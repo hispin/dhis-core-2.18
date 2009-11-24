@@ -374,6 +374,18 @@ function matchObject()
 	}
 }
 
+function matchUpdateObject()
+{
+	var importObjectId = document.getElementById( "objectId" ).value;
+	
+	var existingObjectId = document.getElementById( "existingObjectId" ).value;
+	
+    if ( importObjectId != null && existingObjectId != null )
+    {
+        window.location.href = "matchObject.action?importObjectId=" + importObjectId + "&existingObjectId=" + existingObjectId;
+    }	
+}
+
 function discardObject()
 {
 	var objectId = document.getElementById( "objectId" ).value;

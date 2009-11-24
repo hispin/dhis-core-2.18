@@ -9,6 +9,7 @@
 
 <input type="hidden" id="objectType" name="objectType" value="$!objectType">
 <input type="hidden" id="objectId" name="objectId" value="$!importObject.id">
+<input type="hidden" id="existingObjectId" name="existingObjectId" value="$!importObject.compareObject.id">
 
 <table style="width:680px">
 
@@ -513,7 +514,8 @@
 	
 	<tr>
 		<td colspan="2">
-			<input type="button" value="$i18n.getString( 'back' )" style="width:25%" onclick="cancelObject()"><input 
+			<input type="button" value="$i18n.getString( 'back' )" style="width:25%" onclick="cancelObject()"><input
+			type="button" value="$i18n.getString( 'match_to_existing' )" style="width:25%" onclick="matchUpdateObject()"><input 
 			type="button" value="$i18n.getString( 'discard_update' )" style="width:25%" onclick="discardObject()">
 		</td>
 	</tr>

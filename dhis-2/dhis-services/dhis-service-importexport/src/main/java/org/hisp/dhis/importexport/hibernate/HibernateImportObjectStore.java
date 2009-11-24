@@ -191,6 +191,8 @@ public class HibernateImportObjectStore
 
         String hql = "from ImportObject";
         
+        //TODO improve performance
+        
         Collection<ImportObject> importObjects = session.createQuery( hql ).list();
 
         for ( ImportObject importObject : importObjects )
