@@ -157,13 +157,6 @@ public class SaveTableAction
         this.doIndicators = doIndicators;
     }
     
-    private boolean doCategoryOptionCombos;
-
-    public void setDoCategoryOptionCombos( boolean doCategoryOptionCombos )
-    {
-        this.doCategoryOptionCombos = doCategoryOptionCombos;
-    }
-    
     private boolean doPeriods;
 
     public void setDoPeriods( boolean doPeriods )
@@ -382,7 +375,7 @@ public class SaveTableAction
         {
             reportTable = new ReportTable( tableName, mode, regression,
                 dataElements, indicators, dataSets, periods, null, units, null,
-                dimensionSet, doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
+                dimensionSet, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
         }
         else
@@ -397,7 +390,6 @@ public class SaveTableAction
             reportTable.setPeriods( periods );
             reportTable.setUnits( units );
             reportTable.setDoIndicators( doIndicators );
-            reportTable.setDoCategoryOptionCombos( doCategoryOptionCombos );
             reportTable.setDoPeriods( doPeriods );
             reportTable.setDoUnits( doOrganisationUnits );
             reportTable.setRelatives( relatives );

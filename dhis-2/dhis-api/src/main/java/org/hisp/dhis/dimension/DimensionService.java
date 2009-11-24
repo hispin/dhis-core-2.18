@@ -42,7 +42,8 @@ public interface DimensionService
      * Returns the DimensionSet with the argument DimensionSet identifier.
      * 
      * @param dimensionSetId the DimensionSet identifier.
-     * @return the DimensionSet with the argument DimensionSet identifier.
+     * @return the DimensionSet with the argument DimensionSet identifier. Null
+     *         of the argument is null or no DimensionSet exists for the identifier.
      */
     DimensionSet getDimensionSet( String dimensionSetId );
     

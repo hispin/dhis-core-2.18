@@ -151,7 +151,7 @@ public class ReportTableStatementTest
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
         
         reportTable.init();
         
@@ -161,7 +161,7 @@ public class ReportTableStatementTest
         
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -171,7 +171,7 @@ public class ReportTableStatementTest
         
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -185,7 +185,7 @@ public class ReportTableStatementTest
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false, 
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false ,true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -203,7 +203,7 @@ public class ReportTableStatementTest
     {        
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            categoryCombo, true, true, false, false, relatives, null, i18nFormat, "january_2000" );
+            categoryCombo, true, false, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -221,7 +221,7 @@ public class ReportTableStatementTest
     {        
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -239,7 +239,7 @@ public class ReportTableStatementTest
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -257,7 +257,7 @@ public class ReportTableStatementTest
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         

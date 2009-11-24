@@ -84,7 +84,7 @@ public class BasicDimensionSet
 
     public String getDimensionSetId()
     {
-        StringBuffer identifier = new StringBuffer( DimensionType.GROUPSET.name() + SEPARATOR_TYPE );
+        StringBuffer identifier = new StringBuffer( DimensionType.DATAELEMENTGROUPSET.name() + SEPARATOR_TYPE );
         
         Iterator<? extends Dimension> iterator = getDimensions().iterator(); 
         

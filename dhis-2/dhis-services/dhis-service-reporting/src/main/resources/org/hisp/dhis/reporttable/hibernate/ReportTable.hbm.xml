@@ -73,8 +73,6 @@
 
     <property name="doIndicators"/>
     
-    <property name="doCategoryOptionCombos"/>
-	
     <property name="doPeriods"/>
     
     <property name="doUnits"/>

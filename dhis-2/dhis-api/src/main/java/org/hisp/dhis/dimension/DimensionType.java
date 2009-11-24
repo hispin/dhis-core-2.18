@@ -33,5 +33,6 @@ package org.hisp.dhis.dimension;
 public enum DimensionType
 {
     CATEGORY,
-    GROUPSET
+    DATAELEMENTGROUPSET,
+    INDICATORGROUPSET
 }

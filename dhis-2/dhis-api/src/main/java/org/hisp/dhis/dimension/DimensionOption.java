@@ -35,6 +35,8 @@ import java.util.List;
 public interface DimensionOption
 {
     String getName();
+
+    DimensionType getDimensionType();
     
     List<? extends DimensionOptionElement> getDimensionOptionElements();
     

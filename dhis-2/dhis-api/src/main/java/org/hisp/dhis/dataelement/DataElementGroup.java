@@ -36,6 +36,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Kristian Nordal
@@ -65,6 +66,11 @@ public class DataElementGroup
     // Dimension
     // -------------------------------------------------------------------------
 
+    public DimensionType getDimensionType()
+    {
+        return DimensionType.DATAELEMENTGROUPSET;
+    }
+    
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return new ArrayList<DataElement>( members );
