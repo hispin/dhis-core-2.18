@@ -184,24 +184,10 @@ public class HibernateImportObjectStore
         query.executeUpdate();
     }
     
-    @SuppressWarnings( "unchecked" )
     public void deleteImportObjects()
     {
         Session session = sessionFactory.getCurrentSession();
 
-        String hql = "from ImportObject";
-        
-        //TODO improve performance
-        
-        Collection<ImportObject> importObjects = session.createQuery( hql ).list();
-
-        for ( ImportObject importObject : importObjects )
-        {
-            session.evict( importObject );
-        }
-        
-        hql = "delete " + hql;
-        
-        session.createQuery( hql ).executeUpdate();
+        session.createQuery( "delete from ImportObject" ).executeUpdate();
     }
 }
