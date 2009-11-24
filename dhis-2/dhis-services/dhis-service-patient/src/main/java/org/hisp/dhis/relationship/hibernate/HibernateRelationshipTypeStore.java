@@ -24,63 +24,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.relationship;
 
-import java.util.Collection;
+package org.hisp.dhis.relationship.hibernate;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeStore;
 
 /**
- * @author Abyot Asalefew
+ * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-@Transactional
-public class DefaultRelationshipTypeService
-    implements RelationshipTypeService
+public class HibernateRelationshipTypeStore
+    extends HibernateGenericStore<RelationshipType>
+    implements RelationshipTypeStore
 {
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private RelationshipTypeStore relationshipTypeStore;
-
-    public void setRelationshipTypeStore( RelationshipTypeStore relationshipTypeStore )
-    {
-        this.relationshipTypeStore = relationshipTypeStore;
-    }
-
-    // -------------------------------------------------------------------------
-    // RelationshipType Implementation
-    // -------------------------------------------------------------------------
-
-    public void deleteRelationshipType( RelationshipType relationshipType )
-    {
-        relationshipTypeStore.delete( relationshipType );
-    }
-
-    public Collection<RelationshipType> getAllRelationshipTypes()
-    {
-        return relationshipTypeStore.getAll();
-    }
-
-    public RelationshipType getRelationshipType( int id )
-    {
-        return relationshipTypeStore.get( id );
-    }
-
-    public int saveRelationshipType( RelationshipType relationshipType )
-    {
-        return relationshipTypeStore.save( relationshipType );
-    }
-
-    public void updateRelationshipType( RelationshipType relationshipType )
-    {
-        relationshipTypeStore.update( relationshipType );
-    }
 
     public RelationshipType getRelationshipType( String aIsToB, String bIsToA )
     {
-        return relationshipTypeStore.getRelationshipType( aIsToB, bIsToA );
+        return (RelationshipType) getCriteria( Restrictions.eq( "aIsToB", aIsToB ), Restrictions.eq( "bIsToA", bIsToA ) )
+            .uniqueResult();
     }
 }

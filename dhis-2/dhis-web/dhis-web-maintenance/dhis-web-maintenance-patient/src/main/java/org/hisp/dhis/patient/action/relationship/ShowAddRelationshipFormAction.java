@@ -108,7 +108,7 @@ public class ShowAddRelationshipFormAction
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
-    }    
+    }
 
     private Patient patient;
 
@@ -134,6 +134,18 @@ public class ShowAddRelationshipFormAction
     public Collection<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
+    }
+
+    private String relationshipTypeId;
+
+    public String getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
+
+    public void setRelationshipTypeId( String relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
     }
 
     private List<RelationshipType> relationshipTypes;
@@ -182,24 +194,42 @@ public class ShowAddRelationshipFormAction
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        if ( searchingAttributeId != null )
+        if ( searchingAttributeId != null && searchText != null )
         {
-            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
+            searchText = searchText.trim();
 
-            Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
-                patientAttribute, searchText );
-
-            for ( PatientAttributeValue patientAttributeValue : matching )
+            if ( searchText.length() > 0 )
             {
-                patients.add( patientAttributeValue.getPatient() );
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
+
+                Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
+                    patientAttribute, searchText );
+
+                for ( PatientAttributeValue patientAttributeValue : matching )
+                {
+                    patients.add( patientAttributeValue.getPatient() );
+                }
+
+                patients.remove( patient );
+
+                return SUCCESS;
             }
 
-            return SUCCESS;
         }
 
-        patients = patientService.getPatients( searchText );
+        if ( searchText != null )
+        {
+            searchText = searchText.trim();
 
-        patients.remove( patient );
+            if ( searchText.length() > 0 )
+            {
+                patients = patientService.getPatients( searchText );
+
+                patients.remove( patient );
+
+                return SUCCESS;
+            }
+        }
 
         return SUCCESS;
 

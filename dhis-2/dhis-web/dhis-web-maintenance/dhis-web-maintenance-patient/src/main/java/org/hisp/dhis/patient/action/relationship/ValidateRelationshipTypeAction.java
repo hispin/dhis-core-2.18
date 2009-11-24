@@ -28,6 +28,8 @@
 package org.hisp.dhis.patient.action.relationship;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,6 +45,13 @@ public class ValidateRelationshipTypeAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private RelationshipTypeService relationshipTypeService;
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -147,6 +156,25 @@ public class ValidateRelationshipTypeAction
                 return INPUT;
             }
         }
+        
+        RelationshipType relationshipType = relationshipTypeService.getRelationshipType( aIsToB, bIsToA );
+        
+        if( relationshipType != null )
+        {
+            message = i18n.getString( "relationship_already_exists" );
+
+            return INPUT;
+        }
+        
+        relationshipType = relationshipTypeService.getRelationshipType( bIsToA, aIsToB );
+        
+        if( relationshipType != null )
+        {
+            message = i18n.getString( "relationship_already_exists" );
+
+            return INPUT;
+        }
+        
 
         // ---------------------------------------------------------------------
         // Validation success

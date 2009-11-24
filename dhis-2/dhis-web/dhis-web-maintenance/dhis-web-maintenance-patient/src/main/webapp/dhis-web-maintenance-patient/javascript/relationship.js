@@ -7,7 +7,7 @@ function showRelationshipTypeDetails( relationshipTypeId )
     var request = new Request();
     request.setResponseTypeXML( 'relationshipType' );
     request.setCallbackSuccess( relationshipTypeReceived );
-    request.send( 'getRelationshipTYpe.action?id=' + relationshipTypeId );
+    request.send( 'getRelationshipType.action?id=' + relationshipTypeId );
 }
 
 function relationshipTypeReceived( relationshipTypeElement )
@@ -15,7 +15,7 @@ function relationshipTypeReceived( relationshipTypeElement )
 	setFieldValue( 'idField', getElementValue( relationshipTypeElement, 'id' ) );
 	setFieldValue( 'aIsToBField', getElementValue( relationshipTypeElement, 'aIsToB' ) );	
 	setFieldValue( 'bIsToAField', getElementValue( relationshipTypeElement, 'bIsToA' ) );       
-	setFieldValue( 'descriptionField', getElementValue( programElement, 'description' ) );
+	setFieldValue( 'descriptionField', getElementValue( relationshipTypeElement, 'description' ) );
    
     showDetails();
 }

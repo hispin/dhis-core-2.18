@@ -24,15 +24,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient.action.patient;
+package org.hisp.dhis.patient.action.patientattribute;
 
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,21 +44,35 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class SaveDueDateAction
+public class SavePatientAttributeDateValueAction
     implements Action
 {
 
-    private static final Log LOG = LogFactory.getLog( SaveDueDateAction.class );
+    private static final Log LOG = LogFactory.getLog( SavePatientAttributeDateValueAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageInstanceService programStageInstanceService;
+    private PatientService patientService;
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    public void setPatientService( PatientService patientService )
     {
-        this.programStageInstanceService = programStageInstanceService;
+        this.patientService = patientService;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     private I18nFormat format;
@@ -68,23 +86,25 @@ public class SaveDueDateAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String dueDate;
+    private String value;
 
-    public void setDueDate( String dueDate )
+    public void setValue( String value )
     {
-        this.dueDate = dueDate;
+        this.value = value;
     }
 
-    private int programStageInstanceId;
+    private int patientId;
 
-    public void setProgramStageInstanceId( int programStageInstanceId )
+    public void setPatientId( int patientId )
     {
-        this.programStageInstanceId = programStageInstanceId;
+        this.patientId = patientId;
     }
 
-    public int getProgramStageInstanceId()
+    private int patientAttributeId;
+
+    public void setPatientAttributeId( int patientAttributeId )
     {
-        return programStageInstanceId;
+        this.patientAttributeId = patientAttributeId;
     }
 
     private int statusCode;
@@ -107,12 +127,29 @@ public class SaveDueDateAction
         throws Exception
     {
 
-        ProgramStageInstance programStageInstance = programStageInstanceService
-            .getProgramStageInstance( programStageInstanceId );
+        Patient patient = patientService.getPatient( patientId );
 
-        if ( dueDate != null )
+        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( patientAttributeId );
+
+        if ( !patient.getAttributes().contains( patientAttribute ) )
         {
-            Date dateValue = format.parseDate( dueDate );
+            patient.getAttributes().add( patientAttribute );
+            patientService.updatePatient( patient );
+        }
+
+        if ( value != null && value.trim().length() == 0 )
+        {
+            value = null;
+        }
+
+        if ( value != null )
+        {
+            value = value.trim();
+        }
+
+        if ( value != null )
+        {
+            Date dateValue = format.parseDate( value );
 
             if ( dateValue == null )
             {
@@ -122,16 +159,31 @@ public class SaveDueDateAction
             }
         }
 
-        if ( dueDate != null )
+        PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+            patientAttribute );
+
+        if ( patientAttributeValue == null )
         {
-            programStageInstance.setDueDate( format.parseDate( dueDate ) );
+            if ( value != null )
+            {
 
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+                LOG.debug( "Adding PatientAttributeValue, value added" );
 
-            LOG.debug( "Updating Due Date, value added/changed" );
+                patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
 
+                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
+            }
+        }
+        else
+        {
+            LOG.debug( "Updating PatientAttributeValue, value added/changed" );
+
+            patientAttributeValue.setValue( value );
+
+            patientAttributeValueService.updatePatientAttributeValue( patientAttributeValue );
         }
 
         return SUCCESS;
+
     }
 }

@@ -24,28 +24,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.relationship;
 
-import java.util.Collection;
+import org.hisp.dhis.common.GenericStore;
 
 /**
- * @author Abyot Asalefew
+ * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public interface RelationshipTypeService
-{    
-    String ID = RelationshipTypeService.class.getName();
-    
-    int saveRelationshipType( RelationshipType relationshipType );
-    
-    void deleteRelationshipType( RelationshipType relationshipType );
-    
-    void updateRelationshipType( RelationshipType relationshipType );
-    
-    RelationshipType getRelationshipType( int id );    
-    
+public interface RelationshipTypeStore
+    extends GenericStore<RelationshipType>
+{
+    String ID = RelationshipTypeStore.class.getName();
+
     RelationshipType getRelationshipType( String aIsToB, String bIsToA );
-    
-    Collection<RelationshipType> getAllRelationshipTypes();    
 
 }

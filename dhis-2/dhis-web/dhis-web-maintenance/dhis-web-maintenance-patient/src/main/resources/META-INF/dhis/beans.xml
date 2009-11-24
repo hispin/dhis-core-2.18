@@ -54,6 +54,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
     class="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
     scope="prototype">
+    <property name="relationshipTypeService"
+      ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
   </bean>
   
   <!-- Relationship -->
@@ -212,6 +214,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean
     id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction"
     class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction"
+    scope="prototype">
+    <property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
+    <property name="patientAttributeService"
+      ref="org.hisp.dhis.patient.PatientAttributeService"/>
+    <property name="patientAttributeValueService"
+      ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+  </bean>
+  
+  <bean
+    id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeDateValueAction"
+    class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeDateValueAction"
     scope="prototype">
     <property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
     <property name="patientAttributeService"
@@ -411,6 +424,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.patient.action.program.ValidateProgramAction"
     class="org.hisp.dhis.patient.action.program.ValidateProgramAction"
     scope="prototype">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService"/>
   </bean>
   
   <!-- Program_OrganisationUnit Association -->
@@ -544,6 +558,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction"
     class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction"
     scope="prototype">
+    <property name="programStageService"
+      ref="org.hisp.dhis.program.ProgramStageService"/>
   </bean>
   
 </beans>

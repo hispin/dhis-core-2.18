@@ -15,7 +15,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
   
   <bean id="org.hisp.dhis.relationship.RelationshipTypeStore"
-    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    class="org.hisp.dhis.relationship.hibernate.HibernateRelationshipTypeStore">
     <property name="clazz" value="org.hisp.dhis.relationship.RelationshipType"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
