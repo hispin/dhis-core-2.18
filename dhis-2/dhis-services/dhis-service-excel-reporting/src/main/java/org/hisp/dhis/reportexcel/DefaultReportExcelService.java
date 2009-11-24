@@ -106,7 +106,7 @@ public class DefaultReportExcelService
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
     {
-        if ( user == null || (user != null && superUser) )
+        if ( user == null || superUser )
         {
             return this.getReportsByGroup( group );
         }

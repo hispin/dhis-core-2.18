@@ -362,7 +362,7 @@ public class DefaultDXFImportService
             reader.next();
         }
 
-        if ( reader.getXmlStreamReader().getNamespaceURI() == DXF2_NAMESPACE_URI )
+        if ( reader.getXmlStreamReader().getNamespaceURI().equals( DXF2_NAMESPACE_URI ) )
         {
             dxfVersion = 2;
             log.info( "Parsing DXF version " + dxfVersion );
