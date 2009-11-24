@@ -36,8 +36,6 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.jdbc.StatementBuilder;
 
@@ -48,8 +46,6 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 public class JDBCCrossTabStore
     implements CrossTabStore
 {
-    private static final Log log = LogFactory.getLog( JDBCCrossTabStore.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -75,8 +71,6 @@ public class JDBCCrossTabStore
     public void createCrossTabTable( final List<Operand> operands )
     {
         final StatementHolder holder = statementManager.getHolder();
-        
-        log.info( operands != null ? "Number of crosstab columns: " + ( 2 + operands.size() ) : "No operands selected" );
         
         try
         {
