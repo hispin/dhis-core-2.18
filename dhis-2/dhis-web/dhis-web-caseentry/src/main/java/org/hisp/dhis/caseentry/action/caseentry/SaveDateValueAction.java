@@ -179,50 +179,45 @@ public class SaveDateValueAction
 
         if ( value != null )
         {
-            value = value.trim();
+            Date dateValue = format.parseDate( value );
 
-            if ( value.length() != 0 )
+            if ( dateValue == null )
             {
-                Date dateValue = format.parseDate( value );
+                statusCode = 1;
 
-                if ( dateValue != null )
-                {
-                    if ( programStageInstance.getExecutionDate() == null )
-                    {
-                        programStageInstance.setExecutionDate( new Date() );
-                        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-                    }
-                    
-                    if ( patientDataValue == null )
-                    {
-                        if ( value != null )
-                        {
-                            LOG.debug( "Adding PatientDataValue, value added" );
-
-                            patientDataValue = new PatientDataValue( programStageInstance, dataElement, optionCombo,
-                                organisationUnit, new Date(), value, providedByAnotherFacility );
-
-                            patientDataValueService.savePatientDataValue( patientDataValue );
-                        }
-                    }
-                    else
-                    {
-                        LOG.debug( "Updating PatientDataValue, value added/changed" );
-
-                        patientDataValue.setValue( value );
-                        patientDataValue.setProvidedByAnotherFacility( providedByAnotherFacility );
-                        patientDataValue.setTimestamp( new Date() );
-
-                        patientDataValueService.updatePatientDataValue( patientDataValue );
-                    }
-                }
-                else
-                {
-                    statusCode = 1;
-                }
+                return SUCCESS;
             }
         }
 
+        if ( programStageInstance.getExecutionDate() == null )
+        {
+            programStageInstance.setExecutionDate( new Date() );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        }
+
+        if ( patientDataValue == null )
+        {
+            if ( value != null )
+            {
+                LOG.debug( "Adding PatientDataValue, value added" );
+
+                patientDataValue = new PatientDataValue( programStageInstance, dataElement, optionCombo,
+                    organisationUnit, new Date(), value, providedByAnotherFacility );
+
+                patientDataValueService.savePatientDataValue( patientDataValue );
+            }
+        }
+        else
+        {
+            LOG.debug( "Updating PatientDataValue, value added/changed" );
+
+            patientDataValue.setValue( value );
+            patientDataValue.setProvidedByAnotherFacility( providedByAnotherFacility );
+            patientDataValue.setTimestamp( new Date() );
+
+            patientDataValueService.updatePatientDataValue( patientDataValue );
+        }
+        
         return SUCCESS;
     }
 }

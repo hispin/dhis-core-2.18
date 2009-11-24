@@ -28,6 +28,8 @@
 package org.hisp.dhis.patient.action.programstage;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,9 +46,23 @@ public class ValidateProgramStageAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private String nameField;
 
@@ -60,7 +76,7 @@ public class ValidateProgramStageAction
     public void setDescription( String description )
     {
         this.description = description;
-    }    
+    }
 
     private String message;
 
@@ -98,6 +114,15 @@ public class ValidateProgramStageAction
             if ( nameField.length() == 0 )
             {
                 message = i18n.getString( "please_specify_a_name" );
+
+                return INPUT;
+            }
+
+            ProgramStage match = programStageService.getProgramStageByName( nameField );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "duplicate_names" );
 
                 return INPUT;
             }

@@ -109,34 +109,34 @@ public class SaveExecutionDateAction
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
-        if ( programStageInstance != null )
+        if ( executionDate != null )
         {
-            if ( executionDate != null )
+            Date dateValue = format.parseDate( executionDate );
+
+            if ( dateValue != null )
             {
-                executionDate = executionDate.trim();
+                programStageInstance.setExecutionDate( format.parseDate( executionDate ) );
 
-                if ( executionDate.length() != 0 )
-                {
-                    Date dateOfExecution = format.parseDate( executionDate );
+                programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
-                    if ( dateOfExecution != null )
-                    {
-                        programStageInstance.setExecutionDate( format.parseDate( executionDate ) );
-
-                        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
-                        LOG.debug( "Updating Execution Date, value added/changed" );
-
-                        return SUCCESS;
-                    }
-                    else
-                    {
-                        statusCode = 1;
-                    }
-                }               
+                LOG.debug( "Updating Execution Date, value added/changed" );
             }
-        }       
+
+            else
+            {
+                statusCode = 1;
+            }
+        }
+        else
+        {
+            programStageInstance.setExecutionDate( new Date() );
+
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
+            LOG.debug( "Updating Execution Date, value added/changed" );
+        }
 
         return SUCCESS;
+
     }
 }

@@ -1,4 +1,7 @@
+package org.hisp.dhis.patient.action.program;
+
 /*
+
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
@@ -25,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.program;
-
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,9 +47,23 @@ public class ValidateProgramAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private String nameField;
 
@@ -60,7 +77,7 @@ public class ValidateProgramAction
     public void setDescription( String description )
     {
         this.description = description;
-    }   
+    }
 
     private String message;
 
@@ -101,6 +118,15 @@ public class ValidateProgramAction
 
                 return INPUT;
             }
+
+            Program match = programService.getProgramByName( nameField );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "duplicate_names" );
+
+                return INPUT;
+            }
         }
 
         if ( description == null )
@@ -121,7 +147,6 @@ public class ValidateProgramAction
                 return INPUT;
             }
         }
-        
 
         // ---------------------------------------------------------------------
         // Validation success

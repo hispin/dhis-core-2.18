@@ -112,7 +112,14 @@ public class DefaultPatientAttributeValueService
 
     public void updatePatientAttributeValue( PatientAttributeValue patientAttributeValue )
     {
-        patientAttributeValueStore.update( patientAttributeValue );
+        if ( patientAttributeValue.getValue() == null )
+        {
+            patientAttributeValueStore.delete( patientAttributeValue );
+        }
+        else
+        {
+            patientAttributeValueStore.update( patientAttributeValue );
+        }        
     }
 
     public Map<Integer, Collection<PatientAttributeValue>> getPatientAttributeValueMapForPatients(

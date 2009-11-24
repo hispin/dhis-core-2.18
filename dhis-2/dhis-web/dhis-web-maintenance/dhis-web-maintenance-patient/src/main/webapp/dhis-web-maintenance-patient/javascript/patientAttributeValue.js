@@ -33,6 +33,14 @@ function saveAttributeValue( patientId, patientAttributeId, patientAttributeName
     
 }
 
+function saveDate( patientId, patientAttributeId, selectedOption )
+{
+	var field = document.getElementById( 'value[' + patientAttributeId + '].date' );
+ 
+	var dateSaver = new DateSaver( patientId, patientAttributeId, field.value, '#ccffcc', '' );
+	dateSaver.save();
+}
+
 function saveBoolean( patientId, patientAttributeId, selectedOption )
 {
 	selectedOption.style.backgroundColor = '#ffffcc';
@@ -42,14 +50,67 @@ function saveBoolean( patientId, patientAttributeId, selectedOption )
 }
 
 
-//-----------------------------------------------------------------------------
-//Saver objects
-//-----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// Saver objects
+// ------------------------------------------------------------------------------
+
+function DateSaver( patientId_, patientAttributeId_, value_, resultColor_, selectedOption_ )
+{
+	var SUCCESS = '#ccffcc';
+	var ERROR = '#ffcc00';
+	
+	var patientId = patientId_;
+	var patientAttributeId = patientAttributeId_;	
+	var value = value_;
+	var resultColor = resultColor_;
+	var selectedOption = selectedOption_;
+ 
+	this.save = function()
+	{
+		var request = new Request();
+		request.setCallbackSuccess( handleResponse );
+		request.setCallbackError( handleHttpError );
+		request.setResponseTypeXML( 'status' );
+		request.send( 'savePatientAttributeDateValue.action?patientId=' + patientId + '&patientAttributeId=' + patientAttributeId + '&value=' + value );		
+	};
+ 
+	function handleResponse( rootElement )
+	{
+		var codeElement = rootElement.getElementsByTagName( 'code' )[0];
+		var code = parseInt( codeElement.firstChild.nodeValue );
+     
+		if ( code == 0 )
+		{
+			markValue( resultColor );                   
+		}		
+		else
+		{
+			markValue( ERROR );
+			window.alert( i18n_invalid_date );
+		}	
+		
+	}
+ 
+	function handleHttpError( errorCode )
+	{
+		markValue( ERROR );
+		window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+	}   
+ 
+	function markValue( color )
+	{		       
+     
+		var element = document.getElementById( 'value[' + patientAttributeId + '].date' );	
+             
+		element.style.backgroundColor = color;
+	}
+}
+
 
 function ValueSaver( patientId_, patientAttributeId_, value_, resultColor_, selectedOption_ )
 {
 	var SUCCESS = '#ccffcc';
-	var ERROR = '#ccccff';
+	var ERROR = '#ffcc00';
 	
 	var patientId = patientId_;
 	var patientAttributeId = patientAttributeId_;	
@@ -121,15 +182,17 @@ function isInt( value )
 }
 
 /**
- * Display patient attribute name in selection display when a value field recieves
- * focus.
- * XXX May want to move this to a separate function, called by valueFocus.
- * @param e focus event
+ * Display patient attribute name in selection display when a value field
+ * recieves focus. XXX May want to move this to a separate function, called by
+ * valueFocus.
+ * 
+ * @param e
+ *            focus event
  * @author Hans S. Tommerholt
  */
 function valueFocus(e) 
 {
-	//Retrieve the data element id from the id of the field
+	// Retrieve the data element id from the id of the field
 	var str = e.target.id;
 	
 	var match = /.*\[(.*)\]/.exec( str ); 
@@ -141,7 +204,7 @@ function valueFocus(e)
 
 	var attrId = match[1];	
 	
-	//Get the data element name
+	// Get the data element name
 	var nameContainer = document.getElementById('value[' + attrId + '].name');	
 	
 	if ( ! nameContainer )
@@ -154,7 +217,7 @@ function valueFocus(e)
 	
 	var as = nameContainer.getElementsByTagName('a');
 
-	if ( as.length > 0 )	//Admin rights: Name is in a link
+	if ( as.length > 0 )	// Admin rights: Name is in a link
 	{
 		name = as[0].firstChild.nodeValue;
 	} 
@@ -170,19 +233,28 @@ function keyPress( event, field )
     var key = 0;
     if ( event.charCode )
     {
-    	key = event.charCode; /* Safari2 (Mac) (and probably Konqueror on Linux, untested) */
+    	key = event.charCode; /*
+								 * Safari2 (Mac) (and probably Konqueror on
+								 * Linux, untested)
+								 */
     }
     else
     {
 		if ( event.keyCode )
 		{
-			key = event.keyCode; /* Firefox1.5 (Mac/Win), Opera9 (Mac/Win), IE6, IE7Beta2, Netscape7.2 (Mac) */
+			key = event.keyCode; /*
+									 * Firefox1.5 (Mac/Win), Opera9 (Mac/Win),
+									 * IE6, IE7Beta2, Netscape7.2 (Mac)
+									 */
 		}
 		else
 		{
 			if ( event.which )
 			{
-				key = event.which; /* Older Netscape? (No browsers triggered yet) */
+				key = event.which; /*
+									 * Older Netscape? (No browsers triggered
+									 * yet)
+									 */
 			}
 	    }
 	}
@@ -192,7 +264,10 @@ function keyPress( event, field )
 		nextField = getNextEntryField( field );
         if ( nextField )
         {
-            nextField.focus(); /* Does not seem to actually work in Safari, unless you also have an Alert in between */
+            nextField.focus(); /*
+								 * Does not seem to actually work in Safari,
+								 * unless you also have an Alert in between
+								 */
         }
         return true;
     }
@@ -233,7 +308,7 @@ function getNextEntryField( field )
     	// No more fields after this:
     	return false;
     	// First field:
-        //return inputs[0];
+        // return inputs[0];
     }
     else
     {

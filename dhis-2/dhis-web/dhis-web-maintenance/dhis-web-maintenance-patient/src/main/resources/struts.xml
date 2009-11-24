@@ -78,7 +78,8 @@
       <result name="relationshiplist" type="chain">getRelationshipList</result>      
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/relationshipList.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>            
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>            
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/relationship.js</param>
       <param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_UPDATE</param>      
     </action>      
@@ -87,7 +88,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>      
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/relationshipList.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>            
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>            
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/relationship.js</param>
       <param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_UPDATE</param>      
     </action>   
@@ -96,7 +98,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>      
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/addRelationshipForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>           
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>        
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/relationship.js</param>
       <param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>      
     </action>
@@ -193,8 +196,9 @@
       <interceptor-ref name="organisationUnitTreeStack"/>      
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/updatePatientAttributeValueForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>            
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patientAttributeValue.js</param>
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>          
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patientAttributeValue.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
       <param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_UPDATE</param>      
     </action>
     
@@ -203,6 +207,12 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_ADD,F_PATIENTATTRIBUTEVALUE_UPDATE,F_PATIENTATTRIBUTEVALUE_DELETE</param>
     </action>   
+    
+    <action name="savePatientAttributeDateValue" class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeDateValueAction">      
+      <result name="success" type="velocity">status.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_ADD,F_PATIENTATTRIBUTEVALUE_UPDATE,F_PATIENTATTRIBUTEVALUE_DELETE</param>
+    </action>
 	  
     <!-- Patient -->	
     
@@ -211,7 +221,8 @@
       <result name="patientform" type="chain">patientform</result>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/selectPatient.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>      
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>      
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>             
     </action>
     
@@ -219,7 +230,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/patient.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>      
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>      
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>            
     </action>    
     
@@ -235,7 +247,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>        
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>        
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>            
     </action> 
     
@@ -244,7 +257,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="listAll">true</param>
       <param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>        
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>        
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>            
     </action>
     
@@ -267,7 +281,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/addPatientForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>      
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>      
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
       <param name="requiredAuthorities">F_PATIENT_ADD</param>      
     </action>  
@@ -276,7 +291,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-patient/updatePatientForm.vm</param>   
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>         
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>        
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
       <param name="requiredAuthorities">F_PATIENT_UPDATE</param>      
     </action>
@@ -301,7 +317,8 @@
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="enrollmentform" type="chain">enrollmentform</result>
       <result name="success" type="velocity">/main.vm</result>
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>
       <param name="page">/dhis-web-maintenance-patient/programEnrollmentSelectForm.vm</param>           
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
       <param name="requiredAuthorities">F_PATIENT_UPDATE</param>      
@@ -310,7 +327,8 @@
     <action name="enrollmentform" class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction">    
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="success" type="velocity">/main.vm</result>  
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>         
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>         
       <param name="page">/dhis-web-maintenance-patient/programEnrollmentForm.vm</param>      
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
       <param name="requiredAuthorities">F_PATIENT_UPDATE</param>            
@@ -327,7 +345,8 @@
     <action name="saveProgramEnrollment" class="org.hisp.dhis.patient.action.patient.SaveProgramEnrollmentAction">
       <interceptor-ref name="organisationUnitTreeStack"/>      
       <result name="success" type="velocity">/main.vm</result>  
-      <param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>    
+      <param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+      <param name="menuTreeHeight">321</param>    
       <param name="page">/dhis-web-maintenance-patient/programEnrollmentForm.vm</param>           
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>            
     </action>

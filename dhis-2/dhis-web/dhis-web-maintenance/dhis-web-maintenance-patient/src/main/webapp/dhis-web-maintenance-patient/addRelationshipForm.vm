@@ -50,16 +50,17 @@
             </tr>
             <tr>  
                 <td>
-                    <select id="relationshipTypeId" name="relationshipTypeId" #if( $relationshipTypes.size() == 0 ) disabled="disabled" #end>
+                    <select id="relationshipTypeId" name="relationshipTypeId" onchange="document.getElementById( 'relationshipSelectForm' ).submit();" #if( $relationshipTypes.size() == 0 ) disabled="disabled" #end>
                         <option value="">[$i18n.getString( "select_relationship" )]</option>
-                        #foreach( $relationshipType in $relationshipTypes )
-                            <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )">$encoder.htmlEncode( $relationshipType.aIsToB )</option>
-                            <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.bIsToA )">$encoder.htmlEncode( $relationshipType.bIsToA )</option>
+                        #foreach( $relationshipType in $relationshipTypes )                        
+                            <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )" #if( $relationshipTypeId && "$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )" == $relationshipTypeId ) selected="selected" #end>$encoder.htmlEncode( $relationshipType.aIsToB )</option>
+                            <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.bIsToA )" #if( $relationshipTypeId && "$relationshipType.id:$encoder.htmlEncode( $relationshipType.bIsToA )" == $relationshipTypeId ) selected="selected" #end>$encoder.htmlEncode( $relationshipType.bIsToA )</option>
                         #end
                     </select>
                     $i18n.getString( "is" )
                 </td>
-            </tr>                
+            </tr>           
+                                    
             <tr>           
                 <td>
                     <select id="searchingAttributeId" name="searchingAttributeId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end>
@@ -92,7 +93,7 @@
             </tr>
             <tr>
             	<td><input type="button" value="$i18n.getString( "assign_relationship" )" onclick="javascript:addRelationship()" style="width:10em"></td>
-            </tr>
+            </tr>            
         </table>
     </td>
 </tr>

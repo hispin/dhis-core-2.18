@@ -90,7 +90,7 @@
                     <option value="false" #if( $patientAttributeValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
                 </select>                
             #elseif( $patientAttribute.valueType == "date" )
-                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveAttributeValue( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
+                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
                     <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
                     <script type="text/javascript">
                         Calendar.setup({
@@ -111,3 +111,11 @@
 </form>     
 
 <span id="message"></span>
+
+<script type="text/javascript">    
+    var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
+    var i18n_invalid_date = '$encoder.jsEscape( $i18n.getString( "invalid_date" ) , "'")'; 
+    var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
+    var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
+    var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")';    
+</script>
