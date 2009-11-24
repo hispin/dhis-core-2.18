@@ -40,19 +40,19 @@ import org.hisp.dhis.period.Period;
  * @author Dag Haavi Finstad
  * @version $Id: AbstractStdDevOutlierAnalysisService.java 1020 2009-06-05 01:30:07Z daghf $
  */
-public abstract class AbstractStdDevOutlierAnalysisService
+public abstract class AbstractOutlierAnalysisService
     implements OutlierAnalysisService
 {
     public final Collection<OutlierValue> findOutliers( Collection<? extends OrganisationUnit> organisationUnits,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
-        final Queue<OrganisationUnit> orgUnitQueue = new LinkedList<OrganisationUnit>( organisationUnits );
+        final Queue<OrganisationUnit> organisationUnitQueue = new LinkedList<OrganisationUnit>( organisationUnits );
         final Collection<OutlierValue> outlierCollection = new ArrayList<OutlierValue>();
         
-        while ( !orgUnitQueue.isEmpty() )
+        while ( !organisationUnitQueue.isEmpty() )
         {
-            final OrganisationUnit organisationUnit = orgUnitQueue.remove();
-            orgUnitQueue.addAll( organisationUnit.getChildren() );
+            final OrganisationUnit organisationUnit = organisationUnitQueue.remove();
+            organisationUnitQueue.addAll( organisationUnit.getChildren() );
             
             for ( DataElement dataElement : dataElements )
             {

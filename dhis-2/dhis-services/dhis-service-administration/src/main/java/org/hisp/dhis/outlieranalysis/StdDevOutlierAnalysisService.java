@@ -45,7 +45,7 @@ import org.hisp.dhis.period.Period;
  * @version $Id: DefaultStdDevOutlierAnalysisService.java 1020 2009-06-05 01:30:07Z daghf $
  */
 public class StdDevOutlierAnalysisService
-    extends AbstractStdDevOutlierAnalysisService
+    extends AbstractOutlierAnalysisService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -84,9 +84,10 @@ public class StdDevOutlierAnalysisService
         }
 
         double mean = statistics.getMean();
-        double standardDeviation = statistics.getStandardDeviation();
-        double lowerBound = mean - stdDevFactor * standardDeviation;
-        double upperBound = mean + stdDevFactor * standardDeviation;
+        double deviation = statistics.getStandardDeviation() * stdDevFactor;
+        
+        double lowerBound = mean - deviation;
+        double upperBound = mean + deviation;
 
         for ( Period period : periods )
         {

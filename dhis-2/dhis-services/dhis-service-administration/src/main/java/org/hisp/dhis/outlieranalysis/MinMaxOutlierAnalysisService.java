@@ -45,7 +45,7 @@ import org.hisp.dhis.period.Period;
  * @version $Id: DefaultMinMaxOutlierAnalysisService.java 1047 2009-06-10 11:01:04Z daghf $
  */
 public class MinMaxOutlierAnalysisService
-    extends AbstractStdDevOutlierAnalysisService
+    extends AbstractOutlierAnalysisService
 {
     // -------------------------------------------------------------------------
     // Dependencies
