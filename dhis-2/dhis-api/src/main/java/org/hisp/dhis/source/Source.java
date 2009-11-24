@@ -36,6 +36,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -103,6 +104,11 @@ public abstract class Source
         }
     }
 
+    public DimensionType getDimensionType()
+    {
+        return null;
+    }
+    
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null;

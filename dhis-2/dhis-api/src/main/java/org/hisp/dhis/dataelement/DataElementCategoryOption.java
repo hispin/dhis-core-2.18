@@ -34,6 +34,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Abyot Asalefew
@@ -77,6 +78,11 @@ public class DataElementCategoryOption
     // Dimension
     // -------------------------------------------------------------------------
 
+    public DimensionType getDimensionType()
+    {
+        return DimensionType.CATEGORY;
+    }
+    
     public Dimension getDimension()
     {
         return category;

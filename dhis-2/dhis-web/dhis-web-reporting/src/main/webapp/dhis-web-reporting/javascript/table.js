@@ -161,8 +161,8 @@ function validateCollections()
         
         return false;
     }
-        
-    if ( !isChecked( "doIndicators" ) && !isChecked( "doPeriods" ) && !isChecked( "doOrganisationUnits" ) && !isChecked( "doCategoryOptionCombos" ) )
+    
+    if ( !hasValue( "dimension" ) && !isChecked( "doIndicators" ) && !isChecked( "doPeriods" ) && !isChecked( "doOrganisationUnits" ) )
     {
         setMessage( i18n_cannot_crosstab_no_dimensions );
         
@@ -198,6 +198,11 @@ function validateCollections()
     }
     
     return true;
+}
+
+function hasValue( elementId )
+{
+	return document.getElementById( elementId ).value != "" ? true : false;
 }
 
 function relativePeriodsChecked()
@@ -275,17 +280,14 @@ function toggleRegression()
         check( "doIndicators" );
         uncheck( "doOrganisationUnits" );
         uncheck( "doPeriods" );
-        uncheck( "doCategoryOptionCombos" );
         
         disable( "doOrganisationUnits" );
-        disable( "doPeriods" );        
-        disable( "doCategoryOptionCombos" );
+        disable( "doPeriods" );
     }
     else
     {
         enable( "doOrganisationUnits" );
-        enable( "doPeriods" );        
-        enable( "doCategoryOptionCombos" );
+        enable( "doPeriods" );
     }
 }
 

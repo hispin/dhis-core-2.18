@@ -204,7 +204,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -271,7 +271,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -330,7 +330,7 @@ public class ReportTableTest
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false, 
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -393,7 +393,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -460,7 +460,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -520,7 +520,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -583,7 +583,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            categoryCombo, true, true, true, false, relatives, null, i18nFormat, "january_2000" );
+            categoryCombo, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -664,7 +664,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            categoryCombo, false, true, false, true, relatives, null, i18nFormat, "january_2000" );
+            categoryCombo, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -727,66 +727,7 @@ public class ReportTableTest
     @Test
     public void testDataElementWithCategoryOptionReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            categoryCombo, true, false, false, true, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-
-        assertNotNull( indexColumns );
-        assertEquals( 2, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.CATEGORYCOMBO_ID ) );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 2, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.CATEGORYCOMBO_NAME ) );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
-        List<String> selectColumns = reportTable.getSelectColumns();
-        
-        assertNotNull( selectColumns );
-        assertEquals( 2, selectColumns.size() );
-        assertTrue( selectColumns.contains( ReportTable.DATAELEMENT_ID ) );
-        assertTrue( selectColumns.contains( ReportTable.ORGANISATIONUNIT_ID ) );
-        
-        List<String> crossTabColumns = reportTable.getCrossTabColumns();
-        
-        assertNotNull( crossTabColumns );        
-        assertEquals( 4, crossTabColumns.size() );
-
-        assertTrue( crossTabColumns.contains( "shortnamea_shortnamea" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_shortnameb" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_shortnamea" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_shortnameb" ) );
-
-        List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
-        
-        assertNotNull( crossTabIdentifiers );
-        assertEquals( 4, crossTabIdentifiers.size() );
-        
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-
-        assertTrue( reportTable.getReportIndicators().contains( null ) );
-        assertTrue( reportTable.getReportPeriods().size() == 4 );
-        assertTrue( reportTable.getReportUnits().contains( null ) );
-        
-        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
-        
-        assertNotNull( prettyCrossTabColumns );
-        assertEquals( 4, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
+        //TODO
     }
 
     @Test
@@ -794,7 +735,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -860,7 +801,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -919,7 +860,7 @@ public class ReportTableTest
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false, 
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         

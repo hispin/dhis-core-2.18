@@ -116,13 +116,17 @@ public class DefaultDimensionService
 
             dataElements = dataElementService.getDataElementByCategoryCombo( categoryCombo );
         }
-        else if ( dimensionSet != null && dimensionSet.getDimensionType().equals( GROUPSET ) )
+        else if ( dimensionSet != null && dimensionSet.getDimensionType().equals( DATAELEMENTGROUPSET ) )
         {
             Integer[] ids = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() );
     
             Set<DataElementGroupSet> groupSets = getDataElementDimensionSet( ids );
     
             dataElements = dataElementService.getDataElementsByGroupSets( groupSets );
+        }
+        else if ( dimensionSet != null && dimensionSet.getDimensionType().equals( INDICATORGROUPSET ) )
+        {            
+            throw new UnsupportedOperationException(); // TODO implement
         }
         
         return dataElements;

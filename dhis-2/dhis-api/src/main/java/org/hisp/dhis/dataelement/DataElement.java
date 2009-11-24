@@ -41,6 +41,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.period.PeriodType;
 
 /**
@@ -229,6 +230,11 @@ public class DataElement
         }
     }
 
+    public DimensionType getDimensionType()
+    {
+        return null; // DataElement is DimensionOption for the static DataElement dimension
+    }
+    
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null; // DataElement is DimensionOption for the static DataElement dimension

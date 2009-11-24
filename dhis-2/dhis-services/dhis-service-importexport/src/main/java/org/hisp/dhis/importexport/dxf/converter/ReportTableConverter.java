@@ -63,7 +63,6 @@ public class ReportTableConverter
     private static final String FIELD_REGRESSION = "regression";
             
     private static final String FIELD_DO_INDICATORS = "doIndicators";
-    private static final String FIELD_DO_CATEGORY_OPTION_COMBOS = "doCategoryOptionCombos";
     private static final String FIELD_DO_PERIODS = "doPeriods";
     private static final String FIELD_DO_ORGANISATION_UNITS = "doOrganisationUnits";
     
@@ -137,7 +136,6 @@ public class ReportTableConverter
                 writer.writeElement( FIELD_REGRESSION, String.valueOf( reportTable.isRegression() ) );
                 
                 writer.writeElement( FIELD_DO_INDICATORS, String.valueOf( reportTable.isDoIndicators() ) );
-                writer.writeElement( FIELD_DO_CATEGORY_OPTION_COMBOS, String.valueOf( reportTable.isDoCategoryOptionCombos() ) );
                 writer.writeElement( FIELD_DO_PERIODS, String.valueOf( reportTable.isDoPeriods() ) );
                 writer.writeElement( FIELD_DO_ORGANISATION_UNITS, String.valueOf( reportTable.isDoUnits() ) );
                 
@@ -188,7 +186,6 @@ public class ReportTableConverter
             reportTable.setRegression( Boolean.parseBoolean( values.get( FIELD_REGRESSION ) ) );
             
             reportTable.setDoIndicators( Boolean.parseBoolean( values.get( FIELD_DO_INDICATORS ) ) );
-            reportTable.setDoCategoryOptionCombos( Boolean.parseBoolean( values.get( FIELD_DO_CATEGORY_OPTION_COMBOS ) ) );
             reportTable.setDoPeriods( Boolean.parseBoolean( values.get( FIELD_DO_PERIODS ) ) );
             reportTable.setDoUnits( Boolean.parseBoolean( values.get( FIELD_DO_ORGANISATION_UNITS ) ) );
             

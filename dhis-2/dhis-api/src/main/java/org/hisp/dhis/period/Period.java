@@ -34,6 +34,7 @@ import java.util.List;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Kristian Nordal
@@ -136,6 +137,11 @@ public class Period
         }
     }
 
+    public DimensionType getDimensionType()
+    {
+        return null;
+    }
+    
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null;

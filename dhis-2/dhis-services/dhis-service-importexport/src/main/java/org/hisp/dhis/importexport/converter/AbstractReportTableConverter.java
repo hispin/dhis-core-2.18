@@ -56,7 +56,6 @@ public class AbstractReportTableConverter
         match.setRegression( object.isRegression() );
         
         match.setDoIndicators( match.isDoIndicators() );
-        match.setDoCategoryOptionCombos( match.isDoCategoryOptionCombos() );
         match.setDoPeriods( match.isDoPeriods() );
         match.setDoUnits( match.isDoUnits() );
         
@@ -106,10 +105,6 @@ public class AbstractReportTableConverter
         }
         
         if ( object.isDoIndicators() != existing.isDoIndicators() )
-        {
-            return false;
-        }
-        if ( object.isDoCategoryOptionCombos() != existing.isDoCategoryOptionCombos() )
         {
             return false;
         }

@@ -36,6 +36,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Lars Helge Overland
@@ -65,6 +66,11 @@ public class IndicatorGroup
     // Dimension
     // -------------------------------------------------------------------------
 
+    public DimensionType getDimensionType()
+    {
+        return DimensionType.INDICATORGROUPSET;
+    }
+    
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return new ArrayList<Indicator>( members );

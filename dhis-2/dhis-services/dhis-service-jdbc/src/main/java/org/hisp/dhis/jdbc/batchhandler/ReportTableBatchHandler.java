@@ -92,7 +92,6 @@ public class ReportTableBatchHandler
         statementBuilder.setColumn( "mode" );
         statementBuilder.setColumn( "regression" );
         statementBuilder.setColumn( "doindicators" );
-        statementBuilder.setColumn( "docategoryoptioncombos" );
         statementBuilder.setColumn( "doperiods" );
         statementBuilder.setColumn( "dounits" );
         
@@ -123,7 +122,6 @@ public class ReportTableBatchHandler
         statementBuilder.setValue( reportTable.getMode() );
         statementBuilder.setValue( reportTable.isRegression() );
         statementBuilder.setValue( reportTable.isDoIndicators() );
-        statementBuilder.setValue( reportTable.isDoCategoryOptionCombos() );
         statementBuilder.setValue( reportTable.isDoPeriods() );
         statementBuilder.setValue( reportTable.isDoUnits() );
         

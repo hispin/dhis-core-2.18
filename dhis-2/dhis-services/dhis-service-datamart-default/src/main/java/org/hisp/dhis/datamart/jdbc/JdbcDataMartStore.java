@@ -50,6 +50,7 @@ import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -113,19 +114,22 @@ public class JdbcDataMartStore
 
     public Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit )
     {
-        // Assuming dimension type CATEGORY for now
+        if ( dimensionOption.getDimensionType().equals( DimensionType.CATEGORY ) )
+        {
+            String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, dimensionOption.getDimensionOptionElements() ) );
+            
+            final String sql =
+                "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value)" +
+                "FROM aggregateddatavalue " +
+                "WHERE dataelementid = " + dataElement.getId() + " " +
+                "AND categoryoptioncomboid IN (" + ids + ") " +
+                "AND periodid = " + period.getId() + " " +
+                "AND organisationunitid = " + organisationUnit.getId();
+            
+            return statementManager.getHolder().queryForDouble( sql );
+        }
         
-        String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, dimensionOption.getDimensionOptionElements() ) );
-        
-        final String sql =
-            "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value)" +
-            "FROM aggregateddatavalue " +
-            "WHERE dataelementid = " + dataElement.getId() + " " +
-            "AND categoryoptioncomboid IN (" + ids + ") " +
-            "AND periodid = " + period.getId() + " " +
-            "AND organisationunitid = " + organisationUnit.getId();
-        
-        return statementManager.getHolder().queryForDouble( sql );
+        throw new IllegalArgumentException();
     }
     
     public Double getAggregatedValue( DataElement dataElement, 

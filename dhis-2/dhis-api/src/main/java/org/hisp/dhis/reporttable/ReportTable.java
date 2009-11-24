@@ -120,8 +120,6 @@ public class ReportTable
     
     private Boolean doIndicators;
     
-    private Boolean doCategoryOptionCombos;
-    
     private Boolean doPeriods;
     
     private Boolean doUnits;
@@ -316,7 +314,6 @@ public class ReportTable
         List<OrganisationUnit> relativeUnits,
         DimensionSet dimensionSet,
         boolean doIndicators,
-        boolean doCategoryOptionCombos,
         boolean doPeriods,
         boolean doUnits,
         RelativePeriods relatives,
@@ -337,7 +334,6 @@ public class ReportTable
         this.units = units;
         this.relativeUnits = relativeUnits;
         this.doIndicators = doIndicators;
-        this.doCategoryOptionCombos = doCategoryOptionCombos;
         this.doPeriods = doPeriods;
         this.doUnits = doUnits;
         this.relatives = relatives;
@@ -375,7 +371,7 @@ public class ReportTable
         // Init dimensional lists
         // ---------------------------------------------------------------------
 
-        if ( isDimensional() && dimensionType.equals( DimensionType.CATEGORY ) )
+        if ( isDimensional( DimensionType.CATEGORY ) )
         {
             // -----------------------------------------------------------------
             // CategoryCombo is set, populate CategoryOptionCombos
@@ -383,7 +379,7 @@ public class ReportTable
 
             categoryOptionCombos = categoryCombo.getDimensionOptionElements();
         }
-        else if ( isDimensional() && dimensionType.equals( DimensionType.GROUPSET ) )
+        else if ( isDimensional( DimensionType.DATAELEMENTGROUPSET ) )
         {
             // -----------------------------------------------------------------
             // All DataElements have GroupSets, populate DataElements
@@ -425,7 +421,7 @@ public class ReportTable
             indexNameColumns.add( getName( mode ) );
         }
         
-        if ( isDoCategoryOptionCombos() )
+        if ( isDimensional( DimensionType.CATEGORY ) ) // Category options will be crosstab if dimensional and type category
         {
             reportCategoryOptionCombos.add( null );
             
@@ -540,7 +536,7 @@ public class ReportTable
         {
             this.dimensionType = dimensionSet.getDimensionType();
             this.categoryCombo = dimensionType.equals( DimensionType.CATEGORY ) ? dimensionSet : null;
-            this.dataElementGroupSets = dimensionType.equals( DimensionType.GROUPSET ) ? dimensionSet.getDimensions() : null;
+            this.dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET ) ? dimensionSet.getDimensions() : null;
         }
     }
     
@@ -649,14 +645,6 @@ public class ReportTable
     }
 
     /**
-     * Tests whether the Indicator dimension will be crosstabulated for this ReportTable.
-     */
-    public boolean isDoCategoryOptionCombos()
-    {
-        return doCategoryOptionCombos != null && doCategoryOptionCombos;
-    }
-
-    /**
      * Tests whether the Period dimension will be crosstabulated for this ReportTable.
      */
     public boolean isDoPeriods()
@@ -694,7 +682,7 @@ public class ReportTable
      */
     public boolean doTotal()
     {
-        return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDoCategoryOptionCombos() && 
+        return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && 
             isDimensional( DimensionType.CATEGORY ) && mode.equals( MODE_DATAELEMENTS );
     }
         
@@ -1122,16 +1110,6 @@ public class ReportTable
     public void setDoIndicators( Boolean doIndicators )
     {
         this.doIndicators = doIndicators;
-    }
-    
-    public Boolean getDoCategoryOptionCombos()
-    {
-        return doCategoryOptionCombos;
-    }
-
-    public void setDoCategoryOptionCombos( Boolean doCategoryOptionCombos )
-    {
-        this.doCategoryOptionCombos = doCategoryOptionCombos;
     }
     
     public Boolean getDoPeriods()
