@@ -35,7 +35,6 @@ import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,7 +45,6 @@ import com.opensymphony.xwork2.Action;
 public class ProgramEnrollmentSelectAction
     implements Action
 {
-
     private static final String PROGRAM_ENROLLMENT_FORM = "enrollmentform";
 
     // -------------------------------------------------------------------------
