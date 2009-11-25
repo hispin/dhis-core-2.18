@@ -27,7 +27,6 @@ package org.hisp.dhis.validationrule.action.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -141,6 +140,10 @@ public class GetOutliersAction
         this.fromDateString = fromDate.trim();
     }
 
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
     private String dataSetId;
 
     public void setDataset( String dataSet )
@@ -155,39 +158,11 @@ public class GetOutliersAction
         this.dataElementsById = dataElementsById;
     }
 
-    private Collection<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return new ArrayList<DataElement>( this.dataElements );
-    }
-    
-    private OrganisationUnit source;
-    
-    public OrganisationUnit getSource()
-    {
-        return source;
-    }
-
     private String outlierType;
 
     public void setOutlierType( String outlierType )
     {
         this.outlierType = outlierType;
-    }
-
-    public String getOutlierType()
-    {
-        if ( outlierType.equals( TYPE_MINMAX ) )
-        {
-            return "Min-max";
-        }
-        if ( outlierType.equals( TYPE_STDDEV ) )
-        {
-            return "Standard deviation";
-        }
-        
-        return "";
     }
 
     private Double standardDeviation;
@@ -197,6 +172,10 @@ public class GetOutliersAction
         this.standardDeviation = standardDeviation;
     }
 
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+    
     private Collection<OutlierValue> outlierValues;
 
     public Collection<OutlierValue> getOutlierValues()
@@ -210,7 +189,7 @@ public class GetOutliersAction
     {
         return searchTime;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -219,9 +198,9 @@ public class GetOutliersAction
     {
         long startTime = System.currentTimeMillis();
 
-        dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) );
+        Collection<DataElement> dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) );
 
-        source = selectionTreeManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionTreeManager.getSelectedOrganisationUnit();
         
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
         
@@ -253,11 +232,11 @@ public class GetOutliersAction
 
         if ( outlierType.equals( TYPE_MINMAX ) )
         {
-            outlierValues = minMaxOutlierAnalysisService.findOutliers( source, dataElements, periods, null );
+            outlierValues = minMaxOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, null );
         }
         else if ( outlierType.equals( TYPE_STDDEV ) )
         {
-            outlierValues = stdDevOutlierAnalysisService.findOutliers( source, dataElements, periods, standardDeviation );
+            outlierValues = stdDevOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, standardDeviation );
         }
         else
         {

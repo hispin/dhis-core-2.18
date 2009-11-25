@@ -29,12 +29,14 @@ package org.hisp.dhis.outlieranalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
  * @author Dag Haavi Finstad
@@ -63,7 +65,11 @@ public abstract class AbstractOutlierAnalysisService
     {
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
         
-        final Collection<OutlierValue> outlierCollection = new ArrayList<OutlierValue>();
+        Map<Integer, DataElement> dataElementMap = ConversionUtils.getIdentifierMap( dataElements );
+        Map<Integer, Period> periodMap = ConversionUtils.getIdentifierMap( periods );
+        Map<Integer, OrganisationUnit> organisationUnitMap = ConversionUtils.getIdentifierMap( units );
+        
+        Collection<OutlierValue> outlierCollection = new ArrayList<OutlierValue>();
         
         for ( OrganisationUnit unit : units )
         {
@@ -73,9 +79,12 @@ public abstract class AbstractOutlierAnalysisService
                 {                    
                     Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
                     
+                    Map<Integer, DataElementCategoryOptionCombo> categoryOptionComboMap = ConversionUtils.getIdentifierMap( categoryOptionCombos );
+                    
                     for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                     {
-                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor,
+                            dataElementMap, periodMap, organisationUnitMap, categoryOptionComboMap ) );
                     }
                 }
             }
@@ -89,5 +98,7 @@ public abstract class AbstractOutlierAnalysisService
     // -------------------------------------------------------------------------
 
     protected abstract Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
-        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor );
+        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor,
+        Map<Integer, DataElement> dataElementMap, Map<Integer, Period> periodMap, Map<Integer, OrganisationUnit> organisationUnitMap,
+        Map<Integer, DataElementCategoryOptionCombo> categoryOptionComboMap );
 }

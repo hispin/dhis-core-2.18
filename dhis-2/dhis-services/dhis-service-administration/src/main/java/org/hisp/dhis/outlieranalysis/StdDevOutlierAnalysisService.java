@@ -29,6 +29,7 @@ package org.hisp.dhis.outlieranalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -64,13 +65,15 @@ public class StdDevOutlierAnalysisService
     // -------------------------------------------------------------------------
 
     public Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
-        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
+        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor,
+        Map<Integer, DataElement> dataElementMap, Map<Integer, Period> periodMap, Map<Integer, OrganisationUnit> organisationUnitMap,
+        Map<Integer, DataElementCategoryOptionCombo> categoryOptionComboMap)
     {
         final Collection<OutlierValue> outlierValues = new ArrayList<OutlierValue>();
 
         Double stdDev = outlierAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
                 
-        if ( !isEqual( stdDev, 0.0 ) ) // If 0.0 no values found or no outliers exist
+        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist when 0.0
         {
             Double avg = outlierAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
             
@@ -79,11 +82,13 @@ public class StdDevOutlierAnalysisService
             double upperBound = avg + deviation;
             
             Collection<DeflatedDataValue> outliers = outlierAnalysisStore.
-                getDeflatedDataValues( dataElement, categoryOptionCombo, organisationUnit, lowerBound, upperBound );
+                getDeflatedDataValues( dataElement, categoryOptionCombo, periods, organisationUnit, lowerBound, upperBound );
             
             for ( DeflatedDataValue outlier : outliers )
             {
-                outlierValues.add( new OutlierValue( outlier, lowerBound, upperBound ) );
+                outlierValues.add( new OutlierValue( dataElementMap.get( outlier.getDataElementId() ), periodMap.get( outlier.getPeriodId() ),
+                    organisationUnitMap.get( outlier.getSourceId() ), categoryOptionComboMap.get( outlier.getCategoryOptionComboId() ),
+                    Double.valueOf( outlier.getValue() ), lowerBound, upperBound ) );
             }
         }
         

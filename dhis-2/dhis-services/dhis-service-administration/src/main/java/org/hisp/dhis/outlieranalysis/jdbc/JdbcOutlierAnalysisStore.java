@@ -38,8 +38,11 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.ObjectMapper;
+import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.TextUtils;
 
 /**
  * @author Lars Helge Overland
@@ -84,11 +87,13 @@ public class JdbcOutlierAnalysisStore
     }
     
     public Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        OrganisationUnit organisationUnit, double lowerBound, double upperBound )
+        Collection<Period> periods, OrganisationUnit organisationUnit, double lowerBound, double upperBound )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         final ObjectMapper<DeflatedDataValue> mapper = new ObjectMapper<DeflatedDataValue>();
+        
+        final String periodIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Period.class, periods ) );
         
         try
         {
@@ -96,6 +101,7 @@ public class JdbcOutlierAnalysisStore
                 "SELECT * FROM datavalue " +
                 "WHERE dataelementid='" + dataElement.getId() + "' " +
                 "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
+                "AND periodid IN (" + periodIds + ") " +
                 "AND sourceid='" + organisationUnit.getId() + "' " +
                 "AND ( CAST( value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
                 "OR CAST( value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
