@@ -123,8 +123,6 @@
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 		<property name="importDataValueService"
 			ref="org.hisp.dhis.importexport.ImportDataValueService" />
-		<property name="lockingManager"
-			ref="org.hisp.dhis.importexport.locking.LockingManager" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -294,8 +292,6 @@
 		<property name="batchHandlerFactory" ref="batchHandlerFactory" />
 		<property name="objectMappingGenerator"
 			ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator" />
-		<property name="lockingManager"
-			ref="org.hisp.dhis.importexport.locking.LockingManager" />
 		<property name="cacheManager" ref="org.hisp.dhis.cache.HibernateCacheManager" />
 		<property name="converterInvoker"
 			ref="org.hisp.dhis.importexport.invoker.ConverterInvoker" />
