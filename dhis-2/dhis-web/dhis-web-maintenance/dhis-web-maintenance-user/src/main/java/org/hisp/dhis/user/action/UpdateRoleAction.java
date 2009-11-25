@@ -131,7 +131,7 @@ public class UpdateRoleAction
 
         group.getDataSets().clear();
         group.getAuthorities().clear();
-        //group.getReportExcels().clear();
+        group.getReportExcels().clear();
 
         for ( String id : selectedList )
         {
