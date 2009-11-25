@@ -158,6 +158,7 @@ public class HibernateDataValueStore
         return query.executeUpdate();    
     }
 
+    @Deprecated
     public DataValue getDataValue( Source source, DataElement dataElement, Period period )
     {
         Session session = sessionFactory.getCurrentSession();

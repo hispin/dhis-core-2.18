@@ -43,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -201,7 +200,7 @@ public class MinMaxOutlierAnalysisServiceTest
 
         assertEquals( 2, result.size() );
         equals( result,
-            new OutlierValue( new DeflatedDataValue( dataValueA ), minMaxDataElement.getMin(), minMaxDataElement.getMax() ),
-            new OutlierValue( new DeflatedDataValue( dataValueB ), minMaxDataElement.getMin(), minMaxDataElement.getMax() ) );
+            new OutlierValue( dataValueA, minMaxDataElement.getMin(), minMaxDataElement.getMax() ),
+            new OutlierValue( dataValueB, minMaxDataElement.getMin(), minMaxDataElement.getMax() ) );
     }
 }

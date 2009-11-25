@@ -30,8 +30,10 @@ package org.hisp.dhis.system.util;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,6 +44,7 @@ public class ConversionUtils
 {
     /**
      * Creates a collection of the identifiers of the objects passed as argument.
+     * The object are assumed to have a <code>int getId()</code> method.
      * 
      * @param clazz the clazz of the argument objects.
      * @param objects for which to get the identifiers.
@@ -66,6 +69,26 @@ public class ConversionUtils
         catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to convert objects", ex );
+        }
+    }
+    /**
+     * Returns the identifier of the argument object. The object is assumed to
+     * have a <code>int getId()</code> method.
+     * 
+     * @param object the object.
+     * @return the identifier of the argument object.
+     */
+    public static Integer getIdentifier( Object object )
+    {
+        try
+        {
+            Method method = object.getClass().getMethod( "getId", new Class[ 0 ] );
+            
+            return (Integer) method.invoke( object, new Object[ 0 ] );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to convert object", ex );
         }
     }
     
@@ -163,5 +186,24 @@ public class ConversionUtils
         }
         
         return list;
+    }
+    
+    /**
+     * Returns a Map based on an argument Collection of objects where the key is
+     * the object identifier and the value if the object itself.
+     * 
+     * @param collection the Collection of objects.
+     * @return a Map with identifier object pairs.
+     */
+    public static <T> Map<Integer, T> getIdentifierMap( Collection<T> collection )
+    {
+        Map<Integer, T> map = new HashMap<Integer, T>();
+        
+        for ( T object : collection )
+        {
+            map.put( getIdentifier( object ), object );
+        }
+        
+        return map;
     }
 }

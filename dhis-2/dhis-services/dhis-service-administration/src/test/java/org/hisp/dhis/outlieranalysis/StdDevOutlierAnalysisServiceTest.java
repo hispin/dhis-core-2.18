@@ -43,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -187,7 +186,7 @@ public class StdDevOutlierAnalysisServiceTest
         
         assertEquals( 2, result.size() );
         equals( result, 
-            new OutlierValue( new DeflatedDataValue( dataValueA ), lowerBound, upperBound ),
-            new OutlierValue( new DeflatedDataValue( dataValueB ), lowerBound, upperBound ) );
+            new OutlierValue( dataValueA, lowerBound, upperBound ),
+            new OutlierValue( dataValueB, lowerBound, upperBound ) );
     }
 }

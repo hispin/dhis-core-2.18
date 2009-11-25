@@ -101,14 +101,14 @@
 	<tr>
 		<td colspan="2">
 			<select id="outlierType" name="outlierType" style="min-width:325px" onChange="chooseType()">
-				<option value ="minmax">$i18n.getString( "min_max" )</option>
-				<option value ="stddev">$i18n.getString( "std_dev" )</option>
+				<option value="stddev">$i18n.getString( "std_dev" )</option>
+                <option value="minmax">$i18n.getString( "min_max" )</option>
 			</select>
 		</td>
 	</tr>
 </table>
 
-<div id="stddevform" style="display:none">
+<div id="stddevform">
 <table>
 	## STANDARD DEVIATION INPUT FIELD
 	<tr>
