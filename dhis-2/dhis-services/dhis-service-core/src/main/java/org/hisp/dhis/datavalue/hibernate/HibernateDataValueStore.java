@@ -27,14 +27,11 @@ package org.hisp.dhis.datavalue.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -200,32 +197,17 @@ public class HibernateDataValueStore
         return (DataValue) criteria.uniqueResult();
     }
     
-    public String getValue( DataElement dataElement, Period period, Source source, DataElementCategoryOptionCombo optionCombo )
+    public String getValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId )
     {
-        StatementHolder holder = statementManager.getHolder();
-        
         final String sql = 
             "SELECT value " + 
             "FROM datavalue " + 
-            "WHERE dataelementid='" + dataElement.getId() + "' " +
-            "AND periodid='" + period.getId() + "' " +
-            "AND sourceid='" + source.getId() + "' " + 
-            "AND categoryoptioncomboid='" + optionCombo.getId() + "'";
+            "WHERE dataelementid='" + dataElementId + "' " +
+            "AND periodid='" + periodId + "' " +
+            "AND sourceid='" + sourceId + "' " + 
+            "AND categoryoptioncomboid='" + categoryOptionComboId + "'";
         
-        try
-        {
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return resultSet.next() ? resultSet.getString( 1 ) : null;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().queryForString( sql );
     }
     
     // -------------------------------------------------------------------------

@@ -67,6 +67,9 @@ public class DefaultExpressionService
     private static final String NULL_REPLACEMENT = "0";
     private static final String FORMULA_EXPRESSION = "(\\[\\d+\\" + SEPARATOR + "\\d+\\])";
     private static final String DESCRIPTION_EXPRESSION = "\\[.+?\\" + SEPARATOR + ".+?\\]";
+    
+    private final Pattern FORMULA_PATTERN = Pattern.compile( FORMULA_EXPRESSION );
+    private final Pattern DESCRIPTION_PATTERN = Pattern.compile( DESCRIPTION_EXPRESSION );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -160,8 +163,8 @@ public class DefaultExpressionService
         {
             dataElementsInExpression = new HashSet<DataElement>();
 
-            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
-
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            
             while ( matcher.find() )
             {
                 final DataElement dataElement = dataElementService.getDataElement( getOperand( matcher.group() ).getDataElementId() );
@@ -182,7 +185,7 @@ public class DefaultExpressionService
         
         if ( expression != null )
         {
-            final Matcher matcher = getMatcher( FORMULA_EXPRESSION, expression );
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
 
             while ( matcher.find() )
             {
@@ -227,7 +230,7 @@ public class DefaultExpressionService
         {
             operandsInExpression = new HashSet<Operand>();
 
-            final Matcher matcher = getMatcher( FORMULA_EXPRESSION, expression );
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
 
             while ( matcher.find() )
             {
@@ -242,7 +245,7 @@ public class DefaultExpressionService
     {
         StringBuffer buffer = new StringBuffer();
         
-        final Matcher matcher = getMatcher( DESCRIPTION_EXPRESSION, formula );
+        final Matcher matcher = DESCRIPTION_PATTERN.matcher( formula );
 
         int dataElementId = -1;
         int categoryOptionComboId = -1;
@@ -310,7 +313,7 @@ public class DefaultExpressionService
         {
             buffer = new StringBuffer();
 
-            final Matcher matcher = getMatcher( DESCRIPTION_EXPRESSION, formula );
+            final Matcher matcher = DESCRIPTION_PATTERN.matcher( formula );
 
             while ( matcher.find() )
             {
@@ -370,7 +373,7 @@ public class DefaultExpressionService
                 }
             }
 
-            final Matcher matcher = getMatcher( FORMULA_EXPRESSION, expression );
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
 
             while ( matcher.find() )
             {
@@ -401,7 +404,7 @@ public class DefaultExpressionService
 
         if ( expression != null )
         {
-            final Matcher matcher = getMatcher( FORMULA_EXPRESSION, expression );
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
 
             buffer = new StringBuffer();
 
@@ -411,11 +414,7 @@ public class DefaultExpressionService
 
                 final Operand operand = getOperand( replaceString );
                 
-                final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-                final DataElementCategoryOptionCombo categoryOptionCombo = 
-                    categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
-
-                final String value = dataValueService.getValue( dataElement, period, source, categoryOptionCombo );
+                final String value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(), operand.getOptionComboId() );
                 
                 if ( value == null && nullIfNoValues )
                 {
@@ -436,13 +435,6 @@ public class DefaultExpressionService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private Matcher getMatcher( String regex, String expression )
-    {
-        final Pattern pattern = Pattern.compile( regex );
-
-        return pattern.matcher( expression );
-    }
     
     private Operand getOperand( String formula )
     {
