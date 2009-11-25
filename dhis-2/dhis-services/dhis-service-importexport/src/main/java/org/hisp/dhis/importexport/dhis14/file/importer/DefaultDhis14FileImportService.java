@@ -261,6 +261,11 @@ public class DefaultDhis14FileImportService
 
     public void importData( ImportParams params, InputStream inputStream )
     {
+        if ( !verifyImportFile( params ) )
+        {
+            return;
+        }
+        
         NameMappingUtil.clearMapping();
         
         if ( params.isPreview() )
@@ -914,5 +919,37 @@ public class DefaultDhis14FileImportService
         mapping.put( categoryOptionComboId, categoryOptionComboId );
         
         return mapping;
+    }
+    
+    /**
+     * Verifies that the import file is valid by checking for routine and semi
+     * permanent data values out of range.
+     */
+    private boolean verifyImportFile( ImportParams params )
+    {
+        if ( params.isDataValues() )
+        {
+            Integer count = (Integer) queryManager.queryForObject( "getRoutineDataValuesOutOfRange", null );
+            
+            if ( count != null && count > 0 )
+            {
+                log.error( "Table RoutineData contains values larger than 2^31 which is out of range"  );
+                
+                return false;
+            }
+            
+            count = (Integer) queryManager.queryForObject( "getSemiPermanentDataValuesOutOfRange", null );
+            
+            if ( count != null && count > 0 )
+            {
+                log.error( "Table SemiPermanentData contains values larger than 2^31 which is out of range"  );
+                
+                return false;
+            }
+        }
+        
+        log.info( "Verified import file" );
+        
+        return true;
     }
 }
