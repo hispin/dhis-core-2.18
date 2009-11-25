@@ -31,12 +31,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
@@ -125,8 +127,10 @@ public class ViewDataOrganizationGroupAction
                 for ( OrganisationUnitGroup organisationUnitGroup : excelItemGroup.getOrganisationUnitGroups() )
                 {
 
-                    Collection<OrganisationUnit> organisationUnits = getOrganisationUnits( organisationUnitGroup,
-                        organisationUnit );
+                	List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits( organisationUnitGroup,
+                        organisationUnit ));
+
+                    Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
                     int row = 0;
 
