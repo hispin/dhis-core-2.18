@@ -94,11 +94,6 @@ public class DefaultDataValueService
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 
-    public DataValue getDataValue( Source source, DataElement dataElement, Period period )
-    {
-        return dataValueStore.getDataValue( source, dataElement, period );
-    }
-
     public DataValue getDataValue( Source source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo )
     {

@@ -13,6 +13,7 @@ function editOutlierValue( outlierId )
 	var field = document.getElementById( 'outlier[' + outlierId + '].value' );
 	
 	var dataElementId = document.getElementById( 'outlier[' + outlierId + '].dataElement' ).value;
+    var categoryOptionComboId = document.getElementById( 'outlier[' + outlierId + '].categoryOptionCombo' ).value;
 	var periodId = document.getElementById( 'outlier[' + outlierId + '].period' ).value;
 	var sourceId = document.getElementById( 'outlier[' + outlierId + '].source' ).value;
 	
@@ -38,7 +39,7 @@ function editOutlierValue( outlierId )
 			
 			if ( value < min )
 			{
-				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, field.value, outlierId, '#ffcccc' );
+				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, outlierId, '#ffcccc' );
 				valueSaver.save();
 				
 				alert( "Value is still lower than the lower boundary." );
@@ -47,7 +48,7 @@ function editOutlierValue( outlierId )
 			
 			if ( value > max )
 			{
-				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, field.value, outlierId, '#ffcccc' );
+				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, outlierId, '#ffcccc' );
 				valueSaver.save();
 				
 				alert( "Value is still higher than the upper boundary." );
@@ -56,7 +57,7 @@ function editOutlierValue( outlierId )
 		}
 	}
 	
-    var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, field.value, outlierId, '#ccffcc', '');
+    var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, outlierId, '#ccffcc', '');
     valueSaver.save();
 
 }
@@ -78,7 +79,7 @@ function isInt( value )
 // Saver object (modified version of dataentry/javascript/general.js)
 //-----------------------------------------------------------------------------
 
-function ValueSaver( dataElementId_, periodId_, sourceId_, value_, outlierId_, resultColor_, selectedOption_ )
+function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId_, value_, outlierId_, resultColor_, selectedOption_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
@@ -86,6 +87,7 @@ function ValueSaver( dataElementId_, periodId_, sourceId_, value_, outlierId_, r
     var dataElementId = dataElementId_;
     var periodId = periodId_;
     var sourceId = sourceId_;
+    var categoryOptionComboId = categoryOptionComboId_;
     var value = value_;
     var outlierId = outlierId_;
     var resultColor = resultColor_;
@@ -101,6 +103,7 @@ function ValueSaver( dataElementId_, periodId_, sourceId_, value_, outlierId_, r
         		+ 'dataElementId=' + dataElementId
         		+ '&periodId=' + periodId
         		+ '&organisationUnitId=' + sourceId
+        		+ '&categoryOptionComboId=' + categoryOptionComboId
         		+ '&value=' + value );
     };
     
