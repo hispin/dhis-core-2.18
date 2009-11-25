@@ -39,4 +39,8 @@
         AND LastUpdated > #value#
     </select>
   
+    <select id="getSemiPermanentDataValuesOutOfRange" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM SemiPermanentData WHERE EntryNumber > 2147483647
+	</select>
+  
 </sqlMap>
