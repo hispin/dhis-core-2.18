@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -40,7 +39,8 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.AggregateableDataElementPredicate;
+import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 /**
  * @author Lars Helge Overland
@@ -97,7 +97,7 @@ public class Dhis20ReportDataAccess
 
         Set<DataElement> dataElements = group.getMembers();
         
-        CollectionUtils.filter( dataElements, new AggregateableDataElementPredicate() );
+        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         
         return dataElements;
     }
