@@ -60,7 +60,6 @@ import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectManager;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.ImportObjectStore;
-import org.hisp.dhis.importexport.locking.LockingManager;
 import org.hisp.dhis.importexport.mapping.GroupMemberAssociationVerifier;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
@@ -201,14 +200,6 @@ public class DefaultImportObjectManager
     public void setImportDataValueService( ImportDataValueService importDataValueService )
     {
         this.importDataValueService = importDataValueService;
-    }
-
-    @SuppressWarnings( "unused" )
-    private LockingManager lockingManager;
-
-    public void setLockingManager( LockingManager lockingManager )
-    {
-        this.lockingManager = lockingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -1330,50 +1321,42 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataValues()
     {
-        /*
-        if ( lockingManager.currentImportContainsLockedData() )
+        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+        
+        batchHandler.init();
+        
+        Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
+        Map<Object, Integer> periodMapping = objectMappingGenerator.getPeriodMapping( false );
+        Map<Object, Integer> sourceMapping = objectMappingGenerator.getOrganisationUnitMapping( false );
+        Map<Object, Integer> categoryOptionComboMapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
+        
+        Collection<ImportDataValue> importValues = importDataValueService.getImportDataValues( ImportObjectStatus.NEW );
+        
+        for ( ImportDataValue importValue : importValues )
         {
-            log.warn( "Import file contained DataValues for locked periods" );
-        }
-        else*/ //TODO too slow
-        {
-            BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+            DataValue value = importValue.getDataValue();
             
-            batchHandler.init();
+            value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
+            value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
+            value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
+            value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
             
-            Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
-            Map<Object, Integer> periodMapping = objectMappingGenerator.getPeriodMapping( false );
-            Map<Object, Integer> sourceMapping = objectMappingGenerator.getOrganisationUnitMapping( false );
-            Map<Object, Integer> categoryOptionComboMapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
+            // -------------------------------------------------------------
+            // Must check for existing datavalues since this cannot be done
+            // during preview
+            // -------------------------------------------------------------
             
-            Collection<ImportDataValue> importValues = importDataValueService.getImportDataValues( ImportObjectStatus.NEW );
-            
-            for ( ImportDataValue importValue : importValues )
+            if ( !batchHandler.objectExists( value ) )
             {
-                DataValue value = importValue.getDataValue();
-                
-                value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
-                value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
-                value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
-                value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
-                
-                // -------------------------------------------------------------
-                // Must check for existing datavalues since this cannot be done
-                // during preview
-                // -------------------------------------------------------------
-                
-                if ( !batchHandler.objectExists( value ) )
-                {
-                    batchHandler.addObject( value );
-                }
+                batchHandler.addObject( value );
             }
-            
-            batchHandler.flush();
-            
-            importDataValueService.deleteImportDataValues();
-            
-            log.info( "Imported DataValues" );
         }
+        
+        batchHandler.flush();
+        
+        importDataValueService.deleteImportDataValues();
+        
+        log.info( "Imported DataValues" );
     }
 
     // -------------------------------------------------------------------------

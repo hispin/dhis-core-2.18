@@ -107,7 +107,6 @@ import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
 import org.hisp.dhis.importexport.dxf2.importer.Parser;
 import org.hisp.dhis.importexport.invoker.ConverterInvoker;
-import org.hisp.dhis.importexport.locking.LockingManager;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
 import org.hisp.dhis.indicator.Indicator;
@@ -303,14 +302,6 @@ public class DefaultDXFImportService
     public void setObjectMappingGenerator( ObjectMappingGenerator objectMappingGenerator )
     {
         this.objectMappingGenerator = objectMappingGenerator;
-    }
-
-    @SuppressWarnings( "unused" )
-    private LockingManager lockingManager;
-
-    public void setLockingManager( LockingManager lockingManager )
-    {
-        this.lockingManager = lockingManager;
     }
 
     private HibernateCacheManager cacheManager;
@@ -1191,39 +1182,30 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
             {
-                /*if ( params.skipMapping() == false && lockingManager.currentImportContainsLockedData() )
-                {
-                    // setMessage( "import_contains_data_for_locked_periods" );
+                BatchHandler<DataValue> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataValueBatchHandler.class );
 
-                    log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );
-                }
-                else */ //TODO too slow
-                {
-                    BatchHandler<DataValue> batchHandler = batchHandlerFactory
-                        .createBatchHandler( DataValueBatchHandler.class );
+                BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory
+                    .createBatchHandler( ImportDataValueBatchHandler.class );
 
-                    BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory
-                        .createBatchHandler( ImportDataValueBatchHandler.class );
+                batchHandler.init();
 
-                    batchHandler.init();
+                importDataValueBatchHandler.init();
 
-                    importDataValueBatchHandler.init();
+                XMLConverter converter = new DataValueConverter( batchHandler, importDataValueBatchHandler,
+                    dataValueService, dataMartService, importObjectService, params, objectMappingGenerator
+                        .getDataElementMapping( params.skipMapping() ), objectMappingGenerator
+                        .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
+                        .getOrganisationUnitMapping( params.skipMapping() ), objectMappingGenerator
+                        .getCategoryOptionComboMapping( params.skipMapping() ) );
 
-                    XMLConverter converter = new DataValueConverter( batchHandler, importDataValueBatchHandler,
-                        dataValueService, dataMartService, importObjectService, params, objectMappingGenerator
-                            .getDataElementMapping( params.skipMapping() ), objectMappingGenerator
-                            .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
-                            .getOrganisationUnitMapping( params.skipMapping() ), objectMappingGenerator
-                            .getCategoryOptionComboMapping( params.skipMapping() ) );
+                converterInvoker.invokeRead( converter, reader, params );
 
-                    converterInvoker.invokeRead( converter, reader, params );
+                batchHandler.flush();
 
-                    batchHandler.flush();
+                importDataValueBatchHandler.flush();
 
-                    importDataValueBatchHandler.flush();
-
-                    log.info( "Imported DataValues" );
-                }
+                log.info( "Imported DataValues" );
             }
         }
     }
