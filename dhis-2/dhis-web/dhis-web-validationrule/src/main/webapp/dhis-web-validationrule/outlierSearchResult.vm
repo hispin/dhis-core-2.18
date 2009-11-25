@@ -38,7 +38,7 @@
 	
 		## data element
 		<td>
-			<span id="outlier[$count].name"> ## title="$!encoder.htmlEncode( $dataElement.description )"
+			<span id="outlier[$count].name">
 				$outlierValue.dataElement.name
 			</span>
 		</td>
@@ -64,10 +64,10 @@
 				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editOutlierValue( $count )">			
             <input type="hidden" id="outlier[$count].dataElement" value="$outlierValue.dataElement.id">
             <input type="hidden" id="outlier[$count].period" value="$outlierValue.period.id">
-			<input type="hidden" id="outlier[$count].source" value="$outlierValue.organisationUnit.id">
-			<input type="hidden" id="outlier[$count].categoryOptionCombo" value="$outlierValue.categoryOptionCombo.id">
-			<input type="hidden" id="outlier[$count].max" value="$outlierValue.upperBound">
-			<input type="hidden" id="outlier[$count].min" value="$outlierValue.lowerBound">
+            <input type="hidden" id="outlier[$count].source" value="$outlierValue.organisationUnit.id">
+            <input type="hidden" id="outlier[$count].categoryOptionCombo" value="$outlierValue.categoryOptionCombo.id">
+            <input type="hidden" id="outlier[$count].min" value="$outlierValue.lowerBound">
+            <input type="hidden" id="outlier[$count].max" value="$outlierValue.upperBound">
 		</td>
 		
 		## upper bound (max)
