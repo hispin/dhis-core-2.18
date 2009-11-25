@@ -44,10 +44,6 @@ public class ShowAddPatientFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )

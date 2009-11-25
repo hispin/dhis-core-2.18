@@ -107,7 +107,7 @@ public interface DataValueStore
      */
     DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
 
-    String getValue( DataElement dataElement, Period period, Source source, DataElementCategoryOptionCombo optionCombo );
+    String getValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId );
     
     // -------------------------------------------------------------------------
     // Collections of DataValues
