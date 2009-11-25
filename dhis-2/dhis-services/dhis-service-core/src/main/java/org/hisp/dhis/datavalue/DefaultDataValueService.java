@@ -61,7 +61,7 @@ public class DefaultDataValueService
 
     public void addDataValue( DataValue dataValue )
     {
-        if ( !(dataValue.getValue() == null && dataValue.getComment() == null) )
+        if ( !( dataValue.getValue() == null && dataValue.getComment() == null ) )
         {
             dataValueStore.addDataValue( dataValue );
         }
@@ -177,11 +177,5 @@ public class DefaultDataValueService
     public Collection<DataValue> getDataValues( DataElement dataElement )
     {
         return dataValueStore.getDataValues( dataElement );
-    }
-
-    public Collection<DataValueAudit> getDataValueAudits( Source source, Period period, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo )
-    {
-        return dataValueStore.getDataValueAudits( source, period, dataElement, optionCombo );
     }
 }
