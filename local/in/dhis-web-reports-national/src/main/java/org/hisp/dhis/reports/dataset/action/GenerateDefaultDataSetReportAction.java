@@ -340,7 +340,7 @@ public class GenerateDefaultDataSetReportAction
 
                         if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                         {
-                            double aggregatedValue;
+                            Double aggregatedValue;
 
                             if ( organisationUnitGroupId.equals( "Selected_Only" ) )
                             {
@@ -353,7 +353,7 @@ public class GenerateDefaultDataSetReportAction
                                 aggregatedValue = dataMartStore.getAggregatedValue( dataElement, optionCombo, period,
                                     orgUnit );
 
-                                value = (aggregatedValue != DataMartStore.NO_VALUES_REGISTERED) ? NumberUtils
+                                value = (aggregatedValue != null) ? NumberUtils
                                     .formatDataValue( aggregatedValue ) : "";
                             }
                             else
@@ -454,7 +454,7 @@ public class GenerateDefaultDataSetReportAction
                     if ( dataElementService.getDataElement( reportElement.getElementId() ).getType().equals(
                         DataElement.VALUE_TYPE_INT ) )
                     {
-                        double aggregatedValue;
+                        Double aggregatedValue;
 
                         if ( selectedUnitOnly != null )
                         {
@@ -470,8 +470,7 @@ public class GenerateDefaultDataSetReportAction
                                 .getDataElement( reportElement.getElementId() ), dataElements.iterator().next()
                                 .getCategoryCombo().getOptionCombos().iterator().next(), period, orgUnit );
 
-                            value = (aggregatedValue != DataMartStore.NO_VALUES_REGISTERED) ? NumberUtils
-                                .formatDataValue( aggregatedValue ) : "";
+                            value = (aggregatedValue != null) ? NumberUtils.formatDataValue( aggregatedValue ) : "";
                         }
                     }
 

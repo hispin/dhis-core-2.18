@@ -209,7 +209,7 @@ public class GenerateCustomDataSetReportAction
 
                     if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                     {
-                        double aggregatedValue;
+                        Double aggregatedValue;
 
                         if ( organisationUnitGroupId.equals( "Selected_Only" ) )
                         {
@@ -220,8 +220,8 @@ public class GenerateCustomDataSetReportAction
                         {
                             aggregatedValue = dataMartStore.getAggregatedValue( dataElement, optionCombo, period,
                                 orgUnit );
-                            value = (aggregatedValue != DataMartStore.NO_VALUES_REGISTERED) ? NumberUtils
-                                .formatDataValue( aggregatedValue ) : "";
+                            //value = (aggregatedValue != null ) ? NumberUtils.formatDataValue( aggregatedValue ) : "";
+                            value = ( aggregatedValue != null ) ? NumberUtils.formatDataValue( aggregatedValue ) : "";
                         }
                         else
                         {
