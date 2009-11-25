@@ -27,7 +27,6 @@ package org.hisp.dhis.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -38,7 +37,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore;
+import org.hisp.dhis.outlieranalysis.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
 
 /**
