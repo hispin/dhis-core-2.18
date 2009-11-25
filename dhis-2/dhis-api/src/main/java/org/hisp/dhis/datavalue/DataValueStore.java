@@ -94,19 +94,17 @@ public interface DataValueStore
      * @return the DataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    DataValue getDataValue( Source source, DataElement dataElement, Period period );
-    
+    DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
+
     /**
      * Returns a DataValue.
      * 
-     * @param source the Source of the DataValue.
-     * @param dataElement the DataElement of the DataValue.
-     * @param period the Period of the DataValue.
-     * @return the DataValue which corresponds to the given parameters, or null
-     *         if no match.
+     * @param dataElementId the DataElement identifier.
+     * @param periodId the Period identifier.
+     * @param sourceId the Source identifier.
+     * @param categoryOptionComboId the DataElementCategoryOptionCombo identifier.
+     * @return the DataValue.
      */
-    DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
-
     String getValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId );
     
     // -------------------------------------------------------------------------

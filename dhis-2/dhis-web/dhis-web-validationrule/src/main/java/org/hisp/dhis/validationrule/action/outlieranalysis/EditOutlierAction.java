@@ -28,6 +28,8 @@ package org.hisp.dhis.validationrule.action.outlieranalysis;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -81,6 +83,13 @@ public class EditOutlierAction
     {
         this.periodService = periodService;
     }
+    
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
 
     private CurrentUserService currentUserService;
 
@@ -100,25 +109,32 @@ public class EditOutlierAction
         this.value = value;
     }
 
-    private String organisationUnitId;
+    private Integer dataElementId;
 
-    public void setOrganisationUnitId( String organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
-    private String dataElementId;
-
-    public void setDataElementId( String dataElementId )
+    public void setDataElementId( Integer dataElementId )
     {
         this.dataElementId = dataElementId;
     }
 
-    private String periodId;
+    private Integer periodId;
 
-    public void setPeriodId( String periodId )
+    public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
+    }
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+    
+    private Integer categoryOptionComboId;
+
+    public void setCategoryOptionComboId( Integer categoryOptionComboId )
+    {
+        this.categoryOptionComboId = categoryOptionComboId;
     }
 
     private String message;
@@ -141,52 +157,6 @@ public class EditOutlierAction
 
     public String execute()
     {
-        Period period = null;
-        DataElement dataElement = null;
-        OrganisationUnit organisationUnit = null;
-
-        try
-        {
-            int i = Integer.parseInt( periodId );
-
-            period = periodService.getPeriod( i );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            statusCode = 1;
-            message = "invalid data value";
-            return ERROR;
-        }
-
-        try
-        {
-            int i = Integer.parseInt( dataElementId );
-
-            dataElement = dataElementService.getDataElement( i );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            statusCode = 2;
-            message = "invalid data value";
-            return ERROR;
-        }
-
-        try
-        {
-            int i = Integer.parseInt( organisationUnitId );
-
-            organisationUnit = organisationUnitService.getOrganisationUnit( i );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            statusCode = 3;
-            message = "invalid data value";
-            return ERROR;
-        }
-
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
@@ -197,7 +167,12 @@ public class EditOutlierAction
             value = value.trim();
         }
 
-        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        Period period = periodService.getPeriod( periodId );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
+        
+        DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );
 
         if ( dataValue == null )
         {
@@ -207,9 +182,6 @@ public class EditOutlierAction
         }
         if ( !dataValue.getDataElement().getType().equals( "int" ) )
         {
-            // can only find outlier values for data elements of where
-            // type="int", and therefore, only update such values
-            
             statusCode = 5;
             message = "invalid data value";
             return ERROR;
@@ -229,7 +201,7 @@ public class EditOutlierAction
         dataValueService.updateDataValue( dataValue );
 
         statusCode = 0;
-        message = ""; // "success" - no message set
+        message = "";
 
         return SUCCESS;
     }

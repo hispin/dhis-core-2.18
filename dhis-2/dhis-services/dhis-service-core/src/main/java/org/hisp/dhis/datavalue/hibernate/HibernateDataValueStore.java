@@ -158,26 +158,6 @@ public class HibernateDataValueStore
         return query.executeUpdate();    
     }
 
-    @Deprecated
-    public DataValue getDataValue( Source source, DataElement dataElement, Period period )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Period storedPeriod = reloadPeriod( period );
-
-        if ( storedPeriod == null )
-        {
-            return null;
-        }
-
-        Criteria criteria = session.createCriteria( DataValue.class );
-        criteria.add( Restrictions.eq( "source", source ) );
-        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
-        criteria.add( Restrictions.eq( "period", storedPeriod ) );
-
-        return (DataValue) criteria.uniqueResult();
-    }
-
     public DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo )
     {
         Session session = sessionFactory.getCurrentSession();

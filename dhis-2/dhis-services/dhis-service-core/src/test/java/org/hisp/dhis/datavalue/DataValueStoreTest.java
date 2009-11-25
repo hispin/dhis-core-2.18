@@ -182,21 +182,21 @@ public class DataValueStoreTest
             // Expected
         }
 
-        dataValueA = dataValueStore.getDataValue( sourceA, dataElementA, periodA );
+        dataValueA = dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo );
         assertNotNull( dataValueA );
         assertEquals( sourceA.getId(), dataValueA.getSource().getId() );
         assertEquals( dataElementA, dataValueA.getDataElement() );
         assertEquals( periodA, dataValueA.getPeriod() );
         assertEquals( "1", dataValueA.getValue() );
 
-        dataValueB = dataValueStore.getDataValue( sourceA, dataElementB, periodA );
+        dataValueB = dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo );
         assertNotNull( dataValueB );
         assertEquals( sourceA.getId(), dataValueB.getSource().getId() );
         assertEquals( dataElementB, dataValueB.getDataElement() );
         assertEquals( periodA, dataValueB.getPeriod() );
         assertEquals( "2", dataValueB.getValue() );
 
-        dataValueC = dataValueStore.getDataValue( sourceA, dataElementC, periodC );
+        dataValueC = dataValueStore.getDataValue( sourceA, dataElementC, periodC, optionCombo );
         assertNotNull( dataValueC );
         assertEquals( sourceA.getId(), dataValueC.getSource().getId() );
         assertEquals( dataElementC, dataValueC.getDataElement() );
@@ -216,17 +216,17 @@ public class DataValueStoreTest
         dataValueStore.addDataValue( dataValueA );
         dataValueStore.addDataValue( dataValueB );
 
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementB, periodA ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementB, periodA, optionCombo ) );
 
         dataValueA.setValue( "5" );
         dataValueStore.updateDataValue( dataValueA );
 
-        dataValueA = dataValueStore.getDataValue( sourceA, dataElementA, periodA );
+        dataValueA = dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo );
         assertNotNull( dataValueA );
         assertEquals( "5", dataValueA.getValue() );
 
-        dataValueB = dataValueStore.getDataValue( sourceB, dataElementB, periodA );
+        dataValueB = dataValueStore.getDataValue( sourceB, dataElementB, periodA, optionCombo );
         assertNotNull( dataValueB );
         assertEquals( "2", dataValueB.getValue() );
     }
@@ -249,34 +249,34 @@ public class DataValueStoreTest
         dataValueStore.addDataValue( dataValueC );
         dataValueStore.addDataValue( dataValueD );
 
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValue( dataValueA );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValue( dataValueB );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValue( dataValueC );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValue( dataValueD );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
     }
 
     @Test
@@ -297,34 +297,34 @@ public class DataValueStoreTest
         dataValueStore.addDataValue( dataValueC );
         dataValueStore.addDataValue( dataValueD );
 
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesBySource( sourceA );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesBySource( sourceB );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesBySource( sourceC );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesBySource( sourceD );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
     }
 
     @Test
@@ -345,34 +345,34 @@ public class DataValueStoreTest
         dataValueStore.addDataValue( dataValueC );
         dataValueStore.addDataValue( dataValueD );
 
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesByDataElement( dataElementA );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesByDataElement( dataElementB );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesByDataElement( dataElementC );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNotNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
 
         dataValueStore.deleteDataValuesByDataElement( dataElementD );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA ) );
-        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC ) );
-        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementA, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceA, dataElementB, periodA, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceD, dataElementC, periodC, optionCombo ) );
+        assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC, optionCombo ) );
     }
 
     // -------------------------------------------------------------------------
