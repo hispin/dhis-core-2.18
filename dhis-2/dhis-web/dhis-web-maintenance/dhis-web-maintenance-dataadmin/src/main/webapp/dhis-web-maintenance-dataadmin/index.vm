@@ -8,5 +8,6 @@
     #introListItem( "displayMaintenanceForm.action" "maintenance" )
     #introListItem( "displayResourceTableForm.action" "resource_table" )
     #introListItem( "viewStatistics.action" "data_statistics" )
+    #introListItem( "showCache.action" "cache_statistics" )
 </ul>
     
