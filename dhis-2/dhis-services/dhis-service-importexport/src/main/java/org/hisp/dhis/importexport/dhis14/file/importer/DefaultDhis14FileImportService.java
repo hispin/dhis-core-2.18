@@ -268,7 +268,7 @@ public class DefaultDhis14FileImportService
     {
         NameMappingUtil.clearMapping();
         
-        if ( !verifyImportFile( params ) )
+        if ( !verifyImportFile( params, state ) )
         {
             return;
         }
@@ -312,6 +312,7 @@ public class DefaultDhis14FileImportService
         if ( params.isAnalysis() )
         {
             state.setOutput( importAnalyser.getImportAnalysis() );
+            System.out.println( "AN " + importAnalyser.getImportAnalysis() );
         }
         
         state.setMessage( "import_process_done" );
@@ -931,7 +932,7 @@ public class DefaultDhis14FileImportService
      * Verifies that the import file is valid by checking for routine and semi
      * permanent data values out of range.
      */
-    private boolean verifyImportFile( ImportParams params )
+    private boolean verifyImportFile( ImportParams params, ProcessState state )
     {
         if ( params.isDataValues() )
         {
@@ -939,6 +940,7 @@ public class DefaultDhis14FileImportService
             
             if ( count != null && count > 0 )
             {
+                state.setMessage( "routine_data_contains_values_out_of_range" );
                 log.error( "Table RoutineData contains values larger than 2^31 which is out of range"  );
                 
                 return false;
@@ -948,6 +950,7 @@ public class DefaultDhis14FileImportService
             
             if ( count != null && count > 0 )
             {
+                state.setMessage( "semi_permanent_data_contains_values_out_of_range" );
                 log.error( "Table SemiPermanentData contains values larger than 2^31 which is out of range"  );
                 
                 return false;
