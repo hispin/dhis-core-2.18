@@ -155,7 +155,7 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
-
+    
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getAggregateableDataElements()
     {
