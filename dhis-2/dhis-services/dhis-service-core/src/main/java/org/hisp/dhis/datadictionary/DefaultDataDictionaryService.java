@@ -27,10 +27,11 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -66,21 +67,17 @@ public class DefaultDataDictionaryService
         return dataDictionaryStore.get( id );
     }
     
-    public Collection<DataDictionary> getDataDictionaries( Collection<Integer> identifiers )
+    public Collection<DataDictionary> getDataDictionaries( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataDictionaries();
-        }
+        Collection<DataDictionary> dictionaries = getAllDataDictionaries();
         
-        Collection<DataDictionary> dictionaries = new ArrayList<DataDictionary>();
-        
-        for ( Integer id : identifiers )
-        {
-            dictionaries.add( getDataDictionary( id ) );
-        }
-        
-        return dictionaries;
+        return identifiers == null ? dictionaries : FilterUtils.filter( dictionaries, new Filter<DataDictionary>()
+            {
+                public boolean retain( DataDictionary object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public void deleteDataDictionary( DataDictionary dataDictionary )

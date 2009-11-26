@@ -27,6 +27,8 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -41,10 +43,10 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Kristian Nordal
@@ -154,40 +156,19 @@ public class DefaultDataElementService
         return dataElements;
     }
     
-    public Collection<DataElement> getDataElements( Collection<Integer> identifiers )
+    public Collection<DataElement> getDataElements( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataElements();
-        }
+        Collection<DataElement> dataElements = getAllDataElements();
         
-        Collection<DataElement> objects = new ArrayList<DataElement>();
-        
-        for ( Integer id : identifiers )
-        {
-            objects.add( getDataElement( id ) );
-        }
-        
-        return objects;
+        return identifiers == null ? dataElements : FilterUtils.filter( dataElements, new Filter<DataElement>()
+            {
+                public boolean retain( DataElement dataElement )
+                {
+                    return identifiers.contains( dataElement.getId() );
+                }
+            } );
     }
-    
-    public Collection<CalculatedDataElement> getCalculatedDataElements( Collection<Integer> identifiers )
-    {
-        if ( identifiers == null )
-        {
-            return getAllCalculatedDataElements();
-        }
-        
-        Collection<CalculatedDataElement> objects = new ArrayList<CalculatedDataElement>();
-        
-        for ( Integer id : identifiers )
-        {
-            objects.add( (CalculatedDataElement)getDataElement( id ) );
-        }
-        
-        return objects;
-    }
-    
+
     public Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers )
     {
         if ( identifiers == null )
@@ -277,6 +258,19 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getAllCalculatedDataElements() );
     }
 
+    public Collection<CalculatedDataElement> getCalculatedDataElements( final Collection<Integer> identifiers )
+    {
+        Collection<CalculatedDataElement> dataElements = getAllCalculatedDataElements();
+        
+        return identifiers == null ? dataElements : FilterUtils.filter( dataElements, new Filter<CalculatedDataElement>()
+            {
+                public boolean retain( CalculatedDataElement dataElement )
+                {
+                    return identifiers.contains( dataElement.getId() );
+                }
+            } );
+    }
+    
     public CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement )
     {
         return i18n( i18nService, dataElementStore.getCalculatedDataElementByDataElement( dataElement ) );
@@ -368,12 +362,12 @@ public class DefaultDataElementService
     
     public Map<Integer, String> getCalculatedDataElementExpressionMap( Collection<Integer> identifiers )
     {
+        Collection<CalculatedDataElement> dataElements = getCalculatedDataElements( identifiers );
+
         Map<Integer, String> map = new HashMap<Integer, String>();
         
-        for ( Integer id : identifiers )
-        {
-            CalculatedDataElement element = (CalculatedDataElement) getDataElement( id );
-            
+        for ( CalculatedDataElement element : dataElements )
+        {            
             map.put( element.getId(), element.getExpression().getExpression() );
         }
         
@@ -417,21 +411,17 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroupStore.get( id ) );
     }
     
-    public Collection<DataElementGroup> getDataElementGroups( Collection<Integer> identifiers )
+    public Collection<DataElementGroup> getDataElementGroups( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
+        Collection<DataElementGroup> groups = getAllDataElementGroups();
+
+        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<DataElementGroup>()
         {
-            return getAllDataElementGroups();
-        }
-        
-        Collection<DataElementGroup> groups = new ArrayList<DataElementGroup>();
-        
-        for ( Integer id : identifiers )
-        {
-            groups.add( getDataElementGroup( id ) );
-        }
-        
-        return groups;
+            public boolean retain( DataElementGroup object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 
     public DataElementGroup getDataElementGroup( String uuid )
@@ -508,20 +498,16 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroupSetStore.getAll() );
     }
 
-    public Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers )
+    public Collection<DataElementGroupSet> getDataElementGroupSets( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataElementGroupSets();
-        }
+        Collection<DataElementGroupSet> groupSets = getAllDataElementGroupSets();
         
-        Collection<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
-        
-        for ( Integer id : identifiers )
-        {
-            groupSets.add( getDataElementGroupSet( id ) );
-        }
-        
-        return groupSets;
+        return identifiers == null ? groupSets : FilterUtils.filter( groupSets, new Filter<DataElementGroupSet>()
+            {
+                public boolean retain( DataElementGroupSet object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 }

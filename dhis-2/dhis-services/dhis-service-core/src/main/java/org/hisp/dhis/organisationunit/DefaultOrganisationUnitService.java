@@ -42,6 +42,8 @@ import java.util.Map.Entry;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.source.SourceStore;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -142,21 +144,17 @@ public class DefaultOrganisationUnitService
         return sourceStore.getAllSources();
     }
     
-    public Collection<OrganisationUnit> getOrganisationUnits( Collection<Integer> identifiers )
+    public Collection<OrganisationUnit> getOrganisationUnits( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllOrganisationUnits();
-        }
+        Collection<OrganisationUnit> objects = getAllOrganisationUnits();
         
-        Collection<OrganisationUnit> objects = new ArrayList<OrganisationUnit>();
-        
-        for ( Integer id : identifiers )
-        {
-            objects.add( getOrganisationUnit( id ) );
-        }
-        
-        return objects;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OrganisationUnit>()
+            {
+                public boolean retain( OrganisationUnit object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public OrganisationUnit getOrganisationUnit( String uuid )
@@ -482,21 +480,17 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitLevel( id );
     }
     
-    public Collection<OrganisationUnitLevel> getOrganisationUnitLevels( Collection<Integer> identifiers )
+    public Collection<OrganisationUnitLevel> getOrganisationUnitLevels( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getOrganisationUnitLevels();
-        }
+        Collection<OrganisationUnitLevel> objects = getOrganisationUnitLevels();
         
-        Collection<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
-        
-        for ( Integer id : identifiers )
-        {
-            levels.add( getOrganisationUnitLevel( id ) );
-        }
-        
-        return levels;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OrganisationUnitLevel>()
+            {
+                public boolean retain( OrganisationUnitLevel object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )

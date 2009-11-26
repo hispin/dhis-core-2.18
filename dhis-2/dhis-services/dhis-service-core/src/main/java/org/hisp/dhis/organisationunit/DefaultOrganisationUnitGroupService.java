@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,21 +92,17 @@ public class DefaultOrganisationUnitGroupService
         return organisationUnitGroupStore.get( id );
     }
     
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers )
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroups( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllOrganisationUnitGroups();
-        }
+        Collection<OrganisationUnitGroup> objects = getAllOrganisationUnitGroups();
         
-        Collection<OrganisationUnitGroup> groups = new ArrayList<OrganisationUnitGroup>();
-        
-        for ( Integer id : identifiers )
-        {
-            groups.add( getOrganisationUnitGroup( id ) );
-        }
-        
-        return groups;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OrganisationUnitGroup>()
+            {
+                public boolean retain( OrganisationUnitGroup object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroup( String uuid )
@@ -146,21 +144,17 @@ public class DefaultOrganisationUnitGroupService
         return organisationUnitGroupSetStore.get( id );
     }
     
-    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( Collection<Integer> identifiers )
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllOrganisationUnitGroupSets();
-        }
+        Collection<OrganisationUnitGroupSet> objects = getAllOrganisationUnitGroupSets();
         
-        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
-        
-        for ( Integer id : identifiers )
-        {
-            groupSets.add( getOrganisationUnitGroupSet( id ) );
-        }
-        
-        return groupSets;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OrganisationUnitGroupSet>()
+            {
+                public boolean retain( OrganisationUnitGroupSet object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name )

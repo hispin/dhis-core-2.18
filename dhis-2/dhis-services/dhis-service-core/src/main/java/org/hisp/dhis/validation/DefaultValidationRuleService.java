@@ -29,7 +29,6 @@ package org.hisp.dhis.validation;
 
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -42,6 +41,8 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -272,21 +273,17 @@ public class DefaultValidationRuleService
         return validationRuleStore.get( id );
     }
     
-    public Collection<ValidationRule> getValidationRules( Collection<Integer> identifiers )
+    public Collection<ValidationRule> getValidationRules( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllValidationRules();
-        }
+        Collection<ValidationRule> objects = getAllValidationRules();
         
-        Collection<ValidationRule> rules = new ArrayList<ValidationRule>();
-        
-        for ( Integer id : identifiers )
-        {
-            rules.add( getValidationRule( id ) );
-        }
-        
-        return rules;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<ValidationRule>()
+            {
+                public boolean retain( ValidationRule object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public ValidationRule getValidationRuleByName( String name )

@@ -27,10 +27,11 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -89,21 +90,17 @@ public class DefaultOlapURLService
         return olapURLStore.get( id );
     }
     
-    public Collection<OlapURL> getOlapURLs( Collection<Integer> identifiers )
+    public Collection<OlapURL> getOlapURLs( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllOlapURLs();
-        }
+        Collection<OlapURL> objects = getAllOlapURLs();
         
-        Collection<OlapURL> urls = new ArrayList<OlapURL>();
-        
-        for ( Integer id : identifiers )
-        {
-            urls.add( getOlapURL( id ) );
-        }
-        
-        return urls;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OlapURL>()
+            {
+                public boolean retain( OlapURL object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public void deleteOlapURL( OlapURL olapURL )
