@@ -60,7 +60,7 @@ import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
-import org.hisp.dhis.system.objectmapper.ObjectMapper;
+import org.amplecode.quick.mapper.ObjectMapper;
 
 /**
  * @author Lars Helge Overland

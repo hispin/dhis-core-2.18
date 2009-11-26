@@ -41,7 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.outlieranalysis.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
-import org.hisp.dhis.system.objectmapper.ObjectMapper;
+import org.amplecode.quick.mapper.ObjectMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
 
