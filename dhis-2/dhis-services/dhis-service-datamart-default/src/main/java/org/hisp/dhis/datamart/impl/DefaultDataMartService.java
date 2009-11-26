@@ -44,6 +44,7 @@ import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.process.OutputHolderState;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -84,7 +85,7 @@ public class DefaultDataMartService
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, new OutputHolderState() );
     }
 
     // ----------------------------------------------------------------------

@@ -41,6 +41,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -261,58 +262,63 @@ public class DefaultDhis14FileImportService
 
     public void importData( ImportParams params, InputStream inputStream )
     {
+        
+    }
+    public void importData( ImportParams params, InputStream inputStream, ProcessState state )
+    {
+        NameMappingUtil.clearMapping();
+        
         if ( !verifyImportFile( params ) )
         {
             return;
         }
         
-        NameMappingUtil.clearMapping();
-        
         if ( params.isPreview() )
         {
             importObjectService.deleteImportObjects();
         }
-
-        importDataElements( params );
-        importCalculatedDataElements( params, createCalculatedDataElementEntryMap() );
-        importIndicatorTypes( params );
-        importIndicators( params );
-        importDataElementGroups( params );
-        importDataElementGroupMembers( params );
-        importIndicatorGroups( params );
-        importIndicatorGroupMembers( params );
+   
+        importDataElements( params, state );
+        importCalculatedDataElements( params, state, createCalculatedDataElementEntryMap() );
+        importIndicatorTypes( params, state );
+        importIndicators( params, state );
+        importDataElementGroups( params, state );
+        importDataElementGroupMembers( params, state );
+        importIndicatorGroups( params, state );
+        importIndicatorGroupMembers( params, state );
         
-        importDataSets( params );
-        importDataSetMembers( params );
+        importDataSets( params, state );
+        importDataSetMembers( params, state );
 
-        importOrganisationUnits( params );            
-        importOrganisationUnitGroups( params );
-        importOrganisationUnitGroupMembers( params );
-        importGroupSets( params );
-        importGroupSetMembers( params );
-        importOrganisationUnitRelationships( params );
-        importOrganisationUnitHierarchy();
+        importOrganisationUnits( params, state );            
+        importOrganisationUnitGroups( params, state );
+        importOrganisationUnitGroupMembers( params, state );
+        importGroupSets( params, state );
+        importGroupSetMembers( params, state );
+        importOrganisationUnitRelationships( params, state );
+        importOrganisationUnitHierarchy( state );
 
-        importDataSetOrganisationUnitAssociations( params );
+        importDataSetOrganisationUnitAssociations( params, state );
         
         if ( params.isDataValues() && !params.isAnalysis() )
         {
-            importPeriods( params );
-            importRoutineDataValues( params );
+            importPeriods( params, state );
+            importRoutineDataValues( params, state );
 
-            importOnChangePeriods( params );
-            importSemiPermanentDataValues( params );
+            importOnChangePeriods( params, state );
+            importSemiPermanentDataValues( params, state );
         }
         
         if ( params.isAnalysis() )
         {
-            //setOutput( importAnalyser.getImportAnalysis() ); //TODO fix
+            state.setOutput( importAnalyser.getImportAnalysis() );
         }
         
-        //setMessage( "import_process_done" );
+        state.setMessage( "import_process_done" );
         
-        NameMappingUtil.clearMapping();
         Dhis14PeriodUtil.clear();
+
+        NameMappingUtil.clearMapping();
         
         cacheManager.clearCache();
     }
@@ -321,9 +327,9 @@ public class DefaultDhis14FileImportService
     // DataElement and Indicator
     // -------------------------------------------------------------------------
 
-    private void importDataElements( ImportParams params )
-    {
-        //setMessage( "importing_data_elements" );
+    private void importDataElements( ImportParams params, ProcessState state )
+    {        
+        state.setMessage( "importing_data_elements" );
         
         BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
         
@@ -346,9 +352,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported DataElements" );
     }
 
-    private void importCalculatedDataElements( ImportParams params, Map<Integer, String> calculatedEntryMap )
+    private void importCalculatedDataElements( ImportParams params, ProcessState state, Map<Integer, String> calculatedEntryMap )
     {
-        //setMessage( "importing_data_elements" );
+        state.setMessage( "importing_data_elements" );
         
         DataElementCategoryCombo categoryCombo = categoryService.
             getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
@@ -368,9 +374,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported CalculatedDataElements" );
     }
     
-    private void importIndicatorTypes( ImportParams params )
+    private void importIndicatorTypes( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_indicator_types" );
+        state.setMessage( "importing_indicator_types" );
         
         BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
         
@@ -388,9 +394,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported IndicatorTypes" );
     }
     
-    private void importIndicators( ImportParams params )
+    private void importIndicators( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_indicators" );
+        state.setMessage( "importing_indicators" );
         
         BatchHandler<Indicator> indicatorBatchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
         BatchHandler<DataElement> dataElementBatchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
@@ -418,9 +424,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported Indicators" );
     }
     
-    private void importDataElementGroups( ImportParams params )
+    private void importDataElementGroups( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_data_element_groups" );
+        state.setMessage( "importing_data_element_groups" );
         
         BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
         
@@ -438,9 +444,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported DataElementGroups" );
     }
     
-    private void importIndicatorGroups( ImportParams params )
+    private void importIndicatorGroups( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_indicator_groups" );
+        state.setMessage( "importing_indicator_groups" );
         
         BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
         
@@ -458,9 +464,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported IndicatorGroups" );
     }
     
-    private void importDataElementGroupMembers( ImportParams params )
+    private void importDataElementGroupMembers( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_data_element_group_members" );
+        state.setMessage( "importing_data_element_group_members" );
         
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
         
@@ -479,9 +485,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported DataElementGroup members" );
     }
 
-    private void importIndicatorGroupMembers( ImportParams params )
+    private void importIndicatorGroupMembers( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_indicator_group_members" );
+        state.setMessage( "importing_indicator_group_members" );
         
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
         
@@ -504,9 +510,9 @@ public class DefaultDhis14FileImportService
     // DataSet
     // -------------------------------------------------------------------------
 
-    private void importDataSets( ImportParams params )
+    private void importDataSets( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_data_sets" );
+        state.setMessage( "importing_data_sets" );
         
         BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
         
@@ -526,9 +532,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported DataSets" );
     }
     
-    private void importDataSetMembers( ImportParams params )
+    private void importDataSetMembers( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_data_set_members" );
+        state.setMessage( "importing_data_set_members" );
         
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
         
@@ -551,9 +557,9 @@ public class DefaultDhis14FileImportService
     // OrganisatonUnit
     // -------------------------------------------------------------------------
 
-    private void importOrganisationUnits( ImportParams params )
+    private void importOrganisationUnits( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_organisation_units" );
+        state.setMessage( "importing_organisation_units" );
         
         BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
         BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
@@ -576,9 +582,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported OrganisationUnits" );       
     }
     
-    private void importOrganisationUnitGroups( ImportParams params )
+    private void importOrganisationUnitGroups( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_organisation_unit_groups" );
+        state.setMessage( "importing_organisation_unit_groups" );
         
         BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
         
@@ -596,9 +602,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported OrganisationUnitGroups" );
     }
     
-    private void importOrganisationUnitGroupMembers( ImportParams params )
+    private void importOrganisationUnitGroupMembers( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_organisation_unit_group_members" );
+        state.setMessage( "importing_organisation_unit_group_members" );
         
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
         
@@ -617,9 +623,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported OrganisationUnitGroup members" );
     }
     
-    private void importGroupSets( ImportParams params )
+    private void importGroupSets( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_organisation_unit_group_sets" );
+        state.setMessage( "importing_organisation_unit_group_sets" );
         
         BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
         
@@ -637,9 +643,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported OrganisationUnitGroupSets" );  
     }
     
-    private void importGroupSetMembers( ImportParams params )
+    private void importGroupSetMembers( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_organisation_unit_group_set_members" );
+        state.setMessage( "importing_organisation_unit_group_set_members" );
         
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
         
@@ -658,9 +664,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported OrganisationUnitGroupSet members" );
     }
 
-    private void importOrganisationUnitRelationships( ImportParams params )
+    private void importOrganisationUnitRelationships( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_organisation_unit_relationships" );
+        state.setMessage( "importing_organisation_unit_relationships" );
         
         BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
         
@@ -679,9 +685,9 @@ public class DefaultDhis14FileImportService
         log.info( "Imported OrganisationUnitRelationships" );
     }
     
-    private void importOrganisationUnitHierarchy()
+    private void importOrganisationUnitHierarchy( ProcessState state )
     {
-        //setMessage( "importing_organisation_unit_hierarchy" );
+        state.setMessage( "importing_organisation_unit_hierarchy" );
         
         organisationUnitService.addOrganisationUnitHierarchy( DateUtils.getEpoch() );
         
@@ -692,9 +698,9 @@ public class DefaultDhis14FileImportService
     // DataSet - OrganisationUnit Associations
     // -------------------------------------------------------------------------
 
-    private void importDataSetOrganisationUnitAssociations( ImportParams params )
+    private void importDataSetOrganisationUnitAssociations( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_data_set_organisation_unit_associations" );
+        state.setMessage( "importing_data_set_organisation_unit_associations" );
         
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
         
@@ -717,9 +723,9 @@ public class DefaultDhis14FileImportService
     // Period
     // -------------------------------------------------------------------------
 
-    private void importPeriods( ImportParams params )
+    private void importPeriods( ImportParams params, ProcessState state )
     {   
-        //setMessage( "importing_periods" );
+        state.setMessage( "importing_periods" );
         
         BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         
@@ -743,9 +749,9 @@ public class DefaultDhis14FileImportService
     // RoutineDataValue
     // -------------------------------------------------------------------------
 
-    private void importRoutineDataValues( ImportParams params )
+    private void importRoutineDataValues( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_routine_data_values" );
+        state.setMessage( "importing_routine_data_values" );
 
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
@@ -787,9 +793,9 @@ public class DefaultDhis14FileImportService
     // OnChangePeriod
     // -------------------------------------------------------------------------
 
-    private void importOnChangePeriods( ImportParams params )
+    private void importOnChangePeriods( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_on_change_periods" );
+        state.setMessage( "importing_on_change_periods" );
         
         BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         
@@ -812,9 +818,9 @@ public class DefaultDhis14FileImportService
     // SemiPermanentDataValue
     // -------------------------------------------------------------------------
 
-    private void importSemiPermanentDataValues( ImportParams params )
+    private void importSemiPermanentDataValues( ImportParams params, ProcessState state )
     {
-        //setMessage( "importing_semi_permanent_data_values" );
+        state.setMessage( "importing_semi_permanent_data_values" );
 
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
