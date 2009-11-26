@@ -37,6 +37,8 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -87,21 +89,17 @@ public class DefaultPeriodService
         return periodStore.getAllPeriods();
     }
 
-    public Collection<Period> getPeriods( Collection<Integer> identifiers )
+    public Collection<Period> getPeriods( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllPeriods();
-        }
-
-        Collection<Period> objects = new ArrayList<Period>();
-
-        for ( Integer id : identifiers )
-        {
-            objects.add( getPeriod( id ) );
-        }
-
-        return objects;
+        Collection<Period> periods = getAllPeriods();
+        
+        return identifiers == null ? periods : FilterUtils.filter( periods, new Filter<Period>()
+            {
+                public boolean retain( Period object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )

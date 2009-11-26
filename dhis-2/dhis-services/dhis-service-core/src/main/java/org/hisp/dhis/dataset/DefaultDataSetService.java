@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -37,9 +39,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -181,21 +183,17 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.getDataSetsByPeriodType( periodType ) );
     }
     
-    public Collection<DataSet> getDataSets( Collection<Integer> identifiers )
+    public Collection<DataSet> getDataSets( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataSets();
-        }        
+        Collection<DataSet> dataSets = getAllDataSets();
         
-        Collection<DataSet> objects = new ArrayList<DataSet>();
-        
-        for ( Integer id : identifiers )
-        {
-            objects.add( getDataSet( id ) );
-        }
-        
-        return objects;
+        return identifiers == null ? dataSets : FilterUtils.filter( dataSets, new Filter<DataSet>()
+            {
+                public boolean retain( DataSet object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public List<DataSet> getAvailableDataSets()

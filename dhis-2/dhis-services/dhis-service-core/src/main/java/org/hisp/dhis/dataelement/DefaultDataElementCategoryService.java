@@ -39,6 +39,8 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,21 +126,17 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryStore.get( id );
     }
     
-    public Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers )
+    public Collection<DataElementCategory> getDataElementCategories( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataElementCategories();
-        }
+        Collection<DataElementCategory> categories = getAllDataElementCategories();
         
-        Collection<DataElementCategory> categories = new ArrayList<DataElementCategory>();
-        
-        for ( Integer id : identifiers )
-        {
-            categories.add( getDataElementCategory( id ) );
-        }
-        
-        return categories;
+        return identifiers == null ? categories : FilterUtils.filter( categories, new Filter<DataElementCategory>()
+            {
+                public boolean retain( DataElementCategory object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );        
     }
 
     public DataElementCategory getDataElementCategoryByName( String name )
@@ -175,21 +173,17 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionStore.getByName( name );
     }
     
-    public Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers )
+    public Collection<DataElementCategoryOption> getDataElementCategoryOptions( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataElementCategoryOptions();
-        }
+        Collection<DataElementCategoryOption> categoryOptions = getAllDataElementCategoryOptions();
         
-        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
-        
-        for ( Integer id : identifiers )
-        {
-            categoryOptions.add( getDataElementCategoryOption( id ) );
-        }
-        
-        return categoryOptions;
+        return identifiers == null ? categoryOptions : FilterUtils.filter( categoryOptions, new Filter<DataElementCategoryOption>()
+            {
+                public boolean retain( DataElementCategoryOption object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()
@@ -226,21 +220,17 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryComboStore.get( id );
     }
     
-    public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<Integer> identifiers )
+    public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataElementCategoryCombos();
-        }
+        Collection<DataElementCategoryCombo> categoryCombo = getAllDataElementCategoryCombos();
         
-        Collection<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
-        
-        for ( Integer id : identifiers )
-        {
-            categoryCombos.add( getDataElementCategoryCombo( id ) );
-        }
-        
-        return categoryCombos;
+        return identifiers == null ? categoryCombo : FilterUtils.filter( categoryCombo, new Filter<DataElementCategoryCombo>()
+            {
+                public boolean retain( DataElementCategoryCombo object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
@@ -272,22 +262,17 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionComboStore.get( id );
     }
 
-    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(
-        Collection<Integer> identifiers )
+    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllDataElementCategoryOptionCombos();
-        }
-
-        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-
-        for ( Integer id : identifiers )
-        {
-            categoryOptionCombos.add( getDataElementCategoryOptionCombo( id ) );
-        }
-
-        return categoryOptionCombos;
+        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = getAllDataElementCategoryOptionCombos();
+        
+        return identifiers == null ? categoryOptionCombos : FilterUtils.filter( categoryOptionCombos, new Filter<DataElementCategoryOptionCombo>()
+            {
+                public boolean retain( DataElementCategoryOptionCombo object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( Collection<DataElementCategoryOption> categoryOptions )
@@ -298,7 +283,7 @@ public class DefaultDataElementCategoryService
             {
                 return categoryOptionCombo;
             }
-        } // TODO Re-implement with a Hibernate Criteria
+        }
         
         return null;
     }

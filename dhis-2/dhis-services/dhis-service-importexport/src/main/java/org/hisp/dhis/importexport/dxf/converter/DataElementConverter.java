@@ -44,6 +44,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractDataElementConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.TimeUtils;
 
 /**
  * @author Lars Helge Overland
@@ -111,8 +112,11 @@ public class DataElementConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
+        TimeUtils.start();
         Collection<DataElement> elements = dataElementService.getNonCalculatedDataElements( params.getDataElements() );
-
+        TimeUtils.markHMS( "Got de" );
+        TimeUtils.stop();
+        
         if ( elements != null && elements.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );

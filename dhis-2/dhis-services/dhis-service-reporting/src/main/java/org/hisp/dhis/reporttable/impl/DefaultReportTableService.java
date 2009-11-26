@@ -67,6 +67,8 @@ import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
 import org.hisp.dhis.system.grid.Grid;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -487,21 +489,17 @@ public class DefaultReportTableService
     }
 
     @Transactional
-    public Collection<ReportTable> getReportTables( Collection<Integer> identifiers )
+    public Collection<ReportTable> getReportTables( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllReportTables();
-        }
+        Collection<ReportTable> objects = getAllReportTables();
         
-        Collection<ReportTable> tables = new ArrayList<ReportTable>();
-        
-        for ( Integer id : identifiers )
-        {
-            tables.add( getReportTable( id ) );
-        }
-        
-        return tables;
+        return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<ReportTable>()
+            {
+                public boolean retain( ReportTable object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
 
     @Transactional

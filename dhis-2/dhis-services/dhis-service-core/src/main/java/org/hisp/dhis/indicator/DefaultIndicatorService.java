@@ -27,17 +27,18 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -137,21 +138,17 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorStore.getAllIndicators() );
     }
     
-    public Collection<Indicator> getIndicators( Collection<Integer> identifiers )
+    public Collection<Indicator> getIndicators( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllIndicators();
-        }
+        Collection<Indicator> indicators = getAllIndicators();
         
-        Collection<Indicator> objects = new ArrayList<Indicator>();
-        
-        for ( Integer id : identifiers )
-        {
-            objects.add( getIndicator( id ) );
-        }
-        
-        return objects;
+        return identifiers == null ? indicators : FilterUtils.filter( indicators, new Filter<Indicator>()
+            {
+                public boolean retain( Indicator object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public Indicator getIndicatorByName( String name )
@@ -211,21 +208,17 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorTypeStore.get( id ) );
     }
     
-    public Collection<IndicatorType> getIndicatorTypes( Collection<Integer> identifiers )
+    public Collection<IndicatorType> getIndicatorTypes( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllIndicatorTypes();
-        }
+        Collection<IndicatorType> types = getAllIndicatorTypes();
         
-        Collection<IndicatorType> types = new ArrayList<IndicatorType>();
-        
-        for ( Integer id : identifiers )
-        {
-            types.add( getIndicatorType( id ) );
-        }
-        
-        return types;
+        return identifiers == null ? types : FilterUtils.filter( types, new Filter<IndicatorType>()
+            {
+                public boolean retain( IndicatorType object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public Collection<IndicatorType> getAllIndicatorTypes()
@@ -275,21 +268,17 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorGroupStore.get( id ) );
     }
     
-    public Collection<IndicatorGroup> getIndicatorGroups( Collection<Integer> identifiers )
+    public Collection<IndicatorGroup> getIndicatorGroups( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllIndicatorGroups();
-        }
+        Collection<IndicatorGroup> groups = getAllIndicatorGroups();
         
-        Collection<IndicatorGroup> groups = new ArrayList<IndicatorGroup>();
-        
-        for ( Integer id : identifiers )
-        {
-            groups.add( getIndicatorGroup( id ) );
-        }
-        
-        return groups;
+        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<IndicatorGroup>()
+            {
+                public boolean retain( IndicatorGroup object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );
     }
     
     public IndicatorGroup getIndicatorGroup( String uuid )
@@ -368,20 +357,16 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorGroupSetStore.getAll() );
     }
     
-    public Collection<IndicatorGroupSet> getIndicatorGroupSets( Collection<Integer> identifiers )
+    public Collection<IndicatorGroupSet> getIndicatorGroupSets( final Collection<Integer> identifiers )
     {
-        if ( identifiers == null )
-        {
-            return getAllIndicatorGroupSets();
-        }
+        Collection<IndicatorGroupSet> groupSets = getAllIndicatorGroupSets();
         
-        Collection<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
-        
-        for ( Integer id : identifiers )
-        {
-            groupSets.add( getIndicatorGroupSet( id ) );
-        }
-        
-        return groupSets;       
+        return identifiers == null ? groupSets : FilterUtils.filter( groupSets, new Filter<IndicatorGroupSet>()
+            {
+                public boolean retain( IndicatorGroupSet object )
+                {
+                    return identifiers.contains( object.getId() );
+                }
+            } );     
     }
 }
