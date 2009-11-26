@@ -36,6 +36,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -181,7 +182,7 @@ public class DefaultDataMartEngine
 
     @Transactional
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, ProcessState state )
     {   
         int count = 0;
              
@@ -189,7 +190,7 @@ public class DefaultDataMartEngine
         
         TimeUtils.start();
 
-        //setMessage( "deleting_existing_aggregated_data" );
+        state.setMessage( "deleting_existing_aggregated_data" );
 
         // ---------------------------------------------------------------------
         // Delete existing aggregated data
@@ -220,6 +221,8 @@ public class DefaultDataMartEngine
         final Collection<Operand> dataElementInIndicatorOperands = categoryService.getOperandsByIds( dataElementInIndicatorIds );
         final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryService.getOperandsByIds( dataElementInCalculatedDataElementIds );
 
+        log.info( "Filtered data elements" );
+        
         // ---------------------------------------------------------------------
         // Validate crosstabtable
         // ---------------------------------------------------------------------
@@ -230,14 +233,14 @@ public class DefaultDataMartEngine
 
             log.warn( "Cannot crosstabulate since the number of data elements exceeded maximum columns: " + excess );
             
-            //setMessage( "could_not_export_too_many_data_elements" );
+            state.setMessage( "could_not_export_too_many_data_elements" );
             
             return 0;
         }           
 
         log.info( "Validated crosstab table: " + TimeUtils.getHMS() );
         
-        //setMessage( "crosstabulating_data" );
+        state.setMessage( "crosstabulating_data" );
 
         final Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 
             getIdsWithChildren( organisationUnitIds ) );
@@ -259,7 +262,7 @@ public class DefaultDataMartEngine
         // Data element export
         // ---------------------------------------------------------------------
 
-        //setMessage( "exporting_data_for_data_elements" );
+        state.setMessage( "exporting_data_for_data_elements" );
 
         if ( sumIntOperands.size() > 0 )
         {
@@ -289,7 +292,7 @@ public class DefaultDataMartEngine
             log.info( "Exported values for data elements with average aggregation operator of type yes/no (" + averageBooleanOperands.size() + "): " + TimeUtils.getHMS() );
         }
 
-        //setMessage( "exporting_data_for_indicators" );
+        state.setMessage( "exporting_data_for_indicators" );
 
         // ---------------------------------------------------------------------
         // Indicator export
@@ -302,7 +305,7 @@ public class DefaultDataMartEngine
             log.info( "Exported values for indicators (" + indicatorIds.size() + "): " + TimeUtils.getHMS() );
         }
 
-        //setMessage( "exporting_data_for_calculated_data_elements" );
+        state.setMessage( "exporting_data_for_calculated_data_elements" );
 
         // ---------------------------------------------------------------------
         // Calculated data element export
@@ -321,7 +324,7 @@ public class DefaultDataMartEngine
         
         TimeUtils.stop();
 
-        //setMessage( "export_process_done" );
+        state.setMessage( "export_process_done" );
         
         aggregationCache.clearCache();
         

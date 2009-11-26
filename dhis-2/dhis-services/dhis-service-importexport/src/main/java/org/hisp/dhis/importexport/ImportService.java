@@ -29,6 +29,8 @@ package org.hisp.dhis.importexport;
 
 import java.io.InputStream;
 
+import org.hisp.dhis.common.ProcessState;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: ExportService.java 4646 2008-02-26 14:54:29Z larshelg $
@@ -36,4 +38,6 @@ import java.io.InputStream;
 public interface ImportService
 {
     void importData( ImportParams params, InputStream inputStream );
+    
+    void importData( ImportParams params, InputStream inputStream, ProcessState state );
 }

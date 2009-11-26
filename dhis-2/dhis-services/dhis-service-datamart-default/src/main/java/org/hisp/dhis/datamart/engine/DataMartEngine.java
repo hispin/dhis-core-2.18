@@ -29,11 +29,13 @@ package org.hisp.dhis.datamart.engine;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.ProcessState;
+
 /**
  * @author Lars Helge Overland
  */
 public interface DataMartEngine
 {
     int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, ProcessState processState );
 }

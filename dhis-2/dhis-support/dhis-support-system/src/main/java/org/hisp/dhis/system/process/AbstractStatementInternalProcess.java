@@ -39,20 +39,9 @@ public abstract class AbstractStatementInternalProcess
 {    
     private OutputHolderState state;
 
-    public void setMessage( String message )
+    protected OutputHolderState getState()
     {
-        if ( this.state != null )
-        {
-            this.state.setMessage( message );
-        }
-    }
-    
-    public void setOutput( Object output )
-    {
-        if ( this.state != null )
-        {
-            this.state.setOutput( output );
-        }
+        return state;
     }
 
     // -------------------------------------------------------------------------

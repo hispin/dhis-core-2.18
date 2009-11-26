@@ -28,13 +28,14 @@ package org.hisp.dhis.system.process;
  */
 
 import org.amplecode.cave.process.state.MessageState;
+import org.hisp.dhis.common.ProcessState;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class OutputHolderState
-    extends MessageState
+    extends MessageState implements ProcessState
 {
     private Object output;
 

@@ -37,6 +37,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
@@ -164,13 +165,12 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDXFImportService.java 6425 2008-11-22 00:08:57Z larshelg
- *          $
  */
 public class DefaultDXFImportService
     implements ImportService
@@ -333,11 +333,17 @@ public class DefaultDXFImportService
 
     public void importData( ImportParams params, InputStream inputStream )
     {
-        log.info( "Import process started" );
+        importData( params, inputStream, new OutputHolderState() );
+    }
+    
+    public void importData( ImportParams params, InputStream inputStream, ProcessState state )
+    {
+        NameMappingUtil.clearMapping();
         
         if ( params.isPreview() )
         {
-            importObjectService.deleteImportObjects();
+            importObjectService.deleteImportObjects();            
+            log.info( "Deleted previewed objects" );
         }
 
         ZipInputStream zipIn = new ZipInputStream( inputStream );
@@ -345,12 +351,10 @@ public class DefaultDXFImportService
         StreamUtils.getNextZipEntry( zipIn );
 
         XMLReader reader = XMLFactory.getXMLReader( zipIn );
+        
+        int dxfVersion = 1; // assume default version 1
 
-        // assume default version 1
-        int dxfVersion = 1;
-
-        // move to root element
-        while ( !reader.isStartElement( ROOT_NAME ) )
+        while ( !reader.isStartElement( ROOT_NAME ) ) // move to root element
         {
             reader.next();
         }
@@ -368,35 +372,33 @@ public class DefaultDXFImportService
             }
             catch ( javax.xml.bind.JAXBException ex )
             {
-                log.warn( "Parsing error: " + ex );
-                // report something to GUI ....
+                log.warn( "Parsing error: " + ex ); // report something to GUI
+                
             }
         }
         else
         {
             dxfVersion = 1;
             log.info( "Parsing DXF version " + dxfVersion );
-            parseDXFv1( params, reader );
+            parseDXFv1( params, reader, state );
         }
-
-        // setMessage( "import_process_done" );
 
         StreamUtils.closeInputStream( zipIn );
 
         reader.closeReader();
 
         NameMappingUtil.clearMapping();
-
+        
         cacheManager.clearCache();
     }
 
-    private void parseDXFv1( ImportParams params, XMLReader reader )
+    private void parseDXFv1( ImportParams params, XMLReader reader, ProcessState state )
     {
         while ( reader.next() )
         {
             if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_category_options" );
+                state.setMessage( "importing_data_element_category_options" );
 
                 BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementCategoryOptionBatchHandler.class );
@@ -414,7 +416,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementCategoryConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_categories" );
+                state.setMessage( "importing_data_element_categories" );
 
                 BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementCategoryBatchHandler.class );
@@ -432,7 +434,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementCategoryComboConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_category_combos" );
+                state.setMessage( "importing_data_element_category_combos" );
 
                 BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementCategoryComboBatchHandler.class );
@@ -450,8 +452,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementCategoryOptionComboConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_category_option_combos"
-                // );
+                state.setMessage( "importing_data_element_category_option_combos" );
 
                 XMLConverter converter = new DataElementCategoryOptionComboConverter( importObjectService,
                     objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), objectMappingGenerator
@@ -461,10 +462,9 @@ public class DefaultDXFImportService
 
                 log.info( "Imported DataElementCategoryOptionCombos" );
             }
-            // dxfv1 only
             else if ( reader.isStartElement( CategoryCategoryOptionAssociationConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_category_members" );
+                state.setMessage( "importing_data_element_category_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
@@ -481,10 +481,9 @@ public class DefaultDXFImportService
 
                 log.info( "Imported CategoryCategoryOption associations" );
             }
-            // dxfv1 only
             else if ( reader.isStartElement( CategoryComboCategoryAssociationConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_category_combo_members" );
+                state.setMessage( "importing_data_element_category_combo_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
@@ -503,7 +502,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_elements" );
+                state.setMessage( "importing_data_elements" );
 
                 BatchHandler<DataElement> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementBatchHandler.class );
@@ -521,7 +520,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ExtendedDataElementConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_elements" );
+                state.setMessage( "importing_data_elements" );
 
                 BatchHandler<DataElement> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementBatchHandler.class );
@@ -547,7 +546,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( CalculatedDataElementConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_calculated_data_elements" );
+                state.setMessage( "importing_calculated_data_elements" );
 
                 XMLConverter converter = new CalculatedDataElementConverter( importObjectService, dataElementService,
                     expressionService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
@@ -560,7 +559,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementGroupConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_groups" );
+                state.setMessage( "importing_data_element_groups" );
 
                 BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementGroupBatchHandler.class );
@@ -578,7 +577,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementGroupMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_group_members" );
+                state.setMessage( "importing_data_element_group_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataElementGroupMemberBatchHandler.class );
@@ -597,7 +596,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementGroupSetConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_group_sets" );
+                state.setMessage( "importing_data_element_group_sets" );
                 
                 BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.
                     createBatchHandler( DataElementGroupSetBatchHandler.class );
@@ -614,7 +613,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataElementGroupSetMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_group_set_members" );
+                state.setMessage( "importing_data_element_group_set_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.
                     createBatchHandler( DataElementGroupSetMemberBatchHandler.class );
@@ -633,7 +632,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( IndicatorTypeConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicator_types" );
+                state.setMessage( "importing_indicator_types" );
 
                 BatchHandler<IndicatorType> batchHandler = batchHandlerFactory
                     .createBatchHandler( IndicatorTypeBatchHandler.class );
@@ -651,7 +650,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( IndicatorConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicators" );
+                state.setMessage( "importing_indicators" );
 
                 BatchHandler<Indicator> batchHandler = batchHandlerFactory
                     .createBatchHandler( IndicatorBatchHandler.class );
@@ -671,7 +670,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ExtendedIndicatorConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicators" );
+                state.setMessage( "importing_indicators" );
 
                 BatchHandler<Indicator> batchHandler = batchHandlerFactory
                     .createBatchHandler( IndicatorBatchHandler.class );
@@ -699,7 +698,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( IndicatorGroupConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicator_groups" );
+                state.setMessage( "importing_indicator_groups" );
 
                 BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory
                     .createBatchHandler( IndicatorGroupBatchHandler.class );
@@ -717,7 +716,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( IndicatorGroupMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicator_group_members" );
+                state.setMessage( "importing_indicator_group_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( IndicatorGroupMemberBatchHandler.class );
@@ -736,7 +735,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( IndicatorGroupSetConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicator_group_sets" );
+                state.setMessage( "importing_indicator_group_sets" );
                 
                 BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.
                     createBatchHandler( IndicatorGroupSetBatchHandler.class );
@@ -753,7 +752,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( IndicatorGroupSetMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_indicator_group_set_members" );
+                state.setMessage( "importing_indicator_group_set_members" );
                 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.
                     createBatchHandler( IndicatorGroupSetMemberBatchHandler.class );
@@ -772,7 +771,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataDictionaryConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_dictionaries" );
+                state.setMessage( "importing_data_dictionaries" );
 
                 BatchHandler<DataDictionary> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataDictionaryBatchHandler.class );
@@ -790,7 +789,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataDictionaryDataElementConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_dictionary_data_elements" );
+                state.setMessage( "importing_data_dictionary_data_elements" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataDictionaryDataElementBatchHandler.class );
@@ -809,7 +808,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataDictionaryIndicatorConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_dictionary_indicators" );
+                state.setMessage( "importing_data_dictionary_indicators" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
@@ -828,7 +827,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataSetConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_sets" );
+                state.setMessage( "importing_data_sets" );
 
                 BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
 
@@ -845,7 +844,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataSetMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_set_members" );
+                state.setMessage( "importing_data_set_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataSetMemberBatchHandler.class );
@@ -864,7 +863,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( OrganisationUnitConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_units" );
+                state.setMessage( "importing_organisation_units" );
 
                 BatchHandler<Source> sourceBatchHandler = batchHandlerFactory
                     .createBatchHandler( SourceBatchHandler.class );
@@ -886,7 +885,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( OrganisationUnitRelationshipConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_unit_relationships" );
+                state.setMessage( "importing_organisation_unit_relationships" );
 
                 BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory
                     .createBatchHandler( OrganisationUnitBatchHandler.class );
@@ -904,7 +903,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( OrganisationUnitGroupConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_unit_groups" );
+                state.setMessage( "importing_organisation_unit_groups" );
 
                 BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory
                     .createBatchHandler( OrganisationUnitGroupBatchHandler.class );
@@ -922,7 +921,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( OrganisationUnitGroupMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_unit_group_members" );
+                state.setMessage( "importing_organisation_unit_group_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
@@ -941,7 +940,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( GroupSetConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_unit_group_sets" );
+                state.setMessage( "importing_organisation_unit_group_sets" );
 
                 BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory
                     .createBatchHandler( GroupSetBatchHandler.class );
@@ -959,8 +958,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( GroupSetMemberConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_unit_group_set_members"
-                // );
+                state.setMessage( "importing_organisation_unit_group_set_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( GroupSetMemberBatchHandler.class );
@@ -979,7 +977,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( OrganisationUnitLevelConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_organisation_unit_levels" );
+                state.setMessage( "importing_organisation_unit_levels" );
 
                 XMLConverter converter = new OrganisationUnitLevelConverter( organisationUnitService,
                     importObjectService );
@@ -990,7 +988,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataSetSourceAssociationConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_set_source_associations" );
+                state.setMessage( "importing_data_set_source_associations" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataSetSourceAssociationBatchHandler.class );
@@ -1009,7 +1007,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ValidationRuleConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_validation_rules" );
+                state.setMessage( "importing_validation_rules" );
 
                 XMLConverter converter = new ValidationRuleConverter( importObjectService, validationRuleService,
                     expressionService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
@@ -1021,7 +1019,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( PeriodConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_periods" );
+                state.setMessage( "importing_periods" );
 
                 BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
 
@@ -1038,7 +1036,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ReportTableConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_report_tables" );
+                state.setMessage( "importing_report_tables" );
 
                 BatchHandler<ReportTable> batchHandler = batchHandlerFactory
                     .createBatchHandler( ReportTableBatchHandler.class );
@@ -1056,7 +1054,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ReportTableDataElementConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_report_table_dataelements" );
+                state.setMessage( "importing_report_table_dataelements" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( ReportTableDataElementBatchHandler.class );
@@ -1075,7 +1073,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ReportTableIndicatorConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_report_table_indicators" );
+                state.setMessage( "importing_report_table_indicators" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( ReportTableIndicatorBatchHandler.class );
@@ -1094,7 +1092,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ReportTableDataSetConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_report_table_datasets" );
+                state.setMessage( "importing_report_table_datasets" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( ReportTableDataSetBatchHandler.class );
@@ -1113,7 +1111,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ReportTablePeriodConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_report_table_periods" );
+                state.setMessage( "importing_report_table_periods" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( ReportTablePeriodBatchHandler.class );
@@ -1132,7 +1130,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( ReportTableOrganisationUnitConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_report_table_organisation_units" );
+                state.setMessage( "importing_report_table_organisation_units" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
@@ -1151,7 +1149,7 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( OlapUrlConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_olap_urls" );
+                state.setMessage( "importing_olap_urls" );
 
                 XMLConverter converter = new OlapUrlConverter( importObjectService, olapURLService );
 
@@ -1162,7 +1160,7 @@ public class DefaultDXFImportService
             else if ( reader.isStartElement( CompleteDataSetRegistrationConverter.COLLECTION_NAME )
                 && params.isDataValues() )
             {
-                // setMessage( "importing_complete_data_set_registrations" );
+                state.setMessage( "importing_complete_data_set_registrations" );
 
                 BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory
                     .createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
@@ -1182,6 +1180,8 @@ public class DefaultDXFImportService
             }
             else if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
             {
+                state.setMessage( "importing_data_values" );
+                
                 BatchHandler<DataValue> batchHandler = batchHandlerFactory
                     .createBatchHandler( DataValueBatchHandler.class );
 

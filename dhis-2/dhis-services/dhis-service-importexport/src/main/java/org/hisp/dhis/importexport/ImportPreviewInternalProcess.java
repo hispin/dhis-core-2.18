@@ -31,7 +31,6 @@ import org.amplecode.cave.process.SerialToGroup;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
-import org.hisp.dhis.system.util.TimeUtils;
 
 /**
  * @author Lars Helge Overland
@@ -70,16 +69,12 @@ public class ImportPreviewInternalProcess
     public void executeStatements()
         throws Exception
     {
-        setMessage( "importing_previewed_meta_data" );
+        getState().setMessage( "preview_process_started" );
+        log.info( "Preview process started" );
         
-        TimeUtils.start();
-                
         importObjectService.importAll();        
 
-        log.info( "Import process completed: " + TimeUtils.getHMS() );
-        
-        TimeUtils.stop();
-        
-        setMessage( "import_process_done" );
+        getState().setMessage( "import_process_done" );
+        log.info( "Preview process completed" );        
     }
 }

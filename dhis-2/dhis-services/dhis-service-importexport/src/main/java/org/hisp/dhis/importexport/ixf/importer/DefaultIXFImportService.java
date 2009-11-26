@@ -37,6 +37,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -64,6 +65,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
 
 /**
@@ -161,9 +163,16 @@ public class DefaultIXFImportService
     // -------------------------------------------------------------------------
     // ImportService implementation
     // -------------------------------------------------------------------------
-
+    
     public void importData( ImportParams params, InputStream inputStream )
     {
+        importData( params, inputStream, new OutputHolderState() );
+    }
+    
+    public void importData( ImportParams params, InputStream inputStream, ProcessState state )
+    {
+        NameMappingUtil.clearMapping();
+        
         if ( params.isPreview() )
         {
             importObjectService.deleteImportObjects();
@@ -179,7 +188,7 @@ public class DefaultIXFImportService
         {
             if ( reader.isStartElement( TimePeriodConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_periods" );
+                state.setMessage( "importing_periods" );
                 
                 BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
                 
@@ -196,7 +205,7 @@ public class DefaultIXFImportService
             }
             else if ( reader.isStartElement( SourceConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_units" );
+                state.setMessage( "importing_organisation_units" );
                 
                 BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
                 BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
@@ -216,7 +225,7 @@ public class DefaultIXFImportService
             }
             else if ( reader.isStartElement( IndicatorConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_elements" );
+                state.setMessage( "importing_data_elements" );
 
                 BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );                
                 BatchHandler<DataValue> dataValueBatchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
@@ -249,7 +258,7 @@ public class DefaultIXFImportService
             }
         }
         
-        //setMessage( "import_process_done" );
+        state.setMessage( "import_process_done" );
         
         StreamUtils.closeInputStream( zipIn );
         
