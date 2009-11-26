@@ -202,7 +202,7 @@ public class GetMatchOptionsAction
         }
         else if ( objectType.equals( CALCULATEDDATAELEMENT.name() ) )
         {
-            objects = dataElementService.getCalculatedDataElements();
+            objects = dataElementService.getAllCalculatedDataElements();
         }
         else if ( objectType.equals( DATAELEMENTGROUP.name() ) )
         {

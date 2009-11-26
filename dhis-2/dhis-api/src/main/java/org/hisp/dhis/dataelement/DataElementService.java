@@ -128,15 +128,7 @@ public interface DataElementService
      *         are no DataElements.
      */
     Collection<DataElement> getAllDataElements(); 
-    
-    
-    /**
-     * Returns all DataElements which are instances of CalculatedDataElement.
-     * 
-     * @return all DataElements which are instances of CalculatedDataElement.
-     */
-    Collection<CalculatedDataElement> getCalculatedDataElements();
-    
+        
     /**
      * Returns all DataElements which are not instances of CalculatedDataElements.
      * 

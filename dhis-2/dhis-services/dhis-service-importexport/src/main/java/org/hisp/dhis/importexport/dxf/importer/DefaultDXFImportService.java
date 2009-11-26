@@ -372,8 +372,7 @@ public class DefaultDXFImportService
             }
             catch ( javax.xml.bind.JAXBException ex )
             {
-                log.warn( "Parsing error: " + ex ); // report something to GUI
-                
+                log.warn( "Parsing error: " + ex ); // report something to GUI                
             }
         }
         else

@@ -139,21 +139,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getAllDataElements() );
     }
     
-    public Collection<CalculatedDataElement> getCalculatedDataElements()
-    {        
-        Collection<CalculatedDataElement> calculatedDataElements = new ArrayList<CalculatedDataElement>();
-        
-        for ( DataElement dataElement : getAllDataElements() )
-        {
-            if ( dataElement instanceof CalculatedDataElement )
-            {
-                calculatedDataElements.add( (CalculatedDataElement) dataElement );
-            }
-        }
-        
-        return calculatedDataElements;
-    }
-    
     public Collection<DataElement> getNonCalculatedDataElements()
     {
         Collection<DataElement> dataElements = new ArrayList<DataElement>();
@@ -190,7 +175,7 @@ public class DefaultDataElementService
     {
         if ( identifiers == null )
         {
-            return getCalculatedDataElements();
+            return getAllCalculatedDataElements();
         }
         
         Collection<CalculatedDataElement> objects = new ArrayList<CalculatedDataElement>();
