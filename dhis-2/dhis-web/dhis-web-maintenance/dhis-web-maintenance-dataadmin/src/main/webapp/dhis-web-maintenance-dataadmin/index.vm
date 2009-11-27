@@ -2,12 +2,12 @@
 <h3>$i18n.getString( "data_administration" )</h3>
 
 <ul class="introList">
-    #introListItem( "displayLockingForm.action" "data_locking" )
     #introListItem( "displayDataBrowserForm.action" "data_browser" )
     #introListItem( "displayDataIntegrityForm.action" "data_integrity" )
     #introListItem( "displayMaintenanceForm.action" "maintenance" )
     #introListItem( "displayResourceTableForm.action" "resource_table" )
     #introListItem( "viewStatistics.action" "data_statistics" )
     #introListItem( "showCache.action" "cache_statistics" )
+    #introListItem( "displayLockingForm.action" "data_locking" )
 </ul>
     
