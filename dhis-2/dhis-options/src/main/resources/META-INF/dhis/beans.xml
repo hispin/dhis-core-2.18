@@ -43,6 +43,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>ethiopia.png</value>
         </entry>
         <entry>
+          <key><value>gambia</value></key>
+          <value>gambia.png</value>
+        </entry>
+        <entry>
           <key><value>ghana</value></key>
           <value>ghana.png</value>
         </entry>
