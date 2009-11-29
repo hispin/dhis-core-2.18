@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=2.0.2
+version=2.0.3_rc_trunk_1137
 tomcathome=/usr/share/tomcat6
 tomcatwebapps=/var/lib/tomcat6/webapps
 tomcatstartup=/etc/init.d/tomcat6
