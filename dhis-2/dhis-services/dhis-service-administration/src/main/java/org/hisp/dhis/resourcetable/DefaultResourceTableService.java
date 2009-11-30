@@ -224,7 +224,6 @@ public class DefaultResourceTableService
 
         for ( DataElementCategoryOptionCombo combo : combos )
         {
-
             DataElementCategoryOptionComboName entry = new DataElementCategoryOptionComboName( combo.getId(), combo
                 .getName() );
 
