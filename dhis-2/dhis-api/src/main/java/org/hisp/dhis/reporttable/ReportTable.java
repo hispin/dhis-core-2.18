@@ -858,9 +858,8 @@ public class ReportTable
     
     /**
      * Database encodes the argument string. Remove non-character data from the
-     * string, prefixes the string if it starts with a numeric charater and
+     * string, prefixes the string if it starts with a numeric character and
      * truncates the string if it is longer than 255 characters.
-     * 
      */
     private String databaseEncode( String string )
     {

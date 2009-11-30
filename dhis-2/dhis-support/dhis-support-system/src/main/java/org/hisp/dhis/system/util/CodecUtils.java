@@ -28,6 +28,8 @@ package org.hisp.dhis.system.util;
  */
 
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
@@ -42,8 +44,10 @@ public class CodecUtils
     private static final Log log = LogFactory.getLog( CodecUtils.class );
     
     private static final String CHARSET = "8859_1";
-
     private static final Base64 codec = new Base64();
+    private static final String EMPTY_REPLACEMENT = "_";
+    private static final String REGEX_NUMERIC = "([0-9]*)";
+    private static final String SEPARATOR = "_";
 
     /**
      * Encrypts a string with Base64 encoding.
@@ -96,23 +100,22 @@ public class CodecUtils
         int b, sumb = 0;
         for ( int i = 0, more = -1; i < l; i++ )
         {
-            /* Get next byte b from URL segment s */
             switch ( ch = s.charAt( i ) )
             {
-            case '%':
-                ch = s.charAt( ++i );
-                int hb = (Character.isDigit( (char) ch ) ? ch - '0' : 10 + Character.toLowerCase( (char) ch ) - 'a') & 0xF;
-                ch = s.charAt( ++i );
-                int lb = (Character.isDigit( (char) ch ) ? ch - '0' : 10 + Character.toLowerCase( (char) ch ) - 'a') & 0xF;
-                b = (hb << 4) | lb;
-                break;
-            case '+':
-                b = ' ';
-                break;
-            default:
-                b = ch;
+                case '%':
+                    ch = s.charAt( ++i );
+                    int hb = (Character.isDigit( (char) ch ) ? ch - '0' : 10 + Character.toLowerCase( (char) ch ) - 'a') & 0xF;
+                    ch = s.charAt( ++i );
+                    int lb = (Character.isDigit( (char) ch ) ? ch - '0' : 10 + Character.toLowerCase( (char) ch ) - 'a') & 0xF;
+                    b = (hb << 4) | lb;
+                    break;
+                case '+':
+                    b = ' ';
+                    break;
+                default:
+                    b = ch;
             }
-            /* Decode byte b as UTF-8, sumb collects incomplete chars */
+            
             if ( (b & 0xc0) == 0x80 )
             { // 10xxxxxx (continuation byte)
                 sumb = (sumb << 6) | (b & 0x3f); // Add 6 bits to sumb
@@ -148,9 +151,62 @@ public class CodecUtils
                 sumb = b & 0x01;
                 more = 5; // Expect 5 more bytes
             }
-            /* We don't test if the UTF-8 encoding is well-formed */
         }
         
         return sbuf.toString();
+    }
+
+    /**
+     * Database encodes the argument string. Remove non-character data from the
+     * string, prefixes the string if it starts with a numeric character and
+     * truncates the string if it is longer than 255 characters.
+     * 
+     * @param string the string to encode.
+     */
+    public static String databaseEncode( String string )
+    {
+        if ( string != null )
+        {
+            string = string.toLowerCase();
+            
+            string = string.replaceAll( " ", EMPTY_REPLACEMENT );
+            string = string.replaceAll( "<", EMPTY_REPLACEMENT + "lt" + EMPTY_REPLACEMENT );
+            string = string.replaceAll( ">", EMPTY_REPLACEMENT + "gt" + EMPTY_REPLACEMENT );
+            
+            StringBuffer buffer = new StringBuffer();
+            
+            Pattern pattern = Pattern.compile( "[a-zA-Z0-9_]" );
+            
+            Matcher matcher = pattern.matcher( string );
+            
+            while ( matcher.find() )
+            {
+                buffer.append( matcher.group() );
+            }
+            
+            string = buffer.toString();
+            
+            string = string.replaceAll( EMPTY_REPLACEMENT + "+", EMPTY_REPLACEMENT );
+
+            // -----------------------------------------------------------------
+            // Cannot start with numeric character
+            // -----------------------------------------------------------------
+
+            if ( string.length() > 0 && string.substring( 0, 1 ).matches( REGEX_NUMERIC ) )
+            {
+                string = SEPARATOR + string;
+            }
+
+            // -----------------------------------------------------------------
+            // Cannot be longer than 255 characters
+            // -----------------------------------------------------------------
+
+            if ( string.length() > 255 )
+            {
+                string = string.substring( 0, 255 );
+            }
+        }
+        
+        return string;
     }
 }

@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.amplecode.quick.Statement;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.system.util.CodecUtils;
 
 /**
  * @author Lars Helge Overland
@@ -60,7 +61,7 @@ public class CreateExclusiveGroupSetTableStatement
         
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
-            buffer.append( groupSet.getName() + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
+            buffer.append( CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
         }
         
         buffer.append( "PRIMARY KEY ( organisationunitid ) )" );
