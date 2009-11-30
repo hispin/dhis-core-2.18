@@ -30,6 +30,7 @@ package org.hisp.dhis.reportexcel.preview.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -115,8 +116,8 @@ public class XMLStructureResponse
     {
     }
 
-    public XMLStructureResponse( String pathFileName, String enc, int sheetId, boolean bFormat, boolean bDetailed,
-        boolean bWriteDescription, boolean bWriteVersion, boolean bWriteDTD )
+    public XMLStructureResponse( String pathFileName, String enc, Collection<Integer> collectSheets, boolean bFormat,
+        boolean bDetailed, boolean bWriteDescription, boolean bWriteVersion, boolean bWriteDTD )
 
         throws Exception
     {
@@ -134,18 +135,18 @@ public class XMLStructureResponse
 
         if ( bFormat )
         {
-            writeFormattedXML( sheetId, bDetailed, bWriteDescription );
+            writeFormattedXML( collectSheets, bDetailed, bWriteDescription );
         }
         else
         {
-            writeXML();
+            writeXML(collectSheets);
         }
     }
 
     /**
      * Writes out the WORKBOOK data as XML, without formatting information
      */
-    private void writeXML()
+    private void writeXML(Collection<Integer> collectSheets)
         throws IOException
     {
         if ( this.bWRITE_VERSION )
@@ -164,9 +165,9 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_OPENTAG );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
 
-        for ( int sheet = 0; sheet < WORKBOOK.getNumberOfSheets(); sheet++ )
+        for ( Integer sheet : collectSheets )
         {
-            Sheet s = WORKBOOK.getSheet( sheet );
+            Sheet s = WORKBOOK.getSheet( sheet-1 );
 
             STRUCTURE_DATA_RESPONSE.append( "  <sheet>" );
             STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
@@ -209,7 +210,7 @@ public class XMLStructureResponse
      * @throws Exception
      */
 
-    private void writeFormattedXML( int sheetId, boolean bDetailed, boolean bWriteDescription )
+    private void writeFormattedXML( Collection<Integer> collectSheets, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
         FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
@@ -217,7 +218,7 @@ public class XMLStructureResponse
 
         if ( bWriteDescription )
         {
-            this.writeXMLDescription( sheetId );
+            this.writeXMLDescription( collectSheets );
         }
 
         if ( this.bWRITE_VERSION )
@@ -236,16 +237,9 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_OPENTAG );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
 
-        if ( sheetId > 0 )
+        for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( hssfwb, (sheetId - 1), bDetailed );
-        }
-        else
-        {
-            for ( int sheet = 0; sheet < WORKBOOK.getNumberOfSheets(); sheet++ )
-            {
-                writeBySheetNo( hssfwb, sheet, bDetailed );
-            }
+            writeBySheetNo( hssfwb, (sheet-1), bDetailed );
         }
 
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_CLOSETAG );
@@ -417,7 +411,7 @@ public class XMLStructureResponse
     // -------------------------------------------------------------------------
     // Get the merged cell's information
     // -------------------------------------------------------------------------
-    private void writeXMLDescription( int sheetId )
+    private void writeXMLDescription( Collection<Integer> collectSheets )
         throws IOException
     {
         // Get the Range of the Merged Cells //
@@ -431,17 +425,9 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( MERGEDCELL_OPENTAG );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
 
-        if ( sheetId > 0 )
+        for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( sheetId - 1 );
-        }
-        else
-        {
-            for ( int i = 0; i < WORKBOOK.getNumberOfSheets(); i++ )
-            {
-                writeBySheetNo( i );
-            }
-
+            writeBySheetNo( sheet-1 );
         }
 
         // Close the main Tag //

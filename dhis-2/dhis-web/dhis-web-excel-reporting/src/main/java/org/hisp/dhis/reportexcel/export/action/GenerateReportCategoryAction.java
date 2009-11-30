@@ -39,7 +39,9 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
+ * @since 2009-09-18
  */
 public class GenerateReportCategoryAction
     extends GenerateReportSupport

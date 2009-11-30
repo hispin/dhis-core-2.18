@@ -419,6 +419,7 @@
 			<param name="page">/dhis-web-excel-reporting/reportparams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">250</param>
+			<param name="stylesheets">style/previewStyle.css</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
 		</action>
 
@@ -619,16 +620,6 @@
 
 		<!-- PREVIEW REPORT EXCEL ACTION -->
 
-		<action name="openPreviewReport"
-			class="org.hisp.dhis.reportexcel.preview.action.OpenPreviewReportAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-			<param name="page">/dhis-web-excel-reporting/viewReportPreview.vm</param>
-			<param name="stylesheets">style/previewStyle.css</param>
-			<param name="javascripts">javascript/preview.js</param>
-		</action>
-
 		<action name="previewReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -646,25 +637,25 @@
 		</action>
 
 		<action name="generatePreviewCategory"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewCategoryAction">
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportCategoryAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
 		<action name="generatePreviewNormal"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewNormalAction">
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportNormalAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
 		<action name="generatePreviewOrgGroupListing"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewOrgGroupListingAction">
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportOrganizationGroupListingAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
 		<action name="generatePreviewPeriodColumnListing"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewPeriodColumnListingAction">
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportPeriodColumnListingAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
@@ -786,25 +777,25 @@
 		</action>
 
 		<action name="generatePreviewAdvancedCategory"
-			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedCategoryAction">
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportCategoryAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedNormal"
-			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedNormalAction">
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportNormalAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedOrgGroupListing"
-			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedOrgGroupListingAction">
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportOrgGroupListingAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedPeriodColumnListing"
-			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedPeriodColumnListingAction">
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportPeriodColumnListingAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
