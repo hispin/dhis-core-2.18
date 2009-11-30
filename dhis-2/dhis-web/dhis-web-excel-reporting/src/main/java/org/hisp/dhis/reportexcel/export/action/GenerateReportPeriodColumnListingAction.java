@@ -40,7 +40,9 @@ import org.hisp.dhis.system.util.MathUtils;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
+ * @since 2009-09-18
  */
 public class GenerateReportPeriodColumnListingAction
     extends GenerateReportSupport

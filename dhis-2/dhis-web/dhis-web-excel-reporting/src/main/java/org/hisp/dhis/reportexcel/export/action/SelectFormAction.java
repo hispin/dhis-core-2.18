@@ -28,7 +28,9 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -37,12 +39,15 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
+ * @since 2009-11-26
  */
 public class SelectFormAction
     implements Action
@@ -51,6 +56,7 @@ public class SelectFormAction
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
+
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
     private ReportExcelService reportService;
@@ -67,6 +73,12 @@ public class SelectFormAction
 
     private List<String> groups;
 
+    private String reportGroup;
+
+    private Integer reportId;
+
+    private Collection<Integer> collectSheets = new HashSet<Integer>();
+
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
@@ -79,11 +91,36 @@ public class SelectFormAction
     public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
     {
         this.periodDatabaseService = periodDatabaseService;
-    }   
+    }
 
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
+    }
+
+    public Integer getReportId()
+    {
+        return reportId;
+    }
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    public String getReportGroup()
+    {
+        return reportGroup;
+    }
+
+    public void setReportGroup( String reportGroup )
+    {
+        this.reportGroup = reportGroup;
+    }
+
+    public Collection<Integer> getCollectSheets()
+    {
+        return collectSheets;
     }
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
@@ -121,15 +158,29 @@ public class SelectFormAction
         if ( organisationUnit == null )
         {
             return SUCCESS;
-        } 
-        
+        }
+
         periodDatabaseService.setSelectedPeriodTypeName( MonthlyPeriodType.NAME );
 
-        periods = periodDatabaseService.getPeriodList();               
+        periods = periodDatabaseService.getPeriodList();
 
         groups = new ArrayList<String>( reportService.getReportExcelGroups() );
 
         Collections.sort( groups );
+
+        if ( reportGroup != null )
+        {
+            reportGroup = CodecUtils.unescape( reportGroup );
+        }
+
+        if ( reportId != null )
+        {
+            collectSheets = reportService.getSheets( reportId );
+        }
+        else
+        {
+            collectSheets.add( 0 );
+        }
 
         return SUCCESS;
     }

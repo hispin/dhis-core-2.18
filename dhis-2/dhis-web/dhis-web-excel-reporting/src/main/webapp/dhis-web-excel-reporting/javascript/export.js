@@ -5,7 +5,7 @@ function organisationUnitSelected( orgUnits )
 
 selection.setListenerFunction( organisationUnitSelected );
 
-function getReportExcelsByGroup(){
+function getReportExcelsByGroup() {
 	$.post("getReportExcelsByGroup.action",
     {
         group:$("#group").val()
@@ -18,6 +18,11 @@ function getReportExcelsByGroup(){
 			var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
 			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
 			addOption('report',name,id);
+			
+			// selectedReport is a global variable
+			if ( id == selectedReport) {
+				byId('report').options[i].selected = true;
+			}
 		}
     }, "xml");
 }
@@ -106,14 +111,26 @@ function generateAdvancedReportExcel() {
 	
 }
 
-function openPreviewReport() {
+generic_type = '';
+
+function validateExportReport() {
+
+	if ( $("#report").val() == -1 ) {
 	
-	var url = "openPreviewReport.action?reportId=" + $('#report').val() + "&periodId=" + $('#period').val() + "&sheetId=1";
-	
-	if ( byId('availableOrgunitGroups') != null ) {
-		
-		url = url + "&orgunitGroupId=" + byId('availableOrgunitGroups').value;
+		setMessage(i18n_select_report);
+		return;
 	}
 	
-	window.open( url, "_blank", "width=900,height=600,scrollbars=yes,menubar=yes,resizable=yes" );
+	if ( generic_type == 'preview' ) {
+	
+		previewReport();
+	}
+	else if ( generic_type == 'normal' ) {
+	
+		generateReportExcel();
+	}
+	else {
+	
+		generateAdvancedReportExcel();
+	}
 }

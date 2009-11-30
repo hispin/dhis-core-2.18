@@ -1,4 +1,14 @@
-﻿<h2>$i18n.getString( "generate_advanced_report" )</h2>
+﻿<link type="text/css" href="style/ui.all.css" rel="stylesheet" />
+
+<script type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#tabs").tabs({collapsible : true});
+	});
+</script>
+
+<h2>$i18n.getString( "generate_advanced_report" )</h2>
 <table >	
 	<tr>
 		<td ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -13,10 +23,8 @@
 	<tr>
 		<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="report" name="report" style="width:20em">
-				#foreach($report in $reports)
-					<option value='$report.id'>$encoder.htmlEncode( $report.name )</option>				
-				#end
+			<select type="text" id="report" name="report" style="width:20em" onchange="javascript: reportChanged();" >
+			
 			</select>
 		</td>
     </tr>
@@ -58,16 +66,48 @@
 <br>
 <hr>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: openPreviewReport();" />
+<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type= 'preview'; validateExportReport();" />
 
-<input name="generate_report" id="generate_report"  type="button" onClick="generateAdvancedReportExcel()" value='$i18n.getString( "generate_report" )' />
+<input name="generate_report" id="generate_report"  type="button" onClick="javascript: generic_type= 'advance'; validateExportReport()" value='$i18n.getString( "generate_report" )' />
 </p>
+
+<!-- Preview Report Excel -->
+<div id="tabs" style="display:none">
+
+	#if( $!collectSheets )
+		<ul>
+		#foreach( $i in $!collectSheets  )
+			<li><a href="#fragment-$i">Sheet $i</a></li>
+		#end
+		</ul>
+		
+		#foreach( $i in $!collectSheets  )
+		<div id="fragment-$i"></div>
+		#end
+	#end
+	
+</div>
+
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
 	
 </span>
 <span id="loading" style="display:none;position:fixed;"><img src="../images/ajax-loader.gif" /></span>
 
+<span id="loadingPreview" style="display:none;position:fixed;"><img src="../images/ajax-loader-preview.gif" /></span>
+
 <script>
-	getALLReportExcelByGroup();
-	getPeriodsByPeriodTypeName();
+
+var selectedReport = '$reportId';
+var i18n_select_report = '$encoder.jsEscape( $i18n.getString( "report_is_null" ) , "'")';
+
+#if ( $organisationUnit )
+	
+	$(document).ready(function() {
+	
+		getReportExcelsByGroup();
+		getPeriodsByPeriodTypeName();
+	});
+	
+#end
+
 </script>

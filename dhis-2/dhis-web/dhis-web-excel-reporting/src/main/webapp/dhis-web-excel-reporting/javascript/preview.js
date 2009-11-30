@@ -1,36 +1,17 @@
 
 aKey	= null;
 aMerged = null;
-globalReportId = 0;
-globalPeriodId = 0;
 
-function getNoSheetsOfReportExcel( reportId ) {
-
-	if ( reportId == '-1' ) {
-		clearListById('sheetNoExcelFile');
-	}
-	else {
-		$.post("getListSheet.action", {
-			reportId:reportId
-		}, 	function ( xmlObject ) {
-			clearListById('sheetNoExcelFile');
-			xmlObject = xmlObject.getElementsByTagName('sheets')[0];
-			nodes	  = xmlObject.getElementsByTagName('sheet');
-			for (var i = 0 ; i < nodes.length ; i++)
-			{
-				var id = nodes[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-				var name = nodes[i].getElementsByTagName('name')[0].firstChild.nodeValue;
-				addOptionToList(document.getElementById('sheetNoExcelFile'), id, name);
-			}
-		}, "xml");
-	}
+function reportChanged() {
+	
+	window.location.href="selectExportReportParam.action?reportGroup=" + $("#group").val() + "&reportId=" + $("#report").val();
 }
 
-function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
+function previewReport() {
 	
-	var url = "reportId="+reportId+"&periodId="+periodId+"&sheetId="+sheetId;
+	var url = "reportId=" + $('#report').val() + "&periodId=" + $('#period').val() + "&sheetId=-1";
 	
-	if ( orgunitGroupId > 0 ) {
+	if ( byId('availableOrgunitGroups') != null ) {
 	
 		url = "previewAdvancedReportExcel.action?orgunitGroupId=" + orgunitGroupId + "&" + url;
 	}
@@ -38,8 +19,7 @@ function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
 		url = "previewReportExcel.action?" + url;
 	}
 	
-	setMessage(message);
-	disable('sheetNoExcelFile');
+	$("#loadingPreview").showAtCenter(true);
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
@@ -47,14 +27,14 @@ function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
 	request.send( url );
 	
 }
-
 function previewReportReceived( reportXML ) {
 
 	setMergedNumberForEachCell( reportXML );
 	exportFromXMLtoHTML( reportXML );
 	
-	hideMessage();
-	enable('sheetNoExcelFile');
+	deleteDivEffect();
+	$("#loadingPreview").hide();
+	
 }
 
 function setMergedNumberForEachCell( parentElement ) {
@@ -85,21 +65,23 @@ return 1;
 function exportFromXMLtoHTML( parentElement ) {
 
 	var _index		= 0;
-	var _sHTML		= "<table>";
+	var _sHTML		= "";
 	var _sPattern	= "";
-	var _rows 		= new Array();
-	var _cols 		= new Array();
+	var _rows 		= "";
+	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
-	var _title		= parentElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;
+	var _title		= parentElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;	
 	
 	for (var s = 0 ; s < _sheets.length ; s ++) {
 	
 		_rows = _sheets[s].getElementsByTagName( 'row' );
 
+		_sHTML = "<table class='formatTablePreview'>";
+		
 		for (var i = 0 ; i < _rows.length ; i ++) {
 		
 			_index		= 0;
-			_sHTML = _sHTML + "<tr>";
+			_sHTML += "<tr>";
 			
 			_cols = _rows[i].getElementsByTagName( 'col' );
 			
@@ -110,7 +92,7 @@ function exportFromXMLtoHTML( parentElement ) {
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++) {
 					
-					_sHTML = _sHTML + "<td/>";
+					_sHTML += "<td/>";
 				}
 
 				if ( _index == _number ) {
@@ -127,42 +109,31 @@ function exportFromXMLtoHTML( parentElement ) {
 					j 		= Number(j) + Number(_no_of_merged_cell);
 					_index 	= Number(_index) + Number(_no_of_merged_cell);
 
-					_sHTML = _sHTML + "<td align='" + _align + "' colspan='" + _no_of_merged_cell;
+					_sHTML += "<td align='" + _align + "' colspan='" + _no_of_merged_cell;
 					
 					if ( isNaN(_sData) == false ) {
 						
-						_sHTML = _sHTML + "' class='formatNumber";
+						_sHTML += "' class='formatNumberPreview";
 					}
-					_sHTML = _sHTML + "'>"+ _sData + "</td>";
+					else {
+						_sHTML += "' class='formatStringPreview";
+					}
+					_sHTML += "'>"+ _sData + "</td>";
 				}
 			}
-			_sHTML = _sHTML + "</tr>";
+			_sHTML += "</tr>";
 		}
-		_sHTML = _sHTML + "<br/>";
+		_sHTML += "</table><br/>";
+		
+		if ( byId("fragment-" + eval(s+1)) != null ) {
+		
+			byId("fragment-" + eval(s+1)).innerHTML = _sHTML;
+		}
 	}
-	_sHTML = _sHTML + "</table>";
 	
-	document.getElementById("previewContentDiv").innerHTML = _sHTML;
+	showById("tabs");
 	
 	window.status= "DATAWARE HOUSE - "+ _title;
 	window.stop();
 }
 // END OF Previewed Report Excel //
-
-/**
- * Clears the list.
- *
- * @param listId the id of the list.
- */
-function clearListById( listId ) {
-    var list = document.getElementById( listId );
-    clearList( list );
-}
-
-/**
- * Clears the list.
- * @param list the list.
- */
-function clearList( list ) {
-    list.options.length = 0;
-}
