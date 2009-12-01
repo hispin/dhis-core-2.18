@@ -36,13 +36,15 @@ public class DeleteNotAllowedException
 {
     public static final String ERROR_ASSOCIATED_BY_OTHER_OBJECTS = "Object associated by other objects";
     
+    private static final String SEPARATOR = "-";
+    
     private String errorCode;
     
     private String className;
     
     public DeleteNotAllowedException( String errorCode, String className )
     {
-        super( errorCode );
+        super( errorCode + SEPARATOR + className );
         
         this.errorCode = errorCode;
         this.className = className;
