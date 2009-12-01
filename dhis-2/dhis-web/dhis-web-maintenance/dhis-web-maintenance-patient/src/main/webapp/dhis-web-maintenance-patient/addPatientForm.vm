@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "add_new_patient" )</h3>
 																					
-<form id="addPatientForm" action="addPatient.action" method="post" onsubmit="return validateAddPatient()">
+<form id="addPatientForm" action="addPatient.action" method="post">
 
 <table>	
 	<tr>
@@ -51,14 +51,14 @@
 			<input type="text" id="age" name="age" style="width:4em">
 			&nbsp;&nbsp;&nbsp;
 			<label for="estimated">$i18n.getString( "estimated" )</label>
-            <input type="checkbox" " id="birthDateEstimated" name="birthDateEstimated"> 
+            <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true"> 
 	   </td>
 	</tr>
 	  	
 </table>
 
 <p>
-	<input type="submit" value="$i18n.getString( "add" )" style="width:10em">
+	<input type="button" onclick="validateAddPatient()" value="$i18n.getString( "add" )" style="width:10em">
 	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patient.action'" style="width:10em">
 </p>
 
