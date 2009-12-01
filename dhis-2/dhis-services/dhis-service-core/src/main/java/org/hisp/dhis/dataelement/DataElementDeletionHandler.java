@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
 /**
  * @author Lars Helge Overland
@@ -47,6 +48,13 @@ public class DataElementDeletionHandler
         this.dataElementService = dataElementService;
     }
 
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -60,11 +68,13 @@ public class DataElementDeletionHandler
     @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
+        DataElementCategoryCombo default_ = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
+        
         for ( DataElement dataElement : dataElementService.getAllDataElements() )
         {
             if ( dataElement.getCategoryCombo().equals( categoryCombo ) )
             {
-                dataElement.setCategoryCombo( null );
+                dataElement.setCategoryCombo( default_ );
 
                 dataElementService.updateDataElement( dataElement );
             }
