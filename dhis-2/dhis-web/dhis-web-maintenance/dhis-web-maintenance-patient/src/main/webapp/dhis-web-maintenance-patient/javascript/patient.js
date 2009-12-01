@@ -300,15 +300,7 @@ function addValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
-    	window.location.href='addPatient.action?' +			
-			'identifier=' + getFieldValue( 'identifier' ) +
-			'&firstName=' + getFieldValue( 'firstName' ) +
-			'&middleName=' + getFieldValue( 'middleName' ) +
-			'&lastName=' + getFieldValue( 'lastName' ) +
-			'&gender=' + getFieldValue( 'gender' ) +
-			'&birthDate=' + getFieldValue( 'birthDate' ) +
-			'&age=' + getFieldValue( 'age' ) +
-			'&birthDateEstimated=' + document.getElementById( 'birthDateEstimated' ).checked ;       
+    	document.getElementById('addPatientForm').submit();
     }
     else if ( type == 'error' )
     {
@@ -352,17 +344,8 @@ function updateValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
-    	window.location.href='updatePatient.action?' + 
-    		'id=' + getFieldValue( 'id' ) +    		
-    		'&firstName=' + getFieldValue( 'firstName' ) +
-    		'&middleName=' + getFieldValue( 'middleName' ) +
-    		'&lastName=' + getFieldValue( 'lastName' ) +
-    		'&gender=' + getFieldValue( 'gender' ) +
-    		'&birthDate=' + getFieldValue( 'birthDate' ) +
-    		'&birthDateEstimated=' + document.getElementById( 'birthDateEstimated' ).checked ;   		
-    	
-    	//var form = document.getElementById( 'updatePatientForm' ) + document.getElementById( 'birthDateEstimated' ).checked;        
-        //form.submit();
+    	var form = document.getElementById( 'updatePatientForm' );        
+        form.submit();
     }
     else if ( type == 'error' )
     {
