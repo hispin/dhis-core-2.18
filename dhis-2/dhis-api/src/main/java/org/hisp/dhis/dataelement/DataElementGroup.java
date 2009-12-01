@@ -27,9 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
@@ -71,9 +69,9 @@ public class DataElementGroup
         return DimensionType.DATAELEMENTGROUPSET;
     }
     
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
-        return new ArrayList<DataElement>( members );
+        return members;
     }
     
     public Dimension getDimension()

@@ -30,6 +30,7 @@ package org.hisp.dhis.period;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -142,7 +143,7 @@ public class Period
         return null;
     }
     
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null;
     }

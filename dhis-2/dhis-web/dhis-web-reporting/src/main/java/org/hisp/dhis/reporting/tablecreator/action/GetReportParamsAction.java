@@ -55,7 +55,7 @@ import com.opensymphony.xwork2.Action;
 public class GetReportParamsAction
     implements Action
 {
-    private static final int AVAILABLE_REPORTING_MONTHS = 12;
+    private static final int AVAILABLE_REPORTING_MONTHS = 24;
     private static final String MODE_REPORT = "report";
     private static final String MODE_REPORT_TABLE = "table";
     

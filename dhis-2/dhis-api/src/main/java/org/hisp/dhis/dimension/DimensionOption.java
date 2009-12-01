@@ -27,7 +27,7 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -38,7 +38,7 @@ public interface DimensionOption
 
     DimensionType getDimensionType();
     
-    List<? extends DimensionOptionElement> getDimensionOptionElements();
+    Set<? extends DimensionOptionElement> getDimensionOptionElements();
     
     Dimension getDimension();
 }

@@ -119,13 +119,13 @@ public class JdbcDataMartStore
             String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, dimensionOption.getDimensionOptionElements() ) );
             
             final String sql =
-                "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value)" +
+                "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value) " +
                 "FROM aggregateddatavalue " +
                 "WHERE dataelementid = " + dataElement.getId() + " " +
                 "AND categoryoptioncomboid IN (" + ids + ") " +
                 "AND periodid = " + period.getId() + " " +
                 "AND organisationunitid = " + organisationUnit.getId();
-            
+
             return statementManager.getHolder().queryForDouble( sql );
         }
         

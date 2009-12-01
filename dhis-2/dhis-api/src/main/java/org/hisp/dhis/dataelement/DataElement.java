@@ -235,7 +235,7 @@ public class DataElement
         return null; // DataElement is DimensionOption for the static DataElement dimension
     }
     
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null; // DataElement is DimensionOption for the static DataElement dimension
     }

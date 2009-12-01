@@ -109,7 +109,7 @@ public abstract class Source
         return null;
     }
     
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null;
     }

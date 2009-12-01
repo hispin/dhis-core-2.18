@@ -266,23 +266,7 @@ public class DataElementCategoryOptionCombo
     
     public String getShortName()
     {
-        StringBuffer name = new StringBuffer();
-        
-        if ( categoryOptions != null && categoryOptions.size() > 0 )
-        {
-            Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
-            
-            name.append( "(" ).append( iterator.next().getShortName() );
-                                    
-            while ( iterator.hasNext() )
-            {
-                name.append( ", " ).append( iterator.next().getShortName() );
-            }
-            
-            name.append( ")" );
-        }
-        
-        return name.toString();
+        return getName();
     }
     
     public void setShortName( String shortName )
@@ -292,7 +276,7 @@ public class DataElementCategoryOptionCombo
     
     public String getCode()
     {
-        return getShortName();
+        return getName();
     }
     
     public void setCode( String code )
@@ -302,7 +286,7 @@ public class DataElementCategoryOptionCombo
     
     public String getAlternativeName()
     {
-        return getShortName();
+        return getName();
     }
     
     public void setAlternativeName( String alternativeName )
