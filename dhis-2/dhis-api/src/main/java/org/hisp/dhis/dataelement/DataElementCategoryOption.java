@@ -27,8 +27,8 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
@@ -47,7 +47,7 @@ public class DataElementCategoryOption
     
     private DataElementCategory category;
     
-    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -69,7 +69,7 @@ public class DataElementCategoryOption
     // Constructors
     // -------------------------------------------------------------------------
 
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return categoryOptionCombos;
     }
@@ -147,12 +147,12 @@ public class DataElementCategoryOption
         this.category = category;
     }
 
-    public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
+    public Set<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;
     }
 
-    public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
+    public void setCategoryOptionCombos( Set<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
     }

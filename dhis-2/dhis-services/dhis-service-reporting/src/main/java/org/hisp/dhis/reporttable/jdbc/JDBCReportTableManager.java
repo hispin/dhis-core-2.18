@@ -102,6 +102,8 @@ public class JDBCReportTableManager
         }
         catch ( Exception ex )
         {
+            log.info( "SQL: '" + statement.getStatement() + "'" );
+            
             throw new RuntimeException( "Failed to create table: " + reportTable.getTableName(), ex );
         }
         finally

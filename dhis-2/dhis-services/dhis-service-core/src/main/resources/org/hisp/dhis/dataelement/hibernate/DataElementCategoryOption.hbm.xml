@@ -16,12 +16,11 @@
       <column name="name" not-null="true" unique="true" length="160"/>
     </property>
     
-    <list name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
+    <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
 	  <key column="categoryoptionid"/>
-      <list-index column="sort_order" base="1"/>
 	  <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
 		column="categoryoptioncomboid" foreign-key="fk_categoryoption_categoryoptioncomboid"/>
-	</list> 
+	</set> 
     
     <join table="categories_categoryoptions" inverse="true">
       <key column="categoryoptionid"/>
