@@ -42,6 +42,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -110,6 +111,13 @@ public class DefaultDataIntegrityService
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
+    }
+    
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
     }
 
     // -------------------------------------------------------------------------
@@ -230,28 +238,6 @@ public class DefaultDataIntegrityService
     // Indicator
     // -------------------------------------------------------------------------
 
-    public Collection<Indicator> getIndicatorsWithBlankFormulas()
-    {
-        Collection<Indicator> indicators = indicatorService.getAllIndicators();
-        
-        Iterator<Indicator> iterator = indicators.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final Indicator indicator = iterator.next();
-            
-            if ( indicator.getNumerator() != null && 
-                 indicator.getNumerator().trim().length() > 0 &&
-                 indicator.getDenominator() != null &&
-                 indicator.getDenominator().trim().length() > 0 )
-            {
-                iterator.remove();
-            }
-        }
-        
-        return indicators;
-    }
-    
     public Collection<Indicator> getIndicatorsWithIdenticalFormulas()
     {
         List<String> formulas = new ArrayList<String>();
@@ -301,6 +287,40 @@ public class DefaultDataIntegrityService
         }
         
         return indicators;
+    }
+    
+    public Map<Indicator, String> getInvalidIndicatorNumerators()
+    {
+        Map<Indicator, String> invalids = new HashMap<Indicator, String>();
+        
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            String result = expressionService.expressionIsValid( indicator.getNumerator() );
+            
+            if ( !result.equals( ExpressionService.VALID ) )
+            {
+                invalids.put( indicator, result );
+            }
+        }
+        
+        return invalids;
+    }
+
+    public Map<Indicator, String> getInvalidIndicatorDenominators()
+    {
+        Map<Indicator, String> invalids = new HashMap<Indicator, String>();
+        
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            String result = expressionService.expressionIsValid( indicator.getDenominator() );
+            
+            if ( !result.equals( ExpressionService.VALID ) )
+            {
+                invalids.put( indicator, result );
+            }
+        }
+        
+        return invalids;
     }
     
     // -------------------------------------------------------------------------
@@ -501,5 +521,39 @@ public class DefaultDataIntegrityService
         }
         
         return validationRules;
+    }
+    
+    public Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
+    {
+        Map<ValidationRule, String> invalids = new HashMap<ValidationRule, String>();
+        
+        for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
+        {
+            String result = expressionService.expressionIsValid( rule.getLeftSide().getExpression() );
+            
+            if ( !result.equals( ExpressionService.VALID ) )
+            {
+                invalids.put( rule, result );
+            }
+        }
+        
+        return invalids;
+    }
+    
+    public Map<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
+    {
+        Map<ValidationRule, String> invalids = new HashMap<ValidationRule, String>();
+        
+        for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
+        {
+            String result = expressionService.expressionIsValid( rule.getRightSide().getExpression() );
+            
+            if ( !result.equals( ExpressionService.VALID ) )
+            {
+                invalids.put( rule, result );
+            }
+        }
+        
+        return invalids;
     }
 }
