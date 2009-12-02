@@ -2811,8 +2811,8 @@ Ext.onReady( function() {
 	MAP.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
-        prefix: '<font color="' + MENU_TITLECOLOR_LIGHT + '">x: </font>',
-        separator: '<br/><font color="' + MENU_TITLECOLOR_LIGHT + '">y: </font>'
+        prefix: '<font color="#666">x: &nbsp;</font>',
+        separator: '<br/><font color="#666">y: &nbsp;</font>'
     }));
 
     MAP.addControl(new OpenLayers.Control.OverviewMap({

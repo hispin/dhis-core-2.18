@@ -226,14 +226,14 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 id: 'grid_gp',
                 store: gridStore,
                 columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true, width: gridpanel_width } ],
-				autoExpandColumn: 'organisationUnitId',
-				enableHdMenu: true,
+				  autoExpandColumn: 'organisationUnitId',
+				  enableHdMenu: true,
                 width: gridpanel_width,
                 height: this.getGridPanelHeight(),
                 view: gridView,
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
-                    defaultText: '',
+						defaultText: '',
                     id: 'relations_sb',
                     items:
                     [

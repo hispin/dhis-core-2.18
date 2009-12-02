@@ -26,41 +26,41 @@
 }
 
 .aa_dark button  {
-	font-family:myriad pro,frutiger,arial;
-	font-weight:bold;
-	font-size:11px;
-	letter-spacing:1px;
+	font-family:lucida sans unicode;
+	font-weight:normal;
+	font-size:10px;
+	letter-spacing:0px;
 	color:#111;
 }
 
 .aa_med button  {
-	font-family:myriad pro,frutiger,arial;
-	font-weight:bold;
-	font-size:12px;
-	letter-spacing:1px;
-	color:#444;
+	font-family:lucida sans unicode;
+	font-weight:normal;
+	font-size:10px;
+	letter-spacing:0px;
+	color:#333;
 }
 
 .aa_light button  {
-	font-family:myriad pro,frutiger,arial;
+	font-family:lucida sans unicode;
 	font-weight:bold;
-	font-size:12px;
-	letter-spacing:1px;
+	font-size:10px;
+	letter-spacing:0px;
 	color:#888;
 }
 
 .x-grid3-cell-inner, .x-grid3-hd-inner  {
-	font-family:myriad pro,frutiger,arial;
-	font-weight:bold;
-	font-size:12px;
-	letter-spacing:1px;
+	font-family:lucida sans unicode;
+	font-weight:normal;
+	font-size:10px;
+	letter-spacing:0px;
 	color:#777;
 }
 
 .x-grid3-hd-inner, .x-grid3-hd-organisationUnitId  {
-	font-family:myriad pro,frutiger,arial;
-	font-weight:bold;
-	font-size:12px;
-	letter-spacing:1px;
-	color:#444;
+	font-family:lucida sans unicode;
+	font-weight:normal;
+	font-size:11px;
+	letter-spacing:0px;
+	color:#333;
 }
