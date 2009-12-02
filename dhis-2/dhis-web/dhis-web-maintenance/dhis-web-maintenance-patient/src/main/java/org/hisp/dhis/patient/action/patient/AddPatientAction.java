@@ -35,6 +35,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 
 import com.opensymphony.xwork2.Action;
@@ -76,6 +77,13 @@ public class AddPatientAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+    
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
     }
 
     // -------------------------------------------------------------------------
@@ -214,6 +222,10 @@ public class AddPatientAction
         patientIdentifier.setPreferred( true );
 
         patientIdentifierService.savePatientIdentifier( patientIdentifier );
+        
+        selectedStateManager.clearListAll();
+        selectedStateManager.clearSearchingAttributeId();
+        selectedStateManager.setSearchText( patientIdentifier.getIdentifier() );
 
         return SUCCESS;
     }

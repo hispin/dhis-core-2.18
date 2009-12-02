@@ -268,12 +268,12 @@
     </action>   
     
     <action name="removePatient" class="org.hisp.dhis.patient.action.patient.RemovePatientAction">
-      <result name="success" type="redirect">patientform.action</result>      
+      <result name="success" type="redirect">searchPatient.action</result>      
       <param name="requiredAuthorities">F_PATIENT_DELETE</param>      
     </action>
     
     <action name="addPatient" class="org.hisp.dhis.patient.action.patient.AddPatientAction">
-      <result name="success" type="redirect">patientform.action</result>
+      <result name="success" type="redirect">searchPatient.action</result>
       <param name="requiredAuthorities">F_PATIENT_ADD</param>
     </action>
     
