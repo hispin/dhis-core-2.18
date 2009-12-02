@@ -415,7 +415,7 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 /**************************************************************/
 
 /*FORM*/
-.x-form-field{font:normal 11px tahoma, arial, verdana, helvetica, sans-serif;}
+.x-form-field{font:normal 10px lucida sans unicode, tahoma, arial, verdana, helvetica, sans-serif;}
 .x-form-field-wrap .x-form-trigger{background:transparent url(../images/gray-extend/form/trigger.gif) no-repeat 0 0;border-bottom:1px solid #B5B8C8;}
 .x-form-field-wrap .x-form-date-trigger{background-image:url(../images/gray-extend/form/date-trigger.gif);cursor:pointer;}
 .x-form-field-wrap .x-form-clear-trigger{background-image:url(../images/gray-extend/form/clear-trigger.gif);cursor:pointer;}
@@ -513,7 +513,7 @@ td.x-date-mp-sep{border-right:1px solid #d0d0d0;}
 .x-combo-list{border:1px solid #bcbcbc;background:#eaeaea;zoom:1;overflow:hidden;}
 .x-combo-list-hd{font:bold 11px tahoma,arial,helvetica,sans-serif;color:#15428b;background-image:url(../images/gray-extend/layout/panel-title-light-bg.gif);border-bottom:1px solid #bcbcbc;padding:3px;}
 .x-resizable-pinned .x-combo-list-inner{border-bottom:1px solid #bcbcbc;}
-.x-combo-list-item{font:normal 11px tahoma,arial,helvetica,sans-serif;}
+.x-combo-list-item{font:normal 10px lucida sans unicode,tahoma,arial,helvetica,sans-serif;}
 .x-combo-list .x-combo-selected{border:1px dotted #b9b9b9!important;background:#e7e7e7;cursor:pointer;}
 .x-combo-list .x-toolbar{border-top:1px solid #98c0f4;}
 .x-combo-list-small .x-combo-list-item{font:normal 11px tahoma,arial,helvetica,sans-serif;}

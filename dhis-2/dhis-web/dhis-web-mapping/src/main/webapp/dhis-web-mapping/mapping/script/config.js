@@ -38,18 +38,18 @@
 	combo_number_width = 65;
 	combo_number_list_width = combo_number_width + 17;
 	
-    MENU_TEXTCOLOR = '#666'; // label
-	MENU_TEXTCOLOR_INFO = '#222'; // info text
+    // MENU_TEXTCOLOR = '#666'; // label
+	// MENU_TEXTCOLOR_INFO = '#222'; // info text
     MENU_TITLECOLOR_LIGHT = '#444'; // panel title
-	MENU_TITLECOLOR_ADMIN = '#111';
+	// MENU_TITLECOLOR_ADMIN = '#111';
 	MENU_EMPTYTEXT = '';
 	MENU_LABELSEPARATOR = '';
 	
 //	Styles
 
-	AA_DARK = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#111; letter-spacing:1px;';
-	AA_MED = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#444; letter-spacing:1px;';
-	AA_LIGHT = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#888; letter-spacing:1px;';
+	AA_DARK = 'font-family:arial; font-weight:bold; font-size:11px; color:#111; letter-spacing:0px;';
+	AA_MED = 'font-family:lucida sans unicode,arial; font-weight:normal; font-size:11px; color:#333; letter-spacing:0px;';
+	AA_LIGHT = 'font-family:lucida sans unicode,arial; font-weight:normal; font-size:11px; color:#888; letter-spacing:0px;';
 	LABEL = 'padding-bottom:2px; padding-left:3px;';
 	
 	ASSIGNED_ROW_COLOR = '#b1ffa1';
