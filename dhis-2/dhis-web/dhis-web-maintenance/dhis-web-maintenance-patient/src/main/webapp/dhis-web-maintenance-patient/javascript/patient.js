@@ -276,19 +276,19 @@ function validateAddPatient()
 		}
 	}	
 	
-	var url = 'validatePatient.action?' +
-			'identifier=' + getFieldValue( 'identifier' ) +
-			'&firstName=' + getFieldValue( 'firstName' ) +
-	        '&middleName=' + getFieldValue( 'middleName' ) +
-	        '&lastName=' + getFieldValue( 'lastName' ) +
-	        '&gender=' + getFieldValue( 'gender' ) +
-	        '&birthDate=' + getFieldValue( 'birthDate' ) +	        
-	        '&age=' + getFieldValue( 'age' ) ;
+	var params = 'identifier=' + getFieldValue( 'identifier' ) +
+				'&firstName=' + getFieldValue( 'firstName' ) +
+				'&middleName=' + getFieldValue( 'middleName' ) +
+				'&lastName=' + getFieldValue( 'lastName' ) +
+				'&gender=' + getFieldValue( 'gender' ) +
+				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
+				'&age=' + getFieldValue( 'age' ) ;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );    
-    request.send( url );        
+    request.setCallbackSuccess( addValidationCompleted ); 
+	request.sendAsPost( params );	
+    request.send( "validatePatient.action" );        
 
     return false;
 }
@@ -319,20 +319,19 @@ function addValidationCompleted( messageElement )
 
 function validateUpdatePatient()
 {
-    var url = 'validatePatient.action?' + 
-    		'id=' + getFieldValue( 'id' ) +
-    		'&identifier=' + getFieldValue( 'identifier' ) +
-    		'&firstName=' + getFieldValue( 'firstName' ) +
-	        '&middleName=' + getFieldValue( 'middleName' ) +
-	        '&lastName=' + getFieldValue( 'lastName' ) +
-	        '&gender=' + getFieldValue( 'gender' ) +
-	        '&birthDate=' + getFieldValue( 'birthDate' ) ;
+    var params = 'id=' + getFieldValue( 'id' ) +
+				'&identifier=' + getFieldValue( 'identifier' ) +
+				'&firstName=' + getFieldValue( 'firstName' ) +
+				'&middleName=' + getFieldValue( 'middleName' ) +
+				'&lastName=' + getFieldValue( 'lastName' ) +
+				'&gender=' + getFieldValue( 'gender' ) +
+				'&birthDate=' + getFieldValue( 'birthDate' ) ;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );   
-    
-    request.send( url );
+    request.sendAsPost( params );
+    request.send( "validatePatient.action" );
         
     return false;
 }
