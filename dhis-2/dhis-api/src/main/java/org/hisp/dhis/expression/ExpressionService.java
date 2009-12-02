@@ -47,6 +47,7 @@ public interface ExpressionService
     String ID = ExpressionService.class.getName();
     
     final String VALID = "valid";
+    final String EXPRESSION_IS_EMPTY = "expression_is_empty";
     final String DATAELEMENT_ID_NOT_NUMERIC = "dataelement_id_not_numeric";
     final String CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC = "category_option_combo_id_not_numeric";
     final String DATAELEMENT_DOES_NOT_EXIST = "data_element_does_not_exist";

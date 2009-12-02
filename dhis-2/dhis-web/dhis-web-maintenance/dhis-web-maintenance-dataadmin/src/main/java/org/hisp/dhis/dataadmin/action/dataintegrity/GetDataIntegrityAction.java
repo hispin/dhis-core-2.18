@@ -90,13 +90,6 @@ public class GetDataIntegrityAction
         return dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
     }
 
-    private Collection<Indicator> indicatorsWithBlankFormulas;
-
-    public Collection<Indicator> getIndicatorsWithBlankFormulas()
-    {
-        return indicatorsWithBlankFormulas;
-    }
-
     private Collection<Indicator> indicatorsWithIdenticalFormulas;
 
     public Collection<Indicator> getIndicatorsWithIdenticalFormulas()
@@ -109,6 +102,20 @@ public class GetDataIntegrityAction
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
         return indicatorsWithoutGroups;
+    }
+    
+    private Map<Indicator, String> invalidIndicatorNumerators;
+
+    public Map<Indicator, String> getInvalidIndicatorNumerators()
+    {
+        return invalidIndicatorNumerators;
+    }
+
+    private Map<Indicator, String> invalidIndicatorDenominators;
+
+    public Map<Indicator, String> getInvalidIndicatorDenominators()
+    {
+        return invalidIndicatorDenominators;
     }
 
     private Collection<OrganisationUnit> organisationUnitsWithCyclicReferences;
@@ -160,6 +167,20 @@ public class GetDataIntegrityAction
         return validationRulesWithoutGroups;
     }
 
+    private Map<ValidationRule, String> invalidValidationRuleLeftSideExpressions;
+    
+    public Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
+    {
+        return invalidValidationRuleLeftSideExpressions;
+    }
+
+    private Map<ValidationRule, String> invalidValidationRuleRightSideExpressions;
+
+    public Map<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
+    {
+        return invalidValidationRuleRightSideExpressions;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -172,9 +193,10 @@ public class GetDataIntegrityAction
         
         dataSetsNotAssignedToOrganisationUnits = dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits();
         
-        indicatorsWithBlankFormulas = dataIntegrityService.getIndicatorsWithBlankFormulas();
         indicatorsWithIdenticalFormulas = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
         indicatorsWithoutGroups = dataIntegrityService.getIndicatorsWithoutGroups();
+        invalidIndicatorNumerators = dataIntegrityService.getInvalidIndicatorNumerators();
+        invalidIndicatorDenominators = dataIntegrityService.getInvalidIndicatorDenominators();
         
         organisationUnitsWithCyclicReferences = dataIntegrityService.getOrganisationUnitsWithCyclicReferences();
         orphanedOrganisationUnits = dataIntegrityService.getOrphanedOrganisationUnits();
@@ -185,6 +207,8 @@ public class GetDataIntegrityAction
         organisationUnitGroupsWithoutGroupSets = dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets();
         
         validationRulesWithoutGroups = dataIntegrityService.getValidationRulesWithoutGroups();
+        invalidValidationRuleLeftSideExpressions = dataIntegrityService.getInvalidValidationRuleLeftSideExpressions();
+        invalidValidationRuleRightSideExpressions = dataIntegrityService.getInvalidValidationRuleRightSideExpressions();
         
         return SUCCESS;
     }

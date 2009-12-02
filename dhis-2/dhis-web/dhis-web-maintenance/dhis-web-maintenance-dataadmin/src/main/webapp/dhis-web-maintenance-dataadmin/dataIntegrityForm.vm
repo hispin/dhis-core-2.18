@@ -54,14 +54,33 @@
 #integrityHeader( $i18n.getString( "data_sets_not_assigned_to_organisation_units" ) $dataSetsNotAssignedToOrganisationUnits.size() "dataSetsNotAssignedToOrganisationUnits" )
 #violationList( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits )
 
-#integrityHeader( $i18n.getString( "indicators_with_blank_formulas" ) $indicatorsWithBlankFormulas.size() "indicatorsWithBlankFormulas" )
-#violationList( "indicatorsWithBlankFormulas" $indicatorsWithBlankFormulas )
-
 #integrityHeader( $i18n.getString( "indicators_with_identical_formulas" ) $indicatorsWithIdenticalFormulas.size() "indicatorsWithIdenticalFormulas" )
 #violationList( "indicatorsWithIdenticalFormulas" $indicatorsWithIdenticalFormulas )
 
 #integrityHeader( $i18n.getString( "indicators_without_groups" ) $indicatorsWithoutGroups.size() "indicatorsWithoutGroups" )
 #violationList( "indicatorsWithoutGroups" $indicatorsWithoutGroups )
+
+#integrityHeader( $i18n.getString( "invalid_indicator_numerators" ) $invalidIndicatorNumerators.size() "invalidIndicatorNumerators" )
+<div style="display:none" id="invalidIndicatorNumerators">
+	<table>
+	#foreach ( $indicator in $invalidIndicatorNumerators.keySet() )
+		<tr>
+			<td>${indicator.name}: $i18n.getString( $invalidIndicatorNumerators.get( $indicator ) )</td>
+		</tr>
+	#end
+	</table>
+</div>
+
+#integrityHeader( $i18n.getString( "invalid_indicator_denominators" ) $invalidIndicatorDenominators.size() "invalidIndicatorDenominators" )
+<div style="display:none" id="invalidIndicatorDenominators">
+    <table>
+    #foreach ( $indicator in $invalidIndicatorDenominators.keySet() )
+        <tr>
+            <td>${indicator.name}: $i18n.getString( $invalidIndicatorDenominators.get( $indicator ) )</td>
+        </tr>
+    #end
+    </table>
+</div>
 
 #integrityHeader( $i18n.getString( "organisation_units_with_cyclic_references" ) $organisationUnitsWithCyclicReferences.size() "organisationUnitsWithCyclicReferences" )
 #violationList( "organisationUnitsWithCyclicReferences" $organisationUnitsWithCyclicReferences )
@@ -83,3 +102,25 @@
 
 #integrityHeader( $i18n.getString( "validation_rules_without_groups" ) $validationRulesWithoutGroups.size() "validationRulesWithoutGroups" )
 #violationList( "validationRulesWithoutGroups" $validationRulesWithoutGroups )
+
+#integrityHeader( $i18n.getString( "invalid_validation_rule_left_side_expressions" ) $invalidValidationRuleLeftSideExpressions.size() "invalidValidationRuleLeftSideExpressions" )
+<div style="display:none" id="invalidValidationRuleLeftSideExpressions">
+    <table>
+    #foreach ( $rule in $invalidValidationRuleLeftSideExpressions.keySet() )
+        <tr>
+            <td>${rule.name}: $i18n.getString( $invalidValidationRuleLeftSideExpressions.get( $rule ) )</td>
+        </tr>
+    #end
+    </table>
+</div>
+
+#integrityHeader( $i18n.getString( "invalid_validation_rule_right_side_expressions" ) $invalidValidationRuleRightSideExpressions.size() "invalidValidationRuleRightSideExpressions" )
+<div style="display:none" id="invalidValidationRuleRightSideExpressions">
+    <table>
+    #foreach ( $rule in $invalidValidationRuleRightSideExpressions.keySet() )
+        <tr>
+            <td>${rule.name}: $i18n.getString( $invalidValidationRuleRightSideExpressions.get( $rule ) )</td>
+        </tr>
+    #end
+    </table>
+</div>

@@ -83,11 +83,6 @@ public interface DataIntegrityService
     // -------------------------------------------------------------------------
 
     /**
-     * Gets all indicators whith blank numerator or denominator.
-     */
-    Collection<Indicator> getIndicatorsWithBlankFormulas();
-
-    /**
      * Gets all indicators with identical numerator and denominator.
      */
     Collection<Indicator> getIndicatorsWithIdenticalFormulas();
@@ -96,6 +91,16 @@ public interface DataIntegrityService
      * Gets all indicators which are not assigned to any groups.
      */
     Collection<Indicator> getIndicatorsWithoutGroups();
+
+    /**
+     * Gets all indicators with invalid indicator numerators.
+     */
+    Map<Indicator, String> getInvalidIndicatorNumerators();
+
+    /**
+     * Gets all indicators with invalid indicator denominators.
+     */
+    Map<Indicator, String> getInvalidIndicatorDenominators();
     
     // -------------------------------------------------------------------------
     // OrganisationUnit
@@ -141,5 +146,18 @@ public interface DataIntegrityService
     // ValidationRule
     // -------------------------------------------------------------------------
 
+    /**
+     * Gets all ValidationRules which are not members fo one or more groups.
+     */
     Collection<ValidationRule> getValidationRulesWithoutGroups();
+    
+    /**
+     * Gets all ValidationRules with invalid left side expressions.
+     */
+    Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions();
+    
+    /**
+     * Gets all ValidationRules with invalid right side expressions.
+     */
+    Map<ValidationRule, String> getInvalidValidationRuleRightSideExpressions();
 }

@@ -254,14 +254,6 @@ public class DataIntegrityServiceTest
     }
 
     @Test
-    public void testGetIndicatorsWithBlankFormulas()
-    {
-        Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithBlankFormulas();
-        
-        assertTrue( equals( expected, indicatorA ) );
-    }
-
-    @Test
     public void testGetIndicatorsWithIdenticalFormulas()
     {
         Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithIdenticalFormulas();

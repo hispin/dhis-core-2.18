@@ -243,6 +243,11 @@ public class DefaultExpressionService
     
     public String expressionIsValid( String formula )
     {
+        if ( formula == null )
+        {
+            return EXPRESSION_IS_EMPTY;
+        }
+        
         StringBuffer buffer = new StringBuffer();
         
         final Matcher matcher = DESCRIPTION_PATTERN.matcher( formula );

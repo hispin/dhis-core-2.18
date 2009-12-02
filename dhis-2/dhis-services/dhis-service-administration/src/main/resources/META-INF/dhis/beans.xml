@@ -58,6 +58,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     <property name="validationRuleService"
       ref="org.hisp.dhis.validation.ValidationRuleService"/>
+	<property name="expressionService"
+	  ref="org.hisp.dhis.expression.ExpressionService"/>
   </bean>
   
   <!-- Maintenance -->
