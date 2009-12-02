@@ -698,7 +698,7 @@ public class DefaultMappingService
         {
             for ( MapView mapView : mapViews )
             {
-                if ( mapView.getMapSourceType().equals( type ) )
+                if ( mapView.getMapSourceType() != null && mapView.getMapSourceType().equals( type ) )
                 {
                     selectedMapViews.add( mapView );
                 }

@@ -99,8 +99,9 @@ function confirmAction( message, url )
 function validateDenum()
 {
 	var formula = htmlEncode( document.getElementById( "formula" ).value );
-
-	var url = "validateDenum.action?formula=" + formula;
+	var description = htmlEncode( document.getElementById( "description" ).value );
+	
+	var url = "validateDenum.action?description=" + description + "&formula=" + formula;
 
 	var request = new Request();
 	request.setResponseTypeXML( "message" );

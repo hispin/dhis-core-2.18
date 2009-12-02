@@ -27,9 +27,6 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
-
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.validation.ValidationRule;
@@ -168,18 +165,6 @@ public class ValidateValidationRuleAction
             return INPUT;
         }
 
-        Set<DataElement> leftSideDataElements = expressionService.getDataElementsInExpression( leftSideExpression );
-        
-        for ( DataElement element : leftSideDataElements )
-        {
-            if ( !element.getType().equals( DataElement.VALUE_TYPE_INT ) )
-            {
-                message = i18n.getString( "dataelements_left_must_be_type_integers" );
-                
-                return INPUT;
-            }
-        }
-
         if ( rightSideExpression == null || rightSideExpression.trim().length() == 0 )
         {
             message = i18n.getString( "specify_right_side" );
@@ -187,18 +172,22 @@ public class ValidateValidationRuleAction
             return INPUT;
         }
         
-        Set<DataElement> rightSideDataElements = expressionService.getDataElementsInExpression( rightSideExpression  );
-
-        for ( DataElement element : rightSideDataElements )
+        String result = expressionService.expressionIsValid( leftSideExpression );
+        
+        if ( !result.equals( ExpressionService.VALID ) )
         {
-            if ( !element.getType().equals( DataElement.VALUE_TYPE_INT ) )
-            {
-                message = i18n.getString( "dataelements_right_must_be_type_integers" );
-                
-                return INPUT;
-            }
+            message = i18n.getString( result );
+            
+            return INPUT;
         }
         
+        if ( !result.equals( ExpressionService.VALID ) )
+        {
+            message = i18n.getString( result );
+            
+            return INPUT;
+        }
+                
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;

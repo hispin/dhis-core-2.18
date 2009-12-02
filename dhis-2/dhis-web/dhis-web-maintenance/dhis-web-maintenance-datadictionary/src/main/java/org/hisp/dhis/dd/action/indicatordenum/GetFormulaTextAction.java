@@ -82,49 +82,20 @@ public class GetFormulaTextAction
     public String execute()
         throws Exception
     {
-        formulaText = getFormulaDescription( formula );
-
-        return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String getFormulaDescription( String formula )
-    {
-        String description = null;
-        
         if ( formula != null )
-        {        
-            int result = expressionService.expressionIsValid( formula );
-
-            if ( result == ExpressionService.VALID )
+        {
+            String result = expressionService.expressionIsValid( formula );
+            
+            if ( result.equals( ExpressionService.VALID ) )
             {
-                description = expressionService.getExpressionDescription( formula );
+                formulaText = expressionService.getExpressionDescription( formula );
             }
-            else if ( result == ExpressionService.DATAELEMENT_ID_NOT_NUMERIC )
+            else
             {
-                description = i18n.getString( "dataelement_id_must_be_number" );
-            }
-            else if ( result == ExpressionService.CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC )
-            {
-                description = i18n.getString( "category_option_combo_id_must_be_number" );
-            }
-            else if ( result == ExpressionService.DATAELEMENT_DOES_NOT_EXIST )
-            {
-                description = i18n.getString( "id_does_not_reference_dataelement" );
-            }
-            else if ( result == ExpressionService.CATEGORYOPTIONCOMBO_DOES_NOT_EXIST )
-            {
-                description = i18n.getString( "id_does_not_reference_category_option_combo" );
-            }
-            else if ( result == ExpressionService.EXPRESSION_NOT_WELL_FORMED )
-            {
-                description = i18n.getString( "expression_not_well_formed" );
+                formulaText = i18n.getString( result );
             }
         }
         
-        return description;
+        return SUCCESS;
     }
 }

@@ -46,12 +46,12 @@ public interface ExpressionService
 {
     String ID = ExpressionService.class.getName();
     
-    final int VALID = 1;
-    final int DATAELEMENT_ID_NOT_NUMERIC = -1;
-    final int CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC = -2;
-    final int DATAELEMENT_DOES_NOT_EXIST = -3;
-    final int CATEGORYOPTIONCOMBO_DOES_NOT_EXIST = -4;
-    final int EXPRESSION_NOT_WELL_FORMED = -5;
+    final String VALID = "valid";
+    final String DATAELEMENT_ID_NOT_NUMERIC = "dataelement_id_not_numeric";
+    final String CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC = "category_option_combo_id_not_numeric";
+    final String DATAELEMENT_DOES_NOT_EXIST = "data_element_does_not_exist";
+    final String CATEGORYOPTIONCOMBO_DOES_NOT_EXIST = "category_option_combo_does_not_exist";
+    final String EXPRESSION_NOT_WELL_FORMED = "expression_not_well_formed";
     
     /**
      * Adds a new Expression to the database.
@@ -105,9 +105,10 @@ public interface ExpressionService
     Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues );
     
     /**
+     * Returns all DataElements associated with the CalculatedDataElement.
      * 
-     * @param id
-     * @return
+     * @param id the CalculatedDataElement identifier.
+     * @return a Set of DataElements.
      */
     Set<DataElement> getDataElementsInCalculatedDataElement( int id );
     
@@ -148,12 +149,12 @@ public interface ExpressionService
      * 
      * @param formula the expression formula.
      * @return VALID if the expression is valid.
-     * 		   DATAELEMENT_ID_NOT_NUMERIC if the data element is not a number.
-     * 		   CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC if the category option combo id is not a number.
-     * 		   DATAELEMENT_DOES_NOT_EXIST if the data element does not exist.
-     * 		   CATEGORYOPTIONCOMBO_DOES_NOT_EXIST if the category option combo does not exist.
+     * 	       DATAELEMENT_ID_NOT_NUMERIC if the data element is not a number.
+     * 	       CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC if the category option combo id is not a number.
+     * 	       DATAELEMENT_DOES_NOT_EXIST if the data element does not exist.
+     *         CATEGORYOPTIONCOMBO_DOES_NOT_EXIST if the category option combo does not exist.
      */
-    int expressionIsValid( String formula );
+    String expressionIsValid( String formula );
     
     /**
      * Creates an expression string containing DataElement names and the names of

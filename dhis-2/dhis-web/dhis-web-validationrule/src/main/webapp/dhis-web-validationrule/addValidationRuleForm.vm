@@ -4,12 +4,12 @@
 <form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="return validateAddValidationRule()">
 
 <div>
-	<input type="hidden" id="leftSideDescription" name="leftSideDescription"/>
-	<input type="hidden" id="leftSideExpression" name="leftSideExpression"/>
-	<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression"/>
-	<input type="hidden" id="rightSideDescription" name="rightSideDescription"/>
-	<input type="hidden" id="rightSideExpression" name="rightSideExpression"/>
-	<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression"/>
+	<input type="hidden" id="leftSideDescription" name="leftSideDescription">
+	<input type="hidden" id="leftSideExpression" name="leftSideExpression">
+	<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
+	<input type="hidden" id="rightSideDescription" name="rightSideDescription">
+	<input type="hidden" id="rightSideExpression" name="rightSideExpression">
+	<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">
 </div>
 
 <table>
