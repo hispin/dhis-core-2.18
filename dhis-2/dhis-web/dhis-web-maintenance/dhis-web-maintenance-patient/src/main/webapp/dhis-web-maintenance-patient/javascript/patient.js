@@ -222,13 +222,13 @@ function removePatientCompleted( messageElement )
 function validateSearchPatient()
 {	
 	
-	var url = 'validateSearchPatient.action?' +
-			'searchText=' + getFieldValue( 'searchText' );	
+	var params = 'searchText=' + getFieldValue( 'searchText' );	
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
  	request.setCallbackSuccess( searchValidationCompleted );    
- 	request.send( url );        
+	request.sendAsPost( params );
+ 	request.send( "validateSearchPatient.action" );        
 
  	return false;
 }
