@@ -248,34 +248,46 @@ public class ValidateIndicatorAction
             return INPUT;
         }
         
-        if ( numerator == null )
+        if ( numerator == null || numerator.trim().isEmpty() )
         {
             message = i18n.getString( "specify_numerator" );
+
+            return INPUT;
         }
         
-        if ( numeratorDescription == null )
+        if ( numeratorDescription == null || numeratorDescription.trim().isEmpty() )
         {
             message = i18n.getString( "specify_numerator_description" );
+
+            return INPUT;
         }
         
-        if ( numeratorAggregationOperator == null )
+        if ( numeratorAggregationOperator == null || numeratorAggregationOperator.trim().isEmpty() )
         {
             message = i18n.getString( "specify_numerator_agg_operator" );
+
+            return INPUT;
         }
         
-        if ( denominator == null )
+        if ( denominator == null || denominator.trim().isEmpty() )
         {
             message = i18n.getString( "specify_denominator" );
+
+            return INPUT;
         }
         
-        if ( denominatorDescription == null )
+        if ( denominatorDescription == null || denominatorDescription.trim().isEmpty() )
         {
             message = i18n.getString( "specify_denominator_description" );
+
+            return INPUT;
         }
         
-        if ( denominatorAggregationOperator == null )
+        if ( denominatorAggregationOperator == null || denominatorAggregationOperator.trim().isEmpty() )
         {
             message = i18n.getString( "specify_denominator_agg_operator" );
+
+            return INPUT;
         }
 
         message = i18n.getString( "everything_is_ok" );

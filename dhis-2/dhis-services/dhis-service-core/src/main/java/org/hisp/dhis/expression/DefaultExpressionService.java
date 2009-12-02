@@ -241,7 +241,7 @@ public class DefaultExpressionService
         return operandsInExpression;
     }
     
-    public int expressionIsValid( String formula )
+    public String expressionIsValid( String formula )
     {
         StringBuffer buffer = new StringBuffer();
         

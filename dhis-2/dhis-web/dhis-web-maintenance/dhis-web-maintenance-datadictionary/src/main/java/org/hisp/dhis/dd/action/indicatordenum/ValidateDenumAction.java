@@ -67,6 +67,13 @@ public class ValidateDenumAction
     {
         this.formula = formula;
     }
+    
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -85,6 +92,13 @@ public class ValidateDenumAction
 
     public String execute()
     {
+        if ( description == null || description.trim().length() == 0 )
+        {
+            message = i18n.getString( "specify_description" );
+            
+            return ERROR;
+        }
+        
         if ( formula == null || formula.trim().length() == 0 )
         {
             message = i18n.getString( "specify_formula" );
@@ -92,37 +106,16 @@ public class ValidateDenumAction
             return ERROR;
         }
         
-        int result = expressionService.expressionIsValid( formula );
+        String result = expressionService.expressionIsValid( formula );
         
-        if ( result != ExpressionService.VALID )
-        {        
-            message = i18n.getString( "could_not_save" ) + ": ";
-            
-            if ( result == ExpressionService.DATAELEMENT_ID_NOT_NUMERIC )
-            {
-                message += i18n.getString( "dataelement_id_must_be_number" );
-            }
-            else if ( result == ExpressionService.CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC )
-            {
-                message += i18n.getString( "category_option_combo_id_must_be_number" );
-            }
-            else if ( result == ExpressionService.DATAELEMENT_DOES_NOT_EXIST )
-            {
-                message += i18n.getString( "id_does_not_reference_dataelement" );
-            }
-            else if ( result == ExpressionService.CATEGORYOPTIONCOMBO_DOES_NOT_EXIST )
-            {
-                message += i18n.getString( "id_does_not_reference_category_option_combo" );
-            }
-            else if ( result == ExpressionService.EXPRESSION_NOT_WELL_FORMED )
-            {
-                message += i18n.getString( "expression_not_well_formed" );
-            }
+        if ( !result.equals( ExpressionService.VALID ) )
+        {
+            message = i18n.getString( result );
             
             return ERROR;
         }
 
-        message = "Valid";
+        message = "valid";
         
         return SUCCESS;
     }
