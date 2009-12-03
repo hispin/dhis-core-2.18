@@ -97,8 +97,6 @@ public class AddExcelItemAction implements Action {
 	// -------------------------------------------------------------------------
 
 	public String execute() throws Exception {
-		
-//		 statementManager.initialise();
 
 		ExcelItem excelItem = new ExcelItem();
 		

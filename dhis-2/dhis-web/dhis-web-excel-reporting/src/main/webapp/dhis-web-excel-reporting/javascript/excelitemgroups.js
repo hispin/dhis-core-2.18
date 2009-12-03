@@ -6,8 +6,8 @@
 */
 
 function openAddExcelItemGroup(){
-	$("#name").attr("disabled", false);
-	$("#type").attr("disabled", false);
+	enable("name");
+	enable("type");
 	$("#divExcelitemGroup").showAtCenter( true );
 }
 
@@ -15,7 +15,14 @@ function openAddExcelItemGroup(){
 *	Open Update Excel item group form
 */
 function openUpdateExcelItemGroup( id ){
-	$.post("getExcelItemGroup.action",{id:id},
+	byId("id").value = id;
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( openUpdateExcelItemGroupReceived );
+	request.send("getExcelItemGroup.action?id=" + id);
+	
+	/*$.post("getExcelItemGroup.action",{id:id},
 	function ( xmlObject ){
 		
 		$("#id").val(id);
@@ -27,14 +34,31 @@ function openUpdateExcelItemGroup( id ){
 		$("#name").attr("disabled", true);
 		$("#type").attr("disabled", true);
 		
-	},'xml');	
+	},'xml'); */	
+}
+
+function openUpdateExcelItemGroupReceived(xmlObject){
+
+	byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
+	byId("type").value = xmlObject.getElementsByTagName('type')[0].firstChild.nodeValue;
+	byId("periodType").value = xmlObject.getElementsByTagName('periodType')[0].firstChild.nodeValue;
+		
+	$("#divExcelitemGroup").showAtCenter( true );
+	disable("name");
+	disable("type");
 }
 
 /*
 *	Validate Update Excel item group
 */
 function validateExcelItemGroup(){
-	$.post("validateExcelItemGroup.action",{		
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( validateExcelItemGroupReceived );
+	request.send("validateExcelItemGroup.action?name=" + byId('name').value + "&type=" + byId('type').value);
+	
+	/*$.post("validateExcelItemGroup.action",{		
 		name:$("#name").val(),
 		type:$("#type").val()
 	},function(xmlObject){
@@ -52,39 +76,82 @@ function validateExcelItemGroup(){
 			}
 			
 		}
-	},'xml');	
+	},'xml');	*/
+}
+
+function validateExcelItemGroupReceived(xmlObject){
+	
+	var type = xmlObject.getAttribute( 'type' );
+	if(type=='error')
+	{
+		setMessage(xmlObject.firstChild.nodeValue);
+	}else if(type=='success')
+	{
+		if(mode == 'add'){
+			addExcelItemGroup();
+		}else{
+			updateExcelItemGroup();
+		}
+			
+	}
 }
 
 function addExcelItemGroup(){
 	
-	$.post("addExcelItemGroup.action",{
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( addExcelItemGroupReceived );
+	request.send("addExcelItemGroup.action?name=" + byId('name').value + 
+		"&type=" + byId('type').value + 
+		"&periodTypeName=" + byId('periodType').value );
+	
+	
+	/* $.post("addExcelItemGroup.action",{
 		name:$("#name").val(),
 		type:$("#type").val(),
 		periodTypeName:$("#periodType").val()
 	},function(data){
 		window.location.reload();
-	},'xml');	
+	},'xml');	*/
 }
 
+function addExcelItemGroupReceived(){
+	window.location.reload();
+}
 
 function updateExcelItemGroup(){
-	$.post("updateExcelItemGroup.action",{
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( addExcelItemGroupReceived );
+	request.send("updateExcelItemGroup.action?id=" + byId('id').value + 
+		"&name=" + byId('name').value +
+		"&type=" + byId('type').value +
+		"&periodTypeName=" + byId('periodType').value );
+	
+	/* $.post("updateExcelItemGroup.action",{
 		id:$("#id").val(),
 		name:$("#name").val(),
 		type:$("#type").val(),
 		periodTypeName:$("#periodType").val()
 	},function(data){
 		window.location.reload();
-	},'xml');	
+	},'xml');	*/
 }
 
 function deleteExcelItemGroup(id){
+	
 	if(window.confirm(i18n_confirm_delete)){
-		$.post("deleteExcelItemGroup.action",{
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( addExcelItemGroupReceived );
+		request.send("deleteExcelItemGroup.action?id=" + id);
+	
+		/*$.post("deleteExcelItemGroup.action",{
 				id:id
 			},function(data){
 				window.location.reload();
-			},'xml');
+			},'xml');*/
 	}
 }
 
@@ -151,7 +218,12 @@ function getDataElementsByGroupReceived( datalement ){
 
 function getALLDataElementGroups(){
 	
-	$.get("getAllDataElementGroups.action",{},
+	var request = new Request();
+	request.setResponseTypeXML( 'datalement' );
+	request.setCallbackSuccess( getALLDataElementGroupsReceived );	
+	request.send( "getAllDataElementGroups.action" );	
+	
+	/* $.get("getAllDataElementGroups.action",{},
 	function(data){
 		
 		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
@@ -171,5 +243,26 @@ function getALLDataElementGroups(){
 			availableDataElementGroups.add(option, null);
 		}			
 		getDataElementsByGroup($("#availableDataElementGroups").val());
-	},'xml');
+	},'xml'); */
+}
+
+function getALLDataElementGroupsReceived(data){
+	
+	var availableDataElementGroups = document.getElementById('availableDataElementGroups');
+		
+	availableDataElementGroups.options.length = 0;
+		
+	var dataElementGroups = data.getElementsByTagName('dataElementGroup');
+		
+	availableDataElementGroups.options.add(new Option("ALL", null));	
+		
+	for(var i=0;i<dataElementGroups.length;i++){
+			
+		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
+		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
+		
+		var option = new Option( name, id );
+		availableDataElementGroups.add(option, null);
+	}			
+	getDataElementsByGroup(byId("availableDataElementGroups").value);
 }

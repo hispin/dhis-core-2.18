@@ -146,7 +146,7 @@
 <!-- This form use for  dataelement -->
 
 <div id="normal" style="position:fixed;display:none;width:800px;z-index:10002;background-color: white;border: medium solid silver;height:300px;padding:20px;">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#normal').hide();deleteDivEffect();">[x]</div>
+	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#normal').hide();">[x]</div>
 	<table width="100%">
 		<tr>
 			<th>$i18n.getString( "formula" )</th>
@@ -174,7 +174,7 @@
 		</tr>	
 	</table>	
 	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="$('#expression').val($('#formula').html());$('#normal').hide();"/>
+	<input type="button" value="$i18n.getString('ok')" onclick="$('#expression').val($('#formula').val());$('#normal').hide();"/>
 	<input type="button" value="$i18n.getString('clean')" onclick="$('#formula').html('')"/></p>
 </div>
 <!-- This form use for indicator-->
@@ -264,28 +264,29 @@
 	
 	function selectItiemType( value ){	
 		if(value=='serial'){
-			$('#expression').val(value);
+			byId('expression').value = value;
 		}		
 		if(value=='dataelement_code'){
-			$('#expression').val(value);
+			byId('expression').value = value;
 		}
 		if(value=='dataelement_name'){
-			$('#expression').val(value);
+			byId('expression').value = value;
 		}
 		if(value=='organisation'){
-			$('#expression').val(value);
+			byId('expression').value = value;
 		}
 		
 	}
 
 	function openExpressionBuild() {		
-		var itemTypeValue = $("#itemType").val();
+		var itemTypeValue = byId("itemType").value;
 		var reportType = '$!reportExcel.getReportType()';
+		
 		if($!reportExcel.isCategory()){
 			if(itemTypeValue=='dataelement'){
 				openCategoryExpression();
 			}else{
-				$("#expression").val(itemTypeValue);
+				byId("expression").value = itemTypeValue;
 			}			
 		}else {			
 			if(itemTypeValue=='dataelement'){

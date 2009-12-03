@@ -1,8 +1,4 @@
 
-/**
-	HIEU DONE
-*/
-
 // init a new list from xml file //
 function initElementList( targetListId, parentElement, tagName, isHaveOptionALL )  {
 
@@ -96,39 +92,6 @@ function setMessageReport( message_report )
 }
 
 
-// Get Elements by GroupID //
-/*
-function getAvailableDataElements( dataElementGroupById )
-{
-	var dataElementGroupId = getListValue( dataElementGroupById );
-	var url = "getDataElementList.action?dataElementGroupId=" + dataElementGroupId;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getFilteredDataElementsReceived );
-    request.send( url );
-}
-
-
-function getFilteredDataElementsReceived( xmlObject )
-{
-	var dataElementList = byId( 'availableDataElements' );
-	dataElementList.options.length = 0;
-	var dataElements = xmlObject.getElementsByTagName( "dataElement" );
-
-	for ( var i = 0; i < dataElements.length; i++)
-	{
-		var id = dataElements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var elementName = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		
-		if ( !isExistInList( 'selectedDataElements', elementName ) ) {
-			
-			addOptionToList( dataElementList, id, elementName );
-		}
-	}
-}
-*/
-
 function isExistInList( listId, elementName )
 {
 	var list = byId( listId );
@@ -144,7 +107,6 @@ function isExistInList( listId, elementName )
     }
 	return false;
 }
-
 
 
 // Validate to add DataElement AND add CateCombo for ReportCategory //
@@ -165,7 +127,7 @@ function validateAddDataElementAndCateComboCompleted( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
     var message = xmlObject.firstChild.nodeValue;
-
+	
 	setMessage( message );
 		
     if ( type == 'success' )
@@ -286,18 +248,5 @@ function showCateOptionCombosReceived( xmlObject )
 		var optionComboName = categoryOption.firstChild.nodeValue;
 		
 		optionComboList.add( new Option(optionComboName, id) , null );
-		//addOptionToList( 'optionComboList', id, optionComboName );
 	}
 }
-
-
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
-/**
-Notes:
-common.js:
-	byId();
-	setPositionCenter();
-	
-list.js:
-	
-*/
