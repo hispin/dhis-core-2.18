@@ -6,7 +6,12 @@ function getOptionCombos(){
 	
 	clearListById('availableOptionCombos');
 	
-	$.get("getOptionCombos.action",
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( getOptionCombosReceived );
+	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements").value );
+	
+	/*$.get("getOptionCombos.action",
 		{
 		dataElementId:$("#availableDataElements").val()
 		},
@@ -30,7 +35,26 @@ function getOptionCombos(){
 			}
 		
 		}
-	,'xml');
+	,'xml'); */
+}
+
+function getOptionCombosReceived( xmlObject ){
+	
+	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
+			
+	var optionComboList = byId( "availableOptionCombos" );			
+			
+	optionComboList.options.length = 0;		
+	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
+	for ( var i = 0; i < optionCombos.length; i++)
+	{
+		var id = optionCombos[ i ].getAttribute('id');
+		var name = optionCombos[ i ].firstChild.nodeValue;			
+		var option = document.createElement( "option" );
+		option.value = id ;
+		option.text = name;
+		optionComboList.add( option, null );	
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -39,23 +63,20 @@ function getOptionCombos(){
 
 function filterByDataElementGroup( selectedDataElementGroup )
 {
-	  var request = new Request();
-
-	  var requestString = 'filterAvailableDataElementsByDataElementGroup.action';
-	  
-	  var params = 'dataElementGroupId=' + selectedDataElementGroup;
-
-	  var selectedList = byId( 'selectedDataElements' );
-
-		
-	  for ( var i = 0; i < selectedList.options.length; ++i)
-	  {
+	
+	var request = new Request();
+	var requestString = 'filterAvailableDataElementsByDataElementGroup.action';
+	var params = 'dataElementGroupId=' + selectedDataElementGroup;
+	var selectedList = byId( 'selectedDataElements' );
+	
+	for ( var i = 0; i < selectedList.options.length; ++i)
+	{
 		var selectedValue = selectedList.options[i].value;
-		  
+	  
 		var id = selectedValue.substring(selectedValue.indexOf(".") + 1, selectedValue.length);
 
 		params += '&selectedDataElements=' + id;
-	  }
+	 }
 
 	  // Clear the Dataelement list
 	  var availableList = document.getElementById( 'availableDataElements' );
@@ -163,7 +184,6 @@ function addDataSetMembers()
 		
 		byId( 'selectedDataElements' ).add(option, null );
 		
-		
 		listOptionCombo.remove( listOptionCombo.selectedIndex );
     }
 }
@@ -240,34 +260,51 @@ function getListPeriodCompleted( xmlObject ){
 // -----------------------------------------------------------------------------
 
 function generateIndividualReportExcel(){
-	
-	// get operands
-	var operands = new Array();
+	// Check operands
 	var selectedDataElements = byId('selectedDataElements').options;
-	for ( var i = 0; i < selectedDataElements.length; i++ )
+	var message = '';
+	if( selectedDataElements.length==0)
 	{
-		operands[i] = selectedDataElements[i].value;
-	}	
-	
-	// get periods
-	var periods = new Array();
+		message = choose_dataelement + '<br>';
+	}
+	// Check periods
 	selectedDataElements = byId('selectedPeriods').options;
-	for ( var i = 0; i < selectedDataElements.length; i++ )
+	if(selectedDataElements.length==0)
 	{
-		periods[i] = selectedDataElements[i].value;
+		message += choose_period + '<br>';
 	}
 	
+	if(message.length > 0 ){
+		setMessage(message);
+		return;
+	}
 	$("#loading").showAtCenter( true );	
-		$.post("generateIndividualReportExcel.action",{
-		operands:operands,
-		periods:periods
-		},function(data){		
-			window.location = "downloadFile.action?outputFormat=";
-			deleteDivEffect();
-			$("#loading").hide();		
-		},'xml');
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( generateIndividualReportExcelReceived );
+	var params = getQueryStringFromList('selectedDataElements', 'operands');
+	params += getQueryStringFromList('selectedPeriods', 'periods');
+	request.sendAsPost(params);
+	request.send( "generateIndividualReportExcel.action");
+	
 }
 
+function generateIndividualReportExcelReceived(xmlObject){
+	
+	var type = xmlObject.getAttribute( 'type' );
+	
+	if(type=='error')
+	{
+		setMessage( xmlObject.firstChild.nodeValue);
+	}else if(type=='success')
+	{
+		window.location = "downloadFile.action?outputFormat=";
+	}
+	
+	deleteDivEffect();
+	$("#loading").hide();
+}
 // -----------------------------------------------------------------------------
 function showToolTip( e, value){
 	
@@ -303,7 +340,7 @@ function getPeriodsByPeriodTypeName() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'getPeriodsByPeriodTypeDB.action?periodTypeName=' + $("#availabelPeriodTypes").val());
+	request.send( 'getPeriodsByPeriodTypeDB.action?periodTypeName=' + byId("availabelPeriodTypes").value);
 }
 
 function lastPeriod() {

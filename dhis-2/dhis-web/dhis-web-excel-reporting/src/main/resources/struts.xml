@@ -750,6 +750,8 @@
 			class="org.hisp.dhis.reportexcel.export.individual.action.GenerateIndividualReportExcelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
 		<action name="cleanUpReportExcel"

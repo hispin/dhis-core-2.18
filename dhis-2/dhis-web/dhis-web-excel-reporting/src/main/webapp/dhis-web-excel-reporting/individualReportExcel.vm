@@ -109,8 +109,7 @@
 		<tr>
         <td>
           <select id="availabelPeriodTypes" name="availabelPeriodTypes" style="width:30em ;" onChange="javascript: getPeriodsByPeriodTypeName();">
-            
-			<option value="" ></option>
+           
             #foreach ( $periodType in $periodTypes )
               
             <option value="$periodType.name" >$i18n.getString( $periodType.name )</option>
@@ -169,5 +168,10 @@
 	#end
 
 	initLists();
+	
+	getPeriodsByPeriodTypeName();
+	
+	var choose_period = '$encoder.jsEscape($i18n.getString( 'choose_period' ) , "'")';
+	var choose_dataelement = '$encoder.jsEscape($i18n.getString( 'choose_dataelement' ) , "'")';
 
 </script>

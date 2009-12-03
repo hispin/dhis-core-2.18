@@ -135,7 +135,6 @@ public class GetImportingParamsAction
 
         if ( organisationUnit == null )
         {
-
             return SUCCESS;
         }
 

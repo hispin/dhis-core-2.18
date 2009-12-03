@@ -37,6 +37,8 @@ import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
@@ -59,6 +61,8 @@ public class GenerateIndividualReportExcelAction
 
     private ExpressionService expressionService;
 
+    public I18nFormat format;
+    
     // ---------------------------------------------------------------------------------------------------
     // Inputs && Outputs
     // ---------------------------------------------------------------------------------------------------
@@ -66,6 +70,12 @@ public class GenerateIndividualReportExcelAction
     private String[] operands;
 
     private Integer[] periods;
+    
+    private OrganisationUnit organisationUnit;
+    
+    public String message;
+
+    public I18n i18n;
 
     // ---------------------------------------------------------------------------------------------------
     // Getters && Setters
@@ -76,7 +86,23 @@ public class GenerateIndividualReportExcelAction
         this.dataValueService = dataValueService;
     }
 
-    public void setExpressionService( ExpressionService expressionService )
+    public String getMessage() {
+		return message;
+	}
+
+	public void setFormat(I18nFormat format) {
+		this.format = format;
+	}
+
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
+	}
+
+	public OrganisationUnit getOrganisationUnit() {
+		return organisationUnit;
+	}
+
+	public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
     }
@@ -100,8 +126,13 @@ public class GenerateIndividualReportExcelAction
     {
         statementManager.initialise();
         
-        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+        organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
         
+        if(organisationUnit == null){
+        	message = i18n.getString("choose_orgUnit");
+        	return ERROR;
+        }
+        	
         templateWorkbook = new HSSFWorkbook();
         
         HSSFSheet sheet = templateWorkbook.createSheet( organisationUnit.getName() ); 
