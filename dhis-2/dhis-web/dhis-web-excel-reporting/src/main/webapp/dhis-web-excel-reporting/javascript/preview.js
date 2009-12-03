@@ -4,12 +4,15 @@ aMerged = null;
 
 function reportChanged() {
 	
-	window.location.href="selectExportReportParam.action?reportGroup=" + $("#group").val() + "&reportId=" + $("#report").val();
+	window.location.href="selectExportReportParam.action?reportGroup=" + getListValue("group") + "&reportId=" + getListValue("report");
 }
 
 function previewReport() {
 	
-	var url = "reportId=" + $('#report').val() + "&periodId=" + $('#period').val() + "&sheetId=-1";
+	aKey	= null;
+	aMerged = null;
+	
+	var url = "reportId=" + getListValue('report') + "&periodId=" + getListValue('period');
 	
 	if ( byId('availableOrgunitGroups') != null ) {
 	
@@ -27,6 +30,7 @@ function previewReport() {
 	request.send( url );
 	
 }
+
 function previewReportReceived( reportXML ) {
 
 	setMergedNumberForEachCell( reportXML );
@@ -52,10 +56,11 @@ function setMergedNumberForEachCell( parentElement ) {
 }
 
 function getMergedNumberForEachCell( sKey ) {
+
 	for (var i = 0 ; i < aKey.length ; i ++) {
 	
 		if ( sKey == aKey[i] ) {
-
+		
 			return Number(aMerged[i]);
 		}
 	}
@@ -70,52 +75,53 @@ function exportFromXMLtoHTML( parentElement ) {
 	var _rows 		= "";
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
-	var _title		= parentElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;	
+	var _title		= getElementValue(parentElement, 'name');
 	
-	for (var s = 0 ; s < _sheets.length ; s ++) {
-	
+	for (var s = 0 ; s < _sheets.length ; s ++)
+	{
 		_rows = _sheets[s].getElementsByTagName( 'row' );
 
 		_sHTML = "<table class='formatTablePreview'>";
 		
-		for (var i = 0 ; i < _rows.length ; i ++) {
-		
-			_index		= 0;
-			_sHTML += "<tr>";
+		for (var i = 0 ; i < _rows.length ; i ++)
+		{
+			_index	 = 0;
+			_sHTML 	+= "<tr>";
 			
-			_cols = _rows[i].getElementsByTagName( 'col' );
+			_cols 	 = _rows[i].getElementsByTagName( 'col' );
 			
-			for (var j 	= 0 ; j < _cols.length ; ) {
-				
+			for (var j 	= 0 ; j < _cols.length ; )
+			{
 				var _number	= _cols[j].getAttribute( 'no' );
 				
 				// Printing out the unformatted cells
-				for (; _index < _number ; _index ++) {
-					
+				for (; _index < _number ; _index ++)
+				{
 					_sHTML += "<td/>";
 				}
 
-				if ( _index == _number ) {
-					
-					var _no_of_merged_cell = 1;
-					var _sData		 = _cols[j].getElementsByTagName( 'data' )[0].firstChild.nodeValue;					
-					var _align		 = _cols[j].getElementsByTagName( 'format' )[0].getAttribute( 'align' );
+				if ( _index == _number )
+				{
+					var _colspan 	= 1;
+					var _sData		= getElementValue( _cols[j], 'data' );				
+					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
 				
 					// If this cell is merged - Key's form: Sheet#Row#Col
-					_sPattern 			=  s + "#" + i + "#" + _number;
-					_no_of_merged_cell 	= getMergedNumberForEachCell( _sPattern );
+					_sPattern 		=  s + "#" + i + "#" + _number;
+					_colspan 		= getMergedNumberForEachCell( _sPattern );
 					
 					// Jumping for <For Loop> AND <Empty Cells>
-					j 		= Number(j) + Number(_no_of_merged_cell);
-					_index 	= Number(_index) + Number(_no_of_merged_cell);
+					j 		= Number(j) + Number(_colspan);
+					_index 	= Number(_index) + Number(_colspan);
 
-					_sHTML += "<td align='" + _align + "' colspan='" + _no_of_merged_cell;
+					_sHTML += "<td align='" + _align + "' colspan='" + _colspan;
 					
-					if ( isNaN(_sData) == false ) {
-						
+					if ( isNaN(_sData) == false )
+					{
 						_sHTML += "' class='formatNumberPreview";
 					}
-					else {
+					else
+					{
 						_sHTML += "' class='formatStringPreview";
 					}
 					_sHTML += "'>"+ _sData + "</td>";

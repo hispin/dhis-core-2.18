@@ -284,6 +284,19 @@ function getElementValue( parentElement, childElementName )
 }
 
 /**
+ * Gets the attribute value from the given DOM element.
+ * 
+ * @param parentElement the DOM object.
+ * @param attributeName the name of the attribute.
+ */
+function getElementAttribute( parentElement, childElementName, childAttributeName )
+{
+	var textNode = parentElement.getElementsByTagName( childElementName )[0];
+    
+    return textNode ? textNode.getAttribute( childAttributeName ) : null; 
+}
+
+/**
  * Gets the value from the given DOM element.
  * 
  * @param rootElement the DOM object.
