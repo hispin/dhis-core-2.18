@@ -17,22 +17,21 @@ function importData(){
 	request.setCallbackSuccess( importDataCompleted );
 	
 	// URL
-	url = 'importData.action?excelItemGroupId='+excelItemGroupId;
+	var params = 'excelItemGroupId='+excelItemGroupId;
 	// USER choose reportItem
 	var preview = byId('showValue').style.display;
 	
 	if(preview == 'block'){
-		
 		var excelItems = document.getElementsByName('excelItems');
 		for(var i=0;i<excelItems.length;i++){
 			if(excelItems[i].checked ){
-				url +='&excelItemIds=' + excelItems[i].value;
+				params +='&excelItemIds=' + excelItems[i].value;
 			}
 		}
 	}	
-	url += '&periodId='+ periodId;
-	
-	request.send(url); 
+	params += '&periodId='+ periodId;
+	request.sendAsPost(params);
+	request.send('importData.action'); 
 }
 
 function importDataCompleted( xmlObject ){
@@ -45,24 +44,13 @@ function importDataCompleted( xmlObject ){
 // -----------------------------------------------------------------------------
 
 function getPreviewImportData(){	
-		
+	
 	var request = new Request();
-	
 	request.setResponseTypeXML( 'xmlObject' );
-	
 	request.setCallbackSuccess( getReportItemValuesReceived );
-	
-	var excelItemGroupId = byId("excelItemGroupId").value;
-	
-	request.send( "previewDataFlow.action?excelItemGroupId=" + excelItemGroupId );
-		
+	request.send( "previewDataFlow.action?excelItemGroupId=" + byId("excelItemGroupId").value );
 	
 }
-
-
-// -----------------------------------------------------------------------------
-// PREVIEW DATA FLOW RECEIVED
-// -----------------------------------------------------------------------------
 
 function getReportItemValuesReceived( xmlObject ){
 	
@@ -145,12 +133,11 @@ function previewOrganisation( xmlObject ){
 	{
 		myTable.deleteRow(i -1);
 	}
-
+	
 	for(var i=0;i<availableObjectList.length;i++){
 		
 		// get item into XML
 		var itemValue = availableObjectList.item(i);
-		
 		
 		
 		// Add new row which contains to Organisation's name
@@ -163,7 +150,6 @@ function previewOrganisation( xmlObject ){
 		newTR.appendChild (newTD);
 		// add row into the table
 		tBody.appendChild(newTR);
-		
 		
 		
 		// get values
