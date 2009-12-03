@@ -3,11 +3,23 @@
 */
 function deleteReportExcelItem( id ){
 	if(window.confirm(i18n_confirm_delete)){
-		$.get("deleteReportExcelItem.action",{id:id}, function(data){
+		
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( Completed );
+		request.send("deleteReportExcelItem.action?id=" + id);
+	
+		
+		/* $.get("deleteReportExcelItem.action",{id:id}, function(data){
 			window.location.reload();
-		});		
+		});	*/	
 	}		
 }
+
+function Completed(xmlObject){
+	window.location.reload();
+}
+
 /*
 * 	Get Report Excel Item by Sheet
 */
@@ -19,8 +31,10 @@ function getReportItemBySheet(){
 * 	Open add report item
 */
 function openAddReportItemForm(){
-	$("#reportItemButton").click(validateAddReportExcelItem);
-	$("#sheetNo").val($("#sheetNoFilter").val());		
+	byId("reportItemButton").onclick = function(e){
+		validateAddReportExcelItem();
+	}
+	byId("sheetNo").value = byId("sheetNoFilter").value;		
 	$("#report").showAtCenter( true );	
 }	
 
@@ -29,7 +43,13 @@ function openAddReportItemForm(){
 */
 
 function openUpdateReportItem( id ){
-	$.get("getReportExcelItem.action",{id:id}, function(data){
+		
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( openUpdateReportItemReceived );
+	request.send("getReportExcelItem.action?id=" + id);
+	
+	/* $.get("getReportExcelItem.action",{id:id}, function(data){
 		
 		var reportItem = data.getElementsByTagName('reportItem')[0];
 		
@@ -44,9 +64,27 @@ function openUpdateReportItem( id ){
 		$("#reportItemButton").click(validateUpdateReportExcelItem);
 		$("#report").showAtCenter( true );		
 		
-	},"xml");
+	},"xml"); */
 	
 }	
+
+function openUpdateReportItemReceived(xmlObject){
+	
+	byId("id").value = getElementValue (xmlObject, 'id');
+	byId("name").value = getElementValue (xmlObject, 'name');
+	byId("itemType").value = getElementValue (xmlObject, 'itemType');
+	byId("periodType").value = getElementValue (xmlObject, 'periodType');
+	byId("row").value = getElementValue (xmlObject, 'row');
+	byId("column").value = getElementValue (xmlObject, 'column');
+	byId("expression").value = getElementValue (xmlObject, 'expression');
+	byId("sheetNo").value = getElementValue (xmlObject, 'sheetNo');
+	
+	byId("reportItemButton").onclick = function(e){
+		validateUpdateReportExcelItem();
+	};
+	
+	$("#report").showAtCenter( true );	
+}
 
 /*
 * 	Validate Add Report Excel Item
@@ -54,7 +92,20 @@ function openUpdateReportItem( id ){
 
 function validateAddReportExcelItem(){
 	
-	$.post("validateAddReportExcelItem.action",{		
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( validateAddReportExcelItemReceived );
+	var params = "name=" + byId("name").value;
+	params += "&expression=" + byId("expression").value;
+	params += "&row=" + byId("row").value;
+	params += "&column=" + byId("column").value;
+	params += "&sheetNo=" + byId("sheetNo").value;
+	params += "&reportId=" + byId("reportId").value;
+	
+	request.sendAsPost(params);
+	request.send("validateAddReportExcelItem.action");
+	
+	/* $.post("validateAddReportExcelItem.action",{		
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
 		row:$("#row").val(),
@@ -72,12 +123,44 @@ function validateAddReportExcelItem(){
 		{
 			addReportExcelItem();    
 		}
-	},'xml');	
+	},'xml');	*/
 	
 }
 
+function validateAddReportExcelItemReceived( xmlObject ){
+	var type = xmlObject.getAttribute( 'type' );
+	if(type=='error')
+	{
+		setMessage(xmlObject.firstChild.nodeValue);
+	}
+	if(type=='success')
+	{
+		addReportExcelItem();    
+	}
+}
+
+/*
+* 	Add Report Excel Item
+*/
+	
 function addReportExcelItem(){
-	$.post("addReportExcelItem.action",{
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( Completed );
+	var params = "name=" + byId("name").value;
+	params += "&expression=" + byId("expression").value;
+	params += "&row=" + byId("row").value;
+	params += "&column=" + byId("column").value;
+	params += "&reportId=" + reportId;
+	params += "&itemType=" + byId("itemType").value;
+	params += "&periodType=" + byId("periodType").value;
+	params += "&sheetNo=" + byId("sheetNo").value;
+	
+	request.sendAsPost(params);
+	request.send("addReportExcelItem.action");
+	
+	/* $.post("addReportExcelItem.action",{
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
 		row:$("#row").val(),
@@ -88,7 +171,7 @@ function addReportExcelItem(){
 		sheetNo:$("#sheetNo").val()
 	}, function (data){
 		window.location.reload();
-	},'xml');
+	},'xml'); */
 }
 
 /*
@@ -96,8 +179,21 @@ function addReportExcelItem(){
 */
 
 function validateUpdateReportExcelItem(){
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( validateUpdateReportExcelItemReceived );
+	var params = "name=" + byId("name").value;
+	params += "&reportItemId=" + byId("id").value;
+	params += "&expression=" + byId("expression").value;
+	params += "&row=" + byId("row").value;
+	params += "&column=" + byId("column").value;
+	params += "&sheetNo=" + byId("sheetNo").value;
+	params += "&reportId=" + reportId;
 	
-	$.post("validateUpdateReportExcelItem.action",{
+	request.sendAsPost(params);
+	request.send("validateUpdateReportExcelItem.action");
+	
+	/* $.post("validateUpdateReportExcelItem.action",{
 		name:$("#name").val(),
 		reportItemId:$("#id").val(),
 		expression:$("#expression").val(),
@@ -116,12 +212,46 @@ function validateUpdateReportExcelItem(){
 		{
 			updateReportExcelItem();    
 		}
-	},'xml');	
+	},'xml');	*/
 	
 }
 
+function  validateUpdateReportExcelItemReceived( xmlObject ){
+	
+	var type = xmlObject.getAttribute( 'type' );
+	if(type=='error')
+	{
+		setMessage(xmlObject.firstChild.nodeValue);
+	}
+	if(type=='success')
+	{
+		updateReportExcelItem();    
+	}
+}
+
+/*
+* 	Update Report Excel Item
+*/
+
 function updateReportExcelItem(){
-	$.post("updateReportExcelItem.action",{
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( Completed );
+	var params = "id=" + byId("id").value;
+	params += "&name=" + byId("name").value;
+	params += "&expression=" + byId("expression").value;
+	params += "&row=" + byId("row").value;
+	params += "&column=" + byId("column").value;
+	params += "&reportId=" + reportId;
+	params += "&itemType=" + byId("itemType").value;
+	params += "&periodType=" + byId("periodType").value;
+	params += "&sheetNo=" + byId("sheetNo").value;
+	
+	//request.sendAsPost(params);
+	request.send("updateReportExcelItem.action?" + params);
+	
+/*	$.post("updateReportExcelItem.action",{
 		id:$("#id").val(),
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
@@ -133,17 +263,17 @@ function updateReportExcelItem(){
 		sheetNo:$("#sheetNo").val()
 	}, function (data){
 		window.location.reload();
-	},'xml');	
+	},'xml');	*/
 }
 
 
 
-function insertFormulaText(sourceId, targetId) {	
-	$("#" + targetId).html($("#"+targetId).html() + $("#"+sourceId).val());
+function insertFormulaText(sourceId, targetId) {
+	byId(targetId).value += byId(sourceId).value;
 }
 
 function insertOperation(target, value ){
-	$("#" + target).html($("#" + target).html() + value);
+	byId(target).value += value;
 }
 
 function selectALL( checked ){
@@ -157,7 +287,13 @@ function selectALL( checked ){
 *	COPY REPORT ITEM 
 */
 function copySelectedItem() {
-	$.post("getAllReportExcels.action",{},
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( copySelectedItemReceived );
+	request.send("getAllReportExcels.action");
+	
+	/* $.post("getAllReportExcels.action",{},
 	function (xmlObject){
 		xmlObject = xmlObject.getElementsByTagName('reports')[0];
 		var reports = xmlObject.getElementsByTagName("report");
@@ -170,9 +306,27 @@ function copySelectedItem() {
 			options.add(new Option(name,id), null);
 		}	
 	$("#copyTo").showAtCenter( true );
-	},'xml');	
+	},'xml');	 */
+	
 }
 
+function copySelectedItemReceived(xmlObject){
+	var reports = xmlObject.getElementsByTagName("report");
+	var selectList = document.getElementById("targetReport");
+	var options = selectList.options;
+	options.length = 0;
+	for(i=0;i<reports.length;i++){
+		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
+		options.add(new Option(name,id), null);
+	}	
+	$("#copyTo").showAtCenter( true );
+}
+
+
+/*
+*	Validate Copy Report Items
+*/
 
 sheetId = 0;
 iReportItemsChecked = 0;
@@ -190,7 +344,15 @@ function validateCopyReportItems() {
 
 	sheetId	= $("#targetSheetNo").val();
 	
-	$.post("getReportExcelItems.action",
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( validateCopyReportItemsReceived );
+	var param = "reportId=" + byId("targetReport").value;
+		param += "sheetNo=" + sheetId;
+	request.sendAsPost(param);
+	request.send("getReportExcelItems.action");
+	
+	/* $.post("getReportExcelItems.action",
 	{
 		reportId:$("#targetReport").val(),
 		sheetNo:sheetId
@@ -208,8 +370,21 @@ function validateCopyReportItems() {
 		splitDuplicatedReportItems();
 		saveCopyItems();
 		
-	}, "xml");
+	}, "xml"); */
 }
+
+function validateCopyReportItemsReceived(data){
+	var items = data.getElementsByTagName('reportItem');
+		
+	for (var i = 0 ;  i < items.length ; i ++) 
+	{
+		reportItemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
+	}
+	
+	splitDuplicatedReportItems();
+	saveCopyItems();
+}
+
 
 function splitDuplicatedReportItems() {
 
@@ -312,18 +487,22 @@ function saveCopyItems() {
 
 
 /**
-* DataElement Report type
+* Open dataelement expression
 */
 function openDataElementExpression(){
-	$("#formula").html($("#expression").val());
+	byId("formula").value = byId("expression").value;
 	getALLDataElementGroup();
 	getDataElementsByGroup();
-	$("#dataElementGroup").attr("disabled", false);
-	$("#availableDataElements").attr("disabled", false);
-	$("#availableDataElements").change(getOptionCombos);		
+	enable("dataElementGroup");
+	enable("availableDataElements");
+	byId("availableDataElements").onchange = function(e){getOptionCombos()};
 	$("#normal").showAtCenter( true );
 }
 
+/**
+* Get All dataelement group
+*/
+	
 function getALLDataElementGroup(){
 	var list = byId('dataElementGroup');
 	list.options.length = 0;
@@ -333,6 +512,10 @@ function getALLDataElementGroup(){
 		list.add( new Option( dataElementGroups[id], id ), null );
 	}
 }
+
+/**
+* Get DataElements By Group
+*/
 
 function getDataElementsByGroup( )
 {		
@@ -366,7 +549,13 @@ function getDataElementsByGroupCompleted( xmlObject ){
 }
 
 function getOptionCombos(){
-	$.get("getOptionCombos.action",{dataElementId:$("#availableDataElements").val()},
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( getOptionCombosReceived );
+	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements").value);
+	
+	/* $.get("getOptionCombos.action",{dataElementId:$("#availableDataElements").val()},
 	function(xmlObject){
 		var xmlObject = xmlObject.getElementsByTagName('optionCombo')[0];
 		xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
@@ -384,24 +573,41 @@ function getOptionCombos(){
 		}
 		
 	}
-	,'xml');	
+	,'xml'); */
+}
+
+function getOptionCombosReceived( xmlObject ){
+	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
+	var optionComboList = byId( "optionCombos" );			
+	optionComboList.options.length = 0;		
+	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
+	for ( var i = 0; i < optionCombos.length; i++)
+	{
+		var id = optionCombos[ i ].getAttribute('id');
+		var name = optionCombos[ i ].firstChild.nodeValue;			
+		var option = document.createElement( "option" );
+		option.value = id ;
+		option.text = name;
+		optionComboList.add( option, null );	
+	}
 }
 
 function insertDataElementId(){
 	var dataElementComboId = "[" + $("#availableDataElements").val() + "." + $("#optionCombos").val() + "]";
-	$("#formula").html($("#formula").html() + dataElementComboId);
+	byId("formula").value += dataElementComboId;
 }
 
 /**
 * Indicator Report item type
 */
 function openIndicatorExpression(){
-	$("#formulaIndicator").html($("#expression").val());
+	byId("formulaIndicator").value = byId("expression").value;
 	getIndicatorGroups();
 	filterIndicators();	
-	$("#indicatorGroups").attr("disabled", false);
-	$("#availableIndicators").attr("disabled", false);
-	setPositionCenter( 'indicatorForm' );	
+	enable("indicatorGroups");
+	enable("availableIndicators");
+	setPositionCenter( 'indicatorForm' );
+	
 	$("#indicatorForm").show();
 }
 
@@ -438,11 +644,18 @@ function filterIndicatorsCompleted( xmlObject ){
 }
 
 /**
-* Category Report item type
+* Open Category Expression
 */
 function openCategoryExpression(){
-	$("#categoryFormula").html($("#expression").val());
-	$.get("getReportExcel.action",{id:reportId},		
+	
+	byId("categoryFormula").value = byId("expression").value;
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( openCategoryExpressionReceived );
+	request.send("getReportExcel.action?id=" + reportId);
+	
+	/* $.get("getReportExcel.action",{id:reportId},		
 	function(data){
 		var selectedDataElementGroups = document.getElementById('dataElementGroup_');
 		selectedDataElementGroups.options.length = 0;
@@ -460,12 +673,43 @@ function openCategoryExpression(){
 		showDivEffect();
 		$("#category").show();			
 			
-	},'xml');	
+	},'xml');	*/
 	
 }
 
+function openCategoryExpressionReceived(data){
+	var selectedDataElementGroups = document.getElementById('dataElementGroup_');
+	selectedDataElementGroups.options.length = 0;
+	var dataElementGroups = data.getElementsByTagName('dataElementGroup');
+	for(var i=0;i<dataElementGroups.length;i++){
+		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
+		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
+		selectedDataElementGroups.options.add(new Option(name, id));
+	}	
+	getDataElementGroupOrder();
+	setPositionCenter( 'category' );
+	enable("dataElementGroup_");
+	enable("availableDataElements_");
+	byId("availableDataElements_").onChange = function(e){getOptionCombos_()};
+	
+	showDivEffect();
+	$("#category").show();	
+}
+
+
+/**
+* Get DataElement Group Order
+*/
+
 function getDataElementGroupOrder(){
-	$.get("getDataElementGroupOrder.action",{id:$("#dataElementGroup_").val()},
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( getDataElementGroupOrderReceived );
+	request.send("getReportExcel.action?id=" + reportId);
+	
+	
+	/* $.get("getDataElementGroupOrder.action",{id:$("#dataElementGroup_").val()},
 	function( data ){
 		data = data.getElementsByTagName('dataElements')[0];
 		var availableDataElements = document.getElementById('availableDataElements_');
@@ -477,11 +721,29 @@ function getDataElementGroupOrder(){
 			var name = dataelEments[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;       
 			availableDataElements.options.add(new Option(name, id));
 		}
-	},'xml');
+	},'xml'); */
+}
+
+function getDataElementGroupOrderReceived(data){
+	var availableDataElements = document.getElementById('availableDataElements_');
+	availableDataElements.options.length = 0;
+	var dataelEments = data.getElementsByTagName( "dataElement" );	
+	for ( var i = 0; i < dataelEments.length; i++ )
+	{			
+		var id = dataelEments[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
+		var name = dataelEments[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;       
+		availableDataElements.options.add(new Option(name, id));
+	}
 }
 
 function getOptionCombos_(){
-	$.get("getOptionCombos.action",{dataElementId:$("#availableDataElements_").val()},
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( getOptionCombos_Received );
+	request.send("getOptionCombos.action?dataElementId=" + byId("availableDataElements_").value);
+	
+	
+	/* $.get("getOptionCombos.action",{dataElementId:$("#availableDataElements_").val()},
 	function(xmlObject){
 		var xmlObject = xmlObject.getElementsByTagName('optionCombo')[0];
 		xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
@@ -499,16 +761,26 @@ function getOptionCombos_(){
 		}
 		
 	}
-	,'xml');
+	,'xml'); */
+}
+
+function getOptionCombos_Received(xmlObject){
+	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
+	var optionComboList = byId( "optionCombos_" );			
+	optionComboList.options.length = 0;		
+	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
+	for ( var i = 0; i < optionCombos.length; i++)
+	{
+		var id = optionCombos[ i ].getAttribute('id');
+		var name = optionCombos[ i ].firstChild.nodeValue;			
+		var option = document.createElement( "option" );
+		option.value = id ;
+		option.text = name;
+		optionComboList.add( option, null );	
+	}
 }
 
 function insertDataElementId_(){
-	var dataElementComboId = "[*." + $("#optionCombos_").val() + "]";
-	$("#categoryFormula").html($("#categoryFormula").html() + dataElementComboId);
+	var dataElementComboId = "[*." + byId("optionCombos_").value + "]";
+	byId("categoryFormula").value += dataElementComboId;
 }
-
-/*
-* Organisation Unit Listing Report
-*/
-
-
