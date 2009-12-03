@@ -6,7 +6,14 @@ function organisationUnitSelected( orgUnits )
 selection.setListenerFunction( organisationUnitSelected );
 
 function getReportExcelsByGroup() {
-	$.post("getReportExcelsByGroup.action",
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( getReportExcelsByGroupReceived);
+    request.sendAsPost("group=" + byId('group').value);
+	request.send( "getReportExcelsByGroup.action");
+	
+	/* $.post("getReportExcelsByGroup.action",
     {
         group:$("#group").val()
     }, function( xmlObject ){       
@@ -24,9 +31,24 @@ function getReportExcelsByGroup() {
 				byId('report').options[i].selected = true;
 			}
 		}
-    }, "xml");
+    }, "xml"); */
 }
 
+function getReportExcelsByGroupReceived(xmlObject){
+	clearListById('report');
+	var list = xmlObject.getElementsByTagName("report");
+	for(var i=0;i<list.length;i++){
+		var item = list[i];
+		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+		addOption('report',name,id);
+		
+		// selectedReport is a global variable
+		if ( id == selectedReport) {
+			byId('report').options[i].selected = true;
+		}
+	}
+}
 
 function getPeriodsByPeriodTypeName() {
 	
@@ -67,20 +89,42 @@ function responseListPeriodReceived( xmlObject ) {
 
 function generateReportExcel() {
 	
-	$("#loading").showAtCenter( true );	
-	$.post("generateReportExcel.action",{
+	$("#loading").showAtCenter( true );
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( generateReportExcelReceived );
+	var params = "reportId=" + byId('report').value;
+	params += "&periodId=" + byId('period').value;
+	request.sendAsPost(params);
+	request.send( 'generateReportExcel.action');
+	
+	
+	/* $.post("generateReportExcel.action",{
 	reportId:$('#report').val(),
 	periodId:$('#period').val()
 	},function(data){		
 		window.location = "downloadFile.action";
 		deleteDivEffect();
 		$("#loading").hide();		
-	},'xml');
+	},'xml'); */
 	
 }
 
+function generateReportExcelReceived(xmlObject){
+	window.location = "downloadFile.action";
+	deleteDivEffect();
+	$("#loading").hide();
+}
+
 function getALLReportExcelByGroup(){
-	$.post("getALLReportExcelByGroup.action",
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( getALLReportExcelByGroupReceived );
+	request.send( 'getALLReportExcelByGroup.action?group=' + byId("group").value);
+	
+	/* $.post("getALLReportExcelByGroup.action",
     {
         group:$("#group").val()
     }, function( xmlObject ){       
@@ -93,13 +137,32 @@ function getALLReportExcelByGroup(){
 			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
 			addOption('report',name,id);
 		}
-    }, "xml");
+    }, "xml"); */
+}
+
+function getALLReportExcelByGroupReceived(xmlObject){
+	clearListById('report');
+	var list = xmlObject.getElementsByTagName("report");
+	for(var i=0;i<list.length;i++){
+		var item = list[i];
+		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+		addOption('report',name,id);
+	}
 }
 
 function generateAdvancedReportExcel() {	
 
 	$("#loading").showAtCenter( true );	
-		$.post("generateAdvancedReportExcel.action",{
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( generateReportExcelReceived );
+	var params = "reportId=" + byId('report').value;
+	params += "&periodId=" + byId('period').value;
+	request.sendAsPost(params);
+	request.send( 'generateAdvancedReportExcel.action');
+	
+	/*	$.post("generateAdvancedReportExcel.action",{
 		reportId:$('#report').val(),
 		periodId:$('#period').val(),
 		organisationGroupId: byId('availableOrgunitGroups').value
@@ -107,7 +170,7 @@ function generateAdvancedReportExcel() {
 			window.location = "downloadFile.action";
 			deleteDivEffect();
 			$("#loading").hide();		
-		},'xml');
+		},'xml'); */
 	
 }
 
@@ -115,7 +178,7 @@ generic_type = '';
 
 function validateExportReport() {
 
-	if ( $("#report").val() == -1 ) {
+	if ( byId("report").value == -1 ) {
 	
 		setMessage(i18n_select_report);
 		return;
