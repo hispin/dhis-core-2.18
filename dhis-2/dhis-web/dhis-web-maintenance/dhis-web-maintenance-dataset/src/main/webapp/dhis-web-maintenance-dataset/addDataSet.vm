@@ -13,7 +13,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em"></td>
+        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -106,12 +106,14 @@
 	var dataSetMembers = new Object();
 
 	var availableDataElements = new Object();	
-#foreach ( $availableDataElement in $dataElements )
-	availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
-#end
+	
+	#foreach ( $availableDataElement in $dataElements )
+		availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
+	#end
 
 	initLists();
 
+	var previousName = '';
 	var nameField = document.getElementById( 'name' );
 	nameField.select();
 	nameField.focus();
