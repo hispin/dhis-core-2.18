@@ -208,7 +208,7 @@ function moveDownSelectedOption( listId ) {
 
     for ( var i = list.options.length - 1; i >= 0; i-- ) {
         if ( list.options[ i ].selected ) {
-            if ( i <= list.options.length - 1 ) { // Cannot move down the option at the bottom
+            if ( i < list.options.length - 1 ) { // Cannot move down the option at the bottom
                 var subsequentOption = new Option( list.options[ i + 1 ].text, list.options[ i + 1 ].value );
                 var currentOption = new Option( list.options[ i ].text, list.options[ i ].value );
 

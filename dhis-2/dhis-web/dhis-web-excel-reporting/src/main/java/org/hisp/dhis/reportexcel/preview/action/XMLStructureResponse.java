@@ -41,8 +41,6 @@ import jxl.format.CellFormat;
 import jxl.format.Colour;
 import jxl.format.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
 import org.hisp.dhis.reportexcel.utils.StringUtils;
 
 /**
@@ -214,7 +212,7 @@ public class XMLStructureResponse
         throws Exception
     {
         FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
-        HSSFWorkbook hssfwb = new HSSFWorkbook( fis );
+        org.apache.poi.ss.usermodel.Workbook hssfwb = new org.apache.poi.hssf.usermodel.HSSFWorkbook ( fis );
 
         if ( bWriteDescription )
         {
@@ -282,7 +280,7 @@ public class XMLStructureResponse
                 {
                     bFormula = false;
 
-                    CellReference cellReference = new CellReference( i, j );
+                    org.apache.poi.hssf.util.CellReference cellReference = new org.apache.poi.hssf.util.CellReference( i, j );
                     org.apache.poi.ss.usermodel.Row rowRef = sheet.getRow( cellReference.getRow() );
                     org.apache.poi.ss.usermodel.Cell cellRef = rowRef.getCell( cellReference.getCol() );
 
