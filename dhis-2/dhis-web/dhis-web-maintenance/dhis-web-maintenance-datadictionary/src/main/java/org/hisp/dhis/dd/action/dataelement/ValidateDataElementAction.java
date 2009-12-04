@@ -110,11 +110,11 @@ public class ValidateDataElementAction
         this.code = code;
     }
     
-    private String type;
+    private String valueType;
 
-    public void setType( String type )
+    public void setValueType( String valueType )
     {
-        this.type = type;
+        this.valueType = valueType;
     }
 
     // -------------------------------------------------------------------------
@@ -254,7 +254,7 @@ public class ValidateDataElementAction
 
         if ( calculated != null && calculated.equals( "on" ) )
         {
-            if ( type != null && (!type.equals( DataElement.VALUE_TYPE_INT )) )
+            if ( valueType != null && (!valueType.equals( DataElement.VALUE_TYPE_INT )) )
             {
                 message = i18n.getString( "cde_must_be_number" );
 

@@ -29,6 +29,7 @@ package org.hisp.dhis.system.deletion;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -116,6 +117,15 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteDataElement( DataElement dataElement )
+    {
+        return true;
+    }
+
+    public void deleteCalculatedDataElement( CalculatedDataElement dataElement )
+    {
+    }
+    
+    public boolean allowDeleteCalculatedDataElement( CalculatedDataElement dataElement )
     {
         return true;
     }
