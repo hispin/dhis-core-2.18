@@ -169,7 +169,7 @@ function validateAddDataElement()
         '&shortName=' + getFieldValue( 'shortName' ) +
         '&alternativeName=' + getFieldValue( 'alternativeName' ) +
         '&code=' + getFieldValue( 'code' ) +
-        '&type=' + getSelectValue( 'type' ) +
+        '&valueType=' + getSelectValue( 'valueType' ) +
         '&calculated=' + getCheckboxValue( 'calculated' ) +
         '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
         makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds'))
@@ -204,6 +204,9 @@ function addValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
+        selectAllById( "aggregationLevels" );
+        selectAllById( "dataElementGroupSets" );
+    
         var form = document.getElementById( 'addDataElementForm' );
         form.submit();
     }
@@ -273,7 +276,7 @@ function getCheckboxValue( checkboxId )
 {
 	var checkbox = document.getElementById( checkboxId );
 	
-	return ( checkbox.checked ? checkbox.value : null );
+	return ( checkbox != null && checkbox.checked ? checkbox.value : null );
 }
 
 /**
@@ -339,6 +342,9 @@ function updateValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
+        selectAllById( "aggregationLevels" );
+        selectAllById( "dataElementGroupSets" );
+        
         var form = document.getElementById( 'updateDataElementForm' );
         form.submit();
     }
@@ -503,20 +509,4 @@ function toggleByIdAndFlagIfDefaultCombo( id, display, defaultId )
 	}
 	
     return;
-}
-
-function submitAddDataElement()
-{
-    selectAllById( "aggregationLevels" );
-    selectAllById( "dataElementGroupSets" );
-    
-    document.getElementById( "addDataElementForm" ).submit();
-}
-
-function submitUpdateDataElement()
-{
-    selectAllById( "aggregationLevels" );
-    selectAllById( "dataElementGroupSets" );
-    
-    document.getElementById( "updateDataElementForm" ).submit();
 }
