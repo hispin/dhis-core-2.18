@@ -7,14 +7,14 @@
 
 #end
    
- <table width="50%">
+ <table width="62%">
 <h2>$i18n.getString('import_data')</h2>
 <form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="post" enctype="multipart/form-data">   
   <tr>
      <td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
       <td width="82%">
-          <input type="file" id="upload" name="upload" >
-          <input name="submit" type="submit" value="$i18n.getString( 'upload_file' )" />    
+          <input type="file" id="upload" name="upload" onChange="enable('uploadButton');">
+          <input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />    
 	  </td>   
   </tr>
   </form>
