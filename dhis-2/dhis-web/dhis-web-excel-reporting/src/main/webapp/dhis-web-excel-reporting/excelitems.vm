@@ -1,5 +1,4 @@
-﻿<h2>$i18n.getString("list_of_excel_items")</h2>
-<h4><font color="green">$!encoder.htmlEncode($!excelItemGroup.name)</font></h4>
+﻿<h2>$!encoder.htmlEncode($!excelItemGroup.name)</h2>
 <table width="100%">
 <tr>
 <td>

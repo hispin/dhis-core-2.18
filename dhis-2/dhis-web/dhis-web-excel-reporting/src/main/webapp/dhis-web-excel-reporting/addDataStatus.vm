@@ -1,3 +1,4 @@
+<h2>$i18n.getString( "add" ) $i18n.getString( "dataset_completed_report" )</h2>
 <table>
 	<tr>
 		<td>$i18n.getString( 'dataset' )</td>
