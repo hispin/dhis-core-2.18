@@ -290,3 +290,16 @@ function nextPeriod() {
 	request.setCallbackSuccess( responseListPeriodReceived );
 	request.send( 'nextPeriodsGeneric.action' ); 
 }
+
+function validateUploadExcelFileImporting() {
+	
+	if ( (byId("upload").value == "") || (byId("upload").value.length == 0) ) {
+	
+		hideById("messageUpload");
+		setMessage(i18n_warning_upload_is_null);
+		return false;
+	}
+	else {
+		return true;
+	}
+}

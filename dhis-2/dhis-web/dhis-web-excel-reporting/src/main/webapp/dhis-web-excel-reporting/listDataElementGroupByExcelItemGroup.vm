@@ -1,6 +1,6 @@
 <h2>$i18n.getString('dataelement_groups')</h2>
 <div id="tooltip" style=" display:none; background-color:#FFFFCC; ; position:absolute; z-index:100001" ></div>
-<h4>$excelItemGroup.name</h4>
+<h4><font color="green">$!encoder.htmlEncode($!excelItemGroup.name)</font></h4>
 <p></p>
 <table width="800px">
 	<tr>

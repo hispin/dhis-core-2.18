@@ -1,3 +1,5 @@
+<h2>$i18n.getString( "dataset_completed_report" )</h2>
+
 <table width="100%" class="list">
 	<tr>
 		<th style="background:#DFDFDF">$i18n.getString( 'dataset' )</th>
