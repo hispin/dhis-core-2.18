@@ -13,25 +13,6 @@ function getReportExcelsByGroup() {
     request.sendAsPost("group=" + byId('group').value);
 	request.send( "getReportExcelsByGroup.action");
 	
-	/* $.post("getReportExcelsByGroup.action",
-    {
-        group:$("#group").val()
-    }, function( xmlObject ){       
-        xmlObject = xmlObject.getElementsByTagName("reports")[0];
-		clearListById('report');
-		var list = xmlObject.getElementsByTagName("report");
-		for(var i=0;i<list.length;i++){
-			var item = list[i];
-			var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-			addOption('report',name,id);
-			
-			// selectedReport is a global variable
-			if ( id == selectedReport) {
-				byId('report').options[i].selected = true;
-			}
-		}
-    }, "xml"); */
 }
 
 function getReportExcelsByGroupReceived(xmlObject){
@@ -99,16 +80,6 @@ function generateReportExcel() {
 	request.sendAsPost(params);
 	request.send( 'generateReportExcel.action');
 	
-	
-	/* $.post("generateReportExcel.action",{
-	reportId:$('#report').val(),
-	periodId:$('#period').val()
-	},function(data){		
-		window.location = "downloadFile.action";
-		deleteDivEffect();
-		$("#loading").hide();		
-	},'xml'); */
-	
 }
 
 function generateReportExcelReceived(xmlObject){
@@ -124,20 +95,6 @@ function getALLReportExcelByGroup(){
 	request.setCallbackSuccess( getALLReportExcelByGroupReceived );
 	request.send( 'getALLReportExcelByGroup.action?group=' + byId("group").value);
 	
-	/* $.post("getALLReportExcelByGroup.action",
-    {
-        group:$("#group").val()
-    }, function( xmlObject ){       
-        xmlObject = xmlObject.getElementsByTagName("reports")[0];
-		clearListById('report');
-		var list = xmlObject.getElementsByTagName("report");
-		for(var i=0;i<list.length;i++){
-			var item = list[i];
-			var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-			addOption('report',name,id);
-		}
-    }, "xml"); */
 }
 
 function getALLReportExcelByGroupReceived(xmlObject){
@@ -161,16 +118,6 @@ function generateAdvancedReportExcel() {
 	params += "&periodId=" + byId('period').value;
 	request.sendAsPost(params);
 	request.send( 'generateAdvancedReportExcel.action');
-	
-	/*	$.post("generateAdvancedReportExcel.action",{
-		reportId:$('#report').val(),
-		periodId:$('#period').val(),
-		organisationGroupId: byId('availableOrgunitGroups').value
-		},function(data){		
-			window.location = "downloadFile.action";
-			deleteDivEffect();
-			$("#loading").hide();		
-		},'xml'); */
 	
 }
 

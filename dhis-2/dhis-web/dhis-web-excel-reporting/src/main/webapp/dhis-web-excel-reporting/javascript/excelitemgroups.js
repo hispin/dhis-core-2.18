@@ -95,15 +95,6 @@ function updateExcelItemGroup(){
 		params += "&periodTypeName=" + byId('periodType').value;
 	request.sendAsPost(params);
 	request.send( "updateExcelItemGroup.action" );
-	
-	/* $.post("updateExcelItemGroup.action",{
-		id:$("#id").val(),
-		name:$("#name").val(),
-		type:$("#type").val(),
-		periodTypeName:$("#periodType").val()
-	},function(data){
-		window.location.reload();
-	},'xml');	*/
 }
 
 function deleteExcelItemGroup(id){
@@ -114,11 +105,6 @@ function deleteExcelItemGroup(id){
 		request.setCallbackSuccess( addExcelItemGroupReceived );
 		request.send("deleteExcelItemGroup.action?id=" + id);
 	
-		/*$.post("deleteExcelItemGroup.action",{
-				id:id
-			},function(data){
-				window.location.reload();
-			},'xml');*/
 	}
 }
 

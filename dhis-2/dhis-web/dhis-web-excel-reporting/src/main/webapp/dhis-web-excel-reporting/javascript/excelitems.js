@@ -22,20 +22,6 @@ function openUpdateExcelItem( id ){
 	request.setCallbackSuccess( openUpdateExcelItemReceived );	
 	request.send( "getExcelItem.action?id=" + id );	
 	
-	/* $.post("getExcelItem.action",{id:id},
-	function ( xmlObject ){
-		
-		$("#id").val(id);
-		$("#name").val( xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue );
-		$("#expression").val( xmlObject.getElementsByTagName('expression')[0].firstChild.nodeValue);
-		$("#row").val( xmlObject.getElementsByTagName('row')[0].firstChild.nodeValue  );
-		$("#column").val( xmlObject.getElementsByTagName('column')[0].firstChild.nodeValue  );
-		$("#sheetNo").val( xmlObject.getElementsByTagName('sheetNo')[0].firstChild.nodeValue  );
-		
-		$("#divExcelitem").showAtCenter( true );
-		$("#name").attr("disabled", true);
-		
-	},'xml');	*/
 }
 
 function openUpdateExcelItemReceived(xmlObject){
@@ -65,31 +51,8 @@ function validateExcelItem(){
 	url += "&column=" + byId("column").value;
 	url += "&sheetNo=" + byId("sheetNo").value;
 	
-	request.send( url );	
+	request.send( url );
 	
-	
-	/* $.post("validateExcelItem.action",{
-		name:$("#name").val(),
-		expression:$("#expression").val(),
-		row:$("#row").val(),
-		column:$("#column").val(),
-		sheetNo:$("#sheetNo").val()
-	},function(xmlObject){
-		var xmlObject = xmlObject.getElementsByTagName('message')[0];
-		var type = xmlObject.getAttribute( 'type' );
-		if(type=='error')
-		{
-			setMessage(xmlObject.firstChild.nodeValue);
-		}else if(type=='success')
-		{		
-			if(mode == 'add'){
-				addExcelItem();
-			}else{
-				updateExcelItem();
-			}
-			
-		}
-	},'xml');	*/
 }
 
 function validateExcelItemReceived(xmlObject){
@@ -124,19 +87,7 @@ function addExcelItem(){
 	params += "&sheetNo=" + byId("sheetNo").value; 
 	params += "&excelItemGroupId=" + getParamByURL("excelItemGroupId"); 
 	request.sendAsPost( params );
-	request.send( "addExcelItem.action" );	
-	
-	
-	/* $.post("addExcelItem.action",{
-		name:$("#name").val(),
-		expression:$("#expression").val(),
-		row:$("#row").val(),
-		column:$("#column").val(),
-		sheetNo:$("#sheetNo").val(),
-		excelItemGroupId:getParamByURL("excelItemGroupId")
-	},function(data){
-		window.location.reload();
-	},'xml');	*/
+	request.send( "addExcelItem.action" );
 }
 
 function Completed(xmlObject){
@@ -341,10 +292,22 @@ excelItemsDuplicated = null;
 
 function validateCopyExcelItems() {
 
+	sheetId	= byId("targetExcelItemGroupSheetNo").value;
+	var message = '';
+	if(sheetId < 1){
+		message = input_sheet_no;
+	}
+	if(byId("targetExcelItemGroup").value == -1){
+		message += "<br>"+ choose_report;
+	}
+	
+	if(message.length > 0){
+		setMessage(message);
+		return;
+	}
+	
 	excelItemsCurTarget = new Array();
 	excelItemsDuplicated = new Array();
-
-	sheetId	= byId("targetExcelItemGroupSheetNo").value;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );

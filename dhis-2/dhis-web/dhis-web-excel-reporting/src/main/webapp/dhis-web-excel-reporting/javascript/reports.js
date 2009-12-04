@@ -36,26 +36,6 @@ function validateAddReportExcel(){
 	request.sendAsPost(params);
 	request.send( "validateAddReportExcel.action" );
 	
-	/* $.post("validateAddReportExcel.action",{
-		name:$("#name").val(),
-		excel:$("#excelTemplateFile").val(),
-		reportType:$("#reportType").val(),
-		periodRow:$("#periodRow").val(),
-		periodCol:$("#periodColumn").val(),
-		organisationRow:$("#organisationRow").val(),
-		organisationCol:$("#organisationColumn").val(),
-		groupName:$("#group").val()
-	},function(xmlObject){
-		var xmlObject = xmlObject.getElementsByTagName('message')[0];
-		var type = xmlObject.getAttribute( 'type' );
-		if(type=='error')
-		{
-			setMessage(xmlObject.firstChild.nodeValue);
-		}else if(type=='success')
-		{		
-			addReportExcel();
-		}
-	},'xml');	*/
 }
 
 function validateAddReportExcelReceived(xmlObject){
@@ -88,20 +68,6 @@ function addReportExcel(){
 	
 	request.sendAsPost(params);
 	request.send( "addReportExcel.action" );	
-
-	
-/*	$.post("addReportExcel.action",{		
-		name:$("#name").val(),
-		excel:$("#excelTemplateFile").val(),
-		reportType:$("#reportType").val(),
-		periodRow:$("#periodRow").val(),
-		periodCol:$("#periodColumn").val(),
-		organisationRow:$("#organisationRow").val(),
-		organisationCol:$("#organisationColumn").val(),
-		group:$("#group").val()
-	},function(data){
-		window.location.reload();
-	},'xml');	*/
 	
 }
 
@@ -129,25 +95,6 @@ function openUpdateReportReportExcel( id ){
 	request.setCallbackSuccess( openUpdateReportReportExcelReceived );
 	request.send( "getReportExcel.action?id=" + id );
 	
-	/* 
-	$.post("getReportExcel.action",{id:id},
-	function ( xmlObject ){
-		var report = xmlObject.getElementsByTagName('report')[0];
-		reportId =  getElementValue(report, 'id') ;
-		$("#name").val( getElementValue(report, 'name') );
-		$("#excelTemplateFile").val( getElementValue(report, 'excelTemplateFile') );
-		$("#periodRow").val( getElementValue(report, 'periodRow') );
-		$("#periodColumn").val( getElementValue(report, 'periodColumn') );
-		$("#organisationRow").val( getElementValue(report, 'organisationRow') );
-		$("#organisationColumn").val( getElementValue(report, 'organisationColumn') );
-		$("#reportType").val( getElementValue(report, 'reportType') );
-		$("#group").val( getElementValue(report, 'group') );	
-		
-		$("#reportExcelAddUpdateButton").click( validateUpdateReportExcel );		
-		$("#report").showAtCenter( true );	
-		$("#name").attr("disabled", false);	
-		$("#reportType").attr("disabled", true);
-	},'xml');	*/
 }
 
 function openUpdateReportReportExcelReceived(xmlObject){
@@ -188,29 +135,7 @@ function validateUpdateReportExcel(){
 		params += "&groupName=" + byId("group").value;
 	request.sendAsPost(params);
 	request.send( "validateUpdateReportExcel.action" );
-	
-	
-	/*$.post("validateUpdateReportExcel.action",{		
-		id:reportId,
-		name:$("#name").val(),
-		excel:$("#excelTemplateFile").val(),
-		reportType:$("#reportType").val(),
-		periodRow:$("#periodRow").val(),
-		periodCol:$("#periodColumn").val(),
-		organisationRow:$("#organisationRow").val(),
-		organisationCol:$("#organisationColumn").val(),
-		group:$("#group").val()
-	},function(xmlObject){
-		var xmlObject = xmlObject.getElementsByTagName('message')[0];
-		var type = xmlObject.getAttribute( 'type' );
-		if(type=='error')
-		{
-			setMessage(xmlObject.firstChild.nodeValue);
-		}else if(type=='success')
-		{		
-			updateReportExcel();			
-		}
-	},'xml');	*/
+
 }
 
 function validateUpdateReportExcelReceived (xmlObject){
@@ -241,20 +166,7 @@ function updateReportExcel(){
 	request.sendAsPost(params);
 	
 	request.send( "updateReportExcel.action" );
-	
-	
-	/* $.post("updateReportExcel.action",{
-		id:reportId,	
-		name:$("#name").val(),
-		excel:$("#excelTemplateFile").val(),		
-		periodRow:$("#periodRow").val(),
-		periodCol:$("#periodColumn").val(),
-		organisationRow:$("#organisationRow").val(),
-		organisationCol:$("#organisationColumn").val(),
-		group:$("#group").val()
-	},function(data){
-		window.location.reload();
-	},'xml');	*/
+
 }
 
 
@@ -282,20 +194,7 @@ function getALLDataElementGroups(){
 	request.setResponseTypeXML( 'datalement' );
 	request.setCallbackSuccess( getALLDataElementGroupsReceived );
 	request.send( "getAllDataElementGroups.action" );
-	
-	
-	/* $.get("getAllDataElementGroups.action",{},
-	function(data){
-		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
-		availableDataElementGroups.options.length = 0;
-		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
-		for(var i=0;i<dataElementGroups.length;i++){
-			var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			availableDataElementGroups.options.add(new Option(name, id));			
-		}
-		getReportDataElementGroups(reportId);
-	},'xml'); */
+
 }
 
 function getALLDataElementGroupsReceived( data ){
@@ -320,29 +219,7 @@ function getReportDataElementGroups( id ){
     request.setCallbackSuccess( getReportDataElementGroupsReceived );
 	request.send( "getReportExcel.action?id=" + id );	
 	
-	
-	/* $.get("getReportExcel.action",{id:id},		
-	function(data){
-		var selectedDataElementGroups = document.getElementById('selectedDataElementGroups');
-		selectedDataElementGroups.options.length = 0;
-		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
-		for(var i=0;i<dataElementGroups.length;i++){
-			var id = dataElementGroups.item(i).getElementsByTagName('dataElementGroupId')[0].firstChild.nodeValue;
-			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			selectedDataElementGroups.options.add(new Option(name, id));
-		}		
-		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
-		var selectedDataElementGroups = document.getElementById('selectedDataElementGroups');
-		for(var i=0;i<availableDataElementGroups.options.length;i++){
-			for(var j=0;j<selectedDataElementGroups.options.length;j++){				
-				if(availableDataElementGroups.options[i].value==selectedDataElementGroups.options[j].value){					
-					availableDataElementGroups.options[i] = null;
-				}
-			}
-		}	
-		$("#dataElementGroups").showAtCenter( true );
-	},'xml');	*/
-}
+	b}
 
 function getReportDataElementGroupsReceived(data){
 	var selectedDataElementGroups = document.getElementById('selectedDataElementGroups');
@@ -385,10 +262,7 @@ function backupReportExcel( id ){
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( backupReportExcelReceived );
 	request.send( "backupReportExcel.action?id=" + id );	
-	
-	/* $.post("backupReportExcel.action",{id:id},function(data){
-		window.location = "downloadFile.action?outputFormat=application/xml-external-parsed-entity";
-	},'xml'); */
+
 }
 
 function backupReportExcelReceived(data){
@@ -401,18 +275,7 @@ function restoreReportExcel(){
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( restoreReportExcelReceived );
 	request.send( "restoreReportExcel.action");	
-	
-	/* $.post("restoreReportExcel.action",{},function(xmlObject){
-		var xmlObject = xmlObject.getElementsByTagName('message')[0];
-		var type = xmlObject.getAttribute( 'type' );
-		if(type=='error')
-		{
-			setMessage(xmlObject.firstChild.nodeValue);
-		}else if(type=='success')
-		{		
-			window.location.reload();	
-		}
-	},'xml');	*/
+
 }
 
 function restoreReportExcelReceived(xmlObject){

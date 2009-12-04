@@ -10,32 +10,7 @@ function getOptionCombos(){
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( getOptionCombosReceived );
 	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements").value );
-	
-	/*$.get("getOptionCombos.action",
-		{
-		dataElementId:$("#availableDataElements").val()
-		},
-		
-		function(xmlObject){
-			var xmlObject = xmlObject.getElementsByTagName('optionCombo')[0];
-			xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
-			
-			var optionComboList = byId( "availableOptionCombos" );			
-			
-			optionComboList.options.length = 0;		
-			var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
-			for ( var i = 0; i < optionCombos.length; i++)
-			{
-				var id = optionCombos[ i ].getAttribute('id');
-				var name = optionCombos[ i ].firstChild.nodeValue;			
-				var option = document.createElement( "option" );
-				option.value = id ;
-				option.text = name;
-				optionComboList.add( option, null );	
-			}
-		
-		}
-	,'xml'); */
+
 }
 
 function getOptionCombosReceived( xmlObject ){
