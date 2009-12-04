@@ -62,7 +62,7 @@
 </p>
 
 <!-- Preview Report Excel -->
-<div id="tabs" style="display:true">
+<div id="tabs" style="display:none">
 
 	#if( $!collectSheets && $!mapSheets )
 		<ul>
