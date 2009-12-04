@@ -37,7 +37,7 @@
       </tr>
       <tr>       
 		<td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )" disabled="disabled">
             #foreach ( $availableDataElementCategory in $allDataElementCategories )
               <option value="$availableDataElementCategory.id">$encoder.htmlEncode( $availableDataElementCategory.name )</option>
             #end
@@ -51,7 +51,7 @@
 		  <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""></a>		  
         </td> 
 		<td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em">
             #foreach ( $dataElementCategory in $dataElementCategories )
               <option value="$dataElementCategory.id">$encoder.htmlEncode( $dataElementCategory.name )</option>
             #end
