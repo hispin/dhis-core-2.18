@@ -36,6 +36,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 import com.opensymphony.xwork2.Action;
@@ -44,63 +45,80 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ListExcelItemAction implements Action {
+public class ListExcelItemAction
+    implements Action
+{
 
-	// -------------------------------------------------------------
-	// Dependency
-	// -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	private DataElementService dataElementService;
+    private DataElementService dataElementService;
 
-	// -------------------------------------------------------------
-	// Input && Output
-	// -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------
 
-	private Collection<ExcelItem> excelItems;
+    private int excelItemGroupId;
+    
+    private ExcelItemGroup excelItemGroup;
+    
+    private Collection<ExcelItem> excelItems;
 
-	private List<DataElementGroup> dataElementGroups;
+    private List<DataElementGroup> dataElementGroups;
 
-	private int excelItemGroupId;
+    // -------------------------------------------------------------
+    // Getters and Setters
+    // -------------------------------------------------------------
 
-	// -------------------------------------------------------------
-	// Getters and Setters
-	// -------------------------------------------------------------
+    public Collection<ExcelItem> getExcelItems()
+    {
+        return excelItems;
+    }
 
-	public Collection<ExcelItem> getExcelItems() {
-		return excelItems;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
 
-	public List<DataElementGroup> getDataElementGroups() {
-		return dataElementGroups;
-	}
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
 
-	public void setDataElementService(DataElementService dataElementService) {
-		this.dataElementService = dataElementService;
-	}
+    public void setExcelItemGroupId( int excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-	public void setExcelItemGroupId(int excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+    public ExcelItemGroup getExcelItemGroup()
+    {
+        return excelItemGroup;
+    }
 
-	// -------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
+        excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-		excelItems = excelItemService.getExcelItemGroup(excelItemGroupId)
-				.getExcelItems();
+        excelItems = excelItemService.getExcelItemGroup( excelItemGroupId ).getExcelItems();
 
-	    dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-		
-		return SUCCESS;
-	}
+
+        return SUCCESS;
+    }
+
 }
