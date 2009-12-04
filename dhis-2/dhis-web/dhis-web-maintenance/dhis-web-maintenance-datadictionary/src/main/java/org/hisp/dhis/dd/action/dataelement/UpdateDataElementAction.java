@@ -130,11 +130,11 @@ public class UpdateDataElementAction
         this.domainType = domainType;
     }
 
-    private String valueType;
+    private String type;
 
-    public void setValueType( String valueType )
+    public void setType( String type )
     {
-        this.valueType = valueType;
+        this.type = type;
     }
 
     private String aggregationOperator;
@@ -233,7 +233,7 @@ public class UpdateDataElementAction
         dataElement.setDescription( description );
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
-        dataElement.setType( valueType );
+        dataElement.setType( type );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );
