@@ -84,7 +84,7 @@ function getDataElementsByGroupReceived( datalement ){
 * 	Add Data Element Group Order
 */
 function submitDataElementGroupOrder(){
-	if($("#name").val()=='') setMesaage(i18n_name_is_null);	
+	if(byId("name").value =='') setMessage(i18n_name_is_null);	
 	else{
 		selectAllById('selectedDataElements');
 		document.forms['dataElementGroups'].submit();
