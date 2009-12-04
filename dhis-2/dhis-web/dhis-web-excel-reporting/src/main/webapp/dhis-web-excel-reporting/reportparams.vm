@@ -62,12 +62,12 @@
 </p>
 
 <!-- Preview Report Excel -->
-<div id="tabs" style="display:none">
+<div id="tabs" style="display:true">
 
-	#if( $!collectSheets )
+	#if( $!collectSheets && $!mapSheets )
 		<ul>
-		#foreach( $i in $!collectSheets  )
-			<li><a href="#fragment-$i">Sheet $i</a></li>
+		#foreach( $i in $!collectSheets )
+			<li><a href="#fragment-$i">$!mapSheets.get($i)</a></li>
 		#end
 		</ul>
 		

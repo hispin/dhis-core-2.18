@@ -293,25 +293,33 @@ excelItemsDuplicated = null;
 function validateCopyExcelItems() {
 
 	sheetId	= byId("targetExcelItemGroupSheetNo").value;
+	
 	var message = '';
-	if(sheetId < 1){
-		message = input_sheet_no;
+	
+	if ( sheetId < 1 )
+	{
+		message = i18n_input_sheet_no;
 	}
-	if(byId("targetExcelItemGroup").value == -1){
-		message += "<br>"+ choose_report;
+	if ( byId("targetExcelItemGroup").value == -1 )
+	{
+		message += "<br/>" + i18n_choose_report;
 	}
 	
-	if(message.length > 0){
+	if ( message.length > 0 )
+	{
 		setMessage(message);
 		return;
 	}
+	
+	excelItemsCurTarget = null;
+	excelItemsDuplicated = null;
 	
 	excelItemsCurTarget = new Array();
 	excelItemsDuplicated = new Array();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( validateCopyExcelItemsReceived);
+    request.setCallbackSuccess( validateCopyExcelItemsReceived );
 	request.send( "getExcelItemsByGroup.action?excelItemGroupId=" + byId("targetExcelItemGroup").value + "&sheetNo=" + sheetId);
 	
 }
@@ -345,6 +353,8 @@ function splitDuplicatedItems() {
 		}
 	}
 	
+	iReportItemsChecked = reportItemsChecked.length;
+	
 	for (var i in reportItemsChecked)
 	{
 		flag = i;
@@ -359,53 +369,82 @@ function splitDuplicatedItems() {
 			}
 		}
 		
-		if ( flag != -1 )
+		if ( flag >= 0 )
 		{
 			reportItemIds.push( reportItemsChecked[i].split("#")[0] );
 		}
 	}
 }
 
+warningMessages = "";
+
 function saveCopyExcelItems() {
 	
-	var excelItemsDuplicatedList = '';
+	warningMessages = " ======= Sheet [" + sheetId + "] =======<br/>";
 	
-	if (excelItemsDuplicated.length > 0) {
-	
-		excelItemsDuplicatedList = "Sheet [" + sheetId + "] - " + i18n_copy_items_duplicated + "<br>";
+	// If have ReportItem(s) in Duplicating list
+	// preparing the warning message
+	if ( excelItemsDuplicated.length > 0 ) {
+
+		warningMessages += 
+		"<b>[" + (excelItemsDuplicated.length) + "/" + (iReportItemsChecked) + "]</b>:: "
+		+ i18n_copy_items_duplicated
+		+ "<br/><br/>";
 		
 		for (var i in excelItemsDuplicated) {
 		
-			excelItemsDuplicatedList += "&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;" + excelItemsDuplicated[i] + "<br>";
+			warningMessages +=
+			"<b>(*)</b> "
+			+ excelItemsDuplicated[i] 
+			+ "<br/><br/>";
 		}
-	
+		
+		warningMessages += "======================<br/><br/>";
 	}
 	
-	if (reportItemIds.length > 0) {
+	// If have also ReportItem(s) in Copying list
+	// do copy and prepare the message notes
+	if ( reportItemIds.length > 0 ) {
 	
 		var request = new Request();
-    	request.setResponseTypeXML( 'xmlObject' );
-    	var url = "copyExcelItems.action?excelItemGroupId=" + byId("targetExcelItemGroup").value;
-    	url += "&sheetNo=" + byId('targetExcelItemGroupSheetNo').value;
-    	
-    	for (var i=0; i<reportItemIds.length; i++) {
-    		url += "&reportItemIds=" + reportItemIds[i];
-    	}
-    	
-		request.send( url );	
-	
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( saveCopyExcelItemsReceived );	
+		
+		var params = "excelItemGroupId=" + byId("targetExcelItemGroup").value;
+			params += "&sheetNo=" + sheetId;
+			
+		for (var i in reportItemIds)
+		{
+			params += "&reportItemIds=" + reportItemIds[i];
+		}
+			
+		request.sendAsPost(params);
+		request.send( "copyExcelItems.action");
 	}
-	
-	if(reportItemIds.length == 0){
-		setMessage( excelItemsDuplicatedList );
-	}else{
-		if (excelItemsDuplicated.length > 0)
-			 excelItemsDuplicatedList += "<br>==========<br>" + i18n_copy_successful;
-		else
-			excelItemsDuplicatedList += i18n_copy_successful;
-		setMessage( excelItemsDuplicatedList);
+	// If have no any ReportItem(s) will be copied
+	// and also have ReportItem(s) in Duplicating list
+	else if ( excelItemsDuplicated.length > 0 ) {
+
+		setMessage( warningMessages );
 	}
-	
-	$("#copyToExcelItem").hide();
+		
+	hideById("copyToExcelItem");
 	deleteDivEffect();
+}
+
+function saveCopyExcelItemsReceived( data ) {
+	
+	var type = data.getAttribute("type");
+	
+	if ( type == "success" ) {
+		//alert(warningMessages);
+		warningMessages +=
+		"<br/><b>[" + (reportItemIds.length) + "/" + (iReportItemsChecked) + "]</b>:: "
+		+ i18n_copy_successful
+		+ "<br/>======================<br/><br/>";
+		
+		
+	}
+	
+	setMessage( warningMessages );
 }
