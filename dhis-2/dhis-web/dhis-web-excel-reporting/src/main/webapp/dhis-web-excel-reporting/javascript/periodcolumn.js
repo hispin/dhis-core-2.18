@@ -1,12 +1,12 @@
 function openAddPriodColumn(){
-	$("#action").click(validateAddPeriodColumn);
+	byId("action").onclick = function(e){validateAddPeriodColumn();};
 	$("#periodColumn").showAtCenter( true );	
 }
 
 function validateAddPeriodColumn(){
-	var startdate = $("#startdate").val();
-	var enddate = $("#enddate").val();
-	var column = $("#column").val();
+	var startdate = byId("startdate").value;
+	var enddate = byId("enddate").value;
+	var column = byId("column").value;
 	if(startdate==""){
 		setMessage(i18n_startdate_null);
 	}else if(enddate==""){
@@ -36,23 +36,21 @@ function openUpdatePriodColumnCompleted( xmlObject ){
 	var periodType = xmlObject.getElementsByTagName("periodType")[0].firstChild.nodeValue;
 	var column = xmlObject.getElementsByTagName("column")[0].firstChild.nodeValue;
 	
+	byId("startdate").value = startdate;
+	byId("enddate").value = enddate;
+	byId("periodType").value = periodType;
+	byId("column").value = column;
+	byId("id").value = id;
 	
-	$("#startdate").val(startdate);
-	$("#enddate").val(enddate);
-	$("#periodType").val(periodType);
-	$("#column").val(column);
-	$("#id").val(id);
-	
-	
-	$("#action").click(validateUpdatePeriodColumn);
+	byId("action").onclick = function(e) {validateUpdatePeriodColumn() ; };
 	$("#periodColumn").showAtCenter( true );	
 		
 }
 
 function validateUpdatePeriodColumn(){
-	var startdate = $("#startdate").val();
-	var enddate = $("#enddate").val();
-	var column = $("#column").val();
+	var startdate = byId("startdate").value;
+	var enddate = byId("enddate").value;
+	var column = byId("column").value;
 	if(startdate==""){
 		setMessage(i18n_startdate_null);
 	}else if(enddate==""){

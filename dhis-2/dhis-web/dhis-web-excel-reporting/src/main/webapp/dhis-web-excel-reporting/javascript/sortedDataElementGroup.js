@@ -17,7 +17,7 @@ function openAddDataElementGroupOrder(){
 
 function submitDataElementGroupOrder(){
 	
-	if($("#name").val()=='') setMessage(i18n_name_is_null);	
+	if(byId("name").value =='') setMessage(i18n_name_is_null);	
 	else{
 		selectAllById('dataElementIds');
 		document.forms['dataElementGroups'].submit();
@@ -30,28 +30,41 @@ function submitDataElementGroupOrder(){
 
 function deleteDataElementGroupOrder( id ){
 	if(window.confirm(i18n_confirm_delete)){
-		$.post("deleteDataElementGroupOrderForCategory.action",{id:id}, function (data){window.location.reload()},'xml');		
+		var request = new Request();
+		request.setResponseTypeXML( 'datalement' );
+		request.setCallbackSuccess( Completed );
+		request.send("deleteDataElementGroupOrderForCategory.action?id=" + id);
+		
 	}
 }
 
+function Completed(xmlObject){
+	window.location.reload();
+}
 // -----------------------------------------------------------------------------
 // Get All Data Element Group
 // -----------------------------------------------------------------------------
 
 function getALLDataElementGroups(){
-	$.get("getAllDataElementGroups.action",{},
-	function(data){
-		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
-		availableDataElementGroups.options.length = 0;
-		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
-		availableDataElementGroups.options.add(new Option("ALL", null));	
-		for(var i=0;i<dataElementGroups.length;i++){
-			var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			availableDataElementGroups.options.add(new Option(name, id));			
-		}			
-		getDataElementsByGroup($("#availableDataElementGroups").val());
-	},'xml');
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'datalement' );
+	request.setCallbackSuccess( getALLDataElementGroupsReceived );
+	request.send("getAllDataElementGroups.action");
+
+}
+
+function getALLDataElementGroupsReceived ( data ){
+	var availableDataElementGroups = document.getElementById('availableDataElementGroups');
+	availableDataElementGroups.options.length = 0;
+	var dataElementGroups = data.getElementsByTagName('dataElementGroup');
+	availableDataElementGroups.options.add(new Option("ALL", null));	
+	for(var i=0;i<dataElementGroups.length;i++){
+		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
+		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
+		availableDataElementGroups.options.add(new Option(name, id));			
+	}			
+	getDataElementsByGroup($("#availableDataElementGroups").val());
 }
 
 // -----------------------------------------------------------------------------
@@ -73,7 +86,6 @@ function updateDataElementGroupOrder(){
 }
 
 function updateDataElementGroupOrderReceived(xmlObject){
-	
 	setMessage(xmlObject.firstChild.nodeValue);
 }
 
@@ -138,52 +150,52 @@ function getDataElementsByGroupReceived( datalement ){
 
 function openUpdateDataElementOrder( id ){
 	
-	$("#dataElementGroupOrderId").val( id );
-	$.post("getDataElementGroupOrderForCategory.action",{id:id},
-	function(data){
-		var listDataElement = document.getElementById('dataElementIds');
-		listDataElement.options.length = 0;
-		data = data.getElementsByTagName('dataElementGroupOrder')[0];
-		$("#name").val(data.getElementsByTagName('name')[0].firstChild.nodeValue);
-		$("#code").val(data.getElementsByTagName('code')[0].firstChild.nodeValue);
-		var dataElements = data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
-		
-		for(var i=0;i<dataElements.length;i++){
-			var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
-			var id = dataElements[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-			
-			var option = new Option( name, id );
-			option.onmousemove  = function(e){
-				showToolTip( e, this.text);
-			}
+	byId("dataElementGroupOrderId").value = id;
 	
-			listDataElement.add(option, null);
-		}
-		
-		document.forms['dataElementGroups'].action = "updateDataElementGroupOrderForCategory.action";
-		
-		getALLDataElementGroups();
-	},'xml');
+	var request = new Request();
+	request.setResponseTypeXML( 'datalement' );
+	request.setCallbackSuccess( openUpdateDataElementOrderReceived );
+	request.send("getDataElementGroupOrderForCategory.action?id=" + id);
+	
 }
 
+function openUpdateDataElementOrderReceived(data){
+	var listDataElement = document.getElementById('dataElementIds');
+	listDataElement.options.length = 0;
+	byId("name").value = getElementValue(data,'name' );//data.getElementsByTagName('name')[0].firstChild.nodeValue;
+	byId("code").value = getElementValue(data,'code' );// data.getElementsByTagName('code')[0].firstChild.nodeValue;
+	var dataElements = getElementValue(data,'dataElements' );// data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
+	
+	for(var i=0;i<dataElements.length;i++){
+		var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
+		var id = dataElements[i].getElementsByTagName('id')[0].firstChild.nodeValue;
+		
+		var option = new Option( name, id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+
+		listDataElement.add(option, null);
+	}
+	
+	document.forms['dataElementGroups'].action = "updateDataElementGroupOrderForCategory.action";
+	
+	getALLDataElementGroups();	
+}
 
 // -----------------------------------------------------------------------------
 // Update sortesd order of DataElement
 // -----------------------------------------------------------------------------
 
 function updateSortedDataElement(){	
-	var dataElements = byId('sortdataElement');
-	var dataElementIds = new Array();
-	for(var i=0;i<dataElements.length;i++){		
-		dataElementIds.push(dataElements.item(i).value);
-	}
-	
-	$.post("updateSortedDataElementsForCategory.action",{
-		id:$('#dataElementGroupOrderId').val(),
-		dataElementIds:dataElementIds
-	},function (data){
-		history.go(-1);
-	},'xml');	
+
+	var request = new Request();
+	request.setResponseTypeXML( 'datalement' );
+	request.setCallbackSuccess( Completed );
+	var params = "id=" + byId('dataElementGroupOrderId').value;
+		params += getQueryStringFromList( 'sortdataElement', 'dataElementIds');
+	request.send("updateSortedDataElementsForCategory");
+
 }
 
 // -----------------------------------------------------------------------------

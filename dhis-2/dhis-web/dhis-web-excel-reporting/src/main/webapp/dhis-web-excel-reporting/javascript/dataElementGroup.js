@@ -15,20 +15,7 @@ function getALLDataElementGroups(){
 	var url = "getAllDataElementGroups.action";
 	
 	request.send(url);
-	
-	/*$.get("getAllDataElementGroups.action",{},
-	function(data){
-		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
-		availableDataElementGroups.options.length = 0;
-		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
-		availableDataElementGroups.options.add(new Option("ALL", null));	
-		for(var i=0;i<dataElementGroups.length;i++){
-			var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			availableDataElementGroups.options.add(new Option(name, id));			
-		}			
-		getDataElementsByGroup($("#availableDataElementGroups").val());
-	},'xml'); */
+
 }
 
 function getALLDataElementGroupsReceived(xmlObject){
@@ -104,7 +91,6 @@ function deleteDataElementOrder( id ){
 		var url = "deleteDataElementGroupOrder.action?id=" + id;
 		request.send( url );
 		
-		//$.post("deleteDataElementGroupOrder.action",{id:id}, function (data){window.location.reload()},'xml');		
 	}
 }
 
@@ -125,25 +111,6 @@ function openUpdateDataElementOrder( id ){
 	request.setCallbackSuccess( openUpdateDataElementOrderReceived );
 	var url = "getDataElementGroupOrder.action?id=" + id;
 	request.send(url);
-	
-	/*$("#dataElementGroupOrderId").val( id );
-	$.post("getDataElementGroupOrder.action",{id:id},
-	function(data){
-		var listDataElement = document.getElementById('selectedDataElements');
-		listDataElement.options.length = 0;
-		data = data.getElementsByTagName('dataElementGroupOrder')[0];
-		$("#name").val(data.getElementsByTagName('name')[0].firstChild.nodeValue);
-		$("#code").val(data.getElementsByTagName('code')[0].firstChild.nodeValue);
-		var dataElements = data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
-		for(var i=0;i<dataElements.length;i++){
-			var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
-			var id = dataElements[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-			listDataElement.options.add(new Option(name, id));
-		}
-		
-		document.forms['dataElementGroups'].action = "updateDataElementGroupOrder.action";		
-		getALLDataElementGroups();
-	},'xml'); */
 }
 
 function openUpdateDataElementOrderReceived(xmlObject)
@@ -166,19 +133,6 @@ function openUpdateDataElementOrderReceived(xmlObject)
 * 	Update Sorted Data Element 
 */
 function updateSortedDataElement(){	
-/*	var dataElements = document.getElementsByName('dataElement');
-	var dataElementIds = new Array();
-	for(var i=0;i<dataElements.length;i++){		
-		dataElementIds.push(dataElements.item(i).value);
-	}
-	
-	
-	$.post("updateSortedDataElements.action",{
-		id:id,
-		dataElementIds:dataElementIds
-	},function (data){
-		history.go(-1);
-	},'xml');	*/
 	
 	var dataElements = document.getElementsByName('dataElement');
 	var paramDataElementIds = '';
