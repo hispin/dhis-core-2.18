@@ -239,17 +239,16 @@ function updateReportExcelItem(){
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( Completed );
 	var params = "id=" + byId("id").value;
-	params += "&name=" + byId("name").value;
-	params += "&expression=" + byId("expression").value;
-	params += "&row=" + byId("row").value;
-	params += "&column=" + byId("column").value;
-	params += "&reportId=" + reportId;
-	params += "&itemType=" + byId("itemType").value;
-	params += "&periodType=" + byId("periodType").value;
-	params += "&sheetNo=" + byId("sheetNo").value;
-	
-	//request.sendAsPost(params);
-	request.send("updateReportExcelItem.action?" + params);
+		params += "&name=" + byId("name").value;
+		params += "&expression=" + byId("expression").value;
+		params += "&row=" + byId("row").value;
+		params += "&column=" + byId("column").value;
+		params += "&reportId=" + reportId;
+		params += "&itemType=" + byId("itemType").value;
+		params += "&periodType=" + byId("periodType").value;
+		params += "&sheetNo=" + byId("sheetNo").value;
+	request.sendAsPost(params);
+	request.send("updateReportExcelItem.action");
 	
 /*	$.post("updateReportExcelItem.action",{
 		id:$("#id").val(),
@@ -265,8 +264,6 @@ function updateReportExcelItem(){
 		window.location.reload();
 	},'xml');	*/
 }
-
-
 
 function insertFormulaText(sourceId, targetId) {
 	byId(targetId).value += byId(sourceId).value;

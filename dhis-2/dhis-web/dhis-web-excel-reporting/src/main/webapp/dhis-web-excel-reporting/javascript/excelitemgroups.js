@@ -22,19 +22,6 @@ function openUpdateExcelItemGroup( id ){
 	request.setCallbackSuccess( openUpdateExcelItemGroupReceived );
 	request.send("getExcelItemGroup.action?id=" + id);
 	
-	/*$.post("getExcelItemGroup.action",{id:id},
-	function ( xmlObject ){
-		
-		$("#id").val(id);
-		$("#name").val( xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue );
-		$("#type").val( xmlObject.getElementsByTagName('type')[0].firstChild.nodeValue);
-		$("#periodType").val( xmlObject.getElementsByTagName('periodType')[0].firstChild.nodeValue);
-		
-		$("#divExcelitemGroup").showAtCenter( true );
-		$("#name").attr("disabled", true);
-		$("#type").attr("disabled", true);
-		
-	},'xml'); */	
 }
 
 function openUpdateExcelItemGroupReceived(xmlObject){
@@ -56,27 +43,11 @@ function validateExcelItemGroup(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateExcelItemGroupReceived );
-	request.send("validateExcelItemGroup.action?name=" + byId('name').value + "&type=" + byId('type').value);
+	var params = "name=" + byId('name').value;
+		params += "&type=" + byId('type').value
+	request.sendAsPost(params);
+	request.send( "validateExcelItemGroup.action" );
 	
-	/*$.post("validateExcelItemGroup.action",{		
-		name:$("#name").val(),
-		type:$("#type").val()
-	},function(xmlObject){
-		var xmlObject = xmlObject.getElementsByTagName('message')[0];
-		var type = xmlObject.getAttribute( 'type' );
-		if(type=='error')
-		{
-			setMessage(xmlObject.firstChild.nodeValue);
-		}else if(type=='success')
-		{
-			if(mode == 'add'){
-				addExcelItemGroup();
-			}else{
-				updateExcelItemGroup();
-			}
-			
-		}
-	},'xml');	*/
 }
 
 function validateExcelItemGroupReceived(xmlObject){
@@ -101,18 +72,12 @@ function addExcelItemGroup(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( addExcelItemGroupReceived );
-	request.send("addExcelItemGroup.action?name=" + byId('name').value + 
-		"&type=" + byId('type').value + 
-		"&periodTypeName=" + byId('periodType').value );
+	var params = "name=" + byId('name').value;
+		params += "&type=" + byId('type').value;
+		params += "&periodTypeName=" + byId('periodType').value;
+	request.sendAsPost(params);
+	request.send("addExcelItemGroup.action");
 	
-	
-	/* $.post("addExcelItemGroup.action",{
-		name:$("#name").val(),
-		type:$("#type").val(),
-		periodTypeName:$("#periodType").val()
-	},function(data){
-		window.location.reload();
-	},'xml');	*/
 }
 
 function addExcelItemGroupReceived(){
@@ -124,10 +89,12 @@ function updateExcelItemGroup(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( addExcelItemGroupReceived );
-	request.send("updateExcelItemGroup.action?id=" + byId('id').value + 
-		"&name=" + byId('name').value +
-		"&type=" + byId('type').value +
-		"&periodTypeName=" + byId('periodType').value );
+	var params = "id=" + byId('id').value;
+		params += "&name=" + byId('name').value;
+		params += "&type=" + byId('type').value
+		params += "&periodTypeName=" + byId('periodType').value;
+	request.sendAsPost(params);
+	request.send( "updateExcelItemGroup.action" );
 	
 	/* $.post("updateExcelItemGroup.action",{
 		id:$("#id").val(),
@@ -223,27 +190,6 @@ function getALLDataElementGroups(){
 	request.setCallbackSuccess( getALLDataElementGroupsReceived );	
 	request.send( "getAllDataElementGroups.action" );	
 	
-	/* $.get("getAllDataElementGroups.action",{},
-	function(data){
-		
-		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
-		
-		availableDataElementGroups.options.length = 0;
-		
-		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
-		
-		availableDataElementGroups.options.add(new Option("ALL", null));	
-		
-		for(var i=0;i<dataElementGroups.length;i++){
-			
-			var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			
-			var option = new Option( name, id );
-			availableDataElementGroups.add(option, null);
-		}			
-		getDataElementsByGroup($("#availableDataElementGroups").val());
-	},'xml'); */
 }
 
 function getALLDataElementGroupsReceived(data){
@@ -263,6 +209,6 @@ function getALLDataElementGroupsReceived(data){
 		
 		var option = new Option( name, id );
 		availableDataElementGroups.add(option, null);
-	}			
+	}
 	getDataElementsByGroup(byId("availableDataElementGroups").value);
 }
