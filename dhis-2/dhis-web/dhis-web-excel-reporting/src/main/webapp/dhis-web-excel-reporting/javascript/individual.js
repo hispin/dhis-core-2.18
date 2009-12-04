@@ -240,13 +240,13 @@ function generateIndividualReportExcel(){
 	var message = '';
 	if( selectedDataElements.length==0)
 	{
-		message = choose_dataelement + '<br>';
+		message = i18n_choose_dataelement + '<br/>';
 	}
 	// Check periods
 	selectedDataElements = byId('selectedPeriods').options;
 	if(selectedDataElements.length==0)
 	{
-		message += choose_period + '<br>';
+		message += i18n_choose_period + '<br/>';
 	}
 	
 	if(message.length > 0 ){

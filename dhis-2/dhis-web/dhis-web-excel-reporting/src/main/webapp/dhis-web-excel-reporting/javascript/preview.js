@@ -139,7 +139,7 @@ function exportFromXMLtoHTML( parentElement ) {
 	
 	showById("tabs");
 	
-	window.status= "DATAWARE HOUSE - "+ _title;
+	window.status= "DATAWARE HOUSE - " + _title;
 	window.stop();
 }
 // END OF Previewed Report Excel //

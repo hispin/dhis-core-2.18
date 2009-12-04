@@ -27,17 +27,22 @@
 package org.hisp.dhis.reportexcel.export.action;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 import org.hisp.dhis.system.util.CodecUtils;
 
@@ -53,19 +58,41 @@ public class SelectFormAction
     implements Action
 {
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
-
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
+
+    private ReportLocationManager reportLocationManager;
+
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    {
+        this.reportLocationManager = reportLocationManager;
+    }
+
     private PeriodDatabaseService periodDatabaseService;
 
-    // -------------------------------------------
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
+    {
+        this.periodDatabaseService = periodDatabaseService;
+    }
+
+    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
+
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private List<Period> periods;
 
@@ -77,20 +104,21 @@ public class SelectFormAction
 
     private Integer reportId;
 
+    private HSSFWorkbook templateWorkbook;
+
+    private FileInputStream inputStreamExcelTemplate;
+
+    private Map<Integer, String> mapSheets = new HashMap<Integer, String>();
+
     private Collection<Integer> collectSheets = new HashSet<Integer>();
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public List<String> getGroups()
     {
         return groups;
-    }
-
-    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
-    {
-        this.periodDatabaseService = periodDatabaseService;
     }
 
     public OrganisationUnit getOrganisationUnit()
@@ -123,19 +151,14 @@ public class SelectFormAction
         return collectSheets;
     }
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    public Map<Integer, String> getMapSheets()
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        return mapSheets;
     }
 
     public List<Period> getPeriods()
     {
         return periods;
-    }
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
     }
 
     private File fileExcel;
@@ -168,6 +191,10 @@ public class SelectFormAction
 
         Collections.sort( groups );
 
+        // ---------------------------------------------------------------------
+        // Processing Tabs for Previewing excel report
+        // ---------------------------------------------------------------------
+
         if ( reportGroup != null )
         {
             reportGroup = CodecUtils.unescape( reportGroup );
@@ -175,13 +202,25 @@ public class SelectFormAction
 
         if ( reportId != null )
         {
+            inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
+                + File.separator + reportService.getReportExcel( reportId ).getExcelTemplateFile() );
+
+            templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
+
             collectSheets = reportService.getSheets( reportId );
+
+            for ( Integer sheetId : collectSheets )
+            {
+                mapSheets.put( sheetId, CodecUtils.unescape( templateWorkbook.getSheetName( sheetId.intValue() ) ) );
+            }
         }
         else
         {
             collectSheets.add( 0 );
+            mapSheets.put( 0, "" );
         }
 
         return SUCCESS;
     }
+
 }
