@@ -3191,8 +3191,6 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
     var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
     var nameColumn = MAPDATA.nameColumn;
     var mlp = MAPDATA.mapLayerPath;
-    var count_features = 0;
-    var count_orgunits = 0;
     var count_match = 0;
     var relations = '';
 	var featureName, orgunitName;
@@ -3205,10 +3203,10 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
 		organisationUnits[i].compareName = organisationUnits[i].name.split(' ').join('').toLowerCase();
 	}
 	
-    for ( var j=0; j < features.length; j++ ) {
-        for ( var i=0; i < organisationUnits.length; i++ ) {
+    for ( var i=0; i < organisationUnits.length; i++ ) {
+        for ( var j=0; j < features.length; j++ ) {
 			if (features[j].attributes.compareName == organisationUnits[i].compareName) {
-                count_match++;                
+                count_match++;
                 relations += organisationUnits[i].id + '::' + features[j].attributes[nameColumn] + ';;';
 				break;
             }
