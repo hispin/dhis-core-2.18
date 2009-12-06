@@ -1,4 +1,4 @@
-﻿//  Country dependent
+//  Country dependent
 
     FACILITY_LEVEL = 4;
 

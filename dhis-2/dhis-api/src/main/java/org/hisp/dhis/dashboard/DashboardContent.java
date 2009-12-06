@@ -175,7 +175,7 @@ public class DashboardContent
             
             while ( mapViews.size() > MAX_DASHBOARD_ELEMENTS )
             {
-                reportTables.remove( MAX_DASHBOARD_ELEMENTS );
+                mapViews.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
