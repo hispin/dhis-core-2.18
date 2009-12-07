@@ -234,22 +234,19 @@ function validateCopyReportItems() {
 	sheetId	= byId("targetSheetNo").value;
 	
 	var message = '';
-	
-	if ( sheetId < 1 )
-	{	
-		message = i18n_input_sheet_no;
+	if(sheetId < 1){
+		message = input_sheet_no;
 	}
-	if ( byId("targetReport").value == -1 )
-	{	
-		message += "<br/>" + i18n_choose_report;
+	if(byId("targetReport").value == -1){
+		message += "<br>"+ choose_report;
 	}
 	
-	if ( message.length > 0 )
-	{	
+	if(message.length > 0){
 		setMessage(message);
 		return;
 	}
 	
+	if(byId("targetReport").value)
 	reportItemsCurTarget = null;
 	reportItemsDuplicated = null;
 	
@@ -260,17 +257,14 @@ function validateCopyReportItems() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateCopyReportItemsReceived );
-	
 	var param = "reportId=" + byId("targetReport").value;
 		param += "&sheetNo=" + sheetId;
-		
 	request.sendAsPost(param);
 	request.send("getReportExcelItems.action");
 	
 }
 
-function validateCopyReportItemsReceived( data ) {
-
+function validateCopyReportItemsReceived(data){
 	var items = data.getElementsByTagName('reportItem');
 		
 	for (var i = 0 ;  i < items.length ; i ++) 
@@ -279,7 +273,6 @@ function validateCopyReportItemsReceived( data ) {
 	}
 	
 	splitDuplicatedReportItems();
-	
 	saveCopyItems();
 }
 
@@ -294,7 +287,6 @@ function splitDuplicatedReportItems() {
 	reportItems = new Array();
 	
 	for (var i = 0 ; i < listRadio.length ; i++) {
-	
 		if ( listRadio.item(i).checked ) {
 			reportItemsChecked.push( listRadio.item(i).getAttribute("reportItemID") + "#" + listRadio.item(i).getAttribute("reportItemName"));
 		}
@@ -321,8 +313,6 @@ function splitDuplicatedReportItems() {
 		}
 	}
 }
-
-warningMessage = "";
 
 function saveCopyItems() {
 	
@@ -352,21 +342,28 @@ function saveCopyItems() {
 	// do copy and prepare the message notes
 	if ( reportItems.length > 0 ) {
 	
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( saveCopyItemsReceived );	
-		
-		var params = "reportId=" + byId("targetReport").value;
-			params += "&sheetId=" + sheetId;
-			
-		for (var i in reportItems)
+		$.post("copyReportExcelItems.action",
 		{
-			params += "&reportItems=" + reportItems[i];
-		}
+			reportId:$("#targetReport").val(),
+			sheetNo:sheetId,
+			reportItems:reportItems
+		},
+		function (data)
+		{
+			var data = data.getElementsByTagName("message")[0];	
+			var type = data.getAttribute("type");
 			
-		request.sendAsPost(params);
-		request.send( "copyReportExcelItems.action");
-	
+			if ( type == "success" ) {
+				
+				warningMessage +=
+				"<br/><b>[" + (reportItems.length) + "/" + (iReportItemsChecked) + "]</b>:: "
+				+ i18n_copy_successful
+				+ "<br/>======================<br/><br/>";
+			}
+			
+			setMessage( warningMessage );
+			
+		},'xml');
 	}
 	// If have no any ReportItem(s) will be copied
 	// and also have ReportItem(s) in Duplicating list
@@ -375,24 +372,8 @@ function saveCopyItems() {
 		setMessage( warningMessage );
 	}
 		
-	hideById("copyTo");
+	$("#copyTo").hide();
 	deleteDivEffect();
-}
-
-function saveCopyItemsReceived (message) {
-
-	var type = message.getAttribute("type");
-			
-	if ( type == "success" ) {
-		
-		warningMessage +=
-		"<br/><b>[" + (reportItems.length) + "/" + (iReportItemsChecked) + "]</b>:: "
-		+ i18n_copy_successful
-		+ "<br/>======================<br/><br/>";
-	}
-	
-	setMessage( warningMessage );
-
 }
 
 
@@ -428,7 +409,7 @@ function getALLDataElementGroup(){
 */
 
 function getDataElementsByGroup( )
-{		
+{
 	var dataElementGroupId = $("#dataElementGroup").val();
 	var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + $("#dataElementGroup").val();
 	
@@ -445,7 +426,7 @@ function getDataElementsByGroupCompleted( xmlObject ){
 	dataElementList.options.length = 0;
 	
 	var dataelements = xmlObject.getElementsByTagName( "dataElement" );
-	
+
 	for ( var i = 0; i < dataelements.length; i++)
 	{
 		var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
@@ -577,7 +558,7 @@ function getDataElementGroupOrder(){
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( getDataElementGroupOrderReceived );
-	request.send("getReportExcel.action?id=" + reportId);
+	request.send("getDataElementGroupOrder.action?id=" + $("#dataElementGroup_").val());
 
 }
 
@@ -585,6 +566,7 @@ function getDataElementGroupOrderReceived(data){
 	var availableDataElements = document.getElementById('availableDataElements_');
 	availableDataElements.options.length = 0;
 	var dataelEments = data.getElementsByTagName( "dataElement" );	
+	
 	for ( var i = 0; i < dataelEments.length; i++ )
 	{			
 		var id = dataelEments[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
