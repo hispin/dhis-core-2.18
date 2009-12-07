@@ -46,10 +46,10 @@ function setMergedNumberForEachCell( parentElement ) {
 	aKey 		= new Array();
 	aMerged 	= new Array();
 	
-	var cells 	 = parentElement.getElementsByTagName( 'cell' );
+	var cells 	= parentElement.getElementsByTagName( 'cell' );
 	
-	for (var i = 0 ; i < cells.length ; i ++) {
-		
+	for (var i  = 0 ; i < cells.length ; i ++)
+	{	
 		aKey[i]	= cells[i].getAttribute( 'iKey' );
 		aMerged[i]	= cells[i].firstChild.nodeValue;
 	}
@@ -57,10 +57,10 @@ function setMergedNumberForEachCell( parentElement ) {
 
 function getMergedNumberForEachCell( sKey ) {
 
-	for (var i = 0 ; i < aKey.length ; i ++) {
-	
-		if ( sKey == aKey[i] ) {
-		
+	for (var i = 0 ; i < aKey.length ; i ++)
+	{
+		if ( sKey == aKey[i] )
+		{
 			return Number(aMerged[i]);
 		}
 	}
@@ -70,16 +70,17 @@ return 1;
 function exportFromXMLtoHTML( parentElement ) {
 
 	var _index		= 0;
+	var _orderSheet	= 0;
 	var _sHTML		= "";
 	var _sPattern	= "";
 	var _rows 		= "";
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
-	var _title		= getElementValue(parentElement, 'name');
 	
 	for (var s = 0 ; s < _sheets.length ; s ++)
 	{
-		_rows = _sheets[s].getElementsByTagName( 'row' );
+		_rows 		= _sheets[s].getElementsByTagName( 'row' );
+		_orderSheet	= getRootElementAttribute( _sheets[s], "id" );
 
 		_sHTML = "<table class='formatTablePreview'>";
 		
@@ -92,7 +93,7 @@ function exportFromXMLtoHTML( parentElement ) {
 			
 			for (var j 	= 0 ; j < _cols.length ; )
 			{
-				var _number	= _cols[j].getAttribute( 'no' );
+				var _number	= getRootElementAttribute( _cols[j], 'no' );
 				
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++)
@@ -107,13 +108,13 @@ function exportFromXMLtoHTML( parentElement ) {
 					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
 				
 					// If this cell is merged - Key's form: Sheet#Row#Col
-					_sPattern 		=  s + "#" + i + "#" + _number;
+					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
 					_colspan 		= getMergedNumberForEachCell( _sPattern );
 					
 					// Jumping for <For Loop> AND <Empty Cells>
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
-
+					
 					_sHTML += "<td align='" + _align + "' colspan='" + _colspan;
 					
 					if ( isNaN(_sData) == false )
@@ -131,15 +132,15 @@ function exportFromXMLtoHTML( parentElement ) {
 		}
 		_sHTML += "</table><br/>";
 		
-		if ( byId("fragment-" + eval(s+1)) != null ) {
-		
-			byId("fragment-" + eval(s+1)).innerHTML = _sHTML;
+		if ( byId( "fragment-" + _orderSheet ) != null )
+		{
+			byId( "fragment-" + _orderSheet ).innerHTML = _sHTML;
 		}
 	}
 	
 	showById("tabs");
 	
-	window.status= "DATAWARE HOUSE - " + _title;
+	window.status = "DATAWARE HOUSE";
 	window.stop();
 }
 // END OF Previewed Report Excel //
