@@ -211,7 +211,7 @@ public class SelectFormAction
 
             for ( Integer sheetId : collectSheets )
             {
-                mapSheets.put( sheetId, CodecUtils.unescape( templateWorkbook.getSheetName( sheetId.intValue() ) ) );
+                mapSheets.put( sheetId, CodecUtils.unescape( templateWorkbook.getSheetName( sheetId.intValue() - 1 ) ) );
             }
         }
         else
