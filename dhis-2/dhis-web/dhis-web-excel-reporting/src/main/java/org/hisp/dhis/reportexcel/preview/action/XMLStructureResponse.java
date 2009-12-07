@@ -32,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.hisp.dhis.reportexcel.utils.StringUtils;
+
 import jxl.Cell;
 import jxl.CellType;
 import jxl.Range;
@@ -40,8 +42,6 @@ import jxl.Workbook;
 import jxl.format.CellFormat;
 import jxl.format.Colour;
 import jxl.format.Pattern;
-
-import org.hisp.dhis.reportexcel.utils.StringUtils;
 
 /**
  * Simple demo class which uses the api to present the contents of an excel 97
@@ -57,7 +57,7 @@ public class XMLStructureResponse
     /**
      * The encoding to write
      */
-    private StringBuffer STRUCTURE_DATA_RESPONSE;
+    private StringBuffer STRUCTURE_DATA_RESPONSE = new StringBuffer( 200000 );
 
     /**
      * The encoding to write
@@ -99,6 +99,11 @@ public class XMLStructureResponse
         return STRUCTURE_DATA_RESPONSE.toString();
     }
 
+    private void cleanUpForResponse()
+    {
+        System.gc();
+    }
+
     /**
      * Constructor
      * 
@@ -119,12 +124,13 @@ public class XMLStructureResponse
 
         throws Exception
     {
+        this.cleanUpForResponse();
+
         this.ENCODING = enc;
         this.bWRITE_DTD = bWriteDTD;
         this.bWRITE_VERSION = bWriteVersion;
         this.PATH_FILE_NAME = pathFileName;
         this.WORKBOOK = Workbook.getWorkbook( new File( pathFileName ) );
-        this.STRUCTURE_DATA_RESPONSE = new StringBuffer();
 
         if ( this.ENCODING == null || !this.ENCODING.equals( "UnicodeBig" ) )
         {
@@ -137,14 +143,14 @@ public class XMLStructureResponse
         }
         else
         {
-            writeXML(collectSheets);
+            writeXML( collectSheets );
         }
     }
 
     /**
      * Writes out the WORKBOOK data as XML, without formatting information
      */
-    private void writeXML(Collection<Integer> collectSheets)
+    private void writeXML( Collection<Integer> collectSheets )
         throws IOException
     {
         if ( this.bWRITE_VERSION )
@@ -165,9 +171,9 @@ public class XMLStructureResponse
 
         for ( Integer sheet : collectSheets )
         {
-            Sheet s = WORKBOOK.getSheet( sheet-1 );
+            Sheet s = WORKBOOK.getSheet( sheet - 1 );
 
-            STRUCTURE_DATA_RESPONSE.append( "  <sheet>" );
+            STRUCTURE_DATA_RESPONSE.append( "  <sheet id=\"" + sheet + "\">" );
             STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
             STRUCTURE_DATA_RESPONSE.append( "    <name><![CDATA[" + s.getName() + "]]></name>" );
             STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
@@ -212,7 +218,7 @@ public class XMLStructureResponse
         throws Exception
     {
         FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
-        org.apache.poi.ss.usermodel.Workbook hssfwb = new org.apache.poi.hssf.usermodel.HSSFWorkbook ( fis );
+        org.apache.poi.ss.usermodel.Workbook hssfwb = new org.apache.poi.hssf.usermodel.HSSFWorkbook( fis );
 
         if ( bWriteDescription )
         {
@@ -237,7 +243,7 @@ public class XMLStructureResponse
 
         for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( hssfwb, (sheet-1), bDetailed );
+            writeBySheetNo( hssfwb, (sheet - 1), bDetailed );
         }
 
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_CLOSETAG );
@@ -252,7 +258,7 @@ public class XMLStructureResponse
     {
         Sheet s = WORKBOOK.getSheet( sheetNo );
 
-        STRUCTURE_DATA_RESPONSE.append( "  <sheet>" );
+        STRUCTURE_DATA_RESPONSE.append( "  <sheet id=\"" + (sheetNo + 1) + "\">" );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
         STRUCTURE_DATA_RESPONSE.append( "    <name><![CDATA[" + s.getName() + "]]></name>" );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
@@ -280,7 +286,8 @@ public class XMLStructureResponse
                 {
                     bFormula = false;
 
-                    org.apache.poi.hssf.util.CellReference cellReference = new org.apache.poi.hssf.util.CellReference( i, j );
+                    org.apache.poi.hssf.util.CellReference cellReference = new org.apache.poi.hssf.util.CellReference(
+                        i, j );
                     org.apache.poi.ss.usermodel.Row rowRef = sheet.getRow( cellReference.getRow() );
                     org.apache.poi.ss.usermodel.Cell cellRef = rowRef.getCell( cellReference.getCol() );
 
@@ -425,7 +432,7 @@ public class XMLStructureResponse
 
         for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( sheet-1 );
+            writeBySheetNo( sheet - 1 );
         }
 
         // Close the main Tag //
@@ -450,7 +457,7 @@ public class XMLStructureResponse
 
             if ( iColTopLeft != iColBottomRight )
             {
-                STRUCTURE_DATA_RESPONSE.append( "  <cell" + " iKey=\"" + sheetNo + "#" + iRowTopLeft + "#"
+                STRUCTURE_DATA_RESPONSE.append( "  <cell" + " iKey=\"" + (sheetNo + 1) + "#" + iRowTopLeft + "#"
                     + iColTopLeft + "\">" + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
                 STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
             }

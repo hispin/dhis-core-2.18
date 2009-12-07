@@ -7,7 +7,6 @@
 		$("#tabs").tabs({collapsible : true});
 	});
 </script>
-	
 
 <h2>$i18n.getString( "generate_report" )</h2>
 <table>	
