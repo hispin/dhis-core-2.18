@@ -300,6 +300,8 @@ public abstract class GenerateReportSupport
 
     protected HSSFCellStyle csNumber;
 
+    protected HSSFCellStyle csFormula;
+    
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
     protected void initExcelFormat()
@@ -319,6 +321,7 @@ public abstract class GenerateReportSupport
         csTextChapterLeft = templateWorkbook.createCellStyle();
         csTextOrgUnitName = templateWorkbook.createCellStyle();
         csNumber = templateWorkbook.createCellStyle();
+        csFormula = templateWorkbook.createCellStyle();
 
     }
 
@@ -349,6 +352,9 @@ public abstract class GenerateReportSupport
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_JUSTIFY );
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
+        initPOIStylesManager.initCellStyle( csFormula, csFontBold, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
         initPOIStylesManager.initCellStyle( csTextOrgUnitName, csFontBold, this.CELLSTYLE_BORDER,
