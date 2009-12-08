@@ -542,7 +542,7 @@ function openCategoryExpressionReceived(data){
 	setPositionCenter( 'category' );
 	enable("dataElementGroup_");
 	enable("availableDataElements_");
-	byId("availableDataElements_").onChange = function(e){getOptionCombos_()};
+	byId("availableDataElements_").onchange = function(e){getOptionCombos_()};
 	
 	showDivEffect();
 	$("#category").show();	
