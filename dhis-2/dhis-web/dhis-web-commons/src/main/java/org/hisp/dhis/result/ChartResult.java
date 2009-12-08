@@ -35,11 +35,15 @@ import java.io.OutputStream;
 public class ChartResult
     implements Result
 {
+    private static final String DEFAULT_CONTENT_TYPE = "image/png";
+    
     private JFreeChart chart = null;
 
     private Integer height;
 
     private Integer width;
+    
+    private String contentType;
 
     /**
      * Sets the JFreeChart to use.
@@ -70,6 +74,16 @@ public class ChartResult
     {
         this.width = width;
     }
+    
+    /**
+     * Sets the content type.
+     * 
+     * @param contentType the content type.
+     */
+    public void setContentType( String contentType )
+    {
+        this.contentType = contentType;
+    }
 
     /**
      * Executes the result. Writes the given chart as a PNG to the servlet
@@ -94,6 +108,10 @@ public class ChartResult
         
         width = stackWidth != null && stackWidth > 0 ? stackWidth : width;
         
+        String stackContentType = invocation.getStack().findString( "contentType" );
+        
+        contentType = stackContentType != null && !stackContentType.trim().isEmpty() ? stackContentType : contentType;
+        
         if ( chart == null )
         {
             throw new NullPointerException( "No chart found" );
@@ -109,7 +127,13 @@ public class ChartResult
             throw new IllegalArgumentException( "Width not set" );
         }
         
+        if ( contentType == null )
+        {
+            contentType = DEFAULT_CONTENT_TYPE;
+        }
+        
         HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType( contentType );
         OutputStream os = response.getOutputStream();
         ChartUtilities.writeChartAsPNG( os, chart, width, height );
         os.flush();
