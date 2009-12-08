@@ -118,8 +118,8 @@
 		</tr>	
 	</table>	
 	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="$('#expression').val($('#formula').val());$('#divExpression').hide();"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="$('#formula').val('')"/></p>
+	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formula').value;$('#divExpression').hide();"/>
+	<input type="button" value="$i18n.getString('clean')" onclick="byId('formula').value = ''"/></p>
 </div>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
