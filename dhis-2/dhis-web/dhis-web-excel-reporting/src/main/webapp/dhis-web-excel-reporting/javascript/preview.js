@@ -2,18 +2,12 @@
 var aKey	= null;
 var aMerged = null;
 
-function reportChanged() {
-	
-	window.location.href="selectExportReportParam.action?reportGroup=" + getListValue("group") + "&reportId=" + getListValue("report");
-}
+function previewAdvandReport() {
 
-function previewAdvandReport()
-{	
 	aKey	= null;
 	aMerged = null;
 	
 	var params = "reportId=" + byId('report').value + "&periodId=" + byId('period').value + "&organisationGroupId=" + byId("availableOrgunitGroups").value;
-
 	
 	$("#processing").showAtCenter(true);
 	
@@ -29,16 +23,8 @@ function previewReport() {
 	aKey	= null;
 	aMerged = null;
 	
-	var url = "reportId=" + getListValue('report') + "&periodId=" + getListValue('period');
-	
-	if ( byId('availableOrgunitGroups') != null ) {
-	
-		url = "previewAdvancedReportExcel.action?orgunitGroupId=" + orgunitGroupId + "&" + url;
-	}
-	else {
-		url = "previewReportExcel.action?" + url;
-	}
-	
+	var url = "previewReportExcel.action?reportId=" + getListValue('report') + "&periodId=" + getListValue('period');
+
 	$("#processing").showAtCenter(true);
 	
 	var request = new Request();
@@ -61,36 +47,37 @@ function previewReportReceived( reportXML ) {
 
 function createTabs( reportXML )
 {
-	var tabs = document.getElementById( 'tabs' );
+	var _tabs = document.getElementById( 'tabs' );
 	
-	if(tabs!=null){	
-		byId("preview").removeChild(tabs);
+	if ( _tabs != null )
+	{	
+		byId( "previewDiv" ).removeChild( _tabs );
 	}
 
-	tabs = document.createElement("div");
-	tabs.id = "tabs";
-	tabs.style.display = "none";
-	byId("preview").appendChild(tabs);
+	_tabs 	 = document.createElement( "div" );
+	_tabs.id = "tabs";
+	_tabs.style.display = "none";
 	
-	var _sheets		= reportXML.getElementsByTagName( 'sheet' );	
+	byId( "previewDiv" ).appendChild( _tabs );
 	
-	var divHTML = "";
-	var html = "<ul>";
+	var _createDivs  = "";
+	var _createTabs  = "<ul>";
+	var _sheets		 = reportXML.getElementsByTagName( "sheet" );
 		
-	for(var i=0;i<_sheets.length;i++){
-		var sheet = _sheets.item(i) ;
-		var id = sheet.getAttribute("id");
+	for( var i = 0 ; i < _sheets.length ; i++ )
+	{
+		var _id = getRootElementAttribute( _sheets[i], "id" );
 		
-		html += "<li><a href='#fragment-" + id + "'>" + id + "</a></li>";
-		divHTML += "<div id='fragment-" + id + "'></div>";
+		_createTabs += "<li><a href='#fragment-" + _id + "'>" + getElementValue( _sheets[i], "name" ) + "</a></li>";
+		_createDivs += "<div id='fragment-" + _id + "'></div>";
 	}
 	
-	html += "</ul>";	
+	_createTabs += "</ul>";	
 	
-	byId("tabs").innerHTML = html + divHTML;	
+	byId("tabs").innerHTML = _createTabs + _createDivs;	
 	
-	
-	$("#tabs").tabs({collapsible : true});
+	// Apply tab
+	$("#tabs").tabs({ collapsible : true });
 }
 
 
@@ -157,7 +144,7 @@ function exportFromXMLtoHTML( parentElement ) {
 				if ( _index == _number )
 				{
 					var _colspan 	= 1;
-					var _sData		= getElementValue( _cols[j], 'data' );				
+					var _sData		= getElementValue( _cols[j], 'data' );
 					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
 				
 					// If this cell is merged - Key's form: Sheet#Row#Col

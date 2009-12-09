@@ -1,8 +1,9 @@
 /*
 * 	Delete Report Excel Item
 */
-function deleteReportExcelItem( id ){
-	if(window.confirm(i18n_confirm_delete)){
+function deleteReportExcelItem( id ) {
+
+	if ( window.confirm(i18n_confirm_delete) ) {
 		
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
@@ -12,53 +13,59 @@ function deleteReportExcelItem( id ){
 	}
 }
 
-function Completed(xmlObject){
+function Completed ( xmlObject ) {
+
 	window.location.reload();
 }
 
 /*
 * 	Get Report Excel Item by Sheet
 */
-function getReportItemBySheet(){
+function getReportItemBySheet() {
+
 	window.location = "listReportExcelItemAction.action?reportId=" +  getFieldValue("reportId") + "&sheetNo=" + getFieldValue("sheetNoFilter");
 }
 
 /*
 * 	Open add report item
 */
-function openAddReportItemForm(){
-	byId("reportItemButton").onclick = function(e){
+function openAddReportItemForm() {
+
+	byId( "reportItemButton" ).onclick = function(e) {
+	
 		validateAddReportExcelItem();
 	}
-	byId("sheetNo").value = byId("sheetNoFilter").value;		
-	$("#report").showAtCenter( true );	
+	
+	byId( "sheetNo" ).value = byId( "sheetNoFilter" ).value;		
+	$( "#report" ).showAtCenter( true );
 }	
 
 /*
 * 	Open update report item
 */
 
-function openUpdateReportItem( id ){
+function openUpdateReportItem( id ) {
 		
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( openUpdateReportItemReceived );
-	request.send("getReportExcelItem.action?id=" + id);
+	request.send( "getReportExcelItem.action?id=" + id );
 	
 }	
 
-function openUpdateReportItemReceived(xmlObject){
+function openUpdateReportItemReceived( xmlObject ) {
 	
-	byId("id").value = getElementValue (xmlObject, 'id');
-	byId("name").value = getElementValue (xmlObject, 'name');
-	byId("itemType").value = getElementValue (xmlObject, 'itemType');
-	byId("periodType").value = getElementValue (xmlObject, 'periodType');
-	byId("row").value = getElementValue (xmlObject, 'row');
-	byId("column").value = getElementValue (xmlObject, 'column');
-	byId("expression").value = getElementValue (xmlObject, 'expression');
-	byId("sheetNo").value = getElementValue (xmlObject, 'sheetNo');
+	byId( "id" ).value = getElementValue( xmlObject, 'id' );
+	byId( "name" ).value = getElementValue( xmlObject, 'name' );
+	byId( "itemType" ).value = getElementValue( xmlObject, 'itemType' );
+	byId( "periodType" ).value = getElementValue( xmlObject, 'periodType' );
+	byId( "row" ).value = getElementValue( xmlObject, 'row' );
+	byId( "column" ).value = getElementValue( xmlObject, 'column' );
+	byId( "expression" ).value = getElementValue( xmlObject, 'expression' );
+	byId( "sheetNo" ).value = getElementValue( xmlObject, 'sheetNo' );
 	
-	byId("reportItemButton").onclick = function(e){
+	byId( "reportItemButton" ).onclick = function(e) {
+	
 		validateUpdateReportExcelItem();
 	};
 	
@@ -69,11 +76,12 @@ function openUpdateReportItemReceived(xmlObject){
 * 	Validate Add Report Excel Item
 */
 
-function validateAddReportExcelItem(){
+function validateAddReportExcelItem() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateAddReportExcelItemReceived );
+	
 	var params = "name=" + byId("name").value;
 	params += "&expression=" + byId("expression").value;
 	params += "&row=" + byId("row").value;
@@ -82,17 +90,20 @@ function validateAddReportExcelItem(){
 	params += "&reportId=" + byId("reportId").value;
 	
 	request.sendAsPost(params);
-	request.send("validateAddReportExcelItem.action");
+	request.send( "validateAddReportExcelItem.action" );
 	
 }
 
-function validateAddReportExcelItemReceived( xmlObject ){
+function validateAddReportExcelItemReceived( xmlObject ) {
+
 	var type = xmlObject.getAttribute( 'type' );
-	if(type=='error')
+	
+	if ( type =='error' )
 	{
-		setMessage(xmlObject.firstChild.nodeValue);
+		setMessage( xmlObject.firstChild.nodeValue );
 	}
-	if(type=='success')
+	
+	if ( type=='success' )
 	{
 		addReportExcelItem();    
 	}
@@ -102,11 +113,12 @@ function validateAddReportExcelItemReceived( xmlObject ){
 * 	Add Report Excel Item
 */
 	
-function addReportExcelItem(){
+function addReportExcelItem() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( Completed );
+	
 	var params = "name=" + byId("name").value;
 	params += "&expression=" + byId("expression").value;
 	params += "&row=" + byId("row").value;
@@ -125,10 +137,12 @@ function addReportExcelItem(){
 * 	Validate Update Report Excel Item
 */
 
-function validateUpdateReportExcelItem(){
+function validateUpdateReportExcelItem() {
+
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateUpdateReportExcelItemReceived );
+	
 	var params = "name=" + byId("name").value;
 	params += "&reportItemId=" + byId("id").value;
 	params += "&expression=" + byId("expression").value;
@@ -138,18 +152,20 @@ function validateUpdateReportExcelItem(){
 	params += "&reportId=" + reportId;
 	
 	request.sendAsPost(params);
-	request.send("validateUpdateReportExcelItem.action");
+	request.send( "validateUpdateReportExcelItem.action" );
 	
 }
 
-function validateUpdateReportExcelItemReceived( xmlObject ){
+function validateUpdateReportExcelItemReceived( xmlObject ) {
 	
 	var type = xmlObject.getAttribute( 'type' );
-	if(type=='error')
+	
+	if ( type =='error' )
 	{
-		setMessage(xmlObject.firstChild.nodeValue);
+		setMessage( xmlObject.firstChild.nodeValue );
 	}
-	if(type=='success')
+	
+	if ( type =='success' )
 	{
 		updateReportExcelItem();    
 	}
@@ -159,11 +175,12 @@ function validateUpdateReportExcelItemReceived( xmlObject ){
 * 	Update Report Excel Item
 */
 
-function updateReportExcelItem(){
+function updateReportExcelItem() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( Completed );
+	
 	var params = "id=" + byId("id").value;
 		params += "&name=" + byId("name").value;
 		params += "&expression=" + byId("expression").value;
@@ -173,22 +190,28 @@ function updateReportExcelItem(){
 		params += "&itemType=" + byId("itemType").value;
 		params += "&periodType=" + byId("periodType").value;
 		params += "&sheetNo=" + byId("sheetNo").value;
+	
 	request.sendAsPost(params);
 	request.send("updateReportExcelItem.action");
 	
 }
 
-function insertFormulaText(sourceId, targetId) {
+function insertFormulaText( sourceId, targetId ) {
+
 	byId(targetId).value += byId(sourceId).value;
 }
 
-function insertOperation(target, value ){
+function insertOperation( target, value ) {
+
 	byId(target).value += value;
 }
 
-function selectALL( checked ){
-	var listRadio = document.getElementsByName('reportItemCheck');	
-	for(var i=0;i<listRadio.length;i++){
+function selectALL( checked ) {
+
+	var listRadio = document.getElementsByName('reportItemCheck');
+	
+	for (var i = 0 ; i < listRadio.length ; i++) {
+	
 		listRadio.item(i).checked = checked;
 	}
 }
@@ -201,20 +224,25 @@ function copySelectedItem() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( copySelectedItemReceived );
-	request.send("getAllReportExcels.action");
+	request.send( "getAllReportExcels.action" );
 
 }
 
-function copySelectedItemReceived(xmlObject){
+function copySelectedItemReceived( xmlObject ) {
+
 	var reports = xmlObject.getElementsByTagName("report");
 	var selectList = document.getElementById("targetReport");
 	var options = selectList.options;
+	
 	options.length = 0;
-	for(i=0;i<reports.length;i++){
+	
+	for( var i = 0 ; i < reports.length ; i++ ) {
+	
 		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
 		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
 		options.add(new Option(name,id), null);
-	}	
+	}
+	
 	$("#copyTo").showAtCenter( true );
 }
 
@@ -231,43 +259,49 @@ reportItemsDuplicated = null;
 
 function validateCopyReportItems() {
 
-	sheetId	= byId("targetSheetNo").value;
+	sheetId	= byId( "targetSheetNo" ).value;
 	
 	var message = '';
-	if(sheetId < 1){
+	
+	if ( sheetId < 1 ) {
+	
 		message = input_sheet_no;
 	}
-	if(byId("targetReport").value == -1){
-		message += "<br>"+ choose_report;
+	
+	if ( byId("targetReport").value == -1 )
+	{
+		message += "<br/>"+ choose_report;
 	}
 	
-	if(message.length > 0){
-		setMessage(message);
+	if ( message.length > 0 )
+	{
+		setMessage( message );
 		return;
 	}
 	
-	if(byId("targetReport").value)
 	reportItemsCurTarget = null;
 	reportItemsDuplicated = null;
 	
 	reportItemsCurTarget = new Array();
 	reportItemsDuplicated = new Array();
 
-	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateCopyReportItemsReceived );
+	
 	var param = "reportId=" + byId("targetReport").value;
 		param += "&sheetNo=" + sheetId;
-	request.sendAsPost(param);
-	request.send("getReportExcelItems.action");
+	
+	request.sendAsPost( param );
+	request.send( "getReportExcelItems.action" );
 	
 }
 
-function validateCopyReportItemsReceived(data){
+function validateCopyReportItemsReceived( data ) {
+
 	var items = data.getElementsByTagName('reportItem');
 		
-	for (var i = 0 ;  i < items.length ; i ++) 
+	for (var i = 0 ; i < items.length ; i ++) 
 	{
 		reportItemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
@@ -281,12 +315,13 @@ function splitDuplicatedReportItems() {
 
 	var flag = -1;
 	var reportItemsChecked = new Array();
-	var listRadio = document.getElementsByName('reportItemCheck');
+	var listRadio = document.getElementsByName( 'reportItemCheck' );
 
 	reportItems = null;
 	reportItems = new Array();
 	
 	for (var i = 0 ; i < listRadio.length ; i++) {
+	
 		if ( listRadio.item(i).checked ) {
 			reportItemsChecked.push( listRadio.item(i).getAttribute("reportItemID") + "#" + listRadio.item(i).getAttribute("reportItemName"));
 		}
@@ -380,13 +415,16 @@ function saveCopyItems() {
 /**
 * Open dataelement expression
 */
-function openDataElementExpression(){
-	byId("formula").value = byId("expression").value;
+function openDataElementExpression() {
+
+	byId( "formula" ).value = byId( "expression" ).value;
+	
 	getALLDataElementGroup();
 	getDataElementsByGroup();
 	enable("dataElementGroup");
 	enable("availableDataElements");
-	byId("availableDataElements").onchange = function(e){getOptionCombos()};
+	byId("availableDataElements").onchange = function(e){ getOptionCombos() };
+	
 	$("#normal").showAtCenter( true );
 }
 
@@ -394,10 +432,13 @@ function openDataElementExpression(){
 * Get All dataelement group
 */
 	
-function getALLDataElementGroup(){
+function getALLDataElementGroup() {
+
 	var list = byId('dataElementGroup');
+	
 	list.options.length = 0;
 	list.add( new Option( "ALL", "ALL" ), null );
+	
 	for ( id in dataElementGroups )
 	{
 		list.add( new Option( dataElementGroups[id], id ), null );
@@ -439,7 +480,7 @@ function getDataElementsByGroupCompleted( xmlObject ){
 	}
 }
 
-function getOptionCombos(){
+function getOptionCombos() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -448,23 +489,28 @@ function getOptionCombos(){
 
 }
 
-function getOptionCombosReceived( xmlObject ){
-	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
+function getOptionCombosReceived( xmlObject ) {
+
+	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];
+	
 	var optionComboList = byId( "optionCombos" );			
 	optionComboList.options.length = 0;		
-	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
+	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );
+	
 	for ( var i = 0; i < optionCombos.length; i++)
 	{
 		var id = optionCombos[ i ].getAttribute('id');
 		var name = optionCombos[ i ].firstChild.nodeValue;			
 		var option = document.createElement( "option" );
+		
 		option.value = id ;
 		option.text = name;
 		optionComboList.add( option, null );	
 	}
 }
 
-function insertDataElementId(){
+function insertDataElementId() {
+
 	var dataElementComboId = "[" + $("#availableDataElements").val() + "." + $("#optionCombos").val() + "]";
 	byId("formula").value += dataElementComboId;
 }
@@ -472,8 +518,10 @@ function insertDataElementId(){
 /**
 * Indicator Report item type
 */
-function openIndicatorExpression(){
+function openIndicatorExpression() {
+
 	byId("formulaIndicator").value = byId("expression").value;
+	
 	getIndicatorGroups();
 	filterIndicators();	
 	enable("indicatorGroups");
@@ -483,32 +531,40 @@ function openIndicatorExpression(){
 	$("#indicatorForm").show();
 }
 
-function getIndicatorGroups(){
+function getIndicatorGroups() {
+
 	var list = byId('indicatorGroups');
+	
 	list.options.length = 0;
 	list.add( new Option( "ALL", "ALL" ), null );
+	
 	for ( id in indicatorGroups )
 	{
 		list.add( new Option( indicatorGroups[id], id ), null );
 	}
 }
 
-function filterIndicators(){
+function filterIndicators() {
+
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( filterIndicatorsCompleted );
 	request.send( "../dhis-web-commons-ajax/getIndicators.action?id=" + $("#indicatorGroups").val());
 }
-function filterIndicatorsCompleted( xmlObject ){
+
+function filterIndicatorsCompleted( xmlObject ) {
+
 	var indiatorList = byId( "availableIndicators" );
 	indiatorList.options.length = 0;
 	
 	var indicators = xmlObject.getElementsByTagName( "indicator" );
-	for ( var i = 0; i < indicators.length; i++)
+	
+	for ( var i = 0; i < indicators.length; i++ )
 	{
 		var id = indicators[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
 		var indicatorName = indicators[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
 		var option = document.createElement( "option" );
+		
 		option.value = "[" + id + "]";
 		option.text = indicatorName;
 		indiatorList.add( option, null );	
@@ -518,7 +574,7 @@ function filterIndicatorsCompleted( xmlObject ){
 /**
 * Open Category Expression
 */
-function openCategoryExpression(){
+function openCategoryExpression() {
 	
 	byId("categoryFormula").value = byId("expression").value;
 	
@@ -529,23 +585,27 @@ function openCategoryExpression(){
 	
 }
 
-function openCategoryExpressionReceived(data){
+function openCategoryExpressionReceived( data ) {
+
 	var selectedDataElementGroups = document.getElementById('dataElementGroup_');
 	selectedDataElementGroups.options.length = 0;
 	var dataElementGroups = data.getElementsByTagName('dataElementGroup');
-	for(var i=0;i<dataElementGroups.length;i++){
+	
+	for( var i = 0 ; i < dataElementGroups.length ; i++ ) {
+	
 		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
 		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
 		selectedDataElementGroups.options.add(new Option(name, id));
-	}	
+	}
+	
 	getDataElementGroupOrder();
 	setPositionCenter( 'category' );
-	enable("dataElementGroup_");
-	enable("availableDataElements_");
-	byId("availableDataElements_").onchange = function(e){getOptionCombos_()};
+	enable( "dataElementGroup_" );
+	enable( "availableDataElements_" );
+	byId( "availableDataElements_" ).onchange = function(e){ getOptionCombos_() };
 	
 	showDivEffect();
-	$("#category").show();	
+	$( "#category" ).show();	
 }
 
 
@@ -553,16 +613,17 @@ function openCategoryExpressionReceived(data){
 * Get DataElement Group Order
 */
 
-function getDataElementGroupOrder(){
+function getDataElementGroupOrder() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( getDataElementGroupOrderReceived );
-	request.send("getDataElementGroupOrder.action?id=" + $("#dataElementGroup_").val());
+	request.send( "getDataElementGroupOrder.action?id=" + $("#dataElementGroup_").val() );
 
 }
 
-function getDataElementGroupOrderReceived(data){
+function getDataElementGroupOrderReceived( data ) {
+
 	var availableDataElements = document.getElementById('availableDataElements_');
 	availableDataElements.options.length = 0;
 	var dataelEments = data.getElementsByTagName( "dataElement" );	
@@ -575,31 +636,37 @@ function getDataElementGroupOrderReceived(data){
 	}
 }
 
-function getOptionCombos_(){
+function getOptionCombos_() {
+
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( getOptionCombos_Received );
-	request.send("getOptionCombos.action?dataElementId=" + byId("availableDataElements_").value);
+	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements_").value );
 	
 }
 
-function getOptionCombos_Received(xmlObject){
+function getOptionCombos_Received( xmlObject ) {
+
 	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
+	
 	var optionComboList = byId( "optionCombos_" );			
 	optionComboList.options.length = 0;		
-	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
-	for ( var i = 0; i < optionCombos.length; i++)
+	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );
+	
+	for ( var i = 0; i < optionCombos.length; i++ )
 	{
 		var id = optionCombos[ i ].getAttribute('id');
 		var name = optionCombos[ i ].firstChild.nodeValue;			
 		var option = document.createElement( "option" );
+		
 		option.value = id ;
 		option.text = name;
 		optionComboList.add( option, null );	
 	}
 }
 
-function insertDataElementId_(){
+function insertDataElementId_() {
+
 	var dataElementComboId = "[*." + byId("optionCombos_").value + "]";
 	byId("categoryFormula").value += dataElementComboId;
 }

@@ -43,40 +43,39 @@
       </select></td>
   </tr>
 </table> 
+
 <div id="actions" style="width:200px text-align:right">
 
 </div>
+
 <div id="orgUnitTree">
-	
+
 </div>
 
-
-		  
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
-<br>
-<hr>
+<br/>
+<hr/>
 <p>
 <input type="button" value='$i18n.getString( "preview_report" )' onclick="previewAdvandReport();" />
 
 <input name="generate_report" id="generate_report"  type="button" onClick="generateAdvancedReportExcel();" value='$i18n.getString( "generate_report" )' />
 </p>
 
-<div id="preview">
+<div id="previewDiv">
+
 </div>
 
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
-	
-</span>
 
+</span>
 
 <span id="processing" style="display:none;position:fixed;"><img src="../images/ajax-loader-preview.gif" /></span>
 
 <script>
 
+	$(document).ready(function() {	
 	
-$(document).ready(function() {	
-	getReportExcelsByGroup();		
-});
-	
+		getReportExcelsByGroup();		
+	});
 
 </script>

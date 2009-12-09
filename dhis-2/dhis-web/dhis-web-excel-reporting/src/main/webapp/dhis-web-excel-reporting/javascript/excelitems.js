@@ -6,16 +6,17 @@
 // Open Add Excel item form
 // ========================================================================================================================
 
-function openAddExcelItem(){
-	enable("name");
-	$("#divExcelitem").showAtCenter( true );
+function openAddExcelItem() {
+
+	enable( "name" );
+	$( "#divExcelitem" ).showAtCenter( true );
 }
 
 // ========================================================================================================================
 // Open Update Excel item form
 // ========================================================================================================================
 
-function openUpdateExcelItem( id ){
+function openUpdateExcelItem( id ) {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
@@ -24,7 +25,7 @@ function openUpdateExcelItem( id ){
 	
 }
 
-function openUpdateExcelItemReceived(xmlObject){
+function openUpdateExcelItemReceived( xmlObject ) {
 	
 	byId("id").value = xmlObject.getElementsByTagName('id')[0].firstChild.nodeValue;
 	byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
@@ -40,11 +41,12 @@ function openUpdateExcelItemReceived(xmlObject){
 // Validate Update Excel item group
 // ========================================================================================================================
 
-function validateExcelItem(){
+function validateExcelItem() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
 	request.setCallbackSuccess( validateExcelItemReceived );
+	
 	var url = "validateExcelItem.action?name=" + byId("name").value;
 	url += "&expression=" + byId("expression").value;
 	url += "&row=" + byId("row").value;
@@ -55,27 +57,30 @@ function validateExcelItem(){
 	
 }
 
-function validateExcelItemReceived(xmlObject){
+function validateExcelItemReceived( xmlObject ) {
 	
 	var type = xmlObject.getAttribute( 'type' );
-	if(type=='error')
+	
+	if ( type == 'error' )
 	{
 		setMessage(xmlObject.firstChild.nodeValue);
-	}else if(type=='success')
-	{		
-		if(mode == 'add'){
+	}
+	else if ( type == 'success' )
+	{
+		if ( mode == 'add' ) {
+			
 			addExcelItem();
-		}else{
+		}
+		else {
 			updateExcelItem();
 		}
-		
 	}
 }
 // ========================================================================================================================
 // Add Excel item
 // ========================================================================================================================
 
-function addExcelItem(){
+function addExcelItem() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
@@ -90,7 +95,8 @@ function addExcelItem(){
 	request.send( "addExcelItem.action" );
 }
 
-function Completed(xmlObject){
+function Completed( xmlObject ) {
+
 	window.location.reload();
 }
 
@@ -98,7 +104,7 @@ function Completed(xmlObject){
 // Update Excel Item
 // ========================================================================================================================
 
-function updateExcelItem(){
+function updateExcelItem() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
@@ -120,8 +126,9 @@ function updateExcelItem(){
 // Delete Excel Item
 // ========================================================================================================================
 
-function deleteExcelItem(id){
-	if(window.confirm(i18n_confirm_delete)){
+function deleteExcelItem( id ) {
+
+	if ( window.confirm(i18n_confirm_delete) ) {
 		
 		var request = new Request();
 		request.setResponseTypeXML( 'datalement' );
@@ -135,7 +142,8 @@ function deleteExcelItem(id){
 // Get parram from URL
 // ========================================================================================================================
 
-function getParamByURL(param){
+function getParamByURL( param ) {
+
 	var name = param.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 	var regexS = "[\\?&]"+name+"=([^&#]*)";
 	var regex = new RegExp( regexS );
@@ -148,16 +156,17 @@ function getParamByURL(param){
 // Open Expression Form
 // ===============================================================================
 
-function openExpressionBuild(){
+function openExpressionBuild() {
 	
 	byId("formula").value = byId("expression").value;
+	
 	getALLDataElementGroup();
 	getDataElementsByGroup();
 	enable("dataElementGroup");
 	enable("availableDataElements");
 	
-	$("#availableDataElements").change(getOptionCombos);		
-	$("#divExpression").showAtCenter( true );
+	$( "#availableDataElements" ).change(getOptionCombos);		
+	$( "#divExpression" ).showAtCenter( true );
 	
 }
 
@@ -165,10 +174,13 @@ function openExpressionBuild(){
 // Get all Dataelement Group
 // ===============================================================================
 
-function getALLDataElementGroup(){
-	var list = byId('dataElementGroup');
+function getALLDataElementGroup() {
+
+	var list = byId( 'dataElementGroup' );
+	
 	list.options.length = 0;
 	list.add( new Option( "ALL", "ALL" ), null );
+	
 	for ( id in dataElementGroups )
 	{
 		list.add( new Option( dataElementGroups[id], id ), null );
@@ -179,7 +191,7 @@ function getALLDataElementGroup(){
 // Get DataElements by Group
 // ===============================================================================
 
-function getDataElementsByGroup( )
+function getDataElementsByGroup()
 {		
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -188,7 +200,7 @@ function getDataElementsByGroup( )
 	request.send( url );	
 }
 
-function getDataElementsByGroupCompleted( xmlObject ){
+function getDataElementsByGroupCompleted( xmlObject ) {
 
 	var dataElementList = byId( "availableDataElements" );
 		
@@ -212,7 +224,7 @@ function getDataElementsByGroupCompleted( xmlObject ){
 // Get OptionCombos by DataElement
 // ===============================================================================
 
-function getOptionCombos(){
+function getOptionCombos() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -220,13 +232,15 @@ function getOptionCombos(){
 	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements").value );	
 }
 
-function getOptionCombosReceived(xmlObject){
+function getOptionCombosReceived( xmlObject ) {
 	
-	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];		
+	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];
+	
 	var optionComboList = byId( "optionCombos" );			
-	optionComboList.options.length = 0;		
-	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );		
-	for ( var i = 0; i < optionCombos.length; i++)
+	optionComboList.options.length = 0;
+	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );
+	
+	for ( var i = 0; i < optionCombos.length; i++ )
 	{
 		var id = optionCombos[ i ].getAttribute('id');
 		var name = optionCombos[ i ].firstChild.nodeValue;			
@@ -241,7 +255,8 @@ function getOptionCombosReceived(xmlObject){
 // Insert dataelement's id into the Formular textbox
 // ===============================================================================
 
-function insertDataElementId(){
+function insertDataElementId() {
+
 	var dataElementComboId = "[" + byId("availableDataElements").value + "." + byId("optionCombos").value + "]";
 	byId("formula").value += dataElementComboId;
 }
@@ -250,8 +265,9 @@ function insertDataElementId(){
 // Insert operators into the Formular textbox
 // ===============================================================================
 
-function insertOperation(target, value ){
-	byId(target).value += value;
+function insertOperation( target, value ) {
+
+	byId( target ).value += value;
 }
 
 // ===============================================================================
@@ -266,13 +282,16 @@ function copySelectedExcelItemForm() {
 	request.send( "getAllExcelItemGroup.action" );
 }
 
-function copySelectedExcelItemFormReceived(xmlObject){
+function copySelectedExcelItemFormReceived( xmlObject ) {
 	
 	var groups = xmlObject.getElementsByTagName("excelitemgroup");
 	var selectList = document.getElementById("targetExcelItemGroup");
 	var options = selectList.options;
+	
 	options.length = 0;
-	for(i=0;i<groups.length;i++){
+	
+	for( var i = 0 ; i < groups.length ; i++ ) {
+	
 		var id = groups[i].getElementsByTagName("id")[0].firstChild.nodeValue;
 		var name = groups[i].getElementsByTagName("name")[0].firstChild.nodeValue;
 		options.add(new Option(name,id), null);
@@ -300,6 +319,7 @@ function validateCopyExcelItems() {
 	{
 		message = i18n_input_sheet_no;
 	}
+	
 	if ( byId("targetExcelItemGroup").value == -1 )
 	{
 		message += "<br/>" + i18n_choose_report;
@@ -307,7 +327,7 @@ function validateCopyExcelItems() {
 	
 	if ( message.length > 0 )
 	{
-		setMessage(message);
+		setMessage( message );
 		return;
 	}
 	
