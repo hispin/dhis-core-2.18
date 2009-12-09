@@ -27,8 +27,12 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.report.Report.TYPE_BIRT;
+import static org.hisp.dhis.report.Report.TYPE_DEFAULT;
+
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 
@@ -70,6 +74,13 @@ public class GetReportConfigurationAction
         return reportConfiguration;
     }
     
+    private SystemSettingManager systemSettingManager;
+    
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
     private String message;
 
     public String getMessage()
@@ -83,15 +94,20 @@ public class GetReportConfigurationAction
 
     public String execute()
     {
-        try
+        String framework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK, TYPE_DEFAULT );
+        
+        if ( framework.equals( TYPE_BIRT ) )
         {
-            reportConfiguration = reportManager.getConfiguration();
-        }
-        catch ( NoConfigurationFoundException ex )
-        {
-            message = i18n.getString( "set_configuration" );
-            
-            return NONE;
+            try
+            {
+                reportConfiguration = reportManager.getConfiguration();
+            }
+            catch ( NoConfigurationFoundException ex )
+            {
+                message = i18n.getString( "set_configuration" );
+                
+                return NONE;
+            }
         }
         
         return SUCCESS;

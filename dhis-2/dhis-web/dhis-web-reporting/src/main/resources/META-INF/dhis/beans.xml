@@ -364,6 +364,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportManager"
       ref="org.hisp.dhis.report.ReportManager"/>
+	<property name="systemSettingManager"
+	  ref="org.hisp.dhis.options.SystemSettingManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction"
