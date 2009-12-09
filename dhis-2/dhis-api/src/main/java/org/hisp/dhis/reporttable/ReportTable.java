@@ -49,6 +49,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
+ * The ReportTable object represents a customizable database table. It has features
+ * like crosstabulation, relative periods, parameters, and display columns.
+ * 
  * @author Lars Helge Overland
  * @version $Id$
  */
@@ -90,44 +93,104 @@ public class ReportTable
     // Persisted properties
     // -------------------------------------------------------------------------
 
+    /**
+     * The internal identifier.
+     */
     private int id;
     
+    /**
+     * The name of the ReportTable object.
+     */
     private String name;
 
+    /**
+     * The name of the database table corresponding to the ReportTable object name.
+     */
     private String tableName;
     
+    /**
+     * The name of the existing database table.
+     */
     private String existingTableName;
     
+    /**
+     * The ReportTable mode, can be dataelement, indicators, datasets.
+     */
     private String mode;
     
+    /**
+     * Whether the ReportTable contains regression columns.
+     */
     private Boolean regression;
 
+    /**
+     * The list of DataElements the ReportTable contains.
+     */
     private List<DataElement> dataElements = new ArrayList<DataElement>();
     
+    /**
+     * The list of Indicators the ReportTable contains.
+     */
     private List<Indicator> indicators = new ArrayList<Indicator>();
     
+    /**
+     * The list of DataSets the ReportTable contains.
+     */
     private List<DataSet> dataSets = new ArrayList<DataSet>();
     
+    /**
+     * The list of Periods the ReportTable contains.
+     */
     private List<Period> periods = new ArrayList<Period>();
     
+    /**
+     * The list of OrganisationUnits the ReportTable contains.
+     */
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
     
+    /**
+     * The <a>org.hisp.dhis.dimension.DimensionType</a> for the ReportTable.
+     */
     private DimensionType dimensionType;
     
+    /**
+     * The DataElementCategoryCombo for the ReportTable.
+     */
     private DimensionSet categoryCombo;
     
+    /**
+     * The DataElementGropSets for the ReportTable.
+     */
     private List<? extends Dimension> dataElementGroupSets = new ArrayList<Dimension>();
     
+    /**
+     * Whether to crosstabulate on the Indicator dimension, which also represents DataElements and DataSets.
+     */
     private Boolean doIndicators;
     
+    /**
+     * Whether to crosstabulate on the Period dimension.
+     */
     private Boolean doPeriods;
     
+    /**
+     * Whether to crosstabulate on the OrganisationUnit dimension.
+     */
     private Boolean doUnits;
 
+    /**
+     * The RelativePeriods of the ReportTable.
+     */
     private RelativePeriods relatives;
 
+    /**
+     * The ReportParams of the ReportTable.
+     */
     private ReportParams reportParams;
 
+    /**
+     * The list of ReportTableColumns for the ReportTable.
+     */
     private List<ReportTableColumn> displayColumns = new ArrayList<ReportTableColumn>();
     
     // -------------------------------------------------------------------------

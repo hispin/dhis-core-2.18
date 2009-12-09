@@ -28,6 +28,10 @@ package org.hisp.dhis.reporttable;
  */
 
 /**
+ * The ReportTableColumn objec represents a customziable column header for a
+ * ReportTable, including a more meaningful name and the ability to hide it in a
+ * view.
+ * 
  * @author Lars Helge Overland
  * @version $Id$
  */
