@@ -311,4 +311,25 @@
     
   </package>
   
+  <!-- user account -->
+  
+  <package name="dhis-web-commons-useraccount" extends="dhis-web-commons" namespace="/dhis-web-commons-useraccount">
+    
+    	<action name="showUpdateUserAccountForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
+			<result name="success" type="velocity">/main.vm</result>
+     		<param name="menu">/dhis-web-commons/about/menu.vm</param>
+			<param name="page">/dhis-web-commons/useraccount/updateUserAccountForm.vm</param>
+			<param name="javascripts">/dhis-web-commons/useraccount/javascript/userAccount.js</param>
+		</action>
+
+		<action name="updateUserAccount"
+			class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
+			<result name="success" type="redirect">
+				showUpdateUserAccountForm.action</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-commons/useraccount/responseError.vm</result>
+		</action>
+		
+   </package> 
+  
 </struts>
