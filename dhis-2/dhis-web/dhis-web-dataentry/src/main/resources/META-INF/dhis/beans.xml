@@ -295,5 +295,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.expression.ExpressionService" />
 		</property>
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 </beans>
