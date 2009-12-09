@@ -22,21 +22,8 @@ function getReportExcelsByGroupReceived(xmlObject){
 		var item = list[i];
 		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
 		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('report',name,id);
-		
-		// selectedReport is a global variable
-		if ( id == selectedReport) {
-			byId('report').options[i].selected = true;
-		}
+		addOption('report',name,id);	
 	}
-}
-
-function getPeriodsByPeriodTypeName() {
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'getPeriodsByPeriodTypeDB.action');
 }
 
 function lastPeriod() {
@@ -70,7 +57,7 @@ function responseListPeriodReceived( xmlObject ) {
 
 function generateReportExcel() {
 	
-	$("#loading").showAtCenter( true );
+	$("#processing").showAtCenter( true );
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -83,9 +70,12 @@ function generateReportExcel() {
 }
 
 function generateReportExcelReceived(xmlObject){
-	window.location = "downloadFile.action";
-	deleteDivEffect();
-	$("#loading").hide();
+	var type = xmlObject.getAttribute("type");
+	if(type=="success"){
+		window.location = "downloadFile.action";
+		deleteDivEffect();
+		$("#processing").hide();
+	}
 }
 
 function getALLReportExcelByGroup(){
@@ -93,7 +83,8 @@ function getALLReportExcelByGroup(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( getALLReportExcelByGroupReceived );
-	request.send( 'getALLReportExcelByGroup.action?group=' + byId("group").value);
+	request.sendAsPost( "group=" + byId("group").value );
+	request.send( 'getALLReportExcelByGroup.action');
 	
 }
 
@@ -110,37 +101,14 @@ function getALLReportExcelByGroupReceived(xmlObject){
 
 function generateAdvancedReportExcel() {	
 
-	$("#loading").showAtCenter( true );	
+	$("#processing").showAtCenter( true );	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( generateReportExcelReceived );
 	var params = "reportId=" + byId('report').value;
 	params += "&periodId=" + byId('period').value;
+	params += "&organisationGroupId=" + byId("availableOrgunitGroups").value;
 	request.sendAsPost(params);
 	request.send( 'generateAdvancedReportExcel.action');
 	
-}
-
-generic_type = '';
-
-function validateExportReport() {
-
-	if ( byId("report").value == -1 ) {
-	
-		setMessage(i18n_select_report);
-		return;
-	}
-	
-	if ( generic_type == 'preview' ) {
-	
-		previewReport();
-	}
-	else if ( generic_type == 'normal' ) {
-	
-		generateReportExcel();
-	}
-	else {
-	
-		generateAdvancedReportExcel();
-	}
 }

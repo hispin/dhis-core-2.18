@@ -51,118 +51,130 @@ import com.opensymphony.xwork2.Action;
  * @author Margrethe Store
  * @version $Id: ValidationAction.java 5426 2008-06-16 04:33:05Z larshelg $
  */
-public class ValidationAction implements Action {
-	private static final Log log = LogFactory.getLog(ValidationAction.class);
+public class ValidationAction
+    implements Action
+{
+    private static final Log log = LogFactory.getLog( ValidationAction.class );
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private ValidationRuleService validationRuleService;
+    private ValidationRuleService validationRuleService;
 
-	public void setValidationRuleService(
-			ValidationRuleService validationRuleService) {
-		this.validationRuleService = validationRuleService;
-	}
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
+    }
 
-	private SelectedStateManager selectedStateManager;
+    private SelectedStateManager selectedStateManager;
 
-	public void setSelectedStateManager(
-			SelectedStateManager selectedStateManager) {
-		this.selectedStateManager = selectedStateManager;
-	}
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
 
-	private ExpressionService expressionService;
+    private ExpressionService expressionService;
 
-	public void setExpressionService(ExpressionService expressionService) {
-		this.expressionService = expressionService;
-	}
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
 
-	private PeriodService periodService;
+    private PeriodService periodService;
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-	private List<ValidationResult> results;
+    private List<ValidationResult> results;
 
-	public List<ValidationResult> getResults() {
-		return results;
-	}
+    public List<ValidationResult> getResults()
+    {
+        return results;
+    }
 
-	private Map<Integer, Expression> leftsideMap;
+    private Map<Integer, Expression> leftsideMap;
 
-	public Map<Integer, Expression> getLeftsideMap() {
-		return leftsideMap;
-	}
+    public Map<Integer, Expression> getLeftsideMap()
+    {
+        return leftsideMap;
+    }
 
-	private Map<Integer, Expression> rightsideMap;
+    private Map<Integer, Expression> rightsideMap;
 
-	public Map<Integer, Expression> getRightsideMap() {
-		return rightsideMap;
-	}
+    public Map<Integer, Expression> getRightsideMap()
+    {
+        return rightsideMap;
+    }
 
-	private Map<Integer, String> leftsideFormulaMap;
+    private Map<Integer, String> leftsideFormulaMap;
 
-	public Map<Integer, String> getLeftsideFormulaMap() {
-		return leftsideFormulaMap;
-	}
+    public Map<Integer, String> getLeftsideFormulaMap()
+    {
+        return leftsideFormulaMap;
+    }
 
-	private Map<Integer, String> rightsideFormulaMap;
+    private Map<Integer, String> rightsideFormulaMap;
 
-	public Map<Integer, String> getRightsideFormulaMap() {
-		return rightsideFormulaMap;
-	}
+    public Map<Integer, String> getRightsideFormulaMap()
+    {
+        return rightsideFormulaMap;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		OrganisationUnit orgUnit = selectedStateManager
-				.getSelectedOrganisationUnit();
+    public String execute()
+        throws Exception
+    {
+        OrganisationUnit orgUnit = selectedStateManager.getSelectedOrganisationUnit();
 
-		Period selectedPeriod = selectedStateManager.getSelectedPeriod();
-		
-		Period period = periodService.getPeriod(selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedPeriod.getPeriodType());
+        Period selectedPeriod = selectedStateManager.getSelectedPeriod();
 
-		DataSet dataSet = selectedStateManager.getSelectedDataSet();
+        Period period = periodService.getPeriod( selectedPeriod.getStartDate(), selectedPeriod.getEndDate(),
+            selectedPeriod.getPeriodType() );
 
-		results = new ArrayList<ValidationResult>(validationRuleService
-				.validate(dataSet, period, orgUnit));
+        DataSet dataSet = selectedStateManager.getSelectedDataSet();
 
-		log.info("Numer of validation violations: " + results.size());
+        results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
 
-		if (results.size() == 0) {
-			return NONE;
-		} else {
-			leftsideMap = new HashMap<Integer, Expression>(results.size());
-			rightsideMap = new HashMap<Integer, Expression>(results.size());
+        log.info( "Numer of validation violations: " + results.size() );
 
-			leftsideFormulaMap = new HashMap<Integer, String>(results.size());
-			rightsideFormulaMap = new HashMap<Integer, String>(results.size());
+        if ( results.size() == 0 )
+        {
+            return NONE;
+        }
+        else
+        {
+            leftsideMap = new HashMap<Integer, Expression>( results.size() );
+            rightsideMap = new HashMap<Integer, Expression>( results.size() );
 
-			for (ValidationResult result : results) {
-				ValidationRule rule = result.getValidationRule();
-				int id = rule.getId();
+            leftsideFormulaMap = new HashMap<Integer, String>( results.size() );
+            rightsideFormulaMap = new HashMap<Integer, String>( results.size() );
 
-				Expression leftside = rule.getLeftSide();
-				Expression rightside = rule.getRightSide();
+            for ( ValidationResult result : results )
+            {
+                ValidationRule rule = result.getValidationRule();
+                int id = rule.getId();
 
-				leftsideMap.put(id, leftside);
-				rightsideMap.put(id, rightside);
+                Expression leftside = rule.getLeftSide();
+                Expression rightside = rule.getRightSide();
 
-				leftsideFormulaMap.put(id, expressionService
-						.getExpressionDescription(leftside.getExpression()));
-				rightsideFormulaMap.put(id, expressionService
-						.getExpressionDescription(rightside.getExpression()));
-			}
-		}
+                leftsideMap.put( id, leftside );
+                rightsideMap.put( id, rightside );
 
-		return SUCCESS;
-	}
+                leftsideFormulaMap.put( id, expressionService.getExpressionDescription( leftside.getExpression() ) );
+                rightsideFormulaMap.put( id, expressionService.getExpressionDescription( rightside.getExpression() ) );
+            }
+        }
+
+        return SUCCESS;
+    }
 }

@@ -27,24 +27,16 @@
 package org.hisp.dhis.reportexcel.export.action;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
-import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -67,14 +59,7 @@ public class SelectFormAction
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
-    }
-
-    private ReportLocationManager reportLocationManager;
-
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
-    {
-        this.reportLocationManager = reportLocationManager;
-    }
+    } 
 
     private PeriodDatabaseService periodDatabaseService;
 
@@ -100,18 +85,6 @@ public class SelectFormAction
 
     private List<String> groups;
 
-    private String reportGroup;
-
-    private Integer reportId;
-
-    private HSSFWorkbook templateWorkbook;
-
-    private FileInputStream inputStreamExcelTemplate;
-
-    private Map<Integer, String> mapSheets = new HashMap<Integer, String>();
-
-    private Collection<Integer> collectSheets = new HashSet<Integer>();
-
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
@@ -124,38 +97,8 @@ public class SelectFormAction
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
-    }
-
-    public Integer getReportId()
-    {
-        return reportId;
-    }
-
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
-
-    public String getReportGroup()
-    {
-        return reportGroup;
-    }
-
-    public void setReportGroup( String reportGroup )
-    {
-        this.reportGroup = reportGroup;
-    }
-
-    public Collection<Integer> getCollectSheets()
-    {
-        return collectSheets;
-    }
-
-    public Map<Integer, String> getMapSheets()
-    {
-        return mapSheets;
-    }
-
+    } 
+    
     public List<Period> getPeriods()
     {
         return periods;
@@ -190,36 +133,7 @@ public class SelectFormAction
         groups = new ArrayList<String>( reportService.getReportExcelGroups() );
 
         Collections.sort( groups );
-
-        // ---------------------------------------------------------------------
-        // Processing Tabs for Previewing excel report
-        // ---------------------------------------------------------------------
-
-        if ( reportGroup != null )
-        {
-            reportGroup = CodecUtils.unescape( reportGroup );
-        }
-
-        if ( reportId != null )
-        {
-            inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
-                + File.separator + reportService.getReportExcel( reportId ).getExcelTemplateFile() );
-
-            templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
-
-            collectSheets = reportService.getSheets( reportId );
-
-            for ( Integer sheetId : collectSheets )
-            {
-                mapSheets.put( sheetId, CodecUtils.unescape( templateWorkbook.getSheetName( sheetId.intValue() - 1 ) ) );
-            }
-        }
-        else
-        {
-            collectSheets.add( 0 );
-            mapSheets.put( 0, "" );
-        }
-
+       
         return SUCCESS;
     }
 
