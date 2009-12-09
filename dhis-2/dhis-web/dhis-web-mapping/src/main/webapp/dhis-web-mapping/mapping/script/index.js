@@ -2827,7 +2827,7 @@ Ext.onReady( function() {
     
 	MAP.events.on({
         changelayer: function(e) {
-            if (e.property == 'visibility' && e.layer != choroplethLayer) {
+            if (e.property == 'visibility' && e.layer != choroplethLayer && e.layer != vmap0) {
                 if (e.layer.visibility) {
                     selectFeatureChoropleth.deactivate();
                 }
