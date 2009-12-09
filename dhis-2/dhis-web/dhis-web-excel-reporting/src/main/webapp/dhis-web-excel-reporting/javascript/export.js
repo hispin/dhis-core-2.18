@@ -9,15 +9,17 @@ function getReportExcelsByGroup() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getReportExcelsByGroupReceived);
+    request.setCallbackSuccess( getReportExcelsByGroupReceived );
     request.sendAsPost("group=" + byId('group').value);
 	request.send( "getReportExcelsByGroup.action");
 	
 }
 
-function getReportExcelsByGroupReceived(xmlObject){
+function getReportExcelsByGroupReceived( xmlObject ) {
+
 	clearListById('report');
 	var list = xmlObject.getElementsByTagName("report");
+	
 	for(var i=0;i<list.length;i++){
 		var item = list[i];
 		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
@@ -46,6 +48,7 @@ function responseListPeriodReceived( xmlObject ) {
 
 	clearListById('period');
 	var nodes = xmlObject.getElementsByTagName('period');
+	
 	for ( var i = 0; i < nodes.length; i++ )
     {
         node = nodes.item(i);  
@@ -62,6 +65,7 @@ function generateReportExcel() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( generateReportExcelReceived );
+	
 	var params = "reportId=" + byId('report').value;
 	params += "&periodId=" + byId('period').value;
 	request.sendAsPost(params);
@@ -69,16 +73,19 @@ function generateReportExcel() {
 	
 }
 
-function generateReportExcelReceived(xmlObject){
+function generateReportExcelReceived( xmlObject ) {
+
 	var type = xmlObject.getAttribute("type");
-	if(type=="success"){
+	
+	if( type == "success" ) {
+	
 		window.location = "downloadFile.action";
 		deleteDivEffect();
 		$("#processing").hide();
 	}
 }
 
-function getALLReportExcelByGroup(){
+function getALLReportExcelByGroup() {
 
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -88,9 +95,11 @@ function getALLReportExcelByGroup(){
 	
 }
 
-function getALLReportExcelByGroupReceived(xmlObject){
+function getALLReportExcelByGroupReceived( xmlObject ) {
+
 	clearListById('report');
 	var list = xmlObject.getElementsByTagName("report");
+	
 	for(var i=0;i<list.length;i++){
 		var item = list[i];
 		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
@@ -102,9 +111,11 @@ function getALLReportExcelByGroupReceived(xmlObject){
 function generateAdvancedReportExcel() {	
 
 	$("#processing").showAtCenter( true );	
+	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( generateReportExcelReceived );
+	
 	var params = "reportId=" + byId('report').value;
 	params += "&periodId=" + byId('period').value;
 	params += "&organisationGroupId=" + byId("availableOrgunitGroups").value;

@@ -5,26 +5,28 @@
 *	Open Add Excel item group form
 */
 
-function openAddExcelItemGroup(){
-	enable("name");
-	enable("type");
+function openAddExcelItemGroup() {
+
+	enable( "name" );
+	enable( "type" );
 	$("#divExcelitemGroup").showAtCenter( true );
 }
 
 /*
 *	Open Update Excel item group form
 */
-function openUpdateExcelItemGroup( id ){
+function openUpdateExcelItemGroup( id ) {
+
 	byId("id").value = id;
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( openUpdateExcelItemGroupReceived );
-	request.send("getExcelItemGroup.action?id=" + id);
+	request.send( "getExcelItemGroup.action?id=" + id );
 	
 }
 
-function openUpdateExcelItemGroupReceived(xmlObject){
+function openUpdateExcelItemGroupReceived( xmlObject ) {
 
 	byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
 	byId("type").value = xmlObject.getElementsByTagName('type')[0].firstChild.nodeValue;
@@ -38,73 +40,84 @@ function openUpdateExcelItemGroupReceived(xmlObject){
 /*
 *	Validate Update Excel item group
 */
-function validateExcelItemGroup(){
+function validateExcelItemGroup() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateExcelItemGroupReceived );
+	
 	var params = "name=" + byId('name').value;
 		params += "&type=" + byId('type').value
+	
 	request.sendAsPost(params);
 	request.send( "validateExcelItemGroup.action" );
 	
 }
 
-function validateExcelItemGroupReceived(xmlObject){
+function validateExcelItemGroupReceived( xmlObject ) {
 	
 	var type = xmlObject.getAttribute( 'type' );
-	if(type=='error')
+	
+	if ( type=='error' )
 	{
 		setMessage(xmlObject.firstChild.nodeValue);
-	}else if(type=='success')
+	}
+	else if ( type=='success' )
 	{
-		if(mode == 'add'){
+		if ( mode == 'add' )
+		{
 			addExcelItemGroup();
-		}else{
-			updateExcelItemGroup();
 		}
-			
+		else
+		{
+			updateExcelItemGroup();
+		}	
 	}
 }
 
-function addExcelItemGroup(){
+function addExcelItemGroup() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( addExcelItemGroupReceived );
+	
 	var params = "name=" + byId('name').value;
 		params += "&type=" + byId('type').value;
 		params += "&periodTypeName=" + byId('periodType').value;
+	
 	request.sendAsPost(params);
 	request.send("addExcelItemGroup.action");
 	
 }
 
-function addExcelItemGroupReceived(){
+function addExcelItemGroupReceived() {
+
 	window.location.reload();
 }
 
-function updateExcelItemGroup(){
+function updateExcelItemGroup() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( addExcelItemGroupReceived );
+	
 	var params = "id=" + byId('id').value;
 		params += "&name=" + byId('name').value;
 		params += "&type=" + byId('type').value
 		params += "&periodTypeName=" + byId('periodType').value;
+	
 	request.sendAsPost(params);
 	request.send( "updateExcelItemGroup.action" );
 }
 
-function deleteExcelItemGroup(id){
+function deleteExcelItemGroup( id ) {
 	
-	if(window.confirm(i18n_confirm_delete)){
+	if ( window.confirm(i18n_confirm_delete) ) {
+	
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
 		request.setCallbackSuccess( addExcelItemGroupReceived );
 		request.send("deleteExcelItemGroup.action?id=" + id);
-	
 	}
 }
 
@@ -115,17 +128,20 @@ function deleteExcelItemGroup(id){
 /*
 * 	Open Add Data Element Group Order 
 */
-function openAddDataElementGroupOrder(){
+function openAddDataElementGroupOrder() {
+
 	getALLDataElementGroups();
 	document.forms['dataElementGroups'].action = "addDataElementGroupOrderForCategory.action";
 }
 /*
 * 	Get Data Elements By Data Element Group
 */
-function getDataElementsByGroup( id ){
+function getDataElementsByGroup( id ) {
 	
-	if(id==null)
+	if ( id == null )
+	{
 		return;
+	}
 
 	var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + id;
 
@@ -135,7 +151,7 @@ function getDataElementsByGroup( id ){
 	request.send( url );	
 }
 
-function getDataElementsByGroupReceived( datalement ){
+function getDataElementsByGroupReceived( datalement ) {
 	
 	var dataElements = datalement.getElementsByTagName( "dataElement" );
 	
@@ -147,20 +163,25 @@ function getDataElementsByGroupReceived( datalement ){
     {
         var id = dataElements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var name = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-        var option = new Option(name, id);
+        var option = new Option( name, id );
 		
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
+		option.onmousemove  = function( e ) {
+		
+			showToolTip( e, this.text );
 		}
 		
-		listDataElement.add(option, null);
+		listDataElement.add( option, null );
     }
 	
 	var availableDataElements = document.getElementById('availableDataElements');
 	var dataElementIds = document.getElementById('dataElementIds');
-	for(var i=0;i<availableDataElements.options.length;i++){
-		for(var j=0;j<dataElementIds.options.length;j++){				
-			if(availableDataElements.options[i].value==dataElementIds.options[j].value){					
+	
+	for( var i = 0 ; i < availableDataElements.options.length ; i++ ) {
+	
+		for ( var j = 0 ; j < dataElementIds.options.length ; j++ ) {				
+		
+			if ( availableDataElements.options[i].value == dataElementIds.options[j].value ) {
+			
 				availableDataElements.options[i].style.display='none';				
 			}
 		}
@@ -169,7 +190,7 @@ function getDataElementsByGroupReceived( datalement ){
 	$("#dataElementGroups").showAtCenter( true );	
 }
 
-function getALLDataElementGroups(){
+function getALLDataElementGroups() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
@@ -178,7 +199,7 @@ function getALLDataElementGroups(){
 	
 }
 
-function getALLDataElementGroupsReceived(data){
+function getALLDataElementGroupsReceived( data ) {
 	
 	var availableDataElementGroups = document.getElementById('availableDataElementGroups');
 		
@@ -188,7 +209,7 @@ function getALLDataElementGroupsReceived(data){
 		
 	availableDataElementGroups.options.add(new Option("ALL", null));	
 		
-	for(var i=0;i<dataElementGroups.length;i++){
+	for( var i = 0 ; i < dataElementGroups.length ; i++ ) {
 			
 		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
 		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
@@ -196,5 +217,7 @@ function getALLDataElementGroupsReceived(data){
 		var option = new Option( name, id );
 		availableDataElementGroups.add(option, null);
 	}
+	
 	getDataElementsByGroup(byId("availableDataElementGroups").value);
 }
+
