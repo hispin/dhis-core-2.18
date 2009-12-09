@@ -39,8 +39,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
+import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
 import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
@@ -94,7 +94,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
         Period period = periodDatabaseService.getSelectedPeriod();
         this.installPeriod( period );
 
-        ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager
+        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( selectionManager
             .getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );

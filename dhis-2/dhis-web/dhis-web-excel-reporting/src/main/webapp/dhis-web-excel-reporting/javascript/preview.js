@@ -1,10 +1,27 @@
 
-aKey	= null;
-aMerged = null;
+var aKey	= null;
+var aMerged = null;
 
 function reportChanged() {
 	
 	window.location.href="selectExportReportParam.action?reportGroup=" + getListValue("group") + "&reportId=" + getListValue("report");
+}
+
+function previewAdvandReport()
+{	
+	aKey	= null;
+	aMerged = null;
+	
+	var params = "reportId=" + byId('report').value + "&periodId=" + byId('period').value + "&organisationGroupId=" + byId("availableOrgunitGroups").value;
+
+	
+	$("#processing").showAtCenter(true);
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'reportXML' );
+	request.setCallbackSuccess( previewReportReceived );
+	request.sendAsPost( params );
+	request.send( "previewAdvancedReportExcel.action" );	
 }
 
 function previewReport() {
@@ -22,24 +39,60 @@ function previewReport() {
 		url = "previewReportExcel.action?" + url;
 	}
 	
-	$("#loadingPreview").showAtCenter(true);
+	$("#processing").showAtCenter(true);
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
 	request.setCallbackSuccess( previewReportReceived );
-	request.send( url );
+	request.send( url );	
 	
 }
 
 function previewReportReceived( reportXML ) {
-
+	
+	createTabs( reportXML );	
 	setMergedNumberForEachCell( reportXML );
 	exportFromXMLtoHTML( reportXML );
 	
 	deleteDivEffect();
-	$("#loadingPreview").hide();
+	$("#processing").hide();
 	
 }
+
+function createTabs( reportXML )
+{
+	var tabs = document.getElementById( 'tabs' );
+	
+	if(tabs!=null){	
+		byId("preview").removeChild(tabs);
+	}
+
+	tabs = document.createElement("div");
+	tabs.id = "tabs";
+	tabs.style.display = "none";
+	byId("preview").appendChild(tabs);
+	
+	var _sheets		= reportXML.getElementsByTagName( 'sheet' );	
+	
+	var divHTML = "";
+	var html = "<ul>";
+		
+	for(var i=0;i<_sheets.length;i++){
+		var sheet = _sheets.item(i) ;
+		var id = sheet.getAttribute("id");
+		
+		html += "<li><a href='#fragment-" + id + "'>" + id + "</a></li>";
+		divHTML += "<div id='fragment-" + id + "'></div>";
+	}
+	
+	html += "</ul>";	
+	
+	byId("tabs").innerHTML = html + divHTML;	
+	
+	
+	$("#tabs").tabs({collapsible : true});
+}
+
 
 function setMergedNumberForEachCell( parentElement ) {
 		
@@ -143,4 +196,4 @@ function exportFromXMLtoHTML( parentElement ) {
 	window.status = "DATAWARE HOUSE";
 	window.stop();
 }
-// END OF Previewed Report Excel //
+

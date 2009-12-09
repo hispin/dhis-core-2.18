@@ -419,8 +419,14 @@
 			<param name="page">/dhis-web-excel-reporting/reportparams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="stylesheets">style/previewStyle.css</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
+			<param name="stylesheets">style/previewStyle.css, style/ui.all.css</param>
+			<param name="javascripts">
+					../dhis-web-commons/ouwt/ouwt.js,
+					javascript/export.js,
+					javascript/commons.js,
+					javascript/preview.js,
+					javascript/jquery-ui-1.7.2.custom.min.js
+			</param>
 		</action>
 
 		<action name="getReportExcelsByGroup"
@@ -470,51 +476,8 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
+
 		
-
-		<!-- Generate Report By Ajax -->
-		<!-- 
-		<action name="generateReportExcel"
-			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
-			<result name="CATEGORY" type="chain">
-				generateReportExcelCategoryAjax
-			</result>
-			<result name="NORMAL" type="chain">
-				generateReportExcelNormalAjax
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generateReportExcelOrganizationGroupListingAjax
-			</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generateReportExcelPeriodColumnListingAjax
-			</result>
-		</action>
-
-		<action name="generateReportExcelCategoryAjax"
-			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-		</action>
-
-		<action name="generateReportExcelNormalAjax"
-			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelNormalAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-		</action>
-
-		<action name="generateReportExcelOrganizationGroupListingAjax"
-			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-		</action>
-
-		<action name="generateReportExcelPeriodColumnListingAjax"
-			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelPeriodColumnListingAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-		</action>
-
-		-->
 		<!-- DATA ENTRY STATUS ACTION -->
 
 		<action name="viewDataEntryStatus"
@@ -676,7 +639,14 @@
 			<param name="page">/dhis-web-excel-reporting/advancedReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
+			<param name="stylesheets">style/previewStyle.css, style/ui.all.css</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/export.js,
+				javascript/commons.js,
+				javascript/preview.js,
+				javascript/jquery-ui-1.7.2.custom.min.js
+			</param>
 		</action>
 
 		<action name="getALLReportExcelByGroup"

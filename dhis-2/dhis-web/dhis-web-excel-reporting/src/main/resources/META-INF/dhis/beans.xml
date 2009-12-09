@@ -375,9 +375,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />	
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />		
 	</bean>
 
 	<bean
