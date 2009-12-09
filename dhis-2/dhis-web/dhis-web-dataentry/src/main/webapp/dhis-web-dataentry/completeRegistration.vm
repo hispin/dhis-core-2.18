@@ -26,4 +26,11 @@
 <script type="text/javascript">
     var i18n_confirm_complete = '$encoder.jsEscape( $i18n.getString( "confirm_complete" ) , "'")';
     var i18n_confirm_undo = '$encoder.jsEscape( $i18n.getString( "confirm_undo" ) , "'")';
+	
+	#if( $registration || $periods.size() == 0 )
+		disableInputField();
+	#end
+	
+	
+	
 </script>

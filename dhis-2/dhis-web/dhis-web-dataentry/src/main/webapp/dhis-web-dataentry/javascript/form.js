@@ -303,6 +303,7 @@ function registerReceived( messageElement )
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
     document.getElementById( "dateDiv" ).style.display = "none";
+	disableInputField();
 }
 
 function undoCompleteDataSet()
@@ -325,4 +326,25 @@ function undoReceived( messageElement )
     document.getElementById( "undoButton" ).disabled = true;
     document.getElementById( "dateField" ).disabled = false;
     document.getElementById( "dateDiv" ).style.display = "inline";
+	enableInputField();
+}
+
+function disableInputField()
+{
+	var inputList = byId("dataEntryForm").getElementsByTagName("input");
+	
+	for(var i=0;i<inputList.length;i++){
+		var input = inputList.item(i);
+		input.disabled = true;
+	}		
+}
+
+function enableInputField()
+{
+	var inputList = byId("dataEntryForm").getElementsByTagName("input");
+	
+	for(var i=0;i<inputList.length;i++){
+		var input = inputList.item(i);
+		input.disabled = false;
+	}	
 }
