@@ -42,7 +42,7 @@
     <tr>
       <td></td>
       <td colspan="2">
-        <input type="button" onclick="validateEditDataElementCategory()" value="$i18n.getString( "edit" )" style="width:100px"><input 
+        <input type="button" onclick="validateEditDataElementCategory()" value="$i18n.getString( "save" )" style="width:100px"><input 
                type="button" onclick="window.location.href='category.action'" value="$i18n.getString( "cancel" )" style="width:100px"></p>
       </td>
     </tr>
