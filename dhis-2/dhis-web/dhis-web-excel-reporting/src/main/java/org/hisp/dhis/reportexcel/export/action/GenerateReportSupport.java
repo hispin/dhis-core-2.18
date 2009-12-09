@@ -274,34 +274,35 @@ public abstract class GenerateReportSupport
     // ------------------------------------------
     // Excel format
     // ------------------------------------------
-    protected HSSFFont csFont;
-
-    protected HSSFFont csFontBold;
-
-    protected HSSFFont csFontChapterBold;
 
     protected HSSFHeader header;
 
     protected HSSFDataFormat dFormat;
 
+    protected HSSFFont csFont;
+
+    protected HSSFFont csFont11Bold;
+
+    protected HSSFFont csFont10Bold;
+
+    protected HSSFFont csFont12BoldCenter;
+
     protected HSSFCellStyle csHeader;
-
-    protected HSSFCellStyle csText;
-
-    protected HSSFCellStyle csTextLeft;
-
-    protected HSSFCellStyle csTextRight;
-
-    protected HSSFCellStyle csTextICDJustify;
-
-    protected HSSFCellStyle csTextChapterLeft;
-
-    protected HSSFCellStyle csTextOrgUnitName;
 
     protected HSSFCellStyle csNumber;
 
     protected HSSFCellStyle csFormula;
-    
+
+    protected HSSFCellStyle csText;
+
+    protected HSSFCellStyle csText10Bold;
+
+    protected HSSFCellStyle csTextSerial;
+
+    protected HSSFCellStyle csTextICDJustify;
+
+    protected HSSFCellStyle csText12BoldCenter;
+
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
     protected void initExcelFormat()
@@ -310,18 +311,17 @@ public abstract class GenerateReportSupport
         hssfSheet = templateWorkbook.getSheetAt( 0 );
         header = hssfSheet.getHeader();
         csFont = templateWorkbook.createFont();
-        csFontBold = templateWorkbook.createFont();
-        csFontChapterBold = templateWorkbook.createFont();
+        csFont11Bold = templateWorkbook.createFont();
+        csFont12BoldCenter = templateWorkbook.createFont();
         dFormat = templateWorkbook.createDataFormat();
         csHeader = templateWorkbook.createCellStyle();
-        csText = templateWorkbook.createCellStyle();
-        csTextLeft = templateWorkbook.createCellStyle();
-        csTextRight = templateWorkbook.createCellStyle();
-        csTextICDJustify = templateWorkbook.createCellStyle();
-        csTextChapterLeft = templateWorkbook.createCellStyle();
-        csTextOrgUnitName = templateWorkbook.createCellStyle();
         csNumber = templateWorkbook.createCellStyle();
         csFormula = templateWorkbook.createCellStyle();
+        csText = templateWorkbook.createCellStyle();
+        csText10Bold = templateWorkbook.createCellStyle();
+        csTextSerial = templateWorkbook.createCellStyle();
+        csTextICDJustify = templateWorkbook.createCellStyle();
+        csText12BoldCenter = templateWorkbook.createCellStyle();
 
     }
 
@@ -337,31 +337,32 @@ public abstract class GenerateReportSupport
         initPOIStylesManager.initDefaultHeader( header );
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
-        initPOIStylesManager.initFont( csFontBold, "Tahoma", (short) 11, HSSFFont.BOLDWEIGHT_BOLD,
+
+        initPOIStylesManager.initFont( csFont10Bold, "Tahoma", (short) 10, HSSFFont.BOLDWEIGHT_BOLD,
+            HSSFColor.BLACK.index );
+        initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, HSSFFont.BOLDWEIGHT_BOLD,
             HSSFColor.DARK_BLUE.index );
-        initPOIStylesManager.initFont( csFontChapterBold, "Tahoma", (short) 12, HSSFFont.BOLDWEIGHT_BOLD,
-            HSSFColor.BROWN.index );
-        initPOIStylesManager.initCellStyle( csTextLeft, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
-        initPOIStylesManager.initCellStyle( csTextRight, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+        initPOIStylesManager.initFont( csFont12BoldCenter, "Tahoma", (short) 12, HSSFFont.BOLDWEIGHT_BOLD,
+            HSSFColor.BLUE.index );
+
+        initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_RIGHT );
+        initPOIStylesManager.initCellStyle( csFormula, csFont11Bold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_ALIGN_RIGHT );
+        initPOIStylesManager.initCellStyle( csText10Bold, csFont10Bold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
+        initPOIStylesManager.initCellStyle( csTextSerial, csFont, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
         initPOIStylesManager.initCellStyle( csTextICDJustify, csFont, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_JUSTIFY );
-        initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
-        initPOIStylesManager.initCellStyle( csFormula, csFontBold, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
-        initPOIStylesManager.initCellStyle( csTextOrgUnitName, csFontBold, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
-            this.CELLSTYLE_ALIGN_CENTER );
-        initPOIStylesManager.initCellStyle( csTextChapterLeft, csFontChapterBold, this.CELLSTYLE_BORDER,
+        initPOIStylesManager.initCellStyle( csText12BoldCenter, csFont12BoldCenter, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
 

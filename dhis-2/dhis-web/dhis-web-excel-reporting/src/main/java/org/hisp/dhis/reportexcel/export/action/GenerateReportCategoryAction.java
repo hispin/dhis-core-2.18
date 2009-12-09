@@ -94,16 +94,15 @@ public class GenerateReportCategoryAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElementGroup
-                        .getName() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft );   
+                        .getName() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter );   
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_CODE ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElementGroup
-                        .getCode() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft ); 
+                        .getCode() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter ); 
                 }
 
                 rowBegin++;
-
                 int serial = 1;
 
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
@@ -112,7 +111,7 @@ public class GenerateReportCategoryAction
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElement
-                            .getName() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft );
+                            .getName() ), ExcelUtils.TEXT, sheet, this.csText10Bold );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_CODE ) )
                     {
@@ -122,7 +121,7 @@ public class GenerateReportCategoryAction
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
-                            ExcelUtils.NUMBER, sheet, this.csNumber );
+                            ExcelUtils.NUMBER, sheet, this.csTextSerial );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
                     {

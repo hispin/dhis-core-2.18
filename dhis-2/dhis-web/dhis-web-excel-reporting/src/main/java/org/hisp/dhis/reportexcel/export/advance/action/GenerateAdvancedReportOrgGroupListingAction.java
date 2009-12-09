@@ -47,7 +47,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 /**
  * @author Chau Thu Tran
  * @author Tran Thanh Tri
- * @version $Id$
+ * @since 2009-09-18
  */
 public class GenerateAdvancedReportOrgGroupListingAction
     extends GenerateReportSupport
@@ -104,12 +104,13 @@ public class GenerateAdvancedReportOrgGroupListingAction
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
-            
-            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>(organisationUnitGroup.getMembers());
-            
+
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup
+                .getMembers() );
+
             Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
-            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnits , sheet );
+            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnits, sheet );
 
         }
 
@@ -121,7 +122,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
     }
 
     private void generateOutPutFile( ReportExcel reportExcel, Collection<ReportExcelItem> reportExcelItems,
-    		List<OrganisationUnit> organisationUnits, HSSFSheet sheet )
+        List<OrganisationUnit> organisationUnits, HSSFSheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
@@ -139,12 +140,12 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.ORGANISATION ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), o.getName(), ExcelUtils.TEXT, sheet,
-                        this.csTextOrgUnitName );
+                        this.csText10Bold );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
-                        ExcelUtils.NUMBER, sheet, this.csNumber );
+                        ExcelUtils.NUMBER, sheet, this.csTextSerial );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
                 {
