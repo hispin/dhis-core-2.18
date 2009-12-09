@@ -6,7 +6,7 @@
 </script>
 
 #parse( "/dhis-web-dataentry/select.vm" )
-<div id="dataEntryForm">
+
 #if ( $customDataEntryFormExists && !$useDefaultForm )
 			
 		#foreach( $optionCombo in $orderdCategoryOptionCombos )
@@ -171,7 +171,7 @@
 #end
 </table>
 #end
-</div>
+
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )
 
 <script type="text/javascript">
