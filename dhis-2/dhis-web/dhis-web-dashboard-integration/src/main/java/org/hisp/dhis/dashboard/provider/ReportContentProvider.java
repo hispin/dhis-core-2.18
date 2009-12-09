@@ -27,6 +27,9 @@ package org.hisp.dhis.dashboard.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.report.Report.TYPE_BIRT;
+import static org.hisp.dhis.report.Report.TYPE_DEFAULT;
+import static org.hisp.dhis.report.Report.TYPE_JASPER;
 import static org.hisp.dhis.util.ContextUtils.getBaseUrl;
 
 import java.util.Collections;
@@ -38,17 +41,17 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-
-import org.apache.struts2.ServletActionContext;
 
 /**
  * @author Lars Helge Overland
@@ -61,6 +64,7 @@ public class ReportContentProvider
     
     private static final String SEPARATOR = "/";
     private static final String BASE_QUERY = "frameset?__report=";
+    private static final String JASPER_BASE_URL = "../dhis-web-reporting/renderReport.action?template=";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -71,6 +75,13 @@ public class ReportContentProvider
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     private DashboardService dashboardService;
@@ -107,30 +118,43 @@ public class ReportContentProvider
         if ( user != null )
         {
             DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
-                        
-            try
+            
+            String framework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK, TYPE_DEFAULT );
+            
+            List<Report> reports = dashboardContent.getReports();
+            
+            if ( framework.equals( TYPE_JASPER ) )
             {
-                ReportConfiguration config = reportManager.getConfiguration();
-                
-                HttpServletRequest request = ServletActionContext.getRequest();
-                
-                String birtURL = getBaseUrl( request ) + config.getDirectory() + SEPARATOR + BASE_QUERY;
-                
-                List<Report> reports = dashboardContent.getReports();
-                
                 for ( Report report : reports )
                 {
-                    report.setUrl( birtURL + report.getDesign() );
+                    report.setUrl( JASPER_BASE_URL + report.getDesign() );
                 }
-                
-                Collections.sort( reports, new ReportComparator() );
-                
-                content.put( key, reports );
             }
-            catch ( NoConfigurationFoundException ex )
-            {
-                log.error( "Report configuration not set" );
+            else if ( framework.equals( TYPE_BIRT ) )
+            {            
+                try
+                {
+                    ReportConfiguration config = reportManager.getConfiguration();
+                    
+                    HttpServletRequest request = ServletActionContext.getRequest();
+                    
+                    String birtURL = getBaseUrl( request ) + config.getDirectory() + SEPARATOR + BASE_QUERY;
+                    
+                    for ( Report report : reports )
+                    {
+                        report.setUrl( birtURL + report.getDesign() );
+                    }
+                    
+                }
+                catch ( NoConfigurationFoundException ex )
+                {
+                    log.error( "Report configuration not set" );
+                }
             }
+
+            Collections.sort( reports, new ReportComparator() );
+            
+            content.put( key, reports );
         }
         
         return content;
