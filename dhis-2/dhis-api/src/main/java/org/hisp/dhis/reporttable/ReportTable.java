@@ -748,7 +748,17 @@ public class ReportTable
         return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && 
             isDimensional( DimensionType.CATEGORY ) && mode.equals( MODE_DATAELEMENTS );
     }
-        
+    
+    /**
+     * Returns a List containing index and select columns.
+     */
+    public List<String> getIndexAndSelectColumns()
+    {
+        List<String> columns = new ArrayList<String>( indexColumns );
+        columns.addAll( selectColumns );
+        return columns;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
