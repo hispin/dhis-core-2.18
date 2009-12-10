@@ -56,7 +56,7 @@ public class GetReportTableDataStatement
     {
         StringBuffer buffer = new StringBuffer();
         
-        buffer.append( "SELECT value, " );
+        buffer.append( "SELECT SUM(value), " );
         
         Iterator<String> selectColumns = reportTable.getSelectColumns().iterator();
         
@@ -78,6 +78,15 @@ public class GetReportTableDataStatement
             indexColumn = indexColumns.next();
             
             buffer.append( "AND " + indexColumn + "='" + QUERY_PARAM_ID + indexColumn + "' " );
+        }
+        
+        buffer.append( "GROUP BY " );
+        
+        selectColumns = reportTable.getIndexAndSelectColumns().iterator();
+        
+        while( selectColumns.hasNext() )
+        {
+            buffer.append( selectColumns.next() + ( selectColumns.hasNext() ? SEPARATOR : SPACE ) );
         }
         
         statement = buffer.toString();
