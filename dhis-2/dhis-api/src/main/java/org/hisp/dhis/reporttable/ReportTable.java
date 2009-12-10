@@ -82,6 +82,7 @@ public class ReportTable
 
     public static final String TOTAL_COLUMN_NAME = "total";
     public static final String TOTAL_COLUMN_PREFIX = "total_";
+    public static final String TOTAL_COLUMN_PRETTY_PREFIX = "Total ";
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
     
@@ -578,8 +579,12 @@ public class ReportTable
             {
                 for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
                 {
+                    String columnName = databaseEncode( TOTAL_COLUMN_PREFIX + dimensionOption.getName() );
+                    String prettyColumnName = TOTAL_COLUMN_PRETTY_PREFIX + dimensionOption.getName();
+                    
                     dimensionOptions.add( dimensionOption );
-                    dimensionOptionColumns.add( databaseEncode( TOTAL_COLUMN_PREFIX + dimensionOption.getName() ) );
+                    dimensionOptionColumns.add( columnName );
+                    prettyCrossTabColumns.put( columnName, prettyColumnName );
                 }
             }
         }
@@ -646,6 +651,12 @@ public class ReportTable
         columns.addAll( getIndexNameColumns() );
         columns.add( ReportTable.REPORTING_MONTH_COLUMN_NAME );
         columns.addAll( getCrossTabColumns() );
+        columns.addAll( getDimensionOptionColumns() );
+        
+        if ( doTotal() )
+        {
+            columns.add( TOTAL_COLUMN_NAME );
+        }
         
         if ( isRegression() )
         {

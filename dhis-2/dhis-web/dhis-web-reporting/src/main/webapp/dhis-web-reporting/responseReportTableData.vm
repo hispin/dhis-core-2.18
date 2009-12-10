@@ -9,7 +9,7 @@
     </tr>
     <tr>
     #foreach( $column in $data.prettyPrintColumns )
-        <td class="reportTableHeader">$column</td>
+        <td class="reportTableHeader" style="min-width:100px">$column</td>
     #end
     </tr>
     #set( $mark = false )
