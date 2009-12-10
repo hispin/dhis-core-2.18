@@ -194,8 +194,12 @@ public class ReportTableStatementTest
         statement.setInt( ReportTable.PERIOD_ID, 5 );
         statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
         
+        String expected = 
+            "SELECT SUM(value), indicatorid, periodid FROM aggregatedindicatorvalue " +
+            "WHERE organisationunitid='10' GROUP BY organisationunitid, indicatorid, periodid ";
+        
         assertNotNull( statement.getStatement() );
-        assertEquals( "SELECT value, indicatorid, periodid FROM aggregatedindicatorvalue WHERE organisationunitid='10' ", statement.getStatement() );
+        assertEquals( expected, statement.getStatement() );
     }
 
     @Test
@@ -212,8 +216,12 @@ public class ReportTableStatementTest
         statement.setInt( ReportTable.PERIOD_ID, 5 );
         statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
         
+        String expected = 
+            "SELECT SUM(value), dataelementid, categoryoptioncomboid FROM aggregateddatavalue " +
+            "WHERE periodid='5' AND organisationunitid='10' GROUP BY periodid, organisationunitid, dataelementid, categoryoptioncomboid ";
+        
         assertNotNull( statement.getStatement() );
-        assertEquals( "SELECT value, dataelementid, categoryoptioncomboid FROM aggregateddatavalue WHERE periodid='5' AND organisationunitid='10' ", statement.getStatement() );
+        assertEquals( expected, statement.getStatement() );
     }
 
     @Test
@@ -230,8 +238,12 @@ public class ReportTableStatementTest
         statement.setInt( ReportTable.PERIOD_ID, 5 );
         statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
         
+        String expected = 
+            "SELECT SUM(value), dataelementid, periodid FROM aggregateddatavalue " +
+            "WHERE organisationunitid='10' GROUP BY organisationunitid, dataelementid, periodid ";
+        
         assertNotNull( statement.getStatement() );
-        assertEquals( "SELECT value, dataelementid, periodid FROM aggregateddatavalue WHERE organisationunitid='10' ", statement.getStatement() );
+        assertEquals( expected, statement.getStatement() );
     }
 
     @Test
@@ -248,8 +260,12 @@ public class ReportTableStatementTest
         statement.setInt( ReportTable.PERIOD_ID, 5 );
         statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
         
+        String expected =
+            "SELECT SUM(value), datasetid, periodid FROM aggregateddatasetcompleteness " +
+            "WHERE organisationunitid='10' GROUP BY organisationunitid, datasetid, periodid ";
+        
         assertNotNull( statement.getStatement() );
-        assertEquals( "SELECT value, datasetid, periodid FROM aggregateddatasetcompleteness WHERE organisationunitid='10' ", statement.getStatement() );
+        assertEquals( expected, statement.getStatement() );
     }
 
     @Test

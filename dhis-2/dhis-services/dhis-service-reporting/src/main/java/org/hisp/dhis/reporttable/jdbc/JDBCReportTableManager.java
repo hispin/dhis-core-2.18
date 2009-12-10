@@ -150,7 +150,7 @@ public class JDBCReportTableManager
         {
             ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
             
-            log.info( "Get values statement: " + statement.getStatement() );
+            log.debug( "Get values statement: " + statement.getStatement() );
             
             int columnCount = resultSet.getMetaData().getColumnCount(); //TODO improve performance?
             

@@ -80,7 +80,7 @@ public class GetReportTableDataStatement
             buffer.append( "AND " + indexColumn + "='" + QUERY_PARAM_ID + indexColumn + "' " );
         }
         
-        buffer.append( "GROUP BY " );
+        buffer.append( "GROUP BY " ); // Required for getting sum of category option combos for data elements
         
         selectColumns = reportTable.getIndexAndSelectColumns().iterator();
         
