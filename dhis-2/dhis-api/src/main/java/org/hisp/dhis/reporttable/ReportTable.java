@@ -149,7 +149,7 @@ public class ReportTable
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
     
     /**
-     * The <a>org.hisp.dhis.dimension.DimensionType</a> for the ReportTable.
+     * The {@link org.hisp.dhis.dimension.DimensionType} for the ReportTable.
      */
     private DimensionType dimensionType;
     
