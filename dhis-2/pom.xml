@@ -51,6 +51,11 @@
     <url>http://www.amplecode.org/maven2</url>
     </repository>
     -->
+    <repository>
+      <id>jasperreports</id>
+      <name>JasperReports Maven 2 repository</name>
+      <url>http://jasperreports.sourceforge.net/maven2</url>
+    </repository>
   </repositories>
   
   <issueManagement>
@@ -473,7 +478,7 @@
       <dependency>
         <groupId>jasperreports</groupId>
         <artifactId>jasperreports</artifactId>
-        <version>3.5.3</version>
+        <version>3.7.0</version>
       </dependency>
       <dependency>
         <groupId>jfree</groupId>
