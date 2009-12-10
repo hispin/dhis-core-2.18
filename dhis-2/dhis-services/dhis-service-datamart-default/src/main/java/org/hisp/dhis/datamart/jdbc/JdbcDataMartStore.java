@@ -69,15 +69,6 @@ import org.amplecode.quick.mapper.ObjectMapper;
 public class JdbcDataMartStore
     implements DataMartStore
 {
-    private static final Map<String, String> functionMap = new HashMap<String, String>();
-    
-    static
-    {
-        functionMap.put( DataElement.AGGREGATION_OPERATOR_SUM, "SUM" );
-        functionMap.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "AVG" );
-        functionMap.put( DataElement.AGGREGATION_OPERATOR_COUNT, "SUM" );
-    }
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -103,7 +94,7 @@ public class JdbcDataMartStore
     public Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
         final String sql = 
-            "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value) " +
+            "SELECT SUM(value) " +
             "FROM aggregateddatavalue " +
             "WHERE dataelementid = " + dataElement.getId() + " " +
             "AND periodid = " + period.getId() + " " +
@@ -119,7 +110,7 @@ public class JdbcDataMartStore
             String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, dimensionOption.getDimensionOptionElements() ) );
             
             final String sql =
-                "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value) " +
+                "SELECT SUM(value) " +
                 "FROM aggregateddatavalue " +
                 "WHERE dataelementid = " + dataElement.getId() + " " +
                 "AND categoryoptioncomboid IN (" + ids + ") " +
