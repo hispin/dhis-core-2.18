@@ -46,22 +46,22 @@ public class DataElementCategoryCombo
     implements Serializable, DimensionSet
 {
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
-    
+
     /**
      * The database internal identifier.
      */
     private int id;
-    
+
     /**
      * The name.
      */
     private String name;
-    
+
     /**
      * A set with categories.
      */
     private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
-    
+
     /**
      * A set of category option combos.
      */
@@ -75,22 +75,22 @@ public class DataElementCategoryCombo
     {
         return DimensionType.CATEGORY.name() + SEPARATOR_TYPE + id;
     }
-    
+
     public DimensionType getDimensionType()
     {
         return DimensionType.CATEGORY;
     }
-    
+
     public List<? extends Dimension> getDimensions()
     {
         return categories;
     }
-    
+
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return new ArrayList<DimensionOptionElement>( optionCombos );
     }
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -98,18 +98,18 @@ public class DataElementCategoryCombo
     public DataElementCategoryCombo()
     {
     }
-    
+
     public DataElementCategoryCombo( String name )
     {
-    	this.name = name;
+        this.name = name;
     }
-    
+
     public DataElementCategoryCombo( String name, List<DataElementCategory> categories )
     {
         this.name = name;
         this.categories = categories;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -127,19 +127,19 @@ public class DataElementCategoryCombo
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final DataElementCategoryCombo other = (DataElementCategoryCombo) object;
-        
+
         return name.equals( other.getName() );
     }
 
@@ -147,49 +147,49 @@ public class DataElementCategoryCombo
     public String toString()
     {
         return "[" + name + "]";
-    }
+    }   
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-    
+
     public int getId()
     {
         return id;
     }
-    
-    public void setId( int id ) 
+
+    public void setId( int id )
     {
         this.id = id;
     }
-    
+
     public String getName()
     {
         return name;
     }
-    
-    public void setName( String name ) 
+
+    public void setName( String name )
     {
         this.name = name;
-    }    
+    }
 
     public List<DataElementCategory> getCategories()
     {
         return categories;
     }
-    
+
     public void setCategories( List<DataElementCategory> categories )
     {
         this.categories = categories;
     }
-    
+
     public Set<DataElementCategoryOptionCombo> getOptionCombos()
     {
         return optionCombos;
     }
-    
+
     public void setOptionCombos( Set<DataElementCategoryOptionCombo> optionCombos )
-    {        
+    {
         this.optionCombos = optionCombos;
     }
 }

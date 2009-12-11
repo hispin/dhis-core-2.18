@@ -31,10 +31,12 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MOD
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.CategoryComboSizeComparator;
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
@@ -45,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -64,6 +67,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Abyot Asalefew
@@ -149,7 +154,7 @@ public class FormAction
     {
         this.categoryService = categoryService;
     }
-
+    
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -162,6 +167,17 @@ public class FormAction
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -277,9 +293,9 @@ public class FormAction
         return allOptionCombos;
     }
 
-    private Collection<DataElementCategoryCombo> orderedCategoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private List<DataElementCategoryCombo> orderedCategoryCombos = new ArrayList<DataElementCategoryCombo>();
 
-    public Collection<DataElementCategoryCombo> getOrderedCategoryCombos()
+    public List<DataElementCategoryCombo> getOrderedCategoryCombos()
     {
         return orderedCategoryCombos;
     }
@@ -373,21 +389,23 @@ public class FormAction
         if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
         {
             disabled = "disabled";
-        }
-
-        Collection<DataElement> dataElements = dataSet.getDataElements();
+        }       
+        
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         if ( dataElements.size() == 0 )
         {
             return SUCCESS;
-        }
-
+        }      
+        
+        Collections.sort( dataElements, dataElementComparator );       
+        
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
-
-        orderedCategoryCombos.addAll( dataElementService.getDataElementCategoryCombos( dataElements ) );       
+        
+        orderedCategoryCombos = dataElementService.getDataElementCategoryCombos( dataElements );        
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
-        {
+        {            
             Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
 
             allOptionCombos.addAll( optionCombos );
@@ -529,6 +547,7 @@ public class FormAction
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {
             des = (List<DataElement>) orderedDataElements.get( categoryCombo );
+          
             displayPropertyHandler.handle( des );
 
             orderedDataElements.put( categoryCombo, des );

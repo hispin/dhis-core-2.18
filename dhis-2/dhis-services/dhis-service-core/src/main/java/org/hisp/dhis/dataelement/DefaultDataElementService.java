@@ -35,20 +35,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.comparator.CategoryComboSizeComparator;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Kristian Nordal
@@ -233,7 +235,7 @@ public class DefaultDataElementService
     }
 
     public Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo(
-        Collection<DataElement> dataElements )
+        List<DataElement> dataElements )
     {
         Map<DataElementCategoryCombo, Collection<DataElement>> mappedDataElements = new HashMap<DataElementCategoryCombo, Collection<DataElement>>();
 
@@ -255,17 +257,20 @@ public class DefaultDataElementService
         return mappedDataElements;
     }
 
-    public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<DataElement> dataElements )
+    public List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements )
     {
-        SortedMap<String, DataElementCategoryCombo> sortedCategoryCombo = new TreeMap<String, DataElementCategoryCombo>();
+        Set<DataElementCategoryCombo> setCategoryCombos = new HashSet<DataElementCategoryCombo>();              
 
         for ( DataElement de : dataElements )
         {
-            sortedCategoryCombo.put( de.getCategoryCombo().getOptionCombos().size() + "-"
-                + de.getCategoryCombo().getId(), de.getCategoryCombo() );
+            setCategoryCombos.add( de.getCategoryCombo() );           
         }
 
-        return sortedCategoryCombo.values();
+        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>(setCategoryCombos);
+        
+        Collections.sort( listCategoryCombos, new CategoryComboSizeComparator() );
+        
+        return listCategoryCombos;
     }
 
     public Collection<DataElement> getDataElementsWithGroupSets()
