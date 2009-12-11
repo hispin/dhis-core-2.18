@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
@@ -214,6 +215,15 @@ public interface DataElementService
      * @return all DataElements with the given category combo.
      */
     Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo );
+    
+    
+    /**
+     * @param dataElements
+     * @return grouped dataElements based on their categoryCombo
+     */
+    Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo( Collection<DataElement> dataElements );
+    
+    Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<DataElement> dataElements );
 
     /**
      * Returns all DataElements which are associated with one or more DataElementGroupSets.
@@ -388,5 +398,6 @@ public interface DataElementService
     
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
     
-    Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
+    Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );   
+    
 }

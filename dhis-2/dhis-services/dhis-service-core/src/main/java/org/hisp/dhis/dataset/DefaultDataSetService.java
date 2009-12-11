@@ -31,11 +31,16 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
@@ -61,14 +66,14 @@ public class DefaultDataSetService
     {
         this.dataSetStore = dataSetStore;
     }
-    
+
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-    
+
     private I18nService i18nService;
 
     public void setI18nService( I18nService service )
@@ -83,23 +88,23 @@ public class DefaultDataSetService
     public int addDataSet( DataSet dataSet )
     {
         int id = dataSetStore.addDataSet( dataSet );
-        
+
         i18nService.addObject( dataSet );
-        
+
         return id;
     }
 
     public void updateDataSet( DataSet dataSet )
     {
         dataSetStore.updateDataSet( dataSet );
-        
+
         i18nService.verify( dataSet );
     }
 
     public void deleteDataSet( DataSet dataSet )
     {
         i18nService.removeObject( dataSet );
-        
+
         dataSetStore.deleteDataSet( dataSet );
     }
 
@@ -117,7 +122,7 @@ public class DefaultDataSetService
     {
         return i18n( i18nService, dataSetStore.getDataSetByShortName( shortName ) );
     }
-    
+
     public DataSet getDataSetByCode( String code )
     {
         return i18n( i18nService, dataSetStore.getDataSetByCode( code ) );
@@ -126,7 +131,7 @@ public class DefaultDataSetService
     public Collection<DataSet> getDataSetsBySource( Source source )
     {
         Set<DataSet> dataSets = new HashSet<DataSet>();
-        
+
         for ( DataSet dataSet : getAllDataSets() )
         {
             if ( dataSet.getSources().contains( source ) )
@@ -134,14 +139,14 @@ public class DefaultDataSetService
                 dataSets.add( dataSet );
             }
         }
-        
+
         return dataSets;
     }
 
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
         Set<DataSet> dataSets = new HashSet<DataSet>();
-        
+
         dataSets: for ( DataSet dataSet : getAllDataSets() )
         {
             for ( Source source : sources )
@@ -149,19 +154,19 @@ public class DefaultDataSetService
                 if ( dataSet.getSources().contains( source ) )
                 {
                     dataSets.add( dataSet );
-                    
+
                     continue dataSets;
                 }
             }
         }
-        
+
         return dataSets;
     }
-    
+
     public int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<? extends Source> sources )
     {
         int count = 0;
-        
+
         for ( Source source : sources )
         {
             if ( dataSet.getSources().contains( source ) )
@@ -169,31 +174,31 @@ public class DefaultDataSetService
                 count++;
             }
         }
-        
+
         return count;
     }
-    
+
     public Collection<DataSet> getAllDataSets()
     {
         return i18n( i18nService, dataSetStore.getAllDataSets() );
     }
-    
+
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
     {
         return i18n( i18nService, dataSetStore.getDataSetsByPeriodType( periodType ) );
     }
-    
+
     public Collection<DataSet> getDataSets( final Collection<Integer> identifiers )
     {
         Collection<DataSet> dataSets = getAllDataSets();
-        
+
         return identifiers == null ? dataSets : FilterUtils.filter( dataSets, new Filter<DataSet>()
+        {
+            public boolean retain( DataSet object )
             {
-                public boolean retain( DataSet object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 
     public List<DataSet> getAvailableDataSets()
@@ -202,9 +207,9 @@ public class DefaultDataSetService
         List<DataSet> dataSetList = new ArrayList<DataSet>( getAllDataSets() );
 
         for ( DataSet dataSet : dataSetList )
-        {            
+        {
             DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
-            
+
             if ( dataEntryForm == null )
             {
                 availableDataSetList.add( dataSet );
@@ -222,7 +227,7 @@ public class DefaultDataSetService
         for ( DataSet dataSet : dataSetList )
         {
             DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
-            
+
             if ( dataEntryForm != null )
             {
                 assignedDataSetList.add( dataSet );
@@ -231,22 +236,22 @@ public class DefaultDataSetService
 
         return assignedDataSetList;
     }
-    
+
     public PeriodType getPeriodType( DataElement dataElement, Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
-        
+
         for ( DataSet dataSet : dataSets )
         {
             if ( dataSet.getDataElements().contains( dataElement ) )
             {
-                return dataSet.getPeriodType();                
+                return dataSet.getPeriodType();
             }
         }
-        
+
         return null;
     }
-    
+
     public List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType )
     {
         List<DataSet> assignedDataSetListByPeriodType = new ArrayList<DataSet>();
@@ -255,27 +260,27 @@ public class DefaultDataSetService
         for ( DataSet dataSet : dataSetListByPeriodType )
         {
             DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
-            
+
             if ( dataEntryForm != null )
             {
-            	assignedDataSetListByPeriodType.add( dataSet );
+                assignedDataSetListByPeriodType.add( dataSet );
             }
         }
 
         return assignedDataSetListByPeriodType;
     }
-    
+
     public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
-        
+
         Set<DataElement> dataElements = new HashSet<DataElement>();
-        
+
         for ( DataSet dataSet : dataSets )
         {
             dataElements.addAll( dataSet.getDataElements() );
         }
-        
+
         return dataElements;
     }
 
@@ -311,5 +316,5 @@ public class DefaultDataSetService
     public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source )
     {
         return dataSetStore.getFrequencyOverrideAssociationsBySource( source );
-    }
+    }   
 }
