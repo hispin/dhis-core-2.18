@@ -365,7 +365,7 @@ public abstract class GenerateReportSupport
             this.CELLSTYLE_ALIGN_JUSTIFY );
         initPOIStylesManager.initCellStyle( csText12BoldCenter, csFont12BoldCenter, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
 
     }
 
