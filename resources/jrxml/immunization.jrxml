@@ -41,10 +41,6 @@
 	</background>
 	<title>
 		<band height="70" splitType="Stretch">
-			<image>
-				<reportElement x="50" y="0" width="83" height="62"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\development\\jrxml\\sierra_leone_coat_of_arms.jpg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="151" y="0" width="253" height="46" forecolor="#354781"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
