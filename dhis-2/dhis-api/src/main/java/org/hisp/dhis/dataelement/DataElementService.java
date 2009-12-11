@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -221,9 +222,9 @@ public interface DataElementService
      * @param dataElements
      * @return grouped dataElements based on their categoryCombo
      */
-    Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo( Collection<DataElement> dataElements );
+    Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo( List<DataElement> dataElements );
     
-    Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<DataElement> dataElements );
+    List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements );
 
     /**
      * Returns all DataElements which are associated with one or more DataElementGroupSets.
