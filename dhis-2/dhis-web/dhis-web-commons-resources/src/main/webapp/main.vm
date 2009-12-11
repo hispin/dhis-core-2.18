@@ -80,8 +80,8 @@
           <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/help.action'">$i18n.getString( "help_contents" )&nbsp;</li>
       	  <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayFeedbackForm.action'">$i18n.getString( "feedback" )&nbsp;</li>
       	  <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayChangeLog.action'">$i18n.getString( "change_log" )&nbsp;</li>
+          <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-useraccount/showUpdateUserAccountForm.action'">$i18n.getString( "user_account" )&nbsp;</li>
           <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/about.action'">$i18n.getString( "about_dhis2" )&nbsp;</li>
-		  <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-useraccount/showUpdateUserAccountForm.action'">$i18n.getString( "user_account" )&nbsp;</li>
 	    </ul>
 	  </div>
 
