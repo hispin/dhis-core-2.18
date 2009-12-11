@@ -162,7 +162,7 @@ public class DefaultReportTableService
 
             if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
             {
-                reportTable.setRelativePeriods( getRelativePeriods( reportTable.getRelatives(), reportingPeriod ) );
+                reportTable.setRelativePeriods( getRelativePeriods( reportTable, reportingPeriod, format ) );
                 
                 date = getDateFromPreviousMonth( reportingPeriod );
                 
@@ -170,7 +170,7 @@ public class DefaultReportTableService
             }
             else
             {
-                reportTable.setRelativePeriods( getRelativePeriods( reportTable.getRelatives(), 1 ) );
+                reportTable.setRelativePeriods( getRelativePeriods( reportTable, 1, format ) );
                 
                 date = getDateFromPreviousMonth( 1 );
                 
@@ -317,8 +317,12 @@ public class DefaultReportTableService
     }
     
     @Transactional
-    public List<Period> getRelativePeriods( RelativePeriods relatives, int months )
+    public List<Period> getRelativePeriods( ReportTable reportTable, int months, I18nFormat format )
     {
+        RelativePeriods relatives = reportTable.getRelatives();
+        
+        boolean dynamicNames = !reportTable.isDoPeriods();
+            
         List<Period> relativePeriods = new ArrayList<Period>();
         
         Date date = getDateFromPreviousMonth( months );
@@ -328,31 +332,31 @@ public class DefaultReportTableService
             if ( relatives.isReportingMonth() )
             {
                 Period period = periodService.getRelativePeriod( date, -1 );
-                period.setName( RelativePeriods.REPORTING_MONTH );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.REPORTING_MONTH );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast3Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -3 );
-                period.setName( RelativePeriods.LAST_3_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_3_MONTHS );
                 relativePeriods.add( period );            
             }
             if ( relatives.isLast6Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -6 );
-                period.setName( RelativePeriods.LAST_6_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_6_MONTHS );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast9Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -9 );
-                period.setName( RelativePeriods.LAST_9_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_9_MONTHS );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast12Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -12 );
-                period.setName( RelativePeriods.LAST_12_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_12_MONTHS );
                 relativePeriods.add( period );
             }
             if ( relatives.isSoFarThisYear() )
@@ -365,7 +369,7 @@ public class DefaultReportTableService
                 period.setEndDate( periodType.createPeriod( date ).getEndDate() );
                 
                 period = savePeriod( period );
-                period.setName( RelativePeriods.SO_FAR_THIS_YEAR );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.SO_FAR_THIS_YEAR );
                 relativePeriods.add( period );
             }
             if ( relatives.isSoFarThisFinancialYear() )
@@ -378,25 +382,25 @@ public class DefaultReportTableService
                 period.setEndDate( periodType.createPeriod( date ).getEndDate() );
                 
                 period = savePeriod( period );
-                period.setName( RelativePeriods.SO_FAR_THIS_FINANCIAL_YEAR );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.SO_FAR_THIS_FINANCIAL_YEAR );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast3To6Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -6, -3 );
-                period.setName( RelativePeriods.LAST_3_TO_6_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_3_TO_6_MONTHS );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast6To9Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -9, -6 );
-                period.setName( RelativePeriods.LAST_6_TO_9_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_6_TO_9_MONTHS );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast9To12Months() )
             {
                 Period period = periodService.getRelativePeriod( date, -12, -9 );
-                period.setName( RelativePeriods.LAST_9_TO_12_MONTHS );
+                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_9_TO_12_MONTHS );
                 relativePeriods.add( period );
             }
             if ( relatives.isLast12IndividualMonths() )
@@ -406,7 +410,7 @@ public class DefaultReportTableService
                     int periodNumber = i - 12;
                     
                     Period period = periodService.getRelativePeriod( date, periodNumber, periodNumber + 1 );
-                    period.setName( RelativePeriods.PREVIOUS_MONTH_NAMES[i] );
+                    period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.PREVIOUS_MONTH_NAMES[i] );
                     relativePeriods.add( period );
                 }
             }
@@ -424,7 +428,7 @@ public class DefaultReportTableService
                     Period month = periods.get( i );
                     month.setPeriodType( new RelativePeriodType() );
                     month = savePeriod( month );
-                    month.setName( RelativePeriods.MONTHS_THIS_YEAR[i] );                
+                    month.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.MONTHS_THIS_YEAR[i] );                
                     relativePeriods.add( month );
                 }            
             }
@@ -442,7 +446,7 @@ public class DefaultReportTableService
                     Period quarter = periods.get( i );
                     quarter.setPeriodType( new RelativePeriodType() );
                     quarter = savePeriod( quarter );
-                    quarter.setName( RelativePeriods.QUARTERS_THIS_YEAR[i] );
+                    quarter.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.QUARTERS_THIS_YEAR[i] );
                     relativePeriods.add( quarter );
                 }
             }
