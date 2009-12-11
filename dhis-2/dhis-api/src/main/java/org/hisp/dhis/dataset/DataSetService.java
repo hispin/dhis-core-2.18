@@ -29,8 +29,10 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
@@ -238,5 +240,6 @@ public interface DataSetService
      * @return A collection of FrequencyOverrideAssociations for the given
      *         Source.
      */
-    Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source );
+    Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source );       
+    
 }
