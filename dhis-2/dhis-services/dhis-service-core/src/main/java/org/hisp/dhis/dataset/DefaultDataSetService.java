@@ -31,16 +31,11 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;

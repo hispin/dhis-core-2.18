@@ -26,7 +26,7 @@
         column="parentid" foreign-key="fk_parentid" index="in_parentid"/>
 				
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="true" length="25"/>			
+      <column name="shortname" not-null="true" unique="true" length="50"/>			
     </property>
 		
     <property name="code">
