@@ -231,8 +231,8 @@
 
 		<action name="updateSortedDataElements"
 			class="org.hisp.dhis.reportexcel.category.action.UpdateSortedDataElementAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="redirect">
+				listDataElementGroupOrder.action?id=${reportId}</result>
 		</action>
 
 		<action name="updateSortDataElementGroupOrder"

@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,11 +54,15 @@ public class UpdateSortedDataElementAction
 
     private DataElementService dataElementService;
 
+    private SelectionManager selectionManager;
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
     private Integer id;
+
+    private Integer reportId;
 
     private List<String> dataElementIds = new ArrayList<String>();
 
@@ -74,6 +79,16 @@ public class UpdateSortedDataElementAction
         return message;
     }
 
+    public Integer getReportId()
+    {
+        return reportId;
+    }
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
@@ -87,6 +102,11 @@ public class UpdateSortedDataElementAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public Integer getId()
+    {
+        return id;
     }
 
     public void setDataElementIds( List<String> dataElementIds )
@@ -119,6 +139,8 @@ public class UpdateSortedDataElementAction
         this.message = i18n.getString( "update_sort_dataelement_success" );
 
         reportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        
+        reportId = selectionManager.getSelectedReportId();
 
         return SUCCESS;
     }

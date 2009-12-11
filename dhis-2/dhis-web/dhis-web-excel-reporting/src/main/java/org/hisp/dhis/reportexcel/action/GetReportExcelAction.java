@@ -27,9 +27,9 @@
 
 package org.hisp.dhis.reportexcel.action;
 
-
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 /**
  * @author Tran Thanh Tri
@@ -43,6 +43,8 @@ public class GetReportExcelAction
     // -------------------------------------------
 
     private ReportExcelService reportService;
+
+    private SelectionManager selectionManager;
 
     // -------------------------------------------
     // Input & Output
@@ -59,6 +61,11 @@ public class GetReportExcelAction
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
+    }
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     public ReportExcelService getReportService()
@@ -95,13 +102,15 @@ public class GetReportExcelAction
     {
         if ( id != null )
         {
+            selectionManager.setSelectedReportId( id );
+            
             report = reportService.getReportExcel( id );
         }
         else
         {
             return ERROR;
         }
-        
+
         return SUCCESS;
     }
 }
