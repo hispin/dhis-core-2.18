@@ -86,7 +86,7 @@ public interface ReportTableService
      *        
      * @return a Collection of Periods of the RelativePeriodType.
      */
-    List<Period> getRelativePeriods( RelativePeriods relatives, int months );
+    List<Period> getRelativePeriods( ReportTable reportTable, int months, I18nFormat format );
     
     /**
      * Returns the current date subtracted with the given number of months.

@@ -32,12 +32,8 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MOD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
