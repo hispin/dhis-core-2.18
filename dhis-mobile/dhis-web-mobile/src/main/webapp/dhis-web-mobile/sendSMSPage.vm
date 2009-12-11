@@ -1,0 +1,8 @@
+<h1>Send SMS</h1>
+        <form action="post">
+            <table>
+                <tr><td>Phone #:</td><td><input type="text"/></td></tr>
+                <tr><td></td><td><textarea cols="50" rows="10"></textarea></td></tr>
+                <tr><td></td><td><input type="submit" value="Send SMS"/></td>
+            </table>
+        </form>
