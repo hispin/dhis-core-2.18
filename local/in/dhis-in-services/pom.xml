@@ -17,7 +17,7 @@
 	<module>dhis-in-service-configuration</module>
     <module>dhis-in-service-dbmanager</module>
 	<module>dhis-in-service-linelisting</module> 
-	<module>dhis-in-service-reports</module>
+	<!--<module>dhis-in-service-reports</module>-->
     <module>dhis-in-service-survey</module>
   </modules>
   

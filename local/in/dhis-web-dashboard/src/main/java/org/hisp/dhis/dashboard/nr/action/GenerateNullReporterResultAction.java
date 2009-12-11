@@ -457,7 +457,8 @@ public class GenerateNullReporterResultAction
                         }
                         else
                         {
-                            DataValue dataValue = dataValueService.getDataValue( curOu, de, p );
+							DataElementCategoryOptionCombo decoc = de.getCategoryCombo().getOptionCombos().iterator().next();
+                            DataValue dataValue = dataValueService.getDataValue( curOu, de, p, decoc );
 
                             if ( dataValue == null )
                             {

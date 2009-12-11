@@ -36,8 +36,8 @@ import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 public class OrganisationUnitGroupSetPopulator
     extends AbstractStartupRoutine
 {
-    private static final String NAME_TYPE = "Type";
-    private static final String NAME_OWNERSHIP = "Ownership";
+    public static final String NAME_TYPE = "Type";
+    public static final String NAME_OWNERSHIP = "Ownership";
 
     // -------------------------------------------------------------------------
     // Dependencies
