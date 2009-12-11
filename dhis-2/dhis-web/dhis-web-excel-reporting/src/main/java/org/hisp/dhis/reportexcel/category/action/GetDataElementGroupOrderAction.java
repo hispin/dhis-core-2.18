@@ -75,6 +75,8 @@ public class GetDataElementGroupOrderAction
         throws Exception
     {
         dataElementGroupOrder = reportService.getDataElementGroupOrder( id );
+        
+        
 
         return SUCCESS;
     }
