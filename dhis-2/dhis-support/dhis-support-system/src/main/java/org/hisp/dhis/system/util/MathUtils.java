@@ -27,6 +27,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Random;
 import java.util.Scanner;
 
 import org.nfunk.jep.JEP;
@@ -185,5 +186,13 @@ public class MathUtils
         }
         
         return Math.abs( d1 - d2 ) < TOLERANCE;
+    }
+    
+    /**
+     * Returns a random int between 0 and 999.
+     */
+    public static int getRandom()
+    {
+        return new Random().nextInt( 999 );
     }
 }
