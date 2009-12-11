@@ -311,6 +311,7 @@ public abstract class GenerateReportSupport
         hssfSheet = templateWorkbook.getSheetAt( 0 );
         header = hssfSheet.getHeader();
         csFont = templateWorkbook.createFont();
+        csFont10Bold = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
         csFont12BoldCenter = templateWorkbook.createFont();
         dFormat = templateWorkbook.createDataFormat();
