@@ -117,7 +117,6 @@ public class RoutineDataValueRowHandler
         value.setSource( source );
         value.setValue( String.valueOf( dhis14Value.getValue() ) );
         value.setStoredBy( dhis14Value.getStoredBy() );
-        value.setComment( dhis14Value.getComment() );
         
         if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
         {

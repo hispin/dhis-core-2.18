@@ -19,21 +19,20 @@
         <result property="endDate" column="ValidTo" typeHandler="dateTypeHandler"/>
 		<result property="organisationUnitId" column="OrgUnitID"/>
 		<result property="value" column="EntryNumber" nullValue="0"/>
-		<result property="comment" column="Comment"/>
     </resultMap>
 	
 	<!-- Statement -->
 	
 	<select id="getSemiPermanentDataValues" resultMap="semiPermanentDataValueResultMap">
 		SELECT SemiPermanentData.DataElementID, SemiPermanentData.ValidFrom, SemiPermanentData.ValidTo, 
-		SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, SemiPermanentData.Comment, DataElement.DataPeriodTypeID 
+		SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, DataElement.DataPeriodTypeID 
 		FROM SemiPermanentData, DataElement 
         WHERE SemiPermanentData.DataElementID = DataElement.DataElementID
 	</select>
   
     <select id="getSemiPermanentDataValuesLastUpdated" parameterClass="java.util.Date" resultMap="semiPermanentDataValueResultMap">
         SELECT SemiPermanentData.DataElementID, SemiPermanentData.ValidFrom, SemiPermanentData.ValidTo, 
-        SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, SemiPermanentData.Comment, DataElement.DataPeriodTypeID 
+        SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, DataElement.DataPeriodTypeID 
         FROM SemiPermanentData, DataElement 
         WHERE SemiPermanentData.DataElementID = DataElement.DataElementID 
         AND LastUpdated > #value#

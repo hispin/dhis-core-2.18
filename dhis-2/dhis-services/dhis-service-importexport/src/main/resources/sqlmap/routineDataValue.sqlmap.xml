@@ -16,19 +16,18 @@
         <result property="dataElementId" column="DataElementID"/>
         <result property="periodId" column="DataPeriodID"/>
         <result property="organisationUnitId" column="OrgUnitID"/>
-        <result property="value" column="EntryNumber" nullValue="0"/>
+        <result property="value" column="EntryNumber" nullValue="0"/> <!-- use double?-->
         <result property="storedBy" column="LastUserID"/>
-        <result property="comment" column="Comment"/>
     </resultMap>
 	
     <!-- Statement -->
 	
     <select id="getRoutineDataValues" resultMap="routineDataValueResultMap">
-        SELECT DataElementID, DataPeriodID, OrgUnitID, EntryNumber, LastUserID, Comment FROM RoutineData
+        SELECT DataElementID, DataPeriodID, OrgUnitID, EntryNumber, LastUserID FROM RoutineData
     </select>
 
     <select id="getRoutineDataValuesLastUpdated" parameterClass="java.util.Date" resultMap="routineDataValueResultMap">
-        SELECT DataElementID, DataPeriodID, OrgUnitID, EntryNumber, LastUserID, Comment FROM RoutineData WHERE LastUpdated > #value#
+        SELECT DataElementID, DataPeriodID, OrgUnitID, EntryNumber, LastUserID FROM RoutineData WHERE LastUpdated > #value#
     </select>
 
     <select id="getDistinctPeriodIdentifiers" resultClass="java.lang.Integer">

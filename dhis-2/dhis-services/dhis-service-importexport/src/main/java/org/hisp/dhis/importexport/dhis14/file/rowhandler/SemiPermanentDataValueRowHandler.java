@@ -119,7 +119,6 @@ public class SemiPermanentDataValueRowHandler
         value.setPeriod( period );
         value.setSource( source );
         value.setValue( String.valueOf( dhis14Value.getValue() ) );
-        value.setComment( dhis14Value.getComment() );
 
         if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
         {
