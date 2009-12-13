@@ -46,27 +46,41 @@
 		<band height="14" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="34" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<staticText>
-				<reportElement x="293" y="10" width="69" height="20"/>
+				<reportElement x="293" y="29" width="69" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Value]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="10" width="100" height="20"/>
+				<reportElement x="193" y="29" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Organisation unit]]></text>
 			</staticText>
 			<line>
-				<reportElement x="193" y="29" width="169" height="1"/>
+				<reportElement x="193" y="48" width="169" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.25" lineColor="#999999"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement x="193" y="0" width="46" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Month:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="239" y="0" width="123" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{reporting_month_name}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
