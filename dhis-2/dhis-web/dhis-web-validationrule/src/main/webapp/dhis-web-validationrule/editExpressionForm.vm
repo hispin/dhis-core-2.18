@@ -42,10 +42,11 @@
 	</td>
   	<td valign="top">
   	  <label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br>  	  
-  	  <input type="text" id="filter" name="filter" style="width:450px" onkeyup="filterDataElements( 'dataElementGroupId', 'filter' )"><br>
+  	  <input type="text" id="filter" name="filter" style="width:450px" onkeyup="filterList( this.value, 'dataElementId' )"><br>
   	  
   	  <select id="dataElementGroupId" name="dataElementGroupId" style="min-width:450px" onchange="filterDataElements( 'dataElementGroupId', 'filter' )">
 	  	<option value="$ALL">[ $i18n.getString( "filter_by_group_view_all" ) ]</option>
+	  	<option value="$ALL">[ $i18n.getString( "view_all" ) ]</option>
 	  	#foreach ( $group in $dataElementGroups )
 	  	  <option value="$group.id" #if ( $dataElementGroupId == $group.id ) selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
 	  	#end
