@@ -15,7 +15,7 @@
 		<property name="organisationColumn" column="organisationcolumn" />
 		<property name="group" column="reportgroup" not-null="true"/>
 
-		<set name="reportExcelItems" lazy="false" cascade="all" inverse="true">
+		<set name="reportExcelItems" lazy="false" cascade="all-delete-orphan" inverse="true">
 			<key column="reportexcelid" />
 			<one-to-many class="org.hisp.dhis.reportexcel.ReportExcelItem" />
 		</set>
