@@ -45,13 +45,13 @@ public interface InitializePOIStylesManager
 
     // HSSFHeader initDefaultHeader();
     void initDefaultHeader( HSSFHeader header );
-    
+
     // HSSFFont initDefaultFont();
     void initDefaultFont( HSSFFont font );
-    
+
     // HSSFCellStyle initDefaultCellStyle();
     void initDefaultCellStyle( HSSFCellStyle cs, HSSFFont font );
-    
+
     // HSSFHeader initHeader( String sCenter, String sLeft, String sRight );
 
     // HSSFFont initFont( String sFontName, short fontHeightInPoints, short
@@ -59,29 +59,28 @@ public interface InitializePOIStylesManager
 
     // HSSFCellStyle initCellStyle( HSSFFont hssffont, short borderBottom, short
     // bottomBorderColor,
-      // short borderTop, short topBorderColor, short borderLeft, short
-        // leftBorderColor, short borderRight,
-      // short rightBorderColor, short alignment );
+    // short borderTop, short topBorderColor, short borderLeft, short
+    // leftBorderColor, short borderRight,
+    // short rightBorderColor, short alignment );
 
     // HSSFCellStyle initCellStyle( HSSFFont hssffont, short fillBgColor, short
     // fillFgColor, short fillPattern,
-      // short borderBottom, short bottomBorderColor, short borderTop, short
-        // topBorderColor, short borderLeft,
-      // short leftBorderColor, short borderRight, short rightBorderColor,
-        // short dataFormat, short alignment );
+    // short borderBottom, short bottomBorderColor, short borderTop, short
+    // topBorderColor, short borderLeft,
+    // short leftBorderColor, short borderRight, short rightBorderColor,
+    // short dataFormat, short alignment );
 
-    
-    void initHeader(HSSFHeader header, String sCenter, String sLeft, String sRight );
+    void initHeader( HSSFHeader header, String sCenter, String sLeft, String sRight );
 
-    void initFont(HSSFFont test_font, String sFontName, short fontHeightInPoints, short boldWeight, short fontColor );
+    void initFont( HSSFFont test_font, String sFontName, short fontHeightInPoints, short boldWeight, short fontColor );
 
-    void initCellStyle(HSSFCellStyle test_cs, HSSFFont hssffont, short borderBottom, short bottomBorderColor,
+    void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short borderBottom, short bottomBorderColor,
         short borderTop, short topBorderColor, short borderLeft, short leftBorderColor, short borderRight,
-        short rightBorderColor, short alignment );
+        short rightBorderColor, short alignment, boolean bAutoWrap );
 
-    void initCellStyle(HSSFCellStyle test_cs, HSSFFont hssffont, short fillBgColor, short fillFgColor, short fillPattern,
-        short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor, short borderLeft,
-        short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat, short alignment );
+    void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short fillBgColor, short fillFgColor,
+        short fillPattern, short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor,
+        short borderLeft, short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat,
+        short alignment, boolean bAutoWrap );
 
-    
 }
