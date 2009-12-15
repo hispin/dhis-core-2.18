@@ -1,5 +1,8 @@
 package org.hisp.dhis.reportexcel.utils;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -39,8 +42,12 @@ public class StringUtils
     private static final String MIDDLE_LINE = "-";
 
     public static final String NUMBER_OF_ZERO = "0";
-    
+
     private static final String SEPARATE = "/";
+
+    private static final String PATTERN_DECIMAL_FORMAT = "#0.##";
+
+    private static final NumberFormat nf = new DecimalFormat( PATTERN_DECIMAL_FORMAT );
 
     /* ---------------------------------------------------------------------- */
     /*                                                                        */
@@ -89,7 +96,7 @@ public class StringUtils
                         input = String.valueOf( new Long( s1 ) ).concat( DOT + splitZeroAtEndOfNumberic( s2 ) );
                     }
                 }
-                
+
                 if ( new Double( input ) == 0.0d )
                 {
                     input = MIDDLE_LINE;
@@ -128,12 +135,33 @@ public class StringUtils
 
         return number;
     }
-    
+
     /* ---------------------------------------------------------------------- */
     /*                                                                        */
     /* ---------------------------------------------------------------------- */
 
-    @SuppressWarnings("unused")
+    public static String applyPatternDecimalFormat( String input )
+    {
+        try
+        {
+            if ( Double.parseDouble( input ) >= 0.0d )
+            {
+                input = nf.format( Double.parseDouble( input ) );
+            }
+            return input;
+        }
+        catch ( NumberFormatException nfe )
+        {
+            return input;
+        }
+
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /*                                                                        */
+    /* ---------------------------------------------------------------------- */
+
+    @SuppressWarnings( "unused" )
     private static final String replacedSeparateCharacter( String path )
     {
         path = path.replace( "\\", SEPARATE );

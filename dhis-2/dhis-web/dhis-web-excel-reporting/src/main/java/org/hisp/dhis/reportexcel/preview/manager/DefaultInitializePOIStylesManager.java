@@ -134,7 +134,7 @@ public class DefaultInitializePOIStylesManager
 
     public void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short borderBottom, short bottomBorderColor,
         short borderTop, short topBorderColor, short borderLeft, short leftBorderColor, short borderRight,
-        short rightBorderColor, short alignment )
+        short rightBorderColor, short alignment, boolean bAutoWrap )
     {
 
         test_cs.setFont( hssffont );
@@ -147,13 +147,14 @@ public class DefaultInitializePOIStylesManager
         test_cs.setBorderRight( borderRight );
         test_cs.setRightBorderColor( rightBorderColor );
         test_cs.setAlignment( alignment );
+        test_cs.setWrapText( bAutoWrap );
 
     }
 
     public void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short fillBgColor, short fillFgColor,
         short fillPattern, short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor,
         short borderLeft, short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat,
-        short alignment )
+        short alignment, boolean bAutoWrap )
     {
 
         test_cs.setFont( hssffont );
@@ -170,5 +171,6 @@ public class DefaultInitializePOIStylesManager
         test_cs.setRightBorderColor( rightBorderColor );
         test_cs.setDataFormat( dataFormat );
         test_cs.setAlignment( alignment );
+        test_cs.setWrapText( bAutoWrap );
     }
 }

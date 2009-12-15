@@ -329,12 +329,12 @@ public class XMLStructureResponse
                     if ( bFormula )
                     {
                         STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
-                            + StringUtils.checkingNumberDecimal( recalculatedValue ) + "]]>" );
+                            + StringUtils.applyPatternDecimalFormat( recalculatedValue ) + "]]>" );
                     }
                     else
                     {
                         STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
-                            + StringUtils.checkingNumberDecimal( cell[j].getContents() ) + "]]>" );
+                            + StringUtils.applyPatternDecimalFormat( cell[j].getContents() ) + "]]>" );
                     }
 
                     STRUCTURE_DATA_RESPONSE.append( "</data>" );
