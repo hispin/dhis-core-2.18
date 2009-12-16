@@ -27,11 +27,11 @@ function getReportExcelsByGroupReceived( xmlObject ) {
 		addOption('report',name,id);	
 	}
 	
+	var selectedOrganisationUnit = null;
+	
 	try{
 	
-		var selectedOrganisationUnit = xmlObject.getElementsByTagName('organisationUnit')[0].firstChild.nodeValue;
-		
-		byId("selectedOrganisationUnit").innerHTML = selectedOrganisationUnit; 
+		selectedOrganisationUnit = xmlObject.getElementsByTagName('organisationUnit')[0].firstChild.nodeValue;	
 		
 		enable("group");
 		enable("report");
@@ -50,6 +50,8 @@ function getReportExcelsByGroupReceived( xmlObject ) {
 		disable("nextPeriod");
 		disable("lastPeriod");		
 	}
+	
+	byId("selectedOrganisationUnit").innerHTML = selectedOrganisationUnit; 
 	
 	
 	
