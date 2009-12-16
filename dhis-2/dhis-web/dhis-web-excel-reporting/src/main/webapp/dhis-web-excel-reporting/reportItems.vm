@@ -120,7 +120,7 @@
 			<td><label>$i18n.getString('expression')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<input type="text" id="expression" name="expression" style="width:20em"/>
-				<input type="button" value="$i18n.getString('expression')" onclick="openExpressionBuild();"/>			
+				<input type="button" value="$i18n.getString('expression')" onclick="openExpressionBuild();" style="width:100px"/>			
 			</td>
 			
 		</tr>	
@@ -138,8 +138,8 @@
 		</tr>			
 	</table>
 	<p align="center">
-	<input type="button" value="$i18n.getString('ok')" id="reportItemButton"/>
-	<input type="button" value="$i18n.getString('cancel')" onclick="hideById('report');deleteDivEffect();"/>
+	<input type="button" value="$i18n.getString('ok')" id="reportItemButton" style="width:100px"/>
+	<input type="button" value="$i18n.getString('cancel')" onclick="hideById('report');deleteDivEffect();" style="width:100px"/>
 	</p>
 </div>
 </form>
@@ -175,8 +175,8 @@
 		</tr>	
 	</table>	
 	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formula').value;$('#normal').hide();"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="byId('formula').value = ''"/></p>
+	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formula').value;hideById('normal');" style="width:100px"/>
+	<input type="button" value="$i18n.getString('clean')" onclick="byId('formula').value = ''" style="width:100px"/></p>
 </div>
 <!-- This form use for indicator-->
 
@@ -185,7 +185,8 @@
 	<table width="100%">
 		<tr>
 			<th>$i18n.getString( "formula" )</th>
-			<th>$i18n.getString( "indicators" )</th>
+			<th></th>
+			<th>$i18n.getString( "indicator" )</th>
 		<tr>
 		<tr valign="top">
 			<td>
@@ -197,6 +198,9 @@
 				<a href="#" onclick="insertOperation( 'formulaIndicator','+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
 				<a href="#" onclick="insertOperation( 'formulaIndicator','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
 			</td>
+			<td valign="bottom">
+				<input type="button" value="<" onclick="insertFormulaText('availableIndicators','formulaIndicator')"/>
+			</td>
 			<td>	
 				<select id="indicatorGroups" style="min-width:450px" onchange="filterIndicators()"></select>				
 				<select id="availableIndicators" size="11" style="min-width:450px" ondblclick="insertFormulaText(this.id, 'formulaIndicator');"></select>
@@ -205,8 +209,8 @@
 		
 	</table>	
 	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formulaIndicator').value;$('#indicatorForm').hide();"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="$('#formulaIndicator').html('')"/></p>
+	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formulaIndicator').value;hideById('indicatorForm');" style="width:100px"/>
+	<input type="button" value="$i18n.getString('clean')" onclick="byId('formulaIndicator').value=''" style="width:100px"/></p>
 </div>
 
 <!-- This form use for  category report -->
@@ -240,8 +244,8 @@
 		</tr>	
 	</table>	
 	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('categoryFormula').value ;$('#category').hide();"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="byId('categoryFormula').value = ''"/></p>
+	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('categoryFormula').value ;hideById('category');" style="width:100px"/>
+	<input type="button" value="$i18n.getString('clean')" onclick="byId('categoryFormula').value = ''" style="width:100px"/></p>
 </div>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
@@ -315,8 +319,8 @@
 	</tr>	
 </table>
 <p align="center">
-<input type="button" value="$i18n.getString('ok')" onclick="javascript: validateCopyReportItems(); "/>
-<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo');deleteDivEffect();"/>
+<input type="button" value="$i18n.getString('ok')" onclick="javascript: validateCopyReportItems(); " style="width:100px"/>
+<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo');deleteDivEffect();" style="width:100px"/>
 </p>
 </div>
 
@@ -336,8 +340,8 @@
 	</tr>	
 </table>
 <p align="center">
-<input type="button" value="$i18n.getString('ok')" onclick="validateCopyExcelItems();"/>
-<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyToExcelItem'); deleteDivEffect();"/>
+<input type="button" value="$i18n.getString('ok')" onclick="validateCopyExcelItems();" style="width:100px"/>
+<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyToExcelItem'); deleteDivEffect();" style="width:100px"/>
 </p>
 </div>
 
