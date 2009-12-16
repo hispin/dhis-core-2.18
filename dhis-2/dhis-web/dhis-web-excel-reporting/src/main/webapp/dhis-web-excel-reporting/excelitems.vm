@@ -1,4 +1,5 @@
 ﻿<h2>$!encoder.htmlEncode($!excelItemGroup.name)</h2>
+<div id="tooltip" style=" display:none; background-color:#FFFFCC; ; position:absolute;" ></div>
 <table width="100%">
 <tr>
 <td>
@@ -110,10 +111,10 @@
 				<input type="button" value="<" onclick="insertDataElementId()"/>
 			</td>
 			<td>	
-				<select id="dataElementGroup" style="min-width:500px" onchange="getDataElementsByGroup()"></select>				
-                <select name="select" size="11" id="availableDataElements" style="min-width:500px">
+				<select id="dataElementGroup" style="width:500px" onchange="getDataElementsByGroup()"></select>				
+                <select name="select" size="11" id="availableDataElements" style="width:500px" onMouseOut="javascript: hideToolTip();">
                 </select>				
-              <select id="optionCombos" size=4 style="min-width:500px"></select>	
+              <select id="optionCombos" size=4 style="width:500px"></select>	
 			</td>
 		</tr>	
 	</table>	

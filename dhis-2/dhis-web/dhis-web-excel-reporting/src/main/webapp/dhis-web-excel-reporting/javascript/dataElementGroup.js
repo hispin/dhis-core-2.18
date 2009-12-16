@@ -52,7 +52,12 @@ function getDataElementsByGroupReceived( datalement ){
     {
         var id = dataElements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var name = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;  
-		listDataElement.options.add(new Option(name, id));          
+		//listDataElement.options.add(new Option(name, id));  
+		var option = new Option( name, id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		listDataElement.add( option, null );
     }
 	
 	var availableDataElements = document.getElementById('availableDataElements');
@@ -60,7 +65,7 @@ function getDataElementsByGroupReceived( datalement ){
 	for(var i=0;i<availableDataElements.options.length;i++){
 		for(var j=0;j<selectedDataElements.options.length;j++){				
 			if(availableDataElements.options[i].value==selectedDataElements.options[j].value){					
-				availableDataElements.options[i].style.display='none';				
+				availableDataElements.options[i].style.display='none';			
 			}
 		}
 	}		
@@ -83,8 +88,8 @@ function submitDataElementGroupOrder(){
 */
 
 function deleteDataElementOrder( id ){
+	
 	if(window.confirm(i18n_confirm_delete)){
-		
 		var request = new Request();
 		request.setResponseTypeXML( 'datalement' );
 		request.setCallbackSuccess( deleteDataElementOrderReceived );
@@ -120,10 +125,15 @@ function openUpdateDataElementOrderReceived(xmlObject)
 		byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
 		byId("code").value = xmlObject.getElementsByTagName('code')[0].firstChild.nodeValue;
 		var dataElements = xmlObject.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
+		
 		for(var i=0;i<dataElements.length;i++){
 			var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
 			var id = dataElements[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-			listDataElement.options.add(new Option(name, id));
+			var option =  new Option( name, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+			}
+			listDataElement.options.add(option);
 		}
 		
 		document.forms['dataElementGroups'].action = "updateDataElementGroupOrder.action";		

@@ -186,8 +186,17 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/listDataElementGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/ui.core.js,javascript/ui.sortable.js,javascript/dataElementGroup.js,javascript/commons.js</param>
-			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
+			<param name="javascripts">
+				javascript/commons.js,
+				javascript/ui.core.js,
+				javascript/ui.sortable.js,
+				javascript/dataElementGroup.js
+			</param>
+			<param name="stylesheets">
+				style/ui.theme.css,
+				style/basic.css, 
+				style/style.css
+			</param>
 		</action>
 
 		<action name="getAllDataElementGroups"
@@ -327,7 +336,7 @@
 				javascript/jquery.autocomplete.js,
 				javascript/commons.js
 			</param>
-			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="stylesheets">style/jquery.autocomplete.css, style/style.css</param>
 		</action>
 
 		<action name="getReportExcelItems"
@@ -797,7 +806,10 @@
 			<param name="page">/dhis-web-excel-reporting/excelitemgroups.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">javascript/excelitemgroups.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">
+				javascript/excelitemgroups.js,
+				javascript/commons.js,
+				../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 
 		<action name="getAllExcelItemGroup"
@@ -949,7 +961,12 @@
 			<param name="page">/dhis-web-excel-reporting/excelitems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">javascript/excelitems.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">
+				javascript/excelitems.js,
+				javascript/commons.js,
+				../dhis-web-commons/ouwt/ouwt.js
+			</param>
+			<param name="stylesheets">style/style.css</param>
 		</action>
 
 		<action name="updateExcelItem"

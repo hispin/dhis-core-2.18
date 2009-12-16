@@ -212,11 +212,11 @@ function getDataElementsByGroupCompleted( xmlObject ) {
 	{
 		var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
 		var elementName = dataelements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		
-		var option = document.createElement( "option" );
-		option.value = id ;
-		option.text = elementName;
-		dataElementList.add( option, null );	
+		var option = new Option( elementName, id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		dataElementList.add( option, null );		
 	}
 }
 

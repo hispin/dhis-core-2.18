@@ -73,7 +73,7 @@ function filterByDataElementGroupCompleted( dataElementGroup )
   var dataElements = dataElementGroup.getElementsByTagName( 'dataElements' )[0];
   var dataElementList = dataElements.getElementsByTagName( 'dataElement' );
 
-  var availableList = document.getElementById( 'availableDataElements' );
+  var availableList = byId( 'availableDataElements' );
  
   for ( var i = 0; i < dataElementList.length; i++ )
   {
@@ -280,35 +280,7 @@ function generateIndividualReportExcelReceived(xmlObject){
 	deleteDivEffect();
 	$("#loading").hide();
 }
-// -----------------------------------------------------------------------------
-function showToolTip( e, value){
-	
-	var tooltipDiv = byId('tooltip');
-	tooltipDiv.style.display = 'block';
-	
-	var posx = 0;
-    var posy = 0;
-	
-    if (!e) var e = window.event;
-    if (e.pageX || e.pageY)
-    {
-        posx = e.pageX;
-        posy = e.pageY;
-    }
-    else if (e.clientX || e.clientY)
-    {
-        posx = e.clientX;
-        posy = e.clientY;
-    }
-	
-	tooltipDiv.style.left= posx  + 8 + 'px';
-	tooltipDiv.style.top = posy  + 8 + 'px';
-	tooltipDiv.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +   value;
-}
 
-function hideToolTip(){
-	byId('tooltip').style.display = 'none';
-}
 
 function getPeriodsByPeriodTypeName() {
 	

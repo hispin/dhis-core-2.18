@@ -1,12 +1,5 @@
-<style type="text/css">
-#tooltip {
-    color:#000; font-size:11px; line-height:1.2;
-    background-color:#E1E5F1; border:1px solid #667295; 
-    width:210px; padding:4px;
-}
-</style>
 <h3>$i18n.getString( "individual_report" )</h3>
-<div id="tooltip" style=" display:none; background-color:#FFFFCC; ; position:absolute;" ></div>
+<div id="tooltip"></div>
 
 <form id="editDataSetForm" name="editDataSetForm" method="post" onsubmit="submitForm(); return validateEditDataSet()">
   <div style="display:inline">
@@ -74,7 +67,7 @@
         <td>
           <!-- List of all available DataElements -->
 		 
-          <select size="15"  onMouseOut="javascript: hideToolTip();" hideToolTip id="availableDataElements" name="availableDataElements" style="max-width:30em;min-width:30em;height:10em" onChange="getOptionCombos();">
+          <select size="15"  onMouseOut="javascript: hideToolTip();" id="availableDataElements" name="availableDataElements" style="max-width:30em;min-width:30em;height:10em" onChange="getOptionCombos();">
           </select>
 		  <br><br>
 		  <strong>$i18n.getString('category_option_combo')</strong><br>
