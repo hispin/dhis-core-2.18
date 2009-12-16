@@ -442,7 +442,10 @@ function getALLDataElementGroup() {
 	for ( id in dataElementGroups )
 	{
 		list.add( new Option( dataElementGroups[id], id ), null );
+		//var option = new Option( dataElementGroups[id], id );
+		//list.add( option , null );
 	}
+	
 }
 
 /**
@@ -473,10 +476,11 @@ function getDataElementsByGroupCompleted( xmlObject ){
 		var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
 		var elementName = dataelements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
 		
-		var option = document.createElement( "option" );
-		option.value = id ;
-		option.text = elementName;
-		dataElementList.add( option, null );	
+		var option = new Option( elementName, id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		dataElementList.add( option, null );
 	}
 }
 
@@ -511,7 +515,7 @@ function getOptionCombosReceived( xmlObject ) {
 
 function insertDataElementId() {
 
-	var dataElementComboId = "[" + $("#availableDataElements").val() + "." + $("#optionCombos").val() + "]";
+	var dataElementComboId = "[" + byId("availableDataElements").value + "." + byId("optionCombos").value + "]";
 	byId("formula").value += dataElementComboId;
 }
 
@@ -595,7 +599,13 @@ function openCategoryExpressionReceived( data ) {
 	
 		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
 		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-		selectedDataElementGroups.options.add(new Option(name, id));
+		//selectedDataElementGroups.options.add(new Option(name, id));
+		
+		var option = new Option( name, id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		selectedDataElementGroups.add(option, null);
 	}
 	
 	getDataElementGroupOrder();
@@ -624,7 +634,7 @@ function getDataElementGroupOrder() {
 
 function getDataElementGroupOrderReceived( data ) {
 
-	var availableDataElements = document.getElementById('availableDataElements_');
+	var availableDataElements = byId('availableDataElements_');
 	availableDataElements.options.length = 0;
 	var dataelEments = data.getElementsByTagName( "dataElement" );	
 	
@@ -632,7 +642,12 @@ function getDataElementGroupOrderReceived( data ) {
 	{			
 		var id = dataelEments[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
 		var name = dataelEments[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;       
-		availableDataElements.options.add(new Option(name, id));
+		//availableDataElements.options.add(new Option(name, id));
+		var option = new Option( name, id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		availableDataElements.add(option, null);
 	}
 }
 

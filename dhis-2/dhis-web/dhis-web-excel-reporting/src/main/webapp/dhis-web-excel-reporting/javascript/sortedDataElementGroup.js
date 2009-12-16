@@ -164,7 +164,7 @@ function openUpdateDataElementOrderReceived(data){
 	listDataElement.options.length = 0;
 	byId("name").value = getElementValue(data,'name' );//data.getElementsByTagName('name')[0].firstChild.nodeValue;
 	byId("code").value = getElementValue(data,'code' );// data.getElementsByTagName('code')[0].firstChild.nodeValue;
-	var dataElements = getElementValue(data,'dataElements' );// data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
+	var dataElements = data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
 	
 	for(var i=0;i<dataElements.length;i++){
 		var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
