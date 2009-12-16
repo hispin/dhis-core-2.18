@@ -29,6 +29,8 @@ package org.hisp.dhis.importexport.dxf.converter;
 
 import java.util.Collection;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -52,6 +54,8 @@ import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 public class CategoryComboCategoryAssociationConverter
     extends AbstractGroupMemberConverter implements XMLConverter
 {
+    private static final Log log = LogFactory.getLog(CategoryComboCategoryAssociationConverter.class);
+
     public static final String COLLECTION_NAME = "categoryComboCategoryAssociations";
     public static final String ELEMENT_NAME = "categoryComboCategoryAssociation";
     
@@ -108,9 +112,7 @@ public class CategoryComboCategoryAssociationConverter
     {
         Collection<DataElementCategoryCombo> categoryCombos = categoryService.getDataElementCategoryCombos( params.getCategoryCombos() );
         
-        Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
-        
-        if ( categoryCombos != null && categoryCombos.size() > 0 && categories != null && categories.size() > 0 )
+        if ( categoryCombos != null && categoryCombos.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -122,8 +124,6 @@ public class CategoryComboCategoryAssociationConverter
                     
                     for ( DataElementCategory category : categoryCombo.getCategories() )
                     {
-                        if ( categories.contains( category ) )
-                        {
                             writer.openElement( ELEMENT_NAME );
                             
                             writer.writeElement( FIELD_CATEGORY_COMBO, String.valueOf( categoryCombo.getId() ) );
@@ -131,7 +131,6 @@ public class CategoryComboCategoryAssociationConverter
                             writer.writeElement( FIELD_SORT_ORDER, String.valueOf( sortOrder++ ) );
                             
                             writer.closeElement();
-                        }
                     }
                 }
             }
