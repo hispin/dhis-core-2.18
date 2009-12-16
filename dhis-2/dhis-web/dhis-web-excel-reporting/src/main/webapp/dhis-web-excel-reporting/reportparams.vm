@@ -1,9 +1,13 @@
 ﻿<h2>$i18n.getString( "generate_report" )</h2>
 <table>	
 	<tr>
+		<td><label>$i18n.getString('organisation')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><span id="selectedOrganisationUnit"></span></td>
+    </tr>
+	<tr>
 		<td><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td >
-			<select type="text" id="group" name="group" style="min-width:20em" onchange="getReportExcelsByGroup()" #if(!$organisationUnit) disabled #end>
+			<select type="text" id="group" name="group" style="min-width:20em" onchange="getReportExcelsByGroup()" >
 				#foreach($group in $groups)
 					<option value='$group' #if( $group == $reportGroup ) selected="selected" #end>$encoder.htmlEncode( $group )</option>				
 				#end
@@ -13,7 +17,7 @@
 	<tr>
 		<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="report" name="report" style="min-width:20em" #if(!$organisationUnit) disabled #end>
+			<select type="text" id="report" name="report" style="min-width:20em" >
 
 			</select>
 		</td>
@@ -21,13 +25,13 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="lastPeriod();" #if(!$organisationUnit) disabled #end/><input type="button" value=">>" #if(!$organisationUnit) disabled #end onclick="nextPeriod()"/>
+			<input type="button" value="<<" onclick="lastPeriod();" id="lastPeriod"/><input type="button" value=">>"  onclick="nextPeriod()" id="nextPeriod"/>
 		</td>
     </tr>
 	<tr>
 		<td><label>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="period" style="min-width:20em" #if(!$organisationUnit) disabled #end>
+			<select type="text" id="period" style="min-width:20em" >
 				#foreach($period in $periods)
 					<option value='$period.id'>$format.formatPeriod( $period )</option>				
 				#end
@@ -48,8 +52,8 @@
 <br/>
 <hr/>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="previewReport();" #if(!$organisationUnit) disabled #end/>
-<input name="generate_report" id="generate_report"  type="button" onClick="generateReportExcel();" value='$i18n.getString( "generate_report" )' #if(!$organisationUnit) disabled #end/>
+<input type="button" value='$i18n.getString( "preview_report" )' onclick="previewReport();" id="previewButton"/>
+<input name="generate_report" id="generate_report"  type="button" onClick="generateReportExcel();" value='$i18n.getString( "generate_report" )' />
 </p>
 
 <div id="previewDiv">

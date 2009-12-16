@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -65,6 +66,8 @@ public class GetReportExcelsByGroupAction
 
     private String group;
 
+    private OrganisationUnit organisationUnit;
+
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
@@ -72,6 +75,11 @@ public class GetReportExcelsByGroupAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
     }
 
     public List<ReportExcel> getReports()
@@ -97,7 +105,9 @@ public class GetReportExcelsByGroupAction
     public String execute()
         throws Exception
     {
-        if ( organisationUnitSelectionManager.getSelectedOrganisationUnit() != null )
+        organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+        
+        if ( organisationUnit != null )
         {
 
             reports = new ArrayList<ReportExcel>( reportService.getReportExcels( currentUserService.getCurrentUser(),
