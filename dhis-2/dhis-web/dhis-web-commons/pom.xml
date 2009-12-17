@@ -83,6 +83,10 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-options</artifactId>
     </dependency>
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-i18n-upgrader</artifactId>
+    </dependency>
     
     <!-- Web -->
     
@@ -108,7 +112,7 @@
     </dependency>
     
     <!-- Other -->
-    
+	
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring</artifactId>

@@ -21,8 +21,8 @@
     <module>dhis-web-reporting</module>
     <module>dhis-web-mapping</module>
     <module>dhis-web-dashboard-integration</module>
-	<module>dhis-web-excel-reporting</module>
-	<module>dhis-web-caseentry</module>
+    <module>dhis-web-excel-reporting</module>
+    <module>dhis-web-caseentry</module>
     <module>dhis-web-portal</module>	
   </modules>
   
@@ -53,45 +53,22 @@
     </plugins>
   </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-i18n-upgrader</artifactId>
-      <version>${version}</version>
-    </dependency>
-  </dependencies>
-
   <dependencyManagement>
     <dependencies>
-      <!--DHIS -->
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-web-commons</artifactId>
         <version>${version}</version>
-        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-web-commons-resources</artifactId>
         <version>${version}</version>
         <type>war</type>
-        <scope>runtime</scope>
-      </dependency>
-      <!--Web -->
-      <dependency>
-        <groupId>commons-fileupload</groupId>
-        <artifactId>commons-fileupload</artifactId>
-        <version>1.1.1</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-        <version>2.4</version>
-        <scope>compile</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <properties>
     <rootDir>../</rootDir>
   </properties>

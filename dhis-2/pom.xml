@@ -239,6 +239,11 @@
         <artifactId>dhis-useradminandsecurity</artifactId>
         <version>${version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-i18n-upgrader</artifactId>
+        <version>${version}</version>
+      </dependency>
       <!--Other -->
       <dependency>
         <groupId>org.apache.struts</groupId>
@@ -329,6 +334,11 @@
         <groupId>commons-digester</groupId>
         <artifactId>commons-digester</artifactId>
         <version>1.7</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.2.1</version>
       </dependency>
       <dependency>
         <groupId>commons-codec</groupId>

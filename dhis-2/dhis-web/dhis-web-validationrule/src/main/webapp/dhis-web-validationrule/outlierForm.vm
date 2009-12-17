@@ -45,8 +45,10 @@
  
  <table>    
 	## DATA ELEMENTS CHOOSER
-	<tr >
-		<th colspan="3" style="min-width:325px;">$i18n.getString( "select_data_elements" )</th>
+	<tr>
+		<th style="min-width:325px;">$i18n.getString( "available_data_elements" )</th>
+		<td></td>
+		<th style="min-width:325px;">$i18n.getString( "selected_data_elements" )</th>
 	</tr>
 	<tr>
 		<td>
