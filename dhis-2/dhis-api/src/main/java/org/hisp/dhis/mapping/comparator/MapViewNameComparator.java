@@ -40,6 +40,6 @@ public class MapViewNameComparator
 {
     public int compare( MapView mapView0, MapView mapView1 )
     {
-        return mapView0.getName().compareTo( mapView1.getName() );
+        return mapView0.getName().compareToIgnoreCase( mapView1.getName() );
     }
 }

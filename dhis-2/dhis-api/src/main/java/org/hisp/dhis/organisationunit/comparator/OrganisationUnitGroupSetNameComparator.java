@@ -40,6 +40,6 @@ public class OrganisationUnitGroupSetNameComparator
 {
     public int compare( OrganisationUnitGroupSet groupSet0, OrganisationUnitGroupSet groupSet1 )
     {
-        return groupSet0.getName().compareTo( groupSet1.getName() );
+        return groupSet0.getName().compareToIgnoreCase( groupSet1.getName() );
     }
 }

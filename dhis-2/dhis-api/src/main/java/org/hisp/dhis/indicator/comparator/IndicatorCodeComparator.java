@@ -49,6 +49,6 @@ public class IndicatorCodeComparator
             return -1;
         }
         
-        return indicator0.getCode().compareTo( indicator1.getCode() );
+        return indicator0.getCode().compareToIgnoreCase( indicator1.getCode() );
     }    
 }

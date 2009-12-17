@@ -40,6 +40,6 @@ public class MapNameComparator
 {
     public int compare( Map map0, Map map1 )
     {
-        return map0.getName().compareTo( map1.getName() );
+        return map0.getName().compareToIgnoreCase( map1.getName() );
     }
 }

@@ -40,6 +40,6 @@ public class DataElementGroupNameComparator
 {
     public int compare( DataElementGroup dataElementGroup0, DataElementGroup dataElementGroup1 )
     {
-        return dataElementGroup0.getName().compareTo( dataElementGroup1.getName() );
+        return dataElementGroup0.getName().compareToIgnoreCase( dataElementGroup1.getName() );
     }
 }

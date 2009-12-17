@@ -49,6 +49,6 @@ public class OrganisationUnitCodeComparator
             return -1;
         }
         
-        return organisationUnit0.getCode().compareTo( organisationUnit1.getCode() );
+        return organisationUnit0.getCode().compareToIgnoreCase( organisationUnit1.getCode() );
     }
 }

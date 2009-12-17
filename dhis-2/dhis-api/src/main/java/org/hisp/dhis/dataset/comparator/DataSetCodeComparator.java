@@ -50,6 +50,6 @@ public class DataSetCodeComparator
             return -1;
         }
         
-        return object0.getCode().compareTo( object1.getCode() );
+        return object0.getCode().compareToIgnoreCase( object1.getCode() );
     }
 }

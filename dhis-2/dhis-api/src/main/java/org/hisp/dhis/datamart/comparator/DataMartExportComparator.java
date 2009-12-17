@@ -40,6 +40,6 @@ public class DataMartExportComparator
 {
     public int compare( DataMartExport export1, DataMartExport export2 )
     {
-        return export1.getName().compareTo( export2.getName() );
+        return export1.getName().compareToIgnoreCase( export2.getName() );
     }
 }

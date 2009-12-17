@@ -49,6 +49,6 @@ public class IndicatorShortNameComparator
             return -1;
         }
         
-        return indicator0.getShortName().compareTo( indicator1.getShortName() );        
+        return indicator0.getShortName().compareToIgnoreCase( indicator1.getShortName() );        
     }
 }
