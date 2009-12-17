@@ -69,7 +69,7 @@ public class StringUtils
     /*                                                                        */
     /* ---------------------------------------------------------------------- */
 
-    public static String checkingNumberDecimal( String input )
+    public static String refiningNumberDecimalFormat( String input )
     {
         try
         {

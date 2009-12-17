@@ -67,6 +67,9 @@
 <span id="processing" style="display:none;position:fixed;"><img src="../images/ajax-loader-preview.gif" /></span>
 
 <script>
+
+	var i18n_value_rounded = '$encoder.jsEscape( $i18n.getString("value_rounded"), "'" )';
+
 	#if ( $organisationUnit )
 		
 		$(document).ready(function() {
