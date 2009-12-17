@@ -77,7 +77,7 @@
         <tr>
             <td>
                 <select id="dimensionSetId" name="dimensionSetId" style="min-width:640px" onchange="getDimensionSetDataElements()">
-                    <option value="-1">[ $i18n.getString( "select_category_combo" ) ]</option>
+                    <option value="-1">[ $i18n.getString( "select_dimension" ) ]</option>
                     #foreach ( $dimensionSet in $dimensionSets )
                         <option value="$dimensionSet.dimensionSetId">$dimensionSet.name</option>
                     #end
