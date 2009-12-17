@@ -70,6 +70,7 @@ public class OptionsCategoriesDefaultSortOrderPopulator
     {
         executeSql( "drop table columnorder" );
         executeSql( "drop table roworder" );
+        executeSql( "alter table dataelementcategoryoption drop column categoryid" );
         
         //categories_categoryoptions
         int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" ); // set to 0 temporarily
