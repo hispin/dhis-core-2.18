@@ -1,0 +1,19 @@
+#!/bin/sh
+TOMCAT_LOCAL=/usr/local/tomcat
+case $1 in
+start) 
+  ${TOMCAT_LOCAL}/bin/startup.sh 
+  ;;
+stop)
+  ${TOMCAT_LOCAL}/bin/shutdown.sh
+  ;;
+restart)
+  ${TOMCAT_LOCAL}/bin/startup.sh
+  ${TOMCAT_LOCAL}/bin/shutdown.sh
+  ;;
+log)
+  tail -f ${TOMCAT_LOCAL}/logs/catalina.out
+  ;;
+esac
+exit 0
+
