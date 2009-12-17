@@ -57,8 +57,27 @@ public class ExcelUtils
 
     public static final String NUMBER = "NUMBER";
 
+    public static final String ZERO = "0.0";
+
     private final static Integer NUMBER_OF_LETTER = new Integer( 26 );
 
+    // -------------------------------------------------------------------------
+    //
+    // -------------------------------------------------------------------------
+
+    /* JXL - Get the specified cell */
+    public static Cell getCell( int row, int column, Sheet sheet )
+    {
+        return sheet.getCell( column - 1, row - 1 );
+    }
+
+    /* JXL - Read the value of specified cell */
+    public static String readValue( int row, int column, Sheet sheet )
+    {
+        return sheet.getCell( column - 1, row - 1 ).getContents();
+    }
+
+    /* JXL - Write the value with customize format */
     public static void writeValue( int row, int column, String value, String type, WritableSheet sheet,
         WritableCellFormat format )
         throws RowsExceededException, WriteException
@@ -84,9 +103,204 @@ public class ExcelUtils
         }
     }
 
-    public static Cell getValue( int row, int column, Sheet sheet )
+    /* JXL - Write formula with customize format */
+    public static void writeFormula( int row, int column, String formula, WritableSheet sheet, WritableCellFormat format )
+        throws RowsExceededException, WriteException
     {
-        return sheet.getCell( column - 1, row - 1 );
+        if ( row > 0 && column > 0 )
+        {
+            sheet.addCell( new Formula( column - 1, row - 1, formula, format ) );
+        }
+    }
+
+    /* POI - Get the specified cell */
+    public static HSSFCell getCellByPOI( int row, int column, HSSFSheet sheet )
+    {
+        return sheet.getRow( row - 1 ).getCell( column - 1 );
+    }
+
+    /* POI - Read the value of specified cell */
+    public static String readValuePOI( int row, int column, HSSFSheet sheet )
+    {
+        HSSFCell cellPOI = getCellByPOI( row - 1, column - 1, sheet );
+
+        String value = "";
+
+        if ( cellPOI != null )
+        {
+            switch ( cellPOI.getCellType() )
+            {
+            case HSSFCell.CELL_TYPE_STRING:
+                value = cellPOI.getRichStringCellValue().toString();
+                break;
+
+            case HSSFCell.CELL_TYPE_BOOLEAN:
+                value = String.valueOf( cellPOI.getBooleanCellValue() );
+                break;
+
+            case HSSFCell.CELL_TYPE_ERROR:
+                value = String.valueOf( cellPOI.getErrorCellValue() );
+                break;
+
+            case HSSFCell.CELL_TYPE_FORMULA:
+                value = cellPOI.getCellFormula();
+                break;
+
+            case HSSFCell.CELL_TYPE_NUMERIC:
+                value = String.valueOf( cellPOI.getNumericCellValue() );
+                break;
+
+            default:
+                value = cellPOI.getStringCellValue();
+                break;
+            }
+        }
+
+        return value;
+
+    }
+
+    /* POI - Write value without CellStyle */
+    public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet )
+    {
+        if ( row > 0 && column > 0 )
+        {
+
+            HSSFRow rowPOI = sheet.getRow( row - 1 );
+            HSSFCellStyle cellStylePOI = sheet.getColumnStyle( column - 1 );
+
+            if ( rowPOI == null )
+            {
+                rowPOI = sheet.createRow( row - 1 );
+            }
+
+            HSSFCell cellPOI = rowPOI.getCell( column - 1 );
+
+            if ( cellPOI == null )
+            {
+                cellPOI = rowPOI.createCell( column - 1 );
+            }
+            else
+            {
+                cellStylePOI = cellPOI.getCellStyle();
+            }
+
+            cellPOI.setCellStyle( cellStylePOI );
+
+            if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
+            {
+                cellPOI.setCellValue( new HSSFRichTextString( value ) );
+            }
+            else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
+            {
+                if ( value.equals( ZERO ) )
+                {
+                    cellPOI.setCellType( HSSFCell.CELL_TYPE_BLANK );
+                }
+                else if ( Double.isNaN( Double.valueOf( value ) ) )
+                {
+                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NA );
+                }
+                else if ( Double.isInfinite( Double.valueOf( value ) ) )
+                {
+                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NUM );
+                }
+                else
+                {
+                    cellPOI.setCellValue( Double.parseDouble( value ) );
+                }
+            }
+        }
+    }
+
+    /* POI - Write value with customized CellStyle */
+    public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
+        HSSFCellStyle cellStyle )
+    {
+        if ( row > 0 && column > 0 )
+        {
+            HSSFRow rowPOI = sheet.getRow( row - 1 );
+
+            if ( rowPOI == null )
+            {
+                rowPOI = sheet.createRow( row - 1 );
+            }
+
+            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
+
+            cellPOI.setCellStyle( cellStyle );
+
+            if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
+            {
+                cellPOI.setCellValue( new HSSFRichTextString( value ) );
+            }
+            else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
+            {
+                if ( value.equals( ZERO ) )
+                {
+                    cellPOI.setCellType( HSSFCell.CELL_TYPE_BLANK );
+                }
+                else if ( Double.isNaN( Double.valueOf( value ) ) )
+                {
+                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NA );
+                }
+                else if ( Double.isInfinite( Double.valueOf( value ) ) )
+                {
+                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NUM );
+                }
+                else
+                {
+                    cellPOI.setCellValue( Double.parseDouble( value ) );
+                }
+            }
+        }
+    }
+
+    /* POI - Write formula without CellStyle */
+    public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet )
+    {
+        if ( row > 0 && column > 0 )
+        {
+            HSSFRow rowPOI = sheet.getRow( row - 1 );
+            HSSFCellStyle cellStylePOI = sheet.getColumnStyle( column - 1 );
+
+            if ( rowPOI == null )
+            {
+                rowPOI = sheet.createRow( row - 1 );
+            }
+
+            HSSFCell cellPOI = rowPOI.getCell( column - 1 );
+
+            if ( cellPOI == null )
+            {
+                cellPOI = rowPOI.createCell( column - 1 );
+            }
+            else
+            {
+                cellStylePOI = cellPOI.getCellStyle();
+            }
+
+            cellPOI.setCellStyle( cellStylePOI );
+            cellPOI.setCellFormula( formula );
+        }
+    }
+
+    /* POI - Write formula with customize CellStyle */
+    public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet, HSSFCellStyle cellStyle )
+    {
+        if ( row > 0 && column > 0 )
+        {
+            HSSFRow rowPOI = sheet.getRow( row - 1 );
+
+            if ( rowPOI == null )
+            {
+                rowPOI = sheet.createRow( row - 1 );
+            }
+
+            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
+            cellPOI.setCellStyle( cellStyle );
+            cellPOI.setCellFormula( formula );
+        }
     }
 
     public static String convertColNumberToColName( int column )
@@ -107,81 +321,6 @@ public class ExcelUtils
         }
 
         return ConvertToLetter;
-    }
-
-    public static void writeFormula( int row, int column, String formula, WritableSheet sheet, WritableCellFormat format )
-        throws RowsExceededException, WriteException
-    {
-        if ( row > 0 && column > 0 )
-        {
-            sheet.addCell( new Formula( column - 1, row - 1, formula, format ) );
-        }
-    }
-
-//    public static String readValue( int row, int column, Sheet sheet )
-//    {
-//        Cell cell = sheet.getCell( column - 1, row - 1 );
-//        return cell.getContents();
-//    }
-
-    /* POI methods */
-    public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
-        HSSFCellStyle cellStyle )
-    {
-        if ( row > 0 && column > 0 )
-        {
-            HSSFRow rowPOI = sheet.getRow( row - 1 );
-
-            if ( rowPOI == null )
-            {
-                rowPOI = sheet.createRow( row - 1 );
-            }
-
-            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
-            cellPOI.setCellStyle( cellStyle );
-
-            if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
-            {
-                cellPOI.setCellValue( new HSSFRichTextString( value ) );
-            }
-            else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
-            {
-                if ( Double.isNaN( Double.valueOf( value ) ) )
-                {
-                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NA );
-                }
-                else if ( Double.isInfinite( Double.valueOf( value ) ) )
-                {
-                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NUM );
-                }
-                else
-                {
-                    cellPOI.setCellValue( Double.parseDouble( value ) );
-                }
-            }
-        }
-    }
-
-    public static HSSFCell getValueByPOI( int row, int column, HSSFSheet sheet )
-    {
-        return sheet.getRow( row - 1 ).getCell( column - 1 );
-    }
-
-    public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet, HSSFCellStyle cellStyle )
-    {
-        if ( row > 0 && column > 0 )
-        {
-            HSSFRow rowPOI = sheet.getRow( row - 1 );
-
-            if ( rowPOI == null )
-            {
-                rowPOI = sheet.createRow( row - 1 );
-            }
-
-            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
-            cellPOI.setCellStyle( cellStyle );
-            cellPOI.setCellFormula( formula );
-        }
     }
 
     public static int convertExcelColumnNameToNumber( String columnName )
@@ -208,8 +347,4 @@ public class ExcelUtils
         }
     }
 
-    public static String readValuePOI( int row, int column, HSSFSheet sheet )
-    {
-        return String.valueOf( sheet.getRow( row - 1 ).getCell( column - 1 ).getNumericCellValue() );
-    }
 }

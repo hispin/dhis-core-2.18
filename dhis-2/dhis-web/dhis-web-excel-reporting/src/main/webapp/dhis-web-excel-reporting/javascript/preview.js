@@ -155,17 +155,18 @@ function exportFromXMLtoHTML( parentElement ) {
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
 					
-					_sHTML += "<td align='" + _align + "' colspan='" + _colspan;
+					_sHTML += "<td align='" + _align + "' colspan='" + _colspan + "' ";
 					
-					if ( isNaN(_sData) == false )
+					if ( !isNaN(_sData) && (_sData != "") )
 					{
-						_sHTML += "' class='formatNumberPreview";
+						_sHTML += "class='formatNumberPreview' "
+							   + "title='" + i18n_value_rounded;
 					}
 					else
 					{
-						_sHTML += "' class='formatStringPreview";
+						_sHTML += "class='formatStringPreview" ;
 					}
-					_sHTML += "'>"+ _sData + "</td>";
+					_sHTML += "'>" + _sData + "</td>";
 				}
 			}
 			_sHTML += "</tr>";
