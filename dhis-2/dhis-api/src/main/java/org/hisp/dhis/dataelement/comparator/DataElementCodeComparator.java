@@ -49,6 +49,6 @@ public class DataElementCodeComparator
             return -1;
         }        
         
-        return dataElement0.getCode().compareTo( dataElement1.getCode() );
+        return dataElement0.getCode().compareToIgnoreCase( dataElement1.getCode() );
     }
 }

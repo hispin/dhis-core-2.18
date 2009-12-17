@@ -9,6 +9,6 @@ public class DocumentNameComparator
 {
     public int compare( Document object1, Document object2 )
     {
-        return object1.getName().compareTo( object2.getName() );
+        return object1.getName().compareToIgnoreCase( object2.getName() );
     }
 }

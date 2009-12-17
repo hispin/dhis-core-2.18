@@ -40,6 +40,6 @@ public class ValidationRuleNameComparator
 {
     public int compare( ValidationRule rule1, ValidationRule rule2 )
     {
-        return rule1.getName().compareTo( rule2.getName() );
+        return rule1.getName().compareToIgnoreCase( rule2.getName() );
     }
 }

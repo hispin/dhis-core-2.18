@@ -40,6 +40,6 @@ public class DataSetNameComparator
 {
     public int compare( DataSet dataSet0, DataSet dataSet1 )
     {
-        return dataSet0.getName().compareTo( dataSet1.getName() );
+        return dataSet0.getName().compareToIgnoreCase( dataSet1.getName() );
     }
 }

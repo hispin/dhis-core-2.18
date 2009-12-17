@@ -40,6 +40,6 @@ public class DataElementCategoryComboNameComparator
 {
     public int compare( DataElementCategoryCombo categoryCombo1, DataElementCategoryCombo categoryCombo2 )
     {
-        return categoryCombo1.getName().compareTo( categoryCombo2.getName() );
+        return categoryCombo1.getName().compareToIgnoreCase( categoryCombo2.getName() );
     }
 }

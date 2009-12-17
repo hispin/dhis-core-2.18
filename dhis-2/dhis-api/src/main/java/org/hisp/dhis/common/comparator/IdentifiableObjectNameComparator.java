@@ -39,6 +39,6 @@ public class IdentifiableObjectNameComparator
 {
     public int compare( IdentifiableObject object0, IdentifiableObject object1 )
     {
-        return object0.getName().compareTo( object1.getName() );
+        return object0.getName().compareToIgnoreCase( object1.getName() );
     }
 }

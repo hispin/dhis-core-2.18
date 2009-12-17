@@ -40,6 +40,6 @@ public class ExcelItemComparator
 {
     public int compare( ExcelItem excelItem1, ExcelItem excelItem2 )
     {
-        return excelItem1.getName().compareTo( excelItem2.getName() );
+        return excelItem1.getName().compareToIgnoreCase( excelItem2.getName() );
     }
 }

@@ -9,6 +9,6 @@ implements Comparator<DataDictionary>
 {
     public int compare( DataDictionary dataDictionary0, DataDictionary dataDictionary1 )
     {
-        return dataDictionary0.getName().compareTo( dataDictionary1.getName() );
+        return dataDictionary0.getName().compareToIgnoreCase( dataDictionary1.getName() );
     }
 }

@@ -50,6 +50,6 @@ public class DataSetShortNameComparator
             return -1;
         }
         
-        return object0.getShortName().compareTo( object1.getShortName() );
+        return object0.getShortName().compareToIgnoreCase( object1.getShortName() );
     }
 }

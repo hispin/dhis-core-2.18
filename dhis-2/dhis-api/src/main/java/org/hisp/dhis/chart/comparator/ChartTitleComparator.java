@@ -40,6 +40,6 @@ public class ChartTitleComparator
 {
     public int compare( Chart chart1, Chart chart2 )
     {
-        return chart1.getTitle().compareTo( chart2.getTitle() );
+        return chart1.getTitle().compareToIgnoreCase( chart2.getTitle() );
     }
 }

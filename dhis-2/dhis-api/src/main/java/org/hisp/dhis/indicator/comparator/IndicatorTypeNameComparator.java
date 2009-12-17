@@ -40,6 +40,6 @@ public class IndicatorTypeNameComparator
 {
     public int compare( IndicatorType indicatorType0, IndicatorType indicatorType1 )
     {
-        return indicatorType0.getName().compareTo( indicatorType1.getName() );
+        return indicatorType0.getName().compareToIgnoreCase( indicatorType1.getName() );
     }
 }

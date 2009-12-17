@@ -40,6 +40,6 @@ public class OrganisationUnitShortNameComparator
 {
     public int compare( OrganisationUnit organisationUnit0, OrganisationUnit organisationUnit1 )
     {
-        return organisationUnit0.getShortName().compareTo( organisationUnit1.getShortName() );
+        return organisationUnit0.getShortName().compareToIgnoreCase( organisationUnit1.getShortName() );
     }
 }

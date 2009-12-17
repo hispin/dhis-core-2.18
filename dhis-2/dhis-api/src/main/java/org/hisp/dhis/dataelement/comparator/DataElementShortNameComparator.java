@@ -49,6 +49,6 @@ public class DataElementShortNameComparator
             return -1;
         }
         
-        return dataElement0.getShortName().compareTo( dataElement1.getShortName() );
+        return dataElement0.getShortName().compareToIgnoreCase( dataElement1.getShortName() );
     }
 }

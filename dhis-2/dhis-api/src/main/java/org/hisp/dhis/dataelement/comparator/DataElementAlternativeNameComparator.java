@@ -49,6 +49,6 @@ public class DataElementAlternativeNameComparator
             return -1;
         }        
         
-        return dataElement0.getAlternativeName().compareTo( dataElement1.getAlternativeName() );
+        return dataElement0.getAlternativeName().compareToIgnoreCase( dataElement1.getAlternativeName() );
     }
 }

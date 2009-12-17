@@ -40,6 +40,6 @@ public class ReportTableComparator
 {
     public int compare( ReportTable table1, ReportTable table2 )
     {
-        return table1.getName().compareTo( table2.getName() );
+        return table1.getName().compareToIgnoreCase( table2.getName() );
     }    
 }
