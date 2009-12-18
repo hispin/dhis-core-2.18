@@ -265,6 +265,18 @@
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
 		</action>
+		
+		<action name="organisationUnitAtLevels"
+			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/organisationUnitAtLevels.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>		
+		</action>
+		
+		<action name="updateOrganisationUnitGroupAtLevel"
+			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
 
 		<!-- REPORT EXCEL ASSOCIATION ACTION -->
 
