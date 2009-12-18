@@ -107,9 +107,9 @@ public class CategoryComboCategoryAssociationConverter
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<DataElementCategoryCombo> categoryCombos = categoryService.getDataElementCategoryCombos( params.getCategoryCombos() );
-        System.out.println( "catcom size " + categoryCombos.size() );
+        
         Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
-        System.out.println( "cat size " + categories.size() );
+        
         if ( categoryCombos != null && categoryCombos.size() > 0 && categories != null && categories.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
@@ -122,10 +122,8 @@ public class CategoryComboCategoryAssociationConverter
                     
                     for ( DataElementCategory category : categoryCombo.getCategories() )
                     {
-                    	System.out.println( "cat name "+ category.getName() );
                     	if ( categories.contains( category ) )
                     	{
-                    		System.out.println( "contains");
                             writer.openElement( ELEMENT_NAME );
                             
                             writer.writeElement( FIELD_CATEGORY_COMBO, String.valueOf( categoryCombo.getId() ) );
