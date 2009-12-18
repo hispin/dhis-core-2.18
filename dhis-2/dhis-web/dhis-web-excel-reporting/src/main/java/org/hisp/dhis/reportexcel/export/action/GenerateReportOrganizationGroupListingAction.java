@@ -29,11 +29,15 @@ package org.hisp.dhis.reportexcel.export.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
@@ -50,6 +54,17 @@ public class GenerateReportOrganizationGroupListingAction
     extends GenerateReportSupport
 {
 
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
+    
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -63,6 +78,9 @@ public class GenerateReportOrganizationGroupListingAction
         ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
             .getReportExcel( selectionManager.getSelectedReportId() );
 
+        Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(
+            reportExcel.getOrganisationUnitLevels() );
+
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
@@ -71,10 +89,12 @@ public class GenerateReportOrganizationGroupListingAction
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnit, sheet );
+            this.generateOutPutFile( reportExcel, orgUniGroupAtLevels, reportExcelItems, organisationUnit, sheet );
 
         }
 
+        
+        
         this.complete();
 
         statementManager.destroy();
@@ -83,8 +103,10 @@ public class GenerateReportOrganizationGroupListingAction
     }
 
     private void generateOutPutFile( ReportExcelOganiztionGroupListing reportExcel,
+        Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
         Collection<ReportExcelItem> reportExcelItems, OrganisationUnit organisationUnit, HSSFSheet sheet )
     {
+
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
             int rowBegin = reportItem.getRow();
@@ -92,13 +114,31 @@ public class GenerateReportOrganizationGroupListingAction
 
             for ( OrganisationUnitGroup organisationUnitGroup : reportExcel.getOrganisationUnitGroups() )
             {
+
+                OrganisationUnitLevel organisationUnitLevel = orgUniGroupAtLevels.get( organisationUnitGroup );
+                
+                List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
+              
+
                 List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnit
                     .getChildren() );
 
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup
                     .getMembers() );
 
-                organisationUnits.retainAll( childrenOrganisationUnits );
+                
+                
+                if ( organisationUnitLevel != null )
+                {
+                    organisationUnitsAtLevel = new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel( organisationUnitLevel.getLevel(), organisationUnit ));
+                    
+                    organisationUnits.retainAll( organisationUnitsAtLevel );
+                    
+                }else{
+                    
+                    organisationUnits.retainAll( childrenOrganisationUnits );
+                }                
+                
 
                 Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
@@ -108,13 +148,13 @@ public class GenerateReportOrganizationGroupListingAction
                     && (!organisationUnits.isEmpty()) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( organisationUnitGroup
-                        .getName() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter);
+                        .getName() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL )
                     && (!organisationUnits.isEmpty()) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo], ExcelUtils.TEXT,
-                        sheet, this.csText12BoldCenter);
+                        sheet, this.csText12BoldCenter );
                 }
                 chapperNo++;
                 rowBegin++;

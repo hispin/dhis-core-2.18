@@ -22,7 +22,7 @@
 		<th>$i18n.getString('name')</th>
 		<th>$i18n.getString('report_type')</th>
 		<th>$i18n.getString('excel_template')</th>		
-		<th width="150px">$i18n.getString('operations')</th>		
+		<th width="170px">$i18n.getString('operations')</th>		
 	</tr>
 	<tbody id="list">
 	#set( $mark = false )
@@ -41,10 +41,10 @@
 				-->
 				#if($report.isOrganisationUnitGroupListing())
 				<a href="openUpdateOrgnisationUnitGroupListingReport.action?id=$report.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
+				<a href="organisationUnitAtLevels.action?id=$report.id" title="$i18n.getString( 'set_organisationunit_group_level' )"><img src="images/organisationunitlevel.png" alt="$i18n.getString( 'set_organisationunit_group_level' )"/></a>				
 				#end
 				#if($report.isCategory())				
-				<a href="listDataElementGroupOrder.action?id=$report.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg"/></a>
-				
+				<a href="listDataElementGroupOrder.action?id=$report.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg"/></a>				
 				#end
 				
 				#if($report.isPeriodColumnListing())

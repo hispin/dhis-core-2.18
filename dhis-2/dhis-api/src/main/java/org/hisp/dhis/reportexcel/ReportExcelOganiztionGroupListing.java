@@ -28,11 +28,13 @@
 package org.hisp.dhis.reportexcel;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,6 +50,8 @@ public class ReportExcelOganiztionGroupListing
     public static final String ID = "id";
 
     private List<OrganisationUnitGroup> organisationUnitGroups;
+    
+    private Map<OrganisationUnitGroup, OrganisationUnitLevel> organisationUnitLevels;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -61,13 +65,24 @@ public class ReportExcelOganiztionGroupListing
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+    
+    
 
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
     }
 
-    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
+    public Map<OrganisationUnitGroup, OrganisationUnitLevel> getOrganisationUnitLevels() {
+		return organisationUnitLevels;
+	}
+
+	public void setOrganisationUnitLevels(
+			Map<OrganisationUnitGroup, OrganisationUnitLevel> organisationUnitLevels) {
+		this.organisationUnitLevels = organisationUnitLevels;
+	}
+
+	public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
     {
         this.organisationUnitGroups = organisationUnitGroups;
     }
