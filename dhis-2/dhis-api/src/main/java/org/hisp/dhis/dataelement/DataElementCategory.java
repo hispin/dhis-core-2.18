@@ -100,7 +100,7 @@ public class DataElementCategory
             return false;
         }
         
-        if ( getClass() != object.getClass() )
+        if ( !(object instanceof DataElementCategory) )
         {
             return false;
         }
