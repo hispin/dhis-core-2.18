@@ -471,7 +471,7 @@ public class NameMappingUtil
     }
 
     // -------------------------------------------------------------------------
-    // ReportTable
+    // AggregationOperator
     // -------------------------------------------------------------------------
     
     public static void addDataElementAggregationOperatorMapping( Object dataElementId, String aggregationOperator )
