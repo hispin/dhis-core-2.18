@@ -103,7 +103,7 @@ function previewNormal( xmlObject ){
 		var newTD1 = document.createElement('td');
 		var id = itermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
 		if(value!=0){
-			newTD1.innerHTML= "<input type='checkbox' name='excelItems' id='excelItems' value='" + id + "'>" ;
+			newTD1.innerHTML= "<input type='checkbox' name='excelItems' onChange='javascript: checkAllSelect(this);' id='excelItems' value='" + id + "'>" ;
 		}
 		
 		newTR.appendChild (newTD1);
@@ -111,6 +111,12 @@ function previewNormal( xmlObject ){
 		newTR.appendChild (newTD3);
 		// add row into the table
 		tBody.appendChild(newTR);
+	}
+}
+
+function checkAllSelect(checkBox){
+	if(!checkBox.checked){
+		byId('selectAll').checked = false;
 	}
 }
 
