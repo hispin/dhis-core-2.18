@@ -1,0 +1,59 @@
+<h2>$encoder.htmlEncode($reportExcel.name)</h2>
+<hr>
+
+<table width=100%>
+	<thead>
+		<tr>
+			<td colspan=2>
+				$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
+			</td>
+		</tr>	
+		<tr>
+			<th>$i18n.getString( "name" )</th>
+			<th width="200px;">$i18n.getString( "levels" )</th>
+		</tr>
+	</thead>
+	<tbody id="list">
+		#set( $mark = false )
+		#set( $selected = false )
+		#foreach( $orgUnitGroup in $availableOrganisationUnitGroups)		
+			
+			<tr #alternate( $mark )>
+				<td>
+					$encoder.htmlEncode($orgUnitGroup.name)
+				</td>
+				<td>
+					<select id="selectedLevel" onchange="updateOrganisationUnitGroupAtLevel($reportExcel.id, $orgUnitGroup.id, this)" >						
+						<option #if(!$organisationUnitGroupAtLevel.get($orgUnitGroup)) selected=true #end>$i18n.getString( "default" )</option>						
+						#foreach( $level in $organisationUnitLevel)							
+							<option value="$level.id" #if($organisationUnitGroupAtLevel.get($orgUnitGroup)==$level) selected=true #end>$encoder.htmlEncode($level.name)</option>
+						#end
+					</select>
+				</td>
+			</tr>			
+			#if( $mark )
+				#set( $mark = false )
+			#else
+				#set( $mark = true )
+			#end
+		#end
+	</tbody>
+</table>
+
+
+<script>
+	function updateOrganisationUnitGroupAtLevel(reportId, orgUnitGroupId, select){
+		select.style.backgroundColor = "#FFFFFF";
+		var request = new Request();
+		request.setResponseTypeXML( 'message' );
+		request.setCallbackSuccess( function (message){
+			select.style.backgroundColor = "#D5FFC5";
+		});		
+		request.send( "updateOrganisationUnitGroupAtLevel.action?reportId=" + reportId + "&orgUnitGroupId=" + orgUnitGroupId + "&levelId=" + select.value);		
+	}
+	
+	
+	
+</script>
+
+
