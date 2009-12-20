@@ -29,9 +29,6 @@ package org.hisp.dhis.importexport.dxf.converter;
 
 import java.util.Collection;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
@@ -54,9 +51,6 @@ import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 public class DataElementCategoryOptionComboConverter
     extends AbstractDataElementCategoryOptionComboConverter implements XMLConverter
 {
-
-    private static final Log log = LogFactory.getLog(DataElementCategoryOptionComboConverter.class);
-
     public static final String COLLECTION_NAME = "categoryOptionCombos";
     public static final String ELEMENT_NAME = "categoryOptionCombo";
     

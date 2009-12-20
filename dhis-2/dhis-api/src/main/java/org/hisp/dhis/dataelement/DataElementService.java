@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
