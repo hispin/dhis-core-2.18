@@ -162,7 +162,7 @@ function validateCollections()
         return false;
     }
     
-    if ( !hasValue( "dimension" ) && !isChecked( "doIndicators" ) && !isChecked( "doPeriods" ) && !isChecked( "doOrganisationUnits" ) )
+    if ( !isTrue( "dimension" ) && !isChecked( "doIndicators" ) && !isChecked( "doPeriods" ) && !isChecked( "doOrganisationUnits" ) )
     {
         setMessage( i18n_cannot_crosstab_no_dimensions );
         
@@ -200,9 +200,11 @@ function validateCollections()
     return true;
 }
 
-function hasValue( elementId )
+function isTrue( elementId )
 {
-	return document.getElementById( elementId ).value != "" ? true : false;
+    var value = document.getElementById( elementId ).value;
+    
+    return value && value == "true" ? true : false;
 }
 
 function relativePeriodsChecked()
