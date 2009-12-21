@@ -27,54 +27,73 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.BatchUpdateException;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Thanh Nguyen
  * @version $Id: RemoveRoleAction.java 5724 2008-09-18 14:37:01Z larshelg $
+ * @version $Id: RemoveRoleAction.java 339942 2009-12-21 10:21:03Z chauthutran $
  */
-public class RemoveRoleAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class RemoveRoleAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private UserStore userStore;
+	private UserStore userStore;
 
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
+	public void setUserStore(UserStore userStore) {
+		this.userStore = userStore;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    private Integer id;
+	private Integer id;
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    
-    public String execute()
-        throws Exception
-    {
-        UserAuthorityGroup authorityGroup = userStore.getUserAuthorityGroup( id );
-        
-        if ( authorityGroup != null )
-        {
-            userStore.deleteUserAuthorityGroup( authorityGroup );
-        }
-        
-        return SUCCESS;
-    }
+	private String message;
+
+	public String getMessage() {
+		return message;
+	}
+
+	private I18n i18n;
+
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
+	}
+
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+		
+		UserAuthorityGroup authorityGroup = userStore.getUserAuthorityGroup(id);
+
+		if (authorityGroup != null) {
+			try{
+				userStore.deleteUserAuthorityGroup(authorityGroup);
+			}catch(DataIntegrityViolationException e){
+				message = i18n.getString("user_use_group");
+				return ERROR;	
+			}
+		}
+
+		return SUCCESS;
+	}
 }

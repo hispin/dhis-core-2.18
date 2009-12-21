@@ -32,6 +32,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -43,115 +44,115 @@ import com.opensymphony.xwork2.Action;
  * @author Thanh Nguyen
  * @version $Id: UpdateRoleAction.java 5701 2008-09-14 20:34:46Z larshelg $
  */
-public class UpdateRoleAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class UpdateRoleAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private UserStore userStore;
+	private UserStore userStore;
 
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
+	public void setUserStore(UserStore userStore) {
+		this.userStore = userStore;
+	}
 
-    private DataSetService dataSetService;
+	private DataSetService dataSetService;
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
+	public void setDataSetService(DataSetService dataSetService) {
+		this.dataSetService = dataSetService;
+	}
 
-    private ReportExcelService reportExcelService;
+	private ReportExcelService reportExcelService;
 
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
-    }
+	public void setReportExcelService(ReportExcelService reportExcelService) {
+		this.reportExcelService = reportExcelService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+	private String message;
 
-    private Integer id;
+	public String getMessage() {
+		return message;
+	}
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+	private I18n i18n;
 
-    private String name;
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
+	}
 
-    public void setName( String rolename )
-    {
-        this.name = rolename;
-    }
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    private String description;
+	private Integer id;
 
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    private Collection<String> selectedList = new ArrayList<String>();
+	private String name;
 
-    public void setSelectedList( Collection<String> selectedList )
-    {
-        this.selectedList = selectedList;
-    }
+	public void setName(String rolename) {
+		this.name = rolename;
+	}
 
-    private Collection<String> selectedListAuthority = new ArrayList<String>();
+	private String description;
 
-    public void setSelectedListAuthority( Collection<String> selectedListAuthority )
-    {
-        this.selectedListAuthority = selectedListAuthority;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    private Collection<String> selectedReportExcel = new ArrayList<String>();
+	private Collection<String> selectedList = new ArrayList<String>();
 
-    public void setSelectedReportExcel( Collection<String> selectedReportExcel )
-    {
-        this.selectedReportExcel = selectedReportExcel;
-    }
+	public void setSelectedList(Collection<String> selectedList) {
+		this.selectedList = selectedList;
+	}
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	private Collection<String> selectedListAuthority = new ArrayList<String>();
 
-    public String execute()
-        throws Exception
-    {
-        UserAuthorityGroup group = userStore.getUserAuthorityGroup( id );
+	public void setSelectedListAuthority(
+			Collection<String> selectedListAuthority) {
+		this.selectedListAuthority = selectedListAuthority;
+	}
 
-        group.setName( name );
-        group.setDescription( description );
+	private Collection<String> selectedReportExcel = new ArrayList<String>();
 
-        group.getDataSets().clear();
-        group.getAuthorities().clear();
-        group.getReportExcels().clear();
+	public void setSelectedReportExcel(Collection<String> selectedReportExcel) {
+		this.selectedReportExcel = selectedReportExcel;
+	}
 
-        for ( String id : selectedList )
-        {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
 
-            group.getDataSets().add( dataSet );
-        }
+	public String execute() throws Exception {
+		
+		UserAuthorityGroup group = userStore.getUserAuthorityGroup(id);
 
-        for ( String id : selectedReportExcel )
-        {
+		group.setName(name);
+		group.setDescription(description);
 
-            ReportExcel reportExcel = reportExcelService.getReportExcel( Integer.parseInt( id ) );
+		group.getDataSets().clear();
+		group.getAuthorities().clear();
+		group.getReportExcels().clear();
 
-            group.getReportExcels().add( reportExcel );
-        }
+		for (String id : selectedList) {
+			DataSet dataSet = dataSetService.getDataSet(Integer.parseInt(id));
 
-        group.getAuthorities().addAll( selectedListAuthority );
+			group.getDataSets().add(dataSet);
+		}
 
-        userStore.updateUserAuthorityGroup( group );
+		for (String id : selectedReportExcel) {
 
-        return SUCCESS;
-    }
+			ReportExcel reportExcel = reportExcelService.getReportExcel(Integer
+					.parseInt(id));
+
+			group.getReportExcels().add(reportExcel);
+		}
+
+		group.getAuthorities().addAll(selectedListAuthority);
+		
+		userStore.updateUserAuthorityGroup(group);
+
+		return SUCCESS;
+	}
 }

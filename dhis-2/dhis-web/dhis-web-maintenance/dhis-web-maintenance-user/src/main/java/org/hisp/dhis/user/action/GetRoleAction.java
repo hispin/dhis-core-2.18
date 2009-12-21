@@ -154,7 +154,7 @@ public class GetRoleAction
         throws Exception
     {
         userAuthorityGroup = userStore.getUserAuthorityGroup( id );
-
+        
         // ---------------------------------------------------------------------
         // DataSets
         // ---------------------------------------------------------------------

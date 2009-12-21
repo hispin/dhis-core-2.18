@@ -39,40 +39,44 @@ import com.opensymphony.xwork2.Action;
  * @author Thanh Nguyen
  * @version $Id: GetRoleListAction.java 4079 2007-11-20 11:42:23Z larshelg $
  */
-public class GetRoleListAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class GetRoleListAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private UserStore userStore;
+	private UserStore userStore;
 
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
+	public void setUserStore(UserStore userStore) {
+		this.userStore = userStore;
+	}
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+	private String superuserRole;
 
-    private List<UserAuthorityGroup> userAuthorityGroups;
+	public String getSuperuserRole() {
+		return superuserRole;
+	}
 
-    public List<UserAuthorityGroup> getUserAuthorityGroups()
-    {
-        return userAuthorityGroups;
-    }
+	// -------------------------------------------------------------------------
+	// Output
+	// -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	private List<UserAuthorityGroup> userAuthorityGroups;
 
-    public String execute()
-        throws Exception
-    {
-        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
+	public List<UserAuthorityGroup> getUserAuthorityGroups() {
+		return userAuthorityGroups;
+	}
 
-        return SUCCESS;
-    }
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+		
+		superuserRole = UserAuthorityGroup.SUPER_USER_GROUP;
+		
+		userAuthorityGroups = new ArrayList<UserAuthorityGroup>(userStore
+				.getAllUserAuthorityGroups());
+
+		return SUCCESS;
+	}
 }

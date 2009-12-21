@@ -28,10 +28,26 @@ function removeRole(id, role)
 {
 	if ( confirm( i18n_confirm_delete ) )
 	{
-		window.location.href = 'removeRole.action?id=' + id;						
+		var request = new Request();
+		request.setResponseTypeXML( 'message' );
+		request.setCallbackSuccess( removeRoleCompleted );
+		request.send( 'removeRole.action?id=' + id );
+		//window.location.href = 'removeRole.action?id=' + id;						
 	}		
 }
 
+function removeRoleCompleted(xmlObject){
+	var type = xmlObject.getAttribute( 'type' );
+    
+    if ( type == 'success' )
+    {
+        windown.location.href = 'allRole.action';
+    }
+	
+    else{
+		setMessage(xmlObject.firstChild.nodeValue);
+	}
+}
 // -----------------------------------------------------------------------------
 // Add role
 // -----------------------------------------------------------------------------
@@ -85,7 +101,6 @@ function validateUpdateRole()
     request.send( 'validateRole.action?id=' + getFieldValue( 'id' ) +
         '&name=' + getFieldValue( 'name' ) +
         '&description=' + getFieldValue( 'description' ) );
-        
     return false;
 }
 

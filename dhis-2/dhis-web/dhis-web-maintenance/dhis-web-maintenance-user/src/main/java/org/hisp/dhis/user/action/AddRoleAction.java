@@ -136,11 +136,11 @@ public class AddRoleAction
 
             group.getReportExcels().add( reportExcel );
         }
-
-        group.getAuthorities().addAll( selectedListAuthority );
-
-        userStore.addUserAuthorityGroup( group );
-
+        
+	    group.getAuthorities().addAll( selectedListAuthority );
+	
+	    userStore.addUserAuthorityGroup( group );
+        
         return SUCCESS;
     }
 }

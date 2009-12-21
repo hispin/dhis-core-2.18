@@ -56,12 +56,19 @@ public class GetUserListAction
     {
         this.userStore = userStore;
     }
+    
+    private String userAdmin;
+    
 
+    public String getUserAdmin() {
+		return userAdmin;
+	}
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<UserCredentials> userCredentialsList;
+
+	private List<UserCredentials> userCredentialsList;
 
     public List<UserCredentials> getUserCredentialsList()
     {
@@ -74,6 +81,8 @@ public class GetUserListAction
 
     public String execute() throws Exception
     {
+    	userAdmin = UserCredentials.SUPER_USER_NAME;
+    	
         Collection<User> users = userStore.getAllUsers();
 
         userCredentialsList = new ArrayList<UserCredentials>();
