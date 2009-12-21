@@ -53,6 +53,8 @@ public interface SystemSettingManager
     
     final String KEY_GIS_LONGITUDE = "longitude";
     final String KEY_GIS_LATITUDE = "latitude";
+    
+    final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
 
     void saveSystemSetting( String name, Serializable value );   
 

@@ -34,6 +34,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 
 import org.hisp.dhis.options.SystemSettingManager;
 
@@ -60,14 +61,14 @@ public class SetSystemSettingsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private String applicationTitle;
 
     public void setApplicationTitle( String applicationTitle )
     {
         this.applicationTitle = applicationTitle;
     }
-    
+
     private String flag;
 
     public void setFlag( String flag )
@@ -83,7 +84,7 @@ public class SetSystemSettingsAction
     }
 
     private String reportFramework;
-    
+
     public void setReportFramework( String reportFramework )
     {
         this.reportFramework = reportFramework;
@@ -95,50 +96,60 @@ public class SetSystemSettingsAction
     {
         this.zeroValueSaveMode = zeroValueSaveMode;
     }
-    
+
     private Boolean forumIntegration;
 
     public void setForumIntegration( Boolean forumIntegration )
     {
         this.forumIntegration = forumIntegration;
     }
-    
+
     private Boolean omitIndicatorsZeroNumeratorDataMart;
 
     public void setOmitIndicatorsZeroNumeratorDataMart( Boolean omitIndicatorsZeroNumeratorDataMart )
     {
         this.omitIndicatorsZeroNumeratorDataMart = omitIndicatorsZeroNumeratorDataMart;
     }
-    
+
+    private boolean disableDataEntryWhenCompleted;
+
+    public void setDisableDataEntryWhenCompleted( boolean disableDataEntryWhenCompleted )
+    {
+        this.disableDataEntryWhenCompleted = disableDataEntryWhenCompleted;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
         if ( applicationTitle != null && applicationTitle.trim().length() == 0 )
         {
             applicationTitle = null;
         }
-        
+
         if ( flag != null && flag.equals( "NO_FLAG" ) )
         {
             flag = null;
         }
-        
+
         if ( startModule != null && startModule.equals( "NO_START_PAGE" ) )
         {
             startModule = null;
         }
-        
-        systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );        
+
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         systemSettingManager.saveSystemSetting( KEY_REPORT_FRAMEWORK, reportFramework );
         systemSettingManager.saveSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, zeroValueSaveMode );
         systemSettingManager.saveSystemSetting( KEY_FORUM_INTEGRATION, forumIntegration );
-        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
-        
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
+            omitIndicatorsZeroNumeratorDataMart );
+        systemSettingManager
+            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+
         return SUCCESS;
     }
 }

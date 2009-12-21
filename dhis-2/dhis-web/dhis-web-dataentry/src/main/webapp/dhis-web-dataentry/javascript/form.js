@@ -303,6 +303,7 @@ function registerReceived( messageElement )
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
     document.getElementById( "dateDiv" ).style.display = "none";
+	changeInputTextStatus( true );
 }
 
 function undoCompleteDataSet()
@@ -325,4 +326,5 @@ function undoReceived( messageElement )
     document.getElementById( "undoButton" ).disabled = true;
     document.getElementById( "dateField" ).disabled = false;
     document.getElementById( "dateDiv" ).style.display = "inline";
+	changeInputTextStatus( false );
 }
