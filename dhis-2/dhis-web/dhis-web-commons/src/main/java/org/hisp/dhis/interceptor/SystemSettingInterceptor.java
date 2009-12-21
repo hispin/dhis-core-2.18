@@ -34,6 +34,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZER
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +87,7 @@ public class SystemSettingInterceptor
         map.put( KEY_ZERO_VALUE_SAVE_MODE, systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false ) );
         map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION, false ) );
         map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false ) );
+        map.put( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, systemSettingManager.getSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, false ) );
         
         invocation.getStack().push( map );
         

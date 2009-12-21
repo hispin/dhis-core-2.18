@@ -7,6 +7,8 @@
 
 #parse( "/dhis-web-dataentry/select.vm" )
 
+<div id="entryform">
+
 #if ( $customDataEntryFormExists && !$useDefaultForm )
 			
 		#foreach( $optionCombo in $orderdCategoryOptionCombos )
@@ -171,7 +173,7 @@
 #end
 </table>
 #end
-
+</div>
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )
 
 <script type="text/javascript">
@@ -196,4 +198,24 @@
       #set( $count = $count + 1 )
 	#end
     }
+	#if( $registration || $periods.size() == 0 ) 
+		changeInputTextStatus(true);
+	#end
+
+	function changeInputTextStatus( disabled ){	
+		
+		if($dataEntryFormCompleted){
+			var entryform = document.getElementById("entryform");
+			
+			var inputList = entryform.getElementsByTagName('input');
+			for(var i=0;i<inputList.length;i++){
+				var input = inputList[i];
+				
+					input.disabled = disabled;
+				
+			}	
+		}		
+	
+	}
+
 </script>
