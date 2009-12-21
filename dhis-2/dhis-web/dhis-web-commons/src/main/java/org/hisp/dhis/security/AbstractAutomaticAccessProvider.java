@@ -66,6 +66,7 @@ public abstract class AbstractAutomaticAccessProvider
     // -------------------------------------------------------------------------
 
     protected abstract void initialise();
+    
 
     public final void init()
     {
@@ -81,7 +82,7 @@ public abstract class AbstractAutomaticAccessProvider
 
     protected boolean isEnabled()
     {
-        return userStore.getAllUsers().size() == 0;
+        return ( userStore.getAllUsers().size() == 0);
     }
 
     protected Collection<String> getAuthorities()
