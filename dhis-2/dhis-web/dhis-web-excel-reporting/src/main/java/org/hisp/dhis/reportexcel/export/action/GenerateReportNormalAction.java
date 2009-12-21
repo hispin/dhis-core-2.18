@@ -42,7 +42,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @since 2009-09-18
  */
 public class GenerateReportNormalAction
-    extends GenerateReportSupport_bk
+    extends GenerateReportSupport
 {
 
     @Override
