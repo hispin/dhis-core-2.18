@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -101,7 +101,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
@@ -122,7 +122,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
     }
 
     private void generateOutPutFile( ReportExcel reportExcel, Collection<ReportExcelItem> reportExcelItems,
-        List<OrganisationUnit> organisationUnits, HSSFSheet sheet )
+        List<OrganisationUnit> organisationUnits, Sheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {

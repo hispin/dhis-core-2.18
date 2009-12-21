@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.Collection;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -64,7 +64,7 @@ public class GenerateReportCategoryAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
@@ -80,7 +80,7 @@ public class GenerateReportCategoryAction
     }
 
     private void generateOutPutFile( ReportExcelCategory reportExcel, Collection<ReportExcelItem> reportExcelItems,
-        OrganisationUnit organisationUnit, HSSFSheet sheet )
+        OrganisationUnit organisationUnit, Sheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {

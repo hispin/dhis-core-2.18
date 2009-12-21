@@ -32,7 +32,7 @@ import java.util.Set;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -100,7 +100,7 @@ public class GenerateAdvancedReportCategoryAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
@@ -117,7 +117,7 @@ public class GenerateAdvancedReportCategoryAction
     }
 
     private void generateOutPutFile( Set<OrganisationUnit> organisationUnits,
-        Collection<ReportExcelItem> reportExcelItems, ReportExcelCategory reportExcel, HSSFSheet sheet )
+        Collection<ReportExcelItem> reportExcelItems, ReportExcelCategory reportExcel, Sheet sheet )
         throws RowsExceededException, WriteException
     {
 

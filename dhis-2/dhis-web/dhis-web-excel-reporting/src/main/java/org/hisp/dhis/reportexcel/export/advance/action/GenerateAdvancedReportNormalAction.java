@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -114,7 +114,7 @@ public class GenerateAdvancedReportNormalAction
                 value += getDataValue( reportItem, organisationUnit );
             }
 
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( reportItem.getSheetNo() - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( reportItem.getSheetNo() - 1 );
 
             ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
                 ExcelUtils.NUMBER, sheet, this.csNumber );

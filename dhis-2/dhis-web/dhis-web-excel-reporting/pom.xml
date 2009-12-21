@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-excel-reporting</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>DHIS Web Excel Reporting</name>
   
   <build>
@@ -78,24 +78,24 @@
 	<dependency>
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi</artifactId>		
-		<version>3.5-beta5</version>
+		<version>3.5-FINAL</version>
 	</dependency>
-
-	<!-- Used for Ms Office 2007 and over	
+	
+	<!-- Used for Ms Office 2007 and over 
+	
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>		
+		<version>3.5-FINAL</version>
+	</dependency>
 	
 	<dependency>
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi-scratchpad</artifactId>		
-		<version>3.5-beta5</version>
+		<version>3.5-FINAL</version>
 	</dependency>
-
-	<dependency>
-		<groupId>org.apache.poi</groupId>
-		<artifactId>poi-ooxml</artifactId>		
-		<version>3.5-beta5</version>
-	</dependency>
-	
 	-->
+	
 	
   </dependencies>
   

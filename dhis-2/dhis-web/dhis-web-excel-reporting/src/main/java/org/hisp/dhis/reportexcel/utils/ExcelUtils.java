@@ -38,13 +38,6 @@ import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFErrorConstants;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-
 /**
  * @author Tran Thanh Tri
  * @author Chau Thu Tran
@@ -53,13 +46,21 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
  */
 public class ExcelUtils
 {
+    public static final String ZERO = "0.0";
+
     public static final String TEXT = "TEXT";
 
     public static final String NUMBER = "NUMBER";
 
-    public static final String ZERO = "0.0";
+    public static final String EXTENSION_XLS = ".xls";
 
-    private final static Integer NUMBER_OF_LETTER = new Integer( 26 );
+    private static final Integer NUMBER_OF_LETTER = new Integer( 26 );
+
+    private static final Integer POI_CELLSTYLE_BLANK = new Integer( org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK );
+
+    private static final Byte POI_CELLERROR_NAN = (byte) org.apache.poi.ss.usermodel.ErrorConstants.ERROR_NA;
+
+    private static final Byte POI_CELLERROR_INFINITE = (byte) org.apache.poi.ss.usermodel.ErrorConstants.ERROR_NUM;
 
     // -------------------------------------------------------------------------
     //
@@ -114,15 +115,16 @@ public class ExcelUtils
     }
 
     /* POI - Get the specified cell */
-    public static HSSFCell getCellByPOI( int row, int column, HSSFSheet sheet )
+    public static org.apache.poi.ss.usermodel.Cell getCellByPOI( int row, int column,
+        org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
-        return sheet.getRow( row - 1 ).getCell( column - 1 );
+        return sheetPOI.getRow( row - 1 ).getCell( column - 1 );
     }
 
     /* POI - Read the value of specified cell */
-    public static String readValuePOI( int row, int column, HSSFSheet sheet )
+    public static String readValuePOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
-        HSSFCell cellPOI = getCellByPOI( row - 1, column - 1, sheet );
+        org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row - 1, column - 1, sheetPOI );
 
         String value = "";
 
@@ -130,23 +132,23 @@ public class ExcelUtils
         {
             switch ( cellPOI.getCellType() )
             {
-            case HSSFCell.CELL_TYPE_STRING:
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING:
                 value = cellPOI.getRichStringCellValue().toString();
                 break;
 
-            case HSSFCell.CELL_TYPE_BOOLEAN:
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN:
                 value = String.valueOf( cellPOI.getBooleanCellValue() );
                 break;
 
-            case HSSFCell.CELL_TYPE_ERROR:
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
                 value = String.valueOf( cellPOI.getErrorCellValue() );
                 break;
 
-            case HSSFCell.CELL_TYPE_FORMULA:
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
                 value = cellPOI.getCellFormula();
                 break;
 
-            case HSSFCell.CELL_TYPE_NUMERIC:
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
                 value = String.valueOf( cellPOI.getNumericCellValue() );
                 break;
 
@@ -160,21 +162,26 @@ public class ExcelUtils
 
     }
 
+    /**
+     * USING FOR XLS-XLSX EXTENSION
+     */
+
     /* POI - Write value without CellStyle */
-    public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet )
+    public static void writeValueByPOI( int row, int column, String value, String type,
+        org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
         if ( row > 0 && column > 0 )
         {
 
-            HSSFRow rowPOI = sheet.getRow( row - 1 );
-            HSSFCellStyle cellStylePOI = sheet.getColumnStyle( column - 1 );
+            org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( row - 1 );
+            org.apache.poi.ss.usermodel.CellStyle cellStylePOI = sheetPOI.getColumnStyle( column - 1 );
 
             if ( rowPOI == null )
             {
-                rowPOI = sheet.createRow( row - 1 );
+                rowPOI = sheetPOI.createRow( row - 1 );
             }
 
-            HSSFCell cellPOI = rowPOI.getCell( column - 1 );
+            org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.getCell( column - 1 );
 
             if ( cellPOI == null )
             {
@@ -189,21 +196,21 @@ public class ExcelUtils
 
             if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
             {
-                cellPOI.setCellValue( new HSSFRichTextString( value ) );
+                cellPOI.setCellValue( value );
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
                 if ( value.equals( ZERO ) )
                 {
-                    cellPOI.setCellType( HSSFCell.CELL_TYPE_BLANK );
+                    cellPOI.setCellType( POI_CELLSTYLE_BLANK );
                 }
                 else if ( Double.isNaN( Double.valueOf( value ) ) )
                 {
-                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NA );
+                    cellPOI.setCellErrorValue( POI_CELLERROR_NAN );
                 }
                 else if ( Double.isInfinite( Double.valueOf( value ) ) )
                 {
-                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NUM );
+                    cellPOI.setCellErrorValue( POI_CELLERROR_INFINITE );
                 }
                 else
                 {
@@ -214,39 +221,39 @@ public class ExcelUtils
     }
 
     /* POI - Write value with customized CellStyle */
-    public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
-        HSSFCellStyle cellStyle )
+    public static void writeValueByPOI( int row, int column, String value, String type,
+        org.apache.poi.ss.usermodel.Sheet sheetPOI, org.apache.poi.ss.usermodel.CellStyle cellStyle )
     {
         if ( row > 0 && column > 0 )
         {
-            HSSFRow rowPOI = sheet.getRow( row - 1 );
+            org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( row - 1 );
 
             if ( rowPOI == null )
             {
-                rowPOI = sheet.createRow( row - 1 );
+                rowPOI = sheetPOI.createRow( row - 1 );
             }
 
-            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
+            org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.createCell( column - 1 );
 
             cellPOI.setCellStyle( cellStyle );
 
             if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
             {
-                cellPOI.setCellValue( new HSSFRichTextString( value ) );
+                cellPOI.setCellValue( value );
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
                 if ( value.equals( ZERO ) )
                 {
-                    cellPOI.setCellType( HSSFCell.CELL_TYPE_BLANK );
+                    cellPOI.setCellType( POI_CELLSTYLE_BLANK );
                 }
                 else if ( Double.isNaN( Double.valueOf( value ) ) )
                 {
-                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NA );
+                    cellPOI.setCellErrorValue( POI_CELLERROR_NAN );
                 }
                 else if ( Double.isInfinite( Double.valueOf( value ) ) )
                 {
-                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NUM );
+                    cellPOI.setCellErrorValue( POI_CELLERROR_INFINITE );
                 }
                 else
                 {
@@ -257,19 +264,20 @@ public class ExcelUtils
     }
 
     /* POI - Write formula without CellStyle */
-    public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet )
+    public static void writeFormulaByPOI( int row, int column, String formula,
+        org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
         if ( row > 0 && column > 0 )
         {
-            HSSFRow rowPOI = sheet.getRow( row - 1 );
-            HSSFCellStyle cellStylePOI = sheet.getColumnStyle( column - 1 );
+            org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( row - 1 );
+            org.apache.poi.ss.usermodel.CellStyle cellStylePOI = sheetPOI.getColumnStyle( column - 1 );
 
             if ( rowPOI == null )
             {
-                rowPOI = sheet.createRow( row - 1 );
+                rowPOI = sheetPOI.createRow( row - 1 );
             }
 
-            HSSFCell cellPOI = rowPOI.getCell( column - 1 );
+            org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.getCell( column - 1 );
 
             if ( cellPOI == null )
             {
@@ -286,18 +294,19 @@ public class ExcelUtils
     }
 
     /* POI - Write formula with customize CellStyle */
-    public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet, HSSFCellStyle cellStyle )
+    public static void writeFormulaByPOI( int row, int column, String formula,
+        org.apache.poi.ss.usermodel.Sheet sheetPOI, org.apache.poi.ss.usermodel.CellStyle cellStyle )
     {
         if ( row > 0 && column > 0 )
         {
-            HSSFRow rowPOI = sheet.getRow( row - 1 );
+            org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( row - 1 );
 
             if ( rowPOI == null )
             {
-                rowPOI = sheet.createRow( row - 1 );
+                rowPOI = sheetPOI.createRow( row - 1 );
             }
 
-            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
+            org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.createCell( column - 1 );
             cellPOI.setCellStyle( cellStyle );
             cellPOI.setCellFormula( formula );
         }
