@@ -27,10 +27,10 @@ package org.hisp.dhis.reportexcel.preview.manager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 
 /**
  * @author Dang Duy Hieu
@@ -55,20 +55,20 @@ public class DefaultInitializePOIStylesManager
 
     private static final short STYLE_DEFAULT_FONT_HEIGHT = 11;
 
-    private static final short STYLE_DEFAULT_FONT_WEIGHT = HSSFFont.BOLDWEIGHT_NORMAL;
+    private static final short STYLE_DEFAULT_FONT_WEIGHT = Font.BOLDWEIGHT_NORMAL;
 
-    private static final short STYLE_DEFAULT_FONT_COLOR = HSSFColor.DARK_YELLOW.index;
+    private static final short STYLE_DEFAULT_PATTERN = CellStyle.SOLID_FOREGROUND;
 
-    private static final short STYLE_DEFAULT_BACK_FORE_GROUND_COLOR = HSSFColor.WHITE.index;
+    private static final short STYLE_DEFAULT_BORDER = CellStyle.BORDER_THIN;
 
-    private static final short STYLE_DEFAULT_PATTERN = HSSFCellStyle.SOLID_FOREGROUND;
+    private static final short STYLE_DEFAULT_FONT_COLOR = IndexedColors.DARK_YELLOW.getIndex();
 
-    private static final short STYLE_DEFAULT_BORDER = HSSFCellStyle.BORDER_THIN;
+    private static final short STYLE_DEFAULT_BACK_FORE_GROUND_COLOR = IndexedColors.WHITE.getIndex();
 
-    private static final short STYLE_DEFAULT_BORDER_COLOR = HSSFColor.LIGHT_ORANGE.index;
+    private static final short STYLE_DEFAULT_BORDER_COLOR = IndexedColors.LIGHT_ORANGE.getIndex();
 
     /***************************************************************************
-     * Default Methods
+     * Default Methods - Using for XLS Extension
      **************************************************************************/
 
     @SuppressWarnings( "static-access" )
@@ -82,7 +82,7 @@ public class DefaultInitializePOIStylesManager
     }
 
     @SuppressWarnings( "static-access" )
-    public void initDefaultFont( HSSFFont test_font )
+    public void initDefaultFont( Font test_font )
     {
         test_font.setFontName( this.STYLE_DEFAULT_FONT_NAME );
         test_font.setFontHeightInPoints( this.STYLE_DEFAULT_FONT_HEIGHT );
@@ -91,7 +91,7 @@ public class DefaultInitializePOIStylesManager
     }
 
     @SuppressWarnings( "static-access" )
-    public void initDefaultCellStyle( HSSFCellStyle test_cs, HSSFFont test_font )
+    public void initDefaultCellStyle( CellStyle test_cs, Font test_font )
     {
         test_cs.setFont( test_font );
         test_cs.setFillBackgroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
@@ -109,7 +109,7 @@ public class DefaultInitializePOIStylesManager
     }
 
     /** ************************************************** */
-    /** Implemented Methods */
+    /** Customized Methods - Using for XLS Extension */
     /** ************************************************** */
 
     public void initHeader( HSSFHeader test_header, String center, String left, String right )
@@ -121,8 +121,7 @@ public class DefaultInitializePOIStylesManager
 
     }
 
-    public void initFont( HSSFFont test_font, String fontName, short fontHeightInPoints, short boldWeight,
-        short fontColor )
+    public void initFont( Font test_font, String fontName, short fontHeightInPoints, short boldWeight, short fontColor )
     {
 
         test_font.setFontName( fontName );
@@ -132,12 +131,12 @@ public class DefaultInitializePOIStylesManager
 
     }
 
-    public void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short borderBottom, short bottomBorderColor,
+    public void initCellStyle( CellStyle test_cs, Font font, short borderBottom, short bottomBorderColor,
         short borderTop, short topBorderColor, short borderLeft, short leftBorderColor, short borderRight,
         short rightBorderColor, short alignment, boolean bAutoWrap )
     {
 
-        test_cs.setFont( hssffont );
+        test_cs.setFont( font );
         test_cs.setBorderBottom( borderBottom );
         test_cs.setBottomBorderColor( bottomBorderColor );
         test_cs.setBorderTop( borderTop );
@@ -151,13 +150,13 @@ public class DefaultInitializePOIStylesManager
 
     }
 
-    public void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short fillBgColor, short fillFgColor,
-        short fillPattern, short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor,
-        short borderLeft, short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat,
-        short alignment, boolean bAutoWrap )
+    public void initCellStyle( CellStyle test_cs, Font font, short fillBgColor, short fillFgColor, short fillPattern,
+        short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor, short borderLeft,
+        short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat, short alignment,
+        boolean bAutoWrap )
     {
 
-        test_cs.setFont( hssffont );
+        test_cs.setFont( font );
         test_cs.setFillBackgroundColor( fillBgColor );
         test_cs.setFillForegroundColor( fillFgColor );
         test_cs.setFillPattern( fillPattern );
@@ -173,4 +172,5 @@ public class DefaultInitializePOIStylesManager
         test_cs.setAlignment( alignment );
         test_cs.setWrapText( bAutoWrap );
     }
+
 }

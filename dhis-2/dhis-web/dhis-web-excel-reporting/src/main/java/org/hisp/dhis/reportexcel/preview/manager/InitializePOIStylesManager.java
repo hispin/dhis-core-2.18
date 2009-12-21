@@ -27,9 +27,9 @@ package org.hisp.dhis.reportexcel.preview.manager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 
 /**
  * @author Dang Duy Hieu
@@ -43,42 +43,28 @@ public interface InitializePOIStylesManager
     /** Methods */
     /** ************************************************** */
 
-    // HSSFHeader initDefaultHeader();
+    // Header initDefaultHeader();
     void initDefaultHeader( HSSFHeader header );
 
-    // HSSFFont initDefaultFont();
-    void initDefaultFont( HSSFFont font );
+    // Font initDefaultFont();
+    void initDefaultFont( Font font );
 
-    // HSSFCellStyle initDefaultCellStyle();
-    void initDefaultCellStyle( HSSFCellStyle cs, HSSFFont font );
+    // CellStyle initDefaultCellStyle();
+    void initDefaultCellStyle( CellStyle cs, Font font );
 
-    // HSSFHeader initHeader( String sCenter, String sLeft, String sRight );
-
-    // HSSFFont initFont( String sFontName, short fontHeightInPoints, short
-    // boldWeight, short fontColor );
-
-    // HSSFCellStyle initCellStyle( HSSFFont hssffont, short borderBottom, short
-    // bottomBorderColor,
-    // short borderTop, short topBorderColor, short borderLeft, short
-    // leftBorderColor, short borderRight,
-    // short rightBorderColor, short alignment );
-
-    // HSSFCellStyle initCellStyle( HSSFFont hssffont, short fillBgColor, short
-    // fillFgColor, short fillPattern,
-    // short borderBottom, short bottomBorderColor, short borderTop, short
-    // topBorderColor, short borderLeft,
-    // short leftBorderColor, short borderRight, short rightBorderColor,
-    // short dataFormat, short alignment );
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Use for XLS and XLSX Extension
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void initHeader( HSSFHeader header, String sCenter, String sLeft, String sRight );
 
-    void initFont( HSSFFont test_font, String sFontName, short fontHeightInPoints, short boldWeight, short fontColor );
+    void initFont( Font test_font, String sFontName, short fontHeightInPoints, short boldWeight, short fontColor );
 
-    void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short borderBottom, short bottomBorderColor,
+    void initCellStyle( CellStyle test_cs, Font font, short borderBottom, short bottomBorderColor,
         short borderTop, short topBorderColor, short borderLeft, short leftBorderColor, short borderRight,
         short rightBorderColor, short alignment, boolean bAutoWrap );
 
-    void initCellStyle( HSSFCellStyle test_cs, HSSFFont hssffont, short fillBgColor, short fillFgColor,
+    void initCellStyle( CellStyle test_cs, Font font, short fillBgColor, short fillFgColor,
         short fillPattern, short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor,
         short borderLeft, short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat,
         short alignment, boolean bAutoWrap );

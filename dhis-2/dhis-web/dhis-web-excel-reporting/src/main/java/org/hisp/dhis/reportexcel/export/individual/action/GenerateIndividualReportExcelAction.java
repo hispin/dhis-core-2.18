@@ -29,8 +29,8 @@ package org.hisp.dhis.reportexcel.export.individual.action;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.Operand;
@@ -135,7 +135,7 @@ public class GenerateIndividualReportExcelAction
         	
         templateWorkbook = new HSSFWorkbook();
         
-        HSSFSheet sheet = templateWorkbook.createSheet( organisationUnit.getName() ); 
+        Sheet sheet = templateWorkbook.createSheet( organisationUnit.getName() ); 
         
         initExcelFormat();
         

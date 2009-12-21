@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -57,7 +57,7 @@ public class GenerateReportOrganizationGroupListingAction
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -85,7 +85,7 @@ public class GenerateReportOrganizationGroupListingAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
@@ -93,8 +93,6 @@ public class GenerateReportOrganizationGroupListingAction
 
         }
 
-        
-        
         this.complete();
 
         statementManager.destroy();
@@ -104,7 +102,7 @@ public class GenerateReportOrganizationGroupListingAction
 
     private void generateOutPutFile( ReportExcelOganiztionGroupListing reportExcel,
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
-        Collection<ReportExcelItem> reportExcelItems, OrganisationUnit organisationUnit, HSSFSheet sheet )
+        Collection<ReportExcelItem> reportExcelItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
 
         for ( ReportExcelItem reportItem : reportExcelItems )
@@ -116,9 +114,8 @@ public class GenerateReportOrganizationGroupListingAction
             {
 
                 OrganisationUnitLevel organisationUnitLevel = orgUniGroupAtLevels.get( organisationUnitGroup );
-                
+
                 List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
-              
 
                 List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnit
                     .getChildren() );
@@ -126,19 +123,19 @@ public class GenerateReportOrganizationGroupListingAction
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup
                     .getMembers() );
 
-                
-                
                 if ( organisationUnitLevel != null )
                 {
-                    organisationUnitsAtLevel = new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel( organisationUnitLevel.getLevel(), organisationUnit ));
-                    
+                    organisationUnitsAtLevel = new ArrayList<OrganisationUnit>( organisationUnitService
+                        .getOrganisationUnitsAtLevel( organisationUnitLevel.getLevel(), organisationUnit ) );
+
                     organisationUnits.retainAll( organisationUnitsAtLevel );
-                    
-                }else{
-                    
+
+                }
+                else
+                {
+
                     organisationUnits.retainAll( childrenOrganisationUnits );
-                }                
-                
+                }
 
                 Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 

@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.Collection;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
@@ -42,7 +42,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @since 2009-09-18
  */
 public class GenerateReportNormalAction
-    extends GenerateReportSupport
+    extends GenerateReportSupport_bk
 {
 
     @Override
@@ -62,7 +62,7 @@ public class GenerateReportNormalAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
@@ -78,7 +78,7 @@ public class GenerateReportNormalAction
     }
 
     private void generateOutPutFile( Collection<ReportExcelItem> reportExcelItems, OrganisationUnit organisationUnit,
-        HSSFSheet sheet )
+        Sheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {

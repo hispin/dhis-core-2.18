@@ -30,6 +30,7 @@ import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,13 +41,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementManager;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -85,17 +87,17 @@ public abstract class GenerateReportSupport
     implements Action
 {
 
-    protected static final short CELLSTYLE_ALIGN_LEFT = HSSFCellStyle.ALIGN_LEFT;
+    protected static final short CELLSTYLE_ALIGN_LEFT = CellStyle.ALIGN_LEFT;
 
-    protected static final short CELLSTYLE_ALIGN_CENTER = HSSFCellStyle.ALIGN_CENTER;
+    protected static final short CELLSTYLE_ALIGN_CENTER = CellStyle.ALIGN_CENTER;
 
-    protected static final short CELLSTYLE_ALIGN_RIGHT = HSSFCellStyle.ALIGN_RIGHT;
+    protected static final short CELLSTYLE_ALIGN_RIGHT = CellStyle.ALIGN_RIGHT;
 
-    protected static final short CELLSTYLE_ALIGN_JUSTIFY = HSSFCellStyle.ALIGN_JUSTIFY;
+    protected static final short CELLSTYLE_ALIGN_JUSTIFY = CellStyle.ALIGN_JUSTIFY;
 
-    protected static final short CELLSTYLE_BORDER = HSSFCellStyle.BORDER_THIN;
+    protected static final short CELLSTYLE_BORDER = CellStyle.BORDER_THIN;
 
-    protected static final short CELLSTYLE_BORDER_COLOR = HSSFColor.LIGHT_ORANGE.index;
+    protected static final short CELLSTYLE_BORDER_COLOR = IndexedColors.LIGHT_ORANGE.getIndex();
 
     private static final String NULL_REPLACEMENT = "0";
 
@@ -243,9 +245,9 @@ public abstract class GenerateReportSupport
 
     protected FileOutputStream outputStreamExcelTemplate;
 
-    protected HSSFWorkbook templateWorkbook;
+    protected Workbook templateWorkbook;
 
-    protected HSSFSheet hssfSheet;
+    protected Sheet sheetPOI;
 
     protected Date startDate;
 
@@ -277,39 +279,39 @@ public abstract class GenerateReportSupport
 
     protected HSSFHeader header;
 
-    protected HSSFDataFormat dFormat;
+    protected DataFormat dFormat;
 
-    protected HSSFFont csFont;
+    protected Font csFont;
 
-    protected HSSFFont csFont11Bold;
+    protected Font csFont11Bold;
 
-    protected HSSFFont csFont10Bold;
+    protected Font csFont10Bold;
 
-    protected HSSFFont csFont12BoldCenter;
+    protected Font csFont12BoldCenter;
 
-    protected HSSFCellStyle csHeader;
+    protected CellStyle csHeader;
 
-    protected HSSFCellStyle csNumber;
+    protected CellStyle csNumber;
 
-    protected HSSFCellStyle csFormula;
+    protected CellStyle csFormula;
 
-    protected HSSFCellStyle csText;
+    protected CellStyle csText;
 
-    protected HSSFCellStyle csText10Bold;
+    protected CellStyle csText10Bold;
 
-    protected HSSFCellStyle csTextSerial;
+    protected CellStyle csTextSerial;
 
-    protected HSSFCellStyle csTextICDJustify;
+    protected CellStyle csTextICDJustify;
 
-    protected HSSFCellStyle csText12BoldCenter;
+    protected CellStyle csText12BoldCenter;
 
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
     protected void initExcelFormat()
         throws Exception
     {
-        hssfSheet = templateWorkbook.getSheetAt( 0 );
-        header = hssfSheet.getHeader();
+        sheetPOI = templateWorkbook.getSheetAt( 0 );
+        header = (HSSFHeader) sheetPOI.getHeader();
         csFont = templateWorkbook.createFont();
         csFont10Bold = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
@@ -339,12 +341,12 @@ public abstract class GenerateReportSupport
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
 
-        initPOIStylesManager.initFont( csFont10Bold, "Tahoma", (short) 10, HSSFFont.BOLDWEIGHT_BOLD,
-            HSSFColor.BLACK.index );
-        initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, HSSFFont.BOLDWEIGHT_BOLD,
-            HSSFColor.DARK_BLUE.index );
-        initPOIStylesManager.initFont( csFont12BoldCenter, "Tahoma", (short) 12, HSSFFont.BOLDWEIGHT_BOLD,
-            HSSFColor.BLUE.index );
+        initPOIStylesManager.initFont( csFont10Bold, "Tahoma", (short) 10, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
+            .getIndex() );
+        initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, Font.BOLDWEIGHT_BOLD,
+            IndexedColors.DARK_BLUE.getIndex() );
+        initPOIStylesManager.initFont( csFont12BoldCenter, "Tahoma", (short) 12, Font.BOLDWEIGHT_BOLD,
+            IndexedColors.BLUE.getIndex() );
 
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
@@ -355,17 +357,19 @@ public abstract class GenerateReportSupport
             this.CELLSTYLE_ALIGN_RIGHT, true );
         initPOIStylesManager.initCellStyle( csText10Bold, csFont10Bold, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT, true );
-        initPOIStylesManager.initCellStyle( csTextSerial, csFont, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER, false );
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,
+            true );
+        initPOIStylesManager.initCellStyle( csTextSerial, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER, false );
         initPOIStylesManager.initCellStyle( csTextICDJustify, csFont, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_JUSTIFY, true );
         initPOIStylesManager.initCellStyle( csText12BoldCenter, csFont12BoldCenter, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER, true );
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_ALIGN_CENTER, true );
 
     }
 
@@ -428,15 +432,12 @@ public abstract class GenerateReportSupport
 
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
 
-        this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
-            + File.separator + reportExcel.getExcelTemplateFile() );
-
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
             + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
+        this.createWorkbookInstance( reportExcel );
 
         this.initExcelFormat();
 
@@ -656,15 +657,12 @@ public abstract class GenerateReportSupport
 
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
 
-        this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
-            + File.separator + reportExcel.getExcelTemplateFile() );
-
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
             + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
+        this.createWorkbookInstance( reportExcel );
 
         this.initExcelFormat();
 
@@ -678,6 +676,10 @@ public abstract class GenerateReportSupport
 
     }
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Supporting method(s)
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     protected void complete()
         throws IOException
     {
@@ -686,5 +688,31 @@ public abstract class GenerateReportSupport
         this.outputStreamExcelTemplate.close();
 
         selectionManager.setDownloadFilePath( outputReportFile.getPath() );
+    }
+
+    private boolean checkingExtensionExcelFile( String fileName )
+    {
+        return fileName.endsWith( ExcelUtils.EXTENSION_XLS );
+    }
+
+    private void createWorkbookInstance( ReportExcel reportExcel )
+        throws FileNotFoundException, IOException
+    {
+        if ( checkingExtensionExcelFile( reportExcel.getExcelTemplateFile() ) )
+        {
+            this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager
+                .getReportExcelTemplateDirectory()
+                + File.separator + reportExcel.getExcelTemplateFile() );
+
+            this.templateWorkbook = new HSSFWorkbook( this.inputStreamExcelTemplate );
+        }
+        else
+        {
+            /* DO NOT DELETE THIS STATEMENT */
+            
+            // this.templateWorkbook = new XSSFWorkbook(
+            // reportLocationManager.getReportExcelTemplateDirectory()
+            // + File.separator + reportExcel.getExcelTemplateFile() );
+        }
     }
 }

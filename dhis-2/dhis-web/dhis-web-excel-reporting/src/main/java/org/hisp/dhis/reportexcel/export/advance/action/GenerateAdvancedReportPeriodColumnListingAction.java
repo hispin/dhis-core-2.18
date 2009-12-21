@@ -30,7 +30,7 @@ package org.hisp.dhis.reportexcel.export.advance.action;
 import java.util.Collection;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -99,7 +99,7 @@ public class GenerateAdvancedReportPeriodColumnListingAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
@@ -116,7 +116,7 @@ public class GenerateAdvancedReportPeriodColumnListingAction
     }
 
     private void generateOutPutFile( Collection<PeriodColumn> periodColumns,
-        Collection<ReportExcelItem> reportExcelItems, Set<OrganisationUnit> organisationUnits, HSSFSheet sheet )
+        Collection<ReportExcelItem> reportExcelItems, Set<OrganisationUnit> organisationUnits, Sheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
