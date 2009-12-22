@@ -17,7 +17,7 @@ window.onload = function ()
 }
 
 function viewHistory( dataElementId, optionComboId, showComment )
-{    
+{
     window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=560,height=550,scrollbars=yes' );
 }
 
@@ -191,11 +191,6 @@ function getNextEntryField( field )
 // -----------------------------------------------------------------------------
 // View history
 // -----------------------------------------------------------------------------
-
-function viewHistory( dataElementId, optionComboId, showComment )
-{
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=560,height=550,scrollbars=yes' );
-}
 
 /**
  * Set min/max limits for dataelements that has one or more values, and no 
