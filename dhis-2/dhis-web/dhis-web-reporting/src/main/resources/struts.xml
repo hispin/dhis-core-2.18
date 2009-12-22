@@ -329,7 +329,7 @@
     
     <action name="getDataCompletenessPDF" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessPDFAction">
       <result name="success" type="stream">
-        <param name="contentType">text/pdf</param>
+        <param name="contentType">application/pdf</param>
         <param name="inputName">inputStream</param>
         <param name="contentDisposition">filename="DataCompletenessReport.pdf"</param>
         <param name="bufferSize">10240</param>        
@@ -338,7 +338,7 @@
     
     <action name="getDataCompletenessWorkbook" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessWorkbookAction">
       <result name="success" type="stream">
-        <param name="contentType">text/pdf</param>
+        <param name="contentType">application/vnd.ms-excel</param>
         <param name="inputName">inputStream</param>
         <param name="contentDisposition">filename="DataCompletenessReport.xls"</param>
         <param name="bufferSize">10240</param>        

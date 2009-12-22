@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TOMCAT_LOCAL=/usr/local/tomcat
+TOMCAT_LOCAL=/usr/local/lib/tomcat
 DHIS2_SOURCE_HOME=~/development/src/dhis2
 
 case $1 in

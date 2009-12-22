@@ -419,9 +419,9 @@ public class ReportTable
             throw new IllegalArgumentException( "ReportTable cannot contain more than one out of dataelements, indicators, and datasets" );
         }
                 
-        if ( trueVars( doIndicators, doPeriods, doUnits ) == 3 || trueVars( doIndicators, doPeriods, doUnits ) == 0 )
+        if ( doIndicators && doPeriods && doUnits )
         {
-            throw new IllegalArgumentException( "ReportTable must crosstab on one or two dimensions" );
+            throw new IllegalArgumentException( "ReportTable cannot crosstab on all dimensions" );
         }
         
         // ---------------------------------------------------------------------
@@ -853,24 +853,6 @@ public class ReportTable
     private boolean listIsNonEmpty( List<?> list )
     {
         return list != null && list.size() > 0;
-    }
-    
-    /**
-     * Returns the number of booleans among the arguments which are true.
-     */
-    private int trueVars( Boolean... vars )
-    {
-        int trueVars = 0;
-        
-        for ( Boolean var : vars )
-        {
-            if ( var )
-            {
-                ++trueVars;
-            }
-        }
-        
-        return trueVars;
     }
     
     /**

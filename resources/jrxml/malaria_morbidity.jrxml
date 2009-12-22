@@ -27,9 +27,9 @@
 	<title>
 		<band height="78" splitType="Stretch">
 			<staticText>
-				<reportElement x="136" y="10" width="282" height="32" forecolor="#2E488C"/>
+				<reportElement x="133" y="10" width="288" height="42" forecolor="#2E488C"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="25"/>
+					<font fontName="SansSerif" size="20"/>
 				</textElement>
 				<text><![CDATA[Malaria Morbidity]]></text>
 			</staticText>

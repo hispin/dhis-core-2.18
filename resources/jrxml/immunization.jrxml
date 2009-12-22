@@ -44,14 +44,14 @@
 			<staticText>
 				<reportElement x="151" y="0" width="253" height="46" forecolor="#354781"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Tahoma" size="25"/>
+					<font fontName="SansSerif" size="25"/>
 				</textElement>
 				<text><![CDATA[Immunization]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="201" y="50" width="153" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Tahoma" size="10" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Sierra Leone Ministry of Health]]></text>
 			</staticText>
@@ -63,35 +63,35 @@
 	<columnHeader>
 		<band height="36" splitType="Stretch">
 			<staticText>
-				<reportElement x="50" y="10" width="100" height="20"/>
+				<reportElement x="50" y="10" width="131" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Month]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="151" y="10" width="100" height="20"/>
+				<reportElement x="181" y="10" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Organisation unit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="251" y="10" width="80" height="20"/>
+				<reportElement x="281" y="10" width="70" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Fully immunized]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="331" y="10" width="80" height="20"/>
+				<reportElement x="351" y="10" width="70" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Penta 3]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="411" y="10" width="80" height="20"/>
+				<reportElement x="421" y="10" width="70" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -108,35 +108,35 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField>
-				<reportElement x="51" y="0" width="100" height="15"/>
+				<reportElement x="51" y="0" width="130" height="15"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{periodname}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="151" y="0" width="100" height="15"/>
+				<reportElement x="181" y="0" width="100" height="15"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{organisationunitname}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="251" y="0" width="80" height="15"/>
+				<reportElement x="281" y="0" width="70" height="15"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{fullyimmunizedcova}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="331" y="0" width="80" height="15"/>
+				<reportElement x="351" y="0" width="70" height="15"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{penta3_coveragea}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="411" y="0" width="80" height="15"/>
+				<reportElement x="421" y="0" width="70" height="15"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>

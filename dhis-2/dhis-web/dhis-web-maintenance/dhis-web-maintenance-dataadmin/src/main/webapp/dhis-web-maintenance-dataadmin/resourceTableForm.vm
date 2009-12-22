@@ -18,7 +18,7 @@
 
 <p>
     <input type="checkbox" id="categoryOptionComboName">
-    <label for="groupSet">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(categoryoptioncomboname)</span></label>
+    <label for="categoryOptionComboName">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(categoryoptioncomboname)</span></label>
 </p>
 
 <p>
