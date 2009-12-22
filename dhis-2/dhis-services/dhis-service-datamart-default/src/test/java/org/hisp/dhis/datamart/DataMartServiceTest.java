@@ -445,7 +445,7 @@ public class DataMartServiceTest
         
         assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitF ), 681.6, 0.5 );
         assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitG ), 51.3, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitH ), 480.6, 0.5 );
+        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitH ), 480.6, 2.0 );
     }
 
     @Test
