@@ -29,10 +29,8 @@ package org.hisp.dhis.user.action;
 
 import java.util.Collection;
 
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserStore;
 
@@ -76,20 +74,15 @@ public class RemoveUserAction
 
     private String message;
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	private I18n i18n;
-
-	public void setI18n(I18n i18n) {
-		this.i18n = i18n;
-	}
-	
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
