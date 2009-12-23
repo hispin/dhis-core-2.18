@@ -1,0 +1,6 @@
+
+<h3>$i18n.getString( "follow_up" )</h3>
+
+#foreach ( $dataValue in $dataValues )
+	Hey!
+#end
