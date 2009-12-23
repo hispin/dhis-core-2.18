@@ -169,6 +169,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
+  <bean id="org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore"
+    class="org.hisp.dhis.outlieranalysis.jdbc.JdbcOutlierAnalysisStore">
+    <property name="statementManager" ref="statementManager"/>
+    <property name="statementBuilder" ref="statementBuilder"/>
+  </bean>
+    
   <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.customvalue.CustomValueService"
@@ -315,6 +321,24 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"/>
     <property name="organisationUnitGroupSetStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"/>
+  </bean>
+   
+  <bean id="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService" 
+    class="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="outlierAnalysisStore"
+      ref="org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore"/>    
+  </bean>
+
+  <bean id="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService"
+    class="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
+    <property name="outlierAnalysisStore"
+      ref="org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore"/>   
   </bean>
   
   <!-- Startup routine definitions -->
@@ -592,6 +616,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       
     <aop:aspect ref="statementInterceptor">
       <aop:around pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate(..) )" method="intercept"/>
+	  <aop:around pointcut="execution( * org.hisp.dhis.outlieranalysis.OutlierAnalysisService.findOutliers(..) )" method="intercept"/>
     </aop:aspect>
     
 	<!--

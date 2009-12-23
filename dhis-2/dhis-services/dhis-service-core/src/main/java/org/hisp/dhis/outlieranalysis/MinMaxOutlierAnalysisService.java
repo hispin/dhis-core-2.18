@@ -27,35 +27,34 @@ package org.hisp.dhis.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.MathUtils.isEqual;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.minmax.MinMaxDataElement;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 
 /**
- * 
  * @author Dag Haavi Finstad
  * @author Lars Helge Overland
  */
-public class StdDevOutlierAnalysisService
+public class MinMaxOutlierAnalysisService
     implements OutlierAnalysisService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OutlierAnalysisStore outlierAnalysisStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setOutlierAnalysisStore( OutlierAnalysisStore outlierAnalysisStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.outlierAnalysisStore = outlierAnalysisStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -65,8 +64,15 @@ public class StdDevOutlierAnalysisService
         this.organisationUnitService = organisationUnitService;
     }
     
+    private OutlierAnalysisStore outlierAnalysisStore;
+
+    public void setOutlierAnalysisStore( OutlierAnalysisStore outlierAnalysisStore )
+    {
+        this.outlierAnalysisStore = outlierAnalysisStore;
+    }
+    
     // -------------------------------------------------------------------------
-    // OutlierAnalysisService implementation
+    // MinMaxOutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
     public final Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit,
@@ -76,17 +82,19 @@ public class StdDevOutlierAnalysisService
         
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
         
+        MinMaxValueMap map = getMinMaxValueMap( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements ) );
+        
         for ( DataElement dataElement : dataElements )
         {
             if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {                    
                 Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
                 
-                for ( OrganisationUnit unit : units )
-                {   
-                    for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+                for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+                {
+                    for ( OrganisationUnit unit : units )
                     {
-                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, map ) );
                     }
                 }
             }
@@ -100,22 +108,28 @@ public class StdDevOutlierAnalysisService
     // -------------------------------------------------------------------------
 
     private Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
-        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
+        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, MinMaxValueMap map )
     {
-        Double stdDev = outlierAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
-                
-        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist when 0.0
+        MinMaxDataElement minMaxDataElement = map.get( organisationUnit, dataElement, categoryOptionCombo );
+
+        if ( minMaxDataElement != null )
         {
-            Double avg = outlierAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
-            
-            double deviation = stdDev * stdDevFactor;        
-            Double lowerBound = avg - deviation;
-            Double upperBound = avg + deviation;
-            
             return outlierAnalysisStore.getDeflatedDataValues( 
-                dataElement, categoryOptionCombo, periods, organisationUnit, lowerBound.intValue(), upperBound.intValue() );            
+                dataElement, categoryOptionCombo, periods, organisationUnit, minMaxDataElement.getMin(), minMaxDataElement.getMax() );
         }
         
         return new ArrayList<DeflatedDataValue>();
+    }
+    
+    private MinMaxValueMap getMinMaxValueMap( Collection<MinMaxDataElement> minMaxDataElements )
+    {
+        MinMaxValueMap map = new MinMaxValueMap();
+        
+        for ( MinMaxDataElement element : minMaxDataElements )
+        {
+            map.put( element );
+        }
+        
+        return map;
     }
 }
