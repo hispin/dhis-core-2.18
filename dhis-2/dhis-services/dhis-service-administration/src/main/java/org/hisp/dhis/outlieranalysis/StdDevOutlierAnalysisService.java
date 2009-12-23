@@ -36,16 +36,16 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 
 /**
  * 
  * @author Dag Haavi Finstad
  * @author Lars Helge Overland
- * @version $Id: DefaultStdDevOutlierAnalysisService.java 1020 2009-06-05 01:30:07Z daghf $
  */
 public class StdDevOutlierAnalysisService
-    extends AbstractOutlierAnalysisService
+    implements OutlierAnalysisService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -58,11 +58,48 @@ public class StdDevOutlierAnalysisService
         this.outlierAnalysisStore = outlierAnalysisStore;
     }
 
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     // -------------------------------------------------------------------------
     // OutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
+    public final Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit,
+        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
+    {
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
+        
+        Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
+        
+        for ( DataElement dataElement : dataElements )
+        {
+            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            {                    
+                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+                
+                for ( OrganisationUnit unit : units )
+                {   
+                    for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+                    {
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
+                    }
+                }
+            }
+        }
+
+        return outlierCollection;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
         DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
     {
         Double stdDev = outlierAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
