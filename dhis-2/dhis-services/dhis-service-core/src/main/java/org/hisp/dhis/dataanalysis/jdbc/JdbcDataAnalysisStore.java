@@ -138,4 +138,48 @@ public class JdbcDataAnalysisStore
             holder.close();
         }
     }
+
+    public Collection<DeflatedDataValue> getNonExistingDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
+        Collection<Period> periods, OrganisationUnit organisationUnit )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        final ObjectMapper<DeflatedDataValue> mapper = new ObjectMapper<DeflatedDataValue>();
+        
+        final String periodIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Period.class, periods ) );
+        
+        try
+        {
+            //TODO minmax
+            
+            final String sql =
+                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
+                "dv.comment, dv.followup, '1' AS minvalue, '2' AS maxvalue, de.name AS dataelementname, " +
+                "pe.startdate, pe.enddate, pt.name as periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
+                "FROM datavalue AS dv " +                
+                "JOIN dataelement AS de USING (dataelementid) " +
+                "RIGHT JOIN period AS pe USING (periodid) " +
+                "JOIN periodtype AS pt USING (periodtypeid) " +
+                "JOIN source AS sr USING (sourceid) " +
+                "JOIN organisationunit AS ou ON ou.organisationunitid=sr.sourceid " +
+                "LEFT JOIN categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
+                "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
+                "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
+                "AND dv.periodid IN (" + periodIds + ") " +
+                "AND pt.periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
+                "AND dv.sourceid='" + organisationUnit.getId() + "' )";
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return mapper.getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get deflated data values", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
 }
