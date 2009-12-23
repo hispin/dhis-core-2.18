@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.action.outlieranalysis;
+package org.hisp.dhis.validationrule.action;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -27,6 +27,8 @@ package org.hisp.dhis.validationrule.action.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -49,9 +51,11 @@ import com.opensymphony.xwork2.Action;
  * @author Jon Moen Drange
  * 
  */
-public class EditOutlierAction
+public class EditDataValueAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( EditDataValueAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -203,6 +207,8 @@ public class EditOutlierAction
         statusCode = 0;
         message = "";
 
+        log.info( "Updated data value: " + value );
+        
         return SUCCESS;
     }
 }

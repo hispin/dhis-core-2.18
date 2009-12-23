@@ -271,8 +271,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetService"/>
   </bean>
       
-  <bean id="org.hisp.dhis.validationrule.action.outlieranalysis.EditOutlierAction" 
-    class="org.hisp.dhis.validationrule.action.outlieranalysis.EditOutlierAction"
+  <bean id="org.hisp.dhis.validationrule.action.EditDataValueAction" 
+    class="org.hisp.dhis.validationrule.action.EditDataValueAction"
     scope="prototype">
     <property name="dataValueService" 
       ref="org.hisp.dhis.datavalue.DataValueService" />

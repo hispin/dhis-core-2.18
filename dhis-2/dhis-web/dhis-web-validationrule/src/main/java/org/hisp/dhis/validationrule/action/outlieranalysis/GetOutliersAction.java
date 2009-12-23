@@ -113,15 +113,10 @@ public class GetOutliersAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
 
     private String toDateString;
-
-    public String getToDate()
-    {
-        return toDateString;
-    }
 
     public void setToDate( String toDate )
     {
@@ -130,19 +125,10 @@ public class GetOutliersAction
 
     private String fromDateString;
 
-    public String getFromDate()
-    {
-        return fromDateString;
-    }
-
     public void setFromDate( String fromDate )
     {
         this.fromDateString = fromDate.trim();
     }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
 
     private String dataSetId;
 
@@ -176,18 +162,11 @@ public class GetOutliersAction
     // Output
     // -------------------------------------------------------------------------
     
-    private Collection<DeflatedDataValue> outlierValues;
+    private Collection<DeflatedDataValue> dataValues;
 
-    public Collection<DeflatedDataValue> getOutlierValues()
+    public Collection<DeflatedDataValue> getDataValues()
     {
-        return outlierValues;
-    }
-
-    private long searchTime;
-
-    public long getSearchTime()
-    {
-        return searchTime;
+        return dataValues;
     }
     
     // -------------------------------------------------------------------------
@@ -196,8 +175,6 @@ public class GetOutliersAction
 
     public String execute()
     {
-        long startTime = System.currentTimeMillis();
-
         Collection<DataElement> dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) );
 
         OrganisationUnit organisationUnit = selectionTreeManager.getSelectedOrganisationUnit();
@@ -211,7 +188,6 @@ public class GetOutliersAction
         {
             Date epoch = new Date( 0 );
             fromDate = epoch;
-            fromDateString = "earliest";
         }
         else
         {
@@ -221,7 +197,6 @@ public class GetOutliersAction
         if ( toDateString == null || toDateString.trim().length() == 0 )
         {
             toDate = new Date();
-            toDateString = "now";
         }
         else
         {
@@ -232,18 +207,16 @@ public class GetOutliersAction
 
         if ( outlierType.equals( TYPE_MINMAX ) )
         {
-            outlierValues = minMaxOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, null );
+            dataValues = minMaxOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, null );
         }
         else if ( outlierType.equals( TYPE_STDDEV ) )
         {
-            outlierValues = stdDevOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, standardDeviation );
+            dataValues = stdDevOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, standardDeviation );
         }
         else
         {
             return ERROR;
         }
-
-        searchTime = System.currentTimeMillis() - startTime;
 
         return SUCCESS;
     }

@@ -1,0 +1,78 @@
+
+<h3>$i18n.getString( "search_result" )</h3>
+
+#if ( $dataValues.size() == 0 )
+
+<span id="info">$i18n.getString( "no_values_found" )</span>
+	
+#else
+
+<span id="info">$dataValues.size() $i18n.getString( "values_found" )</span>
+
+<table class="mainPageTable" cellpadding="0">
+	<tr>
+		<th>$i18n.getString( "data_element" )</th>
+		<th>$i18n.getString( "organisation_unit" )</th>
+		<th>$i18n.getString( "period" )</th>
+		<th>$i18n.getString( "min" )</th>
+		<th style="width: 100px">$i18n.getString( "value" )</th>
+		<th>$i18n.getString( "max" )</th>
+	</tr>
+	
+	#set( $count = 0 )
+	#set( $mark = 0 )
+	#foreach( $value in $dataValues )
+	
+		#if( $mark == 1 )
+			#set( $mark = 0 )
+		#else
+			#set( $mark = 1 )
+		#end
+		#set( $count = $count + 1 )
+	
+	<tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
+	
+		## data element
+		<td>
+			<span id="value[$count].name">
+				$value.dataElementName
+			</span>
+		</td>
+		
+		## organisation unit
+		<td>
+			$value.sourceName
+		</td>
+		
+		## period
+		<td>
+			$format.formatPeriod( $value.period )
+		</td>
+		
+		## lower bound (min)
+		<td>
+			<div style="text-align:center">$value.min</div>
+		</td>
+		
+		## value
+		<td style="width:100px">
+			<input id="value[$count].value" value="$value.value"
+				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editValue( $count )">			
+            <input type="hidden" id="value[$count].dataElement" value="$value.dataElementId">
+            <input type="hidden" id="value[$count].period" value="$value.periodId">
+            <input type="hidden" id="value[$count].source" value="$value.sourceId">
+            <input type="hidden" id="value[$count].categoryOptionCombo" value="$value.categoryOptionComboId">
+            <input type="hidden" id="value[$count].min" value="$value.min">
+            <input type="hidden" id="value[$count].max" value="$value.max">
+		</td>
+		
+		## upper bound (max)
+		<td>
+			<div style="text-align:center">$value.max</div>
+		</td>
+		
+	</tr>
+	#end
+</table>
+
+#end
