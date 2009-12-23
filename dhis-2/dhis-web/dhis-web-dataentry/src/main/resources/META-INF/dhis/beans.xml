@@ -284,8 +284,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 	</bean>
 
-	<!-- Validate -->
-
 	<bean id="org.hisp.dhis.de.action.ValidationAction" class="org.hisp.dhis.de.action.ValidationAction">
 		<property name="validationRuleService">
 			<ref bean="org.hisp.dhis.validation.ValidationRuleService" />
@@ -296,4 +294,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.de.action.MarkForFollowupAction" class="org.hisp.dhis.de.action.MarkForFollowupAction">
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	</bean>
+	
 </beans>

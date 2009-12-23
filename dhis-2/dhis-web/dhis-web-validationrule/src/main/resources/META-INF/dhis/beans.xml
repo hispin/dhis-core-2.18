@@ -288,4 +288,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
   
+  <!-- Followup -->
+  
+  <bean id="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction"
+	class="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction"
+	scope="prototype">
+    <property name="dataValueService" 
+      ref="org.hisp.dhis.datavalue.DataValueService" />
+  </bean>
+  
 </beans>

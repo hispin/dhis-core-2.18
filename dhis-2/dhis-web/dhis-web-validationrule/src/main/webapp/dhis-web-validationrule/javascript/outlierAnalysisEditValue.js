@@ -17,7 +17,7 @@ function editOutlierValue( outlierId )
 	var periodId = document.getElementById( 'outlier[' + outlierId + '].period' ).value;
 	var sourceId = document.getElementById( 'outlier[' + outlierId + '].source' ).value;
 	
-	if (field.value != '')
+	if ( field.value != '' )
 	{
 		if ( !isInt(field.value) )
 		{
