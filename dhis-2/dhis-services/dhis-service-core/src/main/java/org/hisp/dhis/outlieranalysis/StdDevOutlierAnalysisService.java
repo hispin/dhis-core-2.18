@@ -111,8 +111,8 @@ public class StdDevOutlierAnalysisService
             Double lowerBound = avg - deviation;
             Double upperBound = avg + deviation;
             
-            return outlierAnalysisStore.getDeflatedDataValues( 
-                dataElement, categoryOptionCombo, periods, organisationUnit, lowerBound.intValue(), upperBound.intValue() );            
+            return outlierAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods, 
+                organisationUnit, dataElement.getPeriodType(), lowerBound.intValue(), upperBound.intValue() );            
         }
         
         return new ArrayList<DeflatedDataValue>();
