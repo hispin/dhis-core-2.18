@@ -39,13 +39,13 @@
 		## data element
 		<td>
 			<span id="outlier[$count].name">
-				$outlierValue.dataElement.name
+				$outlierValue.dataElementName
 			</span>
 		</td>
 		
 		## organisation unit
 		<td>
-			$outlierValue.organisationUnit.name
+			$outlierValue.sourceName
 		</td>
 		
 		## period
@@ -55,24 +55,24 @@
 		
 		## lower bound (min)
 		<td>
-			<div style="text-align:center">$outlierValue.getLowerBoundFormatted()</div>
+			<div style="text-align:center">$outlierValue.min</div>
 		</td>
 		
 		## value
 		<td style="width:100px">
-			<input name="outliervalue" id="outlier[$count].value" value="$outlierValue.getValue()"
+			<input name="outliervalue" id="outlier[$count].value" value="$outlierValue.value"
 				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editOutlierValue( $count )">			
-            <input type="hidden" id="outlier[$count].dataElement" value="$outlierValue.dataElement.id">
-            <input type="hidden" id="outlier[$count].period" value="$outlierValue.period.id">
-            <input type="hidden" id="outlier[$count].source" value="$outlierValue.organisationUnit.id">
-            <input type="hidden" id="outlier[$count].categoryOptionCombo" value="$outlierValue.categoryOptionCombo.id">
-            <input type="hidden" id="outlier[$count].min" value="$outlierValue.lowerBound">
-            <input type="hidden" id="outlier[$count].max" value="$outlierValue.upperBound">
+            <input type="hidden" id="outlier[$count].dataElement" value="$outlierValue.dataElementId">
+            <input type="hidden" id="outlier[$count].period" value="$outlierValue.periodId">
+            <input type="hidden" id="outlier[$count].source" value="$outlierValue.sourceId">
+            <input type="hidden" id="outlier[$count].categoryOptionCombo" value="$outlierValue.categoryOptionComboId">
+            <input type="hidden" id="outlier[$count].min" value="$outlierValue.min">
+            <input type="hidden" id="outlier[$count].max" value="$outlierValue.max">
 		</td>
 		
 		## upper bound (max)
 		<td>
-			<div style="text-align:center">$outlierValue.getUpperBoundFormatted()</div>
+			<div style="text-align:center">$outlierValue.max</div>
 		</td>
 		
 	</tr>

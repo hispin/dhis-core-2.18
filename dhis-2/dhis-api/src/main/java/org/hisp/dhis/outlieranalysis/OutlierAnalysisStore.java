@@ -45,5 +45,5 @@ public interface OutlierAnalysisStore
     Double getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit );
     
     Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Collection<Period> periods, OrganisationUnit organisationUnit, double lowerBound, double upperBound );
+        Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound );
 }

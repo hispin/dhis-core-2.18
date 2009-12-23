@@ -29,7 +29,6 @@ package org.hisp.dhis.outlieranalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -37,7 +36,6 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.outlieranalysis.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -70,31 +68,17 @@ public class MinMaxOutlierAnalysisService
     // MinMaxOutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
-        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor,
-        Map<Integer, DataElement> dataElementMap, Map<Integer, Period> periodMap, Map<Integer, OrganisationUnit> organisationUnitMap,
-        Map<Integer, DataElementCategoryOptionCombo> categoryOptionComboMap )
+    public Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, 
+        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
     {
-        final Collection<OutlierValue> outlierValues = new ArrayList<OutlierValue>();
-
         MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement, categoryOptionCombo );
 
         if ( minMaxDataElement != null )
         {
-            double lowerBound = minMaxDataElement.getMin();
-            double upperBound = minMaxDataElement.getMax();
-
-            Collection<DeflatedDataValue> outliers = outlierAnalysisStore.
-                getDeflatedDataValues( dataElement, categoryOptionCombo, periods, organisationUnit, lowerBound, upperBound );
-
-            for ( DeflatedDataValue outlier : outliers )
-            {
-                outlierValues.add( new OutlierValue( dataElementMap.get( outlier.getDataElementId() ), periodMap.get( outlier.getPeriodId() ),
-                    organisationUnitMap.get( outlier.getSourceId() ), categoryOptionComboMap.get( outlier.getCategoryOptionComboId() ),
-                    Double.valueOf( outlier.getValue() ), lowerBound, upperBound ) );
-            }
+            return outlierAnalysisStore.getDeflatedDataValues( 
+                dataElement, categoryOptionCombo, periods, organisationUnit, minMaxDataElement.getMin(), minMaxDataElement.getMax() );
         }
         
-        return outlierValues;
+        return new ArrayList<DeflatedDataValue>();
     }
 }
