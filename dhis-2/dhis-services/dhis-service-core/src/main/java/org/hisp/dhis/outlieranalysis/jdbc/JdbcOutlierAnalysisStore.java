@@ -41,6 +41,7 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.outlieranalysis.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
@@ -96,7 +97,7 @@ public class JdbcOutlierAnalysisStore
     }
     
     public Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound )
+        Collection<Period> periods, OrganisationUnit organisationUnit, PeriodType periodType, int lowerBound, int upperBound )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -120,6 +121,7 @@ public class JdbcOutlierAnalysisStore
                 "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
                 "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
                 "AND dv.periodid IN (" + periodIds + ") " +
+                "AND pt.periodtypeid='" + periodType.getId() + "' " +
                 "AND dv.sourceid='" + organisationUnit.getId() + "' " +
                 "AND ( CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
                 "OR CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
