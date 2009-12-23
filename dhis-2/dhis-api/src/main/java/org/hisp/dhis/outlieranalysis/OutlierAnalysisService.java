@@ -30,6 +30,7 @@ package org.hisp.dhis.outlieranalysis;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -59,7 +60,7 @@ public interface OutlierAnalysisService
      * @return A collection of OutlierValue objects. If no values were found, an
      *         empty collection is returned.
      */
-    Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
+    Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
         Collection<Period> periods, Double stdDevFactor );
 
 }

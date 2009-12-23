@@ -33,6 +33,7 @@ import java.util.Collection;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.amplecode.quick.mapper.ObjectMapper;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -40,8 +41,7 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.outlieranalysis.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
-import org.amplecode.quick.mapper.ObjectMapper;
+import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
 
@@ -88,7 +88,7 @@ public class JdbcOutlierAnalysisStore
     }
     
     public Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Collection<Period> periods, OrganisationUnit organisationUnit, double lowerBound, double upperBound )
+        Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -99,17 +99,26 @@ public class JdbcOutlierAnalysisStore
         try
         {
             final String sql =
-                "SELECT * FROM datavalue " +
-                "WHERE dataelementid='" + dataElement.getId() + "' " +
-                "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
-                "AND periodid IN (" + periodIds + ") " +
-                "AND sourceid='" + organisationUnit.getId() + "' " +
-                "AND ( CAST( value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
-                "OR CAST( value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
+                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
+                "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, de.name AS dataelementname, " +
+                "pe.startdate, pe.enddate, pt.name as periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
+                "FROM datavalue AS dv " +                
+                "JOIN dataelement AS de USING (dataelementid) " +
+                "JOIN period AS pe USING (periodid) " +
+                "JOIN periodtype AS pt USING (periodtypeid) " +
+                "JOIN source AS sr USING (sourceid) " +
+                "JOIN organisationunit AS ou ON ou.organisationunitid=sr.sourceid " +
+                "LEFT JOIN categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
+                "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
+                "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
+                "AND dv.periodid IN (" + periodIds + ") " +
+                "AND dv.sourceid='" + organisationUnit.getId() + "' " +
+                "AND ( CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
+                "OR CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            return mapper.getCollection( resultSet, new DeflatedDataValueRowMapper() );
+            return mapper.getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
         }
         catch ( SQLException ex )
         {

@@ -29,14 +29,13 @@ package org.hisp.dhis.outlieranalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
  * @author Dag Haavi Finstad
@@ -60,31 +59,25 @@ public abstract class AbstractOutlierAnalysisService
     // OutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
-    public final Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit,
+    public final Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
         
-        Map<Integer, DataElement> dataElementMap = ConversionUtils.getIdentifierMap( dataElements );
-        Map<Integer, Period> periodMap = ConversionUtils.getIdentifierMap( periods );
-        Map<Integer, OrganisationUnit> organisationUnitMap = ConversionUtils.getIdentifierMap( units );
+        Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
         
-        Collection<OutlierValue> outlierCollection = new ArrayList<OutlierValue>();
-        
-        for ( OrganisationUnit unit : units )
+        for ( DataElement dataElement : dataElements )
         {
-            for ( DataElement dataElement : dataElements )
-            {
-                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-                {                    
-                    Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
-                    
-                    Map<Integer, DataElementCategoryOptionCombo> categoryOptionComboMap = ConversionUtils.getIdentifierMap( categoryOptionCombos );
-                    
+            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            {                    
+                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+                
+                for ( OrganisationUnit unit : units )
+                {   
                     for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                     {
-                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor,
-                            dataElementMap, periodMap, organisationUnitMap, categoryOptionComboMap ) );
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
+                        i++;
                     }
                 }
             }
@@ -97,8 +90,6 @@ public abstract class AbstractOutlierAnalysisService
     // Abstract methods
     // -------------------------------------------------------------------------
 
-    protected abstract Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
-        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor,
-        Map<Integer, DataElement> dataElementMap, Map<Integer, Period> periodMap, Map<Integer, OrganisationUnit> organisationUnitMap,
-        Map<Integer, DataElementCategoryOptionCombo> categoryOptionComboMap );
+    protected abstract Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, 
+        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor );
 }
