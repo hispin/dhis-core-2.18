@@ -66,6 +66,11 @@ public class DataValue
      */
     private Source source;
 
+    /**
+     * Part of the DataValue's composite ID
+     */
+    private DataElementCategoryOptionCombo optionCombo;
+
     private String value;
 
     private String storedBy;
@@ -74,8 +79,8 @@ public class DataValue
 
     private String comment;
     
-    private DataElementCategoryOptionCombo optionCombo;
-
+    private Boolean followup;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -180,6 +185,15 @@ public class DataValue
     {
         return value;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean isFollowup()
+    {
+        return followup != null && followup;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals
@@ -256,6 +270,16 @@ public class DataValue
     {
         this.source = source;
     }
+    
+    public DataElementCategoryOptionCombo getOptionCombo()
+    {
+        return optionCombo;
+    }
+
+    public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    {
+        this.optionCombo = optionCombo;
+    }
 
     public String getValue()
     {
@@ -296,14 +320,14 @@ public class DataValue
     {
         this.comment = comment;
     }
-    
-    public DataElementCategoryOptionCombo getOptionCombo()
+
+    public Boolean getFollowup()
     {
-        return optionCombo;
+        return followup;
     }
 
-    public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    public void setFollowup( Boolean followup )
     {
-        this.optionCombo = optionCombo;
+        this.followup = followup;
     }
 }

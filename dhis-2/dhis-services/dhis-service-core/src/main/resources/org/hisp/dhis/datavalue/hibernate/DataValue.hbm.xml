@@ -23,5 +23,6 @@
     <property name="storedBy" column="storedby" length="31"/>
     <property name="timestamp" column="lastupdated" type="date"/>
     <property name="comment" length="360"/>
+	<property name="followup"/>
   </class>
 </hibernate-mapping>

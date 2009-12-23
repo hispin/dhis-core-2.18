@@ -30,6 +30,8 @@ package org.hisp.dhis.de.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -51,6 +53,8 @@ import com.opensymphony.xwork2.Action;
 public class MinMaxGeneratingAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( MinMaxGeneratingAction.class );
+    
     private static final int HISTORY_LENGTH = 6;
 
     // -------------------------------------------------------------------------
@@ -103,6 +107,8 @@ public class MinMaxGeneratingAction
     public String execute()
         throws Exception
     {    	
+        log.info( "Starting min-max limits generation" );
+        
     	minMaxDataElements = new ArrayList<MinMaxDataElement>();
 
         Period period = selectedStateManager.getSelectedPeriod();
@@ -127,6 +133,8 @@ public class MinMaxGeneratingAction
             	
             }
         }        
+        
+        log.info( "Generated min-max limits" );
         
         return SUCCESS;
     }

@@ -27,7 +27,11 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * The purpose of this class is to avoid the overhead of creating objects
@@ -38,12 +42,16 @@ import java.util.Date;
  */
 public class DeflatedDataValue
 {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
     private int dataElementId;
     
     private int periodId;
     
     private int sourceId;
-    
+
+    private int categoryOptionComboId;
+
     private String value;
     
     private String storedBy;
@@ -52,8 +60,24 @@ public class DeflatedDataValue
 
     private String comment;
     
-    private int categoryOptionComboId;
+    private boolean followup;
 
+    // -------------------------------------------------------------------------
+    // Optional attributes
+    // -------------------------------------------------------------------------
+
+    private int min;
+    
+    private int max;
+
+    private String dataElementName;
+    
+    private Period period = new Period();
+    
+    private String sourceName;
+    
+    private String categoryOptionComboName;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -67,11 +91,12 @@ public class DeflatedDataValue
         this.dataElementId = dataValue.getDataElement().getId();
         this.periodId = dataValue.getPeriod().getId();
         this.sourceId = dataValue.getSource().getId();
+        this.categoryOptionComboId = dataValue.getOptionCombo().getId();
         this.value = dataValue.getValue();
         this.storedBy = dataValue.getStoredBy();
         this.timestamp = dataValue.getTimestamp();
         this.comment = dataValue.getComment();
-        this.categoryOptionComboId = dataValue.getOptionCombo().getId();
+        this.followup = dataValue.isFollowup();
     }
     
     // -------------------------------------------------------------------------
@@ -106,6 +131,16 @@ public class DeflatedDataValue
     public void setSourceId( int sourceId )
     {
         this.sourceId = sourceId;
+    }
+
+    public int getCategoryOptionComboId()
+    {
+        return categoryOptionComboId;
+    }
+
+    public void setCategoryOptionComboId( int categoryOptionComboId )
+    {
+        this.categoryOptionComboId = categoryOptionComboId;
     }
 
     public String getValue()
@@ -148,16 +183,94 @@ public class DeflatedDataValue
         this.comment = comment;
     }
 
-    public int getCategoryOptionComboId()
+    public boolean isFollowup()
     {
-        return categoryOptionComboId;
+        return followup;
     }
 
-    public void setCategoryOptionComboId( int categoryOptionComboId )
+    public void setFollowup( boolean followup )
     {
-        this.categoryOptionComboId = categoryOptionComboId;
+        this.followup = followup;
     }
 
+    public int getMin()
+    {
+        return min;
+    }
+
+    public void setMin( int min )
+    {
+        this.min = min;
+    }
+
+    public int getMax()
+    {
+        return max;
+    }
+
+    public void setMax( int max )
+    {
+        this.max = max;
+    }
+
+    public String getDataElementName()
+    {
+        return dataElementName;
+    }
+
+    public void setDataElementName( String dataElementName )
+    {
+        this.dataElementName = dataElementName;
+    }
+
+    public Period getPeriod()
+    {
+        return period;
+    }
+
+    public void setPeriod( Period period )
+    {
+        this.period = period;
+    }
+
+    public String getSourceName()
+    {
+        return sourceName;
+    }
+
+    public void setSourceName( String sourceName )
+    {
+        this.sourceName = sourceName;
+    }
+
+    public String getCategoryOptionComboName()
+    {
+        return categoryOptionComboName;
+    }
+
+    public void setCategoryOptionComboName( String categoryOptionComboName )
+    {
+        this.categoryOptionComboName = categoryOptionComboName;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+    
+    public void setPeriod( String periodTypeName, String startDate, String endDate )
+    {
+        try
+        {
+            period.setPeriodType( PeriodType.getPeriodTypeByName( periodTypeName ) );
+            period.setStartDate( dateFormat.parse( startDate ) );
+            period.setEndDate( dateFormat.parse( endDate ) );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

@@ -113,7 +113,9 @@ public class OptionsCategoriesDefaultSortOrderPopulator
         //executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_name_key" ); will be maintained in transition period
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
         
-        log.info( "Updated Category sort order and primary keys" );  
+        executeSql( "CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )" );
+        
+        log.info( "Updated Category sort order and primary keys" );
     }
     
     private List<Integer> getDistinctIdList( String table, String col1 )

@@ -246,4 +246,12 @@ public interface DataValueStore
      * @return a collection of all DataValues which mach the given collection of DataElements.
      */
     Collection<DataValue> getDataValues( DataElement dataElement );  
+
+    /**
+     * Returns DeflatedDataValues which are marked for follow-up, including min and
+     * max limit.
+     * 
+     * @return a collection of DeflatedDataValues which are marked for follow-up.
+     */
+    Collection<DeflatedDataValue> getDataValuesMarkedForFollowup();
 }

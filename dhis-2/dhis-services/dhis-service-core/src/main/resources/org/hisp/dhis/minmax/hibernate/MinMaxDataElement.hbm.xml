@@ -10,11 +10,11 @@
     </id>
 
     <many-to-one name="source" class="org.hisp.dhis.source.Source"
-        column="sourceid" foreign-key="fk_minmaxdataelement_sourceid"/>
+        column="sourceid" foreign-key="fk_minmaxdataelement_sourceid" index="index_minmaxdataelement"/>
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
-        column="dataelementid" foreign-key="fk_minmaxdataelement_dataelementid"/>
+        column="dataelementid" foreign-key="fk_minmaxdataelement_dataelementid" index="index_minmaxdataelement"/>
     <many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
-        column="categoryoptioncomboid" foreign-key="fk_minmaxdataelement_categoryoptioncomboid"/>
+        column="categoryoptioncomboid" foreign-key="fk_minmaxdataelement_categoryoptioncomboid" index="index_minmaxdataelement"/>
 
     <property name="min" column="minvalue"/>
     <property name="max" column="maxvalue"/>
