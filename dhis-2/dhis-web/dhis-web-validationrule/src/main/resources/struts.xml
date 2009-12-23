@@ -223,10 +223,15 @@
     
 	<!-- Followup -->
 	
-	<action name="getDataValuesMarkedForFollowup" class="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction">
-	  <result name="success" type="velocity">/main.vm</result>
-	  <param name="page">/dhis-web-validationrule/followupForm.vm</param>
+	<action name="getFollowupValues" class="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-validationrule/searchResult.vm</param>
       <param name="menu">/dhis-web-validationrule/menu.vm</param>
+      <param name="javascripts">javascript/editDataValue.js</param>
+	</action>
+	
+	<action name="markValueForFollowup" class="org.hisp.dhis.validationrule.action.followup.MarkForFollowupAction">
+		<result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
 	</action>
 	
   </package>

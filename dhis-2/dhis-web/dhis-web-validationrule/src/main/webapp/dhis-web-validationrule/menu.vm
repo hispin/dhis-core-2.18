@@ -5,4 +5,5 @@
 	<li><a href="showValidationRuleGroupForm.action">$i18n.getString( "validation_rule_group" )&nbsp;</a></li>
 	<li><a href="showRunValidationForm.action">$i18n.getString( "run_validation" )&nbsp;</a></li>
     <li><a href="outlierAnalysisForm.action">$i18n.getString( "outlier_analysis" )&nbsp;</a></li>
+    <li><a href="getFollowupValues.action">$i18n.getString( "followup_analysis" )&nbsp;</a></li>
 </ul>

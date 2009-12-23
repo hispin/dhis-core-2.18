@@ -9,53 +9,32 @@
 
 <span id="info">$dataValues.size() $i18n.getString( "values_found" )</span>
 
-<table class="mainPageTable" cellpadding="0">
+<table class="listTable" style="width:100%">
 	<tr>
 		<th>$i18n.getString( "data_element" )</th>
 		<th>$i18n.getString( "organisation_unit" )</th>
 		<th>$i18n.getString( "period" )</th>
-		<th>$i18n.getString( "min" )</th>
-		<th style="width: 100px">$i18n.getString( "value" )</th>
-		<th>$i18n.getString( "max" )</th>
+		<th style="text-align:center">$i18n.getString( "min" )</th>
+		<th style="width: 100px; text-align:center">$i18n.getString( "value" )</th>
+		<th style="text-align:center">$i18n.getString( "max" )</th>
+		<th style="text-align:center">$i18n.getString( "mark" )</th>
 	</tr>
-	
+    #set( $mark = false )	
 	#set( $count = 0 )
-	#set( $mark = 0 )
-	#foreach( $value in $dataValues )
 	
-		#if( $mark == 1 )
-			#set( $mark = 0 )
-		#else
-			#set( $mark = 1 )
-		#end
-		#set( $count = $count + 1 )
-	
+	#foreach( $value in $dataValues )	
+	#set( $count = $count + 1 )	
 	<tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
 	
-		## data element
-		<td>
-			<span id="value[$count].name">
-				$value.dataElementName
-			</span>
-		</td>
+		<td#alternate( $mark )><span id="value[$count].name">$value.dataElementName</span></td>
 		
-		## organisation unit
-		<td>
-			$value.sourceName
-		</td>
+		<td#alternate( $mark )>$value.sourceName</td>
 		
-		## period
-		<td>
-			$format.formatPeriod( $value.period )
-		</td>
+		<td#alternate( $mark )>$format.formatPeriod( $value.period )</td>
 		
-		## lower bound (min)
-		<td>
-			<div style="text-align:center">$value.min</div>
-		</td>
+		<td style="text-align:center"#alternate( $mark )>$value.min</td>
 		
-		## value
-		<td style="width:100px">
+		<td style="width:100px"#alternate( $mark )>
 			<input id="value[$count].value" value="$value.value"
 				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editValue( $count )">			
             <input type="hidden" id="value[$count].dataElement" value="$value.dataElementId">
@@ -66,13 +45,31 @@
             <input type="hidden" id="value[$count].max" value="$value.max">
 		</td>
 		
-		## upper bound (max)
-		<td>
-			<div style="text-align:center">$value.max</div>
+		<td style="text-align:center"#alternate( $mark )>$value.max</td>
+		
+		<td style="text-align:center"#alternate( $mark )>
+		#if ( $value.followup )
+			<img id="value[$count].followup" src="../images/marked.png" onclick="markValueForFollowup($count)" style="cursor:pointer">
+		#else
+		    <img id="value[$count].followup" src="../images/unmarked.png" onclick="markValueForFollowup($count)" style="cursor:pointer">
+		#end
 		</td>
 		
 	</tr>
+	    #if( $mark )
+            #set( $mark = false )
+        #else
+            #set( $mark = true )
+        #end
 	#end
 </table>
 
 #end
+
+<script type="text/javascript">
+    var i18n_value_must_be_a_number = '$encoder.jsEscape( $i18n.getString( "value_must_be_a_number" ) , "'")';
+    var i18n_value_is_lower_than_min_value = '$encoder.jsEscape( $i18n.getString( "value_is_lower_than_min_value" ) , "'")';
+    var i18n_value_is_higher_than_max_value = '$encoder.jsEscape( $i18n.getString( "value_is_higher_than_max_value" ) , "'")';
+    var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
+    var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
+</script>
