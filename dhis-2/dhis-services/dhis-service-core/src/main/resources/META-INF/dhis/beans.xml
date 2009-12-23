@@ -341,6 +341,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
   </bean>
   
+  <bean id="org.hisp.dhis.dataanalysis.GapAnalysisService"
+    class="org.hisp.dhis.dataanalysis.GapAnalysisService">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="dataAnalysisStore"
+      ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
+  </bean>
+  
   <!-- Startup routine definitions -->
 	
   <bean id="org.hisp.dhis.period.PeriodTypePopulator"
