@@ -77,7 +77,6 @@ public abstract class AbstractOutlierAnalysisService
                     for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                     {
                         outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
-                        i++;
                     }
                 }
             }
