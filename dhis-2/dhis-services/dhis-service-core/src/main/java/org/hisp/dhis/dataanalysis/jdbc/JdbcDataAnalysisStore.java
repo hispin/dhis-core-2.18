@@ -1,4 +1,4 @@
-package org.hisp.dhis.outlieranalysis.jdbc;
+package org.hisp.dhis.dataanalysis.jdbc;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -34,12 +34,12 @@ import java.util.Collection;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.amplecode.quick.mapper.ObjectMapper;
+import org.hisp.dhis.dataanalysis.DataAnalysisStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.outlieranalysis.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
@@ -49,8 +49,8 @@ import org.hisp.dhis.system.util.TextUtils;
 /**
  * @author Lars Helge Overland
  */
-public class JdbcOutlierAnalysisStore
-    implements OutlierAnalysisStore
+public class JdbcDataAnalysisStore
+    implements DataAnalysisStore
 {
     // -------------------------------------------------------------------------
     // Dependencies

@@ -1,4 +1,4 @@
-package org.hisp.dhis.outlieranalysis;
+package org.hisp.dhis.dataanalysis;
 
 /*
  * Copyright (c) 2004-2009, University of Oslo
@@ -34,33 +34,14 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
-
 /**
- * Defines service functionality for finding outlier DataValues.
- * 
  * @author Dag Haavi Finstad
  * @version $Id: StdDevOutlierAnalysisService.java 882 2009-05-14 23:09:31Z daghf $
- * 
  */
-public interface OutlierAnalysisService
+public interface DataAnalysisService
 {
-    String ID = OutlierAnalysisService.class.getName();
+    String ID = DataAnalysisService.class.getName();
 
-    /**
-     * Finds possible outliers for a collection of sources, dataelements and periods.
-     * 
-     * Checks for every combination in the cartesian product of sources,
-     * dataelements and periods if the corresponding datavalues are possible
-     * outliers.
-     * 
-     * @param organisationUnits The organisation units.
-     * @param dataElement The DataElement.
-     * @param period The period.
-     * @param stdDevFactor The standard deviation factor.
-     * @return A collection of OutlierValue objects. If no values were found, an
-     *         empty collection is returned.
-     */
-    Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
+    Collection<DeflatedDataValue> analyse( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
         Collection<Period> periods, Double stdDevFactor );
-
 }

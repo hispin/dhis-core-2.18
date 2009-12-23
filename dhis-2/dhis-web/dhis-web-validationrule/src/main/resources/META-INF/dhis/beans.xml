@@ -251,9 +251,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.validationrule.action.outlieranalysis.GetOutliersAction"
     scope="prototype">
     <property name="minMaxOutlierAnalysisService" 
-      ref="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService" />
+      ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
     <property name="stdDevOutlierAnalysisService" 
-      ref="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService" />
+      ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="selectionTreeManager" 
