@@ -1,21 +1,12 @@
-/**
- * @author Jon Moen Drange
- *
- * Javascript file for outlier analysis web UI - update outlier value.
- * Included in outlierSearchResult: updates a outlier value by sending
- * AJAX requests to the server on-the-fly when an user has updated a
- * outlier value.
- *
- */
 
-function editOutlierValue( outlierId )
+function editValue( valueId )
 {
-	var field = document.getElementById( 'outlier[' + outlierId + '].value' );
+	var field = document.getElementById( 'value[' + valueId + '].value' );
 	
-	var dataElementId = document.getElementById( 'outlier[' + outlierId + '].dataElement' ).value;
-    var categoryOptionComboId = document.getElementById( 'outlier[' + outlierId + '].categoryOptionCombo' ).value;
-	var periodId = document.getElementById( 'outlier[' + outlierId + '].period' ).value;
-	var sourceId = document.getElementById( 'outlier[' + outlierId + '].source' ).value;
+	var dataElementId = document.getElementById( 'value[' + valueId + '].dataElement' ).value;
+    var categoryOptionComboId = document.getElementById( 'value[' + valueId + '].categoryOptionCombo' ).value;
+	var periodId = document.getElementById( 'value[' + valueId + '].period' ).value;
+	var sourceId = document.getElementById( 'value[' + valueId + '].source' ).value;
 	
 	if ( field.value != '' )
 	{
@@ -30,8 +21,8 @@ function editOutlierValue( outlierId )
 		}
 		else
 		{
-			var minString = document.getElementById('outlier[' + outlierId + '].min').value;
-			var maxString = document.getElementById('outlier[' + outlierId + '].max').value;
+			var minString = document.getElementById('value[' + valueId + '].min').value;
+			var maxString = document.getElementById('value[' + valueId + '].max').value;
 			
 			var min = new Number( minString );
 			var max = new Number( maxString );
@@ -39,7 +30,7 @@ function editOutlierValue( outlierId )
 			
 			if ( value < min )
 			{
-				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, outlierId, '#ffcccc' );
+				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
 				valueSaver.save();
 				
 				alert( "Value is still lower than the lower boundary." );
@@ -48,7 +39,7 @@ function editOutlierValue( outlierId )
 			
 			if ( value > max )
 			{
-				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, outlierId, '#ffcccc' );
+				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
 				valueSaver.save();
 				
 				alert( "Value is still higher than the upper boundary." );
@@ -57,7 +48,7 @@ function editOutlierValue( outlierId )
 		}
 	}
 	
-    var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, outlierId, '#ccffcc', '');
+    var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ccffcc', '');
     valueSaver.save();
 
 }
@@ -79,7 +70,7 @@ function isInt( value )
 // Saver object (modified version of dataentry/javascript/general.js)
 //-----------------------------------------------------------------------------
 
-function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId_, value_, outlierId_, resultColor_, selectedOption_ )
+function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId_, value_, valueId_, resultColor_, selectedOption_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
@@ -89,7 +80,7 @@ function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId
     var sourceId = sourceId_;
     var categoryOptionComboId = categoryOptionComboId_;
     var value = value_;
-    var outlierId = outlierId_;
+    var valueId = valueId_;
     var resultColor = resultColor_;
     var selecteOption = selectedOption_;
     
@@ -99,7 +90,7 @@ function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
-        request.send( 'editOutlier.action?'
+        request.send( 'editDataValue.action?'
         		+ 'dataElementId=' + dataElementId
         		+ '&periodId=' + periodId
         		+ '&organisationUnitId=' + sourceId
@@ -131,7 +122,7 @@ function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId
     
     function markValue( color )
     {
-        var element = document.getElementById( 'outlier[' + outlierId + '].value' );
+        var element = document.getElementById( 'value[' + valueId + '].value' );
         element.style.backgroundColor = color;
     }
 }
