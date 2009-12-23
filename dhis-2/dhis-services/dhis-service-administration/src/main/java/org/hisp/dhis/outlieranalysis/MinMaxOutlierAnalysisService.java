@@ -36,15 +36,16 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 
 /**
  * 
  * @author Dag Haavi Finstad
- * @version $Id: DefaultMinMaxOutlierAnalysisService.java 1047 2009-06-10 11:01:04Z daghf $
+ * @author Lars Helge Overland
  */
 public class MinMaxOutlierAnalysisService
-    extends AbstractOutlierAnalysisService
+    implements OutlierAnalysisService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -57,6 +58,13 @@ public class MinMaxOutlierAnalysisService
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     private OutlierAnalysisStore outlierAnalysisStore;
 
     public void setOutlierAnalysisStore( OutlierAnalysisStore outlierAnalysisStore )
@@ -68,10 +76,42 @@ public class MinMaxOutlierAnalysisService
     // MinMaxOutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, 
-        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
+    public final Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit,
+        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
-        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement, categoryOptionCombo );
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
+        
+        Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
+        
+        MinMaxValueMap map = getMinMaxValueMap( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements ) );
+        
+        for ( DataElement dataElement : dataElements )
+        {
+            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            {                    
+                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+                
+                for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+                {
+                    for ( OrganisationUnit unit : units )
+                    {
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, map ) );
+                    }
+                }
+            }
+        }
+
+        return outlierCollection;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
+        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, MinMaxValueMap map )
+    {
+        MinMaxDataElement minMaxDataElement = map.get( organisationUnit, dataElement, categoryOptionCombo );
 
         if ( minMaxDataElement != null )
         {
@@ -80,5 +120,17 @@ public class MinMaxOutlierAnalysisService
         }
         
         return new ArrayList<DeflatedDataValue>();
+    }
+    
+    private MinMaxValueMap getMinMaxValueMap( Collection<MinMaxDataElement> minMaxDataElements )
+    {
+        MinMaxValueMap map = new MinMaxValueMap();
+        
+        for ( MinMaxDataElement element : minMaxDataElements )
+        {
+            map.put( element );
+        }
+        
+        return map;
     }
 }
