@@ -1,4 +1,6 @@
 
+var currentFollowupId = null;
+
 function editValue( valueId )
 {
 	var field = document.getElementById( 'value[' + valueId + '].value' );
@@ -12,7 +14,7 @@ function editValue( valueId )
 	{
 		if ( !isInt(field.value) )
 		{
-			alert( "Value must be an integer." );
+			alert( i18n_value_must_be_a_number );
 			
 			field.select();
 	        field.focus(); 
@@ -33,7 +35,7 @@ function editValue( valueId )
 				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
 				valueSaver.save();
 				
-				alert( "Value is still lower than the lower boundary." );
+				alert( i18n_value_is_lower_than_min_value );
 				return;
 			}
 			
@@ -42,7 +44,7 @@ function editValue( valueId )
 				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
 				valueSaver.save();
 				
-				alert( "Value is still higher than the upper boundary." );
+				alert( i18n_value_is_higher_than_max_value );
 				return;
 			}
 		}
@@ -65,6 +67,40 @@ function isInt( value )
     return true;
 }
 
+function markValueForFollowup( valueId )
+{	
+	currentFollowupId = valueId;
+	
+    var dataElementId = document.getElementById( 'value[' + valueId + '].dataElement' ).value;
+    var categoryOptionComboId = document.getElementById( 'value[' + valueId + '].categoryOptionCombo' ).value;
+    var periodId = document.getElementById( 'value[' + valueId + '].period' ).value;
+    var sourceId = document.getElementById( 'value[' + valueId + '].source' ).value;
+    
+    var url = 'markValueForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId +
+        '&sourceId=' + sourceId + '&categoryOptionComboId=' + categoryOptionComboId;
+    
+    var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( markValueForFollowupReceived );    
+    request.send( url );
+}
+
+function markValueForFollowupReceived( messageElement )
+{   
+    var message = messageElement.firstChild.nodeValue;
+    var image = document.getElementById( 'value[' + currentFollowupId + '].followup' );
+    
+    if ( message == "marked" )
+    {
+        image.src = "../images/marked.png";
+        image.alt = i18n_unmark_value_for_followup;
+    }
+    else if ( message = "unmarked" )
+    {
+        image.src = "../images/unmarked.png";
+        image.alt = i18n_mark_value_for_followup;   
+    }
+}
 
 //-----------------------------------------------------------------------------
 // Saver object (modified version of dataentry/javascript/general.js)

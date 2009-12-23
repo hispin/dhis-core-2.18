@@ -45,11 +45,7 @@ import java.util.Date;
 import com.opensymphony.xwork2.Action;
 
 /**
- * Edit an outlier value identified by a tuple of: (sourceId, dataElementId,
- * periodId)
- * 
  * @author Jon Moen Drange
- * 
  */
 public class EditDataValueAction
     implements Action
