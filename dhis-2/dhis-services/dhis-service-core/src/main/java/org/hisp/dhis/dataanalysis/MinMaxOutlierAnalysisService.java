@@ -82,17 +82,17 @@ public class MinMaxOutlierAnalysisService
         
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
         
-        MinMaxValueMap map = getMinMaxValueMap( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements ) );
-        
-        for ( DataElement dataElement : dataElements )
+        for ( OrganisationUnit unit : units )
         {
-            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-            {                    
-                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
-                
-                for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
-                {
-                    for ( OrganisationUnit unit : units )
+            MinMaxValueMap map = getMinMaxValueMap( minMaxDataElementService.getMinMaxDataElements( unit, dataElements ) );
+            
+            for ( DataElement dataElement : dataElements )
+            {
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+                {                    
+                    Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+                    
+                    for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                     {
                         outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, map ) );
                     }
