@@ -51,6 +51,10 @@ import org.hisp.dhis.system.util.TextUtils;
 public class JdbcOutlierAnalysisStore
     implements OutlierAnalysisStore
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -64,6 +68,10 @@ public class JdbcOutlierAnalysisStore
     {
         this.statementBuilder = statementBuilder;
     }
+
+    // -------------------------------------------------------------------------
+    // OutlierAnalysisStore implementation
+    // -------------------------------------------------------------------------
 
     public Double getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit )
     {
