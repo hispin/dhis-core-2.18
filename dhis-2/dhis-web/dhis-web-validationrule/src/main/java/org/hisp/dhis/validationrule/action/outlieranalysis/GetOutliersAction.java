@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -39,7 +40,6 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.outlieranalysis.OutlierAnalysisService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -63,16 +63,16 @@ public class GetOutliersAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OutlierAnalysisService minMaxOutlierAnalysisService;
+    private DataAnalysisService minMaxOutlierAnalysisService;
 
-    public void setMinMaxOutlierAnalysisService( OutlierAnalysisService minMaxOutlierAnalysisService )
+    public void setMinMaxOutlierAnalysisService( DataAnalysisService minMaxOutlierAnalysisService )
     {
         this.minMaxOutlierAnalysisService = minMaxOutlierAnalysisService;
     }
 
-    private OutlierAnalysisService stdDevOutlierAnalysisService;
+    private DataAnalysisService stdDevOutlierAnalysisService;
 
-    public void setStdDevOutlierAnalysisService( OutlierAnalysisService stdDevOutlierAnalysisService )
+    public void setStdDevOutlierAnalysisService( DataAnalysisService stdDevOutlierAnalysisService )
     {
         this.stdDevOutlierAnalysisService = stdDevOutlierAnalysisService;
     }
@@ -207,11 +207,11 @@ public class GetOutliersAction
 
         if ( outlierType.equals( TYPE_MINMAX ) )
         {
-            dataValues = minMaxOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, null );
+            dataValues = minMaxOutlierAnalysisService.analyse( organisationUnit, dataElements, periods, null );
         }
         else if ( outlierType.equals( TYPE_STDDEV ) )
         {
-            dataValues = stdDevOutlierAnalysisService.findOutliers( organisationUnit, dataElements, periods, standardDeviation );
+            dataValues = stdDevOutlierAnalysisService.analyse( organisationUnit, dataElements, periods, standardDeviation );
         }
         else
         {

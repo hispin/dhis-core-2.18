@@ -1,4 +1,4 @@
-package org.hisp.dhis.outlieranalysis;
+package org.hisp.dhis.dataanalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -27,14 +27,14 @@ package org.hisp.dhis.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.MathUtils.isEqual;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -43,18 +43,18 @@ import org.hisp.dhis.period.Period;
  * @author Dag Haavi Finstad
  * @author Lars Helge Overland
  */
-public class MinMaxOutlierAnalysisService
-    implements OutlierAnalysisService
+public class StdDevOutlierAnalysisService
+    implements DataAnalysisService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MinMaxDataElementService minMaxDataElementService;
+    private DataAnalysisStore dataAnalysisStore;
 
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
+    public void setDataAnalysisStore( DataAnalysisStore dataAnalysisStore )
     {
-        this.minMaxDataElementService = minMaxDataElementService;
+        this.dataAnalysisStore = dataAnalysisStore;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -64,25 +64,16 @@ public class MinMaxOutlierAnalysisService
         this.organisationUnitService = organisationUnitService;
     }
     
-    private OutlierAnalysisStore outlierAnalysisStore;
-
-    public void setOutlierAnalysisStore( OutlierAnalysisStore outlierAnalysisStore )
-    {
-        this.outlierAnalysisStore = outlierAnalysisStore;
-    }
-    
     // -------------------------------------------------------------------------
-    // MinMaxOutlierAnalysisService implementation
+    // OutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
-    public final Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit,
+    public final Collection<DeflatedDataValue> analyse( OrganisationUnit organisationUnit,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
         
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
-        
-        MinMaxValueMap map = getMinMaxValueMap( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements ) );
         
         for ( DataElement dataElement : dataElements )
         {
@@ -90,11 +81,11 @@ public class MinMaxOutlierAnalysisService
             {                    
                 Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
                 
-                for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
-                {
-                    for ( OrganisationUnit unit : units )
+                for ( OrganisationUnit unit : units )
+                {   
+                    for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                     {
-                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, map ) );
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
                     }
                 }
             }
@@ -108,28 +99,22 @@ public class MinMaxOutlierAnalysisService
     // -------------------------------------------------------------------------
 
     private Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
-        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, MinMaxValueMap map )
+        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
     {
-        MinMaxDataElement minMaxDataElement = map.get( organisationUnit, dataElement, categoryOptionCombo );
-
-        if ( minMaxDataElement != null )
+        Double stdDev = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
+                
+        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist when 0.0
         {
-            return outlierAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods, 
-                organisationUnit, dataElement.getPeriodType(), minMaxDataElement.getMin(), minMaxDataElement.getMax() );
+            Double avg = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
+            
+            double deviation = stdDev * stdDevFactor;        
+            Double lowerBound = avg - deviation;
+            Double upperBound = avg + deviation;
+            
+            return dataAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods, 
+                organisationUnit, dataElement.getPeriodType(), lowerBound.intValue(), upperBound.intValue() );            
         }
         
         return new ArrayList<DeflatedDataValue>();
-    }
-    
-    private MinMaxValueMap getMinMaxValueMap( Collection<MinMaxDataElement> minMaxDataElements )
-    {
-        MinMaxValueMap map = new MinMaxValueMap();
-        
-        for ( MinMaxDataElement element : minMaxDataElements )
-        {
-            map.put( element );
-        }
-        
-        return map;
     }
 }

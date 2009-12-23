@@ -1,4 +1,4 @@
-package org.hisp.dhis.outlieranalysis;
+package org.hisp.dhis.dataanalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -39,7 +39,7 @@ import org.hisp.dhis.period.PeriodType;
 /**
  * @author Lars Helge Overland
  */
-public interface OutlierAnalysisStore
+public interface DataAnalysisStore
 {
     Double getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit );
     

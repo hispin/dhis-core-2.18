@@ -169,8 +169,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
-  <bean id="org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore"
-    class="org.hisp.dhis.outlieranalysis.jdbc.JdbcOutlierAnalysisStore">
+  <bean id="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"
+    class="org.hisp.dhis.dataanalysis.jdbc.JdbcDataAnalysisStore">
     <property name="statementManager" ref="statementManager"/>
     <property name="statementBuilder" ref="statementBuilder"/>
   </bean>
@@ -323,22 +323,22 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"/>
   </bean>
    
-  <bean id="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService" 
-    class="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService">
+  <bean id="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" 
+    class="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="outlierAnalysisStore"
-      ref="org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore"/>    
+    <property name="dataAnalysisStore"
+      ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>
   </bean>
 
-  <bean id="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService"
-    class="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService">
+  <bean id="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService"
+    class="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="minMaxDataElementService"
       ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
-    <property name="outlierAnalysisStore"
-      ref="org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore"/>   
+    <property name="dataAnalysisStore"
+      ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
   </bean>
   
   <!-- Startup routine definitions -->
@@ -616,7 +616,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       
     <aop:aspect ref="statementInterceptor">
       <aop:around pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate(..) )" method="intercept"/>
-	  <aop:around pointcut="execution( * org.hisp.dhis.outlieranalysis.OutlierAnalysisService.findOutliers(..) )" method="intercept"/>
+	  <aop:around pointcut="execution( * org.hisp.dhis.dataanalysis.DataAnalysisService.analyse(..) )" method="intercept"/>
     </aop:aspect>
     
 	<!--

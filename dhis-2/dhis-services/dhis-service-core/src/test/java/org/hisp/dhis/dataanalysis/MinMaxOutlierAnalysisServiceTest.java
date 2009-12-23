@@ -1,4 +1,4 @@
-package org.hisp.dhis.outlieranalysis;
+package org.hisp.dhis.dataanalysis;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,8 +27,6 @@ package org.hisp.dhis.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,7 +41,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.minmax.MinMaxDataElement;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -53,13 +52,15 @@ import org.junit.Test;
 
 /**
  * @author eirikmi
- * @version $Id: StdDevOutlierAnalysisServiceTest.java 883 2009-05-15 00:42:45Z daghf $
+ * @version $Id: MinMaxOutlierAnalysisServiceTest.java 883 2009-05-15 00:42:45Z daghf $
  */
 @SuppressWarnings( "unused" )
-public class StdDevOutlierAnalysisServiceTest
+public class MinMaxOutlierAnalysisServiceTest
     extends DhisTest
 {
-    private OutlierAnalysisService stdDevOutlierAnalysisService;
+    private DataAnalysisService minMaxOutlierAnalysisService;
+
+    private MinMaxDataElementService minMaxDataElementService;
 
     private DataElement dataElementA;
     private DataElement dataElementB;
@@ -70,6 +71,8 @@ public class StdDevOutlierAnalysisServiceTest
     private DataValue dataValueB;
 
     private Set<DataElement> dataElementsA = new HashSet<DataElement>();
+    private Set<DataElement> dataElementsB = new HashSet<DataElement>();
+    private Set<DataElement> dataElementsC = new HashSet<DataElement>();
 
     private DataElementCategoryCombo categoryCombo;
 
@@ -77,10 +80,10 @@ public class StdDevOutlierAnalysisServiceTest
 
     private Period periodA;
     private Period periodB;
-    private Period periodC;    
-    private Period periodD;    
-    private Period periodE;    
-    private Period periodF;    
+    private Period periodC;
+    private Period periodD;
+    private Period periodE;
+    private Period periodF;
     private Period periodG;
     private Period periodH;
     private Period periodI;
@@ -88,23 +91,28 @@ public class StdDevOutlierAnalysisServiceTest
 
     private OrganisationUnit organisationUnitA;
 
+    private MinMaxDataElement minMaxDataElement;
+
     // ----------------------------------------------------------------------
     // Fixture
     // ----------------------------------------------------------------------
 
     @Override
     public void setUpTest()
+        throws Exception
     {
-        stdDevOutlierAnalysisService = (OutlierAnalysisService) getBean( "org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService" );
+        minMaxOutlierAnalysisService = (DataAnalysisService) getBean( "org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
+
+        minMaxDataElementService = (MinMaxDataElementService) getBean( MinMaxDataElementService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
+
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -123,6 +131,9 @@ public class StdDevOutlierAnalysisServiceTest
 
         dataElementsA.add( dataElementA );
         dataElementsA.add( dataElementB );
+        dataElementsB.add( dataElementC );
+        dataElementsB.add( dataElementD );
+        dataElementsC.add( dataElementB );
 
         categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 
@@ -155,12 +166,12 @@ public class StdDevOutlierAnalysisServiceTest
     @Test
     public void testGetFindOutliers()
     {
-        // testvalues = [5, 5, -5, -5, 10, -10, 13, -13, 71, -71]
+        // testvalues = [5, 5, -5, -5, 10, -10, 13, -13, 41, -41]
         // mean(testvalues) = 0.0
-        // std(testvalues) = 34.51
+        // std(testvalues) = 20.0
         
-        dataValueA = createDataValue( dataElementA, periodI, organisationUnitA, "71", categoryOptionCombo );
-        dataValueB = createDataValue( dataElementA, periodJ, organisationUnitA, "-71", categoryOptionCombo );
+        dataValueA = createDataValue( dataElementA, periodI, organisationUnitA, "41", categoryOptionCombo );
+        dataValueB = createDataValue( dataElementA, periodJ, organisationUnitA, "-41", categoryOptionCombo );
 
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, organisationUnitA, "5", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodB, organisationUnitA, "-5", categoryOptionCombo ) );
@@ -170,21 +181,21 @@ public class StdDevOutlierAnalysisServiceTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodF, organisationUnitA, "-10", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodG, organisationUnitA, "13", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodH, organisationUnitA, "-13", categoryOptionCombo ) );
+        
         dataValueService.addDataValue( dataValueA );
         dataValueService.addDataValue( dataValueB );
+        
+        minMaxDataElement = new MinMaxDataElement( organisationUnitA, dataElementA, categoryOptionCombo, -40, 40, false );
+        minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
 
-        double stdDevFactor = 2.0;
         Collection<Period> periods = new ArrayList<Period>();
         periods.add( periodI );
         periods.add( periodJ );
         periods.add( periodA );
         periods.add( periodE );
 
-        //Collection<DeflatedDataValue> result = stdDevOutlierAnalysisService.findOutliers( organisationUnitA, dataElementsA, periods, stdDevFactor );
+        //Collection<DeflatedDataValue> result = minMaxOutlierAnalysisService.findOutliers( organisationUnitA, dataElementsA, periods, null );
 
-        //double lowerBound = -34.51 * stdDevFactor;
-        //double upperBound = 34.51 * stdDevFactor;
-        
         //assertEquals( 2, result.size() );
     }
 }

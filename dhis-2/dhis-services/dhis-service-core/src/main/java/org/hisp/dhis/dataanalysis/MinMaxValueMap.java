@@ -1,4 +1,4 @@
-package org.hisp.dhis.outlieranalysis;
+package org.hisp.dhis.dataanalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
