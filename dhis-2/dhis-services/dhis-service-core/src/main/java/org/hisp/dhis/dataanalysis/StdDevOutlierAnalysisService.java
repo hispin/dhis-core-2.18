@@ -74,16 +74,16 @@ public class StdDevOutlierAnalysisService
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
         
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
-        
-        for ( OrganisationUnit unit : units )
+            
+        for ( DataElement dataElement : dataElements )
         {
-            for ( DataElement dataElement : dataElements )
-            {
-                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-                {                    
-                    Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
-                    
-                    for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            {                    
+                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+                
+                for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+                {
+                    for ( OrganisationUnit unit : units )
                     {
                         outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
                     }
