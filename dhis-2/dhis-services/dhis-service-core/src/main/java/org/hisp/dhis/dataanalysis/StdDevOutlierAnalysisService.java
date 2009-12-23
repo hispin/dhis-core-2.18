@@ -112,7 +112,7 @@ public class StdDevOutlierAnalysisService
             Double upperBound = avg + deviation;
             
             return dataAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods, 
-                organisationUnit, dataElement.getPeriodType(), lowerBound.intValue(), upperBound.intValue() );            
+                organisationUnit, lowerBound.intValue(), upperBound.intValue() );            
         }
         
         return new ArrayList<DeflatedDataValue>();
