@@ -115,7 +115,7 @@ public class MinMaxOutlierAnalysisService
         if ( minMaxDataElement != null )
         {
             return dataAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods, 
-                organisationUnit, dataElement.getPeriodType(), minMaxDataElement.getMin(), minMaxDataElement.getMax() );
+                organisationUnit, minMaxDataElement.getMin(), minMaxDataElement.getMax() );
         }
         
         return new ArrayList<DeflatedDataValue>();

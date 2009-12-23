@@ -34,7 +34,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Lars Helge Overland
@@ -46,5 +45,5 @@ public interface DataAnalysisStore
     Double getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit );
     
     Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Collection<Period> periods, OrganisationUnit organisationUnit, PeriodType periodType, int lowerBound, int upperBound );
+        Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound );
 }
