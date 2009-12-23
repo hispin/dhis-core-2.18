@@ -439,18 +439,18 @@ public class HibernateDataValueStore
         try
         {
             final String sql =
-                "select dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
-                "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name as dataelementname, " +
-                "pe.startdate, pe.enddate, pt.name as periodtypename, ou.name as sourcename, cc.categoryoptioncomboname " +
-                "from datavalue as dv " +
-                "left join minmaxdataelement as mm using (sourceid, dataelementid, categoryoptioncomboid) " +
-                "left join dataelement as de using (dataelementid) " +
-                "left join period as pe using (periodid) " +
-                "left join periodtype as pt using (periodtypeid) " +
-                "left join source as sr using (sourceid) " +
-                "left join organisationunit as ou on ou.organisationunitid=sr.sourceid " +
-                "left join categoryoptioncomboname as cc using (categoryoptioncomboid) " +
-                "where dv.followup=true";
+                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
+                "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
+                "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
+                "FROM datavalue AS dv " +
+                "LEFT JOIN minmaxdataelement AS mm using (sourceid, dataelementid, categoryoptioncomboid) " +
+                "JOIN dataelement AS de using (dataelementid) " +
+                "JOIN period AS pe using (periodid) " +
+                "JOIN periodtype AS pt using (periodtypeid) " +
+                "JOIN source AS sr using (sourceid) " +
+                "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
+                "LEFT JOIN categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
+                "WHERE dv.followup=true";
 
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
