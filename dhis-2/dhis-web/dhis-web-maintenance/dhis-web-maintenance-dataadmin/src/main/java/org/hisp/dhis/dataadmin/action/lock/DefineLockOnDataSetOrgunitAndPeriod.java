@@ -160,34 +160,32 @@ public class DefineLockOnDataSetOrgunitAndPeriod
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
-    {
+    public String execute() throws Exception{
+    	
         Period period = new Period();
 		
-		if( periodId != null )
-		{
+		if( periodId != null ){
+			
 			period = periodService.getPeriod( periodId.intValue() );
 		}
-		else
-		{
+		
+		else{
 			return SUCCESS;
 		}
-        
-		storedBy = currentUserService.getCurrentUsername();
+		
+        period = periodService.getPeriod( periodId.intValue() );
+        storedBy = currentUserService.getCurrentUsername();
 
         // -------------------------------------------------------------------------------
         // For data set movement from locked to unlocked data set list box and
         // vice versa according to lock status
         // -------------------------------------------------------------------------------
 
-        for ( String id : unlockedDataSets )
-        {      	
+        for ( String id : unlockedDataSets ){      	
         	DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
             DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
             
-            if ( dataSetLock != null )
-            {                
+            if ( dataSetLock != null ){                
                 dataSet.setLocked( false );
                 dataSetService.updateDataSet( dataSet );                               
                 dataSetLock.getSources().removeAll( dataSetLock.getSources() );
@@ -200,15 +198,13 @@ public class DefineLockOnDataSetOrgunitAndPeriod
         // organization unit ( or units )
         // ----------------------------------------------------------------------------------------
 
-        if ( lockedDataSets != null )
-        {
+        if ( lockedDataSets != null ){
             DataSet dataSet = dataSetService.getDataSet(  lockedDataSets.intValue() );
             Set<Source> organisationUnitsSelectedForLocking = new HashSet<Source>( selectionTreeManager
                 .getLockOnSelectedOrganisationUnits() );
             DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
 
-            if ( organisationUnitsSelectedForLocking.size() < 1 )
-            {
+            if ( organisationUnitsSelectedForLocking.size() < 1 ){
                 dataSet.setLocked( false );
                 dataSetService.updateDataSet( dataSet );
                 dataSetLock.getSources().removeAll( dataSetLock.getSources() );

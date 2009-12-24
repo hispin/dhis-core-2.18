@@ -123,10 +123,10 @@ implements Action
         locked = selectionTreeManager.getLockOnSelectedOrganisationUnits();
 
         Collection<OrganisationUnit> pathNodes = findPathNodes( roots, selected );
-        
-        @SuppressWarnings("unused")
+                
+		@SuppressWarnings("unused")
 		Collection<OrganisationUnit> pathNodesL = findPathNodes( roots, locked );
-        
+
         // ---------------------------------------------------------------------
         // Get the children of the roots
         // ---------------------------------------------------------------------

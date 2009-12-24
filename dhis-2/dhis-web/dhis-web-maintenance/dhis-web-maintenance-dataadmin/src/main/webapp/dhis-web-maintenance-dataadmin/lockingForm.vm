@@ -81,7 +81,6 @@
 			<tr>
 				<td>
                 	<input type="button" id="button5" value="$i18n.getString( "apply_lock_on_all" )" onclick="ApplyAll()" style="width:11em" disabled="true">                
-    				<input type="button" id="button6" value="$i18n.getString( "remove_all" )" onclick="RemoveAll()" style="width:11em" disabled="true">             
     				<input type="button" id="button7" value="$i18n.getString( "select_all_at_level" )" onclick="lockAllAtLevel()" style="width:12em" disabled="true">      		
                     <select id="levelList" name="levelList" style="width:13em" disabled="true">
                     	#foreach( $level in $levels )
@@ -89,6 +88,7 @@
                     	#end
                     </select> 			
                 	<input type="button" id="button8" value="$i18n.getString( "unselect_all_at_level" )" onclick="unLockAllAtLevel()" style="width:12em" disabled="true">      		
+					<input type="button" id="button6" value="$i18n.getString( "remove_all" )" onclick="RemoveAll()" style="width:11em" disabled="true">             
 				</td>
 			</tr>
 			<tr>
