@@ -92,40 +92,35 @@ public class GetDataSetsForLockAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-    {
-        if ( periodId != null )
-        {
+    public String execute(){
+    	
+        if ( periodId != null ){
+        	
             Period period = new Period();
             period = periodService.getPeriod( periodId.intValue() );
-
-            for ( DataSet dataSet : dataSetService.getAssignedDataSetsByPeriodType( period.getPeriodType() ) )
-            {
-                if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null )
-                {
-                	if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null )
-                	{
+            
+            for ( DataSet dataSet : dataSetService.getAssignedDataSetsByPeriodType( period.getPeriodType() ) ){
+            	if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null ){	
+                	if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null ){
 	                    dataSet.setLocked( true );
 	                    dataSetService.updateDataSet( dataSet );
 	                    dataSets.add( dataSet );
                 	}
-                	else
-                	{                                                
+                	else{                                                
 	                    dataSetLockService.deleteDataSetLock( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) );
 	                    dataSet.setLocked( false );
 	                    dataSetService.updateDataSet( dataSet );
 	                    dataSets.add( dataSet );
                 	}
                 }
-                else
-                {
+                else{
                     dataSet.setLocked( false );
                     dataSetService.updateDataSet( dataSet );
                     dataSets.add( dataSet );
+                    System.out.println("unlocked data sets in outer loop :" + dataSets.toString());
                 }
-            }            
+            }
         }
-        
         return SUCCESS;
     }
 }

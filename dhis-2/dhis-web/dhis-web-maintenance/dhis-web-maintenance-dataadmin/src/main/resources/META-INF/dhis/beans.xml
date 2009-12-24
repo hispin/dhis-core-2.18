@@ -4,7 +4,7 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	
-  <!-- Locking -->
+   <!-- Locking -->
   
   <bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
     class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
@@ -102,14 +102,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
     class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction" scope="prototype">
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
 	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
+	<bean id="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
     class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
     scope="prototype">
     <property name="organisationUnitService">

@@ -36,7 +36,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class SelectAllAction 
     implements Action
-    {
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -45,22 +45,22 @@ public class SelectAllAction
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-         this.selectionTreeManager = selectionTreeManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
-        
+    
     public SelectionTreeManager getSelectionTreeManager( )
     {
-          return selectionTreeManager;
+        return selectionTreeManager;
     }
-        
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
 
     public String execute() throws Exception {
-        	           
-         selectionTreeManager.setLockOnSelectedOrganisationUnits( selectionTreeManager.getSelectedOrganisationUnits() );
-            
-         return SUCCESS;
-        }
+    	           
+        selectionTreeManager.setLockOnSelectedOrganisationUnits( selectionTreeManager.getSelectedOrganisationUnits() );
+        
+        return SUCCESS;
     }
+}

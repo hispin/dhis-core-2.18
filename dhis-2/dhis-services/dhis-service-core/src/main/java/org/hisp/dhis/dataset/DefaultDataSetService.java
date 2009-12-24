@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
@@ -254,9 +255,9 @@ public class DefaultDataSetService
 
         for ( DataSet dataSet : dataSetListByPeriodType )
         {
-            DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+            // DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
 
-            if ( dataEntryForm != null )
+            if ( dataSet.getSources() != null )
             {
                 assignedDataSetListByPeriodType.add( dataSet );
             }
@@ -264,7 +265,7 @@ public class DefaultDataSetService
 
         return assignedDataSetListByPeriodType;
     }
-
+   
     public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );

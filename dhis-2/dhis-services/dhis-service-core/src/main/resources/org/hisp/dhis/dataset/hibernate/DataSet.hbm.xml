@@ -36,6 +36,8 @@
         class="org.hisp.dhis.period.Period"/>
     </set>
 	
+	<property name="locked"/>
+	
 	<property name="sortOrder"/>
 	
   </class>

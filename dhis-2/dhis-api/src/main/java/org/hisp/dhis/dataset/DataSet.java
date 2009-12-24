@@ -65,7 +65,7 @@ public class DataSet
     /**
     * Property indicating whether the DataSet is locked for data entry.
     */
-    private transient Boolean locked = false;
+    private Boolean locked = false;
     
     /**
      * All locked periods within the DataSet.
