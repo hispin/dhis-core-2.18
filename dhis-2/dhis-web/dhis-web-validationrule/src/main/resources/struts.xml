@@ -191,11 +191,11 @@
       <result name="none" type="redirect">showRunValidationForm.action</result>
     </action>
     
-    <!-- Outlier analysis -->
+    <!-- Data analysis -->
     
-    <action name="outlierAnalysisForm" class="org.hisp.dhis.validationrule.action.outlieranalysis.OutlierFormAction">
+    <action name="viewAnalysisForm" class="org.hisp.dhis.validationrule.action.dataanalysis.ViewAnalysisFormAction">
       <result name="success" type="velocity">/main.vm</result>        
-      <param name="page">/dhis-web-validationrule/outlierForm.vm</param>
+      <param name="page">/dhis-web-validationrule/dataAnalysisForm.vm</param>
       <param name="menu">/dhis-web-validationrule/menu.vm</param>
       <param name="javascripts">
         ../dhis-web-commons/ouwt/ouwt.js,
@@ -204,33 +204,24 @@
         ../dhis-web-commons/calendar/calendar-lang.js,
         ../dhis-web-commons/calendar/calendar-setup.js,
         ../dhis-web-commons/lists/lists.js,
-        javascript/outlierAnalysis.js
+        javascript/dataAnalysis.js
       </param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>
     
-    <action name="searchOutlierResult" class="org.hisp.dhis.validationrule.action.outlieranalysis.GetOutliersAction">
+    <action name="getAnalysis" class="org.hisp.dhis.validationrule.action.dataanalysis.GetAnalysisAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-validationrule/searchResult.vm</param>
       <param name="menu">/dhis-web-validationrule/menu.vm</param>
       <param name="javascripts">javascript/editDataValue.js</param>
     </action>
     
-    <action name="editDataValue" class="org.hisp.dhis.validationrule.action.EditDataValueAction">
+    <action name="editDataValue" class="org.hisp.dhis.validationrule.action.dataanalysis.EditDataValueAction">
       <result name="success" type="velocity">responseStatus.vm</result>
       <result name="error" type="velocity">responseStatus.vm</result>
     </action>
     
-	<!-- Followup -->
-	
-	<action name="getFollowupValues" class="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-validationrule/searchResult.vm</param>
-      <param name="menu">/dhis-web-validationrule/menu.vm</param>
-      <param name="javascripts">javascript/editDataValue.js</param>
-	</action>
-	
-	<action name="markValueForFollowup" class="org.hisp.dhis.validationrule.action.followup.MarkForFollowupAction">
+	<action name="markForFollowup" class="org.hisp.dhis.validationrule.action.dataanalysis.MarkForFollowupAction">
 		<result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
 	</action>
 	

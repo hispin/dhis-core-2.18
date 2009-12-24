@@ -101,6 +101,8 @@ public class MinMaxOutlierAnalysisService
         }
 
         return outlierCollection;
+        
+        //TODO improve performance by joining datavalue with minmaxdataelement
     }
 
     // -------------------------------------------------------------------------

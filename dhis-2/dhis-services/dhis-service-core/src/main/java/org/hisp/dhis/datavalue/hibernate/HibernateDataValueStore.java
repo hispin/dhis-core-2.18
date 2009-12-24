@@ -27,16 +27,12 @@ package org.hisp.dhis.datavalue.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
-import org.amplecode.quick.mapper.ObjectMapper;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -47,11 +43,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueStore;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -430,39 +424,5 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 
         return criteria.list();
-    }
-
-    public Collection<DeflatedDataValue> getDataValuesMarkedForFollowup()
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql =
-                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
-                "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
-                "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
-                "FROM datavalue AS dv " +
-                "LEFT JOIN minmaxdataelement AS mm using (sourceid, dataelementid, categoryoptioncomboid) " +
-                "JOIN dataelement AS de using (dataelementid) " +
-                "JOIN period AS pe using (periodid) " +
-                "JOIN periodtype AS pt using (periodtypeid) " +
-                "JOIN source AS sr using (sourceid) " +
-                "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
-                "LEFT JOIN categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
-                "WHERE dv.followup=true";
-
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return new ObjectMapper<DeflatedDataValue>().getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get deflated data values for followup", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 }

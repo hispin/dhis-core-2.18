@@ -245,15 +245,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <!-- OutlierAnalysis -->
+  <!-- Data analysis -->
   
-  <bean id="org.hisp.dhis.validationrule.action.outlieranalysis.GetOutliersAction" 
-    class="org.hisp.dhis.validationrule.action.outlieranalysis.GetOutliersAction"
+  <bean id="org.hisp.dhis.validationrule.action.dataanalysis.ViewAnalysisFormAction" 
+    class="org.hisp.dhis.validationrule.action.dataanalysis.ViewAnalysisFormAction"
     scope="prototype">
-    <property name="minMaxOutlierAnalysisService" 
-      ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
-    <property name="stdDevOutlierAnalysisService" 
-      ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
+    <property name="dataSetService"
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+  </bean>
+      
+  <bean id="org.hisp.dhis.validationrule.action.dataanalysis.GetAnalysisAction" 
+    class="org.hisp.dhis.validationrule.action.dataanalysis.GetAnalysisAction"
+    scope="prototype">
+	<property name="serviceProvider"
+	  ref="org.hisp.dhis.dataanalysis.DataAnalysisServiceProvider"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="selectionTreeManager" 
@@ -264,15 +269,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetService" />    
   </bean>
   
-  <bean id="org.hisp.dhis.validationrule.action.outlieranalysis.OutlierFormAction" 
-    class="org.hisp.dhis.validationrule.action.outlieranalysis.OutlierFormAction"
-    scope="prototype">
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
-  </bean>
-      
-  <bean id="org.hisp.dhis.validationrule.action.EditDataValueAction" 
-    class="org.hisp.dhis.validationrule.action.EditDataValueAction"
+  <bean id="org.hisp.dhis.validationrule.action.dataanalysis.EditDataValueAction" 
+    class="org.hisp.dhis.validationrule.action.dataanalysis.EditDataValueAction"
     scope="prototype">
     <property name="dataValueService" 
       ref="org.hisp.dhis.datavalue.DataValueService" />
@@ -288,17 +286,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
   
-  <!-- Followup -->
-  
-  <bean id="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction"
-	class="org.hisp.dhis.validationrule.action.followup.GetDataValuesMarkedForFollowupAction"
-	scope="prototype">
-    <property name="dataValueService" 
-      ref="org.hisp.dhis.datavalue.DataValueService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.validationrule.action.followup.MarkForFollowupAction"
-	class="org.hisp.dhis.validationrule.action.followup.MarkForFollowupAction"
+  <bean id="org.hisp.dhis.validationrule.action.dataanalysis.MarkForFollowupAction"
+	class="org.hisp.dhis.validationrule.action.dataanalysis.MarkForFollowupAction"
 	scope="prototype">    
     <property name="dataValueService" 
       ref="org.hisp.dhis.datavalue.DataValueService"/>

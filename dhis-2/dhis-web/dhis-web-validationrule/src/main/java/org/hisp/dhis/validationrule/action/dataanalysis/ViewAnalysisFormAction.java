@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.action.outlieranalysis;
+package org.hisp.dhis.validationrule.action.dataanalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -45,7 +45,7 @@ import com.opensymphony.xwork2.Action;
  * @author Jon Moen Drange
  * 
  */
-public class OutlierFormAction
+public class ViewAnalysisFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -82,6 +82,18 @@ public class OutlierFormAction
     public List<DataSet> getDataSets()
     {
         return dataSets;
+    }
+    
+    private String key;
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.action.followup;
+package org.hisp.dhis.validationrule.action.dataanalysis;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo

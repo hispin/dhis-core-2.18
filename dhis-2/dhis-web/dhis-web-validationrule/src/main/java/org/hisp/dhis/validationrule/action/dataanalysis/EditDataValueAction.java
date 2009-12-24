@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.action;
+package org.hisp.dhis.validationrule.action.dataanalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -137,14 +137,14 @@ public class EditDataValueAction
         this.categoryOptionComboId = categoryOptionComboId;
     }
 
-    private String message;
+    private String message = "";
 
     public String getMessage()
     {
         return message;
     }
 
-    private int statusCode;
+    private int statusCode = 0;
 
     public int getStatusCode()
     {
@@ -174,24 +174,25 @@ public class EditDataValueAction
         
         DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );
 
-        if ( dataValue == null )
-        {
-            statusCode = 4;
-            message = "data value does not exist";
-            return ERROR;
-        }
-        if ( !dataValue.getDataElement().getType().equals( "int" ) )
-        {
-            statusCode = 5;
-            message = "invalid data value";
-            return ERROR;
-        }
-
         String storedBy = currentUserService.getCurrentUsername();
 
-        if ( storedBy == null )
+        storedBy = storedBy == null ? "[unknown]" : storedBy;
+
+        if ( dataValue == null ) // Add new
         {
-            storedBy = "[unknown]";
+            dataValue = new DataValue();
+            dataValue.setDataElement( dataElement );
+            dataValue.setPeriod( period );
+            dataValue.setSource( unit );
+            dataValue.setOptionCombo( categoryOptionCombo );
+            dataValue.setValue( value );
+            dataValue.setStoredBy( storedBy );
+            
+            dataValueService.addDataValue( dataValue );
+            
+            log.info( "Added data value: " + value );
+            
+            return SUCCESS;
         }
 
         dataValue.setValue( value );
@@ -199,9 +200,6 @@ public class EditDataValueAction
         dataValue.setTimestamp( new Date() );
 
         dataValueService.updateDataValue( dataValue );
-
-        statusCode = 0;
-        message = "";
 
         log.info( "Updated data value: " + value );
         

@@ -76,7 +76,7 @@ function markValueForFollowup( valueId )
     var periodId = document.getElementById( 'value[' + valueId + '].period' ).value;
     var sourceId = document.getElementById( 'value[' + valueId + '].source' ).value;
     
-    var url = 'markValueForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId +
+    var url = 'markForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId +
         '&sourceId=' + sourceId + '&categoryOptionComboId=' + categoryOptionComboId;
     
     var request = new Request();
@@ -146,14 +146,14 @@ function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId
         else
         {
             markValue( ERROR );
-            window.alert( "Failed saving value:\n" + code );
+            window.alert( "Failed saving value." );
         }
     }
     
     function handleHttpError( errorCode )
     {
         markValue( ERROR );
-        window.alert( "Failed saving value. HTTP code: \n" + errorCode );
+        window.alert( "Failed saving value." );
     }
     
     function markValue( color )
