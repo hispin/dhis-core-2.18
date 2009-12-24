@@ -108,14 +108,12 @@ public class JdbcDataAnalysisStore
         {
             final String sql =
                 "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
-                "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, de.name AS dataelementname, " +
-                "pe.startdate, pe.enddate, pt.name as periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
-                "FROM datavalue AS dv " +                
-                "JOIN dataelement AS de USING (dataelementid) " +
+                "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
+                "'" + dataElement.getName() + "' AS dataelementname, pe.startdate, pe.enddate, pt.name AS periodtypename, " + 
+                "'" + organisationUnit.getName() + "' AS sourcename, cc.categoryoptioncomboname " +
+                "FROM datavalue AS dv " +
                 "JOIN period AS pe USING (periodid) " +
                 "JOIN periodtype AS pt USING (periodtypeid) " +
-                "JOIN source AS sr USING (sourceid) " +
-                "JOIN organisationunit AS ou ON ou.organisationunitid=sr.sourceid " +
                 "LEFT JOIN categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
                 "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
                 "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
