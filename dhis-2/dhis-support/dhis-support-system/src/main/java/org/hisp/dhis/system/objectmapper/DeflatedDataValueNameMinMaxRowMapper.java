@@ -37,23 +37,23 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
  * RowMapper which expects a result set with the following columns:
  * 
  * <ul>
- * <li>1: dataelementid</li>
- * <li>2: periodid</li>
- * <li>3: sourceid</li>
- * <li>4: categoryoptioncomboid</li>
- * <li>5: value</li>
- * <li>6: storedby</li>
- * <li>7: lastupdated</li>
- * <li>8: comment</li>
- * <li>9: followup</li>
- * <li>10: minvalue</li>
- * <li>11: maxvalue</li>
- * <li>12: dataelementname</li>
- * <li>13: periodtypename</li>
- * <li>14: startdate</li>
- * <li>15: enddate</li>
- * <li>16: sourcename</li>
- * <li>17: categoryoptioncomboname</li>
+ * <li>1: dataelementid - int</li>
+ * <li>2: periodid - int</li>
+ * <li>3: sourceid - int</li>
+ * <li>4: categoryoptioncomboid - int</li>
+ * <li>5: value - String</li>
+ * <li>6: storedby - String</li>
+ * <li>7: lastupdated - date</li>
+ * <li>8: comment - String</li>
+ * <li>9: followup - Boolean</li>
+ * <li>10: minvalue - int</li>
+ * <li>11: maxvalue - int</li>
+ * <li>12: dataelementname - String</li>
+ * <li>13: periodtypename - String</li>
+ * <li>14: startdate - String</li>
+ * <li>15: enddate - String</li>
+ * <li>16: sourcename - String</li>
+ * <li>17: categoryoptioncomboname - String</li>
  * </ul>
  * 
  * @author Lars Helge Overland

@@ -69,9 +69,9 @@ public class GapAnalysisService
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
+
+        Collection<DeflatedDataValue> gapCollection = new ArrayList<DeflatedDataValue>();
         
-        Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
-            
         for ( DataElement dataElement : dataElements )
         {
             if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
@@ -82,13 +82,12 @@ public class GapAnalysisService
                 {
                     for ( OrganisationUnit unit : units )
                     {
-                        outlierCollection.addAll( dataAnalysisStore.getNonExistingDeflatedDataValues( 
-                            dataElement, categoryOptionCombo, periods, unit ) );
+                        gapCollection.addAll( dataAnalysisStore.getDeflatedDataValueGaps( dataElement, categoryOptionCombo, periods, unit ) );                        
                     }
                 }
             }
         }
 
-        return outlierCollection;
+        return gapCollection;
     }
 }

@@ -47,6 +47,6 @@ public interface DataAnalysisStore
     Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound );
     
-    Collection<DeflatedDataValue> getNonExistingDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
+    Collection<DeflatedDataValue> getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, OrganisationUnit organisationUnit );
 }
