@@ -173,9 +173,4 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValues( dataElement );
     }
-    
-    public Collection<DeflatedDataValue> getDataValuesMarkedForFollowup()
-    {
-        return dataValueStore.getDataValuesMarkedForFollowup();
-    }
 }

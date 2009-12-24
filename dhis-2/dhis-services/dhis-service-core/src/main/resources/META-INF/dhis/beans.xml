@@ -349,6 +349,36 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
   </bean>
   
+  <bean id="org.hisp.dhis.dataanalysis.FollowupAnalysisService"
+    class="org.hisp.dhis.dataanalysis.FollowupAnalysisService">
+    <property name="dataAnalysisStore"
+      ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataanalysis.DataAnalysisServiceProvider"
+	class="org.hisp.dhis.dataanalysis.provider.DefaultDataAnalysisServiceProvider">
+	<property name="dataAnalysisServices">
+		<map>
+			<entry>
+				<key><value>stddevoutlier</value></key>
+				<ref bean="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService"/>
+			</entry>
+            <entry>
+                <key><value>minmaxoutlier</value></key>
+                <ref bean="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService"/>
+            </entry>
+            <entry>
+                <key><value>gap</value></key>
+                <ref bean="org.hisp.dhis.dataanalysis.GapAnalysisService"/>
+            </entry>
+            <entry>
+                <key><value>followup</value></key>
+                <ref bean="org.hisp.dhis.dataanalysis.FollowupAnalysisService"/>
+            </entry>
+		</map>		
+	</property>
+  </bean>
+  
   <!-- Startup routine definitions -->
 	
   <bean id="org.hisp.dhis.period.PeriodTypePopulator"

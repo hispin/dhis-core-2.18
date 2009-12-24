@@ -4,6 +4,9 @@
 <ul class="introList">
     #introListItem( "showValidationRuleForm.action" "validation_rule" )
     #introListItem( "showValidationRuleGroupForm.action" "validation_rule_group" )
-    #introListItem( "showRunValidationForm.action" "run_validation" )
-    #introListItem( "outlierAnalysisForm.action" "outlier_analysis" )
+    #introListItem( "showRunValidationForm.action" "validation_rule_analysis" )
+    #introListItem( "viewAnalysisForm.action?key=stddevoutlier" "stddevoutlier_analysis" )
+    #introListItem( "viewAnalysisForm.action?key=minmaxoutlier" "minmaxoutlier_analysis" )
+    #introListItem( "viewAnalysisForm.action?key=gap" "gap_analysis" )
+    #introListItem( "getAnalysis.action?key=followup" "followup_analysis" )
 </ul>

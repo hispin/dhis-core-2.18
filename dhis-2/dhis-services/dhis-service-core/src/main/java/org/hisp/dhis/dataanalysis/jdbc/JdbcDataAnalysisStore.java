@@ -118,7 +118,6 @@ public class JdbcDataAnalysisStore
                 "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
                 "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
                 "AND dv.periodid IN (" + periodIds + ") " +
-                "AND pt.periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
                 "AND dv.sourceid='" + organisationUnit.getId() + "' " +
                 "AND ( CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
                 "OR CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
@@ -151,20 +150,20 @@ public class JdbcDataAnalysisStore
         try
         {
             final String sql =
-                "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid " +
+                "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " +
                 "'" + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId() + "' AS categoryoptioncomboid, " +
-                "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, 0 as minvalue, 0 as maxvalue, " +
+                "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, '0' as minvalue, '100000' as maxvalue, " +
                 "'" + dataElement.getName() + "' AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " +
                 "'" + organisationUnit.getName() + "' AS sourcename, '" + categoryOptionCombo.getName() + "' as categoryoptioncomboname " +
-                "FROM period as pe " +
-                "JOIN periodtype as pt USING (periodtypeid) " +
+                "FROM period AS pe " +
+                "JOIN periodtype AS pt USING (periodtypeid) " +
                 "WHERE periodid IN (" + periodIds + ") " +
                 "AND periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
                 "AND periodid NOT IN ( " +
                     "SELECT periodid FROM datavalue " +
                     "WHERE dataelementid='" + dataElement.getId() + "' " +
                     "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
-                    "AND sourceid='" + organisationUnit + "' )";
+                    "AND sourceid='" + organisationUnit.getId() + "' )";
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
@@ -173,6 +172,40 @@ public class JdbcDataAnalysisStore
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to get deflated data values", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    public Collection<DeflatedDataValue> getDataValuesMarkedForFollowup()
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            final String sql =
+                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
+                "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
+                "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
+                "FROM datavalue AS dv " +
+                "LEFT JOIN minmaxdataelement AS mm using (sourceid, dataelementid, categoryoptioncomboid) " +
+                "JOIN dataelement AS de using (dataelementid) " +
+                "JOIN period AS pe using (periodid) " +
+                "JOIN periodtype AS pt using (periodtypeid) " +
+                "JOIN source AS sr using (sourceid) " +
+                "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
+                "LEFT JOIN categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
+                "WHERE dv.followup=true";
+
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return new ObjectMapper<DeflatedDataValue>().getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get deflated data values for followup", ex );
         }
         finally
         {

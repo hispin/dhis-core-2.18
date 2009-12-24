@@ -14,7 +14,7 @@
  *
  ******************************************************************/
  
-function validate()
+function validateAndSubmit()
 {
 	// validating date (copied from dataBrowser.js)
 	
@@ -64,39 +64,11 @@ function validate()
 		return false;
 	}
 	
-	// selected outlier type
-	
-	var outlierType = document.getElementById( "outlierType" );
-	
-	if ( outlierType.value == "null" )
-	{
-		setMessage( "No outlier type is selected." );
-		return false;
-	}
-	
-	// validating given standard deviation
-	
-	if ( outlierType.value == "stddev" )
-	{
-		var stddev = document.getElementById( "standardDeviation").value;
-		
-		if ( isNaN(stddev) )
-		{
-			setMessage( "Given standard deviation is not a number." );
-			return false;
-		}
-		else if ( stddev < 0.1 || stddev > 10.0 )
-		{
-			setMessage( "The standard deviation should be a number between 0.1 and 10.0." );
-			return false;
-		}
-	}
-	
 	// client side validation OK
 	
 	selectAllById( "dataElementsById" ); // setting data elements to "selected" before posting
 	
-	return true;
+	document.getElementById( "analysisForm" ).submit();
 }
 
 
@@ -158,8 +130,7 @@ function fetchDataElementsSuccess( response )
 		
 		document.getElementById('dataElementsById').disabled = true;
 		select.disabled = true;
-	}
-	
+	}	
 }
 
 function FetchDataElementsError( httpStatusCode )
@@ -189,36 +160,6 @@ function fetchDataElements()
 	request.setCallbackError( FetchDataElementsError );
 	
 	request.send('../dhis-web-commons-ajax/getDataElements.action?dataSetId=' + dataset);
-}
-
-
-/******************************************************************
- * Exchanges the visible form, depending on the a dropdown menu.
- *
- * The available choices should be among these two:
- *  - Min-Max, or
- *  - Standard Deviation
- *
- ******************************************************************/
- 
-function chooseType()
-{
-	var stddev = document.getElementById('stddevform');
-	
-	var choice = document.getElementById('outlierType').value;
-	
-	if ( choice == 'minmax' )
-	{
-		stddev.style.display = 'none';
-	}
-	else if ( choice == 'stddev' )
-	{
-		stddev.style.display = '';
-	}
-	else
-	{
-		stddev.style.display = 'none';
-	}
 }
 
  

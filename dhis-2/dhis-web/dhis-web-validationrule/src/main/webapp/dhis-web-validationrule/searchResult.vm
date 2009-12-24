@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "search_result" )</h3>
+<h3>$i18n.getString( "${key}_analysis" ) $i18n.getString( "result" )</h3>
 
 #if ( $dataValues.size() == 0 )
 

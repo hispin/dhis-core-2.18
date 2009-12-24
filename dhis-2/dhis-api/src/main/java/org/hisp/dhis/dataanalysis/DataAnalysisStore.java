@@ -49,4 +49,6 @@ public interface DataAnalysisStore
     
     Collection<DeflatedDataValue> getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, OrganisationUnit organisationUnit );
+
+    Collection<DeflatedDataValue> getDataValuesMarkedForFollowup();
 }

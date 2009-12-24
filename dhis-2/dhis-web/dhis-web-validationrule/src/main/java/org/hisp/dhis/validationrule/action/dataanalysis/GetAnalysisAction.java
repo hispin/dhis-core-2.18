@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.action.outlieranalysis;
+package org.hisp.dhis.validationrule.action.dataanalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -31,7 +31,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
+import org.hisp.dhis.dataanalysis.DataAnalysisServiceProvider;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -50,31 +53,23 @@ import com.opensymphony.xwork2.Action;
  * Finds outliers in given data elements for given sources in a given period and
  * displays a list of them.
  * 
- * @author Jon Moen Drange, Peter Flem, Dag Haavi Finstad
+ * @author Jon Moen Drange, Peter Flem, Dag Haavi Finstad, Lars Helge Oeverland
  * @version $Id: GetOutliersAction.java 1005 2009-06-04 13:29:44Z jonmd $
  */
-public class GetOutliersAction
+public class GetAnalysisAction
     implements Action
 {
-    private static final String TYPE_MINMAX = "minmax";
-    private static final String TYPE_STDDEV = "stddev";
+    private static final Log log = LogFactory.getLog( GetAnalysisAction.class );
     
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataAnalysisService minMaxOutlierAnalysisService;
+    private DataAnalysisServiceProvider serviceProvider;
 
-    public void setMinMaxOutlierAnalysisService( DataAnalysisService minMaxOutlierAnalysisService )
+    public void setServiceProvider( DataAnalysisServiceProvider serviceProvider )
     {
-        this.minMaxOutlierAnalysisService = minMaxOutlierAnalysisService;
-    }
-
-    private DataAnalysisService stdDevOutlierAnalysisService;
-
-    public void setStdDevOutlierAnalysisService( DataAnalysisService stdDevOutlierAnalysisService )
-    {
-        this.stdDevOutlierAnalysisService = stdDevOutlierAnalysisService;
+        this.serviceProvider = serviceProvider;
     }
 
     private DataElementService dataElementService;
@@ -116,6 +111,18 @@ public class GetOutliersAction
     // Input
     // -------------------------------------------------------------------------
 
+    private String key;
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     private String toDateString;
 
     public void setToDate( String toDate )
@@ -144,13 +151,6 @@ public class GetOutliersAction
         this.dataElementsById = dataElementsById;
     }
 
-    private String outlierType;
-
-    public void setOutlierType( String outlierType )
-    {
-        this.outlierType = outlierType;
-    }
-
     private Double standardDeviation;
 
     public void setStandardDeviation( Double standardDeviation )
@@ -175,49 +175,54 @@ public class GetOutliersAction
 
     public String execute()
     {
-        Collection<DataElement> dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) );
+        Collection<DataElement> dataElements = null;
+        Collection<Period> periods = null;
 
         OrganisationUnit organisationUnit = selectionTreeManager.getSelectedOrganisationUnit();
         
-        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+        if ( dataElementsById != null && dataSetId != null && organisationUnit != null )
+        {
+            dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) ); 
         
-        Date fromDate = null;
-        Date toDate = null;
-
-        if ( fromDateString == null || fromDateString.trim().length() == 0 )
-        {
-            Date epoch = new Date( 0 );
-            fromDate = epoch;
+            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+        
+            Date fromDate = null;
+            Date toDate = null;
+    
+            if ( fromDateString == null || fromDateString.trim().length() == 0 )
+            {
+                Date epoch = new Date( 0 );
+                fromDate = epoch;
+            }
+            else
+            {
+                fromDate = format.parseDate( fromDateString );
+            }
+    
+            if ( toDateString == null || toDateString.trim().length() == 0 )
+            {
+                toDate = new Date();
+            }
+            else
+            {
+                toDate = format.parseDate( toDateString );
+            }
+    
+            periods = periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), fromDate, toDate );
+            
+            log.info( "DataSet: " + dataSet + " Organisation unit: " + organisationUnit );
+            log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
         }
-        else
+        
+        DataAnalysisService service = serviceProvider.provide( key );
+        
+        if ( service != null )
         {
-            fromDate = format.parseDate( fromDateString );
+            log.info( "Data analysis type: " + key );
+            
+            dataValues = service.analyse( organisationUnit, dataElements, periods, standardDeviation );
         }
-
-        if ( toDateString == null || toDateString.trim().length() == 0 )
-        {
-            toDate = new Date();
-        }
-        else
-        {
-            toDate = format.parseDate( toDateString );
-        }
-
-        Collection<Period> periods = periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), fromDate, toDate );
-
-        if ( outlierType.equals( TYPE_MINMAX ) )
-        {
-            dataValues = minMaxOutlierAnalysisService.analyse( organisationUnit, dataElements, periods, null );
-        }
-        else if ( outlierType.equals( TYPE_STDDEV ) )
-        {
-            dataValues = stdDevOutlierAnalysisService.analyse( organisationUnit, dataElements, periods, standardDeviation );
-        }
-        else
-        {
-            return ERROR;
-        }
-
+        
         return SUCCESS;
     }
 }

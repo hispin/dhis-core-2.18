@@ -1,7 +1,9 @@
 
-<h3>$i18n.getString( "outlier_analysis" )</h3>
+<h3>$i18n.getString( "${key}_analysis" )</h3>
 
-<form method="post" action="searchOutlierResult.action" onsubmit="return validate()">
+<form id="analysisForm" method="post" action="getAnalysis.action">
+
+<input type="hidden" id="key" name="key" value="$!key">
 
 <table>
 	## Date
@@ -90,39 +92,36 @@
         	</script>
 		</td>
 	</tr>
-	<tr>
-        <td colspan="2" style="height:20px"></td>
-    </tr>	
 </table>
 
-<table>
-	## OUTLIER TYPE CHOOSER
-	<tr>
-		<th colspan="2">$i18n.getString( "select_outlier_type" )</th>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<select id="outlierType" name="outlierType" style="min-width:325px" onChange="chooseType()">
-				<option value="stddev">$i18n.getString( "std_dev" )</option>
-                <option value="minmax">$i18n.getString( "min_max" )</option>
-			</select>
-		</td>
-	</tr>
-</table>
-
+#if( $key == "stddevoutlier" || $key == "minmaxoutlier" )
 <div id="stddevform">
 <table>
-	## STANDARD DEVIATION INPUT FIELD
+	## STANDARD DEVIATION INPUT FIELD	
+    <tr>
+        <td colspan="2" style="height:20px"></td>
+    </tr>
 	<tr>
 		<th style="min-width:325px">$i18n.getString( "select_std_dev" )</th>
 	</tr>
 	<tr>
-		<td colspan="1">
-			<input type="text" id="standardDeviation" name="standardDeviation" value="3.0" style="width:120px"></input>
+		<td>
+			<select id="standardDeviation" name="standardDeviation" style="width:120px">
+				<option value="1.0">1.0</option>
+                <option value="1.5">1.5</option>
+                <option value="2.0">2.0</option>
+                <option value="2.5">2.5</option>
+                <option value="3.0" selected="selected">3.0</option>
+                <option value="3.5">3.5</option>
+                <option value="4.0">4.0</option>
+                <option value="4.5">4.5</option>
+                <option value="5.0">5.0</option>
+			</select>
 		</td>
 	</tr>
 </table>
 </div>
+#end
 
 <table> 
     <tr>
@@ -130,7 +129,7 @@
     </tr>
 	<tr>
 		<td>
-			<input type="submit" value="Find outliers" style="width:120px" />
+			<input type="button" onclick="validateAndSubmit()" value="$i18n.getString( 'start' )" style="width:120px" />
 		</td>
 	</tr>
 </table>
