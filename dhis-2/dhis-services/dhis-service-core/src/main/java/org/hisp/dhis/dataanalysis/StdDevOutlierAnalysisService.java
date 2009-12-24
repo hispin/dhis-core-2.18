@@ -74,7 +74,7 @@ public class StdDevOutlierAnalysisService
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
         
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
-            
+        
         for ( DataElement dataElement : dataElements )
         {
             if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
