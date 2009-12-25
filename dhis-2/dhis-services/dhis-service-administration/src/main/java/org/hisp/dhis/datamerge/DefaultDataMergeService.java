@@ -29,9 +29,12 @@ package org.hisp.dhis.datamerge;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamerge.DataMergeService;
 import org.hisp.dhis.datamerge.DataMergeStore;
+import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 /**
  * @author Lars Helge Overland
@@ -39,21 +42,88 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class DefaultDataMergeService
     implements DataMergeService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private DataMergeStore dataMergeStore;
     
     public void setDataMergeStore( DataMergeStore dataMergeStore )
     {
         this.dataMergeStore = dataMergeStore;
     }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    // -------------------------------------------------------------------------
+    // DataMergeService implementation
+    // -------------------------------------------------------------------------
 
     public void mergeDataElements( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
-        dataMergeStore.mergeDataElements( destDataElement, destCategoryOptionCombo, sourceDataElemenet, sourceCategoryOptionCombo );        
+        // ---------------------------------------------------------------------
+        // Eliminate duplicates
+        // ---------------------------------------------------------------------
+
+        dataMergeStore.mergeDataElements( destDataElement, destCategoryOptionCombo, sourceDataElemenet, sourceCategoryOptionCombo );
+
+        // ---------------------------------------------------------------------
+        // Delete source
+        // ---------------------------------------------------------------------
+
+        try
+        {
+            dataElementService.deleteDataElement( sourceDataElemenet );
+        }
+        catch ( HierarchyViolationException ex )
+        {
+            // Do nothing for now
+        }
     }
 
     public void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source )
     {
-        dataMergeStore.mergeOrganisationUnits( dest, source );        
+        // ---------------------------------------------------------------------
+        // Merge source data with destination
+        // ---------------------------------------------------------------------
+
+        dataMergeStore.mergeOrganisationUnits( dest, source );      
+        
+        // ---------------------------------------------------------------------
+        // Set parent of children of destination to source
+        // ---------------------------------------------------------------------
+
+        for ( OrganisationUnit child : source.getChildren() )
+        {
+            child.setParent( dest );
+            
+            organisationUnitService.updateOrganisationUnit( child );
+        }
+
+        // ---------------------------------------------------------------------
+        // Delete source
+        // ---------------------------------------------------------------------
+
+        try
+        {
+            organisationUnitService.deleteOrganisationUnit( source );
+        }
+        catch ( HierarchyViolationException ex )
+        {
+            // Do nothing for now
+        }
     }
 }
