@@ -83,7 +83,7 @@ public class OrganisationUnitRelationshipRowHandler
         final Integer parentId = organisationUnitMapping.get( dhis14Association.getGroupId() );
         final Integer childId = organisationUnitMapping.get( dhis14Association.getMemberId() );
         
-        if ( parentId != null && childId != null && parentId.equals( childId ) ) // Parent id equals child id for root
+        if ( parentId != null && childId != null && !parentId.equals( childId ) ) // Parent id equals child id for root
         {
             association.setGroupId( parentId );
             association.setMemberId( childId );
