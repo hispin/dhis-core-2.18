@@ -98,4 +98,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.databrowser.DataBrowserStore" />
   </bean>
        
+  <!-- Data merge -->
+  
+  <bean id="org.hisp.dhis.datamerge.DataMergeStore"
+    class="org.hisp.dhis.datamerge.jdbc.JdbcDataMergeStore">
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.datamerge.DataMergeService"
+    class="org.hisp.dhis.datamerge.DefaultDataMergeService">
+    <property name="dataMergeStore" ref="org.hisp.dhis.datamerge.DataMergeStore"/>
+  </bean>
+  
 </beans>
