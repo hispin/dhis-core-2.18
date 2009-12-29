@@ -61,6 +61,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	  <ref bean="org.hisp.dhis.user.CurrentUserService"/>
 	</property>     
   </bean>
+	
+  <bean id="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
+    class="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
+    scope="prototype">   
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>
+    <property name="dataSetLockService">
+      <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
+    </property>   
+  </bean>
   
   <bean id="org.hisp.dhis.dataadmin.action.lock.SelectAllAction"
     class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction" 

@@ -55,10 +55,17 @@
 		  ../dhis-web-commons/util/jquery.js,
 		  ../dhis-web-commons/css/${stylesheetDirectory}/dom.js</param>
     </action>
+	  
+	<action name="updateLockedDataSets"
+        class="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets">
+	  <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/index.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+    </action>
     
     <action name="defineLockOnDataSetOrgunitAndPeriod"
         class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod">
-      <result name="success" type="redirect">displayLockingForm.action</result>
+      <result name="success" type="chain">getLockSelectionTree</result>
     </action>
  
 	<action name="selectLevel"

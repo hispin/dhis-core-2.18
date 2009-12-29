@@ -117,7 +117,7 @@ public class GetDataSetsForLockAction
                     dataSet.setLocked( false );
                     dataSetService.updateDataSet( dataSet );
                     dataSets.add( dataSet );
-                    System.out.println("unlocked data sets in outer loop :" + dataSets.toString());
+                    //System.out.println("unlocked data sets in outer loop :" + dataSets.toString());
                 }
             }
         }
