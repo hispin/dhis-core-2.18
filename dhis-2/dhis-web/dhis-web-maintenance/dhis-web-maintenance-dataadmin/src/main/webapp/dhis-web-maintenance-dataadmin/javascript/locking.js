@@ -111,7 +111,8 @@ function enableLockComponents(){
 	enableParent( "button8" );
 	enableParent( "button9" );	 
 	enableParent( "levelList" );
-	enableParent( "submitButton" );
+	enableParent( "button10" );
+	enableParent( "button11" );
 }
 		
 function desableLockComponents(){
@@ -127,9 +128,9 @@ function desableLockComponents(){
 	disableParent( "button6" );
 	disableParent( "button7" );
 	disableParent( "button8" );
-	//disableParent( "button9" );	 
+	disableParent( "button11" );	 
 	disableParent( "levelList" );
-	disableParent( "submitButton" );
+	disableParent( "button10" );
 }
 
 function LoadOrgUnitTree(){
@@ -180,7 +181,19 @@ function unLockAllAtLevel(){
    iframeForOUTree.location.href = 'unselectLevel.action?level=' + level + '&selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
 }
 
-function updateDataSetsOrgunitwise(){
+function saveUpdate(){
+	 desableLockComponents();
+   var periodList = document.getElementById( "periodId" );
+   var periodId = periodList.options[ periodList.selectedIndex ].value;
+   var list = document.getElementById( 'levelList' );         
+   var level = list.options[ list.selectedIndex ].value;
+   var lockedDataSetList = document.getElementById('lockedDataSets');
+   
+   var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;
+   iframeForOUTree.location.href = 'defineLockOnDataSetOrgunitAndPeriod.action?level=' + level + '&selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
+}
+
+function updateLockedDataSets(){
      if ( validateLocking() )  {
         selectAllById( "unlockedDataSets" );       
         document.getElementById( "lockingForm" ).submit();

@@ -2,7 +2,7 @@
 
 <span id="message"></span>	
 
-<form id="lockingForm" name="lockingForm" action="defineLockOnDataSetOrgunitAndPeriod.action" method="post">
+<form id="lockingForm" name="lockingForm" action="updateLockedDataSets.action" method="post">
 	
 <table width="730">
     
@@ -93,8 +93,9 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="button" id="submitButton" value="$i18n.getString( 'save' )" style="width:30em"  onclick="updateDataSetsOrgunitwise()" disabled="true">									
-					<input type="button" id="button9" value="$i18n.getString( 'cancel' )" style="width:30em"  onclick="cancilSelection()" disabled="true">
+					<input type="button" id="button10" value="$i18n.getString( "save" )" style="width:20em"  onclick="saveUpdate()" disabled="true">	
+					<input type="button" id="button11" value="$i18n.getString( "done" )" style="width:20em"  onclick="updateLockedDataSets()" disabled="true">
+					<input type="button" id="button9" value="$i18n.getString( "cancel" )" style="width:20em"  onclick="cancilSelection()" disabled="true">
 				</td>
 			</tr>
             <tr>

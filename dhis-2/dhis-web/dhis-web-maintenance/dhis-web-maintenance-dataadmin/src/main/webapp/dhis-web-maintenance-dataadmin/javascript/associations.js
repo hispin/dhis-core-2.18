@@ -32,7 +32,7 @@ function treeClicked()
    else{ 	
     		numberOfSelects++;   
     		setMessage( i18n_loading );
-    		parent.document.getElementById( "submitButton" ).disabled = true;
+    		parent.document.getElementById( "button10" ).disabled = true;
     	}
 }
 
@@ -44,6 +44,6 @@ function selectCompleted( selectedUnits )
     {
        hideMessage();
         
-       parent.document.getElementById( "submitButton" ).disabled = false;
+       parent.document.getElementById( "button10" ).disabled = false;
     }
 }
