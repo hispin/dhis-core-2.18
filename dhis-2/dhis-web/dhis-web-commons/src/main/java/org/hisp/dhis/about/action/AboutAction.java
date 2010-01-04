@@ -123,6 +123,13 @@ public class AboutAction
         return info;
     }
     
+    private String javaOpts;
+
+    public String getJavaOpts()
+    {
+        return javaOpts;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -185,7 +192,16 @@ public class AboutAction
         // ---------------------------------------------------------------------
 
         info = provider.getDatabaseInfo();
-                
+        
+        try
+        {
+            javaOpts = System.getenv( "JAVA_OPTS" );
+        }
+        catch ( SecurityException ex )
+        {
+            javaOpts = i18n.getString( "unknown" );
+        }
+        
         return SUCCESS;
     }
 }

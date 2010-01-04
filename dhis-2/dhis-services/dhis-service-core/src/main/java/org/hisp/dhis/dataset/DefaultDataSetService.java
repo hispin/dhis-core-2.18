@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
