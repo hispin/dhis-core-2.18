@@ -10,4 +10,5 @@
   <dt>$i18n.getString( "database_type" ):</dt><dd>$!info.type</dd>
   <dt>$i18n.getString( "database_name" ):</dt><dd>$!info.name</dd>
   <dt>$i18n.getString( "database_user" ):</dt><dd>$!info.user</dd>
+  <dt>$i18n.getString( "java_opts" ):</dt><dd>$!javaOpts</dd>
 </dl>
