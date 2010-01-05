@@ -107,8 +107,10 @@ public class GenerateReportOrganizationGroupListingAction
 
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
-            int rowBegin = reportItem.getRow();
+            int iRow = 0;
+            int iCol = 0;
             int chapperNo = 0;
+            int rowBegin = reportItem.getRow();
 
             for ( OrganisationUnitGroup organisationUnitGroup : reportExcel.getOrganisationUnitGroups() )
             {
@@ -185,12 +187,13 @@ public class GenerateReportOrganizationGroupListingAction
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
                     {
-                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), reportItem.getExpression(),
-                            sheet, this.csFormula );
+                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
+                            .checkingExcelFormula( reportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
                     }
 
                     rowBegin++;
                     serial++;
+                    iRow++;
                 }
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
@@ -205,5 +208,4 @@ public class GenerateReportOrganizationGroupListingAction
 
         }
     }
-
 }

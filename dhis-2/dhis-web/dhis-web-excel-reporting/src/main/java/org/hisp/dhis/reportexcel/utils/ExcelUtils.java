@@ -27,6 +27,9 @@ package org.hisp.dhis.reportexcel.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.write.Blank;
@@ -46,6 +49,11 @@ import jxl.write.biff.RowsExceededException;
  */
 public class ExcelUtils
 {
+
+    private static Pattern pattern = null;
+
+    private static Matcher matcher = null;
+
     public static final String ZERO = "0.0";
 
     public static final String TEXT = "TEXT";
@@ -53,6 +61,12 @@ public class ExcelUtils
     public static final String NUMBER = "NUMBER";
 
     public static final String EXTENSION_XLS = ".xls";
+
+    private static final String PATTERN_FOR_ROW = "(\\d{1,})";
+
+    private static final String PATTERN_FOR_COLUMN = "([a-zA-Z])";
+
+    private static final String PATTERN_EXCELFORMULA = "(\\W?([a-zA-Z]{1,2}.?\\d{1,}!?))";
 
     private static final Integer NUMBER_OF_LETTER = new Integer( 26 );
 
@@ -354,6 +368,85 @@ public class ExcelUtils
         {
             return -1;
         }
+    }
+
+    public static String checkingExcelFormula( String string_formula, int indexRow, int indexCol )
+    {
+        Pattern pattern_formula = Pattern.compile( PATTERN_EXCELFORMULA );
+        Matcher matcher_formula = pattern_formula.matcher( string_formula );
+
+        String s = null;
+        String sTemp = null;
+        StringBuffer buffer = null;
+
+        while ( matcher_formula.find() )
+        {
+            buffer = new StringBuffer();
+
+            s = matcher_formula.group().replaceAll( " ", "" );
+
+            if ( !s.endsWith( "!" ) )
+            {
+                sTemp = s;
+
+                if ( s.startsWith( "$" ) )
+                {
+                    if ( s.lastIndexOf( '$' ) > 0 )
+                    {
+                        buffer = new StringBuffer( s );
+                    }
+                    else
+                    {
+                        applyingPatternForRow( s, buffer, indexRow );
+                    }
+                }
+                else if ( s.lastIndexOf( '$' ) > 0 )
+                {
+                    applyingPatternForColumn( s, buffer, indexCol );
+                }
+                else
+                {
+                    applyingPatternForColumn( s, buffer, indexCol );
+
+                    s = buffer.toString();
+                    buffer = new StringBuffer();
+
+                    applyingPatternForRow( s, buffer, indexRow );
+                }
+
+                string_formula = string_formula.replace( sTemp, buffer.substring( 0 ) );
+            }
+        }
+
+        return string_formula;
+    }
+
+    private static void applyingPatternForColumn( String sCell, StringBuffer buffer, int iCol )
+    {
+        pattern = Pattern.compile( PATTERN_FOR_COLUMN );
+        matcher = pattern.matcher( sCell );
+
+        if ( matcher.find() )
+        {
+            sCell = ExcelUtils
+                .convertColNumberToColName( (ExcelUtils.convertExcelColumnNameToNumber( matcher.group() ) + iCol) );
+            matcher.appendReplacement( buffer, sCell );
+        }
+
+        matcher.appendTail( buffer );
+    }
+
+    private static void applyingPatternForRow( String sCell, StringBuffer buffer, int iRow )
+    {
+        pattern = Pattern.compile( PATTERN_FOR_ROW );
+        matcher = pattern.matcher( sCell );
+
+        if ( matcher.find() )
+        {
+            sCell = Integer.parseInt( matcher.group() ) + iRow + "";
+            matcher.appendReplacement( buffer, sCell );
+        }
+        matcher.appendTail( buffer );
     }
 
 }
