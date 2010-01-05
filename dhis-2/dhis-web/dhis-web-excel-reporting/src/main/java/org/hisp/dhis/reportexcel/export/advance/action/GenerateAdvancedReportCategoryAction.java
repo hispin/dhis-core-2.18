@@ -123,6 +123,8 @@ public class GenerateAdvancedReportCategoryAction
 
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
+            int iRow = 0;
+            int iCol = 0;
             int rowBegin = reportItem.getRow();
 
             for ( DataElementGroupOrder dataElementGroup : reportExcel.getDataElementOrders() )
@@ -143,7 +145,7 @@ public class GenerateAdvancedReportCategoryAction
 
                 rowBegin++;
                 int serial = 1;
-                
+
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
                 {
 
@@ -164,8 +166,8 @@ public class GenerateAdvancedReportCategoryAction
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
                     {
-                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), reportItem.getExpression(),
-                            sheet, this.csFormula );
+                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
+                            .checkingExcelFormula( reportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
                     }
                     else
                     {
@@ -191,6 +193,7 @@ public class GenerateAdvancedReportCategoryAction
                     }
                     rowBegin++;
                     serial++;
+                    iRow++;
                 }
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )

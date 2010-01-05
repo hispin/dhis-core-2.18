@@ -94,8 +94,8 @@ public class GenerateAdvancedReportOrgGroupListingAction
         Period period = periodDatabaseService.getSelectedPeriod();
         this.installPeriod( period );
 
-        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( selectionManager
-            .getSelectedReportId() );
+        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
@@ -126,9 +126,10 @@ public class GenerateAdvancedReportOrgGroupListingAction
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
-            int rowBegin = reportItem.getRow();
+            int iRow = 0;
+            int iCol = 0;
             int chapperNo = 0;
-
+            int rowBegin = reportItem.getRow();
             int beginChapter = rowBegin;
 
             chapperNo++;
@@ -163,12 +164,13 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
                 {
-                    ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), reportItem.getExpression(), sheet,
-                        this.csFormula );
+                    ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils.checkingExcelFormula(
+                        reportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
                 }
 
                 rowBegin++;
                 serial++;
+                iRow++;
             }
 
             if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
