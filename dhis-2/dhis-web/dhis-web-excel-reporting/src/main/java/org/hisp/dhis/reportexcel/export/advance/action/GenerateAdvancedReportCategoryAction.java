@@ -108,6 +108,14 @@ public class GenerateAdvancedReportCategoryAction
 
         }
 
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
+        {
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+
+            this.recalculatingFormula( sheet );
+
+        }
+
         this.complete();
 
         statementManager.destroy();

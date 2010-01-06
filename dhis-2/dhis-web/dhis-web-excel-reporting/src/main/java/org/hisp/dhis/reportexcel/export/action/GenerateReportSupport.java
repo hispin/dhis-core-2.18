@@ -43,10 +43,13 @@ import java.util.regex.Pattern;
 import org.amplecode.quick.StatementManager;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.aggregation.AggregationService;
@@ -109,35 +112,35 @@ public abstract class GenerateReportSupport
     // Dependency
     // -------------------------------------------
 
-    protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    AggregationService aggregationService;
 
     CurrentUserService currentUserService;
 
-    AggregationService aggregationService;
+    DataMartStore dataMartStore;
 
     IndicatorService indicatorService;
+
+    InitializePOIStylesManager initPOIStylesManager;
 
     protected DataElementCategoryService categoryService;
 
     protected DataElementService dataElementService;
 
-    protected ReportLocationManager reportLocationManager;
-
     protected I18nFormat format;
 
-    DataMartStore dataMartStore;
+    protected PeriodService periodService;
 
-    InitializePOIStylesManager initPOIStylesManager;
+    protected PeriodDatabaseService periodDatabaseService;
+
+    protected ReportExcelService reportService;
+
+    protected ReportLocationManager reportLocationManager;
 
     protected StatementManager statementManager;
 
     protected SelectionManager selectionManager;
 
-    protected ReportExcelService reportService;
-
-    protected PeriodService periodService;
-
-    protected PeriodDatabaseService periodDatabaseService;
+    protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
     // -------------------------------------------
     // Input & Output
@@ -305,6 +308,8 @@ public abstract class GenerateReportSupport
 
     protected CellStyle csText12BoldCenter;
 
+    protected FormulaEvaluator evaluatorFormula;
+
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
     protected void initExcelFormat()
@@ -442,6 +447,8 @@ public abstract class GenerateReportSupport
         this.initExcelFormat();
 
         this.installDefaultExcelFormat();
+        
+        this.initFormulaEvaluating();
 
         ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
             organisationUnit.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
@@ -668,6 +675,8 @@ public abstract class GenerateReportSupport
 
         this.installDefaultExcelFormat();
 
+        this.initFormulaEvaluating();
+
         ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
             organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
 
@@ -680,14 +689,18 @@ public abstract class GenerateReportSupport
     // Supporting method(s)
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    protected void complete()
-        throws IOException
+    protected void recalculatingFormula( Sheet sheet )
     {
-        this.templateWorkbook.write( outputStreamExcelTemplate );
-
-        this.outputStreamExcelTemplate.close();
-
-        selectionManager.setDownloadFilePath( outputReportFile.getPath() );
+        for ( Row row : sheet )
+        {
+            for ( Cell cell : row )
+            {
+                if ( (cell != null) && (cell.getCellType() == Cell.CELL_TYPE_FORMULA) )
+                {
+                    this.evaluatorFormula.evaluateFormulaCell( cell );
+                }
+            }
+        }
     }
 
     private boolean checkingExtensionExcelFile( String fileName )
@@ -708,11 +721,30 @@ public abstract class GenerateReportSupport
         }
         else
         {
-            /* DO NOT DELETE THIS STATEMENT */
-            
-            // this.templateWorkbook = new XSSFWorkbook(
-            // reportLocationManager.getReportExcelTemplateDirectory()
-            // + File.separator + reportExcel.getExcelTemplateFile() );
+            /**
+             * DO NOT DELETE THIS STATEMENT
+             * 
+             * this.templateWorkbook = new XSSFWorkbook(
+             * reportLocationManager.getReportExcelTemplateDirectory() +
+             * File.separator + reportExcel.getExcelTemplateFile() );
+             * 
+             */
         }
     }
+
+    private void initFormulaEvaluating()
+    {
+        this.evaluatorFormula = this.templateWorkbook.getCreationHelper().createFormulaEvaluator();
+    }
+
+    protected void complete()
+        throws IOException
+    {
+        this.templateWorkbook.write( outputStreamExcelTemplate );
+
+        this.outputStreamExcelTemplate.close();
+
+        selectionManager.setDownloadFilePath( outputReportFile.getPath() );
+    }
+
 }

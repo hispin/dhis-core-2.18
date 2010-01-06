@@ -265,11 +265,6 @@ public class XMLStructureResponse
 
         Cell[] cell = null;
         CellFormat format = null;
-        boolean bFormula = false;
-        String recalculatedValue = "";
-
-        org.apache.poi.ss.usermodel.Sheet sheet = wb.getSheetAt( sheetNo );
-        org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
 
         for ( int i = 0; i < s.getRows(); i++ )
         {
@@ -284,66 +279,12 @@ public class XMLStructureResponse
                 // information
                 if ( (cell[j].getType() != CellType.EMPTY) || (cell[j].getCellFormat() != null) )
                 {
-                    bFormula = false;
-
-                    org.apache.poi.hssf.util.CellReference cellReference = new org.apache.poi.hssf.util.CellReference(
-                        i, j );
-                    org.apache.poi.ss.usermodel.Row rowRef = sheet.getRow( cellReference.getRow() );
-                    org.apache.poi.ss.usermodel.Cell cellRef = rowRef.getCell( cellReference.getCol() );
-
-                    if ( (cellRef != null)
-                        && (cellRef.getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA) )
-                    {
-                        bFormula = true;
-                        recalculatedValue = "";
-
-                        // CELL_TYPE_NUMERIC if this cell is an
-                        // NumbericCell
-                        switch ( evaluator.evaluateInCell( cellRef ).getCellType() )
-                        {
-                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
-
-                            recalculatedValue = String.valueOf( cellRef.getNumericCellValue() );
-
-                            break;
-
-                        // CELL_TYPE_STRING will occur if the formula return a
-                        // string value
-                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING:
-
-                            recalculatedValue = cellRef.getRichStringCellValue().getString();
-
-                            break;
-
-                        // CELL_TYPE_FORMULA will never occur
-                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
-                            System.out.println( "Formula into cell :: [" + cellRef.getRowIndex() + "]["
-                                + cellRef.getColumnIndex() + "]" );
-                            break;
-
-                        // CELL_TYPE_ERROR if this cell is an ErrorCell
-                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
-
-                            recalculatedValue = cell[j].getContents();
-                            break;
-                        }
-                    }
-
-                    // end of checking the cell formula
                     STRUCTURE_DATA_RESPONSE.append( "      <col no=\"" + j + "\">" );
                     STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
                     STRUCTURE_DATA_RESPONSE.append( "        <data>" );
 
-                    if ( bFormula )
-                    {
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
-                            + StringUtils.applyPatternDecimalFormat( recalculatedValue ) + "]]>" );
-                    }
-                    else
-                    {
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
-                            + StringUtils.applyPatternDecimalFormat( cell[j].getContents() ) + "]]>" );
-                    }
+                    STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
+                        + StringUtils.applyPatternDecimalFormat( cell[j].getContents() ) + "]]>" );
 
                     STRUCTURE_DATA_RESPONSE.append( "</data>" );
                     STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
