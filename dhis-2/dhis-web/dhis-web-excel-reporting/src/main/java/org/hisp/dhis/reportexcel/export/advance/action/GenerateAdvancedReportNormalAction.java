@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.reportexcel.export.advance.action;
 
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -118,6 +117,14 @@ public class GenerateAdvancedReportNormalAction
 
             ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
                 ExcelUtils.NUMBER, sheet, this.csNumber );
+
+        }
+
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
+        {
+            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+
+            this.recalculatingFormula( sheet );
 
         }
 
