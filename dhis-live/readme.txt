@@ -49,10 +49,13 @@ hibernate.connection.password =
 hibernate.hbm2ddl.auto = update
 --------------------------------------------------------------------
 
-TODO:
-1.  sort out proper logging!
-2.  make a nice "instrument panel" showing application status when you
+The default port that the embedded jetty server listens on is 8080.  If this
+clashes with other services on your system it can be reconfigured by creating a
+file conf/jetty.port which contains simply the desired server port, eg 8888.
+
+
+TODO 
+1.  make a nice "instrument panel" showing application status when you
 click on the tray icon
-3.  test with different databases.  Currently should work with mysql,
 postgres and h2, though the latter (and JavaDB) is targeted.
-4.  Put some nicer icons (animated gifs)
+2.  make richer configuration of jetty through web.xml or similar
