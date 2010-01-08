@@ -121,7 +121,7 @@ public class TrayApp
     }
 
     appServer = new WebAppServer();
-    appServer.init(installDir,this);
+    appServer.init(installDir, this);
     try {
         appServer.start();
     } catch (Exception ex) {

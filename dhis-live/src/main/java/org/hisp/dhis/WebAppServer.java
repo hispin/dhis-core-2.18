@@ -33,7 +33,12 @@
 
 package org.hisp.dhis;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,7 +58,10 @@ public class WebAppServer
   public static final String DHIS_DIR = "/webapps/dhis";
   public static final String BIRT_DIR = "/webapps/birt";
   public static final String BIRT_CONTEXT_PATH = "/birt";
-  
+  public static final String JETTY_PORT_CONF = "/conf/jetty.port";
+
+  public static final int DEFAULT_JETTY_PORT = 8080;
+
   private static final Log log = LogFactory.getLog( WebAppServer.class );
     
   protected Server server;
@@ -67,7 +75,15 @@ public class WebAppServer
   public void init(String installDir, LifeCycle.Listener serverListener)
     throws Exception
   {
-    connector.setPort(Integer.getInteger("jetty.port",8080).intValue());
+
+    try {
+      connector.setPort(this.getPortFromConfig(installDir + JETTY_PORT_CONF));
+    } catch (Exception ex) {
+      log.info("Couldn't load port number from " + installDir + JETTY_PORT_CONF);
+      log.info("Trying default of " + DEFAULT_JETTY_PORT);
+      connector.setPort(DEFAULT_JETTY_PORT);
+    }
+
     server.setConnectors(new Connector[]{connector});
 
     ContextHandlerCollection handlers = new ContextHandlerCollection();
@@ -106,4 +122,16 @@ public class WebAppServer
   {
     return connector.getPort();
   }
+
+  // read integer value from file
+  public int getPortFromConfig(String conf) throws FileNotFoundException, IOException
+  {
+    Reader r = new BufferedReader(new FileReader(conf));
+    char[] cbuf = new char[10];
+    r.read(cbuf);
+    String numstr = String.copyValueOf(cbuf);
+    Integer port = Integer.valueOf(numstr.trim());
+    return port.intValue();
+  }
+
 }
