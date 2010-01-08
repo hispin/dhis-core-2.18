@@ -61,7 +61,7 @@ function getDataElementsByGroupReceived( datalement ){
     }
 	
 	var availableDataElements = document.getElementById('availableDataElements');
-	var selectedDataElements = document.getElementById('selectedDataElements');
+	var selectedDataElements = document.getElementById('dataElementIds');
 	for(var i=0;i<availableDataElements.options.length;i++){
 		for(var j=0;j<selectedDataElements.options.length;j++){				
 			if(availableDataElements.options[i].value==selectedDataElements.options[j].value){					
@@ -78,7 +78,7 @@ function getDataElementsByGroupReceived( datalement ){
 function submitDataElementGroupOrder(){
 	if(byId("name").value =='') setMessage(i18n_name_is_null);	
 	else{
-		selectAllById('selectedDataElements');
+		selectAllById('dataElementIds');
 		document.forms['dataElementGroups'].submit();
 	}
 }
@@ -120,7 +120,7 @@ function openUpdateDataElementOrder( id ){
 
 function openUpdateDataElementOrderReceived(xmlObject)
 {
-		var listDataElement = document.getElementById('selectedDataElements');
+		var listDataElement = document.getElementById('dataElementIds');
 		listDataElement.options.length = 0;
 		byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
 		byId("code").value = xmlObject.getElementsByTagName('code')[0].firstChild.nodeValue;
