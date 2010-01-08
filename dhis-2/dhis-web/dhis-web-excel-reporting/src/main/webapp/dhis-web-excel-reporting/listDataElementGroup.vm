@@ -63,16 +63,16 @@
 		</tr>
 		<tr>
 		  <td width="23%">
-			<select id="availableDataElements" name="availableDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('availableDataElements','selectedDataElements');showText('selectedDataElements')" onMouseOut="javascript: hideToolTip();"></select>
+			<select id="availableDataElements" name="availableDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('availableDataElements','dataElementIds');showText('dataElementIds')" onMouseOut="javascript: hideToolTip();"></select>
 			</td>
 			<td width="17%" align="center">
-				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','selectedDataElements');" style="width:50px"/><br>
-				<input type="button" value="<" onclick="moveSelectedById('selectedDataElements' , 'availableDataElements' );" style="width:50px"/><br>
-				<input type="button" value=">>" onclick="moveAllById('availableDataElements' , 'selectedDataElements' );" style="width:50px"/><br>
-				<input type="button" value="<<" onclick="moveAllById('selectedDataElements' , 'availableDataElements' );" style="width:50px"/>
+				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
+				<input type="button" value="<" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
+				<input type="button" value=">>" onclick="moveAllById('availableDataElements' , 'dataElementIds' );" style="width:50px"/><br>
+				<input type="button" value="<<" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
 			<td width="60%">
-				<select id="selectedDataElements" name="selectedDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('selectedDataElements' , 'availableDataElements' ); showText('availableDataElements');" onMouseOut="javascript: hideToolTip();"></select>
+				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' ); showText('availableDataElements');" onMouseOut="javascript: hideToolTip();"></select>
 			</td>
 		</tr>
 	</table>
