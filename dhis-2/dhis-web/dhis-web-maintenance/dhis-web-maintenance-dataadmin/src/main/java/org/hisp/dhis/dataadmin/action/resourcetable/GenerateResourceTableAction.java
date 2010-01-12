@@ -67,13 +67,27 @@ public class GenerateResourceTableAction
         this.groupSet = groupSet;
     }
 
-    private boolean exclusiveGroupSet;
+    private boolean dataElementGroupSetStructure;
 
-    public void setExclusiveGroupSet( boolean exclusiveGroupSet )
+    public void setDataElementGroupSetStructure( boolean dataElementGroupSetStructure )
     {
-        this.exclusiveGroupSet = exclusiveGroupSet;
+        this.dataElementGroupSetStructure = dataElementGroupSetStructure;
     }
     
+    private boolean indicatorGroupSetStructure;
+
+    public void setIndicatorGroupSetStructure( boolean indicatorGroupSetStructure )
+    {
+        this.indicatorGroupSetStructure = indicatorGroupSetStructure;
+    }
+
+    private boolean organisationUnitGroupSetStructure;
+
+    public void setOrganisationUnitGroupSetStructure( boolean organisationUnitGroupSetStructure )
+    {
+        this.organisationUnitGroupSetStructure = organisationUnitGroupSetStructure;
+    }
+
     private boolean categoryOptionComboName; 
 
     public void setCategoryOptionComboName( boolean categoryOptionComboName )
@@ -98,9 +112,19 @@ public class GenerateResourceTableAction
             resourceTableService.generateGroupSetStructures();
         }
 
-        if ( exclusiveGroupSet )
+        if ( dataElementGroupSetStructure )
         {
-            resourceTableService.generateExclusiveGroupSetStructures();
+            resourceTableService.generateDataElementGroupSetTable();
+        }
+        
+        if ( indicatorGroupSetStructure )
+        {
+            resourceTableService.generateIndicatorGroupSetTable();
+        }
+        
+        if ( organisationUnitGroupSetStructure )
+        {
+            resourceTableService.generateOrganisationUnitGroupSetTable();
         }
         
         if ( categoryOptionComboName )

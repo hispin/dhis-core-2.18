@@ -28,16 +28,23 @@ package org.hisp.dhis.resourcetable.hibernate;
  */
 
 import java.util.Collection;
+import java.util.List;
 
+import org.amplecode.quick.Statement;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
 import org.hisp.dhis.resourcetable.GroupSetStructure;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
-import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
+import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
+import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
+import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -157,23 +164,62 @@ public class HibernateResourceTableStore
     }
 
     // -------------------------------------------------------------------------
-    // ExclusiveGroupSetStructure
+    // DataElementGroupSetTable
     // -------------------------------------------------------------------------
 
-    public void createExclusiveGroupSetStructureTable( String statement )
-    {
-        jdbcTemplate.update( statement );
-    }
-
-    public void removeExclusiveGroupSetStructureTable()
+    public void createDataElementGroupSetStructure( List<DataElementGroupSet> groupSets )
     {
         try
         {
-            jdbcTemplate.update( "DROP TABLE " + CreateExclusiveGroupSetTableStatement.TABLE_NAME );
+            jdbcTemplate.update( "DROP TABLE " + CreateDataElementGroupSetTableStatement.TABLE_NAME );
         }
         catch ( BadSqlGrammarException ex )
         {
             // Do nothing, table does not exist
         }
+        
+        Statement statement = new CreateDataElementGroupSetTableStatement( groupSets );
+        
+        jdbcTemplate.update( statement.getStatement() );
+    }
+
+    // -------------------------------------------------------------------------
+    // DataElementGroupSetTable
+    // -------------------------------------------------------------------------
+
+    public void createIndicatorGroupSetStructure( List<IndicatorGroupSet> groupSets )
+    {
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + CreateIndicatorGroupSetTableStatement.TABLE_NAME );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        Statement statement = new CreateIndicatorGroupSetTableStatement( groupSets );
+        
+        jdbcTemplate.update( statement.getStatement() );
+    }
+    
+    // -------------------------------------------------------------------------
+    // OrganisationUnitGroupSetTable
+    // -------------------------------------------------------------------------
+
+    public void createOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets )
+    {
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        Statement statement = new CreateOrganisationUnitGroupSetTableStatement( groupSets );
+        
+        jdbcTemplate.update( statement.getStatement() );
     }
 }

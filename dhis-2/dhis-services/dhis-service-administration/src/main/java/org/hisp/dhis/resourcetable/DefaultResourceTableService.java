@@ -39,8 +39,20 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.quick.Statement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
+import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GroupSetStructureBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitStructureBatchHandler;
@@ -51,7 +63,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
+import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
+import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
+import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -94,6 +108,20 @@ public class DefaultResourceTableService
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     private BatchHandlerFactory batchHandlerFactory;
@@ -232,17 +260,111 @@ public class DefaultResourceTableService
     }
 
     // -------------------------------------------------------------------------
-    // Exclusive GroupSetStructure
+    // DataElementGroupSetTable
     // -------------------------------------------------------------------------
 
-    public void generateExclusiveGroupSetStructures()
+    public void generateDataElementGroupSetTable()
     {
         // ---------------------------------------------------------------------
-        // Drop table
+        // Create table
         // ---------------------------------------------------------------------
 
-        resourceTableStore.removeExclusiveGroupSetStructureTable();
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
+        Collections.sort( dataElements, new DataElementNameComparator() );
+        
+        List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
+        
+        Collections.sort( groupSets, new DataElementGroupSetNameComparator() );
+        
+        resourceTableStore.createDataElementGroupSetStructure( groupSets );
 
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+
+        batchHandler.setTableName( CreateDataElementGroupSetTableStatement.TABLE_NAME );
+
+        batchHandler.init();
+
+        for ( DataElement dataElement : dataElements )
+        {
+            final List<String> values = new ArrayList<String>();
+
+            values.add( String.valueOf( dataElement.getId() ) );
+            values.add( dataElement.getName() );
+            
+            for ( Dimension groupSet : groupSets )
+            {
+                DimensionOption dimensionOption = groupSet.getDimensionOption( dataElement );
+                
+                values.add( dimensionOption != null ? dimensionOption.getName() : null );    
+            }
+            
+            batchHandler.addObject( values );
+        }
+        
+        batchHandler.flush();
+    }
+
+    // -------------------------------------------------------------------------
+    // IndicatorGroupSetTable
+    // -------------------------------------------------------------------------
+
+    public void generateIndicatorGroupSetTable()
+    {
+        // ---------------------------------------------------------------------
+        // Create table
+        // ---------------------------------------------------------------------
+
+        List<Indicator> indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        
+        Collections.sort( indicators, new IndicatorNameComparator() );
+        
+        List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
+        
+        Collections.sort( groupSets, new IndicatorGroupSetNameComparator() );
+        
+        resourceTableStore.createIndicatorGroupSetStructure( groupSets );
+
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+
+        batchHandler.setTableName( CreateIndicatorGroupSetTableStatement.TABLE_NAME );
+
+        batchHandler.init();
+
+        for ( Indicator indicator : indicators )
+        {
+            final List<String> values = new ArrayList<String>();
+            
+            values.add( String.valueOf( indicator.getId() ) );
+            values.add( indicator.getName() );
+            
+            for ( Dimension groupSet : groupSets )
+            {
+                DimensionOption dimensionOption = groupSet.getDimensionOption( indicator );
+                
+                values.add( dimensionOption != null ? dimensionOption.getName() : null );    
+            }
+            
+            batchHandler.addObject( values );
+        }
+        
+        batchHandler.flush();        
+    }
+    
+    // -------------------------------------------------------------------------
+    // OrganisationUnitGroupSetTable
+    // -------------------------------------------------------------------------
+
+    public void generateOrganisationUnitGroupSetTable()
+    {
         // ---------------------------------------------------------------------
         // Create table
         // ---------------------------------------------------------------------
@@ -257,9 +379,7 @@ public class DefaultResourceTableService
 
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
 
-        Statement statement = new CreateExclusiveGroupSetTableStatement( groupSets );
-
-        resourceTableStore.createExclusiveGroupSetStructureTable( statement.getStatement() );
+        resourceTableStore.createOrganisationUnitGroupSetStructure( groupSets );
 
         // ---------------------------------------------------------------------
         // Populate table
@@ -267,7 +387,7 @@ public class DefaultResourceTableService
 
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
 
-        batchHandler.setTableName( CreateExclusiveGroupSetTableStatement.TABLE_NAME );
+        batchHandler.setTableName( CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME );
 
         batchHandler.init();
 

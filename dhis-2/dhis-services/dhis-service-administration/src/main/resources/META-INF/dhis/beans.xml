@@ -39,6 +39,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	<property name="dataElementService"
+	  ref="org.hisp.dhis.dataelement.DataElementService"/>
+	<property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
   </bean>
   

@@ -1,4 +1,4 @@
-package org.hisp.dhis.resourcetable;
+package org.hisp.dhis.resourcetable.statement;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,44 +27,48 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+import org.amplecode.quick.Statement;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.system.util.CodecUtils;
+
 /**
  * @author Lars Helge Overland
- * @version $Id: ResourceTableService.java 5459 2008-06-26 01:12:03Z larshelg $
  */
-public interface ResourceTableService
+public class CreateIndicatorGroupSetTableStatement
+    implements Statement
 {
-    String ID = ResourceTableService.class.getName();
-    
-    /**
-     * Generates a resource table containing the hierarchy graph for each
-     * OrganisationUnit.
-     */
-    void generateOrganisationUnitStructures();
-    
-    /**
-     * Generates a resource table containing the relationships between
-     * OrganisationUnit, OrganisationUnitGroup, and OrganisationUnitGroupSet.
-     */
-    void generateGroupSetStructures();
-    
-    /**
-     * Generates a resource table containing id and a derived name for
-     * all DataElementCategoryOptionCombos.
-     */
-    void generateCategoryOptionComboNames();
-    
-    /**
-     * Generates a resource table for all data elements.
-     */
-    void generateDataElementGroupSetTable();
+    private static final Log log = LogFactory.getLog( CreateIndicatorGroupSetTableStatement.class );
 
-    /**
-     * Generates a resource table for all indicators.
-     */
-    void generateIndicatorGroupSetTable();
+    private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (160)";
     
-    /**
-     * Generates a resource table for all organisation units 
-     */
-    void generateOrganisationUnitGroupSetTable();
+    public static final String TABLE_NAME = "_indicatorgroupsetstructure";
+    
+    private List<IndicatorGroupSet> groupSets;
+    
+    public CreateIndicatorGroupSetTableStatement( List<IndicatorGroupSet> groupSets )
+    {
+        this.groupSets = groupSets;
+    }
+    
+    public String getStatement()
+    {
+        String statement = "CREATE TABLE " + TABLE_NAME + " ( " +
+            "indicatorid " + NUMERIC_COLUMN_TYPE + SEPARATOR +
+            "indicatorname " + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
+        
+        for ( IndicatorGroupSet groupSet : groupSets )
+        {
+            statement += CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
+        }
+        
+        statement += "PRIMARY KEY ( indicatorid ) )";
+                
+        log.info( "Create indicator group set table SQL: " + statement );
+        
+        return statement;
+    }
 }

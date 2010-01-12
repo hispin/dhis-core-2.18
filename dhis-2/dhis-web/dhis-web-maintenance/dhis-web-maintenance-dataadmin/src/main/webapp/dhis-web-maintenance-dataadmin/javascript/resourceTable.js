@@ -3,16 +3,21 @@ function generateResourceTable()
 {
     var organisationUnit = document.getElementById( "organisationUnit" ).checked;
     var groupSet = document.getElementById( "groupSet" ).checked;
-    var exclusiveGroupSet = document.getElementById( "exclusiveGroupSet" ).checked;
+    var dataElementGroupSetStructure = document.getElementById( "dataElementGroupSetStructure" ).checked;
+    var indicatorGroupSetStructure = document.getElementById( "indicatorGroupSetStructure" ).checked;
+    var organisationUnitGroupSetStructure = document.getElementById( "organisationUnitGroupSetStructure" ).checked;
     var categoryOptionComboName = document.getElementById( "categoryOptionComboName" ).checked;
     
-    if ( organisationUnit || groupSet || exclusiveGroupSet || categoryOptionComboName )
+    if ( organisationUnit || groupSet || dataElementGroupSetStructure || 
+        indicatorGroupSetStructure || organisationUnitGroupSetStructure || categoryOptionComboName )
     {
         setMessage( i18n_generating_resource_tables );
             
         var params = "organisationUnit=" + organisationUnit + 
             "&groupSet=" + groupSet + 
-            "&exclusiveGroupSet=" + exclusiveGroupSet +
+            "&dataElementGroupSetStructure=" + dataElementGroupSetStructure +
+            "&indicatorGroupSetStructure=" + indicatorGroupSetStructure +
+            "&organisationUnitGroupSetStructure=" + organisationUnitGroupSetStructure +
             "&categoryOptionComboName=" + categoryOptionComboName;
             
         var url = "generateResourceTable.action";
