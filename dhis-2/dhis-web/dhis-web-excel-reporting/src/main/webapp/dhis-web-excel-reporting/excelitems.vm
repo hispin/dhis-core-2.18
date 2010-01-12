@@ -14,7 +14,7 @@
 </table>
 <table width="100%">
 	<tr>
-	  <th><input type="checkbox" id="checkAll" name="checkAll"></th>
+	  <th><input type="checkbox" id="checkAll" name="checkAll" onChange='selectedItemsAll();'></th>
 		<th>$i18n.getString('name')</th>
 		<th>$i18n.getString('sheetNo')</th>	
 		<th>$i18n.getString('row')</th>
