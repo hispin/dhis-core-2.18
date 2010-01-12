@@ -418,6 +418,13 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
+		
+		<action name="copyExcelItemsToGroup"
+			class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemToGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<param name="requiredAuthorities">F_COPY_EXCEL_ITEM_ADMINISTRATION</param>
+		</action>
 
 		<action name="getListSheet"
 			class="org.hisp.dhis.reportexcel.item.action.GetListSheetAction">

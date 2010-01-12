@@ -1233,6 +1233,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-
+	
+	<bean id="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemToGroupAction"
+		class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemToGroupAction"
+		scope="prototype">
+		<property name="excelItemService" ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
 
 </beans>
