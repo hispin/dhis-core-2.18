@@ -28,6 +28,7 @@ package org.hisp.dhis.interceptor;
  */
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import ognl.NoSuchPropertyException;
@@ -36,6 +37,7 @@ import ognl.Ognl;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.i18n.locale.LocaleManager;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionInvocation;
@@ -49,8 +51,8 @@ public class I18nInterceptor
     implements Interceptor
 {
     private static final String KEY_I18N = "i18n";
-
     private static final String KEY_I18N_FORMAT = "format";
+    private static final String KEY_LOCALE = "locale";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -61,6 +63,13 @@ public class I18nInterceptor
     public void setI18nManager( I18nManager manager )
     {
         i18nManager = manager;
+    }
+    
+    private LocaleManager localeManager;
+
+    public void setLocaleManager( LocaleManager localeManager )
+    {
+        this.localeManager = localeManager;
     }
 
     // -------------------------------------------------------------------------
@@ -86,14 +95,16 @@ public class I18nInterceptor
 
         I18n i18n = i18nManager.getI18n( action.getClass() );
         I18nFormat i18nFormat = i18nManager.getI18nFormat();
+        Locale locale = localeManager.getCurrentLocale();
 
         // ---------------------------------------------------------------------
         // Make the objects available for web templates
         // ---------------------------------------------------------------------
 
-        Map<String, Object> i18nMap = new HashMap<String, Object>( 2 );
+        Map<String, Object> i18nMap = new HashMap<String, Object>( 3 );
         i18nMap.put( KEY_I18N, i18n );
         i18nMap.put( KEY_I18N_FORMAT, i18nFormat );
+        i18nMap.put( KEY_LOCALE, locale );
 
         invocation.getStack().push( i18nMap );
 
@@ -114,6 +125,14 @@ public class I18nInterceptor
         try
         {
             Ognl.setValue( KEY_I18N_FORMAT, contextMap, action, i18nFormat );
+        }
+        catch ( NoSuchPropertyException e )
+        {
+        }
+
+        try
+        {
+            Ognl.setValue( KEY_LOCALE, contextMap, action, locale );
         }
         catch ( NoSuchPropertyException e )
         {
