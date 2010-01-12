@@ -540,13 +540,25 @@ function saveCopyExcelItemsToGroup() {
 
 function saveCopyExcelItemsToGroupReceived( data ) {
 	
-	//var type = data.getAttribute("type");
-	
-	//if ( type == "success" ) {
-		setMessage( data.firstChild.nodeValue );
-	//}
+	setMessage( data.firstChild.nodeValue );
 	
 	hideById("copyTo");
 	deleteDivEffect();
 	
+}
+
+// ----------------------------------------------------
+// Select Items ALL
+// ----------------------------------------------------
+
+function selectedItemsAll(){
+    
+	var checked = byId('checkAll').checked;
+	
+	var list = document.getElementsByName('excelItemChecked');
+	
+	for (var i=0 ;i<list.length; i++)
+	{
+		list.item(i).checked = checked;
+	}
 }
