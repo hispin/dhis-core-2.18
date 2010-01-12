@@ -12,8 +12,18 @@
 </p>
 
 <p>
-    <input type="checkbox" id="exclusiveGroupSet">
-    <label for="exclusiveGroupSet">$i18n.getString( "exclusive_group_set_structure" ) <span style="color:#606060">(orgunitgroupsetexclusivestructure)</span></label>
+	<input type="checkbox" id="dataElementGroupSetStructure">
+	<label for="dataElementGroupSetStructure">$i18n.getString( "data_element_group_set_structure" ) <span style="color:#606060">(_dataelementgroupsetstructure)</span></label>
+</p>
+
+<p>
+    <input type="checkbox" id="indicatorGroupSetStructure">
+    <label for="indicatorGroupSetStructure">$i18n.getString( "indicator_group_set_structure" ) <span style="color:#606060">(_indicatorgroupsetstructure)</span></label>
+</p>
+
+<p>
+    <input type="checkbox" id="organisationUnitGroupSetStructure">
+    <label for="organisationUnitGroupSetStructure">$i18n.getString( "organisation_unit_group_set_structure" ) <span style="color:#606060">(_organisationunitgroupsetstructure)</span></label>
 </p>
 
 <p>

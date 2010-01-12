@@ -27,6 +27,7 @@ package org.hisp.dhis.reporttable.statement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.amplecode.quick.Statement;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.reporttable.ReportTable;
 
@@ -35,6 +36,7 @@ import org.hisp.dhis.reporttable.ReportTable;
  * @version $Id$
  */
 public abstract class ReportTableStatement
+    implements Statement
 {
     protected static final String NUMERIC_COLUMN_TYPE = "INTEGER NOT NULL";
     protected static final String SHORT_TEXT_COLUMN_TYPE = "VARCHAR (15)";

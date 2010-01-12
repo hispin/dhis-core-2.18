@@ -30,42 +30,45 @@ package org.hisp.dhis.resourcetable.statement;
 import java.util.List;
 
 import org.amplecode.quick.Statement;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.system.util.CodecUtils;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class CreateExclusiveGroupSetTableStatement
+public class CreateDataElementGroupSetTableStatement
     implements Statement
 {
-    public static final String TABLE_NAME = "orgunitgroupsetexclusivestructure";
+    private static final Log log = LogFactory.getLog( CreateDataElementGroupSetTableStatement.class );
     
-    private List<OrganisationUnitGroupSet> groupSets;
+    private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (160)";
     
-    protected CreateExclusiveGroupSetTableStatement()
-    {   
-    }
+    public static final String TABLE_NAME = "_dataelementgroupsetstructure";
     
-    public CreateExclusiveGroupSetTableStatement( List<OrganisationUnitGroupSet> groupSets )
+    private List<DataElementGroupSet> groupSets;
+    
+    public CreateDataElementGroupSetTableStatement( List<DataElementGroupSet> groupSets )
     {
         this.groupSets = groupSets;
     }
-
+    
     public String getStatement()
     {
-        StringBuffer buffer = new StringBuffer( "CREATE TABLE " + TABLE_NAME + " ( organisationunitid " );
+        String statement = "CREATE TABLE " + TABLE_NAME + " ( " +
+            "dataelementid " + NUMERIC_COLUMN_TYPE + SEPARATOR +
+            "dataelementname " + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
         
-        buffer.append( NUMERIC_COLUMN_TYPE + SEPARATOR );
-        
-        for ( OrganisationUnitGroupSet groupSet : groupSets )
+        for ( DataElementGroupSet groupSet : groupSets )
         {
-            buffer.append( CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
+            statement += CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
         }
         
-        buffer.append( "PRIMARY KEY ( organisationunitid ) )" );
+        statement += "PRIMARY KEY ( dataelementid ) )";
+                
+        log.info( "Create data element group set table SQL: " + statement );
         
-        return buffer.toString();
+        return statement;
     }
 }

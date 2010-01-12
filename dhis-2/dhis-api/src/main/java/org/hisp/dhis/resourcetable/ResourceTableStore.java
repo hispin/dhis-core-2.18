@@ -1,6 +1,11 @@
 package org.hisp.dhis.resourcetable;
 
 import java.util.Collection;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 
 public interface ResourceTableStore
 {
@@ -85,18 +90,28 @@ public interface ResourceTableStore
     int deleteDataElementCategoryOptionComboNames();
 
     // -------------------------------------------------------------------------
-    // ExclusiveGroupSetStructure
+    // GroupSetStructure
     // -------------------------------------------------------------------------
 
     /**
      * Creates table.
      * 
-     * @param statement the Statement.
+     * @param groupSets the group sets.
      */
-    void createExclusiveGroupSetStructureTable( String statement );
+    void createDataElementGroupSetStructure( List<DataElementGroupSet> groupSets );
+
+    /**
+     * Creates table.
+     * 
+     * @param groupSets the group sets.
+     */
+    void createIndicatorGroupSetStructure( List<IndicatorGroupSet> groupSets );
     
     /**
-     * Removes table.
+     * Creates table.
+     * 
+     * @param groupSets the group sets.
      */
-    void removeExclusiveGroupSetStructureTable();
+    void createOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets );
+    
 }
