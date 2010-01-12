@@ -468,3 +468,85 @@ function saveCopyExcelItemsReceived( data ) {
 	
 	setMessage( warningMessages );
 }
+
+// -----------------------------------------------------------------------
+// SAVE COPY EXCEL ITEM TO GROUP
+// -----------------------------------------------------------------------
+
+function copySelectedItemToGroup(){
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( copySelectedItemToGroupReceived );
+	request.send( "getAllExcelItemGroup.action" );
+
+}
+
+function copySelectedItemToGroupReceived( xmlObject ) {
+
+	var reports = xmlObject.getElementsByTagName("excelitemgroup");
+	var selectList = document.getElementById("targetGroup");
+	var options = selectList.options;
+	
+	options.length = 0;
+	
+	for( var i = 0 ; i < reports.length ; i++ ) {
+	
+		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
+		options.add(new Option(name,id), null);
+	}
+	
+	$("#copyTo").showAtCenter( true );
+}
+
+// -----------------------------------------------------------------------
+// SAVE COPY EXCEL ITEM TO GROUP
+// -----------------------------------------------------------------------
+
+function saveCopyExcelItemsToGroup() {
+	
+	var list = document.getElementsByName('excelItemChecked');
+	
+	// If have also ReportItem(s) in Copying list
+	// do copy and prepare the message notes
+	if ( list.length > 0 ) {
+	
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( saveCopyExcelItemsToGroupReceived );	
+		
+		var params = "excelItemGroupDestId=" + byId("targetGroup").value;
+			params += "&sheetNo=" + byId('targetSheetNo').value;
+		
+		for (var i=0 ;i<list.length; i++)
+		{
+			if(list.item(i).checked){
+				params += "&itemIds=" + list.item(i).value;
+			}
+		}
+			
+		request.sendAsPost(params);
+		request.send( "copyExcelItemsToGroup.action");
+	}
+	// If have no any ReportItem(s) will be copied
+	// and also have ReportItem(s) in Duplicating list
+	else {
+
+		setMessage( no_item );
+	}
+	
+}
+
+function saveCopyExcelItemsToGroupReceived( data ) {
+	
+	//var type = data.getAttribute("type");
+	
+	//if ( type == "success" ) {
+		setMessage( data.firstChild.nodeValue );
+	//}
+	
+	hideById("copyTo");
+	deleteDivEffect();
+	
+}
