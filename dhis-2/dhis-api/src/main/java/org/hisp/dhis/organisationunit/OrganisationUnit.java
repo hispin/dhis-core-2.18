@@ -65,6 +65,8 @@ public class OrganisationUnit
     private String url;
 
     private Date lastUpdated;
+
+    private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
     
     private transient int level;
     
@@ -340,6 +342,16 @@ public class OrganisationUnit
     public void setLastUpdated( Date lastUpdated )
     {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Set<OrganisationUnitGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<OrganisationUnitGroup> groups )
+    {
+        this.groups = groups;
     }
 
     public int getLevel()
