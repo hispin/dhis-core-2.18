@@ -3,6 +3,7 @@ package org.hisp.dhis.resourcetable;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -113,5 +114,12 @@ public interface ResourceTableStore
      * @param groupSets the group sets.
      */
     void createOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets );
+    
+    /**
+     * Creates table.
+     * 
+     * @param categories the categories.
+     */
+    void createCategoryStructure( List<DataElementCategory> categories );
     
 }

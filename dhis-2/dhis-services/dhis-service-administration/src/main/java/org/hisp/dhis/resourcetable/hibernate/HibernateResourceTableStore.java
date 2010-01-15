@@ -35,6 +35,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -42,6 +43,7 @@ import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
 import org.hisp.dhis.resourcetable.GroupSetStructure;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
+import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
@@ -219,6 +221,26 @@ public class HibernateResourceTableStore
         }
         
         Statement statement = new CreateOrganisationUnitGroupSetTableStatement( groupSets );
+        
+        jdbcTemplate.update( statement.getStatement() );
+    }
+    
+    // -------------------------------------------------------------------------
+    // CategoryTable
+    // -------------------------------------------------------------------------
+
+    public void createCategoryStructure( List<DataElementCategory> categories )
+    {
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + CreateCategoryTableStatement.TABLE_NAME );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        Statement statement = new CreateCategoryTableStatement( categories );
         
         jdbcTemplate.update( statement.getStatement() );
     }

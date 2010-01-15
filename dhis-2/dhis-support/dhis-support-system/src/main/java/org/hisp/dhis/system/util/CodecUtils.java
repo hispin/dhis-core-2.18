@@ -172,6 +172,7 @@ public class CodecUtils
             string = string.replaceAll( " ", EMPTY_REPLACEMENT );
             string = string.replaceAll( "<", EMPTY_REPLACEMENT + "lt" + EMPTY_REPLACEMENT );
             string = string.replaceAll( ">", EMPTY_REPLACEMENT + "gt" + EMPTY_REPLACEMENT );
+            string = string.replaceAll( "default", "_default" );
             
             StringBuffer buffer = new StringBuffer();
             

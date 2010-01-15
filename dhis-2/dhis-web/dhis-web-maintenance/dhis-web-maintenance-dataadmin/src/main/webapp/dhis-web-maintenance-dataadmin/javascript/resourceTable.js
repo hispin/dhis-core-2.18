@@ -6,10 +6,11 @@ function generateResourceTable()
     var dataElementGroupSetStructure = document.getElementById( "dataElementGroupSetStructure" ).checked;
     var indicatorGroupSetStructure = document.getElementById( "indicatorGroupSetStructure" ).checked;
     var organisationUnitGroupSetStructure = document.getElementById( "organisationUnitGroupSetStructure" ).checked;
+    var categoryStructure = document.getElementById( "categoryStructure" ).checked;
     var categoryOptionComboName = document.getElementById( "categoryOptionComboName" ).checked;
     
-    if ( organisationUnit || groupSet || dataElementGroupSetStructure || 
-        indicatorGroupSetStructure || organisationUnitGroupSetStructure || categoryOptionComboName )
+    if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
+        organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
     {
         setMessage( i18n_generating_resource_tables );
             
@@ -18,6 +19,7 @@ function generateResourceTable()
             "&dataElementGroupSetStructure=" + dataElementGroupSetStructure +
             "&indicatorGroupSetStructure=" + indicatorGroupSetStructure +
             "&organisationUnitGroupSetStructure=" + organisationUnitGroupSetStructure +
+            "&categoryStructure=" + categoryStructure +
             "&categoryOptionComboName=" + categoryOptionComboName;
             
         var url = "generateResourceTable.action";

@@ -23,5 +23,10 @@
           column="organisationunitid" foreign-key="fk_orgunitgroup_organisationunitid"/>
     </set>
     
+    <join table="orgunitgroupsetmembers" inverse="true">
+      <key column="orgunitgroupid"/>
+      <many-to-one column="orgunitgroupsetid" name="groupSet"/> 
+    </join>
+	
   </class>
 </hibernate-mapping>
