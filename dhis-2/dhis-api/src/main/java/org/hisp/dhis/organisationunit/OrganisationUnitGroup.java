@@ -27,9 +27,13 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Kristian Nordal
@@ -37,7 +41,7 @@ import java.util.Set;
  */
 
 public class OrganisationUnitGroup
-    implements Serializable
+    implements DimensionOption
 {
     private int id;
     
@@ -49,6 +53,8 @@ public class OrganisationUnitGroup
     private String name;
 
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
+    
+    private OrganisationUnitGroupSet groupSet;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -63,6 +69,25 @@ public class OrganisationUnitGroup
         this.name = name;
     }
 
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
+
+    public Dimension getDimension()
+    {
+        return groupSet;
+    }
+
+    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
+    {
+        return members;
+    }
+
+    public DimensionType getDimensionType()
+    {
+        return DimensionType.ORGANISATIONUNITGROUPSET;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -126,6 +151,16 @@ public class OrganisationUnitGroup
         this.uuid = uuid;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
     public Set<OrganisationUnit> getMembers()
     {
         return members;
@@ -136,13 +171,13 @@ public class OrganisationUnitGroup
         this.members = members;
     }
 
-    public String getName()
+    public OrganisationUnitGroupSet getGroupSet()
     {
-        return name;
+        return groupSet;
     }
 
-    public void setName( String name )
+    public void setGroupSet( OrganisationUnitGroupSet groupSet )
     {
-        this.name = name;
+        this.groupSet = groupSet;
     }
 }

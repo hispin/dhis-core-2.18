@@ -87,6 +87,13 @@ public class GenerateResourceTableAction
     {
         this.organisationUnitGroupSetStructure = organisationUnitGroupSetStructure;
     }
+    
+    private boolean categoryStructure;
+
+    public void setCategoryStructure( boolean categoryStructure )
+    {
+        this.categoryStructure = categoryStructure;
+    }
 
     private boolean categoryOptionComboName; 
 
@@ -125,6 +132,11 @@ public class GenerateResourceTableAction
         if ( organisationUnitGroupSetStructure )
         {
             resourceTableService.generateOrganisationUnitGroupSetTable();
+        }
+        
+        if ( categoryStructure )
+        {
+            resourceTableService.generateCategoryTable();
         }
         
         if ( categoryOptionComboName )

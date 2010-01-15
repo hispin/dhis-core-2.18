@@ -27,18 +27,20 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 
 /**
  * @author Kristian Nordal
  * @version $Id: OrganisationUnitGroupSet.java 1905 2006-09-23 14:34:55Z torgeilo $
  */
 public class OrganisationUnitGroupSet
-    implements Serializable
+    extends Dimension
 {
     private int id;
 
@@ -69,14 +71,18 @@ public class OrganisationUnitGroupSet
     }
 
     // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public List<? extends DimensionOption> getDimensionOptions()
+    {
+        return new ArrayList<DimensionOption>( organisationUnitGroups );
+    }
+    
+    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
-    public boolean hasOrganisationUnitGroups()
-    {
-        return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
-    }
-    
     public boolean isMemberOfOrganisationUnitGroups( OrganisationUnit organisationUnit )
     {
         for ( OrganisationUnitGroup group : organisationUnitGroups )
@@ -86,10 +92,15 @@ public class OrganisationUnitGroupSet
                 return true;
             }
         }
-        
+    
         return false;
     }
-    
+
+    public boolean hasOrganisationUnitGroups()
+    {
+        return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
+    }
+        
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

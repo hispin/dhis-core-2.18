@@ -40,10 +40,12 @@ import org.amplecode.quick.Statement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dimension.Dimension;
@@ -63,6 +65,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
@@ -396,17 +399,67 @@ public class DefaultResourceTableService
             final List<String> values = new ArrayList<String>();
 
             values.add( String.valueOf( unit.getId() ) );
+            values.add( unit.getName() );
 
-            for ( OrganisationUnitGroupSet groupSet : groupSets )
+            for ( Dimension groupSet : groupSets )
             {
-                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( groupSet, unit );
-
-                values.add( group != null ? group.getName() : Statement.EMPTY );
+                DimensionOption dimensionOption = groupSet.getDimensionOption( unit );
+                
+                values.add( dimensionOption != null ? dimensionOption.getName() : null );
             }
 
             batchHandler.addObject( values );
         }
 
+        batchHandler.flush();
+    }
+    
+    // -------------------------------------------------------------------------
+    // CategoryTable
+    // -------------------------------------------------------------------------
+
+    public void generateCategoryTable()
+    {
+        // ---------------------------------------------------------------------
+        // Create table
+        // ---------------------------------------------------------------------
+
+        List<DataElementCategory> categories = new ArrayList<DataElementCategory>( categoryService.getAllDataElementCategories() );
+        
+        Collections.sort( categories, new DataElementCategoryNameComparator() );
+        
+        List<DataElementCategoryOptionCombo> categoryOptionCombos = 
+            new ArrayList<DataElementCategoryOptionCombo>( categoryService.getAllDataElementCategoryOptionCombos() );
+        
+        resourceTableStore.createCategoryStructure( categories );
+
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+
+        batchHandler.setTableName( CreateCategoryTableStatement.TABLE_NAME );
+
+        batchHandler.init();
+        
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+        {
+            final List<String> values = new ArrayList<String>();
+            
+            values.add( String.valueOf( categoryOptionCombo.getId() ) );
+            values.add( categoryOptionCombo.getName() );
+            
+            for ( Dimension category : categories )
+            {
+                DimensionOption dimensionOption = category.getDimensionOption( categoryOptionCombo );
+                
+                values.add( dimensionOption != null ? dimensionOption.getName() : null );    
+            }
+            
+            batchHandler.addObject( values );
+        }
+        
         batchHandler.flush();
     }
 }

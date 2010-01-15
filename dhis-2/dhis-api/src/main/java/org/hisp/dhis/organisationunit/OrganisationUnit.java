@@ -27,10 +27,14 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -38,7 +42,7 @@ import org.hisp.dhis.source.Source;
  * @version $Id: OrganisationUnit.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class OrganisationUnit
-    extends Source
+    extends Source implements DimensionOptionElement
 {
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
@@ -127,6 +131,15 @@ public class OrganisationUnit
         this.comment = comment;
     }
 
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public List<? extends DimensionOption> getDimensionOptions()
+    {
+        return new ArrayList<DimensionOption>( groups );
+    }
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------

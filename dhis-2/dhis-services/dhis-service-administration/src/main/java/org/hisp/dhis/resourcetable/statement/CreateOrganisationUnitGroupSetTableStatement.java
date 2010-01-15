@@ -30,6 +30,8 @@ package org.hisp.dhis.resourcetable.statement;
 import java.util.List;
 
 import org.amplecode.quick.Statement;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.system.util.CodecUtils;
 
@@ -39,6 +41,8 @@ import org.hisp.dhis.system.util.CodecUtils;
 public class CreateOrganisationUnitGroupSetTableStatement
     implements Statement
 {
+    private static final Log log = LogFactory.getLog( CreateOrganisationUnitGroupSetTableStatement.class );
+    
     public static final String TABLE_NAME = "_organisationunitgroupsetstructure";
 
     private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (160)";
@@ -52,17 +56,19 @@ public class CreateOrganisationUnitGroupSetTableStatement
     
     public String getStatement()
     {
-        StringBuffer buffer = new StringBuffer( "CREATE TABLE " + TABLE_NAME + " ( organisationunitid " );
-        
-        buffer.append( NUMERIC_COLUMN_TYPE + SEPARATOR );
-        
+        String statement = "CREATE TABLE " + TABLE_NAME + " ( " +
+            "organisationunitid " + NUMERIC_COLUMN_TYPE + SEPARATOR +
+            "organisationunitname " + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
+                
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
-            buffer.append( CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
+            statement += CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
         }
         
-        buffer.append( "PRIMARY KEY ( organisationunitid ) )" );
+        statement += "PRIMARY KEY ( organisationunitid ) )";
         
-        return buffer.toString();
+        log.info( "Create organisation unit group set table SQL: " + statement );
+        
+        return statement;
     }
 }
