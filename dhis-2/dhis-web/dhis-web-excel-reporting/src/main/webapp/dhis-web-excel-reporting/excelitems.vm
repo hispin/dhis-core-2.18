@@ -3,7 +3,7 @@
 <table width="100%">
 <tr>
 <td>
-	$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
+	$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 2)" style="width:300px"/>
 </td>
 <td align="right">	
 	<input type="button" onclick="mode='add'; openAddExcelItem()" value="$i18n.getString('add')" style="width:150px"/> <br>
