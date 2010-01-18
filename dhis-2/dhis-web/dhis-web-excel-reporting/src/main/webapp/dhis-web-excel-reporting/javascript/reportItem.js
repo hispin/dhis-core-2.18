@@ -315,7 +315,6 @@ function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute )
 
 	var flag = -1;
 	var itemsChecked = new Array();
-	//var listRadio = document.getElementsByName( 'reportItemCheck' );
 	var listRadio = document.getElementsByName( itemCheckID );
 
 	ItemsSaved = null;
@@ -324,7 +323,6 @@ function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute )
 	for (var i = 0 ; i < listRadio.length ; i++) {
 	
 		if ( listRadio.item(i).checked ) {
-			//itemsChecked.push( listRadio.item(i).getAttribute("reportItemID") + "#" + listRadio.item(i).getAttribute("reportItemName"));
 			itemsChecked.push( listRadio.item(i).getAttribute(itemIDAttribute) + "#" + listRadio.item(i).getAttribute(itemNameAttribute));
 		}
 	}

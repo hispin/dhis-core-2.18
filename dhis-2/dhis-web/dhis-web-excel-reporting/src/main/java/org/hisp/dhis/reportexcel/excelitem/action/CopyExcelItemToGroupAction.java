@@ -35,8 +35,6 @@ import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Chau Thu Tran
  * @version $Id$
