@@ -343,7 +343,6 @@
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">
 				javascript/reportItem.js,
-				javascript/excelitems.js,
 				javascript/dataelement.js,
 				javascript/jquery.autocomplete.js,
 				javascript/commons.js

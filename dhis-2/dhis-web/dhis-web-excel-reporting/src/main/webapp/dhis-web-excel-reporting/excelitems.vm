@@ -26,7 +26,7 @@
 	#set( $mark = false )
 	#foreach($excelItem in $excelItems)
 		<tr #alternate( $mark )>
-		  	<td><input type="checkbox" id="excelItemChecked" name="excelItemChecked" value='$excelItem.id'></td>
+		  	<td><input type="checkbox" excelItemID="$excelItem.id" excelItemName="$excelItem.name" id="excelItemChecked" name="excelItemChecked" value='$excelItem.id'></td>
 			<td>$encoder.htmlEncode( $excelItem.name )</td>
 			<td>$excelItem.sheetNo</td>
 			<td>$excelItem.row</td>
@@ -156,7 +156,16 @@
 	</tr>	
 </table>
 <p align="center">
-<input type="button" value="$i18n.getString('ok')" onclick="saveCopyExcelItemsToGroup();"/>
+<input type="button" value="$i18n.getString('ok')" onclick="validateCopyExcelItemsToExcelItemGroup();"/>
 <input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo'); deleteDivEffect();"/>
 </p>
 </div>
+
+<script type="text/javascript">
+    var i18n_copy_successful = '$encoder.jsEscape( $i18n.getString( "copy_successful" ) , "'")';
+	var i18n_copy_items_duplicated = '$encoder.jsEscape( $i18n.getString( "copy_items_duplicated" ) , "'")';
+	var i18n_copy_items = '$encoder.jsEscape( $i18n.getString( "copy_items" ) , "'")';
+	var i18n_input_sheet_no = '$encoder.jsEscape( $i18n.getString( "input_sheet_no" ) , "'")';
+	var i18n_choose_report = '$encoder.jsEscape( $i18n.getString( "choose_report" ) , "'")';
+	var i18n_choose_excel_group = '$encoder.jsEscape( $i18n.getString( "choose_excel_group" ) , "'")';
+</script>
