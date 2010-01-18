@@ -121,6 +121,8 @@ public class SelectFormAction
     {
         organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
+        groups = new ArrayList<String>( reportService.getReportExcelGroups() );
+
         if ( organisationUnit == null )
         {
             return SUCCESS;
@@ -129,8 +131,6 @@ public class SelectFormAction
         periodDatabaseService.setSelectedPeriodTypeName( MonthlyPeriodType.NAME );
 
         periods = periodDatabaseService.getPeriodList();
-
-        groups = new ArrayList<String>( reportService.getReportExcelGroups() );
 
         Collections.sort( groups );
        
