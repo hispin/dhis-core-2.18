@@ -27,6 +27,10 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dimension.DimensionType.CATEGORY;
+import static org.hisp.dhis.dimension.DimensionType.DATAELEMENTGROUPSET;
+import static org.hisp.dhis.dimension.DimensionType.INDICATORGROUPSET;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,8 +43,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.system.util.ConversionUtils;
-
-import static org.hisp.dhis.dimension.DimensionType.*;
 
 /**
  * @author Lars Helge Overland
@@ -131,7 +133,7 @@ public class DefaultDimensionService
         
         return dataElements;
     }
-    
+        
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
