@@ -40,8 +40,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
@@ -52,8 +50,6 @@ import org.hisp.dhis.translation.TranslationService;
 public class DefaultI18nService
     implements I18nService
 {
-    private static final Log log = LogFactory.getLog( DefaultI18nService.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -447,8 +443,6 @@ public class DefaultI18nService
                     return i18nObject;
                 }
             }
-            
-            log.debug( "Object not enabled for i18n: " + object );
         }
         
         return null;
