@@ -205,15 +205,15 @@ public class DefaultResourceTableService
     {
         resourceTableStore.deleteGroupSetStructures();
 
-        Collection<OrganisationUnitGroupSet> exclusiveGroupSets = organisationUnitGroupService
-            .getExclusiveOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService
+            .getAllOrganisationUnitGroupSets();
 
         BatchHandler<GroupSetStructure> batchHandler = batchHandlerFactory
             .createBatchHandler( GroupSetStructureBatchHandler.class );
 
         batchHandler.init();
 
-        for ( OrganisationUnitGroupSet groupSet : exclusiveGroupSets )
+        for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
             Collection<OrganisationUnitGroup> groups = groupSet.getOrganisationUnitGroups();
 
@@ -377,7 +377,7 @@ public class DefaultResourceTableService
         Collections.sort( units, new OrganisationUnitNameComparator() );
 
         List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>(
-            organisationUnitGroupService.getExclusiveOrganisationUnitGroupSets() );
+            organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
 

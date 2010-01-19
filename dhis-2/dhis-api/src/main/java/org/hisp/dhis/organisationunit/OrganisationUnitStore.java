@@ -86,6 +86,12 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getRootOrganisationUnits();
 
+    /**
+     * Updates the parent id of the organisation unit with the given id.
+     * 
+     * @param organisationUnitId the child organisation unit identifier.
+     * @param parentId the parent organisation unit identifier.
+     */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
     
     // -------------------------------------------------------------------------
@@ -126,19 +132,61 @@ public interface OrganisationUnitStore
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds an OrganisationUnitLevel.
+     * 
+     * @param level the OrganisationUnitLevel to add.
+     * @return the generated identifier.
+     */
     int addOrganisationUnitLevel( OrganisationUnitLevel level );
     
+    /**
+     * Updates an OrganisationUnitLevel.
+     * 
+     * @param level the OrganisationUnitLevel to update.
+     */
     void updateOrganisationUnitLevel( OrganisationUnitLevel level );
     
+    /**
+     * Gets an OrganisationUnitLevel.
+     * 
+     * @param id the identifier of the OrganisationUnitLevel.
+     * @return the OrganisationUnitLevel with the given identifier.
+     */
     OrganisationUnitLevel getOrganisationUnitLevel( int id );
     
+    /**
+     * Deletes an OrganisationUnitLevel.
+     * 
+     * @param level the OrganisationUnitLevel to delete.
+     */
     void deleteOrganisationUnitLevel( OrganisationUnitLevel level );
     
+    /**
+     * Deletes all OrganisationUnitLevels.
+     */
     void deleteOrganisationUnitLevels();
     
+    /**
+     * Gets all OrganisationUnitLevels.
+     * 
+     * @return a Collection of all OrganisationUnitLevels.
+     */
     Collection<OrganisationUnitLevel> getOrganisationUnitLevels();
     
+    /**
+     * Gets the OrganisationUnitLevel at the given level.
+     * 
+     * @param level the level.
+     * @return the OrganisationUnitLevel at the given level.
+     */
     OrganisationUnitLevel getOrganisationUnitLevelByLevel( int level );
     
+    /**
+     * Gets the OrganisationUnitLevel with the given name.
+     * 
+     * @param name the name of the OrganisationUnitLevel to get.
+     * @return the OrganisationUnitLevel with the given name.
+     */
     OrganisationUnitLevel getOrganisationUnitLevelByName( String name );
 }

@@ -203,8 +203,11 @@ public class DataIntegrityServiceTest
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupB );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupC );
         
-        unitGroupSetA = new OrganisationUnitGroupSet( "GroupSetA", "GroupSetA", true, false );
-        unitGroupSetB = new OrganisationUnitGroupSet( "GroupSetB", "GroupSetB", false, true );
+        unitGroupSetA = createOrganisationUnitGroupSet( 'A' );
+        unitGroupSetB = createOrganisationUnitGroupSet( 'B' );
+        
+        unitGroupSetA.setCompulsory( true );        
+        unitGroupSetB.setCompulsory( false );
         
         unitGroupSetA.getOrganisationUnitGroups().add( unitGroupA );    
         

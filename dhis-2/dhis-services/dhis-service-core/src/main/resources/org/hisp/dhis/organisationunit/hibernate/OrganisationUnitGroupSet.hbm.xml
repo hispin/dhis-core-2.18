@@ -15,7 +15,6 @@
 
     <property name="description"/>
     <property name="compulsory"/>
-    <property name="exclusive"/>
     
     <set name="organisationUnitGroups" table="orgunitgroupsetmembers">
       <key column="orgunitgroupsetid"/>

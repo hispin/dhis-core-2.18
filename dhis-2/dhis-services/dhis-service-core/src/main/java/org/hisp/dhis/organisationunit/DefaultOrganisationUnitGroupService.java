@@ -29,7 +29,6 @@ package org.hisp.dhis.organisationunit;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.system.util.Filter;
@@ -182,39 +181,6 @@ public class DefaultOrganisationUnitGroupService
         return groupSets;
     }
 
-    public Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSets()
-    {
-        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
-        
-        for ( OrganisationUnitGroupSet groupSet : getAllOrganisationUnitGroupSets() )
-        {
-            if ( groupSet.isExclusive() )
-            {
-                groupSets.add( groupSet );
-            }
-        }
-        
-        return groupSets;
-    }
-
-    public Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSetsContainingGroup(
-        OrganisationUnitGroup organisationUnitGroup )
-    {
-        HashSet<OrganisationUnitGroupSet> result = new HashSet<OrganisationUnitGroupSet>();
-
-        Collection<OrganisationUnitGroupSet> exclusiveGroupSets = getExclusiveOrganisationUnitGroupSets();
-
-        for ( OrganisationUnitGroupSet groupSet : exclusiveGroupSets )
-        {
-            if ( groupSet.getOrganisationUnitGroups().contains( organisationUnitGroup ) )
-            {
-                result.add( groupSet );
-            }
-        }
-
-        return result;
-    }
-    
     public OrganisationUnitGroup getOrganisationUnitGroup( OrganisationUnitGroupSet groupSet, OrganisationUnit unit )
     {
         for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )

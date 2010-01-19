@@ -437,7 +437,7 @@ public class DefaultDataIntegrityService
 
     public Collection<OrganisationUnit> getOrganisationUnitsViolatingExclusiveGroupSets()
     {
-        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getExclusiveOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
         
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
         
@@ -469,7 +469,7 @@ public class DefaultDataIntegrityService
 
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithoutGroupSets()
     {
-        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getExclusiveOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
         
         Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getAllOrganisationUnitGroups();
         

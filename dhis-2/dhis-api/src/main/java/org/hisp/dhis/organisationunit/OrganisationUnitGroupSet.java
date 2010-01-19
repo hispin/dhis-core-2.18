@@ -52,8 +52,6 @@ public class OrganisationUnitGroupSet
 
     private boolean compulsory;
 
-    private boolean exclusive;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -62,12 +60,11 @@ public class OrganisationUnitGroupSet
     {
     }
 
-    public OrganisationUnitGroupSet( String name, String description, boolean compulsory, boolean exclusive )
+    public OrganisationUnitGroupSet( String name, String description, boolean compulsory )
     {
         this.name = name;
         this.description = description;
         this.compulsory = compulsory;
-        this.exclusive = exclusive;
     }
 
     // -------------------------------------------------------------------------
@@ -182,16 +179,6 @@ public class OrganisationUnitGroupSet
     public void setCompulsory( boolean compulsory )
     {
         this.compulsory = compulsory;
-    }
-
-    public boolean isExclusive()
-    {
-        return exclusive;
-    }
-
-    public void setExclusive( boolean exclusive )
-    {
-        this.exclusive = exclusive;
     }
 
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()

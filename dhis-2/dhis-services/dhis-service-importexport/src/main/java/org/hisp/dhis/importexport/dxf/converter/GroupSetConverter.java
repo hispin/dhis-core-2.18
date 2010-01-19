@@ -57,7 +57,6 @@ public class GroupSetConverter
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESCRIPTION = "description";
     private static final String FIELD_COMPULSORY = "compulsory";
-    private static final String FIELD_EXCLUSIVE = "exclusive";
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -108,7 +107,6 @@ public class GroupSetConverter
                 writer.writeElement( FIELD_NAME, groupSet.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, groupSet.getDescription() );
                 writer.writeElement( FIELD_COMPULSORY, String.valueOf( groupSet.isCompulsory() ) );
-                writer.writeElement( FIELD_EXCLUSIVE, String.valueOf( groupSet.isExclusive() ) );
                 
                 writer.closeElement();
             }
@@ -129,7 +127,6 @@ public class GroupSetConverter
             groupSet.setName( values.get( FIELD_NAME ) );
             groupSet.setDescription( values.get( FIELD_DESCRIPTION ) );
             groupSet.setCompulsory( Boolean.parseBoolean( values.get( FIELD_COMPULSORY ) ) );
-            groupSet.setExclusive( Boolean.parseBoolean( values.get( FIELD_EXCLUSIVE ) ) );
             
             NameMappingUtil.addGroupSetMapping( groupSet.getId(), groupSet.getName() );
             

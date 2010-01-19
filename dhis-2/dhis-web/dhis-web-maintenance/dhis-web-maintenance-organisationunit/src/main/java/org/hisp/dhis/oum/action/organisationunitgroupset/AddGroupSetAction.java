@@ -80,13 +80,6 @@ public class AddGroupSetAction
         this.compulsory = compulsory;
     }
 
-    private boolean exclusive;
-
-    public void setExclusive( boolean exclusive )
-    {
-        this.exclusive = exclusive;
-    }
-
     private Collection<String> selectedGroups;
 
     public void setSelectedGroups( Collection<String> selectedGroups )
@@ -101,7 +94,7 @@ public class AddGroupSetAction
     public String execute()
         throws Exception
     {
-        OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet( name, description, compulsory, exclusive );
+        OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet( name, description, compulsory );
 
         Set<OrganisationUnitGroup> selectedMembers = new HashSet<OrganisationUnitGroup>();
 
@@ -109,8 +102,7 @@ public class AddGroupSetAction
         {
             for ( String groupId : selectedGroups )
             {
-                selectedMembers.add( organisationUnitGroupService
-                    .getOrganisationUnitGroup( Integer.parseInt( groupId ) ) );
+                selectedMembers.add( organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( groupId ) ) );
             }
         }
 

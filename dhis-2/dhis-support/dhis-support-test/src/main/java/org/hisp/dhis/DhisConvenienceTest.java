@@ -596,7 +596,6 @@ public abstract class DhisConvenienceTest
         groupSet.setName( "OrganisationUnitGroupSet" + uniqueCharacter );
         groupSet.setDescription( "Description" + uniqueCharacter );
         groupSet.setCompulsory( true );
-        groupSet.setExclusive( true );
 
         return groupSet;
     }
