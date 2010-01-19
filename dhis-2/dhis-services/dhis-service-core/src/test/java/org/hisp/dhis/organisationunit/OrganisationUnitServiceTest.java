@@ -799,7 +799,6 @@ public class OrganisationUnitServiceTest
         OrganisationUnitGroupSet organisationUnitGroupSet1 = new OrganisationUnitGroupSet();
         organisationUnitGroupSet1.setName( "ougs1" );
         organisationUnitGroupSet1.setCompulsory( true );
-        organisationUnitGroupSet1.setExclusive( false );
         organisationUnitGroupSet1.getOrganisationUnitGroups().add( organisationUnitGroup1 );
         organisationUnitGroupSet1.getOrganisationUnitGroups().add( organisationUnitGroup2 );
         organisationUnitGroupSet1.getOrganisationUnitGroups().add( organisationUnitGroup3 );
@@ -823,7 +822,6 @@ public class OrganisationUnitServiceTest
         OrganisationUnitGroupSet organisationUnitGroupSet2 = new OrganisationUnitGroupSet();
         organisationUnitGroupSet2.setName( "ougs2" );
         organisationUnitGroupSet2.setCompulsory( true );
-        organisationUnitGroupSet2.setExclusive( false );
         organisationUnitGroupSet2.getOrganisationUnitGroups().add( organisationUnitGroup4 );
 
         int id2 = organisationUnitGroupService.addOrganisationUnitGroupSet( organisationUnitGroupSet2 );
@@ -862,7 +860,6 @@ public class OrganisationUnitServiceTest
         OrganisationUnitGroupSet organisationUnitGroupSet1 = new OrganisationUnitGroupSet();
         organisationUnitGroupSet1.setName( ougs1 );
         organisationUnitGroupSet1.setCompulsory( true );
-        organisationUnitGroupSet1.setExclusive( true );
         organisationUnitGroupSet1.getOrganisationUnitGroups().add( organisationUnitGroup1 );
         organisationUnitGroupSet1.getOrganisationUnitGroups().add( organisationUnitGroup2 );
         organisationUnitGroupSet1.getOrganisationUnitGroups().add( organisationUnitGroup3 );
@@ -870,7 +867,6 @@ public class OrganisationUnitServiceTest
         OrganisationUnitGroupSet organisationUnitGroupSet2 = new OrganisationUnitGroupSet();
         organisationUnitGroupSet2.setName( ougs2 );
         organisationUnitGroupSet2.setCompulsory( false );
-        organisationUnitGroupSet2.setExclusive( false );
         organisationUnitGroupSet2.getOrganisationUnitGroups().add( organisationUnitGroup4 );
 
         organisationUnitGroupService.addOrganisationUnitGroupSet( organisationUnitGroupSet1 );
@@ -885,14 +881,6 @@ public class OrganisationUnitServiceTest
         Collection<OrganisationUnitGroupSet> compulsorySets = organisationUnitGroupService
             .getCompulsoryOrganisationUnitGroupSets();
         assertEquals( compulsorySets.size(), 1 );
-
-        Collection<OrganisationUnitGroupSet> exclusiveSets = organisationUnitGroupService
-            .getExclusiveOrganisationUnitGroupSets();
-        assertEquals( exclusiveSets.size(), 1 );
-
-        Collection<OrganisationUnitGroupSet> containingSets = organisationUnitGroupService
-            .getExclusiveOrganisationUnitGroupSetsContainingGroup( organisationUnitGroup1 );
-        assertEquals( containingSets.size(), 1 );
     }
 
     // -------------------------------------------------------------------------

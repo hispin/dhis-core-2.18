@@ -34,7 +34,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -144,63 +143,10 @@ public class ValidateOrganisationUnitGroupAction
             }
         }
 
-        // ---------------------------------------------------------------------
-        // When updating a group which is a member of an exclusive group set,
-        // any selected units can not be a member of another group in the
-        // group set.
-        // ---------------------------------------------------------------------
-
-        if ( id == null )
-        {
-            message = "Everything's ok";
-
-            return SUCCESS;
-        }
-
-        OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id
-            .intValue() );
-
-        Collection<OrganisationUnitGroupSet> exclusiveGroupSets = organisationUnitGroupService
-            .getExclusiveOrganisationUnitGroupSetsContainingGroup( organisationUnitGroup );
-
-        // TODO move to service layer
+        // TODO validate exclusivity
         
-        if ( exclusiveGroupSets != null && exclusiveGroupSets.size() > 0 )
-        {
-            for ( OrganisationUnitGroupSet groupSet : exclusiveGroupSets )
-            {
-                for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
-                {
-                    for ( OrganisationUnit unit : getSelectedOrganisationUnits() )
-                    {
-                        if ( group.getMembers().contains( unit ) && group.getId() != id )
-                        {
-                            message = unit.getShortName() + " "
-                                + i18n.getString( "can_not_be_a_member_because_member_of" ) + " " + group.getName()
-                                + " " + i18n.getString( "which_is_a_member_of_the_same_exclusive_group_set" ) + " "
-                                + groupSet.getName() + " " + i18n.getString( "as_the_current_group" );
-
-                            return INPUT;
-                        }
-                    }
-                }
-            }
-        }
-
         message = "Everything's ok";
 
         return SUCCESS;
-    }
-    
-    private Collection<OrganisationUnit> getSelectedOrganisationUnits()
-    {
-        Collection<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
-        
-        for ( String id : groupMembers )
-        {
-            units.add( organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) ) );
-        }
-        
-        return units;
     }
 }

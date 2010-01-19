@@ -89,7 +89,6 @@ public class GroupSetBatchHandler
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "description" );
         statementBuilder.setColumn( "compulsory" );
-        statementBuilder.setColumn( "exclusive" );
     }
     
     protected void setValues( OrganisationUnitGroupSet groupSet )
@@ -97,6 +96,5 @@ public class GroupSetBatchHandler
         statementBuilder.setValue( groupSet.getName() );
         statementBuilder.setValue( groupSet.getDescription() );
         statementBuilder.setValue( groupSet.isCompulsory() );
-        statementBuilder.setValue( groupSet.isExclusive() );
     }
 }

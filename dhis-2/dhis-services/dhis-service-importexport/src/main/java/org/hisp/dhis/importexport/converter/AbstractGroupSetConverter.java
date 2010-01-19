@@ -53,7 +53,6 @@ public class AbstractGroupSetConverter
         match.setName( object.getName() );
         match.setDescription( object.getDescription() );
         match.setCompulsory( object.isCompulsory() );
-        match.setExclusive( object.isExclusive() );
         
         organisationUnitGroupService.updateOrganisationUnitGroupSet( match );
     }
@@ -74,10 +73,6 @@ public class AbstractGroupSetConverter
             return false;
         }
         if ( object.isCompulsory() != existing.isCompulsory() )
-        {
-            return false;
-        }
-        if ( object.isExclusive() != existing.isExclusive() )
         {
             return false;
         }

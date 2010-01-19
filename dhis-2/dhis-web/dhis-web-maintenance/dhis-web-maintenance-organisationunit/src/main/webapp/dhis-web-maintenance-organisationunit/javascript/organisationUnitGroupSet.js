@@ -29,18 +29,7 @@ function organisationUnitGroupSetReceived( unitElement )
     {
     	setFieldValue( 'compulsoryField', i18n_no );
     }
-    
-    var exclusive = getElementValue( unitElement, 'exclusive' );
-    
-    if ( exclusive == "true" )
-    {
-    	setFieldValue( 'exclusiveField', i18n_yes );
-    }
-    else
-    {
-    	setFieldValue( 'exclusiveField', i18n_no );
-    }
-    
+        
     setFieldValue( 'memberCountField', getElementValue( unitElement, 'memberCount' ) );
     
     showDetails();
@@ -72,8 +61,7 @@ function validateAddOrganisationUnitGroupSet()
     
     var params = 'name=' + getFieldValue( 'name' ) +
         '&description=' + getFieldValue( 'description' ) +
-        '&compulsory=' + getFieldValue( 'compulsory' ) +
-        '&exclusive=' + getFieldValue( 'exclusive' ) + '&';
+        '&compulsory=' + getFieldValue( 'compulsory' ) + '&';
         
     var selectedGroups = document.getElementById( 'selectedGroups' );
     
@@ -131,8 +119,7 @@ function validateUpdateOrganisationUnitGroupSet()
     var params = 'id=' + getFieldValue( 'id' ) +
     	'&name=' + getFieldValue( 'name' ) +
         '&description=' + getFieldValue( 'description' ) +
-        '&compulsory=' + getFieldValue( 'compulsory' ) +
-        '&exclusive=' + getFieldValue( 'exclusive' ) + '&';
+        '&compulsory=' + getFieldValue( 'compulsory' ) + '&';
     
     var selectedGroups = document.getElementById( 'selectedGroups' );
     

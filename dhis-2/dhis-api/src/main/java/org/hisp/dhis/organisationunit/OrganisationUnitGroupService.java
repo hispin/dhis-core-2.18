@@ -142,9 +142,10 @@ public interface OrganisationUnitGroupService
     OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id );
 
     /**
+     * Returns the OrganisationUnitGroupSets with the given identifiers.
      * 
-     * @param identifiers
-     * @return
+     * @param identifiers the identifiers.
+     * @return the OrganisationUnitGroupSets with the given identifiers.
      */
     Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( Collection<Integer> identifiers );
     
@@ -174,38 +175,6 @@ public interface OrganisationUnitGroupService
      */
     Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets();
 
-    /**
-     * Returns all exclusive OrganisationUnitGroupSets.
-     * 
-     * @return a collection of all exclusive OrganisationUnitGroupSets, or an
-     *         empty collection if there are no exclusive
-     *         OrganisationUnitGroupSets.
-     */
-    Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSets();
-
-    /**
-     * Returns a collection of all exclusive OrganisationUnitGroupSets
-     * containing a given OrganisationUnitGroup.
-     * 
-     * @param organisationUnitGroup the OrganisationUnitGroup to look for.
-     * @return a collection of all exclusive OrganisationUnitGroupSets
-     *         containing the given OrganisationUnitGroup, or an empty
-     *         collection if no such OrganisationUnitGroupSet exists.
-     */
-    Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSetsContainingGroup(
-        OrganisationUnitGroup organisationUnitGroup );
-    
-    /**
-     * Returns the OrganisationUnitGroup of which the given OrganisationUnit is
-     * a member of within the OrganisationUnitGroupSet. This will return the first
-     * group found so the given group set should be exclusive.
-     * 
-     * @param groupSet the OrganisationUnitGroupSet.
-     * @param unit the OrganisationUNit.
-     * @return an OrganisationUnitGroup.
-     */
-    OrganisationUnitGroup getOrganisationUnitGroup( OrganisationUnitGroupSet groupSet, OrganisationUnit unit );
-    
     /**
      * Returns a Collection of compulsory OrganisationUnitGroupSets whichs groups 
      * the given OrganisationUnit is not a member of.
