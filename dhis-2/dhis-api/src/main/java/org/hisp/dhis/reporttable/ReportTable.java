@@ -414,15 +414,8 @@ public class ReportTable
 
     public void init()
     {
-        if ( nonEmptyLists( dataElements, indicators, dataSets ) > 1 )
-        {
-            throw new IllegalArgumentException( "ReportTable cannot contain more than one out of dataelements, indicators, and datasets" );
-        }
-                
-        if ( doIndicators && doPeriods && doUnits )
-        {
-            throw new IllegalArgumentException( "ReportTable cannot crosstab on all dimensions" );
-        }
+        verify( nonEmptyLists( dataElements, indicators, dataSets ) == 1, "One of dataelements, indicators, and datasets size must be larger than 0" );
+        verify( !( doIndicators && doPeriods && doUnits ), "Cannot crosstab on all dimensions" );
         
         // ---------------------------------------------------------------------
         // Init tableName, allPeriods and allUnits
@@ -436,6 +429,9 @@ public class ReportTable
         allUnits.addAll( units );
         allUnits.addAll( relativeUnits );
 
+        verify( nonEmptyLists( allPeriods ) == 1, "All periods size must be larger than 0" );
+        verify( nonEmptyLists( allUnits ) == 1, "All units size must be larger than 0" );
+        
         // ---------------------------------------------------------------------
         // Init dimensional lists
         // ---------------------------------------------------------------------
@@ -447,6 +443,8 @@ public class ReportTable
             // -----------------------------------------------------------------
 
             categoryOptionCombos = categoryCombo.getDimensionOptionElements();
+            
+            verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
         else if ( isDimensional( DimensionType.DATAELEMENTGROUPSET ) )
         {
@@ -462,6 +460,8 @@ public class ReportTable
             }
             
             dimensionalDataElements = elements;
+            
+            verify( nonEmptyLists( dimensionalDataElements ) == 1, "Dimensional data elements size must be larger than 0" );
         }
         
         // ---------------------------------------------------------------------
@@ -538,7 +538,7 @@ public class ReportTable
         {
             crossTabUnits = new ArrayList<OrganisationUnit>( allUnits );
             reportUnits.add( null );
-            selectColumns.add( ORGANISATIONUNIT_ID );            
+            selectColumns.add( ORGANISATIONUNIT_ID );
         }
         else
         {
@@ -572,15 +572,17 @@ public class ReportTable
             }
         }
 
+        verify( nonEmptyLists( crossTabColumns ) == 1, "Crosstab columns size must be larger than 0" );
+        
         // ---------------------------------------------------------------------
         // Init dimensionOptions and dimensionOptionColumns
         // ---------------------------------------------------------------------
 
         if ( doTotal() )
         {
-            List<? extends Dimension> dimensions = isDimensional( DimensionType.CATEGORY ) ? categoryCombo.getDimensions() : dataElementGroupSets;
+            verify ( nonEmptyLists( categoryCombo.getDimensions() ) == 1, "Category combo dimensions size must be larger than 0" );
             
-            for ( Dimension dimension : dimensions )
+            for ( Dimension dimension : categoryCombo.getDimensions() )
             {
                 for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
                 {
@@ -592,6 +594,8 @@ public class ReportTable
                     prettyCrossTabColumns.put( columnName, prettyColumnName );
                 }
             }
+            
+            verify( nonEmptyLists( dimensionOptions, dimensionOptionColumns ) == 2, "Dimension options size must be larger than 0" );
         }
     }
 
@@ -607,9 +611,11 @@ public class ReportTable
     {
         if ( dimensionSet != null )
         {
-            this.dimensionType = dimensionSet.getDimensionType();
-            this.categoryCombo = dimensionType.equals( DimensionType.CATEGORY ) ? dimensionSet : null;
-            this.dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET ) ? dimensionSet.getDimensions() : null;
+            dimensionType = dimensionSet.getDimensionType();
+            categoryCombo = dimensionType.equals( DimensionType.CATEGORY ) ? dimensionSet : null;
+            dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET ) ? dimensionSet.getDimensions() : null;
+            
+            verify( dimensionType != null, "Dimension type cannot be null" );
         }
     }
     
@@ -957,6 +963,7 @@ public class ReportTable
             string = string.toLowerCase();
             
             string = string.replaceAll( " ", EMPTY_REPLACEMENT );
+            string = string.replaceAll( "-", EMPTY_REPLACEMENT );
             string = string.replaceAll( "<", EMPTY_REPLACEMENT + "lt" + EMPTY_REPLACEMENT );
             string = string.replaceAll( ">", EMPTY_REPLACEMENT + "gt" + EMPTY_REPLACEMENT );
             
@@ -995,6 +1002,17 @@ public class ReportTable
         }
         
         return string;
+    }
+    
+    /**
+     * Supportive method.
+     */
+    private void verify( boolean expression, String falseMessage )
+    {
+        if ( !expression )
+        {
+            throw new IllegalStateException( falseMessage );
+        }   
     }
 
     // -------------------------------------------------------------------------
