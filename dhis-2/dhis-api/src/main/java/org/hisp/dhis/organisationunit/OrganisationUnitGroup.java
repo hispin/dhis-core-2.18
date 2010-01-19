@@ -27,6 +27,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ import org.hisp.dhis.dimension.DimensionType;
  */
 
 public class OrganisationUnitGroup
-    implements DimensionOption
+    implements DimensionOption, Serializable
 {
     private int id;
     
