@@ -154,6 +154,8 @@ public class DefaultDataIntegrityService
         return dataElements;
     }
 
+    // TODO re-implement using new model
+    
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
         Collection<DataElementGroup> groups = dataElementService.getAllDataElementGroups();

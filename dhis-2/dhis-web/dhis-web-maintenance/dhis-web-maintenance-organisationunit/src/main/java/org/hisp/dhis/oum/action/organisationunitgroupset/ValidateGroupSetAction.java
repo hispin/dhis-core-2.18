@@ -29,13 +29,14 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.system.util.ListUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -56,7 +57,7 @@ public class ValidateGroupSetAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -87,13 +88,6 @@ public class ValidateGroupSetAction
     public void setCompulsory( boolean compulsory )
     {
         this.compulsory = compulsory;
-    }
-
-    private boolean exclusive;
-
-    public void setExclusive( boolean exclusive )
-    {
-        this.exclusive = exclusive;
     }
 
     private Collection<String> selectedGroups;
@@ -183,40 +177,29 @@ public class ValidateGroupSetAction
             return INPUT;
         }
 
-        // --------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // When adding or updating an exclusive group set any unit in the
-        // selected groups
-        // can not be a member of more than one group
-        // --------------------------------------------------------------------------------
+        // selected groups can not be a member of more than one group
+        // ---------------------------------------------------------------------
 
-        if ( exclusive && selectedGroups != null && selectedGroups.size() > 0 )
-        {
-            Collection<OrganisationUnit> allUnitsInGroupSet = new ArrayList<OrganisationUnit>();
+        if ( selectedGroups != null && selectedGroups.size() > 0 )
+        {            
+            List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
 
             for ( String groupId : selectedGroups )
             {
-                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( Integer
-                    .parseInt( groupId ) );
-
-                allUnitsInGroupSet.addAll( group.getMembers() );
+                units.addAll( organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( groupId ) ).getMembers() );
             }
 
-            Iterator<OrganisationUnit> unitIterator = allUnitsInGroupSet.iterator();
-
-            while ( unitIterator.hasNext() )
+            Collection<OrganisationUnit> duplicates = ListUtils.getDuplicates( units, new OrganisationUnitNameComparator() );
+            
+            if ( duplicates.size() > 0 )
             {
-                OrganisationUnit unit = unitIterator.next();
-
-                unitIterator.remove();
-
-                if ( allUnitsInGroupSet.contains( unit ) )
-                {
-                    message = i18n.getString( "the_group_set_can_not_be_creat_bec_it_is_exc_and" ) + " "
-                        + unit.getShortName() + " " + i18n.getString( "is_a_member_of_more_than_one_selected_group" );
-
-                    return INPUT;
-                }
-            }
+                message = i18n.getString( "the_group_set_can_not_be_creat_bec_it_is_exc_and" ) + " "
+                    + duplicates.iterator().next().getShortName() + " " + i18n.getString( "is_a_member_of_more_than_one_selected_group" );
+                
+                return INPUT;
+            }            
         }
 
         message = "Everything's ok";
