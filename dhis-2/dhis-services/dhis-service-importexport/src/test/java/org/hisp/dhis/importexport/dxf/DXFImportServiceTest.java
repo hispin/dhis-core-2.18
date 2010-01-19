@@ -391,11 +391,6 @@ public class DXFImportServiceTest
         
         assertEquals( organisationUnitGroupService.getAllOrganisationUnitGroupSets().size(), expectedSize );
         
-        for ( OrganisationUnitGroupSet groupSet : organisationUnitGroupService.getAllOrganisationUnitGroupSets() )
-        {
-            assertEquals( groupSet.getOrganisationUnitGroups().size(), expectedSize );
-        }
-        
         assertEquals( validationRuleService.getAllValidationRules().size(), expectedSize );
     }
 
@@ -436,7 +431,5 @@ public class DXFImportServiceTest
         assertEquals( importObjectService.getImportObjects( GroupMemberType.DATASET ).size(), expectedSize * expectedSize );
         
         assertEquals( importObjectService.getImportObjects( GroupMemberType.ORGANISATIONUNITGROUP ).size(), expectedSize * expectedSize );
-        
-        assertEquals( importObjectService.getImportObjects( GroupMemberType.ORGANISATIONUNITGROUPSET ).size(), expectedSize * expectedSize );
     }
 }
