@@ -34,6 +34,8 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -73,8 +75,8 @@ public class PrepareAddGroupSetAction
     public String execute()
         throws Exception
     {
-        availableGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
-            .getAllOrganisationUnitGroups() );
+        availableGroups = new ArrayList<OrganisationUnitGroup>( FilterUtils.filter( 
+            organisationUnitGroupService.getAllOrganisationUnitGroups(), new OrganisationUnitGroupWithoutGroupSetFilter() ) );
 
         Collections.sort( availableGroups, new OrganisationUnitGroupNameComparator() );
 
