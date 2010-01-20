@@ -240,6 +240,11 @@ public abstract class DhisConvenienceTest
 
         return true;
     }
+    
+    public static String message( Object object )
+    {
+        return "Expected was: " + ( ( object != null ) ? "[" + object.toString() + "]" : "[null]" );
+    }
 
     // -------------------------------------------------------------------------
     // Dependency injection methods

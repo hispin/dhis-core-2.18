@@ -29,7 +29,9 @@ package org.hisp.dhis.validation;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.expression.Expression;
 
@@ -65,6 +67,8 @@ public class ValidationRule
     private Expression leftSide;
     
     private Expression rightSide;
+    
+    private Set<ValidationRuleGroup> groups = new HashSet<ValidationRuleGroup>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -198,6 +202,16 @@ public class ValidationRule
     public void setRightSide( Expression rightSide )
     {
         this.rightSide = rightSide;
+    }
+
+    public Set<ValidationRuleGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<ValidationRuleGroup> groups )
+    {
+        this.groups = groups;
     }
 
     // -------------------------------------------------------------------------

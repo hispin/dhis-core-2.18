@@ -28,6 +28,7 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,6 +81,18 @@ public class OrganisationUnitGroupSet
     // Logic
     // -------------------------------------------------------------------------
 
+    public Collection<OrganisationUnit> getOrganisationUnits()
+    {
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        
+        for ( OrganisationUnitGroup group : organisationUnitGroups )
+        {
+            units.addAll( group.getMembers() );
+        }
+        
+        return units;
+    }
+    
     public boolean isMemberOfOrganisationUnitGroups( OrganisationUnit organisationUnit )
     {
         for ( OrganisationUnitGroup group : organisationUnitGroups )

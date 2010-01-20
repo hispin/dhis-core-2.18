@@ -27,6 +27,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -73,7 +74,7 @@ public class ListUtils
      * @param comparator the comparator.
      * @return a set of duplicates from the given list.
      */
-    public static <T> Set<T> getDuplicates( List<T> list, Comparator<T> comparator )
+    public static <T> Collection<T> getDuplicates( List<T> list, Comparator<T> comparator )
     {
         Set<T> duplicates = new HashSet<T>();
         

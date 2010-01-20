@@ -28,6 +28,7 @@ package org.hisp.dhis.indicator;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.dimension.Dimension;
@@ -58,6 +59,31 @@ public class IndicatorGroupSet
         this.name = name;
     }
 
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public List<? extends DimensionOption> getDimensionOptions()
+    {
+        return members;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public Collection<Indicator> getIndicators()
+    {
+        List<Indicator> indicators = new ArrayList<Indicator>();
+        
+        for ( IndicatorGroup group : members )
+        {
+            indicators.addAll( group.getMembers() );
+        }
+        
+        return indicators;
+    }
+    
     // -------------------------------------------------------------------------
     // equals and hashCode
     // -------------------------------------------------------------------------
@@ -97,15 +123,6 @@ public class IndicatorGroupSet
         return "[" + name + "]";
     }
 
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return members;
-    }
-    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
