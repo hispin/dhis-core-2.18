@@ -57,11 +57,11 @@
 <script type="text/javascript">
 
 	var groupMembers = new Object();
-#foreach( $indicatorGroup in $indicatorGroupSet.members )
+#foreach( $indicatorGroup in $selectedGroups )
 	groupMembers['$indicatorGroup.id'] = '$encoder.jsEscape( $indicatorGroup.name, "'" )';
 #end
 	var availableIndicatorGroups = new Object();
-#foreach( $indicatorGroup in $indicatorGroups )
+#foreach( $indicatorGroup in $availableGroups )
 	availableIndicatorGroups['$indicatorGroup.id'] = '$encoder.jsEscape( $indicatorGroup.name, "'" )';
 #end
 	initLists();

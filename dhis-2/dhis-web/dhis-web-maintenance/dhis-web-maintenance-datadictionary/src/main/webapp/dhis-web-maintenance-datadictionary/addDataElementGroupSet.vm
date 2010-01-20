@@ -58,7 +58,7 @@
 	var groupMembers = new Object();
 	
 	var availableDataElementGroups = new Object();
-#foreach( $dataElementGroup in $dataElementGroups )
+#foreach( $dataElementGroup in $availableGroups )
 	availableDataElementGroups['$dataElementGroup.id'] = '$encoder.jsEscape( $dataElementGroup.name, "'" )';
 #end
 

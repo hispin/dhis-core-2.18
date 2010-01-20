@@ -1,4 +1,4 @@
-package org.hisp.dhis.dd.action.dataelementgroup;
+package org.hisp.dhis.dd.action.indicatorgroupset;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -31,39 +31,40 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
+import org.hisp.dhis.system.filter.IndicatorGroupWIthoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: GetDataElementGroupListAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @author Lars Helge Overland
  */
-public class GetDataElementGroupListAction
-    extends ActionSupport
+public class OpenAddIndicatorGroupSetAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private IndicatorService indicatorService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setIndicatorService( IndicatorService indicatorService )
     {
-        this.dataElementService = dataElementService;
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Ouput
     // -------------------------------------------------------------------------
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<IndicatorGroup> availableGroups;
 
-    public List<DataElementGroup> getDataElementGroups()
+    public List<IndicatorGroup> getAvailableGroups()
     {
-        return dataElementGroups;
+        return availableGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -72,9 +73,11 @@ public class GetDataElementGroupListAction
 
     public String execute()
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        availableGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        FilterUtils.filter( availableGroups, new IndicatorGroupWIthoutGroupSetFilter() );
+        
+        Collections.sort( availableGroups, new IndicatorGroupNameComparator() );
 
         return SUCCESS;
     }
