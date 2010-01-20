@@ -429,9 +429,6 @@ public class ReportTable
         allUnits.addAll( units );
         allUnits.addAll( relativeUnits );
 
-        verify( nonEmptyLists( allPeriods ) == 1, "All periods size must be larger than 0" );
-        verify( nonEmptyLists( allUnits ) == 1, "All units size must be larger than 0" );
-        
         // ---------------------------------------------------------------------
         // Init dimensional lists
         // ---------------------------------------------------------------------
@@ -572,8 +569,6 @@ public class ReportTable
             }
         }
 
-        verify( nonEmptyLists( crossTabColumns ) == 1, "Crosstab columns size must be larger than 0" );
-        
         // ---------------------------------------------------------------------
         // Init dimensionOptions and dimensionOptionColumns
         // ---------------------------------------------------------------------
