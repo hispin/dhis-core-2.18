@@ -241,7 +241,7 @@
 		</action>
 		
 		<action name="openAddDataElementGroupSet"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
+			class="org.hisp.dhis.dd.action.dataelementgroupset.OpenAddDataElementGroupSetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
@@ -254,14 +254,8 @@
 			<result name="success" type="redirect">dataElementGroupSet.action</result>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
-		
+				
 		<action name="openUpdateDataElementGroupSet"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
-			<result name="success" type="chain">openUpdateDataElementGroupSetChain</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
-		</action>
-		
-		<action name="openUpdateDataElementGroupSetChain"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.OpenUpdateDataElementGroupSetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupSet.vm</param>
@@ -428,7 +422,7 @@
 		</action>
 		
 		<action name="openAddIndicatorGroupSet"
-			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupListAction">
+			class="org.hisp.dhis.dd.action.indicatorgroupset.OpenAddIndicatorGroupSetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
@@ -443,12 +437,6 @@
 		</action>
 		
 		<action name="openUpdateIndicatorGroupSet"
-			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupListAction">
-			<result name="success" type="chain">openUpdateIndicatorGroupSetChain</result>
-			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-		</action>
-		
-		<action name="openUpdateIndicatorGroupSetChain"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.OpenUpdateIndicatorGroupSetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupSet.vm</param>

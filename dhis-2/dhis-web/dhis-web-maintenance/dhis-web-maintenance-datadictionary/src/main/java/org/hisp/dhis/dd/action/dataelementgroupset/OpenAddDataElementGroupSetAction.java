@@ -1,4 +1,4 @@
-package org.hisp.dhis.dd.action.dataelementgroup;
+package org.hisp.dhis.dd.action.dataelementgroupset;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -34,15 +34,16 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.system.filter.DataElementGroupWithoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: GetDataElementGroupListAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @author Lars Helge Oeverland
  */
-public class GetDataElementGroupListAction
-    extends ActionSupport
+public class OpenAddDataElementGroupSetAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,26 +57,26 @@ public class GetDataElementGroupListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Ouput
     // -------------------------------------------------------------------------
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<DataElementGroup> availableGroups;
 
-    public List<DataElementGroup> getDataElementGroups()
+    public List<DataElementGroup> getAvailableGroups()
     {
-        return dataElementGroups;
+        return availableGroups;
     }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
+    
     public String execute()
+        throws Exception
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        availableGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-
+        FilterUtils.filter( availableGroups, new DataElementGroupWithoutGroupSetFilter() );
+        
+        Collections.sort( availableGroups, new DataElementGroupNameComparator() );
+        
         return SUCCESS;
     }
 }
+

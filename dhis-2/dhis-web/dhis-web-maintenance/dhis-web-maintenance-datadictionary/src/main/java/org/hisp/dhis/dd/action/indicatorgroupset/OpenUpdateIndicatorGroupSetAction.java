@@ -27,11 +27,16 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
+import org.hisp.dhis.system.filter.IndicatorGroupWIthoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,7 +44,6 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-
 public class OpenUpdateIndicatorGroupSetAction
     implements Action
 {
@@ -72,16 +76,18 @@ public class OpenUpdateIndicatorGroupSetAction
         return indicatorGroupSet;
     }
 
-    private List<IndicatorGroup> indicatorGroups;
+    private List<IndicatorGroup> availableGroups;
 
-    public List<IndicatorGroup> getIndicatorGroups()
+    public List<IndicatorGroup> getAvailableGroups()
     {
-        return indicatorGroups;
+        return availableGroups;
     }
 
-    public void setIndicatorGroups( List<IndicatorGroup> indicatorGroups )
+    private List<IndicatorGroup> selectedGroups;
+
+    public List<IndicatorGroup> getSelectedGroups()
     {
-        this.indicatorGroups = indicatorGroups;
+        return selectedGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -92,8 +98,18 @@ public class OpenUpdateIndicatorGroupSetAction
     {
         indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
 
-        indicatorGroups.removeAll( indicatorGroupSet.getMembers() );
+        availableGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
+        availableGroups.removeAll( indicatorGroupSet.getMembers() );
+
+        FilterUtils.filter( availableGroups, new IndicatorGroupWIthoutGroupSetFilter() );
+        
+        Collections.sort( availableGroups, new IndicatorGroupNameComparator() );
+
+        selectedGroups = indicatorGroupSet.getMembers();
+        
+        Collections.sort( selectedGroups, new IndicatorGroupNameComparator() );
+        
         return SUCCESS;
     }
 }

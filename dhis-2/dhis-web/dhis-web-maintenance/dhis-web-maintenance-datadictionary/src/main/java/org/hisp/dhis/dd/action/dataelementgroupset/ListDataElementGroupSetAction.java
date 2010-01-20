@@ -72,7 +72,7 @@ public class ListDataElementGroupSetAction
 
     public String execute()
     {
-        this.dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
+        dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
         
         Collections.sort( dataElementGroupSets, new DataElementGroupSetNameComparator() );
 

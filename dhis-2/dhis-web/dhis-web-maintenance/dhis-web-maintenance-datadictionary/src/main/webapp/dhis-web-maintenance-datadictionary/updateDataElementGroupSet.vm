@@ -57,11 +57,11 @@
 <script type="text/javascript">
 
 	var groupMembers = new Object();
-#foreach( $dataElement in $dataElementGroupSet.members )
+#foreach( $dataElement in $selectedGroups )
 	groupMembers['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
 #end
 	var availableDataElementGroups = new Object();
-#foreach( $dataElement in $dataElementGroups )
+#foreach( $dataElement in $availableGroups )
 	availableDataElementGroups['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
 #end
 

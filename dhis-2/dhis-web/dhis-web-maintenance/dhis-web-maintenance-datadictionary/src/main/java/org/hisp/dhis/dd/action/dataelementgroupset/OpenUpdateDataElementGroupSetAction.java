@@ -27,11 +27,16 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.system.filter.DataElementGroupWithoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -71,16 +76,18 @@ public class OpenUpdateDataElementGroupSetAction
         return dataElementGroupSet;
     }
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<DataElementGroup> availableGroups;
 
-    public List<DataElementGroup> getDataElementGroups()
+    public List<DataElementGroup> getAvailableGroups()
     {
-        return dataElementGroups;
+        return availableGroups;
     }
+    
+    private List<DataElementGroup> selectedGroups;
 
-    public void setDataElementGroups( List<DataElementGroup> dataElementGroups )
+    public List<DataElementGroup> getSelectedGroups()
     {
-        this.dataElementGroups = dataElementGroups;
+        return selectedGroups;
     }
 
     public String execute()
@@ -88,9 +95,18 @@ public class OpenUpdateDataElementGroupSetAction
     {
         dataElementGroupSet = dataElementService.getDataElementGroupSet( id );       
 
-        dataElementGroups.removeAll( dataElementGroupSet.getMembers() );
+        availableGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
+        availableGroups.removeAll( dataElementGroupSet.getMembers() );
+
+        FilterUtils.filter( availableGroups, new DataElementGroupWithoutGroupSetFilter() );
+        
+        Collections.sort( availableGroups, new DataElementGroupNameComparator() );
+        
+        selectedGroups = dataElementGroupSet.getMembers();
+        
+        Collections.sort( selectedGroups, new DataElementGroupNameComparator() );
+        
         return SUCCESS;
     }
-
 }
