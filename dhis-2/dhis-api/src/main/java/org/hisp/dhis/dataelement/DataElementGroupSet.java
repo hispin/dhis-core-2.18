@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.dimension.Dimension;
@@ -65,6 +66,22 @@ public class DataElementGroupSet
     public List<? extends DimensionOption> getDimensionOptions()
     {
         return members;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public Collection<DataElement> getDataElements()
+    {
+        List<DataElement> dataElements = new ArrayList<DataElement>();
+        
+        for ( DataElementGroup group : members )
+        {
+            dataElements.addAll( group.getMembers() );
+        }
+        
+        return dataElements;
     }
     
     // -------------------------------------------------------------------------

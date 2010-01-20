@@ -88,6 +88,7 @@ public class DataIntegrityServiceTest
     private OrganisationUnitGroup unitGroupA;
     private OrganisationUnitGroup unitGroupB;
     private OrganisationUnitGroup unitGroupC;
+    private OrganisationUnitGroup unitGroupD;
     
     private OrganisationUnitGroupSet unitGroupSetA;
     private OrganisationUnitGroupSet unitGroupSetB;    
@@ -121,7 +122,7 @@ public class DataIntegrityServiceTest
         dataElementService.addDataElement( elementA );
         dataElementService.addDataElement( elementB );
         dataElementService.addDataElement( elementC );
-                
+        
         indicatorTypeA = createIndicatorType( 'A' );
         
         indicatorService.addIndicatorType( indicatorTypeA );
@@ -163,14 +164,18 @@ public class DataIntegrityServiceTest
 
         dataSetA.getDataElements().add( elementA );
         dataSetA.getDataElements().add( elementB );
+        elementA.getDataSets().add( dataSetA );
+        elementB.getDataSets().add( dataSetA );
         
         dataSetA.getSources().add( unitA );
+        unitA.getDataSets().add( dataSetA );
         
         dataSetB.getDataElements().add( elementA );
+        elementA.getDataSets().add( dataSetB );        
         
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
-              
+        
         // ---------------------------------------------------------------------
         // Groups
         // ---------------------------------------------------------------------
@@ -178,30 +183,43 @@ public class DataIntegrityServiceTest
         elementGroupA = createDataElementGroup( 'A' );
         
         elementGroupA.getMembers().add( elementA );
+        elementA.getGroups().add( elementGroupA );
         
         dataElementService.addDataElementGroup( elementGroupA );
         
         indicatorGroupA = createIndicatorGroup( 'A' );
         
         indicatorGroupA.getMembers().add( indicatorA );
+        indicatorA.getGroups().add( indicatorGroupA );
         
         indicatorService.addIndicatorGroup( indicatorGroupA );
         
         unitGroupA = createOrganisationUnitGroup( 'A' );
         unitGroupB = createOrganisationUnitGroup( 'B' );
         unitGroupC = createOrganisationUnitGroup( 'C' );
+        unitGroupD = createOrganisationUnitGroup( 'D' );
         
         unitGroupA.getMembers().add( unitA );
         unitGroupA.getMembers().add( unitB );
         unitGroupA.getMembers().add( unitC );
+        unitA.getGroups().add( unitGroupA );
+        unitB.getGroups().add( unitGroupA );
+        unitC.getGroups().add( unitGroupA );
         
         unitGroupB.getMembers().add( unitA );
         unitGroupB.getMembers().add( unitB );
         unitGroupB.getMembers().add( unitF );
+        unitA.getGroups().add( unitGroupB );
+        unitB.getGroups().add( unitGroupB );
+        unitF.getGroups().add( unitGroupB );
+        
+        unitGroupC.getMembers().add( unitA );
+        unitA.getGroups().add( unitGroupC );
         
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupA );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupB );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupC );
+        organisationUnitGroupService.addOrganisationUnitGroup( unitGroupD );
         
         unitGroupSetA = createOrganisationUnitGroupSet( 'A' );
         unitGroupSetB = createOrganisationUnitGroupSet( 'B' );
@@ -209,10 +227,13 @@ public class DataIntegrityServiceTest
         unitGroupSetA.setCompulsory( true );        
         unitGroupSetB.setCompulsory( false );
         
-        unitGroupSetA.getOrganisationUnitGroups().add( unitGroupA );    
+        unitGroupSetA.getOrganisationUnitGroups().add( unitGroupA );
+        unitGroupA.setGroupSet( unitGroupSetA );
         
-        unitGroupSetB.getOrganisationUnitGroups().add( unitGroupA );
         unitGroupSetB.getOrganisationUnitGroups().add( unitGroupB );
+        unitGroupSetB.getOrganisationUnitGroups().add( unitGroupC );
+        unitGroupB.setGroupSet( unitGroupSetB );
+        unitGroupC.setGroupSet( unitGroupSetB );
                 
         organisationUnitGroupService.addOrganisationUnitGroupSet( unitGroupSetA );
         organisationUnitGroupService.addOrganisationUnitGroupSet( unitGroupSetB );
@@ -235,7 +256,7 @@ public class DataIntegrityServiceTest
     {
         Collection<DataElement> expected = dataIntegrityService.getDataElementsWithoutGroups();
         
-        assertTrue( equals( expected, elementB, elementC ) );
+        assertTrue( message( expected ), equals( expected, elementB, elementC ) );
     }
 
     @Test
@@ -253,7 +274,7 @@ public class DataIntegrityServiceTest
     {
         Collection<DataSet> expected = dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits();
         
-        assertTrue( equals( expected, dataSetB ) );
+        assertTrue( message( expected ), equals( expected, dataSetB ) );
     }
 
     @Test
@@ -261,7 +282,7 @@ public class DataIntegrityServiceTest
     {
         Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
         
-        assertTrue( equals( expected, indicatorC ) );
+        assertTrue( message( expected ), equals( expected, indicatorC ) );
     }
 
     @Test
@@ -269,7 +290,7 @@ public class DataIntegrityServiceTest
     {
         Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithoutGroups();
         
-        assertTrue( equals( expected, indicatorB, indicatorC ) );
+        assertTrue( message( expected ), equals( expected, indicatorB, indicatorC ) );
     }
 
     @Test
@@ -277,7 +298,7 @@ public class DataIntegrityServiceTest
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsWithCyclicReferences();
         
-        assertTrue( equals( expected, unitA, unitB, unitC ) );
+        assertTrue( message( expected ), equals( expected, unitA, unitB, unitC ) );
     }
 
     @Test
@@ -285,7 +306,7 @@ public class DataIntegrityServiceTest
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrphanedOrganisationUnits();
         
-        assertTrue( equals( expected, unitF ) );
+        assertTrue( message( expected ), equals( expected, unitF ) );
     }
 
     @Test
@@ -293,7 +314,7 @@ public class DataIntegrityServiceTest
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsWithoutGroups();
         
-        assertTrue( equals( expected, unitD, unitE ) );
+        assertTrue( message( expected ), equals( expected, unitD, unitE ) );
     }
 
     @Test
@@ -301,7 +322,7 @@ public class DataIntegrityServiceTest
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsViolatingCompulsoryGroupSets();
         
-        assertTrue( equals( expected, unitD, unitE, unitF ) );
+        assertTrue( message( expected ), equals( expected, unitD, unitE, unitF ) );
     }
 
     @Test
@@ -309,7 +330,7 @@ public class DataIntegrityServiceTest
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
         
-        assertTrue( equals( expected, unitA, unitB ) );
+        assertTrue( message( expected ), equals( expected, unitA ) );
     }
 
     @Test
@@ -317,6 +338,6 @@ public class DataIntegrityServiceTest
     {
         Collection<OrganisationUnitGroup> expected = dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets();
         
-        assertTrue( equals( expected, unitGroupC ) );
+        assertTrue( message( expected ), equals( expected, unitGroupD ) );
     }
 }

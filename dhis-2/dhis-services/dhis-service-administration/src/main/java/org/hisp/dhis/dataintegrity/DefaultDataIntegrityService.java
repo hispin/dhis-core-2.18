@@ -27,35 +27,37 @@ package org.hisp.dhis.dataintegrity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ListUtils.getDuplicates;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataintegrity.DataIntegrityService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.validation.ValidationRule;
-import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -130,56 +132,28 @@ public class DefaultDataIntegrityService
 
     public Collection<DataElement> getDataElementsWithoutDataSet()
     {
-        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
-        
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
         
-        Iterator<DataElement> iterator = dataElements.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final DataElement element = iterator.next();
-            
-            for ( DataSet dataSet : dataSets )
+        return FilterUtils.filter( dataElements, new Filter<DataElement>()
             {
-                if ( dataSet.getDataElements().contains( element ) )
+                public boolean retain( DataElement object )
                 {
-                    iterator.remove();
-                    
-                    break;
+                    return object.getDataSets() == null || object.getDataSets().size() == 0;
                 }
-            }
-        }
-        
-        return dataElements;
+            } );
     }
 
-    // TODO re-implement using new model
-    
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
-        Collection<DataElementGroup> groups = dataElementService.getAllDataElementGroups();
-        
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
         
-        Iterator<DataElement> iterator = dataElements.iterator();
-        
-        while ( iterator.hasNext() )
+        return FilterUtils.filter( dataElements, new Filter<DataElement>()
         {
-            final DataElement element = iterator.next();
-            
-            for ( DataElementGroup group : groups )
+            public boolean retain( DataElement object )
             {
-                if ( group.getMembers().contains( element ) )
-                {
-                    iterator.remove();
-                    
-                    break;
-                }
+                return object.getGroups() == null || object.getGroups().size() == 0;
             }
-        }
-        
-        return dataElements;
+        } );
     }
     
     public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
@@ -221,19 +195,13 @@ public class DefaultDataIntegrityService
     {
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
         
-        Iterator<DataSet> iterator = dataSets.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final DataSet dataSet = iterator.next();
-            
-            if ( dataSet.getSources().size() > 0 )
+        return FilterUtils.filter( dataSets, new Filter<DataSet>()
             {
-                iterator.remove();
-            }
-        }
-        
-        return dataSets;
+                public boolean retain( DataSet object )
+                {
+                    return object.getSources() == null || object.getSources().size() == 0;
+                }
+            } );
     }
     
     // -------------------------------------------------------------------------
@@ -267,28 +235,15 @@ public class DefaultDataIntegrityService
 
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
-        Collection<IndicatorGroup> groups = indicatorService.getAllIndicatorGroups();
-        
         Collection<Indicator> indicators = indicatorService.getAllIndicators();
         
-        Iterator<Indicator> iterator = indicators.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final Indicator indicator = iterator.next();
-            
-            for ( IndicatorGroup group : groups )
+        return FilterUtils.filter( indicators, new Filter<Indicator>()
             {
-                if ( group.getMembers().contains( indicator ) )
+                public boolean retain( Indicator object )
                 {
-                    iterator.remove();
-                    
-                    break;
+                    return object.getGroups() == null || object.getGroups().size() == 0;
                 }
-            }
-        }
-        
-        return indicators;
+            } );
     }
     
     public Map<Indicator, String> getInvalidIndicatorNumerators()
@@ -371,65 +326,43 @@ public class DefaultDataIntegrityService
     {
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
         
-        Set<OrganisationUnit> orphans = new HashSet<OrganisationUnit>();
-        
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            if ( unit.getParent() == null && ( unit.getChildren() == null || unit.getChildren().size() == 0 ) )
+        return FilterUtils.filter( organisationUnits, new Filter<OrganisationUnit>()
             {
-                orphans.add( unit );
-            }
-        }
-        
-        return orphans;
+                public boolean retain( OrganisationUnit object )
+                {
+                    return object.getParent() == null && ( object.getChildren() == null || object.getChildren().size() == 0 );
+                }
+            } );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
-        Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getAllOrganisationUnitGroups();
-        
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
         
-        Iterator<OrganisationUnit> iterator = organisationUnits.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final OrganisationUnit unit = iterator.next();
-            
-            for ( OrganisationUnitGroup group : groups )
+        return FilterUtils.filter( organisationUnits, new Filter<OrganisationUnit>()
             {
-                if ( group.getMembers().contains( unit ) )
+                public boolean retain( OrganisationUnit object )
                 {
-                    iterator.remove();
-                    
-                    break;
+                    return object.getGroups() == null || object.getGroups().size() == 0;
                 }
-            }
-        }
-        
-        return organisationUnits;
+            } );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsViolatingCompulsoryGroupSets()
     {
         Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets();
-        
+                
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
         
         Set<OrganisationUnit> targets = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnitGroupSet groupSet : groupSets )
+        for ( OrganisationUnit unit : organisationUnits )
         {
-            organisationUnit: for ( OrganisationUnit unit : organisationUnits )
+            for ( OrganisationUnitGroupSet groupSet : groupSets )
             {
-                for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
-                {                    
-                    if ( group.getMembers().contains( unit ) )
-                    {
-                        continue organisationUnit;
-                    }
-                    
-                    targets.add( unit ); // Unit is not a member of any groups in the compulsory group set                    
+                if ( !CollectionUtils.containsAny( groupSet.getOrganisationUnitGroups(), unit.getGroups() ) )
+                {
+                    targets.add( unit );
                 }
             }
         }
@@ -438,32 +371,14 @@ public class DefaultDataIntegrityService
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsViolatingExclusiveGroupSets()
-    {
+    {        
         Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
-        
+
         Set<OrganisationUnit> targets = new HashSet<OrganisationUnit>();
 
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
-            organisationUnit: for ( OrganisationUnit unit : organisationUnits )
-            {
-                int memberships = 0;
-                
-                for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
-                {
-                    if ( group.getMembers().contains( unit ) )
-                    {
-                        if ( ++memberships > 1 )
-                        {
-                            targets.add( unit ); // Unit is member of more than one group in the exclusive group set
-                            
-                            continue organisationUnit;
-                        }
-                    }
-                }
-            }
+            targets.addAll( getDuplicates( new ArrayList<OrganisationUnit>( groupSet.getOrganisationUnits() ), new OrganisationUnitNameComparator() ) );
         }
         
         return targets;
@@ -471,28 +386,9 @@ public class DefaultDataIntegrityService
 
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithoutGroupSets()
     {
-        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
         Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getAllOrganisationUnitGroups();
         
-        Iterator<OrganisationUnitGroup> iterator = groups.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final OrganisationUnitGroup group = iterator.next();
-            
-            for ( OrganisationUnitGroupSet groupSet : groupSets )
-            {
-                if ( groupSet.getOrganisationUnitGroups().contains( group ) )
-                {
-                    iterator.remove();
-                    
-                    break;
-                }
-            }
-        }
-        
-        return groups;
+        return FilterUtils.filter( groups, new OrganisationUnitGroupWithoutGroupSetFilter() );
     }
 
     // -------------------------------------------------------------------------
@@ -501,28 +397,15 @@ public class DefaultDataIntegrityService
 
     public Collection<ValidationRule> getValidationRulesWithoutGroups()
     {
-        Collection<ValidationRuleGroup> groups = validationRuleService.getAllValidationRuleGroups();
-        
         Collection<ValidationRule> validationRules = validationRuleService.getAllValidationRules();
         
-        Iterator<ValidationRule> iterator = validationRules.iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            final ValidationRule rule = iterator.next();
-            
-            for ( ValidationRuleGroup group : groups )
+        return FilterUtils.filter( validationRules, new Filter<ValidationRule>()
             {
-                if ( group.getMembers().contains( rule ) )
+                public boolean retain( ValidationRule object )
                 {
-                    iterator.remove();
-                    
-                    break;
+                    return object.getGroups() == null || object.getGroups().size() == 0;
                 }
-            }
-        }
-        
-        return validationRules;
+            } );
     }
     
     public Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
