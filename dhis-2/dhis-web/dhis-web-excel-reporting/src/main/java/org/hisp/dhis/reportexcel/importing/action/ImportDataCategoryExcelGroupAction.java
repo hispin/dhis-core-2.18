@@ -148,7 +148,6 @@ public class ImportDataCategoryExcelGroupAction
     public String execute()
         throws Exception
     {
-
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
         if ( excelItemIds == null )
@@ -160,19 +159,14 @@ public class ImportDataCategoryExcelGroupAction
 
         if ( organisationUnit != null )
         {
-
             FileInputStream upload = new FileInputStream( selectionManager.getUploadFilePath() );
-           // WorkbookSettings ws = new WorkbookSettings();
-            //ws.setLocale( new Locale( "en", "EN" ) );
-           // Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
-            
-            HSSFWorkbook wb = new  HSSFWorkbook( upload );
+
+            HSSFWorkbook wb = new HSSFWorkbook( upload );
 
             Period period = periodGenericManager.getSelectedPeriod();
 
             for ( int i = 0; i < excelItemIds.length; i++ )
             {
-
                 int excelItemId = Integer.parseInt( excelItemIds[i].split( "-" )[0] );
 
                 int rowIndex = Integer.parseInt( excelItemIds[i].split( "-" )[1] );
@@ -183,10 +177,9 @@ public class ImportDataCategoryExcelGroupAction
 
                 HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValuePOI( rowIndex, excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValueImportingByPOI( rowIndex, excelItem.getColumn(), sheet );
 
                 addDataValue( expression, value, organisationUnit, period );
-
             }
 
         }// end if (organisationUnit ...
@@ -198,7 +191,6 @@ public class ImportDataCategoryExcelGroupAction
 
     private void addDataValue( String expression, String value, OrganisationUnit organisationUnit, Period period )
     {
-
         Operand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
 
         DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
@@ -215,7 +207,6 @@ public class ImportDataCategoryExcelGroupAction
             dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy, new Date(), null,
                 optionCombo );
             dataValueService.addDataValue( dataValue );
-
         }
         else
         {
@@ -224,8 +215,6 @@ public class ImportDataCategoryExcelGroupAction
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );
-
         }
     }
-
 }

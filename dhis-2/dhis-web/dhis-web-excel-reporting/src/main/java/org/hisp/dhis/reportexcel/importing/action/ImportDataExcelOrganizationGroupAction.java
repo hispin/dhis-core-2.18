@@ -157,7 +157,6 @@ public class ImportDataExcelOrganizationGroupAction
     public String execute()
         throws Exception
     {
-
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
         if ( excelItemIds == null )
@@ -169,16 +168,14 @@ public class ImportDataExcelOrganizationGroupAction
 
         if ( organisationUnit != null )
         {
-            
             FileInputStream inputStream = new FileInputStream( selectionManager.getUploadFilePath() );
-            
-            HSSFWorkbook wb = new  HSSFWorkbook( inputStream );
+
+            HSSFWorkbook wb = new HSSFWorkbook( inputStream );
 
             Period period = periodGenericManager.getSelectedPeriod();
 
             for ( int i = 0; i < excelItemIds.length; i++ )
             {
-
                 int orgunitId = Integer.parseInt( excelItemIds[i].split( "-" )[0] );
 
                 OrganisationUnit o = organisationUnitService.getOrganisationUnit( orgunitId );
@@ -205,17 +202,14 @@ public class ImportDataExcelOrganizationGroupAction
         return SUCCESS;
     }
 
-    private void writeDataValue( ExcelItem exelItem, HSSFWorkbook wb, int row, OrganisationUnit o,
-        Period period )
+    private void writeDataValue( ExcelItem exelItem, HSSFWorkbook wb, int row, OrganisationUnit o, Period period )
     {
-
         HSSFSheet sheet = wb.getSheetAt( exelItem.getSheetNo() - 1 );
 
-        String value = ExcelUtils.readValuePOI( exelItem.getRow() + row, exelItem.getColumn(), sheet );
+        String value = ExcelUtils.readValueImportingByPOI( exelItem.getRow() + row, exelItem.getColumn(), sheet );
 
         if ( value.length() > 0 )
         {
-
             Operand operand = expressionService.getOperandsInExpression( exelItem.getExpression() ).iterator().next();
 
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
@@ -239,7 +233,6 @@ public class ImportDataExcelOrganizationGroupAction
                 dataValue.setStoredBy( storedBy );
 
                 dataValueService.updateDataValue( dataValue );
-
             }
         }
     }

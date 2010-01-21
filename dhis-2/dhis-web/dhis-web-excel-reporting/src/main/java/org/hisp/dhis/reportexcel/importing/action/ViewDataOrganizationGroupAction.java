@@ -112,23 +112,20 @@ public class ViewDataOrganizationGroupAction
     {
         try
         {
-
             OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
             FileInputStream inputStream = new FileInputStream( upload );
-            
-            HSSFWorkbook wb = new  HSSFWorkbook( inputStream );
+
+            HSSFWorkbook wb = new HSSFWorkbook( inputStream );
 
             excelItemValueByOrgUnits = new ArrayList<ExcelItemValueByOrganisationUnit>();
 
             if ( organisationUnit != null )
             {
-
                 for ( OrganisationUnitGroup organisationUnitGroup : excelItemGroup.getOrganisationUnitGroups() )
                 {
-
-                	List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits( organisationUnitGroup,
-                        organisationUnit ));
+                    List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits(
+                        organisationUnitGroup, organisationUnit ) );
 
                     Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
@@ -136,18 +133,16 @@ public class ViewDataOrganizationGroupAction
 
                     for ( OrganisationUnit o : organisationUnits )
                     {
-
                         ExcelItemValueByOrganisationUnit excelItemValueByOrgUnit = new ExcelItemValueByOrganisationUnit(
                             o );
                         ArrayList<ExcelItemValue> excelItemValues = new ArrayList<ExcelItemValue>();
 
                         for ( ExcelItem excelItem : excelItems )
                         {
-
                             HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-                            String value = ExcelUtils
-                                .readValuePOI( excelItem.getRow() + row, excelItem.getColumn(), sheet );
+                            String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow() + row, excelItem
+                                .getColumn(), sheet );
 
                             ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
 

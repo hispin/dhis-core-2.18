@@ -97,7 +97,6 @@ public class ViewDataCategoryAction
     {
         try
         {
-
             FileInputStream inputStream = new FileInputStream( upload );
 
             HSSFWorkbook wb = new HSSFWorkbook( inputStream );
@@ -121,7 +120,7 @@ public class ViewDataCategoryAction
                     for ( DataElement dataElement : dataElementGroup.getDataElements() )
                     {
 
-                        String value = ExcelUtils.readValuePOI( rowBegin, excelItem.getColumn(), sheet );
+                        String value = ExcelUtils.readValueImportingByPOI( rowBegin, excelItem.getColumn(), sheet );
 
                         ExcelItem item = new ExcelItem();
 

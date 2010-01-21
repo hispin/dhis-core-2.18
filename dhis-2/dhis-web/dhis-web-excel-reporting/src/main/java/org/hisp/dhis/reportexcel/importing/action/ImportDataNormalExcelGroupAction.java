@@ -159,7 +159,6 @@ public class ImportDataNormalExcelGroupAction
     public String execute()
         throws Exception
     {
-
         ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId.intValue() );
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
@@ -173,10 +172,9 @@ public class ImportDataNormalExcelGroupAction
 
         if ( organisationUnit != null )
         {
-
             FileInputStream upload = new FileInputStream( selectionManager.getUploadFilePath() );
-            
-            HSSFWorkbook wb = new  HSSFWorkbook( upload );
+
+            HSSFWorkbook wb = new HSSFWorkbook( upload );
 
             Collection<ExcelItem> excelItems = new ArrayList<ExcelItem>();
             if ( excelItemIds != null )
@@ -195,15 +193,12 @@ public class ImportDataNormalExcelGroupAction
 
             for ( ExcelItem excelItem : excelItems )
             {
-
-
                 HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValuePOI( excelItem.getRow(), excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow(), excelItem.getColumn(), sheet );
 
                 if ( value.length() > 0 )
                 {
-
                     Operand operand = expressionService.getOperandsInExpression( excelItem.getExpression() ).iterator()
                         .next();
 
