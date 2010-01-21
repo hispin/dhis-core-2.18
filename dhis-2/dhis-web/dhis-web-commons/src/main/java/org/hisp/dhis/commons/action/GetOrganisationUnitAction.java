@@ -27,19 +27,45 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class NoAction
+public class GetOrganisationUnitAction
     implements Action
 {
-    //TODO remove not required with struts2
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
     
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
     public String execute()
     {
+        if ( id != null )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        }
+        
         return SUCCESS;
     }
 }

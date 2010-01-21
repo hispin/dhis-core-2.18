@@ -65,7 +65,11 @@ public class JdbcDataMergeStore
         final int destCategoryOptionComboId = destCategoryOptionCombo.getId();
         final int sourceDataElementId = sourceDataElemenet.getId();
         final int sourceCategoryOptionComboId = sourceCategoryOptionCombo.getId();
-        
+
+        // -------------------------------------------------------------------------
+        // DataMergeStore implementation
+        // -------------------------------------------------------------------------
+
         final String sql =         
             "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid=" + destCategoryOptionComboId + " " +
             "WHERE dataelementid=" + sourceDataElementId + " and categoryoptioncomboid=" + sourceCategoryOptionComboId + " " +

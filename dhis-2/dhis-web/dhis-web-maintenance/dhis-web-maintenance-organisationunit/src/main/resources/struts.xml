@@ -131,7 +131,6 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-
 		<action name="openAddOrganisationUnitGroup"
 			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SetupAssociationsTreeAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -146,8 +145,6 @@
 			</result>
 			<param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
 		</action>
-		
-		
 
 		<action name="openUpdateOrganisationUnitGroup"
 			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SetupAssociationsTreeAction">

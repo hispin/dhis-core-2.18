@@ -27,19 +27,42 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class NoAction
+public class GetDataElementAction
     implements Action
 {
-    //TODO remove not required with struts2
+    private DataElementService dataElementService;
     
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private Integer id;
+    
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private DataElement dataElement;
+
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
+
     public String execute()
     {
+        dataElement = dataElementService.getDataElement( id );      
+
         return SUCCESS;
     }
 }
