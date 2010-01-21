@@ -270,5 +270,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFActionAction" 
     class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction"
     scope="prototype"/>
-    
+  
+  <!-- Organisation unit merge -->
+  
+  <bean id="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
+	class="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
+	scope="prototype">
+    <property name="dataMergeService"
+      ref="org.hisp.dhis.datamerge.DataMergeService"/>
+    <property name="organisationUnitService" 
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+  
 </beans>

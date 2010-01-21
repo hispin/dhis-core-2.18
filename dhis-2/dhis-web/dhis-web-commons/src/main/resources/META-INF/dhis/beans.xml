@@ -46,8 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor"
+	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor"
 		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor">
 		<property name="standardParams">
 			<set>
@@ -64,8 +63,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor"
+	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor"
 		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor">
 		<property name="moduleManager">
 			<ref local="org.hisp.dhis.webportal.module.ModuleManager" />
@@ -88,16 +86,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor"
+	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor"
 		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor">
 		<property name="menuStateManager">
 			<ref local="org.hisp.dhis.webportal.menu.MenuStateManager" />
 		</property>
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor"
+	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor"
 		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor">
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService" />
@@ -540,6 +536,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.commons.action.GetDataElementAction"
+        class="org.hisp.dhis.commons.action.GetDataElementAction" scope="prototype">
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+		
 	<bean id="org.hisp.dhis.commons.action.GetDataSetsAction" class="org.hisp.dhis.commons.action.GetDataSetsAction"
 		scope="prototype">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -562,6 +563,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+
+    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitAction"
+        class="org.hisp.dhis.commons.action.GetOrganisationUnitAction" scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
 
 	<bean id="org.hisp.dhis.commons.action.GetPeriodsAction" class="org.hisp.dhis.commons.action.GetPeriodsAction"
 		scope="prototype">

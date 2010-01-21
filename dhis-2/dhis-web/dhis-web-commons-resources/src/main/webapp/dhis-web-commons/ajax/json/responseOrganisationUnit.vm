@@ -1,0 +1,11 @@
+{
+  "organisationUnit":
+  {
+    "name": "$!{encoder.jsEncode( ${organisationUnit.name} )}",
+    "shortName": "$!{encoder.jsEncode( ${organisationUnit.shortName} )}",
+    "code": "$!{encoder.jsEncode( ${organisationUnit.code} )}",
+    "type": "$!{encoder.jsEncode( ${organisationUnit.type} )}",
+    "comment": "$!{encoder.jsEncode( ${organisationUnit.comment} )}",
+    "url": "$!{encoder.jsEncode( ${organisationUnit.url} )}"
+  }
+}

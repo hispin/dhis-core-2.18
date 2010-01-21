@@ -235,6 +235,19 @@
         <param name="bufferSize">10240</param>
       </result>
     </action>
+	
+	<!-- Organisation unit merge -->
+	
+    <action name="displayOrganisationUnitMergeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/organisationUnitMergeForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitMerge.js</param>
+    </action>
+	
+	<action name="mergeOrganisationUnits" class="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction">
+	  <result name="success" type="redirect">displayOrganisationUnitMergeForm.action</result>
+	</action>
     
   </package>
 </struts>

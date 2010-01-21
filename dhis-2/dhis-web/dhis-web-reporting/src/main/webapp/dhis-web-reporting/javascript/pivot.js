@@ -41,14 +41,6 @@ function getData()
   var periodTypeName = periodTypeList.options[ periodTypeList.selectedIndex ].value;
   var level = levelList.options[ levelList.selectedIndex ].value;
   
-  /* DEBUG 
-  indicatorGroupId = "1152";
-  periodTypeName = "Monthly";
-  startDate = "2006-01-01";
-  endDate = "2007-01-01";
-  level = "4";  
-  /* DEBUG */
-  
   document.getElementById( "dataLabel" ).innerHTML = 
     i18n_indicator_group + ": " + indicatorGroupName +
     ", " + i18n_start_date + ": " + startDate + 
