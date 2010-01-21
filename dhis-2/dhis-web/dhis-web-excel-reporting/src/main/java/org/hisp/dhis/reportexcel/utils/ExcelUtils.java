@@ -138,7 +138,7 @@ public class ExcelUtils
     /* POI - Read the value of specified cell */
     public static String readValuePOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
-        org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row - 1, column - 1, sheetPOI );
+        org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row, column, sheetPOI );
 
         String value = "";
 
