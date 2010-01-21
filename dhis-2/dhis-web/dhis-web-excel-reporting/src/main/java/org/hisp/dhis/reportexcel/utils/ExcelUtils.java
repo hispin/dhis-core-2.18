@@ -136,7 +136,7 @@ public class ExcelUtils
     }
 
     /* POI - Read the value of specified cell */
-    public static String readValuePOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
+    public static String readValueByPOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
         org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row, column, sheetPOI );
 
@@ -168,6 +168,31 @@ public class ExcelUtils
 
             default:
                 value = cellPOI.getStringCellValue();
+                break;
+            }
+        }
+
+        return value;
+
+    }
+
+    public static String readValueImportingByPOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
+    {
+        org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row, column, sheetPOI );
+
+        String value = "";
+
+        if ( cellPOI != null )
+        {
+            switch ( cellPOI.getCellType() )
+            {
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING:
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK:
+                value = cellPOI.getRichStringCellValue().toString();
+                break;
+                
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
+                value = String.valueOf( cellPOI.getNumericCellValue() );
                 break;
             }
         }

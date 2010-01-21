@@ -86,19 +86,17 @@ public class ViewDataNormalAction
     {
         try
         {
-
             FileInputStream inputStream = new FileInputStream( upload );
-           
-            HSSFWorkbook wb = new  HSSFWorkbook( inputStream );
+
+            HSSFWorkbook wb = new HSSFWorkbook( inputStream );
 
             excelItemValues = new ArrayList<ExcelItemValue>();
 
             for ( ExcelItem excelItem : excelItems )
             {
-
                 HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValuePOI( excelItem.getRow(), excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow(), excelItem.getColumn(), sheet );
 
                 ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
 
