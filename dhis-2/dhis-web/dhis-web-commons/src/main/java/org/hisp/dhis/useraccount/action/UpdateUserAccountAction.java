@@ -40,109 +40,125 @@ import com.opensymphony.xwork2.Action;
  * @version $Id: UpdateUserAction.java 5556 2009-11-30 11:18:30Z Chau Thu Tran $
  */
 
-public class UpdateUserAccountAction implements Action {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public class UpdateUserAccountAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private UserStore userStore;
+    private UserStore userStore;
 
-	private PasswordManager passwordManager;
+    private PasswordManager passwordManager;
 
-	// -------------------------------------------------------------------------
-	// Input
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	private String rawPassword;
+    private String rawPassword;
 
-	private String surname;
+    private String surname;
 
-	private String firstName;
+    private String firstName;
 
-	private String email;
+    private String email;
 
-	private String phoneNumber;
+    private String phoneNumber;
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public void setPasswordManager(PasswordManager passwordManager) {
-		this.passwordManager = passwordManager;
-	}
+    public void setPasswordManager( PasswordManager passwordManager )
+    {
+        this.passwordManager = passwordManager;
+    }
 
-	public void setUserStore(UserStore userStore) {
-		this.userStore = userStore;
-	}
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
 
-	public void setRawPassword(String rawPassword) {
-		this.rawPassword = rawPassword;
-	}
+    public void setRawPassword( String rawPassword )
+    {
+        this.rawPassword = rawPassword;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setSurname( String surname )
+    {
+        this.surname = surname;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail( String email )
+    {
+        this.email = email;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		
-		// ---------------------------------------------------------------------
-		// Prepare values
-		// ---------------------------------------------------------------------
+    public String execute()
+        throws Exception
+    {
 
-		if (email != null && email.trim().length() == 0) {
-			email = null;
-		}
+        // ---------------------------------------------------------------------
+        // Prepare values
+        // ---------------------------------------------------------------------
 
-		if (rawPassword != null && rawPassword.trim().length() == 0) {
-			rawPassword = null;
-		}
+        if ( email != null && email.trim().length() == 0 )
+        {
+            email = null;
+        }
 
-		// ---------------------------------------------------------------------
-		// Update userCredentials and user
-		// ---------------------------------------------------------------------
+        if ( rawPassword != null && rawPassword.trim().length() == 0 )
+        {
+            rawPassword = null;
+        }
 
-		User user = userStore.getUser(id);
+        // ---------------------------------------------------------------------
+        // Update userCredentials and user
+        // ---------------------------------------------------------------------
 
-		user.setSurname(surname);
+        User user = userStore.getUser( id );
 
-		user.setFirstName(firstName);
+        user.setSurname( surname );
 
-		user.setEmail(email);
+        user.setFirstName( firstName );
 
-		user.setPhoneNumber(phoneNumber);
+        user.setEmail( email );
 
-		UserCredentials userCredentials = userStore.getUserCredentials(user);
+        user.setPhoneNumber( phoneNumber );
 
-		if (rawPassword != null) {
-			userCredentials.setPassword(passwordManager.encodePassword(
-					userCredentials.getUsername(), rawPassword));
-		}
+        UserCredentials userCredentials = userStore.getUserCredentials( user );
 
-		userStore.updateUserCredentials(userCredentials);
-		userStore.updateUser(user);
+        if ( rawPassword != null )
+        {
+            userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
+            
+            userStore.updateUserCredentials( userCredentials );
+            
+        }
+        
+        userStore.updateUser( user );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

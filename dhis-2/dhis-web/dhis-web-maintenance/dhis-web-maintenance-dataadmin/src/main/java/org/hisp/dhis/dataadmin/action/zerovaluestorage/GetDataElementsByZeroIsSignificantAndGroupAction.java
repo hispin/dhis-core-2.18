@@ -1,4 +1,4 @@
-package org.hisp.dhis.useraccount.action;
+package org.hisp.dhis.dataadmin.action.zerovaluestorage;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,18 +27,23 @@ package org.hisp.dhis.useraccount.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GetCurrentUserAction
+
+public class GetDataElementsByZeroIsSignificantAndGroupAction
     implements Action
 {
 
@@ -46,46 +51,60 @@ public class GetCurrentUserAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private DataElementService dataElementService;
 
-    private UserStore userStore;
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private boolean saveZeroValue;
+
+    public void setSaveZeroValue( boolean saveZeroValue )
+    {
+        this.saveZeroValue = saveZeroValue;
+    }
+
+    private Integer dataElementGroupId;
+
+    public void setDataElementGroupId( Integer dataElementGroupId )
+    {
+        this.dataElementGroupId = dataElementGroupId;
+    }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private UserCredentials userCredentials;
+    private List<DataElement> dataElements;
 
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public List<DataElement> getDataElements()
     {
-        this.currentUserService = currentUserService;
+        return dataElements;
     }
 
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
-
-    public UserCredentials getUserCredentials()
-    {
-        return userCredentials;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
+    @Override
     public String execute()
         throws Exception
     {
+        if ( dataElementGroupId == null )
+        {
+            dataElements = new ArrayList<DataElement>( dataElementService
+                .getDataElementsByZeroIsSignificant( saveZeroValue ) );
+        }
+        else
+        {
+            DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( dataElementGroupId );
 
-        User user = currentUserService.getCurrentUser();
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByZeroIsSignificantAndGroup(
+                saveZeroValue, dataElementGroup ) );
+        }
 
-        userCredentials = userStore.getUserCredentials( user );
+        Collections.sort( dataElements, new DataElementNameComparator() );
 
         return SUCCESS;
     }

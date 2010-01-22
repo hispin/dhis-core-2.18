@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "update_user" )</h3>
 
-<form id="updateUserinforForm" action="updateUserAccount.action" method="post" onsubmit="return validateUpdateUser()">
+<form id="updateUserinforForm" action="updateUserAccount.action" method="post">
 	
   <div>
 	<input type="hidden" id="id" name="id" value="$userCredentials.id">
@@ -41,7 +41,7 @@
     </tr>
 	<tr>
 		<td></td>
-		<td valign="top"><input type="submit" value="$i18n.getString( "save" )" style="width:10em"></td>
+		<td valign="top"><input type="button" value="$i18n.getString( "save" )" style="width:10em" onclick="validateUpdateUser()"></td>
 	</tr>
 </table>
 
@@ -54,5 +54,21 @@
 	var surnameField = document.getElementById( 'surname' );
 	surnameField.select();
 	surnameField.focus();
+	
+	function validateUpdateUser()
+	{
+		var rawPassword = getFieldValue( 'rawPassword' );
+		var retypePassword = getFieldValue( 'retypePassword' );	        
+	    if( rawPassword==retypePassword )
+		{
+			document.getElementById( 'updateUserinforForm' ).submit();			
+		}else
+		{
+			window.alert( '$encoder.jsEscape( $i18n.getString( "password_not_match" ) , "'")');
+		}
+	}
+	
+	
+	
 
 </script>

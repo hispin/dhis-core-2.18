@@ -1,285 +1,295 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-	
-   <!-- Locking -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
-    class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService"/> 
-  </bean>
-  
-  <bean
-    id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
-    class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
-    scope="prototype">
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-  </bean>
-  
-  <bean
-    id="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
-    class="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-    </property>
-    <property name="periodService">
-      <ref bean="org.hisp.dhis.period.PeriodService"/>
-    </property>
-    <property name="dataSetLockService">
-      <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-    </property>
-    <property name="currentUserService">
-      <ref bean="org.hisp.dhis.user.CurrentUserService"/>
-    </property> 
-  </bean>
- 
-  <bean id="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
-    class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-    </property>
-    <property name="periodService">
-      <ref bean="org.hisp.dhis.period.PeriodService"/>
-    </property>
-    <property name="dataSetLockService">
-      <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-    </property>
-	<property name="currentUserService">
-	  <ref bean="org.hisp.dhis.user.CurrentUserService"/>
-	</property>     
-  </bean>
-	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
-    class="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
-    scope="prototype">   
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-    </property>
-    <property name="periodService">
-      <ref bean="org.hisp.dhis.period.PeriodService"/>
-    </property>
-    <property name="dataSetLockService">
-      <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-    </property>   
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.lock.SelectAllAction"
-    class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction" 
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction"
-    class="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction" 
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction"
-    class="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction" 
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction"
-    class="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction" 
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property> 
-  </bean>
-	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction"
-    class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction"
-    scope="prototype">
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </property>
-  </bean>
-	
-	<bean id="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
-    class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction" scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-	
-	<bean id="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
-    class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
-    scope="prototype">
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
-    class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
-    scope="prototype">
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock"
-    class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock"
-    scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-  </bean>
-	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.ExpandSubtreeAction"
-    class="org.hisp.dhis.ouwt.action.ExpandSubtreeAction" scope="prototype">
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </property>
-    <property name="treeStateManager">
-      <ref bean="org.hisp.dhis.ouwt.manager.TreeStateManager"/>
-    </property>
-  </bean>
-	
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
-    class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
-    scope="prototype">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>      
-  </bean>
-  
-  <!-- Maintenance -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
-    class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
-    scope="prototype">
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="maintenanceService"
-      ref="org.hisp.dhis.maintenance.MaintenanceService"/>
-    <property name="completenessStore"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-  </bean>
-	
-  <!-- Resource table -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
-    class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
-    scope="prototype">    
-    <property name="resourceTableService"
-      ref="org.hisp.dhis.resourcetable.ResourceTableService"/>
-  </bean>
-  
-  <!-- Cache -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction" 
-    class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction"
-    scope="prototype">
-    <property name="cacheManager"
-      ref="org.hisp.dhis.cache.HibernateCacheManager"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction"
-    class="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction"
-    scope="prototype">
-    <property name="cacheManager"
-      ref="org.hisp.dhis.cache.HibernateCacheManager"/>
-  </bean>
-  
-  <!-- Data integrity -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
-    class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
-    scope="prototype">
-    <property name="dataIntegrityService"
-      ref="org.hisp.dhis.dataintegrity.DataIntegrityService"/>
-  </bean>
-  
-  <!-- Statistics -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction"
-    class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction"
-    scope="prototype">
-    <property name="statisticsProvider"
-      ref="org.hisp.dhis.statistics.StatisticsProvider"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
-    class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
-    scope="prototype">
-    <property name="statisticsProvider"
-      ref="org.hisp.dhis.statistics.StatisticsProvider"/>
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-  </bean>
-  
-  <!-- Databrowser -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.databrowser.SearchAction" 
-    class="org.hisp.dhis.dataadmin.action.databrowser.SearchAction"
-    scope="prototype">
-    <property name="dataBrowserService" 
-      ref="org.hisp.dhis.databrowser.DataBrowserService" />
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataSetService" 
-      ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="periodService" 
-      ref="org.hisp.dhis.period.PeriodService" />
-    <property name="selectionManager" 
-      ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    <property name="organisationUnitService" 
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="organisationUnitGroupService" 
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />   
-  </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
-    class="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
-    scope="prototype">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-  </bean>
+	<!-- Locking -->
 
-  <bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFActionAction" 
-    class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction"
-    scope="prototype"/>
-  
-  <!-- Organisation unit merge -->
-  
-  <bean id="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
-	class="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
-	scope="prototype">
-    <property name="dataMergeService"
-      ref="org.hisp.dhis.datamerge.DataMergeService"/>
-    <property name="organisationUnitService" 
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-  
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
+		class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
+		scope="prototype">
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
+		class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
+		class="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
+		scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService" />
+		</property>
+		<property name="dataSetLockService">
+			<ref bean="org.hisp.dhis.datalock.DataSetLockService" />
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
+		class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
+		scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService" />
+		</property>
+		<property name="dataSetLockService">
+			<ref bean="org.hisp.dhis.datalock.DataSetLockService" />
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
+		class="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService" />
+		</property>
+		<property name="dataSetLockService">
+			<ref bean="org.hisp.dhis.datalock.DataSetLockService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.SelectAllAction"
+		class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction" scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction"
+		class="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction" scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction"
+		class="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction" scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction"
+		class="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction" scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction"
+		class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction"
+		scope="prototype">
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
+		class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
+		scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
+		class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
+		scope="prototype">
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
+		class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
+		scope="prototype">
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock"
+		class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock" scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.ExpandSubtreeAction"
+		class="org.hisp.dhis.ouwt.action.ExpandSubtreeAction" scope="prototype">
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+		<property name="treeStateManager">
+			<ref bean="org.hisp.dhis.ouwt.manager.TreeStateManager" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
+		class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<!-- Maintenance -->
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
+		class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="maintenanceService" ref="org.hisp.dhis.maintenance.MaintenanceService" />
+		<property name="completenessStore"
+			ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
+		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<!-- Resource table -->
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
+		class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
+		scope="prototype">
+		<property name="resourceTableService"
+			ref="org.hisp.dhis.resourcetable.ResourceTableService" />
+	</bean>
+
+	<!-- Cache -->
+
+	<bean id="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction"
+		class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction" scope="prototype">
+		<property name="cacheManager" ref="org.hisp.dhis.cache.HibernateCacheManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction"
+		class="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction" scope="prototype">
+		<property name="cacheManager" ref="org.hisp.dhis.cache.HibernateCacheManager" />
+	</bean>
+
+	<!-- Data integrity -->
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
+		class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
+		scope="prototype">
+		<property name="dataIntegrityService"
+			ref="org.hisp.dhis.dataintegrity.DataIntegrityService" />
+	</bean>
+
+	<!-- Statistics -->
+
+	<bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction"
+		class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction"
+		scope="prototype">
+		<property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
+		class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
+		scope="prototype">
+		<property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
+		<property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+	</bean>
+
+	<!-- Databrowser -->
+
+	<bean id="org.hisp.dhis.dataadmin.action.databrowser.SearchAction"
+		class="org.hisp.dhis.dataadmin.action.databrowser.SearchAction" scope="prototype">
+		<property name="dataBrowserService" ref="org.hisp.dhis.databrowser.DataBrowserService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
+		class="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFActionAction"
+		class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction"
+		scope="prototype" />
+
+	<!-- Organisation unit merge -->
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
+		class="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
+		scope="prototype">
+		<property name="dataMergeService" ref="org.hisp.dhis.datamerge.DataMergeService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<!--  Data Element Zero Value Storage Management -->
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.GetDataElementsByZeroIsSignificantAndGroupAction"
+		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.GetDataElementsByZeroIsSignificantAndGroupAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction"
+		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificant4DataElementsAction"
+		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificant4DataElementsAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+
 </beans>

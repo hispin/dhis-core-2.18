@@ -1,4 +1,4 @@
-package org.hisp.dhis.useraccount.action;
+package org.hisp.dhis.dataadmin.action.zerovaluestorage;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,66 +27,81 @@ package org.hisp.dhis.useraccount.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GetCurrentUserAction
+
+public class OpenDataElementsZeroIsSignificantManagerAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private DataElementService dataElementService;
 
-    private UserStore userStore;
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private UserCredentials userCredentials;
+    private List<DataElement> ignoreZeroValueDataElements;
 
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public List<DataElement> getIgnoreZeroValueDataElements()
     {
-        this.currentUserService = currentUserService;
+        return ignoreZeroValueDataElements;
     }
 
-    public void setUserStore( UserStore userStore )
+    private List<DataElement> zeroDataValueElements;
+
+    public List<DataElement> getZeroDataValueElements()
     {
-        this.userStore = userStore;
+        return zeroDataValueElements;
     }
 
-    public UserCredentials getUserCredentials()
+    private List<DataElementGroup> dataElementGroups;
+
+    public List<DataElementGroup> getDataElementGroups()
     {
-        return userCredentials;
+        return dataElementGroups;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
+    @Override
     public String execute()
         throws Exception
     {
+        ignoreZeroValueDataElements = new ArrayList<DataElement>( dataElementService
+            .getDataElementsByZeroIsSignificant( false ) );
 
-        User user = currentUserService.getCurrentUser();
+        Collections.sort( ignoreZeroValueDataElements, new DataElementNameComparator() );
 
-        userCredentials = userStore.getUserCredentials( user );
+        zeroDataValueElements = new ArrayList<DataElement>( dataElementService
+            .getDataElementsByZeroIsSignificant( true ) );
+
+        Collections.sort( zeroDataValueElements, new DataElementNameComparator() );
+
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         return SUCCESS;
     }
+
 }
