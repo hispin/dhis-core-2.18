@@ -78,7 +78,7 @@ public interface DataElementStore
      * @return the DataElement with the given id, or null if no match.
      */
     DataElement getDataElement( int id );
-    
+
     /**
      * Returns the DataElement with the given UUID.
      * 
@@ -135,7 +135,7 @@ public interface DataElementStore
      * @return all DataElements with types that are possible to aggregate.
      */
     Collection<DataElement> getAggregateableDataElements();
-    
+
     /**
      * Returns all active DataElements.
      * 
@@ -162,16 +162,16 @@ public interface DataElementStore
      * @return all DataElements with the given domainType.
      */
     Collection<DataElement> getDataElementsByDomainType( String domainType );
-    
+
     /**
      * Returns all DataElements with the given type.
      * 
      * @param type the type.
      * @return all DataElements with the given type.
      */
-    
+
     Collection<DataElement> getDataElementsByType( String type );
-    
+
     /**
      * Returns all DataElements with the given category combo.
      * 
@@ -181,12 +181,30 @@ public interface DataElementStore
     Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo );
 
     /**
-     * Returns all DataElements which are associated with one or more DataElementGroupSets.
+     * Returns all DataElements which are associated with one or more
+     * DataElementGroupSets.
      * 
-     * @return all DataElements which are associated with one or more DataElementGroupSets.
+     * @return all DataElements which are associated with one or more
+     *         DataElementGroupSets.
      */
     Collection<DataElement> getDataElementsWithGroupSets();
+
+    /**
+     * Return void
+     * 
+     * @param dataElementIs is list of data element id which you want to update
+     *        zeroIsSignificant property is true of false
+     * @param zeroIsSignificant is true or false
+     */
+    void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant );
     
+    /**
+     * Returns all DataElement which zeroIsSignificant property is true or false
+     * @param zeroIsSignificant is zeroIsSignificant property 
+     * @return a collection of all DataElement
+     */
+    Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant );
+
     // -------------------------------------------------------------------------
     // Calculated Data Elements
     // -------------------------------------------------------------------------
@@ -194,27 +212,30 @@ public interface DataElementStore
     /**
      * Returns a CalclulatedDataElement which contains a given dataElement
      * 
-     * @paran dataElement the DataElement which is contained by the 
-     *          CalculatedDataElement to return.
+     * @paran dataElement the DataElement which is contained by the
+     *        CalculatedDataElement to return.
      * @return a CalculatedDataElement which contains the given DataElement, or
-     *          null if the DataElement is not part of a CalculatedDataElement.
+     *         null if the DataElement is not part of a CalculatedDataElement.
      */
     CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement );
-    
+
     /**
-     * Returns CalculatedDataElements which contain any of the given DataElements
-     * @param dataElements Collection of DataElements which can be contained by 
-     *          the returned CalculatedDataElements
-     * @return a collection of CalculatedDataElements which contain any of the 
-     *          given DataElements, or an empty collection if no 
-     *          CalculatedDataElements contain any of the DataElements.
+     * Returns CalculatedDataElements which contain any of the given
+     * DataElements
+     * 
+     * @param dataElements Collection of DataElements which can be contained by
+     *        the returned CalculatedDataElements
+     * @return a collection of CalculatedDataElements which contain any of the
+     *         given DataElements, or an empty collection if no
+     *         CalculatedDataElements contain any of the DataElements.
      */
     Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements( Collection<DataElement> dataElements );
-    
+
     /**
      * Returns all CalculatedDataElements
-     * @return a collection of all CalculatedDataElements, or an empty collection
-     *          if there are no CalculcatedDataELements
+     * 
+     * @return a collection of all CalculatedDataElements, or an empty
+     *         collection if there are no CalculcatedDataELements
      */
     Collection<CalculatedDataElement> getAllCalculatedDataElements();
 }

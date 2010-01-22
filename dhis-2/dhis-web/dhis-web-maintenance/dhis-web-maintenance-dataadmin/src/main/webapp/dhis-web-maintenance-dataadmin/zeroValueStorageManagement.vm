@@ -1,0 +1,69 @@
+<h3>$i18n.getString( "dataelement_zero_storage_management" )</h3>
+<br>
+<form id="ZeroDataValueManagement" method="POST" action="updateZeroIsSignificant4DataElements.action">
+<table>
+	<thead>
+		<tr>
+			<th>$i18n.getString( "ignore_zero_data_values" )</th>
+			<td></td>
+			<th>$i18n.getString( "store_zero_data_values" )</th>			
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<select onchange="getDataElementsByGroupIgnoreZeroValue(this.value)">
+					<option>$i18n.getString( "all" )</option>
+					#foreach( $dataElementGroup in $dataElementGroups )
+						<option value='$dataElementGroup.id'>$encoder.jsEscape( $dataElementGroup.name, "'" )</option>
+					#end
+				</select>
+			</td>
+			<td></td>
+			<td>
+				<select onchange="getDataElementsByGroupSaveZeroValue(this.value)">
+					<option>$i18n.getString( "all" )</option>
+					#foreach( $dataElementGroup in $dataElementGroups )
+						<option value='$dataElementGroup.id'>$encoder.jsEscape( $dataElementGroup.name, "'" )</option>
+					#end
+				</select>
+			</td>			
+		</tr>
+		<tr>
+			<td><input type="text" style="width:100%" id="filterIgnoreZeroValue" onkeyup="filterIgnoreZeroValueDataElements()"/></td>
+			<td></td>
+			<td><input type="text" style="width:100%" id="filterSaveZeroValue" onkeyup="filterSaveZeroValueDataElements()"/></td>
+		</tr>
+		<tr>
+			<td>
+				<select id="ignoreZeroValueDataElements" name="ignoreZeroValueDataElements" size="10" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveLeftToRight()">
+				</select>
+			</td>
+		
+			<td style="text-align:center">			
+				<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveLeftToRight()"><br>
+				<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveRightToLeft()">			
+			</td>
+	
+			<td>
+				<select id="zeroDataValueElements" name="zeroDataValueElements" size="10" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveRightToLeft()">
+				</select>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	<input type="button" value="$i18n.getString( "save" )" onclick="submitForm()" style="width:100px"/>
+</p>
+</form>
+<script>
+	var ignoreZeroValueDataElements = new Object();
+#foreach( $dataElement in $ignoreZeroValueDataElements )
+	ignoreZeroValueDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
+#end
+	var zeroDataValueElements = new Object();
+#foreach( $dataElement in $zeroDataValueElements )
+	zeroDataValueElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
+#end
+	init();
+</script>

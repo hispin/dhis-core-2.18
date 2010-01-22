@@ -174,6 +174,26 @@ public class DefaultDataElementService
         } );
     }
 
+    public void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
+    {
+        dataElementStore.setZeroIsSignificant4DataElements( dataElementIds, zeroIsSignificant );
+    }
+
+    public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
+    {
+        return dataElementStore.getDataElementsByZeroIsSignificant( zeroIsSignificant );
+    }
+
+    public Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant,
+        DataElementGroup dataElementGroup )
+    {
+        Collection<DataElement> dataElements = getDataElementsByZeroIsSignificant( zeroIsSignificant );
+        
+        dataElements.retainAll( dataElementGroup.getMembers() );
+        
+        return dataElements;
+    }
+
     public Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers )
     {
         if ( identifiers == null )
@@ -259,17 +279,17 @@ public class DefaultDataElementService
 
     public List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements )
     {
-        Set<DataElementCategoryCombo> setCategoryCombos = new HashSet<DataElementCategoryCombo>();              
+        Set<DataElementCategoryCombo> setCategoryCombos = new HashSet<DataElementCategoryCombo>();
 
         for ( DataElement de : dataElements )
         {
-            setCategoryCombos.add( de.getCategoryCombo() );           
+            setCategoryCombos.add( de.getCategoryCombo() );
         }
 
-        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>(setCategoryCombos);
-        
+        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>( setCategoryCombos );
+
         Collections.sort( listCategoryCombos, new CategoryComboSizeComparator() );
-        
+
         return listCategoryCombos;
     }
 

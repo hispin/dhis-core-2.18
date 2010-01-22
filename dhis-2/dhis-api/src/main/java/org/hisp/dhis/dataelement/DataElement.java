@@ -28,7 +28,6 @@ package org.hisp.dhis.dataelement;
  */
 
 // import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -160,6 +159,12 @@ public class DataElement
      */
     private List<Integer> aggregationLevels = new ArrayList<Integer>();
 
+    /**
+     * There is no point of saving 0's for this data element default is false
+     * ,we don't want to store 0's if not set to true
+     */
+    private boolean zeroIsSignificant;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -232,12 +237,14 @@ public class DataElement
 
     public DimensionType getDimensionType()
     {
-        return null; // DataElement is DimensionOption for the static DataElement dimension
+        return null; // DataElement is DimensionOption for the static
+        // DataElement dimension
     }
-    
+
     public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
-        return null; // DataElement is DimensionOption for the static DataElement dimension
+        return null; // DataElement is DimensionOption for the static
+        // DataElement dimension
     }
 
     public List<? extends DimensionOption> getDimensionOptions()
@@ -362,11 +369,11 @@ public class DataElement
     {
         return domainType != null ? domainType : DOMAIN_TYPE_AGGREGATE;
     }
-    
+
     public Set<DataElement> getDataElements()
     {
         Set<DataElement> dataElements = new HashSet<DataElement>();
-        
+
         for ( DataElementGroupSet groupSet : groupSets )
         {
             for ( DataElementGroup group : groupSet.getMembers() )
@@ -374,7 +381,7 @@ public class DataElement
                 dataElements.addAll( group.getMembers() );
             }
         }
-        
+
         return dataElements;
     }
 
@@ -531,4 +538,15 @@ public class DataElement
     {
         this.aggregationLevels = aggregationLevels;
     }
+
+    public boolean isZeroIsSignificant()
+    {
+        return zeroIsSignificant;
+    }
+
+    public void setZeroIsSignificant( boolean zeroIsSignificant )
+    {
+        this.zeroIsSignificant = zeroIsSignificant;
+    }
+
 }

@@ -84,6 +84,7 @@ public interface DataElementService
 
     /**
      * Returns the DataElement with the given UUID.
+     * 
      * @param uuid the UUID.
      * @return the DataElement with the given UUID, or null if no match.
      */
@@ -120,7 +121,7 @@ public interface DataElementService
      * @param code the code of the DataElement to return.
      * @return the DataElement with the given code, or null if no match.
      */
-    DataElement getDataElementByCode( String code );   
+    DataElement getDataElementByCode( String code );
 
     /**
      * Returns all DataElements.
@@ -128,15 +129,17 @@ public interface DataElementService
      * @return a collection of all DataElements, or an empty collection if there
      *         are no DataElements.
      */
-    Collection<DataElement> getAllDataElements(); 
-        
+    Collection<DataElement> getAllDataElements();
+
     /**
-     * Returns all DataElements which are not instances of CalculatedDataElements.
+     * Returns all DataElements which are not instances of
+     * CalculatedDataElements.
      * 
-     * @return all DataElements which are not instances of CalculatedDataElements.
+     * @return all DataElements which are not instances of
+     *         CalculatedDataElements.
      */
     Collection<DataElement> getNonCalculatedDataElements();
-    
+
     /**
      * Returns all DataElements with corresponding identifiers. Returns all
      * DataElements if the given argument is null.
@@ -145,16 +148,16 @@ public interface DataElementService
      * @return a collection of DataElements.
      */
     Collection<DataElement> getDataElements( Collection<Integer> identifiers );
-    
+
     /**
-     * Returns all CalculatedDataElements with corresponding identifiers. Returns
-     * all CalculatedDataElements if the given argument is null.
+     * Returns all CalculatedDataElements with corresponding identifiers.
+     * Returns all CalculatedDataElements if the given argument is null.
      * 
      * @param identifiers the collection of identifiers.
      * @return a collection of CalculatedDataElements.
      */
     Collection<CalculatedDataElement> getCalculatedDataElements( Collection<Integer> identifiers );
-    
+
     /**
      * Returns all non-calculated DataElements with corresponding identifiers.
      * Returns all non-calculated DataElements if the given argument is null.
@@ -163,7 +166,7 @@ public interface DataElementService
      * @return a collection of DataElements.
      */
     Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers );
-    
+
     /**
      * Returns all DataElements with types that are possible to aggregate. The
      * types are currently INT and BOOL.
@@ -171,7 +174,7 @@ public interface DataElementService
      * @return all DataElements with types that are possible to aggregate.
      */
     Collection<DataElement> getAggregateableDataElements();
-    
+
     /**
      * Returns all active DataElements.
      * 
@@ -198,14 +201,14 @@ public interface DataElementService
      * @return all DataElements with the given domainType.
      */
     Collection<DataElement> getDataElementsByDomainType( String domainType );
-    
+
     /**
      * Returns all DataElements with the given type.
      * 
      * @param type the type.
      * @return all DataElements with the given type.
      */
-    
+
     Collection<DataElement> getDataElementsByType( String type );
 
     /**
@@ -215,31 +218,35 @@ public interface DataElementService
      * @return all DataElements with the given category combo.
      */
     Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo );
-    
-    
+
     /**
      * @param dataElements
      * @return grouped dataElements based on their categoryCombo
      */
-    Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo( List<DataElement> dataElements );
-    
+    Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo(
+        List<DataElement> dataElements );
+
     List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements );
 
     /**
-     * Returns all DataElements which are associated with one or more DataElementGroupSets.
+     * Returns all DataElements which are associated with one or more
+     * DataElementGroupSets.
      * 
-     * @return all DataElements which are associated with one or more DataElementGroupSets.
+     * @return all DataElements which are associated with one or more
+     *         DataElementGroupSets.
      */
     Collection<DataElement> getDataElementsWithGroupSets();
-    
+
     /**
-     * Returns all DataElements which are associated with the given set of DataElementGroupSets.
+     * Returns all DataElements which are associated with the given set of
+     * DataElementGroupSets.
      * 
      * @param groupSets the set of DataElementGroupSets.
-     * @return all DataElements which are associated with the given set of DataElementGroupSets.
+     * @return all DataElements which are associated with the given set of
+     *         DataElementGroupSets.
      */
     Collection<DataElement> getDataElementsByGroupSets( Set<DataElementGroupSet> groupSets );
-    
+
     // -------------------------------------------------------------------------
     // Calculated Data Elements
     // -------------------------------------------------------------------------
@@ -247,30 +254,32 @@ public interface DataElementService
     /**
      * Returns a CalclulatedDataElement which contains a given dataElement
      * 
-     * @param dataElement the DataElement which is contained by the 
-     *          CalculatedDataElement to return.
+     * @param dataElement the DataElement which is contained by the
+     *        CalculatedDataElement to return.
      * @return a CalculatedDataElement which contains the given DataElement, or
-     *          null if the DataElement is not part of a CalculatedDataElement.
+     *         null if the DataElement is not part of a CalculatedDataElement.
      */
     CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement );
-    
+
     /**
-     * Returns CalculatedDataElements which contain any of the given DataElements
-     * @param dataElements Collection of DataElements which can be contained by 
-     *          the returned CalculatedDataElements
-     * @return a collection of CalculatedDataElements which contain any of the 
-     *          given DataElements, or an empty collection if no 
-     *          CalculatedDataElements contain any of the DataElements.
+     * Returns CalculatedDataElements which contain any of the given
+     * DataElements
+     * 
+     * @param dataElements Collection of DataElements which can be contained by
+     *        the returned CalculatedDataElements
+     * @return a collection of CalculatedDataElements which contain any of the
+     *         given DataElements, or an empty collection if no
+     *         CalculatedDataElements contain any of the DataElements.
      */
     Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements( Collection<DataElement> dataElements );
-    
+
     /**
      * Returns all CalculatedDataElements
-     * @return a collection of all CalculatedDataElements, or an empty collection
-     *          if there are no CalculcatedDataELements
+     * 
+     * @return a collection of all CalculatedDataElements, or an empty
+     *         collection if there are no CalculcatedDataELements
      */
     Collection<CalculatedDataElement> getAllCalculatedDataElements();
-    
 
     /**
      * Returns a Map of factors for the DataElements in the given
@@ -281,7 +290,7 @@ public interface DataElementService
      *         CalculatedDataElement
      */
     Map<DataElement, Integer> getDataElementFactors( CalculatedDataElement calculatedDataElement );
-    
+
     /**
      * Returns a Map of factors for the Operands in the given
      * CalculatedDataElement
@@ -290,25 +299,24 @@ public interface DataElementService
      * @return a map of factors for the Operands in the given
      *         CalculatedDataElement
      */
-    Map<String, Integer> getOperandFactors( CalculatedDataElement calculatedDataElement );    
-    
+    Map<String, Integer> getOperandFactors( CalculatedDataElement calculatedDataElement );
+
     /**
-     * Returns a collection of OperandIds in the given
-     * CalculatedDataElement
+     * Returns a collection of OperandIds in the given CalculatedDataElement
      * 
      * @param calculatedDataElement CalculatedDataElement to get operands for
-     * @return a collection of operands (actually string) for the expression in 
-     * the given CalculatedDataElement
+     * @return a collection of operands (actually string) for the expression in
+     *         the given CalculatedDataElement
      */
     Collection<String> getOperandIds( CalculatedDataElement calculatedDataElement );
-    
+
     /**
      * 
      * @param identifiers
      * @return
      */
     Map<Integer, String> getCalculatedDataElementExpressionMap( Collection<Integer> identifiers );
-    
+
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------
@@ -350,7 +358,7 @@ public interface DataElementService
      * @return data elements with identifiers in the given collection.
      */
     Collection<DataElementGroup> getDataElementGroups( Collection<Integer> identifiers );
-    
+
     /**
      * Returns the DataElementGroup with the given UUID.
      * 
@@ -374,30 +382,59 @@ public interface DataElementService
      *         no DataElementGroups exist.
      */
     Collection<DataElementGroup> getAllDataElementGroups();
-    
+
     /**
      * Returns all DataElementGroups which contain the given DataElement.
-     * @param dataElement the DataElement which the DataElementGroups must contain.
-     * @return a collection of all DataElementGroups that contain the given DataElement.
+     * 
+     * @param dataElement the DataElement which the DataElementGroups must
+     *        contain.
+     * @return a collection of all DataElementGroups that contain the given
+     *         DataElement.
      */
     Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement );
+
+    /**
+     * Return void
+     * 
+     * @param dataElementIs is list of data element id which you want to update
+     *        zeroIsSignificant property is true of false
+     * @param zeroIsSignificant is true or false
+     */
+    void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant );
+
+    /**
+     * Returns all DataElement which zeroIsSignificant property is true or false
+     * 
+     * @param zeroIsSignificant is zeroIsSignificant property
+     * @return a collection of all DataElement
+     */
+    Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant );
+
+    /**
+     * Returns all DataElement which zeroIsSignificant property is true or false
+     * 
+     * @param zeroIsSignificant is zeroIsSignificant property
+     * @param dataElementGroup is group contain data elements
+     * @return a collection of all DataElement
+     */
+    Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant, DataElementGroup dataElementGroup );
 
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
 
     int addDataElementGroupSet( DataElementGroupSet groupSet );
-    
+
     void updateDataElementGroupSet( DataElementGroupSet groupSet );
-    
+
     void deleteDataElementGroupSet( DataElementGroupSet groupSet );
-    
+
     DataElementGroupSet getDataElementGroupSet( int id );
-    
+
     DataElementGroupSet getDataElementGroupSetByName( String name );
-    
+
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
-    
-    Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );   
-    
+
+    Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
+
 }

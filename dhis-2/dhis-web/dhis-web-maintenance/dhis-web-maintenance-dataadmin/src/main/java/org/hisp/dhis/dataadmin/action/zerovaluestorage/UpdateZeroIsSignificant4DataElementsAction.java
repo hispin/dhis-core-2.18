@@ -1,4 +1,4 @@
-package org.hisp.dhis.useraccount.action;
+package org.hisp.dhis.dataadmin.action.zerovaluestorage;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,18 +27,18 @@ package org.hisp.dhis.useraccount.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElementService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GetCurrentUserAction
+
+public class UpdateZeroIsSignificant4DataElementsAction
     implements Action
 {
 
@@ -46,47 +46,42 @@ public class GetCurrentUserAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private DataElementService dataElementService;
 
-    private UserStore userStore;
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private UserCredentials userCredentials;
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.currentUserService = currentUserService;
-    }
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
-
-    public UserCredentials getUserCredentials()
-    {
-        return userCredentials;
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Input
     // -------------------------------------------------------------------------
 
+    private List<Integer> ignoreZeroValueDataElements;
+    
+    public void setIgnoreZeroValueDataElements( List<Integer> ignoreZeroValueDataElements )
+    {
+        this.ignoreZeroValueDataElements = ignoreZeroValueDataElements;
+    }
+   
+    
+    private List<Integer> zeroDataValueElements;
+
+    public void setZeroDataValueElements( List<Integer> zeroDataValueElements )
+    {
+        this.zeroDataValueElements = zeroDataValueElements;
+    }
+
+
+    @Override
     public String execute()
         throws Exception
     {
+        dataElementService.setZeroIsSignificant4DataElements( ignoreZeroValueDataElements, false );
 
-        User user = currentUserService.getCurrentUser();
-
-        userCredentials = userStore.getUserCredentials( user );
+        dataElementService.setZeroIsSignificant4DataElements( zeroDataValueElements, true );
 
         return SUCCESS;
     }
+
 }

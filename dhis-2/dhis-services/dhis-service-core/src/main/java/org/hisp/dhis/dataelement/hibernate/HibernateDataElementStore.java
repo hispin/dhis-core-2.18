@@ -61,7 +61,7 @@ public class HibernateDataElementStore
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
     // -------------------------------------------------------------------------
     // DataElement
     // -------------------------------------------------------------------------
@@ -155,7 +155,7 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getAggregateableDataElements()
     {
@@ -205,7 +205,7 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByDomainType( String domainType )
     {
@@ -221,10 +221,10 @@ public class HibernateDataElementStore
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "categoryCombo", categoryCombo ) );
-        
+
         return criteria.list();
     }
 
@@ -232,10 +232,38 @@ public class HibernateDataElementStore
     public Collection<DataElement> getDataElementsWithGroupSets()
     {
         final String sql = "from DataElement d where d.groupSets.size > 0";
-        
+
         Query query = sessionFactory.getCurrentSession().createQuery( sql );
-        
+
         return query.list();
+    }
+
+    public void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
+    {
+        for ( Integer id : dataElementIds )
+        {
+            String sql = "update DataElement d set d.zeroIsSignificant=:zeroIsSignificant where d.id=:id";
+            
+            Query query = sessionFactory.getCurrentSession().createQuery( sql );
+            
+            query.setParameter( "zeroIsSignificant", zeroIsSignificant );
+            
+            query.setParameter( "id", id );          
+            
+            query.executeUpdate();
+            
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataElement.class );
+        criteria.add( Restrictions.eq( "zeroIsSignificant", zeroIsSignificant ) );
+
+        return criteria.list();
     }
 
     // -------------------------------------------------------------------------
@@ -347,5 +375,5 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
-    
+
 }
