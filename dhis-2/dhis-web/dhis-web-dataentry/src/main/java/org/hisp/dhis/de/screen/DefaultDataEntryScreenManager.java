@@ -603,6 +603,11 @@ public class DefaultDataEntryScreenManager
 
                 DataElement dataElement = dataElementMap.get( dataElementId ); //dataElementService.getDataElement( dataElementId );
                 
+                if( dataElement==null )
+                {
+                    throw new RuntimeException("Data Element Id: " + dataElementId + " not found");
+                }
+                
                 // -------------------------------------------------------------
                 // Find value type of data element
                 // -------------------------------------------------------------

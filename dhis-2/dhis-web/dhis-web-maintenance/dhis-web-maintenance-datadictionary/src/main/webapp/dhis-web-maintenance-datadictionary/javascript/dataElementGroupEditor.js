@@ -1,4 +1,32 @@
+function showToolTip( e, value){
+	
+	var tooltipDiv = byId('tooltip');
+	tooltipDiv.style.display = 'block';
+	
+	var posx = 0;
+    var posy = 0;
+	
+    if (!e) var e = window.event;
+    if (e.pageX || e.pageY)
+    {
+        posx = e.pageX;
+        posy = e.pageY;
+    }
+    else if (e.clientX || e.clientY)
+    {
+        posx = e.clientX;
+        posy = e.clientY;
+    }
+	
+	tooltipDiv.style.left= posx  + 8 + 'px';
+	tooltipDiv.style.top = posy  + 8 + 'px';
+	tooltipDiv.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +   value;
+}
 
+function hideToolTip(){
+	byId('tooltip').style.display = 'none';
+}
+// ========================================================================
 function initAllList()
 {
     var list = document.getElementById( 'dataElementGroups' );
@@ -6,14 +34,22 @@ function initAllList()
 
     for ( id in dataElementGroups )
     {
-        list.add( new Option( dataElementGroups[id], id ), null );
+		var option = new Option( dataElementGroups[id], id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+        list.add( option, null );
     }
 
     list = document.getElementById( 'availableDataElements' );
 
     for ( id in availableDataElements )
     {
-        list.add( new Option( availableDataElements[id], id ), null );
+		var option = new Option( availableDataElements[id], id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+        list.add( option, null );        
     }
 
     if(list.selectedIndex==-1)
@@ -58,22 +94,6 @@ function removeSelectedDataElements()
     filterSelectedDataElements();
     filterAvailableDataElements();
 }
-{
-    var filter = document.getElementById( 'dataElementGroupsFilter' ).value;
-    var list = document.getElementById( 'dataElementGroups' );
-
-    list.options.length = 0;
-
-    for ( var id in dataElementGroups )
-    {
-        var value = dataElementGroups[id];
-
-        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
-        {
-            list.add( new Option( value, id ), null );
-        }
-    }
-}
 
 function filterAvailableDataElements()
 {
@@ -88,8 +108,12 @@ function filterAvailableDataElements()
 
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
-            list.add( new Option( value, id ), null );
-        }
+            var option = new Option( value, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+			}
+	        list.add( option, null );
+	    }
     }
 }
 
@@ -106,7 +130,12 @@ function filterSelectedDataElements()
 
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
-            list.add( new Option( value, id ), null );
+			var option = new Option( value, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, value);				
+			}
+            list.add( option, null );			
+
         }
     }
 }
@@ -138,6 +167,24 @@ function getDataElementGroupCompleted( xmlObject )
 
     filterSelectedDataElements();
     document.getElementById('availableDataElements').disabled=false;
+	visableAvailableDataElements();	
+}
+
+function visableAvailableDataElements()
+{
+	var selectedList = byId( 'selectedDataElements' );
+	var availableList = byId( 'availableDataElements' );
+	var selectedOptions = selectedList.options;
+	var availableOptions = availableList.options;
+	
+	for(var i=0;i<availableOptions.length;i++){
+		availableList.options[i].style.display='block';
+		for(var j=0;j<selectedOptions.length;j++){			
+			if(availableOptions[i].value==selectedOptions[j].value){				
+				availableList.options[i].style.display='none';
+			}
+		}
+	}
 }
 
 function updateDataElementGroupMembers()

@@ -1,17 +1,54 @@
+function showToolTip( e, value){
+	
+	var tooltipDiv = byId('tooltip');
+	tooltipDiv.style.display = 'block';
+	
+	var posx = 0;
+    var posy = 0;
+	
+    if (!e) var e = window.event;
+    if (e.pageX || e.pageY)
+    {
+        posx = e.pageX;
+        posy = e.pageY;
+    }
+    else if (e.clientX || e.clientY)
+    {
+        posx = e.clientX;
+        posy = e.clientY;
+    }
+	
+	tooltipDiv.style.left= posx  + 8 + 'px';
+	tooltipDiv.style.top = posy  + 8 + 'px';
+	tooltipDiv.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +   value;
+}
+
+function hideToolTip(){
+	byId('tooltip').style.display = 'none';
+}
 
 function initList() 
 {
 	var list = document.getElementById('indicatorGroups');
 	var id;
 
-	for (id in indicatorGroups) {
-		list.add(new Option(indicatorGroups[id], id), null);
+	for (id in indicatorGroups) {		
+		var option = new Option( indicatorGroups[id], id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+        list.add( option, null );  
+		
 	}
 
 	list = document.getElementById('availableIndicators');
 
-	for (id in availableIndicators) {
-		list.add(new Option(availableIndicators[id], id), null);
+	for (id in availableIndicators) {		
+		var option = new Option( availableIndicators[id], id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+        list.add( option, null );  
 	}
 
 	if (list.selectedIndex == -1) {
@@ -84,11 +121,29 @@ function getIndicatorGroupCompleted( xmlObject )
         var name = indicator.getElementsByTagName('name')[0].firstChild.nodeValue;
         selectedIndicators[id] = name;
     }
-    filterSelectedIndicators();   
-    document.getElementById( 'groupNameView').innerHTML = i18n_member_of + " <b>" + name + "</b>";
+    filterSelectedIndicators();       
     document.getElementById('availableIndicators').disabled=false;
+	visableAvailableIndicators();
     
 }
+
+function visableAvailableIndicators()
+{
+	var selectedList = byId( 'selectedIndicators' );
+	var availableList = byId( 'availableIndicators' );
+	var selectedOptions = selectedList.options;
+	var availableOptions = availableList.options;
+	
+	for(var i=0;i<availableOptions.length;i++){
+		availableList.options[i].style.display='block';
+		for(var j=0;j<selectedOptions.length;j++){			
+			if(availableOptions[i].value==selectedOptions[j].value){				
+				availableList.options[i].style.display='none';
+			}
+		}
+	}
+}
+
 
 /*==============================================================================
  *   Filter Indicator 
@@ -106,8 +161,12 @@ function filterSelectedIndicators()
         var value = selectedIndicators[id];
         
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
-        {
-            list.add( new Option( value, id ), null );
+        {            
+			var option = new Option( value, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+			}
+	        list.add( option, null );  
         }
     }
 }
@@ -125,7 +184,11 @@ function filterIndicatorGroups()
         
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
-            list.add( new Option( value, id ), null );
+            var option = new Option( value, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+			}
+	        list.add( option, null );  
         }
     }
 }
@@ -143,7 +206,11 @@ function filterAvailableIndicators()
         
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
-            list.add( new Option( value, id ), null );
+            var option = new Option( value, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+			}
+	        list.add( option, null );  
         }
     }
 }
