@@ -505,6 +505,27 @@ public class DataElementStoreTest
         assertTrue( dataElements.contains( dataElementB ) );
         assertTrue( dataElements.contains( dataElementD ) );        
     }
+    
+    @Test
+    public void testGetDataElementsZeroIsSignificant()
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        DataElement dataElementD = createDataElement( 'D' );
+
+        dataElementA.setZeroIsSignificant( true );
+        dataElementB.setZeroIsSignificant( true );
+        
+        dataElementStore.addDataElement( dataElementA );
+        dataElementStore.addDataElement( dataElementB );
+        dataElementStore.addDataElement( dataElementC );
+        dataElementStore.addDataElement( dataElementD );
+        
+        Collection<DataElement> dataElements = dataElementStore.getDataElementsByZeroIsSignificant( true );
+        
+        assertTrue( equals( dataElements, dataElementA, dataElementB ) );
+    }
 
     // -------------------------------------------------------------------------
     // CalculatedDataElements

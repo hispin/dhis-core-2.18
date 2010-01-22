@@ -259,7 +259,7 @@ public class DataElement
     // Logic
     // -------------------------------------------------------------------------
 
-    public boolean isZeroIsSignificantNullSafe()
+    public boolean isZeroIsSignificant()
     {
         return zeroIsSignificant != null && zeroIsSignificant;
     }
@@ -546,7 +546,7 @@ public class DataElement
         this.aggregationLevels = aggregationLevels;
     }
 
-    public Boolean isZeroIsSignificant()
+    public Boolean getZeroIsSignificant()
     {
         return zeroIsSignificant;
     }
