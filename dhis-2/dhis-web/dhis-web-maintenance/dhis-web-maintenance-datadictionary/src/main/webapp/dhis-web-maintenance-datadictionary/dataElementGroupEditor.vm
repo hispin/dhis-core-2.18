@@ -3,8 +3,17 @@
 .select
 {
 	border:#666666 thin solid;
-	min-width:300px;
+	width:300px;
 	size:30;
+}
+
+#tooltip {
+    color:#000; font-size:11px; line-height:1.2;
+    background-color:#FFFFCC; border:1px solid #667295; 
+    width:210px; padding:4px;
+	z-index: 100000;
+	display: none;
+	position:absolute;
 }
 
 </style>
@@ -31,11 +40,11 @@
 
 	<tr>
 		<td>
-			<select class="select" id="dataElementGroups" size="30" onchange="getDataElementGroup( this );">
+			<select class="select" id="dataElementGroups" size="30" onchange="getDataElementGroup( this );" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 		<td>
-			<select class="select" id="selectedDataElements" multiple="multiple" size="30"  ondblclick="removeSelectedDataElements();">
+			<select class="select" id="selectedDataElements" multiple="multiple" size="30"  ondblclick="removeSelectedDataElements();" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 
@@ -44,7 +53,7 @@
 			<input type="button" value="&gt;" onclick="removeSelectedDataElements();" style="width:30px">
 		</td>
 		<td>
-			<select class="select" id="availableDataElements" multiple="multiple" size="30"  ondblclick="addSelectedDataElements();" disabled="true">
+			<select class="select" id="availableDataElements" multiple="multiple" size="30"  ondblclick="addSelectedDataElements();" disabled="true" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 	</tr>
@@ -85,6 +94,9 @@
 </table>
 
 </div>
+
+<div id="tooltip"></div>
+
 
 <script type="text/javascript">
 	var i18n_select_dataelement_group = '$encoder.jsEscape( $i18n.getString( "select_dataelement_group" ) , "'")';

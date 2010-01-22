@@ -7,6 +7,16 @@
 	size:30;
 }
 
+#tooltip {
+    color:#000; font-size:11px; line-height:1.2;
+    background-color:#FFFFCC; border:1px solid #667295; 
+    width:210px; padding:4px;
+	z-index: 100000;
+	display: none;
+	position:absolute;
+}
+
+
 </style>
 
 <h3>$i18n.getString( "indicator_group_editor" )</h3>
@@ -31,11 +41,11 @@
 
 	<tr>
 		<td>
-			<select class="select" id="indicatorGroups" size="30" onchange="getIndicatorGroup( this );">				
+			<select class="select" id="indicatorGroups" size="30" onchange="getIndicatorGroup( this );" onMouseOut="javascript: hideToolTip();">				
 			</select>
 		</td>
 		<td>
-			<select class="select" id="selectedIndicators" multiple="multiple" size="30"  ondblclick="removeSelectedIndicators();">
+			<select class="select" id="selectedIndicators" multiple="multiple" size="30"  ondblclick="removeSelectedIndicators();" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 		
@@ -44,7 +54,7 @@
 			<input type="button" value="&gt;" onclick="removeSelectedIndicators();" style="width:30px">
 		</td>
 		<td>
-			<select class="select" id="availableIndicators" multiple="multiple" size="30"  ondblclick="addSelectedIndicators();" disabled="true">				
+			<select class="select" id="availableIndicators" multiple="multiple" size="30"  ondblclick="addSelectedIndicators();" disabled="true" onMouseOut="javascript: hideToolTip();">				
 			</select>
 		</td>
 	</tr>
@@ -85,6 +95,8 @@
 </table>
 
 </div>
+
+<div id="tooltip"></div>
 
 <script type="text/javascript">
 
