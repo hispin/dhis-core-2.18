@@ -163,7 +163,7 @@ public class DataElement
      * There is no point of saving 0's for this data element default is false
      * ,we don't want to store 0's if not set to true
      */
-    private boolean zeroIsSignificant;
+    private Boolean zeroIsSignificant;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -237,14 +237,12 @@ public class DataElement
 
     public DimensionType getDimensionType()
     {
-        return null; // DataElement is DimensionOption for the static
-        // DataElement dimension
+        return null; // DataElement is DimensionOption for the static DataElement dimension
     }
 
     public Set<? extends DimensionOptionElement> getDimensionOptionElements()
     {
-        return null; // DataElement is DimensionOption for the static
-        // DataElement dimension
+        return null; // DataElement is DimensionOption for the static DataElement dimension
     }
 
     public List<? extends DimensionOption> getDimensionOptions()
@@ -257,6 +255,15 @@ public class DataElement
         return DIMENSION;
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean isZeroIsSignificantNullSafe()
+    {
+        return zeroIsSignificant != null && zeroIsSignificant;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -539,14 +546,13 @@ public class DataElement
         this.aggregationLevels = aggregationLevels;
     }
 
-    public boolean isZeroIsSignificant()
+    public Boolean isZeroIsSignificant()
     {
         return zeroIsSignificant;
     }
 
-    public void setZeroIsSignificant( boolean zeroIsSignificant )
+    public void setZeroIsSignificant( Boolean zeroIsSignificant )
     {
         this.zeroIsSignificant = zeroIsSignificant;
     }
-
 }
