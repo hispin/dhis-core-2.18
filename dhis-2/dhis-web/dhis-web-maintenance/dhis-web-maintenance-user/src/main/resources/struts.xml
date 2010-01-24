@@ -54,7 +54,9 @@
     <action name="showAddUserForm" class="org.hisp.dhis.user.action.SetupTreeAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/addUserForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/user.js,javascript/dataElementsList.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/user.js,javascript/dataElementsList.js
+       ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
       <param name="requiredAuthorities">F_USER_ADD</param>
     </action>
