@@ -81,7 +81,7 @@ public class GetOrganisationUnitsAction
     }
     
     // -------------------------------------------------------------------------
-    // Input & output
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer level;
@@ -91,6 +91,10 @@ public class GetOrganisationUnitsAction
         this.level = level;
     }
 
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+    
     private List<OrganisationUnit> organisationUnits;
 
     public List<OrganisationUnit> getOrganisationUnits()

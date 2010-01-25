@@ -1,0 +1,8 @@
+{ "dataSet": 
+  {
+    "id": $!{dataSet.id},
+    "name": "$!{dataSet.name}",
+    "shortName": "$!{dataSet.shortName}",
+    "periodTypeId": "$!{dataSet.periodTypeId}"
+  }
+}

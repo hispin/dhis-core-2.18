@@ -27,57 +27,57 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetOrganisationUnitAction
+public class GetIndicatorAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.indicatorService = indicatorService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
-    private Integer id;
 
+    private Integer id;
+    
     public void setId( Integer id )
     {
         this.id = id;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    private Indicator indicator;    
     
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
+    public Indicator getIndicator()
     {
-        return organisationUnit;
+        return indicator;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        indicator = indicatorService.getIndicator( id );
         
         return SUCCESS;
     }

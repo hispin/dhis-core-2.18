@@ -1,0 +1,12 @@
+#set( $size = $organisationUnits.size() )
+{ "organisationUnits": [
+#foreach ( $unit in $organisationUnits )
+  {
+    "id": $!{unit.id},
+    "name": "$!{unit.name}",
+    "shortName": "$!{unit.shortName}",
+    "code": "$!{unit.code}"
+  }#if( $velocityCount < $size ),#end
+#end
+] }
+ 

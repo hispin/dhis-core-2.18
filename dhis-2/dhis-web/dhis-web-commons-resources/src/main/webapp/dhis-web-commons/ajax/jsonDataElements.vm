@@ -1,0 +1,14 @@
+#set( $size = $dataElements.size() )
+{ "dataElements": [
+#foreach( $dataElement in $dataElements )
+  {
+    "id": $!{dataElement.id},
+    "name": "$!{dataElement.name}",
+    "alternativeName": "$!{dataElement.alternativeNamee}",
+    "shortName": "$!{dataElement.shortName}",
+    "code": "$!{dataElement.code}",
+    "type": "$!{dataElement.type}",
+    "aggregationOperator": "$!{dataElement.aggregationOperator}"
+  }#if( $velocityCount < $size ),#end
+#end
+] }

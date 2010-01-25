@@ -268,6 +268,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
+    <!-- Duplicate data elimination -->
+	
+	<bean
+		id="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction"
+		class="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction"
+		scope="prototype">
+		<property name="dataMergeService" ref="org.hisp.dhis.datamerge.DataMergeService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+	</bean>
+
 	<!--  Data Element Zero Value Storage Management -->
 
 	<bean
