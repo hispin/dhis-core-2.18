@@ -198,7 +198,7 @@ public class DataValue
     public boolean isZero()
     {
         return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) 
-            && value != null && ( value.equals( "0" ) || value.startsWith( "0." ) );
+            && value != null && new Double( value ).intValue() == 0;
     }
     
     public boolean isNullValue()
