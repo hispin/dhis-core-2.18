@@ -174,9 +174,12 @@ public class DefaultDataElementService
         } );
     }
 
-    public void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
+    public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
     {
-        dataElementStore.setZeroIsSignificant4DataElements( dataElementIds, zeroIsSignificant );
+        if ( !dataElementIds.isEmpty() )
+        {
+            dataElementStore.setZeroIsSignificantForDataElements( dataElementIds, zeroIsSignificant );
+        }
     }
 
     public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
@@ -188,9 +191,9 @@ public class DefaultDataElementService
         DataElementGroup dataElementGroup )
     {
         Collection<DataElement> dataElements = getDataElementsByZeroIsSignificant( zeroIsSignificant );
-        
+
         dataElements.retainAll( dataElementGroup.getMembers() );
-        
+
         return dataElements;
     }
 

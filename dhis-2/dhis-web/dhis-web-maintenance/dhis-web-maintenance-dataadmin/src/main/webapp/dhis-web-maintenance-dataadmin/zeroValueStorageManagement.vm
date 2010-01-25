@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "dataelement_zero_storage_management" )</h3>
 <br>
-<form id="ZeroDataValueManagement" method="POST" action="updateZeroIsSignificant4DataElements.action">
+<form id="ZeroDataValueManagement" method="POST" action="updateZeroIsSignificantForDataElements.action">
 <table>
 	<thead>
 		<tr>
@@ -20,14 +20,7 @@
 				</select>
 			</td>
 			<td></td>
-			<td>
-				<select onchange="getDataElementsByGroupSaveZeroValue(this.value)">
-					<option>$i18n.getString( "all" )</option>
-					#foreach( $dataElementGroup in $dataElementGroups )
-						<option value='$dataElementGroup.id'>$encoder.jsEscape( $dataElementGroup.name, "'" )</option>
-					#end
-				</select>
-			</td>			
+			<td></td>			
 		</tr>
 		<tr>
 			<td><input type="text" style="width:100%" id="filterIgnoreZeroValue" onkeyup="filterIgnoreZeroValueDataElements()"/></td>
@@ -41,8 +34,10 @@
 			</td>
 		
 			<td style="text-align:center">			
-				<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveLeftToRight()"><br>
-				<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveRightToLeft()">			
+				<input type="button" value=">>" title="$i18n.getString('move_all')" onclick="moveAllLeftToRight()" style="width:50px"/><br>
+				<input type="button" value=">" title="$i18n.getString('move_selected')" onclick="moveLeftToRight()" style="width:50px"/><br>
+				<input type="button" value="<" title="$i18n.getString('move_selected')" onclick="moveRightToLeft()" style="width:50px"/><br>			
+				<input type="button" value="<<" title="$i18n.getString('move_all')" onclick="moveAllRightToLeft()" style="width:50px"/>
 			</td>
 	
 			<td>
