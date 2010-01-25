@@ -106,7 +106,6 @@ import org.hisp.dhis.importexport.dxf.converter.ReportTableIndicatorConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableOrganisationUnitConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
-import org.hisp.dhis.importexport.dxf2.importer.Parser;
 import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
@@ -352,35 +351,12 @@ public class DefaultDXFImportService
 
         XMLReader reader = XMLFactory.getXMLReader( zipIn );
         
-        int dxfVersion = 1; // assume default version 1
-
         while ( !reader.isStartElement( ROOT_NAME ) ) // move to root element
         {
             reader.next();
         }
 
-        if ( reader.getXmlStreamReader().getNamespaceURI().equals( DXF2_NAMESPACE_URI ) )
-        {
-            dxfVersion = 2;
-            log.info( "Parsing DXF version " + dxfVersion );
-
-            try
-            {
-                Parser v2parser = new Parser();
-                v2parser.getMetadata( reader.getXmlStreamReader() );
-                v2parser.getDataValues( reader.getXmlStreamReader() );
-            }
-            catch ( javax.xml.bind.JAXBException ex )
-            {
-                log.warn( "Parsing error: " + ex ); // report something to GUI                
-            }
-        }
-        else
-        {
-            dxfVersion = 1;
-            log.info( "Parsing DXF version " + dxfVersion );
-            parseDXFv1( params, reader, state );
-        }
+        parse( params, reader, state );
 
         StreamUtils.closeInputStream( zipIn );
 
@@ -391,7 +367,7 @@ public class DefaultDXFImportService
         cacheManager.clearCache();
     }
 
-    private void parseDXFv1( ImportParams params, XMLReader reader, ProcessState state )
+    private void parse( ImportParams params, XMLReader reader, ProcessState state )
     {
         while ( reader.next() )
         {
