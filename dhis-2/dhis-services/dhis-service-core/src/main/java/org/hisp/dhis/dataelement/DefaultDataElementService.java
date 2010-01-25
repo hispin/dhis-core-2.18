@@ -176,7 +176,7 @@ public class DefaultDataElementService
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
     {
-        if ( !dataElementIds.isEmpty() )
+        if ( dataElementIds != null && !dataElementIds.isEmpty() )
         {
             dataElementStore.setZeroIsSignificantForDataElements( dataElementIds, zeroIsSignificant );
         }

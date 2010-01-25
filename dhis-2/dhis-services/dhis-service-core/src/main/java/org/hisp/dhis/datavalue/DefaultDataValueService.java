@@ -37,6 +37,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hisp.dhis.dataelement.DataElement.*;
+
 /**
  * @author Kristian Nordal
  * @version $Id: DefaultDataValueService.java 5715 2008-09-17 14:05:28Z larshelg
@@ -46,8 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataValueService
     implements DataValueService
 {
-    private static final Log LOG = LogFactory.getLog( DefaultDataValueService.class );
-
+    private static final Log log = LogFactory.getLog( DefaultDataValueService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -65,76 +67,38 @@ public class DefaultDataValueService
 
     public void addDataValue( DataValue dataValue )
     {
-
-        if ( !(dataValue.getValue() == null && dataValue.getComment() == null) )
+        if ( !dataValue.isNullValue() )
         {
-            if ( isZero( dataValue ) )
+            if ( dataValue.isZero() && !dataValue.getDataElement().isZeroIsSignificant() &&
+                !dataValue.getDataElement().getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
             {
-                if ( dataValue.getDataElement().isZeroIsSignificant() )
-                {
-                    int value = Integer.parseInt( dataValue.getValue() );
-
-                    dataValue.setValue( String.valueOf( value ) );
-
-                    dataValueStore.addDataValue( dataValue );
-
-                    LOG.info( "Allow save zero value" );
-                }
+                log.info( "DataValue was ignored as zero values are insignificant for this data element: " + dataValue.getDataElement() );
             }
             else
             {
                 dataValueStore.addDataValue( dataValue );
             }
-
         }
     }
 
     public void updateDataValue( DataValue dataValue )
     {
-
-        if ( dataValue.getValue() == null && dataValue.getComment() == null )
+        if ( dataValue.isNullValue() )
         {
             dataValueStore.deleteDataValue( dataValue );
         }
         else
         {
-            if ( isZero( dataValue ) )
+            if ( dataValue.isZero() && !dataValue.getDataElement().isZeroIsSignificant() &&
+                !dataValue.getDataElement().getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
             {
-                if ( dataValue.getDataElement().isZeroIsSignificant() )
-                {
-                    int value = Integer.parseInt( dataValue.getValue() );
-
-                    dataValue.setValue( String.valueOf( value ) );
-
-                    dataValueStore.updateDataValue( dataValue );
-
-                    LOG.info( "Allow save zero value" );
-                }
+                log.info( "DataValue was ignored as zero values are insignificant for this data element: " + dataValue.getDataElement() );
             }
             else
             {
-
                 dataValueStore.updateDataValue( dataValue );
             }
-
         }
-    }
-
-    private boolean isZero( DataValue dataValue )
-    {
-        if ( !dataValue.getDataElement().getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
-        {
-            return false;
-        }
-
-        Double value = Double.parseDouble( dataValue.getValue() );
-
-        if ( value.equals( Double.parseDouble( DataValue.ZERO ) ) )
-        {
-            return true;
-        }
-
-        return false;
     }
 
     public void deleteDataValue( DataValue dataValue )

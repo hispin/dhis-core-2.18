@@ -50,7 +50,6 @@ public class DataValue
 {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
-    public static final String ZERO = "0";
     
     /**
      * Part of the DataValue's composite ID
@@ -194,6 +193,17 @@ public class DataValue
     public boolean isFollowup()
     {
         return followup != null && followup;
+    }
+    
+    public boolean isZero()
+    {
+        return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) 
+            && value != null && ( value.equals( "0" ) || value.startsWith( "0." ) );
+    }
+    
+    public boolean isNullValue()
+    {
+        return value == null && comment == null;
     }
     
     // -------------------------------------------------------------------------
