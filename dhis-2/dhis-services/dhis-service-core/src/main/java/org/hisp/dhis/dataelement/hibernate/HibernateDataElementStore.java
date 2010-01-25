@@ -240,17 +240,14 @@ public class HibernateDataElementStore
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
     {
-
         String sql = "update DataElement d set d.zeroIsSignificant=:zeroIsSignificant where d.id in (:ids)";
 
         Query query = sessionFactory.getCurrentSession().createQuery( sql );
 
         query.setParameter( "zeroIsSignificant", zeroIsSignificant );
-
         query.setParameterList( "ids", dataElementIds );
 
         query.executeUpdate();
-
     }
 
     @SuppressWarnings( "unchecked" )
