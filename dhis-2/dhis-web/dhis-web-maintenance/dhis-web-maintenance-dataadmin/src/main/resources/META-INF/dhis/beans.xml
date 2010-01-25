@@ -285,8 +285,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificant4DataElementsAction"
-		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificant4DataElementsAction"
+		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificantForDataElementsAction"
+		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificantForDataElementsAction"
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>

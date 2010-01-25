@@ -320,8 +320,8 @@
 				/dhis-web-maintenance-dataadmin/responseDataElements.vm</result>
 		</action>
 
-		<action name="updateZeroIsSignificant4DataElements"
-			class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificant4DataElementsAction">
+		<action name="updateZeroIsSignificantForDataElements"
+			class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificantForDataElementsAction">
 			<result name="success" type="redirect">index.action</result>
 		</action>
 

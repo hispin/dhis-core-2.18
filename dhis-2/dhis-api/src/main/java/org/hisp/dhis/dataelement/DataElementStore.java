@@ -196,7 +196,7 @@ public interface DataElementStore
      *        zeroIsSignificant property is true of false
      * @param zeroIsSignificant is true or false
      */
-    void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant );
+    void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant );
     
     /**
      * Returns all DataElement which zeroIsSignificant property is true or false

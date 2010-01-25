@@ -80,6 +80,12 @@ function moveLeftToRight()
 	filterSaveZeroValueDataElements();
 }
 
+function moveAllLeftToRight()
+{
+	selectAllById('ignoreZeroValueDataElements');
+	moveLeftToRight();	
+}
+
 function moveRightToLeft()
 {
 	var list = byId('zeroDataValueElements');
@@ -96,6 +102,12 @@ function moveRightToLeft()
     }
 	filterIgnoreZeroValueDataElements();
 	filterSaveZeroValueDataElements();
+}
+
+function moveAllRightToLeft()
+{
+	selectAllById('zeroDataValueElements');
+	moveRightToLeft();	
 }
 
 function filterIgnoreZeroValueDataElements()

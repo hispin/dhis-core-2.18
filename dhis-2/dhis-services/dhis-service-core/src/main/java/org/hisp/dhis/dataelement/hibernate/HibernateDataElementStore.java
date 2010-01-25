@@ -238,24 +238,22 @@ public class HibernateDataElementStore
         return query.list();
     }
 
-    public void setZeroIsSignificant4DataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
+    public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
     {
-        for ( Integer id : dataElementIds )
-        {
-            String sql = "update DataElement d set d.zeroIsSignificant=:zeroIsSignificant where d.id=:id";
-            
-            Query query = sessionFactory.getCurrentSession().createQuery( sql );
-            
-            query.setParameter( "zeroIsSignificant", zeroIsSignificant );
-            
-            query.setParameter( "id", id );          
-            
-            query.executeUpdate();
-            
-        }
+
+        String sql = "update DataElement d set d.zeroIsSignificant=:zeroIsSignificant where d.id in (:ids)";
+
+        Query query = sessionFactory.getCurrentSession().createQuery( sql );
+
+        query.setParameter( "zeroIsSignificant", zeroIsSignificant );
+
+        query.setParameterList( "ids", dataElementIds );
+
+        query.executeUpdate();
+
     }
-    
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
     {
         Session session = sessionFactory.getCurrentSession();

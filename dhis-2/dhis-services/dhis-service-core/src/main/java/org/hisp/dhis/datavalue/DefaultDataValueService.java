@@ -29,6 +29,8 @@ package org.hisp.dhis.datavalue;
 
 import java.util.Collection;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.period.Period;
@@ -44,6 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataValueService
     implements DataValueService
 {
+    private static final Log LOG = LogFactory.getLog( DefaultDataValueService.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -61,22 +65,76 @@ public class DefaultDataValueService
 
     public void addDataValue( DataValue dataValue )
     {
-        if ( !( dataValue.getValue() == null && dataValue.getComment() == null ) )
+
+        if ( !(dataValue.getValue() == null && dataValue.getComment() == null) )
         {
-            dataValueStore.addDataValue( dataValue );
+            if ( isZero( dataValue ) )
+            {
+                if ( dataValue.getDataElement().isZeroIsSignificant() )
+                {
+                    int value = Integer.parseInt( dataValue.getValue() );
+
+                    dataValue.setValue( String.valueOf( value ) );
+
+                    dataValueStore.addDataValue( dataValue );
+
+                    LOG.info( "Allow save zero value" );
+                }
+            }
+            else
+            {
+                dataValueStore.addDataValue( dataValue );
+            }
+
         }
     }
 
     public void updateDataValue( DataValue dataValue )
     {
+
         if ( dataValue.getValue() == null && dataValue.getComment() == null )
         {
             dataValueStore.deleteDataValue( dataValue );
         }
         else
         {
-            dataValueStore.updateDataValue( dataValue );
+            if ( isZero( dataValue ) )
+            {
+                if ( dataValue.getDataElement().isZeroIsSignificant() )
+                {
+                    int value = Integer.parseInt( dataValue.getValue() );
+
+                    dataValue.setValue( String.valueOf( value ) );
+
+                    dataValueStore.updateDataValue( dataValue );
+
+                    LOG.info( "Allow save zero value" );
+                }
+            }
+            else
+            {
+
+                dataValueStore.updateDataValue( dataValue );
+            }
+
         }
+    }
+
+    private boolean isZero( DataValue dataValue )
+    {
+        if ( !dataValue.getDataElement().getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+        {
+            return false;
+        }
+
+        Double value = Double.parseDouble( dataValue.getValue() );
+
+        if ( value.equals( Double.parseDouble( DataValue.ZERO ) ) )
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void deleteDataValue( DataValue dataValue )
@@ -104,7 +162,7 @@ public class DefaultDataValueService
     {
         return dataValueStore.getValue( dataElementId, periodId, sourceId, categoryOptionComboId );
     }
-    
+
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------
