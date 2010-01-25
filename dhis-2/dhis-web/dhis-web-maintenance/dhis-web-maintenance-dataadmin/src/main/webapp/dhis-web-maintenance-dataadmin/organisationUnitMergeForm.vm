@@ -54,4 +54,6 @@
 
 <script type="text/javascript">
     var i18n_merging = '$encoder.jsEscape( $i18n.getString( "merging" ), "'" )';
+    var i18n_merging_done = '$encoder.jsEscape( $i18n.getString( "merging_done" ), "'" )';
+    var i18n_select_different_org_units = '$encoder.jsEscape( $i18n.getString( "select_different_org_units" ), "'" )';
 </script>

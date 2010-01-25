@@ -90,7 +90,10 @@ public class MergeOrganisationUnitsAction
 
         log.info( "Merging " + eliminate + " into " + keep );
         
-        //dataMergeService.mergeOrganisationUnits( keep, eliminate );
+        if ( !( organisationUnitToEliminate == organisationUnitToKeep ) )
+        {
+            //dataMergeService.mergeOrganisationUnits( keep, eliminate );
+        }
         
         log.info( "Merging complete" );
         

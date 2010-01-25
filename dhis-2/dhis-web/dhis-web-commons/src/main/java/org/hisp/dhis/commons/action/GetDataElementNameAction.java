@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataadmin.action.duplicatedataelimination;
+package org.hisp.dhis.commons.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,44 +27,32 @@ package org.hisp.dhis.dataadmin.action.duplicatedataelimination;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamerge.DataMergeService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class EliminateDuplicateDataAction
+public class GetDataElementNameAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( EliminateDuplicateDataAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMergeService dataMergeService;
-
-    public void setDataMergeService( DataMergeService dataMergeService )
-    {
-        this.dataMergeService = dataMergeService;
-    }
-    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryService categoryService;
 
+    private DataElementCategoryService categoryService;
+    
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -74,32 +62,29 @@ public class EliminateDuplicateDataAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementToEliminate;
+    private Integer dataElementId;
 
-    public void setDataElementToEliminate( Integer dataElementToEliminate )
+    public void setDataElementId( Integer dataElementId )
     {
-        this.dataElementToEliminate = dataElementToEliminate;
+        this.dataElementId = dataElementId;
     }
 
-    private Integer categoryOptionComboToEliminate;
+    private Integer categoryOptionComboId;
 
-    public void setCategoryOptionComboToEliminate( Integer categoryOptionComboToEliminate )
+    public void setCategoryOptionComboId( Integer categoryOptionComboId )
     {
-        this.categoryOptionComboToEliminate = categoryOptionComboToEliminate;
+        this.categoryOptionComboId = categoryOptionComboId;
     }
 
-    private Integer dataElementToKeep;
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-    public void setDataElementToKeep( Integer dataElementToKeep )
-    {
-        this.dataElementToKeep = dataElementToKeep;
-    }
+    private String name;
 
-    private Integer categoryOptionComboToKeep;
-    
-    public void setCategoryOptionComboToKeep( Integer categoryOptionComboToKeep )
+    public String getName()
     {
-        this.categoryOptionComboToKeep = categoryOptionComboToKeep;
+        return name;
     }
 
     // -------------------------------------------------------------------------
@@ -108,23 +93,11 @@ public class EliminateDuplicateDataAction
 
     public String execute()
     {
-        DataElement dataElementEliminate = dataElementService.getDataElement( dataElementToEliminate );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
         
-        DataElementCategoryOptionCombo categoryOptionComboEliminate = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboToEliminate );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
         
-        DataElement dataElementKeep = dataElementService.getDataElement( dataElementToKeep );
-        
-        DataElementCategoryOptionCombo categoryOptionComboKeep = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboToKeep );
-        
-        log.info( "Eliminating: " + dataElementEliminate + " " + categoryOptionComboEliminate  );
-        log.info( "Keeping: " + dataElementKeep + " " + categoryOptionComboKeep );
-        
-        if ( !( dataElementToEliminate == dataElementToKeep && categoryOptionComboEliminate == categoryOptionComboKeep ) )
-        {
-            //dataMergeService.mergeDataElements( dataElementKeep, categoryOptionComboKeep, dataElementEliminate, categoryOptionComboEliminate );
-        }
-        
-        log.info( "Elimination done" );
+        name = dataElement.getName() + " " + categoryOptionCombo.getName();
         
         return SUCCESS;
     }

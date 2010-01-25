@@ -2,9 +2,10 @@
 <h3>$i18n.getString( "duplicate_data_elimination" )</h3>
 
 <div>
-	<input type="text" style="width:294px"><br>
-	<select id="dataElementList" size="6" style="width:300px"></select>
-	<select id="categoryOptionCombolist" size="6" style="width:200px"></select>
+	<label>$i18n.getString( "filter" ):</label><br>
+	<input type="text" style="width:294px" onkeyup="filterList( this.value, 'dataElementList' )"><br>
+	<select id="dataElementList" size="6" style="width:300px" onclick="dataElementSelected()"></select>
+	<select id="categoryOptionComboList" size="6" style="width:200px" onclick="categoryOptionComboSelected()"></select>
 </div>
 
 <br>
@@ -51,6 +52,10 @@
 <p><span id="message"></span></p>
 
 <script type="text/javascript">
+    var i18n_eliminating = '$encoder.jsEscape( $i18n.getString( "eliminating" ), "'" )';
+    var i18n_elimination_done = '$encoder.jsEscape( $i18n.getString( "elimination_done" ), "'" )';
+    var i18n_select_different_data_elements = '$encoder.jsEscape( $i18n.getString( "select_different_data_elements" ), "'" )';
+    
     initLists();
 </script>
 

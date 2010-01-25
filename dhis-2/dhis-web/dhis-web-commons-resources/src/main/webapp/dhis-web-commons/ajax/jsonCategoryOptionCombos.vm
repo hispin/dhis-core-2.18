@@ -1,0 +1,9 @@
+#set( $size = $categoryOptionCombos.size() )
+{ "categoryOptionCombos": [
+#foreach( $coc in $categoryOptionCombos )
+  {
+    "id": $!{coc.id},
+    "name": "$!{coc.name}"
+  }#if( $velocityCount < $size ),#end
+#end
+] }

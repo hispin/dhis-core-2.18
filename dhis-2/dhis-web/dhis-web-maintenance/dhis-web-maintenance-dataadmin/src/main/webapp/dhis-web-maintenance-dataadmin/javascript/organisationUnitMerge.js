@@ -7,25 +7,28 @@ function treeSelected( unitIds )
 {
 	organisationUnitSelected = unitIds[0];
 	
-	$.getJSON( 
-        "../dhis-web-commons-ajax-json/getOrganisationUnit.action",
-        {
-            "id": organisationUnitSelected
-        },
-        function( json )
-        {
-        	if ( organisationUnitToEliminate == 0 ) // Step 1
-        	{
-	            document.getElementById( "eliminateNameField" ).innerHTML = json.organisationUnit.name;
-	            document.getElementById( "confirmOrganisationUnitToEliminateButton" ).disabled = false;        
-        	}
-        	else // Step 2
-        	{
-        		document.getElementById( "keepNameField" ).innerHTML = json.organisationUnit.name;
-                document.getElementById( "confirmOrganisationUnitToKeepButton" ).disabled = false; 
-        	}   
-        }
-    );
+	if ( organisationUnitSelected != null && organisationUnitSelected != 0 )
+	{
+		$.getJSON( 
+	        "../dhis-web-commons-ajax-json/getOrganisationUnit.action",
+	        {
+	            "id": organisationUnitSelected
+	        },
+	        function( json )
+	        {
+	        	if ( organisationUnitToEliminate == 0 ) // Step 1
+	        	{
+		            document.getElementById( "eliminateNameField" ).innerHTML = json.organisationUnit.name;
+		            document.getElementById( "confirmOrganisationUnitToEliminateButton" ).disabled = false;        
+	        	}
+	        	else // Step 2
+	        	{
+	        		document.getElementById( "keepNameField" ).innerHTML = json.organisationUnit.name;
+	                document.getElementById( "confirmOrganisationUnitToKeepButton" ).disabled = false; 
+	        	}   
+	        }
+	    );
+	}
 }
 
 function organisationUnitToEliminateConfirmed()
@@ -39,7 +42,14 @@ function organisationUnitToEliminateConfirmed()
 
 function organisationUnitToKeepConfirmed()
 {
-	organisationUnitToKeep = organisationUnitSelected;	
+	organisationUnitToKeep = organisationUnitSelected;
+	
+	if ( organisationUnitToEliminate == organisationUnitToKeep )
+	{
+		setMessage( i18n_select_different_org_units );
+		return;
+	}
+	
 	document.getElementById( "confirmOrganisationUnitToKeepButton" ).disabled = true;	
     document.getElementById( "mergeButton" ).disabled = false;
                 
@@ -51,14 +61,13 @@ function mergeOrganisationUnits()
 {
 	setMessage( i18n_merging + "..." );
 	
-	$.getJSON( 
-	    "mergeOrganisationUnits.action",
-        {
-	   	    "organisationUnitToEliminate": organisationUnitToEliminate,
-	   	    "organisationUnitToKeep": organisationUnitToKeep
-	    },
-	    function( json )
-	    {
-	    }
-	);
+	$.ajax({ 
+		"url": "mergeOrganisationUnits.action",
+		"data": {
+			"organisationUnitToEliminate": organisationUnitToEliminate,
+	   	    "organisationUnitToKeep": organisationUnitToKeep },
+	   	"success": function()
+	   	{
+	   		setMessage( i18n_merging_done );
+	   	} });
 }
