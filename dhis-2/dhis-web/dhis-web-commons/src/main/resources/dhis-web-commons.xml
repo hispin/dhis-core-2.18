@@ -346,6 +346,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getCategoryOptionCombos" class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
+			<result name="success" type="velocity-xml">
+                /dhis-web-commons/ajax/xmlCategoryOptionCombos.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 	</package>
 
     <!-- Common actions JSON -->
@@ -423,6 +429,18 @@
                 /dhis-web-commons/ajax/jsonPeriods.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
+
+        <action name="getCategoryOptionCombos" class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
+            <result name="success" type="velocity-xml">
+                /dhis-web-commons/ajax/jsonCategoryOptionCombos.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+
+		<action name="getDataElementName" class="org.hisp.dhis.commons.action.GetDataElementNameAction">
+			<result name="success" type="velocity-xml">
+                /dhis-web-commons/ajax/jsonDataElementName.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+		</action>
 
     </package>
 	
