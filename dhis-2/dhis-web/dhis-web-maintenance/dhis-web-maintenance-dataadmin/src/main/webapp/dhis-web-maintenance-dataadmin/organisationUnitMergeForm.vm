@@ -54,6 +54,4 @@
 
 <script type="text/javascript">
     var i18n_merging = '$encoder.jsEscape( $i18n.getString( "merging" ), "'" )';
-    var i18n_performing_maintenance = '$encoder.jsEscape( $i18n.getString( "performing_maintenance" ), "'" )';
-    var i18n_maintenance_performed = '$encoder.jsEscape( $i18n.getString( "maintenance_performed" ), "'" )';
 </script>

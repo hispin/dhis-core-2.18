@@ -8,7 +8,7 @@ function treeSelected( unitIds )
 	organisationUnitSelected = unitIds[0];
 	
 	$.getJSON( 
-        "../dhis-web-commons-ajax/getOrganisationUnit.action",
+        "../dhis-web-commons-ajax-json/getOrganisationUnit.action",
         {
             "id": organisationUnitSelected
         },

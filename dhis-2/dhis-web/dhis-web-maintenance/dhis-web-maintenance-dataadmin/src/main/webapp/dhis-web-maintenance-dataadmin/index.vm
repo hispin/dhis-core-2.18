@@ -6,6 +6,8 @@
     #introListItem( "displayDataIntegrityForm.action" "data_integrity" )
     #introListItem( "displayMaintenanceForm.action" "maintenance" )
     #introListItem( "displayResourceTableForm.action" "resource_table" )
+    #introListItem( "displayOrganisationUnitMergeForm.action" "organisation_unit_merge" )
+    #introListItem( "displayDuplicateDataEliminationForm.action" "duplicate_data_elimination" )
     #introListItem( "viewStatistics.action" "data_statistics" )
     #introListItem( "displayLockingForm.action" "data_locking" )
     #introListItem( "zeroValueStorageManagement.action" "dataelement_zero_storage_management" ) 

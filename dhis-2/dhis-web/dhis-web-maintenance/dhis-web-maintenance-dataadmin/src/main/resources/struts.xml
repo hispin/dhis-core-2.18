@@ -304,7 +304,22 @@
 				displayOrganisationUnitMergeForm.action</result>
 		</action>
 
-		<!--  Data Element Zero Value Storage Management -->
+		<!-- Duplicate data elimination -->
+		
+		<action name="displayDuplicateDataEliminationForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-maintenance-dataadmin/duplicateDataEliminationForm.vm</param>
+            <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/duplicateDataElimination.js</param>
+        </action>
+
+		<action name="eliminateDuplicateData" 
+			class="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction">
+			<result name="success" type="redirect">
+                displayDuplicateDataEliminationForm.action</result>
+		</action>
+
+		<!-- Data Element Zero Value Storage Management -->
 
 		<action name="zeroValueStorageManagement"
 			class="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction">

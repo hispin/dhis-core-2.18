@@ -1,0 +1,15 @@
+{ "organisationUnit": 
+  {
+    "id": $!{organisationUnit.id},
+    "name": "$!{organisationUnit.name}",
+    "shortName": "$!{organisationUnit.shortName}",
+    "code": "$!{organisationUnit.code}",
+    "openingDate": "$!{organisationUnit.openingDate}",
+    "closedDate": "$!{organisationUnit.closedDate}",
+    "active": "$!{organisationUnit.active}",
+    "comment": "$!{organisationUnit.comment}",
+    "geoCode": "$!{organisationUnit.geoCode}",
+    "latitude": "$!{organisationUnit.latitude}",
+    "longitude": "$!{organisationUnit.longitude}"
+  }
+}

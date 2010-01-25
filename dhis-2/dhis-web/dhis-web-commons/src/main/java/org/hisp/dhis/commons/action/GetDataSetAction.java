@@ -27,48 +27,48 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetOrganisationUnitAction
+public class GetDataSetAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
     {
         this.id = id;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
     
-    private OrganisationUnit organisationUnit;
+    private DataSet dataSet;
 
-    public OrganisationUnit getOrganisationUnit()
+    public DataSet getDataSet()
     {
-        return organisationUnit;
+        return dataSet;
     }
 
     // -------------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class GetOrganisationUnitAction
     
     public String execute()
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        dataSet = dataSetService.getDataSet( id );
         
         return SUCCESS;
     }

@@ -79,7 +79,7 @@ public class GetOrganisationUnitChildrenAction
     }
     
     // -------------------------------------------------------------------------
-    // Properties
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -89,6 +89,10 @@ public class GetOrganisationUnitChildrenAction
         this.id = organisationUnitId;
     }
 
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+    
     private List<OrganisationUnit> organisationUnits;
 
     public List<OrganisationUnit> getOrganisationUnits()

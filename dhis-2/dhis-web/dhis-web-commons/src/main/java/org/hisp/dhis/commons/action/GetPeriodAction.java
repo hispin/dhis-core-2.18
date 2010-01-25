@@ -27,32 +27,32 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetOrganisationUnitAction
+public class GetPeriodAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
@@ -61,23 +61,23 @@ public class GetOrganisationUnitAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Period
     // -------------------------------------------------------------------------
-    
-    private OrganisationUnit organisationUnit;
 
-    public OrganisationUnit getOrganisationUnit()
+    private Period period;
+
+    public Period getPeriod()
     {
-        return organisationUnit;
+        return period;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        period = periodService.getPeriod( id );
         
         return SUCCESS;
     }

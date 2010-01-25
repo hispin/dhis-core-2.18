@@ -1,0 +1,13 @@
+{ "dataElement": 
+  {
+    "id": $!{dataElement.id},
+    "name": "$!{dataElement.name}",
+    "alternativeName": "$!{dataElement.alternativeNamee}",
+    "shortName": "$!{dataElement.shortName}",
+    "code": "$!{dataElement.code}",
+    "description": "$!{dataElement.description}",
+    "active": "$!{dataElement.active}",
+    "type": "$!{dataElement.type}",
+    "aggregationOperator": "$!{dataElement.aggregationOperator}"
+  } 
+}

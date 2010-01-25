@@ -42,7 +42,11 @@ public class MergeOrganisationUnitsAction
     extends ActionSupport
 {
     private static final Log log = LogFactory.getLog( MergeOrganisationUnitsAction.class );
-    
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private DataMergeService dataMergeService;
 
     public void setDataMergeService( DataMergeService dataMergeService )
@@ -56,6 +60,10 @@ public class MergeOrganisationUnitsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
     private Integer organisationUnitToEliminate;
     
@@ -80,7 +88,7 @@ public class MergeOrganisationUnitsAction
         OrganisationUnit eliminate = organisationUnitService.getOrganisationUnit( organisationUnitToEliminate );
         OrganisationUnit keep = organisationUnitService.getOrganisationUnit( organisationUnitToKeep );
 
-        log.info( "Merging '" + eliminate + "' into '" + keep + "'" );
+        log.info( "Merging " + eliminate + " into " + keep );
         
         //dataMergeService.mergeOrganisationUnits( keep, eliminate );
         

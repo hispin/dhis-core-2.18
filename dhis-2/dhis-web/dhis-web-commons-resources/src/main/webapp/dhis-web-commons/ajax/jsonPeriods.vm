@@ -1,0 +1,10 @@
+#set( $size = $periods.size() )
+{ "periods": [
+#foreach( $period in $periods )
+  {
+    "id": $!{period.id},
+    "startDate": "$!format.formatDate( ${period.startDate} )",
+    "endDate": "$!format.formatDate( ${period.endDate} )"
+  }#if( $velocityCount < $size ),#end    
+#end
+] }
