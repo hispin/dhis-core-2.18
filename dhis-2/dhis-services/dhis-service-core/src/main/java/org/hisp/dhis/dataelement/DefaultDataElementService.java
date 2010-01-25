@@ -45,6 +45,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.comparator.CategoryComboSizeComparator;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -245,6 +246,19 @@ public class DefaultDataElementService
     public Collection<DataElement> getDataElementsByType( String type )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByType( type ) );
+    }
+    
+    public Collection<DataElement> getDataElementsByPeriodType( final PeriodType periodType )
+    {
+        Collection<DataElement> dataElements = getAllDataElements();
+
+        return FilterUtils.filter( dataElements, new Filter<DataElement>()
+        {
+            public boolean retain( DataElement dataElement )
+            {
+                return dataElement.getPeriodType() != null && dataElement.getPeriodType().equals( periodType );
+            }
+        } );
     }
 
     public Collection<DataElement> getDataElementsByDomainType( String domainType )
