@@ -40,6 +40,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
@@ -78,6 +80,13 @@ public class GetDataElementsAction
     {
         this.dataSetService = dataSetService;
     }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }    
 
     // -------------------------------------------------------------------------
     // Comparator
@@ -125,6 +134,13 @@ public class GetDataElementsAction
     {
         this.dataSetId = dataSetId;
     }
+    
+    private String periodTypeName;
+
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
 
     private boolean aggregate = false;
 
@@ -154,10 +170,6 @@ public class GetDataElementsAction
             {
                 dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
             }
-            else
-            {
-                dataElements = new ArrayList<DataElement>();
-            }
         }
         else if ( categoryComboId != null && categoryComboId != ALL )
         {
@@ -166,10 +178,6 @@ public class GetDataElementsAction
             if ( categoryCombo != null )
             {
                 dataElements = new ArrayList<DataElement>( dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
-            }
-            else
-            {
-                dataElements = new ArrayList<DataElement>();
             }
         }
         else if ( dataSetId != null )
@@ -180,14 +188,24 @@ public class GetDataElementsAction
             {
                 dataElements = new ArrayList<DataElement>( dataset.getDataElements() );
             }
-            else
+        }
+        else if ( periodTypeName != null )
+        {
+            PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+            
+            if ( periodType != null )
             {
-                dataElements = new ArrayList<DataElement>();
+                dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByPeriodType( periodType ) );
             }
         }
         else
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        }
+        
+        if ( dataElements == null )
+        {
+            dataElements = new ArrayList<DataElement>();
         }
         
         Collections.sort( dataElements, dataElementComparator );

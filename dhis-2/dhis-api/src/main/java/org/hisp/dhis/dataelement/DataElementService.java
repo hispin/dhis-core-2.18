@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * Defines service functionality for DataElements and DataElementGroups.
@@ -212,6 +213,14 @@ public interface DataElementService
     Collection<DataElement> getDataElementsByType( String type );
 
     /**
+     * Returns the DataElements with the given PeriodType.
+     * 
+     * @param periodType the PeriodType.
+     * @return a Collection of DataElements.
+     */
+    Collection<DataElement> getDataElementsByPeriodType( PeriodType periodType );
+    
+    /**
      * Returns all DataElements with the given category combo.
      * 
      * @param categoryCombo the DataElementCategoryCombo.
@@ -220,12 +229,23 @@ public interface DataElementService
     Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo );
 
     /**
-     * @param dataElements
-     * @return grouped dataElements based on their categoryCombo
+     * Returns a Map with DataElementCategoryCombo as key and a Collection of
+     * the DataElements belonging to the DataElementCategoryCombo from the given
+     * argument List of DataElements as value.
+     * 
+     * @param dataElements the DataElements to include.
+     * @return grouped DataElements based on their DataElementCategoryCombo.
      */
     Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo(
         List<DataElement> dataElements );
 
+    /**
+     * Returns the DataElementCategoryCombos associated with the given argument
+     * list of DataElements.
+     * 
+     * @param dataElements the DataElements.
+     * @return a list of DataElements.
+     */
     List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements );
 
     /**
