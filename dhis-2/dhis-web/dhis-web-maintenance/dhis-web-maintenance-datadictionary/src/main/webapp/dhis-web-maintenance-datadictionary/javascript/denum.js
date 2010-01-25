@@ -129,7 +129,7 @@ function saveDenum()
 	enableRadioGroup( "aggregationOperator" );
 	
 	var formula = document.getElementById( "formula" ).value;
-    var description = document.getElementById( "description" ).value;
+    var description = htmlEncode( document.getElementById( "description" ).value );
     var aggregationOperator = getSelectedRadioValue( "aggregationOperator" );
     
 	var type = htmlEncode( document.getElementById( "type" ).value );
