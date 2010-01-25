@@ -88,6 +88,8 @@ public class JdbcDataMergeStore
             "AND datavalue.dataelementid=" + destDataElementId + " AND datavalue.categoryoptioncomboid=" + destCategoryOptionComboId + " " +
             "AND d2.dataelementid=" + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + "; " +
     
+            "DELETE FROM datavalueaudit WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";" +
+        
             "DELETE FROM datavalue WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
 
         log.info( sql );
@@ -113,6 +115,8 @@ public class JdbcDataMergeStore
                 
             // TODO summarize when matching values exist
             
+            "DELETE FROM datavalueaudit WHERE sourceid=" + sourceId + ";" +
+                
             "DELETE FROM datavalue WHERE sourceid=" + sourceId + ";";
         
         log.info( sql );
