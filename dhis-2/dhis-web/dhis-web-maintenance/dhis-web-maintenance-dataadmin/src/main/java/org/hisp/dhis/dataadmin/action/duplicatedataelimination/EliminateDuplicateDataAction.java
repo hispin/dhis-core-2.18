@@ -121,7 +121,7 @@ public class EliminateDuplicateDataAction
         
         if ( !( dataElementToEliminate == dataElementToKeep && categoryOptionComboEliminate == categoryOptionComboKeep ) )
         {
-            //dataMergeService.mergeDataElements( dataElementKeep, categoryOptionComboKeep, dataElementEliminate, categoryOptionComboEliminate );
+            dataMergeService.mergeDataElements( dataElementKeep, categoryOptionComboKeep, dataElementEliminate, categoryOptionComboEliminate );
         }
         
         log.info( "Elimination done" );

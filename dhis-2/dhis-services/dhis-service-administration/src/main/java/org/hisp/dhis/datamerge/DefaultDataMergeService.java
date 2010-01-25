@@ -35,6 +35,7 @@ import org.hisp.dhis.datamerge.DataMergeStore;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -71,6 +72,7 @@ public class DefaultDataMergeService
     // DataMergeService implementation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void mergeDataElements( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
@@ -94,6 +96,7 @@ public class DefaultDataMergeService
         }
     }
 
+    @Transactional
     public void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source )
     {
         // ---------------------------------------------------------------------
