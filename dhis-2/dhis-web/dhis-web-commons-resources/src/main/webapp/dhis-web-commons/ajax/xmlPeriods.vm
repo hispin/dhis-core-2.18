@@ -5,6 +5,7 @@
 	    <id>$period.id</id>
 	    <startDate>$!format.formatDate( $period.startDate )</startDate>
 	    <endDate>$!format.formatDate( $period.endDate )</endDate>
+        <name>$!format.formatPeriod( $period )</name>
 	</period>
 #end
 </periods>
