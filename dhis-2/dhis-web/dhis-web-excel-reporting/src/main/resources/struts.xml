@@ -1212,7 +1212,8 @@
 			</result>
 		</action>
 		
-		<!-- Period Column -->
+		<!-- File management -->
+		
 		<action name="excelTemplateList"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1220,6 +1221,15 @@
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js</param>
 		</action>
+		
+		<action name="deleteExcelTemplate"
+			class="org.hisp.dhis.reportexcel.filemanager.action.DeleteExcelTemplateAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
 		
 	</package>
 </struts>
