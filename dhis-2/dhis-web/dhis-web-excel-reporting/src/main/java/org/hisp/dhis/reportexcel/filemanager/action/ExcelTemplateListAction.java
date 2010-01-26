@@ -23,7 +23,7 @@ public class ExcelTemplateListAction
     private Collection<File> templateFiles;
 
     // -------------------------------------------
-    // Getter
+    // Getter && Setter
     // -------------------------------------------
 
     public Collection<File> getTemplateFiles()
