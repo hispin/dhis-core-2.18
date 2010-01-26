@@ -32,7 +32,9 @@ function displayCompleteness()
     {
         clearTable( "resultTable" );
         
-        setMessage( i18n_processing + "..." );
+        showLoader();
+        
+        //setMessage( i18n_processing + "..." );
         
         var request = new Request();
         
@@ -94,7 +96,9 @@ function displayCompletenessByOrganisationUnitReceived( xmlObject )
 
 function displayCompletenessTable( xmlObject, headerText )
 {
-    hideMessage();
+    //hideMessage();
+    
+    hideLoader();
     
     var table = document.getElementById( "resultTable" );
     
