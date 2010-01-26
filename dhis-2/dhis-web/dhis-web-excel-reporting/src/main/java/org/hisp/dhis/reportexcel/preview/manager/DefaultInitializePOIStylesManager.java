@@ -124,7 +124,7 @@ public class DefaultInitializePOIStylesManager
     public void initFont( Font test_font, String fontName, short fontHeightInPoints, short boldWeight, short fontColor )
     {
 
-        test_font.setFontName( fontName );
+    	test_font.setFontName( fontName );
         test_font.setFontHeightInPoints( fontHeightInPoints );
         test_font.setBoldweight( boldWeight );
         test_font.setColor( fontColor );
