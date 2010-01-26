@@ -2,7 +2,7 @@
 #macro( integrityItem $header $id )
 <h4>${header}&nbsp;<img id="${id}Button"></h4>
 
-<div id="${id}Div"></div>
+<div id="${id}Div" style="border:1px solid #a0a0a0; padding:10px; width:600px"></div>
 
 #end
 

@@ -575,8 +575,8 @@ function getQueryStringFromList( listId, paramName )
  */
 function showLoader()
 {
-    $( "#loaderDiv" ).css({ display: "block" });
-    $( "#contentDiv" ).css({ display: "none" });
+    $( "div#loaderDiv" ).show();
+    $( "div#contentDiv" ).hide();
 }
 
 /**
@@ -584,6 +584,6 @@ function showLoader()
  */
 function hideLoader()
 {
-    $( "#loaderDiv" ).css({ display: "none" });
-    $( "#contentDiv" ).css({ display: "block" });
+    $( "div#loaderDiv" ).hide();
+    $( "div#contentDiv" ).show();
 }
