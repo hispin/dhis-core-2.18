@@ -45,9 +45,13 @@
     </tr>
 </table>
 
+#parse( "dhis-web-commons/loader/loader.vm" )
+
+<div id="contentDiv">
+
 <table id="resultTable" name="resultTable" style="width:95%"></table>
 
-<span id="message"></span>
+</div>
 
 <script type="text/javascript">
 	var i18n_processing = '$encoder.jsEscape( $i18n.getString( "processing" ) , "'")';
