@@ -1211,10 +1211,10 @@
 				/dhis-web-excel-reporting/responsePeriodColumn.vm
 			</result>
 		</action>
+
+		<!-- Excel Templates Management -->
 		
-		<!-- File management -->
-		
-		<action name="excelTemplateList"
+		<action name="listAllExcelTemplates"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
