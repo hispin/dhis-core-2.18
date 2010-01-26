@@ -569,3 +569,12 @@ function getQueryStringFromList( listId, paramName )
 	
 	return params;
 }
+
+/**
+ * Hides loader div and shows content div.
+ */
+function hideLoader()
+{
+    $( "#loaderDiv" ).css({ display: "none" });
+    $( "#contentDiv" ).css({ display: "block" });
+}

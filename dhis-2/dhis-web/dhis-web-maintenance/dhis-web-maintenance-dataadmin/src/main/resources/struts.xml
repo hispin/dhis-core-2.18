@@ -200,10 +200,16 @@
 		<!-- Data integrity -->
 
 		<action name="displayDataIntegrityForm"
-			class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction">
+			class="org.hisp.dhis.dataadmin.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-dataadmin/dataIntegrityForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="javascripts">javascript/dataIntegrity.js</param>
+		</action>
+		
+		<action name="getDataIntegrity"
+			class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction">
+			<result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/responseDataIntegrity.vm</result>
 		</action>
 
 		<!-- Statistics -->
@@ -310,7 +316,7 @@
 			<result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-maintenance-dataadmin/duplicateDataEliminationForm.vm</param>
             <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/duplicateDataElimination.js</param>
+            <param name="javascripts">javascript/duplicateDataElimination.js</param>
         </action>
 
 		<action name="eliminateDuplicateData" 
