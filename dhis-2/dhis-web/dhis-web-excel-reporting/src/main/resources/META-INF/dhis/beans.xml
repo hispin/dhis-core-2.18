@@ -1240,5 +1240,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="excelItemService" ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction"
+		class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction"
+		scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
 
 </beans>

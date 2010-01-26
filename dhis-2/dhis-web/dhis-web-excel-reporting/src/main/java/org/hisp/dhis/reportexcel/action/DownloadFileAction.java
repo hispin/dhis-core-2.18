@@ -92,7 +92,6 @@ public class DownloadFileAction
     public String execute()
         throws Exception
     {
-       
         File output = new File( selectionManager.getDownloadFilePath() );
 
         fileName = output.getName();

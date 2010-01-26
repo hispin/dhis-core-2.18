@@ -103,9 +103,7 @@ public class UpdateSortedDataElementForCategoryAction implements Action {
 		List<DataElement> dataElements = new ArrayList<DataElement>();
 
 		for (String dataElementId : this.dataElementIds) {
-System.out.println("\n\n === dataElementId = " + dataElementId);
-System.out.println("\n\n === dataElementId = " + Integer
-		.parseInt(dataElementId));
+
 			DataElement dataElement = dataElementService.getDataElement(Integer
 					.parseInt(dataElementId));
 			dataElements.add(dataElement);
