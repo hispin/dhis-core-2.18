@@ -6,12 +6,12 @@
 *	Delete Excel Template
 */
 function deleteExcelTemplate( fileName ) {
-
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( deleteExcelTemplateReceived );
-	request.send( "deleteExcelTemplate.action?fileName=" + fileName );
-	
+	if ( window.confirm(i18n_confirm_delete) ) {
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( deleteExcelTemplateReceived );
+		request.send( "deleteExcelTemplate.action?fileName=" + fileName );
+	}
 }
 
 function deleteExcelTemplateReceived( xmlObject ) {
