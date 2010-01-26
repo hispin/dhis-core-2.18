@@ -98,8 +98,6 @@ public class SaveDataElementGroupOrderForCategoryAction implements Action {
 
 	public String execute() throws Exception {
 		
-System.out.println("\n\n dataElementIds : " + dataElementIds);
-		
 		ExcelItemGroup excelItemGroup = (ExcelItemGroup) excelItemService
 				.getExcelItemGroup(id);
 

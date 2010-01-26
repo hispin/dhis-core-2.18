@@ -1211,5 +1211,15 @@
 				/dhis-web-excel-reporting/responsePeriodColumn.vm
 			</result>
 		</action>
+		
+		<!-- Period Column -->
+		<action name="excelTemplateList"
+			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js</param>
+		</action>
+		
 	</package>
 </struts>
