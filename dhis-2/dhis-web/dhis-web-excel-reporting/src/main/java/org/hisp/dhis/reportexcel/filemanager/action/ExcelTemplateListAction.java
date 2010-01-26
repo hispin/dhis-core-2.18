@@ -1,6 +1,7 @@
 package org.hisp.dhis.reportexcel.filemanager.action;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.options.SystemSettingManager;
@@ -20,7 +21,7 @@ public class ExcelTemplateListAction
     // -------------------------------------------
     // Output
     // -------------------------------------------
-    private Collection<File> templateFiles;
+    private Collection<File> templateFiles = new ArrayList<File>();
 
     // -------------------------------------------
     // Getter && Setter
@@ -46,10 +47,8 @@ public class ExcelTemplateListAction
     {
         String templateDirectory = (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
-
-        File reportTempDir = new File( templateDirectory );
-
-        templateFiles = FileUtils.getListFile( reportTempDir );
+        
+        templateFiles = FileUtils.getListFile( new File( templateDirectory ) );
 
         return SUCCESS;
     }
