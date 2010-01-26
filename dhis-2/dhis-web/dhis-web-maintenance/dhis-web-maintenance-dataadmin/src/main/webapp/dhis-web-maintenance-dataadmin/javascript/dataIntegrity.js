@@ -33,14 +33,14 @@ function displayViolationList( list, id )
 {
     if ( list.length > 0 )
     {
-    	// Display image button
+    	// Display image "drop-down" button
     	
         $( "#" + id + "Button" )
            .attr({ src: "../images/down.png", title: "View violations" })
            .css({ cursor: "pointer" })
-           .click( function() { showHideDiv( id + "Div" ) } );
+           .click( function() { $( "#" + id + "Div" ).slideToggle( "fast" ) } );
 
-        // Populate and hide violation div
+        // Populate violation div
 
         var violations = "";
         
@@ -49,13 +49,14 @@ function displayViolationList( list, id )
             violations += list[i] + "<br>";
         }
         
-        $( "#" + id + "Div" )
-            .html( violations )
-            .css({ display: "none" });        
+        $( "#" + id + "Div" ).html( violations );
     }
     else
     {
-        $( "#" + id + "Button" )
-            .attr({ src: "../images/check.png", title: "No violations" });
+    	// Display image "check" button
+    	
+        $( "#" + id + "Button" ).attr({ src: "../images/check.png", title: "No violations" });
     }
+        
+    $( "#" + id + "Div" ).hide();
 }
