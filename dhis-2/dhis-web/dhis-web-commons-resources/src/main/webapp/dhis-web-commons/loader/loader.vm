@@ -13,7 +13,7 @@ div#loaderDiv
 
 </style>
 
-<div id="loaderDiv">
+<div id="loaderDiv" style="display:none">
     
     <br><br><br>
     

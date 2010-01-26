@@ -1,6 +1,8 @@
 
 $( document ).ready( function()
 {
+	showLoader();
+	
     $.getJSON( "getDataIntegrity.action", {}, populateIntegrityItems );
 } );
 

@@ -50,6 +50,10 @@ function getData()
   
   var url = "getPivotTable.action";
   
+  hideDivs();
+  
+  showLoader();
+  
   $.getJSON(
     url,
     {
@@ -73,6 +77,8 @@ function getData()
       
       data = pivot.indicatorValues[0];
       
+      hideLoader();
+      
       generateTable();
     }
   );
@@ -86,6 +92,8 @@ function pivotData()
   pivotIndicator = document.getElementById( "indicatorBox" ).checked;
   pivotPeriod = document.getElementById( "periodBox" ).checked;
   pivotOrgunit = document.getElementById( "orgunitBox" ).checked;
+  
+  hideDivs();
   
   generateTable();
 }
@@ -204,9 +212,7 @@ function setPosition( e )
  * This method is responsible for generating the pivot table.
  */
 function generateTable()
-{
-  hideDivs();
-   
+{   
   var columnIndicators = pivotIndicator ? indicators : [null];
   var columnPeriods = pivotPeriod ? periods : [null];
   var columnOrgunits = pivotOrgunit ? orgunits : [null];

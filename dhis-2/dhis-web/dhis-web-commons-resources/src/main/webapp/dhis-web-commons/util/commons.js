@@ -571,6 +571,15 @@ function getQueryStringFromList( listId, paramName )
 }
 
 /**
+ * Shows loader div and hides content div.
+ */
+function showLoader()
+{
+    $( "#loaderDiv" ).css({ display: "block" });
+    $( "#contentDiv" ).css({ display: "none" });
+}
+
+/**
  * Hides loader div and shows content div.
  */
 function hideLoader()
