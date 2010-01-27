@@ -91,7 +91,6 @@ public class DeleteExcelTemplateAction
         String templateDirectory = (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
 
- System.out.println("\n\n\n === File : " + templateDirectory + File.separator + fileName);       
         FileUtils.delete(  templateDirectory + File.separator + fileName );
 
         return SUCCESS;
