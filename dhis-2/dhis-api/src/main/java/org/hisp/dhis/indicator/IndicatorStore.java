@@ -58,4 +58,6 @@ public interface IndicatorStore
     Indicator getIndicatorByCode( String code );
     
     Collection<Indicator> getIndicatorsWithGroupSets();
+    
+    Collection<Indicator> getIndicatorsWithoutGroups();
 }

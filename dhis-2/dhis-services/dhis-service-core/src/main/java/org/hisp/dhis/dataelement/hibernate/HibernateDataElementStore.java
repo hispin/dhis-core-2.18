@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.amplecode.quick.StatementManager;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -60,6 +61,13 @@ public class HibernateDataElementStore
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
+    }
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -261,6 +269,36 @@ public class HibernateDataElementStore
         return criteria.list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsWithoutGroups()
+    {
+        String hql = "from DataElement d where d.groups.size = 0";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsWithoutDataSets()
+    {
+        String hql = "from DataElement d where d.dataSets.size = 0";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+    
+    public boolean dataElementExists( int id )
+    {
+        final String sql = "select count(*) from dataelement where dataelementid=" + id;
+        
+        return statementManager.getHolder().queryForInteger( sql ) > 0;
+    }
+    
+    public boolean dataElementCategoryOptionComboExists( int id )
+    {
+        final String sql = "select count(*) from categoryoptioncombo where categoryoptioncomboid=" + id;
+        
+        return statementManager.getHolder().queryForInteger( sql ) > 0;
+    }
+    
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------

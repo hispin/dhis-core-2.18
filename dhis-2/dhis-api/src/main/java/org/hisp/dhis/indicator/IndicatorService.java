@@ -64,6 +64,8 @@ public interface IndicatorService
     Indicator getIndicatorByCode( String code );
     
     Collection<Indicator> getIndicatorsWithGroupSets();
+    
+    Collection<Indicator> getIndicatorsWithoutGroups();
 
     // -------------------------------------------------------------------------
     // IndicatorType

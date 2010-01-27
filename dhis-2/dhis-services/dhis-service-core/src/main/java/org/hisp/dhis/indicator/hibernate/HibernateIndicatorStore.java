@@ -156,10 +156,16 @@ public class HibernateIndicatorStore
     @SuppressWarnings( "unchecked" )
     public Collection<Indicator> getIndicatorsWithGroupSets()
     {
-        final String sql = "from Indicator d where d.groupSets.size > 0";
+        final String hql = "from Indicator d where d.groupSets.size > 0";
         
-        Query query = sessionFactory.getCurrentSession().createQuery( sql );
-        
-        return query.list();
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Indicator> getIndicatorsWithoutGroups()
+    {
+        final String hql = "from Indicator d where d.groups.size = 0";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }    
 }

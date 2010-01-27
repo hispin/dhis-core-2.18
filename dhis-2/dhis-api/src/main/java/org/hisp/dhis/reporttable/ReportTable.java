@@ -86,7 +86,8 @@ public class ReportTable
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
     
-    private static final String EMPTY_REPLACEMENT = "_";    
+    private static final String EMPTY_REPLACEMENT = "_";
+    private static final String EMPTY = "";    
     private static final String TABLE_PREFIX = "_report_";
     private static final String REGEX_NUMERIC = "([0-9]*)";
 
@@ -958,7 +959,7 @@ public class ReportTable
             string = string.toLowerCase();
             
             string = string.replaceAll( " ", EMPTY_REPLACEMENT );
-            string = string.replaceAll( "-", EMPTY_REPLACEMENT );
+            string = string.replaceAll( "-", EMPTY );
             string = string.replaceAll( "<", EMPTY_REPLACEMENT + "lt" + EMPTY_REPLACEMENT );
             string = string.replaceAll( ">", EMPTY_REPLACEMENT + "gt" + EMPTY_REPLACEMENT );
             

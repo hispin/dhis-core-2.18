@@ -391,6 +391,11 @@ public class DefaultOrganisationUnitService
         organisationUnitStore.updateOrganisationUnitParent( organisationUnitId, parentId );
     }
     
+    public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
+    {
+        return organisationUnitStore.getOrganisationUnitsWithoutGroups();
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

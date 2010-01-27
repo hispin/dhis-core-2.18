@@ -137,6 +137,14 @@ public class HibernateOrganisationUnitStore
         return session.createQuery( "from OrganisationUnit o where o.parent is null" ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
+    {
+        String hql = "from OrganisationUnit o where o.groups.size = 0";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

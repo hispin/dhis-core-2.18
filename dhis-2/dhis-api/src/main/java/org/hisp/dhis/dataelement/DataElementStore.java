@@ -204,6 +204,36 @@ public interface DataElementStore
      * @return a collection of all DataElement
      */
     Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant );
+    
+    /**
+     * Returns all DataElements which are not member of any DataElementGroups.
+     * 
+     * @return all DataElements which are not member of any DataElementGroups.
+     */
+    Collection<DataElement> getDataElementsWithoutGroups();
+    
+    /**
+     * Returns all DataElements which are not assigned to any DataSets.
+     * 
+     * @return all DataElements which are not assigned to any DataSets.
+     */
+    Collection<DataElement> getDataElementsWithoutDataSets();
+    
+    /**
+     * Checks whether a DataElement with the given identifier exists.
+     * 
+     * @param id the DataElement identifier.
+     * @return true or false.
+     */
+    boolean dataElementExists( int id );
+    
+    /**
+     * Checks whether a DataElementCategoryOptionCombo with the given identifier exists.
+     * 
+     * @param id the DataElementCategoryOptionCombo identifier.
+     * @return true or false.
+     */
+    boolean dataElementCategoryOptionComboExists( int id );
 
     // -------------------------------------------------------------------------
     // Calculated Data Elements

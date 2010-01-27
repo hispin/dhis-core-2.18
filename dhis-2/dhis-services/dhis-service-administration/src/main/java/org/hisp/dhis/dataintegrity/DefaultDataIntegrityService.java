@@ -132,28 +132,12 @@ public class DefaultDataIntegrityService
 
     public Collection<DataElement> getDataElementsWithoutDataSet()
     {
-        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
-        
-        return FilterUtils.filter( dataElements, new Filter<DataElement>()
-            {
-                public boolean retain( DataElement object )
-                {
-                    return object.getDataSets() == null || object.getDataSets().size() == 0;
-                }
-            } );
+        return dataElementService.getDataElementsWithoutDataSets();
     }
 
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
-        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
-        
-        return FilterUtils.filter( dataElements, new Filter<DataElement>()
-        {
-            public boolean retain( DataElement object )
-            {
-                return object.getGroups() == null || object.getGroups().size() == 0;
-            }
-        } );
+        return dataElementService.getDataElementsWithoutGroups();        
     }
     
     public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
@@ -235,15 +219,7 @@ public class DefaultDataIntegrityService
 
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
-        Collection<Indicator> indicators = indicatorService.getAllIndicators();
-        
-        return FilterUtils.filter( indicators, new Filter<Indicator>()
-            {
-                public boolean retain( Indicator object )
-                {
-                    return object.getGroups() == null || object.getGroups().size() == 0;
-                }
-            } );
+        return indicatorService.getIndicatorsWithoutGroups();
     }
     
     public Map<Indicator, String> getInvalidIndicatorNumerators()
@@ -337,15 +313,7 @@ public class DefaultDataIntegrityService
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
-        
-        return FilterUtils.filter( organisationUnits, new Filter<OrganisationUnit>()
-            {
-                public boolean retain( OrganisationUnit object )
-                {
-                    return object.getGroups() == null || object.getGroups().size() == 0;
-                }
-            } );
+        return organisationUnitService.getOrganisationUnitsWithoutGroups();
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsViolatingCompulsoryGroupSets()

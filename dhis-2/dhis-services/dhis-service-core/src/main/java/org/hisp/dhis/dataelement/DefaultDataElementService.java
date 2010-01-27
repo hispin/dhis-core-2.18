@@ -330,7 +330,27 @@ public class DefaultDataElementService
 
         return dataElements;
     }
+    
+    public Collection<DataElement> getDataElementsWithoutGroups()
+    {
+        return i18n( i18nService, dataElementStore.getDataElementsWithoutGroups() );
+    }
+    
+    public Collection<DataElement> getDataElementsWithoutDataSets()
+    {
+        return i18n( i18nService, dataElementStore.getDataElementsWithoutDataSets() );
+    }
 
+    public boolean dataElementExists( int id )
+    {
+        return dataElementStore.dataElementExists( id );
+    }
+    
+    public boolean dataElementCategoryOptionComboExists( int id )
+    {
+        return dataElementStore.dataElementCategoryOptionComboExists( id );
+    }
+    
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------

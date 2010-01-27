@@ -94,6 +94,13 @@ public interface OrganisationUnitStore
      */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
     
+    /**
+     * Returns all OrganisationUnits which are not a member of any OrganisationUnitGroups.
+     * 
+     * @return all OrganisationUnits which are not a member of any OrganisationUnitGroups.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
