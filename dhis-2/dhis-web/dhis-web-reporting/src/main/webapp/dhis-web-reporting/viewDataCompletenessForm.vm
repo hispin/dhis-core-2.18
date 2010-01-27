@@ -51,7 +51,7 @@
 
 <div id="contentDiv">
 
-<table id="resultTable" name="resultTable" style="width:95%"></table>
+<table id="resultTable" name="resultTable" style="width:95%" class="listTable"></table>
 
 </div>
 
