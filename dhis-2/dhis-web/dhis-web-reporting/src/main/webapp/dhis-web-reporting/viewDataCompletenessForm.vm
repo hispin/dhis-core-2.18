@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "data_completeness" )</h3>
+<h3>$i18n.getString( "data_completeness_report" )</h3>
 
 <table>
     <col width="320">
@@ -16,6 +16,8 @@
         </td>
         <td></td>
         <td valign="bottom">
+        	<input type="button" value="$i18n.getString( 'configuration' )" style="width:150px"
+        	   onclick="window.location.href='displayConfigureDataCompletenessForm.action'">
         	#openHelp( "dhis-web-reporting.datacompleteness.general" )<br>
         	<input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:150px"
                 onclick="window.location.href='getDataCompletenessPDF.action'"><input 
