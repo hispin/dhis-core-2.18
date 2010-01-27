@@ -13,6 +13,22 @@
     </action>
 		
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Menu                                                          -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		
+	<action name="displayExternalImportMenu" class="org.hisp.dhis.importexport.action.NoAction">
+	  <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/externalImportMenu.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+    </action>
+		
+    <action name="displayExternalExportMenu" class="org.hisp.dhis.importexport.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/externalExportMenu.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+    </action>
+	
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!-- Import                                                        -->
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
