@@ -282,12 +282,12 @@ public class DefaultExpressionService
                 return CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC;
             }
 
-            if ( dataElementService.getDataElement( dataElementId ) == null )
+            if ( !dataElementService.dataElementExists( dataElementId  ) )
             {
                 return DATAELEMENT_DOES_NOT_EXIST;
             }
 
-            if ( categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId ) == null )
+            if ( !dataElementService.dataElementCategoryOptionComboExists( categoryOptionComboId ) )
             {
                 return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
             }

@@ -176,6 +176,11 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorStore.getIndicatorsWithGroupSets() );
     }
     
+    public Collection<Indicator> getIndicatorsWithoutGroups()
+    {
+        return i18n( i18nService, indicatorStore.getIndicatorsWithoutGroups() );
+    }
+    
     // -------------------------------------------------------------------------
     // IndicatorType
     // -------------------------------------------------------------------------

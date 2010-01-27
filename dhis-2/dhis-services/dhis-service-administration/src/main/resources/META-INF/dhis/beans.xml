@@ -119,4 +119,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
+  <aop:config>
+	
+    <aop:aspect ref="statementInterceptor">
+      <aop:around pointcut="execution( * org.hisp.dhis.dataintegrity.DataIntegrityService.getInvalidIndicatorNumerators() )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.dataintegrity.DataIntegrityService.getInvalidIndicatorDenominators() )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.dataintegrity.DataIntegrityService.getInvalidValidationRuleLeftSideExpressions() )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.dataintegrity.DataIntegrityService.getInvalidValidationRuleRightSideExpressions() )" method="intercept"/>
+    </aop:aspect>
+    
+  </aop:config>
+  
 </beans>
