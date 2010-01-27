@@ -163,26 +163,34 @@ function displayCompletenessTable( xmlObject, headerText )
         var cellA = row.insertCell( 0 );
         cellA.style.height = "32px";
         cellA.innerHTML = resultName;
+        cellA.className = mark ? "listAlternateRow" : "listRow" ;
         
         var cellB = row.insertCell( 1 );
         cellB.innerHTML = registrations;
+        cellB.className = mark ? "listAlternateRow" : "listRow" ;
         
         var cellC = row.insertCell( 2 );
         cellC.innerHTML = sources;
+        cellC.className = mark ? "listAlternateRow" : "listRow" ;
         
         var cellD = row.insertCell( 3 );
         cellD.innerHTML = percentage;
+        cellD.className = mark ? "listAlternateRow" : "listRow" ;
         
         var cellE = row.insertCell( 4 );
         cellE.innerHTML = registrationsOnTime;
+        cellE.className = mark ? "listAlternateRow" : "listRow" ;
                 
         var cellF = row.insertCell( 5 );
         cellF.innerHTML = percentageOnTime;
+        cellF.className = mark ? "listAlternateRow" : "listRow" ;
         
+        /*
         if ( mark )
         {
             row.style.backgroundColor = "#e2e2e2";
         }
+        */
         
         mark = mark ? false : true;
 	}
