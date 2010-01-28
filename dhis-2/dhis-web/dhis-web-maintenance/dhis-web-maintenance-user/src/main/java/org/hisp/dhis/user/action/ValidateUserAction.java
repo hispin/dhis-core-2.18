@@ -173,7 +173,11 @@ public class ValidateUserAction
             message = i18n.getString( "specify_retype_password" );
 
             return INPUT;
-
+        }
+        
+        if ( id == null && ( !ValidationUtils.passwordIsValid( rawPassword ) ) )
+        {
+            message = i18n.getString( "password_is_not_valid" );
         }
 
         if ( rawPassword != null && rawPassword.trim().length() != 0 && !rawPassword.equals( retypePassword ) )
