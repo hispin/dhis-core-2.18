@@ -296,7 +296,7 @@ public class DefaultPeriodService
         return period;
     }
     
-    public Collection<Period> getPeriods( Period lastPeriod, int historyLength )
+    public List<Period> getPeriods( Period lastPeriod, int historyLength )
     {
         List<Period> periods = new ArrayList<Period>( historyLength );
 
