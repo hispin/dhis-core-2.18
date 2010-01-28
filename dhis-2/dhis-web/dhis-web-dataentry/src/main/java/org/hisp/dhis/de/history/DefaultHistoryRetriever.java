@@ -81,7 +81,6 @@ public class DefaultHistoryRetriever
 
     public DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         OrganisationUnit organisationUnit, Period lastPeriod, int historyLength )
-        throws HistoryRetrieverException
     {
         if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
         {
@@ -264,7 +263,6 @@ public class DefaultHistoryRetriever
 
     private Double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         OrganisationUnit organisationUnit, Period period )
-        throws HistoryRetrieverException
     {
         DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
@@ -281,7 +279,6 @@ public class DefaultHistoryRetriever
     }
 
     private Double parseValue( String value )
-        throws HistoryRetrieverException
     {
         try
         {
@@ -289,7 +286,7 @@ public class DefaultHistoryRetriever
         }
         catch ( NumberFormatException e )
         {
-            throw new HistoryRetrieverException( "Failed to parse double: " + value, e );
+            throw new RuntimeException( "Failed to parse double: " + value, e );
         }
     }
 }
