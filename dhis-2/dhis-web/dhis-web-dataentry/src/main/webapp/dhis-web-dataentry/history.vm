@@ -40,10 +40,12 @@
 			<br><br>
 			<h4>$i18n.getString( "followup" )</h4>
 			
-		    #if ( $dataValue.isFollowup() )
+		    #if ( $dataValue && $dataValue.isFollowup() )
                 <img id="followup" src="../images/marked_large.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer">
-			#else
+			#elseif ( $dataValue )
                 <img id="followup" src="../images/unmarked_large.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer">
+			#else
+			    <img id="followup" src="../images/unmarked_large.png">
 			#end
 		</td>
 		<!-- Column 2 - Min-max -->
