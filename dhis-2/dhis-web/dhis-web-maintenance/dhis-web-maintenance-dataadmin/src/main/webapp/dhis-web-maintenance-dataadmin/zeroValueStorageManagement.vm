@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "dataelement_zero_storage_management" )</h3>
+<h3>$i18n.getString( "zero_storage_management" )</h3>
 <br>
 <form id="ZeroDataValueManagement" method="POST" action="updateZeroIsSignificantForDataElements.action">
 <table>
