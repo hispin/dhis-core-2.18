@@ -92,7 +92,7 @@ public class MergeOrganisationUnitsAction
         
         if ( !( organisationUnitToEliminate == organisationUnitToKeep ) )
         {
-            //dataMergeService.mergeOrganisationUnits( keep, eliminate );
+            dataMergeService.mergeOrganisationUnits( keep, eliminate );
         }
         
         log.info( "Merging complete" );

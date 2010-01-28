@@ -107,6 +107,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.datamerge.DataMergeStore"
     class="org.hisp.dhis.datamerge.jdbc.JdbcDataMergeStore">
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
+	<property name="statementBuilder" ref="statementBuilder"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamerge.DataMergeService"
