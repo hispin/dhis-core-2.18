@@ -45,14 +45,22 @@ import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.ChartStore;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
+import org.hisp.dhis.minmax.MinMaxDataElement;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
+import org.hisp.dhis.system.util.MathUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
@@ -61,6 +69,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
@@ -103,7 +112,28 @@ public class DefaultChartService
     public void setDataMartService( DataMartService dataMartService )
     {
         this.dataMartService = dataMartService;
-    }        
+    }
+    
+    private PeriodService periodService;
+    
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+    
+    private MinMaxDataElementService minMaxDataElementService;
+
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
+    {
+        this.minMaxDataElementService = minMaxDataElementService;
+    }
 
     // -------------------------------------------------------------------------
     // ChartService implementation
@@ -153,18 +183,72 @@ public class DefaultChartService
             dataSet.addValue( entry.getValue(), title, entry.getKey() );
         }
         
-        CategoryPlot plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), getBarRenderer() );
+        CategoryPlot plot = getCategoryPlot( dataSet, getBarRenderer(), orientation, labelPositions );
         
-        plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
-        plot.setOrientation( orientation );
+        JFreeChart jFreeChart = getBasicJFreeChart( plot );
 
-        CategoryAxis xAxis = plot.getDomainAxis();
-        xAxis.setCategoryLabelPositions( labelPositions );
+        return jFreeChart;
+    }
+    
+    public JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
+        Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format )
+    {
+        List<Period> periods = periodService.getPeriods( lastPeriod, historyLength );
 
-        JFreeChart jFreeChart = new JFreeChart( title, titleFont, plot, false );
+        MinMaxDataElement minMax = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement, categoryOptionCombo );
         
-        jFreeChart.setBackgroundPaint( Color.WHITE );
-        jFreeChart.setAntiAlias( true );
+        SimpleRegression regression = new SimpleRegression();
+        
+        int periodCount = 0;
+        
+        // ---------------------------------------------------------------------
+        // DataSets
+        // ---------------------------------------------------------------------
+
+        DefaultCategoryDataset dataValueDataSet = new DefaultCategoryDataset();
+        DefaultCategoryDataset metaDataSet = new DefaultCategoryDataset();
+                
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+            
+            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, categoryOptionCombo );
+            
+            double value = 0;
+            
+            if ( dataValue != null && dataValue.getValue() != null && MathUtils.isNumeric( dataValue.getValue() ) )
+            {
+                value = Double.parseDouble( dataValue.getValue() );
+                
+                regression.addData( ++periodCount, value );
+            }
+            
+            dataValueDataSet.addValue( value, dataElement.getShortName(), period.getName() );
+            
+            if ( minMax != null )
+            {
+                metaDataSet.addValue( minMax.getMin(), "Min value", period.getName() );
+                metaDataSet.addValue( minMax.getMax(), "Max value", period.getName() );
+            }
+        }
+        
+        periodCount = 0;
+        
+        for ( Period period : periods )
+        {
+            metaDataSet.addValue( regression.predict( ++periodCount ), "Regression value", period.getName() );
+        }
+
+        // ---------------------------------------------------------------------
+        // Plots
+        // ---------------------------------------------------------------------
+
+        CategoryPlot plot = getCategoryPlot( dataValueDataSet, getBarRenderer(), PlotOrientation.VERTICAL, CategoryLabelPositions.UP_45 );
+        
+        plot.setDataset( 1, metaDataSet );        
+        plot.setRenderer( 1, getLineRenderer() );
+        
+        JFreeChart jFreeChart = getBasicJFreeChart( plot );
 
         return jFreeChart;
     }
@@ -173,6 +257,36 @@ public class DefaultChartService
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns a basic JFreeChart.
+     */
+    private JFreeChart getBasicJFreeChart( CategoryPlot plot )
+    {
+        JFreeChart jFreeChart = new JFreeChart( null, titleFont, plot, false );
+
+        jFreeChart.setBackgroundPaint( Color.WHITE );
+        jFreeChart.setAntiAlias( true );
+
+        return jFreeChart;
+    }
+    
+    /**
+     * Returns a CategoryPlot.
+     */
+    private CategoryPlot getCategoryPlot( CategoryDataset dataSet, CategoryItemRenderer renderer, 
+        PlotOrientation orientation, CategoryLabelPositions labelPositions )
+    {
+        CategoryPlot plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), renderer );
+
+        plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
+        plot.setOrientation( orientation );
+
+        CategoryAxis xAxis = plot.getDomainAxis();
+        xAxis.setCategoryLabelPositions( labelPositions );
+
+        return plot;
+    }
+    
     /**
      * Returns a bar renderer.
      */

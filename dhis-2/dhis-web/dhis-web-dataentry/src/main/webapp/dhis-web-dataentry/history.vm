@@ -53,7 +53,7 @@
             <h4>$encoder.htmlEncode( $i18n.getString( "min_max_limits" ) )</h4>
             <table>
                 <tr>
-                    <td style="background-color:#ff0000">&nbsp;</td>
+                    <td style="background-color:#2e4e83; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
                     <td><input type="text" id="maxLimit" style="width:10em" value="$maxLimit"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
@@ -61,7 +61,7 @@
                         #else disabled="disabled" #end onfocus="this.select()"></td>
                 </tr>
                 <tr>
-                    <td style="background-color:#008000">&nbsp;</td>
+                    <td style="background-color:#d54a4a; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$minLimit"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
@@ -69,9 +69,14 @@
                         #else disabled="disabled" #end onfocus="this.select()"></td>
                 </tr>
                 <tr>
-                    <td style="background-color:#0080ff">&nbsp;</td>
+                    <td style="background-color:#f4f256; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "average" ) ) </td>
                     <td><script type="text/javascript">document.write( ${average}.toFixed(1) );</script></td>
+                </tr>
+                <tr>
+                    <td style="background-color:#75e077; height:26px">&nbsp;</td>
+                    <td>$encoder.htmlEncode( $i18n.getString( "regression_line" ) ) </td>
+                    <td></td>
                 </tr>
             </table>        
         </td>
@@ -79,14 +84,13 @@
 	<tr>
 		<!-- History chart -->
 		<td colspan="2">
-			#if( $isHistoryValid )
-			    <h4>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h4>    
-			#else
-			    <h4>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h4>
+			<h4>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h4>
+			#if( !$isHistoryValid )			    
 			    <h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>  
 			#end    
 			
-			<div id="canvas" style="position:relative;width:${width}px;height:300px;border:1px solid black;background-color:#dddddd;margin-top:1em"></div>
+			<img src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&
+			    categoryOptionComboId=${dataElementHistory.optionCombo.id}">			
         </td>
     </tr>
 </table>
@@ -94,24 +98,6 @@
 <p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" onclick="window.opener.location.reload();window.close()"></p>
 
 <script type="text/javascript">
-
-var historyLength = $dataElementHistory.historyLength;
-var maxValue = $dataElementHistory.maxValue;
-var minLimit = #if( $dataElementHistory.minLimit ) $dataElementHistory.minLimit #else Number.NaN #end;
-var maxLimit = #if( $dataElementHistory.maxLimit ) $dataElementHistory.maxLimit #else Number.NaN #end;
-
-var ouid = $dataElementHistory.organisationUnit.id;
-var deid = $dataElementHistory.dataElement.id;
-var coid = $dataElementHistory.optionCombo.id;
-
-var historyPoints = new Array( $dataElementHistory.historyLength );
-#set( $i = 0 )
-#foreach( $historyPoint in $dataElementHistory.historyPoints )
-   historyPoints[$i] = [#if( $historyPoint.period ) '$format.formatPeriod( $historyPoint.period )' #else '-' #end, #if( $historyPoint.value ) $historyPoint.value #else Number.NaN #end, $historyPoint.average, $historyPoint.period.id ];
-   #set( $i = $i + 1 )
-#end
-
-createChart();
 
 var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
 var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
