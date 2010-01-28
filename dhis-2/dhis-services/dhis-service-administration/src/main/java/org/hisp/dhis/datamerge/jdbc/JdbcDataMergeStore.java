@@ -58,7 +58,7 @@ public class JdbcDataMergeStore
     // DataMergeStore implementation
     // -------------------------------------------------------------------------
 
-    public void mergeDataElements( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
+    public void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
         final int destDataElementId = destDataElement.getId();
@@ -70,7 +70,10 @@ public class JdbcDataMergeStore
         // DataMergeStore implementation
         // -------------------------------------------------------------------------
 
-        final String sql =         
+        final String sql =      
+            
+            // Move from source to destination where destination does not exist
+            
             "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid=" + destCategoryOptionComboId + " " +
             "WHERE dataelementid=" + sourceDataElementId + " and categoryoptioncomboid=" + sourceCategoryOptionComboId + " " +
             "AND NOT EXISTS ( " +
@@ -80,6 +83,8 @@ public class JdbcDataMergeStore
                 "AND d1.periodid=d2.periodid " +
                 "AND d1.sourceid=d2.sourceid ); " +
     
+            // Update destination with source where source is last updated
+                
             "UPDATE datavalue SET value=d2.value,storedby=d2.storedby,lastupdated=d2.lastupdated,comment=d2.comment,followup=d2.followup " +
             "FROM datavalue AS d2 " +
             "WHERE datavalue.periodid=d2.periodid " +
@@ -88,14 +93,17 @@ public class JdbcDataMergeStore
             "AND datavalue.dataelementid=" + destDataElementId + " AND datavalue.categoryoptioncomboid=" + destCategoryOptionComboId + " " +
             "AND d2.dataelementid=" + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + "; " +
     
+            // Delete remaining source data value audits
+            
             "DELETE FROM datavalueaudit WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";" +
         
+            // Delete remaining source data values
+            
             "DELETE FROM datavalue WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
 
         log.info( sql );
         
         jdbcTemplate.execute( sql );
-
     }
     
     public void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source )
@@ -104,6 +112,9 @@ public class JdbcDataMergeStore
         final int sourceId = source.getId();
         
         final String sql = 
+            
+            // Move from source to destination where destination does not exist
+            
             "UPDATE datavalue AS d1 SET sourceid=" + destId + " " +
             "WHERE sourceid=" + sourceId + " " +
             "AND NOT EXISTS ( " +
@@ -114,9 +125,13 @@ public class JdbcDataMergeStore
                 "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid ); " +
                 
             // TODO summarize when matching values exist
-            
-            "DELETE FROM datavalueaudit WHERE sourceid=" + sourceId + ";" +
+
+            // Delete remaining source data value audits
                 
+            "DELETE FROM datavalueaudit WHERE sourceid=" + sourceId + ";" +
+
+            // Delete remaining source data values
+            
             "DELETE FROM datavalue WHERE sourceid=" + sourceId + ";";
         
         log.info( sql );

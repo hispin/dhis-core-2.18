@@ -36,8 +36,22 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  */
 public interface DataMergeStore
 {
-    void mergeDataElements( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
+    /**
+     * Eliminate duplicate data element and its data values.
+     * 
+     * @param destDataElement the destination data element.
+     * @param destCategoryOptionCombo the destination category option combo.
+     * @param sourceDataElemenet the source data element.
+     * @param sourceCategoryOptionCombo the source category option combo.
+     */
+    void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo );
     
+    /**
+     * Merge organisation units and their data values.
+     * 
+     * @param dest the destination organisation unit.
+     * @param source the source organisation unit.
+     */
     void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source );
 }

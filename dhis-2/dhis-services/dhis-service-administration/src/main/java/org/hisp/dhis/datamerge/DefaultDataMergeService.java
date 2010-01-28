@@ -73,14 +73,14 @@ public class DefaultDataMergeService
     // -------------------------------------------------------------------------
 
     @Transactional
-    public void mergeDataElements( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
+    public void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
         DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
         // ---------------------------------------------------------------------
         // Eliminate duplicates
         // ---------------------------------------------------------------------
 
-        dataMergeStore.mergeDataElements( destDataElement, destCategoryOptionCombo, sourceDataElemenet, sourceCategoryOptionCombo );
+        dataMergeStore.eliminateDuplicateDataElement( destDataElement, destCategoryOptionCombo, sourceDataElemenet, sourceCategoryOptionCombo );
 
         // ---------------------------------------------------------------------
         // Delete source
