@@ -41,7 +41,6 @@ public interface HistoryRetriever
     String ID = HistoryRetriever.class.getName();
 
     DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
-        OrganisationUnit organisationUnit, Period lastPeriod, int historyLength )
-            throws HistoryRetrieverException;    
+        OrganisationUnit organisationUnit, Period lastPeriod, int historyLength );
     
 }
