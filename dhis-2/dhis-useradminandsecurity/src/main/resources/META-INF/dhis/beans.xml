@@ -15,19 +15,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   -->
   
-  <!-- DHIS beans -->
-  
   <bean id="org.hisp.dhis.security.PasswordManager"
-    class="org.hisp.dhis.security.acegi.AcegiPasswordManager">
-    <property name="passwordEncoder" ref="org.acegisecurity.providers.encoding.PasswordEncoder"/>
+    class="org.hisp.dhis.security.spring.SpringSecurityPasswordManager">
+	<property name="passwordEncoder" ref="passwordEncoder"/>
     <property name="authenticationManager" ref="authenticationManager"/>
-    <property name="usernameSaltSource" ref="org.hisp.dhis.security.UsernameSaltSource"/>
+    <property name="usernameSaltSource" ref="usernameSaltSource"/>
   </bean>
   
-  <!-- Authentication beans -->
-  
   <bean id="authenticationManager"
-    class="org.acegisecurity.providers.ProviderManager">
+    class="org.springframework.security.providers.ProviderManager">
     <property name="providers">
       <list>
         <ref local="daoAuthenticationProvider"/>
@@ -36,21 +32,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="daoAuthenticationProvider"
-    class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-    <property name="userDetailsService" ref="org.acegisecurity.userdetails.UserDetailsService"/>
-    <property name="passwordEncoder" ref="org.acegisecurity.providers.encoding.PasswordEncoder"/>
-    <property name="saltSource" ref="org.hisp.dhis.security.UsernameSaltSource"/>
+    class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+    <property name="userDetailsService" ref="userDetailsService"/>
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+    <property name="saltSource" ref="usernameSaltSource"/>
   </bean>
   
-  <bean id="org.acegisecurity.userdetails.UserDetailsService"
+  <bean id="userDetailsService"
     class="org.hisp.dhis.security.hibernate.HibernateUserDetailsService">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
-  <bean id="org.acegisecurity.providers.encoding.PasswordEncoder"
-    class="org.acegisecurity.providers.encoding.Md5PasswordEncoder"/>
+  <bean id="passwordEncoder"
+    class="org.springframework.security.providers.encoding.Md5PasswordEncoder"/>
   
-  <bean id="org.hisp.dhis.security.UsernameSaltSource"
+  <bean id="usernameSaltSource"
     class="org.hisp.dhis.security.DefaultUsernameSaltSource"/>
   
 </beans>

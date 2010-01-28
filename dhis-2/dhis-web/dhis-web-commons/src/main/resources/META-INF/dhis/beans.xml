@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+						http://www.springframework.org/schema/security
+						http://www.springframework.org/schema/security/spring-security-2.0.xsd">
 
 	<!-- Web Portal -->
 
@@ -17,7 +20,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<value>maintenance</value>
 		</property>
 	</bean>
-
+		
+    <bean id="filterChainProxy" class="org.springframework.security.util.FilterChainProxy">
+        <sec:filter-chain-map path-type="ant">
+        <sec:filter-chain pattern="/dhis-web-commons/security/**"  filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/util/**"  filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/css/**"  filters="none"/>
+        <sec:filter-chain pattern="/**"
+            filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,requiredLoginFilter"/>
+        </sec:filter-chain-map>
+    </bean>
+		
 	<bean id="org.hisp.dhis.webportal.module.ConfigurableModuleComparator"
 		class="org.hisp.dhis.webportal.module.ConfigurableModuleComparator">
 		<property name="order">
@@ -256,20 +269,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
-
-	<bean id="org.acegisecurity.util.FilterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
-		<property name="filterInvocationDefinitionSource">
-			<value>
-				\A.*\.action(\?.*)?\Z=httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,requiredLoginFilter
-			</value>
-		</property>
-	</bean>
-
+	
 	<bean id="httpSessionContextIntegrationFilter"
-		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter" />
+		class="org.springframework.security.context.HttpSessionContextIntegrationFilter" />
 
 	<bean id="authenticationProcessingFilter"
-		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="authenticationFailureUrl" value="/dhis-web-commons/security/loginfailed.html" />
 		<property name="defaultTargetUrl" value="/dhis-web-commons-security/loggedIn.action" />
@@ -277,11 +282,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="alwaysUseDefaultTargetUrl" value="true" />
 	</bean>
 
-	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+	<bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
 		<constructor-arg value="/" />
 		<constructor-arg>
 			<list>
-				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+				<bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler" />
 			</list>
 		</constructor-arg>
 		<property name="filterProcessesUrl" value="/dhis-web-commons-security/logout.action" />
@@ -336,7 +341,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean id="regularAccessDecisionVoting" class="org.acegisecurity.vote.UnanimousBased">
+	<bean id="regularAccessDecisionVoting" class="org.springframework.security.vote.UnanimousBased">
 		<property name="decisionVoters">
 			<list>
 				<ref local="actionAccessVoter" />
@@ -359,13 +364,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				<value>dhis-web-commons-security</value>
 				<value>dhis-web-commons-i18n</value>
 				<value>dhis-web-commons-ajax</value>
+                <value>dhis-web-commons-ajax-json</value>
+                <value>dhis-web-commons-help</value>
 				<value>dhis-web-commons-about</value>
 				<value>dhis-web-portal</value>
 			</set>
 		</property>
 	</bean>
 
-	<bean id="adminAccessDecisionVoting" class="org.acegisecurity.vote.UnanimousBased">
+	<bean id="adminAccessDecisionVoting" class="org.springframework.security.vote.UnanimousBased">
 		<property name="decisionVoters">
 			<list>
 				<ref local="adminAccessVoter" />
@@ -387,7 +394,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="actionAccessResolver" ref="org.hisp.dhis.security.ActionAccessResolver" />
 	</bean>
 
-	<bean id="org.hisp.dhis.security.ActionAccessResolver" class="org.hisp.dhis.security.AcegiActionAccessResolver">
+	<bean id="org.hisp.dhis.security.ActionAccessResolver" class="org.hisp.dhis.security.SpringSecurityActionAccessResolver">
 		<property name="requiredAuthoritiesProvider"
 			ref="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider" />
 		<property name="accessDecisionManager" ref="accessDecisionManager" />
@@ -438,7 +445,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				<value>dhis-web-commons-security</value>
 				<value>dhis-web-commons-i18n</value>
 				<value>dhis-web-commons-ajax</value>
-				<value>dhis-web-commons-about</value>
+                <value>dhis-web-commons-ajax-json</value>
+                <value>dhis-web-commons-help</value>
+                <value>dhis-web-commons-about</value>
 				<value>dhis-web-portal</value>
 			</set>
 		</property>

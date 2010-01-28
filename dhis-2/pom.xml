@@ -468,17 +468,21 @@
       </dependency>
       <!--Security -->
       <dependency>
-        <groupId>org.acegisecurity</groupId>
-        <artifactId>acegi-security</artifactId>
-        <version>1.0.2</version>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>2.0.5.RELEASE</version>
         <exclusions>
           <exclusion>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-remoting</artifactId>
+            <artifactId>spring-context</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
+            <artifactId>spring-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.springframework</groupId>
@@ -487,15 +491,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.acegisecurity</groupId>
-        <artifactId>acegi-security-tiger</artifactId>
-        <version>1.0.2</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-          </exclusion>
-        </exclusions>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core-tiger</artifactId>
+        <version>2.0.5.RELEASE</version>
       </dependency>
       <!--Reporting -->
       <dependency>

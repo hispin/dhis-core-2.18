@@ -27,20 +27,20 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
+import java.util.Collection;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.ConfigAttribute;
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.vote.RoleVoter;
+import org.springframework.security.Authentication;
+import org.springframework.security.ConfigAttribute;
+import org.springframework.security.ConfigAttributeDefinition;
+import org.springframework.security.vote.RoleVoter;
 
 /**
- * RoleVoter which requires all org.acegisecurity.ConfigAttributes to be granted
+ * RoleVoter which requires all  org.springframework.security.ConfigAttributes to be granted
  * authorities, given that the ConfigAttributes have the specified prefix
  * ("ROLE_" by default). If there are no supported ConfigAttributes it abstains
  * from voting.
  * 
- * @see org.acegisecurity.vote.RoleVoter
+ * @see  org.springframework.security.vote.RoleVoter
  * 
  * @author Torgeir Lorange Ostby
  * @version $Id: AllRequiredRoleVoter.java 6070 2008-10-28 17:49:23Z larshelg $
@@ -53,11 +53,10 @@ public class AllRequiredRoleVoter
         int supported = 0;
 
         @SuppressWarnings( "unchecked" )
-        Iterator<ConfigAttribute> it = config.getConfigAttributes();
+        Collection<ConfigAttribute> attributes = config.getConfigAttributes();
 
-        while ( it.hasNext() )
+        for ( ConfigAttribute attribute : attributes )
         {
-            ConfigAttribute attribute = it.next();
 
             if ( this.supports( attribute ) )
             {

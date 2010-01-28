@@ -27,7 +27,7 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.providers.dao.SaltSource;
+import  org.springframework.security.providers.dao.SaltSource;
 
 /**
  * This interface adds a method for getting a salt based on a username. The

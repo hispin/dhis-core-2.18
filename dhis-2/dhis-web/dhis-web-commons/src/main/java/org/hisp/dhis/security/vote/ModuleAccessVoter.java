@@ -30,9 +30,9 @@ package org.hisp.dhis.security.vote;
 import java.util.Collections;
 import java.util.Set;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.GrantedAuthority;
+import org.springframework.security.Authentication;
+import org.springframework.security.ConfigAttributeDefinition;
+import org.springframework.security.GrantedAuthority;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

@@ -30,10 +30,10 @@ package org.hisp.dhis.security;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserStore;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.GrantedAuthorityImpl;
 
 /**
  * @author Torgeir Lorange Ostby

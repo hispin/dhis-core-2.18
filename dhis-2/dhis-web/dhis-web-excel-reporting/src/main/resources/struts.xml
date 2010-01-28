@@ -1220,7 +1220,7 @@
 			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js</param>
-			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MAMAGEMENT_LIST</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_LIST</param>
 		</action>
 		
 		<action name="deleteExcelTemplate"
@@ -1229,7 +1229,7 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
-			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MAMAGEMENT_DELETE</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_DELETE</param>
 		</action>
 		
 		

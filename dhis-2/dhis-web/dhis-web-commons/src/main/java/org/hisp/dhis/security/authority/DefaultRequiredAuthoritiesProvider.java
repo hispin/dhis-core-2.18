@@ -27,16 +27,18 @@ package org.hisp.dhis.security.authority;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.SecurityConfig;
-import org.acegisecurity.intercept.ObjectDefinitionSource;
+import org.springframework.security.ConfigAttributeDefinition;
+import org.springframework.security.SecurityConfig;
+import org.springframework.security.intercept.ObjectDefinitionSource;
 import org.hisp.dhis.security.intercept.SingleObjectDefinitionSource;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
@@ -74,26 +76,27 @@ public class DefaultRequiredAuthoritiesProvider
     {
         return createObjectDefinitionSource( actionConfig, actionConfig );
     }
-
     public ObjectDefinitionSource createObjectDefinitionSource( ActionConfig actionConfig, Object object )
     {
         Collection<String> requiredAuthorities = getRequiredAuthorities( actionConfig );
 
-        ConfigAttributeDefinition attributes = new ConfigAttributeDefinition();
-
+        List<SecurityConfig> list = new ArrayList<SecurityConfig>();
+        
         for ( String requiredAuthority : requiredAuthorities )
         {
-            attributes.addConfigAttribute( new SecurityConfig( requiredAuthority ) );
+            list.add( new SecurityConfig( requiredAuthority ) );
         }
 
         for ( String globalAttribute : globalAttributes )
         {
-            attributes.addConfigAttribute( new SecurityConfig( globalAttribute ) );
+            list.add( new SecurityConfig( globalAttribute ) );
         }
 
+        ConfigAttributeDefinition attributes = new ConfigAttributeDefinition(list);
+        
         return new SingleObjectDefinitionSource( object, attributes );
     }
-
+    
     public Collection<String> getRequiredAuthorities( ActionConfig actionConfig )
     {
         final Map<String, String> staticParams = actionConfig.getParams();

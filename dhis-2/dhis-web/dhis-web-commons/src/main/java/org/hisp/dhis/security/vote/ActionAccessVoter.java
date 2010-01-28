@@ -27,14 +27,14 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
+import java.util.Collection;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.ConfigAttribute;
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.Authentication;
+import org.springframework.security.ConfigAttribute;
+import org.springframework.security.ConfigAttributeDefinition;
+import org.springframework.security.GrantedAuthority;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 
@@ -61,6 +61,7 @@ public class ActionAccessVoter
         return result;
     }
 
+    @SuppressWarnings( "unchecked" )
     public int vote( Authentication authentication, Object object, ConfigAttributeDefinition definition )
     {
         if ( !supports( object.getClass() ) )
@@ -71,13 +72,11 @@ public class ActionAccessVoter
         }
 
         int supported = 0;
+        
+        Collection<ConfigAttribute> attributes =  definition.getConfigAttributes();
 
-        Iterator<?> it = definition.getConfigAttributes();
-
-        while ( it.hasNext() )
+        for ( ConfigAttribute attribute : attributes )
         {
-            ConfigAttribute attribute = (ConfigAttribute) it.next();
-
             if ( supports( attribute ) )
             {
                 ++supported;

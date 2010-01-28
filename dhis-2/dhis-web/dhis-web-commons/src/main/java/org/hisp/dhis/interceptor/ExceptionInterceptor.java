@@ -30,8 +30,8 @@ package org.hisp.dhis.interceptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.acegisecurity.AccessDeniedException;
-import org.acegisecurity.InsufficientAuthenticationException;
+import org.springframework.security.AccessDeniedException;
+import org.springframework.security.InsufficientAuthenticationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

@@ -1,4 +1,4 @@
-package org.hisp.dhis.security.acegi;
+package org.hisp.dhis.security.spring;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,12 +27,12 @@ package org.hisp.dhis.security.acegi;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.encoding.PasswordEncoder;
-import org.acegisecurity.userdetails.UserDetails;
+import  org.springframework.security.Authentication;
+import  org.springframework.security.AuthenticationException;
+import  org.springframework.security.AuthenticationManager;
+import  org.springframework.security.providers.UsernamePasswordAuthenticationToken;
+import  org.springframework.security.providers.encoding.PasswordEncoder;
+import  org.springframework.security.userdetails.UserDetails;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.UsernameSaltSource;
 
@@ -40,7 +40,7 @@ import org.hisp.dhis.security.UsernameSaltSource;
  * @author Torgeir Lorange Ostby
  * @version $Id: AcegiPasswordManager.java 3109 2007-03-19 17:05:21Z torgeilo $
  */
-public class AcegiPasswordManager
+public class SpringSecurityPasswordManager
     implements PasswordManager
 {
     // -------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class AcegiPasswordManager
 
     public final boolean isPasswordValid( String username, String password )
     {
-        UserDetails userDetails = new org.acegisecurity.userdetails.User( username, password, true, true, true, true,
+        UserDetails userDetails = new  org.springframework.security.userdetails.User( username, password, true, true, true, true,
             null );
 
         Authentication authentication = new UsernamePasswordAuthenticationToken( userDetails, userDetails.getPassword() );

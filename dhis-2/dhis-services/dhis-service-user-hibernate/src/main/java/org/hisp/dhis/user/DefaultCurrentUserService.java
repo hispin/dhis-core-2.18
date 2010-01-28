@@ -27,14 +27,14 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.acegi.AbstractAcegiCurrentUserService;
+import org.hisp.dhis.security.spring.AbstractSpringSecurityCurrentUserService;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: DefaultCurrentUserService.java 5708 2008-09-16 14:28:32Z larshelg $
  */
 public class DefaultCurrentUserService
-    extends AbstractAcegiCurrentUserService
+    extends AbstractSpringSecurityCurrentUserService
 {
     private static final String SUPERUSER_AUTHORITY = "ALL";
     

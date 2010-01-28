@@ -26,17 +26,17 @@
       <artifactId>dhis-support-hibernate</artifactId>
     </dependency>
     
-    <!-- Acegi -->
+    <!-- Spring Security -->
     
-    <dependency>
-      <groupId>org.acegisecurity</groupId>
-      <artifactId>acegi-security</artifactId>
+	<dependency>
+	  <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.acegisecurity</groupId>
-      <artifactId>acegi-security-tiger</artifactId>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core-tiger</artifactId>
     </dependency>
-    
+	
     <!-- Other -->
     
     <dependency>

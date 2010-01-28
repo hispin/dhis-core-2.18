@@ -27,7 +27,7 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.userdetails.UserDetails;
+import  org.springframework.security.userdetails.UserDetails;
 
 /**
  * @author Torgeir Lorange Ostby
