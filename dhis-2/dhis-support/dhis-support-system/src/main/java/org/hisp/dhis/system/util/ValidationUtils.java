@@ -83,4 +83,15 @@ public class ValidationUtils
     {
         return new UrlValidator().isValid( url );
     }
+    
+    /**
+     * Validates whether a password is valid.
+     * 
+     * @param password the password.
+     * @return true if the password is valid, false otherwise.
+     */
+    public static boolean passwordIsValid( String password )
+    {
+        return password != null && password.length() >= 5 && password.length() < 50;
+    }
 }
