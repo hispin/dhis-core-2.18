@@ -30,11 +30,11 @@ package org.hisp.dhis.security.hibernate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import  org.springframework.security.GrantedAuthority;
+import  org.springframework.security.GrantedAuthorityImpl;
+import  org.springframework.security.userdetails.UserDetails;
+import  org.springframework.security.userdetails.UserDetailsService;
+import  org.springframework.security.userdetails.UsernameNotFoundException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -80,7 +80,7 @@ public class HibernateUserDetailsService
 
         GrantedAuthority[] authorities = getGrantedAuthorities( credentials );
 
-        return new org.acegisecurity.userdetails.User( credentials.getUsername(), credentials.getPassword(), true,
+        return new  org.springframework.security.userdetails.User( credentials.getUsername(), credentials.getPassword(), true,
             true, true, true, authorities );
     }
 

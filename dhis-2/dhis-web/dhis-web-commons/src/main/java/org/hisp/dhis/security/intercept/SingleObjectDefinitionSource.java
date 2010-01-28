@@ -27,10 +27,10 @@ package org.hisp.dhis.security.intercept;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
+import java.util.Collection;
 
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.intercept.ObjectDefinitionSource;
+import org.springframework.security.ConfigAttributeDefinition;
+import org.springframework.security.intercept.ObjectDefinitionSource;
 
 /**
  * Generic ObjectDefinitionSource for one single object.
@@ -56,12 +56,8 @@ public class SingleObjectDefinitionSource
 
     public SingleObjectDefinitionSource( Object object, ConfigAttributeDefinition attributes )
     {
-        this.object = object;
-
-        if ( attributes.size() > 0 )
-        {
-            this.attributes = attributes;
-        }
+        this.object = object;   
+        this.attributes = attributes;        
     }
 
     // -------------------------------------------------------------------------
@@ -84,7 +80,7 @@ public class SingleObjectDefinitionSource
         return null;
     }
 
-    public Iterator<?> getConfigAttributeDefinitions()
+    public Collection<?> getConfigAttributeDefinitions()
     {
         return null;
     }

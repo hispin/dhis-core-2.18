@@ -1,4 +1,4 @@
-package org.hisp.dhis.user.acegi;
+package org.hisp.dhis.security.spring;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,17 +27,17 @@ package org.hisp.dhis.user.acegi;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.userdetails.UserDetails;
+import  org.springframework.security.Authentication;
+import  org.springframework.security.context.SecurityContext;
+import  org.springframework.security.context.SecurityContextHolder;
+import  org.springframework.security.userdetails.UserDetails;
 import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: AbstractAcegiCurrentUserService.java 3109 2007-03-19 17:05:21Z torgeilo $
  */
-public abstract class AbstractAcegiCurrentUserService
+public abstract class AbstractSpringSecurityCurrentUserService
     implements CurrentUserService
 {
     public String getCurrentUsername()

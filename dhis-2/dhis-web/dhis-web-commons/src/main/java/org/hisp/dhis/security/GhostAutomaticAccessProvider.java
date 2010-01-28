@@ -27,10 +27,10 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.userdetails.UserDetails;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -50,7 +50,7 @@ public class GhostAutomaticAccessProvider
         String username = "ghost_admin";
         String password = "";
 
-        UserDetails user = new org.acegisecurity.userdetails.User( username, password, true, true, true, true,
+        UserDetails user = new org.springframework.security.userdetails.User( username, password, true, true, true, true,
             getGrantedAuthorities() );
 
         authentication = new UsernamePasswordAuthenticationToken( user, user.getPassword(), user.getAuthorities() );

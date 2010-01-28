@@ -27,8 +27,8 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.ConfigAttribute;
-import org.acegisecurity.vote.AccessDecisionVoter;
+import org.springframework.security.ConfigAttribute;
+import org.springframework.security.vote.AccessDecisionVoter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

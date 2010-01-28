@@ -29,7 +29,7 @@ package org.hisp.dhis.security.authority;
 
 import java.util.Collection;
 
-import org.acegisecurity.intercept.ObjectDefinitionSource;
+import org.springframework.security.intercept.ObjectDefinitionSource;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 

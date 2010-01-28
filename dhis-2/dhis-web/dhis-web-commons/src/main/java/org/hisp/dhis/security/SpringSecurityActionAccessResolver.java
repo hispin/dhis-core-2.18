@@ -27,17 +27,17 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.acegisecurity.AccessDecisionManager;
-import org.acegisecurity.AccessDeniedException;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.InsufficientAuthenticationException;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.intercept.ObjectDefinitionSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.dispatcher.Dispatcher;
 import org.hisp.dhis.security.authority.RequiredAuthoritiesProvider;
+import org.springframework.security.AccessDecisionManager;
+import org.springframework.security.AccessDeniedException;
+import org.springframework.security.Authentication;
+import org.springframework.security.InsufficientAuthenticationException;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.intercept.ObjectDefinitionSource;
 
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.entities.ActionConfig;
@@ -45,12 +45,12 @@ import com.opensymphony.xwork2.config.entities.PackageConfig;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AcegiActionAccessResolver.java 3160 2007-03-24 20:15:06Z torgeilo $
+ * @version $Id: SpringSecurityActionAccessResolver.java 3160 2007-03-24 20:15:06Z torgeilo $
  */
-public class AcegiActionAccessResolver
+public class SpringSecurityActionAccessResolver
     implements ActionAccessResolver
 {
-    private static final Log LOG = LogFactory.getLog( AcegiActionAccessResolver.class );
+    private static final Log LOG = LogFactory.getLog( SpringSecurityActionAccessResolver.class );
 
     // -------------------------------------------------------------------------
     // Dependencies

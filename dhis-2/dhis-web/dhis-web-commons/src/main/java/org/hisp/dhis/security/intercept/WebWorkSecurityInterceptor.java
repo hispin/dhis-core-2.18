@@ -30,9 +30,9 @@ package org.hisp.dhis.security.intercept;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.acegisecurity.intercept.AbstractSecurityInterceptor;
-import org.acegisecurity.intercept.InterceptorStatusToken;
-import org.acegisecurity.intercept.ObjectDefinitionSource;
+import org.springframework.security.intercept.AbstractSecurityInterceptor;
+import org.springframework.security.intercept.InterceptorStatusToken;
+import org.springframework.security.intercept.ObjectDefinitionSource;
 import org.hisp.dhis.security.ActionAccessResolver;
 import org.hisp.dhis.security.authority.RequiredAuthoritiesProvider;
 

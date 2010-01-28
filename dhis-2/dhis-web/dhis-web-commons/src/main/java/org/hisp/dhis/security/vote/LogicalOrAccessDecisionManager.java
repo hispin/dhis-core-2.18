@@ -30,12 +30,12 @@ package org.hisp.dhis.security.vote;
 import java.util.Collections;
 import java.util.List;
 
-import org.acegisecurity.AccessDecisionManager;
-import org.acegisecurity.AccessDeniedException;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.ConfigAttribute;
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.InsufficientAuthenticationException;
+import org.springframework.security.AccessDecisionManager;
+import org.springframework.security.AccessDeniedException;
+import org.springframework.security.Authentication;
+import org.springframework.security.ConfigAttribute;
+import org.springframework.security.ConfigAttributeDefinition;
+import org.springframework.security.InsufficientAuthenticationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
