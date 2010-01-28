@@ -226,6 +226,15 @@ public interface PeriodService
      */
     Period getRelativePeriod( Date date, int months );
 
+    /**
+     * Returns historyLength number of Periods chronologically ending with lastPeriod.
+     * 
+     * @param lastPeriod the last Period in the provided collection.
+     * @param historyLength the number of Periods in the provided collection.
+     * @return a collection of Periods.
+     */
+    Collection<Period> getPeriods( Period lastPeriod, int historyLength );
+    
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------
