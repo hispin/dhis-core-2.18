@@ -30,6 +30,7 @@ package org.hisp.dhis.period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -293,6 +294,30 @@ public class DefaultPeriodService
         }
 
         return period;
+    }
+    
+    public Collection<Period> getPeriods( Period lastPeriod, int historyLength )
+    {
+        List<Period> periods = new ArrayList<Period>( historyLength );
+
+        CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
+
+        Period period = lastPeriod;
+        
+        Period p = new Period();
+
+        for ( int i = 0; i < historyLength; ++i )
+        {
+            p = getPeriodFromDates( period.getStartDate(), period.getEndDate(), periodType );
+            
+            periods.add( p != null ? p : period );
+            
+            period = periodType.getPreviousPeriod( period );
+        }
+
+        Collections.reverse( periods );
+
+        return periods;
     }
 
     // -------------------------------------------------------------------------
