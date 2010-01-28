@@ -233,7 +233,7 @@ public interface PeriodService
      * @param historyLength the number of Periods in the provided collection.
      * @return a collection of Periods.
      */
-    Collection<Period> getPeriods( Period lastPeriod, int historyLength );
+    List<Period> getPeriods( Period lastPeriod, int historyLength );
     
     // -------------------------------------------------------------------------
     // PeriodType

@@ -27,8 +27,6 @@ package org.hisp.dhis.de.history;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -38,7 +36,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -108,7 +105,7 @@ public class DefaultHistoryRetriever
         // Create history points
         // ---------------------------------------------------------------------
 
-        List<Period> periods = getPeriods( lastPeriod, historyLength );
+        List<Period> periods = periodService.getPeriods( lastPeriod, historyLength );
 
         double max = 1;
         double average = 0;
@@ -230,35 +227,6 @@ public class DefaultHistoryRetriever
         }
 
         return value;
-    }
-
-    private List<Period> getPeriods( Period lastPeriod, int historyLength )
-    {
-        List<Period> periods = new ArrayList<Period>( historyLength );
-
-        CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
-
-        Period period = lastPeriod;
-        Period p = new Period();
-
-        for ( int i = 0; i < historyLength; ++i )
-        {
-
-            p = periodService.getPeriodFromDates( period.getStartDate(), period.getEndDate(), periodType );
-            if ( p != null )
-            {
-                periods.add( p );
-            }
-            else
-            {
-                periods.add( period );
-            }
-            period = periodType.getPreviousPeriod( period );
-        }
-
-        Collections.reverse( periods );
-
-        return periods;
     }
 
     private Double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
