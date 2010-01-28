@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -54,6 +56,9 @@ public interface ChartService
     
     JFreeChart getJFreeChart( String title, PlotOrientation orientation, 
         CategoryLabelPositions labelPositions, Map<String, Double> categoryValues );
+    
+    JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
+        Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format );
     
     int saveChart( Chart chart );
 

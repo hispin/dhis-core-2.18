@@ -45,7 +45,7 @@ public class DataElementHistory
     private DataElementCategoryOptionCombo optionCombo;
 
     private OrganisationUnit organisationUnit;
-
+    
     private Integer minLimit;
 
     private Integer maxLimit;
