@@ -26,7 +26,7 @@
 	#set( $count = $count + 1 )	
 	<tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
 	
-		<td#alternate( $mark )><span id="value[$count].name">$value.dataElementName</span></td>
+		<td#alternate( $mark )><span id="value[$count].name">$value.dataElementName $value.categoryOptionComboNameParsed</span></td>
 		
 		<td#alternate( $mark )>$value.sourceName</td>
 		
