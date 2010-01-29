@@ -27,16 +27,18 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import junit.framework.TestCase;
-
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
+
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: MathUtil.java 4712 2008-03-12 10:32:45Z larshelg $
  */
 public class MathUtilsTest
-    extends TestCase
 {
     private static final String OPERATOR_EQUAL = "==";
     private static final String OPERATOR_NOT_EQUAL = "!=";
@@ -45,6 +47,7 @@ public class MathUtilsTest
     private static final String OPERATOR_LESSER = "<";
     private static final String OPERATOR_LESSER_EQUAL = "<=";
     
+    @Test
     public void testExpressionIsTrue()
     {
         assertFalse( expressionIsTrue( 20.0, OPERATOR_EQUAL, 10.0 ) );
@@ -54,5 +57,21 @@ public class MathUtilsTest
         assertFalse( expressionIsTrue( 30.0, OPERATOR_LESSER, 15.0 ) );
         assertTrue( expressionIsTrue( 40.0, OPERATOR_LESSER_EQUAL, 50.0 ) );
         assertFalse( expressionIsTrue( 0.0, OPERATOR_GREATER_EQUAL, 20.0 ) );
+    }
+    
+    @Test
+    public void testGetMin()
+    {
+        double[] array = { 5.0, 2.0, 6.0, 12.0 };
+        
+        assertEquals( 2.0, MathUtils.getMin( array ) );
+    }
+
+    @Test
+    public void testGetMax()
+    {
+        double[] array = { 5.0, 2.0, 12.0, 6.0 };
+        
+        assertEquals( 12.0, MathUtils.getMax( array ) );
     }
 }

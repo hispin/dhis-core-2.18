@@ -1,7 +1,7 @@
 package org.hisp.dhis.system.util;
 
 /*
- * Copyright (c) 2004-2005, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@ package org.hisp.dhis.system.util;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+ * * Neither the name of the HISP project nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,53 +27,31 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
- *
- * @author bobj
- * @version created 19-Dec-2009
+ * @author Lars Helge Overland
  */
-public class StreamUtilsTest
-        extends TestCase {
-
-    public static BufferedInputStream zipStream;
-
-    public static BufferedInputStream gzipStream;
-
-    @Override
-    public void setUp()
+public class ConversionUtilsTest
+{
+    @Test
+    public void getArray()
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-        zipStream = new BufferedInputStream(classLoader.getResourceAsStream( "dxfA.zip" ));
-
-        gzipStream = new BufferedInputStream(classLoader.getResourceAsStream( "Export.xml.gz" ));
-    }
-
-    @Override
-    public void tearDown() throws Exception
-    {
-        zipStream.close();
-
-        gzipStream.close();
-    }
-
-    public void testZip()
-    {
-        assertTrue(StreamUtils.isZip(zipStream));
-
-        assertFalse(StreamUtils.isGZip(zipStream));
-    }
-
-    public void testGZip()
-    {
-        assertTrue(StreamUtils.isGZip(gzipStream));
-
-        assertFalse(StreamUtils.isZip(gzipStream));
+        List<Double> list = new ArrayList<Double>();
+        list.add( 1.0 );
+        list.add( 2.0 );
+        list.add( 3.0 );
+        
+        double[] array = ConversionUtils.getArray( list );
+        
+        assertEquals( 3, array.length );
+        assertEquals( 1.0, array[0] );
+        assertEquals( 2.0, array[1] );
+        assertEquals( 3.0, array[2] );
     }
 }
-
-
