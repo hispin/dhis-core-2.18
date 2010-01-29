@@ -7,7 +7,7 @@
 	<table width="100%">
 		<thead>
 			<tr>
-				<th>$encoder.htmlEncode( $i18n.getString( "validation_rule" ) )</th>				
+				<th style="width:110px">$encoder.htmlEncode( $i18n.getString( "validation_rule" ) )</th>				
 				<th>$encoder.htmlEncode( $i18n.getString( "expression" ) )</th>
 				<th>$encoder.htmlEncode( $i18n.getString( "description" ) )</th>
     			<th>$encoder.htmlEncode( $i18n.getString( "value" ) )</th>

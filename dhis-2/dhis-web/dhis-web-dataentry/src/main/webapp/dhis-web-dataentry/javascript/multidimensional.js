@@ -316,7 +316,7 @@ function CommentSaver( dataElementId_, optionComboId_, value_ )
 // -----------------------------------------------------------------------------
 function validate()
 {
-    window.open( 'validate.action', '_blank', 'width=800,height=200,scrollbars=yes' );
+    window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
 }
 
 // -----------------------------------------------------------------------------
