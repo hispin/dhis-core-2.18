@@ -195,4 +195,56 @@ public class MathUtils
     {
         return new Random().nextInt( 999 );
     }
+    
+    /**
+     * Returns the minimum value from the given array.
+     * 
+     * @param array the array of numbers.
+     * @return the minimum value.
+     */
+    public static Double getMin( double[] array )
+    {
+        if ( array == null || array.length == 0 )
+        {
+            return null;
+        }
+        
+        double min = array[ 0 ];
+        
+        for ( int i = 1; i < array.length; i++ )
+        {
+            if ( array[ i ] < min )
+            {
+                min = array[ i ];
+            }
+        }
+        
+        return min;
+    }
+    
+    /**
+     * Returns the maximum value from the given array.
+     * 
+     * @param array the array of numbers.
+     * @return the maximum value.
+     */
+    public static Double getMax( double[] array )
+    {
+        if ( array == null || array.length == 0 )
+        {
+            return null;
+        }
+        
+        double max = array[ 0 ];
+        
+        for ( int i = 1; i < array.length; i++ )
+        {
+            if ( array[ i ] > max )
+            {
+                max = array[ i ];
+            }
+        }
+        
+        return max;
+    }
 }

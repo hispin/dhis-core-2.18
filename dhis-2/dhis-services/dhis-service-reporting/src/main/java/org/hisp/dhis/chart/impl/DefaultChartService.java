@@ -33,14 +33,21 @@ import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 
+import static org.hisp.dhis.system.util.ConversionUtils.*;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.analysis.SplineInterpolator;
+import org.apache.commons.math.analysis.UnivariateRealFunction;
+import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
@@ -197,12 +204,14 @@ public class DefaultChartService
 
         MinMaxDataElement minMax = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement, categoryOptionCombo );
         
-        SimpleRegression regression = new SimpleRegression();
+        UnivariateRealInterpolator interpolator = new SplineInterpolator();
         
-        int periodCount = 0;
+        Integer periodCount = 0;
+        List<Double> x = new ArrayList<Double>();
+        List<Double> y = new ArrayList<Double>();
         
         // ---------------------------------------------------------------------
-        // DataSets
+        // DataValue, MinValue and MaxValue DataSets
         // ---------------------------------------------------------------------
 
         DefaultCategoryDataset dataValueDataSet = new DefaultCategoryDataset();
@@ -210,6 +219,8 @@ public class DefaultChartService
                 
         for ( Period period : periods )
         {
+            ++periodCount;
+            
             period.setName( format.formatPeriod( period ) );
             
             DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, categoryOptionCombo );
@@ -220,7 +231,8 @@ public class DefaultChartService
             {
                 value = Double.parseDouble( dataValue.getValue() );
                 
-                regression.addData( ++periodCount, value );
+                x.add( periodCount.doubleValue() );
+                y.add( value );
             }
             
             dataValueDataSet.addValue( value, dataElement.getShortName(), period.getName() );
@@ -231,12 +243,36 @@ public class DefaultChartService
                 metaDataSet.addValue( minMax.getMax(), "Max value", period.getName() );
             }
         }
-        
-        periodCount = 0;
-        
-        for ( Period period : periods )
+
+        // ---------------------------------------------------------------------
+        // Interpolation DataSet
+        // ---------------------------------------------------------------------
+
+        if ( x.size() >= 3 ) // minimum 3 data points required for interpolation
         {
-            metaDataSet.addValue( regression.predict( ++periodCount ), "Regression value", period.getName() );
+            periodCount = 0;
+
+            double[] xa = getArray( x );
+            
+            int min = MathUtils.getMin( xa ).intValue();
+            int max = MathUtils.getMax( xa ).intValue();
+            
+            try
+            {
+                UnivariateRealFunction function = interpolator.interpolate( xa, getArray( y ) );
+                    
+                for ( Period period : periods )
+                {
+                    if ( ++periodCount >= min && periodCount <= max )
+                    {
+                        metaDataSet.addValue( function.value( periodCount ), "Regression value", period.getName() );
+                    }
+                }
+            }
+            catch ( MathException ex )
+            {
+                throw new RuntimeException( "Failed to interpolate", ex );
+            }
         }
 
         // ---------------------------------------------------------------------

@@ -206,4 +206,24 @@ public class ConversionUtils
         
         return map;
     }
+    
+    /**
+     * Converts a List<Double> into a double[].
+     * 
+     * @param list the List.
+     * @return a double array.
+     */
+    public static double[] getArray( List<Double> list )
+    {
+        double[] array = new double[ list.size() ];
+        
+        int index = 0;
+        
+        for ( Double d : list )
+        {
+            array[ index++ ] = d;
+        }
+        
+        return array;
+    }
 }
