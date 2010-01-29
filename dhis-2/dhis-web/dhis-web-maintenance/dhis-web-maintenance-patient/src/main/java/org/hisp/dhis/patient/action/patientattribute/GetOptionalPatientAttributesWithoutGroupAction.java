@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 
@@ -36,7 +39,7 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class UpdatePatientAttributeAction
+public class GetOptionalPatientAttributesWithoutGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -51,44 +54,17 @@ public class UpdatePatientAttributeAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
-    public void setId( int id )
+    public Collection<PatientAttribute> getPatientAttributes()
     {
-        this.id = id;
+        return patientAttributes;
     }
 
-    private String nameField;
-
-    public void setNameField( String nameField )
-    {
-        this.nameField = nameField;
-    }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
-    private boolean mandatory;
-
-    public void setMandatory( boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-
+   
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -96,13 +72,7 @@ public class UpdatePatientAttributeAction
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
-        patientAttribute.setMandatory( mandatory );
-
-        patientAttributeService.updatePatientAttribute( patientAttribute );
+        patientAttributes = patientAttributeService.getOptionalPatientAttributesWithoutGroup();
 
         return SUCCESS;
     }

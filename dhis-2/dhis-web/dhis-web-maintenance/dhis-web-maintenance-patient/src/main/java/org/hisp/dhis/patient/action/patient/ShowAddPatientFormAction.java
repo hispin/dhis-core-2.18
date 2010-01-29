@@ -27,8 +27,12 @@
 
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.Collection;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierService;
 
 import com.opensymphony.xwork2.Action;
@@ -58,6 +62,13 @@ public class ShowAddPatientFormAction
         this.patientIdentifierService = patientIdentifierService;
     }
 
+    public PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -67,6 +78,13 @@ public class ShowAddPatientFormAction
     public String getIdentifier()
     {
         return identifier;
+    }
+
+    private Collection<PatientAttribute> patientAttributes;
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
     }
 
     // -------------------------------------------------------------------------
@@ -79,6 +97,8 @@ public class ShowAddPatientFormAction
 
         identifier = patientIdentifierService.getNextIdentifierForOrgUnit( organisationUnit );
 
+        patientAttributes = patientAttributeService.getPatientAttributesByMandatory(true);
+        
         return SUCCESS;
     }
 }

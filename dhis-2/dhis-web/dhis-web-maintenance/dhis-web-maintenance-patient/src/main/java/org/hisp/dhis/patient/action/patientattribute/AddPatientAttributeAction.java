@@ -75,6 +75,13 @@ public class AddPatientAttributeAction
         this.valueType = valueType;
     }
 
+    private boolean mandatory;
+    
+    public void setMandatory( boolean mandatory )
+    {
+        this.mandatory = mandatory;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -88,7 +95,8 @@ public class AddPatientAttributeAction
         patientAttribute.setName( nameField );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
-
+        patientAttribute.setMandatory(mandatory);
+        
         patientAttributeService.savePatientAttribute( patientAttribute );
 
         return SUCCESS;

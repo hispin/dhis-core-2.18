@@ -31,6 +31,8 @@
                 <option value="bool" #if( $patientAttribute.valueType == 'bool' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
                 <option value="date" #if( $patientAttribute.valueType == 'date' ) selected="selected" #end>$i18n.getString( "date" )</option>
             </select>
+			<input type="hidden" id="mandatory" name="mandatory">
+			<label>$i18n.getString( "madatory" )</label> <input type="checkbox" #if($patientAttribute.mandatory==true) checked #end onChange="javascript: byId('mandatory').value=this.checked;">
         </td>
       </tr>
       <tr>

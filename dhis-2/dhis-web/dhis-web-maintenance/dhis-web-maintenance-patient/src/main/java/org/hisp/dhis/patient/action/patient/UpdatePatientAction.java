@@ -26,10 +26,22 @@
  */
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.i18n.I18nFormat;
 
 import com.opensymphony.xwork2.Action;
@@ -41,6 +53,7 @@ import com.opensymphony.xwork2.Action;
 public class UpdatePatientAction
     implements Action
 {
+    private static final Log LOG = LogFactory.getLog( UpdatePatientAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -58,6 +71,20 @@ public class UpdatePatientAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -106,9 +133,9 @@ public class UpdatePatientAction
     {
         this.birthDate = birthDate;
     }
-    
+
     private boolean birthDateEstimated;
-    
+
     public void setBirthDateEstimated( boolean birthDateEstimated )
     {
         this.birthDateEstimated = birthDateEstimated;
@@ -150,12 +177,59 @@ public class UpdatePatientAction
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
         patient.setGender( gender );
-        patient.setBirthDate( format.parseDate( birthDate ) );        
-        patient.setBirthDateEstimated( birthDateEstimated );        
+        patient.setBirthDate( format.parseDate( birthDate ) );
+        patient.setBirthDateEstimated( birthDateEstimated );
         patient.setRegistrationDate( new Date() );
 
         patientService.updatePatient( patient );
 
+        // add attribute value
+        Collection<PatientAttribute> patientAttributes = patientAttributeService.getPatientAttributesByMandatory( true );
+
+        HttpServletRequest request = ServletActionContext.getRequest();
+        ArrayList<String> attributeValue = new ArrayList<String>();
+
+        for ( PatientAttribute patientAttribute : patientAttributes )
+        {
+            int patientAttributeId = patientAttribute.getId();
+            String value = request.getParameterValues( patientAttributeId + "" )[0].trim();
+            if ( value.length() > 0 )
+            {
+                if ( !patient.getAttributes().contains( patientAttribute ) )
+                {
+                    patient.getAttributes().add( patientAttribute );
+                }
+                
+                updatePatientAttributeValue(patientAttribute, value);
+            }
+        }
+
+        patientService.updatePatient( patient );
+        
         return SUCCESS;
+    }
+
+    private void updatePatientAttributeValue(PatientAttribute patientAttribute, String value)
+    {
+
+        PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+            patientAttribute );
+
+        if ( patientAttributeValue == null )
+        {
+                LOG.debug( "Adding PatientAttributeValue, value added" );
+
+                patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
+
+                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
+        }
+        else
+        {
+            LOG.debug( "Updating PatientAttributeValue, value added/changed" );
+
+            patientAttributeValue.setValue( value );
+
+            patientAttributeValueService.updatePatientAttributeValue( patientAttributeValue );
+        }
     }
 }

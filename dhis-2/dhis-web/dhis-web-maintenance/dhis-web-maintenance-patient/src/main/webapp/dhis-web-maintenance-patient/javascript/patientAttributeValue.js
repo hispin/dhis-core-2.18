@@ -316,3 +316,49 @@ function getNextEntryField( field )
     }
 }
 
+// Validate
+// Input datetime
+function isDate( value ) {
+	var re = /^(\d{2,4})(\/|-)(\d{1,2})(\/|-)(\d{1,2})$/;
+	return (re.test(value)) ? true : false;
+}
+
+function validateAttributeValue(  patientAttributeId, patientAttributeName, type)
+{ 
+	var field = byId( patientAttributeId );
+    
+    if( field.value != '' )
+    {
+    	if( type == 'int' )
+    	{
+    		if ( !isInt( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+
+                window.alert( i18n_value_must_integer + '\n\n' + patientAttributeName );
+				field.value = '';
+                
+				field.select();
+                field.focus();
+
+                return;
+            }
+    	} else if(type == 'date'){
+			if(!isDate(field.value ))
+			{
+				field.style.backgroundColor = '#ffcc00';
+			
+				window.alert( i18n_value_must_date + '\n\n' + patientAttributeName );
+				field.value = '';
+                
+				field.select();
+                field.focus();
+
+                return;
+			}
+		}
+		field.style.backgroundColor = '';
+    }
+}
+
+
