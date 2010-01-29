@@ -28,19 +28,22 @@ package org.hisp.dhis.de.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.de.state.SelectedStateManager;
-import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -56,6 +59,8 @@ public class ValidationAction
 {
     private static final Log log = LogFactory.getLog( ValidationAction.class );
 
+    private static final double STD_DEV = 2.0;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -87,6 +92,13 @@ public class ValidationAction
     {
         this.periodService = periodService;
     }
+    
+    private DataAnalysisService stdDevOutlierAnalysisService;
+
+    public void setStdDevOutlierAnalysisService( DataAnalysisService stdDevOutlierAnalysisService )
+    {
+        this.stdDevOutlierAnalysisService = stdDevOutlierAnalysisService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -97,20 +109,6 @@ public class ValidationAction
     public List<ValidationResult> getResults()
     {
         return results;
-    }
-
-    private Map<Integer, Expression> leftsideMap;
-
-    public Map<Integer, Expression> getLeftsideMap()
-    {
-        return leftsideMap;
-    }
-
-    private Map<Integer, Expression> rightsideMap;
-
-    public Map<Integer, Expression> getRightsideMap()
-    {
-        return rightsideMap;
     }
 
     private Map<Integer, String> leftsideFormulaMap;
@@ -127,6 +125,13 @@ public class ValidationAction
         return rightsideFormulaMap;
     }
 
+    private Collection<DeflatedDataValue> dataValues;
+
+    public Collection<DeflatedDataValue> getDataValues()
+    {
+        return dataValues;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -145,36 +150,30 @@ public class ValidationAction
 
         results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
 
-        log.info( "Numer of validation violations: " + results.size() );
-
+        log.info( "Number of validation violations: " + results.size() );
+        
         if ( results.size() == 0 )
         {
             return NONE;
         }
         else
         {
-            leftsideMap = new HashMap<Integer, Expression>( results.size() );
-            rightsideMap = new HashMap<Integer, Expression>( results.size() );
-
             leftsideFormulaMap = new HashMap<Integer, String>( results.size() );
             rightsideFormulaMap = new HashMap<Integer, String>( results.size() );
 
             for ( ValidationResult result : results )
             {
                 ValidationRule rule = result.getValidationRule();
-                int id = rule.getId();
 
-                Expression leftside = rule.getLeftSide();
-                Expression rightside = rule.getRightSide();
-
-                leftsideMap.put( id, leftside );
-                rightsideMap.put( id, rightside );
-
-                leftsideFormulaMap.put( id, expressionService.getExpressionDescription( leftside.getExpression() ) );
-                rightsideFormulaMap.put( id, expressionService.getExpressionDescription( rightside.getExpression() ) );
+                leftsideFormulaMap.put( rule.getId(), expressionService.getExpressionDescription( rule.getLeftSide().getExpression() ) );
+                rightsideFormulaMap.put( rule.getId(), expressionService.getExpressionDescription( rule.getRightSide().getExpression() ) );
             }
         }
+        
+        dataValues = stdDevOutlierAnalysisService.analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), STD_DEV );
 
+        log.info( "Number of outlier values: " + dataValues.size() );
+        
         return SUCCESS;
     }
 }
