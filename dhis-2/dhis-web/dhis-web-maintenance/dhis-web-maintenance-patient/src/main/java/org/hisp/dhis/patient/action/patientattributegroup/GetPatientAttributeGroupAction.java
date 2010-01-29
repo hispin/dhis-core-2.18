@@ -25,76 +25,91 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientattribute;
+package org.hisp.dhis.patient.action.patientattributegroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdatePatientAttributeAction
+public class GetPatientAttributeGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private PatientAttributeGroupService patientAttributeGroupService;
+
     private PatientAttributeService patientAttributeService;
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private int id;
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private List<PatientAttribute> patientAttributes;
+
+    private PatientAttributeGroup patientAttributeGroup;
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
 
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-    
-    private int id;
+    public PatientAttributeGroup getPatientAttributeGroup()
+    {
+        return patientAttributeGroup;
+    }
+
+    public List<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
 
     public void setId( int id )
     {
         this.id = id;
     }
 
-    private String nameField;
-
-    public void setNameField( String nameField )
-    {
-        this.nameField = nameField;
-    }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
+        patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( id );
 
-        patientAttributeService.updatePatientAttribute( patientAttribute );
+        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getOptionalPatientAttributesWithoutGroup() );
+
+        Collections.sort( patientAttributes, new PatientAttributeComparator() );
 
         return SUCCESS;
     }

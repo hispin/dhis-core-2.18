@@ -34,9 +34,9 @@ import java.util.Collection;
  */
 public interface PatientAttributeService
 {
-    
+
     String ID = PatientAttributeService.class.getName();
-    
+
     int savePatientAttribute( PatientAttribute patientAttribute );
 
     void deletePatientAttribute( PatientAttribute patientAttribute );
@@ -44,11 +44,15 @@ public interface PatientAttributeService
     void updatePatientAttribute( PatientAttribute patientAttribute );
 
     PatientAttribute getPatientAttribute( int id );
-    
+
     PatientAttribute getPatientAttributeByName( String name );
 
     Collection<PatientAttribute> getAllPatientAttributes();
-    
+
     Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
+
+    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
+    
+    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
 
 }

@@ -144,6 +144,16 @@ public class Patient
         return id;
     }
 
+    public Set<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public void setAttributes( Set<PatientAttribute> attributes )
+    {
+        this.attributes = attributes;
+    }
+
     public void setId( Integer id )
     {
         this.id = id;
@@ -259,15 +269,15 @@ public class Patient
         return registrationDate;
     }
 
-    public Set<PatientAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
-    public void setAttributes( Set<PatientAttribute> attributes )
-    {
-        this.attributes = attributes;
-    }
+    // public Set<PatientAttribute> getAttributes()
+    // {
+    // return attributes;
+    // }
+    //
+    // public void setAttributes( Set<PatientAttribute> attributes )
+    // {
+    // this.attributes = attributes;
+    // }
 
     public void setRepresentative( Patient representative )
     {

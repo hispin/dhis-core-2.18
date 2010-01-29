@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.patient.action.patientattribute;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.patient.Patient;
@@ -35,6 +34,7 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,121 +42,112 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class SavePatientAttributeValueAction
-    implements Action
-{
+public class SavePatientAttributeValueAction implements Action {
 
-    private static final Log LOG = LogFactory.getLog( SavePatientAttributeValueAction.class );
+	private static final Log LOG = LogFactory
+			.getLog(SavePatientAttributeValueAction.class);
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private PatientService patientService;
+	private PatientService patientService;
 
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
+	public void setPatientService(PatientService patientService) {
+		this.patientService = patientService;
+	}
 
-    private PatientAttributeService patientAttributeService;
+	private PatientAttributeService patientAttributeService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
+	public void setPatientAttributeService(
+			PatientAttributeService patientAttributeService) {
+		this.patientAttributeService = patientAttributeService;
+	}
 
-    private PatientAttributeValueService patientAttributeValueService;
+	private PatientAttributeValueService patientAttributeValueService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
+	public void setPatientAttributeValueService(
+			PatientAttributeValueService patientAttributeValueService) {
+		this.patientAttributeValueService = patientAttributeValueService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Input/Output
+	// -------------------------------------------------------------------------
 
-    private String value;
+	private String value;
 
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    private int patientId;
+	private int patientId;
 
-    public void setPatientId( int patientId )
-    {
-        this.patientId = patientId;
-    }
+	public void setPatientId(int patientId) {
+		this.patientId = patientId;
+	}
 
-    private int patientAttributeId;
+	private int patientAttributeId;
 
-    public void setPatientAttributeId( int patientAttributeId )
-    {
-        this.patientAttributeId = patientAttributeId;
-    }
+	public void setPatientAttributeId(int patientAttributeId) {
+		this.patientAttributeId = patientAttributeId;
+	}
 
-    private int statusCode;
+	private int statusCode;
 
-    public int getStatusCode()
-    {
-        return statusCode;
-    }
+	public int getStatusCode() {
+		return statusCode;
+	}
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
-    {        
+	public String execute() throws Exception {
 
-        Patient patient = patientService.getPatient( patientId );
-        
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( patientAttributeId );
-        
-        if( !patient.getAttributes().contains( patientAttribute ) )
-        {
-            patient.getAttributes().add( patientAttribute );
-            patientService.updatePatient( patient );
-        }
+		Patient patient = patientService.getPatient(patientId);
 
-        if ( value != null && value.trim().length() == 0 )
-        {
-            value = null;
-        }
+		PatientAttribute patientAttribute = patientAttributeService
+				.getPatientAttribute(patientAttributeId);
 
-        if ( value != null )
-        {
-            value = value.trim();
-        }        
+		if (!patient.getAttributes().contains(patientAttribute)) {
+			patient.getAttributes().add(patientAttribute);
+			patientService.updatePatient(patient);
+		}
 
-        PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );            
+		if (value != null && value.trim().length() == 0) {
+			value = null;
+		}
 
-        if ( patientAttributeValue == null )
-        {          
-            
-            if ( value != null )
-            {              
-                
-                LOG.debug( "Adding PatientAttributeValue, value added" );                
+		if (value != null) {
+			value = CodecUtils.unescape(value).trim();
+		}
 
-                patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
+		PatientAttributeValue patientAttributeValue = patientAttributeValueService
+				.getPatientAttributeValue(patient, patientAttribute);
 
-                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
-            }
-        }
-        else
-        {
-            LOG.debug( "Updating PatientAttributeValue, value added/changed" );
+		if (patientAttributeValue == null) {
 
-            patientAttributeValue.setValue( value );            
+			if (value != null) {
 
-            patientAttributeValueService.updatePatientAttributeValue( patientAttributeValue );
-        }
+				LOG.debug("Adding PatientAttributeValue, value added");
 
-        return SUCCESS;
-    }
+				patientAttributeValue = new PatientAttributeValue(
+						patientAttribute, patient, value);
+
+				patientAttributeValueService
+						.savePatientAttributeValue(patientAttributeValue);
+			}
+		} else {
+			LOG.debug("Updating PatientAttributeValue, value added/changed");
+
+			patientAttributeValue.setValue(value);
+
+			patientAttributeValueService
+					.updatePatientAttributeValue(patientAttributeValue);
+		}
+
+		return SUCCESS;
+
+	}
 }

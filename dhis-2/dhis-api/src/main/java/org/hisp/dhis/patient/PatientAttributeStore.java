@@ -41,4 +41,8 @@ public interface PatientAttributeStore
     String ID = PatientAttributeStore.class.getName(); 
     
     Collection<PatientAttribute> getByValueType( String valueType );
+    
+    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
+    
+    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
 }

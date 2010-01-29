@@ -25,39 +25,49 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.hibernate;
+package org.hisp.dhis.patient.action.patientattributegroup;
 
-import java.util.Collection;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
 
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeStore;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class HibernatePatientAttributeStore
-    extends HibernateGenericStore<PatientAttribute>
-    implements PatientAttributeStore
+public class RemovePatientAttributeGroupAction
+    implements Action
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getByValueType( String valueType )
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    private PatientAttributeGroupService patientAttributeGroupService;
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
     {
-        return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
+        this.patientAttributeGroupService = patientAttributeGroupService;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getPatientAttributesByMandatory( boolean mandatory )
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
+
+    private int id;
+
+    public void setId( int id )
     {
-        return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
+        this.id = id;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
+    public String execute()
+        throws Exception
     {
-        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).add(
-            Restrictions.eq( "mandatory", false ) ).list();
+        PatientAttributeGroup patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( id );
+
+        patientAttributeGroupService.deletePatientAttributeGroup( patientAttributeGroup );
+
+        return SUCCESS;
     }
 }

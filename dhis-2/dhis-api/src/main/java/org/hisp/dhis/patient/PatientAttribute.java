@@ -50,6 +50,10 @@ public class PatientAttribute
     private String description;
 
     private String valueType;
+    
+    private boolean mandatory;
+    
+    private PatientAttributeGroup patientAttributeGroup;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -112,6 +116,16 @@ public class PatientAttribute
         this.id = id;
     }
 
+    public boolean isMandatory()
+    {
+        return mandatory;
+    }
+
+    public void setMandatory( boolean mandatory )
+    {
+        this.mandatory = mandatory;
+    }
+
     public String getName()
     {
         return name;
@@ -140,6 +154,16 @@ public class PatientAttribute
     public void setValueType( String valueType )
     {
         this.valueType = valueType;
+    }
+
+    public PatientAttributeGroup getPatientAttributeGroup()
+    {
+        return patientAttributeGroup;
+    }
+
+    public void setPatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    {
+        this.patientAttributeGroup = patientAttributeGroup;
     }
 
 }

@@ -82,9 +82,19 @@ public class DefaultPatientAttributeService
     {
         return patientAttributeStore.getByValueType( valueType );
     }
-    
+
     public PatientAttribute getPatientAttributeByName( String name )
     {
         return patientAttributeStore.getByName( name );
+    }
+
+    public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
+    {
+        return patientAttributeStore.getOptionalPatientAttributesWithoutGroup();
+    }
+
+    public Collection<PatientAttribute> getPatientAttributesByMandatory( boolean mandatory )
+    {
+        return patientAttributeStore.getPatientAttributesByMandatory( mandatory );
     }
 }

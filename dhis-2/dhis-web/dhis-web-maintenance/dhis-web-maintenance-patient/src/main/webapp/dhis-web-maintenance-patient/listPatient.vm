@@ -74,7 +74,6 @@
 				<td style="text-align:center"#alternate( $mark )>
                   <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
                 </td>                
-                
                 <td style="text-align:center"#alternate( $mark )>                  
                   <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
                 </td>
