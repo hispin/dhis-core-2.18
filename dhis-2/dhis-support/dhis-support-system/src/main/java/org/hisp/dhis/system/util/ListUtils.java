@@ -27,6 +27,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -93,5 +94,23 @@ public class ListUtils
         }
         
         return duplicates;
+    }
+    
+    /**
+     * Returns a Collection with the given items.
+     * 
+     * @param items the items which should be included in the Collection.
+     * @return a Collection.
+     */
+    public static <T> Collection<T> getCollection( T... items )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( T item : items )
+        {
+            list.add( item );
+        }
+        
+        return list;
     }
 }
