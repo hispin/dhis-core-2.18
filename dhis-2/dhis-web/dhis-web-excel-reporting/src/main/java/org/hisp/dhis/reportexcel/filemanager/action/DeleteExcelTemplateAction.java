@@ -11,6 +11,11 @@ import org.hisp.dhis.reportexcel.utils.FileUtils;
 
 import com.opensymphony.xwork2.Action;
 
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ * @since 2010-01-27
+ */
 public class DeleteExcelTemplateAction
     implements Action
 {
@@ -19,7 +24,7 @@ public class DeleteExcelTemplateAction
     // -------------------------------------------
 
     private SystemSettingManager systemSettingManager;
-    
+
     private ReportExcelService reportService;
 
     // -------------------------------------------
@@ -27,13 +32,13 @@ public class DeleteExcelTemplateAction
     // -------------------------------------------
 
     private String fileName;
-    
+
     // -------------------------------------------
     // Output
     // -------------------------------------------
 
     private String message;
-    
+
     private I18n i18n;
 
     // -------------------------------------------
@@ -64,7 +69,7 @@ public class DeleteExcelTemplateAction
     {
         this.fileName = fileName;
     }
-    
+
     // -------------------------------------------
     // Action implementation
     // -------------------------------------------
@@ -74,24 +79,30 @@ public class DeleteExcelTemplateAction
         throws Exception
     {
         message = "";
+
+        Collection<ReportExcel> reports = reportService.getALLReportExcel();
         
-        Collection<ReportExcel> reports =  reportService.getALLReportExcel();
-        for(ReportExcel report : reports){
+        for ( ReportExcel report : reports )
+        {
             String name = report.getExcelTemplateFile();
-            if(name.equals( fileName )){
+            
+            if ( name.equals( fileName ) )
+            {
                 message += " - " + report.getName() + "<br>";
             }
         }
-        
-        if(message.length()>0){
+
+        if ( message.length() > 0 )
+        {
             message = i18n.getString( "report_user_template" ) + "<br>" + message;
+            
             return ERROR;
         }
-        
+
         String templateDirectory = (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
-
-        FileUtils.delete(  templateDirectory + File.separator + fileName );
+        
+        FileUtils.delete( templateDirectory + File.separator + fileName );
 
         return SUCCESS;
     }

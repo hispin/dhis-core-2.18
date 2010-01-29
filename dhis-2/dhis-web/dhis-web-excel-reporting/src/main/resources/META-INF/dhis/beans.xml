@@ -1250,6 +1250,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction"
 		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="selectionManager" ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<bean
@@ -1259,5 +1260,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction"
+		class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction"
+		scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="selectionManager" ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
+	</bean>
+	
 </beans>
