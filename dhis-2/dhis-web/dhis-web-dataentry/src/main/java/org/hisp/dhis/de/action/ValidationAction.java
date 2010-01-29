@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
@@ -100,6 +101,13 @@ public class ValidationAction
         this.stdDevOutlierAnalysisService = stdDevOutlierAnalysisService;
     }
 
+    private DataAnalysisService minMaxOutlierAnalysisService;
+
+    public void setMinMaxOutlierAnalysisService( DataAnalysisService minMaxOutlierAnalysisService )
+    {
+        this.minMaxOutlierAnalysisService = minMaxOutlierAnalysisService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -136,6 +144,7 @@ public class ValidationAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
     {
@@ -170,8 +179,14 @@ public class ValidationAction
             }
         }
         
-        dataValues = stdDevOutlierAnalysisService.analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), STD_DEV );
+        Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.
+            analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), STD_DEV );
 
+        Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.
+            analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), null );
+        
+        dataValues = CollectionUtils.union( stdDevs, minMaxs );
+        
         log.info( "Number of outlier values: " + dataValues.size() );
         
         return SUCCESS;

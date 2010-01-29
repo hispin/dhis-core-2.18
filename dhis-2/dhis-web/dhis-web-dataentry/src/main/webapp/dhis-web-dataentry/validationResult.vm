@@ -20,7 +20,7 @@
             #set ( $leftFormula = $leftsideFormulaMap.get( $id ) )
             #set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
             <tr>
-                <td#alternate( $mark )>$encoder.htmlEncode( $result.validationRule.name )</td>
+                <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $result.validationRule.name )</td>
                 <td#alternate( $mark )>$leftFormula $result.validationRule.operator $rightFormula</td>
                 <td#alternate( $mark )>$!encoder.htmlEncode( $result.validationRule.leftSide.description )</td>
                 <td#alternate( $mark )>$result.leftsideValue</td>
@@ -35,6 +35,36 @@
         #end
         #end
     </table>            
+#end
+
+<br>
+
+#if( $dataValues.size() == 0 )
+	<p><b>$encoder.htmlEncode( $i18n.getString( "no_outlier_values_found" ) )</b></p>
+#else
+    <p><b>$encoder.htmlEncode( $i18n.getString( "the_following_values_are_outliers" ) )</b></p>
+    <table class="listTable" style="width:100%">
+	    <tr>
+	        <th>$i18n.getString( "data_element" )</th>
+	        <th style="text-align:center">$i18n.getString( "min" )</th>
+	        <th style="width: 100px; text-align:center">$i18n.getString( "value" )</th>
+	        <th style="text-align:center">$i18n.getString( "max" )</th>
+	    </tr>
+	    #set( $mark = false )	    
+	    #foreach( $value in $dataValues ) 
+	    <tr>	    
+	        <td style="height:32px"#alternate( $mark )>$value.dataElementName $value.categoryOptionComboNameParsed</td>	        
+	        <td style="text-align:center"#alternate( $mark )>$value.min</td>	        
+	        <td style="text-align:center;width:100px"#alternate( $mark )>$value.value</td>	        
+	        <td style="text-align:center"#alternate( $mark )>$value.max</td>
+	    </tr>
+        #if( $mark )
+            #set( $mark = false )
+        #else
+            #set( $mark = true )
+        #end
+	    #end
+	</table>
 #end
 
 <p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" style="width:10em" onclick="window.close()"></p>
