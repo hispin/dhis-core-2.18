@@ -27,6 +27,8 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.DEFAULT_TOSTRING;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,7 +45,7 @@ import org.hisp.dhis.period.PeriodType;
 public class DeflatedDataValue
 {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        
+    
     private int dataElementId;
     
     private int periodId;
@@ -269,6 +271,11 @@ public class DeflatedDataValue
         {
             throw new RuntimeException( ex );
         }
+    }
+    
+    public String getCategoryOptionComboNameParsed()
+    {
+        return categoryOptionComboName != null && categoryOptionComboName.equals( DEFAULT_TOSTRING ) ? "" : categoryOptionComboName;
     }
     
     // -------------------------------------------------------------------------

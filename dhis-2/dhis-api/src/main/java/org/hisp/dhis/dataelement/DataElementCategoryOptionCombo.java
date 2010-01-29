@@ -46,6 +46,7 @@ public class DataElementCategoryOptionCombo
     extends IdentifiableObject implements DimensionOptionElement
 {
     public static final String DEFAULT_NAME = "default";
+    public static final String DEFAULT_TOSTRING = "(default)";
     
     /**
      * The category combo.
