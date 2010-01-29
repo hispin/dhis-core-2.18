@@ -25,61 +25,49 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientattribute;
+package org.hisp.dhis.patient.action.patientattributegroup;
 
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupComparator;
 
 import com.opensymphony.xwork2.Action;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdatePatientAttributeAction
+public class GetPatientAttributeGroupListAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
+    private PatientAttributeGroupService patientAttributeGroupService;
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
-    
-    private int id;
 
-    public void setId( int id )
+    private List<PatientAttributeGroup> patientAttributeGroups = new ArrayList<PatientAttributeGroup>();
+
+    // -------------------------------------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------------------------------------
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
     {
-        this.id = id;
+        this.patientAttributeGroupService = patientAttributeGroupService;
     }
 
-    private String nameField;
-
-    public void setNameField( String nameField )
+    public List<PatientAttributeGroup> getPatientAttributeGroups()
     {
-        this.nameField = nameField;
-    }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
+        return patientAttributeGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -89,12 +77,10 @@ public class UpdatePatientAttributeAction
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
+        patientAttributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getAllPatientAttributeGroups() );
 
-        patientAttributeService.updatePatientAttribute( patientAttribute );
+        Collections.sort( patientAttributeGroups, new PatientAttributeGroupComparator() );
 
         return SUCCESS;
     }

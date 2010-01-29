@@ -24,40 +24,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.patient.hibernate;
+package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeStore;
-
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class HibernatePatientAttributeStore
-    extends HibernateGenericStore<PatientAttribute>
-    implements PatientAttributeStore
+public interface PatientAttributeGroupService
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getByValueType( String valueType )
-    {
-        return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
-    }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getPatientAttributesByMandatory( boolean mandatory )
-    {
-        return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
-    }
+    String ID = PatientAttributeGroupService.class.getName();
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
-    {
-        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).add(
-            Restrictions.eq( "mandatory", false ) ).list();
-    }
+    int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
+
+    void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
+
+    void updatePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
+
+    PatientAttributeGroup getPatientAttributeGroup( int id );
+
+    PatientAttributeGroup getPatientAttributeGroupByName( String name );
+
+    Collection<PatientAttributeGroup> getAllPatientAttributeGroups();
 }

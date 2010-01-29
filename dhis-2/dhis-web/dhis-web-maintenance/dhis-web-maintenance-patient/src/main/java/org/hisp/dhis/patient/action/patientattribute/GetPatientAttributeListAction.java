@@ -64,7 +64,6 @@ public class GetPatientAttributeListAction
         return patientAttributes;
     }
 
-   
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

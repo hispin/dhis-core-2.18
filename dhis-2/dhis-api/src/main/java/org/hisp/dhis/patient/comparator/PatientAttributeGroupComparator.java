@@ -1,5 +1,7 @@
+package org.hisp.dhis.patient.comparator;
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,39 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.hibernate;
+import java.util.Comparator;
 
-import java.util.Collection;
-
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeStore;
+import org.hisp.dhis.patient.PatientAttributeGroup;
 
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class HibernatePatientAttributeStore
-    extends HibernateGenericStore<PatientAttribute>
-    implements PatientAttributeStore
+public class PatientAttributeGroupComparator
+    implements Comparator<PatientAttributeGroup>
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getByValueType( String valueType )
+    public int compare( PatientAttributeGroup patientAttributeGroup0, PatientAttributeGroup patientAttributeGroup1 )
     {
-        return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getPatientAttributesByMandatory( boolean mandatory )
-    {
-        return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
-    {
-        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).add(
-            Restrictions.eq( "mandatory", false ) ).list();
+        return patientAttributeGroup0.getName().compareToIgnoreCase( patientAttributeGroup1.getName() );
     }
 }

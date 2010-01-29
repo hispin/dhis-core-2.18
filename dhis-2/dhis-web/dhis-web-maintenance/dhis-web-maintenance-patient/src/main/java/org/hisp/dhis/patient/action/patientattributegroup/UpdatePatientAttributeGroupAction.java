@@ -25,23 +25,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientattribute;
+package org.hisp.dhis.patient.action.patientattributegroup;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdatePatientAttributeAction
+public class UpdatePatientAttributeGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
+
+    private PatientAttributeGroupService patientAttributeGroupService;
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
 
     private PatientAttributeService patientAttributeService;
 
@@ -53,33 +65,37 @@ public class UpdatePatientAttributeAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
-    private int id;
 
-    public void setId( int id )
+    private Integer id;
+
+    private String nameField;
+
+    private String description;
+
+    private String[] selectedAttributes;
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public void setId( Integer id )
     {
         this.id = id;
     }
-
-    private String nameField;
 
     public void setNameField( String nameField )
     {
         this.nameField = nameField;
     }
 
-    private String description;
-
     public void setDescription( String description )
     {
         this.description = description;
     }
 
-    private String valueType;
-
-    public void setValueType( String valueType )
+    public void setSelectedAttributes( String[] selectedAttributes )
     {
-        this.valueType = valueType;
+        this.selectedAttributes = selectedAttributes;
     }
 
     // -------------------------------------------------------------------------
@@ -89,12 +105,22 @@ public class UpdatePatientAttributeAction
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
 
-        patientAttributeService.updatePatientAttribute( patientAttribute );
+        PatientAttributeGroup patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( id );
+
+        patientAttributeGroup.setName( nameField );
+        patientAttributeGroup.setDescription( description );
+
+        Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+        for ( String attributeId : selectedAttributes )
+        {
+            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                .parseInt( attributeId ) );
+            attributes.add( patientAttribute );
+        }
+        patientAttributeGroup.setAttributes( attributes );
+
+        patientAttributeGroupService.updatePatientAttributeGroup( patientAttributeGroup );
 
         return SUCCESS;
     }

@@ -27,13 +27,15 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -57,12 +59,20 @@ public class ShowUpdatePatientAttributeValueAction
     {
         this.patientService = patientService;
     }
-    
-    private PatientAttributeService patientAttributeService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    // private PatientAttributeService patientAttributeService;
+    //
+    // public void setPatientAttributeService( PatientAttributeService
+    // patientAttributeService )
+    // {
+    // this.patientAttributeService = patientAttributeService;
+    // }
+
+    private PatientAttributeGroupService patientAttributeGroupService;
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.patientAttributeGroupService = patientAttributeGroupService;
     }
 
     private PatientAttributeValueService patientAttributeValueService;
@@ -88,7 +98,7 @@ public class ShowUpdatePatientAttributeValueAction
     public Patient getPatient()
     {
         return patient;
-    } 
+    }
 
     Collection<PatientAttribute> patientAttributes;
 
@@ -104,6 +114,30 @@ public class ShowUpdatePatientAttributeValueAction
         return patientAttributeValueMap;
     }
 
+    private Collection<PatientAttributeGroup> patientAttributeGroups;
+
+    public Collection<PatientAttributeGroup> getPatientAttributeGroups()
+    {
+        return patientAttributeGroups;
+    }
+
+    public void setPatientAttributeGroups( Collection<PatientAttributeGroup> patientAttributeGroups )
+    {
+        this.patientAttributeGroups = patientAttributeGroups;
+    }
+
+    private int patientAttributeGroupId;
+
+    public void setPatientAttributeGroupId( int patientAttributeGroupId )
+    {
+        this.patientAttributeGroupId = patientAttributeGroupId;
+    }
+
+    public int getPatientAttributeGroupId()
+    {
+        return patientAttributeGroupId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -111,9 +145,21 @@ public class ShowUpdatePatientAttributeValueAction
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );       
+        patient = patientService.getPatient( id );
 
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        if ( patientAttributeGroups == null )
+            patientAttributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+
+        if ( patientAttributeGroupId != 0 )
+        {
+            patientAttributes = new ArrayList<PatientAttribute>();
+
+            patientAttributes = patientAttributeGroupService.getPatientAttributeGroup(
+                patientAttributeGroupId ).getAttributes();
+        }
+
+        // patientAttributes =
+        // patientAttributeService.getAllPatientAttributes();
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patient );

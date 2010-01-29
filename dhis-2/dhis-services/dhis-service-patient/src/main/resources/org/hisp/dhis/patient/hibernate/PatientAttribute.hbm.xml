@@ -13,7 +13,13 @@
     
     <property name="description"/>    
     
-    <property name="valueType" column="valuetype" not-null="true"/>       	
+    <property name="valueType" column="valuetype" not-null="true"/>  
+    
+	<property name="mandatory" column="mandatory" not-null="true" />
+    
+    <many-to-one name="patientAttributeGroup" column="patientattributegroupid"
+			class="org.hisp.dhis.patient.PatientAttributeGroup"
+			foreign-key="fk_attribute_group" lazy="false" insert="true" />     	
 	
   </class>
 </hibernate-mapping>

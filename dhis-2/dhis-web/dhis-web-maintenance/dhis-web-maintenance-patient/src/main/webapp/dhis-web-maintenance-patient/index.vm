@@ -4,6 +4,7 @@
 <ul class="introList">
     #introListItem( "patient.action" "patient" )
     #introListItem( "patientAttribute.action" "patient_attribute" )
+	#introListItem( "patientAttributeGroup.action" "patient_attribute_group" )
     #introListItem( "relationshipType.action" "relationship_type" )
     #introListItem( "program.action" "program" )
 </ul>

@@ -24,78 +24,116 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.patient;
 
-package org.hisp.dhis.patient.action.patientattribute;
-
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-
-import com.opensymphony.xwork2.Action;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdatePatientAttributeAction
-    implements Action
+public class PatientAttributeGroup
+    implements Serializable
 {
+    private int id;
+
+    private String name;
+
+    private String description;
+
+    private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Constructors
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public PatientAttributeGroup()
     {
-        this.patientAttributeService = patientAttributeService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
-    private int id;
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !(o instanceof PatientAttributeGroup) )
+        {
+            return false;
+        }
+
+        final PatientAttributeGroup other = (PatientAttributeGroup) o;
+
+        return name.equals( other.getName() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
+    }
 
     public void setId( int id )
     {
         this.id = id;
     }
 
-    private String nameField;
-
-    public void setNameField( String nameField )
+    public String getName()
     {
-        this.nameField = nameField;
+        return name;
     }
 
-    private String description;
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
 
     public void setDescription( String description )
     {
         this.description = description;
     }
 
-    private String valueType;
-
-    public void setValueType( String valueType )
+    public Set<PatientAttribute> getAttributes()
     {
-        this.valueType = valueType;
+        return attributes;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
+    public void setAttributes( Set<PatientAttribute> attributes )
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
-
-        patientAttributeService.updatePatientAttribute( patientAttribute );
-
-        return SUCCESS;
+        this.attributes = attributes;
     }
+
 }

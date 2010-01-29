@@ -209,6 +209,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetOptionalPatientAttributesWithoutGroupAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetOptionalPatientAttributesWithoutGroupAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
 	<!-- Patient Attribute value -->
 
 	<bean
@@ -216,8 +224,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeService"
+		<!--
+			<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		-->
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
@@ -302,6 +314,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.RemovePatientAction"
@@ -560,6 +574,62 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<!-- Patient Attribute Group -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.RemovePatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.RemovePatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.ValidatePatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.ValidatePatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 	</bean>
 
 </beans>

@@ -24,78 +24,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.patient;
 
-package org.hisp.dhis.patient.action.patientattribute;
+import java.util.Collection;
 
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdatePatientAttributeAction
-    implements Action
+@Transactional
+public class DefaultPatientAttributeGroupService
+    implements PatientAttributeGroupService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
+    private GenericIdentifiableObjectStore<PatientAttributeGroup> patientAttributeGroupStore;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setPatientAttributeGroupStore(
+        GenericIdentifiableObjectStore<PatientAttributeGroup> patientAttributeGroupStore )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.patientAttributeGroupStore = patientAttributeGroupStore;
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-    
-    private int id;
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    private String nameField;
-
-    public void setNameField( String nameField )
-    {
-        this.nameField = nameField;
-    }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
+    // PatientAttribute implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+    public int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
+        return patientAttributeGroupStore.save( patientAttributeGroup );
+    }
 
-        patientAttributeService.updatePatientAttribute( patientAttribute );
+    public void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    {
+        patientAttributeGroupStore.delete( patientAttributeGroup );
+    }
 
-        return SUCCESS;
+    public void updatePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    {
+        patientAttributeGroupStore.update( patientAttributeGroup );
+    }
+
+    public PatientAttributeGroup getPatientAttributeGroup( int id )
+    {
+        return patientAttributeGroupStore.get( id );
+    }
+
+    public PatientAttributeGroup getPatientAttributeGroupByName( String name )
+    {
+        return patientAttributeGroupStore.getByName( name );
+    }
+
+    public Collection<PatientAttributeGroup> getAllPatientAttributeGroups()
+    {
+        return patientAttributeGroupStore.getAll();
     }
 }
