@@ -72,6 +72,7 @@ public class DatabaseAutomaticAccessProvider extends
 
 		UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
 		userAuthorityGroup.setName(UserAuthorityGroup.SUPER_USER_GROUP);
+		
 		userAuthorityGroup
 				.setAuthorities(new HashSet<String>(getAuthorities()));
 

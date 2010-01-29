@@ -10,10 +10,7 @@
     <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="nameField" name="nameField"  style="width:20em"></td>
-        <td colspan="2"><label>$i18n.getString( "required" )</label>
-		<input type='hidden' id='requiredField' name="requiredField">
-        <input type="checkbox" id="required" name="required" onchange="javascript: byId('requiredField').value = this.checked"></td>
-      </td>
+        </td>
     </tr>   
     
     <tr>

@@ -355,18 +355,26 @@
 			<param name="page">/dhis-web-maintenance-patient/addPatientForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js,
+				javascript/patientAttributeValue.js </param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
 		<action name="showUpdatePatientForm"
+			class="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction">
+			<result name="success" type="chain">showUpdatePatientFormChain
+			</result>
+		</action>
+
+		<action name="showUpdatePatientFormChain"
 			class="org.hisp.dhis.patient.action.patient.GetPatientAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updatePatientForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js,
+				javascript/patientAttributeValue.js</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
@@ -684,7 +692,7 @@
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
-		
+
 		<action name="addPatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction">
 			<result name="success" type="redirect">patientAttributeGroup.action

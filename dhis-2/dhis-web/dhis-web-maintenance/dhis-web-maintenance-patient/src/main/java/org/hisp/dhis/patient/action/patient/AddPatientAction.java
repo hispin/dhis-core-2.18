@@ -27,16 +27,25 @@
 
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -78,12 +87,26 @@ public class AddPatientAction
     {
         this.selectionManager = selectionManager;
     }
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -207,10 +230,10 @@ public class AddPatientAction
         {
             if ( age != null )
             {
-                patient.setBirthDateFromAge( age.intValue() );                
+                patient.setBirthDateFromAge( age.intValue() );
             }
         }
-        
+
         patient.setRegistrationDate( new Date() );
 
         patientService.savePatient( patient );
@@ -222,11 +245,36 @@ public class AddPatientAction
         patientIdentifier.setPreferred( true );
 
         patientIdentifierService.savePatientIdentifier( patientIdentifier );
-        
+
         selectedStateManager.clearListAll();
         selectedStateManager.clearSearchingAttributeId();
         selectedStateManager.setSearchText( patientIdentifier.getIdentifier() );
 
+        // add attribute value
+        Collection<PatientAttribute> patientAttributes = patientAttributeService.getPatientAttributesByMandatory( true );
+
+        HttpServletRequest request = ServletActionContext.getRequest();
+        ArrayList<String> attributeValue = new ArrayList<String>();
+        
+        for ( PatientAttribute patientAttribute : patientAttributes )
+        {
+            int patientAttributeId = patientAttribute.getId();
+            String value = request.getParameterValues( patientAttributeId + "" )[0].trim();
+            if ( value.length() > 0 )
+            {
+                if ( !patient.getAttributes().contains( patientAttribute ) )
+                {
+                    patient.getAttributes().add( patientAttribute );
+                }
+                
+                PatientAttributeValue patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
+
+                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
+            }
+        }
+        
+        patientService.updatePatient( patient );
+        
         return SUCCESS;
     }
 }

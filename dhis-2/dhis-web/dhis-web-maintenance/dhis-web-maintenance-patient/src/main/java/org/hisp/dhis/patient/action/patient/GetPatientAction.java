@@ -74,7 +74,7 @@ public class GetPatientAction
     {
         this.programService = programService;
     }
-    
+
     private PatientAttributeValueService patientAttributeValueService;
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
@@ -98,7 +98,7 @@ public class GetPatientAction
     public Patient getPatient()
     {
         return patient;
-    }   
+    }
 
     private PatientIdentifier patientIdentifier;
 
@@ -113,12 +113,24 @@ public class GetPatientAction
     {
         return programs;
     }
-    
+
     private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
 
     public Map<Integer, String> getPatientAttributeValueMap()
     {
         return patientAttributeValueMap;
+    }
+
+    private Collection<PatientAttribute> patientAttributes;
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
+    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
+    {
+        this.patientAttributes = patientAttributes;
     }
 
     // -------------------------------------------------------------------------
@@ -128,22 +140,22 @@ public class GetPatientAction
     public String execute()
         throws Exception
     {
+        patient = patientService.getPatient( id );
 
-        patient = patientService.getPatient( id );       
+        patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
 
-        patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );        
-        
-        for( PatientAttribute patientAttribute : patient.getAttributes() )
+        for ( PatientAttribute patientAttribute : patient.getAttributes() )
         {
             patientAttributeValueMap.put( patientAttribute.getId(), PatientAttributeValue.UNKNOWN );
         }
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );       
+            .getPatientAttributeValues( patient );
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
-            patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue.getValue() );
+            patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
+                .getValue() );
         }
 
         programs = programService.getAllPrograms();
