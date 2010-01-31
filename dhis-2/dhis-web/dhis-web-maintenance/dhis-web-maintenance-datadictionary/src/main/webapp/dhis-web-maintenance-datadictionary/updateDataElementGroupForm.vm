@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for updateDataElementGroupForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateDataElementGroupForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateDataElementGroup();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_data_element_group" )</h3>
 
-<form id="updateDataElementGroupForm" action="updateDataElementGroup.action" method="post" onsubmit="return validateUpdateDataElementGroup()">
+<form id="updateDataElementGroupForm" action="updateDataElementGroup.action" method="post" >
 
 <div>
 	<input type="hidden" id="id" name="id" value="$dataElementGroup.id">
@@ -13,7 +33,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em" class="{validate:{required:true,rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>

@@ -1,7 +1,30 @@
 
-<h3>$i18n.getString( "edit_user" )</h3>
+<script>
 
-<form id="updateUserForm" action="updateUser.action" method="post" onsubmit="return validateUpdateUser()">
+//-----------------------------------------------------------------------
+//init jQuery validation for addUserForm
+//
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateUserForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateUser();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#rawPassword").focus();
+			}
+	);
+
+</script>
+<h3>$i18n.getString( "edit_user" )</h3>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+<form id="updateUserForm" action="updateUser.action" method="post" >
 	
   <div>
 	<input type="hidden" id="id" name="id" value="$userCredentials.id">
@@ -19,37 +42,37 @@
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em"></td>
+		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,notequalto:'#username'}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em"></td>
+		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,equalTo:'#rawPassword'}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"></td>
+		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:25}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "firstName" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:25}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em"></td>
+		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em" class="{validate:{email:true,minlength:4,maxlength:25}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em"></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em" class="{validate:{number:true}}"></td>
         <td></td>
         <td></td>       
     </tr>
@@ -76,7 +99,7 @@
         	<input type="button" value="&gt;" onclick="move( 'availableList' )">
         </td>
 		<td>
-        	<select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
+        	<select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )" class="{validate:{required:true}}">
             #foreach ( $selectedRole in $userCredentials.userAuthorityGroups )
             	<option value="$selectedRole.id">$encoder.htmlEncode( $selectedRole.name )</option>
             #end

@@ -1,6 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addOrganisationUnitGroupSetForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addOrganisationUnitGroupSetForm").validate({
+					  meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddOrganisationUnitGroupSet();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_org_unit_group_set" )</h3>
 
-<form id="addOrganisationUnitGroupSetForm" action="addOrganisationUnitGroupSet.action" method="post" onsubmit="return validateAddOrganisationUnitGroupSet()">
+<form id="addOrganisationUnitGroupSetForm" action="addOrganisationUnitGroupSet.action" method="post" >
 
 <table>
 	
@@ -10,12 +32,12 @@
 	
 	<tr>
 		<td><label for="name" style="width:100%">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:100,alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	
 	<tr>
 		<td><label for="description" style="width:100%">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em"></td>
+		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:150,alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	
 	<tr>

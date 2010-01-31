@@ -1,6 +1,4 @@
-
 <script>
-
 //-----------------------------------------------------------------------
 //init jQuery validation for addUserForm
 //
@@ -18,13 +16,14 @@
 				});
 				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 				jQuery("#username").focus();
+				selectionTree.buildSelectionTree();
 			}
 	);
 
 </script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_user" )</h3>
 <form id="addUserForm" action="addUser.action" method="post" >
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <table>
 	<tr>
@@ -132,13 +131,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-
-	selectionTree.buildSelectionTree();
-	
-	var usernameField = document.getElementById( 'username' );
-	usernameField.select();
-	usernameField.focus();
-	
-</script>

@@ -1,20 +1,42 @@
+<script>
 
+//-----------------------------------------------------------------------
+//init jQuery validation for addRoleForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addRoleForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddRole();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_user_role" )</h3>
 
-<form id="addRoleForm" action="addRole.action" method="post" onsubmit="return validateAddRole()">
+<form id="addRoleForm" action="addRole.action" method="post" >
   <table>
 	<tr>
 		<th colspan="4">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25,alphanumeric:true,firstletteralphabet:true}}"></td>
 		<td></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em"></td>
+		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 		<td></td>
 	</tr>

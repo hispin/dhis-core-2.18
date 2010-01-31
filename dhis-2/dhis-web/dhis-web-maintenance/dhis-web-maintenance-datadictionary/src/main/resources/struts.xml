@@ -73,7 +73,9 @@
 			class="org.hisp.dhis.dd.action.dataelement.ShowAddDataElementForm">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
@@ -89,7 +91,9 @@
 			class="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
@@ -187,7 +191,9 @@
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupForm.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js</param>
+			<param name="javascripts">javascript/dataElementGroup.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 
@@ -209,7 +215,9 @@
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupForm.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js</param>
+			<param name="javascripts">javascript/dataElementGroup.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 
@@ -245,7 +253,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupSet.js</param>
+			<param name="javascripts">javascript/dataElementGroupSet.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 		
@@ -260,7 +270,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupSet.js</param>
+			<param name="javascripts">javascript/dataElementGroupSet.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 		</action>	
 		
 		<action name="updateDataElementGroupSet"
@@ -738,7 +750,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addExtendedDataElementForm.vm</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
 
@@ -760,7 +774,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateExtendedDataElementForm.vm</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 

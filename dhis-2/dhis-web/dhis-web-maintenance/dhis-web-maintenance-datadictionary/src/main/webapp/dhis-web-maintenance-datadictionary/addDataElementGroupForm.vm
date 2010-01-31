@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addDataElementGroupForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addDataElementGroupForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddDataElementGroup();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <h3>$i18n.getString( "create_new_data_element_group" )</h3>
 
-<form id="addDataElementGroupForm" action="addDataElementGroup.action" method="post" onsubmit="return validateAddDataElementGroup()">
+<form id="addDataElementGroupForm" action="addDataElementGroup.action" method="post" >
 
 <table>
 	<tr>
@@ -9,7 +30,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true,rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>

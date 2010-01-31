@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for editDataSetForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#editDataSetForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateEditDataSet();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_dataset" )</h3>
 
-<form id="editDataSetForm" name="editDataSetForm" action="updateDataSet.action" method="post" onsubmit="submitForm(); return validateEditDataSet()">
+<form id="editDataSetForm" name="editDataSetForm" action="updateDataSet.action" method="post" >
   <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id">
   </div>
@@ -17,15 +38,15 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"  class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>      
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )"></td>
+        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true}}"> </td>
       </tr>     
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )"></td>
+        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )" class="{validate:{maxlength:100}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -121,9 +142,4 @@
 #end
 
 	initLists();
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
 </script>

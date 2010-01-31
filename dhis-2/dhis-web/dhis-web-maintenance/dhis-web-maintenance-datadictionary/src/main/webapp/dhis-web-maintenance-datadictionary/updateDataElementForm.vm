@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for updateDataElementForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateDataElementForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateDataElement();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_data_element" )</h3>
 
-<form id="updateDataElementForm" action="updateDataElement.action" method="post" onsubmit="return validateUpdateDataElement()">
+<form id="updateDataElementForm" action="updateDataElement.action" method="post" >
 
 <div>
 	<input type="hidden" id="id" name="id" value="$dataElement.id">
@@ -13,23 +33,23 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElement.name )" onchange="nameChanged()" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElement.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $dataElement.shortName )" maxlength="20" style="width:20em"></td>
+		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $dataElement.shortName )" maxlength="20" style="width:20em" class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )" style="width:20em"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )" style="width:20em" class="{validate:{rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElement.code )" style="width:20em"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElement.code )" style="width:20em" class="{validate:{maxlength:40,alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em">$!encoder.htmlEncode( $dataElement.description )</textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{rangelength:[4,150],alphanumericwithbasicpuncspaces:true}}">$!encoder.htmlEncode( $dataElement.description )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="active">$i18n.getString( "active" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -71,7 +91,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $dataElement.url )" style="width:20em"></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $dataElement.url )" style="width:20em" class="{validate:{maxlength:255,url:true}}"></td>
     </tr>
 	<tr #if( $calculatedDataElement ) style="display:none" #end >	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

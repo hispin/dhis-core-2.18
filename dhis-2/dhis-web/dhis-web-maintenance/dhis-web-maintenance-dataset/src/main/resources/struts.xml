@@ -47,7 +47,9 @@
       <param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <result name="success" type="chain">section</result>
-      <param name="javascripts">javascript/dataElementsList.js,javascript/section.js</param>
+      <param name="javascripts">javascript/dataElementsList.js,javascript/section.js
+      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
     </action>
     
      <action name="validateSection"
@@ -70,7 +72,9 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <param name="javascripts">javascript/dataElementsList.js,javascript/dataSet.js</param>
+      <param name="javascripts">javascript/dataElementsList.js,javascript/dataSet.js
+      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
     </action>
     
     <action name="updateSection"
@@ -121,7 +125,9 @@
       class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js,javascript/dataElementsList.js</param>
+      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js,javascript/dataElementsList.js
+      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
     
@@ -149,7 +155,9 @@
       class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editDataSet.vm</param>
-      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js</param>
+      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js
+      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -246,7 +254,9 @@
       class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/viewDataEntryForm.vm</param>
-      <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
+      <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js
+      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
       <param name="stylesheets">css/cde.css</param>
     </action>
     

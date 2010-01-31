@@ -11,7 +11,6 @@ en_GB = {
 		,dateISO: "Please enter a valid date (like 1990-01-01)."
 		,number: "Please enter a valid number."
 		,digits: "Please enter only digits"
-		,creditcard: "Please enter a valid credit card number."
 		,equalTo: "Mismatch: Please enter the equal values again."
 		,accept: "Please enter a value with a valid extension."
 		,firstletteralphabet: "The first character must be alphabetical."
@@ -30,5 +29,16 @@ en_GB = {
         ,greaterthanequal: $.validator.format("Please enter a value greater than or equal to {1}")
         ,unique: "Please do not enter same values"
         ,letterswithbasicpunc: "Letters or punctuation only please"
+        ,maxWords : $.validator.format("Please enter {0} words or less.")
+        ,minWords : $.validator.format("Please enter at least {0} words.")
+        ,rangeWords : $.validator.format("Please enter between {0} and {1} words.")
+        ,lettersonly : "Letters only please." 
+        ,decimals : "Digits/Decimal only please"
+        ,nowhitespace : "No white space please"
+        ,ziprange : "Your ZIP-code must be in the range 902xx-xxxx to 905-xx-xxxx"
+        ,unique : "Value must be unique."
+        ,time : "Please enter a valid time, between 00:00 and 23:59"
+        ,phone : "Please specify a valid phone number"
+        ,strippedminlength : "Please enter at least {0} characters"
 };
 

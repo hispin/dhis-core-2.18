@@ -17,12 +17,30 @@
         oFCKeditor.BasePath = "javascript/FCK/";
         oFCKeditor.ReplaceTextarea();
     }
-</script>
+//-----------------------------------------------------------------------
+//init jQuery validation for saveDataEntryForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#saveDataEntryForm").validate({
+				 	 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateDataEntryForm();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <h3>$i18n.getString( "dataentryform_management" )</h3>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post" onsubmit="return validateDataEntryForm()">
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post" >
   <table id="detailsList">
     <col> ## Labels
     <col> ## Input
@@ -34,7 +52,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em"></td>
+        <td><input type="text" id="nameField" name="nameField" value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em" class="{validate:{required:true,minlength:2,maxlength:50,alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
