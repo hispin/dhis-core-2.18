@@ -1,7 +1,30 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addOrganisationUnitGroupForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addOrganisationUnitGroupForm").validate({
+					  meta:"validate"
+					,errorElement:"span"
+					,errorClass:"error"
+					,submitHandler: function(form)
+									{
+										validateAddOrganisationUnitGroup();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "crease_new_org_unit_group" )</h3>
-<form name="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
+<form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
 <span id="message" style="position:absolute;top:80px;right:5px"></span>
-<p>$i18n.getString( "name" )  <input type="text" name="name" id="name" style="width:300px"/></p>
+<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" class="{validate:{required:true,rangelength:[4,100],alphanumericwithbasicpuncspaces:true}}"/></p>
+<span class="error"></span>
  <table id="selectionTable">
 	<tr>
 	  <td>
@@ -111,7 +134,7 @@
 
     <tr>
       <td>
-        <input type="button" id="submitButton" value="$i18n.getString( "save" )" style="width:10em" onclick="validateAddOrganisationUnitGroup()">
+        <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em">
 		<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( "cancel" )" style="width:10em">
       </td>
     </tr>

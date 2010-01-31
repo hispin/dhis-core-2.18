@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addDataElementForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addDataElementForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddDataElement();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+  
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_data_element" )</h3>
 
-<form id="addDataElementForm" action="addDataElement.action" method="post" onsubmit="return validateAddDataElement()">
+<form id="addDataElementForm" action="addDataElement.action" method="post" >
 
 <table>
 	<tr>
@@ -9,23 +30,23 @@
 	</tr>
 	<tr>
 		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em"></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" class="{validate:{rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" style="width:20em"></td>
+		<td><input type="text" id="code" name="code" style="width:20em" class="{validate:{maxlength:40,alphanumericwithbasicpuncspaces:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em"></textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{rangelength:[4,150],alphanumericwithbasicpuncspaces:true}}"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -58,7 +79,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em"></td>
+        <td><input type="text" id="url" name="url" style="width:20em" class="{validate:{maxlength:255,url:true}}"></td>
     </tr>
 	<tr>	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

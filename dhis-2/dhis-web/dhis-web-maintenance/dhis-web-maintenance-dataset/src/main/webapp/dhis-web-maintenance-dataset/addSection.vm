@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addSectionForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addSectionForm").validate({
+				 	 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddSection();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#sectionName").focus();
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "add_section" )</h3>
 
-<form id="addSectionForm" name="addSectionForm" action="addSectionAction.action" method="post" onsubmit="submitForm(); return validateAddSection()">
+<form id="addSectionForm" name="addSectionForm" action="addSectionAction.action" method="post" >
   <table id="detailsList">
     <col> ## Labels
     <col> ## Input
@@ -13,11 +34,11 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionName" name="sectionName" style="width:20em"></td>
+        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>
 	   <tr>
         <td><label>$i18n.getString( "label" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionLabel" name="sectionLabel" style="width:20em"></td>
+        <td><input type="text" id="sectionLabel" name="sectionLabel" style="width:20em" class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>
 	  
 	   <tr>

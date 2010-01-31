@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addDataSetForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addDataSetForm").validate({
+				 	 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddDataSet();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "add_dataset" )</h3>
 
-<form id="addDataSetForm" name="addDataSetForm" action="addDataSet.action" method="post" onsubmit="submitForm(); return validateAddDataSet()">
+<form id="addDataSetForm" name="addDataSetForm" action="addDataSet.action" method="post" >
   <table id="detailsList">
     <col> ## Labels
     <col> ## Input
@@ -13,20 +34,20 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
+        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"  class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em"></td>
+        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em"></td>
+        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em" class="{validate:{maxlength:100}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td>
-          <select id="frequencySelect" name="frequencySelect" style="min-width:20em">
+          <select id="frequencySelect" name="frequencySelect" style="min-width:20em" class="{validate:{required:true}}">
             #foreach ( $periodType in $periodTypes )
               <option value="$periodType.name">$i18n.getString( $periodType.name )</option>
             #end
@@ -114,8 +135,5 @@
 	initLists();
 
 	var previousName = '';
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
 
 </script>

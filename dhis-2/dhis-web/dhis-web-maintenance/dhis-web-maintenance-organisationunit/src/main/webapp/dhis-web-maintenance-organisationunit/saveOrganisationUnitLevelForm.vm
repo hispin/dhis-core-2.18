@@ -1,7 +1,24 @@
+<script>
 
+//-----------------------------------------------------------------------
+//init jQuery validation for saveOrganisationUnitLevelsForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#saveOrganisationUnitLevelsForm").validate({
+					  meta:"validate"
+					,errorElement:"td"
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "organisation_unit_level_management" )</h3>
 
-<form method="post" action="saveOrganisationUnitLevels.action">
+<form method="post" id="saveOrganisationUnitLevelsForm" action="saveOrganisationUnitLevels.action">
 
 <table>
 	<tr>
@@ -11,7 +28,7 @@
 	#foreach ( $level in $levels )
     <tr>
         <td style="text-align: center">$level.level</td>
-        <td><input type="text" id="level${level.level}" name="level${level.level}" style="width:20em" value="$!level.name"></td>
+        <td><input type="text" id="level${level.level}" name="level${level.level}" style="width:20em" value="$!level.name" class="uniqueFields {validate:{required:true,alphanumeric:true,unique:'uniqueFields'}}"></td>
     </tr>
     #end
     <tr>

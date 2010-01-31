@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addSectionForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#editDataSetForm").validate({
+				 	 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										submitForm();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#sectionName").focus();
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_section" )</h3>
 
-<form id="editDataSetForm" name="editDataSetForm" action="updateSection.action" method="post" onsubmit="submitForm();">
+<form id="editDataSetForm" name="editDataSetForm" action="updateSection.action" method="post" >
   <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id">
   <input type="hidden" id="sectionId" name="sectionId" value="$sectionId">
@@ -22,7 +43,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "label" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionLabel" name="sectionLabel" style="width:20em" value="$section.label" ></td>
+        <td><input type="text" id="sectionLabel" name="sectionLabel" style="width:20em" value="$section.label"  class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
       </tr>
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
     </tbody>

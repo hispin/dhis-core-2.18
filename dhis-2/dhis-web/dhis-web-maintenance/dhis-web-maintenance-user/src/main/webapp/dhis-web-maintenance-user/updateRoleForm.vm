@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for updateRoleForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateRoleForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateRole();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_user_role" )</h3>
 
-<form id="updateRoleForm" action="updateRole.action" method="post" onsubmit="return validateUpdateRole()">
+<form id="updateRoleForm" action="updateRole.action" method="post">
 	<div>
 		<input type="hidden" id="id" name="id" value="$userAuthorityGroup.id">
   	</div>
@@ -12,13 +33,13 @@
 		</tr>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $userAuthorityGroup.name )" style="width:20em"></td>
+			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $userAuthorityGroup.name )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25,alphanumeric:true,firstletteralphabet:true}}"></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )" style="width:20em"></td>
+			<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )" style="width:20em" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 			<td></td>
 		</tr>
