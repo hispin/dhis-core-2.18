@@ -59,7 +59,7 @@ function organisationUnitToKeepConfirmed()
 
 function mergeOrganisationUnits()
 {
-	setMessage( i18n_merging + "..." );
+	setWaitMessage( i18n_merging + "..." );
 	
 	$.ajax({ 
 		"url": "mergeOrganisationUnits.action",

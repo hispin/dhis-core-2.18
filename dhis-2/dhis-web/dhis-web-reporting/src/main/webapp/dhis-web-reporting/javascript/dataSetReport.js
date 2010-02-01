@@ -62,7 +62,7 @@ function runAndViewDataSetReport( previewReport )
 {
     if ( validateDataSetReport() )
     {
-        setMessage( i18n_generating_report + "..." );
+        setWaitMessage( i18n_generating_report + "..." );
         
         tempPreviewReport = previewReport;
         

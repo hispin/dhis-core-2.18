@@ -55,13 +55,13 @@ function reportStatusReceived( xmlObject )
     }
     else if ( statusMessage == null )
     {
-        setMessage( i18n_please_wait );
+        setWaitMessage( i18n_please_wait );
         
         waitAndGetReportStatus( 2000 );
     }
     else
     {
-        setMessage( i18n_please_wait + ". " + statusMessage + "..."  );
+        setWaitMessage( i18n_please_wait + ". " + statusMessage + "..."  );
         
         waitAndGetReportStatus( 2000 );
     }

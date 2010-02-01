@@ -21,12 +21,16 @@ function importStatusReceived( messageElement )
 		var fileMessage = getElementValue( messageElement, "fileMessage" );
 		var running = getElementValue( messageElement, "running" );
 		
-		setMessage( statusMessage );
 		setInfo( i18n_current_import_file + ": " + fileMessage );
 		
 		if ( running == "true" )
         {
+            setWaitMessage( statusMessage );
 		    waitAndGetImportStatus( 2000 );
+        }
+        else
+        {        	
+            setMessage( statusMessage );
         }
 	}
 	else if ( actionType == "preview" )

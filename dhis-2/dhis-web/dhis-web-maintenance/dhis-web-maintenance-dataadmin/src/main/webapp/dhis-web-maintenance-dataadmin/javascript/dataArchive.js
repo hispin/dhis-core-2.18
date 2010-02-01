@@ -29,7 +29,7 @@ function archive( operation )
     
     var message = operation == "archive" ? i18n_archiving : i18n_unarchiving;
     
-    setMessage( message );
+    setWaitMessage( message );
     
     $.getJSON( 
         "archiveData.action",

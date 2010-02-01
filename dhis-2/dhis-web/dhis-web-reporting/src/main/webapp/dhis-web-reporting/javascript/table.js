@@ -53,11 +53,11 @@ function tableStatusReceived( xmlObject )
     }
     else if ( statusMessage == null )
     {
-        setMessage( i18n_please_wait );
+        setWaitMessage( i18n_please_wait );
     }
     else
     {
-        setMessage( i18n_please_wait + ". " + statusMessage + "..."  );
+        setWaitMessage( i18n_please_wait + ". " + statusMessage + "..."  );
     }
     
     waitAndGetTableStatus( 2000 );

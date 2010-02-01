@@ -12,7 +12,7 @@ function generateResourceTable()
     if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
         organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
     {
-        setMessage( i18n_generating_resource_tables );
+        setWaitMessage( i18n_generating_resource_tables );
             
         var params = "organisationUnit=" + organisationUnit + 
             "&groupSet=" + groupSet + 

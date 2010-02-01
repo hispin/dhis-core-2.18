@@ -309,12 +309,15 @@ function exportStatusReceived( xmlObject )
 {
     var message = getElementValue( xmlObject, "message" );
     var running = getElementValue( xmlObject, "running" );
-    
-    setMessage( message );
-    
+        
     if ( running == "true" )
     {
-	   waitAndGetExportStatus( 2000 );
+        setWaitMessage( message );
+	    waitAndGetExportStatus( 2000 );
+    }
+    else
+    {
+    	setMessage( message );
     }
 }
 

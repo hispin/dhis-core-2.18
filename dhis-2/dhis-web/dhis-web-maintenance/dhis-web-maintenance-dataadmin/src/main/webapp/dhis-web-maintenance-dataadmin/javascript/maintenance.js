@@ -10,7 +10,7 @@ function performMaintenance()
     
     if ( hierarchyHistory || aggregatedDataValues || aggregatedIndicatorValues || zeroValues ||dataSetCompleteness || prunePeriods )
     {
-        setMessage( i18n_performing_maintenance );
+        setWaitMessage( i18n_performing_maintenance );
         
         var params = "hierarchyHistory=" + hierarchyHistory +
             "&aggregatedDataValues=" + aggregatedDataValues + 
