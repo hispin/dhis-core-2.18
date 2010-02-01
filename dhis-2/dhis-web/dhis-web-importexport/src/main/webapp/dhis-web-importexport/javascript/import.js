@@ -5,7 +5,7 @@
 
 function submitImportForm()
 {
-    setMessage( i18n_importing ); 
+    setWaitMessage( i18n_importing ); 
 	document.getElementById( "importForm" ).submit();
 }
 

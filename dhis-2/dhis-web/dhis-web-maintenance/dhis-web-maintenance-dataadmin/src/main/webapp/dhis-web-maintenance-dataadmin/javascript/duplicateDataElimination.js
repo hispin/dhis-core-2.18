@@ -102,7 +102,7 @@ function keepConfirmed()
 
 function eliminate()
 {
-	setMessage( i18n_eliminating + "..." );
+	setWaitMessage( i18n_eliminating + "..." );
 	
 	$.ajax({ 
 		"url": "eliminateDuplicateData.action", 

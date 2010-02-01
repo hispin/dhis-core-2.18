@@ -348,8 +348,13 @@ function getFieldValue( fieldId )
  */
 function setMessage( message )
 {
-    document.getElementById( 'message' ).innerHTML = message;   
-    document.getElementById( 'message' ).style.display = 'block';
+    $( '#message' ).html( message );
+    $( '#message' ).slideDown( 'fast' );
+}
+
+function setWaitMessage( message )
+{
+	setMessage( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
 }
 
 /**
@@ -357,18 +362,18 @@ function setMessage( message )
  */
 function hideMessage()
 {
-    document.getElementById( 'message' ).style.display = 'none';
+	$( '#message' ).slideUp( 'fast' );
 }
 
 function setInfo( message )
 {
-    document.getElementById( 'info' ).innerHTML = message;
-    document.getElementById( 'info' ).style.display = 'block';
+    $( '#info' ).html( message );
+    $( '#info' ).slideDown( 'fast' );
 }
 
 function hideInfo()
 {
-    document.getElementById( 'info' ).style.display = 'block';
+    $( '#info' ).slideUp( 'fast' );
 }
 
 /**
