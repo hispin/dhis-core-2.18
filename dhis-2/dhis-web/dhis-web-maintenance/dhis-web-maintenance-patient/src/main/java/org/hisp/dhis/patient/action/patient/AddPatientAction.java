@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.patient;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -254,8 +253,7 @@ public class AddPatientAction
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getPatientAttributesByMandatory( true );
 
         HttpServletRequest request = ServletActionContext.getRequest();
-        ArrayList<String> attributeValue = new ArrayList<String>();
-        
+         
         for ( PatientAttribute patientAttribute : patientAttributes )
         {
             int patientAttributeId = patientAttribute.getId();

@@ -346,6 +346,25 @@
 			<result name="success" type="redirect">index.action</result>
 		</action>
 
-	</package>
+		<!-- Data archive -->
 
+		<action name="displayDataArchiveForm"
+			class="org.hisp.dhis.dataadmin.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-maintenance-dataadmin/dataArchiveForm.vm</param>
+            <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+            <param name="javascripts">javascript/dataArchive.js</param>
+		</action>
+
+		<action name="archiveData"
+			class="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction">
+			<result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+		</action>
+
+		<action name="getNumberOfOverlaps"
+			class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction">
+			<result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+        </action>
+
+	</package>
 </struts>

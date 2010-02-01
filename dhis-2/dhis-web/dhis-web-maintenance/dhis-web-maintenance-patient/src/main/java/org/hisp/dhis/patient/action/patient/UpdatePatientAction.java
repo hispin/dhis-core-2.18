@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.patient.action.patient;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -35,14 +34,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.i18n.I18nFormat;
 
 import com.opensymphony.xwork2.Action;
 
@@ -187,7 +185,6 @@ public class UpdatePatientAction
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getPatientAttributesByMandatory( true );
 
         HttpServletRequest request = ServletActionContext.getRequest();
-        ArrayList<String> attributeValue = new ArrayList<String>();
 
         for ( PatientAttribute patientAttribute : patientAttributes )
         {

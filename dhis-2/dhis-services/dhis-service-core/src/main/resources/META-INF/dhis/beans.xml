@@ -635,6 +635,26 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </property>
   </bean>
   
+  <!-- Startup -->
+  
+  <bean id="org.hisp.dhis.startup.TableCreator"
+    class="org.hisp.dhis.startup.TableCreator">
+    <property name="runlevel" value="3"/>
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    <property name="statementBuilder" ref="statementBuilder"/>
+  </bean>
+    
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"
+      ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
+    <property name="targetMethod" value="addStartupRoutines"/>
+    <property name="arguments">
+      <list>
+        <ref local="org.hisp.dhis.startup.TableCreator"/>
+      </list>
+    </property>
+  </bean>
+  
   <!-- AOP definitions -->
   
   <aop:config>

@@ -6,11 +6,11 @@
 
 #end
 
+<h3>$i18n.getString( "data_integrity_checks_performed" )</h3>
+
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <div id="contentDiv" style="display:none">
-
-<h3>$i18n.getString( "data_integrity_checks_performed" )</h3>
 
 #integrityItem( $i18n.getString( "data_elements_without_data_set" ) "dataElementsWithoutDataSet" )
 #integrityItem( $i18n.getString( "data_elements_without_groups" ) "dataElementsWithoutGroups" )

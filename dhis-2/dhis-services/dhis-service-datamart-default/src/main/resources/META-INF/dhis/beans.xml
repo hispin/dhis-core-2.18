@@ -234,24 +234,4 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       
   </aop:config>
     
-  <!-- Startup -->
-  
-  <bean id="org.hisp.dhis.datamart.startup.AggregationTableCreator"
-    class="org.hisp.dhis.datamart.startup.AggregationTableCreator">
-    <property name="runlevel" value="3"/>
-    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="statementBuilder" ref="statementBuilder"/>
-  </bean>
-    
-  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject"
-      ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
-    <property name="targetMethod" value="addStartupRoutines"/>
-    <property name="arguments">
-      <list>
-        <ref local="org.hisp.dhis.datamart.startup.AggregationTableCreator"/>
-      </list>
-    </property>
-  </bean>
-  
 </beans>

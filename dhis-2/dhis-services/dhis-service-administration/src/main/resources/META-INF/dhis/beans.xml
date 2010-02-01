@@ -120,6 +120,42 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
+  <!-- Data archive -->
+  
+  <bean id="org.hisp.dhis.dataarchive.DataArchiveStore"
+	class="org.hisp.dhis.dataarchive.jdbc.JdbcDataArchiveStore">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataarchive.DataArchiveService"
+    class="org.hisp.dhis.dataarchive.DefaultDataArchiveService">
+    <property name="dataArchiveStore" 
+		ref="org.hisp.dhis.dataarchive.DataArchiveStore"/>
+  </bean>
+  
+  <!--DeletionHandler -->
+  
+  <bean id="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler"
+	class="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+  </bean>
+  
+  <!-- DeletionManager -->
+  
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+    <property name="targetMethod" value="addDeletionHandlers"/>
+    <property name="arguments">
+      <list>
+        <list>
+          <ref local="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler"/>
+		</list>
+	  </list>
+	</property>
+  </bean>
+
+  <!-- AOP definitions -->
+  
   <aop:config>
 	
     <aop:aspect ref="statementInterceptor">
