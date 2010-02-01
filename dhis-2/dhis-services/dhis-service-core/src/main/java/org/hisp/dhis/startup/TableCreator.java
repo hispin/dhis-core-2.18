@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.startup;
+package org.hisp.dhis.startup;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -35,12 +35,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: AggregationTableCreator.java 5943 2008-10-16 15:45:19Z larshelg $
  */
-public class AggregationTableCreator
+public class TableCreator
     extends AbstractStartupRoutine
 {
-    private Log log = LogFactory.getLog( AggregationTableCreator.class );
+    private Log log = LogFactory.getLog( TableCreator.class );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -66,6 +65,10 @@ public class AggregationTableCreator
 
     public void execute()
     {
+        // -----------------------------------------------------------------
+        // AggregatedDataValue
+        // -----------------------------------------------------------------
+
         try
         {
             jdbcTemplate.execute( statementBuilder.getCreateAggregatedDataValueTable() );
@@ -78,7 +81,7 @@ public class AggregationTableCreator
         }
 
         // -----------------------------------------------------------------
-        // Aggregated indicator value table
+        // AggregatedIndicatorValue
         // -----------------------------------------------------------------
 
         try
@@ -93,7 +96,7 @@ public class AggregationTableCreator
         }
         
         // -----------------------------------------------------------------
-        // Crosstab index on datavalue table
+        // Crosstab index on DataValue table
         // -----------------------------------------------------------------
 
         try
@@ -114,6 +117,42 @@ public class AggregationTableCreator
         try
         {
             jdbcTemplate.execute( statementBuilder.getCreateDataSetCompletenessTable() );
+            
+            log.info( "Created table aggregateddatasetcompleteness" );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Table aggregateddatasetcompleteness exists" );
+        }
+        
+        // -----------------------------------------------------------------
+        // ArchivedDataValue
+        // -----------------------------------------------------------------
+
+        try
+        {
+            final String sql = 
+                "CREATE TABLE datavaluearchive ( " +
+                "dataelementid INTEGER NOT NULL, " +
+                "periodid INTEGER NOT NULL, " +
+                "sourceid INTEGER NOT NULL, " +
+                "categoryoptioncomboid INTEGER NOT NULL, " +
+                "\"value\" CHARACTER VARYING(255), " +
+                "storedby CHARACTER VARYING(31), " +
+                "lastupdated TIMESTAMP, " +
+                "\"comment\" CHARACTER VARYING(360), " +
+                "followup BOOLEAN, " +
+                "CONSTRAINT datavaluearchive_pkey PRIMARY KEY (dataelementid, periodid, sourceid, categoryoptioncomboid), " +
+                "CONSTRAINT fk_datavaluearchive_categoryoptioncomboid FOREIGN KEY (categoryoptioncomboid) " +
+                    "REFERENCES categoryoptioncombo (categoryoptioncomboid), " +
+                "CONSTRAINT fk_datavaluearchive_dataelementid FOREIGN KEY (dataelementid) " +
+                    "REFERENCES dataelement (dataelementid), " +
+                "CONSTRAINT fk_datavaluearchive_periodid FOREIGN KEY (periodid) " +
+                    "REFERENCES period (periodid), " +
+                "CONSTRAINT fk_datavaluearchive_sourceid FOREIGN KEY (sourceid) " +
+                    "REFERENCES source (sourceid) );";
+                
+            jdbcTemplate.execute( sql );
             
             log.info( "Created table aggregateddatasetcompleteness" );
         }

@@ -302,5 +302,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
+	<!-- Data archive -->
+	
+	<bean
+		id="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction"
+		class="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction"
+		scope="prototype">
+		<property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService"/>
+	</bean>
+
+    <bean
+        id="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction"
+        class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction"
+        scope="prototype">
+        <property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService"/>
+    </bean>
 
 </beans>

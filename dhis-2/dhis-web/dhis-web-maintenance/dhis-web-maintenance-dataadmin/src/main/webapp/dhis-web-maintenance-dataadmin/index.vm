@@ -4,6 +4,7 @@
 <ul class="introList">
     #introListItem( "displayDataBrowserForm.action" "data_browser" )
     #introListItem( "displayDataIntegrityForm.action" "data_integrity" )
+    #introListItem( "displayDataArchiveForm.action" "data_archive" )
     #introListItem( "displayMaintenanceForm.action" "maintenance" )
     #introListItem( "displayResourceTableForm.action" "resource_table" )
     #introListItem( "displayOrganisationUnitMergeForm.action" "organisation_unit_merge" )
@@ -13,4 +14,3 @@
     #introListItem( "zeroValueStorageManagement.action" "zero_storage_management" ) 
     #introListItem( "showCache.action" "cache_statistics" )
 </ul>
-    
