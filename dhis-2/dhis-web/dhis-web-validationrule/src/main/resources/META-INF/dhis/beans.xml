@@ -258,7 +258,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.validationrule.action.dataanalysis.GetAnalysisAction"
     scope="prototype">
 	<property name="serviceProvider"
-	  ref="org.hisp.dhis.dataanalysis.DataAnalysisServiceProvider"/>
+	  ref="dataAnalysisServiceProvider"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="selectionTreeManager" 

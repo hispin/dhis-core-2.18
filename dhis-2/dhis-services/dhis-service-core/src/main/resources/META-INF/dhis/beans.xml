@@ -356,9 +356,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
   </bean>
   
-  <bean id="org.hisp.dhis.dataanalysis.DataAnalysisServiceProvider"
-	class="org.hisp.dhis.dataanalysis.provider.DefaultDataAnalysisServiceProvider">
-	<property name="dataAnalysisServices">
+  <bean id="dataAnalysisServiceProvider"
+	class="org.hisp.dhis.common.ServiceProvider">
+	<property name="services">
 		<map>
 			<entry>
 				<key><value>stddevoutlier</value></key>

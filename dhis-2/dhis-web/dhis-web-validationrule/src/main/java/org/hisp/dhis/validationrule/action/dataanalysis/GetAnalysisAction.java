@@ -33,8 +33,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
-import org.hisp.dhis.dataanalysis.DataAnalysisServiceProvider;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -65,9 +65,9 @@ public class GetAnalysisAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataAnalysisServiceProvider serviceProvider;
+    private ServiceProvider<DataAnalysisService> serviceProvider;
 
-    public void setServiceProvider( DataAnalysisServiceProvider serviceProvider )
+    public void setServiceProvider( ServiceProvider<DataAnalysisService> serviceProvider )
     {
         this.serviceProvider = serviceProvider;
     }
