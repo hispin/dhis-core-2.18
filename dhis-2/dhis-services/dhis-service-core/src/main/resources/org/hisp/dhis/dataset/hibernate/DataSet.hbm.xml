@@ -24,6 +24,12 @@
           column="dataelementid" foreign-key="fk_dataset_dataelementid"/>
     </set>
     
+    <set name="compulsoryDataElements" table="compulsorydatasetmembers">
+      <key column="datasetid"/>
+      <many-to-many class="org.hisp.dhis.dataelement.DataElement" 
+          column="dataelementid" foreign-key="fk_dataset_compulsorydataelementid"/>
+    </set>
+    
     <set name="sources" table="datasetsource">
       <key column="datasetid"/>
       <many-to-many column="sourceid" 

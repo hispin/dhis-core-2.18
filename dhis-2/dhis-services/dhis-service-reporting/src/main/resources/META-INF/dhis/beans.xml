@@ -58,7 +58,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataMartService"
       ref="org.hisp.dhis.datamart.DataMartService"/>
     <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
+      ref="subjectiveDataCompletenessService"/>
   </bean>
   
   <!-- Report -->
@@ -126,12 +126,26 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <!-- DataSetCompleteness -->
   
-  <bean id="org.hisp.dhis.completeness.DataSetCompletenessService"
-    class="org.hisp.dhis.completeness.impl.DefaultDataSetCompletenessService">
-    <property name="configDir"
-      value="reports"/>
-    <property name="configFile"
-      value="dataSetCompletenessConfiguration.xml"/>
+  <bean id="dataCompletenessServiceProvider"
+	class="org.hisp.dhis.common.ServiceProvider">
+    <property name="services">
+	  <map>
+        <entry>
+          <key><value>subjective</value></key>
+          <ref bean="subjectiveDataCompletenessService"/>
+        </entry>
+        <entry>
+          <key><value>objective</value></key>
+          <ref bean="objectiveDataCompletenessService"/>
+        </entry>
+	  </map>
+    </property>
+  </bean>
+  
+  <bean id="objectiveDataCompletenessService"
+	class="org.hisp.dhis.completeness.impl.ObjectiveDataSetCompletenessService">
+    <property name="configDir" value="reports"/>
+    <property name="configFile" value="dataSetCompletenessConfiguration.xml"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -139,16 +153,19 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataset.DataSetService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="registrationService"
-      ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
     <property name="locationManager"
       ref="org.hisp.dhis.external.location.LocationManager"/>
     <property name="configurationManager"
       ref="org.hisp.dhis.external.configuration.ConfigurationManager"/>
-    <property name="completenessCache"
-      ref="org.hisp.dhis.completeness.cache.DataSetCompletenessCache"/>
     <property name="completenessStore"
       ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
+  </bean>
+  
+  <bean id="subjectiveDataCompletenessService"
+	class="org.hisp.dhis.completeness.impl.SubjectiveDataSetCompletenessService" 
+	parent="objectiveDataCompletenessService">	
+    <property name="registrationService"
+      ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
   </bean>
   
   <bean id="org.hisp.dhis.completeness.DataSetCompletenessStore"
@@ -160,16 +177,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.completeness.DataSetCompletenessInternalProcess"
     scope="prototype">
     <property name="statementManager" ref="statementManager"/>
-    <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
+    <property name="completenessService" ref="subjectiveDataCompletenessService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.completeness.cache.DataSetCompletenessCache"
-    class="org.hisp.dhis.completeness.cache.MemoryDataSetCompletenessCache">    
-    <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
-  </bean>
-    
   <!-- PDF -->
   
   <bean id="org.hisp.dhis.pdf.PdfService"

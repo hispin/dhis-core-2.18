@@ -53,9 +53,15 @@ public class DataSet
     private PeriodType periodType;
 
     /**
-     * All DataSetElements associated with this DataSet.
+     * All DataElements associated with this DataSet.
      */
     private Collection<DataElement> dataElements = new HashSet<DataElement>();
+    
+    /**
+     * The DataElements for which data must be entered in order for the DataSet to
+     * be considered as complete.
+     */
+    private Set<DataElement> compulsoryDataElements = new HashSet<DataElement>();
     
     /**
      * All Sources that register data with this DataSet.
@@ -175,6 +181,16 @@ public class DataSet
     public void setDataElements( Collection<DataElement> dataElements )
     {
         this.dataElements = dataElements;
+    }
+
+    public Set<DataElement> getCompulsoryDataElements()
+    {
+        return compulsoryDataElements;
+    }
+
+    public void setCompulsoryDataElements( Set<DataElement> compulsoryDataElements )
+    {
+        this.compulsoryDataElements = compulsoryDataElements;
     }
 
     public Set<Source> getSources()

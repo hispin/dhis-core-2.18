@@ -592,8 +592,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
     class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
     scope="prototype">
-    <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
+    <property name="serviceProvider"
+      ref="dataCompletenessServiceProvider"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
   </bean>
@@ -620,14 +620,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction"
     scope="prototype">
     <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
+      ref="subjectiveDataCompletenessService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction"
     class="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction"
     scope="prototype">
     <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
+      ref="subjectiveDataCompletenessService"/>
   </bean>
   
   <!-- Tallysheet -->

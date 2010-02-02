@@ -14,10 +14,11 @@
 		  <col width="20">
 		  <col width="20">
           <col width="20">
+          <col width="20">
 		  
 		  <tr>
 			<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
-			<td colspan="8" style="text-align:right">
+			<td colspan="9" style="text-align:right">
 				<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"></a>
 				<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"></a>
 			</td>
@@ -25,7 +26,7 @@
 
           <tr>
             <th>$i18n.getString( "name" )</th>
-            <th colspan="8">$i18n.getString( "operations" )</th>
+            <th style="text-align:center" colspan="9">$i18n.getString( "operations" )</th>
           </tr>
 
           <tbody id="list">
@@ -49,7 +50,10 @@
                   <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
                 </td>  
 				<td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:showsection( $dataSet.id )" title="$i18n.getString( "view_section_management" )"><img src="../images/add_section.png" alt="$i18n.getString( "view_section_management" )"></a>
+                  <a href="javascript:showsection( $dataSet.id )" title="$i18n.getString( "view_section_management" )"><img src="../images/edit_sections.png" alt="$i18n.getString( "view_section_management" )"></a>
+                </td>  
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="javascript:window.location.href='displayCompulsoryDataElementsForm.action?id=${dataSet.id}'" title="$i18n.getString( "edit_compulsory_data_elements" )"><img src="../images/edit_compulsory_data_elements.png" alt="$i18n.getString( "edit_compulsory_data_elements" )"></a>
                 </td>  
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="javascript:removeDataSet( '$dataSet.id', '$encoder.jsEncode( $dataSet.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>

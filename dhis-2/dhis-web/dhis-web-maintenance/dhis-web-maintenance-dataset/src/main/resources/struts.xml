@@ -303,6 +303,19 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseCustomValue.vm</result>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
     </action>
-        
+    
+    <!-- Compulsory data elements -->
+  
+    <action name="displayCompulsoryDataElementsForm"
+	  class="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction">
+	  <result name="success" type="velocity">/main.vm</result>
+	  <param name="page">/dhis-web-maintenance-dataset/compulsoryDataElementsForm.vm</param>	  
+	</action>
+		
+	<action name="saveCompulsoryDataElements"
+	  class="org.hisp.dhis.dataset.action.compulsory.SaveCompulsoryDataElementsAction">
+	  <result name="success" type="redirect">dataSet.action</result>
+	</action>
+	
   </package>
 </struts>

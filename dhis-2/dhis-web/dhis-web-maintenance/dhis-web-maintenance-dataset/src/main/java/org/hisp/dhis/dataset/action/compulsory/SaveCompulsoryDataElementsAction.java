@@ -1,4 +1,4 @@
-package org.hisp.dhis.completeness.cache;
+package org.hisp.dhis.dataset.action.compulsory;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,69 +27,73 @@ package org.hisp.dhis.completeness.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.completeness.DataSetCompletenessService;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class MemoryDataSetCompletenessCache
-    implements DataSetCompletenessCache
+public class SaveCompulsoryDataElementsAction
+    implements Action
 {
-    private ThreadLocal<Map<Period, Date>> deadlines = new ThreadLocal<Map<Period, Date>>();
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataSetCompletenessService completenessService;
-    
-    public void setCompletenessService( DataSetCompletenessService completenessService )
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.completenessService = completenessService;
+        this.dataSetService = dataSetService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+    
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private Collection<String> selectedDataElements = new ArrayList<String>();
+
+    public void setSelectedDataElements( Collection<String> selectedDataElements )
+    {
+        this.selectedDataElements = selectedDataElements;
     }
 
     // -------------------------------------------------------------------------
-    // DataSetCompletenessCache implementation
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    public Date getDeadline( Period period )
+    public String execute()
     {
-        Map<Period, Date> cache = deadlines.get();
+        DataSet dataSet = dataSetService.getDataSet( id );
+        dataSet.getCompulsoryDataElements().clear();
         
-        Date deadline = null;
-        
-        if ( cache != null && ( deadline = cache.get( period ) ) != null )
+        for ( String id : selectedDataElements )
         {
-            return deadline;
-        }
-
-        try
-        {
-            deadline = completenessService.getConfiguration().getDeadline( period );
-        }
-        catch ( NoConfigurationFoundException ex )
-        {
-            // On-time calculations will be disabled
+            dataSet.getCompulsoryDataElements().add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
         
-        cache = ( cache == null ) ? new HashMap<Period, Date>() : cache;
+        dataSetService.updateDataSet( dataSet );
         
-        cache.put( period, deadline );
-        
-        deadlines.set( cache );
-        
-        return deadline;
-    }
-    
-    public void clear()
-    {
-        deadlines.remove();
+        return SUCCESS;
     }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.completeness.cache;
+package org.hisp.dhis.completeness.impl;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,17 +27,34 @@ package org.hisp.dhis.completeness.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Date;
 
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public interface DataSetCompletenessCache
+public class SubjectiveDataSetCompletenessService
+    extends AbstractDataSetCompletenessService
 {
-    Date getDeadline( Period period );
-    
-    void clear();
+    private CompleteDataSetRegistrationService registrationService;
+
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
+    {
+        this.registrationService = registrationService;
+    }
+
+    public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period )
+    {
+        return registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period );
+    }
+
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
+    {
+        return registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period, deadline );
+    }
 }

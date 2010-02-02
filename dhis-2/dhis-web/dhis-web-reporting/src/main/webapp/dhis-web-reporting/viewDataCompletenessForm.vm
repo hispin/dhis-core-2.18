@@ -7,7 +7,7 @@
     <col width="320">    
     <tr>
 	   <td>
-		    <div id="selectionTree" style="width:310px; height:180px"></div>
+		    <div id="selectionTree" style="width:310px; height:220px"></div>
 		            
 		    <script type="text/javascript">
 		        selectionTreeSelection.setMultipleSelectionAllowed( false );
@@ -23,6 +23,11 @@
                 onclick="window.location.href='getDataCompletenessPDF.action'"><input 
                 type="button" value="$i18n.getString( 'generate_workbook' )" style="width:150px"
                 onclick="window.location.href='getDataCompletenessWorkbook.action'"><br><br>
+                	
+        	<input type="radio" name="criteria" id="subjectiveRadio" value="subjective" checked="checked" onclick="displayCompleteness()">
+            <label for="subjectiveRadio">$i18n.getString( 'based_on_subjective' )</label><br>
+            <input type="radio" name="criteria" id="objectiveRadio" value="objective" onclick="displayCompleteness()">
+            <label for="objectiveRadio">$i18n.getString( 'based_on_objective' )</label><br><br>
             
         	<select id="dataSetId" name="dataSetId" style="width:310px" onchange="displayCompleteness()">
 			<option value="ALL">[ $i18n.getString( "select_dataset_all" ) ]</option>

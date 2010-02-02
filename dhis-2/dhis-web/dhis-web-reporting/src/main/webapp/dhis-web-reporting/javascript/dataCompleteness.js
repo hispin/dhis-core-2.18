@@ -15,6 +15,8 @@ selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitId );
 
 function displayCompleteness()
 {
+	var criteria = $( "input[name='criteria']:checked" ).val();
+	
     var dataSetList = document.getElementById( "dataSetId" );
     
     var dataSetId = dataSetList.options[ dataSetList.selectedIndex ].value;
@@ -49,7 +51,8 @@ function displayCompleteness()
             // -----------------------------------------------------------------
             
             url = "getDataCompleteness.action?periodId=" + periodId + 
-                  "&organisationUnitId=" + selectedOrganisationUnitId;
+                  "&organisationUnitId=" + selectedOrganisationUnitId +
+                  "&criteria=" + criteria;
             
             request.setCallbackSuccess( displayCompletenessByDataSetReceived );
         }
@@ -61,7 +64,8 @@ function displayCompleteness()
             
             url = "getDataCompleteness.action?periodId=" + periodId + 
                   "&organisationUnitId=" + selectedOrganisationUnitId +
-                  "&dataSetId=" + dataSetId;
+                  "&dataSetId=" + dataSetId +
+                  "&criteria=" + criteria;
             
             request.setCallbackSuccess( displayCompletenessByOrganisationUnitReceived );
         }               

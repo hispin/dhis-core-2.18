@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.comparator.DataSetCompletenessResultComparator;
@@ -54,13 +55,13 @@ public class GetDataCompletenessAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataSetCompletenessService completenessService;
+    private ServiceProvider<DataSetCompletenessService> serviceProvider;    
 
-    public void setCompletenessService( DataSetCompletenessService completenessService )
+    public void setServiceProvider( ServiceProvider<DataSetCompletenessService> serviceProvider )
     {
-        this.completenessService = completenessService;
+        this.serviceProvider = serviceProvider;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -93,6 +94,13 @@ public class GetDataCompletenessAction
         this.organisationUnitId = organisationUnitId;
     }
     
+    private String criteria;
+
+    public void setCriteria( String criteria )
+    {
+        this.criteria = criteria;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -114,8 +122,10 @@ public class GetDataCompletenessAction
         SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS );
         SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS_DATASET );
         
-        if ( periodId != null && organisationUnitId != null )
+        if ( periodId != null && organisationUnitId != null && criteria != null )
         {
+            DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
+            
             if ( dataSetId != null )
             {
                 // -------------------------------------------------------------

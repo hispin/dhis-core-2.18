@@ -373,4 +373,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>    
   </bean>
   
+  <!-- Compulsory data elements -->
+  
+  <bean id="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction"
+	class="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction"
+	scope="prototype">
+	<property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property> 
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataset.action.compulsory.SaveCompulsoryDataElementsAction"
+    class="org.hisp.dhis.dataset.action.compulsory.SaveCompulsoryDataElementsAction"
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property> 
+    <property name="dataElementService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>    
+  </bean>
+  
 </beans>

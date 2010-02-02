@@ -4,10 +4,10 @@
 <ul class="introList">
     #introListItem( "displayViewReportFormVerifyConfiguration.action" "standard_report" )
     #introListItem( "dataSetReport.action" "dataset_report" )
+    #introListItem( "displayViewDataCompletenessForm.action" "data_completeness" )
     #introListItem( "displayViewDocumentForm.action" "static_report" )
     #introListItem( "tallySheetGenerator.action" "tally_sheet_generator" )
+    #introListItem( "displayManageTableForm.action" "report_table" )
     #introListItem( "displayViewChartForm.action" "chart" )
     #introListItem( "displayPivotTableForm.action" "pivot_table" )
-    #introListItem( "displayManageTableForm.action" "report_table" )
-    #introListItem( "displayViewDataCompletenessForm.action" "data_completeness" )
 </ul>
