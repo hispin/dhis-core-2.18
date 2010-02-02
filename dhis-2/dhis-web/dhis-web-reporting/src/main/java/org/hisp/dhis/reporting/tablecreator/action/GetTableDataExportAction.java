@@ -29,10 +29,10 @@ package org.hisp.dhis.reporting.tablecreator.action;
 
 import java.io.InputStream;
 
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.importexport.ImportExportServiceManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,13 +47,13 @@ public class GetTableDataExportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportExportServiceManager serviceManager;
+    private ServiceProvider<ExportService> serviceProvider;
 
-    public void setServiceManager( ImportExportServiceManager serviceManager )
+    public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
-        this.serviceManager = serviceManager;
+        this.serviceProvider = serviceProvider;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -103,7 +103,7 @@ public class GetTableDataExportAction
 
     public String execute() throws Exception
     {
-        ExportService exportService = serviceManager.getExportService( exportFormat );
+        ExportService exportService = serviceProvider.provide( exportFormat );
         
         ExportParams params = new ExportParams();
         
