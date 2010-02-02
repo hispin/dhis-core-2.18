@@ -29,12 +29,9 @@ package org.hisp.dhis.completeness.jdbc;
 
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 
-import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.dataset.DataSet;
@@ -66,77 +63,34 @@ public class JDBCDataSetCompletenessStore
     // DataSetCompletenessStore
     // -------------------------------------------------------------------------
 
-    //TODO implement this with improved quick API
-    
     public double getPercentage( int dataSetId, int periodId, int organisationUnitId )
     {
-        StatementHolder holder = statementManager.getHolder();
+        final String sql =
+            "SELECT value " +
+            "FROM aggregateddatasetcompleteness " +
+            "WHERE datasetid = " + dataSetId + " " +
+            "AND periodid = " + periodId + " " +
+            "AND organisationunitid = " + organisationUnitId;
         
-        try
-        {
-            String sql =
-                "SELECT value " +
-                "FROM aggregateddatasetcompleteness " +
-                "WHERE datasetid = " + dataSetId + " " +
-                "AND periodid = " + periodId + " " +
-                "AND organisationunitid = " + organisationUnitId;
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return resultSet.next() ? resultSet.getDouble( 1 ) : -1;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get datasetcompleteness", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().queryForDouble( sql );
     }
     
-    public int deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    public void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        StatementHolder holder = statementManager.getHolder();
+        final String sql = 
+            "DELETE FROM aggregateddatasetcompleteness " +
+            "WHERE datasetid IN ( " + getCommaDelimitedString( dataSetIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        try
-        {
-            String sql = 
-                "DELETE FROM aggregateddatasetcompleteness " +
-                "WHERE datasetid IN ( " + getCommaDelimitedString( dataSetIds ) + " ) " +
-                "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete datasetcompleteness", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        statementManager.getHolder().executeUpdate( sql );
     }
     
     public void deleteDataSetCompleteness()
     {
-        StatementHolder holder = statementManager.getHolder();
+        final String sql = "DELETE FROM aggregateddatasetcompleteness";
         
-        try
-        {
-            String sql = "DELETE FROM aggregateddatasetcompleteness";
-            
-            holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete datasetcompleteness", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period )
