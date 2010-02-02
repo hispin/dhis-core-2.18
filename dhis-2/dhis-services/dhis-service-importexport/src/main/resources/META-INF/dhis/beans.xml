@@ -7,37 +7,9 @@
 	<!-- ImportExportServiceManager                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-	<bean id="org.hisp.dhis.importexport.ImportExportServiceManager"
-		class="org.hisp.dhis.importexport.manager.DefaultImportExportServiceManager">
-		<property name="importServices">
-			<map>
-				<entry>
-					<key>
-						<value>IXF</value>
-					</key>
-					<ref bean="org.hisp.dhis.importexport.IXFImportService" />
-				</entry>
-				<entry>
-					<key>
-						<value>DXF</value>
-					</key>
-					<ref bean="org.hisp.dhis.importexport.DXFImportService" />
-				</entry>
-				<entry>
-					<key>
-						<value>DHIS14XML</value>
-					</key>
-					<ref bean="org.hisp.dhis.importexport.Dhis14XMLImportService" />
-				</entry>
-				<entry>
-					<key>
-						<value>DHIS14FILE</value>
-					</key>
-					<ref bean="org.hisp.dhis.importexport.Dhis14FILEImportService" />
-				</entry>
-			</map>
-		</property>
-		<property name="exportServices">
+	<bean id="exportServiceProvider" 
+		class="org.hisp.dhis.common.ServiceProvider">		
+		<property name="services">
 			<map>
 				<entry>
 					<key>

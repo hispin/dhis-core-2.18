@@ -35,11 +35,11 @@ import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import java.io.InputStream;
 import java.util.Collection;
 
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -71,11 +71,11 @@ public class DataValueExportAction
         this.selectionTreeManager = selectionTreeManager;
     }
 
-    private ImportExportServiceManager serviceManager;
+    private ServiceProvider<ExportService> serviceProvider;
 
-    public void setServiceManager( ImportExportServiceManager serviceManager )
+    public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
-        this.serviceManager = serviceManager;
+        this.serviceProvider = serviceProvider;
     }
 
     private DataSetService dataSetService;
@@ -254,7 +254,7 @@ public class DataValueExportAction
         // Export
         // ---------------------------------------------------------------------
         
-        ExportService exportService = serviceManager.getExportService( exportFormat );        
+        ExportService exportService = serviceProvider.provide( exportFormat );        
         
         inputStream = exportService.exportData( params );
         
