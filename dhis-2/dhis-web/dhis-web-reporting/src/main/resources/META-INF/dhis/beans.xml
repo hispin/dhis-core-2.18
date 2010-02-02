@@ -253,8 +253,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableDataExportAction"
     class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataExportAction"
     scope="prototype">
-    <property name="serviceManager"
-      ref="org.hisp.dhis.importexport.ImportExportServiceManager"/>
+    <property name="serviceProvider"
+      ref="exportServiceProvider"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GenerateTableDataWorkbookAction"
