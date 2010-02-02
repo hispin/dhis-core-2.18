@@ -31,11 +31,11 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
 import com.opensymphony.xwork2.Action;
@@ -61,11 +61,11 @@ public class ExportToPdfAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportExportServiceManager serviceManager;
+    private ServiceProvider<ExportService> serviceProvider;
 
-    public void setServiceManager( ImportExportServiceManager serviceManager )
+    public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
-        this.serviceManager = serviceManager;
+        this.serviceProvider = serviceProvider;
     }
 
     private I18n i18n;
@@ -151,7 +151,7 @@ public class ExportToPdfAction
             params.setI18n( i18n );
             params.setFormat( format );
             
-            ExportService exportService = serviceManager.getExportService( EXPORT_FORMAT_PDF );
+            ExportService exportService = serviceProvider.provide( EXPORT_FORMAT_PDF );
             
             inputStream = exportService.exportData( params );
         }
