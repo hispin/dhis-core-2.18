@@ -108,7 +108,7 @@ public class DataSetCompletenessServiceTest
         
         registrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
         
-        completenessService = (DataSetCompletenessService) getBean( DataSetCompletenessService.ID );
+        completenessService = (DataSetCompletenessService) getBean( "subjectiveDataCompletenessService" );
 
         periodType = periodService.getAllPeriodTypes().iterator().next();
         

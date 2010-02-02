@@ -41,12 +41,9 @@ import org.hisp.dhis.completeness.DataSetCompletenessConfiguration;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
-import org.hisp.dhis.completeness.cache.DataSetCompletenessCache;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.configuration.ConfigurationManager;
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
@@ -62,10 +59,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @version $Id$
  */
 @Transactional
-public class DefaultDataSetCompletenessService
+public abstract class AbstractDataSetCompletenessService
     implements DataSetCompletenessService
 {
-    private static final Log log = LogFactory.getLog( DefaultDataSetCompletenessService.class );
+    private static final Log log = LogFactory.getLog( AbstractDataSetCompletenessService.class );
     
     // -------------------------------------------------------------------------
     // Properties
@@ -89,21 +86,21 @@ public class DefaultDataSetCompletenessService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private BatchHandlerFactory batchHandlerFactory;
+    protected BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
     {
         this.batchHandlerFactory = batchHandlerFactory;
     }
     
-    private OrganisationUnitService organisationUnitService;
+    protected OrganisationUnitService organisationUnitService;
     
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
 
-    private DataSetService dataSetService;
+    protected DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
@@ -117,35 +114,21 @@ public class DefaultDataSetCompletenessService
         this.periodService = periodService;
     }
     
-    private CompleteDataSetRegistrationService registrationService;
-    
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
-    }
-
-    private LocationManager locationManager;
+    protected LocationManager locationManager;
 
     public void setLocationManager( LocationManager locationManager )
     {
         this.locationManager = locationManager;
     }
 
-    private ConfigurationManager<DataSetCompletenessConfiguration> configurationManager;
+    protected ConfigurationManager<DataSetCompletenessConfiguration> configurationManager;
     
     public void setConfigurationManager( ConfigurationManager<DataSetCompletenessConfiguration> configurationManager )
     {
         this.configurationManager = configurationManager;
     }
 
-    private DataSetCompletenessCache completenessCache;
-
-    public void setCompletenessCache( DataSetCompletenessCache completenessCache )
-    {
-        this.completenessCache = completenessCache;
-    }
-
-    private DataSetCompletenessStore completenessStore;
+    protected DataSetCompletenessStore completenessStore;
 
     public void setCompletenessStore( DataSetCompletenessStore completenessStore )
     {
@@ -157,6 +140,14 @@ public class DefaultDataSetCompletenessService
     // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
+    // Abstract methods
+    // -------------------------------------------------------------------------
+    
+    public abstract int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period );
+    
+    public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline );
+    
+    // -------------------------------------------------------------------------
     // DataSetCompleteness
     // -------------------------------------------------------------------------
 
@@ -164,6 +155,8 @@ public class DefaultDataSetCompletenessService
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Integer reportTableId )
     {
         log.info( "Data completeness export process started" );
+        
+        DataSetCompletenessConfiguration config = getConfiguration();
         
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
         
@@ -199,7 +192,7 @@ public class DefaultDataSetCompletenessService
                     {
                         if ( intersectingPeriod.getPeriodType().equals( dataSet.getPeriodType() ) )
                         {
-                            deadline = completenessCache.getDeadline( intersectingPeriod );
+                            deadline = config != null ? config.getDeadline( intersectingPeriod ) : null;
                             
                             result = getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
                             
@@ -219,8 +212,6 @@ public class DefaultDataSetCompletenessService
             log.info( "Exported data completeness for period " + period.getId() );
         }
         
-        completenessCache.clear();
-        
         batchHandler.flush();
         
         log.info( "Export process done" );
@@ -230,16 +221,7 @@ public class DefaultDataSetCompletenessService
     {
         final Period period = periodService.getPeriod( periodId );
         
-        Date deadline = null;
-        
-        try
-        {
-            deadline = getConfiguration().getDeadline( period );
-        }
-        catch ( NoConfigurationFoundException ex )
-        {
-            log.warn( "Disabling on-time completeness calculations because no configuration was found" );
-        }
+        Date deadline = getConfiguration().getDeadline( period );
         
         final Collection<? extends Source> children = organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId );
         
@@ -252,8 +234,8 @@ public class DefaultDataSetCompletenessService
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
             
             result.setName( dataSet.getName() );
-            result.setRegistrations( registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period ) );
-            result.setRegistrationsOnTime( deadline != null ? registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period, deadline ) : 0 );
+            result.setRegistrations( getRegistrations( dataSet, children, period ) );
+            result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
             result.setSources( dataSetService.getSourcesAssociatedWithDataSet( dataSet, children ) );
             
             result.setDataSetId( dataSet.getId() );
@@ -270,16 +252,7 @@ public class DefaultDataSetCompletenessService
     {
         final Period period = periodService.getPeriod( periodId );
 
-        Date deadline = null;
-        
-        try
-        {
-            deadline = getConfiguration().getDeadline( period );
-        }
-        catch ( NoConfigurationFoundException ex )
-        {
-            log.warn( "Disabling on-time completeness calculations because no configuration was found" );
-        }
+        Date deadline = getConfiguration().getDeadline( period );
         
         final DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
@@ -298,8 +271,8 @@ public class DefaultDataSetCompletenessService
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
             
             result.setName( unit.getName() );
-            result.setRegistrations( registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period ) );
-            result.setRegistrationsOnTime( deadline != null ? registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period, deadline ) : 0 );
+            result.setRegistrations( getRegistrations( dataSet, children, period ) );
+            result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
             result.setSources( dataSetService.getSourcesAssociatedWithDataSet( dataSet, children ) );
             
             result.setDataSetId( dataSetId );
@@ -319,8 +292,8 @@ public class DefaultDataSetCompletenessService
         final DataSetCompletenessResult result = new DataSetCompletenessResult();
         
         result.setName( unit.getName() );
-        result.setRegistrations( registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period ) );
-        result.setRegistrationsOnTime( deadline != null ? registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period, deadline ) : 0 );
+        result.setRegistrations( getRegistrations( dataSet, children, period ) );
+        result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
         result.setSources( dataSetService.getSourcesAssociatedWithDataSet( dataSet, children ) );
         
         result.setDataSetId( dataSet.getId() );
@@ -349,7 +322,6 @@ public class DefaultDataSetCompletenessService
     }
     
     public DataSetCompletenessConfiguration getConfiguration()
-        throws NoConfigurationFoundException
     {
         try
         {
@@ -359,7 +331,7 @@ public class DefaultDataSetCompletenessService
         }
         catch ( LocationManagerException ex )
         {
-            throw new NoConfigurationFoundException( "No configuration file found" );
+            return null;
         }
     }
 }

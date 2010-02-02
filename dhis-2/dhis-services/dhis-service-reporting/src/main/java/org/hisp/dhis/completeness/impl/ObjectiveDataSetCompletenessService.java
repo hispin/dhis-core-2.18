@@ -1,4 +1,4 @@
-package org.hisp.dhis.completeness;
+package org.hisp.dhis.completeness.impl;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -36,38 +36,17 @@ import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public interface DataSetCompletenessStore
-{
-    String ID = DataSetCompletenessStore.class.getName();
-    
-    /**
-     * Gets the percentage value for the datasetcompleteness with the given parameters.
-     * 
-     * @param dataSetId the DataSet identifier.
-     * @param periodId the Period identifier.
-     * @param sourceId the Source identifier.
-     * @return the percentage value for the datasetcompleteness result with the given parameters.
-     */
-    double getPercentage( int dataSetId, int periodId, int sourceId );
-    
-    /**
-     * Deletes the datasetcompleteness entries with the given parameters.
-     * 
-     * @param dataSetIds the DataSet identifiers.
-     * @param periodIds the Period identifiers.
-     * @param sourceIds the Source identifiers.
-     * @return the number of deleted entries.
-     */
-    int deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> sourceIds );
-    
-    /**
-     * Deletes all datasetcompleteness entries.
-     */
-    void deleteDataSetCompleteness();
-    
-    int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period );
-    
-    int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline );
+public class ObjectiveDataSetCompletenessService
+    extends AbstractDataSetCompletenessService
+{    
+    public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period )
+    {
+        return completenessStore.getRegistrations( dataSet, children, period );
+    }
+
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
+    {
+        return completenessStore.getRegistrations( dataSet, children, period, deadline );
+    }
 }

@@ -32,10 +32,17 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Date;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.TextUtils;
 
 /**
  * @author Lars Helge Overland
@@ -59,6 +66,8 @@ public class JDBCDataSetCompletenessStore
     // DataSetCompletenessStore
     // -------------------------------------------------------------------------
 
+    //TODO implement this with improved quick API
+    
     public double getPercentage( int dataSetId, int periodId, int organisationUnitId )
     {
         StatementHolder holder = statementManager.getHolder();
@@ -129,4 +138,34 @@ public class JDBCDataSetCompletenessStore
             holder.close();
         }
     }
+
+    public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period )
+    {
+        return getRegistrations( dataSet, children, period, null );
+    }
+    
+    public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
+    {           
+        final int compulsoryElements = dataSet.getCompulsoryDataElements().size();
+        final int periodId = period.getId();
+        final int dataSetId = dataSet.getId();                
+        
+        final String childrenIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Source.class, children ) );
+        final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
+        
+        final String sql = 
+            "SELECT COUNT(sourceid) FROM ( " +
+                "SELECT sourceid, count(DISTINCT dataelementid) AS no " +
+                "FROM datavalue " +
+                "WHERE periodid = " + periodId + " " + deadlineCriteria +
+                "AND sourceid IN (" + childrenIds + ") " +
+                "AND dataelementid IN ( " +
+                    "SELECT dataelementid " +
+                    "FROM compulsorydatasetmembers " +
+                    "WHERE datasetid = " + dataSetId + " ) " +
+                "GROUP BY sourceid ) AS completed " +
+            "WHERE completed.no = " + compulsoryElements;
+        
+        return statementManager.getHolder().queryForInteger( sql );
+    }    
 }
