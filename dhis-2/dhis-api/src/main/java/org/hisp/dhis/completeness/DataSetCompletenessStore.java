@@ -58,9 +58,8 @@ public interface DataSetCompletenessStore
      * @param dataSetIds the DataSet identifiers.
      * @param periodIds the Period identifiers.
      * @param sourceIds the Source identifiers.
-     * @return the number of deleted entries.
      */
-    int deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> sourceIds );
+    void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> sourceIds );
     
     /**
      * Deletes all datasetcompleteness entries.
