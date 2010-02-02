@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -44,5 +45,10 @@ public class ServiceProvider<T>
     public T provide( String key )
     {
         return services.get( key );
+    }
+    
+    public Set<String> getServiceKeySet()
+    {
+        return services.keySet();
     }
 }

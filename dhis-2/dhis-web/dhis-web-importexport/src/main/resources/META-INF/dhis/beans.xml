@@ -128,8 +128,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
 		class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
 		scope="prototype">
-		<property name="serviceManager"
-			ref="org.hisp.dhis.importexport.ImportExportServiceManager" />
+		<property name="serviceProvider" ref="exportServiceProvider" />
 		<property name="importObjectService"
 			ref="org.hisp.dhis.importexport.ImportObjectService" />
 		<property name="importDataValueService"
@@ -140,8 +139,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.importexport.action.exp.DetailedMetaDataExportAction"
 		class="org.hisp.dhis.importexport.action.exp.DetailedMetaDataExportAction"
 		scope="prototype">
-		<property name="serviceManager"
-			ref="org.hisp.dhis.importexport.ImportExportServiceManager" />
+		<property name="serviceProvider" ref="exportServiceProvider" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
@@ -156,8 +154,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="serviceManager"
-			ref="org.hisp.dhis.importexport.ImportExportServiceManager" />
+		<property name="serviceProvider" ref="exportServiceProvider" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitService"

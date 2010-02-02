@@ -29,12 +29,12 @@ package org.hisp.dhis.importexport.action.exp;
 
 import java.io.InputStream;
 
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportDataValueService;
-import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
@@ -53,11 +53,11 @@ public class MetaDataExportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportExportServiceManager serviceManager;
+    private ServiceProvider<ExportService> serviceProvider;
 
-    public void setServiceManager( ImportExportServiceManager serviceManager )
+    public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
-        this.serviceManager = serviceManager;
+        this.serviceProvider = serviceProvider;
     }
 
     private ImportObjectService importObjectService;
@@ -337,7 +337,7 @@ public class MetaDataExportAction
         params.setI18n( i18n );
         params.setFormat( format );
         
-        ExportService exportService = serviceManager.getExportService( exportFormat );
+        ExportService exportService = serviceProvider.provide( exportFormat );
         
         inputStream = exportService.exportData( params );
         

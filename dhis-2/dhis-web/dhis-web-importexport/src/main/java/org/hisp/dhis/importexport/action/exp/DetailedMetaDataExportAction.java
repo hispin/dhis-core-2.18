@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -45,7 +46,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportDataValueService;
-import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -78,12 +78,12 @@ public class DetailedMetaDataExportAction
     {
         this.format = format;
     }
-        
-    private ImportExportServiceManager serviceManager;
 
-    public void setServiceManager( ImportExportServiceManager serviceManager )
+    private ServiceProvider<ExportService> serviceProvider;
+
+    public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
-        this.serviceManager = serviceManager;
+        this.serviceProvider = serviceProvider;
     }
 
     private DataElementService dataElementService;
@@ -219,7 +219,7 @@ public class DetailedMetaDataExportAction
         params.setI18n( i18n );
         params.setFormat( format );
 
-        ExportService exportService = serviceManager.getExportService( exportFormat );
+        ExportService exportService = serviceProvider.provide( exportFormat );
         
         inputStream = exportService.exportData( params );
         
