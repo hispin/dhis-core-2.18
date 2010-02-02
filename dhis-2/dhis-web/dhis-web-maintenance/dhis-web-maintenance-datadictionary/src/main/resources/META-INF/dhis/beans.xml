@@ -845,8 +845,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.dd.action.pdf.ExportToPdfAction" class="org.hisp.dhis.dd.action.pdf.ExportToPdfAction"
 		scope="prototype">
-		<property name="serviceManager">
-			<ref bean="org.hisp.dhis.importexport.ImportExportServiceManager" />
+		<property name="serviceProvider">
+			<ref bean="exportServiceProvider" />
 		</property>
 	</bean>
 
