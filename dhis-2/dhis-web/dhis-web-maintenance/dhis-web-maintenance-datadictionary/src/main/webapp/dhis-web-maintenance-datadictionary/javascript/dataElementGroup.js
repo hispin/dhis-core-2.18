@@ -22,14 +22,19 @@ function dataElementGroupReceived( dataElementGroupElement )
 // Remove data element group
 // -----------------------------------------------------------------------------
 
+/**
+ * DOM modifications at page load.
+ */
+$( document ).ready( function(){
+
+$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+$( "table.listTable tbody tr:even" ).addClass( "listRow" );
+
+});
+
 function removeDataElementGroup( dataElementGroupId, dataElementGroupName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + dataElementGroupName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeDataElementGroup.action?id=' + dataElementGroupId;
-    }
+	removeItem( dataElementGroupId, dataElementGroupName, i18n_confirm_delete, "removeDataElementGroup.action" );
 }
 
 // -----------------------------------------------------------------------------

@@ -593,3 +593,34 @@ function hideLoader()
     $( "div#loaderDiv" ).hide();
     $( "div#contentDiv" ).show();
 }
+
+/**
+ * Deletes and removes an item from a table. The table row to be removed must have
+ * an identifier on the form "tr[itemId]".
+ * 
+ * @param itemId the item identifier.
+ * @param itemName the item name.
+ * @param message the confirmation message.
+ * @param action the server action url for deleting the item.
+ */
+function removeItem( itemId, itemName, message, action )
+{                
+    var result = window.confirm( i18n_confirm_delete + "\n\n" + itemName );
+    
+    if ( result )
+    {       
+        $.ajax({ 
+            "url": action,
+            "data": { "id": itemId },
+            "success": function()
+            {
+                $( "tr#tr" + itemId ).remove();
+                
+                $( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+                $( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+                $( "table.listTable tbody tr:even" ).addClass( "listRow" );
+                
+            }
+        });
+    }
+}
