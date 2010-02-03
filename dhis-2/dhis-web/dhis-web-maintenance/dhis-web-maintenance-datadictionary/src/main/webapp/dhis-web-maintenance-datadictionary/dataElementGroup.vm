@@ -22,7 +22,7 @@
 				<tbody id="list">
 				#set( $mark = false )
 				#foreach( $dataElementGroup in $dataElementGroups )
-				<trd>
+				<tr>
 					<td#alternate( $mark )>$encoder.htmlEncode( $dataElementGroup.name )</td>
 					<td style="text-align:center"#alternate( $mark )><a href="showUpdateDataElementGroupForm.action?id=$dataElementGroup.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'DataElementGroup', '$dataElementGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
