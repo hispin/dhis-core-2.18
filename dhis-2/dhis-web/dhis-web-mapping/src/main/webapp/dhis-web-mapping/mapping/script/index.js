@@ -1,4 +1,4 @@
-/* reference local blank image */
+﻿/* reference local blank image */
 Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 var MAP;
@@ -2454,7 +2454,7 @@ Ext.onReady( function() {
 	
 	/* LAYERS */
 	var vmap0 = new OpenLayers.Layer.WMS(
-        'World WMS',
+        'World',
         'http://labs.metacarta.com/wms/vmap0', 
         {layers: 'basic'}
     );
