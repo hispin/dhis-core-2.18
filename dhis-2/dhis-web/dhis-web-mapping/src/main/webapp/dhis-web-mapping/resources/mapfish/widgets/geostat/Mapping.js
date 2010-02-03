@@ -394,7 +394,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     classify: function(exception) {
         if (!this.ready) {
-alert(2);		
+
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
         }
