@@ -271,10 +271,10 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementByCategoryCombo( categoryCombo ) );
     }
 
-    public Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo(
+    public Map<DataElementCategoryCombo, List<DataElement>> getGroupedDataElementsByCategoryCombo(
         List<DataElement> dataElements )
     {
-        Map<DataElementCategoryCombo, Collection<DataElement>> mappedDataElements = new HashMap<DataElementCategoryCombo, Collection<DataElement>>();
+        Map<DataElementCategoryCombo, List<DataElement>> mappedDataElements = new HashMap<DataElementCategoryCombo, List<DataElement>>();
 
         for ( DataElement de : dataElements )
         {
@@ -284,7 +284,7 @@ public class DefaultDataElementService
             }
             else
             {
-                Collection<DataElement> des = new ArrayList<DataElement>();
+                List<DataElement> des = new ArrayList<DataElement>();
                 des.add( de );
 
                 mappedDataElements.put( de.getCategoryCombo(), des );
