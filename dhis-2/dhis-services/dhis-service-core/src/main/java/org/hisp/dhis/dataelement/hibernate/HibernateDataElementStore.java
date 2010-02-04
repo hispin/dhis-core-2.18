@@ -427,8 +427,7 @@ public class HibernateDataElementStore
             "FROM dataelement as de " +
             "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
             "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
-            "JOIN categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid " +
-            "ORDER BY de.name;";
+            "JOIN categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid;";
         
         try
         {

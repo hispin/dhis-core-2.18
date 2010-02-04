@@ -1,4 +1,4 @@
-package org.hisp.dhis.commons.action;
+package org.hisp.dhis.dataelement.comparator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,55 +27,19 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
 
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.dataelement.comparator.OperandNameComparator;
-
-import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetOperandsAction
-    implements Action
+public class OperandNameComparator
+    implements Comparator<Operand>
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
+    @Override
+    public int compare( Operand o0, Operand o1 )
     {
-        this.dataElementService = dataElementService;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    public List<Operand> operands;
-    
-    public List<Operand> getOperands()
-    {
-        return operands;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-    {
-        operands = new ArrayList<Operand>( dataElementService.getAllOperands() );
-        
-        Collections.sort( operands, new OperandNameComparator() );
-        
-        return SUCCESS;
+        return o0.getOperandName().compareTo( o1.getOperandName() );
     }
 }
