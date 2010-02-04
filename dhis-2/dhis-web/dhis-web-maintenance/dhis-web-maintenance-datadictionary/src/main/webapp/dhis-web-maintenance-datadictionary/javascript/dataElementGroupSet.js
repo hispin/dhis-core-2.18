@@ -51,9 +51,8 @@ function validateAddDataElementGroupSetCompleted( message ){
 // -----------------------------------------------------------------------------
 
 function deleteDataElementGroupSet( id ){
-	if(window.confirm(i18n_confirm_delete)){
-		window.location = "deleteDataElementGroupSet.action?id=" + id;
-	}
+	
+	deleteItem( id, "", i18n_confirm_delete, "deleteDataElementGroupSet.action" );
 }
 
 // -----------------------------------------------------------------------------

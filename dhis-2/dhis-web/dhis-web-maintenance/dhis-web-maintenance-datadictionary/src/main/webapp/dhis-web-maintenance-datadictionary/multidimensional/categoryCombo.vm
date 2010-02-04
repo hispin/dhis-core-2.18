@@ -20,20 +20,14 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
             #if( $dataElementCategoryCombo.id != $defaultCombo.id )
-              <tr>
-                <td#alternate( $mark )>$encoder.htmlEncode( $dataElementCategoryCombo.name )</td>
-                <td style="text-align:center"#alternate( $mark )><a href="showUpdateDataElementCategoryComboForm.action?id=$dataElementCategoryCombo.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-                <td style="text-align:center"#alternate( $mark )><a href="javascript:removeDataElementCategoryCombo( '$dataElementCategoryCombo.id', '$encoder.jsEncode( $dataElementCategoryCombo.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-				<td style="text-align:center"#alternate( $mark )><a href="javascript:showDataElementCategoryComboDetails( $dataElementCategoryCombo.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>				
+              <tr id="tr${dataElementCategoryCombo.id}">
+                <td>$encoder.htmlEncode( $dataElementCategoryCombo.name )</td>
+                <td style="text-align:center"><a href="showUpdateDataElementCategoryComboForm.action?id=$dataElementCategoryCombo.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+                <td style="text-align:center"><a href="javascript:removeDataElementCategoryCombo( '$dataElementCategoryCombo.id', '$encoder.jsEncode( $dataElementCategoryCombo.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
+				<td style="text-align:center"><a href="javascript:showDataElementCategoryComboDetails( $dataElementCategoryCombo.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>				
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
 			#end
             #end
           </tbody>

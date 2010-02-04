@@ -20,20 +20,14 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $dataElementCategory in $dataElementCategories )
             #if( $dataElementCategory.id != $defaultCategory.id )
-              <tr>                
-                <td#alternate( $mark )>$encoder.htmlEncode( $dataElementCategory.name )</td>
-                <td style="text-align:center"#alternate( $mark )><a href="showUpdateDataElementCategoryForm.action?id=$dataElementCategory.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-                <td style="text-align:center"#alternate( $mark )><a href="javascript:removeDataElementCategory( '$dataElementCategory.id', '$encoder.jsEncode( $dataElementCategory.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-                <td style="text-align:center"#alternate( $mark )><a href="javascript:showDataElementCategoryDetails( $dataElementCategory.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>                
+              <tr id="tr${$dataElementCategory.id}">                
+                <td>$encoder.htmlEncode( $dataElementCategory.name )</td>
+                <td style="text-align:center"><a href="showUpdateDataElementCategoryForm.action?id=$dataElementCategory.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+                <td style="text-align:center"><a href="javascript:removeDataElementCategory( '$dataElementCategory.id', '$encoder.jsEncode( $dataElementCategory.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
+                <td style="text-align:center"><a href="javascript:showDataElementCategoryDetails( $dataElementCategory.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>                
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
 			#end
             #end
 

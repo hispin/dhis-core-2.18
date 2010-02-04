@@ -50,9 +50,8 @@ function validateAddIndicatorGroupSetCompleted( message ){
 // -----------------------------------------------------------------------------
 
 function deleteIndicatorGroupSet( id ){
-	if(window.confirm(i18n_confirm_delete)){
-		window.location = "deleteIndicatorGroupSet.action?id=" + id;
-	}
+	
+	removeItem( id, "", i18n_confirm_delete, "deleteIndicatorGroupSet.action" );
 }
 
 // -----------------------------------------------------------------------------

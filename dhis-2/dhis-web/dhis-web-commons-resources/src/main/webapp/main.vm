@@ -14,9 +14,9 @@
 	
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
+    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/lists.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
     <script type="text/javascript" src="../main.js"></script>
     <script type="text/javascript" src="../menu.js"></script>

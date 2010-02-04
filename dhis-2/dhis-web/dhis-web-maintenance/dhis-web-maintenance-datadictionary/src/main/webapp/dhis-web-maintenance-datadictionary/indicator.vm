@@ -50,24 +50,18 @@
 					<th colspan="4">$i18n.getString( "operations" )</th>
 				</tr>
 				<tbody id="list">
-				#set( $mark = false )
 				#foreach( $indicator in $indicators )
-				<tr>
-					<td colspan="3"#alternate( $mark )>$encoder.htmlEncode( $indicator.name )</td>
+				<tr id="tr${indicator.id}">
+					<td colspan="3">$encoder.htmlEncode( $indicator.name )</td>
 					#if ( $dataDictionaryMode == "extended" )
-						<td style="text-align:center"#alternate( $mark )><a href="showUpdateExtendedIndicatorForm.action?id=$indicator.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+						<td style="text-align:center"><a href="showUpdateExtendedIndicatorForm.action?id=$indicator.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					#else
-						<td style="text-align:center"#alternate( $mark )><a href="showUpdateIndicatorForm.action?id=$indicator.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+						<td style="text-align:center"><a href="showUpdateIndicatorForm.action?id=$indicator.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					#end
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'Indicator', '$indicator.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:removeIndicator( $indicator.id, '$encoder.jsEncode( $indicator.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:showIndicatorDetails( $indicator.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+					<td style="text-align:center"><a href="javascript:translate( 'Indicator', '$indicator.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
+					<td style="text-align:center"><a href="javascript:removeIndicator( $indicator.id, '$encoder.jsEncode( $indicator.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
+					<td style="text-align:center"><a href="javascript:showIndicatorDetails( $indicator.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>
-					#if( $mark )
-						#set( $mark = false )
-					#else
-						#set( $mark = true )
-					#end
 				#end
 				</tbody>
 			</table>

@@ -17,25 +17,18 @@
 					<th>$i18n.getString( "name" )</th>
 					<th width="150px">$i18n.getString( "operations" )</th>
 				</tr>
-				<tbody id="list">		
-					#set( $mark = false )
+				<tbody id="list">
 					#foreach( $dataElementGroupSet in $dataElementGroupSets )
-					<tr>
-						<td#alternate( $mark )>$encoder.htmlEncode( $dataElementGroupSet.name )</td>
-						<td style="text-align:center"#alternate( $mark )>
+					<tr id="tr${dataElementGroupSet.id}">
+						<td>$encoder.htmlEncode( $dataElementGroupSet.name )</td>
+						<td style="text-align:center">
 							<a href="openUpdateDataElementGroupSet.action?id=$dataElementGroupSet.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 							<a href="javascript:translate( 'DataElementGroupSet', '$dataElementGroupSet.id' )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
 							<a href="javascript:deleteDataElementGroupSet( $dataElementGroupSet.id, '$encoder.jsEncode( $dataElementGroupSet.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 							<a href="javascript:showDataElementGroupSetDetails( $dataElementGroupSet.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
 						</td>
 					</tr>
-						#if( $mark )
-							#set( $mark = false )
-						#else
-							#set( $mark = true )
-						#end
-					#end					
-				
+					#end
 				</tbody>
 			</table>	
 		</td>
