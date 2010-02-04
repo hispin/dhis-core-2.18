@@ -1,1 +1,1 @@
-{ "name": "$!{name}" }
+{ "name": "$!encoder.jsEncode( ${name} )" }

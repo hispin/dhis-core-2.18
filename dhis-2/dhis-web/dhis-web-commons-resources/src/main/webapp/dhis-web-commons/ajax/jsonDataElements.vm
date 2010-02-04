@@ -2,11 +2,11 @@
 { "dataElements": [
 #foreach( $dataElement in $dataElements )
   {
-    "id": $!{dataElement.id},
-    "name": "$!{dataElement.name}",
-    "alternativeName": "$!{dataElement.alternativeNamee}",
-    "shortName": "$!{dataElement.shortName}",
-    "code": "$!{dataElement.code}",
+    "id": $!encoder.jsEncode( ${dataElement.id} ),
+    "name": "$!encoder.jsEncode( ${dataElement.name} )",
+    "alternativeName": "$!encoder.jsEncode( ${dataElement.alternativeNamee} )",
+    "shortName": "$!encoder.jsEncode( ${dataElement.shortName} )",
+    "code": "$!encoder.jsEncode( ${dataElement.code} )",
     "type": "$!{dataElement.type}",
     "aggregationOperator": "$!{dataElement.aggregationOperator}"
   }#if( $velocityCount < $size ),#end
