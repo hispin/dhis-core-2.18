@@ -1,8 +1,8 @@
 { "dataSet": 
   {
     "id": $!{dataSet.id},
-    "name": "$!{dataSet.name}",
-    "shortName": "$!{dataSet.shortName}",
+    "name": "$!encoder.jsEncode( ${dataSet.name} )",
+    "shortName": "$!encoder.jsEncode( ${dataSet.shortName} )",
     "periodTypeId": "$!{dataSet.periodTypeId}"
   }
 }

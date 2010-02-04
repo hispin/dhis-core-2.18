@@ -423,7 +423,7 @@ public class HibernateDataElementStore
         final ObjectMapper<Operand> mapper = new ObjectMapper<Operand>();
         
         final String sql =
-            "SELECT de.dataelementid, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
+            "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
             "FROM dataelement as de " +
             "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
             "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +

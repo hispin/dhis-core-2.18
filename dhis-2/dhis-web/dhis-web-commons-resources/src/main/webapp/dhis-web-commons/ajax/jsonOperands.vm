@@ -1,0 +1,11 @@
+#set( $size = $operands.size() )
+{ "operands": [
+#foreach( $operand in $operands )
+  {
+    "id": "$!{operand.id}",
+    "dataElementId": "$!{operand.dataElementId}",
+    "optionComboId": "$!{operand.optionComboId}",
+    "operandName": "$!encoder.jsEncode( ${operand.operandName} )"
+  }#if( $velocityCount < $size ),#end
+#end
+] }

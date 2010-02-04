@@ -617,6 +617,12 @@
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
 
+	<bean id="org.hisp.dhis.commons.action.GetOperandsAction"
+		class="org.hisp.dhis.commons.action.GetOperandsAction"
+		scope="prototype">
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>		
+	</bean>
+
 	<bean id="org.hisp.dhis.commons.action.NoAction" 
 		class="org.hisp.dhis.commons.action.NoAction" />
 

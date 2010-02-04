@@ -3,7 +3,7 @@
 #foreach( $coc in $categoryOptionCombos )
   {
     "id": $!{coc.id},
-    "name": "$!{coc.name}"
+    "name": "$!encoder.jsEncode( ${coc.name} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }
