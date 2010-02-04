@@ -43,12 +43,7 @@ function dataDictionaryChanged( list )
 
 function removeDataDictionary( dataDictionaryId, dataDictionaryName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + dataDictionaryName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeDataDictionary.action?id=' + dataDictionaryId;
-    }
+	removeItem( dataDictionaryId, dataDictionaryName, i18n_confirm_delete, 'removeDataDictionary.action' );
 }
 
 // -----------------------------------------------------------------------------

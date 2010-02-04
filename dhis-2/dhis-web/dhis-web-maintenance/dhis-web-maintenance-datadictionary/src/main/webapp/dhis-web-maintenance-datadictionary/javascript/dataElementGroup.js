@@ -1,3 +1,4 @@
+
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
@@ -21,16 +22,6 @@ function dataElementGroupReceived( dataElementGroupElement )
 // -----------------------------------------------------------------------------
 // Remove data element group
 // -----------------------------------------------------------------------------
-
-/**
- * DOM modifications at page load.
- */
-$( document ).ready( function(){
-
-$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
-$( "table.listTable tbody tr:even" ).addClass( "listRow" );
-
-});
 
 function removeDataElementGroup( dataElementGroupId, dataElementGroupName )
 {

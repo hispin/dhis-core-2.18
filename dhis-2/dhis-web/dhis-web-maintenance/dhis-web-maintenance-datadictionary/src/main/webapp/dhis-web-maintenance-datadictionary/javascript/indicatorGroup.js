@@ -25,12 +25,7 @@ function indicatorGroupReceived( indicatorGroupElement )
 
 function removeIndicatorGroup( indicatorGroupId, indicatorGroupName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + indicatorGroupName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeIndicatorGroup.action?id=' + indicatorGroupId;
-    }
+	removeItem( indicatorGroupId, indicatorGroupName, i18n_confirm_delete, 'removeIndicatorGroup.action' );
 }
 
 // -----------------------------------------------------------------------------

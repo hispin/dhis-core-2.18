@@ -55,27 +55,21 @@
 					<th colspan="5">$i18n.getString( "operations" )</th>
 				</tr>
 				<tbody id="list">
-				#set( $mark = false )
 				#foreach( $dataElement in $dataElements )
-				<tr>
-					<td colspan="3"#alternate( $mark )>$encoder.htmlEncode( $dataElement.name )</td>
+				<tr id="tr${dataElement.id}">
+					<td colspan="3">$encoder.htmlEncode( $dataElement.name )</td>
 					#if ( $dataDictionaryMode == "extended" )
-					<td style="text-align:center"#alternate( $mark )><a href="showUpdateExtendedDataElementForm.action?id=$dataElement.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+					<td style="text-align:center"><a href="showUpdateExtendedDataElementForm.action?id=$dataElement.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					#else
-					<td style="text-align:center"#alternate( $mark )><a href="showUpdateDataElementForm.action?id=$dataElement.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+					<td style="text-align:center"><a href="showUpdateDataElementForm.action?id=$dataElement.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					#end
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'DataElement', '$dataElement.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:removeDataElement( $dataElement.id, '$encoder.jsEncode( $dataElement.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:showDataElementDetails( $dataElement.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+					<td style="text-align:center"><a href="javascript:translate( 'DataElement', '$dataElement.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
+					<td style="text-align:center"><a href="javascript:removeDataElement( $dataElement.id, '$encoder.jsEncode( $dataElement.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
+					<td style="text-align:center"><a href="javascript:showDataElementDetails( $dataElement.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 					#if ( $forumIntegration )
-					<td style="text-align:center"#alternate( $mark )><a href="$dataElement.url" title="$i18n.getString( "forum" )" target="_blank"><img src="../images/forum.png" alt="$i18n.getString( "forum" )"></a></td>
+					<td style="text-align:center"><a href="$dataElement.url" title="$i18n.getString( "forum" )" target="_blank"><img src="../images/forum.png" alt="$i18n.getString( "forum" )"></a></td>
 					#end
 				</tr>
-					#if( $mark )
-						#set( $mark = false )
-					#else
-						#set( $mark = true )
-					#end
 				#end
 				</tbody>
 			</table>

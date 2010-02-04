@@ -14,9 +14,9 @@
       <link rel="stylesheet" type="text/css" href="$stylesheet">
 	#end
 	
+    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/lists.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
     
   </head>
   

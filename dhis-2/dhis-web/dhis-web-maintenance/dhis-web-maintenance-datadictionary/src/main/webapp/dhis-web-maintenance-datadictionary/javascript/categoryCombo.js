@@ -21,12 +21,7 @@ function dataElementCategoryComboReceived( dataElementCategoryComboElement )
 
 function removeDataElementCategoryCombo( categoryComboId, categoryComboName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + categoryComboName );
-
-    if ( result )
-    {
-        window.location.href = 'removeDataElementCategoryCombo.action?id=' + categoryComboId;
-    }
+	removeItem( categoryComboId, categoryComboName, i18n_confirm_delete, 'removeDataElementCategoryCombo.action' );
 }
 
 // ----------------------------------------------------------------------
