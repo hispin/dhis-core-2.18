@@ -3,9 +3,8 @@
 
 <div>
 	<label>$i18n.getString( "filter" ):</label><br>
-	<input type="text" style="width:294px" onkeyup="filterList( this.value, 'dataElementList' )"><br>
-	<select id="dataElementList" size="6" style="width:300px" onclick="dataElementSelected()"></select>
-	<select id="categoryOptionComboList" size="6" style="width:200px" onclick="categoryOptionComboSelected()"></select>
+	<input type="text" style="width:294px" onkeyup="filterList( this.value, 'operandList' )"><br>
+	<select id="operandList" size="6" style="width:400px" onclick="operandSelected()"></select>
 </div>
 
 <br>

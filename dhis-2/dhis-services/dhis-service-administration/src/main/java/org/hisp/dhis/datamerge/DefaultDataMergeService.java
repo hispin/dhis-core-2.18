@@ -27,6 +27,9 @@ package org.hisp.dhis.datamerge;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -43,6 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataMergeService
     implements DataMergeService
 {
+    private static final Log log = LogFactory.getLog( DefaultDataMergeService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -92,7 +97,10 @@ public class DefaultDataMergeService
         }
         catch ( HierarchyViolationException ex )
         {
-            // Do nothing for now
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            log.info( "Not deleting data element because it has custom dimensions and more data associated with it" );
         }
     }
 
@@ -126,7 +134,6 @@ public class DefaultDataMergeService
         }
         catch ( HierarchyViolationException ex )
         {
-            // Do nothing for now
         }
     }
 }

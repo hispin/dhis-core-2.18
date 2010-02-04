@@ -1,79 +1,44 @@
 
-var dataElementToEliminate = 0;
-var categoryOptionComboToEliminate = 0;
-var dataElementToKeep = 0;
-var categoryOptionComboToKeep = 0;
+var operandToEliminate = 0;
+var operandToKeep = 0;
 
 function initLists()
 {	
 	$.getJSON( 
-        "../dhis-web-commons-ajax-json/getDataElements.action",
+        "../dhis-web-commons-ajax-json/getOperands.action",
         {},
         function( json )
         {
-        	var elements = json.dataElements;
+        	var operands = json.operands;
         	
-        	for ( var i = 0; i < elements.length; i++ )
+        	for ( var i = 0; i < operands.length; i++ )
         	{
-        	   $( "#dataElementList" ).append( "<option value='" + 
-        	       elements[i].id + "'>" + elements[i].name + "</option>" );
+        	   $( "#operandList" ).append( "<option value='" + 
+        	       operands[i].id + "'>" + operands[i].operandName + "</option>" );
         	}
         }
     );
 }
 
-function dataElementSelected()
+function operandSelected()
 {
-	$( "#categoryOptionComboList" ).children().remove();
+	var operandName = $( "#operandList :selected" ).text();
 	
-	var dataElementId = $( "#dataElementList" ).val();
-	
-	$.getJSON( 
-        "../dhis-web-commons-ajax-json/getCategoryOptionCombos.action",
-        {
-        	"id": dataElementId
-        },
-        function( json )
-        {
-        	var cocs = json.categoryOptionCombos;
-        	
-        	for ( var i = 0; i < cocs.length; i++ )
-        	{
-        		$( "#categoryOptionComboList" ).append( "<option value='" +
-        		    cocs[i].id + "'>" + cocs[i].name + "</option>" );
-        	}
-        }
-    );
-}
-
-function categoryOptionComboSelected()
-{
-	$.getJSON( 
-	    "../dhis-web-commons-ajax-json/getDataElementName.action",
-	    {
-	   	    "dataElementId": $( "#dataElementList" ).val(),
-	   	    "categoryOptionComboId": $( "#categoryOptionComboList" ).val()
-	    },
-	    function( json )
-	    {
-	        if ( dataElementToEliminate == 0 && categoryOptionComboToEliminate == 0 ) // Step 1
-		    {
-		   	    $( "#eliminateNameField" ).html( json.name );
-		   	    $( "#confirmEliminateButton" ).removeAttr( "disabled" );
-		    }
-		    else // Step 2
-            {
-                $( "#keepNameField" ).html( json.name );
-                $( "#confirmKeepButton" ).removeAttr( "disabled" );
-		    }
-        }
-    );
+	if ( operandToEliminate == 0 ) // Step 1
+    {
+        $( "#eliminateNameField" ).html( operandName );
+        $( "#confirmEliminateButton" ).removeAttr( "disabled" );
+    }
+    else // Step 2
+    {
+        $( "#keepNameField" ).html( operandName );
+        $( "#confirmKeepButton" ).removeAttr( "disabled" );
+    }	
 }
 
 function eliminateConfirmed()
 {
-	dataElementToEliminate = $( "#dataElementList" ).val();
-	categoryOptionComboToEliminate = $( "#categoryOptionComboList" ).val();
+	operandToEliminate = $( "#operandList" ).val();
 	
 	$( "#confirmEliminateButton" ).attr( "disabled", "disabled" );
 	
@@ -83,11 +48,9 @@ function eliminateConfirmed()
 
 function keepConfirmed()
 {
-	dataElementToKeep = $( "#dataElementList" ).val();
-	categoryOptionComboToKeep = $( "#categoryOptionComboList" ).val();
+	operandToKeep = $( "#operandList" ).val();
 	
-	if ( dataElementToEliminate == dataElementToKeep && 
-	   categoryOptionComboToEliminate == categoryOptionComboToKeep )
+	if ( operandToEliminate == operandToKeep )
     {
    	    setMessage( i18n_select_different_data_elements );
    	    return;
@@ -107,10 +70,10 @@ function eliminate()
 	$.ajax({ 
 		"url": "eliminateDuplicateData.action", 
 		"data": { 
-			"dataElementToKeep": dataElementToKeep,
-			"categoryOptionComboToKeep": categoryOptionComboToKeep,
-			"dataElementToEliminate": dataElementToEliminate,
-			"categoryOptionComboToEliminate": categoryOptionComboToEliminate },
+			"dataElementToKeep": operandToKeep.split( "." )[0],
+			"categoryOptionComboToKeep": operandToKeep.split( "." )[1],
+			"dataElementToEliminate": operandToEliminate.split( "." )[0],
+			"categoryOptionComboToEliminate": operandToEliminate.split( "." )[1] },
 		"success": function()
 		{
 		    setMessage( i18n_elimination_done );
