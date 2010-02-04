@@ -27,11 +27,14 @@ package org.hisp.dhis.dataelement.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.amplecode.quick.StatementManager;
+import org.amplecode.quick.mapper.ObjectMapper;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -42,7 +45,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementStore;
+import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
+import org.hisp.dhis.system.objectmapper.OperandMapper;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -409,4 +414,31 @@ public class HibernateDataElementStore
         return criteria.list();
     }
 
+    // -------------------------------------------------------------------------
+    // Operand
+    // -------------------------------------------------------------------------
+    
+    public Collection<Operand> getAllOperands()
+    {
+        final ObjectMapper<Operand> mapper = new ObjectMapper<Operand>();
+        
+        final String sql =
+            "SELECT de.dataelementid, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
+            "FROM dataelement as de " +
+            "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
+            "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
+            "JOIN categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid " +
+            "ORDER BY de.name;";
+        
+        try
+        {
+            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
+            
+            return mapper.getCollection( resultSet, new OperandMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get all operands", ex );
+        }   
+    }
 }

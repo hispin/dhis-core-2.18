@@ -17,6 +17,8 @@
     <property name="name">
       <column name="name" not-null="true" unique="true" length="160"/>
     </property>
+	
+	<property name="conceptName"/>
     
     <list name="categoryOptions" table="categories_categoryoptions">
       <key column="categoryid"/>
