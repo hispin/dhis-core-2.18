@@ -614,4 +614,12 @@ public class DefaultDataElementService
         } );
     }
 
+    // -------------------------------------------------------------------------
+    // Operand
+    // -------------------------------------------------------------------------
+    
+    public Collection<Operand> getAllOperands()
+    {
+        return dataElementStore.getAllOperands();
+    }
 }

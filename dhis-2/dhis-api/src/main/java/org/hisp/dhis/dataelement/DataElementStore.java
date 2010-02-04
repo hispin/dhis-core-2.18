@@ -268,4 +268,16 @@ public interface DataElementStore
      *         collection if there are no CalculcatedDataELements
      */
     Collection<CalculatedDataElement> getAllCalculatedDataElements();
+
+    // -------------------------------------------------------------------------
+    // Operand
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns all Operands. Requires the categoryoptioncomboname resource table
+     * to be populated.
+     * 
+     * @return a collection of all Operands.
+     */
+    Collection<Operand> getAllOperands();
 }

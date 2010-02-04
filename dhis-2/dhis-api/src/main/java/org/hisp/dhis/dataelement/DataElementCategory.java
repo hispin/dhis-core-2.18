@@ -47,6 +47,8 @@ public class DataElementCategory
 {
     public static final String DEFAULT_NAME = "default";
         
+    private String conceptName;
+    
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
     // -------------------------------------------------------------------------
@@ -119,7 +121,17 @@ public class DataElementCategory
     // ------------------------------------------------------------------------
     // Getters and setters
     // ------------------------------------------------------------------------
-    
+
+    public String getConceptName()
+    {
+        return conceptName;
+    }
+
+    public void setConceptName( String conceptName )
+    {
+        this.conceptName = conceptName;
+    }
+
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;

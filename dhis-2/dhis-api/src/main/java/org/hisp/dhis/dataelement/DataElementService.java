@@ -487,4 +487,15 @@ public interface DataElementService
 
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
 
+    // -------------------------------------------------------------------------
+    // Operand
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns all Operands. Requires the categoryoptioncomboname resource table
+     * to be populated.
+     * 
+     * @return a collection of all Operands.
+     */
+    Collection<Operand> getAllOperands();
 }
