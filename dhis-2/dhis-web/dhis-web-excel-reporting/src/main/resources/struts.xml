@@ -1236,7 +1236,7 @@
 			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction">
 			<result name="success" type="chain">
 				listAllExcelTemplates</result>
-			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MAMAGEMENT_DELETE</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MAMAGEMENT_UPLOAD</param>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 		
