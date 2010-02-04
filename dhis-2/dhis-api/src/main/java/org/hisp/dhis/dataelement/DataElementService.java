@@ -236,7 +236,7 @@ public interface DataElementService
      * @param dataElements the DataElements to include.
      * @return grouped DataElements based on their DataElementCategoryCombo.
      */
-    Map<DataElementCategoryCombo, Collection<DataElement>> getGroupedDataElementsByCategoryCombo(
+    Map<DataElementCategoryCombo, List<DataElement>> getGroupedDataElementsByCategoryCombo(
         List<DataElement> dataElements );
 
     /**

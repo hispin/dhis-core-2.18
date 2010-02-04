@@ -31,6 +31,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MOD
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -65,8 +67,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Abyot Asalefew
@@ -200,9 +200,9 @@ public class FormAction
         return customValues;
     }
 
-    private Map<DataElementCategoryCombo, Collection<DataElement>> orderedDataElements = new HashMap<DataElementCategoryCombo, Collection<DataElement>>();
+    private Map<DataElementCategoryCombo, List<DataElement>> orderedDataElements = new HashMap<DataElementCategoryCombo, List<DataElement>>();
 
-    public Map<DataElementCategoryCombo, Collection<DataElement>> getOrderedDataElements()
+    public Map<DataElementCategoryCombo, List<DataElement>> getOrderedDataElements()
     {
         return orderedDataElements;
     }
@@ -547,6 +547,7 @@ public class FormAction
             des = (List<DataElement>) orderedDataElements.get( categoryCombo );
           
             displayPropertyHandler.handle( des );
+            Collections.sort( des, new DataElementSortOrderComparator() );
 
             orderedDataElements.put( categoryCombo, des );
         }
