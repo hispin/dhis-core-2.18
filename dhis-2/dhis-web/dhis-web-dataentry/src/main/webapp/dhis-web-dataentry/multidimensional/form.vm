@@ -42,8 +42,8 @@
         
         #foreach( $categoryCombo in $orderedCategoryCombos )
         	
-        	<div style="border:1px solid #808080;">            
-        		<table>
+        	<div style="border:1px solid #808080;width:98%">            
+        		<table class="listTable">
         			#set( $colCount = $numberOfTotalColumns.get( $categoryCombo.id )  ) 
                     #set( $categories = $orderedCategories.get( $categoryCombo.id )  )
                     #set( $optionsMap = $orderedOptionsMap.get( $categoryCombo.id )  )
@@ -64,25 +64,19 @@
                         </tr>
                     #end
     
-                    #set( $count = 0 )
-                    #set( $mark = 0 )                    
+                    #set( $count = 0 )               
                     
                     #set( $dataElements = $orderedDataElements.get( $categoryCombo )  )
                     #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryCombo.id )  )
 
                     #foreach( $dataElement in $dataElements )
                         #set( $count = $count + 1 )
-                        #if( $mark == 1 )
-                            #set( $mark = 0 )
-                        #else
-                            #set( $mark = 1 )
-                        #end    
                         #set( $calculatedValue = false )
                         #set( $calculatedValue = $calculatedValueMap.get( $dataElement ) )
                         
                         #set( $calculated = false )
                         #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
-                        <tr #if( $mark == 0 ) style="background-color:#dddddd" #end>            
+                        <tr>            
                             ##data element name
                             <td>
                                 <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
