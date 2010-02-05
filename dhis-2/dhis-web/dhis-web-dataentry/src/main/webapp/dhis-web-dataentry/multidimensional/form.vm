@@ -93,7 +93,13 @@
                                         $encoder.htmlEncode( $dataElement.name )
                                     #end           
                                 </span>
-                            </td>         
+                            </td>    
+                            
+                            ##type      
+                            <td style="display:none">
+                                $dataElementTypeMap.get( $dataElement.type )
+                                <span id="value[$dataElement.id].type" style="display:none">$dataElement.type</span>
+                            </td>                                  
                                             
                             #foreach( $optionCombo in $optionCombos )                       
                                 #set( $minMax = false )
@@ -155,11 +161,7 @@
                                 </td>
                                 #set( $tabIndex = $tabIndex + 1 )
                             #end
-                        </tr>
-                        <tr style="display:none">
-                            ##type      
-                            <td>$dataElementTypeMap.get( $dataElement.type )<span id="value[$dataElement.id].type" style="display:none">$dataElement.type</span></td>       
-                        </tr>                        
+                        </tr>                                                
                     #end
                 </table>                
             </div>
