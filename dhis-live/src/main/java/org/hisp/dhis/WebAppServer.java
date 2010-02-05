@@ -77,11 +77,13 @@ public class WebAppServer
   {
 
     try {
-      connector.setPort(this.getPortFromConfig(installDir + JETTY_PORT_CONF));
+      int portFromConfig = this.getPortFromConfig(installDir + JETTY_PORT_CONF);
+      connector.setPort(portFromConfig);
+      log.info("Loading DHIS 2 on port: " + portFromConfig );
     } catch (Exception ex) {
       log.info("Couldn't load port number from " + installDir + JETTY_PORT_CONF);
-      log.info("Trying default of " + DEFAULT_JETTY_PORT);
       connector.setPort(DEFAULT_JETTY_PORT);
+      log.info("Loading DHIS 2 on port: " + DEFAULT_JETTY_PORT );
     }
 
     server.setConnectors(new Connector[]{connector});
