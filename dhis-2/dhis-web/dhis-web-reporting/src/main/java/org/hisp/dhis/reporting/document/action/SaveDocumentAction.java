@@ -47,6 +47,7 @@ public class SaveDocumentAction
     private static final Log log = LogFactory.getLog( SaveDocumentAction.class );
     
     private static final String HTTP_PREFIX = "http://";
+    private static final String HTTPS_PREFIX = "https://";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -136,7 +137,7 @@ public class SaveDocumentAction
         }
         else
         {
-            if ( !url.startsWith( HTTP_PREFIX ) )
+            if ( !( url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX ) ) )
             {
                 url = HTTP_PREFIX + url;
             }
