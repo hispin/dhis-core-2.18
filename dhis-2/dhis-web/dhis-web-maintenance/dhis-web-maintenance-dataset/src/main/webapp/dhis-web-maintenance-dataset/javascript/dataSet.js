@@ -126,6 +126,7 @@ function addDataSetValidationCompleted( messageElement )
   if ( type == 'success' )
   {
       // Both edit and add form has id='dataSetForm'      
+	  selectAllById('selectedList');
       document.forms['addDataSetForm'].submit();
   }
   /**
@@ -165,6 +166,7 @@ function editDataSetValidationCompleted( messageElement )
   if ( type == 'success' )
   {
       // Both edit and add form has id='dataSetForm'
+	  selectAllById('selectedList');
       document.forms['editDataSetForm'].submit();
   }
   /**
