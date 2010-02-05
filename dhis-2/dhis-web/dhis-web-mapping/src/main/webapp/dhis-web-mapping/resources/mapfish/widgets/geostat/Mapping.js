@@ -143,6 +143,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     },
      
     newUrl : false,
+	
+	
     
     /**
      * Method: initComponent
@@ -211,6 +213,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             
                             Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                             Ext.getCmp('grid_gp').getStore().reload();
+							
+							Ext.getCmp('filter_tf').enable();
                             
                             this.classify(false);
                         },
@@ -218,8 +222,26 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     }
                 }
             },
-
-            { html: '<br>' },
+			
+			{
+				xtype: 'textfield',
+				id: 'filter_tf',
+				labelStyle: AA_LIGHT,
+				fieldLabel: 'Filter',
+				labelSeparator: MENU_LABELSEPARATOR,
+				isFormField: true,
+				width: combo_width,
+				enableKeyEvents: true,
+				disabled: true,
+				listeners: {
+					'keyup': {
+						fn: function() {
+							var p = Ext.getCmp('filter_tf').getValue();
+							gridStore.filter('organisationUnit', p, true, false);
+						}
+					}
+				}
+			},
 
             {
                 xtype: 'grid',
