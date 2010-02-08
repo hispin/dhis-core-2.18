@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport;
  */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author Lars Helge Overland
@@ -36,7 +36,7 @@ import java.io.BufferedWriter;
  */
 public interface CSVConverter
 {
-    void write( BufferedWriter writer, ExportParams params );
+    void write( ZipOutputStream out, ExportParams params );
     
     void read( BufferedReader reader, ImportParams params );    
 }

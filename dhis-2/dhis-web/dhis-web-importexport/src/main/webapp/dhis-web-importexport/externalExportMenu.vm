@@ -2,8 +2,9 @@
 <h3>$i18n.getString( "export_to_other_systems" )</h3>
 
 <ul class="introList">
-    #introListItem( "displayDataValueExportForm.action?exportFormat=IXF" "ixf_data_export" )
     #introListItem( "displayMetaDataExportForm.action?exportFormat=IXF" "ixf_metadata_export" )
+    #introListItem( "displayDataValueExportForm.action?exportFormat=IXF" "ixf_data_export" )
     #introListItem( "displayMetaDataExportForm.action?exportFormat=DHIS14XML" "DHIS14_metadata_export" )
     #introListItem( "displayDetailedMetaDataExportForm.action?exportFormat=DHIS14XML" "DHIS14_detailed_metadata_export" )
+    #introListItem( "displayDataValueExportForm.action?exportFormat=DHIS14XML" "DHIS14_data_export" )
     #introListItem( "displayMetaDataExportForm.action?exportFormat=PDF" "pdf_metadata_export" )

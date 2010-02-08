@@ -28,13 +28,11 @@ package org.hisp.dhis.importexport.csv.exporter;
  */
 
 import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.hibernate.SessionFactory;
@@ -50,8 +48,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 public class DefaultCSVExportService
     implements ExportService
 {
-    private static final String ZIP_ENTRY_NAME = "Export.csv";
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -87,20 +83,18 @@ public class DefaultCSVExportService
             
             PipedInputStream in = new PipedInputStream( out );
             
-            ZipOutputStream zipOut = new ZipOutputStream( out );
+            ZipOutputStream zipOut = new ZipOutputStream( new BufferedOutputStream( out ) );
             
-            zipOut.putNextEntry( new ZipEntry( ZIP_ENTRY_NAME ) );
+            //zipOut.putNextEntry( new ZipEntry( ZIP_ENTRY_NAME ) );
 
-            BufferedWriter writer = new BufferedWriter( new OutputStreamWriter( zipOut ) );
-            
             // -----------------------------------------------------------------
             // Writes to one end of the pipe 
             // -----------------------------------------------------------------
 
             CSVExportPipeThread thread = new CSVExportPipeThread( sessionFactory );
 
-            thread.setWriter( writer );
             thread.setParams( params );
+            thread.setOutputStream( zipOut );
             
             thread.registerCSVConverter( new ReportTableDataConverter( reportTableService ) );
             

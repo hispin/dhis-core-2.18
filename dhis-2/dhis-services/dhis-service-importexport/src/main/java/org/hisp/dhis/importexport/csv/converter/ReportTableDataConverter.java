@@ -27,14 +27,17 @@ package org.hisp.dhis.importexport.csv.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.csv.util.CsvUtil.SEPARATOR;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.CSV_EXTENSION;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.NEWLINE;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.SEPARATOR_B;
 import static org.hisp.dhis.importexport.csv.util.CsvUtil.csvEncode;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.SortedMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.hisp.dhis.importexport.CSVConverter;
 import org.hisp.dhis.importexport.ExportParams;
@@ -69,27 +72,29 @@ public class ReportTableDataConverter
     // CSVConverter implementation
     // -------------------------------------------------------------------------
 
-    public void write( BufferedWriter writer, ExportParams params )
+    public void write( ZipOutputStream out, ExportParams params )
     {
         try
         {
-            for ( Integer id : params.getReportTables() ) //TODO more than one?
+            for ( Integer id : params.getReportTables() )
             {
+                out.putNextEntry( new ZipEntry( "ReportTable" + id + CSV_EXTENSION ) );
+                
                 ReportTableData data = reportTableService.getReportTableData( id, params.getFormat() );
                 
                 Iterator<String> columns = data.getPrettyPrintColumns().iterator();
                 
                 while ( columns.hasNext() )
                 {
-                    writer.write( csvEncode( columns.next() ) );
+                    out.write( csvEncode( columns.next() ).getBytes() );
                     
                     if ( columns.hasNext() )
                     {
-                        writer.write( SEPARATOR );
+                        out.write( SEPARATOR_B );
                     }
                 }
                 
-                writer.newLine();
+                out.write( NEWLINE );
                 
                 for ( SortedMap<Integer, String> row : data.getRows() )
                 {
@@ -97,15 +102,15 @@ public class ReportTableDataConverter
                     
                     while ( values.hasNext() )
                     {
-                        writer.write( csvEncode( values.next() ) );
+                        out.write( csvEncode( values.next() ).getBytes() );
                         
                         if ( values.hasNext() )
                         {
-                            writer.write( SEPARATOR );
+                            out.write( SEPARATOR_B );
                         }
                     }
                     
-                    writer.newLine();
+                    out.write( NEWLINE );
                 }
             }
         }

@@ -33,15 +33,80 @@ package org.hisp.dhis.importexport.csv.util;
  */
 public class CsvUtil
 {
-    public static final char SEPARATOR = ',';
+    public static final String SEPARATOR = ",";
+    public static final byte[] SEPARATOR_B = SEPARATOR.getBytes();
+    public static final byte[] NEWLINE = "\n".getBytes();
+
+    public static final String CSV_EXTENSION = ".csv";    
+    private static final String ENCLOSURE = "\"";      
+    private static final String EMPTY = "";
     
-    private static final String ENCLOSURE = "\"";    
-    
-    public static String csvEncode( String string )
+    /**
+     * Encodes the given value to a CSV acceptable value.
+     * 
+     * @param value the value.
+     * @return the CSV encoded value.
+     */
+    public static String csvEncode( int value )
     {
-        string = string.replaceAll( ENCLOSURE, ENCLOSURE + ENCLOSURE );
-        string = ENCLOSURE + string + ENCLOSURE;
+        return csvEncode( String.valueOf( value ) );
+    }
+
+    /**
+     * Encodes the given value to a CSV acceptable value.
+     * 
+     * @param value the value.
+     * @return the CSV encoded value.
+     */
+    public static String csvEncode( String value )
+    {
+        if ( value == null )
+        {
+            value = EMPTY;
+        }
+        else
+        {            
+            value = value.replaceAll( ENCLOSURE, ENCLOSURE + ENCLOSURE );
+            value = ENCLOSURE + value + ENCLOSURE;
+        }
+                    
+        return value;
+    }
+    
+    /**
+     * Appends a separator to the value and returns the value as a byte array.
+     * 
+     * @param value the value.
+     * @return a byte araray.
+     */
+    public static byte[] getCsvValue( int value )
+    {
+        return getCsvEndValue( value + SEPARATOR );
+    }
+    
+    /**
+     * Appends a separator to the value and returns the value as a byte array.
+     * 
+     * @param value the value.
+     * @return a byte araray.
+     */
+    public static byte[] getCsvValue( String value )
+    {
+        return getCsvEndValue( value + SEPARATOR );
+    }
+    
+    public static byte[] getCsvEndValue( int value )
+    {
+        return getCsvEndValue( String.valueOf( value ) );
+    }
+    
+    public static byte[] getCsvEndValue( String value )
+    {
+        if ( value == null )
+        {
+            return EMPTY.getBytes();
+        }
         
-        return string;
+        return ( value ).getBytes();
     }
 }

@@ -35,16 +35,19 @@ import java.io.PipedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.amplecode.quick.StatementManager;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataTypeConverter;
+import org.hisp.dhis.importexport.dhis14.xml.converter.DataValueConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.IndicatorTypeConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.PeriodTypeConverter;
@@ -60,6 +63,7 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.PeriodTypeXSDConverte
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserRoleXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserXSDConverter;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author Lars Helge Overland
@@ -100,6 +104,27 @@ public class DefaultDhis14XMLExportService
         this.indicatorService = indicatorService;
     }
     
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private DataMartService dataMartService;
+
+    public void setDataMartService( DataMartService dataMartService )
+    {
+        this.dataMartService = dataMartService;
+    }
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -122,7 +147,7 @@ public class DefaultDhis14XMLExportService
             zipOut.putNextEntry( new ZipEntry( "Export.xml" ) );
 
             XMLWriter writer = XMLFactory.getPlainXMLWriter( zipOut );
-            
+
             // -------------------------------------------------------------------------
             // Writes to one end of the pipe 
             // -------------------------------------------------------------------------
@@ -155,6 +180,8 @@ public class DefaultDhis14XMLExportService
             thread.registerXMLConverter( new DataTypeConverter() );
             thread.registerXMLConverter( new UserConverter() );
             thread.registerXMLConverter( new UserRoleConverter() );
+            
+            thread.registerCSVConverter( new DataValueConverter( periodService, dataMartService, statementManager ) );
             
             thread.start();
 

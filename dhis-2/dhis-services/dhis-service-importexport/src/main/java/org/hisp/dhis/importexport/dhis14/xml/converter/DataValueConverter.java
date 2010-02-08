@@ -27,17 +27,28 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.NEWLINE;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.SEPARATOR_B;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.csvEncode;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.getCsvValue;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.getCsvEndValue;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.CSVConverter;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -47,7 +58,10 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MimicingHashMap;
+import org.hisp.dhis.system.util.StreamUtils;
 
 /**
  * @author Lars Helge Overland
@@ -57,8 +71,11 @@ public class DataValueConverter
     extends AbstractDataValueConverter implements CSVConverter 
 {
     private static final String SEPARATOR = ",";
+    private static final String FILENAME = "RoutineData.txt";
     
     private DataElementCategoryService categoryService;
+    private PeriodService periodService;
+    private StatementManager statementManager;
     
     // -------------------------------------------------------------------------
     // Properties
@@ -72,6 +89,14 @@ public class DataValueConverter
     // Constructor
     // -------------------------------------------------------------------------
 
+    public DataValueConverter( PeriodService periodService, DataMartService dataMartService,
+        StatementManager statementManager )
+    {
+        this.periodService = periodService;
+        this.dataMartService = dataMartService;
+        this.statementManager = statementManager;
+    }
+    
     /**
      * Constructor for read operations.
      */
@@ -95,9 +120,81 @@ public class DataValueConverter
     // CSVConverter implementation
     // -------------------------------------------------------------------------
     
-    public void write( BufferedWriter writer, ExportParams params )
+    public void write( ZipOutputStream out, ExportParams params )
     {
-        // Not implemented
+        try
+        {
+            out.putNextEntry( new ZipEntry( FILENAME ) );
+            
+            out.write( getCsvValue( csvEncode( "RoutineDataID" ) ) );
+            out.write( getCsvValue( csvEncode( "OrgUnitID" ) ) );
+            out.write( getCsvValue( csvEncode( "DataElementID" ) ) );
+            out.write( getCsvValue( csvEncode( "DataPeriodID" ) ) );
+            out.write( getCsvValue( csvEncode( "EntryText" ) ) );
+            out.write( getCsvValue( csvEncode( "EntryYesNo" ) ) );
+            out.write( getCsvValue( csvEncode( "EntryNumber" ) ) );
+            out.write( getCsvValue( csvEncode( "EntryDate" ) ) );
+            out.write( getCsvValue( csvEncode( "EntryMemo" ) ) );
+            out.write( getCsvValue( csvEncode( "EntryObject" ) ) );
+            out.write( getCsvValue( csvEncode( "Check" ) ) );
+            out.write( getCsvValue( csvEncode( "Verified" ) ) );
+            out.write( getCsvValue( csvEncode( "Deleted" ) ) );
+            out.write( getCsvValue( csvEncode( "Comment" ) ) );
+            out.write( getCsvValue( csvEncode( "LastUserID" ) ) );
+            out.write( getCsvEndValue( csvEncode( "LastUpdated" ) ) );
+            
+            out.write( NEWLINE );
+            
+            if ( params.isIncludeDataValues() )
+            {
+                if ( params.getStartDate() != null && params.getEndDate() != null )
+                {
+                    Collection<DeflatedDataValue> values = null;
+                
+                    Collection<Period> periods = periodService.getIntersectingPeriods( params.getStartDate(), params.getEndDate() );
+                    
+                    statementManager.initialise();
+                    
+                    for ( final Integer element : params.getDataElements() )
+                    {
+                        for ( final Period period : periods )
+                        {
+                            values = dataMartService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
+                            
+                            for ( final DeflatedDataValue value : values )
+                            {   
+                                out.write( getCsvValue( 0 ) );
+                                out.write( getCsvValue( value.getSourceId() ) );
+                                out.write( getCsvValue( value.getDataElementId() ) );
+                                out.write( getCsvValue( value.getPeriodId() ) );
+                                out.write( SEPARATOR_B );
+                                out.write( SEPARATOR_B );
+                                out.write( getCsvValue( csvEncode( value.getValue() ) ) );
+                                out.write( SEPARATOR_B );
+                                out.write( SEPARATOR_B );
+                                out.write( SEPARATOR_B );
+                                out.write( getCsvValue( 0 ) );
+                                out.write( getCsvValue( 0 ) );
+                                out.write( getCsvValue( 0 ) );
+                                out.write( getCsvValue( csvEncode( value.getComment() ) ) );
+                                out.write( getCsvValue( 1 ) );
+                                out.write( getCsvEndValue( DateUtils.getAccessDateString( value.getTimestamp() ) ) );
+                                
+                                out.write( NEWLINE );
+                            }
+                        }
+                    }
+                    
+                    statementManager.destroy();
+                }
+            }           
+
+            StreamUtils.closeZipEntry( out );
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( "Failed to write data", ex );
+        }
     }
 
     public void read( BufferedReader reader, ImportParams params )
