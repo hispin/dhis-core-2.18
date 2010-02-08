@@ -234,7 +234,8 @@ public class DefaultDhis14XMLImportService
                 XMLConverter categoryComboConverter = new DataElementCategoryComboConverter( importObjectService, categoryService );
                 XMLConverter categoryOptionComboConverter = new DataElementCategoryOptionComboConverter( importObjectService, categoryService );
                 XMLConverter calculatedDataElementAssociationConverter = new CalculatedDataElementAssociationConverter( expressionMap );
-                XMLConverter dataElementConverter = new DataElementConverter( importObjectService, dataElementService, expressionMap, importAnalyser );
+                XMLConverter dataElementConverter = new DataElementConverter( 
+                    importObjectService, dataElementService, categoryService, expressionMap, importAnalyser );
                 XMLConverter indicatorTypeConverter = new IndicatorTypeConverter( importObjectService, indicatorService );
                 XMLConverter indicatorConverter = new IndicatorConverter( importObjectService, indicatorService, importAnalyser );
                 XMLConverter organisationUnitConverter = new OrganisationUnitConverter( importObjectService, organisationUnitService, importAnalyser );
@@ -296,6 +297,7 @@ public class DefaultDhis14XMLImportService
                 
                 CSVConverter dataValueConverter = new DataValueConverter( importDataValueBatchHandler,
                     dataValueService,
+                    categoryService,
                     importObjectService,
                     params );
                 
