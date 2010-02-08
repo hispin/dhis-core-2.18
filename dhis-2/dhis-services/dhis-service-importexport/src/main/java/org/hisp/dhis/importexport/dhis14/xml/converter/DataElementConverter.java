@@ -33,6 +33,7 @@ import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBo
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertTypeToDhis14;
 import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
+import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,6 +44,7 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.importexport.ExportParams;
@@ -96,6 +98,8 @@ public class DataElementConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataElementCategoryService categoryService;
+    
     private Map<Integer, String> expressionMap;
     
     // -------------------------------------------------------------------------
@@ -118,11 +122,13 @@ public class DataElementConverter
      */
     public DataElementConverter( ImportObjectService importObjectService,
         DataElementService dataElementService,
+        DataElementCategoryService categoryService,
         Map<Integer, String> expressionMap,
         ImportAnalyser importAnalyser )
     {
         this.importObjectService = importObjectService;
         this.dataElementService = dataElementService;
+        this.categoryService = categoryService;
         this.expressionMap = expressionMap;
         this.importAnalyser = importAnalyser;
     }
@@ -130,7 +136,7 @@ public class DataElementConverter
     // -------------------------------------------------------------------------
     // AbstractDataElementConverter implementation
     // -------------------------------------------------------------------------
-        
+    
     @Override
     protected DataElement getMatching( DataElement object )
     {
@@ -197,7 +203,7 @@ public class DataElementConverter
         
         final boolean calculated = convertBooleanFromDhis14( values.get( FIELD_CALCULATED ) );
         
-        final DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
+        final DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
         
         if ( calculated )
         {
@@ -214,7 +220,6 @@ public class DataElementConverter
             element.setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
             element.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
             element.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
-            element.getCategoryCombo().setId( 1 ); //TODO hack
             element.setSaved( convertBooleanFromDhis14( values.get( FIELD_SAVE_CALCULATED ) ) );
             element.setExpression( new Expression( expressionMap.get( element.getId() ), null, new HashSet<DataElement>() ) );
             
@@ -237,7 +242,6 @@ public class DataElementConverter
             element.setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
             element.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
             element.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
-            element.getCategoryCombo().setId( 1 ); //TODO hack
             
             NameMappingUtil.addDataElementAggregationOperatorMapping( element.getId(), element.getAggregationOperator() );
             

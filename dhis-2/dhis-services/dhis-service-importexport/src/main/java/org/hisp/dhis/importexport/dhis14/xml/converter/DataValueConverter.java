@@ -35,6 +35,7 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.CSVConverter;
@@ -57,6 +58,8 @@ public class DataValueConverter
 {
     private static final String SEPARATOR = ",";
     
+    private DataElementCategoryService categoryService;
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -74,11 +77,13 @@ public class DataValueConverter
      */
     public DataValueConverter( BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
+        DataElementCategoryService categoryService,
         ImportObjectService importObjectService,
         ImportParams params )
     {
         this.importDataValueBatchHandler = importDataValueBatchHandler;
         this.dataValueService = dataValueService;
+        this.categoryService = categoryService;
         this.importObjectService = importObjectService;
         this.params = params;
         this.dataElementMapping = new MimicingHashMap<Object, Integer>();
@@ -103,9 +108,7 @@ public class DataValueConverter
         final DataElement dataElement = new DataElement();
         final Period period = new Period();
         final OrganisationUnit organisationUnit = new OrganisationUnit();
-        final DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
-        
-        categoryOptionCombo.setId( 1 );
+        final DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         try
         {
