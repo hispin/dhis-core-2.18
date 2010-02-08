@@ -27,9 +27,9 @@ package org.hisp.dhis.importexport.csv.exporter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,13 +48,6 @@ public class CSVExportPipeThread
 {
     private static final Log log = LogFactory.getLog( CSVExportPipeThread.class );
 
-    private BufferedWriter writer;
-
-    public void setWriter( BufferedWriter writer )
-    {
-        this.writer = writer;
-    }
-
     private ExportParams params;
 
     public void setParams( ExportParams params )
@@ -62,6 +55,13 @@ public class CSVExportPipeThread
         this.params = params;
     }
     
+    private ZipOutputStream outputStream;
+    
+    public void setOutputStream( ZipOutputStream outputStream )
+    {
+        this.outputStream = outputStream;
+    }
+
     private List<CSVConverter> converters = new ArrayList<CSVConverter>();
         
     public void registerCSVConverter( CSVConverter converter )
@@ -90,14 +90,18 @@ public class CSVExportPipeThread
             
             for ( CSVConverter converter : converters )
             {
-                converter.write( writer, params );
+                converter.write( outputStream, params );
             }
             
             log.info( "Export finished" );
         }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( ex );
+        }
         finally
         {
-            StreamUtils.closeWriter( writer );
+            StreamUtils.closeOutputStream( outputStream );
         }
     }
 }

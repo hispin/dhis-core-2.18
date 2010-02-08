@@ -381,6 +381,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
+		<property name="statementManager" ref="statementManager" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

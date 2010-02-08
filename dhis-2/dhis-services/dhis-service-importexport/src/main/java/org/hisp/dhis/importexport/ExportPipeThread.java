@@ -52,7 +52,8 @@ public class ExportPipeThread
     
     private List<XMLConverter> xsdConverters = new ArrayList<XMLConverter>();
     private List<XMLConverter> xmlConverters = new ArrayList<XMLConverter>();
-
+    private List<CSVConverter> csvConverters = new ArrayList<CSVConverter>();
+        
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------
@@ -122,6 +123,11 @@ public class ExportPipeThread
         this.xmlConverters.add( converter );
     }
 
+    public void registerCSVConverter ( CSVConverter converter )
+    {
+        this.csvConverters.add( converter );
+    }
+        
     // -------------------------------------------------------------------------
     // Thread implementation
     // -------------------------------------------------------------------------
@@ -159,9 +165,20 @@ public class ExportPipeThread
             }
             
             afterXML( writer );
-            
+
             closeDocument( writer );
-            
+
+            StreamUtils.closeZipEntry( zipOutputStream );
+
+            // -----------------------------------------------------------------
+            // CSV
+            // -----------------------------------------------------------------
+
+            for ( CSVConverter converter : csvConverters )
+            {
+                converter.write( zipOutputStream, params );
+            }
+
             log.info( "Export done" );
         }
         catch ( Exception ex )
@@ -172,11 +189,9 @@ public class ExportPipeThread
         }
         finally
         {
-            StreamUtils.finishZipEntry( zipOutputStream );
+            writer.closeWriter();
             
             StreamUtils.closeOutputStream( zipOutputStream );
-            
-            writer.closeWriter();
             
             NameMappingUtil.clearMapping();
         }

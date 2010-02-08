@@ -49,6 +49,20 @@ public class DateUtils
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     /**
+     * Formats a Date to the Access date format.
+     * 
+     * @param date the Date to parse.
+     * @return a formatted date string.
+     */
+    public static String getAccessDateString( Date date )
+    {
+        final SimpleDateFormat format = new SimpleDateFormat();
+        format.applyPattern( "yyyy/MM/dd HH:mm:ss" );
+
+        return date != null ? format.format( date ) : null;
+    }
+    
+    /**
      * Formats a Date to the IXF date format which is YYYY-MM-DD'T'HH:MM:SS.
      * 
      * @param date the Date to parse.

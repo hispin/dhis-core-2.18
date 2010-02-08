@@ -422,9 +422,26 @@ public class StreamUtils
     }
     
     /**
+     * Closes the current ZipEntry and positions the stream for writing the next entry.
+     * 
+     * @param out the ZipOutputStream.
+     */
+    public static void closeZipEntry( ZipOutputStream out )
+    {
+        try
+        {
+            out.closeEntry();
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to close the current ZipEntry", ex );
+        }
+    }
+    
+    /**
      * Finishes writing the contents of the ZIP output stream without closing the underlying stream.
      * 
-     * @param out the ZipOutputStream to write to.
+     * @param out the ZipOutputStream.
      */
     public static void finishZipEntry( ZipOutputStream out )
     {
@@ -434,7 +451,7 @@ public class StreamUtils
         }
         catch ( Exception ex )
         {
-            throw new RuntimeException( "Failed to finish ZipOutputStream", ex );
+            throw new RuntimeException( "Failed to finish the content of the ZipOutputStream", ex );
         }
     }
     
