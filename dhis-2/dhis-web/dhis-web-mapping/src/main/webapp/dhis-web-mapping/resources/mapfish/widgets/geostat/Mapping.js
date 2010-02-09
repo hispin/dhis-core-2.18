@@ -251,7 +251,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 				  autoExpandColumn: 'organisationUnitId',
 				  enableHdMenu: true,
                 width: gridpanel_width,
-                height: this.getGridPanelHeight(),
+                height: this.getGridPanelHeight(),				 
                 view: gridView,
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
@@ -273,50 +273,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                 }
 
                                 loadMapData('auto-assignment');
-                            },
-                            scope: this
-                        },
-                        {
-                            xtype: 'button',
-                            id: 'removerelation_b',
-                            text: 'Remove',
-							cls: 'aa_med',
-                            isVisible: false,
-                            handler: function()
-                            {
-                                if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg('Remove relation', 'Please select a map.');
-                                    return;
-                                }
-                                
-                                if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected()) {
-                                    Ext.messageRed.msg('Remove relation', 'Please select an organisation unit from the list.');
-                                    return;
-                                }
-                                    
-                                var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-                                var oui = selected.data['organisationUnitId'];
-                                var ou = selected.data['organisationUnit'];
-                                var mlp = Ext.getCmp('maps_cb').getValue();
-                                
-                                Ext.Ajax.request({
-                                    url: path + 'deleteMapOrganisationUnitRelation' + type,
-                                    method: 'GET',
-                                    params: { mapLayerPath: mlp, organisationUnitId: oui },
-
-                                    success: function( responseObject ) {
-                                        var mlp = Ext.getCmp('maps_cb').getValue();
-                                        Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
-                                        Ext.getCmp('grid_gp').getStore().reload();
-                                        
-                                        Ext.messageBlack.msg('Remove relation', msg_highlight_start + ou + msg_highlight_end + ' relation removed.');
-                                        
-                                        mapping.classify(true);
-                                    },
-                                    failure: function() {
-                                        alert('Error while deleting MapOrganisationUnitRelation');
-                                    } 
-                                });
                             },
                             scope: this
                         },
@@ -352,6 +308,60 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         alert('Error while deleting MapOrganisationUnitRelation');
                                     } 
                                 });
+                            },
+                            scope: this
+                        },
+                        {
+                            xtype: 'button',
+                            id: 'removerelation_b',
+                            text: 'Remove selected',
+							cls: 'aa_med',
+                            isVisible: false,
+                            handler: function()
+                            {
+                                if (!Ext.getCmp('maps_cb').getValue()) {
+                                    Ext.messageRed.msg('Remove relation', 'Please select a map.');
+                                    return;
+                                }
+                                
+								var selection = Ext.getCmp('grid_gp').getSelectionModel().getSelections();
+								var mlp = Ext.getCmp('maps_cb').getValue();
+								var msg;
+								
+                                if (!selection) {
+                                    Ext.messageRed.msg('Remove relation', 'Please select at least one organisation unit in the list.');
+                                    return;
+                                }
+								
+								var params = '?organisationUnitIds=' + selection[0].data['organisationUnitId'];
+								
+								if (selection.length > 1) {
+									for (var i = 1; i < selection.length; i++) {
+										params += '&organisationUnitIds=' + selection[i].data['organisationUnitId'];
+									}
+									msg = 'Selected relations removed.';
+								}
+								else {
+									msg = msg_highlight_start + selection[0].data['organisationUnit'] + msg_highlight_end + ' relation removed.'
+								}
+								
+								params += '&mapLayerPath=' + mlp;
+								
+								Ext.Ajax.request({
+									url: path + 'deleteMapOrganisationUnitRelations' + type + params,
+									method: 'GET',
+									success: function( responseObject ) {
+										Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
+										Ext.getCmp('grid_gp').getStore().reload();
+										
+										Ext.messageBlack.msg('Remove relations', msg);
+										
+										mapping.classify(true);
+									},
+									failure: function() {
+										alert('Error while deleting MapOrganisationUnitRelation');
+									} 
+								});
                             },
                             scope: this
                         }

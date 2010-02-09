@@ -149,8 +149,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationAction"
+  <bean id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction"
+    class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction"
     scope="prototype">
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>

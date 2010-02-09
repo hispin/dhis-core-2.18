@@ -103,7 +103,7 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     
-    <action name="deleteMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationAction">
+    <action name="deleteMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     

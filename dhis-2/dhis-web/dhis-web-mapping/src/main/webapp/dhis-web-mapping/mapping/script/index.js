@@ -2223,7 +2223,7 @@ Ext.onReady( function() {
 			}
 		}
     });
-    
+	
     /* ADMIN PANEL */
     var adminPanel = new Ext.form.FormPanel({
         id: 'admin_p',

@@ -27,6 +27,8 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MappingService;
@@ -39,7 +41,7 @@ import com.opensymphony.xwork2.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DeleteMapOrganisationUnitRelationAction
+public class DeleteMapOrganisationUnitRelationsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -64,11 +66,11 @@ public class DeleteMapOrganisationUnitRelationAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer organisationUnitId;
+    private Collection<Integer> organisationUnitIds;
     
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
     {
-        this.organisationUnitId = organisationUnitId;
+        this.organisationUnitIds = organisationUnitIds;
     }
     
     private String mapLayerPath;
@@ -79,22 +81,29 @@ public class DeleteMapOrganisationUnitRelationAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implemention
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        
-        Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
-        
-        MapOrganisationUnitRelation relation = mappingService.getMapOrganisationUnitRelation( map, unit );
-        
-        if ( relation != null )
-        {            
-            mappingService.deleteMapOrganisationUnitRelation( relation );
-        }
-            
+    	Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
+    	
+    	OrganisationUnit organisationUnit;
+    	
+    	MapOrganisationUnitRelation relation;
+    	
+    	for ( Integer organisationUnitId : organisationUnitIds )
+    	{
+    		organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+    		
+    		relation = mappingService.getMapOrganisationUnitRelation( map, organisationUnit );
+    		
+    		if ( relation != null )
+    		{  		
+    			mappingService.deleteMapOrganisationUnitRelation( relation );
+    		}
+    	}
+    	
         return SUCCESS;
     }
 }
