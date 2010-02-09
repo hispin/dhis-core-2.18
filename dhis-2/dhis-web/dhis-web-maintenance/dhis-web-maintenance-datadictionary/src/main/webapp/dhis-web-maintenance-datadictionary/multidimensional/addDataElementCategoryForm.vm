@@ -1,4 +1,24 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addDataElementCategoryForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addDataElementCategoryForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddDataElementCategory();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_data_element_category" )</h3>
 
 <form id="addDataElementCategoryForm" name="addDataElementCategoryForm" action="addDataElementCategory.action" method="post">
@@ -9,7 +29,7 @@
     </tr>
     <tr>
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="name" name="name" style="width:25em"></td>
+      <td><input type="text" id="name" name="name" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
       <td></td>
     </tr>      
     <tr>
@@ -48,7 +68,7 @@
 	<tr>
 	  <td></td>
 	  <td colspan="2">
-		<input type="button" onclick="validateAddDataElementCategory()" value="$i18n.getString( "add" )" style="width:100px"><input 
+		<input type="submit"  value="$i18n.getString( "add" )" style="width:100px"><input 
                type="button" onclick="window.location.href='category.action'" value="$i18n.getString( "cancel" )" style="width:100px"></p>
       </td>
 	</tr>

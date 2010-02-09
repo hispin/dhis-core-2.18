@@ -31,43 +31,43 @@
 	</tr>
 	<tr>
 		<td><label for="username">$i18n.getString( "username" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="username" name="username" style="width:20em" class="{validate:{required:true,firstletteralphabet:true,minlength:4,maxlength:25,alphanumeric:true}}" ></td>
+		<td><input type="text" id="username" name="username" style="width:20em" maxlength="50" class="{validate:{required:true,firstletteralphabet:true,minlength:2,maxlength:50,alphanumeric:true}}" ></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,notequalto:'#username'}}"></td>
+		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="50" class="{validate:{required:true,minlength:5,maxlength:50,notequalto:'#username'}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,equalTo:'#rawPassword'}}"></td>
+		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="50" class="{validate:{required:true,minlength:5,maxlength:50,equalTo:'#rawPassword'}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="surname" name="surname" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
+		<td><input type="text" id="surname" name="surname" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "firstName" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="firstName" name="firstName" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
+		<td><input type="text" id="firstName" name="firstName" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td><input type="text" id="email" name="email" style="width:20em" class="{validate:{email:true,minlength:4,maxlength:25}}"></td>
+		<td><input type="text" id="email" name="email" style="width:20em" maxlength="160" class="{validate:{email:true,maxlength:160}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td><input type="text" id="phoneNumber" name="phoneNumber" style="width:20em" class="{validate:{number:true}}"></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" style="width:20em" maxlength="80" class="{validate:{number:true,maxlength:80}}"></td>
         <td></td>
         <td></td>       
     </tr>	

@@ -1,7 +1,28 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for editDataElementCategoryComboForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#editDataElementCategoryComboForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										submitForm(); 
+										validateEditDataElementCategoryCombo()
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>
 
-<form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" onsubmit="submitForm(); return validateEditDataElementCategoryCombo()">
+<form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" >
   <input type="hidden" id="id" name="id" value="$dataElementCategoryCombo.id">
   
   <table id="detailsList">
@@ -13,7 +34,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>

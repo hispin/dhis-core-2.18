@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addDataElementCategoryComboForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addDataElementCategoryComboForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddDataElementCategoryCombo();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_data_element_category_combo" )</h3>
 
-<form id="addDataElementCategoryComboForm" name="addDataElementCategoryComboForm" action="addDataElementCategoryCombo.action" method="post" onsubmit="submitForm(); return validateAddDataElementCategoryCombo()">
+<form id="addDataElementCategoryComboForm" name="addDataElementCategoryComboForm" action="addDataElementCategoryCombo.action" method="post" >
   <table id="detailsList">
     <thead>
       <tr>
@@ -11,7 +31,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>

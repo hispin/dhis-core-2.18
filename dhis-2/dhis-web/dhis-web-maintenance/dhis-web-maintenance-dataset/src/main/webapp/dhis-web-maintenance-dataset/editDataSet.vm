@@ -38,15 +38,15 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"  class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"   maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
       </tr>      
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true}}"> </td>
+        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )"  maxlength="60" class="{validate:{required:true,minlength:2,maxlength:160}}"> </td>
       </tr>     
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )" class="{validate:{maxlength:100}}"></td>
+        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )" maxlength="60" class="{validate:{maxlength:60}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

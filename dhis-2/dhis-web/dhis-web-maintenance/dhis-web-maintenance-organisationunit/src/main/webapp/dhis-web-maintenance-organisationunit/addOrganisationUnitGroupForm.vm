@@ -23,7 +23,7 @@
 <h3>$i18n.getString( "crease_new_org_unit_group" )</h3>
 <form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
 <span id="message" style="position:absolute;top:80px;right:5px"></span>
-<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" class="{validate:{required:true,rangelength:[4,100],alphanumericwithbasicpuncspaces:true}}"/></p>
+<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"/></p>
 <span class="error"></span>
  <table id="selectionTable">
 	<tr>

@@ -32,12 +32,12 @@
 	
 	<tr>
 		<td><label for="name" style="width:100%">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:100,alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	
 	<tr>
 		<td><label for="description" style="width:100%">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:150,alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="description" name="description" style="width:20em" maxlength="255" class="{validate:{required:true,minlength:2,maxlength:255}}"></td>
 	</tr>
 	
 	<tr>

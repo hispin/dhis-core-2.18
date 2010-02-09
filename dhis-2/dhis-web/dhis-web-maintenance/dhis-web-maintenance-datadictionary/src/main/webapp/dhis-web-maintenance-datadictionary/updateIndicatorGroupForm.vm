@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for updateIndicatorGroupForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateIndicatorGroupForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateIndicatorGroup();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_indicator_group" )</h3>
 
-<form id="updateIndicatorGroupForm" action="updateIndicatorGroup.action" method="post" onsubmit="return validateUpdateIndicatorGroup()">
+<form id="updateIndicatorGroupForm" action="updateIndicatorGroup.action" method="post" >
 
 <div>
 	<input type="hidden" id="id" name="id" value="$indicatorGroup.id">
@@ -13,7 +33,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>

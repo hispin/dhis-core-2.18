@@ -5,7 +5,7 @@
 	jQuery(document).ready(
 			function()
 			{
-				jQuery("#addDataElementGroupSet").validate({
+				jQuery("#updateDataElementGroupSet").validate({
 					 meta:"validate"
 					,errorElement:"td"
 					,submitHandler: function(form)
@@ -30,7 +30,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementGroupSet.name )" class="{validate:{required:true,rangelength:[2,100],alphanumericwithbasicpuncspaces:true}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementGroupSet.name )" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>

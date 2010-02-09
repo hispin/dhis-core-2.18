@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addIndicatorForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addIndicatorForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddIndicator();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_indicator" )</h3>
 
-<form id="addIndicatorForm" action="addIndicator.action" method="post" onsubmit="return validateAddIndicator()">
+<form id="addIndicatorForm" action="addIndicator.action" method="post" >
 
 <div>
 	<input type="hidden" id="numerator" name="numerator">
@@ -18,19 +38,19 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em"></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" maxlength="160" class="{validate:{minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" style="width:20em"></td>
+		<td><input type="text" id="code" name="code" style="width:20em" maxlength="25" class="{validate:{maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
@@ -48,7 +68,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em">
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" class="{validate:{required:true}}">
 				<option value="null">[$i18n.getString( "select" )]</option>
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id">$encoder.htmlEncode( $indicatorType.name )</option>
@@ -58,7 +78,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em"></td>
+        <td><input type="text" id="url" name="url" style="width:20em" class="{validate:{url:true,maxlength:255}}"></td>
     </tr>
 	<tr>
 		<td></td>

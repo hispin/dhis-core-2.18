@@ -379,7 +379,9 @@
 			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
-			<param name="javascripts">javascript/indicatorGroup.js</param>
+			<param name="javascripts">javascript/indicatorGroup.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+     		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 
@@ -401,7 +403,9 @@
 			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
-			<param name="javascripts">javascript/indicatorGroup.js</param>
+			<param name="javascripts">javascript/indicatorGroup.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
 		</action>
 
@@ -438,7 +442,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupSet.js</param>
+			<param name="javascripts">javascript/indicatorGroupSet.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 		
@@ -453,7 +459,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupSet.js</param>
+			<param name="javascripts">javascript/indicatorGroupSet.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 		</action>	
 		
 		<action name="updateIndicatorGroupSet"
@@ -514,7 +522,9 @@
 		<action name="showAddIndicatorTypeForm" class="org.hisp.dhis.dd.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorTypeForm.vm</param>
-			<param name="javascripts">javascript/indicatorType.js</param>
+			<param name="javascripts">javascript/indicatorType.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+     		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
 		</action>
 
@@ -529,7 +539,9 @@
 			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorTypeForm.vm</param>
-			<param name="javascripts">javascript/indicatorType.js</param>
+			<param name="javascripts">javascript/indicatorType.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+     		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
 		</action>
 
@@ -594,7 +606,9 @@
 			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
 		</action>
 
@@ -616,7 +630,9 @@
 			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
 		</action>
 
@@ -706,7 +722,9 @@
 			class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataDictionaryForm.vm</param>
-			<param name="javascripts">javascript/dataDictionary.js</param>
+			<param name="javascripts">javascript/dataDictionary.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
 		</action>
 
@@ -721,7 +739,9 @@
 			class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataDictionaryForm.vm</param>
-			<param name="javascripts">javascript/dataDictionary.js</param>
+			<param name="javascripts">javascript/dataDictionary.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
 		</action>
 
@@ -805,7 +825,10 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addExtendedIndicatorForm.vm</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js,javascript/extendedIndicator.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js,javascript/extendedIndicator.js
+			 ,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
 		</action>
 
@@ -827,7 +850,11 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateExtendedIndicatorForm.vm</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js,javascript/extendedIndicator.js,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js,javascript/extendedIndicator.js
+			 ,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js
+			 ,../dhis-web-commons/calendar/calendar-setup.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
 		</action>
 
@@ -855,7 +882,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryForm.vm</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-			<param name="javascripts">javascript/category.js</param>
+			<param name="javascripts">javascript/category.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
 
@@ -904,7 +933,9 @@
 			class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryForm.vm</param>
-			<param name="javascripts">javascript/category.js</param>
+			<param name="javascripts">javascript/category.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 
@@ -924,7 +955,9 @@
 			class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryComboForm.vm</param>
-			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js</param>
+			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
@@ -974,7 +1007,9 @@
 			class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryComboForm.vm</param>
-			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js</param>
+			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js
+			 ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      		 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 

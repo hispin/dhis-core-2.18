@@ -33,19 +33,19 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElement.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,rangelength:[2,255],alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElement.name )" onchange="nameChanged()" style="width:20em"  maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $dataElement.shortName )" maxlength="20" style="width:20em" class="{validate:{required:true,rangelength:[2,255],alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $dataElement.shortName )" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )" maxlength="20" style="width:20em" class="{validate:{required:true,rangelength:[2,255],alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )" style="width:20em"  maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElement.code )" style="width:20em" class="{validate:{required:true,maxlength:255,alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElement.code )" style="width:20em" maxlength="160" class="{validate:{required:true,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -81,27 +81,27 @@
     </tr>
 	<tr>
 		<td><label for="mnemonic">$i18n.getString( "mnemonic" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="mnemonic" name="mnemonic" value="$!encoder.htmlEncode( $dataElement.extended.mnemonic )" style="width:20em" class="{validate:{required:true,maxlength:255}}"></td>
+		<td><input type="text" id="mnemonic" name="mnemonic" maxlength="255" value="$!encoder.htmlEncode( $dataElement.extended.mnemonic )" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><textarea id="version" name="version" style="width:20em" class="{validate:{required:true,maxlength:255}}">$!encoder.htmlEncode( $dataElement.extended.version )</textarea></td>
+		<td><textarea id="version" name="version" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}">$!encoder.htmlEncode( $dataElement.extended.version )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="context">$i18n.getString( "context" )</label></td>
-		<td><input type="text" id="context" name="context" value="$!encoder.htmlEncode( $dataElement.extended.context )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+		<td><input type="text" id="context" name="context" value="$!encoder.htmlEncode( $dataElement.extended.context )"  style="width:20em" ></td>
 	</tr>
 	<tr>
 		<td><label for="synonyms">$i18n.getString( "synonyms" )</label></td>
-		<td><input type="text" id="synonyms" name="synonyms" value="$!encoder.htmlEncode( $dataElement.extended.synonyms )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+		<td><input type="text" id="synonyms" name="synonyms" value="$!encoder.htmlEncode( $dataElement.extended.synonyms )" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="hononyms">$i18n.getString( "hononyms" )</label></td>
-		<td><input type="text" id="hononyms" name="hononyms" value="$!encoder.htmlEncode( $dataElement.extended.hononyms )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+		<td><input type="text" id="hononyms" name="hononyms" value="$!encoder.htmlEncode( $dataElement.extended.hononyms )" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="keywords">$i18n.getString( "keywords" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="keywords" name="keywords" value="$!encoder.htmlEncode( $dataElement.extended.keywords )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+		<td><input type="text" id="keywords" name="keywords" value="$!encoder.htmlEncode( $dataElement.extended.keywords )" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="status">$i18n.getString( "status" ) </label></td>
@@ -169,15 +169,15 @@
 	</tr>
 	<tr>
 		<td><label for="representationalLayout">$i18n.getString( "representational_layout" )</label></td>
-		<td><input type="text" id="representationalLayout" name="representationalLayout" value="$!encoder.htmlEncode( $dataElement.extended.representationalLayout )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+		<td><input type="text" id="representationalLayout" name="representationalLayout" value="$!encoder.htmlEncode( $dataElement.extended.representationalLayout )" style="width:20em"  maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="minimumSize">$i18n.getString( "minimum_size" )</label></td>
-		<td><input type="text" id="minimumSize" name="minimumSize" value="$!encoder.htmlEncode( $dataElement.extended.minimumSize )" style="width:20em" class="{validate:{number:true}}"></td>
+		<td><input type="text" id="minimumSize" name="minimumSize" value="$!encoder.htmlEncode( $dataElement.extended.minimumSize )" style="width:20em" maxlength="11" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="maximumSize">$i18n.getString( "maximum_size" )</label></td>
-		<td><input type="text" id="maximumSize" name="maximumSize" value="$!encoder.htmlEncode( $dataElement.extended.maximumSize )" style="width:20em" class="{validate:{number:true}}"></td>
+		<td><input type="text" id="maximumSize" name="maximumSize" value="$!encoder.htmlEncode( $dataElement.extended.maximumSize )" style="width:20em"  maxlength="11"class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="dataDomain">$i18n.getString( "data_domain" )</label></td>
@@ -215,23 +215,23 @@
 	</tr>
 	<tr>
 		<td><label for="accessAuthority">$i18n.getString( "access_authority" )</label></td>
-		<td><input type="text" id="accessAuthority" name="accessAuthority" value="$!encoder.htmlEncode( $dataElement.extended.accessAuthority )" style="width:20em" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="accessAuthority" name="accessAuthority" value="$!encoder.htmlEncode( $dataElement.extended.accessAuthority )" style="width:20em"  maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="updateFrequency">$i18n.getString( "update_frequency" )</label></td>
-		<td><input type="text" id="updateFrequency" name="updateFrequency" value="$!encoder.htmlEncode( $dataElement.extended.updateFrequency )" style="width:20em" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="updateFrequency" name="updateFrequency" value="$!encoder.htmlEncode( $dataElement.extended.updateFrequency )" style="width:20em"  maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="location">$i18n.getString( "location" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="location" name="location" value="$!encoder.htmlEncode( $dataElement.extended.location )" style="width:20em" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="location" name="location" value="$!encoder.htmlEncode( $dataElement.extended.location )" style="width:20em" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="reportingMethods">$i18n.getString( "reporting_methods" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><textarea id="reportingMethods" name="reportingMethods" style="width:20em; height:6em">$!encoder.htmlEncode( $dataElement.extended.reportingMethods )</textarea></td>
+		<td><textarea id="reportingMethods" name="reportingMethods" style="width:20em; height:6em" class="{validate:{required:true}}">$!encoder.htmlEncode( $dataElement.extended.reportingMethods )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="versionStatus">$i18n.getString( "version_status" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="versionStatus" name="versionStatus" value="$!encoder.htmlEncode( $dataElement.extended.versionStatus )" style="width:20em" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="versionStatus" name="versionStatus" value="$!encoder.htmlEncode( $dataElement.extended.versionStatus )" style="width:20em" maxlength="255" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="previousVersionReferences">$i18n.getString( "previous_version_references" )</label></td>
@@ -239,11 +239,11 @@
 	</tr>
 	<tr>
 		<td><label for="sourceDocument">$i18n.getString( "source_document" )</label></td>
-		<td><input type="text" id="sourceDocument" name="sourceDocument" value="$!encoder.htmlEncode( $dataElement.extended.sourceDocument )" style="width:20em" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="sourceDocument" name="sourceDocument" value="$!encoder.htmlEncode( $dataElement.extended.sourceDocument )" style="width:20em" maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="sourceOrganisation">$i18n.getString( "source_organisation" )</label></td>
-		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" value="$!encoder.htmlEncode( $dataElement.extended.sourceOrganisation )" style="width:20em" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" value="$!encoder.htmlEncode( $dataElement.extended.sourceOrganisation )" style="width:20em"  maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
