@@ -35,15 +35,15 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,minlength:4,maxlength:100,alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="name" name="name" maxlength="100" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25,alphanumericwithbasicpuncspaces:true}}"></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="25" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnit.code )" style="width:20em" class="{validate:{maxlength:25,letterswithbasicspecialchars:true}}"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnit.code )" maxlength="25" style="width:20em" class="{validate:{maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -73,7 +73,7 @@
 	</tr>
     <tr>
         <td><label for="type">$i18n.getString( "type" )</label></td>
-        <td><input type="text" id="type" name="type" value="$!encoder.htmlEncode( $organisationUnit.type )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+        <td><input type="text" id="type" name="type" value="$!encoder.htmlEncode( $organisationUnit.type )" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
     </tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
@@ -85,15 +85,15 @@
     </tr>
     <tr>
         <td><label for="latitude">$i18n.getString( "latitude" )</label></td>
-        <td><input type="text" id="latitude" name="latitude" value="$!encoder.htmlEncode( $organisationUnit.latitude )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+        <td><input type="text" id="latitude" name="latitude" value="$!encoder.htmlEncode( $organisationUnit.latitude )" maxlength="255" style="width:20em" class="{validate:{maxlength:255}}"></td>
     </tr>
     <tr>
         <td><label for="longitude">$i18n.getString( "longitude" )</label></td>
-        <td><input type="text" id="longitude" name="longitude" value="$!encoder.htmlEncode( $organisationUnit.longitude )" style="width:20em" class="{validate:{maxlength:255}}"></td>
+        <td><input type="text" id="longitude" name="longitude" value="$!encoder.htmlEncode( $organisationUnit.longitude )"  maxlength="255" style="width:20em" class="{validate:{maxlength:255}}"></td>
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em" class="{validate:{maxlength:255,url:true}}"></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em" maxlength="255" class="{validate:{maxlength:255,url:true}}"></td>
     </tr>
 	<tr>
 		<td></td>

@@ -1,7 +1,29 @@
+<script>
 
+//-----------------------------------------------------------------------
+//init jQuery validation for updateValidationRuleForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateValidationRuleForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateValidationRule();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$encoder.htmlEncode( $i18n.getString( "edit_validation_rule" ) )</h3>
 
-<form id="updateValidationRuleForm" action="updateValidationRule.action" method="post" onsubmit="return validateUpdateValidationRule()">
+<form id="updateValidationRuleForm" action="updateValidationRule.action" method="post" >
 
 <div>
 	<input type="hidden" id="id" name="id" value="$!validationRule.id">
@@ -19,11 +41,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $validationRule.name )" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $validationRule.name )" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:6em">$!encoder.htmlEncode( $validationRule.description )</textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:6em" class="{validate:{maxlength:255}}">$!encoder.htmlEncode( $validationRule.description )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

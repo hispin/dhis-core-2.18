@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for updateExtendedIndicatorForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateExtendedIndicatorForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateUpdateExtendedIndicator();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "edit_indicator" )</h3>
 
-<form id="updateExtendedIndicatorForm" action="updateExtendedIndicator.action" method="post" onsubmit="return validateUpdateExtendedIndicator()">
+<form id="updateExtendedIndicatorForm" action="updateExtendedIndicator.action" method="post" >
 
 <div>
 	<input type="hidden" id="id" name="id" value="$indicator.id">
@@ -19,23 +39,23 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )" maxlength="20" style="width:20em"></td>
+		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )"  style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em" maxlength="160" class="{validate:{minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em" maxlength="25" class="{validate:{maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $indicator.description )" style="width:20em"></td>
+		<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $indicator.description )" style="width:20em" class="{validate:{required:true}}"></td>
 	</tr>
 	<tr>
         <td><label for="annualized">$i18n.getString( "annualized" )</label></td>
@@ -65,27 +85,27 @@
 	
 	<tr>
 		<td><label for="mnemonic">$i18n.getString( "mnemonic" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="mnemonic" name="mnemonic" value="$!encoder.htmlEncode( $indicator.extended.mnemonic )" style="width:20em"></td>
+		<td><input type="text" id="mnemonic" name="mnemonic" value="$!encoder.htmlEncode( $indicator.extended.mnemonic )" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><textarea id="version" name="version" style="width:20em">$!encoder.htmlEncode( $indicator.extended.version )</textarea></td>
+		<td><textarea id="version" name="version" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}">$!encoder.htmlEncode( $indicator.extended.version )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="context">$i18n.getString( "context" )</label></td>
-		<td><input type="text" id="context" name="context" value="$!encoder.htmlEncode( $indicator.extended.context )" style="width:20em"></td>
+		<td><input type="text" id="context" name="context" value="$!encoder.htmlEncode( $indicator.extended.context )" style="width:20em" ></td>
 	</tr>
 	<tr>
 		<td><label for="synonyms">$i18n.getString( "synonyms" )</label></td>
-		<td><input type="text" id="synonyms" name="synonyms" value="$!encoder.htmlEncode( $indicator.extended.synonyms )" style="width:20em"></td>
+		<td><input type="text" id="synonyms" name="synonyms" value="$!encoder.htmlEncode( $indicator.extended.synonyms )" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="hononyms">$i18n.getString( "hononyms" )</label></td>
-		<td><input type="text" id="hononyms" name="hononyms" value="$!encoder.htmlEncode( $indicator.extended.hononyms )" style="width:20em"></td>
+		<td><input type="text" id="hononyms" name="hononyms" value="$!encoder.htmlEncode( $indicator.extended.hononyms )" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="keywords">$i18n.getString( "keywords" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="keywords" name="keywords" value="$!encoder.htmlEncode( $indicator.extended.keywords )" style="width:20em"></td>
+		<td><input type="text" id="keywords" name="keywords" value="$!encoder.htmlEncode( $indicator.extended.keywords )" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="status">$i18n.getString( "status" ) </label></td>
@@ -147,11 +167,11 @@
 	</tr>
 	<tr>
 		<td><label for="minimumSize">$i18n.getString( "minimum_size" )</label></td>
-		<td><input type="text" id="minimumSize" name="minimumSize" value="$!encoder.htmlEncode( $indicator.extended.minimumSize )" style="width:20em"></td>
+		<td><input type="text" id="minimumSize" name="minimumSize" value="$!encoder.htmlEncode( $indicator.extended.minimumSize )" style="width:20em" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="maximumSize">$i18n.getString( "maximum_size" )</label></td>
-		<td><input type="text" id="maximumSize" name="maximumSize" value="$!encoder.htmlEncode( $indicator.extended.maximumSize )" style="width:20em"></td>
+		<td><input type="text" id="maximumSize" name="maximumSize" value="$!encoder.htmlEncode( $indicator.extended.maximumSize )" style="width:20em" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="dataDomain">$i18n.getString( "data_domain" )</label></td>
@@ -181,7 +201,7 @@
 	</tr>
 	<tr>
 		<td><label for="responsibleAuthority">$i18n.getString( "responsible_authority" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="responsibleAuthority" name="responsibleAuthority" value="$!encoder.htmlEncode( $indicator.extended.responsibleAuthority )" style="width:20em"></td>
+		<td><input type="text" id="responsibleAuthority" name="responsibleAuthority" value="$!encoder.htmlEncode( $indicator.extended.responsibleAuthority )" style="width:20em" class="{validate:{required:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="updateRules">$i18n.getString( "update_rules" )</label></td>
@@ -189,23 +209,23 @@
 	</tr>
 	<tr>
 		<td><label for="accessAuthority">$i18n.getString( "access_authority" )</label></td>
-		<td><input type="text" id="accessAuthority" name="accessAuthority" value="$!encoder.htmlEncode( $indicator.extended.accessAuthority )" style="width:20em"></td>
+		<td><input type="text" id="accessAuthority" name="accessAuthority" value="$!encoder.htmlEncode( $indicator.extended.accessAuthority )" style="width:20em" maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="updateFrequency">$i18n.getString( "update_frequency" )</label></td>
-		<td><input type="text" id="updateFrequency" name="updateFrequency" value="$!encoder.htmlEncode( $indicator.extended.updateFrequency )" style="width:20em"></td>
+		<td><input type="text" id="updateFrequency" name="updateFrequency" value="$!encoder.htmlEncode( $indicator.extended.updateFrequency )" style="width:20em" maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="location">$i18n.getString( "location" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="location" name="location" value="$!encoder.htmlEncode( $indicator.extended.location )" style="width:20em"></td>
+		<td><input type="text" id="location" name="location" value="$!encoder.htmlEncode( $indicator.extended.location )" style="width:20em" maxlength="255" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="reportingMethods">$i18n.getString( "reporting_methods" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><textarea id="reportingMethods" name="reportingMethods" style="width:20em; height:6em">$!encoder.htmlEncode( $indicator.extended.reportingMethods )</textarea></td>
+		<td><textarea id="reportingMethods" name="reportingMethods" style="width:20em; height:6em" class="{validate:{required:true}}">$!encoder.htmlEncode( $indicator.extended.reportingMethods )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="versionStatus">$i18n.getString( "version_status" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="versionStatus" name="versionStatus" value="$!encoder.htmlEncode( $indicator.extended.versionStatus )" style="width:20em"></td>
+		<td><input type="text" id="versionStatus" name="versionStatus" value="$!encoder.htmlEncode( $indicator.extended.versionStatus )" style="width:20em" maxlength="255" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="previousVersionReferences">$i18n.getString( "previous_version_references" )</label></td>
@@ -213,11 +233,11 @@
 	</tr>
 	<tr>
 		<td><label for="sourceDocument">$i18n.getString( "source_document" )</label></td>
-		<td><input type="text" id="sourceDocument" name="sourceDocument" value="$!encoder.htmlEncode( $indicator.extended.sourceDocument )" style="width:20em"></td>
+		<td><input type="text" id="sourceDocument" name="sourceDocument" value="$!encoder.htmlEncode( $indicator.extended.sourceDocument )" style="width:20em" maxlength="255"  class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="sourceOrganisation">$i18n.getString( "source_organisation" )</label></td>
-		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" value="$!encoder.htmlEncode( $indicator.extended.sourceOrganisation )" style="width:20em"></td>
+		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" value="$!encoder.htmlEncode( $indicator.extended.sourceOrganisation )" style="width:20em" maxlength="255"  class="{validate{maxlength:255}}"> </td>
 	</tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>

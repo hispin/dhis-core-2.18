@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addExtendedIndicatorForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addExtendedIndicatorForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddExtendedIndicator();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_indicator" )</h3>
 
-<form id="addExtendedIndicatorForm" action="addExtendedIndicator.action" method="post" onsubmit="return validateAddExtendedIndicator()">
+<form id="addExtendedIndicatorForm" action="addExtendedIndicator.action" method="post" >
 
 <div>
 	<input type="hidden" id="numerator" name="numerator">
@@ -18,23 +38,23 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"  maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em"></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" maxlength="160" class="{validate:{minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" style="width:20em"></td>
+		<td><input type="text" id="code" name="code" style="width:20em" maxlength="25" class="{validate:{maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em"></td>
+		<td><input type="text" id="description" name="description" style="width:20em"  class="{validate:{required:true}}"></td>
 	</tr>
 	<tr>
         <td><label for="annualized">$i18n.getString( "annualized" )</label></td>
@@ -48,7 +68,7 @@
     <tr>
         <td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td>
-            <select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em">
+            <select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" class="{validate:{required:true}}">
                 <option value="null">[$i18n.getString( "select" )]</option>
             #foreach( $indicatorType in $indicatorTypes )
                 <option value="$indicatorType.id">$encoder.htmlEncode( $indicatorType.name )</option>
@@ -63,27 +83,27 @@
 	</tr>	
 	<tr>
 		<td><label for="mnemonic">$i18n.getString( "mnemonic" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="mnemonic" name="mnemonic" style="width:20em"></td>
+		<td><input type="text" id="mnemonic" name="mnemonic" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
   	<tr>
 		<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="version" name="version" style="width:20em"></td>
+		<td><input type="text" id="version" name="version" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="context">$i18n.getString( "context" )</label></td>
-		<td><textarea id="context" name="context" style="width:20em; height:6em"></textarea></td>
+		<td><textarea id="context" name="context" style="width:20em; height:6em" ></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="synonyms">$i18n.getString( "synonyms" )</label></td>
-		<td><input type="text" id="synonyms" name="synonyms" style="width:20em"></td>
+		<td><input type="text" id="synonyms" name="synonyms" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="hononyms">$i18n.getString( "hononyms" )</label></td>
-		<td><input type="text" id="hononyms" name="hononyms" style="width:20em"></td>
+		<td><input type="text" id="hononyms" name="hononyms" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="keywords">$i18n.getString( "keywords" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="keywords" name="keywords" style="width:20em"></td>
+		<td><input type="text" id="keywords" name="keywords" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="status">$i18n.getString( "status" )</label></td>
@@ -97,7 +117,7 @@
 	</tr>
 	<tr>
 		<td><label for="statusDate">$i18n.getString( "status_date" ) ($i18n.getString( "format.date.label" ))</label></td>
-		<td><input type="text" id="statusDate" name="statusDate" style="width:20em"></td>
+		<td><input type="text" id="statusDate" name="statusDate" style="width:20em" class="{validate:{dateISO:true}}"></td>
 		<td><img src="../images/calendar_icon.gif" width="16" height="16" id="getStatusDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "status_date" )"></td>
 	</tr>
 	
@@ -141,15 +161,15 @@
 	</tr>
 	<tr>
 		<td><label for="representationalLayout">$i18n.getString( "representational_layout" )</label></td>
-		<td><input type="text" id="representationalLayout" name="representationalLayout" style="width:20em"></td>
+		<td><input type="text" id="representationalLayout" name="representationalLayout" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="minimumSize">$i18n.getString( "minimum_size" )</label></td>
-		<td><input type="text" id="minimumSize" name="minimumSize" style="width:20em"></td>
+		<td><input type="text" id="minimumSize" name="minimumSize" style="width:20em" maxlength="11" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="maximumSize">$i18n.getString( "maximum_size" )</label></td>
-		<td><input type="text" id="maximumSize" name="maximumSize" style="width:20em"></td>
+		<td><input type="text" id="maximumSize" name="maximumSize" style="width:20em" maxlength="11" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="dataDomain">$i18n.getString( "data_domain" )</label></td>
@@ -179,7 +199,7 @@
 	</tr>
 	<tr>
 		<td><label for="responsibleAuthority">$i18n.getString( "responsible_authority" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="responsibleAuthority" name="responsibleAuthority" style="width:20em"></td>
+		<td><input type="text" id="responsibleAuthority" name="responsibleAuthority" style="width:20em" class="{validate:{required:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="updateRules">$i18n.getString( "update_rules" )</label></td>
@@ -187,23 +207,23 @@
 	</tr>
 	<tr>
 		<td><label for="accessAuthority">$i18n.getString( "access_authority" )</label></td>
-		<td><input type="text" id="accessAuthority" name="accessAuthority" style="width:20em"></td>
+		<td><input type="text" id="accessAuthority" name="accessAuthority" style="width:20em"  maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="updateFrequency">$i18n.getString( "update_frequency" )</label></td>
-		<td><input type="text" id="updateFrequency" name="updateFrequency" style="width:20em"></td>
+		<td><input type="text" id="updateFrequency" name="updateFrequency" style="width:20em"  maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="location">$i18n.getString( "location" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="location" name="location" style="width:20em"></td>
+		<td><input type="text" id="location" name="location" style="width:20em" maxlength="255" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="reportingMethods">$i18n.getString( "reporting_methods" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><textarea id="reportingMethods" name="reportingMethods" style="width:20em; height:6em"></textarea></td>
+		<td><textarea id="reportingMethods" name="reportingMethods" style="width:20em; height:6em" class="{validate:{required:true}}"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="versionStatus">$i18n.getString( "version_status" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="versionStatus" name="versionStatus" style="width:20em"></td>
+		<td><input type="text" id="versionStatus" name="versionStatus" style="width:20em" maxlength="255" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="previousVersionReferences">$i18n.getString( "previous_version_references" )</label></td>
@@ -211,11 +231,11 @@
 	</tr>
 	<tr>
 		<td><label for="sourceDocument">$i18n.getString( "source_document" )</label></td>
-		<td><input type="text" id="sourceDocument" name="sourceDocument" style="width:20em"></td>
+		<td><input type="text" id="sourceDocument" name="sourceDocument" style="width:20em" maxlength="255"  class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="sourceOrganisation">$i18n.getString( "source_organisation" )</label></td>
-		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" style="width:20em"></td>
+		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" style="width:20em" maxlength="255"  class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>

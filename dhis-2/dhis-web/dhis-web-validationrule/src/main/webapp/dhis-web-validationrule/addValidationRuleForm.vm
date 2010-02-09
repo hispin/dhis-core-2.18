@@ -1,7 +1,29 @@
+<script>
 
+//-----------------------------------------------------------------------
+//init jQuery validation for addValidationRuleForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addValidationRuleForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddValidationRule();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$encoder.htmlEncode( $i18n.getString( "create_new_validation_rule" ) )</h3>
 
-<form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="return validateAddValidationRule()">
+<form id="addValidationRuleForm" action="addValidationRule.action" method="post" >
 
 <div>
 	<input type="hidden" id="leftSideDescription" name="leftSideDescription">
@@ -18,11 +40,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:6em"></textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:6em" class="{validate:{maxlength:255}}"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

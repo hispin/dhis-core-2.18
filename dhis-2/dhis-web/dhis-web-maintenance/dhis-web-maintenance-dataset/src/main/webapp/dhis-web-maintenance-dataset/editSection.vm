@@ -43,7 +43,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "label" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionLabel" name="sectionLabel" style="width:20em" value="$section.label"  class="{validate:{required:true,rangelength:[2,50],alphanumericwithbasicpuncspaces:true}}"></td>
+        <td><input type="text" id="sectionLabel" name="sectionLabel" style="width:20em" value="$section.label"   maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
       </tr>
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
     </tbody>

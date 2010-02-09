@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addIndicatorGroupForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addIndicatorGroupForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddIndicatorGroup();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_indicator_group" )</h3>
 
-<form id="addIndicatorGroupForm" action="addIndicatorGroup.action" method="post" onsubmit="return validateAddIndicatorGroup()">
+<form id="addIndicatorGroupForm" action="addIndicatorGroup.action" method="post" >
 
 <table>
 	<tr>
@@ -9,7 +29,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>

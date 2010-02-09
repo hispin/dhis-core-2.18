@@ -1,7 +1,27 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addIndicatorTypeForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addIndicatorTypeForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+											validateAddIndicatorType();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+	);
 
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_indicator_type" )</h3>
 
-<form id="addIndicatorTypeForm" action="addIndicatorType.action" method="post" onsubmit="return validateAddIndicatorType()">
+<form id="addIndicatorTypeForm" action="addIndicatorType.action" method="post" >
 
 <table>
 	<tr>
@@ -9,11 +29,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
 	</tr>
 	<tr>
 		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="factor" name="factor" style="width:20em"></td>
+		<td><input type="text" id="factor" name="factor" style="width:20em" maxlength="11" class="{validate:{required:true,number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td></td>
