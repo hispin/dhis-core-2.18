@@ -57,12 +57,7 @@ function viewChart( url )
 
 function removeChart( chartId, chartTitle )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + chartTitle );
-    
-    if ( result )
-    {
-        window.location.href = "removeChart.action?id=" + chartId;
-    }
+	removeItem( chartId, chartTitle, i18n_confirm_delete, "removeChart.action" );
 }
 
 // -----------------------------------------------------------------------------

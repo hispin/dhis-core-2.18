@@ -119,7 +119,9 @@ public class ValidateDocumentAction
                 return INPUT;
             }
         }
-        
+
+        message = i18n.getString( "everything_is_ok" );
+
         return SUCCESS;
     }
 }

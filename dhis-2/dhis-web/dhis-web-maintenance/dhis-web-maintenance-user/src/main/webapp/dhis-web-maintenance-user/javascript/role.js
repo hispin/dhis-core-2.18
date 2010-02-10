@@ -26,28 +26,9 @@ function roleReceived( xmlObject )
 
 function removeRole(id, role)
 {
-	if ( confirm( i18n_confirm_delete ) )
-	{
-		var request = new Request();
-		request.setResponseTypeXML( 'message' );
-		request.setCallbackSuccess( removeRoleCompleted );
-		request.send( 'removeRole.action?id=' + id );
-		//window.location.href = 'removeRole.action?id=' + id;						
-	}		
+	removeItem( id, role, i18n_confirm_delete, 'removeRole.action' );
 }
 
-function removeRoleCompleted(xmlObject){
-	var type = xmlObject.getAttribute( 'type' );
-    
-    if ( type == 'success' )
-    {
-        windown.location.href = 'allRole.action';
-    }
-	
-    else{
-		setMessage(xmlObject.firstChild.nodeValue);
-	}
-}
 // -----------------------------------------------------------------------------
 // Add role
 // -----------------------------------------------------------------------------

@@ -41,12 +41,7 @@ function organisationUnitGroupSetReceived( unitElement )
 
 function removeOrganisationUnitGroupSet( groupSetId, groupSetName )
 {
-    var result = window.confirm( confirm_to_delete_org_unit_group_set + '\n\n' + groupSetName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeOrganisationUnitGroupSet.action?id=' + groupSetId;
-    }
+	removeItem( groupSetId, groupSetName, confirm_to_delete_org_unit_group_set, 'removeOrganisationUnitGroupSet.action' );
 }
 
 // -----------------------------------------------------------------------------

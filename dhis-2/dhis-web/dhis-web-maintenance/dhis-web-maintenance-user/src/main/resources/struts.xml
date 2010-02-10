@@ -48,8 +48,8 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
-    <action name="removeUser" class="org.hisp.dhis.user.action.RemoveUserAction">
-      <result name="success" type="redirect">alluser.action</result>
+    <action name="removeUser" class="org.hisp.dhis.user.action.RemoveUserAction">      
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="logout" type="redirect">/dhis-web-commons-security/logout.action</result>
       <param name="requiredAuthorities">F_USER_DELETE</param>
     </action>
@@ -118,7 +118,8 @@
     </action>
     
     <action name="removeRole" class="org.hisp.dhis.user.action.RemoveRoleAction">
-      <result name="success" type="redirect">allRole.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <result name="logout" type="redirect">/</result>
       <param name="requiredAuthorities">F_USERROLE_DELETE</param>
     </action>

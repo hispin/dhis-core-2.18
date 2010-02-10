@@ -25,12 +25,7 @@ function organisationUnitGroupReceived( unitGroupElement )
 
 function removeOrganisationUnitGroup( unitGroupId, unitGroupName )
 {
-    var result = window.confirm( confirm_to_delete_org_unit_group + '\n\n' + unitGroupName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeOrganisationUnitGroup.action?id=' + unitGroupId;
-    }
+	removeItem( unitGroupId, unitGroupName, confirm_to_delete_org_unit_group, 'removeOrganisationUnitGroup.action' );
 }
 
 // -----------------------------------------------------------------------------

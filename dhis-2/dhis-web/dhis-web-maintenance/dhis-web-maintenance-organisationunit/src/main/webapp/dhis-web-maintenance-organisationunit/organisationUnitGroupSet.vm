@@ -19,26 +19,15 @@
 					<th colspan="3">$i18n.getString( "operations" )</th>
 				</tr>
 				<tbody id="list">
-				#set( $mark = false )
 				#foreach( $organisationUnitGroupSet in $organisationUnitGroupSets )
-				<tr>
-					<td#alternate( $mark )>$encoder.htmlEncode( $organisationUnitGroupSet.name )</td>
-					<td style="text-align:center"#alternate( $mark )><a href="showUpdateOrganisationUnitGroupSetForm.action?id=$organisationUnitGroupSet.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:removeOrganisationUnitGroupSet( $organisationUnitGroupSet.id, '$encoder.jsEncode( $organisationUnitGroupSet.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:showOrganisationUnitGroupSetDetails( $organisationUnitGroupSet.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+				<tr id="tr${organisationUnitGroupSet.id}">
+					<td>$encoder.htmlEncode( $organisationUnitGroupSet.name )</td>
+					<td style="text-align:center"><a href="showUpdateOrganisationUnitGroupSetForm.action?id=$organisationUnitGroupSet.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+					<td style="text-align:center"><a href="javascript:removeOrganisationUnitGroupSet( $organisationUnitGroupSet.id, '$encoder.jsEncode( $organisationUnitGroupSet.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
+					<td style="text-align:center"><a href="javascript:showOrganisationUnitGroupSetDetails( $organisationUnitGroupSet.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>
-					#if( $mark )
-						#set( $mark = false )
-					#else
-						#set( $mark = true )
-					#end
 				#end
 				</tbody>
-				#if ( $organisationUnitGroupSets.size() == 0 )
-				<tr>
-					<td colspan="4">$i18n.getString( "there_are_no_org_unit_group_sets" )</td>
-				</tr>
-				#end
 			</table>
 
 		</td>
@@ -51,7 +40,6 @@
 				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "compulsory" ):</label><br><span id="compulsoryField"></span></p>
-				<p><label>$i18n.getString( "exclusive" ):</label><br><span id="exclusiveField"></span></p>
 				<p><label>$i18n.getString( "number_of_members" ):</label><br><span id="memberCountField"></span></p>
 			</div>
 

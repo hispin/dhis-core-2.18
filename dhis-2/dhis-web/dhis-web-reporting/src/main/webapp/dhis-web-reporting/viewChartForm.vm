@@ -22,22 +22,18 @@
                     <th>$i18n.getString( "title" )</th>
                     <th colspan="5">$i18n.getString( "operations" )</th>
                 </tr>
-                #set( $mark = false )
+                <tbody id="list">
                 #foreach ( $chart in $charts )
-                <tr>
-                    <td#alternate( $mark )>$encoder.htmlEncode( $chart.title )</td>
-                    <td style="text-align:center"#alternate( $mark )><a href="javascript:runAndViewChart( '$chart.id' )" title="$i18n.getString( "generate_datasource_and_view_chart" )"><img src="../images/open.png" alt="$i18n.getString( "generate_datasource_and_view_chart" )"></a></td>
-                    <td style="text-align:center"#alternate( $mark )><a href="javascript:viewChart( 'viewChart.action?id=$chart.id' )" title="$i18n.getString( "view_chart_based_on_existing_datasource" )"><img src="../images/view_report.png" alt="$i18n.getString( "view_report_based_on_existing_datasource" )"></a></td>
-                    <td style="text-align:center"#alternate( $mark )><a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-                    <td style="text-align:center"#alternate( $mark )><a href="javascript:removeChart( '$chart.id', '$encoder.jsEncode( $chart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-                    <td style="text-align:center"#alternate( $mark )><a href="javascript:showChartDetails( '$chart.id' )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+                <tr id="tr${chart.id}">
+                    <td>$encoder.htmlEncode( $chart.title )</td>
+                    <td style="text-align:center"><a href="javascript:runAndViewChart( '$chart.id' )" title="$i18n.getString( "generate_datasource_and_view_chart" )"><img src="../images/open.png" alt="$i18n.getString( "generate_datasource_and_view_chart" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:viewChart( 'viewChart.action?id=$chart.id' )" title="$i18n.getString( "view_chart_based_on_existing_datasource" )"><img src="../images/view_report.png" alt="$i18n.getString( "view_report_based_on_existing_datasource" )"></a></td>
+                    <td style="text-align:center"><a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:removeChart( '$chart.id', '$encoder.jsEncode( $chart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:showChartDetails( '$chart.id' )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
                 </tr>
-                    #if( $mark )
-                        #set( $mark = false )
-                    #else
-                        #set( $mark = true )
-                    #end
                 #end
+                </tbody>
             </table>
             
         </td>

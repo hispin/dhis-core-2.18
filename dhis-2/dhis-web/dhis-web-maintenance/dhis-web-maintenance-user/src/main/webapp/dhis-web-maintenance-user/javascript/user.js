@@ -59,12 +59,7 @@ function groupReceived()
 
 function removeUser( userId, username )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + username );
-    
-    if ( result )
-    {
-        window.location.href = 'removeUser.action?id=' + userId;
-    }
+	removeItem( userId, username, i18n_confirm_delete, 'removeUser.action' );
 }
 
 // -----------------------------------------------------------------------------

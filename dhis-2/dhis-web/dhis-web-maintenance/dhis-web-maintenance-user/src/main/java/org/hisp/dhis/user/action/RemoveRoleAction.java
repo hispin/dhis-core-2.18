@@ -85,7 +85,6 @@ public class RemoveRoleAction
     public String execute()
         throws Exception
     {
-
         UserAuthorityGroup authorityGroup = userStore.getUserAuthorityGroup( id );
 
         if ( authorityGroup != null )
@@ -97,6 +96,7 @@ public class RemoveRoleAction
             catch ( DataIntegrityViolationException e )
             {
                 message = i18n.getString( "user_use_group" );
+                
                 return ERROR;
             }
         }

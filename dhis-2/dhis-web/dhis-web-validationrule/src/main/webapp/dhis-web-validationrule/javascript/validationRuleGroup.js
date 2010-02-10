@@ -26,12 +26,7 @@ function validationRuleGroupReceived( xmlObject )
 
 function removeValidationRuleGroup( validationRuleGroupId, validationRuleGroupName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + validationRuleGroupName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeValidationRuleGroup.action?id=' + validationRuleGroupId;
-    }
+	removeItem( validationRuleGroupId, validationRuleGroupName, i18n_confirm_delete, 'removeValidationRuleGroup.action' );
 }
 
 // -----------------------------------------------------------------------------

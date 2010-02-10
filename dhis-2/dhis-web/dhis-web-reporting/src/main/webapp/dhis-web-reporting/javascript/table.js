@@ -134,12 +134,7 @@ function selectTableForm()
 
 function removeTable( tableId, tableName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + tableName );
-    
-    if ( result )
-    {
-        window.location.href = "removeTable.action?id=" + tableId;
-    }
+	removeItem( tableId, tableName, i18n_confirm_delete, "removeTable.action" );
 }
 
 // -----------------------------------------------------------------------------
