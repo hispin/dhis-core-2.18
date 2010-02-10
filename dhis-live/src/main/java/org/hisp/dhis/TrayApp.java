@@ -50,7 +50,9 @@ public class TrayApp
     private static final String STARTING_ICON = "/icons/starting.png";
     private static final String FAILED_ICON = "/icons/failed.png";
     private static final String RUNNING_ICON = "/icons/running.png";
-
+    private static final String CMD_OPEN = "Open DHIS 2 Live";
+    private static final String CMD_EXIT = "Exit";
+        
     private WebAppServer appServer;
 
     private TrayIcon trayIcon;
@@ -103,8 +105,10 @@ public class TrayApp
         Image image = createImage( STOPPED_ICON, "tray icon" );
 
         PopupMenu popup = new PopupMenu();
-        MenuItem defaultItem = new MenuItem( "Exit" );
-        popup.add( defaultItem );
+        MenuItem openItem = new MenuItem( CMD_OPEN );
+        MenuItem exitItem = new MenuItem( CMD_EXIT );
+        popup.add( openItem );
+        popup.add( exitItem );
 
         trayIcon = new TrayIcon( image, "DHIS 2 Live", popup );
         trayIcon.setImageAutoSize( true );
@@ -115,14 +119,19 @@ public class TrayApp
             {
                 String cmd = e.getActionCommand();
 
-                if ( cmd.equals( "Exit" ) )
+                if ( cmd.equals( CMD_OPEN ) )
+                {
+                    launchBrowser();
+                }
+                else if ( cmd.equals( CMD_EXIT ) )
                 {
                     shutdown();
                 }
             };
         };
 
-        defaultItem.addActionListener( listener );
+        openItem.addActionListener( listener );
+        exitItem.addActionListener( listener );
 
         try
         {
@@ -163,19 +172,11 @@ public class TrayApp
     public void lifeCycleStarted( LifeCycle arg0 )
     {
         log.info( "Lifecycle: server started" );
-        String url = "http://localhost:" + appServer.getConnectorPort();
-        trayIcon.displayMessage( "Started", "DHIS 2 is running. Your browser will\nbe pointed to " + url + ".",
+        trayIcon.displayMessage( "Started", "DHIS 2 is running. Your browser will\n be pointed to " + getUrl() + ".",
             TrayIcon.MessageType.INFO );
         trayIcon.setToolTip( "DHIS 2 Server running" );
-        trayIcon.setImage( createImage( RUNNING_ICON, "Running icon" ) );
-        try
-        {
-            Desktop.getDesktop().browse( URI.create( url ) );
-        }
-        catch ( Exception ex )
-        {
-            log.warn( "Couldn't open default desktop browse" );
-        }
+        trayIcon.setImage( createImage( RUNNING_ICON, "Running icon" ) );        
+        launchBrowser();
     }
 
     public void lifeCycleStarting( LifeCycle arg0 )
@@ -201,6 +202,31 @@ public class TrayApp
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns the URL where the application can be accessed.
+     * 
+     * @return the URL where the application can be accessed.
+     */
+    private String getUrl()
+    {
+        return "http://localhost:" + appServer.getConnectorPort();
+    }
+    
+    /**
+     * Launches the application in the default browser.
+     */
+    private void launchBrowser()
+    {
+        try
+        {
+            Desktop.getDesktop().browse( URI.create( getUrl() ) );
+        }
+        catch ( Exception ex )
+        {
+            log.warn( "Couldn't open default desktop browser: " + ex );
+        }
+    }
+    
     /**
      * Shuts down the web application server.
      */
