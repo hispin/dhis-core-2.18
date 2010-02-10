@@ -62,32 +62,7 @@ function indicatorReceived( indicatorElement )
 
 function removeIndicator( indicatorId, indicatorName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + indicatorName );
-    
-    if ( result )
-    {
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeIndicatorCompleted );
-        request.send( 'removeIndicator.action?id=' + indicatorId );
-    }
-}
-
-function removeIndicatorCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'indicator.action';
-    }
-    else if ( type = 'error' )
-    {
-        setFieldValue( 'warningField', message );
-        
-        showWarning();
-    }
+	removeItem( indicatorId, indicatorName, i18n_confirm_delete, 'removeIndicator.action' );
 }
 
 // -----------------------------------------------------------------------------
