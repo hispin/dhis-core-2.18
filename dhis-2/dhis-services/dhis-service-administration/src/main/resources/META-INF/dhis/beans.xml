@@ -140,6 +140,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
   
+  <bean id="org.hisp.dhis.datalock.DataSetLockDeletionHandler"
+	class="org.hisp.dhis.datalock.DataSetLockDeletionHandler">
+	<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService"/>
+  </bean>
+  
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -149,6 +154,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <list>
         <list>
           <ref local="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler"/>
+		  <ref local="org.hisp.dhis.datalock.DataSetLockDeletionHandler"/>
 		</list>
 	  </list>
 	</property>

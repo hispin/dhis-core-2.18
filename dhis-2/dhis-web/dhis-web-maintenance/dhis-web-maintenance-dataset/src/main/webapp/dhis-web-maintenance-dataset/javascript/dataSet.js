@@ -35,12 +35,7 @@ var tmpSource;
 
 function removeDataSet( dataSetId, dataSetName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + dataSetName );
-
-  if ( result )
-  {
-    window.location.href = 'delDataSet.action?dataSetId=' + dataSetId;
-  }
+  removeItem( dataSetId, dataSetName, i18n_confirm_delete, 'delDataSet.action' );
 }
 
 // ----------------------------------------------------------------------

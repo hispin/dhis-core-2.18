@@ -83,7 +83,7 @@
     </action>   
     
     <action name="removeSection" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
-      <result name="success" type="chain">section</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
 	
     <!-- Get details -->
@@ -184,7 +184,7 @@
     
     <action name="delDataSet"
       class="org.hisp.dhis.dataset.action.DelDataSetAction">
-      <result name="success" type="redirect">dataSet.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
     
