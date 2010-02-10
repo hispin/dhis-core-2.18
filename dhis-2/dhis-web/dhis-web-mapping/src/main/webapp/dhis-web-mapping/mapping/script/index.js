@@ -539,7 +539,14 @@ Ext.onReady( function() {
                     }
                 ]
             }
-        ]
+        ],
+		listeners: {
+			'hide': {
+				fn: function() {
+					alert("closed");
+				}
+			}
+		}
     });
     
     /* LEGEND SET PANEL */
@@ -2748,12 +2755,28 @@ Ext.onReady( function() {
                         anchor: '100%',
                         bodyStyle: 'padding-left: 4px;'
                     },
+					{
+						xtype: 'panel',
+						title: 'Feature data',
+						height: 65,
+						anchor: '100%',
+						bodyStyle: 'padding-left: 4px;',
+						items:
+						[
+							new Ext.form.Label({
+								id: 'featureinfo_l',
+								text: 'No feature selected.',
+								style: 'color:#666'
+							})
+						]
+					},
                     {
                         title: '<font style="' + AA_DARK + '">Map legend</font>',
                         minHeight: 65,
                         autoHeight: true,
                         contentEl: 'legend',
-                        anchor: '100%'
+                        anchor: '100%',
+						bodyStyle: 'padding-left: 4px;'
                     }
                 ]
             },
@@ -2854,7 +2877,8 @@ function onHoverSelectChoropleth(feature) {
     
     if (MAPDATA != null) {
         if (ACTIVEPANEL == 'choropleth') {
-            popup_feature = new Ext.Window({
+/*            
+			popup_feature = new Ext.Window({
                 title: '<font style="' + AA_DARK + '">Organisation unit</font>',
                 width: 190,
                 height: 90,// + 60,
@@ -2864,18 +2888,15 @@ function onHoverSelectChoropleth(feature) {
                 x: x,
                 y: y
             });    
-
-            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
-            html += '<p style="margin-top: 4px; padding-left:5px; ' + AA_LIGHT + '"><b>Value</b>:&nbsp;&nbsp;<font style="font-family:tahoma; font-size:11px; font-weight:normal; letter-spacing:0px; color:#000;">' + feature.attributes.value + '</font></p>';
-			// html += style + bs + 'Factor' + be + space + feature.attributes.factor.toFixed(1) + pe;
-			// html += style + bs + 'Numerator' + be + space + feature.attributes.numeratorValue.toFixed(1) + pe;
-			// html += style + bs + 'Denominator' + be + space + feature.attributes.denominatorValue.toFixed(1) + pe;
             
             popup_feature.html = html;
             popup_feature.show();
+*/			
+
+			Ext.getCmp('featureinfo_l').setText('<font style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</font><br><font style="color:#666">' + feature.attributes.value + '</font>', false);
         }
         else if (ACTIVEPANEL == 'mapping') {
-            popup_feature = new Ext.Window({
+/*            popup_feature = new Ext.Window({
                 title: '<font style="' + AA_DARK + '">Organisation unit</font>',
                 width: 190,
                 height: 71,
@@ -2886,18 +2907,18 @@ function onHoverSelectChoropleth(feature) {
                 y: y
             });    
 
-            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
+			var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
             
             popup_feature.html = html;
             popup_feature.show();
+*/
+			Ext.getCmp('featureinfo_l').setText('<font style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</font>', false);
         }
     }
 }
 
 function onHoverUnselectChoropleth(feature) {
-    if (MAPDATA != null) {
-        popup_feature.hide();
-    }
+    Ext.getCmp('featureinfo_l').setText('<font style="color:#666">No feature selected.</font>', false);
 }
 
 function onClickSelectChoropleth(feature) {
