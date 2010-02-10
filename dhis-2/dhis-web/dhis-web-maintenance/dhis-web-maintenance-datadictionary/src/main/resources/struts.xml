@@ -61,10 +61,10 @@
 
 		<action name="removeDataElement"
 			class="org.hisp.dhis.dd.action.dataelement.RemoveDataElementAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
 		</action>
@@ -182,8 +182,8 @@
 
 		<action name="removeDataElementGroup"
 			class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
-			<result name="success" type="redirect">dataElementGroup.action
-			</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
 		</action>
 
@@ -256,13 +256,13 @@
 			<param name="javascripts">javascript/dataElementGroupSet.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
       		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_ADD</param>
 		</action>
 		
 		<action name="addDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction">
 			<result name="success" type="redirect">dataElementGroupSet.action</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_ADD</param>
 		</action>
 				
 		<action name="openUpdateDataElementGroupSet"
@@ -273,12 +273,13 @@
 			<param name="javascripts">javascript/dataElementGroupSet.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
       		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+            <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
 		</action>	
 		
 		<action name="updateDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
 			<result name="success" type="redirect">dataElementGroupSet.action</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
 		</action>
 		
 		<action name="validateDataElementGroupSet"
@@ -291,8 +292,9 @@
 		
 		<action name="deleteDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.DeleteDataElementGroupSetAction">
-			<result name="success" type="redirect">dataElementGroupSet.action</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_DELETE</param>
 		</action>
 		
 		<action name="showDataElementGroupSetDetails"
@@ -370,8 +372,8 @@
 
 		<action name="removeIndicatorGroup"
 			class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
-			<result name="success" type="redirect">indicatorGroup.action
-			</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
 		</action>
 
@@ -451,7 +453,7 @@
 		<action name="addIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction">
 			<result name="success" type="redirect">indicatorGroupSet.action</result>
-			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+			<param name="requiredAuthorities">F_INDICATORGROUPSET_ADD</param>
 		</action>
 		
 		<action name="openUpdateIndicatorGroupSet"
@@ -467,7 +469,7 @@
 		<action name="updateIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
 			<result name="success" type="redirect">indicatorGroupSet.action</result>
-			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+			<param name="requiredAuthorities">F_INDICATORGROUPSET_UPDATE</param>
 		</action>
 		
 		<action name="validateIndicatorGroupSet"
@@ -480,8 +482,9 @@
 		
 		<action name="deleteIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.DeleteIndicatorGroupSetAction">
-			<result name="success" type="redirect">indicatorGroupSet.action</result>
-			<param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_INDICATORGROUPSET_DELETE</param>
 		</action>
 		
 		<action name="showIndicatorGroupSetDetails"
@@ -511,10 +514,10 @@
 
 		<action name="removeIndicatorType"
 			class="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_INDICATORTYPE_DELETE</param>
 		</action>
@@ -594,10 +597,10 @@
 
 		<action name="removeIndicator"
 			class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_INDICATOR_DELETE</param>
 		</action>
@@ -713,8 +716,8 @@
 
 		<action name="removeDataDictionary"
 			class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction">
-			<result name="success" type="redirect">dataDictionary.action
-			</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_DATADICTIONARY_DELETE</param>
 		</action>
 
@@ -941,10 +944,10 @@
 
 		<action name="removeDataElementCategory"
 			class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
 		</action>
@@ -1015,8 +1018,8 @@
 
 		<action name="removeDataElementCategoryCombo"
 			class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction">
-			<result name="success" type="redirect">categoryCombo.action
-			</result>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
 		</action>
 

@@ -49,9 +49,9 @@ function validateAddIndicatorGroupSetCompleted( message ){
 // Delete Indicator Group Set
 // -----------------------------------------------------------------------------
 
-function deleteIndicatorGroupSet( id ){
+function deleteIndicatorGroupSet( groupSetId, groupSetName ){
 	
-	removeItem( id, "", i18n_confirm_delete, "deleteIndicatorGroupSet.action" );
+	removeItem( groupSetId, groupSetName, i18n_confirm_delete, "deleteIndicatorGroupSet.action" );
 }
 
 // -----------------------------------------------------------------------------

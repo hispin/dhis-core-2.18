@@ -1,0 +1,4 @@
+{
+  "response": "success",
+  "message": "$!encoder.jsEncode( ${message} )"
+}
