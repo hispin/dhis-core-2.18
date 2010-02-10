@@ -51,89 +51,95 @@ import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
  * @author Bob Jolliffe
- * @version $Id$
  */
-public class WebAppServer 
+public class WebAppServer
 {
-  public static final String DHIS_DIR = "/webapps/dhis";
-  public static final String BIRT_DIR = "/webapps/birt";
-  public static final String BIRT_CONTEXT_PATH = "/birt";
-  public static final String JETTY_PORT_CONF = "/conf/jetty.port";
+    public static final String DHIS_DIR = "/webapps/dhis";
 
-  public static final int DEFAULT_JETTY_PORT = 8080;
+    public static final String BIRT_DIR = "/webapps/birt";
 
-  private static final Log log = LogFactory.getLog( WebAppServer.class );
-    
-  protected Server server;
-  protected Connector connector;
+    public static final String BIRT_CONTEXT_PATH = "/birt";
 
-  public WebAppServer() {
-    server = new Server();
-    connector = new SelectChannelConnector();
-  }
+    public static final String JETTY_PORT_CONF = "/conf/jetty.port";
 
-  public void init(String installDir, LifeCycle.Listener serverListener)
-    throws Exception
-  {
+    public static final int DEFAULT_JETTY_PORT = 8080;
 
-    try {
-      int portFromConfig = this.getPortFromConfig(installDir + JETTY_PORT_CONF);
-      connector.setPort(portFromConfig);
-      log.info("Loading DHIS 2 on port: " + portFromConfig );
-    } catch (Exception ex) {
-      log.info("Couldn't load port number from " + installDir + JETTY_PORT_CONF);
-      connector.setPort(DEFAULT_JETTY_PORT);
-      log.info("Loading DHIS 2 on port: " + DEFAULT_JETTY_PORT );
+    private static final Log log = LogFactory.getLog( WebAppServer.class );
+
+    protected Server server;
+
+    protected Connector connector;
+
+    public WebAppServer()
+    {
+        server = new Server();
+        connector = new SelectChannelConnector();
     }
 
-    server.setConnectors(new Connector[]{connector});
+    public void init( String installDir, LifeCycle.Listener serverListener )
+        throws Exception
+    {
+        try
+        {
+            int portFromConfig = this.getPortFromConfig( installDir + JETTY_PORT_CONF );
+            connector.setPort( portFromConfig );
+            log.info( "Loading DHIS 2 on port: " + portFromConfig );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Couldn't load port number from " + installDir + JETTY_PORT_CONF );
+            connector.setPort( DEFAULT_JETTY_PORT );
+            log.info( "Loading DHIS 2 on port: " + DEFAULT_JETTY_PORT );
+        }
 
-    ContextHandlerCollection handlers = new ContextHandlerCollection();
-    
-    WebAppContext dhisWebApp = new WebAppContext();
-    dhisWebApp.setWar(installDir + DHIS_DIR);
-    handlers.addHandler(dhisWebApp);
-    log.info("Setting DHIS 2 web app context to: "+ installDir + DHIS_DIR);
-    
-    if ( new File( installDir, BIRT_DIR ).exists() ) {
-      WebAppContext birtWebApp = new WebAppContext();
-      birtWebApp.setContextPath(BIRT_CONTEXT_PATH);
-      birtWebApp.setWar(installDir + BIRT_DIR);
-      handlers.addHandler(birtWebApp);  
-      log.info("Setting BIRT web app context to: "+ installDir + BIRT_DIR);
+        server.setConnectors( new Connector[] { connector } );
+
+        ContextHandlerCollection handlers = new ContextHandlerCollection();
+
+        WebAppContext dhisWebApp = new WebAppContext();
+        dhisWebApp.setWar( installDir + DHIS_DIR );
+        handlers.addHandler( dhisWebApp );
+        log.info( "Setting DHIS 2 web app context to: " + installDir + DHIS_DIR );
+
+        if ( new File( installDir, BIRT_DIR ).exists() )
+        {
+            WebAppContext birtWebApp = new WebAppContext();
+            birtWebApp.setContextPath( BIRT_CONTEXT_PATH );
+            birtWebApp.setWar( installDir + BIRT_DIR );
+            handlers.addHandler( birtWebApp );
+            log.info( "Setting BIRT web app context to: " + installDir + BIRT_DIR );
+        }
+
+        server.setHandler( handlers );
+        server.addLifeCycleListener( serverListener );
     }
-    
-    server.setHandler(handlers);
-    server.addLifeCycleListener(serverListener);
-  }
 
-  public void start()
-    throws Exception
-  {
-    server.start();
-    server.join();
-  }
+    public void start()
+        throws Exception
+    {
+        server.start();
+        server.join();
+    }
 
-  public void stop()
-    throws Exception
-  {
-    server.stop();
-  }
-  
-  public int getConnectorPort()
-  {
-    return connector.getPort();
-  }
+    public void stop()
+        throws Exception
+    {
+        server.stop();
+    }
 
-  // read integer value from file
-  public int getPortFromConfig(String conf) throws FileNotFoundException, IOException
-  {
-    Reader r = new BufferedReader(new FileReader(conf));
-    char[] cbuf = new char[10];
-    r.read(cbuf);
-    String numstr = String.copyValueOf(cbuf);
-    Integer port = Integer.valueOf(numstr.trim());
-    return port.intValue();
-  }
+    public int getConnectorPort()
+    {
+        return connector.getPort();
+    }
 
+    private int getPortFromConfig( String conf )
+        throws FileNotFoundException, IOException
+    {
+        Reader r = new BufferedReader( new FileReader( conf ) );
+        char[] cbuf = new char[10];
+        r.read( cbuf );
+        String numstr = String.copyValueOf( cbuf );
+        Integer port = Integer.valueOf( numstr.trim() );
+        return port.intValue();
+    }
 }
