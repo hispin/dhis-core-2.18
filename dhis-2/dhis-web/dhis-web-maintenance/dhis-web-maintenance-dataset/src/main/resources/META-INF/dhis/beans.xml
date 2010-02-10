@@ -294,9 +294,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataset.action.DelDataSetAction"
     class="org.hisp.dhis.dataset.action.DelDataSetAction" 
     scope="prototype">
-	<property name="dataSetLockService">
-      <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-    </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>

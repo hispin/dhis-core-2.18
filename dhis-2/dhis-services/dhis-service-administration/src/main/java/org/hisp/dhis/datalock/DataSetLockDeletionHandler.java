@@ -1,7 +1,7 @@
-package org.hisp.dhis.dataset.action.section;
+package org.hisp.dhis.datalock;
 
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,47 +27,58 @@ package org.hisp.dhis.dataset.action.section;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataset.Section;
-import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
-import com.opensymphony.xwork2.Action;
-
-public class RemoveSectionAction
-    implements Action
+public class DataSetLockDeletionHandler
+    extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SectionService sectionService;
-
-    public void setSectionService( SectionService sectionService )
+    private DataSetLockService dataSetLockService;
+    
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
-        this.sectionService = sectionService;
+        this.dataSetLockService = dataSetLockService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & output
+    // DeletionHandler
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public void setId( Integer id )
+    @Override
+    protected String getClassName()
     {
-        this.id = id;
+        return DataSetLock.class.getSimpleName();
+    }
+    
+    @Override
+    public void deletePeriod( Period period )
+    {
+        for ( DataSetLock dataSetLock : dataSetLockService.getDataSetLockByPeriod( period ) )
+        {
+            dataSetLockService.deleteDataSetLock( dataSetLock );
+        }
+    }
+    
+    @Override
+    public void deleteSource( Source source )
+    {
+        for ( DataSetLock dataSetLock : dataSetLockService.getDataSetLocksBySource( source ) )
+        {
+            dataSetLockService.deleteDataSetLock( dataSetLock );
+        }
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
+    public void deleteDataSet( DataSet dataSet )
     {
-        Section section = sectionService.getSection( id );
-        
-        sectionService.deleteSection( section );
-        
-        return SUCCESS;
+        for ( DataSetLock dataSetLock : dataSetLockService.getDataSetLockByDataSet( dataSet ) )
+        {
+            dataSetLockService.deleteDataSetLock( dataSetLock );
+        }
     }
 }

@@ -1,4 +1,42 @@
 
+function sortOrderSubmit()
+{
+    var datasetId = document.getElementById('dataSetId').value;
+    
+    if ( datasetId=="null" )
+    {
+        window.alert( "Please select dataset" );
+    }
+    else
+    {
+        window.location = "sortOrderSection.action?dataSetId=" + datasetId;
+    }    
+}
+
+function getSectionByDataSet(dataSetId)
+{
+    window.location = "section.action?dataSetId=" + dataSetId;
+}
+
+function removeSection( sectionId, sectionName )
+{
+	removeItem( sectionId, sectionName, i18n_confirm_delete, "removeSection.action" );
+}
+
+function addSectionSubmit()
+{
+    var dataset = document.getElementById('dataSetId').value;
+    
+    if( dataset=="null" )
+    {
+        window.alert( "Please select dataset" );
+    }
+    else
+    {
+        window.location.href="addSectionAction.action?dataSetId=" + document.getElementById('dataSetId').value;
+    }
+}
+
 function getDataElementByDataSet( dataSetId )
 {
   var request = new Request();
