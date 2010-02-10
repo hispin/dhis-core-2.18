@@ -69,10 +69,7 @@ public class RemoveValidationRuleGroupAction
     {
         ValidationRuleGroup group = validationRuleService.getValidationRuleGroup( id );
         
-        if ( group != null )
-        {
-            validationRuleService.deleteValidationRuleGroup( group );
-        }
+        validationRuleService.deleteValidationRuleGroup( group );
         
         return SUCCESS;
     }

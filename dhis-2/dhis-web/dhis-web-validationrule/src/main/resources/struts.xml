@@ -45,7 +45,7 @@
     </action>
     
     <action name="removeValidationRule" class="org.hisp.dhis.validationrule.action.RemoveValidationRuleAction">
-      <result name="success" type="redirect">showValidationRuleForm.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_VALIDATIONRULE_DELETE</param>
     </action>
       
@@ -107,7 +107,7 @@
     </action>
         
     <action name="removeValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.RemoveValidationRuleGroupAction">
-      <result name="success" type="redirect">showValidationRuleGroupForm.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_DELETE</param>
     </action>
       

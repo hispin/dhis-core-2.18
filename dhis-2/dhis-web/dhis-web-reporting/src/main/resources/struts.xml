@@ -23,7 +23,7 @@
     </action>
     
     <action name="removeDocument" class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction">
-      <result name="success" type="redirect">displayViewDocumentForm.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_DOCUMENT_DELETE</param>
     </action>
     
@@ -74,7 +74,7 @@
     </action>
     
     <action name="removeChart" class="org.hisp.dhis.reporting.chart.action.RemoveChartAction">
-      <result name="success" type="redirect">displayViewChartForm.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_CHART_DELETE</param>
     </action>
     
@@ -130,8 +130,8 @@
     </action>
     
     <action name="removeReport" class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction">
-      <result name="success" type="redirect">displayViewReportForm.action</result>
-	    <param name="requiredAuthorities">F_REPORT_DELETE</param>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="requiredAuthorities">F_REPORT_DELETE</param>
     </action>
     
     <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
@@ -187,7 +187,7 @@
     </action>
     
     <action name="removeTable" class="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction">
-      <result name="success" type="redirect">displayManageTableForm.action</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_REPORTTABLE_DELETE</param>
     </action>
     

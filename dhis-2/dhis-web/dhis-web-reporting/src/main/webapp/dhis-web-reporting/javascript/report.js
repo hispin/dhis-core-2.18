@@ -87,12 +87,7 @@ function addReport()
 
 function removeReport( id )
 {
-	var dialog = window.confirm( i18n_confirm_remove_report );
-	
-	if ( dialog )
-	{
-		window.location.href = "removeReport.action?id=" + id;
-	}
+	removeItem( id, "", i18n_confirm_remove_report, "removeReport.action" );
 }
 
 function addToDashboard( id )

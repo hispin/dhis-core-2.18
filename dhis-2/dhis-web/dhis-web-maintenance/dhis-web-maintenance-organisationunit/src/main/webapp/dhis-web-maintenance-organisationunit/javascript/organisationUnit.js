@@ -52,32 +52,7 @@ function organisationUnitReceived( unitElement )
 
 function removeOrganisationUnit( unitId, unitName )
 {
-    var result = window.confirm( confirm_to_delete_org_unit + '\n\n' + unitName );
-    
-    if ( result )
-    {
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeOrganisationUnitCompleted );
-        request.send( 'removeOrganisationUnit.action?id=' + unitId );
-    }
-}
-
-function removeOrganisationUnitCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'organisationUnit.action';
-    }
-    else if ( type = 'error' )
-    {
-        setFieldValue( 'warningField', message );
-        
-        showWarning();
-    }
+	removeItem( unitId, unitName, confirm_to_delete_org_unit, 'removeOrganisationUnit.action' );
 }
 
 // -----------------------------------------------------------------------------

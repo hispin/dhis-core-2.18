@@ -22,28 +22,22 @@
 					<th colspan="3">$i18n.getString( "operations" )</th>
 				</tr>
 				<tbody id="list">
-				#set( $mark = false )
 				#foreach( $userAuthorityGroup in $userAuthorityGroups )
-				<tr>
-					<td#alternate( $mark )>$!encoder.htmlEncode( $userAuthorityGroup.name )</td>
-					<td#alternate( $mark )>$!encoder.htmlEncode( $userAuthorityGroup.description )</td>
+				<tr id="tr${userAuthorityGroup.id}">
+					<td>$!encoder.htmlEncode( $userAuthorityGroup.name )</td>
+					<td>$!encoder.htmlEncode( $userAuthorityGroup.description )</td>
 					<td style="text-align:center"#alternate( $mark )>
-						#if($userAuthorityGroup.name != $!encoder.htmlEncode( $superuserRole))
+						#if($userAuthorityGroup.name != $!encoder.htmlEncode( $superuserRole ) )
 							<a href="showUpdateRoleForm.action?id=$userAuthorityGroup.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 						#end
 					</td>
-					<td style="text-align:center"#alternate( $mark )>
-						#if($userAuthorityGroup.name != $!encoder.htmlEncode( $superuserRole))
+					<td style="text-align:center">
+						#if($userAuthorityGroup.name != $!encoder.htmlEncode( $superuserRole ) )
 							<a href="javascript:removeRole( $userAuthorityGroup.id, '$encoder.jsEncode( $userAuthorityGroup.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 						#end
 					</td>
-                    <td style="text-align:center"#alternate( $mark )><a href="javascript:showRoleDetails( $userAuthorityGroup.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:showRoleDetails( $userAuthorityGroup.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>
-				#if( $mark )
-					#set( $mark = false )
-				#else
-					#set( $mark = true )
-				#end
 				#end
 				</tbody>
 			</table>

@@ -1,7 +1,7 @@
 
 function saveDocument()
 {
-    var name = document.getElementById( "name" );
+    var name = document.getElementById( "name" ).value;
     
     var url = "validateDocument.action?name=" + name;
     
@@ -30,12 +30,7 @@ function saveDocumentReceived( messageElement )
 
 function removeDocument( id )
 {
-    var dialog = window.confirm( i18n_confirm_remove_report );
-    
-    if ( dialog )
-    {
-        window.location.href = "removeDocument.action?id=" + id;
-    }
+	removeItem( id, "", i18n_confirm_remove_report, "removeDocument.action" );
 }
 
 function addDocumentToDashboard( id )

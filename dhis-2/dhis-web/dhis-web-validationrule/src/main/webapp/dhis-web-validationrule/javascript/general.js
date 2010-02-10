@@ -71,10 +71,5 @@ function getElementValue( parentElement, childElementName )
 
 function removeValidationRule( ruleId, ruleName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + ruleName );
-    
-    if ( result )
-    {
-        window.location.href = 'removeValidationRule.action?id=' + ruleId;
-    }
+	removeItem( ruleId, ruleName, i18n_confirm_delete, 'removeValidationRule.action' );
 }

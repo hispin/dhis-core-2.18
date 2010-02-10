@@ -19,22 +19,21 @@
 		<th style="text-align:center">$i18n.getString( "max" )</th>
 		<th style="text-align:center">$i18n.getString( "mark" )</th>
 	</tr>
-    #set( $mark = false )	
 	#set( $count = 0 )
 	
+	<tbody id="list">
 	#foreach( $value in $dataValues )	
 	#set( $count = $count + 1 )	
-	<tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
-	
-		<td#alternate( $mark )><span id="value[$count].name">$value.dataElementName $value.categoryOptionComboNameParsed</span></td>
+	<tr>	
+		<td><span id="value[$count].name">$value.dataElementName $value.categoryOptionComboNameParsed</span></td>
 		
-		<td#alternate( $mark )>$value.sourceName</td>
+		<td>$value.sourceName</td>
 		
-		<td#alternate( $mark )>$format.formatPeriod( $value.period )</td>
+		<td>$format.formatPeriod( $value.period )</td>
 		
-		<td style="text-align:center"#alternate( $mark )>$value.min</td>
+		<td style="text-align:center">$value.min</td>
 		
-		<td style="width:100px"#alternate( $mark )>
+		<td style="width:100px">
 			<input id="value[$count].value" value="$value.value"
 				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editValue( $count )">			
             <input type="hidden" id="value[$count].dataElement" value="$value.dataElementId">
@@ -45,23 +44,18 @@
             <input type="hidden" id="value[$count].max" value="$value.max">
 		</td>
 		
-		<td style="text-align:center"#alternate( $mark )>$value.max</td>
+		<td style="text-align:center">$value.max</td>
 		
-		<td style="text-align:center"#alternate( $mark )>
+		<td style="text-align:center">
 		#if ( $value.followup )
 			<img id="value[$count].followup" src="../images/marked.png" onclick="markValueForFollowup($count)" style="cursor:pointer">
 		#else
 		    <img id="value[$count].followup" src="../images/unmarked.png" onclick="markValueForFollowup($count)" style="cursor:pointer">
 		#end
-		</td>
-		
+		</td>		
 	</tr>
-	    #if( $mark )
-            #set( $mark = false )
-        #else
-            #set( $mark = true )
-        #end
 	#end
+	</tbody>
 </table>
 
 #end
