@@ -610,24 +610,34 @@ function hideLoader()
  * @param message the confirmation message.
  * @param action the server action url for deleting the item.
  */
-function removeItem( itemId, itemName, message, action )
+function removeItem( itemId, itemName, confirmation, action )
 {                
-    var result = window.confirm( i18n_confirm_delete + "\n\n" + itemName );
+    var result = window.confirm( confirmation + "\n\n" + itemName );
     
     if ( result )
-    {       
-        $.ajax({ 
-            "url": action,
-            "data": { "id": itemId },
-            "success": function()
-            {
-                $( "tr#tr" + itemId ).remove();
+    {
+    	$.getJSON(
+    	    action,
+    	    {
+    	        "id": itemId   
+    	    },
+    	    function( json )
+    	    {
+    	    	if ( json.response == "success" )
+    	    	{
+    	    		$( "tr#tr" + itemId ).remove();
                 
-                $( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
-                $( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
-                $( "table.listTable tbody tr:even" ).addClass( "listRow" );
-                
-            }
-        });
+	                $( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+	                $( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+	                $( "table.listTable tbody tr:even" ).addClass( "listRow" );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{
+    	    		setFieldValue( 'warningField', json.message );
+        
+                    showWarning();
+    	    	}
+    	    }
+    	);
     }
 }

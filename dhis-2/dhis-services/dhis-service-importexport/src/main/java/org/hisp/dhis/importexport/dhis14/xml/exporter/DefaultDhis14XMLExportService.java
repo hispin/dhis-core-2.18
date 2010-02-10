@@ -69,12 +69,11 @@ import org.hisp.dhis.period.PeriodService;
  * @author Lars Helge Overland
  * @version $Id: DefaultDhis14XMLExportService.java 5793 2008-10-02 14:14:00Z larshelg $
  */
-@SuppressWarnings( "unused" )
 public class DefaultDhis14XMLExportService
     implements ExportService
 {
     private static final String ENCODING = "ISO-8859-1";
-    private static final String ZIP_ENTRY_NAME = "Export.xml";
+    private static final String ZIP_EXT = ".xml";
     private static final String ROOT_NAME = "root";
     private static final String[] ROOT_PROPERTIES = { "xmlns:xsd", "http://www.w3.org/2001/XMLSchema", 
                                   "xmlns:od", "urn:schemas-microsoft-com:officedata" };
@@ -144,7 +143,7 @@ public class DefaultDhis14XMLExportService
 
             ZipOutputStream zipOut = new ZipOutputStream( out );
             
-            zipOut.putNextEntry( new ZipEntry( "Export.xml" ) );
+            zipOut.putNextEntry( new ZipEntry( params.getFileBaseName() + ZIP_EXT ) );
 
             XMLWriter writer = XMLFactory.getPlainXMLWriter( zipOut );
 

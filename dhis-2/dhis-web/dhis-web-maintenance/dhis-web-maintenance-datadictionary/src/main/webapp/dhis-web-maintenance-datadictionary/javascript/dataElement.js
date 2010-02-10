@@ -127,32 +127,7 @@ function getDataElementsReceived( xmlObject )
 
 function removeDataElement( dataElementId, dataElementName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + dataElementName );
-    
-    if ( result )
-    {
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeDataElementCompleted );
-        request.send( 'removeDataElement.action?id=' + dataElementId );
-    }
-}
-
-function removeDataElementCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'dataElement.action';
-    }
-    else if ( type = 'error' )
-    {
-        setFieldValue( 'warningField', message );
-        
-        showWarning();
-    }
+	removeItem( dataElementId, dataElementName, i18n_confirm_delete, 'removeDataElement.action' );
 }
 
 // -----------------------------------------------------------------------------

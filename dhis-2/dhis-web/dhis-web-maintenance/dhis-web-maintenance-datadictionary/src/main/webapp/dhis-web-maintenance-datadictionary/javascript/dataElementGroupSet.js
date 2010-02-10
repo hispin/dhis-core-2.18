@@ -50,9 +50,9 @@ function validateAddDataElementGroupSetCompleted( message ){
 // Delete Data Element Group
 // -----------------------------------------------------------------------------
 
-function deleteDataElementGroupSet( id ){
+function deleteDataElementGroupSet( groupSetId, groupSetName ){
 	
-	deleteItem( id, "", i18n_confirm_delete, "deleteDataElementGroupSet.action" );
+	removeItem( groupSetId, groupSetName, i18n_confirm_delete, "deleteDataElementGroupSet.action" );
 }
 
 // -----------------------------------------------------------------------------
@@ -64,8 +64,7 @@ function showDataElementGroupSetDetails( id ){
 	var request = new Request();
     request.setResponseTypeXML( 'dataElementGroupSet' );
     request.setCallbackSuccess( showDetailsCompleted );
-    request.send( "showDataElementGroupSetDetails.action?id=" + id);
-	
+    request.send( "showDataElementGroupSetDetails.action?id=" + id);	
 }
 
 

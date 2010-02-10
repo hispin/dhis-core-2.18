@@ -35,6 +35,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="flags">
       <map>
         <entry>
+          <key><value>armenia</value></key>
+          <value>armenia.png</value>
+        </entry>
+        <entry>
           <key><value>botswana</value></key>
           <value>botswana.png</value>
         </entry>

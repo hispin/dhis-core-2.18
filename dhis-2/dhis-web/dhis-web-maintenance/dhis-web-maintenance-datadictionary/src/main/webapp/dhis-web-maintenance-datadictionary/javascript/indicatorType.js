@@ -25,32 +25,7 @@ function indicatorTypeReceived( indicatorTypeElement )
 
 function removeIndicatorType( indicatorTypeId, indicatorTypeName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + indicatorTypeName );
-    
-    if ( result )
-    {
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeIndicatorTypeCompleted );
-        request.send( 'removeIndicatorType.action?id=' + indicatorTypeId );
-    }
-}
-
-function removeIndicatorTypeCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'indicatorType.action';
-    }
-    else if ( type = 'error' )
-    {
-        setFieldValue( 'warningField', message );
-        
-        showWarning();
-    }
+	removeItem( indicatorTypeId, indicatorTypeName, i18n_confirm_delete, 'removeIndicatorType.action' );
 }
 
 // -----------------------------------------------------------------------------
