@@ -201,7 +201,7 @@ Ext.onReady( function() {
         checkedCls: 'x-form-radio-checked'
     });
     
-    document.body.oncontextmenu = function() { return false; }
+    document.body.oncontextmenu = function() { return false; };
 	
 	Ext.QuickTips.init();
     
@@ -543,7 +543,7 @@ Ext.onReady( function() {
 		listeners: {
 			'hide': {
 				fn: function() {
-					alert("closed");
+					mapping.relation = false;
 				}
 			}
 		}
@@ -1138,14 +1138,14 @@ Ext.onReady( function() {
 			id: 'wmswindow_sb',
 			items:
 			[
-				// {
-					// xtype: 'button',
-					// id: 'previewwms_b',
-					// text: 'Preview',
-					// handler: function() {
+				/* {
+					 xtype: 'button',
+					 id: 'previewwms_b',
+					 text: 'Preview',
+					 handler: function() {
 						
-					// }
-				// },
+					 }
+				 },*/
 				{
 					xtype: 'button',
 					id: 'selectwms_b',
@@ -1913,14 +1913,14 @@ Ext.onReady( function() {
 			id: 'wmsoverlaywindow_sb',
 			items:
 			[
-				// {
-					// xtype: 'button',
-					// id: 'previewwmsoverlay_b',
-					// text: 'Preview',
-					// handler: function() {
-						
-					// }
-				// },
+/*			
+				{
+					xtype: 'button',
+					id: 'previewwmsoverlay_b',
+					text: 'Preview',
+					handler: function() {}
+				},
+*/				
 				{
 					xtype: 'button',
 					id: 'selectwmsoverlay_b',
