@@ -101,8 +101,6 @@ public class ExportParams
     
     private I18nFormat format;
     
-    private String fileBaseName;
-    
     // -------------------------------------------------------------------------
     // Constructur
     // -------------------------------------------------------------------------
@@ -442,15 +440,5 @@ public class ExportParams
     public void setOlapUrls( Collection<Integer> olapUrls )
     {
         this.olapUrls = olapUrls;
-    }
-
-    public String getFileBaseName()
-    {
-        return fileBaseName;
-    }
-
-    public void setFileBaseName( String fileBaseName )
-    {
-        this.fileBaseName = fileBaseName;
     }
 }

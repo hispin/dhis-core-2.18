@@ -73,7 +73,7 @@ public class DefaultDhis14XMLExportService
     implements ExportService
 {
     private static final String ENCODING = "ISO-8859-1";
-    private static final String ZIP_EXT = ".xml";
+    private static final String ZIP_ENTRY_NAME = "Export.xml";
     private static final String ROOT_NAME = "root";
     private static final String[] ROOT_PROPERTIES = { "xmlns:xsd", "http://www.w3.org/2001/XMLSchema", 
                                   "xmlns:od", "urn:schemas-microsoft-com:officedata" };
@@ -143,7 +143,7 @@ public class DefaultDhis14XMLExportService
 
             ZipOutputStream zipOut = new ZipOutputStream( out );
             
-            zipOut.putNextEntry( new ZipEntry( params.getFileBaseName() + ZIP_EXT ) );
+            zipOut.putNextEntry( new ZipEntry( ZIP_ENTRY_NAME ) );
 
             XMLWriter writer = XMLFactory.getPlainXMLWriter( zipOut );
 
