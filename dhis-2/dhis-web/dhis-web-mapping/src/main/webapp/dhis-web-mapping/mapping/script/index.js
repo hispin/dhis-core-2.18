@@ -2870,48 +2870,31 @@ Ext.onReady( function() {
 });
 
 /*SELECT FEATURES*/
+
+var feature_popup = new Ext.Window({
+	title: '<font style="' + AA_DARK + '">Assign organisation unit</font>',
+	width: 190,
+	height: 71,
+	closeAction: 'hide',
+	layout: 'fit',
+	plain: true,
+	bodyStyle: 'padding:5px',
+	listeners: {
+		'hide': {
+			fn: function() {
+				mapping.relation = false;
+			}
+		}
+	}
+});
+
+
 function onHoverSelectChoropleth(feature) {
-    var east_panel = Ext.getCmp('east');
-    var x = east_panel.x - 210;
-    var y = east_panel.y + 41;
-    
     if (MAPDATA != null) {
         if (ACTIVEPANEL == 'choropleth') {
-/*            
-			popup_feature = new Ext.Window({
-                title: '<font style="' + AA_DARK + '">Organisation unit</font>',
-                width: 190,
-                height: 90,// + 60,
-                layout: 'fit',
-                plain: true,
-                bodyStyle: 'padding:5px',
-                x: x,
-                y: y
-            });    
-            
-            popup_feature.html = html;
-            popup_feature.show();
-*/			
-
 			Ext.getCmp('featureinfo_l').setText('<font style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</font><br><font style="color:#666">' + feature.attributes.value + '</font>', false);
         }
         else if (ACTIVEPANEL == 'mapping') {
-/*            popup_feature = new Ext.Window({
-                title: '<font style="' + AA_DARK + '">Organisation unit</font>',
-                width: 190,
-                height: 71,
-                layout: 'fit',
-                plain: true,
-                bodyStyle: 'padding:5px',
-                x: x,
-                y: y
-            });    
-
-			var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
-            
-            popup_feature.html = html;
-            popup_feature.show();
-*/
 			Ext.getCmp('featureinfo_l').setText('<font style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</font>', false);
         }
     }
@@ -2922,54 +2905,16 @@ function onHoverUnselectChoropleth(feature) {
 }
 
 function onClickSelectChoropleth(feature) {
+	var east_panel = Ext.getCmp('east');
+	var x = east_panel.x - 210;
+	var y = east_panel.y + 41;
+	
     if (ACTIVEPANEL == 'mapping') {
-		var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-        if (!selected) {
-            Ext.messageRed.msg('Assign organisation units', 'Please select an organisation unit in the list first.');
-            return;
-        }
-		
-        var featureId = feature.attributes[MAPDATA.nameColumn];
-		var mlp = Ext.getCmp('maps_cb').getValue();
-		
-		Ext.Ajax.request({
-			url: path + 'getMapOrganisationUnitRelationByFeatureId' + type,
-            method: 'POST',
-			params: {featureId:featureId, mapLayerPath:mlp},
-			
-			success: function( responseObject ) {
-				var mour = Ext.util.JSON.decode( responseObject.responseText ).mapOrganisationUnitRelation[0];
-				var selected;
-				
-				if (mour.featureId == '') {
-					selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-					var organisationUnitId = selected.data.organisationUnitId;
-					var organisationUnit = selected.data.organisationUnit;
-
-					Ext.Ajax.request({
-						url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
-						method: 'GET',
-						params: { mapLayerPath: MAPDATA.mapLayerPath, organisationUnitId: organisationUnitId, featureId: featureId },
-
-						success: function( responseObject ) {
-							Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + organisationUnit + msg_highlight_end + ' (database) assigned to ' + msg_highlight_start + featureId + msg_highlight_end + ' (map).');
-							Ext.getCmp('grid_gp').getStore().reload();
-							popup_feature.hide();
-							loadMapData('assignment');
-						},
-						failure: function() {
-							alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
-						} 
-					});
-				}
-				else {
-					Ext.messageRed.msg('Assign organisation units', msg_highlight_start + featureId + msg_highlight_end + ' is already assigned.');
-				}
-			},
-			failure: function() {
-				alert('Error: getMapOrganisationUnitRelationByFeatureId');
-			}
-		});
+		feature_popup.html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
+		feature_popup.x = x;
+		feature_popup.y = y;
+		feature_popup.show();
+		mapping.relation = feature.attributes[MAPDATA.nameColumn];
     }
 	else {
 		MAP.setCenter(feature.geometry.getBounds().getCenterLonLat(), MAP.getZoom()+1);

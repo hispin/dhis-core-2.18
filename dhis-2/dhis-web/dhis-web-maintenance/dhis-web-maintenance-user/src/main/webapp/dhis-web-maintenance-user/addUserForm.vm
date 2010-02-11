@@ -9,6 +9,10 @@
 				jQuery("#addUserForm").validate({
 					 meta:"validate"
 					,errorElement:"td"
+					,beforeValidateHandler : function()
+											{
+												selectAllById('selectedList');
+											}
 					,submitHandler: function(form)
 									{
 										validateAddUser();
