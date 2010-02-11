@@ -249,7 +249,6 @@ public class DataValueExportAction
         params.setIncludeDataValues( true );
         params.setIncludeCompleteDataSetRegistrations( true );
         params.setAggregatedData( aggregatedData );
-        params.setFileBaseName( getFileBaseName( params ) );
         
         // ---------------------------------------------------------------------
         // Export
@@ -268,7 +267,7 @@ public class DataValueExportAction
     // Supportive methods
     // -------------------------------------------------------------------------
     
-    private String getFileBaseName( ExportParams params )
+    private String getFileName( ExportParams params )
     {
         String fileName = FILE_PREFIX + FILE_SEPARATOR + 
             getMediumDateString( getMediumDate( startDate ) ) + FILE_SEPARATOR + 
@@ -284,12 +283,9 @@ public class DataValueExportAction
             fileName += FILE_SEPARATOR + fileNameEncode( dataSetService.getDataSet( params.getDataSets().iterator().next() ).getName() );
         }
         
+        fileName += FILE_EXTENSION;
+        
         return fileName;
-    }
-    
-    private String getFileName( ExportParams params )
-    {
-        return getFileBaseName( params ) + FILE_EXTENSION;
     }
     
     private String fileNameEncode( String in )
