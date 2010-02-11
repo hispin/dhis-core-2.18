@@ -105,9 +105,9 @@ public class DataElementCategoryStoreTest
         assertEquals( categoryB, categoryStore.get( idB ) );
         assertEquals( categoryC, categoryStore.get( idC ) );
 
-        assertEquals( categoryA.getConceptName(), categoryStore.get( idA ).getConceptName() );
-        assertEquals( categoryB.getConceptName(), categoryStore.get( idB ).getConceptName() );
-        assertEquals( categoryC.getConceptName(), categoryStore.get( idC ).getConceptName() );
+        assertEquals( "ConceptA", categoryStore.get( idA ).getConceptName() );
+        assertEquals( "ConceptB", categoryStore.get( idB ).getConceptName() );
+        assertEquals( "ConceptC", categoryStore.get( idC ).getConceptName() );
         
         assertEquals( categoryOptions, categoryStore.get( idA ).getCategoryOptions() );
         assertEquals( categoryOptions, categoryStore.get( idB ).getCategoryOptions() );
