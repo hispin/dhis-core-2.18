@@ -117,7 +117,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      * APIProperty: loadMask
      *     An Ext.LoadMask config or true to mask the widget while loading (defaults to false).
      */
-    loadMask : false,
+    loadMask: false,
 
     /**
      * APIProperty: labelGenerator
@@ -125,7 +125,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     labelGenerator: null,
 
-    getGridPanelHeight : function() {
+    getGridPanelHeight: function() {
         var h = screen.height;
         
         if (h <= 800) {
@@ -142,14 +142,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         }
     },
      
-    newUrl : false,
+    newUrl: false,
 	
-	
+	relation: false,
     
-    /**
-     * Method: initComponent
-     *    Inits the component
-     */    
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({
@@ -248,14 +244,14 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 id: 'grid_gp',
                 store: gridStore,
                 columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true, width: gridpanel_width } ],
-				  autoExpandColumn: 'organisationUnitId',
-				  enableHdMenu: true,
+				autoExpandColumn: 'organisationUnitId',
+				enableHdMenu: true,
                 width: gridpanel_width,
                 height: this.getGridPanelHeight(),				 
                 view: gridView,
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
-						defaultText: '',
+					defaultText: '',
                     id: 'relations_sb',
                     items:
                     [
@@ -366,7 +362,46 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             scope: this
                         }
                     ]
-                })
+                }),
+				listeners: {
+					'cellclick': {
+						fn: function(grid, rowIndex) {
+							if (mapping.relation) {
+								var id = grid.getStore().getAt(rowIndex).get('organisationUnitId');
+								var name = grid.getStore().getAt(rowIndex).get('organisationUnit');
+								var mlp = Ext.getCmp('maps_cb').getValue();
+								
+								Ext.Ajax.request({
+									url: path + 'getMapOrganisationUnitRelationByFeatureId' + type,
+									method: 'POST',
+									params: {featureId:mapping.relation, mapLayerPath:mlp},
+									success: function( responseObject ) {
+										var mour = Ext.util.JSON.decode( responseObject.responseText ).mapOrganisationUnitRelation[0];
+										if (mour.featureId == '') {
+											Ext.Ajax.request({
+												url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
+												method: 'POST',
+												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:name },
+												success: function( responseObject ) {
+													Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + mapping.relation + msg_highlight_end + ' (map) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (database).');
+													Ext.getCmp('grid_gp').getStore().reload();
+													feature_popup.hide();
+													loadMapData('assignment');
+												},
+												failure: function() {
+													alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
+												} 
+											});
+										}
+										else {
+											Ext.messageRed.msg('Assign organisation units', msg_highlight_start + name + msg_highlight_end + ' is already assigned.');
+										}
+									}
+								});
+							}
+						}
+					}
+				}
              }
         ];
 
