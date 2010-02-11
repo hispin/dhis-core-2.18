@@ -71,6 +71,13 @@ public class UpdateDataElementCategoryAction
         this.name = name;
     }
 
+    private String conceptName;
+
+    public void setConceptName( String conceptName )
+    {
+        this.conceptName = conceptName;
+    }
+
     private List<String> categoryOptions = new ArrayList<String>();
 
     public void setCategoryOptions( List<String> categoryOptions )
@@ -86,6 +93,7 @@ public class UpdateDataElementCategoryAction
     {
         DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
         dataElementCategory.setName( name );        
+        dataElementCategory.setConceptName( conceptName );
         
         // ---------------------------------------------------------------------
         // CategoryOptions can only be sorted on update

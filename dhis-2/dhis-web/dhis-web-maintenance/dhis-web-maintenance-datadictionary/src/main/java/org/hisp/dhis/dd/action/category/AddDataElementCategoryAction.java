@@ -64,6 +64,13 @@ public class AddDataElementCategoryAction
     {
         this.name = name;
     }
+    
+    private String conceptName;
+
+    public void setConceptName( String conceptName )
+    {
+        this.conceptName = conceptName;
+    }
 
     private List<String> categoryOptionNames = new ArrayList<String>();
 
@@ -80,6 +87,7 @@ public class AddDataElementCategoryAction
     {
         DataElementCategory dataElementCategory = new DataElementCategory();
         dataElementCategory.setName( name );
+        dataElementCategory.setConceptName( conceptName );
         
         for ( String categoryOptionName : categoryOptionNames )
         {
