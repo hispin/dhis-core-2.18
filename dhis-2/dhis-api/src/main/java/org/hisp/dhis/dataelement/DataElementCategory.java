@@ -70,6 +70,13 @@ public class DataElementCategory
         this.categoryOptions = categoryOptions;
     }
 
+    public DataElementCategory( String name, String conceptName, List<DataElementCategoryOption> categoryOptions )
+    {
+        this.name = name;
+        this.conceptName = conceptName;
+        this.categoryOptions = categoryOptions;
+    }
+
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
