@@ -32,6 +32,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Abyot Asalefew
@@ -76,6 +78,14 @@ public class ValidateDataElementCategoryAction
         this.name = name;
     }
 
+    private String conceptName;
+
+    public void setConceptName( String conceptName )
+    {
+        this.conceptName = conceptName;
+    }
+    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -110,6 +120,20 @@ public class ValidateDataElementCategoryAction
                 return INPUT;
             }
         }
+
+            if ( conceptName != null || !conceptName.isEmpty()) {
+            // No funny characters please.  max length 10.
+            Pattern conceptNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z_]+$");
+            Matcher matcher = conceptNamePattern.matcher(conceptName);
+
+            if (conceptName.length()>10 || !matcher.matches())
+            {
+                message = i18n.getString( "illegal_conceptName" );
+
+                return INPUT;
+            }
+        }
+
         message = "ok";
 
         return SUCCESS;
