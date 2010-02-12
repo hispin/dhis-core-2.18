@@ -59,7 +59,9 @@ function validateAddDataElementCategory()
     }
 
     var requestString = 'validateDataElementCategory.action?name=' + htmlEncode( document.getElementById( 'name' ).value );
-  
+
+    requestString += "&conceptName=" + htmlEncode( document.getElementById( 'conceptName' ).value );
+
     requestString += "&" + getParamString( 'categoryOptionNames' );
 
     request.send( requestString );
@@ -91,6 +93,8 @@ function validateEditDataElementCategory()
   
     var requestString = 'validateDataElementCategory.action?id=' + document.getElementById( 'id' ).value + 
         '&name=' + htmlEncode( document.getElementById( 'name' ).value );
+
+    requestString += "&conceptName=" + htmlEncode( document.getElementById( 'conceptName' ).value );
 
     requestString += "&" + getParamString( 'categoryOptions' );
   
