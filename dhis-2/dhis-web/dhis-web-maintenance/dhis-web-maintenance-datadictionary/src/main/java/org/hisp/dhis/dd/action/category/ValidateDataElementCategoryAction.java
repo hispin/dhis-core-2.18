@@ -122,11 +122,13 @@ public class ValidateDataElementCategoryAction
         }
 
             if ( conceptName != null || !conceptName.isEmpty()) {
-            // No funny characters please.  max length 10.
-            Pattern conceptNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z_]+$");
+            
+            // This string will be used as an XML attribute name.  So:
+            // Start with a letter. No funny characters please.  max length 10.
+            Pattern conceptNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z_]{1,10}$");
             Matcher matcher = conceptNamePattern.matcher(conceptName);
 
-            if (conceptName.length()>10 || !matcher.matches())
+            if (!matcher.matches())
             {
                 message = i18n.getString( "illegal_conceptName" );
 
