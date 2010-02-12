@@ -125,7 +125,7 @@ public class ValidateDataElementCategoryAction
             
             // This string will be used as an XML attribute name.  So:
             // Start with a letter. No funny characters please.  max length 10.
-            Pattern conceptNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z_]{0,9}$");
+            Pattern conceptNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]{0,9}$");
             Matcher matcher = conceptNamePattern.matcher(conceptName);
 
             if (!matcher.matches())
