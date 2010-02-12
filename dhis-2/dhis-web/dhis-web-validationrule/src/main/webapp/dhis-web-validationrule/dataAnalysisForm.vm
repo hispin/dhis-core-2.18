@@ -94,7 +94,7 @@
 	</tr>
 </table>
 
-#if( $key == "stddevoutlier" || $key == "minmaxoutlier" )
+#if( $key == "stddevoutlier" )
 <div id="stddevform">
 <table>
 	## STANDARD DEVIATION INPUT FIELD	
