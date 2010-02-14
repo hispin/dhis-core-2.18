@@ -1,7 +1,10 @@
-package org.hisp.dhis.importexport;
+package org.hisp.dhis.external.location;
+
+
+import javax.xml.transform.URIResolver;
 
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +14,7 @@ package org.hisp.dhis.importexport;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
+ * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,16 +30,16 @@ package org.hisp.dhis.importexport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.staxwax.reader.XMLReader;
-import org.amplecode.staxwax.writer.XMLWriter;
-
 /**
- * @author Lars Helge Overland
- * @version $Id: XMLConverter.java 4646 2008-02-26 14:54:29Z larshelg $
+ * URI Resolver for xslt transforms based on LocationManager
+ *
+ * @author bobj
+ * @version created 12-Feb-2010
  */
-public interface XMLConverter
-{
-    void write( XMLWriter writer, ExportParams params);
-    
-    void read( XMLReader reader, ImportParams params);
+public interface LocationManagerResolver extends URIResolver {
+
+    LocationManager getLocationManager();
+
+    void setLocationManager(LocationManager lm);
+
 }

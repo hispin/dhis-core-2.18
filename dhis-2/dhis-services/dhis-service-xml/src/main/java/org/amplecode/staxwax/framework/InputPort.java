@@ -1,7 +1,10 @@
-package org.hisp.dhis.importexport;
+package org.amplecode.staxwax.framework;
+
+
+import javax.xml.transform.Source;
 
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +14,7 @@ package org.hisp.dhis.importexport;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
+ * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,16 +30,39 @@ package org.hisp.dhis.importexport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.staxwax.reader.XMLReader;
-import org.amplecode.staxwax.writer.XMLWriter;
-
 /**
- * @author Lars Helge Overland
- * @version $Id: XMLConverter.java 4646 2008-02-26 14:54:29Z larshelg $
+ *
+ * @author bobj
+ * @version created 14-Jan-2010
  */
-public interface XMLConverter
-{
-    void write( XMLWriter writer, ExportParams params);
-    
-    void read( XMLReader reader, ImportParams params);
+
+// Simple tuple providing named xml results
+public class InputPort {
+
+    public InputPort( String name, Source result )
+    {
+        this.name = name;
+        this.result = result;
+    }
+
+    protected String name;
+
+    protected Source result;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Source getSource() {
+        return result;
+    }
+
+    public void setSource(Source result) {
+        this.result = result;
+    }
+
 }
