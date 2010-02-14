@@ -16,6 +16,7 @@
   <modules>
     <module>dhis-service-administration</module>
     <module>dhis-service-core</module>
+    <module>dhis-service-xml</module>
     <module>dhis-service-datamart-default</module>
     <module>dhis-service-user-hibernate</module>
     <module>dhis-service-importexport</module>
