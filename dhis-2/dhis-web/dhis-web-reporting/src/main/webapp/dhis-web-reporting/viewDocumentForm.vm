@@ -12,6 +12,7 @@
                 <col width="20">
                 <col width="20">
                 <col width="20">
+                <thead>
                 <tr>
                     <td colspan="4" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddDocumentForm.action'"></td>
                 </tr>
@@ -19,6 +20,7 @@
                     <th>$i18n.getString( "name" )</th>
                     <th colspan="3">$i18n.getString( "operations" )</th>
                 </tr>
+                </thead>
                 <tbody id="list">
                 #foreach ( $document in $documents )
                 <tr id="tr${document.id}">
@@ -32,12 +34,12 @@
                     	<img src="../images/view_report.png" alt="$i18n.getString( 'view_report' )"></a>
                     </td>
                     <td style="text-align:center"><a href="javascript:addDocumentToDashboard( '$document.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a></td>
-                    <td style="text-align:center"><a href="javascript:removeDocument( '$encoder.htmlEncode( $document.id )' )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a></td>
+                    <td style="text-align:center"><a href="javascript:removeDocument( $document.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a></td>
                 </tr>
                 #end
                 </tbody>
             </table>
-                        
+               
         </td>
         <td style="width:20em; padding-left:2em; vertical-align:top">
 

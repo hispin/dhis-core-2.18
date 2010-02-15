@@ -1,11 +1,4 @@
 
-$( document ).ready( function(){
-
-$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
-$( "table.listTable tbody tr:even" ).addClass( "listRow" );
-
-});
-
 /**
  * Redirects to the translate GUI.
  * 

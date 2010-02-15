@@ -16,6 +16,7 @@
                 #if ( $forumIntegration )
                 <col width="20">
                 #end
+                <thead>
 				<tr>
 					<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
 					<td>
@@ -54,10 +55,11 @@
 					<th colspan="3">$i18n.getString( "name" )</th>
 					<th colspan="5">$i18n.getString( "operations" )</th>
 				</tr>
+				</thead>
 				<tbody id="list">
 				#foreach( $dataElement in $dataElements )
 				<tr id="tr${dataElement.id}">
-					<td colspan="3">$encoder.htmlEncode( $dataElement.name )</td>
+					<td colspan="3" onclick="showDataElementDetails( $dataElement.id )">$encoder.htmlEncode( $dataElement.name )</td>
 					#if ( $dataDictionaryMode == "extended" )
 					<td style="text-align:center"><a href="showUpdateExtendedDataElementForm.action?id=$dataElement.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					#else

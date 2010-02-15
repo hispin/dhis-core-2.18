@@ -15,7 +15,8 @@
 		  <col width="20">
           <col width="20">
           <col width="20">
-		  
+          
+          <thead>
 		  <tr>
 			<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
 			<td colspan="9" style="text-align:right">
@@ -28,11 +29,11 @@
             <th>$i18n.getString( "name" )</th>
             <th style="text-align:center" colspan="9">$i18n.getString( "operations" )</th>
           </tr>
-
+          </thead>
           <tbody id="list">
             #foreach( $dataSet in $dataSets )
               <tr id="tr${dataSet.id}">
-                <td>$encoder.htmlEncode( $dataSet.name )</td>
+                <td onclick="showDataSetDetails( $dataSet.id )">$encoder.htmlEncode( $dataSet.name )</td>
                 <td style="text-align:center">
                   <a href="defineDataSetAssociationsForm.action?dataSetId=$dataSet.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
                 </td>

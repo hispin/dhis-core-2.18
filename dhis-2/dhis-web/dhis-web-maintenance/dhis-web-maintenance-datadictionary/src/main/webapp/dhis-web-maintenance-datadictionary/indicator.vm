@@ -5,7 +5,7 @@
 	<tr>
 		<td style="vertical-align:top">
 
-			<table class="listTable">
+			<table class="listTable">				
 				<col>
 				<col>
 				<col>
@@ -13,6 +13,7 @@
 				<col width="20">
 				<col width="20">
 				<col width="20">
+				<thead>	
 				<tr>
 					<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
 					<td>$i18n.getString( "select_data_dictionary" ):
@@ -49,10 +50,11 @@
 					<th colspan="3">$i18n.getString( "name" )</th>
 					<th colspan="4">$i18n.getString( "operations" )</th>
 				</tr>
+				</thead>
 				<tbody id="list">
 				#foreach( $indicator in $indicators )
 				<tr id="tr${indicator.id}">
-					<td colspan="3">$encoder.htmlEncode( $indicator.name )</td>
+					<td colspan="3" onclick="showIndicatorDetails( $indicator.id )">$encoder.htmlEncode( $indicator.name )</td>
 					#if ( $dataDictionaryMode == "extended" )
 						<td style="text-align:center"><a href="showUpdateExtendedIndicatorForm.action?id=$indicator.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					#else

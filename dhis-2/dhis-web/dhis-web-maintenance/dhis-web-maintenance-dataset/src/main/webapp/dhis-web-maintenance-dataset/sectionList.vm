@@ -8,7 +8,8 @@
           <col>
           <col>
           <col width="20">
-          <col width="20">       	
+          <col width="20">   
+          <thead>    	
 		  <tr>
 			<td colspan="2"><label>$i18n.getString( "select_dataset" )</label><br>
 			  <select id="dataSetId" name="dataSetId" style="min-width:20em" onchange="javascript:getSectionByDataSet(this.options[this.selectedIndex].value)">
@@ -29,6 +30,7 @@
 			<th>$i18n.getString( "label" )</th>
             <th colspan="2">$i18n.getString( "operations" )</th>
           </tr>
+          </thead>
           <tbody id="list">
             #foreach( $section in $sections )
               <tr id="tr${section.id}">
