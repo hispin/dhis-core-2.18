@@ -233,11 +233,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementByShortName( shortName ) );
     }
 
-    public DataElement getDataElementByCode( String code )
-    {
-        return i18n( i18nService, dataElementStore.getDataElementByCode( code ) );
-    }
-
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByAggregationOperator( aggregationOperator ) );

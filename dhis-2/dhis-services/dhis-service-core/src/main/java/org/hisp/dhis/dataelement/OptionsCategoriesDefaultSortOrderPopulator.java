@@ -113,7 +113,13 @@ public class OptionsCategoriesDefaultSortOrderPopulator
         //executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_name_key" ); will be maintained in transition period
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
         
+        //minmaxdataelement query index
         executeSql( "CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )" );
+        
+        //drop code unique constraints
+        executeSql( "ALTER TABLE dataelement DROP CONSTRAINT dataelement_code_key" );
+        executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_code_key" );
+        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key" );
         
         log.info( "Updated Category sort order and primary keys" );
     }

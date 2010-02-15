@@ -117,14 +117,6 @@ public interface DataElementService
     DataElement getDataElementByShortName( String shortName );
 
     /**
-     * Returns a DataElement with a given code.
-     * 
-     * @param code the code of the DataElement to return.
-     * @return the DataElement with the given code, or null if no match.
-     */
-    DataElement getDataElementByCode( String code );
-
-    /**
      * Returns all DataElements.
      * 
      * @return a collection of all DataElements, or an empty collection if there

@@ -77,7 +77,6 @@ function validateAddIndicator()
     request.send( 'validateIndicator.action?name=' + getFieldValue( 'name' ) +
     	'&shortName=' + getFieldValue( 'shortName' ) +
     	'&alternativeName=' + getFieldValue( 'alternativeName' ) +
-    	'&code=' + getFieldValue( 'code' ) +
         '&indicatorTypeId=' + getListValue( 'indicatorTypeId' ) +
         '&numerator=' + getFieldValue( 'numerator' ) +
         '&numeratorDescription=' + getFieldValue( 'numeratorDescription' ) +

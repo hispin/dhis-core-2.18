@@ -103,13 +103,6 @@ public class ValidateDataElementAction
         this.shortName = shortName;
     }
 
-    private String code;
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-    
     private String valueType;
 
     public void setValueType( String valueType )
@@ -224,18 +217,6 @@ public class ValidateDataElementAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "alternative_name_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        if ( code != null && code.trim().length() != 0 )
-        {
-            DataElement match = dataElementService.getDataElementByCode( code );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "code_in_use" );
 
                 return INPUT;
             }

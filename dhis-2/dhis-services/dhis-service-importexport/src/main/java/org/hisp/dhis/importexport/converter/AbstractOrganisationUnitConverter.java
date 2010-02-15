@@ -79,10 +79,6 @@ public class AbstractOrganisationUnitConverter
         {
             match = organisationUnitService.getOrganisationUnitByShortName( object.getShortName() );
         }
-        if ( match == null )
-        {
-            match = organisationUnitService.getOrganisationUnitByCode( object.getCode() );
-        }
         
         return match;
     }

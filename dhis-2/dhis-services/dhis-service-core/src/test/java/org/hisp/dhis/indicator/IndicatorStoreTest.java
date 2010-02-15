@@ -394,31 +394,6 @@ public class IndicatorStoreTest
     }    
 
     @Test
-    public void testGetIndicatorByCodeName()
-        throws Exception
-    {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
-
-        indicatorTypeStore.save( type );
-        
-        Indicator indicatorA = createIndicator( 'A', type );
-        Indicator indicatorB = createIndicator( 'B', type );
-    
-        int idA = indicatorStore.addIndicator( indicatorA );
-        int idB = indicatorStore.addIndicator( indicatorB );
-        
-        assertNotNull( indicatorStore.getIndicator( idA ) );
-        assertNotNull( indicatorStore.getIndicator( idB ) );
-        
-        indicatorA = indicatorStore.getIndicatorByCode( "CodeA" );
-        assertNotNull( indicatorA );
-        assertEq( 'A', indicatorA );
-        
-        Indicator indicatorC = indicatorStore.getIndicatorByCode( "CodeC" );
-        assertNull( indicatorC );
-    } 
-
-    @Test
     public void testGetIndicatorsWithGroupSets()
         throws Exception
     {

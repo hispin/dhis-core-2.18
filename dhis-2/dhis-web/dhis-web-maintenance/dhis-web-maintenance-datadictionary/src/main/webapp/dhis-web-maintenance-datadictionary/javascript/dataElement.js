@@ -143,7 +143,6 @@ function validateAddDataElement()
     request.send( 'validateDataElement.action?name=' + getFieldValue( 'name' ) +
         '&shortName=' + getFieldValue( 'shortName' ) +
         '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-        '&code=' + getFieldValue( 'code' ) +
         '&valueType=' + getSelectValue( 'valueType' ) +
         '&calculated=' + getCheckboxValue( 'calculated' ) +
         '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +

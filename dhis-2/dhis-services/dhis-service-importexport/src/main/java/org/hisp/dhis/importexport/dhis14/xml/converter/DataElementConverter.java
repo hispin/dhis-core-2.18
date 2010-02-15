@@ -199,17 +199,19 @@ public class DataElementConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
-        final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+        Map<String, String> values = reader.readElements( ELEMENT_NAME );
         
-        final boolean calculated = convertBooleanFromDhis14( values.get( FIELD_CALCULATED ) );
+        boolean calculated = convertBooleanFromDhis14( values.get( FIELD_CALCULATED ) );
         
-        final DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryCombo proxyCategoryCombo = new DataElementCategoryCombo();
+        proxyCategoryCombo.setId( categoryCombo.getId() );
         
         if ( calculated )
         {
             final CalculatedDataElement element = new CalculatedDataElement();
 
-            element.setCategoryCombo( categoryCombo );
+            element.setCategoryCombo( proxyCategoryCombo );
             
             element.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
             element.setName( values.get( FIELD_NAME ) );
@@ -231,7 +233,7 @@ public class DataElementConverter
         {
             final DataElement element = new DataElement();
 
-            element.setCategoryCombo( categoryCombo );
+            element.setCategoryCombo( proxyCategoryCombo );
             
             element.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
             element.setName( values.get( FIELD_NAME ) );

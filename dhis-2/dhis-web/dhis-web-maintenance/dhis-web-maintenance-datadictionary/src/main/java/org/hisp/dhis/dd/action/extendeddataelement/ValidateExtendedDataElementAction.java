@@ -285,34 +285,14 @@ public class ValidateExtendedDataElementAction
         }
 
         // -------------------------------------------------------------------------
-        // code: required / unique
+        // code: required
         // -------------------------------------------------------------------------
         
-        if ( code == null )
+        if ( code == null || code.trim().length() == 0 )
         {
             message = i18n.getString( "specify_code" );
             
             return INPUT;
-        }
-        else
-        {
-            code = code.trim();
-            
-            if ( code.length() == 0 )
-            {
-                message = i18n.getString( "specify_code" );
-                
-                return INPUT;
-            }
-            
-            DataElement match = dataElementService.getDataElementByCode( code );
-
-            if ( match != null && ( id == null || match.getId() != id ) )
-            {
-                message = i18n.getString( "code_in_use" );
-
-                return INPUT;
-            }
         }
 
         // -------------------------------------------------------------------------

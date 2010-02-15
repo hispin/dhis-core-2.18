@@ -201,11 +201,13 @@ public class DataValueConverter
     {
         String line = "";
         
-        final DataValue value = new DataValue();
-        final DataElement dataElement = new DataElement();
-        final Period period = new Period();
-        final OrganisationUnit organisationUnit = new OrganisationUnit();
-        final DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        DataValue value = new DataValue();
+        DataElement dataElement = new DataElement();
+        Period period = new Period();
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo proxyCategoryOptionCombo = new DataElementCategoryOptionCombo();
+        proxyCategoryOptionCombo.setId( categoryOptionCombo.getId() );
         
         try
         {
@@ -224,7 +226,7 @@ public class DataValueConverter
                 value.setSource( organisationUnit );
                 value.setValue( handleValue( values[6] ) );
                 value.setComment( values[13] );
-                value.setOptionCombo( categoryOptionCombo );
+                value.setOptionCombo( proxyCategoryOptionCombo );
                 
                 read( value, GroupMemberType.NONE, params );
             }

@@ -86,13 +86,6 @@ public class ValidateOrganisationUnitAction
         this.shortName = shortName;
     }
 
-    private String code;
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
     private String openingDate;
 
     public void setOpeningDate( String openingDate )
@@ -177,24 +170,6 @@ public class ValidateOrganisationUnitAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "short_name_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
-        else
-        {
-            code = code.trim();
-
-            OrganisationUnit match = organisationUnitService.getOrganisationUnitByCode( code );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "org_unit_code_in_use" );
 
                 return INPUT;
             }
