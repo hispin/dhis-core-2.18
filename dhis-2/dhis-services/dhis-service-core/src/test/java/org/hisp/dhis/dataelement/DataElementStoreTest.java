@@ -275,29 +275,7 @@ public class DataElementStoreTest
         DataElement dataElementC = dataElementStore.getDataElementByShortName( "ShortNameC" );
         assertNull( dataElementC );
     }
-
-    @Test
-    public void testGetDataElementByCode()
-    {
-        DataElement dataElementA = createDataElement( 'A' );
-        DataElement dataElementB = createDataElement( 'B' );
-        int idA = dataElementStore.addDataElement( dataElementA );
-        int idB = dataElementStore.addDataElement( dataElementB );
-
-        dataElementA = dataElementStore.getDataElementByCode( "CodeA" );
-        assertNotNull( dataElementA );
-        assertEquals( idA, dataElementA.getId() );
-        assertEquals( "DataElementA", dataElementA.getName() );
-
-        dataElementB = dataElementStore.getDataElementByCode( "CodeB" );
-        assertNotNull( dataElementB );
-        assertEquals( idB, dataElementB.getId() );
-        assertEquals( "DataElementB", dataElementB.getName() );
-
-        DataElement dataElementC = dataElementStore.getDataElementByCode( "CodeC" );
-        assertNull( dataElementC );
-    }
-
+    
     @Test
     public void testGetAllDataElements()
     {

@@ -66,7 +66,6 @@ function validateAddOrganisationUnit()
     request.setCallbackSuccess( addValidationCompleted );
     request.send( 'validateOrganisationUnit.action?name=' + getFieldValue( 'name' ) +
         '&shortName=' + getFieldValue( 'shortName' ) +
-        '&code=' + getFieldValue( 'code' ) +
         '&openingDate=' + getFieldValue( 'openingDate' ) );
 
     return false;

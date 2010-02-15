@@ -138,10 +138,6 @@ public class AbstractExtendedIndicatorConverter
         {
             match = indicatorService.getIndicatorByShortName( object.getShortName() );
         }
-        if ( match == null )
-        {
-            match = indicatorService.getIndicatorByCode( object.getCode() );
-        }
 
         if ( match != null && match.getExtended() != null )
         {

@@ -55,8 +55,6 @@ public interface IndicatorStore
 
     Indicator getIndicatorByAlternativeName( String alternativeName );
 
-    Indicator getIndicatorByCode( String code );
-    
     Collection<Indicator> getIndicatorsWithGroupSets();
     
     Collection<Indicator> getIndicatorsWithoutGroups();

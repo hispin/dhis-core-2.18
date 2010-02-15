@@ -134,10 +134,6 @@ public class AbstractExtendedDataElementConverter
         {
             match = dataElementService.getDataElementByShortName( object.getShortName() );
         }
-        if ( match == null )
-        {
-            match = dataElementService.getDataElementByCode( object.getCode() );
-        }
         
         if ( match != null && match.getExtended() != null )
         {

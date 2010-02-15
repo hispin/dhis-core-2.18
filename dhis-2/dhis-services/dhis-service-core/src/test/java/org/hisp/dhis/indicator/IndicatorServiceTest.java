@@ -527,30 +527,5 @@ public class IndicatorServiceTest
         
         Indicator indicatorC = indicatorService.getIndicatorByShortName( "ShortNameC" );
         assertNull( indicatorC );
-    }    
-
-    @Test
-    public void testGetIndicatorByCodeName()
-        throws Exception
-    {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
-
-        indicatorService.addIndicatorType( type );
-        
-        Indicator indicatorA = createIndicator( 'A', type );
-        Indicator indicatorB = createIndicator( 'B', type );
-    
-        int idA = indicatorService.addIndicator( indicatorA );
-        int idB = indicatorService.addIndicator( indicatorB );
-        
-        assertNotNull( indicatorService.getIndicator( idA ) );
-        assertNotNull( indicatorService.getIndicator( idB ) );
-        
-        indicatorA = indicatorService.getIndicatorByCode( "CodeA" );
-        assertNotNull( indicatorA );
-        assertEq( 'A', indicatorA );
-        
-        Indicator indicatorC = indicatorService.getIndicatorByCode( "CodeC" );
-        assertNull( indicatorC );
     }
 }

@@ -29,7 +29,7 @@
     </property>
 
     <property name="code">
-      <column name="code" not-null="false" unique="true" length="100"/>
+      <column name="code" not-null="false" unique="false" length="100"/>
     </property>
     
     <property name="description" type="text"/>

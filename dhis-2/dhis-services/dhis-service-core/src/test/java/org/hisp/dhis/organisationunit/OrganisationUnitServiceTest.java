@@ -186,9 +186,6 @@ public class OrganisationUnitServiceTest
         OrganisationUnit unit2 = organisationUnitService.getOrganisationUnitByShortName( oU2ShortName );
         assertEquals( unit2.getShortName(), oU2ShortName );
 
-        OrganisationUnit unit3 = organisationUnitService.getOrganisationUnitByCode( oU3Code );
-        assertEquals( unit3.getCode(), oU3Code );
-
         OrganisationUnit unit4 = organisationUnitService.getOrganisationUnitByName( "foo" );
         assertNull( unit4 );
     }

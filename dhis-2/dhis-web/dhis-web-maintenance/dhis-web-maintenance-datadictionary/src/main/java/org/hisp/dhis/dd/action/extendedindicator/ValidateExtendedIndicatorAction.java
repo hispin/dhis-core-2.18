@@ -282,21 +282,16 @@ public class ValidateExtendedIndicatorAction
                 return INPUT;
             }
         }
+
+        // -------------------------------------------------------------------------
+        // code: required
+        // -------------------------------------------------------------------------
         
-        // -------------------------------------------------------------------------
-        // code: unique
-        // -------------------------------------------------------------------------
-
-        if ( code != null && code.trim().length() != 0 )
+        if ( code == null || code.trim().length() == 0 )
         {
-            Indicator match = indicatorService.getIndicatorByCode( code );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "code_in_use" );
-
-                return INPUT;
-            }
+            message = i18n.getString( "specify_code" );
+            
+            return INPUT;
         }
 
         // -------------------------------------------------------------------------

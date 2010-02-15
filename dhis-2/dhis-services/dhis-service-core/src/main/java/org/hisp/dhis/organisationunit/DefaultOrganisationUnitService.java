@@ -172,11 +172,6 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitByShortName( shortName );
     }
 
-    public OrganisationUnit getOrganisationUnitByCode( String code )
-    {
-        return organisationUnitStore.getOrganisationUnitByCode( code );
-    }
-
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
         return organisationUnitStore.getRootOrganisationUnits();

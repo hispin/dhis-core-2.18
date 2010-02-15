@@ -90,13 +90,6 @@ public class ValidateIndicatorAction
         this.alternativeName = alternativeName;
     }
 
-    private String code;
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
     private Integer indicatorTypeId;
 
     public void setIndicatorTypeId( Integer indicatorTypeId )
@@ -224,18 +217,6 @@ public class ValidateIndicatorAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "alternative_name_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        if ( code != null && code.trim().length() != 0 )
-        {
-            Indicator match = indicatorService.getIndicatorByCode( code );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "code_in_use" );
 
                 return INPUT;
             }

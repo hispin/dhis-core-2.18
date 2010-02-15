@@ -30,7 +30,7 @@
     </property>
 		
     <property name="code">
-      <column name="code" not-null="false" unique="true" length="25"/>
+      <column name="code" not-null="false" unique="false" length="25"/>
     </property>
 		
     <property name="openingDate" column="openingdate" type="date"/>

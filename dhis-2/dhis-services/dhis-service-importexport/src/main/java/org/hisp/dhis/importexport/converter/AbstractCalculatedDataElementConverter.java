@@ -78,10 +78,6 @@ public class AbstractCalculatedDataElementConverter
         {
             match = dataElementService.getDataElementByShortName( object.getShortName() );
         }
-        if ( match == null )
-        {
-            match = dataElementService.getDataElementByCode( object.getCode() );
-        }
         
         CalculatedDataElement calculated = (CalculatedDataElement) match;
         
