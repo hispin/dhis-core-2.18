@@ -27,24 +27,25 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElementCategory.DEFAULT_NAME;
+
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryOptionComboConverter;
+import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class DataElementCategoryOptionComboConverter
-    extends AbstractDataElementCategoryOptionComboConverter implements XMLConverter
+public class DataElementCategoryConverter
+    extends AbstractDataElementCategoryConverter implements XMLConverter
 {
     /**
      * Constructor for read operations.
@@ -52,13 +53,13 @@ public class DataElementCategoryOptionComboConverter
      * @param importObjectService the importObjectService to use.
      * @param categoryOptionService the dataElementCategoryOptionService to use.
      */
-    public DataElementCategoryOptionComboConverter( ImportObjectService importObjectService,
+    public DataElementCategoryConverter( ImportObjectService importObjectService,
         DataElementCategoryService categoryService )
     {
         this.importObjectService = importObjectService;
         this.categoryService = categoryService;
-    }
-    
+    }    
+
     // -------------------------------------------------------------------------
     // XMLConverter implementation
     // -------------------------------------------------------------------------
@@ -70,10 +71,10 @@ public class DataElementCategoryOptionComboConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-
-        NameMappingUtil.addCategoryOptionComboMapping( categoryOptionCombo.getId(), categoryOptionCombo );
+        DataElementCategory category = categoryService.getDataElementCategoryByName( DEFAULT_NAME );
         
-        read( categoryOptionCombo, GroupMemberType.NONE, params );
-    }        
+        NameMappingUtil.addCategoryMapping( category.getId(), category.getName() );
+        
+        read( category, GroupMemberType.NONE, params );
+    }
 }

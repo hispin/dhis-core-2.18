@@ -54,6 +54,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryComboConverter;
+import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryOptionComboConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryOptionConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementConverter;
@@ -231,6 +232,7 @@ public class DefaultDhis14XMLImportService
                 XMLReader reader = XMLFactory.getXMLReader( zipIn );
                 
                 XMLConverter categoryOptionConverter = new DataElementCategoryOptionConverter( importObjectService, categoryService );
+                XMLConverter categoryConverter = new DataElementCategoryConverter( importObjectService, categoryService );
                 XMLConverter categoryComboConverter = new DataElementCategoryComboConverter( importObjectService, categoryService );
                 XMLConverter categoryOptionComboConverter = new DataElementCategoryOptionComboConverter( importObjectService, categoryService );
                 XMLConverter calculatedDataElementAssociationConverter = new CalculatedDataElementAssociationConverter( expressionMap );
@@ -242,9 +244,10 @@ public class DefaultDhis14XMLImportService
                 XMLConverter hierarchyConverter = new OrganisationUnitHierarchyConverter( importObjectService, organisationUnitService );
                 XMLConverter periodConverter = new PeriodConverter( importObjectService, periodService, objectMappingGenerator.getPeriodTypeMapping() );
 
-                categoryOptionConverter.read( reader, params );
-                categoryComboConverter.read( reader, params );
-                categoryOptionComboConverter.read( reader, params );
+                converterInvoker.invokeRead( categoryOptionConverter, reader, params );
+                converterInvoker.invokeRead( categoryConverter, reader, params );
+                converterInvoker.invokeRead( categoryComboConverter, reader, params );
+                converterInvoker.invokeRead( categoryOptionComboConverter, reader, params );
                 
                 while ( reader.next() )
                 {

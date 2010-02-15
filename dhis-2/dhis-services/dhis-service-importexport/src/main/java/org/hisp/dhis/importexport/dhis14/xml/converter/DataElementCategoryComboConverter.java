@@ -39,6 +39,7 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryComboConverter;
+import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 
 /**
  * @author Lars Helge Overland
@@ -71,10 +72,9 @@ public class DataElementCategoryComboConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
-        final DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
-        
-        categoryCombo.setId( 1 );
-        categoryCombo.setName( DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
+
+        NameMappingUtil.addCategoryComboMapping( categoryCombo.getId(), categoryCombo.getName() );
         
         read( categoryCombo, GroupMemberType.NONE, params );
     }
