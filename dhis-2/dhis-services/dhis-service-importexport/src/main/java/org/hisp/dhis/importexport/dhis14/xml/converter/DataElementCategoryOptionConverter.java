@@ -37,6 +37,9 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryOptionConverter;
+import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+
+import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
 /**
  * @author Lars Helge Overland
@@ -69,11 +72,9 @@ public class DataElementCategoryOptionConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
-        final DataElementCategoryOption categoryOption = new DataElementCategoryOption();
+        DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOptionByName( DEFAULT_CATEGORY_COMBO_NAME );
         
-        categoryOption.setId( 1 );
-        categoryOption.setName( DataElementCategoryOption.DEFAULT_NAME );
-        categoryOption.setShortName( DataElementCategoryOption.DEFAULT_NAME );
+        NameMappingUtil.addCategoryOptionMapping( categoryOption.getId(), categoryOption.getName() );
         
         read( categoryOption, GroupMemberType.NONE, params );
     }   
