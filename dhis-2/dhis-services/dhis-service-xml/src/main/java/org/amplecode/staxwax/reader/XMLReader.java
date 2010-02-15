@@ -29,10 +29,9 @@ package org.amplecode.staxwax.reader;
  */
 
 import java.util.Map;
+import javax.xml.stream.XMLEventReader;
 
 import javax.xml.stream.XMLStreamReader;
-import org.codehaus.stax2.XMLEventReader2;
-import org.codehaus.stax2.XMLStreamReader2;
 
 /**
  * This interface provides convenience methods for XML reading.
@@ -136,7 +135,7 @@ public interface XMLReader
      * 
      * @return the underlying XMLStreamReader.
      */
-    XMLStreamReader2 getXmlStreamReader();
+    XMLStreamReader getXmlStreamReader();
     
 
     /**
@@ -144,7 +143,7 @@ public interface XMLReader
      *
      * @return the XMLEventReader.
      */
-    XMLEventReader2 getXmlEventReader();
+    XMLEventReader getXmlEventReader();
 
     /**
      * Logs all events which occurs while parsing the document for debugging purposes.

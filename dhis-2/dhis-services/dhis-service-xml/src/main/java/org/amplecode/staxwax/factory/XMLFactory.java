@@ -138,14 +138,14 @@ public class XMLFactory
     }
 
 
-        /**
+    /**
      * Creates an XMLReader from a StAX-based XMLStreamReader.
      *
      * @param inputStreamReader the XMLStreamReader to read from.
      * @return an XMLReader.
      */
     
-    public static XMLReader getXMLReaderf( javax.xml.stream.XMLStreamReader inputStreamReader )
+    public static XMLReader getXMLReader( javax.xml.stream.XMLStreamReader inputStreamReader )
     {
 
             XMLReader xmlReader = new DefaultXMLStreamReader( inputStreamReader );
