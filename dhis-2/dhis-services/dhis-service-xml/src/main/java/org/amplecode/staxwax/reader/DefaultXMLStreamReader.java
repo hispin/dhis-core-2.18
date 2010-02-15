@@ -241,7 +241,7 @@ public class DefaultXMLStreamReader
     }
     
   @Override
-    public XMLStreamReader2 getXmlStreamReader()
+    public XMLStreamReader getXmlStreamReader()
     {
         return reader;
     }
