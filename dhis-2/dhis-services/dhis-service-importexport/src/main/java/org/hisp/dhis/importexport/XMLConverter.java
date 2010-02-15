@@ -36,7 +36,7 @@ import org.amplecode.staxwax.writer.XMLWriter;
  */
 public interface XMLConverter
 {
-    void write( XMLWriter writer, ExportParams params);
+    void write( XMLWriter writer, ExportParams params );
     
-    void read( XMLReader reader, ImportParams params);
+    void read( XMLReader reader, ImportParams params );
 }
