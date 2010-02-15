@@ -5,7 +5,25 @@
 
 $( document ).ready( function()
 {
-    if( $( window ).width() <= 800 ) // In case of 800 x 600 screens
+	// Zebra stripes in lists
+	
+	$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+    $( "table.listTable tbody tr:even" ).addClass( "listRow" );
+
+    // Hover rows in lists
+    
+    $( "table.listTable tbody tr" ).mouseover( function()
+    {
+    	$( this ).addClass( "listHoverRow" );
+    } );
+    $( "table.listTable tbody tr" ).mouseout( function()
+    {
+        $( this ).removeClass( "listHoverRow" );
+    } );
+
+    // Resize UI in case of 800 x 600 screen
+
+    if( $( window ).width() <= 800 ) 
     {
         $( 'img#menuSeparator1').css('left','400px' );
         $( 'img#menuSeparator2').css('left','490px' );
@@ -48,11 +66,8 @@ function showDropDown( id )
     var newDropDownId = "#" + id;
   
     if ( dropDownId != newDropDownId )
-    {
-        if ( dropDownId )
-        {
-            hideDropDown();
-        }
+    {   
+        hideDropDown();
 
         dropDownId = newDropDownId;
         
@@ -62,9 +77,12 @@ function showDropDown( id )
 
 function hideDropDown()
 {
-    $( dropDownId ).hide();
-    
-    dropDownId = null;
+	if ( dropDownId )
+	{
+	    $( dropDownId ).hide();
+	    
+	    dropDownId = null;
+	}
 }
 
 function hideDropDownTimeout()

@@ -16,6 +16,7 @@
                 <col width="20">
                 <col width="20">
                 <col width="20">
+                <thead>
 		        <tr>
                     <td colspan="10" style="text-align:right">
                     	<input type="button" value="$i18n.getString( 'add_indicator_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=indicators'"><br>
@@ -28,10 +29,11 @@
 					<th>$i18n.getString( "name" )</th>
 					<th colspan="9">$i18n.getString( "operations" )</th>
 				</tr>
+				</thead>
 				<tbody id="list">
 				#foreach ( $table in $tables )
 				<tr id="tr${table.id}">
-					<td>$encoder.htmlEncode( $table.name )</td>
+					<td onclick="showTableDetails( $table.id )">$encoder.htmlEncode( $table.name )</td>
 					<td style="text-align:center"><a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a></td>
                     <td style="text-align:center"><a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&dimension=$table.isDimensional()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
                     <td style="text-align:center"><a href="displayTable.action?id=$table.id" title="$i18n.getString( "display" )"><img src="../images/display.png" alt="$i18n.getString( "display" )"></a></td>

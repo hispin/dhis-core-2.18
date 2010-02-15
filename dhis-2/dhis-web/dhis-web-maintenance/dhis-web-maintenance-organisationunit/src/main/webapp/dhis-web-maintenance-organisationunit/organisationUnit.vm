@@ -10,6 +10,7 @@
 				<col width="20">
 				<col width="20">
 				<col width="20">
+                <thead>
 				<tr>
 					<td></td>
 					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOrganisationUnitForm.action'"></td>
@@ -18,10 +19,11 @@
 					<th>$i18n.getString( "name" )</th>
 					<th colspan="3">$i18n.getString( "operations" )</th>
 				</tr>
+                </thead>
 				<tbody id="list">
 				#foreach( $organisationUnit in $organisationUnits )
 				<tr id="tr${organisationUnit.id}">
-					<td>$encoder.htmlEncode( $organisationUnit.name )</td>
+					<td onclick="showOrganisationUnitDetails( $organisationUnit.id )">$encoder.htmlEncode( $organisationUnit.name )</td>
 					<td style="text-align:center"><a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					<td style="text-align:center">#if( $organisationUnit.children.size() == 0 )<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>#end</td>
 					<td style="text-align:center"><a href="javascript:showOrganisationUnitDetails( $organisationUnit.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>

@@ -11,7 +11,8 @@
           <col width="20">
           <col width="20">     
           <col width="20">
-          <col width="20">     		  
+          <col width="20">   
+          <thead>  		  
 		  <tr>
 		  	<td></td>
 			<td colspan="5" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramForm.action'" style="width:70px"></td>
@@ -20,40 +21,34 @@
             <th>$i18n.getString( "name" )</th>
             <th colspan="5">$i18n.getString( "operations" )</th>
           </tr>
-
+          </thead>
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $program in $programs )
               <tr>
               
-                <td#alternate( $mark )>$encoder.htmlEncode( $program.name )</td>                
+                <td onclick="showProgramDetails( $program.id )">$encoder.htmlEncode( $program.name )</td>                
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
                 </td>
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
                 </td>
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="programStage.action?id=$program.id" title="$i18n.getString( "view_stage_management" )"><img src="../images/add_section.png" alt="$i18n.getString( "view_stage_management" )"></a>
                 </td>                
  
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="javascript:showProgramDetails( $program.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
                 </td>
                 
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
             #end
 
           </tbody>

@@ -10,6 +10,7 @@
 <span id="info">$dataValues.size() $i18n.getString( "values_found" )</span>
 
 <table class="listTable" style="width:100%">
+	<thead>
 	<tr>
 		<th>$i18n.getString( "data_element" )</th>
 		<th>$i18n.getString( "organisation_unit" )</th>
@@ -19,8 +20,8 @@
 		<th style="text-align:center">$i18n.getString( "max" )</th>
 		<th style="text-align:center">$i18n.getString( "mark" )</th>
 	</tr>
-	#set( $count = 0 )
-	
+	</thead>
+	#set( $count = 0 )	
 	<tbody id="list">
 	#foreach( $value in $dataValues )	
 	#set( $count = $count + 1 )	

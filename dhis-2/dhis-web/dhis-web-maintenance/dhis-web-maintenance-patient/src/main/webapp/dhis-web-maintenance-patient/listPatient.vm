@@ -26,7 +26,7 @@
           <col width="20">
           <col width="20">
           <col width="20">    
-          
+          <thead>
 		  <tr>
 		  	<td></td>
 		  	<td></td>
@@ -46,19 +46,18 @@
             <th>$i18n.getString( "age" )</th>
             <th colspan="6" style="text-align:center">$i18n.getString( "operations" )</th>
           </tr>
-          
+          </thead>
           <tbody id="list">	
-          #set( $mark = false )
         
           #foreach( $patient in $patients )
-          	<tr #alternate( $mark )>
-				<td>			
+          	<tr>
+				<td onclick="showPatientDetails( $patient.id )">			
 					$encoder.htmlEncode( $patient.firstName )
 				</td>
-				<td>			
+				<td onclick="showPatientDetails( $patient.id )">			
 					$encoder.htmlEncode( $patient.middleName )
 				</td>
-				<td>			
+				<td onclick="showPatientDetails( $patient.id )">			
 					$encoder.htmlEncode( $patient.lastName )
 				</td>				
 				<td>			
@@ -71,35 +70,30 @@
                     $encoder.htmlEncode( $patient.getAge() )
                 </td>
 				
-				<td style="text-align:center"#alternate( $mark )>
+				<td style="text-align:center">
                   <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
                 </td>                
-                <td style="text-align:center"#alternate( $mark )>                  
+                <td style="text-align:center">                  
                   <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
                 </td>
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title="$i18n.getString( "edit_attribute_values" )"><img src="../images/attribute.png" alt="$i18n.getString( "edit_attribute_values" )"></a>
                 </td>
                 
-                <td style="text-align:center"#alternate( $mark )>                  
+                <td style="text-align:center">                  
                   <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="../images/relationship.png" alt="$i18n.getString( "manage_relationship" )"></a>
                 </td>                                
  
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
                 </td>
 				
 			</tr>
-			#if( $mark )
-				#set( $mark = false )
-			#else
-				#set( $mark = true )
-			#end
     	#end
     	</tbody>
     

@@ -14,6 +14,7 @@
                 <col width="20">
                 <col width="20">
                 <col width="20">
+                <thead>
                 <tr>
                 	<td colspan="6" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddReportForm.action'"></td>
                 </tr>
@@ -21,6 +22,7 @@
                     <th>$i18n.getString( "name" )</th>
                     <th colspan="5">$i18n.getString( "operations" )</th>
                 </tr>
+                </thead>
                 <tbody id="list">
                 #foreach ( $report in $reports )
                 <tr id="tr${report.id}">
@@ -29,7 +31,7 @@
                     <td style="text-align:center"><a href="javascript:viewReport( '$encoder.htmlEncode( $report.url )' )" title="$i18n.getString( 'view_report_based_on_existing_datasource' )"><img src="../images/view_report.png" alt="$i18n.getString( 'view_report_based_on_existing_datasource' )"></a></td>
                     <td style="text-align:center"><a href="displayAddReportForm.action?id=$report.id" title="$i18n.getString( 'edit_report' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit_report' )"></a></td>
                     <td style="text-align:center"><a href="javascript:addToDashboard( '$report.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a></td>
-                    <td style="text-align:center"><a href="javascript:removeReport( '$encoder.htmlEncode( $report.id )' )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a></td>
+                    <td style="text-align:center"><a href="javascript:removeReport( $report.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a></td>
                 </tr>
                 #end
                 </tbody>
