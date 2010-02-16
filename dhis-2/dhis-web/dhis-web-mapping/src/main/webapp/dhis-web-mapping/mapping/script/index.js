@@ -55,58 +55,60 @@ function getMultiSelectHeight() {
 }
 
 function toggleFeatureLabels(classify) {
-	var layer = MAP.getLayersByName('Thematic map')[0];
-	
-	function activateLabels() {
-		layer.styleMap = new OpenLayers.StyleMap({
-			'default': new OpenLayers.Style(
-				OpenLayers.Util.applyDefaults(
-					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'tahoma' },
-					OpenLayers.Feature.Vector.style['default']
+	if (MAPDATA) {
+		var layer = MAP.getLayersByName('Thematic map')[0];
+		
+		function activateLabels() {
+			layer.styleMap = new OpenLayers.StyleMap({
+				'default': new OpenLayers.Style(
+					OpenLayers.Util.applyDefaults(
+						{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'tahoma' },
+						OpenLayers.Feature.Vector.style['default']
+					)
+				),
+				'select': new OpenLayers.Style(
+					{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
 				)
-			),
-			'select': new OpenLayers.Style(
-				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-			)
-		});
-		layer.refresh();
-		LABELS = true;
-	}
-	
-	function deactivateLabels() {
-		layer.styleMap = new OpenLayers.StyleMap({
-			'default': new OpenLayers.Style(
-				OpenLayers.Util.applyDefaults(
-					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
-					OpenLayers.Feature.Vector.style['default']
-				)
-			),
-			'select': new OpenLayers.Style(
-				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-			)
-		});
-		layer.refresh();
-		LABELS = false;
-	}
-	
-	if (classify) {
-		if (LABELS) {
-			deactivateLabels();
-		}
-		else {
-			activateLabels();
+			});
+			layer.refresh();
+			LABELS = true;
 		}
 		
-		if (ACTIVEPANEL == 'choropleth') {
-			choropleth.classify(true);
+		function deactivateLabels() {
+			layer.styleMap = new OpenLayers.StyleMap({
+				'default': new OpenLayers.Style(
+					OpenLayers.Util.applyDefaults(
+						{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
+						OpenLayers.Feature.Vector.style['default']
+					)
+				),
+				'select': new OpenLayers.Style(
+					{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+				)
+			});
+			layer.refresh();
+			LABELS = false;
 		}
-		else if (ACTIVEPANEL == 'mapping') {
-			mapping.classify(true);
+		
+		if (classify) {
+			if (LABELS) {
+				deactivateLabels();
+			}
+			else {
+				activateLabels();
+			}
+			
+			if (ACTIVEPANEL == 'choropleth') {
+				choropleth.classify(true);
+			}
+			else if (ACTIVEPANEL == 'mapping') {
+				mapping.classify(true);
+			}
 		}
-	}
-	else {
-		if (LABELS) {
-			activateLabels();
+		else {
+			if (LABELS) {
+				activateLabels();
+			}
 		}
 	}
 }
