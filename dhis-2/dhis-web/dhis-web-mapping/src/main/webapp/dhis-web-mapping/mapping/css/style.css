@@ -18,6 +18,10 @@
 	background-image:url(../../../images/zoom_world.png);
 }
 
+.x-btn .icon-labels {
+	background-image:url(../../../images/labels.png);
+}
+
 .x-mask-loading2 div  {
 	padding:2px 11px 3px 32px;
 	background:#fbfbfb url('../../../images/loader.gif') no-repeat 5px 2px;

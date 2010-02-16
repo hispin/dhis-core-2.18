@@ -145,7 +145,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     newUrl: false,
 	
 	relation: false,
-    
+	
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({

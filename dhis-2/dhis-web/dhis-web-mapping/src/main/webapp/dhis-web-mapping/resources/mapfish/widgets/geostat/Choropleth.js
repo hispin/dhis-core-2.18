@@ -118,7 +118,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      * APIProperty: loadMask
      *     An Ext.LoadMask config or true to mask the widget while loading (defaults to false).
      */
-    loadMask : false,
+    loadMask: false,
 
     /**
      * APIProperty: labelGenerator
@@ -138,8 +138,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      *    Inits the component
      */
      
-    newUrl : false,
-    
+    newUrl: false,
+	
     initComponent : function() {
     
         mapViewStore = new Ext.data.JsonStore({
