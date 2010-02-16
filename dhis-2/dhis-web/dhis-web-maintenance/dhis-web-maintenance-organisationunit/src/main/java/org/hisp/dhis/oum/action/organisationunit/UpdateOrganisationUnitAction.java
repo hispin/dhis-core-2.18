@@ -115,13 +115,6 @@ public class UpdateOrganisationUnitAction
         this.closedDate = closedDate;
     }
 
-    private String type;
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
     private String comment;
 
     public void setComment( String comment )
@@ -166,7 +159,6 @@ public class UpdateOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
-        type = nullIfEmpty( type );
         polygonCoordinates = nullIfEmpty( polygonCoordinates );
         latitude = nullIfEmpty( latitude );
         longitude = nullIfEmpty( longitude );
@@ -193,7 +185,6 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setActive( active.booleanValue() );
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
-        organisationUnit.setType( type );
         organisationUnit.setComment( comment );
         organisationUnit.setPolygonCoordinates( polygonCoordinates );
         organisationUnit.setLatitude( latitude );

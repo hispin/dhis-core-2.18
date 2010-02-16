@@ -103,13 +103,6 @@ public class AddOrganisationUnitAction
         this.openingDate = openingDate;
     }
     
-    private String type;
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
     private String comment;
 
     public void setComment( String comment )
@@ -165,7 +158,6 @@ public class AddOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
-        type = nullIfEmpty( type );
         polygonCoordinates = nullIfEmpty( polygonCoordinates );
         latitude = nullIfEmpty( latitude );
         longitude = nullIfEmpty( longitude );
@@ -196,7 +188,6 @@ public class AddOrganisationUnitAction
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, 
             code, date, null, true, comment );
         
-        organisationUnit.setType( type );
         organisationUnit.setPolygonCoordinates( polygonCoordinates );
         organisationUnit.setLatitude( latitude );
         organisationUnit.setLongitude( longitude );

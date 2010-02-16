@@ -39,8 +39,6 @@
 		
     <property name="active"/>
     
-    <property name="type"/>
-		
     <property name="comment" length="360"/>
     
     <property name="geoCode"/>
