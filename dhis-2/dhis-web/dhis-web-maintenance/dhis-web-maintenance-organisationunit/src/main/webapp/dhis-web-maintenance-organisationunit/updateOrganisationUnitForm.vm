@@ -71,10 +71,6 @@
 			</select>
 		</td>
 	</tr>
-    <tr>
-        <td><label for="type">$i18n.getString( "type" )</label></td>
-        <td><input type="text" id="type" name="type" value="$!encoder.htmlEncode( $organisationUnit.type )" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
-    </tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
