@@ -317,10 +317,10 @@ public class ImportObjectServiceImportAllTest
         // Category - CategoryOption Association
         // ---------------------------------------------------------------------
 
-        categoryCategoryOptionAssociationA = new GroupMemberAssociation( 'A', 'A' );
-        categoryCategoryOptionAssociationB = new GroupMemberAssociation( 'A', 'B' );
-        categoryCategoryOptionAssociationC = new GroupMemberAssociation( 'B', 'C' );
-        categoryCategoryOptionAssociationD = new GroupMemberAssociation( 'B', 'D' );
+        categoryCategoryOptionAssociationA = new GroupMemberAssociation( 'A', 'A', 1 );
+        categoryCategoryOptionAssociationB = new GroupMemberAssociation( 'A', 'B', 2 );
+        categoryCategoryOptionAssociationC = new GroupMemberAssociation( 'B', 'C', 1 );
+        categoryCategoryOptionAssociationD = new GroupMemberAssociation( 'B', 'D', 2 );
         
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.CATEGORY_CATEGORYOPTION, categoryCategoryOptionAssociationA );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.CATEGORY_CATEGORYOPTION, categoryCategoryOptionAssociationB );
@@ -354,9 +354,9 @@ public class ImportObjectServiceImportAllTest
         // CategoryCombo - Category Association
         // ---------------------------------------------------------------------
 
-        categoryComboCategoryAssociationA = new GroupMemberAssociation( 'A', 'A' );
-        categoryComboCategoryAssociationB = new GroupMemberAssociation( 'A', 'B' );
-        categoryComboCategoryAssociationC = new GroupMemberAssociation( 'B', 'A' );
+        categoryComboCategoryAssociationA = new GroupMemberAssociation( 'A', 'A', 1 );
+        categoryComboCategoryAssociationB = new GroupMemberAssociation( 'A', 'B', 2 );
+        categoryComboCategoryAssociationC = new GroupMemberAssociation( 'B', 'A', 1 );
         
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.CATEGORYCOMBO_CATEGORY, categoryComboCategoryAssociationA );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.CATEGORYCOMBO_CATEGORY, categoryComboCategoryAssociationB );

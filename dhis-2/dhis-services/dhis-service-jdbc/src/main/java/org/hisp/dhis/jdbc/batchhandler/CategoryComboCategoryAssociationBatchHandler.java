@@ -59,13 +59,13 @@ public class CategoryComboCategoryAssociationBatchHandler
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "categorycomboid" );
-        statementBuilder.setUniqueColumn( "categoryid" );
+        statementBuilder.setUniqueColumn( "sort_order" );
     }
     
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
-        statementBuilder.setUniqueValue( association.getMemberId() );
+        statementBuilder.setUniqueValue( association.getSortOrder() );
     }
     
     protected void setColumns()
