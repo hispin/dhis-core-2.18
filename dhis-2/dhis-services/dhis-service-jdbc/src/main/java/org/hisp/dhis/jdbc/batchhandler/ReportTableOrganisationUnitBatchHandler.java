@@ -59,13 +59,13 @@ public class ReportTableOrganisationUnitBatchHandler
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "reporttableid" );
-        statementBuilder.setUniqueColumn( "organisationunitid" );
+        statementBuilder.setUniqueColumn( "sort_order" );
     }
     
     protected void setUniqueValues( GroupMemberAssociation association )
     {        
         statementBuilder.setUniqueValue( association.getGroupId() );
-        statementBuilder.setUniqueValue( association.getMemberId() );
+        statementBuilder.setUniqueValue( association.getSortOrder() );
     }
     
     protected void setColumns()
