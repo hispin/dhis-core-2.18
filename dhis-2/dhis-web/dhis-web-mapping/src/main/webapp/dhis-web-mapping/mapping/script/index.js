@@ -14,6 +14,7 @@ var MAP_SOURCE_TYPE_DATABASE = 'database';
 var MAP_SOURCE_TYPE_GEOJSON = 'geojson';
 var MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
 var MASK;
+var LABELS;
 
 function getUrlParam(strParamName) {
     var output = '';
@@ -53,6 +54,63 @@ function getMultiSelectHeight() {
     }
 }
 
+function toggleFeatureLabels(classify) {
+	var layer = MAP.getLayersByName('Thematic map')[0];
+	
+	function activateLabels() {
+		layer.styleMap = new OpenLayers.StyleMap({
+			'default': new OpenLayers.Style(
+				OpenLayers.Util.applyDefaults(
+					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'tahoma' },
+					OpenLayers.Feature.Vector.style['default']
+				)
+			),
+			'select': new OpenLayers.Style(
+				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+			)
+		});
+		layer.refresh();
+		LABELS = true;
+	}
+	
+	function deactivateLabels() {
+		layer.styleMap = new OpenLayers.StyleMap({
+			'default': new OpenLayers.Style(
+				OpenLayers.Util.applyDefaults(
+					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
+					OpenLayers.Feature.Vector.style['default']
+				)
+			),
+			'select': new OpenLayers.Style(
+				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+			)
+		});
+		layer.refresh();
+		LABELS = false;
+	}
+	
+	if (classify) {
+		if (LABELS) {
+			deactivateLabels();
+		}
+		else {
+			activateLabels();
+		}
+		
+		if (ACTIVEPANEL == 'choropleth') {
+			choropleth.classify(true);
+		}
+		else if (ACTIVEPANEL == 'mapping') {
+			mapping.classify(true);
+		}
+	}
+	else {
+		if (LABELS) {
+			activateLabels();
+		}
+	}
+}
+			
 Ext.onReady( function() {
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
     
@@ -2472,7 +2530,7 @@ Ext.onReady( function() {
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
                 OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1},
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
                     OpenLayers.Feature.Vector.style['default']
                 )
             ),
@@ -2641,6 +2699,14 @@ Ext.onReady( function() {
 		},
 		scope: this
 	});
+		
+	var labelsButton = new Ext.Button({
+		iconCls: 'icon-labels',
+		tooltip: 'Toggle feature labels on/off',
+		handler: function() {
+			toggleFeatureLabels(true);				
+		}
+	});	
 	
 	var favoritesButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
@@ -2702,11 +2768,12 @@ Ext.onReady( function() {
 		items: [
 			' ',' ',' ',
 			mapLabel,
-			' ',' ',' ',' ',
+			' ',' ',' ',' ',' ',
 			zoomInButton,
 			zoomOutButton,
             ' ',
 			zoomMaxExtentButton,
+			labelsButton,
 			' ','-',
 			favoritesButton,
             '-',
@@ -2757,7 +2824,7 @@ Ext.onReady( function() {
                     },
 					{
 						xtype: 'panel',
-						title: 'Feature data',
+						title: '<font style="' + AA_DARK + '">Feature data</font>',
 						height: 65,
 						anchor: '100%',
 						bodyStyle: 'padding-left: 4px;',
@@ -2956,6 +3023,8 @@ function loadMapData(redirect) {
 			}
 			
 			MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
+			
+			toggleFeatureLabels(false);
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }
