@@ -34,7 +34,6 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -103,7 +102,7 @@ public class UpdateDataElementGroupAction
 
         if ( name != null && name.trim().length() > 0 )
         {
-            dataElementGroup.setName( CodecUtils.unescape( name ) );
+            dataElementGroup.setName( name );
         }
 
         if ( groupMembers != null && groupMembers.size() > 0 )

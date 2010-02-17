@@ -91,10 +91,7 @@ function saveChart()
 {
     if ( validateCollections() )
     {
-        var id = document.getElementById( "id" ).value;
-        var title = document.getElementById( "title" ).value;
-        
-        var url = "validateChart.action?id=" + id + "&title=" + htmlEncode( title );
+        var url = "validateChart.action?id=" + getFieldValue( "id" ) + "&title=" + getFieldValue( "title" );
 
         var request = new Request();
         request.setResponseTypeXML( 'message' );

@@ -96,11 +96,6 @@ function addValidationCompleted( messageElement )
     }
 }
 
-function getFieldValue( fieldId )
-{
-    return document.getElementById( fieldId ).value;
-}
-
 // -----------------------------------------------------------------------------
 // Update organisation unit group set
 // -----------------------------------------------------------------------------

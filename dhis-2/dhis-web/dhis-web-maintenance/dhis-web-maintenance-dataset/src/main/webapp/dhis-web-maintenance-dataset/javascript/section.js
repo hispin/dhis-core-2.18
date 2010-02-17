@@ -52,16 +52,9 @@ function getDataElementByDataSet( dataSetId )
 	params += '&selectedDataElements=' + selectedList.options[i].value;
 	// process list.options[i].value / list.options[i].text
   }
-   // Clear the list
+  
   var availableList = document.getElementById( 'availableList' );
   availableList.options.length = 0;
-
-  /**
-  for ( var i = availableList.options.length; i > 0; i-- )
-  {
-    availableList.options[i-1] = null;
-  }
-  */
 
   request.setResponseTypeXML( 'dataElementGroup' );
   request.setCallbackSuccess( filterByDataElementGroupCompleted );
@@ -98,15 +91,10 @@ function validateAddSection()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( addSectionValidationCompleted );
 
-  var requestString = 'validateSection.action?name=' + document.getElementById( 'sectionName' ).value + '&label=' + document.getElementById( 'sectionLabel' ).value;
+  var requestString = 'validateSection.action?name=' + 
+    getFieldValue( 'sectionName' ) + '&label=' + getFieldValue( 'sectionLabel' );
   
   request.send( requestString );
-    /**
-    request.send( 'validateOrganisationUnit.action?name=' + getFieldValue( 'name' ) +
-        '&shortName=' + getFieldValue( 'shortName' ) +
-        '&organisationUnitCode=' + getFieldValue( 'organisationUnitCode' ) +
-        '&openingDate=' + getFieldValue( 'openingDate' ) );
-        */
 
   return false;
 }

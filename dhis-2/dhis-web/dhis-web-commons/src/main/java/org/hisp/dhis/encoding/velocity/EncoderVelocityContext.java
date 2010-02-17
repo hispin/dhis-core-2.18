@@ -114,8 +114,9 @@ public class EncoderVelocityContext
 
             String tmp = object.toString();
 
+            tmp = tmp.replaceAll( "%", "%25" );
             tmp = tmp.replaceAll( ESCAPE_JS, ESCAPE_JS + ESCAPE_JS );
-            tmp = tmp.replaceAll( quoteChar, ESCAPE_JS + quoteChar );
+            tmp = tmp.replaceAll( quoteChar, ESCAPE_JS + quoteChar );            
 
             return tmp;
         }

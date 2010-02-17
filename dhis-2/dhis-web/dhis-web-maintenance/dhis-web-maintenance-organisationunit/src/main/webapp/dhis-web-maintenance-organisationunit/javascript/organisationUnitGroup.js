@@ -34,9 +34,12 @@ function removeOrganisationUnitGroup( unitGroupId, unitGroupName )
 
 function validateAddOrganisationUnitGroup()
 {	
-	$.post("validateOrganisationUnitGroup.action",{		
+	$.get( "validateOrganisationUnitGroup.action",
+	{		
 		name:$("#name").val()
-	},function( message ){
+	},
+	function( message )
+	{
 		var messageElement = message.getElementsByTagName('message')[0];
 		var type = messageElement.getAttribute( 'type' );
 		var message = messageElement.firstChild.nodeValue;
@@ -53,7 +56,8 @@ function validateAddOrganisationUnitGroup()
 		{
 			setMessage(message);
 		}
-	},'xml');   
+	},
+	'xml' );   
 }
 
 // -----------------------------------------------------------------------------
@@ -62,11 +66,13 @@ function validateAddOrganisationUnitGroup()
 
 function validateUpdateOrganisationUnitGroup()
 {	
-	
-	$.post("validateOrganisationUnitGroup.action",{
+	$.get("validateOrganisationUnitGroup.action",
+	{
 		id:$("#id").val(),
 		name:$("#name").val()
-	},function( message ){
+	},
+	function( message )
+	{
 		var messageElement = message.getElementsByTagName('message')[0];
 		var type = messageElement.getAttribute( 'type' );
 		var message = messageElement.firstChild.nodeValue;
@@ -83,5 +89,6 @@ function validateUpdateOrganisationUnitGroup()
 		{
 			setMessage(message);
 		}
-	},'xml');   
+	},
+	'xml');   
 }

@@ -226,7 +226,7 @@ public class ValidateOrganisationUnitAction
             }
         }
 
-        message = "Everything's ok";
+        message = "OK";
 
         return SUCCESS;
     }

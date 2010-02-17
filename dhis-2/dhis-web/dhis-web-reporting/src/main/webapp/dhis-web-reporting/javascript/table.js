@@ -76,10 +76,7 @@ function saveTable()
 {
     if ( validateCollections() )
     {
-        var tableId = document.getElementById( "tableId" ).value;
-        var tableName = document.getElementById( "tableName" ).value;
-        
-        var url = "validateTable.action?id=" + tableId + "&name=" + tableName;
+        var url = "validateTable.action?id=" + getFieldValue( "tableId" ) + "&name=" + getFieldValue( "tableName" );
         
         var request = new Request();
         request.setResponseTypeXML( 'message' );

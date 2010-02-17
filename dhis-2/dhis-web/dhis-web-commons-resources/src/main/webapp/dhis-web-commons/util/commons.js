@@ -332,14 +332,14 @@ function setFieldValue( fieldId, value )
 }
 
 /**
- * Gets a value from the given element.
+ * Gets a value from the given element and HTML encodes it.
  * 
  * @param fieldId the identifier of the element.
- * @return a value corresponding to the given identifier.
+ * @return the HTML encoded value of the element with the given identifier.
  */
 function getFieldValue( fieldId )
 {
-    return document.getElementById( fieldId ).value;
+    return htmlEncode( document.getElementById( fieldId ).value );
 }
 
 /**
@@ -516,7 +516,8 @@ function deleteDivEffect()
 {
 	var divEffect = document.getElementById( 'divEffect' );
 	
-	if(divEffect!=null){	
+	if( divEffect!=null )
+	{	
 		document.body.removeChild(divEffect);
 	}
 }
