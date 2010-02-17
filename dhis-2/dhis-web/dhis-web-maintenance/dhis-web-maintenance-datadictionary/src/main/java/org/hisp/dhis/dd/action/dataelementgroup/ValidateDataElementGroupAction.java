@@ -109,9 +109,9 @@ public class ValidateDataElementGroupAction
 
                 return INPUT;
             }
-
+            
             DataElementGroup match = dataElementService.getDataElementGroupByName( name );
-
+            
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );

@@ -90,8 +90,10 @@ public class CodecUtils
             return null;
         }
     }
-	
-    //TODO remove
+    
+    /*
+    //TODO This is not the correct way of encoding values
+    
     public static String unescape( String s )
     {
         StringBuffer sbuf = new StringBuffer();
@@ -147,7 +149,7 @@ public class CodecUtils
                 more = 4; // Expect 4 more bytes
             }
             else
-            /* if ((b & 0xfe) == 0xfc) */{ // 1111110x (yields 1 bit)
+            //if ((b & 0xfe) == 0xfc) { // 1111110x (yields 1 bit)
                 sumb = b & 0x01;
                 more = 5; // Expect 5 more bytes
             }
@@ -155,6 +157,7 @@ public class CodecUtils
         
         return sbuf.toString();
     }
+    */
 
     /**
      * Database encodes the argument string. Remove non-character data from the

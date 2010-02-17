@@ -111,7 +111,7 @@ public class ValidateOrganisationUnitGroupAction
     // -------------------------------------------------------------------------
 
     public String execute()
-    {
+    {        
         // ---------------------------------------------------------------------
         // Validate values
         // ---------------------------------------------------------------------
@@ -145,7 +145,7 @@ public class ValidateOrganisationUnitGroupAction
 
         // TODO validate exclusivity
         
-        message = "Everything's ok";
+        message = "OK";
 
         return SUCCESS;
     }

@@ -202,7 +202,7 @@ public class ValidateGroupSetAction
             }            
         }
 
-        message = "Everything's ok";
+        message = "OK";
 
         return SUCCESS;
     }

@@ -104,9 +104,9 @@ function validateAddDataSet()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( addDataSetValidationCompleted ); 
   
-  var requestString = 'validateDataSet.action?name=' + document.getElementById( 'name' ).value +
-                      '&shortName=' + document.getElementById( 'shortName' ).value +
-                      '&code=' + document.getElementById( 'code' ).value;
+  var requestString = 'validateDataSet.action?name=' + getFieldValue( 'name' ) +
+                      '&shortName=' + getFieldValue( 'shortName' ) +
+                      '&code=' + getFieldValue( 'code' );
 
   request.send( requestString );
 
@@ -143,10 +143,10 @@ function validateEditDataSet()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( editDataSetValidationCompleted );
 
-  var requestString = 'validateDataSet.action?name=' + document.getElementById( 'name' ).value +
-                      '&shortName=' + document.getElementById( 'shortName' ).value +
-                      '&code=' + document.getElementById( 'code' ).value +
-  		              '&dataSetId=' + document.getElementById( 'dataSetId' ).value;
+  var requestString = 'validateDataSet.action?name=' + getFieldValue( 'name' ) +
+                      '&shortName=' + getFieldValue( 'shortName' ) +
+                      '&code=' + getFieldValue( 'code' ) +
+  		              '&dataSetId=' + getFieldValue( 'dataSetId' );
 
   request.send( requestString );
 

@@ -58,9 +58,9 @@ function validateAddDataElementCategory()
         return;
     }
 
-    var requestString = 'validateDataElementCategory.action?name=' + htmlEncode( document.getElementById( 'name' ).value );
+    var requestString = 'validateDataElementCategory.action?name=' + getFieldValue( 'name' );
 
-    requestString += "&conceptName=" + htmlEncode( document.getElementById( 'conceptName' ).value );
+    requestString += "&conceptName=" + getFieldValue( 'conceptName' );
 
     requestString += "&" + getParamString( 'categoryOptionNames' );
 
@@ -91,8 +91,8 @@ function validateEditDataElementCategory()
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( editDataElementCategoryValidationCompleted );
   
-    var requestString = 'validateDataElementCategory.action?id=' + document.getElementById( 'id' ).value + 
-        '&name=' + htmlEncode( document.getElementById( 'name' ).value );
+    var requestString = 'validateDataElementCategory.action?id=' + getFieldValue( 'id' ) + 
+        '&name=' + getFieldValue( 'name' );
 
     requestString += "&conceptName=" + htmlEncode( document.getElementById( 'conceptName' ).value );
 

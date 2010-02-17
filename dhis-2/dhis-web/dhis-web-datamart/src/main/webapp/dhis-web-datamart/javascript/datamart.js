@@ -232,10 +232,8 @@ function saveExport()
 {
     if ( validateCollections() )
     {
-        var exportId = document.getElementById( "exportId" ).value;
-        var exportName = document.getElementById( "exportName" ).value;
-        
-        var url = "validateDataMartExport.action?id=" + exportId + "&name=" + exportName;
+        var url = "validateDataMartExport.action?id=" + 
+            getFieldValue( "exportId" ) + "&name=" + getFieldValue( "exportName" );
         
         var request = new Request();
         request.setResponseTypeXML( 'message' );

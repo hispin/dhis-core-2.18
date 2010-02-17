@@ -1,9 +1,7 @@
 
 function saveDocument()
 {
-    var name = document.getElementById( "name" ).value;
-    
-    var url = "validateDocument.action?name=" + name;
+    var url = "validateDocument.action?name=" + getFieldValue( "name" );
     
     var request = new Request();
     request.setResponseTypeXML( 'message' );

@@ -38,7 +38,7 @@ function validateAddDataElementCategoryCombo()
 
     var selectedList = document.getElementById( 'selectedList' );
   
-    var params = 'name=' + htmlEncode( document.getElementById( 'name' ).value );
+    var params = 'name=' + getFieldValue( 'name' );
 
     for ( var i = 0; i < selectedList.options.length; ++i)
     {  	
@@ -76,8 +76,7 @@ function validateEditDataElementCategoryCombo()
     
     var selectedList = document.getElementById( 'selectedList' );
   
-    var params = 'id=' + document.getElementById( 'id' ).value;
-  	params += '&name=' + htmlEncode( document.getElementById( 'name' ).value );
+    var params = 'id=' + getFieldValue( 'id' ) + '&name=' + getFieldValue( 'name' );
 
     for ( var i = 0; i < selectedList.options.length; ++i)
     {   	

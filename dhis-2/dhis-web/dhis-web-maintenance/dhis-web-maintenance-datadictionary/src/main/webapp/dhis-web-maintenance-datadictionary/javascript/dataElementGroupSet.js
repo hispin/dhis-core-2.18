@@ -26,22 +26,26 @@ function validateUpdateDataElementGroupSetCompleted( message ){
 // Validate Add Data Element Group
 // -----------------------------------------------------------------------------
 
-function validateAddDataElementGroupSet(){		
-	
+function validateAddDataElementGroupSet()
+{	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( validateAddDataElementGroupSetCompleted );    
-	request.sendAsPost( "name=" +  getFieldValue("name") );
-	request.send( "validateDataElementGroupSet.action");
-	
+	request.sendAsPost( "name=" +  getFieldValue( "name" ) );
+	request.send( "validateDataElementGroupSet.action");	
 }
 
-function validateAddDataElementGroupSetCompleted( message ){
+function validateAddDataElementGroupSetCompleted( message )
+{
 	var type = message.getAttribute("type");
-	if(type=="success"){
-		selectAllById("groupMembers");
-		document.forms['addDataElementGroupSet'].submit();
-	}else{
+	
+	if( type == "success" )
+	{
+		selectAllById( "groupMembers" );
+		document.forms[ 'addDataElementGroupSet' ].submit();
+	}
+	else
+	{
 		setMessage(message.firstChild.nodeValue);
 	}
 }
@@ -171,5 +175,3 @@ function removeGroupMembers()
     filterGroupMembers();
     filterAvailableDataElementGroups();
 }
-
-

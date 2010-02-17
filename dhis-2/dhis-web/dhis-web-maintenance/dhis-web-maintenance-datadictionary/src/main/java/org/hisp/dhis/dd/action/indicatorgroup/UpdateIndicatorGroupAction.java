@@ -34,7 +34,6 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -99,7 +98,7 @@ public class UpdateIndicatorGroupAction
 
         if ( name != null && name.trim().length() > 0 )
         {
-            indicatorGroup.setName( CodecUtils.unescape( name ) );
+            indicatorGroup.setName( name );
         }
 
         if ( groupMembers != null )

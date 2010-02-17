@@ -186,6 +186,8 @@ public class ValidateDataSetAction
             }
         }       
         
+        message = "OK";
+        
         return SUCCESS;
     }
 }

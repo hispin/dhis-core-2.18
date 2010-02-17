@@ -34,7 +34,6 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -87,7 +86,7 @@ public class AddIndicatorGroupAction
    
     public String execute()
     {
-        indicatorGroup = new IndicatorGroup( CodecUtils.unescape( name ) );
+        indicatorGroup = new IndicatorGroup( name );
         
         if ( groupMembers != null )
         {

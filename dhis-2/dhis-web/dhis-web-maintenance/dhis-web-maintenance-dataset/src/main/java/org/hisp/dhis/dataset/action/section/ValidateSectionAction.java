@@ -47,51 +47,36 @@ public class ValidateSectionAction
         this.sectionService = sectionService;
     }
 
-    // -------------------------------------------------------------------------
-    // Input & output
-    // -------------------------------------------------------------------------
-
     private I18n i18n;
-
-    private String name;
-
-    private String label;
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setLabel( String label )
-    {
-        this.label = label;
-    }
 
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
     }
 
-    public String getName()
+    // -------------------------------------------------------------------------
+    // Input & output
+    // -------------------------------------------------------------------------
+
+    private String name;
+
+    public void setName( String name )
     {
-        return name;
+        this.name = name;
     }
 
-    public String getLabel()
+    private String label;
+
+    public void setLabel( String label )
     {
-        return label;
+        this.label = label;
     }
 
-    public void setMessage( String message )
+    private String message;
+
+    public String getMessage()
     {
-        this.message = message;
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -101,6 +86,10 @@ public class ValidateSectionAction
     public String execute()
         throws Exception
     {
+        // ---------------------------------------------------------------------
+        // Name
+        // ---------------------------------------------------------------------
+
         if ( name == null )
         {
             message = i18n.getString( "specify_name" );
@@ -117,36 +106,41 @@ public class ValidateSectionAction
 
                 return INPUT;
             }
+            
+            Section match = sectionService.getSectionByName( name );
 
-            if ( label == null )
+            if ( match != null )
+            {
+                message = i18n.getString( "duplicate_names" );
+
+                return INPUT;
+            }
+        }
+        
+        // ---------------------------------------------------------------------
+        // Label
+        // ---------------------------------------------------------------------
+
+        if ( label == null )
+        {
+            message = i18n.getString( "specify_label" );
+
+            return INPUT;
+        }
+        else
+        {
+            label = label.trim();
+
+            if ( label.length() == 0 )
             {
                 message = i18n.getString( "specify_label" );
 
                 return INPUT;
             }
-            else
-            {
-                label = label.trim();
-
-                if ( label.length() == 0 )
-                {
-
-                    message = i18n.getString( "specify_label" );
-
-                    return INPUT;
-                }
-            }
-
-            Section match = sectionService.getSectionByName( name );
-
-            if ( match != null )
-            {
-                message = i18n.getString( "duplicate_section_names" );
-
-                return INPUT;
-            }
         }
 
+        message = "OK";
+        
         return SUCCESS;
     }
 }
