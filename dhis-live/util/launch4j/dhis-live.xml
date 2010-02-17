@@ -12,7 +12,7 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>C:\development\src\dhis2\dhis-live\util\launch4j\favicon.ico</icon>
+  <icon>favicon.ico</icon>
   <singleInstance>
     <mutexName>dhis-live.mutex</mutexName>
     <windowTitle></windowTitle>
@@ -24,7 +24,7 @@
     <jdkPreference>preferJre</jdkPreference>
   </jre>
   <splash>
-    <file>C:\development\src\dhis2\dhis-live\util\launch4j\dhis2-splash.bmp</file>
+    <file>dhis2-splash.bmp</file>
     <waitForWindow>false</waitForWindow>
     <timeout>12</timeout>
     <timeoutErr>false</timeoutErr>
