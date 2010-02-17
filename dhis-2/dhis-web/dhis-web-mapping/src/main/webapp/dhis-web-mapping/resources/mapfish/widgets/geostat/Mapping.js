@@ -381,7 +381,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 											Ext.Ajax.request({
 												url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
 												method: 'POST',
-												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:name },
+												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation },
 												success: function( responseObject ) {
 													Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + mapping.relation + msg_highlight_end + ' (map) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (database).');
 													Ext.getCmp('grid_gp').getStore().reload();
