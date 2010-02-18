@@ -61,7 +61,7 @@ function toggleFeatureLabels(classify) {
 		layer.styleMap = new OpenLayers.StyleMap({
 			'default': new OpenLayers.Style(
 				OpenLayers.Util.applyDefaults(
-					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'tahoma' },
+					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'arial, lucida sans unicode', 'fontWeight': 'bold', 'fontSize': 14 },
 					OpenLayers.Feature.Vector.style['default']
 				)
 			),
