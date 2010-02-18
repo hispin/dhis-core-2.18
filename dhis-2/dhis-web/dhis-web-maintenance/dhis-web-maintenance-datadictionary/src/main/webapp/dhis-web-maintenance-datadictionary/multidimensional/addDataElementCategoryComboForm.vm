@@ -59,7 +59,7 @@
         </td>
 		<td valign="top" align="center">		 
           <input type="button" value="&gt;" onclick="move( 'availableList' )"><br>	
-		  <input type="button" value="&lt;" onclick="move ( 'selectedList' )">	<br>	<br>  	
+		  <input type="button" value="&lt;" onclick="move ( 'selectedList' )"><br><br>  	
 		  <a href="#" onclick="moveUp('selectedList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
 		  <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""></a>		  
         </td> 

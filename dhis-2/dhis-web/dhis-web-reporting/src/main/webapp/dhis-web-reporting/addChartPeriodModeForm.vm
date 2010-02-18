@@ -2,10 +2,10 @@
 <!-- Periods -->
 
 <tr>
-    <th>$i18n.getString( "category_x_available_periods" )</th>
+    <th colspan="2">$i18n.getString( "category_x_available_periods" )</th>
 </tr>   
 <tr>
-    <td>
+    <td colspan="2">
         <select id="periodTypeId" name="periodTypeId" style="min-width:600px" onchange="getPeriods()">
             <option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
             #foreach ( $type in $periodTypes )
@@ -15,7 +15,7 @@
     </td>
 </tr>
 <tr>
-    <td>
+    <td colspan="2">
         <select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:600px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">
             #foreach ( $period in $availablePeriods )
                 <option value="$period.id">$format.formatPeriod( $period )</option>
@@ -24,7 +24,7 @@
     </td>
 </tr>
 <tr>
-    <td>
+    <td colspan="2">
         <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><input 
             type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"><input 
             type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><input 
@@ -32,7 +32,7 @@
     </td>
 </tr>
 <tr>
-    <th>$i18n.getString( "category_x_selected_periods" )</th>
+    <th colspan="2">$i18n.getString( "category_x_selected_periods" )</th>
 </tr>
 <tr>
     <td>
@@ -42,18 +42,22 @@
             #end
         </select>
     </td>
+    <td>
+        <a href="javascript:moveUpSelectedOption( 'selectedPeriods' )"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
+        <a href="javascript:moveDownSelectedOption( 'selectedPeriods' )"><img src="../images/move_down.png" border="0" alt=""></a>        
+    </td>
 </tr>
 <tr>
-    <td style="height:15px"></td>
+    <td colspan="2" style="height:15px"></td>
 </tr>
 
 <!-- OrganisationUnit -->
 
 <tr>
-    <th>$i18n.getString( "filter_available_organisationunits" )</th>
+    <th colspan="2">$i18n.getString( "filter_available_organisationunits" )</th>
 </tr>
 <tr>
-    <td>
+    <td colspan="2">
         <select id="organisationUnitLevel" name="organisationUnitLevel" style="min-width:600px" onchange="getOrganisationUnitsToSelected()">
             <option value="$ALL">[ $i18n.getString( "select_organisationunit_level_all" ) ]</option>
             #foreach ( $level in $levels )
@@ -63,7 +67,7 @@
     </td>
 </tr>
 <tr>
-    <td>
+    <td colspan="2">
         <select id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:600px">               
             #foreach ( $unit in $selectedOrganisationUnits )
                 <option value="$unit.id">$unit.name</option>

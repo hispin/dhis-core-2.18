@@ -71,6 +71,7 @@ public class ConversionUtils
             throw new RuntimeException( "Failed to convert objects", ex );
         }
     }
+    
     /**
      * Returns the identifier of the argument object. The object is assumed to
      * have a <code>int getId()</code> method.

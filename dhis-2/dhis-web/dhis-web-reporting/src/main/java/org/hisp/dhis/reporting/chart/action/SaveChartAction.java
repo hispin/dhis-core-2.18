@@ -42,8 +42,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.RelativePeriods;
 
-import static org.hisp.dhis.system.util.ConversionUtils.*;
-
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -272,10 +270,25 @@ public class SaveChartAction
     {
         Chart chart = new Chart();
 
-        List<Indicator> indicators = getList( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
-        List<Period> periods = getList( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
-        List<OrganisationUnit> organisationUnits = getList( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
-
+        List<Indicator> indicators = new ArrayList<Indicator>();
+        List<Period> periods = new ArrayList<Period>();
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        
+        for ( Integer id : getIntegerCollection( selectedIndicators ) )
+        {
+            indicators.add( indicatorService.getIndicator( id ) );
+        }
+        
+        for ( Integer id : getIntegerCollection( selectedPeriods ) )
+        {
+            periods.add( periodService.getPeriod( id ) );
+        }
+        
+        for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
+        {
+            organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
+        }
+        
         chart.setId( id != null ? id : 0 );
         chart.setTitle( title );
         chart.setType( type );
@@ -289,6 +302,8 @@ public class SaveChartAction
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
+        //TODO currently not in use
+        
         RelativePeriods relatives = new RelativePeriods();
         
         relatives.setReportingMonth( reportingMonth );
