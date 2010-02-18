@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2008  Camptocamp
+ * Copyright (C) 2009  Camptocamp
  *
  * This file is part of MapFish Client
  *
@@ -18,7 +18,7 @@
  */
 
 /*
- * @requires widgets/print/Base.js
+ * @requires widgets/print/BaseWidget.js
  */
 
 Ext.namespace('mapfish.widgets');
@@ -34,7 +34,7 @@ Ext.namespace('mapfish.widgets.print');
  * your responsability to call enable() and disable().
  *
  * Inherits from:
- * - {<mapfish.widgets.print.Base>}
+ * - {<mapfish.widgets.print.BaseWidget>}
  */
 
 /**
@@ -44,10 +44,10 @@ Ext.namespace('mapfish.widgets.print');
  * config - {Object} Config object
  */
 
-mapfish.widgets.print.SimpleForm = Ext.extend(mapfish.widgets.print.Base, {
+mapfish.widgets.print.SimpleForm = Ext.extend(mapfish.widgets.print.BaseWidget, {
     /**
      * APIProperty: formConfig
-     * {Object} - The configuration options passed to the form.
+     * {Object} The configuration options passed to the form.
      *
      * Can contain additionnal items for custom fields. Their values will be
      * passed to the print service
@@ -55,26 +55,32 @@ mapfish.widgets.print.SimpleForm = Ext.extend(mapfish.widgets.print.Base, {
     formConfig: null,
 
     /**
+     * APIProperty: wantResetButton
+     * {Boolean} If true (default), display a reset position button
+     */
+    wantResetButton: true,
+
+    /**
      * Property: scale
-     * {Ext.form.ComboBox} - The scale combobox.
+     * {Ext.form.ComboBox} The scale combobox.
      */
     scale: null,
 
     /**
      * Property: rectangle
-     * {<OpenLayers.Feature.Vector>} - The rectangle representing the extent.
+     * {<OpenLayers.Feature.Vector>} The rectangle representing the extent.
      */
     rectangle: null,
 
     /**
      * Property: rotation
-     * {Ext.form.TextField} - The text field for editing the rotation.
+     * {Ext.form.TextField} The text field for editing the rotation.
      */
     rotation: null,
 
     /**
      * APIProperty: infoPanel
-     * {Ext.Panel} - An optional panel displayed after form fields.
+     * {Ext.Panel} An optional panel displayed after form fields.
      */
     infoPanel: null,
 
@@ -117,22 +123,30 @@ mapfish.widgets.print.SimpleForm = Ext.extend(mapfish.widgets.print.Base, {
             formPanel.add(this.infoPanel);
         }
 
-        formPanel.addButton({
-            text: OpenLayers.Lang.translate('mf.print.resetPos'),
-            scope: this,
-            handler: function() {
-                this.setCurScale(this.fitScale(this.getCurLayout()));
-                this.createTheRectangle();
-            }
-        });
+        if (this.wantResetButton) {
+            formPanel.addButton({
+                text: 'Reset square',
+                scope: this,
+                handler: function() {
+                    this.setCurScale(this.fitScale(this.getCurLayout()));
+                    if (this.rotation) {
+                        this.setCurRotation(0);
+                    }
+                    this.createTheRectangle();
+                }
+            });
+        }
 
         formPanel.addButton({
-            text: OpenLayers.Lang.translate('mf.print.print'),
+            text: 'Print PDF',
             scope: this,
             handler: this.print
         });
 
         this.add(formPanel);
+        
+        formPanel.getComponent(4).setWidth(132);
+        formPanel.getComponent(5).setWidth(150);        
     },
 
     /**
@@ -243,8 +257,11 @@ mapfish.widgets.print.SimpleForm = Ext.extend(mapfish.widgets.print.Base, {
     },
 
     /**
-     * Method: fillSpec
+     * APIMethod: fillSpec
      * Add the page definitions and set the other parameters.
+     *
+     * This method can be overriden to customise the spec sent to the printer.
+     * Don't forget to call the parent implementation.
      *
      * Parameters:
      * printCommand - {<mapfish.PrintProtocol>} The print definition to fill.

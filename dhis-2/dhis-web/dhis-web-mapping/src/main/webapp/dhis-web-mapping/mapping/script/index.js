@@ -55,60 +55,58 @@ function getMultiSelectHeight() {
 }
 
 function toggleFeatureLabels(classify) {
-	if (MAPDATA) {
-		var layer = MAP.getLayersByName('Thematic map')[0];
-		
-		function activateLabels() {
-			layer.styleMap = new OpenLayers.StyleMap({
-				'default': new OpenLayers.Style(
-					OpenLayers.Util.applyDefaults(
-						{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'tahoma' },
-						OpenLayers.Feature.Vector.style['default']
-					)
-				),
-				'select': new OpenLayers.Style(
-					{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+	var layer = MAP.getLayersByName('Thematic map')[0];
+	
+	function activateLabels() {
+		layer.styleMap = new OpenLayers.StyleMap({
+			'default': new OpenLayers.Style(
+				OpenLayers.Util.applyDefaults(
+					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'tahoma' },
+					OpenLayers.Feature.Vector.style['default']
 				)
-			});
-			layer.refresh();
-			LABELS = true;
-		}
-		
-		function deactivateLabels() {
-			layer.styleMap = new OpenLayers.StyleMap({
-				'default': new OpenLayers.Style(
-					OpenLayers.Util.applyDefaults(
-						{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
-						OpenLayers.Feature.Vector.style['default']
-					)
-				),
-				'select': new OpenLayers.Style(
-					{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+			),
+			'select': new OpenLayers.Style(
+				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+			)
+		});
+		layer.refresh();
+		LABELS = true;
+	}
+	
+	function deactivateLabels() {
+		layer.styleMap = new OpenLayers.StyleMap({
+			'default': new OpenLayers.Style(
+				OpenLayers.Util.applyDefaults(
+					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
+					OpenLayers.Feature.Vector.style['default']
 				)
-			});
-			layer.refresh();
-			LABELS = false;
-		}
-		
-		if (classify) {
-			if (LABELS) {
-				deactivateLabels();
-			}
-			else {
-				activateLabels();
-			}
-			
-			if (ACTIVEPANEL == 'choropleth') {
-				choropleth.classify(true);
-			}
-			else if (ACTIVEPANEL == 'mapping') {
-				mapping.classify(true);
-			}
+			),
+			'select': new OpenLayers.Style(
+				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+			)
+		});
+		layer.refresh();
+		LABELS = false;
+	}
+	
+	if (classify) {
+		if (LABELS) {
+			deactivateLabels();
 		}
 		else {
-			if (LABELS) {
-				activateLabels();
-			}
+			activateLabels();
+		}
+		
+		if (ACTIVEPANEL == 'choropleth') {
+			choropleth.classify(true);
+		}
+		else if (ACTIVEPANEL == 'mapping') {
+			mapping.classify(true);
+		}
+	}
+	else {
+		if (LABELS) {
+			activateLabels();
 		}
 	}
 }
@@ -2665,10 +2663,6 @@ Ext.onReady( function() {
         }
     });
 	
-    mapping.hide();
-    shapefilePanel.hide();
-    mapLayerPanel.hide();
-	
 	/* TOOLBAR */  
 	var mapLabel = new Ext.form.Label({
 		text: 'Map',
@@ -2704,11 +2698,24 @@ Ext.onReady( function() {
 		
 	var labelsButton = new Ext.Button({
 		iconCls: 'icon-labels',
-		tooltip: 'Toggle feature labels on/off',
+		tooltip: 'Show/hide feature labels',
 		handler: function() {
 			toggleFeatureLabels(true);				
 		}
-	});	
+	});
+	
+	function showFavorites() {
+        var x = Ext.getCmp('center').x + 15;
+        var y = Ext.getCmp('center').y + 41;    
+        viewWindow.setPosition(x,y);
+
+		if (viewWindow.visible) {
+            viewWindow.hide();
+        }
+        else {
+            viewWindow.show();
+        }
+	}
 	
 	var favoritesButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
@@ -2718,20 +2725,28 @@ Ext.onReady( function() {
 		tooltip: 'Favorite map views',
 		handler: showFavorites
 	});
-    	
-	function showFavorites() {
-        var x = Ext.getCmp('center').x + 15;
-        var y = Ext.getCmp('center').y + 41;    
-        viewWindow.setPosition(x,y);
-    
-		if (viewWindow.visible) {
-            viewWindow.hide();
+	
+	function showPdf() {
+		var printSimplePagePanel = Ext.getCmp('printSinglePage_p');
+		if (printSimplePagePanel.hidden) {
+            printSimplePagePanel.show();
+			printSimplePagePanel.expand();
         }
         else {
-            viewWindow.show();
+			printSimplePagePanel.collapse();
+			printSimplePagePanel.hide();
+			choropleth.expand();
         }
-	}
-    
+	}	
+	
+	var pdfButton = new Ext.Button({
+		iconCls: 'icon-pdf',
+		tooltip: 'Show/hide PDF printing panel',
+		handler: function() {
+			showPdf();				
+		}
+	});
+
     var legendSetButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
 		ctCls: 'aa_med',
@@ -2764,7 +2779,14 @@ Ext.onReady( function() {
 			window.location.href = '../../dhis-web-portal/redirect.action'
 		}
 	});
+	
+	var layerOverrides={
+        "OpenLayers WMS": {overview: true},
+        Countries: { format: 'image/svg+xml' }
+    };
 
+    var printConfigUrl = '../../pdf/info.json';
+	
 	var mapToolbar = new Ext.Toolbar({
 		id: 'map_tb',
 		items: [
@@ -2776,9 +2798,10 @@ Ext.onReady( function() {
             ' ',
 			zoomMaxExtentButton,
 			labelsButton,
-			' ','-',
+			'-',
+			pdfButton,
+			'-',
 			favoritesButton,
-            '-',
             legendSetButton,
 			'->',
 			exitButton
@@ -2870,7 +2893,42 @@ Ext.onReady( function() {
                     shapefilePanel,
                     mapping,
                     mapLayerPanel,
-					adminPanel
+					adminPanel,
+					{
+						xtype: 'print-simple',
+						id: 'printSinglePage_p',
+						title: '<font style="' + AA_DARK + '">Print map as PDF</font>',
+						formConfig: {
+							labelWidth: 65,
+							defaults: {
+								width: 140,
+								listWidth: 140
+							},
+							items: [
+								{
+									xtype: 'textfield',
+									fieldLabel: 'Map title',
+									name: 'mapTitle',
+									labelStyle: AA_LIGHT,
+									labelSeparator: MENU_LABELSEPARATOR,
+									width: combo_width,
+								},
+								{
+									xtype: 'textarea',
+									fieldLabel: 'Comment',
+									name: 'comment',
+									height: 100,
+									labelStyle: AA_LIGHT,
+									labelSeparator: MENU_LABELSEPARATOR,
+									width: combo_width,
+								}
+							]
+						},
+						border: false,
+						map: MAP,
+						configUrl: printConfigUrl,
+						overrides: layerOverrides
+					}
                 ]
             },
             {
@@ -2886,6 +2944,11 @@ Ext.onReady( function() {
             }
         ]
     });
+	
+    shapefilePanel.hide();
+	mapping.hide();
+    mapLayerPanel.hide();
+	Ext.getCmp('printSinglePage_p').hide();
     
 	/* MAP CONTROLS */
 	var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(

@@ -1,20 +1,331 @@
-Ext.namespace('mapfish.widgets');Ext.namespace('mapfish.widgets.print');mapfish.widgets.print.Base=Ext.extend(Ext.Panel,{map:null,overrides:null,configUrl:null,config:null,layerTree:null,grids:null,serviceParams:null,pageDrag:null,rotateHandle:null,layer:null,mask:null,layout:'fit',initComponent:function(){mapfish.widgets.print.Base.superclass.initComponent.call(this);this.addEvents("configloaded");this.on('expand',this.setUp,this);this.on('collapse',this.tearDown,this);this.on('activate',this.setUp,this);this.on('deactivate',this.tearDown,this);this.on('enable',this.setUp,this);this.on('disable',this.tearDown,this);if(this.overrides==null){this.overrides={};}
-this.on('render',function(){var mask=this.mask=new Ext.LoadMask(this.getEl(),{msg:OpenLayers.Lang.translate('mf.print.loadingConfig')});if(this.config==null){mask.show();}},this);if(this.config==null){mapfish.PrintProtocol.getConfiguration(this.configUrl,this.configReceived,this.configFailed,this,this.serviceParams);}else{this.fillComponent();}},configReceived:function(config){if(this.mask){this.mask.hide();}
-this.config=config;this.fillComponent();this.doLayout();this.setUp();this.fireEvent("configloaded");},configFailed:function(){this.add({border:false,region:'center',html:OpenLayers.Lang.translate('mf.print.serverDown')});this.doLayout();if(this.mask){this.mask.hide();}
-this.config=false;},isReallyVisible:function(){if(!this.isVisible()||!this.body.isVisible(true))return false;var result=true;this.bubble(function(component){return result=result&&component.isVisible()&&(!component.body||component.body.isVisible());},this);return result;},setUp:function(){if(!this.disabled&&this.isReallyVisible()&&this.config&&!this.layer){this.map.addLayer(this.getOrCreateLayer());this.pageDrag.activate();}},tearDown:function(){if(this.config&&this.pageDrag&&this.layer){this.pageDrag.destroy();this.pageDrag=null;this.removeRotateHandle();this.layer.removeFeatures(this.layer.features);this.layer.destroy();this.layer=null;}},getOrCreateLayer:function(){if(!this.layer){var self=this;this.layer=new OpenLayers.Layer.Vector("Print"+this.getId(),{displayInLayerSwitcher:false,calculateInRange:function(){return true;}});this.pageDrag=new OpenLayers.Control.DragFeature(this.layer);this.map.addControl(this.pageDrag);var curFeature=null;this.pageDrag.onStart=function(feature){OpenLayers.Control.DragFeature.prototype.onStart.apply(this,arguments);curFeature=feature;if(feature.attributes.rotate){self.pageRotateStart(feature);}else{self.pageDragStart(feature);}};this.pageDrag.onDrag=function(feature){OpenLayers.Control.DragFeature.prototype.onDrag.apply(this,arguments);if(!feature)feature=curFeature;if(feature.attributes.rotate){self.pageRotated(feature);}};this.pageDrag.onComplete=function(feature){OpenLayers.Control.DragFeature.prototype.onComplete.apply(this,arguments);if(!feature)feature=curFeature;if(feature.attributes.rotate){self.pageRotateComplete(feature);}else{self.pageDragComplete(feature);}
-curFeature=null;};this.afterLayerCreated();}
-return this.layer;},pageRotateStart:function(feature){},pageRotated:function(feature){var center=feature.attributes.center;var pos=feature.geometry;var angle=Math.atan2(pos.x-center.x,pos.y-center.y)*180/Math.PI;var page=feature.attributes.page;page.attributes.rotation=angle;page.geometry.rotate(feature.attributes.prevAngle-angle,center);this.layer.drawFeature(page);this.setCurRotation(Math.round(angle));feature.attributes.prevAngle=angle;},pageRotateComplete:function(feature){this.createRotateHandle(feature.attributes.page);},pageDragStart:function(feature){this.removeRotateHandle();},removeRotateHandle:function(){if(this.rotateHandle){this.rotateHandle.destroy();this.rotateHandle=null;}},pageDragComplete:function(feature){if(this.getCurLayout().rotation){this.createRotateHandle(feature);}},createRotateHandle:function(feature){this.removeRotateHandle();var firstPoint=feature.geometry.components[0].components[2];var secondPoint=feature.geometry.components[0].components[3];var lon=(firstPoint.x+secondPoint.x)/2;var lat=(firstPoint.y+secondPoint.y)/2;var rotatePoint=new OpenLayers.Geometry.Point(lon,lat);var center=this.getCenterRectangle(feature);this.rotateHandle=new OpenLayers.Feature.Vector(rotatePoint,{rotate:true,page:feature,center:{x:center[0],y:center[1]},prevAngle:feature.attributes.rotation});this.layer.addFeatures(this.rotateHandle);},createRectangle:function(center,scale,layout,rotation){var extent=this.getExtent(center,scale,layout);var rect=extent.toGeometry();rect.rotate(-rotation,{x:center.lon,y:center.lat});var feature=new OpenLayers.Feature.Vector(rect,{rotation:rotation});this.layer.addFeatures(feature);return feature;},getCenterRectangle:function(rectangle){var center=rectangle.geometry.getBounds().getCenterLonLat();return[center.lon,center.lat];},getExtent:function(center,scale,layout){var unitsRatio=OpenLayers.INCHES_PER_UNIT[this.map.baseLayer.units];var size=layout.map;var w=size.width/72.0/unitsRatio*scale/2.0;var h=size.height/72.0/unitsRatio*scale/2.0;return new OpenLayers.Bounds(center.lon-w,center.lat-h,center.lon+w,center.lat+h);},fitScale:function(layout){var availsTxt=this.config.scales;if(availsTxt.length==0)return;var avails=[];for(var i=0;i<availsTxt.length;++i){avails.push(parseFloat(availsTxt[i].value));}
-avails.sort(function(a,b){return a-b;});var bounds=this.map.getExtent();var unitsRatio=OpenLayers.INCHES_PER_UNIT[this.map.baseLayer.units];var size=layout.map;var targetScale=Math.min(bounds.getWidth()/size.width*72.0*unitsRatio,bounds.getHeight()/size.height*72.0*unitsRatio);var nearestScale=avails[0];for(var j=1;j<avails.length;++j){if(avails[j]<=targetScale){nearestScale=avails[j];}else{break;}}
-return nearestScale;},print:function(){this.overrides[this.layer.name]={visibility:false};var printCommand=new mapfish.PrintProtocol(this.map,this.config,this.overrides,this.getCurDpi(),this.serviceParams);if(this.layerTree){this.addLegends(printCommand.spec);}
-if(this.grids){this.addGrids(printCommand.spec);}
-this.fillSpec(printCommand);this.mask.msg=OpenLayers.Lang.translate('mf.print.generatingPDF');this.mask.show();printCommand.createPDF(function(){this.mask.hide();},function(request){if(request.getURL){Ext.Msg.alert(OpenLayers.Lang.translate('mf.information'),OpenLayers.Lang.translate('mf.print.popupBlocked')+'<br />'+'<a href="'+request.getURL+'" target="_blanc">'+
-request.getURL+'</a>');}else{Ext.Msg.alert(OpenLayers.Lang.translate('mf.error'),OpenLayers.Lang.translate('mf.print.unableToPrint'));}
-this.mask.hide();},this);},addGrids:function(spec){var grids=this.grids;if(grids&&typeof grids=="function"){grids=grids();}
-if(grids){for(var name in grids){var grid=grids[name];if(!grid){continue;}
-spec[name]={};var specData=spec[name].data=[];var specCols=spec[name].columns=[];var columns=grid.getColumnModel();var store=grid.getStore();for(var j=0;j<columns.getColumnCount();++j){if(!columns.isHidden(j)){specCols.push(columns.getDataIndex(j));}}
-store.each(function(record){var hash={};for(var key in record.data){var val=record.data[key];if(val!=null){if(val.CLASS_NAME&&val.CLASS_NAME=='OpenLayers.Feature.Vector'){val=new OpenLayers.Format.WKT().write(val);}
-hash[key]=val;}}
-specData.push(hash);},this);}}},addLegends:function(spec){var legends=spec.legends=[];function addLayer(layerNode){var layerInfo={name:layerNode.attributes.printText||layerNode.attributes.text,icon:mapfish.Util.relativeToAbsoluteURL(layerNode.attributes.icon)};var classesInfo=layerInfo.classes=[];layerNode.eachChild(function(classNode){classesInfo.push({name:classNode.attributes.printText||classNode.attributes.text,icon:mapfish.Util.relativeToAbsoluteURL(classNode.attributes.icon)});},this);legends.push(layerInfo);}
-function goDeep(root){root.eachChild(function(node){var attr=node.attributes;if(attr.checked&&attr.layerNames){addLayer(node);}else{goDeep(node);}},this);}
-goDeep(this.layerTree.getRootNode());},getLayoutForName:function(layoutName){var layouts=this.config.layouts;for(var i=0;i<layouts.length;++i){var cur=layouts[i];if(cur.name==layoutName){return cur;}}},createScaleCombo:function(){var scaleStore=new Ext.data.JsonStore({root:"scales",fields:['name','value'],data:this.config});return new Ext.form.ComboBox({fieldLabel:OpenLayers.Lang.translate('mf.print.scale'),store:scaleStore,displayField:'name',valueField:'value',typeAhead:false,mode:'local',id:'scale_'+this.getId(),hiddenId:'scaleId_'+this.getId(),hiddenName:"scale",name:"scale",editable:false,triggerAction:'all',value:this.config.scales[this.config.scales.length-1].value});},createDpiCombo:function(name){if(this.config.dpis.length>1){var dpiStore=new Ext.data.JsonStore({root:"dpis",fields:['name','value'],data:this.config});return{fieldLabel:OpenLayers.Lang.translate('mf.print.dpi'),xtype:'combo',store:dpiStore,displayField:'name',valueField:'value',typeAhead:false,mode:'local',id:'dpi_'+this.getId(),hiddenId:'dpiId_'+this.getId(),hiddenName:name,name:name,editable:false,triggerAction:'all',value:this.config.dpis[0].value};}else{return{xtype:'hidden',name:name,value:this.config.dpis[0].value};}},createLayoutCombo:function(name){if(this.config.layouts.length>1){var layoutStore=new Ext.data.JsonStore({root:"layouts",fields:['name'],data:this.config});return new Ext.form.ComboBox({fieldLabel:OpenLayers.Lang.translate('mf.print.layout'),store:layoutStore,displayField:'name',valueField:'name',typeAhead:false,mode:'local',id:'layout_'+this.getId(),hiddenId:'layoutId_'+this.getId(),hiddenName:name,name:name,editable:false,triggerAction:'all',value:this.config.layouts[0].name});}else{return new Ext.form.Hidden({name:name,value:this.config.layouts[0].name});}},createRotationTextField:function(){var layouts=this.config.layouts;var hasRotation=false;for(var i=0;i<layouts.length&&!hasRotation;++i){hasRotation=layouts[i].rotation;}
-if(hasRotation){var num=/^-?[0-9]+$/;return new Ext.form.TextField({fieldLabel:OpenLayers.Lang.translate('mf.print.rotation'),name:'rotation',value:'0',maskRe:/^[-0-9]$/,msgTarget:'side',validator:function(v){return num.test(v)?true:"Not a number";}});}else{return null;}},fillComponent:null,afterLayerCreated:null,getCurDpi:null,fillSpec:null,getCurLayout:null,setCurRotation:null});
+/*
+ * Copyright (C) 2009  Camptocamp
+ *
+ * This file is part of MapFish Client
+ *
+ * MapFish Client is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MapFish Client is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MapFish Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * @requires core/PrintProtocol.js
+ * @requires core/Util.js
+ */
+
+Ext.namespace('mapfish.widgets');
+Ext.namespace('mapfish.widgets.print');
+
+/**
+ * Class: mapfish.widgets.print.Base
+ * Base class for the Ext components used to communicate with the print module,
+ * automatically take the layers from the given {<OpenLayers.Map>} instance.
+ */
+
+mapfish.widgets.print.Base = {
+    /**
+     * APIProperty: map
+     * {<OpenLayers.Map>} The OpenLayers Map object.
+     */
+    map: null,
+
+    /**
+     * APIProperty: overrides
+     * {Object} the map that specify the print module overrides for each layers.
+     *    They can be used of changing the OL layer's bahaviors for the print
+     *   module. See the documentation in {<mapfish.PrintProtocol>}.
+     */
+    overrides: null,
+
+    /**
+     * APIProperty: configUrl
+     * {String} The URL to access .../config.json. Either this property or
+     *          config must be set.
+     */
+    configUrl: null,
+
+    /**
+     * APIProperty: config
+     * {Object} The response from .../config.json. Either this property or
+     *          configUrl must be set.
+     */
+    config: null,
+
+    /**
+     * APIProperty: layerTree
+     * {<mapfish.widgets.LayerTree>} An optional layer tree. Needed only if you
+     *                              want to display legends.
+     */
+    layerTree: null,
+
+    /**
+     * APIProperty: grids
+     * {Object} An optional dictionary of {Ext.grid.GridPanel}. Needed only
+     *          if you want to display search results. Can be function
+     *          (returning the dictionary) that will be called each time the
+     *          information is needed.
+     */
+    grids: null,
+
+    /**
+     * APIProperty: serviceParams
+     * {Object} Additional params to send in the print service Ajax calls. Can
+     *          be used to set the "locale" parameter.
+     */
+    serviceParams: null,
+
+    /**
+     * Property: mask
+     * {Ext.LoadingMask} The mask used when loading the configuration or
+     *                   when generating the PDF
+     */
+    mask: null,
+
+    /**
+     * APIProperty: printing
+     * {Boolean} True when a PDF is being generated. Read-only.
+     */
+    printing: false,
+
+    /**
+     * Method: initPrint
+     * loads the configuration
+     *
+     * Returns:
+     * {Boolean} true if the configuration needs loading.
+     */
+    initPrint: function() {
+        if (this.overrides == null) {
+            this.overrides = {};
+        }
+
+        if (this.config == null) {
+            mapfish.PrintProtocol.getConfiguration(this.configUrl,
+                    this.configReceived, this.configFailed, this, this.serviceParams);
+            return true;
+        } else {
+            this.fillComponent();
+            return false;
+        }
+    },
+
+    /**
+     * Method: configReceived
+     * Called once the config has been received
+     *
+     * Parameters:
+     * config - {Object} the config
+     */
+    configReceived: function(config) {
+        this.config = config;
+        if (this.mask) {
+            this.mask.hide();
+        }
+    },
+
+    /**
+     * Method: configFailed
+     * Called if we were unable to get the config.
+     */
+    configFailed: function() {
+        if (this.mask) {
+            this.mask.hide();
+        }
+    },
+
+    /**
+     * Method: print
+     *
+     * Do the actual printing.
+     */
+    print: function() {
+        MASK.msg = 'Generating PDF...';
+				MASK.show();
+        //if (this.mask) {
+        //    this.mask.msg = OpenLayers.Lang.translate('mf.print.generatingPDF');
+        //    this.mask.show();
+        //}
+
+        var printCommand = new mapfish.PrintProtocol(this.map, this.config,
+                this.overrides, this.getCurDpi(), this.serviceParams);
+        if (this.layerTree) {
+            this.addLegends(printCommand.spec);
+        }
+        if (this.grids) {
+            this.addGrids(printCommand.spec);
+        }
+        this.fillSpec(printCommand);
+        this.printing = true;
+        printCommand.createPDF(
+                function() { //success
+                    if (MASK) {
+                      MASK.hide();
+                    }
+                    //if (this.mask) {this.mask.hide();}
+                    this.printing = false;
+                },
+                function(request) { //popup
+                    // don't use an Ext button... for some reason the IE "automatic
+                    // download" stuff kick in with those.
+
+                    var onClick = 'Ext.getCmp(\'printPopup\').destroy();';
+                    if (Ext.isOpera) {
+                        // Opera doesn't respect the "Content-disposition:
+                        // attachment", so we have to open a new tab 
+                        onClick += 'window.open(\'' + request.getURL + '\', \'_blank\');';
+                    } else {
+                        onClick += 'window.location=\'' + request.getURL + '\';';
+                    }
+                    var content = OpenLayers.Lang.translate('mf.print.pdfReady') + '<br /><br />' +
+                                  '<table onclick="' + onClick + '" border="0" cellpadding="0" cellspacing="0" class="x-btn-wrap" align="center">' +
+                                  '<tbody><tr><td class="x-btn-left"><i>&#160;</i></td>' +
+                                  '<td class="x-btn-center"><em unselectable="on" class="x-btn x-btn-text">' + Ext.MessageBox.buttonText.ok + '</em></td>' +
+                                  '<td class="x-btn-right"><i>&#160;</i></td></tr>' +
+                                  '</tbody></table>';
+                    var popup = new Ext.Window({
+                        bodyStyle: 'padding: 7px;',
+                        width: 200,
+                        id: "printPopup",
+                        autoHeight: true,
+                        constrain: true,
+                        closable: false,
+                        title: OpenLayers.Lang.translate('mf.information'),
+                        html: content,
+                        listeners: {
+                            destroy: function() {
+                                if (this.mask) this.mask.hide();
+                                this.printing = false;
+                            },
+                            scope: this
+                        }
+                    });
+                    popup.show();
+                },
+                function(request) { //failure
+                    Ext.Msg.alert(OpenLayers.Lang.translate('mf.error'),
+                            OpenLayers.Lang.translate('mf.print.unableToPrint'));
+                    if (this.mask) this.mask.hide();
+                    this.printing = false;
+                },
+                this);
+    },
+
+    /**
+     * Method: addGrids
+     *
+     * Add the grids' data to the given spec.
+     *
+     * Parameters:
+     * spec - {Object} The print spec to fill.
+     */
+    addGrids: function(spec) {
+        var grids = this.grids;
+        if (grids && typeof grids == "function") {
+            grids = grids();
+        }
+        if (grids) {
+            for (var name in grids) {
+                var grid = grids[name];
+                if (!grid) {
+                    continue;
+                }
+                spec[name] = {};
+                var specData = spec[name].data = [];
+                var specCols = spec[name].columns = [];
+                var columns = grid.getColumnModel();
+                var store = grid.getStore();
+                for (var j = 0; j < columns.getColumnCount(); ++j) {
+                    if (!columns.isHidden(j)) {
+                        specCols.push(columns.getDataIndex(j));
+                    }
+                }
+                store.each(function(record) {
+                    var hash = {};
+                    for (var key in record.data) {
+                        var val = record.data[key];
+                        if (val != null) {
+                            if (val.CLASS_NAME && val.CLASS_NAME == 'OpenLayers.Feature.Vector') {
+                                val = new OpenLayers.Format.WKT().write(val);
+                            }
+                            hash[key] = val;
+                        }
+                    }
+                    specData.push(hash);
+                }, this);
+            }
+        }
+    },
+
+    /**
+     * Method: addLegends
+     *
+     * Add the layerTree's legends to the given spec.
+     *
+     * Parameters:
+     * spec - {Object} The print spec to fill.
+     */
+    addLegends: function(spec) {
+        var legends = spec.legends = [];
+
+        function addLayer(layerNode) {
+            var layerInfo = {
+                name: layerNode.attributes.printText || layerNode.attributes.text,
+                icon: mapfish.Util.relativeToAbsoluteURL(layerNode.attributes.icon)
+            };
+            var classesInfo = layerInfo.classes = [];
+            layerNode.eachChild(function(classNode) {
+                classesInfo.push({
+                    name: classNode.attributes.printText || classNode.attributes.text,
+                    icon:  mapfish.Util.relativeToAbsoluteURL(classNode.attributes.icon)
+                });
+            }, this);
+            legends.push(layerInfo);
+        }
+
+        function goDeep(root) {
+            root.eachChild(function(node) {
+                var attr = node.attributes;
+                if (attr.checked && attr.layerNames && !attr.hidden && attr.printText!=='') {
+                    addLayer(node);
+                } else {
+                    goDeep(node);
+                }
+            }, this);
+        }
+        goDeep(this.layerTree.getRootNode());
+
+        if (legends.length == 0) {
+            //don't display the legends block if there is none
+            delete spec.legends;
+        }
+    },
+
+    /**
+     * APIMethod: fillSpec
+     * Add the page definitions and set the other parameters. To be implemented
+     * by child classes.
+     * 
+     * This method can be overriden to customise the spec sent to the printer.
+     * Don't forget to call the parent implementation.
+     *
+     * Parameters:
+     * printCommand - {<mapfish.PrintProtocol>} The print definition to fill.
+     */
+    fillSpec: null,
+
+    /**
+     * Method: getCurDpi
+     *
+     * Returns the user selected DPI. To be implemented by child classes.
+     */
+    getCurDpi: null
+};
