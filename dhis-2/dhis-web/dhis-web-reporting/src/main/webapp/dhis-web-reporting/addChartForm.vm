@@ -65,14 +65,16 @@
 </table>
 
 <table>
-        
+
+    <col>       
+    <col width="16">
+    	
     <!-- Indicators -->
-    
     <tr>
-        <th>$i18n.getString( "value_y_available_indicators" )</th>      
+        <th colspan="2">$i18n.getString( "value_y_available_indicators" )</th>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <select id="indicatorGroupId" name="indicatorGroupId" style="min-width:600px" onchange="getIndicators()">
                 <option value="$ALL">[ $i18n.getString( "select_indicatorgroup_all" ) ]</option>
                 #foreach ( $group in $indicatorGroups )
@@ -80,9 +82,10 @@
                 #end
             </select>
         </td>
+        <td></td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <select multiple size="6" id="availableIndicators" name="availableIndicators" style="min-width:600px" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">             
                 #foreach ( $indicator in $availableIndicators )
                     <option value="$indicator.id">$indicator.name</option>
@@ -91,7 +94,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"><input 
                 type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"><input 
                 type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"><input 
@@ -99,7 +102,7 @@
         </td>
     </tr>
     <tr>
-        <th>$i18n.getString( "value_y_selected_indicators" )</th>
+        <th colspan="2">$i18n.getString( "value_y_selected_indicators" )</th>
     </tr>
     <tr>
         <td>
@@ -107,11 +110,15 @@
                 #foreach( $indicator in $selectedIndicators )
                     <option value="$indicator.id">$indicator.name</option>
                 #end
-            </select>
+            </select>                  
+        </td>
+        <td>
+            <a href="#" onclick="moveUpSelectedOption( 'selectedIndicators' )"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
+            <a href="#" onclick="moveDownSelectedOption( 'selectedIndicators' )"><img src="../images/move_down.png" border="0" alt=""></a>        
         </td>
     </tr>
     <tr>
-        <td style="height:15px"></td>
+        <td colspan="2" style="height:15px"></td>
     </tr>
     
     <!-- Category -->
@@ -123,13 +130,13 @@
     #end    
     
     <tr>
-        <td style="height:15px"></td>
+        <td colspan="2" style="height:15px"></td>
     </tr>
     
     <!-- Submit -->
     
     <tr>        
-        <td>
+        <td colspan="2">
             <input type="button" value="$i18n.getString( 'save' )"onclick="saveChart()" style="width:120px"><input 
                 type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewChartForm.action'" style="width:120px">
         </td>

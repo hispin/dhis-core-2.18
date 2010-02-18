@@ -244,10 +244,6 @@ public class GetChartOptionsAction
             selectedOrganisationUnits = chart.getOrganisationUnits();
             availableOrganisationUnits.removeAll( selectedOrganisationUnits );
             
-            Collections.sort( selectedIndicators, indicatorComparator );
-            Collections.sort( selectedPeriods, new PeriodComparator() );
-            Collections.sort( selectedOrganisationUnits, organisationUnitComparator );
-
             displayPropertyHandler.handle( selectedIndicators );
             displayPropertyHandler.handle( selectedOrganisationUnits );
         }
