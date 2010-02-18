@@ -65,25 +65,23 @@
 
 	<!-- Mapfish print module -->
 	  
-    <!--
-	<dependency>
+    <dependency>
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
-      <version>1.2</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
-    -->
-    
+  
   </dependencies>
 
-  <!--	
   <repositories>	  	      
-	<repository>
+
+    <repository>
       <id>org.mapfish</id>
       <url>http://dev.mapfish.org/maven/repository</url>
     </repository>	  
+
   </repositories>
-  -->
-	
+
   <properties>
     <rootDir>../../</rootDir>
   </properties>
