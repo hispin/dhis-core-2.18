@@ -144,9 +144,12 @@ mapfish.widgets.print.MultiPage = Ext.extend(mapfish.widgets.print.BaseWidget, {
         formPanel.add(layout);
 
         formPanel.add(this.createDpiCombo("dpi"));
+        formPanel.getComponent(1).setWidth(122);
 
         this.printButton = formPanel.addButton({
-            text: OpenLayers.Lang.translate('mf.print.print'),
+            text: 'Print PDF',
+            cls: 'aa_med',
+            style: 'margin:-5px 0px 0px 36px',
             scope: this,
             handler: this.print,
             disabled: true
@@ -176,7 +179,8 @@ mapfish.widgets.print.MultiPage = Ext.extend(mapfish.widgets.print.BaseWidget, {
         var rotation = this.createRotationTextField();
         if (rotation != null) {
             columns.push({
-                header: OpenLayers.Lang.translate('mf.print.rotation'),
+                header: 'Rot.',
+                width: 45,
                 dataIndex: 'rotation',
                 editor: rotation,
                 id: this.getId() + '_rotation',
@@ -216,11 +220,13 @@ mapfish.widgets.print.MultiPage = Ext.extend(mapfish.widgets.print.BaseWidget, {
             bbar: [
                 {
                     text: OpenLayers.Lang.translate('mf.print.addPage'),
+                    cls: 'aa_med',
                     scope: this,
                     handler: this.addPage
                 },
                 {
                     text: OpenLayers.Lang.translate('mf.print.remove'),
+                    cls: 'aa_med',
                     scope: this,
                     handler: this.removeSelected,
                     id: this.getId() + "_remove",
@@ -228,6 +234,7 @@ mapfish.widgets.print.MultiPage = Ext.extend(mapfish.widgets.print.BaseWidget, {
                 },
                 {
                     text: OpenLayers.Lang.translate('mf.print.clearAll'),
+                    cls: 'aa_med',
                     scope: this,
                     handler: this.clearPages
                 }
