@@ -539,7 +539,7 @@ Ext.extend(mapfish.widgets.print.BaseWidget, Ext.Panel, {
             });
 
             return {
-                fieldLabel: OpenLayers.Lang.translate('mf.print.dpi'),
+                fieldLabel: 'Dots per inch',
                 xtype: 'combo',
                 store: dpiStore,
                 displayField: 'name',
@@ -555,7 +555,7 @@ Ext.extend(mapfish.widgets.print.BaseWidget, Ext.Panel, {
                 name: name,
                 editable: false,
                 triggerAction: 'all',
-                value: this.config.dpis[0].value
+                value: this.config.dpis[3].value
             };
         } else {
             return {

@@ -2727,14 +2727,14 @@ Ext.onReady( function() {
 	});
 	
 	function showPdf() {
-		var printSimplePagePanel = Ext.getCmp('printSinglePage_p');
-		if (printSimplePagePanel.hidden) {
-            printSimplePagePanel.show();
-			printSimplePagePanel.expand();
+		var printMultiPagePanel = Ext.getCmp('printMultiPage_p');
+		if (printMultiPagePanel.hidden) {
+            printMultiPagePanel.show();
+			printMultiPagePanel.expand();
         }
         else {
-			printSimplePagePanel.collapse();
-			printSimplePagePanel.hide();
+			printMultiPagePanel.collapse();
+			printMultiPagePanel.hide();
 			choropleth.expand();
         }
 	}	
@@ -2895,35 +2895,30 @@ Ext.onReady( function() {
                     mapLayerPanel,
 					adminPanel,
 					{
-						xtype: 'print-simple',
-						id: 'printSinglePage_p',
-						title: '<font style="' + AA_DARK + '">Print map as PDF</font>',
+						xtype: 'print-multi',
+						id: 'printMultiPage_p',
+						title: '<font style="' + AA_DARK + '">Print multi page PDF</font>',
 						formConfig: {
 							labelWidth: 65,
+							bodyStyle: 'padding: 7px;',
 							defaults: {
 								width: 140,
 								listWidth: 140
-							},
-							items: [
-								{
-									xtype: 'textfield',
-									fieldLabel: 'Map title',
-									name: 'mapTitle',
-									labelStyle: AA_LIGHT,
-									labelSeparator: MENU_LABELSEPARATOR,
-									width: combo_width,
-								},
-								{
-									xtype: 'textarea',
-									fieldLabel: 'Comment',
-									name: 'comment',
-									height: 100,
-									labelStyle: AA_LIGHT,
-									labelSeparator: MENU_LABELSEPARATOR,
-									width: combo_width,
-								}
-							]
+							}
 						},
+						columns: [
+							{
+								header: 'Map title',
+								width: 80,
+								dataIndex: 'mapTitle',
+								editor: new Ext.form.TextField()
+							},
+							{
+								header: 'Comment',
+								dataIndex: 'comment',
+								editor: new Ext.form.TextField()
+							}
+						],
 						border: false,
 						map: MAP,
 						configUrl: printConfigUrl,
@@ -2948,7 +2943,7 @@ Ext.onReady( function() {
     shapefilePanel.hide();
 	mapping.hide();
     mapLayerPanel.hide();
-	Ext.getCmp('printSinglePage_p').hide();
+	Ext.getCmp('printMultiPage_p').hide();
     
 	/* MAP CONTROLS */
 	var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
