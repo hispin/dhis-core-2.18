@@ -244,12 +244,12 @@ function isNotNull( elementId )
  */
 function htmlEncode( str )
 {
+    str = str.replace( /\%/g, "%25" ); //This line must come first so the % doesn't get overwritten later
     str = str.replace( /\ /g, "%20" );
     str = str.replace( /\!/g, "%21" );
     str = str.replace( /\"/g, "%22" );
     str = str.replace( /\#/g, "%23" );
     str = str.replace( /\$/g, "%24" );
-    str = str.replace( /\%/g, "%25" );
     str = str.replace( /\&/g, "%26" );
     str = str.replace( /\'/g, "%27" );
     str = str.replace( /\(/g, "%28" );
