@@ -18,6 +18,7 @@
     <module>dhis-service-core</module>
     <module>dhis-service-datamart-default</module>
     <module>dhis-service-user-hibernate</module>
+    <module>dhis-service-xml</module>
     <module>dhis-service-importexport</module>
     <module>dhis-service-reporting</module>
     <module>dhis-service-excel-reporting</module>

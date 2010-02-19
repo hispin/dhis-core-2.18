@@ -10,7 +10,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="environmentVariable" value="DHIS2_HOME"/>
     <property name="systemProperty" value="dhis2.home"/>
   </bean>
-  
+
+  <bean id="org.hisp.dhis.external.location.LocationManagerResolver"
+    class="org.hisp.dhis.external.location.DefaultLocationManagerResolver">
+    <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager"/>
+  </bean>
+
   <bean id="org.hisp.dhis.external.configuration.ConfigurationManager"
     class="org.hisp.dhis.external.configuration.DefaultConfigurationManager"/>
     

@@ -94,7 +94,6 @@ public class ImportInternalProcess
         
         importService.importData( params, inputStream, getState() );
         
-        getState().setMessage( "import_process_done" );        
         log.info( "Import process completed" );
     }
 }

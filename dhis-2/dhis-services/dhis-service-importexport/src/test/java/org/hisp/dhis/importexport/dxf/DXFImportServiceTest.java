@@ -43,6 +43,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -62,6 +63,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -91,14 +93,18 @@ public class DXFImportServiceTest
     
     private ImportService importService;
     
-    private InputStream inputStreamA;    
+    private InputStream inputStreamA;
+    private InputStream inputStreamAx;
+    private InputStream inputStreamAz;
     private InputStream inputStreamB;    
     private InputStream inputStreamC;    
     private InputStream inputStreamD;    
     private InputStream inputStreamE;    
     private InputStream inputStreamF;    
     private InputStream inputStreamG;
-    
+    private InputStream inputStreamH;
+    private InputStream inputStreamSDMX;
+
     private ImportObjectService importObjectService;
     
     private ImportDataValueService importDataValueService;
@@ -112,15 +118,21 @@ public class DXFImportServiceTest
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        inputStreamA = classLoader.getResourceAsStream( "dxfA.zip" );        
+        inputStreamA = classLoader.getResourceAsStream( "dxfA.zip" );
+        inputStreamAx = classLoader.getResourceAsStream( "dxfA.xml" );
+        inputStreamAz = classLoader.getResourceAsStream( "dxfA.xml.gz" );
         inputStreamB = classLoader.getResourceAsStream( "dxfB.zip" );
         inputStreamC = classLoader.getResourceAsStream( "dxfC.zip" );        
         inputStreamD = classLoader.getResourceAsStream( "dxfD.zip" );
         inputStreamE = classLoader.getResourceAsStream( "dxfE.zip" );        
         inputStreamF = classLoader.getResourceAsStream( "dxfF.zip" );      
         inputStreamG = classLoader.getResourceAsStream( "dxfG.zip" );
-        
-        importService = (ImportService) getBean( "org.hisp.dhis.importexport.DXFImportService" );
+        inputStreamH = classLoader.getResourceAsStream( "changeroot.xml" );
+        inputStreamSDMX = classLoader.getResourceAsStream( "formattedCSDS2.xml");
+
+        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
+//        importService = (ImportService) getBean( "org.hisp.dhis.importexport.DXFImportService" );
+        importService = (ImportService) getBean( "org.hisp.dhis.importexport.XMLImportService" );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
@@ -153,12 +165,16 @@ public class DXFImportServiceTest
     public void tearDownTest()
         throws Exception
     {
-        inputStreamA.close();        
+        inputStreamA.close();
+        inputStreamAx.close();
+        inputStreamAz.close();
         inputStreamB.close();        
         inputStreamC.close();        
         inputStreamD.close();        
         inputStreamE.close();        
         inputStreamF.close();
+        inputStreamH.close();
+        inputStreamSDMX.close();
     }
     
     @Override
@@ -173,6 +189,31 @@ public class DXFImportServiceTest
     
     // TODO Improve test on duplicate GroupMemberAssociations
 
+
+    @Test
+    public void testSimpleImportWithTransform()
+    {
+        ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
+
+        importService.importData( importParams, inputStreamH );
+
+        assertObjects( dataASize );
+    }
+
+    @Ignore
+    @Test
+    public void testSDMXImportWithTransform()
+    {
+        ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
+
+        importService.importData( importParams, inputStreamSDMX );
+
+        assertEquals( dataElementService.getAllDataElements().size(), 1546 );
+
+        assertEquals( organisationUnitService.getAllOrganisationUnits().size(), 1 );
+
+        assertEquals( dataValueService.getAllDataValues().size(), 64 );    }
+
     @Test
     public void testImportMetaData()
     {        
@@ -180,6 +221,26 @@ public class DXFImportServiceTest
         
         importService.importData( importParams, inputStreamA );
         
+        assertObjects( dataASize );
+    }
+
+    @Test
+    public void testImportMetaDataFromXML()
+    {
+        ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
+
+        importService.importData( importParams, inputStreamAx );
+
+        assertObjects( dataASize );
+    }
+
+    @Test
+    public void testImportMetaDataFromGzip()
+    {
+        ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
+
+        importService.importData( importParams, inputStreamAz );
+
         assertObjects( dataASize );
     }
 
