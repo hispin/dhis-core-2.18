@@ -74,7 +74,7 @@ public class ImportPreviewInternalProcess
         
         importObjectService.importAll();        
 
-        getState().setMessage( "import_process_done" );
+        // getState().setMessage( "import_process_done" );
         log.info( "Preview process completed" );        
     }
 }

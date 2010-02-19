@@ -202,12 +202,16 @@ public class ImportAction
                 return SUCCESS;
             }
             
-            if ( contentType == null || !contentType.contains( "application" ) )
+            // accept zip, gzip or uncompressed xml
+            // TODO: check cross-browser conent type strings
+            if (! ((contentType.equals( "application/x-zip-compressed")) ||
+                contentType.equals( "application/x-gzip") ||
+                contentType.equals( "text/xml")))
             {
                 message = i18n.getString( "file_type_not_allowed" );
-                
+
                 log.warn( "Content type not allowed: " + contentType );
-                
+
                 return SUCCESS;
             }
             
