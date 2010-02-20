@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transforms>
+    <transform root="change" ns="">
+        <xslt>changeroot.xsl</xslt>
+        <description>Simple test transformer</description>
+    </transform>
+    <transform root="DataSet" ns="urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=SL-MOHS:ART-SUMMARY:1.0:cross">
+        <xslt>sl_art_summary1_2dxf.xsl</xslt>
+        <description>Translates Sierra Leone Art summary part 1 to dxf version 1</description>
+    </transform>
+</transforms>
