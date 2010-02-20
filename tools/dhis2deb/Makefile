@@ -1,4 +1,4 @@
-DHIS_WAR=~/development/src/dhis2/dhis-2/dhis-web/dhis-web-portal/target/dhis.war
+DHIS_WAR=~/src/dhis/dhis2-trunk/dhis2/dhis-2/dhis-web/dhis-web-portal/target/dhis.war
 
 dhis2.deb: dhis2/* dhis2/dhis2_home/* dhis2/DEBIAN/*
 	dpkg-deb --build dhis2
