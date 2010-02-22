@@ -75,10 +75,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
@@ -837,7 +839,20 @@ public abstract class DhisConvenienceTest
         return user;
     }
 
-    public static ProgramStage createProrgamStage( char uniqueCharacter, int stage, int minDays ) //TODO typo
+    protected static Program createProgram( char uniqueCharacter, Set<ProgramStage> programStages, OrganisationUnit organisationUnit )
+    {
+        Program program = new Program();
+        
+        program.setName( "Program" + uniqueCharacter );
+        program.setDescription( "Description" + uniqueCharacter );
+        program.setDateOfEnrollmentDescription( "DateOfEnrollmentDescription" );
+        program.setDateOfIncidentDescription( "DateOfIncidentDescription" );
+        program.setProgramStages( programStages );
+        
+        return program;
+    }
+    
+    public static ProgramStage createProgramStage( char uniqueCharacter, int stage, int minDays )
     {
         ProgramStage programStage = new ProgramStage();
 
@@ -849,6 +864,19 @@ public abstract class DhisConvenienceTest
         return programStage;
     }
 
+    public static Patient createPatient( char uniqueChar )
+    {
+        Patient patient = new Patient();
+        
+        patient.setFirstName( "FirstName" + uniqueChar );
+        patient.setMiddleName( "MiddleName" + uniqueChar );
+        patient.setLastName( "LastName" + uniqueChar );
+        patient.setGender( Patient.MALE );
+        patient.setBirthDate( getDate( 1970, 1, 1 ) );
+        
+        return patient;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
