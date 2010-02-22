@@ -54,7 +54,7 @@ public class DefaultDXFImportService
 
     private final Log log = LogFactory.getLog( DefaultDXFImportService.class );
 
-    DXFConverter converter;
+    private DXFConverter converter;
 
     public void setConverter( DXFConverter converter )
     {
@@ -64,6 +64,7 @@ public class DefaultDXFImportService
     // -------------------------------------------------------------------------
     // ImportService implementation
     // -------------------------------------------------------------------------
+    
     public void importData( ImportParams params, InputStream inputStream )
     {
         importData( params, inputStream, new OutputHolderState() );
@@ -71,30 +72,34 @@ public class DefaultDXFImportService
 
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
     {
-
         log.info( "DXF importData()" );
         state.setMessage( "DXF importData()" );
 
-        // Importing of data from xml source is a three phase process
-
-        // Phase 1:  Get the XML stream
-        // this could potentially be from  a zip, a gzip or uncompressed dsource
+        // ---------------------------------------------------------------------
+        // Importing of data from xml source is a three phase process.
+        // Phase 1:  Get the XML stream.
+        // This could potentially be from  a zip, a gzip or uncompressed source.
+        // ---------------------------------------------------------------------
+                
         ZipInputStream zipIn = new ZipInputStream( inputStream );
         StreamUtils.getNextZipEntry( zipIn );
 
-        // Phase 2: get a STaX eventreader for the stream
-        //   On the basis of QName of root element perform additional transformation(s)
+        // ---------------------------------------------------------------------
+        // Phase 2: get a STaX eventreader for the stream.
+        // On the basis of QName of root element perform additional transforms.
+        // ---------------------------------------------------------------------
+        
         XMLReader reader = XMLFactory.getXMLEventReader( zipIn );
-        // we should really peek to find the the <dxf> element
 
-        // assuming <dxf> no further transformation necessary
-
-        // Phase 3: pass through to dxf convertor
+        // ---------------------------------------------------------------------
+        // We should really peek to find the the <dxf> element.
+        // Assuming <dxf> no further transformation necessary.
+        // Phase 3: pass through to dxf convertor.
+        // ---------------------------------------------------------------------
+        
         converter.read( reader, params, state );
-
 
         reader.closeReader();
         StreamUtils.closeInputStream( zipIn );
-
     }
 }

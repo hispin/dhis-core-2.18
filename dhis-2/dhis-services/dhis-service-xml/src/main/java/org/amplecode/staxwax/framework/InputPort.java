@@ -1,8 +1,5 @@
 package org.amplecode.staxwax.framework;
 
-
-import javax.xml.transform.Source;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -30,15 +27,16 @@ import javax.xml.transform.Source;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.xml.transform.Source;
+
 /**
- *
+ * Simple tuple providing named xml results.
+ * 
  * @author bobj
  * @version created 14-Jan-2010
  */
-
-// Simple tuple providing named xml results
-public class InputPort {
-
+public class InputPort
+{
     public InputPort( String name, Source result )
     {
         this.name = name;
@@ -49,20 +47,23 @@ public class InputPort {
 
     protected Source result;
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName( String name )
+    {
         this.name = name;
     }
 
-    public Source getSource() {
+    public Source getSource()
+    {
         return result;
     }
 
-    public void setSource(Source result) {
+    public void setSource( Source result )
+    {
         this.result = result;
     }
-
 }

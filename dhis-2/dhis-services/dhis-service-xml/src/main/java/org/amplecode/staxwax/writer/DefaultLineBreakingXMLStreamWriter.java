@@ -1,8 +1,5 @@
 package org.amplecode.staxwax.writer;
 
-import javax.xml.stream.XMLStreamWriter;
-
-
 /*
  * Copyright (c) 2008, the original author or authors.
  * All rights reserved.
@@ -30,6 +27,8 @@ import javax.xml.stream.XMLStreamWriter;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author Lars Helge Overland

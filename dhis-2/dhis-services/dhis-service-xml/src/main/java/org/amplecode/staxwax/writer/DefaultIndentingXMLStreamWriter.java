@@ -1,7 +1,5 @@
 package org.amplecode.staxwax.writer;
 
-import javax.xml.stream.XMLStreamWriter;
-
 /*
  * Copyright (c) 2008, the original author or authors.
  * All rights reserved.
@@ -30,6 +28,8 @@ import javax.xml.stream.XMLStreamWriter;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.xml.stream.XMLStreamWriter;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultIndentingXMLStreamWriter.java 145 2009-06-29 14:48:33Z larshelg $
@@ -39,7 +39,7 @@ public class DefaultIndentingXMLStreamWriter
 {
     private static final String LINE_BREAK = "\n";
     private static final char SPACE = ' ';    
-    private static final int indentStep = 4; //TODO
+    private static final int indentStep = 4; //TODO improve
     
     private static int currentIndent = 0;    
     

@@ -34,20 +34,20 @@ import java.io.OutputStream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.amplecode.staxwax.reader.DefaultXMLEventReader;
 import org.amplecode.staxwax.reader.DefaultXMLStreamReader;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.DefaultIndentingXMLStreamWriter;
 import org.amplecode.staxwax.writer.DefaultLineBreakingXMLStreamWriter;
 import org.amplecode.staxwax.writer.DefaultXMLStreamWriter;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.codehaus.stax2.XMLEventReader2;
+import org.codehaus.stax2.XMLInputFactory2;
+import org.codehaus.stax2.XMLStreamReader2;
 
 import com.ctc.wstx.stax.WstxOutputFactory;
-import org.amplecode.staxwax.reader.DefaultXMLEventReader;
-import org.codehaus.stax2.*;
-import org.codehaus.stax2.XMLInputFactory2;
 
 /**
  * This is a factory class which produces XMLWriter and XMLReader instances.
@@ -143,14 +143,12 @@ public class XMLFactory
      *
      * @param inputStreamReader the XMLStreamReader to read from.
      * @return an XMLReader.
-     */
-    
+     */    
     public static XMLReader getXMLReader( XMLStreamReader2 inputStreamReader )
     {
+        XMLReader xmlReader = new DefaultXMLStreamReader( inputStreamReader );
 
-            XMLReader xmlReader = new DefaultXMLStreamReader( inputStreamReader );
-
-            return xmlReader;
+        return xmlReader;
     }
 
     /**
