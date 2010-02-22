@@ -29,11 +29,15 @@ package org.hisp.dhis.patient.action.patient;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.PatientAttributePopulator;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,7 +48,7 @@ import com.opensymphony.xwork2.Action;
 public class ShowAddPatientFormAction
     implements Action
 {
-    // -------------------------------------------------------------------------
+	 // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -61,44 +65,76 @@ public class ShowAddPatientFormAction
     {
         this.patientIdentifierService = patientIdentifierService;
     }
-
-    public PatientAttributeService patientAttributeService;
-
+    
+    private PatientAttributeService patientAttributeService;
+    
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
-
+    
+    private PatientAttributeGroupService patientAttributeGroupService;
+    
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
+    
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+    
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String identifier;
-
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-    private Collection<PatientAttribute> patientAttributes;
-
-    public Collection<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
+    private Collection<PatientAttribute> noGroupAttributes;
+   
+    private Collection<PatientAttributeGroup> attributeGroups;
+    
+    private Collection<PatientIdentifierType> identifierTypes;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        identifier = patientIdentifierService.getNextIdentifierForOrgUnit( organisationUnit );
-
-        patientAttributes = patientAttributeService.getPatientAttributesByMandatory(true);
         
+        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes(); 
+       
+        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
+        
+        // Remove Child Contact Name, Child Contact RelationShip Type attributes from this list 
+        PatientAttribute attr = new PatientAttribute();
+        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
+        noGroupAttributes.remove( attr );
+        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
+        noGroupAttributes.remove( attr );
+        
+        attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
+
         return SUCCESS;
+    }
+
+    
+    // -------------------------------------------------------------------------
+    // Getter/Setter
+    // -------------------------------------------------------------------------
+    public Collection<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    public Collection<PatientAttributeGroup> getAttributeGroups()
+    {
+        return attributeGroups;
+    }
+    public Collection<PatientAttribute> getNoGroupAttributes()
+    {
+        return noGroupAttributes;
     }
 }

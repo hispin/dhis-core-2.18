@@ -19,7 +19,12 @@
     
     <many-to-one name="patientAttributeGroup" column="patientattributegroupid"
 			class="org.hisp.dhis.patient.PatientAttributeGroup"
-			foreign-key="fk_attribute_group" lazy="false" insert="true" />     	
-	
+			foreign-key="fk_attribute_group" lazy="false" insert="true" />  
+			   	
+	<set name="attributeOptions" >
+      <key column="patientattributeid"/>      
+      <one-to-many class="org.hisp.dhis.patient.PatientAttributeOption" />
+    </set>
+    
   </class>
 </hibernate-mapping>

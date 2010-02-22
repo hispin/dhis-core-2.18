@@ -7,6 +7,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
   
   <!-- Store definitions -->
+  <bean id="org.hisp.dhis.dataentryform.DataEntryFormAssociationStore"
+    class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormAssociationStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+   <bean id="org.hisp.dhis.dataentryform.DataEntryFormStore"
+    class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
 
   <bean id="org.hisp.dhis.customvalue.CustomValueStore"
     class="org.hisp.dhis.customvalue.hibernate.HibernateCustomValueStore">
@@ -93,12 +102,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.dataset.DataEntryFormStore"
-    class="org.hisp.dhis.dataset.hibernate.HibernateDataEntryFormStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.minmax.MinMaxDataElementStore"
+ <bean id="org.hisp.dhis.minmax.MinMaxDataElementStore"
     class="org.hisp.dhis.minmax.hibernate.HibernateMinMaxDataElementStore">
     <property name="clazz" value="org.hisp.dhis.minmax.MinMaxDataElement"/>
     <property name="sessionFactory" ref="sessionFactory"/>
@@ -239,7 +243,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataSetStore"
       ref="org.hisp.dhis.dataset.DataSetStore"/>
     <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataset.DataEntryFormService"/>
+      ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
@@ -255,14 +259,22 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sectionStore"
       ref="org.hisp.dhis.dataset.SectionStore"/>
   </bean>
-	
-  <bean id="org.hisp.dhis.dataset.DataEntryFormService"
-    class="org.hisp.dhis.dataset.DefaultDataEntryFormService">
+  
+   <bean id="org.hisp.dhis.dataentryform.DataEntryFormService"
+    class="org.hisp.dhis.dataentryform.DefaultDataEntryFormService">
     <property name="dataEntryFormStore"
-      ref="org.hisp.dhis.dataset.DataEntryFormStore"/>
+      ref="org.hisp.dhis.dataentryform.DataEntryFormStore"/>
+    <property name="dataEntryFormAssociationService"
+      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"
+    class="org.hisp.dhis.dataentryform.DefaultDataEntryFormAssociationService">
+    <property name="dataEntryFormAssociationStore"
+      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationStore"/>
   </bean>
     
-  <bean id="org.hisp.dhis.expression.ExpressionService"
+ <bean id="org.hisp.dhis.expression.ExpressionService"
     class="org.hisp.dhis.expression.DefaultExpressionService">
     <property name="expressionStore"
       ref="org.hisp.dhis.expression.ExpressionStore"/>
@@ -467,6 +479,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
 
   <!-- DeletionHandlers -->
+  
+  <bean id="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler"
+    class="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler">
+    <property name="dataEntryFormService"
+      ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+    <property name="deletionManager"
+      ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+  </bean>
     
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"
     class="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler">
@@ -527,14 +547,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.system.deletion.DeletionManager"/>
   </bean>
   
-  <bean id="org.hisp.dhis.dataset.DataEntryFormDeletionHandler"
-    class="org.hisp.dhis.dataset.DataEntryFormDeletionHandler">
-    <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataset.DataEntryFormService"/>
-    <property name="deletionManager"
-      ref="org.hisp.dhis.system.deletion.DeletionManager"/>
-  </bean>
-    
   <bean id="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler"
     class="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler">
     <property name="dataSetService"
@@ -619,7 +631,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.dataset.DataSetDeletionHandler"/>
           <ref local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler"/>
           <ref local="org.hisp.dhis.dataset.SectionDeletionHandler"/>
-          <ref local="org.hisp.dhis.dataset.DataEntryFormDeletionHandler"/>
+          <ref local="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler"/>
           <ref local="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler"/>
           <ref local="org.hisp.dhis.expression.ExpressionDeletionHandler"/>
           <ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler"/>

@@ -54,6 +54,7 @@ public class PatientIdentifier
 
     private Boolean preferred = false;
 
+    private boolean temporary = false;
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -169,4 +170,12 @@ public class PatientIdentifier
     {
         return identifierType;
     }
+
+	public boolean isTemporary() {
+		return temporary;
+	}
+
+	public void setTemporary(boolean temporary) {
+		this.temporary = temporary;
+	}
 }

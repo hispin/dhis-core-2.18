@@ -35,6 +35,8 @@ import static junit.framework.Assert.assertTrue;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormStore;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
@@ -78,9 +80,9 @@ public class DataEntryFormStoreTest
 
         dataSetStore.addDataSet( dataSetA );
 
-        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
 
-        int dataEntryFormAid = dataEntryFormStore.addDataEntryForm( dataEntryFormA );
+        int dataEntryFormAid = dataEntryFormStore.addDataEntryForm(dataEntryFormA );
 
         dataEntryFormA = dataEntryFormStore.getDataEntryForm( dataEntryFormAid );
 
@@ -91,11 +93,8 @@ public class DataEntryFormStoreTest
     @Test
     public void testUpdateDataEntryForm()
     {
-        DataSet dataSetA = new DataSet( "DataSet-A", periodType );
 
-        dataSetStore.addDataSet( dataSetA );
-
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
         int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
 
@@ -115,11 +114,8 @@ public class DataEntryFormStoreTest
     @Test
     public void testDeleteAndGetDataEntryForm()
     {
-        DataSet dataSetA = new DataSet( "DataSet-A", periodType );
 
-        dataSetStore.addDataSet( dataSetA );
-
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
         int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
 
@@ -136,11 +132,8 @@ public class DataEntryFormStoreTest
     public void testGetDataEntryFormByName()
         throws Exception
     {
-        DataSet dataSetA = new DataSet( "DataSet-A", periodType );
 
-        dataSetStore.addDataSet( dataSetA );
-
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
         int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
 
@@ -150,37 +143,29 @@ public class DataEntryFormStoreTest
         assertNull( dataEntryFormStore.getDataEntryFormByName( "DataEntryForm-X" ) );
     }
 
-    @Test
-    public void testGetDataEntryFormByDataSet()
-        throws Exception
-    {
-        DataSet dataSetA = new DataSet( "DataSet-A", periodType );
-
-        dataSetStore.addDataSet( dataSetA );
-
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
-
-        int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
-
-        DataSet dataSetB = new DataSet( "DataSet-B", periodType );
-
-        dataSetStore.addDataSet( dataSetB );
-
-        assertEquals( dataEntryFormStore.getDataEntryFormByDataSet( dataSetA ).getId(), id );
-        assertNull( dataEntryFormStore.getDataEntryFormByDataSet( dataSetB ) );
-    }
+//    @Test
+//    public void testGetDataEntryFormByDataSet()
+//        throws Exception
+//    {
+//
+//        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
+//
+//        int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
+//
+//        DataSet dataSetB = new DataSet( "DataSet-B", periodType );
+//
+//        dataSetStore.addDataSet( dataSetB );
+//
+//        assertEquals( dataEntryFormStore.getDataEntryFormByDataSet( dataSetA ).getId(), id );
+//        assertNull( dataEntryFormStore.getDataEntryFormByDataSet( dataSetB ) );
+//    }
 
     @Test
     public void testGetAllDataEntryForms()
     {
-        DataSet dataSetA = new DataSet( "DataSet-A", periodType );
-        DataSet dataSetB = new DataSet( "DataSet-B", periodType );
 
-        dataSetStore.addDataSet( dataSetA );
-        dataSetStore.addDataSet( dataSetB );
-
-        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A", dataSetA );
-        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B", dataSetB );
+        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
+        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B" );
 
         dataEntryFormStore.addDataEntryForm( dataEntryFormA );
         dataEntryFormStore.addDataEntryForm( dataEntryFormB );

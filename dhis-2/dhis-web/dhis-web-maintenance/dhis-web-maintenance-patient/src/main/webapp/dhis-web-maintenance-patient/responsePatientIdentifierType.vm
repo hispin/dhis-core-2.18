@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patientIdentifierType>
+  <id>$patientIdentifierType.id</id>
+  <name>$encoder.xmlEncode( $patientIdentifierType.name )</name>
+  <description>$encoder.xmlEncode( $patientIdentifierType.description )</description>  
+  <format>#if($patientIdentifierType.format) $encoder.xmlEncode( $patientIdentifierType.format )#end</format>  
+</patientIdentifierType>

@@ -4,6 +4,7 @@ function organisationUnitSelected( orgUnits )
     window.location.href = 'patient.action';    
 }
 
+
 selection.setListenerFunction( organisationUnitSelected );
 
 //------------------------------------------------------------------------------
@@ -276,13 +277,15 @@ function validateAddPatient()
 		}
 	}	
 	
-	var params = 'identifier=' + getFieldValue( 'identifier' ) +
+	var params = '&checkedDuplicate='+checkedDuplicate +
 				'&firstName=' + getFieldValue( 'firstName' ) +
 				'&middleName=' + getFieldValue( 'middleName' ) +
 				'&lastName=' + getFieldValue( 'lastName' ) +
 				'&gender=' + getFieldValue( 'gender' ) +
 				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
-				'&age=' + getFieldValue( 'age' ) ;
+				'&age=' + getFieldValue( 'age' ) +
+				'&genre=' + getFieldValue('gender')
+				+ getIdParams();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
@@ -311,7 +314,13 @@ function addValidationCompleted( messageElement )
         document.getElementById( 'message' ).innerHTML = message;
         document.getElementById( 'message' ).style.display = 'block';
     }
+    else if( type == 'duplicate' )
+    {
+    	if( !checkedDuplicate )
+    		showListPatientDuplicate(messageElement, true);
+    }
 }
+
 
 // -----------------------------------------------------------------------------
 // Update Patient
@@ -320,12 +329,12 @@ function addValidationCompleted( messageElement )
 function validateUpdatePatient()
 {
     var params = 'id=' + getFieldValue( 'id' ) +
-				'&identifier=' + getFieldValue( 'identifier' ) +
 				'&firstName=' + getFieldValue( 'firstName' ) +
 				'&middleName=' + getFieldValue( 'middleName' ) +
 				'&lastName=' + getFieldValue( 'lastName' ) +
 				'&gender=' + getFieldValue( 'gender' ) +
-				'&birthDate=' + getFieldValue( 'birthDate' ) ;
+				'&birthDate=' + getFieldValue( 'birthDate' ) 
+				+ getIdParams();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
@@ -355,8 +364,22 @@ function updateValidationCompleted( messageElement )
         document.getElementById( 'message' ).innerHTML = message;
         document.getElementById( 'message' ).style.display = 'block';
     }
+    else if( type == 'duplicate' )
+    {
+    	if( !checkedDuplicate )
+    		showListPatientDuplicate(messageElement, true);
+    }
 }
 
+function getIdParams()
+{
+	var params = "";
+	jQuery("input.idfield").each(function(){
+		if( jQuery(this).val() )
+			params += "&" + jQuery(this).attr("name") +"="+ jQuery(this).val();
+	});
+	return params;
+}
 
 //-----------------------------------------------------------------------------
 //Move members
@@ -413,4 +436,139 @@ function selectAll( list )
 	{
 		option.selected = true;
 	}
+}
+
+function ageOnchange()
+{
+	jQuery("#birthDate").rules("remove","required");
+	jQuery("#birthDate").val("");
+	jQuery("#birthDate").removeClass("error");
+	jQuery("#age").rules("add",{required:true});
+	if( jQuery("#age").val() <= 5 ) toggleChild5(true); 
+	else toggleChild5(false);
+
+}
+
+function bdOnchange()
+{
+	jQuery("#age").rules("remove","required");
+	jQuery("#age").val("")
+	jQuery("#birthDate").rules("add",{required:true});
+	var date5 = new Date();date5.setFullYear(date5.getFullYear() - 5 );
+	if(  new Date(jQuery("#birthDate").val()) > date5 ) toggleChild5(true);
+	else toggleChild5(false);
+}
+
+function toggleChild5( show )
+{
+	if( show )
+	{
+		jQuery("#childContactType").show();
+		jQuery("#childContactName").show();
+		jQuery("#childContactIdentifierType").rules("add",{required:true});
+		jQuery("#childContactIdentifierName").rules("add",{required:true});
+	}else{
+		jQuery("#childContactType").hide();
+		jQuery("#childContactName").hide();
+		jQuery("#childContactIdentifierType").rules("remove","required");
+		jQuery("#childContactIdentifierName").rules("remove","required");
+	}
+}
+
+function checkDuplicate()
+{
+	var params = 
+				'&firstName=' + getFieldValue( 'firstName' ) +
+				'&middleName=' + getFieldValue( 'middleName' ) +
+				'&lastName=' + getFieldValue( 'lastName' ) +
+				'&gender=' + getFieldValue( 'gender' ) +
+				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
+				'&age=' + getFieldValue( 'age' ) +
+				'&genre=' + getFieldValue('gender');
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( checkDuplicateCompleted ); 
+	request.sendAsPost( params );	
+    request.send( "validatePatient.action" );        
+
+    return false;
+}
+function checkDuplicateCompleted( messageElement )
+{
+	checkedDuplicate = true;    
+	var type = messageElement.getAttribute( 'type' );
+    var message = messageElement.firstChild.nodeValue;
+    
+    if( type == 'success')
+    {
+    	alert(i18n_no_duplicate_found);
+    }
+    if ( type == 'input' )
+    {
+        document.getElementById( 'message' ).innerHTML = message;
+        document.getElementById( 'message' ).style.display = 'block';
+    }
+    else if( type == 'duplicate' )
+    {
+    	showListPatientDuplicate(messageElement, false);
+    }
+}
+/**
+ * Show list patient duplicate found by jQuery thickbox plugin
+ * @param rootElement : root element of the response xml
+ * @param validate  :  is TRUE if this method is called in validation method  
+ */
+function showListPatientDuplicate(rootElement, validate)
+{
+	var message = rootElement.firstChild.nodeValue;
+	var patients = rootElement.getElementsByTagName('patient');
+	var sPatient = "";
+	if( patients && patients.length > 0 )
+	{
+		for( var i = 0; i < patients.length ; i++ )
+		{
+			sPatient += "<hr style='margin:5px 0px;'><table>";
+			sPatient += "<tr><td><strong>"+i18n_patient_system_id+"</strong></td><td>"+ getElementValue( patients[i], 'systemIdentifier' )+"</td></tr>" ;
+			sPatient += "<tr><td><strong>"+i18n_patient_fullName+"</strong></td><td>"+ getElementValue( patients[i], 'fullName' )+"</td></tr>" ;
+			sPatient += "<tr><td><strong>"+i18n_patient_gender+"</strong></td><td>"+ getElementValue(  patients[i], 'gender' )+"</td></tr>" ;
+			sPatient += "<tr><td><strong>"+i18n_patient_date_of_birth+"</strong></td><td>"+getElementValue(  patients[i], 'dateOfBirth' ) +"</td></tr>" ;
+			sPatient += "<tr><td><strong>"+i18n_patient_age+"</strong></td><td>"+ getElementValue(  patients[i], 'age' ) +"</td></tr>" ;
+			sPatient += "<tr><td><strong>"+i18n_patient_blood_group+"</strong></td><td>"+ getElementValue(  patients[i], 'bloodGroup' ) +"</td></tr>";
+        	var identifiers =  patients[i].getElementsByTagName('identifier');
+        	if( identifiers && identifiers.length > 0 )
+        	{
+        		for( var j = 0; j < identifiers.length ; j++ )
+        		{
+        			sPatient +="<tr class='identifierRow'>"
+        				+"<td><strong>"+getElementValue( identifiers[j], 'name' )+"</strong></td>"
+        				+"<td>"+getElementValue( identifiers[j], 'value' )+"</td>	"	
+        				+"</tr>";
+        		}
+        	}
+        	var attributes =  patients[i].getElementsByTagName('attribute');
+        	if( attributes && attributes.length > 0 )
+        	{
+        		for( var k = 0; k < attributes.length ; k++ )
+        		{
+        			sPatient +="<tr class='attributeRow'>"
+        				+"<td><strong>"+getElementValue( attributes[k], 'name' )+"</strong></td>"
+        				+"<td>"+getElementValue( attributes[k], 'value' )+"</td>	"	
+        				+"</tr>";
+        		}
+        	}
+        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_edit_this_patient+"' onclick='edit(this)'/></td></tr>";
+        	sPatient += "</table>";
+		}
+		jQuery("#thickboxContainer","#hiddenModalContent").html("").append(sPatient);
+		if( !validate ) jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();});
+		else jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();window.parent.checkedDuplicate = true; window.parent.validatePatient();});
+		tb_show( message, "#TB_inline?height=500&width=500&inlineId=hiddenModalContent", null);
+	}
+}
+function validatePatient()
+{
+	if( jQuery("#id").val() )
+		validateUpdatePatient();
+	else validateAddPatient();
 }

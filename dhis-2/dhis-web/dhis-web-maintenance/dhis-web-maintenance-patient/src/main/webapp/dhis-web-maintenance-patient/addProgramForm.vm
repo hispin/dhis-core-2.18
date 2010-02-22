@@ -1,17 +1,50 @@
-
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addProgramForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addProgramForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddProgram();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#nameField").focus();
+			}
+	);
+</script>
 <h3>$i18n.getString( "add_new_program" )</h3>
-																		
-<form id="addProgramForm" name "addProgramForm" action="addProgram.action" method="post" onsubmit="return validateAddProgram()">
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>										
+<form id="addProgramForm" name="addProgramForm" action="addProgram.action" method="post" >
 
 <table>	
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="nameField" name="nameField"  maxlength="30" style="width:30em"></td>
+		<td><input type="text" id="nameField" name="nameField"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[4,35],alphanumeric:true}}"></td>
+		<td></td>
 	</tr>	
 	
 	<tr>
 		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:30em"></td>
+		<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td></td>
+	</tr>	
+	
+	<tr>
+		<td><label>$i18n.getString( "dateOfEnrollmentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td></td>
+	</tr>	
+	
+	<tr>
+		<td><label>$i18n.getString( "dateOfIncidentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td></td>
 	</tr>	
   	  	
 </table>
@@ -24,4 +57,3 @@
 </form> 	
 
 <span id="message"></span>
-

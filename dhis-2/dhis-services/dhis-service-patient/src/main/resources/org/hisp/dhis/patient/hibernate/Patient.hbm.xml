@@ -25,6 +25,8 @@
 		<property name="registrationDate" column="registrationdate" />
 
 		<property name="isDead" column="isdead" />
+		
+		<property name="bloodGroup" column="bloodgroup" length="5"/>
 
 		<property name="gender" column="gender" length="5" />
 

@@ -4,9 +4,8 @@
            
 <form id="selectRecordingForm" name="selectRecordingForm" method="post" action="selectDataRecording.action">
 
-<div>
-    <input type="hidden" id="id" name="id" value="$patient.id">
-</div>
+<input type="hidden" id="id" name="id" value="$patient.id">
+    
 
 <table class="mainPageTable"> 
     <tr>            
@@ -27,7 +26,7 @@
                                     <strong>$encoder.htmlEncode( $stageInstance.programStage.name ):</strong>
                                 </td>
                                 <td style="text-align:center" bgcolor="$colorMap.get( $stageInstance.id )">                                                           
-                                    #if( $stageInstance.executionDate )
+                                    #if( $stageInstance.completed )
                                         $i18n.getString( "completed_on" )$format.formatDate( $stageInstance.executionDate )
                                     #else
                                         $i18n.getString( "scheduled_for" )$format.formatDate( $stageInstance.dueDate )
@@ -72,7 +71,7 @@
             <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
             <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled" </td>
             <td>&nbsp;</td>
-            <td><label for="executionDate">$i18n.getString( "execution_date" ) </label></td>
+            <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
             <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
                 <img src="../images/calendar_icon.gif" width="16" height="16" id="getExecutionDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "execution_date" )"></td>
                 <script type="text/javascript">
@@ -84,8 +83,20 @@
                 </script>                
         #end
     </tr>   
+    <tr>
+    	<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()"></td>
+    </tr>
     
 </table>
+<div id="actions" style="float:right">
+    
+	<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
+		#if( $useDefaultForm  ) 
+			checked="checked" 
+		#end 
+		onchange="selectDefaultForm();">
+	<label>$i18n.getString( "use_default_form" )</label><br>	
+</div>
 
 </form>
 

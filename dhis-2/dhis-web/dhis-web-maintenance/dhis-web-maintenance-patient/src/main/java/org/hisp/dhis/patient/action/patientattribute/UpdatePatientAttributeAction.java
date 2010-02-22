@@ -27,7 +27,16 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
@@ -39,6 +48,7 @@ import com.opensymphony.xwork2.Action;
 public class UpdatePatientAttributeAction
     implements Action
 {
+	public static final String PREFIX_ATTRIBUTE_OPTION = "attrOption";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -48,6 +58,13 @@ public class UpdatePatientAttributeAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
+    }
+    
+    private PatientAttributeOptionService patientAttributeOptionService;
+    
+    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
+    {
+        this.patientAttributeOptionService = patientAttributeOptionService;
     }
 
     // -------------------------------------------------------------------------
@@ -88,6 +105,13 @@ public class UpdatePatientAttributeAction
     {
         this.mandatory = mandatory;
     }
+    
+    private List<String> attrOptions;
+    
+    public void setAttrOptions( List<String> attrOptions )
+    {
+        this.attrOptions = attrOptions;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -96,14 +120,50 @@ public class UpdatePatientAttributeAction
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
-        patientAttribute.setName( nameField );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
-        patientAttribute.setMandatory( mandatory );
+    	 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
 
-        patientAttributeService.updatePatientAttribute( patientAttribute );
+         patientAttribute.setName( nameField );
+         patientAttribute.setDescription( description );
+         patientAttribute.setValueType( valueType );
+         patientAttribute.setMandatory( mandatory );
 
-        return SUCCESS;
+         HttpServletRequest request = ServletActionContext.getRequest();
+         
+         Collection<PatientAttributeOption> attributeOptions = patientAttributeOptionService.get( patientAttribute );
+         
+         if ( attributeOptions != null && attributeOptions.size() > 0 )
+         {
+             String value = null;
+             for( PatientAttributeOption option : attributeOptions )
+             {
+                 value = request.getParameter( PREFIX_ATTRIBUTE_OPTION + option.getId() );
+                 if ( StringUtils.isNotBlank( value ) )
+                 {
+                     option.setName( value.trim() );
+                     patientAttributeOptionService.updatePatientAttributeOption( option );
+                 }
+             }
+         }
+         
+         if( attrOptions != null )
+         {
+             PatientAttributeOption opt  = null;
+             for( String optionName : attrOptions )
+             {
+                 opt = patientAttributeOptionService.get( patientAttribute, optionName );
+                 if( opt == null )
+                 {
+                     opt = new PatientAttributeOption();
+                     opt.setName( optionName );
+                     opt.setPatientAttribute( patientAttribute );
+                     patientAttribute.addAttributeOptions( opt );
+                     patientAttributeOptionService.addPatientAttributeOption( opt );
+                 }
+             }
+         }
+         
+         patientAttributeService.updatePatientAttribute( patientAttribute );
+         
+         return SUCCESS; 
     }
 }

@@ -45,5 +45,7 @@ public interface PatientIdentifierTypeService
     PatientIdentifierType getPatientIdentifierType( int id );
 
     Collection<PatientIdentifierType> getAllPatientIdentifierTypes();
+    
+    PatientIdentifierType getPatientIdentifierType( String name );
 
 }

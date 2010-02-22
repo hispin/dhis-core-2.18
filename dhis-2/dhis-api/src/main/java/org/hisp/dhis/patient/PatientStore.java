@@ -50,4 +50,6 @@ public interface PatientStore
     Collection<Patient> getByNames( String name );
     
     //Collection<Patient> getByAttribute( PatientAttribute attribute );
+    
+    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
 }

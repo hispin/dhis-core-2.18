@@ -181,7 +181,8 @@
 		<action name="patientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/patientAttribute.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/patientAttribute.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js</param>
 		</action>
@@ -195,39 +196,42 @@
 
 		<action name="removePatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction">
-			<result name="success" type="redirect">patientAttribute.action
-			</result>
+			<result name="success" type="redirect">patientAttribute.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
 
 		<action name="addPatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.AddPatientAttributeAction">
-			<result name="success" type="redirect">patientAttribute.action
-			</result>
+			<result name="success" type="redirect">patientAttribute.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showAddPatientAttributeForm" class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addPatientAttributeForm.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/addPatientAttributeForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="javascripts">javascript/patientAttribute.js
+				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showUpdatePatientAttributeForm"
 			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updatePatientAttibuteForm.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/updatePatientAttibuteForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="javascripts">javascript/patientAttribute.js
+				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
 		<action name="updatePatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.UpdatePatientAttributeAction">
-			<result name="success" type="redirect">patientAttribute.action
-			</result>
+			<result name="success" type="redirect">patientAttribute.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -239,7 +243,17 @@
 				/dhis-web-maintenance-patient/responseError.vm</result>
 			<result name="input" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseInput.vm</result>
+			<result name="duplicate" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseDuplicate.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="removePatientAttributeOption"
+			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeOptionAction">
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">responseInput.vm</result>
+			<result name="error" type="velocity-xml">responseError.vm</result>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
 
 		<!-- PatientAttributeValue -->
@@ -276,13 +290,13 @@
 		<action name="patient"
 			class="org.hisp.dhis.patient.action.patient.SelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="patientform" type="chain">patientform
-			</result>
+			<result name="patientform" type="chain">patientform</result>
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/selectPatient.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="menuTreeHeight">285</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 		</action>
 
 		<action name="patientform"
@@ -292,7 +306,8 @@
 			<param name="page">/dhis-web-maintenance-patient/patient.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 		</action>
 
 		<action name="validateSearchPatient"
@@ -313,7 +328,8 @@
 			<param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 		</action>
 
 		<action name="listAllPatients"
@@ -323,8 +339,9 @@
 			<param name="listAll">true</param>
 			<param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="menuTreeHeight">285</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 		</action>
 
 		<action name="getPatient"
@@ -333,18 +350,16 @@
 				/dhis-web-maintenance-patient/responsePatient.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
+		
 		<action name="removePatient"
 			class="org.hisp.dhis.patient.action.patient.RemovePatientAction">
-			<result name="success" type="redirect">searchPatient.action
-			</result>
+			<result name="success" type="redirect">patientform.action</result>
 			<param name="requiredAuthorities">F_PATIENT_DELETE</param>
 		</action>
 
 		<action name="addPatient"
 			class="org.hisp.dhis.patient.action.patient.AddPatientAction">
-			<result name="success" type="redirect">searchPatient.action
-			</result>
+			<result name="success" type="redirect">patientform.action</result>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -354,34 +369,46 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js,
-				javascript/patientAttributeValue.js </param>
+			<param name="menuTreeHeight">285</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js
+				,../dhis-web-commons/calendar/calendar.js
+				,../dhis-web-commons/calendar/calendar-lang.js
+				,../dhis-web-commons/calendar/calendar-setup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,javascript/jquery/thickbox/thickbox-compressed.js
+				,javascript/patient.js</param>
+			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
 		<action name="showUpdatePatientForm"
-			class="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction">
-			<result name="success" type="chain">showUpdatePatientFormChain
-			</result>
-		</action>
-
-		<action name="showUpdatePatientFormChain"
 			class="org.hisp.dhis.patient.action.patient.GetPatientAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updatePatientForm.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/updatePatientForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js,
-				javascript/patientAttributeValue.js</param>
+			<param name="menuTreeHeight">285</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js
+				,../dhis-web-commons/calendar/calendar.js
+				,../dhis-web-commons/calendar/calendar-lang.js
+				,../dhis-web-commons/calendar/calendar-setup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,javascript/patient.js</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
 		<action name="updatePatient"
 			class="org.hisp.dhis.patient.action.patient.UpdatePatientAction">
-			<result name="success" type="redirect">searchPatient.action
-			</result>
+			<result name="success" type="redirect">searchPatient.action</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
@@ -393,6 +420,8 @@
 				/dhis-web-maintenance-patient/responseError.vm</result>
 			<result name="input" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseInput.vm</result>
+			<result name="duplicate" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseDuplicate.vm</result>	
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -492,7 +521,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/program.js</param>
+			<param name="javascripts">javascript/program.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+			,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
 		</action>
 
@@ -501,7 +532,9 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/program.js</param>
+			<param name="javascripts">javascript/program.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -587,7 +620,8 @@
 		<action name="programStage"
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/programStageList.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
@@ -604,16 +638,16 @@
 			<result name="input" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseInput.vm</result>
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addProgramStageForm.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/addProgramStageForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/programStage.js</param>
+			<param name="javascripts">javascript/programStage.js,javascript/jquery/jquery.json-2.2.min.js</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
 		<action name="addProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.AddProgramStageAction">
-			<result name="success" type="redirect">programStage.action
-			</result>
+			<result name="success" type="redirect">programStage.action</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
@@ -630,24 +664,23 @@
 
 		<action name="updateProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction">
-			<result name="success" type="redirect">programStage.action
-			</result>
+			<result name="success" type="redirect">programStage.action</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>
 
 		<action name="showUpdateProgramStageForm"
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/programStage.js</param>
+			<param name="javascripts">javascript/programStage.js,javascript/jquery/jquery.json-2.2.min.js</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>
 
 		<action name="removeProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction">
-			<result name="success" type="redirect">programStage.action
-			</result>
+			<result name="success" type="redirect">programStage.action</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_DELETE</param>
 		</action>
 
@@ -656,7 +689,8 @@
 			<result name="input" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseInput.vm</result>
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/sortProgramStageForm.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-patient/sortProgramStageForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
@@ -664,7 +698,86 @@
 
 		<action name="saveProgramStageSortOder"
 			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction">
-			<result name="success" type="redirect">programStage.action
+			<result name="success" type="redirect">programStage.action</result>
+		</action>
+
+
+		<!-- Data Entry Form -->
+
+		<action name="viewDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/viewDataEntryForm.vm</param>
+			<param name="javascripts">../dhis-web-commons/util/jquery-ui.js,javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
+			<param name="stylesheets"></param>
+		</action>
+
+		<action name="saveDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
+			<result name="success" type="redirect">index.action</result>
+		</action>
+
+		<action name="delDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction">
+			<result name="success" type="redirect">index.action</result>
+			<result name="input" type="velocity-xml">/dhis-web-maintenance-patient/responseInput.vm
+			</result>
+		</action>
+
+		<action name="validateDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.ValidateDataEntryFormAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseSuccess.vm
+			</result>
+			<result name="input" type="velocity-xml">/dhis-web-maintenance-patient/responseInput.vm
+			</result>
+			<result name="mismatch" type="velocity-xml">/dhis-web-maintenance-patient/responseMismatch.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="selectDataElement"
+			class="org.hisp.dhis.patient.action.dataentryform.SelectDataElementAction">
+			<result name="success" type="velocity">selectDataElement.vm</result>
+			<result name="input" type="velocity-xml">/dhis-web-maintenance-patient/responseInput.vm
+			</result>
+			<param name="javascripts">javascript/hashtable.js</param>
+		</action>
+
+		<action name="getSelectedDataElements"
+			class="org.hisp.dhis.patient.action.dataentryform.GetSelectedDataElementsAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseSelDataElementList.vm
+			</result>
+		</action>
+
+		<action name="getOptionCombos"
+			class="org.hisp.dhis.patient.action.dataentryform.GetOptionCombosAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseOptionCombo.vm
+			</result>
+		</action>
+
+		<action name="getCustomValues"
+			class="org.hisp.dhis.patient.action.dataentryform.GetCustomValuesAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseCustomValue.vm
+			</result>
+		</action>
+
+		<action name="selectProgramStageDataElement"
+			class="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction">
+			<result name="success" type="velocity">selectProgramStageDataElement.vm
+			</result>
+			<result name="input" type="velocity-xml">/dhis-web-maintenance-patient/responseInput.vm
+			</result>
+		</action>
+
+		<action name="getSelectedProgramStages"
+			class="org.hisp.dhis.patient.action.dataentryform.GetSelectedProgramStagesAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseSelProgramStageList.vm
+			</result>
+		</action>
+
+		<action name="showDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction">
+			<result name="success" type="velocity">/dhis-web-maintenance-patient/dataEntryFormCode.vm
 			</result>
 		</action>
 
@@ -705,7 +818,12 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientAttributeGroupForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="javascripts">javascript/patientAttributeGroup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+			</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
@@ -736,6 +854,117 @@
 				/dhis-web-maintenance-patient/responseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+			<!-- Patient Identifier Type -->
+		
+		<action name="showAddPatientIdentifierTypeForm" class="org.hisp.dhis.patient.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/addPatientIdentifierTypeForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/patientIdentifierType.js
+				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
+		</action>
+		
+		<action name="validatePatientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseError.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="showUpdatePatientIdentifierTypeForm"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/updatePatientIdentifierType.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/patientIdentifierType.js
+				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
+		</action>
+	
+		<action name="patientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/listPatientIdentifierType.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/patientIdentifierType.js</param>
+		</action>
 
+		<action name="getPatientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responsePatientIdentifierType.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="removePatientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.RemovePatientIdentifierTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseError.vm</result>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_DELETE</param>
+		</action>
+
+		<action name="addPatientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction">
+			<result name="success" type="redirect">patientIdentifierType.action</result>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
+		</action>
+
+		<action name="updatePatientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction">
+			<result name="success" type="redirect">patientIdentifierType.action</result>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
+		</action>
+		
+		<!-- Case Aggregation Mapping -->
+
+		<action name="caseaggregationMapForm"
+			class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationMapping">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/caseAggMapping.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/caseaggregation.js,../dhis-web-commons/util/jquery.metadata.js</param>
+		</action>
+
+		<action name="getAggDataElements"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseAggDataElement.vm
+			</result>
+		</action>
+
+		<action name="getPrgramStages"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseProgramStages.vm
+			</result>
+		</action>
+
+		<action name="getPSDataElements"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetPSDataElementsAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseAggDataElement.vm
+			</result>
+		</action>
+
+		<action name="getCaseAggExpression"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggExpressionAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseExpression.vm
+			</result>
+		</action>
+
+		<action name="saveCaseAggMapping"
+			class="org.hisp.dhis.patient.action.caseaggregation.SaveCaseAggregationMappingAction">
+			<result name="success" type="redirect">index.action</result>
+		</action>
+		
 	</package>
 </struts>

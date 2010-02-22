@@ -67,4 +67,6 @@ public interface PatientService
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText );
     
     Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
+    
+    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender);
 }

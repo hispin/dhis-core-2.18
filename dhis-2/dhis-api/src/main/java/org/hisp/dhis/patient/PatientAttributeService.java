@@ -50,6 +50,8 @@ public interface PatientAttributeService
     Collection<PatientAttribute> getAllPatientAttributes();
 
     Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
+    
+    Collection<PatientAttribute> getPatientAttributesNotGroup();
 
     Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
     

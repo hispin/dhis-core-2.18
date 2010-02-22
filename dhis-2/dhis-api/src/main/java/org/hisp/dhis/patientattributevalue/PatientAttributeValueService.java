@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 
 /**
  * @author Abyot Asalefew
@@ -65,4 +66,6 @@ public interface PatientAttributeValueService
     Collection<PatientAttributeValue> searchPatientAttributeValue( PatientAttribute patientAttribute, String searchText );   
 
     void copyPatientAttributeValues( Patient source, Patient destination );
+    
+    int countByPatientAttributeoption( PatientAttributeOption attributeOption ); 
 }

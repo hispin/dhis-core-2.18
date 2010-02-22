@@ -15,6 +15,9 @@
       </composite-id>     
           
       <property name="value"/>   
+      
+       <many-to-one name="patientAttributeOption" class="org.hisp.dhis.patient.PatientAttributeOption" 
+          column="patientattributeoptionid" foreign-key="fk_patientAttributeValue_patientAttributeOption"/>       
         
   </class>
   

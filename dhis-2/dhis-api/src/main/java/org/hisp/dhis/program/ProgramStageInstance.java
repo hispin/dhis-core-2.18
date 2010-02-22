@@ -53,6 +53,8 @@ public class ProgramStageInstance
     private Date dueDate;
 
     private Date executionDate;
+    
+    private boolean completed = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -206,6 +208,22 @@ public class ProgramStageInstance
     public int getStageInProgram()
     {
         return stageInProgram;
+    }
+    
+    /**
+     * @return the completed
+     */
+    public boolean isCompleted()
+    {
+        return completed;
+    }
+
+    /**
+     * @param completed the completed to set
+     */
+    public void setCompleted( boolean completed )
+    {
+        this.completed = completed;
     }
 
 }

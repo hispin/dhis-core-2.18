@@ -30,6 +30,7 @@ import java.io.Serializable;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 
 /**
  * @author Abyot Asalefew
@@ -46,6 +47,8 @@ public class PatientAttributeValue
     private Patient patient;
 
     private String value;
+    
+    private PatientAttributeOption patientAttributeOption;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -141,4 +144,13 @@ public class PatientAttributeValue
     {
         this.value = value;
     }
+
+	public PatientAttributeOption getPatientAttributeOption() {
+		return patientAttributeOption;
+	}
+
+	public void setPatientAttributeOption(
+			PatientAttributeOption patientAttributeOption) {
+		this.patientAttributeOption = patientAttributeOption;
+	}
 }

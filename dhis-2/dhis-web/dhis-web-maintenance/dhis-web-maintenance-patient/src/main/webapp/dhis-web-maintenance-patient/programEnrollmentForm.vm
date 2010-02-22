@@ -4,7 +4,7 @@
 
 <table>
     <tr>
-        <td style="width:180px"><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td style="width:180px"><label for="enrollmentDate" #if($selectedProgram) title="$!selectedProgram.dateOfEnrollmentDescription" #end>$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="enrollmentDate" name="enrollmentDate" #if( $programInstance ) value="$!format.formatDate( $programInstance.enrollmentDate )" #end>
         <img src="../images/calendar_icon.gif" width="16" height="16" id="getEnrollmentDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_enrollment" )"></td>
         <script type="text/javascript">
@@ -13,11 +13,12 @@
                 ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
                 button         :    "getEnrollmentDate"   // trigger for the calendar (button ID)
             });
-        </script>                         
+        </script> 
+        <td>   <i>( $!selectedProgram.dateOfEnrollmentDescription )</i></td>                        
     </tr>
     
     <tr>
-        <td style="width:180px"><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td style="width:180px"><label for="dateOfIncident" #if($selectedProgram) title="$!selectedProgram.dateOfIncidentDescription" #end>$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="dateOfIncident" name="dateOfIncident" #if( $programInstance ) value="$!format.formatDate( $programInstance.dateOfIncident )" #end>
         <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateOfIncident" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_incident" )"></td>
         <script type="text/javascript">
@@ -26,11 +27,13 @@
                 ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
                 button         :    "getDateOfIncident"   // trigger for the calendar (button ID)
             });
-        </script>                         
+        </script>
+        <td>  <i>( $!selectedProgram.dateOfIncidentDescription )</i></td>                         
     </tr>
     <tr>
         <td></td>
-        <td></td>                                
+        <td></td>   
+        <td></td>                             
     </tr>
     
     <tr>

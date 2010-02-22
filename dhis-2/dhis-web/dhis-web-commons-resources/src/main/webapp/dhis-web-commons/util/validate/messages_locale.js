@@ -40,5 +40,7 @@ en_GB = {
         ,time : "Please enter a valid time, between 00:00 and 23:59"
         ,phone : "Please specify a valid phone number"
         ,strippedminlength : "Please enter at least {0} characters"
+        ,datelessthanequaltoday: "This date can not be after today."
+        ,required_group : "Please fill out at least one of these fields."
 };
 

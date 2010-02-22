@@ -27,6 +27,8 @@
 package org.hisp.dhis.patient;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -42,6 +44,8 @@ public class PatientAttribute
     public static final String TYPE_INT = "NUMBER";
 
     public static final String TYPE_BOOL = "YES/NO";
+    
+    public static final String TYPE_COMBO = "COMBO";
 
     private int id;
 
@@ -54,6 +58,8 @@ public class PatientAttribute
     private boolean mandatory;
     
     private PatientAttributeGroup patientAttributeGroup;
+    
+    private Set<PatientAttributeOption> attributeOptions;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -105,7 +111,24 @@ public class PatientAttribute
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+    
+    public Set<PatientAttributeOption> getAttributeOptions()
+    {
+        return attributeOptions == null ? new HashSet<PatientAttributeOption>() : attributeOptions;
+    }
 
+    public void setAttributeOptions( Set<PatientAttributeOption> attributeOptions )
+    {
+        this.attributeOptions = attributeOptions;
+    }
+    
+    public void addAttributeOptions( PatientAttributeOption option )
+    {
+        if( attributeOptions == null )
+            attributeOptions = new HashSet<PatientAttributeOption>();
+        attributeOptions.add( option );
+    }
+    
     public int getId()
     {
         return id;

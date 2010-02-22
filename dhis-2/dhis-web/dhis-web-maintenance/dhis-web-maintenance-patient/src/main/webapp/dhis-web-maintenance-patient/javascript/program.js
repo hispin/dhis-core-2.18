@@ -135,3 +135,4 @@ function updateValidationCompleted( messageElement )
         document.getElementById( 'message' ).style.display = 'block';
     }
 }
+

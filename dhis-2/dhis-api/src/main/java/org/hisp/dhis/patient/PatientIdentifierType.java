@@ -39,6 +39,8 @@ public class PatientIdentifierType
     private String description;
 
     private String format;
+    
+    private boolean mandatory;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -131,5 +133,13 @@ public class PatientIdentifierType
     {
         this.format = format;
     }
+
+	public boolean isMandatory() {
+		return mandatory;
+	}
+
+	public void setMandatory(boolean mandatory) {
+		this.mandatory = mandatory;
+	}
 
 }

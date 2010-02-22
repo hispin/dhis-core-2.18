@@ -133,22 +133,27 @@ public class SaveProvidingFacilityAction
     {
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
+        
+        
         Patient patient = selectedStateManager.getSelectedPatient();
 
+        
         Program program = selectedStateManager.getSelectedProgram();
+        
 
         ProgramStage programStage = selectedStateManager.getSelectedProgramStage();
+        
 
         Collection<ProgramInstance> progamInstances = programInstanceService
             .getProgramInstances( patient, program, false );
 
         ProgramInstance programInstance = progamInstances.iterator().next();
         
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
-
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );      
         
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
+        
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );    
+
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );
         

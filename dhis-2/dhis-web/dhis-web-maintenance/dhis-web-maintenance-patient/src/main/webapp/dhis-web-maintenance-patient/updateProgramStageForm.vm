@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "update_program_stage" )</h3>
 
-<form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post" onsubmit="submitForm(); return validateUpdateProgramStage()">
+<form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post" onsubmit="submitForm(this); return validateUpdateProgramStage()">
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$programStage.id">
@@ -52,23 +52,24 @@
     <tbody>
       <tr>
      	<td>
-            <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
+            <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveFromAvailableList()">
                 #foreach ( $dataElement in $dataElements )
                     <option value="$dataElement.id">$encoder.htmlEncode( $dataElement.name )</option>
                 #end              
             </select>
         </td>
         <td valign="top" align="center">            
-            <input type="button" value="&gt;" onclick="move( 'availableList' )"><br>    
-            <input type="button" value="&lt;" onclick="move ( 'selectedList' )"><br><br>
-            <a href="#" onclick="moveUp('selectedList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
-            <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""></a>                 
+             <input type="button" value="&gt;" onclick="moveFromAvailableList()"><br>    
+             <input type="button" value="&lt;" onclick="moveItemsFromSelectedList()"><br><br> 
         <td>
-            <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
-                #foreach ( $programStageDataElement in $programStage.dataElements )
-                    <option value="$programStageDataElement.id">$encoder.htmlEncode( $programStageDataElement.name )</option>
-                #end
-            </select>
+            <div style="overflow:auto; height:20em; width:20em">    
+	            <ul id="selectedList" style="list-style:none">
+	             #foreach ( $programStageDataElement in $programStageDataElements )
+                    <li onClick="selectItem(this)" ondblclick="moveFromSelectedList(this)"><input type="checkbox" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory) checked="checked" #end>$programStageDataElement.dataElement.name</li>
+               	 #end
+	            </ul>
+	            <input type="hidden" id="selectedListSubmit" name="selectedList"/>
+         	</div>
         </td>
         
       </tr>
@@ -88,5 +89,6 @@
 <script type="text/javascript">     
     var i18n_invalid_min_max_days = '$encoder.jsEscape( $i18n.getString( "invalid_min_max_days" ) , "'")';
     var i18n_value_must_positive = '$encoder.jsEscape( $i18n.getString( "value_must_positive" ) , "'")';
-    var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';   
+    var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
+    var i18n_compulsory_checkbox_title = '$encoder.jsEscape( $i18n.getString( "compulsory_checkbox_title" ) , "'")';      
 </script>

@@ -79,4 +79,9 @@ public class DefaultPatientIdentifierTypeService
     {
         patientIdentifierTypeStore.update( patientIdentifierType );
     }
+    
+    public PatientIdentifierType getPatientIdentifierType( String name )
+    {
+        return patientIdentifierTypeStore.getByName( name );
+    }
 }

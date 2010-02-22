@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset;
+package org.hisp.dhis.dataentryform;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -29,6 +29,9 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.program.ProgramStage;
+
 public interface DataEntryFormService
 {
     String ID = DataEntryFormService.class.getName();
@@ -43,7 +46,7 @@ public interface DataEntryFormService
      * @param dataEntryForm The DataEntryForm to add.
      * @return The generated unique identifier for this DataEntryForm.
      */
-    int addDataEntryForm( DataEntryForm dataEntryForm );
+    int addDataEntryForm( DataEntryForm dataEntryForm , String associationTableName, int associationId);
 
     /**
      * Updates a DataEntryForm.
@@ -83,6 +86,15 @@ public interface DataEntryFormService
      *         does not exist.
      */
     DataEntryForm getDataEntryFormByDataSet( DataSet dataSet );
+    
+    /**
+     * Returns a DataEntryForm corresponding to the given programStage
+     * @param programStage the ProgramStage
+     * @return The DataEntryForm corresponds to the given programStage or null if it 
+     * 			does not exist
+     */
+    DataEntryForm getDataEntryFormByProgramStage( ProgramStage programStage );
+    
 
     /**
      * Get all DataEntryForms.
@@ -90,4 +102,5 @@ public interface DataEntryFormService
      * @return A collection containing all DataEntryForms.
      */
     Collection<DataEntryForm> getAllDataEntryForms();
+    
 }

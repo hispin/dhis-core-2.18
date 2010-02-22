@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset;
+package org.hisp.dhis.dataentryform;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -29,70 +29,71 @@ package org.hisp.dhis.dataset;
 
 import java.io.Serializable;
 
-public class DataEntryForm
+/**
+ * 
+ * @author Viet Nguyen
+ * 
+ */
+public class DataEntryFormAssociation
     implements Serializable
 {
-    /**
-     * The unique identifier for this DataEntryForm
-     */
-    private int id;
 
     /**
-     * Name of DataEntryForm. Required and unique.
-     */
-    private String name;
+     * The Universally Unique Identifer for this Object. 
+     */    
+    protected String uuid;
+
+    public static final String DATAENTRY_ASSOCIATE_DATASET = "dataset";
+
+    public static final String DATAENTRY_ASSOCIATE_PROGRAMSTAGE = "programstage";
 
     /**
-     * HTML Code of DataEntryForm
+     * Part of the composite ID The table name ( dataset, programstage ... )
      */
-    private String htmlCode;
+    private String associationTableName;
 
     /**
-     * The dataSet indicating the list of dataelements that this DataEntryForm
-     * should be used
+     * Part of the composite ID id of the element in the association table (
+     * datasetId, programstageId ... )
      */
-    private DataSet dataSet;
+    private int associationId;
+
+    /**
+     * DataEntryForm, lazy = false
+     */
+    private DataEntryForm dataEntryForm;
 
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
 
-    public DataEntryForm()
+    public DataEntryFormAssociation()
     {
+
     }
 
-    public DataEntryForm( String name )
+    public DataEntryFormAssociation( String associationName, int associationId, DataEntryForm dataEntryForm )
     {
-        this.name = name;
-    }
-
-    public DataEntryForm( String name, DataSet dataSet )
-    {
-        this.name = name;
-        this.dataSet = dataSet;
-    }
-
-    public DataEntryForm( String name, String htmlCode )
-    {
-        this.name = name;
-        this.htmlCode = htmlCode;
-    }
-
-    public DataEntryForm( String name, String htmlCode, DataSet dataSet )
-    {
-        this.name = name;
-        this.htmlCode = htmlCode;
-        this.dataSet = dataSet;
+        this.associationTableName = associationName;
+        this.associationId = associationId;
+        this.dataEntryForm = dataEntryForm;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
+    // HashCode and equals
     // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
     {
-        return name.hashCode();
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + associationId;
+        result = prime * result + associationTableName.hashCode();
+        result = prime * result + dataEntryForm.getId();
+
+        return result;
     }
 
     @Override
@@ -108,58 +109,49 @@ public class DataEntryForm
             return false;
         }
 
-        if ( !(o instanceof DataEntryForm) )
+        if ( !(o instanceof DataEntryFormAssociation) )
         {
             return false;
         }
 
-        final DataEntryForm other = (DataEntryForm) o;
+        final DataEntryFormAssociation other = (DataEntryFormAssociation) o;
 
-        return name.equals( other.getName() );
+        return associationId == (other.getAssociationId())
+            && associationTableName.equals( other.getAssociationTableName() );
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public DataSet getDataSet()
+    public DataEntryForm getDataEntryForm()
     {
-        return dataSet;
+        return dataEntryForm;
     }
 
-    public void setDataSet( DataSet dataSet )
+    public void setDataEntryForm( DataEntryForm dataEntryForm )
     {
-        this.dataSet = dataSet;
+        this.dataEntryForm = dataEntryForm;
     }
 
-    public String getHtmlCode()
+    public int getAssociationId()
     {
-        return htmlCode;
+        return associationId;
     }
 
-    public void setHtmlCode( String htmlCode )
+    public void setAssociationId( int associationId )
     {
-        this.htmlCode = htmlCode;
+        this.associationId = associationId;
     }
 
-    public int getId()
+    public String getAssociationTableName()
     {
-        return id;
+        return associationTableName;
     }
 
-    public void setId( int id )
+    public void setAssociationTableName( String associationTableName )
     {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
+        this.associationTableName = associationTableName;
     }
 
 }

@@ -30,6 +30,10 @@ package org.hisp.dhis.patient.hibernate;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.patient.Patient;
@@ -66,6 +70,31 @@ public class HibernatePatientStore
         return getCriteria( 
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
             Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-            Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).list();        
+            Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).list();        
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate , String gender)
+    {
+        Criteria crit = getCriteria( );
+        Conjunction con = Restrictions.conjunction();
+        
+        if( StringUtils.isNotBlank( firstName ))
+            con.add( Restrictions.eq( "firstName", firstName ) );
+        
+        if( StringUtils.isNotBlank( middleName ))
+            con.add(Restrictions.eq( "middleName", middleName ) );
+        
+        if( StringUtils.isNotBlank( lastName ))
+            con.add(Restrictions.eq( "lastName",  lastName ) );
+        
+        con.add( Restrictions.eq( "gender",  gender ) ) ;
+        con.add( Restrictions.eq( "birthDate",  birthdate ) );
+        
+        crit.add( con );
+        
+        crit.addOrder( Order.asc( "firstName" ) );   
+        
+        return crit.list();
     }
 }

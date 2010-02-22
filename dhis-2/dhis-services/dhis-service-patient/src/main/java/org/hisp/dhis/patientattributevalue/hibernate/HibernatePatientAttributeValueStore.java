@@ -29,11 +29,13 @@ package org.hisp.dhis.patientattributevalue.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueStore;
 
@@ -103,4 +105,9 @@ public class HibernatePatientAttributeValueStore
         query.setEntity( "optionCombo", optionCombo );
         return query.executeUpdate();
     }  
+    
+    public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
+    {
+        return (Integer) getCriteria(Restrictions.eq( "patientAttributeOption", attributeOption )).setProjection( Projections.rowCount() ).uniqueResult();
+    } 
 }

@@ -17,7 +17,7 @@
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
     </action>
     
-    <!-- Data Entry -->
+  <!-- Data Entry -->
     
     <action name="dataEntrySelect" class="org.hisp.dhis.caseentry.action.caseentry.DataEntrySelectAction">
       <interceptor-ref name="organisationUnitTreeStack"/>
@@ -64,12 +64,17 @@
     <action name="selectDataRecording" class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction">
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="dataentryform" type="chain">dataentryform</result>
+      <result name="customentryform" type="chain">customentryform</result>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>      
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js</param>
       <param name="stylesheets">style/patient.css</param>            
     </action>    
+    
+    <action name="completeDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
+        <result name="success" type="chain">selectDataRecording</result>
+    </action>
     
     <action name="saveExecutionDate" class="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction">
       <result name="success" type="velocity">status.vm</result>
@@ -80,7 +85,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>      
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/util/jquery.metadata.js</param>
       <param name="stylesheets">style/patient.css</param>
     </action>
     
@@ -103,8 +108,17 @@
     <action name="getPatient" class="org.hisp.dhis.caseentry.action.caseentry.GetPatientAction">
       <result name="success" type="velocity-xml">/dhis-web-caseentry/responsePatient.vm</result>
       <param name="onExceptionReturn">plainTextError</param>      
-    </action>   
+    </action>    
     
+    <action name="customentryform" class="org.hisp.dhis.caseentry.action.caseentry.CustomDataEntryAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>    
+      <param name="javascripts">../dhis-web-commons/util/jquery-ui.js,../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
+      ,../dhis-web-commons/util/jquery.metadata.js,javascript/customcheckbox/prettyCheckboxes.js</param>
+      <param name="stylesheets">../dhis-web-commons/util/css/redmond/jquery-ui.css,style/patient.css
+      ,javascript/customcheckbox/prettyCheckboxes.css</param>
+    </action>
     <!-- Visit Plan -->
     
     <action name="visitPlanSelect" class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanSelectAction">

@@ -22,41 +22,55 @@
           <col>     
           <col width="20">
           <col width="20">
-          <col width="20">          
-          <thead>  
+          <col width="20">  
+          <col width="20">           
+                    		  
 		  <tr>
 		    <td></td>
 		    <td></td> 
-		  	<td colspan="3" style="text-align:right">
+		  	<td colspan="4" style="text-align:right">
                <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:75px">
 		  	   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
 		  	   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
 			</td>
 		  </tr>
-          <tr>
+		  
+          <tr>            
             <th>$i18n.getString( "name" )</th>
             <th>$i18n.getString( "description" )</th>
-            <th colspan="3">$i18n.getString( "operations" )</th>
+            <th colspan="4">$i18n.getString( "operations" )</th>
           </tr>
-          </thead>
+
           <tbody id="list">
-            #foreach( $programStage in $programStages )
-              <tr>              
-                <td onclick="showProgramStageDetails( $programStage.id )">$encoder.htmlEncode( $programStage.name )</td>                
-                <td onclick="showProgramStageDetails( $programStage.id )">$encoder.htmlEncode( $programStage.description )</td>
+            #set( $mark = false )
+            #foreach( $association in $associations )
+              <tr>
+              
+                <td#alternate( $mark )>$encoder.htmlEncode( $association.name )</td>                
+                <td#alternate( $mark )>$encoder.htmlEncode( $association.description )</td>
                 
-                <td style="text-align:center">
-                  <a href="showUpdateProgramStageForm.action?id=$programStage.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="showUpdateProgramStageForm.action?id=$association.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
                 </td>                
  
-                <td style="text-align:center">
-                  <a href="javascript:removeProgramStage( '$programStage.id', '$encoder.jsEncode( $programStage.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="javascript:removeProgramStage( '$association.id', '$encoder.jsEncode( $association.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 
-                <td style="text-align:center">
-                  <a href="javascript:showProgramStageDetails( $programStage.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
-                </td>                
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="javascript:showProgramStageDetails( $association.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+                </td>
+                
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="javascript:viewDataEntryForm( '$association.id' , '$associationName' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
+                </td>
+                
               </tr>
+			  #if( $mark )
+				#set( $mark = false )
+			  #else
+				#set( $mark = true )
+			  #end
             #end
 
           </tbody>

@@ -138,3 +138,74 @@ function updateValidationCompleted( messageElement )
         document.getElementById( 'message' ).style.display = 'block';
     }
 }
+
+ATTRIBUTE_OPTION = 
+{
+	selectValueType : 	function (this_)
+	{
+		if ( jQuery(this_).val() == "combo" )
+		{
+			jQuery("#attributeComboRow").show();
+			if( jQuery("#attrOptionContainer").find("input").length ==0 ) 
+			{
+				ATTRIBUTE_OPTION.addOption();
+				ATTRIBUTE_OPTION.addOption();
+			}
+		}else {
+			jQuery("#attributeComboRow").hide();
+		}
+	},
+	checkOnSubmit : function ()
+	{
+		if( jQuery("#valueType").val() != "combo" ) 
+		{
+			jQuery("#attrOptionContainer").children().remove();
+			return true;
+		}else {
+			$("input","#attrOptionContainer").each(function(){ 
+				if( !jQuery(this).val() )
+					jQuery(this).remove();
+			});
+			if( $("input","#attrOptionContainer").length < 2)
+			{
+				alert(i118_at_least_2_option);
+				return false;
+			}else return true;
+		}
+	},
+	addOption : function ()
+	{
+		jQuery("#attrOptionContainer").append(ATTRIBUTE_OPTION.createInput());
+	},
+	remove : function (this_, optionId)
+	{
+		
+		if( jQuery(this_).siblings("input").attr("name") != "attrOptions")
+		{
+			jQuery.get("removePatientAttributeOption.action?id="+optionId,function(data){
+				var type  = jQuery(data).find("message").attr("type");
+				alert(type);
+				if( type == "success")
+				{
+					alert("success");
+					jQuery(this_).parent().parent().remove();
+					alert(jQuery(data).text());
+				}else 
+				{
+					alert(jQuery(data).text());
+				}
+			});
+		}else
+		{
+			jQuery(this_).parent().parent().remove();
+		}
+	},
+	removeInAddForm : function(this_)
+	{
+		jQuery(this_).parent().parent().remove();
+	},
+	createInput : function ()
+	{
+		return "<tr><td><input type='text' name='attrOptions' /><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
+	}
+}

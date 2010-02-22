@@ -13,7 +13,9 @@
     
     <property name="description"/>    
     
-    <property name="format"/>       	
+    <property name="format"/>     
+    
+    <property name="mandatory" not-null="true"/>  	
 	
   </class>
 </hibernate-mapping>

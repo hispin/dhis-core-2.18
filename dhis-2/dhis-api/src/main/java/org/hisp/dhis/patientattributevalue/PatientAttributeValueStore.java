@@ -31,6 +31,7 @@ import java.util.Collection;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 
 /**
  * @author Abyot Asalefew
@@ -57,4 +58,5 @@ public interface PatientAttributeValueStore
     
     Collection<PatientAttributeValue> searchByValue( PatientAttribute patientAttribute, String searchText );  
    
+    int countByPatientAttributeoption( PatientAttributeOption attributeOption ); 
 }

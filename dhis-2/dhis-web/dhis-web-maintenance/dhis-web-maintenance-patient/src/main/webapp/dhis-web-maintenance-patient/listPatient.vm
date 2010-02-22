@@ -1,11 +1,18 @@
 #parse( "/dhis-web-maintenance-patient/patient.vm" )
 
+
+#if($searchText) 
+	#set ($sText = $searchText )
+#else 
+	#set ($sText = "" )
+ #end
+
 <table>
 	<tr>
 		<td>$i18n.getString( "search_result_matching_the_search_criteria" )</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td>$i18n.getString( $searchText )</td>
+		<td>$i18n.getString( $sText )</td>
 	</tr>	
 </table>
  
@@ -20,14 +27,16 @@
           <col>
           <col>
           <col>
+          <col>
           <col width="20">
           <col width="20">
           <col width="20">
           <col width="20">
           <col width="20">
           <col width="20">    
-          <thead>
+          
 		  <tr>
+		  	<td></td>
 		  	<td></td>
 		  	<td></td>
 		  	<td></td>
@@ -38,6 +47,7 @@
 				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patient.action'" style="width:10em">
 			</td>
           <tr>
+          	<th>#</th>
             <th>$i18n.getString( "first_name" )</th>
             <th>$i18n.getString( "middle_name" )</th>
             <th>$i18n.getString( "last_name" )</th>            
@@ -46,18 +56,22 @@
             <th>$i18n.getString( "age" )</th>
             <th colspan="6" style="text-align:center">$i18n.getString( "operations" )</th>
           </tr>
-          </thead>
+          
           <tbody id="list">	
+          #set( $mark = false )
         
           #foreach( $patient in $patients )
-          	<tr>
-				<td onclick="showPatientDetails( $patient.id )">			
+          	<tr #alternate( $mark )>
+          		<td>			
+					$velocityCount
+				</td>
+				<td>			
 					$encoder.htmlEncode( $patient.firstName )
 				</td>
-				<td onclick="showPatientDetails( $patient.id )">			
+				<td>			
 					$encoder.htmlEncode( $patient.middleName )
 				</td>
-				<td onclick="showPatientDetails( $patient.id )">			
+				<td>			
 					$encoder.htmlEncode( $patient.lastName )
 				</td>				
 				<td>			
@@ -70,30 +84,36 @@
                     $encoder.htmlEncode( $patient.getAge() )
                 </td>
 				
-				<td style="text-align:center">
+				<td style="text-align:center"#alternate( $mark )>
                   <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
                 </td>                
-                <td style="text-align:center">                  
+                
+                <td style="text-align:center"#alternate( $mark )>                  
                   <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
                 </td>
                 
-                <td style="text-align:center">
+                <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title="$i18n.getString( "edit_attribute_values" )"><img src="../images/attribute.png" alt="$i18n.getString( "edit_attribute_values" )"></a>
                 </td>
                 
-                <td style="text-align:center">                  
+                <td style="text-align:center"#alternate( $mark )>                  
                   <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="../images/relationship.png" alt="$i18n.getString( "manage_relationship" )"></a>
                 </td>                                
  
-                <td style="text-align:center">
+                <td style="text-align:center"#alternate( $mark )>
                   <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 
-                <td style="text-align:center">
+                <td style="text-align:center"#alternate( $mark )>
                   <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
                 </td>
 				
 			</tr>
+			#if( $mark )
+				#set( $mark = false )
+			#else
+				#set( $mark = true )
+			#end
     	#end
     	</tbody>
     

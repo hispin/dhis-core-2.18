@@ -27,17 +27,25 @@
 package org.hisp.dhis.patient.action.patient;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.patient.PatientAttributeOptionService;
+import org.hisp.dhis.patient.PatientAttributePopulator;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -51,100 +59,54 @@ import com.opensymphony.xwork2.Action;
 public class UpdatePatientAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( UpdatePatientAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private I18nFormat format;
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     private PatientService patientService;
 
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    public PatientAttributeService patientAttributeService;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
+    private PatientAttributeService patientAttributeService;
 
     private PatientAttributeValueService patientAttributeValueService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
+    private PatientIdentifierService patientIdentifierService;
+
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
+    private OrganisationUnitSelectionManager selectionManager;
+    
+    private PatientAttributeOptionService patientAttributeOptionService;
 
     // -------------------------------------------------------------------------
     // Input - Id
     // -------------------------------------------------------------------------
-
     private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
 
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
-
     private String firstName;
-
-    public void setFirstName( String firstName )
-    {
-        this.firstName = firstName;
-    }
 
     private String middleName;
 
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
     private String lastName;
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
-    }
 
     // -------------------------------------------------------------------------
     // Input - demographics
     // -------------------------------------------------------------------------
-
     private String birthDate;
 
-    public void setBirthDate( String birthDate )
-    {
-        this.birthDate = birthDate;
-    }
+    private Integer age;
 
     private boolean birthDateEstimated;
 
-    public void setBirthDateEstimated( boolean birthDateEstimated )
-    {
-        this.birthDateEstimated = birthDateEstimated;
-    }
-
     private String gender;
 
-    public void setGender( String gender )
-    {
-        this.gender = gender;
-    }
+    private String childContactIdentifierName;
+
+    private String childContactIdentifierType;
 
     // -------------------------------------------------------------------------
     // Output - making the patient available so that its attributes can be
@@ -153,11 +115,6 @@ public class UpdatePatientAction
 
     private Patient patient;
 
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -165,6 +122,8 @@ public class UpdatePatientAction
     public String execute()
         throws Exception
     {
+
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
         // Update patient
@@ -175,58 +134,327 @@ public class UpdatePatientAction
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
         patient.setGender( gender );
-        patient.setBirthDate( format.parseDate( birthDate ) );
-        patient.setBirthDateEstimated( birthDateEstimated );
-        patient.setRegistrationDate( new Date() );
 
-        patientService.updatePatient( patient );
-
-        // add attribute value
-        Collection<PatientAttribute> patientAttributes = patientAttributeService.getPatientAttributesByMandatory( true );
-
-        HttpServletRequest request = ServletActionContext.getRequest();
-
-        for ( PatientAttribute patientAttribute : patientAttributes )
+        if ( birthDate != null )
         {
-            int patientAttributeId = patientAttribute.getId();
-            String value = request.getParameterValues( patientAttributeId + "" )[0].trim();
-            if ( value.length() > 0 )
+
+            birthDate = birthDate.trim();
+
+            if ( birthDate.length() != 0 )
             {
-                if ( !patient.getAttributes().contains( patientAttribute ) )
+                patient.setBirthDate( format.parseDate( birthDate ) );
+                patient.setBirthDateEstimated( birthDateEstimated );
+            }
+            else
+            {
+                if ( age != null )
                 {
-                    patient.getAttributes().add( patientAttribute );
+                    patient.setBirthDateFromAge( age.intValue() );
                 }
-                
-                updatePatientAttributeValue(patientAttribute, value);
+            }
+        }
+        else
+        {
+            if ( age != null )
+            {
+                patient.setBirthDateFromAge( age.intValue() );
             }
         }
 
         patientService.updatePatient( patient );
-        
+
+        boolean isChild5 = false;
+
+        // --------------------------------------------------------------------------------------------------------
+        // Save Patient Attributes
+        // -----------------------------------------------------------------------------------------------------
+
+        Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
+
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        PatientAttributeValue attributeValue = null;
+        String value = null;
+
+        if ( attributes != null && attributes.size() > 0 )
+        {
+            patient.getAttributes().clear();
+            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+            // ----------------------------------------------------------------------------
+            // Save Identifier Contact Details for child < 5 years old
+            // ----------------------------------------------------------------------------
+            
+            if ( patient.getIntegerValueOfAge() < 5 )
+            {
+                isChild5 = true;
+                
+                // -----------------------------------------------------------------------------
+                // Get  Child Contact Name attribute
+                // -----------------------------------------------------------------------------
+                
+                PatientAttribute attrChildContactName = patientAttributeService
+                    .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
+                
+                patient.getAttributes().add( attrChildContactName );
+                // -----------------------------------------------------------------------------
+                // Save value for Child Contact Name attribute
+                // -----------------------------------------------------------------------------
+                
+                PatientAttributeValue childContactNameValue = patientAttributeValueService.getPatientAttributeValue( patient,
+                    attrChildContactName );
+                if ( childContactNameValue == null )
+                {
+                    childContactNameValue = new PatientAttributeValue();
+                    childContactNameValue.setPatient( patient );
+                    childContactNameValue.setPatientAttribute( attrChildContactName );
+                    childContactNameValue.setValue( childContactIdentifierName );
+                    patientAttributeValueService.savePatientAttributeValue( childContactNameValue );
+                }
+                else
+                {
+                    childContactNameValue.setValue( childContactIdentifierName );
+                    patientAttributeValueService.updatePatientAttributeValue( childContactNameValue );
+                    patientAttributeValues.remove( childContactNameValue );
+                }
+                
+                // -----------------------------------------------------------------------------
+                // Get Child Contact RelationShip Type attribute
+                // -----------------------------------------------------------------------------
+                
+                PatientAttribute attrChildRelationShipType = patientAttributeService
+                    .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
+                patient.getAttributes().add( attrChildRelationShipType );
+                // -----------------------------------------------------------------------------
+                // Save value for Child Contact RelationShip Type attribute
+                // -----------------------------------------------------------------------------
+                
+                PatientAttributeValue childRelationShipValue = patientAttributeValueService.getPatientAttributeValue(
+                    patient, attrChildRelationShipType );
+                if ( childRelationShipValue == null )
+                {
+                    childRelationShipValue = new PatientAttributeValue();
+                    childRelationShipValue.setPatient( patient );
+                    childRelationShipValue.setPatientAttribute( attrChildRelationShipType );
+                    childRelationShipValue.setValue( childContactIdentifierType );
+                    patientAttributeValueService.savePatientAttributeValue( childRelationShipValue );
+                }
+                else
+                {
+                    childRelationShipValue.setValue( childContactIdentifierType );
+                    patientAttributeValueService.updatePatientAttributeValue( childRelationShipValue );
+                    patientAttributeValues.remove( childRelationShipValue );
+                }
+                
+                patientService.updatePatient( patient );
+            } // End deal with child
+            
+            // Save other attributes
+            
+            for ( PatientAttribute attribute : attributes )
+            {
+                value = request.getParameter( AddPatientAction.PREFIX_ATTRIBUTE + attribute.getId() );
+                System.out.println("attribute value : "+value);
+
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, attribute );
+
+                    if ( !patient.getAttributes().contains( attribute ) )
+                    {
+                        patient.getAttributes().add( attribute );
+                    }
+
+                    if ( attributeValue == null )
+                    {
+                        attributeValue = new PatientAttributeValue();
+                        attributeValue.setPatient( patient );
+                        attributeValue.setPatientAttribute( attribute );
+                        if( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ))
+                        {
+                            PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt( value , 0 ) );
+                            if( option != null )
+                            {
+                                attributeValue.setPatientAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
+                            }else{
+                                //  This option was deleted ???
+                            }
+                        }else{
+                            attributeValue.setValue( value.trim() );
+                        }
+                        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+                    }
+                    else
+                    {
+                        if( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ))
+                        {
+                            PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt( value , 0 ) );
+                            if( option != null )
+                            {
+                                attributeValue.setPatientAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
+                            }else{
+                                //  This option was deleted ???
+                            }
+                        }else{
+                            attributeValue.setValue( value.trim() );
+                        }
+                        patientAttributeValueService.updatePatientAttributeValue( attributeValue );
+                        patientAttributeValues.remove( attributeValue );
+                    }
+                }
+            }
+            for ( PatientAttributeValue av : patientAttributeValues )
+            {
+                patientAttributeValueService.deletePatientAttributeValue( av );
+            }
+            patientService.updatePatient( patient );
+        }
+
+        // -------------------------------------------------------------------------------------
+        // Save PatientIdentifier
+        // -------------------------------------------------------------------------------------
+
+        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        PatientIdentifier identifier = null;
+
+        if ( identifierTypes != null && identifierTypes.size() > 0 )
+        {
+            for ( PatientIdentifierType identifierType : identifierTypes )
+            {
+                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
+
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    value = value.trim();
+
+                    identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
+
+                    if ( identifier == null )
+                    {
+                        identifier = new PatientIdentifier();
+                        identifier.setIdentifierType( identifierType );
+                        identifier.setPatient( patient );
+                        identifier.setOrganisationUnit( organisationUnit );
+                        identifier.setIdentifier( value );
+                        // -----------------------------------------------------
+                        // If isChild5 == TRUE : all identifiers is temporary
+                        // -----------------------------------------------------
+                        identifier.setTemporary( isChild5 ? true : false );
+                        patientIdentifierService.savePatientIdentifier( identifier );
+                        patient.getIdentifiers().add( identifier );
+                    }
+                    else
+                    {
+                        identifier.setIdentifier( value );
+                        patientIdentifierService.updatePatientIdentifier( identifier );
+                        patient.getIdentifiers().add( identifier );
+                    }
+                }
+            }
+            patientService.updatePatient( patient );
+        }
+
         return SUCCESS;
     }
 
-    private void updatePatientAttributeValue(PatientAttribute patientAttribute, String value)
+    // -----------------------------------------------------------------------------
+    // Getter/Setter
+    // -----------------------------------------------------------------------------
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
 
-        PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
-            patientAttribute );
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
 
-        if ( patientAttributeValue == null )
-        {
-                LOG.debug( "Adding PatientAttributeValue, value added" );
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
 
-                patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
 
-                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
-        }
-        else
-        {
-            LOG.debug( "Updating PatientAttributeValue, value added/changed" );
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
 
-            patientAttributeValue.setValue( value );
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
+    }
 
-            patientAttributeValueService.updatePatientAttributeValue( patientAttributeValue );
-        }
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+
+    public void setMiddleName( String middleName )
+    {
+        this.middleName = middleName;
+    }
+
+    public void setLastName( String lastName )
+    {
+        this.lastName = lastName;
+    }
+
+    public void setBirthDate( String birthDate )
+    {
+        this.birthDate = birthDate;
+    }
+
+    public void setBirthDateEstimated( boolean birthDateEstimated )
+    {
+        this.birthDateEstimated = birthDateEstimated;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
+    }
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public void setChildContactIdentifierName( String childContactIdentifierName )
+    {
+        this.childContactIdentifierName = childContactIdentifierName;
+    }
+
+    public void setChildContactIdentifierType( String childContactIdentifierType )
+    {
+        this.childContactIdentifierType = childContactIdentifierType;
+    }
+
+    public void setAge( Integer age )
+    {
+        this.age = age;
+    }
+
+    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
+    {
+        this.patientAttributeOptionService = patientAttributeOptionService;
     }
 }

@@ -6,7 +6,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 	<!-- Store definitions -->
-
+	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationMappingStore"
+    class="org.hisp.dhis.caseaggregation.hibernate.HibernateCaseAggregationMappingStore">    
+         <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+	
 	<bean id="org.hisp.dhis.relationship.RelationshipStore"
 		class="org.hisp.dhis.relationship.hibernate.HibernateRelationshipStore">
 		<property name="clazz" value="org.hisp.dhis.relationship.Relationship" />
@@ -69,6 +73,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			value="org.hisp.dhis.patientattributevalue.PatientAttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+   <bean id="org.hisp.dhis.patient.PatientAttributeOptionStore"
+    class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeOptionStore">
+     <property name="clazz" value="org.hisp.dhis.patient.PatientAttributeOption"/>
+     <property name="sessionFactory" ref="sessionFactory"/>
+   </bean>
 
 	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueStore"
 		class="org.hisp.dhis.patientdatavalue.hibernate.HibernatePatientDataValueStore">
@@ -82,8 +92,27 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.patient.PatientAttributeGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+   <bean id="org.hisp.dhis.program.ProgramStageDataElementStore"
+    class="org.hisp.dhis.program.hibernate.HibernateProgramStageDataElementStore">    
+     <property name="clazz" value="org.hisp.dhis.program.ProgramStageDataElement"/>
+     <property name="sessionFactory" ref="sessionFactory"/>
+   </bean>
 
 	<!-- Service definitions -->
+	
+	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"
+    class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationMappingService">
+        <property name="caseAggregationMappingStore"
+      ref="org.hisp.dhis.caseaggregation.CaseAggregationMappingStore"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>  
+    </bean>
+	
+    <bean id="org.hisp.dhis.program.ProgramStageDataElementService"
+    class="org.hisp.dhis.program.DefaultProgramStageDataElementService">
+       <property name="programStageDataElementStore"
+      ref="org.hisp.dhis.program.ProgramStageDataElementStore"/>
+    </bean>
 
 	<bean id="org.hisp.dhis.program.nextvisit.NextVisitGenerator"
 		class="org.hisp.dhis.program.nextvisit.DefaultNextVisitGenerator">
@@ -150,6 +179,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueStore" />
 	</bean>
 
+  <bean id="org.hisp.dhis.patient.PatientAttributeOptionService"
+    class="org.hisp.dhis.patient.DefaultPatientAttributeOptionService">
+    <property name="patientAttributeOptionStore"
+      ref="org.hisp.dhis.patient.PatientAttributeOptionStore"/>
+  </bean>
+
 	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueService"
 		class="org.hisp.dhis.patientdatavalue.DefaultPatientDataValueService">
 		<property name="patientDataValueStore"
@@ -171,5 +206,27 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
+
+	 <!-- Startup routine definitions -->
+		
+	<bean id="org.hisp.dhis.patient.PatientAttributePopulator"
+	    class="org.hisp.dhis.patient.PatientAttributePopulator">
+	    <property name="attributeService"
+	      ref="org.hisp.dhis.patient.PatientAttributeService"/>
+	    <property name="runlevel" value="1"/>
+    </bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"
+      ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
+    <property name="targetMethod" value="addStartupRoutines"/>
+    <property name="arguments">
+      <list>
+        <list>
+          <ref local="org.hisp.dhis.patient.PatientAttributePopulator"/>
+        </list>
+      </list>
+    </property>
+  </bean>
 
 </beans>

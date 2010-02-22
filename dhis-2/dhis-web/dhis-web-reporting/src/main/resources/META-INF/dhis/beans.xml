@@ -512,7 +512,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportTypeAction" 
     scope="prototype">     
     <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataset.DataEntryFormService"/>
+      ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>
   </bean>
@@ -527,7 +527,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementOrderManager"
       ref="org.hisp.dhis.order.manager.DataElementOrderManager"/>
     <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataset.DataEntryFormService"/>
+      ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>		      
   </bean>

@@ -28,6 +28,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -141,13 +143,26 @@ public class SaveValueAction
     {
         return statusCode;
     }
+    
+    private int optionComboId;
+    
+    public int getOptionComboId() 
+    {
+    	return optionComboId;
+    }
+    
+    public void setOptionComboId( int optionComboId ) 
+    {
+    	this.optionComboId = optionComboId;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+
     public String execute()
-        throws Exception
+    throws Exception
     {
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -177,7 +192,29 @@ public class SaveValueAction
             value = value.trim();
         }
 
-        DataElementCategoryOptionCombo optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next(); ;
+        DataElementCategoryOptionCombo optionCombo = null;
+        
+        if( optionComboId == 0 )
+        {
+            optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next(); 
+        }
+        else 
+        {
+            Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
+            if( options != null  && options.size() > 0 )
+            {
+                Iterator<DataElementCategoryOptionCombo> i = options.iterator();
+                while( i.hasNext() )
+                {
+                    DataElementCategoryOptionCombo tmpOption  = i.next();
+                    if( tmpOption.getId() == optionComboId )
+                    {
+                        optionCombo = tmpOption;
+                    }
+                }
+            }
+        }
+        
         
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );

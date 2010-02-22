@@ -48,50 +48,51 @@ function showSortProgramStage()
 // Move members
 //-----------------------------------------------------------------------------
 
-
-var selectedList;
-var availableList;
-
-function move( listId ) {
+function moveFromAvailableList( ) {
 	
-	var fromList = document.getElementById(listId);
-	
-	if ( fromList.selectedIndex == -1 ) { return; }
-	
-	if ( ! availableList ) 
-	{
-		availableList = document.getElementById( 'availableList' );
-	}
-	
-	if ( ! selectedList ) 
-	{
-		selectedList = document.getElementById( 'selectedList' );
-	}
-	
-	var toList = ( fromList == availableList ? selectedList : availableList );
+	var fromList = document.getElementById('availableList');
 	
 	while ( fromList.selectedIndex > -1 ) {
-		
 		option = fromList.options.item(fromList.selectedIndex);
+		jQuery('#selectedList').append("<li onClick='selectItem(this)' ondblclick='moveFromSelectedList(this);'><input type='checkbox' value='"+jQuery(option).val()+"'  title='"+i18n_compulsory_checkbox_title+"'/>"+jQuery(option).text()+"</li>");
 		fromList.remove(fromList.selectedIndex);
-		toList.add(option, null);
 	}
 }
+function selectItem(this_)
+{
+	if( jQuery(this_).hasClass('selected') )
+		jQuery(this_).removeClass('selected');
+	else
+		jQuery(this_).addClass('selected');
+}
+function moveItemsFromSelectedList()
+{
+	jQuery("#selectedList .selected").each(function(){
+		moveFromSelectedList(jQuery(this));
+	});
+}
 
-function submitForm() {
+function moveFromSelectedList(this_)
+{
+	var input = jQuery(this_).children("input")[0];
+	var option = new Option( jQuery(this_).text(), jQuery(input).val());
+	var fromList = document.getElementById('availableList');
+	fromList.add(option,null);
+	jQuery(this_).remove();
+	input = null;
+}
+
+function submitForm(this_) {
 	
-	if ( ! availableList ) 
-	{
-		availableList = document.getElementById('availableList');
-	}
 	
-	if ( ! selectedList ) 
-	{
-		selectedList = document.getElementById('selectedList');
-	}
+	var selectedList = [];
+	var input ;
+	jQuery("#selectedList li").each(function(){
+		input =  jQuery(this).children('input')[0];
+		selectedList.push({"id":jQuery(input).val(),"check":jQuery(input).attr('checked')});
+	});
 	
-	selectAll( selectedList );
-	
+	jQuery("#selectedListSubmit").val(JSON.stringify(selectedList));
 	return false;
 }
 
@@ -330,4 +331,9 @@ function updateValidationCompleted( messageElement )
         document.getElementById( 'message' ).innerHTML = message;
         document.getElementById( 'message' ).style.display = 'block';
     }
+}
+
+function viewDataEntryForm( associationId, associationName )
+{
+    window.location.href = 'viewDataEntryForm.action?associationId=' + associationId +'&associationName=' + associationName;
 }

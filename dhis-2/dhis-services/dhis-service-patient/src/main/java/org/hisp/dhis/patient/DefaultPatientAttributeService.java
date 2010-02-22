@@ -97,4 +97,8 @@ public class DefaultPatientAttributeService
     {
         return patientAttributeStore.getPatientAttributesByMandatory( mandatory );
     }
+    
+    public Collection<PatientAttribute> getPatientAttributesNotGroup(){
+        return patientAttributeStore.getPatientAttributesNotGroup();
+    }
 }

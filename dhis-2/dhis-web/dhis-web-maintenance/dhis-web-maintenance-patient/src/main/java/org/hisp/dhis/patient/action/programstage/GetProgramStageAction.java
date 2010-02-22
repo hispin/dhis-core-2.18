@@ -33,6 +33,7 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
@@ -85,9 +86,9 @@ public class GetProgramStageAction
         return programStage;
     }
 
-    private Collection<DataElement> programStageDataElements;
+    private Collection<ProgramStageDataElement> programStageDataElements;
 
-    public Collection<DataElement> getProgramStageDataElements()
+    public Collection<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;
     }
@@ -109,9 +110,17 @@ public class GetProgramStageAction
 
         programStage = programStageService.getProgramStage( id );
         
-        programStageDataElements = programStage.getDataElements();
+        programStageDataElements = programStage.getProgramStageDataElements();
         
         dataElements = dataElementService.getAllDataElements();
+        
+        if( programStageDataElements != null  && programStageDataElements.size() > 0 )
+        {
+            for( ProgramStageDataElement psde : programStageDataElements )
+            {
+                    dataElements.remove( psde.getDataElement() );
+            }
+        }
 
         return SUCCESS;
     }
