@@ -1,15 +1,5 @@
 package org.hisp.dhis.external.location;
 
-
-import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.transform.Source;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -37,49 +27,63 @@ import org.apache.commons.logging.LogFactory;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.net.URI;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- *
+ * 
  * @author bobj
  * @version created 12-Feb-2010
  */
-public class DefaultLocationManagerResolver implements LocationManagerResolver  {
+public class DefaultLocationManagerResolver
+    implements URIResolver
+{
+    private static final Log log = LogFactory.getLog( DefaultLocationManagerResolver.class );
 
-    private static final Log log = LogFactory.getLog(DefaultLocationManagerResolver.class);
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    protected LocationManager lmanager;
+    private LocationManager locationManager;
 
-    @Override
-    public LocationManager getLocationManager()
-    {
-        return lmanager;
-    }
-
-    @Override
     public void setLocationManager( LocationManager lm )
     {
-        lmanager = lm;
+        locationManager = lm;
     }
 
-    protected String basedir;
+    // -------------------------------------------------------------------------
+    // URIResolver implementation
+    // -------------------------------------------------------------------------
 
-    public Source resolve( String href, String base ) throws TransformerException
+    public Source resolve( String href, String base )
+        throws TransformerException
     {
         Source result = null;
+        
         try
         {
-            URI uri = new URI(href);
+            URI uri = new URI( href );
             String scheme = uri.getScheme();
-            if ((scheme == null) || (scheme.equals( "file"))) {
+            
+            if ( ( scheme == null ) || ( scheme.equals( "file" ) ) )
+            {
                 // TODO: test for absolute path reference
-                result = new StreamSource( lmanager.getInputStream( href ) );
+                result = new StreamSource( locationManager.getInputStream( href ) );
             }
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             log.warn( "URI resolve error: " + ex );
-            throw (new TransformerException("Failed to resolve URI: " + href));
+            throw (new TransformerException( "Failed to resolve URI: " + href ));
         }
 
         return result;
-
     }
 }
