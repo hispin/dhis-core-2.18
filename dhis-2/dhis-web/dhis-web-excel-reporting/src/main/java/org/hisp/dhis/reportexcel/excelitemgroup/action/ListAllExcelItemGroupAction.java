@@ -27,13 +27,16 @@ package org.hisp.dhis.reportexcel.excelitemgroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemGroupComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,7 +54,7 @@ public class ListAllExcelItemGroupAction implements Action {
 	// Input && Output
 	// -------------------------------------------------------------
 
-	private Collection<ExcelItemGroup> excelItemGroups;
+	private List<ExcelItemGroup> excelItemGroups;
 	
 	private List<PeriodType> periodTypes;
 
@@ -63,7 +66,7 @@ public class ListAllExcelItemGroupAction implements Action {
 		this.excelItemService = excelItemService;
 	}
 
-	public Collection<ExcelItemGroup> getExcelItemGroups() {
+	public List<ExcelItemGroup> getExcelItemGroups() {
 		return excelItemGroups;
 	}
 
@@ -81,8 +84,10 @@ public class ListAllExcelItemGroupAction implements Action {
 
 	public String execute() throws Exception {
 
-		excelItemGroups = excelItemService.getAllExcelItemGroup();
+		excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getAllExcelItemGroup());
 
+		Collections.sort( excelItemGroups, new ExcelItemGroupComparator());
+		
 		periodTypes = periodService.getAllPeriodTypes();
 		
 		return SUCCESS;

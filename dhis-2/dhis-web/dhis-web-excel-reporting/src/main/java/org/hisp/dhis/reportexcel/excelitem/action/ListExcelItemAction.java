@@ -28,7 +28,6 @@ package org.hisp.dhis.reportexcel.excelitem.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +37,7 @@ import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -62,10 +62,10 @@ public class ListExcelItemAction
     // -------------------------------------------------------------
 
     private int excelItemGroupId;
-    
+
     private ExcelItemGroup excelItemGroup;
-    
-    private Collection<ExcelItem> excelItems;
+
+    private List<ExcelItem> excelItems;
 
     private List<DataElementGroup> dataElementGroups;
 
@@ -73,7 +73,7 @@ public class ListExcelItemAction
     // Getters and Setters
     // -------------------------------------------------------------
 
-    public Collection<ExcelItem> getExcelItems()
+    public List<ExcelItem> getExcelItems()
     {
         return excelItems;
     }
@@ -112,7 +112,9 @@ public class ListExcelItemAction
     {
         excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-        excelItems = excelItemService.getExcelItemGroup( excelItemGroupId ).getExcelItems();
+        excelItems = new ArrayList<ExcelItem>( excelItemService.getExcelItemGroup( excelItemGroupId ).getExcelItems() );
+
+        Collections.sort( excelItems, new ExcelItemComparator() );
 
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
