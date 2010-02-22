@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.program;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,8 +36,6 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -69,9 +69,9 @@ public class ProgramServiceTest
         
         organisationUnitService.addOrganisationUnit( organisationUnit );              
         
-        programStageA = createProgramStage( 'A' );       
-        programStageB = createProgramStage( 'B' );
-        programStageC = createProgramStage( 'C' );        
+        programStageA = createProgramStage( 'A', 2, 5 );       
+        programStageB = createProgramStage( 'B', 2, 5 );
+        programStageC = createProgramStage( 'C', 2, 5 );        
 
         programStageService.saveProgramStage( programStageA );
         programStageService.saveProgramStage( programStageB );
@@ -80,29 +80,6 @@ public class ProgramServiceTest
         programStages.add( programStageA );
         programStages.add( programStageB );
         programStages.add( programStageC );            
-    }
-    
-    protected static Program createProgram( char uniqueCharacter, Set<ProgramStage> programStages, OrganisationUnit organisationUnit )
-    {
-        Program program = new Program();
-        
-        program.setName( "Program" + uniqueCharacter );
-        program.setDescription( "Description" + uniqueCharacter );
-        program.setProgramStages( programStages );
-        
-        return program;
-    }
-    
-    protected static ProgramStage createProgramStage( char uniqueCharacter )
-    {
-        ProgramStage stage = new ProgramStage();
-        
-        stage.setName( "ProgramStage" + uniqueCharacter );
-        stage.setDescription( "Description" + uniqueCharacter );
-        stage.setStageInProgram( 2 );
-        stage.setMinDaysFromStart( 5 );
-        
-        return stage;
     }
     
     @Test

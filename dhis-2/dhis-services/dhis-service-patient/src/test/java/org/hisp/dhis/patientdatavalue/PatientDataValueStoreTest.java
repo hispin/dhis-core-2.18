@@ -88,19 +88,6 @@ public class PatientDataValueStoreTest
         
         //TODO Add values
     }
-
-    protected static Patient createPatient( char uniqueChar )
-    {
-        Patient patient = new Patient();
-        
-        patient.setFirstName( "FirstName" + uniqueChar );
-        patient.setMiddleName( "MiddleName" + uniqueChar );
-        patient.setLastName( "LastName" + uniqueChar );
-        patient.setGender( Patient.MALE );
-        patient.setBirthDate( getDate( 1970, 1, 1 ) );
-        
-        return patient;
-    }
     
     @Test
     public void addGet()
