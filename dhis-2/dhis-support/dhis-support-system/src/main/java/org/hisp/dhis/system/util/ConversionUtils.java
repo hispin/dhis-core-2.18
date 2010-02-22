@@ -190,6 +190,24 @@ public class ConversionUtils
     }
     
     /**
+     * Creates a List out of an array of objects.
+     * 
+     * @param objects the array of objects.
+     * @return a List of objects.
+     */
+    public static <T> List<T> getList( T... objects )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( T object: objects )
+        {
+            list.add( object );
+        }
+        
+        return list;
+    }
+    
+    /**
      * Returns a Map based on an argument Collection of objects where the key is
      * the object identifier and the value if the object itself.
      * 
