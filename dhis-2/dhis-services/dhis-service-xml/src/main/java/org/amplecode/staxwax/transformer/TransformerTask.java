@@ -1,20 +1,5 @@
 package org.amplecode.staxwax.transformer;
 
-
-import java.util.Iterator;
-import java.util.Map;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import org.amplecode.staxwax.framework.InputPort;
-import org.amplecode.staxwax.framework.OutputPort;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -41,6 +26,24 @@ import org.apache.commons.logging.LogFactory;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import org.amplecode.staxwax.framework.InputPort;
+import org.amplecode.staxwax.framework.OutputPort;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  *
  * @author bobj
@@ -48,7 +51,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class TransformerTask
 {
-
     private static final Log log = LogFactory.getLog( TransformerTask.class );
 
     /**
@@ -61,17 +63,17 @@ public class TransformerTask
      */
     protected InputPort stylesheet;
 
-    /*
+    /**
      * The transformation result
      */
     protected OutputPort result;
 
-    /*
+    /**
      * The stylesheet parameters
      */
     protected Map<String, String> params;
 
-    /*
+    /**
      * The compiled stylesheet
      */
     private Templates templates;
@@ -100,7 +102,6 @@ public class TransformerTask
 
     public void transform( Source source, Result result, URIResolver resolver ) throws TransformerConfigurationException, TransformerException
     {
-
         log.info( "Transformer running" );
 
         if ( templates == null )
@@ -111,9 +112,10 @@ public class TransformerTask
         this.source = new InputPort( "Source", source );
         this.result = new OutputPort( "Result", result );
 
-        javax.xml.transform.Transformer t = templates.newTransformer();
+        Transformer t = templates.newTransformer();
 
         t.setErrorListener( new LoggingErrorListener() );
+        
         if ( resolver != null )
         {
             t.setURIResolver( resolver );
@@ -121,11 +123,13 @@ public class TransformerTask
 
         if ( params != null )
         {
-            Iterator it = params.entrySet().iterator();
+            Iterator<Entry<String, String>> it = params.entrySet().iterator();
+            
             while ( it.hasNext() )
             {
-                Map.Entry pairs = (Map.Entry) it.next();
-                t.setParameter( (java.lang.String) pairs.getKey(), pairs.getValue() );
+                Entry<String, String> pairs = it.next();
+                
+                t.setParameter( pairs.getKey(), pairs.getValue() );
             }
         }
 

@@ -1,17 +1,5 @@
 package org.amplecode.staxwax.framework;
 
-
-import java.util.NoSuchElementException;
-import java.util.concurrent.LinkedBlockingQueue;
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.stax2.XMLEventReader2;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -38,22 +26,33 @@ import org.codehaus.stax2.XMLEventReader2;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.NoSuchElementException;
+import java.util.concurrent.LinkedBlockingQueue;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.stax2.XMLEventReader2;
+
 /**
- * An XML pipe is useful when you want to decouple reader/writer operations, for example
- * using different threads for each.
- *
- * The output of the pipe looks like an XMLEventReader and can be used as a Source for a transformation.
- *
- * The input of the pipe looks like an XMLEventWriter and can be used as a Result of a transformation.
- *
- *
- *
+ * An XML pipe is useful when you want to decouple reader/writer operations, for
+ * example using different threads for each.
+ * 
+ * The output of the pipe looks like an XMLEventReader and can be used as a
+ * Source for a transformation.
+ * 
+ * The input of the pipe looks like an XMLEventWriter and can be used as a
+ * Result of a transformation.
+ * 
  * @author bobj
  * @version created 08-Dec-2009
  */
 public class XMLPipe
 {
-
     private final Log log = LogFactory.getLog( XMLPipe.class );
 
     protected XMLEventReader2 output;
@@ -72,12 +71,12 @@ public class XMLPipe
 
     public boolean inputClosed()
     {
-        return ( (PipeReader) input ).isClosed();
+        return ((PipeReader) input).isClosed();
     }
 
     public boolean outputClosed()
     {
-        return ( (PipeWriter) input ).isClosed();
+        return ((PipeWriter) input).isClosed();
     }
 
     public int getEventCount()
@@ -97,9 +96,9 @@ public class XMLPipe
         input = new PipeWriter();
     }
 
-    private class PipeReader implements XMLEventReader2
+    private class PipeReader
+        implements XMLEventReader2
     {
-
         protected boolean closed;
 
         public boolean isClosed()
@@ -114,7 +113,8 @@ public class XMLPipe
 
         // ------------------- XMLEventReader methods ------------------
         @Override
-        public XMLEvent nextEvent() throws XMLStreamException
+        public XMLEvent nextEvent()
+            throws XMLStreamException
         {
             XMLEvent result;
             try
@@ -126,7 +126,8 @@ public class XMLPipe
                 result = eventQ.take();
                 return result;
 
-            } catch ( InterruptedException ex )
+            }
+            catch ( InterruptedException ex )
             {
                 log.warn( "XMLpipe read interrupted : " + ex );
                 throw new XMLStreamException( ex.toString() );
@@ -136,19 +137,20 @@ public class XMLPipe
         @Override
         public boolean hasNext()
         {
-            return ( eventQ.size() != 0 );
+            return (eventQ.size() != 0);
         }
 
         @Override
-        public XMLEvent peek() throws XMLStreamException
+        public XMLEvent peek()
+            throws XMLStreamException
         {
             return eventQ.peek();
         }
 
         @Override
-        public String getElementText() throws XMLStreamException
+        public String getElementText()
+            throws XMLStreamException
         {
-
             try
             {
                 // get the text
@@ -158,7 +160,8 @@ public class XMLPipe
 
                 return result;
 
-            } catch ( Exception ex )
+            }
+            catch ( Exception ex )
             {
                 log.warn( "XMLpipe getElementText problem : " + ex );
                 throw new XMLStreamException( ex.toString() );
@@ -166,7 +169,8 @@ public class XMLPipe
         }
 
         @Override
-        public XMLEvent nextTag() throws XMLStreamException
+        public XMLEvent nextTag()
+            throws XMLStreamException
         {
             XMLEvent ev = null;
             while ( !ev.isEndElement() && !ev.isStartElement() )
@@ -181,13 +185,15 @@ public class XMLPipe
         }
 
         @Override
-        public Object getProperty( String name ) throws IllegalArgumentException
+        public Object getProperty( String name )
+            throws IllegalArgumentException
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
 
         @Override
-        public void close() throws XMLStreamException
+        public void close()
+            throws XMLStreamException
         {
             closed = true;
             // TODO: think about emptying eventq?
@@ -200,7 +206,8 @@ public class XMLPipe
             if ( !this.hasNext() )
             {
                 throw new NoSuchElementException();
-            } else
+            }
+            else
             {
                 return this.next();
             }
@@ -213,7 +220,8 @@ public class XMLPipe
         }
 
         @Override
-        public boolean hasNextEvent() throws XMLStreamException
+        public boolean hasNextEvent()
+            throws XMLStreamException
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
@@ -231,7 +239,8 @@ public class XMLPipe
         }
     };
 
-    private class PipeWriter implements XMLEventWriter
+    private class PipeWriter
+        implements XMLEventWriter
     {
 
         protected boolean closed;
@@ -246,22 +255,28 @@ public class XMLPipe
             closed = false;
         }
 
-        // ------------------- XMLEventWriter methods ------------------
+        // ---------------------------------------------------------------------
+        // XMLEventWriter methods
+        // ---------------------------------------------------------------------
+        
         @Override
-        public void flush() throws XMLStreamException
+        public void flush()
+            throws XMLStreamException
         {
             // nothing cached to flush?
             return;
         }
 
         @Override
-        public void add( XMLEvent event ) throws XMLStreamException
+        public void add( XMLEvent event )
+            throws XMLStreamException
         {
             eventQ.add( event );
         }
 
         @Override
-        public void add( XMLEventReader reader ) throws XMLStreamException
+        public void add( XMLEventReader reader )
+            throws XMLStreamException
         {
             while ( reader.hasNext() )
             {
@@ -270,25 +285,29 @@ public class XMLPipe
         }
 
         @Override
-        public String getPrefix( String uri ) throws XMLStreamException
+        public String getPrefix( String uri )
+            throws XMLStreamException
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
 
         @Override
-        public void setPrefix( String prefix, String uri ) throws XMLStreamException
+        public void setPrefix( String prefix, String uri )
+            throws XMLStreamException
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
 
         @Override
-        public void setDefaultNamespace( String uri ) throws XMLStreamException
+        public void setDefaultNamespace( String uri )
+            throws XMLStreamException
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
 
         @Override
-        public void setNamespaceContext( NamespaceContext context ) throws XMLStreamException
+        public void setNamespaceContext( NamespaceContext context )
+            throws XMLStreamException
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
@@ -300,7 +319,8 @@ public class XMLPipe
         }
 
         @Override
-        public void close() throws XMLStreamException
+        public void close()
+            throws XMLStreamException
         {
             closed = true;
             return;

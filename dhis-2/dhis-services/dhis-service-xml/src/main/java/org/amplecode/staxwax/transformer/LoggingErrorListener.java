@@ -1,11 +1,5 @@
 package org.amplecode.staxwax.transformer;
 
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.TransformerException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -33,33 +27,41 @@ import org.apache.commons.logging.LogFactory;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.TransformerException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- *
+ * 
  * @author bobj
  * @version created 14-Feb-2010
  */
-public class LoggingErrorListener implements ErrorListener {
-
+public class LoggingErrorListener
+    implements ErrorListener
+{
     private final Log log = LogFactory.getLog( LoggingErrorListener.class );
 
     @Override
-    public void warning( TransformerException exception ) throws TransformerException
+    public void warning( TransformerException exception )
+        throws TransformerException
     {
-        log.warn( exception.getMessageAndLocation());
+        log.warn( exception.getMessageAndLocation() );
     }
 
     @Override
-    public void error( TransformerException exception ) throws TransformerException
+    public void error( TransformerException exception )
+        throws TransformerException
     {
-        log.warn( exception.getMessageAndLocation());
+        log.warn( exception.getMessageAndLocation() );
         throw exception;
     }
 
     @Override
-    public void fatalError( TransformerException exception ) throws TransformerException
+    public void fatalError( TransformerException exception )
+        throws TransformerException
     {
-        log.warn( exception.getMessageAndLocation());
+        log.warn( exception.getMessageAndLocation() );
         throw exception;
     }
-
 }

@@ -36,10 +36,9 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.stream.XMLInputFactory;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,41 +54,41 @@ public class DefaultXMLStreamReader
     implements XMLReader
 {
     private static final Log log = LogFactory.getLog( DefaultXMLStreamReader.class );
-    
-    private static final String[] EVENTS = { 
-        "None", "Start Element", "End Element", "Processing Instruction", "Characters", "Comment", "Space", "Start Document",
-        "End Document", "Entity Reference", "Attribute", "DTD", "CData", "Namespace", "Notation Declaration", "Entity Declaration" };
-    
+
+    private static final String[] EVENTS = { "None", "Start Element", "End Element", "Processing Instruction",
+        "Characters", "Comment", "Space", "Start Document", "End Document", "Entity Reference", "Attribute", "DTD",
+        "CData", "Namespace", "Notation Declaration", "Entity Declaration" };
+
     private XMLStreamReader2 reader;
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    
+
     public DefaultXMLStreamReader( XMLStreamReader2 reader )
     {
-        this.reader = reader;        
+        this.reader = reader;
     }
 
     // -------------------------------------------------------------------------
     // XMLReader implementation
     // -------------------------------------------------------------------------
 
-  @Override
+    @Override
     public String getElementName()
     {
         final int eventType = reader.getEventType();
-        
+
         return eventType == START_ELEMENT || eventType == END_ELEMENT ? reader.getLocalName() : null;
     }
-    
-  @Override
+
+    @Override
     public String getElementValue()
     {
         try
         {
             reader.next();
-            
+
             return reader.getEventType() == CHARACTERS ? reader.getText() : null;
         }
         catch ( XMLStreamException ex )
@@ -98,12 +97,12 @@ public class DefaultXMLStreamReader
         }
     }
 
-  @Override
+    @Override
     public void moveToStartElement( String name )
     {
         try
         {
-            while( reader.next() != END_DOCUMENT )
+            while ( reader.next() != END_DOCUMENT )
             {
                 if ( reader.getEventType() == START_ELEMENT && reader.getLocalName().equals( name ) )
                 {
@@ -117,24 +116,24 @@ public class DefaultXMLStreamReader
         }
     }
 
-  @Override
+    @Override
     public boolean moveToStartElement( String startElementName, String endElementName )
     {
         try
         {
-            while ( reader.next() != END_DOCUMENT ) //TODO && hasNext ?
-            {                
+            while ( reader.next() != END_DOCUMENT ) // TODO && hasNext ?
+            {
                 if ( reader.getEventType() == START_ELEMENT && reader.getLocalName().equals( startElementName ) )
                 {
                     return true;
                 }
-                
+
                 if ( reader.getEventType() == END_ELEMENT && reader.getLocalName().equals( endElementName ) )
                 {
                     return false;
                 }
             }
-            
+
             return false;
         }
         catch ( XMLStreamException ex )
@@ -142,88 +141,88 @@ public class DefaultXMLStreamReader
             throw new RuntimeException( "Failed to move to start element", ex );
         }
     }
-    
-  @Override
+
+    @Override
     public boolean isStartElement( String name )
     {
         return reader.getEventType() == START_ELEMENT && reader.getLocalName().equals( name );
     }
-    
-  @Override
+
+    @Override
     public boolean isEndElement( String name )
     {
         return reader.getEventType() == END_ELEMENT && reader.getLocalName().equals( name );
     }
-    
-  @Override
+
+    @Override
     public boolean next()
     {
         try
         {
-            return reader.next() != END_DOCUMENT;                
+            return reader.next() != END_DOCUMENT;
         }
         catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move cursor to next element", ex );
         }
     }
-    
-  @Override
+
+    @Override
     public boolean next( String endElementName )
     {
         try
         {
-            return !( reader.next() == END_ELEMENT && reader.getLocalName().equals( endElementName ) );                 
+            return !(reader.next() == END_ELEMENT && reader.getLocalName().equals( endElementName ));
         }
         catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move cursor to next element", ex );
         }
     }
-    
-  @Override
+
+    @Override
     public String getAttributeValue( String attributeName )
     {
         return reader.getAttributeValue( null, attributeName );
     }
 
-  @Override
+    @Override
     public int getAttributeCount()
     {
         return reader.getAttributeCount();
     }
-    
-  @Override
+
+    @Override
     public Map<String, String> readElements( String elementName )
     {
         try
         {
             final Map<String, String> elements = new HashMap<String, String>();
-            
+
             String currentElementName = null;
-            
+
             while ( reader.hasNext() )
             {
                 if ( reader.getEventType() == END_ELEMENT && reader.getLocalName().equals( elementName ) )
                 {
                     break;
                 }
-                
+
                 if ( reader.getEventType() == START_ELEMENT )
                 {
                     // Read attributes
-                    
+
                     for ( int i = 0; i < reader.getAttributeCount(); i++ )
                     {
                         elements.put( reader.getAttributeLocalName( i ), reader.getAttributeValue( i ) );
-                    }                    
-                    
+                    }
+
                     currentElementName = reader.getLocalName();
-                    
+
                     reader.next();
-                    
+
                     // Read text if any
-                    
+
                     elements.put( currentElementName, reader.getEventType() == CHARACTERS ? reader.getText() : null );
                 }
                 else
@@ -231,7 +230,7 @@ public class DefaultXMLStreamReader
                     reader.next();
                 }
             }
-            
+
             return elements;
         }
         catch ( XMLStreamException ex )
@@ -239,47 +238,48 @@ public class DefaultXMLStreamReader
             throw new RuntimeException( "Failed to read elements", ex );
         }
     }
-    
-  @Override
+
+    @Override
     public XMLStreamReader2 getXmlStreamReader()
     {
         return reader;
     }
-    
-  @Override
+
+    @Override
     public void dryRun()
-    {   
+    {
         try
         {
             int e;
-            
+
             StringBuffer text = new StringBuffer( "\n" );
-            
-            while ( ( e = reader.next() ) != END_DOCUMENT )
+
+            while ( (e = reader.next()) != END_DOCUMENT )
             {
-                text.append( "EVENT: " + EVENTS[ e ] + " " );
-                
+                text.append( "EVENT: " + EVENTS[e] + " " );
+
                 if ( e == START_ELEMENT || e == END_ELEMENT || e == START_DOCUMENT || e == END_DOCUMENT )
                 {
                     text.append( "NAME: '" + reader.getLocalName() + "' " );
                 }
-                
+
                 if ( e == START_ELEMENT || e == START_DOCUMENT )
                 {
                     for ( int i = 0; i < reader.getAttributeCount(); i++ )
                     {
-                        text.append( "ATTR NAME: '" + reader.getAttributeLocalName( i ) + "' VALUE: '" + reader.getAttributeValue( i ) + "' " );
+                        text.append( "ATTR NAME: '" + reader.getAttributeLocalName( i ) + "' VALUE: '"
+                            + reader.getAttributeValue( i ) + "' " );
                     }
                 }
-                
+
                 if ( e == CHARACTERS )
                 {
                     text.append( "TEXT: '" + reader.getText() + "' " );
                 }
-                
+
                 text.append( "\n" );
             }
-            
+
             log.info( text );
         }
         catch ( XMLStreamException ex )
@@ -287,8 +287,8 @@ public class DefaultXMLStreamReader
             throw new RuntimeException( "Failed to read elements", ex );
         }
     }
-    
-  @Override
+
+    @Override
     public void closeReader()
     {
         try
@@ -301,17 +301,19 @@ public class DefaultXMLStreamReader
         }
     }
 
-  @Override
-  public XMLEventReader2 getXmlEventReader() {
-     XMLInputFactory2 fac = (XMLInputFactory2) XMLInputFactory.newInstance();
-     try
-     {
-       XMLEventReader2 eventReader = (XMLEventReader2) fac.createXMLEventReader(reader);
-       return eventReader;
-     }
-     catch ( XMLStreamException ex )
-     {
-        throw new RuntimeException( "Failed to create XML Event reader", ex );
-     }
-  }
+    @Override
+    public XMLEventReader2 getXmlEventReader()
+    {
+        XMLInputFactory2 fac = (XMLInputFactory2) XMLInputFactory.newInstance();
+        
+        try
+        {
+            XMLEventReader2 eventReader = (XMLEventReader2) fac.createXMLEventReader( reader );
+            return eventReader;
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to create XML Event reader", ex );
+        }
+    }
 }

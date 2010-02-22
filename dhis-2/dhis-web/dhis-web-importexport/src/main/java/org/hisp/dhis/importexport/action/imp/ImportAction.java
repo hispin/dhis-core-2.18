@@ -203,8 +203,9 @@ public class ImportAction
             }
             
             // accept zip, gzip or uncompressed xml
-            // TODO: check cross-browser conent type strings
-            if (! ((contentType.equals( "application/x-zip-compressed")) ||
+            // TODO: check cross-browser content type strings
+            
+            if ( !( ( contentType.equals( "application/x-zip-compressed" ) ) ||
                 contentType.equals( "application/x-gzip") ||
                 contentType.equals( "text/xml")))
             {
