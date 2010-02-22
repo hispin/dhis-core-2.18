@@ -1,8 +1,5 @@
 package org.hisp.dhis.importexport.xml.importer;
 
-
-import java.io.BufferedInputStream;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -30,6 +27,8 @@ import java.io.BufferedInputStream;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.BufferedInputStream;
+
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.zip.GZIPInputStream;
@@ -42,7 +41,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stax.StAXResult;
-import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -58,7 +56,6 @@ import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
@@ -66,26 +63,23 @@ import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
 
 /**
- *
  * @author bobj
- * @version created 14-Feb-2010
  */
-public class DefaultXMLImportService implements ImportService
+public class DefaultXMLImportService
+    implements ImportService
 {
-
     public static final String DXF_ROOT = "dxf";
 
     public static final String TRANSFORMERS_CONFIG = "transform/transforms.xml";
 
     private final Log log = LogFactory.getLog( DefaultXMLImportService.class );
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     protected LocationManager locationManager;
 
-    /**
-     * Set the value of locationManager
-     *
-     * @param locationManager new value of locationManager
-     */
     public void setLocationManager( LocationManager locationManager )
     {
         this.locationManager = locationManager;
@@ -93,24 +87,13 @@ public class DefaultXMLImportService implements ImportService
 
     protected URIResolver dhisResolver;
 
-    /**
-     * Set the value of dhisResolver
-     * This is used to resolve href uris in the xslt stylesheet
-     *
-     * @param dhisResolver new value of dhisResolver
-     */
     public void setDhisResolver( URIResolver dhisResolver )
     {
         this.dhisResolver = dhisResolver;
     }
 
-    DXFConverter converter;
+    private DXFConverter converter;
 
-    /**
-     * Set the value of converter
-     *
-     * @param converter
-     */
     public void setConverter( DXFConverter converter )
     {
         this.converter = converter;
@@ -122,63 +105,9 @@ public class DefaultXMLImportService implements ImportService
         importData( params, inputStream, new OutputHolderState() );
     }
 
-    /**
-     * Open a stylesheet to transform xml with the provided root element
-     * 
-     * @param root
-     * @return open InputStream or null
-     */
-    private InputStream getStyleSheetForRoot( StartElement root )
-    {
-        InputStream result = null;
-        QName rootName = root.getName();
-
-        String localpart = rootName.getLocalPart();
-        String namespaceURI = rootName.getNamespaceURI();
-        
-        // Sdmx hd hack - this is a special case 'cos the transform will be dependent on KeyFamily ns
-        // Its fragile because the CrossSectionalData element is not obliged to declare the KeyFamily ns.
-        // But all current implementations do.
-        // TODO: handle this more elegantly and robustly
-        if ( localpart.equals( "CrossSectionalData" ) )
-        {
-            log.info("SDMX cross sectional data file");
-            // we might have it.  Depends if the DataSet namespace is declared
-            Iterator otherNamespaces = root.getNamespaces();
-            while ( otherNamespaces.hasNext() )
-            {
-                Namespace ns = (Namespace) otherNamespaces.next();
-                if ( ns.getNamespaceURI().contains( "KeyFamily" ) )
-                {
-                    localpart = "DataSet";
-                    namespaceURI = ns.getNamespaceURI();
-                    log.info("KeyFamily = "+namespaceURI);
-                }
-            }
-        }
-
-        if (namespaceURI==null) {
-            namespaceURI="";
-        }
-
-        try
-        {
-            // look up the stylesheet from transformers.xml
-            InputStream transformers = locationManager.getInputStream( TRANSFORMERS_CONFIG );
-            String xpath =
-                "/transforms/transform[(@root='" + localpart + "') and (@ns='" + namespaceURI + "')]/xslt";
-            String stylesheet = "transform/"+XPathFilter.findText(transformers , xpath );
-            transformers.close();
-
-            if (stylesheet != null) {
-                result = locationManager.getInputStream( stylesheet );
-            }
-        } catch ( Exception ex )
-        {
-            log.info( ex );
-        }
-        return result;
-    }
+    // -------------------------------------------------------------------------
+    // ImportService implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
@@ -194,8 +123,9 @@ public class DefaultXMLImportService implements ImportService
             InputStream xmlInStream;
 
             // Importing of data from xml source is a three phase process
-            // Phase 1:  Get the XML stream
-            // this could potentially be from  a zip, a gzip or uncompressed dsource
+            // Phase 1: Get the XML stream
+            // this could potentially be from a zip, a gzip or uncompressed
+            // dsource
             BufferedInputStream bufin = new BufferedInputStream( inputStream );
 
             if ( StreamUtils.isZip( bufin ) )
@@ -203,12 +133,14 @@ public class DefaultXMLImportService implements ImportService
                 // TODO: need a smart zip archive analyzer
                 xmlInStream = new ZipInputStream( bufin );
                 StreamUtils.getNextZipEntry( (ZipInputStream) xmlInStream );
-            } else
+            }
+            else
             {
                 if ( StreamUtils.isGZip( bufin ) )
                 {
                     xmlInStream = new GZIPInputStream( bufin );
-                } else
+                }
+                else
                 {
                     // assume uncompressed xml
                     xmlInStream = bufin;
@@ -216,12 +148,14 @@ public class DefaultXMLImportService implements ImportService
             }
 
             // Phase 2: get a STaX eventreader for the stream
-            //   On the basis of QName of root element perform additional transformation(s)
+            // On the basis of QName of root element perform additional
+            // transformation(s)
             XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
             XMLStreamReader2 streamReader = (XMLStreamReader2) factory.createXMLStreamReader( xmlInStream );
             XMLEventReader2 eventReader = (XMLEventReader2) factory.createXMLEventReader( streamReader );
 
-            // look for the document root element but don't pluck it from the stream
+            // look for the document root element but don't pluck it from the
+            // stream
             while ( !eventReader.peek().isStartElement() )
             {
                 eventReader.nextEvent();
@@ -236,7 +170,8 @@ public class DefaultXMLImportService implements ImportService
             {
                 // native dxf stream - no transform required
                 dxfReader = XMLFactory.getXMLReader( streamReader );
-            } else
+            }
+            else
             {
                 InputStream sheetStream = getStyleSheetForRoot( root );
                 if ( sheetStream == null )
@@ -259,21 +194,88 @@ public class DefaultXMLImportService implements ImportService
                 StAXResult result = new StAXResult( pipeinput );
                 tt.transform( source, result, dhisResolver );
                 log.info( "transform successful - importing dxf" );
-                
+
                 // set dxfReader to output of pipe
                 dxfReader = new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
             }
+            
             // Phase 3: pass through to dxf convertor
-
             converter.read( dxfReader, params, state );
             dxfReader.closeReader();
             StreamUtils.closeInputStream( xmlInStream );
             state.setMessage( "import_process_done" );
 
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             log.error( "XML import error: " + ex );
             state.setMessage( "import_process_failed" ); // see log for details
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Open a stylesheet to transform xml with the provided root element
+     * 
+     * @param root
+     * @return open InputStream or null
+     */
+    private InputStream getStyleSheetForRoot( StartElement root )
+    {
+        InputStream result = null;
+        QName rootName = root.getName();
+
+        String localpart = rootName.getLocalPart();
+        String namespaceURI = rootName.getNamespaceURI();
+
+        // Sdmx hd hack - this is a special case 'cos the transform will be
+        // dependent on KeyFamily ns
+        // Its fragile because the CrossSectionalData element is not obliged to
+        // declare the KeyFamily ns.
+        // But all current implementations do.
+        // TODO: handle this more elegantly and robustly
+        if ( localpart.equals( "CrossSectionalData" ) )
+        {
+            log.info( "SDMX cross sectional data file" );
+            // we might have it. Depends if the DataSet namespace is declared
+            Iterator<?> otherNamespaces = root.getNamespaces();
+            while ( otherNamespaces.hasNext() )
+            {
+                Namespace ns = (Namespace) otherNamespaces.next();
+                if ( ns.getNamespaceURI().contains( "KeyFamily" ) )
+                {
+                    localpart = "DataSet";
+                    namespaceURI = ns.getNamespaceURI();
+                    log.info( "KeyFamily = " + namespaceURI );
+                }
+            }
+        }
+
+        if ( namespaceURI == null )
+        {
+            namespaceURI = "";
+        }
+
+        try
+        {
+            // look up the stylesheet from transformers.xml
+            InputStream transformers = locationManager.getInputStream( TRANSFORMERS_CONFIG );
+            String xpath = "/transforms/transform[(@root='" + localpart + "') and (@ns='" + namespaceURI + "')]/xslt";
+            String stylesheet = "transform/" + XPathFilter.findText( transformers, xpath );
+            transformers.close();
+
+            if ( stylesheet != null )
+            {
+                result = locationManager.getInputStream( stylesheet );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.info( ex );
+        }
+        return result;
     }
 }

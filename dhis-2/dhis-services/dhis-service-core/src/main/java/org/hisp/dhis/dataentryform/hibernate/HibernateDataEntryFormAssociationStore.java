@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -42,15 +41,11 @@ import org.hisp.dhis.dataentryform.DataEntryFormAssociationStore;
 import org.springframework.orm.hibernate3.HibernateQueryException;
 
 /**
- * 
  * @author Viet
- * 
  */
-
 public class HibernateDataEntryFormAssociationStore
     implements DataEntryFormAssociationStore
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -116,6 +111,7 @@ public class HibernateDataEntryFormAssociationStore
         return (DataEntryFormAssociation) criteria.uniqueResult();
     }
     
+    @SuppressWarnings( "unchecked" )
     public Collection<DataEntryForm> listDisctinctDataEntryFormByAssociationIds(String associationName, List<Integer> associationIds )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -125,5 +121,4 @@ public class HibernateDataEntryFormAssociationStore
         .setProjection( Projections.distinct( Projections.property( "dataEntryForm" ) ) );
         return criteria.list();
     }
-
 }

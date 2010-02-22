@@ -51,7 +51,6 @@ public class DefaultLocationManager
     private static final Log log = LogFactory.getLog( DefaultLocationManager.class );
 
     private static final String LINUX_DEFAULT_DHIS2_HOME = "/opt/dhis2";
-    //private static final String LINUX_OS_NAME = "Linux";
 
     private String externalDir = null;
 

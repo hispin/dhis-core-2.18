@@ -38,9 +38,7 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
  * @author Viet Nguyen 
- * 
  */
 @Transactional
 public class DefaultDataEntryFormAssociationService
@@ -118,7 +116,7 @@ public class DefaultDataEntryFormAssociationService
         {
             return null; 
         }
+        
         return dataEntryFormAssociationStore.listDisctinctDataEntryFormByAssociationIds( associationName, associationIds );
     }
-
 }
