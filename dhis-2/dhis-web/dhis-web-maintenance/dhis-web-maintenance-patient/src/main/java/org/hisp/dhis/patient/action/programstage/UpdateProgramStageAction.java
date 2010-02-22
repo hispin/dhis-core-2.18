@@ -31,9 +31,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.sf.json.JSONArray;
+
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
@@ -63,6 +68,14 @@ public class UpdateProgramStageAction
         this.dataElementService = dataElementService;
     }
 
+    private ProgramStageDataElementService programStageDataElementService;
+    
+    public void setProgramStageDataElementService(
+        ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
+    }
+       
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -95,9 +108,9 @@ public class UpdateProgramStageAction
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private Collection<String> selectedList = new HashSet<String>();
+    private String selectedList ;
 
-    public void setSelectedList( Collection<String> selectedList )
+    public void setSelectedList( String selectedList )
     {
         this.selectedList = selectedList;
     }
@@ -118,21 +131,46 @@ public class UpdateProgramStageAction
         {
             minDaysFromStart = 0;
         }
-
-        Set<DataElement> dataElements = new HashSet<DataElement>();
-
-        for ( String id : selectedList )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataElements.add( dataElement );
-        }
-
+        
         programStage.setMinDaysFromStart( minDaysFromStart.intValue() );
-        programStage.setDataElements( dataElements );
-
+        
         programStageService.updateProgramStage( programStage );
-
+        
+        Set<ProgramStageDataElement> programStageDataElements = new HashSet(programStage.getProgramStageDataElements()); 
+        
+        if( StringUtils.isNotBlank( selectedList ) )
+        {
+            DataElement dataElement = null;
+            ProgramStageDataElement programStageDataElement = null;
+            Collection<JSONMappingObject> listObjectMapping = JSONArray.toCollection( JSONArray.fromObject( selectedList ), JSONMappingObject.class );
+            for( JSONMappingObject obj : listObjectMapping )
+            {
+                
+                dataElement = dataElementService.getDataElement( obj.getId() );
+                if( dataElement != null )
+                {
+                    programStageDataElement = programStageDataElementService.get( programStage, dataElement );
+                    if( programStageDataElement == null )
+                    {
+                        programStageDataElement = new ProgramStageDataElement( programStage, dataElement, obj.isCheck() );
+                        programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                    }else
+                    {
+                        programStageDataElement.setCompulsory( obj.isCheck() );
+                        programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
+                        programStageDataElements.remove( programStageDataElement );
+                    }
+                    
+                }
+            }
+            for( ProgramStageDataElement psdeDelete : programStageDataElements )
+            {
+                System.out.println("Delete: "+psdeDelete.getDataElement().getName());
+                programStageDataElementService.deleteProgramStageDataElement( psdeDelete );
+            }
+        }
+        
         return SUCCESS;
     }
+    
 }

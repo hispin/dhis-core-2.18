@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -179,5 +180,9 @@ public class DefaultPatientAttributeValueService
             savePatientAttributeValue( attributeValue );
         }
     }
-
+    
+    public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
+    {
+        return patientAttributeValueStore.countByPatientAttributeoption( attributeOption );
+    }
 }

@@ -31,7 +31,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
+import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -53,7 +57,11 @@ import com.opensymphony.xwork2.Action;
 public class DataRecordingSelectAction
     implements Action
 {
+    Log log = LogFactory.getLog( DataRecordingSelectAction.class );
+
     private static final String DATAENTRY_FORM = "dataentryform";
+
+    private static final String CUSTOM_DATAENTRY_FORM = "customentryform";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -99,6 +107,13 @@ public class DataRecordingSelectAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    private DataEntryFormAssociationService associationService;
+
+    public void setAssociationService( DataEntryFormAssociationService associationService )
+    {
+        this.associationService = associationService;
     }
 
     // -------------------------------------------------------------------------
@@ -168,7 +183,7 @@ public class DataRecordingSelectAction
     {
         return organisationUnit;
     }
-    
+
     private ProgramInstance programInstance;
 
     public ProgramInstance getProgramInstance()
@@ -190,6 +205,25 @@ public class DataRecordingSelectAction
         return colorMap;
     }
 
+    private boolean customDataEntryFormExists;
+
+    public boolean getCustomDataEntryFormExists()
+    {
+        return customDataEntryFormExists;
+    }
+
+    private String useDefaultForm;
+
+    public String getUseDefaultForm()
+    {
+        return useDefaultForm;
+    }
+
+    public void setUseDefaultForm( String useDefaultForm )
+    {
+        this.useDefaultForm = useDefaultForm;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -197,7 +231,6 @@ public class DataRecordingSelectAction
     public String execute()
         throws Exception
     {
-
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
@@ -272,6 +305,9 @@ public class DataRecordingSelectAction
         Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient,
             selectedProgram, false );
 
+        if( progamInstances == null || progamInstances.iterator() == null || !progamInstances.iterator().hasNext() )
+            return SUCCESS;
+        
         programInstance = progamInstances.iterator().next();
 
         colorMap = programStageInstanceService.colorProgramStageInstances( programInstance.getProgramStageInstances() );
@@ -287,7 +323,7 @@ public class DataRecordingSelectAction
         // ---------------------------------------------------------------------
 
         ProgramStage selectedProgramStage;
-
+        
         if ( programStageId != null )
         {
             selectedProgramStage = programStageService.getProgramStage( programStageId );
@@ -316,9 +352,27 @@ public class DataRecordingSelectAction
         // date
         // ---------------------------------------------------------------------
 
+        ProgramInstance programInstance = progamInstances.iterator().next();
+
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
             selectedProgramStage );
 
+        // ---------------------------------------------------------------------
+        // Check if there is custom DataEntryForm
+        // ---------------------------------------------------------------------
+
+        DataEntryFormAssociation association = associationService
+            .getDataEntryFormAssociationByProgramStage( programStageId );
+
+        if ( association != null && association.getDataEntryForm() != null )
+        {
+            customDataEntryFormExists = true;
+        }
+
+        if ( customDataEntryFormExists && useDefaultForm == null )
+        {
+            return CUSTOM_DATAENTRY_FORM;
+        }
         return DATAENTRY_FORM;
 
     }

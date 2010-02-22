@@ -160,4 +160,29 @@ public class DefaultPatientIdentifierService
 
         return nextIdentifier;
     }    
+    
+    public PatientIdentifier getPatientIdentifier( String identifier, Patient patient )
+    {
+        return patientIdentifierStore.getPatientIdentifier( identifier, patient );
+    }
+
+    public Collection<PatientIdentifier> getPatientIdentifiers( Patient patient )
+    {
+        return patientIdentifierStore.getPatientIdentifiers( patient );
+    }
+
+    public PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient )
+    {
+        return patientIdentifierStore.getPatientIdentifier( identifierType, patient );
+    }
+
+    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit );
+    }
+
+    public PatientIdentifier get( PatientIdentifierType type, String identifier )
+    {
+        return patientIdentifierStore.get( type, identifier );
+    }
 }

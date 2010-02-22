@@ -1,4 +1,31 @@
-
+#macro( validate $type $require )
+  #if( $type == "int" )
+  	{validate:{ number:true #if($require), required:true #end }}
+  #elseif( $type == "string" )
+  	{validate:{ alphanumeric:true #if($require), required:true #end }}
+  #elseif( $require )
+  	{validate:{required:true}}
+  #end
+#end
+<script>
+jQuery(document).ready(function(){
+	  //-----------------------------------------------------------------------
+	  //init jQuery validation for updatePatientForm
+	  //-----------------------------------------------------------------------
+		jQuery("#updatePatientForm").validate({
+			 meta:"validate"
+			,errorElement:"td"
+			,submitHandler: function(form)
+							{
+								validateUpdatePatient();
+							}
+		});
+		jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
+		jQuery("#firstName").focus();
+});
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "update_patient" )</h3>
 
 <form id="updatePatientForm" action="updatePatient.action" method="post">
@@ -7,35 +34,30 @@
 </div>
 
 <table>
-	<tr>
-		<th colspan="2">$i18n.getString( "patient_identifier_s" )</th>
-	</tr>
-	<tr>
-		<td><label for="identifier">$i18n.getString( "identifier" )</label></td>
-		<td><input type="text" readonly="readonly" id="identifier" name="identifier" value="$encoder.htmlEncode( $patientIdentifier.identifier )" style="width:30em"></td>
-	</tr>	
+	<tr><th colspan="2">$i18n.getString( "system_identifier" )</th></tr>
+	<tr><td colspan="2" style="text-align: center">$systemIdentifier</td></tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2">$i18n.getString( "name" )</th>
+		<th colspan="2">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em"></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
 	</tr>
 	<tr>
-		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em"></td>
+		<td><label for="middleName">$i18n.getString( "middle_name" )</label></td>
+		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em"></td>
+		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
 		<th colspan="2">$i18n.getString( "demographics" )</th>
 	</tr>
 	<tr>
-		<td><label for="gender">$i18n.getString( "gender" )</label></td>
+		<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="gender" name="gender" style="min-width:20em">
 				<option value="M" #if( $patient.gender == 'M' ) selected="selected" #end>$i18n.getString( "male" )</option>
@@ -44,7 +66,7 @@
 		</td>					
 	</tr>	
 	<tr>
-		<td><label for="birthDate">$i18n.getString( "date_of_birth" ) </label></td>
+		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
 		<td>
 		    <input type="text" id="birthDate" name="birthDate" value="$format.formatDate( $patient.birthDate )" style="width:10em">
 		    <img src="../images/calendar_icon.gif" width="16" height="16" id="getBirthDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_birth" )">		    
@@ -55,55 +77,130 @@
             <label for="age">$i18n.getString( "age" )</label>&nbsp;&nbsp;$encoder.htmlEncode( $patient.getAge() )            
         </td> 
 	</tr>  
-		<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2">$i18n.getString( "mandatory_attribute" )</th>
+		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
+		<td>
+			<select type="text" id="bloodGroup" name="bloodGroup" style="width:30em" >
+				 <option value="">[$i18n.getString( "please_select" )]</option>
+				<option value="A+"  #if($patient.bloodGroup == "A+") selected="selected" #end>A+</option>
+				<option value="A-"  #if($patient.bloodGroup == "A-") selected="selected" #end>A-</option>
+				<option value="AB+" #if($patient.bloodGroup == "AB+") selected="selected" #end>AB+</option>
+				<option value="AB-" #if($patient.bloodGroup == "AB-") selected="selected" #end>AB-</option>
+				<option value="B+"  #if($patient.bloodGroup == "B+") selected="selected" #end>B+</option>
+				<option value="B-"  #if($patient.bloodGroup == "B-") selected="selected" #end>B-</option>
+				<option value="O+"  #if($patient.bloodGroup == "O+") selected="selected" #end>O+</option>
+				<option value="O-"  #if($patient.bloodGroup == "O-") selected="selected" #end>O-</option>
+			</select>
+		</td>		
 	</tr>
-    
-#set( $rowCount = 0 )
-#set( $mark = 0 )
-#set( $tabIndex = 1 )
-
-#foreach( $patientAttribute in $patientAttributes )
-    #set( $rowCount = $rowCount + 1 )
-    #set( $patientAttributeValue = false )
-    #set( $patientAttributeValue = $patientAttributeValueMap.get( $patientAttribute.id ) )    
-    <tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
-        <td>
-            <span id="value[$patientAttribute.id].name" title="$!encoder.htmlEncode( $patientAttribute.description )">
-                $rowCount. $encoder.htmlEncode( $patientAttribute.name )            
-            </span>
-        </td>        
-        ##type        ##entry        
-        <td>        
-            #if( $patientAttribute.valueType == "bool" )
-                <select name="$patientAttribute.id" id="$patientAttribute.id" style="width:100%" tabindex="$tabIndex">              
-                    <option value="">[$i18n.getString( "please_select" )]</option>
-                    <option value="true" #if( $patientAttributeValueMap.get($patientAttribute.id ) == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
-                    <option value="false" #if( $patientAttributeValueMap.get($patientAttribute.id ) == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
-                </select>                
-            #elseif( $patientAttribute.valueType == "date" )
-                <input type="text" id="$patientAttribute.id" name="$patientAttribute.id" value="$!encoder.htmlEncode( $patientAttributeValueMap.get($patientAttribute.id ))" onchange="validateAttributeValue(  $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' , '$patientAttribute.valueType')" tabindex="$tabIndex" >
-                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
-                    <script type="text/javascript">
-                        Calendar.setup({
-                            inputField     :    "$patientAttribute.id",      // id of the input field
-                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-                            button         :    "getDateValue$patientAttribute.id"   // trigger for the calendar (button ID)
-                        });
-                    </script>                    
-            #else
-                <input name="$patientAttribute.id" id="$patientAttribute.id" type="text" value="$!encoder.htmlEncode( $patientAttributeValueMap.get($patientAttribute.id ) )" onchange="validateAttributeValue( $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' , '$patientAttribute.valueType')" tabindex="$tabIndex" >
-            #end
-        </td>       
-    </tr>
-    #set( $tabIndex = $tabIndex + 1 )
-#end
-
+	<tr><td>&nbsp;</td></tr>	
+	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
+	<tr id="childContactType"  #if( $patient.getIntegerValueOfAge() >= 5 ) style="display: none" #end>
+		<td><label>$i18n.getString( "child_contact_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td>
+			<select name="childContactIdentifierType" id="childContactIdentifierType" style="width:30em" >
+				<option value="">[$i18n.getString( "please_select" )]</option>
+				<option value="Father"   #if($childContactType == "Father") selected="selected" #end>$i18n.getString( "father" )</option>	
+				<option value="Mother"   #if($childContactType == "Mother") selected="selected" #end>$i18n.getString( "mother" )</option>	
+				<option value="Guardian" #if($childContactType == "Guardian") selected="selected" #end>$i18n.getString( "guardian" )</option>	
+			</select>
+		</td>
+	</tr>
+	<tr id="childContactName"  #if( $patient.getIntegerValueOfAge() >= 5 ) style="display: none" #end>
+		<td><label>$i18n.getString( "child_contact_name" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" name="childContactIdentifierName" value="$!childContactName" id="childContactIdentifierName" maxlength="160" class="{validate:{firstletteralphabet:true,alphanumeric:true}}" style="width:30em"/></td>
+	</tr>
+	#foreach ($identifierType in $identifierTypes)
+	#set( $identifier = "" )
+	#set( $identifier = $identiferMap.get( $identifierType.id ) )
+	<tr>
+			<td><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+			<td><input type="text" name="iden$identifierType.id" value="$identifier" class='#validate( "default"  $identifierType.mandatory )' style="width:30em" /></td>	
+	</tr>
+	#end
+	<tr><td>&nbsp;</td></tr>
+	#foreach ($attributeGroup in $attributeGroups )
+		<tr><td>&nbsp;</td></tr>	
+		<tr><th colspan="2">$attributeGroup.name</th></tr>
+		#foreach($attribute in $attributeGroup.attributes )
+		#set( $attributeValue = "" )
+		#set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )
+			<tr>
+				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+				<td>
+					#if( $attribute.valueType == "YES/NO" )
+		                <select id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" >              
+		                    <option value="">[$i18n.getString( "please_select" )]</option>
+		                    <option value="true" #if( $attributeValue ) selected="selected" #end>$i18n.getString( "yes" )</option>
+		                    <option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
+		                </select>                
+		            #elseif( $attribute.valueType == "DATE" )
+		                <input type="text" id="attr$attribute.id"  name="attr$attribute.id"  value="$!attributeValue" #validate( "date"  $attribute.mandatory ) style="width:30em" >
+		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+		                    <script type="text/javascript">
+		                        Calendar.setup({
+		                            inputField     :    "attr$attribute.id",      // id of the input field
+		                            ifFormat       :    "$i18n.getString('format.date.label')",       // format of the input field
+		                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
+		                        });
+		                    </script>                    
+					#elseif( $attribute.valueType == "COMBO" )
+						<select  id="attr$attribute.id"  name="attr$attribute.id" #validate( "default"  $attribute.mandatory ) style="width:30em"  >
+							 <option value="">[$i18n.getString( "please_select" )]</option>
+						#foreach ($option in $attribute.attributeOptions )
+							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
+						#end
+						</select>
+					#else 
+						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" #validate( $attribute.valueType  $attribute.mandatory )   style="width:30em" >
+					#end
+				</td>		
+			</tr>
+		#end
+	#end
+	<tr><td>&nbsp;</td></tr>
+	#if ( $noGroupAttributes.size() > 0) 	
+		<tr><th colspan="2">$i18n.getString( "Other details" )</th></tr>
+		#foreach($attribute in $noGroupAttributes )
+		#set( $attributeValue = "" )
+		#set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )
+			<tr>
+				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+				<td>
+					#if( $attribute.valueType == "YES/NO" )
+		                <select id="attr$attribute.id"  name="attr$attribute.id"   style="width:30em" >              
+		                    <option value="">[$i18n.getString( "please_select" )]</option>
+		                    <option value="true" #if( $attributeValue ) selected="selected" #end>$i18n.getString( "yes" )</option>
+		                    <option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
+		                </select>                
+		            #elseif( $attribute.valueType == "DATE" )
+		                <input type="text" id="attr$attribute.id"    style="width:30em" name="attr$attribute.id"  value="$!attributeValue" #validate( ""  $attribute.mandatory )>
+		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+		                    <script type="text/javascript">
+		                        Calendar.setup({
+		                            inputField     :    "attr$attribute.id",      // id of the input field
+		                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+		                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
+		                        });
+		                    </script>                    
+					#elseif( $attribute.valueType == "COMBO" )
+						<select  id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" #validate( "default"  $attribute.mandatory ) >
+							 <option value="">[$i18n.getString( "please_select" )]</option>
+						#foreach ($option in $attribute.attributeOptions )
+							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
+						#end
+						</select>
+					#else 
+						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" #validate( $attribute.valueType  $attribute.mandatory )   style="width:30em" >
+					#end
+				</td>		
+			</tr>
+		#end
+	#end
 </table>
 
 <p>
-	<input type="button" value="$i18n.getString( "update" )" onclick="validateUpdatePatient()" style="width:10em">
+	<input type="submit" value="$i18n.getString( "update" )" style="width:10em">
 	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='searchPatient.action'" style="width:10em">
 </p>
 
@@ -111,24 +208,34 @@
 
 <span id="message"></span>
 
-<script type="text/javascript">	
-	
-	var firstNameField = document.getElementById( 'firstName' );
-	firstNameField.select();
-	firstNameField.focus();
-
+<div id="hiddenModalContent" style="display:none">
+<style> 
+div#hiddenModalContent label { font-weight: bold;}  
+div#hiddenModalContent td {padding: 2px 5px}
+</style>
+<span>$i18n.getString( "duplicate_warning" )</span>
+<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
+<script>function edit(this_){window.parent.tb_remove(); window.parent.location.href="showUpdatePatientForm.action?id="+jQuery(this_).attr("id");}
 </script>
-
+<div id="thickboxContainer"></div>
+</div>
 <script type="text/javascript">
         Calendar.setup({
             inputField     :    "birthDate",      // id of the input field
             ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
             button         :    "getBirthDate"   // trigger for the calendar (button ID)
         });
-		
-	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
-	var i18n_value_must_date = '$encoder.jsEscape( $i18n.getString( "value_must_date" ) , "'")';
-
+        var i18n_patient_identifiers = '$encoder.jsEscape( $i18n.getString( "patient_identifiers" ) , "'")';
+       	var i18n_patient_attributes = '$encoder.jsEscape( $i18n.getString( "patient_attributes" ) , "'")';
+       	var i18n_patient_fullName = '$encoder.jsEscape( $i18n.getString( "full_name" ) , "'")';
+       	var i18n_patient_demographics = '$encoder.jsEscape( $i18n.getString( "demographics" ) , "'")';
+       	var i18n_patient_gender = '$encoder.jsEscape( $i18n.getString( "gender" ) , "'")';
+       	var i18n_patient_date_of_birth = '$encoder.jsEscape( $i18n.getString( "date_of_birth" ) , "'")';
+       	var i18n_patient_age = '$encoder.jsEscape( $i18n.getString( "age" ) , "'")';
+       	var i18n_patient_blood_group = '$encoder.jsEscape( $i18n.getString( "blood_group" ) , "'")';
+       	var i18n_edit_this_patient = '$encoder.jsEscape( $i18n.getString( "edit_this_patient" ) , "'")';
+       	var i18n_no_duplicate_found = '$encoder.jsEscape( $i18n.getString( "no_duplicate_found" ) , "'")';
+       	var i18n_patient_system_id = '$encoder.jsEscape( $i18n.getString( "patient_system_id" ) , "'")';
+        var checkedDuplicate = false;
 </script>
 
-				

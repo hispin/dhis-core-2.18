@@ -60,4 +60,14 @@ public interface PatientIdentifierService
     Collection<PatientIdentifier> getPatientIdentifiersByOrgUnit( OrganisationUnit organisationUnit );
 
     String getNextIdentifierForOrgUnit( OrganisationUnit orgUnit );
+    
+    PatientIdentifier getPatientIdentifier(String identifier, Patient patient);
+    
+    PatientIdentifier getPatientIdentifier(PatientIdentifierType identifierType, Patient patient);
+    
+    Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
+    
+    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit );
+    
+    PatientIdentifier get( PatientIdentifierType type, String identifier );
 }

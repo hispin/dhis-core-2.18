@@ -147,21 +147,23 @@ public class DefaultPatientService
         {
             patients = allPatients;
         }
-
+        
         return patients;
     }
 
     public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit )
     {
-        Collection<Patient> patients = new ArrayList<Patient>();
-
-        for ( PatientIdentifier patientIdentifier : patientIdentifierService
-            .getPatientIdentifiersByOrgUnit( organisationUnit ) )
-        {
-            patients.add( patientIdentifier.getPatient() );
-        }
-
-        return patients;
+//        Collection<Patient> patients = new ArrayList<Patient>();
+//
+//        for ( PatientIdentifier patientIdentifier : patientIdentifierService
+//            .getPatientIdentifiersByOrgUnit( organisationUnit ) )
+//        {
+//            patients.add( patientIdentifier.getPatient() );
+//        }
+//        
+//        return patients;
+    	
+        return  patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
     }
 
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
@@ -205,5 +207,11 @@ public class DefaultPatientService
         }
 
         return sortedPatients;
+    }
+    
+
+    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender )
+    {
+        return patientStore.getPatient( firstName, middleName, lastName, birthdate , gender);
     }
 }

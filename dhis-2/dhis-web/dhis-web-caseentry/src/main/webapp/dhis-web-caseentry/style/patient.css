@@ -15,3 +15,15 @@
   font-size: 12px; 
 
 }
+#dragDiv{  display:none;border : 1px solid red;  background: yellow; color:black; z-index: 999; position: fixed;}
+
+.focusCell{background-color: #AFCCFF}
+.errorCell{background-color: #FFCFCF}
+.sectionOpen {display: true}
+.sectionClose{ display: none}
+.togglePanel.open {height:25px;padding-left:25px; background-image:  url(../images/open.gif) ; background-repeat: no-repeat; background-position: top left}
+.togglePanel.close {height:25px;padding-left:25px;  background-image:  url(../images/close.gif) ; background-repeat: no-repeat; background-position: top left}
+
+input.inputText{width: 8em}
+select.inputText{width: 8.4em}
+.inputColumn{ width:170px}

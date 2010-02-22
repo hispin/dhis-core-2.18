@@ -30,6 +30,7 @@ package org.hisp.dhis.patient.action.programstage;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -78,16 +79,16 @@ public class GetProgramStageListAction
         this.id = id;
     }
 
-    private Collection<ProgramStage> programStages = new ArrayList<ProgramStage>();
+    private Collection<ProgramStage> associations = new ArrayList<ProgramStage>();
 
-    public Collection<ProgramStage> getProgramStages()
+    public Collection<ProgramStage> getAssociations()
     {
-        return programStages;
+        return associations;
     }
 
-    public void setProgramStages( Collection<ProgramStage> programStages )
+    public void setAssociations( Collection<ProgramStage> associations )
     {
-        this.programStages = programStages;
+        this.associations = associations;
     }
 
     private Collection<Program> programs = new ArrayList<Program>();
@@ -101,6 +102,13 @@ public class GetProgramStageListAction
     {
         this.programs = programs;
     }
+    
+    private String associationName;
+
+    public String getAssociationName()
+    {
+        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -110,17 +118,17 @@ public class GetProgramStageListAction
         throws Exception
     {
 
-        programs = programService.getAllPrograms();       
+	  programs = programService.getAllPrograms();
 
-        programStages = programStageService.getAllProgramStages();
+      if ( id != null )
+      {
+          Program program = programService.getProgram( id );
 
-        if ( id != null )
-        {
-            Program program = programService.getProgram( id );
-            
-            programStages = program.getProgramStages();           
+          associations = program.getProgramStages();
 
-        }
+      }else{
+          associations = programStageService.getAllProgramStages();
+      }
 
         return SUCCESS;
     }

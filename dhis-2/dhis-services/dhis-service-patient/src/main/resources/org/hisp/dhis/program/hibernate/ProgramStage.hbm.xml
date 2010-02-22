@@ -19,11 +19,10 @@
     
     <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid"/>    
     
-    <set name="dataElements" table="programstage_dataelements">
+     <set name="programStageDataElements" inverse="true"  >
       <key column="programstageid"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElement" 
-          column="dataelementid" foreign-key="fk_programstage_dataelementid"/>
-    </set>   	
+      <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
+    </set>  	
 	
   </class>
 </hibernate-mapping>

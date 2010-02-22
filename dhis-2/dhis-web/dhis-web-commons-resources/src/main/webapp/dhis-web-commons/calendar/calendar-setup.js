@@ -131,7 +131,17 @@ Calendar.setup = function (params) {
 		alert("Calendar.setup:\n  Nothing to setup (no fields found).  Please check your code");
 		return false;
 	}
-
+	
+	//----------------------------------------------------------------------------
+	// If the input field is disabled then do not setup this calendar
+	// @modified Viet Nguyen
+	//----------------------------------------------------------------------------
+	if( jQuery(params.inputField).attr("disabled") )
+	{
+		jQuery(params.button).hide();
+		return false;
+	}
+	
 	function onSelect(cal) {
 		var p = cal.params;
 		var update = (cal.dateClicked || p.electric);

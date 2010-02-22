@@ -28,14 +28,17 @@
 package org.hisp.dhis.patient.action.programstage;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
+import net.sf.json.JSONArray;
+
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
@@ -72,9 +75,19 @@ public class AddProgramStageAction
         this.dataElementService = dataElementService;
     }
 
+    private ProgramStageDataElementService programStageDataElementService;
+    
+    public void setProgramStageDataElementService(
+        ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+
 
     private int id;
 
@@ -109,9 +122,9 @@ public class AddProgramStageAction
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private Collection<String> selectedList = new HashSet<String>();
+    private String selectedList ;
 
-    public void setSelectedList( Collection<String> selectedList )
+    public void setSelectedList( String selectedList )
     {
         this.selectedList = selectedList;
     }
@@ -131,26 +144,33 @@ public class AddProgramStageAction
         programStage.setProgram( program );
         programStage.setName( nameField );
         programStage.setDescription( description );
-
+        if( minDaysFromStart != null )
+            programStage.setMinDaysFromStart( minDaysFromStart.intValue() );
+        programStageService.saveProgramStage( programStage );
+        
         if ( minDaysFromStart == null )
         {
-            minDaysFromStart = 0;
+            minDaysFromStart = 0; 
         }
        
-        Set<DataElement> dataElements = new HashSet<DataElement>();
-
-        for ( String id : selectedList )
+        
+        if( StringUtils.isNotBlank( selectedList ) )
         {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataElements.add( dataElement );
+            DataElement dataElement = null;
+            ProgramStageDataElement programStageDataElement = null;
+            Collection<JSONMappingObject> listObjectMapping = JSONArray.toCollection( JSONArray.fromObject( selectedList ), JSONMappingObject.class );
+            for( JSONMappingObject obj : listObjectMapping )
+            {
+                dataElement = dataElementService.getDataElement( obj.getId() );
+                if( dataElement != null )
+                {
+                    programStageDataElement = new ProgramStageDataElement( programStage, dataElement, obj.isCheck() );
+                    programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                }
+            }
         }
-
-        programStage.setMinDaysFromStart( minDaysFromStart.intValue() );
-        programStage.setDataElements( dataElements );
-
-        programStageService.saveProgramStage( programStage );
 
         return SUCCESS;
     }
+    
 }

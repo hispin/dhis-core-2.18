@@ -29,6 +29,7 @@ package org.hisp.dhis.patient.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -41,38 +42,78 @@ import org.hisp.dhis.patient.PatientIdentifierType;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class HibernatePatientIdentifierStore
-    extends HibernateGenericStore<PatientIdentifier> implements PatientIdentifierStore
-{
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getByIdentifier( String identifier )
-    {
-        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).list();
-    }
+public class HibernatePatientIdentifierStore extends
+		HibernateGenericStore<PatientIdentifier> implements
+		PatientIdentifierStore {
+	@SuppressWarnings("unchecked")
+	public Collection<PatientIdentifier> getByIdentifier(String identifier) {
+		return getCriteria(
+				Restrictions.ilike("identifier", "%" + identifier + "%"))
+				.list();
+	}
 
-    public PatientIdentifier get( String identifier, OrganisationUnit organisationUnit )
-    {
-        return (PatientIdentifier) getCriteria( 
-            Restrictions.eq( "identifier", identifier ),
-            Restrictions.eq( "organisationUnit", organisationUnit ) ).uniqueResult();
-    }
+	public PatientIdentifier get(String identifier,
+			OrganisationUnit organisationUnit) {
+		return (PatientIdentifier) getCriteria(
+				Restrictions.eq("identifier", identifier),
+				Restrictions.eq("organisationUnit", organisationUnit))
+				.uniqueResult();
+	}
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getByOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
-    }
+	@SuppressWarnings("unchecked")
+	public Collection<PatientIdentifier> getByOrganisationUnit(
+			OrganisationUnit organisationUnit) {
+		return getCriteria(
+				Restrictions.eq("organisationUnit", organisationUnit)).list();
+	}
 
-    public PatientIdentifier get( Patient patient )
-    {
-        return (PatientIdentifier) getCriteria( 
-            Restrictions.eq( "patient", patient ),
-            Restrictions.eq( "preferred", true ) ).uniqueResult();
-    }
+	public PatientIdentifier get(Patient patient) {
+		return (PatientIdentifier) getCriteria(
+				Restrictions.eq("patient", patient),
+				Restrictions.eq("preferred", true)).uniqueResult();
+	}
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType )
-    {
-        return getCriteria( Restrictions.eq( "identifierType", identifierType ) ).list();
-    }
+	@SuppressWarnings("unchecked")
+	public Collection<PatientIdentifier> getByType(
+			PatientIdentifierType identifierType) {
+		return getCriteria(Restrictions.eq("identifierType", identifierType))
+				.list();
+	}
+
+	public PatientIdentifier getPatientIdentifier(String identifier,
+			Patient patient) {
+		return (PatientIdentifier) getCriteria(
+				Restrictions.eq("identifier", identifier),
+				Restrictions.eq("patient", patient)).uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<PatientIdentifier> getPatientIdentifiers(Patient patient) {
+		return (Collection<PatientIdentifier>) getCriteria(
+				Restrictions.eq("patient", patient)).list();
+	}
+
+	public PatientIdentifier getPatientIdentifier(
+			PatientIdentifierType identifierType, Patient patient) {
+		return (PatientIdentifier) getCriteria(
+				Restrictions.eq("identifierType.id", identifierType.getId()),
+				Restrictions.eq("patient", patient)).uniqueResult();
+	}
+
+	public PatientIdentifier get(PatientIdentifierType type, String identifier) {
+		return (PatientIdentifier) getCriteria(
+				Restrictions.eq("identifierType", type),
+				Restrictions.eq("identifier", identifier)).uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Patient> listPatientByOrganisationUnit(
+			OrganisationUnit organisationUnit) {
+		return (Collection<Patient>) getCriteria(
+				Restrictions.eq("organisationUnit", organisationUnit))
+				.setProjection(
+						Projections.distinct(Projections.property("patient")))
+				.list();
+	}
+
 }

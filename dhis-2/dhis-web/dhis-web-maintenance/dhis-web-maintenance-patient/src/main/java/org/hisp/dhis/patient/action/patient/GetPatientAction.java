@@ -32,8 +32,14 @@ import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.PatientAttributePopulator;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -49,38 +55,23 @@ import com.opensymphony.xwork2.Action;
 public class GetPatientAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
 
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
     private PatientIdentifierService patientIdentifierService;
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
 
     private ProgramService programService;
 
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
     private PatientAttributeValueService patientAttributeValueService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
+    private PatientAttributeService patientAttributeService;
+
+    private PatientAttributeGroupService patientAttributeGroupService;
+
+    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -88,50 +79,27 @@ public class GetPatientAction
 
     private int id;
 
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
     private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
 
     private PatientIdentifier patientIdentifier;
 
-    public PatientIdentifier getPatientIdentifier()
-    {
-        return patientIdentifier;
-    }
-
     private Collection<Program> programs;
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
-    }
 
     private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
 
-    public Map<Integer, String> getPatientAttributeValueMap()
-    {
-        return patientAttributeValueMap;
-    }
+    private Collection<PatientAttribute> noGroupAttributes;
 
-    private Collection<PatientAttribute> patientAttributes;
+    private Collection<PatientAttributeGroup> attributeGroups;
 
-    public Collection<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
+    private Collection<PatientIdentifierType> identifierTypes;
 
-    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
-    {
-        this.patientAttributes = patientAttributes;
-    }
+    private Map<Integer, String> identiferMap;
+
+    private String childContactName;
+
+    private String childContactType;
+    
+    private String systemIdentifier;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -140,9 +108,22 @@ public class GetPatientAction
     public String execute()
         throws Exception
     {
+
         patient = patientService.getPatient( id );
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
+
+        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        identiferMap = new HashMap<Integer, String>();
+
+        for ( PatientIdentifier identifier : patient.getIdentifiers() )
+        {
+            if ( identifier.getIdentifierType() != null )
+                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+            else 
+                systemIdentifier = identifier.getIdentifier();
+        }
 
         for ( PatientAttribute patientAttribute : patient.getAttributes() )
         {
@@ -154,13 +135,151 @@ public class GetPatientAction
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
-            patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
-                .getValue() );
+           if( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute().getValueType()  ) )
+           {
+               patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
+                   .getPatientAttributeOption().getName() );
+           }else{
+               patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
+                   .getValue() );
+           }
         }
 
         programs = programService.getAllPrograms();
 
+        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
+
+        // Remove Child Contact Name, Child Contact RelationShip Type attributes from this list
+        
+        PatientAttribute attr = new PatientAttribute();
+        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
+        noGroupAttributes.remove( attr );
+        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
+        noGroupAttributes.remove( attr );
+
+        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+
+        // -----------------------------------------------------------------------------
+        // Get Child Contact Name attribute
+        // -----------------------------------------------------------------------------
+        PatientAttribute attrChildContactName = patientAttributeService
+            .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
+        
+        PatientAttributeValue attrName = patientAttributeValueService.getPatientAttributeValue( patient,
+            attrChildContactName );
+        if ( attrName != null )
+            childContactName = attrName.getValue();
+
+        // -----------------------------------------------------------------------------
+        // Get  Child Contact RelationShip Type attribute
+        // -----------------------------------------------------------------------------
+        PatientAttribute arrChildRelationShipType = patientAttributeService
+            .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
+        PatientAttributeValue attrType = patientAttributeValueService.getPatientAttributeValue( patient,
+            arrChildRelationShipType );
+        if ( attrType != null )
+            childContactType = attrType.getValue();
+
         return SUCCESS;
 
+    }
+
+    // -----------------------------------------------------------------------------
+    // Getter / Setter
+    // -----------------------------------------------------------------------------
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public PatientIdentifier getPatientIdentifier()
+    {
+        return patientIdentifier;
+    }
+
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    public Map<Integer, String> getPatientAttributeValueMap()
+    {
+        return patientAttributeValueMap;
+    }
+
+    public Collection<PatientAttribute> getNoGroupAttributes()
+    {
+        return noGroupAttributes;
+    }
+
+    public Collection<PatientAttributeGroup> getAttributeGroups()
+    {
+        return attributeGroups;
+    }
+
+    public Collection<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    public Map<Integer, String> getIdentiferMap()
+    {
+        return identiferMap;
+    }
+
+    public String getChildContactName()
+    {
+        return childContactName;
+    }
+
+    public String getChildContactType()
+    {
+        return childContactType;
+    }
+
+    public String getSystemIdentifier()
+    {
+        return systemIdentifier;
     }
 }

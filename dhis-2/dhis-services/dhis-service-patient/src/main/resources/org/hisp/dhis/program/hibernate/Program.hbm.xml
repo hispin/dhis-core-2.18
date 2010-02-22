@@ -12,7 +12,11 @@
     
     <property name="name" not-null="true" unique="true" length="160"/>
     
-    <property name="description" type="text"/>   
+    <property name="description" type="text"/>  
+    
+    <property name="dateOfEnrollmentDescription" type="text" not-null="true"/>
+     
+    <property name="dateOfIncidentDescription" type="text" not-null="true"/> 
     
     <set name="programStages" order-by="stageinprogram" inverse="true" cascade="all">
       <key column="programid"/>      

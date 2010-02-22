@@ -27,7 +27,11 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
+import java.util.List;
+
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
@@ -39,7 +43,7 @@ import com.opensymphony.xwork2.Action;
 public class AddPatientAttributeAction
     implements Action
 {
-    // -------------------------------------------------------------------------
+	 // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -49,6 +53,13 @@ public class AddPatientAttributeAction
     {
         this.patientAttributeService = patientAttributeService;
     }   
+    
+    private PatientAttributeOptionService patientAttributeOptionService;
+    
+    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
+    {
+        this.patientAttributeOptionService = patientAttributeOptionService;
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -74,7 +85,7 @@ public class AddPatientAttributeAction
     {
         this.valueType = valueType;
     }
-
+    
     private boolean mandatory;
     
     public void setMandatory( boolean mandatory )
@@ -82,6 +93,13 @@ public class AddPatientAttributeAction
         this.mandatory = mandatory;
     }
     
+    private List<String> attrOptions;
+    
+    public void setAttrOptions( List<String> attrOptions )
+    {
+        this.attrOptions = attrOptions;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -89,16 +107,29 @@ public class AddPatientAttributeAction
     public String execute()
         throws Exception
     {
-
         PatientAttribute patientAttribute = new PatientAttribute();
 
         patientAttribute.setName( nameField );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
-        patientAttribute.setMandatory(mandatory);
+        patientAttribute.setMandatory( mandatory );
         
         patientAttributeService.savePatientAttribute( patientAttribute );
-
+        
+        if( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        {
+            PatientAttributeOption opt  = null;
+            for( String optionName : attrOptions )
+            {
+                opt = new PatientAttributeOption();
+                opt.setName( optionName );
+                opt.setPatientAttribute( patientAttribute );
+                patientAttribute.addAttributeOptions( opt );
+                patientAttributeOptionService.addPatientAttributeOption( opt );
+            }
+        }
+        
+        
         return SUCCESS;
     }
 }

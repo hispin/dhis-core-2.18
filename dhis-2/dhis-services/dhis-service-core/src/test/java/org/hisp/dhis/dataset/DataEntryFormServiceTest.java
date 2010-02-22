@@ -36,6 +36,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
@@ -83,9 +86,9 @@ public class DataEntryFormServiceTest
 
         dataSetService.addDataSet( dataSetA );
 
-        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A");
 
-        int dataEntryFormAid = dataEntryFormService.addDataEntryForm( dataEntryFormA );
+        int dataEntryFormAid = dataEntryFormService.addDataEntryForm( dataEntryFormA, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId() );
 
         dataEntryFormA = dataEntryFormService.getDataEntryForm( dataEntryFormAid );
 
@@ -100,9 +103,9 @@ public class DataEntryFormServiceTest
 
         dataSetService.addDataSet( dataSetA );
 
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormService.addDataEntryForm( dataEntryForm, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId() );
 
         dataEntryForm = dataEntryFormService.getDataEntryForm( id );
 
@@ -124,9 +127,9 @@ public class DataEntryFormServiceTest
 
         dataSetService.addDataSet( dataSetA );
 
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormService.addDataEntryForm( dataEntryForm, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId() );
 
         dataEntryForm = dataEntryFormService.getDataEntryForm( id );
 
@@ -144,9 +147,9 @@ public class DataEntryFormServiceTest
 
         dataSetService.addDataSet( dataSetA );
 
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormService.addDataEntryForm( dataEntryForm, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId() );
 
         dataEntryForm = dataEntryFormService.getDataEntryForm( id );
 
@@ -161,9 +164,10 @@ public class DataEntryFormServiceTest
 
         dataSetService.addDataSet( dataSetA );
 
-        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
+        DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormService.addDataEntryForm( dataEntryForm, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId() );
+
 
         DataSet dataSetB = new DataSet( "DataSet-B", periodType );
 
@@ -182,11 +186,11 @@ public class DataEntryFormServiceTest
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
 
-        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A", dataSetA );
-        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B", dataSetB );
-
-        dataEntryFormService.addDataEntryForm( dataEntryFormA );
-        dataEntryFormService.addDataEntryForm( dataEntryFormB );
+        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
+        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B" );
+        
+        dataEntryFormService.addDataEntryForm( dataEntryFormA , DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId());
+        dataEntryFormService.addDataEntryForm( dataEntryFormB , DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetB.getId());
 
         Collection<DataEntryForm> dataEntryForms = dataEntryFormService.getAllDataEntryForms();
 
@@ -206,11 +210,12 @@ public class DataEntryFormServiceTest
         dataSetService.addDataSet( dataSetB );
         dataSetService.addDataSet( dataSetC );
 
-        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A", dataSetA );
-        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B", dataSetB );
+        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
+        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B" );
+        
+        dataEntryFormService.addDataEntryForm( dataEntryFormA , DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId());
+        dataEntryFormService.addDataEntryForm( dataEntryFormB , DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetB.getId());
 
-        dataEntryFormService.addDataEntryForm( dataEntryFormA );
-        dataEntryFormService.addDataEntryForm( dataEntryFormB );
 
         List<DataSet> dataSets = dataSetService.getAvailableDataSets();
 
@@ -228,11 +233,12 @@ public class DataEntryFormServiceTest
         dataSetService.addDataSet( dataSetB );
         dataSetService.addDataSet( dataSetC );
 
-        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A", dataSetA );
-        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B", dataSetB );
+        DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
+        DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B" );
+        
+        dataEntryFormService.addDataEntryForm( dataEntryFormA , DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetA.getId());
+        dataEntryFormService.addDataEntryForm( dataEntryFormB , DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSetB.getId());
 
-        dataEntryFormService.addDataEntryForm( dataEntryFormA );
-        dataEntryFormService.addDataEntryForm( dataEntryFormB );
 
         List<DataSet> dataSets = dataSetService.getAssignedDataSets();
 

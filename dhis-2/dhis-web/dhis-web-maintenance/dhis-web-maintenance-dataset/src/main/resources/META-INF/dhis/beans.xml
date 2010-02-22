@@ -281,7 +281,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
     <property name="dataEntryFormService">
-      <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
+      <ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -305,7 +305,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction"
     scope="prototype">
     <property name="dataEntryFormService">
-      <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
+      <ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -322,7 +322,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction"
     scope="prototype">
     <property name="dataEntryFormService">
-      <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
+      <ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -334,7 +334,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dataset.action.dataentryform.ValidateDataEntryFormAction"
     scope="prototype">
     <property name="dataEntryFormService">
-      <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
+      <ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     </property>    
   </bean>
   
@@ -342,7 +342,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction"
     scope="prototype">
     <property name="dataEntryFormService">
-      <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
+      <ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     </property>
   </bean>
   

@@ -57,8 +57,10 @@ public class Patient
     private String gender;
 
     private Date birthDate;
+    
+    private String bloodGroup;
 
-    private boolean birthDateEstimated = false;
+	private boolean birthDateEstimated = false;
 
     private Date deathDate;
 
@@ -328,23 +330,59 @@ public class Patient
             return "( " + age + " yr )";
         }
     }
+    
+    public int getIntegerValueOfAge()
+    {
+        if ( birthDate == null )
+        {
+            return 0;
+        }
+
+        Calendar birthCalendar = Calendar.getInstance();
+        birthCalendar.setTime( birthDate );
+
+        Calendar todayCalendar = Calendar.getInstance();
+
+        int age = todayCalendar.get( Calendar.YEAR ) - birthCalendar.get( Calendar.YEAR );
+
+        if ( todayCalendar.get( Calendar.MONTH ) < birthCalendar.get( Calendar.MONTH ) )
+        {
+            age--;
+        }
+        else if ( todayCalendar.get( Calendar.MONTH ) == birthCalendar.get( Calendar.MONTH )
+            && todayCalendar.get( Calendar.DAY_OF_MONTH ) < birthCalendar.get( Calendar.DAY_OF_MONTH ) )
+        {
+            age--;
+        }
+
+        return age;
+        
+    }
 
     public void setBirthDateFromAge( int age )
     {
-        Calendar todayCalendar = Calendar.getInstance();
+    	 Calendar todayCalendar = Calendar.getInstance();
 
-        // Assumed relative to the 1st of January
-        todayCalendar.set( Calendar.DATE, 1 );
-        todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
-        todayCalendar.add( Calendar.YEAR, -1 * age );
+         // Assumed relative to the 1st of January
+//         todayCalendar.set( Calendar.DATE, 1 );
+//         todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
+         todayCalendar.add( Calendar.YEAR, -1 * age );
 
-        setBirthDate( todayCalendar.getTime() );
-        setBirthDateEstimated( true );
+         setBirthDate( todayCalendar.getTime() );
+         setBirthDateEstimated( true );
     }
 
     public String getFullName()
     {
         return firstName + " " + middleName + " " + lastName;
     }
+    
+    public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
 
 }

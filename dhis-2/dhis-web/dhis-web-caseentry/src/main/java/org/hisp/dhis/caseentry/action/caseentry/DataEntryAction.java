@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -41,9 +43,11 @@ import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,6 +58,8 @@ import com.opensymphony.xwork2.Action;
 public class DataEntryAction
     implements Action
 {
+    Log log = LogFactory.getLog( CustomDataEntryAction.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -86,11 +92,35 @@ public class DataEntryAction
         this.selectedStateManager = selectedStateManager;
     }
 
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+    
+    private Integer id;
 
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+    
     private Integer programId;
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
 
     public Integer getProgramId()
     {
@@ -102,6 +132,11 @@ public class DataEntryAction
     public Integer getProgramStageId()
     {
         return programStageId;
+    }
+
+    public void setProgramStageId( Integer programStageId )
+    {
+        this.programStageId = programStageId;
     }
 
     private Patient patient;
@@ -131,12 +166,19 @@ public class DataEntryAction
     {
         return programInstance;
     }
-
-    private Collection<DataElement> dataElements = new ArrayList<DataElement>();
-
-    public Collection<DataElement> getDataElements()
+    
+    private int programStageInstanceId;
+    
+    public int getProgramStageInstanceId()
     {
-        return dataElements;
+        return programStageInstanceId;
+    }
+
+    private Collection<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+
+    public Collection<ProgramStageDataElement> getProgramStageDataElements()
+    {
+        return programStageDataElements;
     }
 
     private Map<Integer, Collection<DataElementCategoryOptionCombo>> optionMap = new HashMap<Integer, Collection<DataElementCategoryOptionCombo>>();
@@ -167,6 +209,30 @@ public class DataEntryAction
         return colorMap;
     }
 
+    private String useDefaultForm;
+
+    public String getUseDefaultForm()
+    {
+        return useDefaultForm;
+    }
+
+    public void setUseDefaultForm( String useDefaultForm )
+    {
+        this.useDefaultForm = useDefaultForm;
+    }
+
+    private String useCustomForm;
+
+    public String getUseCustomForm()
+    {
+        return useCustomForm;
+    }
+
+    public void setUseCustomForm( String useCustomForm )
+    {
+        this.useCustomForm = useCustomForm;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -178,6 +244,8 @@ public class DataEntryAction
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         patient = selectedStateManager.getSelectedPatient();
+        
+        id = patient.getId();
 
         program = selectedStateManager.getSelectedProgram();
 
@@ -187,7 +255,9 @@ public class DataEntryAction
 
         programStageId = programStage.getId();
 
-        dataElements = programStage.getDataElements();
+        programStageDataElements = programStage.getProgramStageDataElements();
+
+        Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
 
         for ( DataElement dataElement : dataElements )
         {
@@ -204,6 +274,8 @@ public class DataEntryAction
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
             programInstance, programStage );
 
+        programStageInstanceId = programStageInstance.getId();
+        
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstance );
 

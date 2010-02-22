@@ -42,7 +42,9 @@
             <select id="programId" name="programId" onchange="document.getElementById( 'programSelectForm' ).submit();" style="min-width:200px" #if( $programs.size() == 0 ) disabled="disabled"#end>
                 <option value="0">[$i18n.getString( "select" )]</option>
                 #foreach( $program in $programs )
-                    <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+                    <option value="$program.id" #if( $programId && $program.id == $programId ) #set( $selectedProgram = $program) selected="selected" #end>$encoder.htmlEncode( $program.name )
+                    </option>
+                    
                 #end
             </select>
         </td>

@@ -30,8 +30,11 @@ package org.hisp.dhis.patient.action.program;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,7 +45,7 @@ import com.opensymphony.xwork2.Action;
 public class GetProgramListAction
     implements Action
 {
-    // -------------------------------------------------------------------------
+	 // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -53,15 +56,58 @@ public class GetProgramListAction
         this.programService = programService;
     }
 
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
+
     // -------------------------------------------------------------------------
-    // Output
+    // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private Collection<ProgramStage> associations = new ArrayList<ProgramStage>();
+
+    public Collection<ProgramStage> getAssociations()
+    {
+        return associations;
+    }
+
+    public void setAssociations( Collection<ProgramStage> associations )
+    {
+        this.associations = associations;
+    }
 
     private Collection<Program> programs = new ArrayList<Program>();
 
     public Collection<Program> getPrograms()
     {
         return programs;
+    }
+
+    public void setPrograms( Collection<Program> programs )
+    {
+        this.programs = programs;
+    }
+
+    private String associationName;
+
+    public String getAssociationName()
+    {
+        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
     }
 
     // -------------------------------------------------------------------------
@@ -71,7 +117,18 @@ public class GetProgramListAction
     public String execute()
         throws Exception
     {
+
         programs = programService.getAllPrograms();
+
+        associations = programStageService.getAllProgramStages();
+
+        if ( id != null )
+        {
+            Program program = programService.getProgram( id );
+
+            associations = program.getProgramStages();
+
+        }
 
         return SUCCESS;
     }

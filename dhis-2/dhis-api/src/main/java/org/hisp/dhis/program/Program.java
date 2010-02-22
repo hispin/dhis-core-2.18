@@ -45,13 +45,25 @@ public class Program
     private String name;
 
     private String description;
+    
+    /**
+     * Description of Date of Enrollment
+     * This description is differ from each program
+     */
+    private String dateOfEnrollmentDescription;
+    
+    /**
+     * Description of Date of Incident
+     * This description is differ from each program
+     */
+    private String dateOfIncidentDescription; 
 
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
 
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -162,11 +174,31 @@ public class Program
     {
         return programStages;
     }
+    
+    public String getDateOfEnrollmentDescription()
+    {
+        return dateOfEnrollmentDescription;
+    }
+
+    public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
+    {
+        this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
+    }
+
+    public String getDateOfIncidentDescription()
+    {
+        return dateOfIncidentDescription;
+    }
+
+    public void setDateOfIncidentDescription( String dateOfIncidentDescription )
+    {
+        this.dateOfIncidentDescription = dateOfIncidentDescription;
+    }
+
 
     // -------------------------------------------------------------------------
     // Convenience method
     // -------------------------------------------------------------------------
-
     public ProgramStage getProgramStageByStage( int stage )
     {
 

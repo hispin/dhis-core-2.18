@@ -30,8 +30,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElement;
-
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -51,7 +49,7 @@ public class ProgramStage
     
     private Program program;
 
-    private Set<DataElement> dataElements = new HashSet<DataElement>();
+    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -191,22 +189,6 @@ public class ProgramStage
     }    
 
     /**
-     * @return the dataElements
-     */
-    public Set<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    /**
-     * @param dataElements the dataElements to set
-     */
-    public void setDataElements( Set<DataElement> dataElements )
-    {
-        this.dataElements = dataElements;
-    }
-
-    /**
      * @param program the program to set
      */
     public void setProgram( Program program )
@@ -221,5 +203,16 @@ public class ProgramStage
     {
         return program;
     }
+    
+    public Set<ProgramStageDataElement> getProgramStageDataElements()
+    {
+        return programStageDataElements;
+    }
+
+    public void setProgramStageDataElements( Set<ProgramStageDataElement> programStageDataElements )
+    {
+        this.programStageDataElements = programStageDataElements;
+    }
+    
 
 }

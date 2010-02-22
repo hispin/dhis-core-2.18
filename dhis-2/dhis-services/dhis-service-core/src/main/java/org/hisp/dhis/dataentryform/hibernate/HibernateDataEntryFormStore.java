@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.hibernate;
+package org.hisp.dhis.dataentryform.hibernate;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -28,13 +28,14 @@ package org.hisp.dhis.dataset.hibernate;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.dataset.DataEntryForm;
-import org.hisp.dhis.dataset.DataEntryFormStore;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormStore;
 import org.hisp.dhis.dataset.DataSet;
 
 /**
@@ -116,4 +117,5 @@ public class HibernateDataEntryFormStore
 
         return criteria.list();
     }
+
 }

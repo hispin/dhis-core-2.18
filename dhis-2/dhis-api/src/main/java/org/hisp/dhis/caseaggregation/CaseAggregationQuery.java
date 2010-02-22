@@ -1,7 +1,5 @@
-package org.hisp.dhis.dataset;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,56 +24,54 @@ package org.hisp.dhis.dataset;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.caseaggregation;
 
-import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Lars Helge Overland
+ * @author Viet Nguyen
+ *
  * @version $Id$
  */
-public class DataEntryFormDeletionHandler
-    extends DeletionHandler
+public class CaseAggregationQuery
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    /**
+     * List all conditions of the query
+     */
+    private List<CaseAggregationCondition> conditions = new ArrayList<CaseAggregationCondition>();
 
-    private DataEntryFormService dataEntryFormService;
+    /**
+     * Value: SUM | COUNT
+     */
+    private String function;
 
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
+    public List<CaseAggregationCondition> getConditions()
     {
-        this.dataEntryFormService = dataEntryFormService;
+        return conditions;
+    }
+
+    public void setConditions( List<CaseAggregationCondition> conditions )
+    {
+        this.conditions = conditions;
+    }
+
+    public String getFunction()
+    {
+        return function;
+    }
+
+    public void setFunction( String function )
+    {
+        this.function = function;
     }
     
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
+    public void addCondition( CaseAggregationCondition c )
     {
-        this.deletionManager = deletionManager;
-    }
-
-    // -------------------------------------------------------------------------
-    // DeletionHandler implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    public String getClassName()
-    {
-        return DataEntryForm.class.getSimpleName();
+        if( conditions == null )
+            conditions = new ArrayList<CaseAggregationCondition>();
+        conditions.add( c );
     }
     
-    @Override
-    public void deleteDataSet( DataSet dataSet )
-    {
-        for ( DataEntryForm form : dataEntryFormService.getAllDataEntryForms() )
-        {
-            if ( form.getDataSet().equals( dataSet ) )
-            {
-                deletionManager.execute( form );
-                
-                dataEntryFormService.deleteDataEntryForm( form );
-            }
-        }
-    }   
+    
 }

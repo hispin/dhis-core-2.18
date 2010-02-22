@@ -60,4 +60,11 @@ public class HibernatePatientAttributeStore
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).add(
             Restrictions.eq( "mandatory", false ) ).list();
     }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientAttribute> getPatientAttributesNotGroup()
+    {
+        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
+    }
+    
 }
