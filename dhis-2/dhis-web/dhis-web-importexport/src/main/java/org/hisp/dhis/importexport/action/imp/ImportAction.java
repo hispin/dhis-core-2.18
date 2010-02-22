@@ -33,10 +33,13 @@ import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcess
 import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_IMPORT;
 import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getList;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
@@ -64,6 +67,12 @@ public class ImportAction
     
     private static final Log log = LogFactory.getLog( ImportAction.class );
 
+    private static final List<String> ALLOWED_CONTENT_TYPES = getList( 
+        "application/x-zip-compressed", 
+        "application/zip", 
+        "application/x-gzip", 
+        "text/xml" );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -205,9 +214,7 @@ public class ImportAction
             // accept zip, gzip or uncompressed xml
             // TODO: check cross-browser content type strings
             
-            if ( !( ( contentType.equals( "application/x-zip-compressed" ) ) ||
-                contentType.equals( "application/x-gzip") ||
-                contentType.equals( "text/xml")))
+            if ( !ALLOWED_CONTENT_TYPES.contains( contentType ) )
             {
                 message = i18n.getString( "file_type_not_allowed" );
 
