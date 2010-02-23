@@ -83,18 +83,6 @@ function Completed( xmlObject ) {
 
 	window.location.reload();
 }
-/*
-*	Delete Report Excel
-*/
-function deleteReportExcel( id ) {
-
-	if ( window.confirm(i18n_confirm_delete) ) {
-	
-		window.location = "deleteReportExcel.action?id=" + id;
-	}
-}
-
-
 
 /*
 *	Open Update Report Excel Window

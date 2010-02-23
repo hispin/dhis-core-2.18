@@ -1,15 +1,50 @@
 /*
-* 	Delete Report Excel Item
+*	Delete multi report item
 */
-function deleteReportExcelItem( id ) {
 
-	if ( window.confirm(i18n_confirm_delete) ) {
-		
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( Completed );
-		request.send("deleteReportExcelItem.action?id=" + id);
+function deleteMultiReportItem( confirm )
+{
 	
+	if ( window.confirm( confirm ) ) 
+	{	
+		
+		var listRadio = document.getElementsByName( 'reportItemCheck' );
+		
+		var params = new Array();	
+		
+		var j = 0;
+		
+		for( var i=0;i<listRadio.length;i++ )
+		{
+			var item = listRadio.item(i);
+			
+			if(item.checked==true)
+			{		
+				params.push( item.getAttribute( 'reportItemID' ) );				
+				j++;				
+			}
+		}
+
+		if( j>0 )
+		{
+			$.getJSON(
+    	    "deleteMultiReportItem.action",
+    	    {
+    	        "ids": params   
+    	    },
+				function( json )
+				{
+					if ( json.response == "success" )
+					{
+						window.location.reload();
+					}
+					else if ( json.response == "error" )
+					{
+						setMessage( json.message ); 
+					}
+				}
+			);
+		}		
 	}
 }
 

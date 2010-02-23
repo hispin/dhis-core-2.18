@@ -370,6 +370,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.item.action.DeleteMultiReportItemAction"
+		class="org.hisp.dhis.reportexcel.item.action.DeleteMultiReportItemAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction"
 		class="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction"
@@ -1050,6 +1057,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.excelitem.action.ValidateExcelItemAction"
 		class="org.hisp.dhis.reportexcel.excelitem.action.ValidateExcelItemAction"
 		scope="prototype">
+		<property name="excelItemService" ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService"/>
 	</bean>
 
 	<bean

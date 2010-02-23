@@ -1,4 +1,9 @@
-package org.hisp.dhis.reportexcel.excelitem.action;
+package org.hisp.dhis.reportexcel.item.action;
+
+import java.util.Collection;
+
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,67 +32,43 @@ package org.hisp.dhis.reportexcel.excelitem.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportexcel.action.ActionSupport;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-
 /**
- * @author Chau Thu Tran
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteExcelItemAction
+
+public class DeleteMultiReportItemAction
     extends ActionSupport
 {
-
-    // -------------------------------------------------------------------------
+    // -------------------------------------------
     // Dependency
-    // -------------------------------------------------------------------------
+    // -------------------------------------------
 
-    private ExcelItemService excelItemService;
+    private ReportExcelService reportService;
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-    private int id;
+    private Collection<Integer> ids;
 
-    // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-
-    public void setId( int id )
+    public void setReportService( ReportExcelService reportService )
     {
-        this.id = id;
+        this.reportService = reportService;
     }
 
-    public void setExcelItemService( ExcelItemService excelItemService )
+    public void setIds( Collection<Integer> ids )
     {
-        this.excelItemService = excelItemService;
+        this.ids = ids;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
+    @Override
     public String execute()
         throws Exception
     {
-
-        try
-        {
-
-            excelItemService.deleteExcelItem( id );
-
-            message = i18n.getString( "success" );
-
-        }
-        catch ( Exception ex )
-        {
-
-            message = i18n.getString( "error" );
-
-            return ERROR;
-        }
-
+        reportService.deleteMultiReportExcelItem( ids );
+        
         return SUCCESS;
     }
+
 }

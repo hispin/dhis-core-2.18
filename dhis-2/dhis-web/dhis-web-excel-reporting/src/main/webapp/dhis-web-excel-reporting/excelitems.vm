@@ -1,31 +1,33 @@
-﻿<h2>$!encoder.htmlEncode($!excelItemGroup.name)</h2>
+﻿<input type="hidden" id="excelItemGroupId" value="$!excelItemGroup.id"/>
+<h2>$!encoder.htmlEncode($!excelItemGroup.name)</h2>
 <div id="tooltip" style=" display:none; background-color:#FFFFCC; ; position:absolute;" ></div>
 <table width="100%">
-<tr>
-<td>
-	$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 2)" style="width:300px"/>
-</td>
-<td align="right">	
-	<input type="button" onclick="mode='add'; openAddExcelItem()" value="$i18n.getString('add')" style="width:150px"/> <br>
-	<input type="button" onclick="copySelectedItemToGroup()" value="$i18n.getString('copy_selected_item_to')" style="width:150px"/><br>
-	<input type="button" onclick="window.location='listAllExcelItemGroup.action'" value="$i18n.getString('cancel')" style="width:150px"/>
-</td>
-</tr>
-</table>
-<table width="100%">
 	<tr>
-	  <th><input type="checkbox" id="checkAll" name="checkAll" onChange='selectedItemsAll();'></th>
-		<th>$i18n.getString('name')</th>
-		<th>$i18n.getString('sheetNo')</th>	
-		<th>$i18n.getString('row')</th>
-		<th>$i18n.getString('column')</th>		
-		<th>$i18n.getString('expression')</th>
-		<th width="70px">$i18n.getString('operations')</th>		
+		<td>
+			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 2)" style="width:300px"/>
+		</td>
+		<td align="right">	
+			<input type="button" onclick="mode='add'; openAddExcelItem()" value="$i18n.getString('add')" style="width:150px"/> <br>
+			<input type="button" onclick="copySelectedItemToGroup()" value="$i18n.getString('copy_selected_item_to')" style="width:150px"/><br>
+			<input type="button" onclick="window.location='listAllExcelItemGroup.action'" value="$i18n.getString('cancel')" style="width:150px"/>
+		</td>
 	</tr>
-	<tbody id="list">
-	#set( $mark = false )
+</table>
+<table width="100%" class="listTable">
+	<thead>
+		<tr>
+			<th><input type="checkbox" id="checkAll" name="checkAll" onChange='selectedItemsAll();'></th>
+			<th>$i18n.getString('name')</th>
+			<th>$i18n.getString('sheetNo')</th>	
+			<th>$i18n.getString('row')</th>
+			<th>$i18n.getString('column')</th>		
+			<th>$i18n.getString('expression')</th>
+			<th width="70px">$i18n.getString('operations')</th>		
+		</tr>
+	</thead>	
+	<tbody id="list">	
 	#foreach($excelItem in $excelItems)
-		<tr #alternate( $mark )>
+		<tr id="tr${excelItem.id}">
 		  	<td><input type="checkbox" excelItemID="$excelItem.id" excelItemName="$excelItem.name" id="excelItemChecked" name="excelItemChecked" value='$excelItem.id'></td>
 			<td>$encoder.htmlEncode( $excelItem.name )</td>
 			<td>$excelItem.sheetNo</td>
@@ -33,25 +35,14 @@
 			<td>$excelItem.column</td>
 			<td>$excelItem.expression</td>
 			<td align="center">				
-				<a href="javascript:deleteExcelItem('$excelItem.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				<a href="javascript:removeItem( $excelItem.id, '$excelItem.name', '$i18n.getString( 'confirm_delete' )', 'deleteExcelItem.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				<a href="javascript:mode='update'; openUpdateExcelItem( '$excelItem.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 			</td>
-		</tr>
-		#if( $mark )
-			#set( $mark = false )
-		#else
-			#set( $mark = true )
-		#end
-	#end
-	<tr>
-	  <td>      
+		</tr>	
+	 
+	#end	 
     </tbody>
 </table>
-
-<script type="text/javascript">
-	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( "confirm_delete" ) , "'")';	
-	var mode = null;
-</script>
 
 <form name="excelItem" method="post">
 <div id="divExcelitem" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:200px;padding:20px;">
@@ -85,7 +76,7 @@
 		</tr>			
 	</table>
 	<p align="center">
-	<input type="button" value="$i18n.getString('ok')" id="reportItemButton" onclick="validateExcelItem();"/>
+	<input type="button" value="$i18n.getString('ok')" id="okButton"/>
 	<input type="button" value="$i18n.getString('cancel')" onclick="hideById('divExcelitem'); deleteDivEffect();"/>
 	</p>
 </div>

@@ -83,6 +83,8 @@ public interface ReportExcelService
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId );   
 
     public Collection<Integer> getSheets( Integer reportId );
+    
+    public void deleteMultiReportExcelItem( Collection<Integer> ids );
 
     // --------------------------------------
     // Report DataElement Order

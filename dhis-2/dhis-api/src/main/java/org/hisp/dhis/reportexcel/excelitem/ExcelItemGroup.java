@@ -218,4 +218,44 @@ public class ExcelItemGroup
         return this.getType().equalsIgnoreCase( TYPE.NORMAL );
     }
 
+    // ----------------------------------------------------------------------
+    // Support methord
+    // ----------------------------------------------------------------------
+
+    public boolean excelItemIsExist( String name )
+    {
+        return getExcelItemByName( name ) != null;
+    }
+
+    public boolean rowAndColumnIsExist( int sheet, int row, int column )
+    {
+       return getExcelItemBySheetRowColumn( sheet, row, column ) != null;
+    }
+
+    public ExcelItem getExcelItemByName( String name )
+    {
+        for ( ExcelItem e : this.excelItems )
+        {
+            if ( e.getName().equals( name ) )
+            {
+                return e;
+            }
+        }
+
+        return null;
+    }
+
+    public ExcelItem getExcelItemBySheetRowColumn( int sheet, int row, int column )
+    {
+        for ( ExcelItem e : this.excelItems )
+        {
+            if ( e.getSheetNo() == sheet && e.getRow() == row && e.getColumn() == column )
+            {
+                return e;
+            }
+        }
+
+        return null;
+    }
+
 }

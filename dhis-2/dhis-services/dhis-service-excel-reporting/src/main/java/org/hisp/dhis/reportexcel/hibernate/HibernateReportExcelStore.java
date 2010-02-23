@@ -31,6 +31,7 @@ import java.util.HashSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -216,6 +217,17 @@ public class HibernateReportExcelStore
         return sqlQuery.list();
     }
 
+    @Override
+    public void deleteMultiReportExcelItem( Collection<Integer> ids )
+    {
+        String sql = "delete ReportExcelItem d where d.id in (:ids)";
+
+        Query query = sessionFactory.getCurrentSession().createQuery( sql );        
+        query.setParameterList( "ids", ids );
+
+        query.executeUpdate();
+    }
+
     // --------------------------------------
     // Report DataElement Order
     // --------------------------------------
@@ -336,7 +348,7 @@ public class HibernateReportExcelStore
 
     @Override
     public PeriodColumn getPeriodColumn( Integer id )
-    {     
+    {
         Session session = sessionFactory.getCurrentSession();
         return (PeriodColumn) session.get( PeriodColumn.class, id );
     }

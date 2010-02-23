@@ -6,8 +6,9 @@
 // Open Add Excel item form
 // ========================================================================================================================
 
-function openAddExcelItem() {
-
+function openAddExcelItem() 
+{	
+	byId( "okButton" ).onclick = validateAddExcelItem;
 	enable( "name" );
 	$( "#divExcelitem" ).showAtCenter( true );
 }
@@ -16,48 +17,92 @@ function openAddExcelItem() {
 // Open Update Excel item form
 // ========================================================================================================================
 
-function openUpdateExcelItem( id ) {
-	
+function openUpdateExcelItem( id ) 
+{	
 	var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
+	request.setResponseTypeXML( 'excelItem' );
 	request.setCallbackSuccess( openUpdateExcelItemReceived );	
-	request.send( "getExcelItem.action?id=" + id );	
-	
+	request.send( "getExcelItem.action?id=" + id );		
 }
 
-function openUpdateExcelItemReceived( xmlObject ) {
+function openUpdateExcelItemReceived( xmlObject ) 
+{
 	
 	byId("id").value = xmlObject.getElementsByTagName('id')[0].firstChild.nodeValue;
 	byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
 	byId("expression").value = xmlObject.getElementsByTagName('expression')[0].firstChild.nodeValue;
 	byId("row").value = xmlObject.getElementsByTagName('row')[0].firstChild.nodeValue;
 	byId("column").value = xmlObject.getElementsByTagName('column')[0].firstChild.nodeValue;
-	byId("sheetNo").value = xmlObject.getElementsByTagName('sheetNo')[0].firstChild.nodeValue;
-	
-	$("#divExcelitem").showAtCenter( true );
+	byId("sheetNo").value = xmlObject.getElementsByTagName('sheetNo')[0].firstChild.nodeValue;	
+	byId( "okButton" ).onclick = validateUpdateExcelItem;
 	disable("name");
+	$("#divExcelitem").showAtCenter( true );
+	
 }
+
 // ========================================================================================================================
-// Validate Update Excel item group
+// Validate Add Excel item 
 // ========================================================================================================================
 
-function validateExcelItem() {
+function validateAddExcelItem() 
+{
 	
 	var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( validateExcelItemReceived );
+	request.setResponseTypeXML( 'message' );
+	request.setCallbackSuccess( validateAddExcelItemReceived );	
+	var params = "name=" + byId("name").value;
+	params += "&expression=" + byId("expression").value;
+	params += "&row=" + byId("row").value;
+	params += "&column=" + byId("column").value;
+	params += "&sheetNo=" + byId("sheetNo").value;
+	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
 	
-	var url = "validateExcelItem.action?name=" + byId("name").value;
-	url += "&expression=" + byId("expression").value;
-	url += "&row=" + byId("row").value;
-	url += "&column=" + byId("column").value;
-	url += "&sheetNo=" + byId("sheetNo").value;
 	
-	request.send( url );
+	request.sendAsPost( params );
+	
+	request.send( "validateExcelItem.action" );	
 	
 }
 
-function validateExcelItemReceived( xmlObject ) {
+function validateAddExcelItemReceived( message )
+{
+	var type = message.getAttribute( 'type' );
+	
+	if ( type == 'error' )
+	{
+		setMessage(message.firstChild.nodeValue);		
+	}
+	else if ( type == 'success' )
+	{				
+		addExcelItem();		
+	}
+}
+// ========================================================================================================================
+// Validate Update Excel item 
+// ========================================================================================================================
+
+function validateUpdateExcelItem() 
+{	
+	var request = new Request();
+	request.setResponseTypeXML( 'message' );
+	request.setCallbackSuccess( validateUpdateExcelItemReceived );
+	
+	var params = "name=" + byId("name").value;
+	params += "&expression=" + byId("expression").value;
+	params += "&row=" + byId("row").value;
+	params += "&column=" + byId("column").value;
+	params += "&sheetNo=" + byId("sheetNo").value;
+	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
+	params += "&id=" + byId( "id" ).value; 
+	
+	request.sendAsPost( params );
+	
+	request.send( "validateExcelItem.action" );	
+	
+}
+
+function validateUpdateExcelItemReceived( xmlObject ) 
+{
 	
 	var type = xmlObject.getAttribute( 'type' );
 	
@@ -66,14 +111,8 @@ function validateExcelItemReceived( xmlObject ) {
 		setMessage(xmlObject.firstChild.nodeValue);
 	}
 	else if ( type == 'success' )
-	{
-		if ( mode == 'add' ) {
-			
-			addExcelItem();
-		}
-		else {
-			updateExcelItem();
-		}
+	{		
+		updateExcelItem();		
 	}
 }
 // ========================================================================================================================
@@ -90,7 +129,7 @@ function addExcelItem() {
 	params += "&row=" + byId("row").value; 
 	params += "&column=" + byId("column").value; 
 	params += "&sheetNo=" + byId("sheetNo").value; 
-	params += "&excelItemGroupId=" + getParamByURL("excelItemGroupId"); 
+	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
 	request.sendAsPost( params );
 	request.send( "addExcelItem.action" );
 }
@@ -116,42 +155,11 @@ function updateExcelItem() {
 	params += "&row=" + byId("row").value; 
 	params += "&column=" + byId("column").value; 
 	params += "&sheetNo=" + byId("sheetNo").value; 
-	params += "&excelItemGroupId=" + getParamByURL("excelItemGroupId"); 
+	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
 	request.sendAsPost( params );
 	request.send( "updateExcelItem.action" );	
 	
 }
-
-// ========================================================================================================================
-// Delete Excel Item
-// ========================================================================================================================
-
-function deleteExcelItem( id ) {
-
-	if ( window.confirm(i18n_confirm_delete) ) {
-		
-		var request = new Request();
-		request.setResponseTypeXML( 'datalement' );
-		request.setCallbackSuccess( Completed );
-		request.send( "deleteExcelItem.action?id=" + id );
-		
-	}
-}
-
-// ========================================================================================================================
-// Get parram from URL
-// ========================================================================================================================
-
-function getParamByURL( param ) {
-
-	var name = param.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-	var regexS = "[\\?&]"+name+"=([^&#]*)";
-	var regex = new RegExp( regexS );
-	var results = regex.exec( window.location.href );
-
-	return ( results == null ) ? "" : results[1];
-}
-
 // ===============================================================================
 // Open Expression Form
 // ===============================================================================

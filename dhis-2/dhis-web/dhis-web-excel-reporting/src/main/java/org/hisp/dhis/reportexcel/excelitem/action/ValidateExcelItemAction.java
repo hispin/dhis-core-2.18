@@ -28,92 +28,172 @@ package org.hisp.dhis.reportexcel.excelitem.action;
  */
 
 import org.hisp.dhis.reportexcel.action.ActionSupport;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 /**
  * @author Chau Thu Tran
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ValidateExcelItemAction extends ActionSupport {
+public class ValidateExcelItemAction
+    extends ActionSupport
+{
 
-	// -------------------------------------------------------------------------
-	// Inputs
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private String name;
+    private ExcelItemService excelItemService;
 
-	private String expression;
+    // -------------------------------------------------------------------------
+    // Inputs
+    // -------------------------------------------------------------------------
 
-	private int row;
+    private String name;
 
-	private int column;
+    private String expression;
 
-	private int sheetNo;
+    private Integer row;
 
-	// -------------------------------------------------------------------------
-	// Setters
-	// -------------------------------------------------------------------------
+    private Integer column;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private Integer sheetNo;
 
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
+    private Integer excelItemGroupId;
 
-	public void setRow(int row) {
-		this.row = row;
-	}
+    private Integer id;
 
-	public void setColumn(int column) {
-		this.column = column;
-	}
+    // -------------------------------------------------------------------------
+    // Setters
+    // -------------------------------------------------------------------------
 
-	public void setSheetNo(int sheetNo) {
-		this.sheetNo = sheetNo;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public String execute() throws Exception {
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-		message = "";
+    public void setExpression( String expression )
+    {
+        this.expression = expression;
+    }
 
-		if (name == null || name.length() == 0) {
+    public void setRow( Integer row )
+    {
+        this.row = row;
+    }
 
-			message += i18n.getString("name") + "<br>";
-		}
+    public void setColumn( Integer column )
+    {
+        this.column = column;
+    }
 
-		if (expression == null || expression.length() == 0) {
+    public void setSheetNo( Integer sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
 
-			message += i18n.getString("expression") + "<br>";
-		}
+    public void setExcelItemGroupId( Integer excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-		if (row == 0) {
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-			message += i18n.getString("row") + "<br>";
-		}
+    public String execute()
+        throws Exception
+    {
+        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-		if (column == 0) {
+        if ( name == null || name.length() == 0 )
+        {
+            message = i18n.getString( "name" ) + " " + i18n.getString( "not_null" );
 
-			message += i18n.getString("column") + "<br>";
-		}
+            return ERROR;
+        }
 
-		if (sheetNo == 0) {
+        if ( expression == null || expression.length() == 0 )
+        {
+            message = i18n.getString( "expression" ) + " " + i18n.getString( "not_null" );
 
-			message += i18n.getString("sheetNo") + "<br>";
-		}
-		
-		if(message.length() > 0 ){
-			
-			message = i18n.getString("error") + "<br>"+ message + i18n.getString("not_null");
-			
-			return ERROR;
-		}
-		
-		return SUCCESS;
-	}
+            return ERROR;
+        }
 
+        if ( sheetNo == null )
+        {
+            message = i18n.getString( "sheetNo" ) + " " + i18n.getString( "not_null" );
+
+            return ERROR;
+        }
+
+        if ( row == null )
+        {
+            message = i18n.getString( "row" ) + " " + i18n.getString( "not_null" );
+
+            return ERROR;
+        }
+
+        if ( column == null )
+        {
+            message = i18n.getString( "column" ) + " " + i18n.getString( "not_null" );
+
+            return ERROR;
+        }
+
+        if ( id == null )
+        {
+
+            if ( excelItemGroup.excelItemIsExist( name ) )
+            {
+                message = i18n.getString( "name_ready_exist" );
+
+                return ERROR;
+            }
+
+            if ( excelItemGroup.rowAndColumnIsExist( sheetNo, row, column ) )
+            {
+                message = i18n.getString( "cell_exist" );
+
+                return ERROR;
+            }
+        }
+        else
+        {
+            ExcelItem excelItem = excelItemService.getExcelItem( id );
+
+            ExcelItem temp = excelItemGroup.getExcelItemByName( name );
+
+            if ( excelItem != temp )
+            {
+                message = i18n.getString( "name_ready_exist" );
+
+                return ERROR;
+            }
+
+            temp = excelItemGroup.getExcelItemBySheetRowColumn( sheetNo, row, column );
+
+            if ( temp != null && excelItem != temp )
+            {
+                message = i18n.getString( "cell_exist" );
+
+                return ERROR;
+            }
+
+        }
+
+        return SUCCESS;
+    }
 }

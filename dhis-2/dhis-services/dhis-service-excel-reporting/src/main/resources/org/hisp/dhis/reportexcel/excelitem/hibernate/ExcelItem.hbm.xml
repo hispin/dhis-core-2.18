@@ -11,20 +11,28 @@
 		<id name="id" column="excelitemid">
 			<generator class="native" />
 		</id>
-
-		<property name="name" column="name" />
-
-		<property name="expression" column="expression" />
-
-		<property name="row" column="excelrow" />
-
-		<property name="column" column="excelcolumn" />
-
-		<property name="sheetNo" column="sheetNo" />
-
-		<many-to-one name="excelItemGroup" column="excelItemGroupId"
+		
+		<properties name="uniqueKey" unique="true">		
+		
+			<property name="name" column="name" not-null="true"/>		
+										
+			<many-to-one name="excelItemGroup" column="excelItemGroupId"
 			class="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
-			foreign-key="fk_exceltitem_group" lazy="false" insert="true" />
+			foreign-key="fk_exceltitem_group" lazy="false" insert="true" />			
+		</properties>
+		
+
+		
+
+		<property name="expression" column="expression" not-null="true"/>
+
+		<property name="row" column="excelrow" not-null="true"/>
+
+		<property name="column" column="excelcolumn" not-null="true"/>
+
+		<property name="sheetNo" column="sheetNo" not-null="true"/>
+
+		
 	</class>
 
 </hibernate-mapping>

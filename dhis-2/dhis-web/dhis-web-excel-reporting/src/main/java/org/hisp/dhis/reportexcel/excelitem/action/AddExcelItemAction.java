@@ -36,86 +36,96 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class AddExcelItemAction implements Action {
+public class AddExcelItemAction
+    implements Action
+{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private ExcelItemService excelItemService;
-	
-	// -------------------------------------------------------------------------
-	// Inputs
-	// -------------------------------------------------------------------------
+    private ExcelItemService excelItemService;
 
-	private String name;
+    // -------------------------------------------------------------------------
+    // Inputs
+    // -------------------------------------------------------------------------
 
-	private String expression;
+    private String name;
 
-	private int row;
+    private String expression;
 
-	private int column;
+    private int row;
 
-	private int sheetNo;
-	
-	private int excelItemGroupId;
+    private int column;
 
-	// -------------------------------------------------------------------------
-	// Setters
-	// -------------------------------------------------------------------------
+    private int sheetNo;
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    private int excelItemGroupId;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    // -------------------------------------------------------------------------
+    // Setters
+    // -------------------------------------------------------------------------
 
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setRow(int row) {
-		this.row = row;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setExcelItemGroupId(int excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+    public void setExpression( String expression )
+    {
+        this.expression = expression;
+    }
 
-	public void setColumn(int column) {
-		this.column = column;
-	}
+    public void setRow( int row )
+    {
+        this.row = row;
+    }
 
-	public void setSheetNo(int sheetNo) {
-		this.sheetNo = sheetNo;
-	}
-	
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    public void setExcelItemGroupId( int excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-	public String execute() throws Exception {
+    public void setColumn( int column )
+    {
+        this.column = column;
+    }
 
-		ExcelItem excelItem = new ExcelItem();
-		
-		excelItem.setName(name);
-		
-		excelItem.setRow(row);
-		
-		excelItem.setColumn(column);
-		
-		excelItem.setExpression(expression);
-		
-		excelItem.setSheetNo(sheetNo);
-		
-		excelItem.setExcelItemGroup( excelItemService.getExcelItemGroup( excelItemGroupId ) );
-		
-		excelItemService.addExcelItem(excelItem);
-		
-		return SUCCESS;
-	}
+    public void setSheetNo( int sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+
+        ExcelItem excelItem = new ExcelItem();
+
+        excelItem.setName( name );
+
+        excelItem.setRow( row );
+
+        excelItem.setColumn( column );
+
+        excelItem.setExpression( expression );
+
+        excelItem.setSheetNo( sheetNo );
+
+        excelItem.setExcelItemGroup( excelItemService.getExcelItemGroup( excelItemGroupId ) );
+
+        excelItemService.addExcelItem( excelItem );
+
+        return SUCCESS;
+    }
 
 }
