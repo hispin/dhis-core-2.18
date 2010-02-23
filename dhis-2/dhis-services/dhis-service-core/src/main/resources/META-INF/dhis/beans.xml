@@ -394,6 +394,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <!-- Startup routine definitions -->
 	
+  <bean id="org.hisp.dhis.dataentryform.DataEntryFormPopulator"
+    class="org.hisp.dhis.dataentryform.DataEntryFormPopulator">
+  	<property name="statementManager" ref="statementManager"/>
+    <property name="runlevel" value="1"/>
+  </bean>
+	
   <bean id="org.hisp.dhis.period.PeriodTypePopulator"
     class="org.hisp.dhis.period.PeriodTypePopulator">
     <property name="periodStore"
@@ -473,6 +479,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.dataelement.UuidPopulator"/>
 		  <ref local="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier"/>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"/>
+          <ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator"/>
         </list>
       </list>
     </property>
