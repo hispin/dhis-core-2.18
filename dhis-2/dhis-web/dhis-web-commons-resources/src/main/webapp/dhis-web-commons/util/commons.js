@@ -13,6 +13,32 @@ function translate( className, objectId )
 }
 
 /**
+ * Gets help content for the given id. Opens the right bar and puts the content
+ * inside. Reads data from an underlying docbook file.
+ * 
+ * @param id the content id, refers to the section id in the docbook file.
+ */
+function getHelpContent( id )
+{
+    $.get( 
+       '../dhis-web-commons-help/getHelpContent.action',
+       { "id": id },
+       function( data )
+       {
+           $( "div#rightBar" ).fadeIn();
+           $( "div#rightBarContents" ).html( data );
+       } );
+}
+
+/**
+ * Hides the help content.
+ */
+function hideHelpContent()
+{
+	$( "div#rightBar" ).fadeOut();
+}
+
+/**
  * Filters values in a html table with tbody id "list".
  * 
  * @param filter the filter.

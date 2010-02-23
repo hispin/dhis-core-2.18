@@ -31,6 +31,8 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.options.help.HelpManager;
 import org.hisp.dhis.util.StreamActionSupport;
 
@@ -40,6 +42,8 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class GetHelpContentAction
     extends StreamActionSupport
 {
+    private static final Log log = LogFactory.getLog( GetHelpContentAction.class );
+    
     private HelpManager helpManager;
     
     public void setHelpManager( HelpManager helpManager )
@@ -58,6 +62,8 @@ public class GetHelpContentAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
+        log.info( "Searching help content for id: " + id );
+        
         helpManager.getHelpContent( out, id );
         
         return SUCCESS;
