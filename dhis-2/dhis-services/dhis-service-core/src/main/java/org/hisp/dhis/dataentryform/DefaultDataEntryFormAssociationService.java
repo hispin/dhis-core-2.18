@@ -30,11 +30,6 @@ package org.hisp.dhis.dataentryform;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationStore;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -44,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataEntryFormAssociationService
     implements DataEntryFormAssociationService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -54,13 +48,6 @@ public class DefaultDataEntryFormAssociationService
     public void setDataEntryFormAssociationStore( DataEntryFormAssociationStore dataEntryFormAssociationStore )
     {
         this.dataEntryFormAssociationStore = dataEntryFormAssociationStore;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     // -------------------------------------------------------------------------

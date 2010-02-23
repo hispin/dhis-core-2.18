@@ -7,6 +7,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
   
   <!-- Store definitions -->
+  
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormAssociationStore"
     class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormAssociationStore">
     <property name="sessionFactory" ref="sessionFactory"/>
