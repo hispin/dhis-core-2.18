@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "data_statistics" )</h3>
+<h3>$i18n.getString( "data_statistics" ) #openHelp( "dataStatistics" )</h3>
 
 <table>
 	<tr>

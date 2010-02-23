@@ -9,7 +9,7 @@
 	}
 </style>
 
-<h3>$i18n.getString( "cache_statistics" )</h3>
+<h3>$i18n.getString( "cache_statistics" ) #openHelp( "cacheStatistics" )</h3>
 
 <p><input type="button" style="width:150px" value="$i18n.getString( 'clear_cache' )" onclick="window.location.href='clearCache.action'"></p>
 

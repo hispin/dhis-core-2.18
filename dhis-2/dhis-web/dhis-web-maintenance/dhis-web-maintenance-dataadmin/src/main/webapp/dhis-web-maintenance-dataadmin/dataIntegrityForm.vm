@@ -6,7 +6,7 @@
 
 #end
 
-<h3>$i18n.getString( "data_integrity_checks_performed" )</h3>
+<h3>$i18n.getString( "data_integrity_checks_performed" ) #openHelp( "dataIntegrity" )</h3>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 
