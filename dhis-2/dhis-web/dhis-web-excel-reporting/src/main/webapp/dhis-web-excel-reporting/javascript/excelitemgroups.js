@@ -110,17 +110,6 @@ function updateExcelItemGroup() {
 	request.send( "updateExcelItemGroup.action" );
 }
 
-function deleteExcelItemGroup( id ) {
-	
-	if ( window.confirm(i18n_confirm_delete) ) {
-	
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( addExcelItemGroupReceived );
-		request.send("deleteExcelItemGroup.action?id=" + id);
-	}
-}
-
 // --------------------------------------------------------------------
 // DATA ELEMENT GROUP
 // --------------------------------------------------------------------

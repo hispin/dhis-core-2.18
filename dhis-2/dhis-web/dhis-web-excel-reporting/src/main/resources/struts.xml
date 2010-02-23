@@ -108,8 +108,10 @@
 
 		<action name="deleteReportExcel"
 			class="org.hisp.dhis.reportexcel.action.DeleteReportExcelAction">
-			<result name="success" type="redirect">listReportExcel.action
-			</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -194,7 +196,7 @@
 			</param>
 			<param name="stylesheets">
 				style/ui.theme.css,
-				style/basic.css, 
+				style/basic.css,
 				style/style.css
 			</param>
 		</action>
@@ -265,17 +267,18 @@
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
 		</action>
-		
+
 		<action name="organisationUnitAtLevels"
 			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitAtLevels.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>		
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 		</action>
-		
+
 		<action name="updateOrganisationUnitGroupAtLevel"
 			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction">
-			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
 		<!-- REPORT EXCEL ASSOCIATION ACTION -->
@@ -347,7 +350,8 @@
 				javascript/jquery.autocomplete.js,
 				javascript/commons.js
 			</param>
-			<param name="stylesheets">style/jquery.autocomplete.css, style/style.css</param>
+			<param name="stylesheets">style/jquery.autocomplete.css,
+				style/style.css</param>
 		</action>
 
 		<action name="getReportExcelItems"
@@ -394,10 +398,22 @@
 
 		<action name="deleteReportExcelItem"
 			class="org.hisp.dhis.reportexcel.item.action.DeleteReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
+		
+		<action name="deleteMultiReportItem"
+			class="org.hisp.dhis.reportexcel.item.action.DeleteMultiReportItemAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
 
 		<action name="getOptionCombos"
 			class="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction">
@@ -417,7 +433,7 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
-		
+
 		<action name="copyExcelItemsToGroup"
 			class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemToGroupAction">
 			<result name="success" type="velocity-xml">
@@ -446,13 +462,14 @@
 			<param name="page">/dhis-web-excel-reporting/reportparams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="stylesheets">style/previewStyle.css, style/ui.all.css</param>
+			<param name="stylesheets">style/previewStyle.css,
+				style/ui.all.css</param>
 			<param name="javascripts">
-					../dhis-web-commons/ouwt/ouwt.js,
-					javascript/export.js,
-					javascript/commons.js,
-					javascript/preview.js,
-					javascript/jquery-ui-1.7.2.custom.min.js
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/export.js,
+				javascript/commons.js,
+				javascript/preview.js,
+				javascript/jquery-ui-1.7.2.custom.min.js
 			</param>
 		</action>
 
@@ -461,7 +478,7 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseListReport.vm</result>
 		</action>
-		
+
 		<!-- Generate Report Excel use POI -->
 
 		<action name="generateReportExcel"
@@ -504,7 +521,7 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-		
+
 		<!-- DATA ENTRY STATUS ACTION -->
 
 		<action name="viewDataEntryStatus"
@@ -666,7 +683,8 @@
 			<param name="page">/dhis-web-excel-reporting/advancedReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="stylesheets">style/previewStyle.css, style/ui.all.css</param>
+			<param name="stylesheets">style/previewStyle.css,
+				style/ui.all.css</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
@@ -686,7 +704,7 @@
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
 				generateAdvancedReportCategory
-            </result>
+			</result>
 			<result name="NORMAL" type="chain">generateAdvancedReportNormal
 			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
@@ -812,10 +830,10 @@
 
 		<action name="deleteExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.DeleteExcelItemGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 
 		<action name="listAllExcelItemGroup"
@@ -952,10 +970,10 @@
 
 		<action name="deleteExcelItem"
 			class="org.hisp.dhis.reportexcel.excelitem.action.DeleteExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 
 		<action name="getSelectedDataElements"
@@ -1040,7 +1058,7 @@
 				javascript/commons.js,javascript/imports.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
-		
+
 		<action name="getPeriodsByExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction">
 			<result name="success" type="velocity-xml">
@@ -1213,7 +1231,7 @@
 		</action>
 
 		<!-- Excel Templates Management -->
-		
+
 		<action name="listAllExcelTemplates"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1222,7 +1240,7 @@
 			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js</param>
 			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_LIST</param>
 		</action>
-		
+
 		<action name="deleteExcelTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.DeleteExcelTemplateAction">
 			<result name="success" type="velocity-xml">
@@ -1231,7 +1249,7 @@
 				/dhis-web-excel-reporting/responseError.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_DELETE</param>
 		</action>
-		
+
 		<action name="uploadExcelTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction">
 			<result name="success" type="chain">
@@ -1239,6 +1257,6 @@
 			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MAMAGEMENT_UPLOAD</param>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
-		
+
 	</package>
 </struts>

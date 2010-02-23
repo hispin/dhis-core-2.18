@@ -138,6 +138,15 @@ public class DefaultReportExcelService
         return reportStore.getReportsByGroup( group );
     }
 
+    @Override
+    public void deleteMultiReportExcelItem( Collection<Integer> ids )
+    {
+        if ( !ids.isEmpty() )
+        {
+            reportStore.deleteMultiReportExcelItem( ids );
+        }
+    }
+
     // --------------------------------------
     // Service of Report Item
     // --------------------------------------
@@ -244,7 +253,7 @@ public class DefaultReportExcelService
 
     @Override
     public PeriodColumn getPeriodColumn( Integer id )
-    {        
+    {
         return reportStore.getPeriodColumn( id );
     }
 

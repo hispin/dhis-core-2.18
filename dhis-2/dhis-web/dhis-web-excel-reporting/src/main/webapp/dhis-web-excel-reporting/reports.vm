@@ -4,37 +4,31 @@
 		<td>
 			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
 		</td>
-		<td align=right>
-			<form name="fileName" action="uploadBackupFile.action" method="post" enctype="multipart/form-data">
-				<input type="button" onclick="openAddReportExcel()" value="$i18n.getString('add')" style="width:100px"/>
-				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px">     
-				<!--
-				<input type="file" id="upload" name="upload"/>
-				<input name="submit" type="submit" value="$i18n.getString( 'Upload' )" />
-				<input type="button" value="$i18n.getString( 'import' )" onclick="restoreReportExcel()"/>
-				-->
-			</form>
+		<td align=right>			
+			<input type="button" onclick="openAddReportExcel()" value="$i18n.getString('add')" style="width:100px"/>
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px">			
 		</td>
 	</tr>
 </table>
-<table width="100%">	
-	<tr>
-		<th>$i18n.getString('name')</th>
-		<th>$i18n.getString('report_type')</th>
-		<th>$i18n.getString('excel_template')</th>		
-		<th width="170px">$i18n.getString('operations')</th>		
-	</tr>
-	<tbody id="list">
-	#set( $mark = false )
+<table width="100%" class="listTable">
+	<thead>
+		<tr>
+			<th>$i18n.getString('name')</th>
+			<th>$i18n.getString('report_type')</th>
+			<th>$i18n.getString('excel_template')</th>		
+			<th width="170px">$i18n.getString('operations')</th>		
+		</tr>
+	</thead>	
+	<tbody id="list">	
 	#foreach($report in $reports)
-		<tr #alternate( $mark )>
+		<tr id="tr${report.id}">
 			<td>$encoder.htmlEncode( $report.name )</td>
 			<td>$i18n.getString($report.reportType)</td>
 			<td>$encoder.htmlEncode( $report.excelTemplateFile )</td>
 			<td align="left">
 				<a href="openDefineAssociationsForm.action?reportId=$report.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
 				<a href="listReportExcelItemAction.action?reportId=$report.id" title="$i18n.getString( 'report_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'report_item' )"></a>
-				<a href="javascript:deleteReportExcel($report.id);" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				<a href="javascript:removeItem( $report.id, '$report.name', '$i18n.getString( 'confirm_delete' )', 'deleteReportExcel.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				<a href="javascript:openUpdateReportReportExcel( $report.id );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 				<!--
 				<a href="javascript:backupReportExcel( $report.id );" title="$i18n.getString( 'backup' )"><img src="../images/open.png" alt="$i18n.getString( 'backup' )"></a>
@@ -52,12 +46,7 @@
 				#end
 
 			</td>
-		</tr>
-		#if( $mark )
-			#set( $mark = false )
-		#else
-			#set( $mark = true )
-		#end
+		</tr>		
 	#end
 	</tbody>
 </table>
