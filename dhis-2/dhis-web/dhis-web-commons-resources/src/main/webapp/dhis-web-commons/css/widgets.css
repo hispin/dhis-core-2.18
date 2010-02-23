@@ -1,5 +1,51 @@
 
 /*----------------------------------------------------------------------------*/
+/* Right bar                                                                  */
+/*----------------------------------------------------------------------------*/
+
+div#rightBar
+{
+  display:none;
+  background-color: #baffbc;
+  height: 454px;
+  width: 300px;
+  float: right;
+  position: absolute;
+  top: 85px;
+  right: 10px;
+  border: 1px solid #12cd17;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+#hideRightBar
+{
+  position: relative;
+  left: 0px;
+  top: 0px;
+}
+
+#rightBar h3 
+{
+  margin-top: 6px;
+  font-size: 11pt;
+  color: #606060;
+}
+
+#rightBar p
+{
+  font-size: 9pt;
+}
+
+#rightBar ul,ol
+{
+  font-size: 9pt;
+  padding-left: 14px;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Thingy                                                                     */
 /*----------------------------------------------------------------------------*/
 

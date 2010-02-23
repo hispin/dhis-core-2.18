@@ -10,8 +10,8 @@
         
     #foreach ( $style in $stylesheets )
       <link type="text/css" rel="stylesheet" href="$style">
-	#end
-	
+    #end
+    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
     <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
@@ -75,40 +75,40 @@
       </div>
       
       <div id="menuDropDown3" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
-      	<ul class="menuDropDownBox">
+        <ul class="menuDropDownBox">
           <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/help.action'">$i18n.getString( "help_contents" )&nbsp;</li>
-      	  <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayFeedbackForm.action'">$i18n.getString( "feedback" )&nbsp;</li>
-      	  <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayChangeLog.action'">$i18n.getString( "change_log" )&nbsp;</li>
+          <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayFeedbackForm.action'">$i18n.getString( "feedback" )&nbsp;</li>
+          <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayChangeLog.action'">$i18n.getString( "change_log" )&nbsp;</li>
           <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/showUpdateUserAccountForm.action'">$i18n.getString( "user_account" )&nbsp;</li>
           <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/about.action'">$i18n.getString( "about_dhis2" )&nbsp;</li>
-	    </ul>
-	  </div>
+        </ul>
+      </div>
 
       <span id="headerText">
-      	#if ( $applicationTitle )
-      	  $applicationTitle
-	    #else
-      	  District Health Information Software 2
-      	#end
+        #if ( $applicationTitle )
+          $applicationTitle
+        #else
+          District Health Information Software 2
+        #end
       </span>
       
       <span id="showLeftBar">
-      	<a href="javascript:leftBar.showAnimated()" title="$i18n.getString( "show_menu" )">
-      	  <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( "show_menu" )"></a>
+        <a href="javascript:leftBar.showAnimated()" title="$i18n.getString( "show_menu" )">
+          <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( "show_menu" )"></a>
       </span>
     </div>
 
-	<div id="leftBar">    
+    <div id="leftBar">    
       <span id="hideLeftBar">
         <a href="javascript:leftBar.hideAnimated()" title="$i18n.getString( "hide_menu" )">
           <img src="../images/hide_menu.png" width="16" height="16" alt="$i18n.getString( "hide_menu" )"></a>
       </span>
       
-	  <div id="leftBarContents">
-	    #parse( $menu )
-	  </div>	  
-	</div>
-	
+      <div id="leftBarContents">
+        #parse( $menu )
+      </div>      
+    </div>
+        
     <div class="page" id="mainPage">
       #if( !$page )
         <p>$i18n.getString( "no_page_specified" )</p>
@@ -121,6 +121,11 @@
         leftBar.hide();
       </script>
     #end
+    
+    <div id="rightBar">
+      <span id="hideRightBar"><a href="#" onclick="hideHelpContent()"><img src="../images/hide.png" onclick=""></a></span>
+      <div id="rightBarContents"/>
+    </div>
     
   </body>
 </html>
