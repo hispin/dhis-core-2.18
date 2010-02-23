@@ -1,40 +1,276 @@
-﻿<?xml version='1.0' encoding='UTF-8'?>
-<chapter>
-  <title>Data Quality</title>
-  <para>The data quality module provides means to improve the quality of the data in the system. This can be done through validation rules and various statistical checks.</para>
-  <section id="learningObjectives">
-    <title>Learning Objectives</title>
-    <para>After reading this module you will be able to understand:</para>
-      <orderedlist>
-        <listitem>
-          <para>What is data quality and its importance for HMIS.</para>
-        </listitem>
-        <listitem>
-          <para>How to do data quality check at point of data entry.</para>
-        </listitem>
-        <listitem>
-          <para>How to create data validation rules.</para>
-        </listitem>
-        <listitem>
-          <para>How to carry out data triangulation.</para>
-        </listitem>
-        <listitem>
-          <para>How to analyze data status.</para>
-        </listitem>
-      </orderedlist>
-	<para>This stuff is in a paragraph</para>
-  </section>
-  <section id="overview">
-    <title>Overview of data quality check</title>
-    <para>Ensuring data quality is a key concern in building an effective HMIS. Data quality has different dimensions including:</para>
-      <itemizedlist>
-        <listitem>
-          <para><emphasis>Correctness:</emphasis> Data should be within the normal range for data collected at that facility. There should be no gross discrepancies when compared with data from related data elements.</para>
-        </listitem>
-        <listitem>
-          <para><emphasis>Completeness:</emphasis> Data for all data elements for all health facilities/blocks/Taluka/districts should have been submitted.</para>
-        </listitem>
-      </itemizedlist>
-	<para>This stuff is in a paragraph</para>
-  </section>
-</chapter>
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="find.xsl"?>
+<book>
+  <chapter>
+    <title>Data Administration in DHIS 2</title>
+      <para>The data administration module provides a range of functions to ensure that the data stored in the DHIS2 database is integral and that the database performance is optimised. These functions should be executed on a regular basis by a data administrator to ensure that the quality of the data stored is optimal. </para>
+      <section id="dataBrowser">
+        <title>Data browser</title>
+        <para>The data browser maintenance module allows the user to produce a summary of the data contained in the DHIS2 database. This summary provides the number of data element values that have been recorded for a given time interval and then grouped by the following options:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Data sets</para>
+          </listitem>
+          <listitem>
+            <para>Data element groups</para>
+          </listitem>
+          <listitem>
+            <para>Organisational unit groups</para>
+          </listitem>
+          <listitem>
+            <para>Organisational units</para>
+          </listitem>
+        </itemizedlist>
+        <para>Each of these options can be accessed by selecting the desired option from  <guilabel>&quot;Browse by&quot; </guilabel>drop-down menu. </para>
+        <para>In order to produce a summary of submitted data for a given period and grouped by data sets, the user should follow this procedure. Begin by selecting a given periodicity type (e.g. Weekly, monthly, yearly, etc) and then a time interval (e.g. January 2009 to March 2009). Select the type of summary to be produced (e.g. Dataset) from the &quot;Browse by&quot; drop-down menu. Click the &quot;Browse&quot; button to view the summary. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_browser1.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>A summary of the number  of data element values that have been submitted over the user selected time period is shown below. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_browsing_data_sets.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para> By clicking on the name of the individual dataset, a more detailed summary of each data element can be obtained as shown below.  A cross-tab table summarising each time period will be shown. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_browser_dataset_detail.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>The functionality of the grouping by Datasets, Data element groups, and Organisational groups is essentially the same. </para>
+        <para>The functionality of grouping by organisation units will be discussed below. Begin by selecting &quot;Organisation units&quot; from the &quot;Browse by&quot; drop-down menu. The organisational hierarchy present in the database will now be displayed. Organisational units can be expanded by clicking on the plus symbol in the organisational tree view.</para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_org_unit1.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para> By clicking on an organisational unit, and the clicking the &quot;Browse&quot; button, a summary of submitted data elements present in the database is returned for all immediate children of the selected organisational as shown below</para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_orgunit2a.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>By clicking on one of the organisational units, a detailed list of data elements is presented by each time period as shown below. <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_orgunit2.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot></para>
+        <para>For each of the data browser summaries, a PDF export can be produced by specifying a filename in the &quot;Filename&quot; field, selecting a font size, a page layout (Landscape or Portrait) and pressing  the <guibutton>&quot;Export PDF&quot;</guibutton> button. You will then be prompted to select a location to save the file to, which can then be viewed with any PDF reader (e.g. Adobe Acrobat Reader, xpdf, etc). </para>
+      </section>
+      <section id="dataIntegrity">
+        <title>Data integrity</title>
+        <para>DHIS2 can perform a wide range of data integrity checks on the data contained in the database. Identifying and correcting data integrity issues is extremely important for ensuring that the data used for analysis purposes is valid. Each of the data integrity checks that are performed by the system will be described, along with general procedures that can be performed to resolve these issues. </para>
+        <section>
+          <title>Data elements without data set</title>
+          <para>Each data element must be assigned to a data set. Values for data elements will not be able to be entered into the system if a data element is not assigned to a data set. Choose Maintenance-&gt;Datasets-&gt;Edit from the main menu and then add the &quot;orphaned&quot; data element to the appropriate data set. </para>
+        </section>
+        <section>
+          <title>Data elements without groups</title>
+          <para>Some Data Elements have been allocated to several Data Element Groups. This is currently not allowed, because it will result in duplication of linked data records in the PivotSource recordsets that `feed` the pivot tables. Go to Maintenance -&gt; Data Element Groups to review each Data Element identified and remove the incorrect Group allocations.</para>
+        </section>
+        <section>
+          <title>Data elements assigned to data sets with different period types</title>
+          <para>Data Elements should not be assigned to two separate data sets whose period types differ. The recommended approach would be to create two separate data elements (for instance a monthly and yearly data element) and assign these to respective datasets. </para>
+        </section>
+        <section>
+          <title>Data sets not assigned to organisation units</title>
+          <para>All data sets should be assigned to at least one organisation unit. </para>
+        </section>
+        <section>
+          <title>Indicators with identical formulas</title>
+          <para>Although this rule will not affect data quality, it generally does not make sense to have two indicators with the exact same definition. Review the identified indicators and their formulas and delete or modify  any indicator that appears to be the duplicate.</para>
+        </section>
+        <section>
+          <title>Indicators without groups</title>
+          <para>All Data Elements and Indicators must be assigned to at least one group, so these Indicators need to be allocated to their correct Data Element and Indicator Group. Go to Maintenance -&gt; Indicator Groups, and allocate each of the `Orphaned` Indicators to its correct group.</para>
+        </section>
+        <section>
+          <title>Invalid indicator numerators</title>
+          <para>Violations of this rule may be caused by an incorrect reference to a deleted or modified data element. Review the indicator and make corrections to the numerator definition. </para>
+        </section>
+        <section>
+          <title>Invalid indicator denominators</title>
+          <para>Violations of this rule may be caused by an incorrect reference to a deleted or modified data element. Review the indicator and make corrections to the denominator definition. </para>
+        </section>
+        <section>
+          <title> Organisation units with cyclic references</title>
+          <para>Organisation units cannot be both parent and children of each other, directly nor indirectly.</para>
+        </section>
+        <section>
+          <title>Orphaned organisation units</title>
+          <para>All organisation units must exist within the organisation unit hierarchy. Go to Organisation-&gt;Hierarchy Operations and move the offending organisation unit into the proper position in the hierarchy. </para>
+        </section>
+        <section>
+          <title>Organisation units without groups</title>
+          <para>All organisation units <emphasis>must</emphasis> be allocated to at least <emphasis>one</emphasis> group. The problem might either be that you have not defined any `compulsory` OrgUnit Group Set at all, or that there are violations of the `compulsory` rule for some OrgUnits . NOTE: If you have defined no `compulsory` OrgUnit Group Sets, then you must first define them by going to  Maintenance -&gt; Organisation units-&gt;Organisation unit group sets and define at least one `compulsory` Group Set (the group set `OrgUnitType` are nearly universally relevant). If you have the relevant group sets, go to Maintenance -&gt; OrgUnit Groups to review each OrgUnit identified and add the relevant Group allocation.</para>
+        </section>
+        <section>
+          <title>Organisation units violating compulsory group sets</title>
+          <para>These organisation units have not been assigned to the any organisation unit group within one of the  <emphasis>compulsory</emphasis> organisation unit group sets. When a group set is defined as `compulsory`, it means that an organisation unit must be allocated to at least one organisation unit group within that group set. For instance, all organisation units must belong to one of the groups in the `organisation unitType` group set. It might belong to  the `Hospital` or the `Clinic` or any other `type` group - but it must belong to exactly one of them.  Go to Maintenance -&gt; organisation unit-&gt;Organisation unit groups to review each organisation unit identified in the integrity check. Allocate all organisation units to exactly one group. </para>
+        </section>
+        <section>
+          <title>Organisation units violating exclusive group sets</title>
+          <para>Some organisation units have been allocated to several organisation unit groups that are members of the same exclusive organisation unit group set. When a group set is defined as exclusive, it means that an organisation unit can <emphasis>only</emphasis> be allocated to <emphasis>one</emphasis> organisation unit group within that Group Set. For instance, one organisation unit cannot normally belong to the both the &apos;Hospital&apos; and &apos;Clinic&apos; groups , but rather to only to one of them. Go to Maintenance -&gt; organisation unit-&gt;Organisation unit groups to review each organisation unit identified in the integrity check. Remove the organisation unit from all groups except the one that it should be allocated to. </para>
+        </section>
+        <section>
+          <title> Organisation unit groups without group sets</title>
+          <para>The organisation unit groups listed here have not been allocated to a group set. Go to Maintenance-&gt;Organisation unit-&gt;Organisation unit group sets and allocate the Organisation unit group to the appropriate group set. </para>
+        </section>
+        <section>
+          <title>Validation rules without groups</title>
+          <para>All validation rules must be assigned to a group. Go to <command>Services-&gt;Data quality-&gt;Validation rule group</command> and assign the offending validation rule to a group. </para>
+        </section>
+        <section>
+          <title>Invalid validation rule left side expressions</title>
+          <para>An error exists in the left-side validation rule definition. Go to <command>Services-&gt;Data quality-&gt;Validation rule</command> and click the &quot;Edit&quot; icon on the offending rule. Press &quot;Edit left side&quot; and make the corrections that are required. </para>
+        </section>
+        <section>
+          <title>Invalid validation rule right side expressions</title>
+          <para>An error exists in the left-side validation rule definition. Go to <command>Services-&gt;Data quality-&gt;Validation rule</command> and click the &quot;Edit&quot; icon on the offending rule. Press &quot;Edit right side&quot; and make the corrections that are required.</para>
+        </section>
+      </section>
+      <section id="maintenance">
+        <title>Maintenance</title>
+        <para>The data maintenance module has five options, each described below. </para>
+        <itemizedlist>
+          <listitem>
+            <para>Clear hierarchy history</para>
+            <para>DHIS 2 maintains an audit trail of changes to the organisation unit hierarchy for aggregation purposes. This function clears the hierarchy history.</para>
+          </listitem>
+          <listitem>
+            <para>Clear data mart (aggregated datavalues)</para>
+            <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated data element values.</para>
+          </listitem>
+          <listitem>
+            <para>Clear data mart (aggregated indicatorvalues)</para>
+            <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated indicator  values.</para>
+          </listitem>
+          <listitem>
+            <para>Clear zero values</para>
+            <para>This function removes zero data values from the database. Values registered for data elements with aggregation operator <emphasis role="italic">average</emphasis> is not removed, as such values will be significant when aggregating the data, contrary to values registered for data elements with aggregation operator <emphasis role="italic">sum</emphasis>. Reducing the number of data values will improve system performance.</para>
+          </listitem>
+          <listitem>
+            <para>Clear dataset completeness</para>
+            <para>This function removes aggregated dataset completeness values. This data is produced and used by report tables.</para>
+          </listitem>
+          <listitem>
+            <para>Prune periods</para>
+            <para>This function removes all periods which have no registered data values. Reducing the number of periods will improve system performance.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section id="resourceTables">
+        <title>Resource tables</title>
+        <para>Resource tables are supporting tables that are used during analysis of data. One would typically join the contents of these tables with the data value table when doing queries from third-party applications like Microsoft Excel. Simply select the tables that should be regenerated and press &quot;Generate tables&quot;. Regeneration of the resource tables should only be done once all data integrity issues are resolved. </para>
+        <itemizedlist>
+          <listitem>
+            <para>Organisation unit structure (orgunitstructure)</para>
+            <para>This table should be regenerated any time there have been any changes made to the organisational unit hierarchy. This table provides information about the organisation unit hierarchy. It has one row for each organisation unit, one  column for each organisation unit level and the organisation unit identifiers for all parents in the lineage as values.</para>
+          </listitem>
+          <listitem>
+            <para>Exclusive organisation unit groupset structure normalized (orgunitgroupsetstructure)</para>
+            <para>This table provides information about the which organisation units are member of which organisation unit group sets.</para>
+          </listitem>
+          <listitem>
+            <para>Data element group set structure (_dataelementgroupsetstructure)</para>
+            <para>This table provides information about which data elements are members of which data element group sets. The table has one row for each data element,  one column for each data element group set and the names of the data element group as values.</para>
+          </listitem>
+          <listitem>
+            <para>Indicator group set structure (_indicatorgroupsetstructure)</para>
+            <para>This table provides information about which indicators are members of which indicator group sets. The table has one row for each indicator, one column for each indicator group set and the names of the indicator group as values.</para>
+          </listitem>
+          <listitem>
+            <para>Organisation unit group set structure (_organisationunitgroupsetstructure)</para>
+            <para>This table provides information about which organisation units are members of which organisation unit group sets. The table has one row for each organisation unit, one column for each organisation unit group set and the names of the organisation unit groups as values.</para>
+          </listitem>
+          <listitem>
+            <para>Category structure (_categorystructure)</para>
+            <para>This table provides information about which data elements are members of which categories. The table has one row for each data element, one column for each category and the names of the category options as values.</para>
+          </listitem>
+          <listitem>
+            <para>Data element category option combo name (categoryoptioncomboname)</para>
+            <para>This table should be regenerated any time there have been changes made to the category combination names. It contains readable names for the various combinations of categories.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section id="organisationUnitMerge">
+        <title>Organisation unit merge</title>
+        <para>This function is useful when two organisation units need to be merged, eg. it is decided that one facility will be shut down and its services will be provided by a nearby facility.</para>
+        <para>Start by selecting the organisation unit to eliminate from the tree and click <emphasis role="italic">confirm</emphasis>.  Then select the organisation unit to keep and click <emphasis role="italic">confirm</emphasis> again. Finally, verify the selection and click <emphasis role="italic">merge</emphasis>.  </para>
+        <para>In the sitation where data exist  for the organisation unit to eliminate and not for the one to keep, the data will be moved to the one to keep. When data exists for both organisation units, the data will be summarized and moved to the one to keep. When data exists only for the one to keep, no action is taken. The organisation unit to eliminate will eventually be deleted.</para>
+      </section>
+      <section id="duplicateDataElimination">
+        <title>Duplicate data elimination</title>
+        <para>This function is useful when data has been entered mistakenly for two data elements which represents the same phenomena.</para>
+        <para>Start by selecting the data element to eliminate from the list and click confirm. Then select the data element to keep and click confirm again. Finally, verify the selection and click merge.</para>
+        <para>In the situation where data exists for the data element to eliminate and not for the one to keep, the data will be moved to the one to keep. When data exists for both data elements, the data which was updated last will be used. When data exists only for the one to keep, no action will be taken. The data element to eliminate will eventually be deleted, except when it is a multidimensional data element and has other data registered.</para>
+      </section>
+      <section id="dataStatistics">
+        <title>Data statistics</title>
+        <para>The data statistics module provides an overview of the number of objects stored in the DHIS2 database. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_stats.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>The total number of each type of object is presented in a table, as well as a graph. </para>
+      </section>
+      <section id="dataLocking">
+        <title>Data locking</title>
+        <para>This module gives users the privilege of locking certain datasets for chosen organisation units. This encourages timely data entry and prevents unwanted to changes to the data once it has been entered. When the ‘Data Administration’ option is chosen the data locking interface is displayed. The user has to select the periodicity of the report e.g. monthly, quarterly or
+  yearly for which the data is to be locked. The month, quarter or year for which the reports are to be locked is then specified. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select1.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>The unlocked data sets for the period are displayed and the user will then have to choose the data sets to be locked.
+  </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select2.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>After choosing the datasets to be locked, double click on each one by one to display the organisation unit tree in the field below. Click on the organisation unit to lock the dataset.
+  </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select3.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>The <guibutton>Apply Locks on All</guibutton> button locks the dataset for all the organisation units to which that dataset has been assigned. <guibutton>‘Remove locks on All’</guibutton> removes all locks put on the organisation units corresponding to the selected dataset. After the operations are completed the user must click <guibutton>‘Save’</guibutton> to apply the settings. The <guibutton>‘Lock at level’</guibutton> button locks datasets at a particular level that the user chooses. . <guibutton>‘Unlock at Level’</guibutton> removes locks that have been put on the organisation units corresponding to the selected dataset at the selected level. After the operations are completed, the user must click <guibutton>‘Save’</guibutton> to apply the settings. The <guibutton>‘Save’</guibutton> button will also lock those organisation unit datasets that have been specified by the user.
+  </para>
+      </section>
+      <section id="zeroValueStorage">
+        <title>Zero value storage</title>
+        <para>The zero value storage function makes it possible to define for which data elements the system should store zero values. In most cases zeros are significant only for a subset of the data elements in the database. Zero values will be ignored during data entry for selected data elements.</para>
+      </section>
+      <section id="cacheStatistics">
+        <title>Cache Statistics </title>
+        <para>This option is for system administrators only to use. The cache statistics shows the status of the application level cache. The application level cache refers to the objects and query results that the application is caching in order to speed up performance. If the database has been modified directly the application cache needs to be cleared for it to take effect.</para>
+      </section>
+  </chapter>
+</book>

@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "organisation_unit_merge" )</h3>
+<h3>$i18n.getString( "organisation_unit_merge" ) #openHelp( "organisationUnitMerge" )</h3>
 
 <div id="selectionTree" style="width:500px; height:200px"></div>
                     

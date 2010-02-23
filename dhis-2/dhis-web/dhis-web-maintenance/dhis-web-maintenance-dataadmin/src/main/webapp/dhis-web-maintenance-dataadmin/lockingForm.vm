@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "data_locking_form" )</h3>
+<h3>$i18n.getString( "data_locking_form" ) #openHelp( "dataLocking" )</h3>
 
 <span id="message"></span>	
 

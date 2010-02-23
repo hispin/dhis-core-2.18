@@ -18,6 +18,7 @@ div#rightBar
   padding-right: 15px;
   padding-top: 9px;
   padding-bottom: 9px;
+  overflow: auto;
 }
 
 #hideRightBar

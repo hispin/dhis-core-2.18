@@ -48,11 +48,9 @@ public class DefaultHelpManager
     {
         try
         {
-            TransformerFactory factory = TransformerFactory.newInstance();
-            
             Source stylesheet = new StreamSource( new ClassPathResource( "help_stylesheet.xsl" ).getInputStream() );
             
-            Transformer transformer = factory.newTransformer( stylesheet );
+            Transformer transformer = TransformerFactory.newInstance().newTransformer( stylesheet );
             
             transformer.setParameter( "sectionId", id );
             

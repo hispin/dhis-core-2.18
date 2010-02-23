@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "duplicate_data_elimination" )</h3>
+<h3>$i18n.getString( "duplicate_data_elimination" ) #openHelp( "duplicateDataElimination" )</h3>
 
 <div>
 	<label>$i18n.getString( "filter" ):</label><br>

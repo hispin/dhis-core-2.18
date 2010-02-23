@@ -28,7 +28,7 @@
 </xsl:template>
 
 <xsl:template match="/">
-  <xsl:apply-templates select="chapter/section[@id=$sectionId]"/>
+  <xsl:apply-templates select="book/chapter/section[@id=$sectionId]"/>
 </xsl:template>
 
 </xsl:stylesheet>

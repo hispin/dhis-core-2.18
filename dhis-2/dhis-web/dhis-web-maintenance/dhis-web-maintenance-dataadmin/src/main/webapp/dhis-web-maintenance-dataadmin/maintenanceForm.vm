@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "maintenance" )</h3>
+<h3>$i18n.getString( "maintenance" ) #openHelp( "maintenance" )</h3>
     
 <p>
 	<input type="checkbox" id="hierarchyHistory">
