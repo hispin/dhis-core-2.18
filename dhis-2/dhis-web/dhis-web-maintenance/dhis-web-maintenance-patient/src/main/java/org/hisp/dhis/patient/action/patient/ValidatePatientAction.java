@@ -217,36 +217,56 @@ public class ValidatePatientAction
         }
 
         // Check ID duplicate
+        
+        Patient p = new Patient();
+        if (birthDate != null) {
+			birthDate = birthDate.trim();
 
-        HttpServletRequest request = ServletActionContext.getRequest();
-
-        Collection<PatientIdentifierType> identifiers = identifierTypeService.getAllPatientIdentifierTypes();
-
-        if ( identifiers != null && identifiers.size() > 0 )
+			if (birthDate.length() != 0) {
+				p.setBirthDate(format.parseDate(birthDate));
+			} else {
+				if (age != null) {
+					p.setBirthDateFromAge(age.intValue());
+				}
+			}
+		} else {
+			if (age != null) {
+				p.setBirthDateFromAge(age.intValue());
+			}
+		}
+        
+        if( p.getIntegerValueOfAge() >= 5 )
         {
-            String value = null;
-            String idDuplicate = "";
-            for ( PatientIdentifierType iden : identifiers )
-            {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + iden.getId() );
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    PatientIdentifier identifier = patientIdentifierService.get( iden, value );
-                    if( identifier != null && ( id == null || identifier.getPatient().getId() != id  ))
-                    {
-                        idDuplicate += iden.getName()+", ";
-                    }
-                }
-            }
-            
-            if( StringUtils.isNotBlank( idDuplicate ) ) 
-            {
-                idDuplicate = StringUtils.substringBeforeLast( idDuplicate, "," );      
-                message = i18n.getString("identifier_duplicate") +": "+ idDuplicate;
-                return INPUT;
-            }
-        }
+        	 HttpServletRequest request = ServletActionContext.getRequest();
 
+             Collection<PatientIdentifierType> identifiers = identifierTypeService.getAllPatientIdentifierTypes();
+
+             if ( identifiers != null && identifiers.size() > 0 )
+             {
+                 String value = null;
+                 String idDuplicate = "";
+                 for ( PatientIdentifierType iden : identifiers )
+                 {
+                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + iden.getId() );
+                     if ( StringUtils.isNotBlank( value ) )
+                     {
+                         PatientIdentifier identifier = patientIdentifierService.get( iden, value );
+                         if( identifier != null && ( id == null || identifier.getPatient().getId() != id  ))
+                         {
+                             idDuplicate += iden.getName()+", ";
+                         }
+                     }
+                 }
+                 
+                 if( StringUtils.isNotBlank( idDuplicate ) ) 
+                 {
+                     idDuplicate = StringUtils.substringBeforeLast( idDuplicate, "," );      
+                     message = i18n.getString("identifier_duplicate") +": "+ idDuplicate;
+                     return INPUT;
+                 }
+             }
+        }
+        
         // ---------------------------------------------------------------------
         // Validation success
         // ---------------------------------------------------------------------

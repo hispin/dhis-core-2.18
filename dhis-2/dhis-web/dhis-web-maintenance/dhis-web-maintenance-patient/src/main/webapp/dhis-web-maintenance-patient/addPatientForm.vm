@@ -1,8 +1,6 @@
 #macro( validate $type $require )
   #if( $type == "int" )
   	{validate:{ number:true #if($require), required:true #end }}
-  #elseif( $type == "string" )
-  	{validate:{ alphanumeric:true #if($require), required:true #end }}
   #elseif( $require )
   	{validate:{required:true}}
   #end

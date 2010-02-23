@@ -305,7 +305,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/patient.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
+			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 		</action>
@@ -327,7 +327,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
+			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 		</action>
