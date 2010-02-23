@@ -3051,7 +3051,7 @@ function onClickSelectChoropleth(feature) {
 function onClickUnselectChoropleth(feature) {}
 
 /*MAP DATA*/
-function loadMapData(redirect) {
+function loadMapData(redirect, position) {
 
     Ext.Ajax.request({
         url: path + 'getMapByMapLayerPath' + type,
@@ -3077,12 +3077,15 @@ function loadMapData(redirect) {
                 MAPDATA.latitude = parseFloat(MAPDATA.latitude);
                 MAPDATA.zoom = parseFloat(MAPDATA.zoom);
             }
-           
-            if (MAPDATA.zoom != MAP.getZoom()) {
-				MAP.zoomTo(MAPDATA.zoom);
-			}
 			
-			MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
+			if (!position) {
+           
+				if (MAPDATA.zoom != MAP.getZoom()) {
+					MAP.zoomTo(MAPDATA.zoom);
+				}
+				
+				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
+			}
 			
 			toggleFeatureLabels(false);
 
@@ -3091,7 +3094,7 @@ function loadMapData(redirect) {
             else if (redirect == 'assignment') {
                 getAssignOrganisationUnitData(); }
             else if (redirect == 'auto-assignment') {
-                getAutoAssignOrganisationUnitData(); }
+                getAutoAssignOrganisationUnitData(position); }
         },
         failure: function() {
             alert( 'Error while retrieving map data: loadMapData' );
@@ -3260,7 +3263,7 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
 }
 
 /*AUTO MAPPING*/
-function getAutoAssignOrganisationUnitData() {
+function getAutoAssignOrganisationUnitData(position) {
 	MASK.msg = 'Loading data...';
 	MASK.show();
 
@@ -3272,7 +3275,7 @@ function getAutoAssignOrganisationUnitData() {
         params: { level: level, format: 'json' },
 
         success: function( responseObject ) {
-            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText );			
+            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText, position );			
         },
         failure: function() {
             alert( 'Status', 'Error while retrieving data' );
@@ -3280,7 +3283,7 @@ function getAutoAssignOrganisationUnitData() {
     });
 }
 
-function dataReceivedAutoAssignOrganisationUnit( responseText ) {
+function dataReceivedAutoAssignOrganisationUnit( responseText, position ) {
     var layers = MAP.getLayersByName('Thematic map');
     var features = layers[0]['features'];
     var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
@@ -3328,7 +3331,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
             Ext.messageBlack.msg('Assign organisation units', '' + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + organisationUnits.length + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + features.length + msg_highlight_end);
             
             Ext.getCmp('grid_gp').getStore().reload();
-            loadMapData('assignment');
+            loadMapData('assignment', position);
         },
         failure: function() {
             alert( 'Error: addOrUpdateMapOrganisationUnitRelations' );

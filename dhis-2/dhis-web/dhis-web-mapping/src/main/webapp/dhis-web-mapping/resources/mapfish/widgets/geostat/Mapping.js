@@ -177,7 +177,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         cls = 'row-assigned';
                 }
                 
-                return cls;                    
+                return cls;
             }
         });
     
@@ -268,7 +268,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                     return;
                                 }
 
-                                loadMapData('auto-assignment');
+                                loadMapData('auto-assignment', true);
                             },
                             scope: this
                         },
@@ -298,7 +298,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         
                                         Ext.messageBlack.msg('Remove all relations', 'All relations for the map ' + msg_highlight_start + Ext.getCmp('maps_cb').getRawValue() + msg_highlight_end + ' removed.');
                                         
-                                        mapping.classify(true);
+                                        mapping.classify(true, true);
                                     },
                                     failure: function() {
                                         alert('Error while deleting MapOrganisationUnitRelation');
@@ -352,7 +352,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 										
 										Ext.messageBlack.msg('Remove relations', msg);
 										
-										mapping.classify(true);
+										mapping.classify(true, true);
 									},
 									failure: function() {
 										alert('Error while deleting MapOrganisationUnitRelation');
@@ -386,7 +386,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 													Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + mapping.relation + msg_highlight_end + ' (map) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (database).');
 													Ext.getCmp('grid_gp').getStore().reload();
 													feature_popup.hide();
-													loadMapData('assignment');
+													loadMapData('assignment', true);
 												},
 												failure: function() {
 													alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
@@ -459,7 +459,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception) {
+    classify: function(exception, position) {
         if (!this.ready) {
 
             Ext.MessageBox.alert('Error', 'Component init not complete');
@@ -488,7 +488,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 		MASK.msg = 'Loading data...';
         MASK.show();
         
-        loadMapData('assignment');
+        loadMapData('assignment', position);
     },
 
     /**
