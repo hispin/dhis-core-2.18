@@ -185,4 +185,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
+  <bean id="org.hisp.dhis.options.help.HelpManager"
+	class="org.hisp.dhis.options.help.DefaultHelpManager"/>
+  
 </beans>

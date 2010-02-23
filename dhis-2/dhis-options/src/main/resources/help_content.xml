@@ -1,0 +1,40 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<chapter>
+  <title>Data Quality</title>
+  <para>The data quality module provides means to improve the quality of the data in the system. This can be done through validation rules and various statistical checks.</para>
+  <section id="learningObjectives">
+    <title>Learning Objectives</title>
+    <para>After reading this module you will be able to understand:</para>
+      <orderedlist>
+        <listitem>
+          <para>What is data quality and its importance for HMIS.</para>
+        </listitem>
+        <listitem>
+          <para>How to do data quality check at point of data entry.</para>
+        </listitem>
+        <listitem>
+          <para>How to create data validation rules.</para>
+        </listitem>
+        <listitem>
+          <para>How to carry out data triangulation.</para>
+        </listitem>
+        <listitem>
+          <para>How to analyze data status.</para>
+        </listitem>
+      </orderedlist>
+	<para>This stuff is in a paragraph</para>
+  </section>
+  <section id="overview">
+    <title>Overview of data quality check</title>
+    <para>Ensuring data quality is a key concern in building an effective HMIS. Data quality has different dimensions including:</para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Correctness:</emphasis> Data should be within the normal range for data collected at that facility. There should be no gross discrepancies when compared with data from related data elements.</para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Completeness:</emphasis> Data for all data elements for all health facilities/blocks/Taluka/districts should have been submitted.</para>
+        </listitem>
+      </itemizedlist>
+	<para>This stuff is in a paragraph</para>
+  </section>
+</chapter>
