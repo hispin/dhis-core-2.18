@@ -43,7 +43,7 @@ public class CreateDataElementGroupSetTableStatement
 {
     private static final Log log = LogFactory.getLog( CreateDataElementGroupSetTableStatement.class );
     
-    private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (160)";
+    private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (250)";
     
     public static final String TABLE_NAME = "_dataelementgroupsetstructure";
     
