@@ -128,4 +128,9 @@ public class PostgreSQLStatementBuilder
     {
         return 1580; // TODO verify
     }
+
+    public String getDropDatasetForeignKeyForDataEntryFormTable()
+    {
+        return  "ALTER TABLE dataentryform DROP CONSTRAINT fk_dataentryform_datasetid;" ;
+    }
 }

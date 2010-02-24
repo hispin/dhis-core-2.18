@@ -91,4 +91,12 @@ public interface StatementBuilder
      * @return the maximum number of columns in a table.
      */
     int getMaximumNumberOfColumns();
+    
+    /**
+     *  
+     *  Drop Dataset foreign key for DataEntryForm table
+     *  
+     * @return
+     */
+    String getDropDatasetForeignKeyForDataEntryFormTable();
 }

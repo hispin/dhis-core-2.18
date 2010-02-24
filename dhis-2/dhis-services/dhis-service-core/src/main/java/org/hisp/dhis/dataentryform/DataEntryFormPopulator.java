@@ -1,44 +1,60 @@
 package org.hisp.dhis.dataentryform;
 
+import java.sql.Statement;
+
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.transaction.annotation.Transactional;
 
-public class DataEntryFormPopulator extends AbstractStartupRoutine {
-	private static final Log log = LogFactory
-			.getLog(OptionsCategoriesDefaultSortOrderPopulator.class);
-	private StatementManager statementManager;
+public class DataEntryFormPopulator
+    extends AbstractStartupRoutine
+{
+    private static final Log log = LogFactory.getLog( DataEntryFormPopulator.class );
 
-	public void setStatementManager(StatementManager statementManager) {
-		this.statementManager = statementManager;
-	}
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+    
+    private StatementBuilder statementBuilder;
+    
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
+
+    // -------------------------------------------------------------------------
+    // Execute
+    // -------------------------------------------------------------------------
+    
+    @Transactional
+    public void execute()
+        throws Exception
+    {
+        log.info( "Remove datasetid column from dataentryform table" );
+        Statement stmnt = statementManager.getHolder().getStatement();
+        try
+        {
+            stmnt.executeUpdate(  statementBuilder.getDropDatasetForeignKeyForDataEntryFormTable() );
+            stmnt.executeUpdate( "INSERT INTO dataentryformassociation  SELECT 'dataset', datasetid, dataentryformid FROM dataentryform;" );
+            stmnt.executeUpdate( "ALTER TABLE dataentryform DROP COLUMN datasetid;" );
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+    }
 
 
-	public void execute() throws Exception {
-		
-		log.info("Update association between DataEntryForm table  and DataEntryFormAssociation table");
-		//      For mysql
-		//executeSql("alter table dataentryform drop foreign key fk_dataentryform_datasetid;");
-		
-		// 		For postgres
-		executeSql("alter table dataentryform drop constraint fk_dataentryform_datasetid;");
-
-		executeSql("insert into dataentryformassociation  select 'dataset', datasetid, dataentryformid from dataentryform ; ");
-		executeSql("alter table dataentryform drop column datasetid;");
-		
-		log.info("Finished Update association between DataEntryForm table  and DataEntryFormAssociation table");
-
-	}
-
-	private int executeSql(String sql) {
-		try {
-			return statementManager.getHolder().getStatement().executeUpdate(sql);
-		} catch (Exception ex) {
-			log.debug(ex);
-			return -1;
-		}
-	}
+    
 
 }

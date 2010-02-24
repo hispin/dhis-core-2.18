@@ -128,4 +128,9 @@ public class MySQLStatementBuilder
     {
         return 720;
     }
+
+    public String getDropDatasetForeignKeyForDataEntryFormTable()
+    {
+        return  "ALTER TABLE dataentryform DROP FOREIGN KEY fk_dataentryform_datasetid;" ;
+    }
 }
