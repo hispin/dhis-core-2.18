@@ -590,7 +590,7 @@ public class DefaultMappingService
     }
 
     public int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh )
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom )
     {
         MapView mapView = new MapView();
 
@@ -614,6 +614,9 @@ public class DefaultMappingService
         mapView.setClasses( classes );
         mapView.setColorLow( colorLow );
         mapView.setColorHigh( colorHigh );
+        mapView.setLongitude( longitude );
+        mapView.setLatitude( latitude );
+        mapView.setZoom( zoom );
 
         return mappingStore.addMapView( mapView );
     }
@@ -624,7 +627,7 @@ public class DefaultMappingService
     }
 
     public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName,
-        int periodId, String mapSource, int method, int classes, String colorLow, String colorHigh )
+        int periodId, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
@@ -652,13 +655,16 @@ public class DefaultMappingService
             mapView.setClasses( classes );
             mapView.setColorLow( colorLow );
             mapView.setColorHigh( colorHigh );
+            mapView.setLongitude( longitude );
+            mapView.setLatitude( latitude );
+            mapView.setZoom( zoom );
 
             updateMapView( mapView );
         }
         else
         {
             mapView = new MapView( name, indicatorGroup, indicator, periodType, period, mapSourceType, mapSource,
-                method, classes, colorLow, colorHigh );
+                method, classes, colorLow, colorHigh, longitude, latitude, zoom );
 
             addMapView( mapView );
         }

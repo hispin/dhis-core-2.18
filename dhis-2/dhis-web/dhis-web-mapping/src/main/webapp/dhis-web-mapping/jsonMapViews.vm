@@ -13,7 +13,10 @@
     "method": $!{mapView.method},
     "classes": $!{mapView.classes},
     "colorLow": "$!encoder.jsEncode( ${mapView.colorLow} )",
-    "colorHigh": "$!encoder.jsEncode( ${mapView.colorHigh} )"
+    "colorHigh": "$!encoder.jsEncode( ${mapView.colorHigh} )",
+    "longitude": "$!encoder.jsEncode( ${mapView.longitude} )",
+    "latitude": "$!encoder.jsEncode( ${mapView.latitude} )",
+    "zoom": "$!{mapView.zoom}"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

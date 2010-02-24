@@ -11,6 +11,9 @@
     "method": "$!{object.method}",
     "classes": "$!{object.classes}",
     "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
-    "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )"
+    "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )",
+    "longitude": "$!encoder.jsEncode( ${object.longitude} )",
+    "latitude": "$!encoder.jsEncode( ${object.latitude} )",
+    "zoom": "$!{object.zoom}"
   }]
 }

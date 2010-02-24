@@ -49,114 +49,112 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class MappingStoreTest
-    extends DhisSpringTest
-{
-    private MappingStore mappingStore;
-    
-    private OrganisationUnit organisationUnit;
-    
-    private OrganisationUnitLevel organisationUnitLevel;
-    
-    private IndicatorGroup indicatorGroup;
-    private IndicatorType indicatorType;
-    private Indicator indicator;
-    
-    private PeriodType periodType;
-    private Period period;
-    
-    private Map mapA;
-    private Map mapB;
+public class MappingStoreTest extends DhisSpringTest {
+	private MappingStore mappingStore;
 
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
+	private OrganisationUnit organisationUnit;
 
-    @Override
-    public void setUpTest()
-    {
-        mappingStore = (MappingStore) getBean( MappingStore.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnit = createOrganisationUnit( 'A' );
-        organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
-        
-        organisationUnitService.addOrganisationUnit( organisationUnit );
-        organisationUnitService.addOrganisationUnitLevel( organisationUnitLevel );
-        
-        mapA = createMap( 'A', organisationUnit, organisationUnitLevel );
-        mapB = createMap( 'B', organisationUnit, organisationUnitLevel );
-        
-        indicatorGroup = createIndicatorGroup( 'A' );        
-        indicatorService.addIndicatorGroup( indicatorGroup );
-        
-        indicatorType = createIndicatorType( 'A' );
-        indicatorService.addIndicatorType( indicatorType );
-        
-        indicator = createIndicator( 'A', indicatorType );
-        indicatorService.addIndicator( indicator );
-        
-        periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
-        period = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
-        periodService.addPeriod( period );
-    }
+	private OrganisationUnitLevel organisationUnitLevel;
 
-    // -------------------------------------------------------------------------
-    // Map tests
-    // -------------------------------------------------------------------------
+	private IndicatorGroup indicatorGroup;
+	private IndicatorType indicatorType;
+	private Indicator indicator;
 
-    @Test
-    public void testAddGetMap()
-    {
-        int idA = mappingStore.addMap( mapA );
-        int idB = mappingStore.addMap( mapB );
-        
-        assertEquals( mapA, mappingStore.getMap( idA ) );
-        assertEquals( mapB, mappingStore.getMap( idB ) );
-    }
+	private PeriodType periodType;
+	private Period period;
 
-    @Test
-    public void testDeleteMap()
-    {
-        int idA = mappingStore.addMap( mapA );
-        int idB = mappingStore.addMap( mapB );
-        
-        assertNotNull( mappingStore.getMap( idA ) );
-        assertNotNull( mappingStore.getMap( idB ) );
-        
-        mappingStore.deleteMap( mapA );
+	private Map mapA;
+	private Map mapB;
 
-        assertNull( mappingStore.getMap( idA ) );
-        assertNotNull( mappingStore.getMap( idB ) );
+	// -------------------------------------------------------------------------
+	// Fixture
+	// -------------------------------------------------------------------------
 
-        mappingStore.deleteMap( mapB );
+	@Override
+	public void setUpTest() {
+		mappingStore = (MappingStore) getBean(MappingStore.ID);
 
-        assertNull( mappingStore.getMap( idA ) );
-        assertNull( mappingStore.getMap( idB ) );        
-    }
+		organisationUnitService = (OrganisationUnitService) getBean(OrganisationUnitService.ID);
 
-    // -------------------------------------------------------------------------
-    // MapView tests
-    // -------------------------------------------------------------------------
+		indicatorService = (IndicatorService) getBean(IndicatorService.ID);
 
-    @Test
-    public void testAddGetMapView()
-    {
-        mappingStore.addMap( mapA );
-        
-        MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", 1, 1, "A", "B" );
-        
-        int idA = mappingStore.addMapView( mapView );
-        
-        assertEquals( mapView, mappingStore.getMapView( idA ) );
-        assertEquals( indicatorGroup, mappingStore.getMapView( idA ).getIndicatorGroup() );
-        assertEquals( indicator, mappingStore.getMapView( idA ).getIndicator() );
-        assertEquals( periodType, mappingStore.getMapView( idA ).getPeriodType() );
-        assertEquals( period, mappingStore.getMapView( idA ).getPeriod() );
-    }
+		periodService = (PeriodService) getBean(PeriodService.ID);
+
+		organisationUnit = createOrganisationUnit('A');
+		organisationUnitLevel = new OrganisationUnitLevel(1, "Level");
+
+		organisationUnitService.addOrganisationUnit(organisationUnit);
+		organisationUnitService.addOrganisationUnitLevel(organisationUnitLevel);
+
+		mapA = createMap('A', organisationUnit, organisationUnitLevel);
+		mapB = createMap('B', organisationUnit, organisationUnitLevel);
+
+		indicatorGroup = createIndicatorGroup('A');
+		indicatorService.addIndicatorGroup(indicatorGroup);
+
+		indicatorType = createIndicatorType('A');
+		indicatorService.addIndicatorType(indicatorType);
+
+		indicator = createIndicator('A', indicatorType);
+		indicatorService.addIndicator(indicator);
+
+		periodType = periodService.getPeriodTypeByName(MonthlyPeriodType.NAME);
+		period = createPeriod(periodType, getDate(2000, 1, 1), getDate(2000, 2,
+				1));
+		periodService.addPeriod(period);
+	}
+
+	// -------------------------------------------------------------------------
+	// Map tests
+	// -------------------------------------------------------------------------
+
+	@Test
+	public void testAddGetMap() {
+		int idA = mappingStore.addMap(mapA);
+		int idB = mappingStore.addMap(mapB);
+
+		assertEquals(mapA, mappingStore.getMap(idA));
+		assertEquals(mapB, mappingStore.getMap(idB));
+	}
+
+	@Test
+	public void testDeleteMap() {
+		int idA = mappingStore.addMap(mapA);
+		int idB = mappingStore.addMap(mapB);
+
+		assertNotNull(mappingStore.getMap(idA));
+		assertNotNull(mappingStore.getMap(idB));
+
+		mappingStore.deleteMap(mapA);
+
+		assertNull(mappingStore.getMap(idA));
+		assertNotNull(mappingStore.getMap(idB));
+
+		mappingStore.deleteMap(mapB);
+
+		assertNull(mappingStore.getMap(idA));
+		assertNull(mappingStore.getMap(idB));
+	}
+
+	// -------------------------------------------------------------------------
+	// MapView tests
+	// -------------------------------------------------------------------------
+
+	@Test
+	public void testAddGetMapView() {
+		mappingStore.addMap(mapA);
+
+		MapView mapView = new MapView("MapViewA", indicatorGroup, indicator,
+				periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE,
+				"sl_districts", 1, 1, "A", "B", "1", "1", 1);
+
+		int idA = mappingStore.addMapView(mapView);
+
+		assertEquals(mapView, mappingStore.getMapView(idA));
+		assertEquals(indicatorGroup, mappingStore.getMapView(idA)
+				.getIndicatorGroup());
+		assertEquals(indicator, mappingStore.getMapView(idA).getIndicator());
+		assertEquals(periodType, mappingStore.getMapView(idA).getPeriodType());
+		assertEquals(period, mappingStore.getMapView(idA).getPeriod());
+	}
 }

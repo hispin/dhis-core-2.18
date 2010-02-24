@@ -49,163 +49,171 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class MappingServiceTest
-    extends DhisSpringTest
-{
-    private MappingService mappingService;
-    
-    private OrganisationUnit organisationUnit;
-    
-    private OrganisationUnitLevel organisationUnitLevel;
-    
-    private IndicatorGroup indicatorGroup;
-    private IndicatorType indicatorType;
-    private Indicator indicator;
-    
-    private PeriodType periodType;
-    private Period period;
-    
-    private Map mapA;
-    private Map mapB;
-    
-    private MapOrganisationUnitRelation mapOrganisationUnitRelationA;
-    private MapOrganisationUnitRelation mapOrganisationUnitRelationB;
+public class MappingServiceTest extends DhisSpringTest {
+	private MappingService mappingService;
 
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
+	private OrganisationUnit organisationUnit;
 
-    @Override
-    public void setUpTest()
-    {
-        mappingService = (MappingService) getBean( MappingService.ID );
-        
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
-        periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        organisationUnit = createOrganisationUnit( 'A' );
-        organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
-        
-        organisationUnitService.addOrganisationUnit( organisationUnit );
-        organisationUnitService.addOrganisationUnitLevel( organisationUnitLevel );
-        
-        mapA = createMap( 'A', organisationUnit, organisationUnitLevel );
-        mapB = createMap( 'B', organisationUnit, organisationUnitLevel );
-        
-        mapOrganisationUnitRelationA = new MapOrganisationUnitRelation( mapA, organisationUnit, "Feature" );
-        mapOrganisationUnitRelationB = new MapOrganisationUnitRelation( mapB, organisationUnit, "Feature" );
-                
-        indicatorGroup = createIndicatorGroup( 'A' );        
-        indicatorService.addIndicatorGroup( indicatorGroup );
-        
-        indicatorType = createIndicatorType( 'A' );
-        indicatorService.addIndicatorType( indicatorType );
-        
-        indicator = createIndicator( 'A', indicatorType );
-        indicatorService.addIndicator( indicator );
-        
-        periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
-        period = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
-        periodService.addPeriod( period );
-    }
+	private OrganisationUnitLevel organisationUnitLevel;
 
-    // -------------------------------------------------------------------------
-    // Map tests
-    // -------------------------------------------------------------------------
+	private IndicatorGroup indicatorGroup;
+	private IndicatorType indicatorType;
+	private Indicator indicator;
 
-    @Test
-    public void testAddGetMap()
-    {
-        int idA = mappingService.addMap( mapA );
-        int idB = mappingService.addMap( mapB );
-        
-        assertEquals( mapA, mappingService.getMap( idA ) );
-        assertEquals( mapB, mappingService.getMap( idB ) );
-    }
+	private PeriodType periodType;
+	private Period period;
 
-    @Test
-    public void testDeleteMap()
-    {
-        int idA = mappingService.addMap( mapA );
-        int idB = mappingService.addMap( mapB );
+	private Map mapA;
+	private Map mapB;
 
-        mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-        
-        assertNotNull( mappingService.getMap( idA ) );
-        assertNotNull( mappingService.getMap( idB ) );
-        
-        mappingService.deleteMap( mapA );
+	private MapOrganisationUnitRelation mapOrganisationUnitRelationA;
+	private MapOrganisationUnitRelation mapOrganisationUnitRelationB;
 
-        assertNull( mappingService.getMap( idA ) );
-        assertNotNull( mappingService.getMap( idB ) );
+	// -------------------------------------------------------------------------
+	// Fixture
+	// -------------------------------------------------------------------------
 
-        mappingService.deleteMap( mapB );
+	@Override
+	public void setUpTest() {
+		mappingService = (MappingService) getBean(MappingService.ID);
 
-        assertNull( mappingService.getMap( idA ) );
-        assertNull( mappingService.getMap( idB ) );        
-    }
+		organisationUnitService = (OrganisationUnitService) getBean(OrganisationUnitService.ID);
 
-    // -------------------------------------------------------------------------
-    // MapOrganisationUnitRelation tests
-    // -------------------------------------------------------------------------
+		indicatorService = (IndicatorService) getBean(IndicatorService.ID);
 
-    @Test
-    public void addGetMapOrganisationUnitRelation()
-    {
-        mappingService.addMap( mapA );
-        mappingService.addMap( mapB );
-        
-        int idA = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        int idB = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-        
-        assertEquals( mappingService.getMapOrganisationUnitRelation( idA ), mapOrganisationUnitRelationA );
-        assertEquals( mappingService.getMapOrganisationUnitRelation( idB ), mapOrganisationUnitRelationB );        
-    }
+		periodService = (PeriodService) getBean(PeriodService.ID);
 
-    @Test
-    public void deleteMapOrganisationUnitRelation()
-    {
-        mappingService.addMap( mapA );
-        mappingService.addMap( mapB );
-        
-        int idA = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        int idB = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-        
-        assertNotNull( mappingService.getMapOrganisationUnitRelation( idA ) );
-        assertNotNull( mappingService.getMapOrganisationUnitRelation( idB ) );
-        
-        mappingService.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        
-        assertNull( mappingService.getMapOrganisationUnitRelation( idA ) );
-        assertNotNull( mappingService.getMapOrganisationUnitRelation( idB ) );
-        
-        mappingService.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-        
-        assertNull( mappingService.getMapOrganisationUnitRelation( idA ) );
-        assertNull( mappingService.getMapOrganisationUnitRelation( idB ) );        
-    }
-    
-    // -------------------------------------------------------------------------
-    // MapView tests
-    // -------------------------------------------------------------------------
+		organisationUnit = createOrganisationUnit('A');
+		organisationUnitLevel = new OrganisationUnitLevel(1, "Level");
 
-    @Test
-    public void testAddGetMapView()
-    {
-        mappingService.addMap( mapA );
-        
-        MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", 1, 1, "A", "B" );
-        
-        int idA = mappingService.addMapView( mapView );
-        
-        assertEquals( mapView, mappingService.getMapView( idA ) );
-        assertEquals( indicatorGroup, mappingService.getMapView( idA ).getIndicatorGroup() );
-        assertEquals( indicator, mappingService.getMapView( idA ).getIndicator() );
-        assertEquals( periodType, mappingService.getMapView( idA ).getPeriodType() );
-        assertEquals( period, mappingService.getMapView( idA ).getPeriod() );
-    }
+		organisationUnitService.addOrganisationUnit(organisationUnit);
+		organisationUnitService.addOrganisationUnitLevel(organisationUnitLevel);
+
+		mapA = createMap('A', organisationUnit, organisationUnitLevel);
+		mapB = createMap('B', organisationUnit, organisationUnitLevel);
+
+		mapOrganisationUnitRelationA = new MapOrganisationUnitRelation(mapA,
+				organisationUnit, "Feature");
+		mapOrganisationUnitRelationB = new MapOrganisationUnitRelation(mapB,
+				organisationUnit, "Feature");
+
+		indicatorGroup = createIndicatorGroup('A');
+		indicatorService.addIndicatorGroup(indicatorGroup);
+
+		indicatorType = createIndicatorType('A');
+		indicatorService.addIndicatorType(indicatorType);
+
+		indicator = createIndicator('A', indicatorType);
+		indicatorService.addIndicator(indicator);
+
+		periodType = periodService.getPeriodTypeByName(MonthlyPeriodType.NAME);
+		period = createPeriod(periodType, getDate(2000, 1, 1), getDate(2000, 2,
+				1));
+		periodService.addPeriod(period);
+	}
+
+	// -------------------------------------------------------------------------
+	// Map tests
+	// -------------------------------------------------------------------------
+
+	@Test
+	public void testAddGetMap() {
+		int idA = mappingService.addMap(mapA);
+		int idB = mappingService.addMap(mapB);
+
+		assertEquals(mapA, mappingService.getMap(idA));
+		assertEquals(mapB, mappingService.getMap(idB));
+	}
+
+	@Test
+	public void testDeleteMap() {
+		int idA = mappingService.addMap(mapA);
+		int idB = mappingService.addMap(mapB);
+
+		mappingService
+				.addMapOrganisationUnitRelation(mapOrganisationUnitRelationA);
+		mappingService
+				.addMapOrganisationUnitRelation(mapOrganisationUnitRelationB);
+
+		assertNotNull(mappingService.getMap(idA));
+		assertNotNull(mappingService.getMap(idB));
+
+		mappingService.deleteMap(mapA);
+
+		assertNull(mappingService.getMap(idA));
+		assertNotNull(mappingService.getMap(idB));
+
+		mappingService.deleteMap(mapB);
+
+		assertNull(mappingService.getMap(idA));
+		assertNull(mappingService.getMap(idB));
+	}
+
+	// -------------------------------------------------------------------------
+	// MapOrganisationUnitRelation tests
+	// -------------------------------------------------------------------------
+
+	@Test
+	public void addGetMapOrganisationUnitRelation() {
+		mappingService.addMap(mapA);
+		mappingService.addMap(mapB);
+
+		int idA = mappingService
+				.addMapOrganisationUnitRelation(mapOrganisationUnitRelationA);
+		int idB = mappingService
+				.addMapOrganisationUnitRelation(mapOrganisationUnitRelationB);
+
+		assertEquals(mappingService.getMapOrganisationUnitRelation(idA),
+				mapOrganisationUnitRelationA);
+		assertEquals(mappingService.getMapOrganisationUnitRelation(idB),
+				mapOrganisationUnitRelationB);
+	}
+
+	@Test
+	public void deleteMapOrganisationUnitRelation() {
+		mappingService.addMap(mapA);
+		mappingService.addMap(mapB);
+
+		int idA = mappingService
+				.addMapOrganisationUnitRelation(mapOrganisationUnitRelationA);
+		int idB = mappingService
+				.addMapOrganisationUnitRelation(mapOrganisationUnitRelationB);
+
+		assertNotNull(mappingService.getMapOrganisationUnitRelation(idA));
+		assertNotNull(mappingService.getMapOrganisationUnitRelation(idB));
+
+		mappingService
+				.deleteMapOrganisationUnitRelation(mapOrganisationUnitRelationA);
+
+		assertNull(mappingService.getMapOrganisationUnitRelation(idA));
+		assertNotNull(mappingService.getMapOrganisationUnitRelation(idB));
+
+		mappingService
+				.deleteMapOrganisationUnitRelation(mapOrganisationUnitRelationB);
+
+		assertNull(mappingService.getMapOrganisationUnitRelation(idA));
+		assertNull(mappingService.getMapOrganisationUnitRelation(idB));
+	}
+
+	// -------------------------------------------------------------------------
+	// MapView tests
+	// -------------------------------------------------------------------------
+
+	@Test
+	public void testAddGetMapView() {
+		mappingService.addMap(mapA);
+
+		MapView mapView = new MapView("MapViewA", indicatorGroup, indicator,
+				periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE,
+				"sl_districts", 1, 1, "A", "B", "1", "1", 1);
+
+		int idA = mappingService.addMapView(mapView);
+
+		assertEquals(mapView, mappingService.getMapView(idA));
+		assertEquals(indicatorGroup, mappingService.getMapView(idA)
+				.getIndicatorGroup());
+		assertEquals(indicator, mappingService.getMapView(idA).getIndicator());
+		assertEquals(periodType, mappingService.getMapView(idA).getPeriodType());
+		assertEquals(period, mappingService.getMapView(idA).getPeriod());
+	}
 }

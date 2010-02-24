@@ -158,17 +158,16 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                 params: { id: PARAMETER },
 
                                 success: function( responseObject ) {
-									PARAMETER = null;
+									PARAMETER = false;
                                     MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
                                     
                                     MAPSOURCE = MAPVIEW.mapSourceType;
 									Ext.getCmp('mapsource_cb').setValue(MAPSOURCE);
-                                    
                                     Ext.getCmp('mapview_cb').setValue(MAPVIEW.id);
-                                    
                                     Ext.getCmp('numClasses').setValue(MAPVIEW.classes);
                                     Ext.getCmp('colorA_cf').setValue(MAPVIEW.colorLow);
                                     Ext.getCmp('colorB_cf').setValue(MAPVIEW.colorHigh);
+									MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
 
                                     Ext.getCmp('indicatorgroup_cb').setValue(MAPVIEW.indicatorGroupId);
                                     
@@ -286,8 +285,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     fn: function() {
                         if (MAPVIEW) {
                             Ext.getCmp('map_cb').setValue(MAPVIEW.mapSource);
-                            MAPVIEW = null;
-                            choropleth.classify(false);
+                            choropleth.classify(false, true);
+                            MAPVIEW = false;
                         }
                     }
                 }
@@ -325,6 +324,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
                             success: function( responseObject ) {
                                 MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
+								MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
                                 
                                 MAPSOURCE = MAPVIEW.mapSourceType;
                                 
@@ -715,7 +715,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception) {
+    classify: function(exception, position) {
         if (!this.ready) {
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
@@ -753,7 +753,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 		MASK.msg = 'Loading data...';
         MASK.show();
 
-        loadMapData('choropleth');
+        loadMapData('choropleth', position);
     },
 
     /**

@@ -343,12 +343,12 @@ public interface MappingService
     int addMapView( MapView mapView );
 
     int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh );
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSource, int method, int classes, String colorLow, String colorHigh );
+        String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom );
 
     void deleteMapView( MapView view );
 
