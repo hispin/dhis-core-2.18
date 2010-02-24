@@ -154,6 +154,16 @@ public class HibernateReportExcelStore
         return criteria.list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<String> getALLReportExcelTemplates()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        SQLQuery sqlQuery = session.createSQLQuery( "select DISTINCT(exceltemplate) from reportexcels" );
+
+        return sqlQuery.list();
+    }
+
     // --------------------------------------
     // Service of Report Item
     // --------------------------------------
@@ -222,7 +232,7 @@ public class HibernateReportExcelStore
     {
         String sql = "delete ReportExcelItem d where d.id in (:ids)";
 
-        Query query = sessionFactory.getCurrentSession().createQuery( sql );        
+        Query query = sessionFactory.getCurrentSession().createQuery( sql );
         query.setParameterList( "ids", ids );
 
         query.executeUpdate();
@@ -358,6 +368,19 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
         session.update( periodColumn );
+    }
+    
+    @Override
+    public void updateReportWithExcelTemplate( String curTemplateName, String newTemplateName )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "update reportexcels set exceltemplate = " + newTemplateName + " where exceltemplate LIKE '"
+            + curTemplateName + "'";
+
+        SQLQuery query = session.createSQLQuery( sql );
+
+        query.executeUpdate();
+
     }
 
 }

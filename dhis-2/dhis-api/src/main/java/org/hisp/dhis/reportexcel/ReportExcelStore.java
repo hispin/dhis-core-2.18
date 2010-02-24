@@ -59,9 +59,11 @@ public interface ReportExcelStore
 
     public Collection<ReportExcel> getALLReportExcel();
 
+    public Collection<ReportExcel> getReportsByGroup( String group );
+
     public Collection<String> getReportExcelGroups();
 
-    public Collection<ReportExcel> getReportsByGroup( String group );
+    public Collection<String> getALLReportExcelTemplates();
 
     // --------------------------------------
     // Service of Report Item
@@ -82,6 +84,8 @@ public interface ReportExcelStore
     public Collection<Integer> getSheets( Integer reportId );
     
     public void deleteMultiReportExcelItem( Collection<Integer> ids );
+    
+    public void updateReportWithExcelTemplate( String curTemplateName, String newTemplateName );
 
     // --------------------------------------
     // DataElement Order

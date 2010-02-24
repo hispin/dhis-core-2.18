@@ -43,5 +43,9 @@ public interface SelectionManager
     public void setSelectedReportId( Integer id );
     
     public Integer getSelectedReportId();
+    
+    public String getRenameFilePath();
+
+    public void setRenameFilePath( String path );
 
 }

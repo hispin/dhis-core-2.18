@@ -140,7 +140,18 @@ public class FileUtils
         }
         catch ( FileNotFoundException e )
         {
-            // TODO Auto-generated catch block
+            return false;
+        }
+    }
+
+    public static boolean rename( File curFile, File newFile )
+    {
+        try
+        {
+            return curFile.renameTo( newFile );
+        }
+        catch ( Exception e )
+        {
             return false;
         }
     }

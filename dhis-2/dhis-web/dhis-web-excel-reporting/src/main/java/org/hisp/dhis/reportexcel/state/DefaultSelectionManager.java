@@ -41,6 +41,8 @@ public class DefaultSelectionManager
     private static final String SESSION_KEY_FILE_DOWNLOAD = "SESSION_KEY_FILE_DOWNLOAD";
 
     private static final String SESSION_KEY_FILE_UPLOAD = "SESSION_KEY_FILE_UPLOAD";
+    
+    private static final String SESSION_KEY_FILE_RENAME = "SESSION_KEY_FILE_RENAME";
 
     private static final String SESSION_KEY_SELECTED_REPORT_ID = "SESSION_KEY_SELECTED_REPORT_ID";
 
@@ -87,6 +89,19 @@ public class DefaultSelectionManager
     public void setSelectedReportId( Integer id )
     {
         getSession().put( SESSION_KEY_SELECTED_REPORT_ID, id );
+    }
+
+    @Override
+    public String getRenameFilePath()
+    {
+        return (String) getSession().get( SESSION_KEY_FILE_RENAME );
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setRenameFilePath( String path )
+    {
+        getSession().put( SESSION_KEY_FILE_RENAME, path );
     }
 
 }
