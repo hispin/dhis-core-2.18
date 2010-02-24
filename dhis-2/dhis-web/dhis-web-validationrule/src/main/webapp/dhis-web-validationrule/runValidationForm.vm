@@ -1,5 +1,5 @@
 
-<h3>$encoder.htmlEncode( $i18n.getString( "run_validation" ) )</h3>
+<h3>$encoder.htmlEncode( $i18n.getString( "run_validation" ) ) #openHelp( "validationRuleAnalysis" )</h3>
 
 <form id="runValidationForm" class="form" action="runValidationAction.action" method="post" onsubmit="return validateRunValidation()">
 
