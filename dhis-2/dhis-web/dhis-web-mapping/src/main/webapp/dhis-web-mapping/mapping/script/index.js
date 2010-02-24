@@ -365,7 +365,7 @@ Ext.onReady( function() {
         items:
         [
             { html: '<div class="window-info">Saving current thematic map selection.</div>' },
-            { html: '<div class="window-field-label">Display name</div>' },
+            { html: '<div class="window-field-label-first">Display name</div>' },
 			viewNameTextField,
 			{
 				xtype: 'button',
@@ -446,7 +446,7 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<div class="window-field-label">View</div>' },
+            { html: '<div class="window-field-label-first">View</div>' },
 			viewComboBox,
 			{
 				xtype: 'button',
@@ -489,7 +489,7 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<div class="window-field-label">View</div>' },
+            { html: '<div class="window-field-label-first">View</div>' },
 			view2ComboBox,
 			{
 				xtype: 'button',
@@ -598,12 +598,16 @@ Ext.onReady( function() {
     /* LEGEND SET PANEL */
     var legendSetNameTextField = new Ext.form.TextField({
         id: 'legendsetname_tf',
+		isFormField: true,
+		hideLabel: true,
         emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var legendSetMethodComboBox = new Ext.form.ComboBox({
         id: 'legendsetmethod_cb',
+		isFormField: true,
+		hideLabel: true,
         editable: false,
         valueField: 'value',
         displayField: 'text',
@@ -620,6 +624,8 @@ Ext.onReady( function() {
     
     var legendSetClassesComboBox = new Ext.form.ComboBox({
         id: 'legendsetclasses_cb',
+		isFormField: true,
+		hideLabel: true,
         editable: false,
         valueField: 'value',
         displayField: 'value',
@@ -637,6 +643,8 @@ Ext.onReady( function() {
     
     var legendSetLowColorColorPalette = new Ext.ux.ColorField({
         id: 'legendsetlowcolor_cp',
+		isFormField: true,
+		hideLabel: true,
         allowBlank: false,
         width: combo_width,
         minListWidth: combo_list_width,
@@ -645,6 +653,8 @@ Ext.onReady( function() {
     
     var legendSetHighColorColorPalette = new Ext.ux.ColorField({
         id: 'legendsethighcolor_cp',
+		isFormField: true,
+		hideLabel: true,
         allowBlank: false,
         width: combo_width,
         minListWidth: combo_list_width,
@@ -662,6 +672,8 @@ Ext.onReady( function() {
 	
 	var legendSetComboBox = new Ext.form.ComboBox({
         id: 'legendset_cb',
+		isFormField: true,
+		hideLabel: true,
         typeAhead: true,
         editable: false,
         valueField: 'id',
@@ -716,6 +728,8 @@ Ext.onReady( function() {
     
     var legendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
         id: 'legendsetindicator_ms',
+		isFormField: true,
+		hideLabel: true,
         dataFields: ['id', 'name', 'shortName'], 
         valueField: 'id',
         displayField: 'shortName',
@@ -726,6 +740,8 @@ Ext.onReady( function() {
 	    
     var legendSet2ComboBox = new Ext.form.ComboBox({
         id: 'legendset2_cb',
+		isFormField: true,
+		hideLabel: true,
         typeAhead: true,
         editable: false,
         valueField: 'id',
@@ -740,28 +756,27 @@ Ext.onReady( function() {
         store: legendSetStore
     });
     
-    var newLegendSetPanel = new Ext.Panel({   
+    var newLegendSetPanel = new Ext.form.FormPanel({   
         id: 'newlegendset_p',
+		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' },
+            { html: '<div class="window-field-label-first">Display name</div>' },
             legendSetNameTextField,
-            { html: '<br>' },
 /*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Method</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Classes</p>' },
+            { html: '<div class="window-field-label">Classes</div>' },
             legendSetClassesComboBox,
-            { html: '<br>' },
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Lowest value color</p>' },
+            { html: '<div class="window-field-label">Lowest value color</div>' },
             legendSetLowColorColorPalette,
-            { html: '<br>' },
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Highest value color</p>' },
+            { html: '<div class="window-field-label">Highest value color</div>' },
             legendSetHighColorColorPalette,
-            { html: '<p style="padding-bottom:11px>' },
             {
                 xtype: 'button',
                 id: 'newlegendset_b',
+				isFormField: true,
+				hideLabel: true,
                 text: 'Save',
-				cls: 'aa_med',
+				cls: 'window-button',
                 handler: function() {
                     var ln = Ext.getCmp('legendsetname_tf').getValue();
         /*            var lm = Ext.getCmp('legendsetmethod_cb').getValue();*/
@@ -820,21 +835,20 @@ Ext.onReady( function() {
         ]
     });
 	
-	var assignLegendSetPanel = new Ext.Panel({   
+	var assignLegendSetPanel = new Ext.form.FormPanel({   
         id: 'assignlegendset_p',
+		bodyStyle: 'border:0px',
         items:
         [   
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Legend set</p>' },
+            { html: '<div class="window-field-label-first">Legend set</div>' },
             legendSetComboBox,
-            { html: '<br>' },
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Indicators</p>' },
-            legendSetIndicatorMultiSelect,
-            { html: '<p style="padding-bottom:11px>' },
+            { html: '<div class="window-field-label">Indicators</div>' },
+			legendSetIndicatorMultiSelect,
             {
                 xtype: 'button',
                 id: 'assignlegendset_b',
                 text: 'Assign to indicators',
-				cls: 'aa_med',
+				cls: 'window-button',
                 handler: function() {
                     var ls = Ext.getCmp('legendset_cb').getValue();
                     var lsrw = Ext.getCmp('legendset_cb').getRawValue();
@@ -879,18 +893,18 @@ Ext.onReady( function() {
         ]
     });
     
-    var deleteLegendSetPanel = new Ext.Panel({
+    var deleteLegendSetPanel = new Ext.form.FormPanel({
         id: 'deletelegendset_p',
+		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Legend set</p>' },
+            { html: '<div class="window-field-label-first">Legend set</p>' },
             legendSet2ComboBox,
-            { html: '<p style="padding-bottom:11px>' },
             {
                 xtype: 'button',
                 id: 'deletelegendset_b',
                 text: 'Delete',
-				cls: 'aa_med',
+				cls: 'window-button',
                 handler: function() {
                     var ls = Ext.getCmp('legendset2_cb').getValue();
                     var lsrw = Ext.getCmp('legendset2_cb').getRawValue();
@@ -944,10 +958,10 @@ Ext.onReady( function() {
                         var w = Ext.getCmp('legendset_w');
                         
                         if (tab.id == 'legendset0') { 
-                            w.setHeight(305);
+                            w.setHeight(306);
                         }
                         else if (tab.id == 'legendset1') {
-                            w.setHeight(getMultiSelectHeight() + 178);
+                            w.setHeight(getMultiSelectHeight() + 180);
                         }
                         else if (tab.id == 'legendset2') {
                             w.setHeight(149);
