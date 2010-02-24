@@ -9,7 +9,12 @@ To build a deb package:
 
 Thats it.  By default hibernate properties is setup to use h2 database in /opt/dhis2/database. This
 can be changed to point to mysql, postgres or what have you.  
- 
+
+Tomcat should be running on http://localhost:8080. To manually restart Tomcat do:
+
+sudo /etc/init.d/tomcat6 restart
+Available options are:  start|stop|restart|try-restart|force-reload|status
+
 Logging and other 'DHIS2_HOME' related stuff happens in /opt/dhis2.
 
 Everything is owned by tomcat user and password files are chmof 600.
