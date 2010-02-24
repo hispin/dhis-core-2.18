@@ -4,7 +4,12 @@
 
 //  MapFish print module
 
-    printConfigUrl = '../../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
+    var layerOverrides = {
+        "World": {overview: true},
+        Countries: { format: 'image/svg+xml' }
+    };
+
+    var printConfigUrl = '../../pdf/info.json';
 
 //  Ajax requests
 

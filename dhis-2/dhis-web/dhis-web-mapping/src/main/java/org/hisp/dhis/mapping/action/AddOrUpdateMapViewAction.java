@@ -122,6 +122,24 @@ public class AddOrUpdateMapViewAction
     {
         this.colorHigh = colorHigh;
     }
+    
+    private String longitude;
+    
+    public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+    
+    private String latitude;
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	
+	private int zoom;
+
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+	}
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -131,7 +149,7 @@ public class AddOrUpdateMapViewAction
         throws Exception
     {
         mappingService.addOrUpdateMapView( name, indicatorGroupId, indicatorId, periodTypeId, periodId, mapSource,
-            method, classes, colorLow, colorHigh );
+            method, classes, colorLow, colorHigh, longitude, latitude, zoom );
         
         return SUCCESS;
     }

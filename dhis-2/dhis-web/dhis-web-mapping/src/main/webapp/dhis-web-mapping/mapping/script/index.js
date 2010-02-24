@@ -387,6 +387,9 @@ Ext.onReady( function() {
 					var c = Ext.getCmp('numClasses').getValue();
 					var ca = Ext.getCmp('colorA_cf').getValue();
 					var cb = Ext.getCmp('colorB_cf').getValue();
+					var lon = MAP.getCenter().lon;
+					var lat = MAP.getCenter().lat;
+					var zoom = parseInt(MAP.getZoom());
 					
 					if (!vn) {
 						Ext.messageRed.msg('New map view', 'Map view form is not complete.');
@@ -419,7 +422,7 @@ Ext.onReady( function() {
 							Ext.Ajax.request({
 								url: path + 'addOrUpdateMapView' + type,
 								method: 'POST',
-								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb },
+								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb, longitude: lon, latitude: lat, zoom: zoom },
 
 								success: function( responseObject ) {
 									Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
@@ -2779,13 +2782,6 @@ Ext.onReady( function() {
 			window.location.href = '../../dhis-web-portal/redirect.action'
 		}
 	});
-	
-	var layerOverrides={
-        "OpenLayers WMS": {overview: true},
-        Countries: { format: 'image/svg+xml' }
-    };
-
-    var printConfigUrl = '../../pdf/info.json';
 	
 	var mapToolbar = new Ext.Toolbar({
 		id: 'map_tb',

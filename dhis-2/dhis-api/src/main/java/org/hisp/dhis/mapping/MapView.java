@@ -66,12 +66,18 @@ public class MapView
     
     private String colorHigh;
     
+    private String longitude;
+    
+    private String latitude;
+    
+    private int zoom;
+    
     public MapView()
     {
     }
 
     public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType, Period period, String mapSourceType, String mapSource,
-        int method, int classes, String colorLow, String colorHigh )
+        int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.indicatorGroup = indicatorGroup;
@@ -84,6 +90,10 @@ public class MapView
         this.classes = classes;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.zoom = zoom;
+        
     }
     
     // -------------------------------------------------------------------------
@@ -242,4 +252,28 @@ public class MapView
     {
         this.colorHigh = colorHigh;
     }
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public int getZoom() {
+		return zoom;
+	}
+
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+	}
 }

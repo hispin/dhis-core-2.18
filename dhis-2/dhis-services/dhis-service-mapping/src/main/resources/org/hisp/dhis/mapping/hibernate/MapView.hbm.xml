@@ -35,7 +35,13 @@
 		
 		<property name="colorLow"/>
 			
-		<property name="colorHigh"/>	
+		<property name="colorHigh"/>
+		
+		<property name="longitude"/>
+        
+        <property name="latitude"/>
+        
+        <property name="zoom"/>		
 			
 	</class>
 	
