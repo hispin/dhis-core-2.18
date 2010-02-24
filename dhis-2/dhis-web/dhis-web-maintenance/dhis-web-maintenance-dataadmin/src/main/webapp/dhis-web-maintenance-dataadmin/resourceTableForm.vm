@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "resource_table" )#openHelp( "resourceTables" )</h3>
+<h3>$i18n.getString( "resource_table" ) #openHelp( "resourceTables" )</h3>
 
 <p>
     <input type="checkbox" id="organisationUnit">

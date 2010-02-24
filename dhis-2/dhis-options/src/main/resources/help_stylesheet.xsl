@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:param name="sectionId">learningObjectives</xsl:param>
+<xsl:param name="sectionId">dataBrowser</xsl:param>
 
-<xsl:template match="title">
-  <h3><xsl:value-of select="."/></h3>
-</xsl:template>
+<xsl:template match="section">
+  <h3><xsl:value-of select="title"/></h3>
+  <xsl:apply-templates select="para|orderedlist|itemizedlist"/>
+ </xsl:template>
 
 <xsl:template match="para">
   <p><xsl:value-of select="."/></p>
