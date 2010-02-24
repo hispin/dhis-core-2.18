@@ -171,7 +171,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 var cls = ''; 
                 switch (row.data.featureId) {
                     case '': 
-                        cls = 'row-not-assigned';
+                        cls = 'row-unassigned';
                         break;
                     default:
                         cls = 'row-assigned';

@@ -356,8 +356,7 @@ Ext.onReady( function() {
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_list_width,
-        store: viewStore,
-        bodyStyle: 'margin-bottom:4px'
+        store: viewStore
     });
     
     var newViewPanel = new Ext.form.FormPanel({
@@ -365,18 +364,16 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [
-            { html: '<font style="' + AA_MED + '">Saving current thematic map selection.</font>' },
-			{ html: '<br>' },
-            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' },
+            { html: '<div class="window-info">Saving current thematic map selection.</div>' },
+            { html: '<div class="window-field-label">Display name</div>' },
 			viewNameTextField,
-			{ html: '<p style="padding-bottom:7px>' },
 			{
 				xtype: 'button',
                 id: 'newview_b',
 				isFormField: true,
 				hideLabel: true,
+				cls: 'window-button',
 				text: 'Save',
-				cls: 'aa_med',
 				handler: function() {
 					var vn = Ext.getCmp('viewname_tf').getValue();
 					var ig = Ext.getCmp('indicatorgroup_cb').getValue();
@@ -449,16 +446,15 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<p style="' + LABEL + AA_LIGHT + '">View</p>' },
+            { html: '<div class="window-field-label">View</div>' },
 			viewComboBox,
-			{ html: '<p style="padding-bottom:7px>' },
 			{
 				xtype: 'button',
                 id: 'deleteview_b',
 				isFormField: true,
 				hideLabel: true,
 				text: 'Delete',
-				cls: 'aa_med',
+				cls: 'window-button',
 				handler: function() {
 					var v = Ext.getCmp('view_cb').getValue();
 					var name = Ext.getCmp('view_cb').getStore().getById(v).get('name');
@@ -488,21 +484,20 @@ Ext.onReady( function() {
         ]
     });
     
-    var dashboardViewPanel = new Ext.Panel({   
+    var dashboardViewPanel = new Ext.form.FormPanel({   
         id: 'dashboardview_p',
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<p style="' + LABEL + AA_LIGHT + '">View</p>' },
+            { html: '<div class="window-field-label">View</div>' },
 			view2ComboBox,
-			{ html: '<p style="padding-bottom:11px>' },
 			{
 				xtype: 'button',
                 id: 'dashboardview_b',
 				isFormField: true,
 				hideLabel: true,
-				text: 'Add to DHIS 2 Dashboard',
-				cls: 'aa_med',
+				text: 'Add to DHIS dashboard',
+				cls: 'window-button',
 				handler: function() {
 					var v2 = Ext.getCmp('view2_cb').getValue();
 					var nv = Ext.getCmp('view2_cb').getRawValue();
@@ -552,13 +547,13 @@ Ext.onReady( function() {
                     tabchange: function(panel, tab)
                     {
                         if (tab.id == 'view0') { 
-                            viewWindow.setHeight(192);
+                            viewWindow.setHeight(173);
                         }
                         else if (tab.id == 'view1') {
-                            viewWindow.setHeight(148);
+                            viewWindow.setHeight(150);
                         }
                         else if (tab.id == 'view2') {
-                            viewWindow.setHeight(148);
+                            viewWindow.setHeight(150);
                         }
                     }
                 },
@@ -581,16 +576,6 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
                         title: '<font style="' + AA_MED + '">Add to dashboard</font>',
                         id: 'view2',
                         items:
