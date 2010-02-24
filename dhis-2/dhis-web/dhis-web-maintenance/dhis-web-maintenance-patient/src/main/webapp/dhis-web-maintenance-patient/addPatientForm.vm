@@ -53,8 +53,9 @@
 	<tr>
 		<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="gender" name="gender" style="min-width:20em">
-				<option value="M" selected="selected">$i18n.getString( "male" )</option>
+			<select id="gender" name="gender" style="min-width:20em" class="{validate:{required:true}}">
+				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+				<option value="M" >$i18n.getString( "male" )</option>
 				<option value="F">$i18n.getString( "female" )</option>
 			</select>
 		</td>		

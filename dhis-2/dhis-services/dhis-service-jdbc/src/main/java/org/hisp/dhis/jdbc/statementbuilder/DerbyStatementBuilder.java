@@ -128,4 +128,9 @@ public class DerbyStatementBuilder
     {
         return 1200; //TODO verify
     }
+
+    public String getDropDatasetForeignKeyForDataEntryFormTable()
+    {
+        return "ALTER TABLE dataentryform DROP FOREIGN KEY fk_dataentryform_datasetid;" ;
+    }
 }
