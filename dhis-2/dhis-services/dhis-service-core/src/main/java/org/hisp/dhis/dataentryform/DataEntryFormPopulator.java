@@ -50,7 +50,7 @@ public class DataEntryFormPopulator
         }
         catch ( Exception ex )
         {
-            log.error( ex );
+            log.debug( ex );
         }
     }
 
