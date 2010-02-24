@@ -1,9 +1,9 @@
-<h2>$i18n.getString( "dataset_completed_report" )</h2>
+<h3>$i18n.getString( "dataset_completed_report" )</h3>
 
 <table width="100%" class="list">
 	<tr>
-		<th style="background:#DFDFDF">$i18n.getString( 'dataset' )</th>
-		<th style="background:#DFDFDF"></th>		
+		<th>$i18n.getString( 'dataset' )</th>
+		<th></th>		
 	</tr>
 	#set( $mark = false )
 	#foreach($ds in $dataStatus)

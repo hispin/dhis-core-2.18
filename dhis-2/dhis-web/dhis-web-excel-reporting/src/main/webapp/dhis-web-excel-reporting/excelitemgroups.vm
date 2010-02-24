@@ -1,4 +1,4 @@
-<h2>$i18n.getString('excelitem_group')</h2>
+<h3>$i18n.getString('excelitem_group')</h3>
 <table width=100%>
 	<tr>
 		<td>

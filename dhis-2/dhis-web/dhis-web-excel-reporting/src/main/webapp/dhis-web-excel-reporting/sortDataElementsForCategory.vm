@@ -1,4 +1,4 @@
-﻿ <h2>$i18n.getString( "sort_dataelement" )</h2>
+<h3>$i18n.getString( "sort_dataelement" )</h3>
 <input type="hidden" id="dataElementGroupOrderId" name="dataElementGroupOrderId" value="$dataElementGroupOrder.id">
 <table>
 	<tr>

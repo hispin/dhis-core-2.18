@@ -1,4 +1,4 @@
-<h2>$!encoder.htmlEncode($!organisationUnit.name)</h2>
+<h3>$!encoder.htmlEncode($!organisationUnit.name)</h3>
 <table width="100%">
 	<tr>
 		<td>

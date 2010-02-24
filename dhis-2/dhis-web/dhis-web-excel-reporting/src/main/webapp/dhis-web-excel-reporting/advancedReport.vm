@@ -1,4 +1,4 @@
-﻿<h2>$i18n.getString( "generate_advanced_report" )</h2>
+<h3>$i18n.getString( "generate_advanced_report" )</h3>
 <table >	
 	<tr>
 		<td ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

@@ -1,4 +1,4 @@
-<h2>$i18n.getString('dataelement_groups')</h2>
+<h3>$i18n.getString('dataelement_groups')</h3>
 <div id="tooltip"></div>
 <p></p>
 <table width="800px">
