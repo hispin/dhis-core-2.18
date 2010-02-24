@@ -1,4 +1,10 @@
-﻿/* MAPPING GRID */
+﻿/* EXT */
+
+.ext-gecko .x-window-body .x-form-item {
+	overflow: hidden;
+}
+
+/* MAPPING GRID */
 
 .row-assigned  {
 	background-color:#b1ffa1;
@@ -90,8 +96,16 @@
 	padding:0 0 8px 0;
 }
 
+.window-field-label-first {
+	padding:0px 0 3px 3px;
+	font-family:lucida sans unicode,arial;
+	font-weight:normal;
+	font-size:11px;
+	color:#888;
+}
+
 .window-field-label {
-	padding:0px 0 4px 3px;
+	padding:8px 0 3px 3px;
 	font-family:lucida sans unicode,arial;
 	font-weight:normal;
 	font-size:11px;
