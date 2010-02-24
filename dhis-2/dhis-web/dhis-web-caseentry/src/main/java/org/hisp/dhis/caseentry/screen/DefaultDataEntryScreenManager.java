@@ -304,7 +304,8 @@ public class DefaultDataEntryScreenManager
         result = populateCustomDataEntryForDate( result, dataValues, calculatedValueMap, minMaxMap, disabled, saveMode,
             i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
-
+        result = populateI18nStrings( result, i18n );
+        
         return result;
     }
 
@@ -1430,6 +1431,42 @@ public class DefaultDataEntryScreenManager
         
         return appendCode;
 
+    }
+
+    private String populateI18nStrings( String dataEntryFormCode, I18n i18n )
+    {
+         StringBuffer sb = new StringBuffer();
+                
+         // ---------------------------------------------------------------------
+         // Pattern to match i18n strings in the HTML code
+         // ---------------------------------------------------------------------
+
+         //Pattern i18nPattern = Pattern.compile( "(<i18n::.*?)[/]?>", Pattern.DOTALL );
+         Pattern i18nPattern = Pattern.compile( "(<i18n.*?)[/]?</i18n>", Pattern.DOTALL );
+         Matcher i18nMatcher = i18nPattern.matcher( dataEntryFormCode );
+       
+         // ---------------------------------------------------------------------
+         // Iterate through all matching i18n element fields
+         // ---------------------------------------------------------------------
+
+         while ( i18nMatcher.find() )
+         {             
+             String i18nCode = i18nMatcher.group( 1 );
+
+             i18nCode = i18nCode.replaceAll("<i18n>", "");                      
+             
+             i18nCode = i18n.getString( i18nCode );
+             
+             i18nMatcher.appendReplacement( sb, i18nCode );             
+         }
+
+         i18nMatcher.appendTail( sb );
+         
+         String result = sb.toString();
+         
+         result.replaceAll("</i18n>", "");
+
+         return result;
     }
 
 }
