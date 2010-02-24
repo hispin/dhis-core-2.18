@@ -45,7 +45,7 @@ public class CreateOrganisationUnitGroupSetTableStatement
     
     public static final String TABLE_NAME = "_organisationunitgroupsetstructure";
 
-    private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (160)";
+    private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (250)";
     
     private List<OrganisationUnitGroupSet> groupSets;
     
