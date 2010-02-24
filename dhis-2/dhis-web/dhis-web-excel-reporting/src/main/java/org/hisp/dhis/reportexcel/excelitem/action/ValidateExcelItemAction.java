@@ -176,7 +176,7 @@ public class ValidateExcelItemAction
 
             ExcelItem temp = excelItemGroup.getExcelItemByName( name );
 
-            if ( excelItem != temp )
+            if ( temp != null && excelItem != temp )
             {
                 message = i18n.getString( "name_ready_exist" );
 
