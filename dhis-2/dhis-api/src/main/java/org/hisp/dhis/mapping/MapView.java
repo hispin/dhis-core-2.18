@@ -39,45 +39,48 @@ import org.hisp.dhis.period.PeriodType;
 public class MapView
 {
     public static final String MAP_SOURCE_TYPE_DATABASE = "database";
+
     public static final String MAP_SOURCE_TYPE_GEOJSON = "geojson";
+
     public static final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
 
     private int id;
 
     private String name;
-    
+
     private IndicatorGroup indicatorGroup;
-    
+
     private Indicator indicator;
-    
+
     private PeriodType periodType;
-    
+
     private Period period;
-    
+
     private String mapSourceType;
-    
+
     private String mapSource;
-    
+
     private int method;
-    
+
     private int classes;
-    
+
     private String colorLow;
-    
+
     private String colorHigh;
-    
+
     private String longitude;
-    
+
     private String latitude;
-    
-    private int zoom;
-    
+
+    private Integer zoom;
+
     public MapView()
     {
     }
 
-    public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType, Period period, String mapSourceType, String mapSource,
-        int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom )
+    public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType,
+        Period period, String mapSourceType, String mapSource, int method, int classes, String colorLow,
+        String colorHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.indicatorGroup = indicatorGroup;
@@ -93,13 +96,13 @@ public class MapView
         this.longitude = longitude;
         this.latitude = latitude;
         this.zoom = zoom;
-        
+
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
@@ -113,22 +116,22 @@ public class MapView
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final MapView other = (MapView) object;
-        
+
         return name.equals( other.name );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -202,7 +205,7 @@ public class MapView
     {
         this.mapSourceType = mapSourceType;
     }
-    
+
     public String getMapSource()
     {
         return mapSource;
@@ -253,27 +256,33 @@ public class MapView
         this.colorHigh = colorHigh;
     }
 
-	public String getLongitude() {
-		return longitude;
-	}
+    public String getLongitude()
+    {
+        return longitude;
+    }
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
+    public void setLongitude( String longitude )
+    {
+        this.longitude = longitude;
+    }
 
-	public String getLatitude() {
-		return latitude;
-	}
+    public String getLatitude()
+    {
+        return latitude;
+    }
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
+    }
 
-	public int getZoom() {
-		return zoom;
-	}
+    public Integer getZoom()
+    {
+        return zoom;
+    }
 
-	public void setZoom(int zoom) {
-		this.zoom = zoom;
-	}
+    public void setZoom( Integer zoom )
+    {
+        this.zoom = zoom;
+    }
 }
