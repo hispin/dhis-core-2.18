@@ -52,94 +52,97 @@ public class AddOrUpdateMapViewAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private String name;
-    
+
     public void setName( String name )
     {
         this.name = name;
     }
-    
+
     private int indicatorGroupId;
-    
+
     public void setIndicatorGroupId( int indicatorGroupId )
     {
         this.indicatorGroupId = indicatorGroupId;
     }
-    
+
     private int indicatorId;
-    
+
     public void setIndicatorId( int indicatorId )
     {
         this.indicatorId = indicatorId;
     }
-    
+
     private String periodTypeId;
-    
+
     public void setPeriodTypeId( String periodTypeId )
     {
         this.periodTypeId = periodTypeId;
     }
-    
+
     private int periodId;
-    
+
     public void setPeriodId( int periodId )
     {
         this.periodId = periodId;
     }
-    
+
     private String mapSource;
-    
+
     public void setMapSource( String mapSource )
     {
         this.mapSource = mapSource;
     }
-    
+
     private int method;
-    
+
     public void setMethod( int method )
     {
         this.method = method;
     }
-    
+
     private int classes;
-    
+
     public void setClasses( int classes )
     {
         this.classes = classes;
     }
-    
+
     private String colorLow;
-    
+
     public void setColorLow( String colorLow )
     {
         this.colorLow = colorLow;
     }
-    
+
     private String colorHigh;
-    
+
     public void setColorHigh( String colorHigh )
     {
         this.colorHigh = colorHigh;
     }
-    
+
     private String longitude;
-    
-    public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-    
+
+    public void setLongitude( String longitude )
+    {
+        this.longitude = longitude;
+    }
+
     private String latitude;
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-	
-	private int zoom;
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
+    }
 
-	public void setZoom(int zoom) {
-		this.zoom = zoom;
-	}
+    private int zoom;
+
+    public void setZoom( int zoom )
+    {
+        this.zoom = zoom;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -150,7 +153,7 @@ public class AddOrUpdateMapViewAction
     {
         mappingService.addOrUpdateMapView( name, indicatorGroupId, indicatorId, periodTypeId, periodId, mapSource,
             method, classes, colorLow, colorHigh, longitude, latitude, zoom );
-        
+
         return SUCCESS;
     }
 }

@@ -1,9 +1,33 @@
-﻿.row-assigned  {
+﻿/* MAPPING GRID */
+
+.row-assigned  {
 	background-color:#b1ffa1;
 }
 
-.row-not-assigned  {
+.row-unassigned  {
 	background-color:#FFFFFF;
+}
+
+.x-grid3-cell-inner, .x-grid3-hd-inner  {
+	font-family:lucida sans unicode, arial;
+	font-weight:normal;
+	font-size:10px;
+	letter-spacing:0px;
+	color:#777;
+}
+
+.x-grid3-hd-inner, .x-grid3-hd-organisationUnitId  {
+	font-family:lucida sans unicode, arial;
+	font-weight:normal;
+	font-size:11px;
+	letter-spacing:0px;
+	color:#333;
+}
+
+/* BUTTONS */
+
+.x-btn button {
+	font:10px lucida sans unicode,arial normal;
 }
 
 .x-btn .icon-zoomin  {
@@ -26,18 +50,10 @@
 	background-image:url(../../../images/pdf.png);
 }
 
-.x-mask-loading2 div  {
-	padding:2px 11px 3px 32px;
-	background:#fbfbfb url('../../../images/loader.gif') no-repeat 5px 2px;
-	line-height:20px;
-	font-weight:normal;
-}
-
 .aa_dark button  {
 	font-family:lucida sans unicode, arial;
 	font-weight:normal;
 	font-size:10px;
-	letter-spacing:0px;
 	color:#111;
 }
 
@@ -45,7 +61,6 @@
 	font-family:lucida sans unicode, arial;
 	font-weight:normal;
 	font-size:10px;
-	letter-spacing:0px;
 	color:#333;
 }
 
@@ -53,22 +68,46 @@
 	font-family:lucida sans unicode, arial;
 	font-weight:bold;
 	font-size:10px;
-	letter-spacing:0px;
 	color:#888;
 }
 
-.x-grid3-cell-inner, .x-grid3-hd-inner  {
-	font-family:lucida sans unicode, arial;
+/* LOADING MASK */
+
+.x-mask-loading2 div  {
+	padding:2px 11px 3px 32px;
+	background:#fbfbfb url('../../../images/loader.gif') no-repeat 5px 2px;
+	line-height:20px;
 	font-weight:normal;
-	font-size:10px;
-	letter-spacing:0px;
-	color:#777;
 }
 
-.x-grid3-hd-inner, .x-grid3-hd-organisationUnitId  {
-	font-family:lucida sans unicode, arial;
+/* DIALOGUE BOX */
+
+.window-info {
+	font-family:lucida sans unicode,arial;
 	font-weight:normal;
 	font-size:11px;
-	letter-spacing:0px;
 	color:#333;
+	padding:0 0 8px 0;
 }
+
+.window-field-label {
+	padding:0px 0 4px 3px;
+	font-family:lucida sans unicode,arial;
+	font-weight:normal;
+	font-size:11px;
+	color:#888;
+}
+
+.window-button {
+	padding:8px 0 0 0;
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
