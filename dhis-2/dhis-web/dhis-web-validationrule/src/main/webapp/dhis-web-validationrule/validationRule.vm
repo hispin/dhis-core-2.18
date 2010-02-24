@@ -1,5 +1,5 @@
 
-<h3>$encoder.htmlEncode( $i18n.getString( "validation_rule_management" ) )</h3>
+<h3>$encoder.htmlEncode( $i18n.getString( "validation_rule_management" ) ) #openHelp( "validationRule" )</h3>
 
 <table class="mainPageTable">
 	<tr>

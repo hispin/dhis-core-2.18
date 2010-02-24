@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "${key}_analysis" )</h3>
+<h3>$i18n.getString( "${key}_analysis" ) #openHelp( "${key}Analysis" )</h3>
 
 <form id="analysisForm" method="post" action="getAnalysis.action">
 
