@@ -1,4 +1,4 @@
-﻿<h2>$!encoder.htmlEncode($!reportExcel.name)</h2>
+<h3>$!encoder.htmlEncode($!reportExcel.name)</h3>
 <div id="tooltip"></div>
 <table width="100%">
 	<tr style="vertical-align:bottom;">

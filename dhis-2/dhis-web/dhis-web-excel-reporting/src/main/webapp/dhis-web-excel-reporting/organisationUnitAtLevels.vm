@@ -1,4 +1,4 @@
-<h2>$encoder.htmlEncode($reportExcel.name)</h2>
+<h3>$encoder.htmlEncode($reportExcel.name)</h3>
 <hr>
 
 <table width=100%>

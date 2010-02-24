@@ -1,4 +1,4 @@
-<h2>$i18n.getString('excel_template_management')</h2>
+<h3>$i18n.getString('excel_template_management')</h3>
 
 <form name="uploadForm" id="uploadForm" action="uploadExcelTemplate.action" onsubmit="return validateUploadExcelTemplate(document.getElementById('upload').value, 1);" method="post" enctype="multipart/form-data">
 	<table>

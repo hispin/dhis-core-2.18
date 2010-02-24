@@ -1,4 +1,4 @@
-<h2>$i18n.getString( 'organisation_unit_group' )</h2>
+<h3>$i18n.getString( 'organisation_unit_group' )</h3>
 <form name="organisationUnitGroupReport" action="updateOrgnisationUnitGroupListingReport.action" method="GET">
 <input type="hidden" name="id" value="$reportExcelOganiztionGroupListing.id"/>
 <table>
