@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.action;
+package org.hisp.dhis.reportexcel.utils;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -26,56 +26,28 @@ package org.hisp.dhis.reportexcel.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
-import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.utils.ExcelFileFilter;
-import org.hisp.dhis.reportexcel.utils.FileUtils;
+import java.io.FileFilter;
 
 /**
- * @author Nguyen Tran Do Xuan Thuy
- * @version $Id$
+ * @author Tran Thanh Tri
+ * @version $Id
  */
-
-public class CleanUpReportExcelAction
-    extends ActionSupport
+public class ExcelFileFilter
+    implements FileFilter
 {
 
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
-
-    private ReportLocationManager reportLocationManager;
-
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    @Override
+    public boolean accept( File file )
     {
-        this.reportLocationManager = reportLocationManager;
-    }
-
-    // -------------------------------------------
-    // Action implementation
-    // -------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
-
-        List<File> listFile = FileUtils.getListFile( reportTempDir, new ExcelFileFilter() );
-        
-        Iterator<File> iterFile = listFile.iterator();
-
-        while ( iterFile.hasNext() )
+        if ( file.isDirectory() )
+            return false;
+        else
         {
-            iterFile.next().delete();
+            String name = file.getName().toLowerCase();
+
+            return name.endsWith( ".xls" ) || name.endsWith( ".xlsx" );
         }
 
-        message = i18n.getString( "cleanup_success" );
-
-        return SUCCESS;
     }
-
 }

@@ -1,51 +1,42 @@
 <h2>$i18n.getString('excel_template_management')</h2>
-
-<table>
 <form name="uploadForm" id="uploadForm" action="uploadExcelTemplate.action" onsubmit="return validateUploadExcelTemplate(document.getElementById('upload').value, 1);" method="post" enctype="multipart/form-data">
-	<tr>
-		<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' ):</td>
-		<td width="82%">
-			<input type="file" id="upload" name="upload" onChange="enable('uploadButton');" />
-			<input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />    
-		</td>   
-	</tr>
+	<table>
+		<tr>
+			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' ):</td>
+			<td width="82%">
+				<input type="file" id="upload" name="upload" onChange="enable('uploadButton');" />
+				<input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />    
+			</td>   
+		</tr>
+		<tr>
+			<td>
+				$i18n.getString( "filter_by_name" ): 
+			</td>
+			<td>
+				<input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
+			</td>			
+		</tr>
+	</table>
 </form>
-</table>
-<table width=100%>
-	<tr>
-		<td>
-			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
-		</td>
-		<td>
 
-		</td>
-		<td align=right>
-			<input type="button" onclick="mode='add'; openAddTemplateFile()" value="$i18n.getString('add')" style="width:100px"/>
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px"/>
-		</td>
-	</tr>
-</table>
-
-<table width="100%">
-	<tr>
-		<th>$i18n.getString('name')</th>
-		<th width="110px">$i18n.getString('operations')</th>
-	</tr>
-	<tbody id="list">
-	#set( $mark = false )
+<table width="100%" class="listTable">
+	<thead>
+		<tr>
+			<th>$i18n.getString('name')</th>
+			<th width="110px">$i18n.getString('operations')</th>
+		</tr>
+	</thead>
+	<tbody id="list">	
 	#foreach($templateFile in $templateFiles)
-		<tr #alternate( $mark )>
+		<tr id="tr${templateFile.name}">
 			<td>$encoder.htmlEncode( $templateFile.name )</td>
 			<td align="left">
 				<a href="javascript:deleteExcelTemplate('$templateFile.name');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				<a href="javascript:mode = 'edit'; openEditExcelTemplate( '$templateFile.name' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="downloadExcelTemplate.action?fileName=$templateFile.name" title="$i18n.getString( 'download' )"><img src="images/download.png" alt="$i18n.getString( 'download' )"></a>
+				
 			</td>
-		</tr>
-		#if( $mark )
-			#set( $mark = false )
-		#else
-			#set( $mark = true )
-		#end
+		</tr>	
 	#end
 	</tbody>
 </table>

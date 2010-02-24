@@ -1,6 +1,7 @@
-package org.hisp.dhis.reportexcel.action;
+package org.hisp.dhis.system.comparator;
 
 /*
+ *
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
@@ -28,54 +29,20 @@ package org.hisp.dhis.reportexcel.action;
  */
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
-import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.utils.ExcelFileFilter;
-import org.hisp.dhis.reportexcel.utils.FileUtils;
+import java.util.Comparator;
 
 /**
- * @author Nguyen Tran Do Xuan Thuy
- * @version $Id$
+ * @author Tran Thanh Tri
+ * @version $Id: FileNameComparator.java 24-02-2010 $
  */
-
-public class CleanUpReportExcelAction
-    extends ActionSupport
+public class FileNameComparator
+    implements Comparator<File>
 {
 
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
-
-    private ReportLocationManager reportLocationManager;
-
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    @Override
+    public int compare( File arg0, File arg1 )
     {
-        this.reportLocationManager = reportLocationManager;
+
+        return arg0.getName().compareToIgnoreCase( arg1.getName() );
     }
-
-    // -------------------------------------------
-    // Action implementation
-    // -------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
-
-        List<File> listFile = FileUtils.getListFile( reportTempDir, new ExcelFileFilter() );
-        
-        Iterator<File> iterFile = listFile.iterator();
-
-        while ( iterFile.hasNext() )
-        {
-            iterFile.next().delete();
-        }
-
-        message = i18n.getString( "cleanup_success" );
-
-        return SUCCESS;
-    }
-
 }

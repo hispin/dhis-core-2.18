@@ -29,13 +29,16 @@ package org.hisp.dhis.reportexcel.filemanager.action;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
+import org.hisp.dhis.reportexcel.utils.ExcelFileFilter;
 import org.hisp.dhis.reportexcel.utils.FileUtils;
+import org.hisp.dhis.system.comparator.FileNameComparator;
 
 /**
  * @author Chau Thu Tran
@@ -51,11 +54,11 @@ public class ExcelTemplateListAction
     // Dependency
     // -------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
+    private ReportLocationManager reportLocationManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
     {
-        this.systemSettingManager = systemSettingManager;
+        this.reportLocationManager = reportLocationManager;
     }
 
     private SelectionManager selectionManager;
@@ -68,7 +71,8 @@ public class ExcelTemplateListAction
     // -------------------------------------------
     // Output
     // -------------------------------------------
-    private Collection<File> templateFiles = new ArrayList<File>();
+
+    private List<File> templateFiles = new ArrayList<File>();
 
     // -------------------------------------------
     // Getter && Setter
@@ -81,7 +85,7 @@ public class ExcelTemplateListAction
         return newFileUploaded;
     }
 
-    public Collection<File> getTemplateFiles()
+    public List<File> getTemplateFiles()
     {
         return templateFiles;
     }
@@ -104,25 +108,32 @@ public class ExcelTemplateListAction
     public String execute()
         throws Exception
     {
+
+        File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
+
+        if ( !templateDirectory.exists() )
+        {
+            return SUCCESS;
+        }
+
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the path of newly uploaded file
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
+
         String newUploadedPath = selectionManager.getUploadFilePath();
-        
+
         if ( (newUploadedPath != "") && (newUploadedPath != null) )
         {
             newFileUploaded = new File( newUploadedPath ).getName();
         }
-        
+
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the list of files
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        String templateDirectory = (String) systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+        templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
 
-        templateFiles = FileUtils.getListFile( new File( templateDirectory ) );
+        Collections.sort( templateFiles, new FileNameComparator() );
 
         return SUCCESS;
     }

@@ -26,39 +26,40 @@ package org.hisp.dhis.reportexcel.filemanager.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
-import java.util.Collection;
 
-import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import java.io.File;
+
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.action.ActionSupport;
-import org.hisp.dhis.reportexcel.utils.FileUtils;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
- * @version $Id
- * @since 2010-01-27
+ * @author Tran Thanh Tri
+ * @version $Id$
  */
-public class DeleteExcelTemplateAction
-    extends ActionSupport
+
+
+public class DownloadExcelTemplateFileAction
+    implements Action
 {
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
+
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
     private ReportLocationManager reportLocationManager;
 
     public void setReportLocationManager( ReportLocationManager reportLocationManager )
     {
         this.reportLocationManager = reportLocationManager;
-    }
-
-    private ReportExcelService reportService;
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
     }
 
     // -------------------------------------------
@@ -72,44 +73,14 @@ public class DeleteExcelTemplateAction
         this.fileName = fileName;
     }
 
-    // -------------------------------------------
-    // Action implementation
-    // -------------------------------------------
-
     @Override
     public String execute()
         throws Exception
     {
-        message = "";
+        File download = new File( reportLocationManager.getReportExcelTemplateDirectory(), fileName );
 
-        Collection<ReportExcel> reports = reportService.getALLReportExcel();
-
-        int i = 0;
-
-        for ( ReportExcel report : reports )
-        {
-            String name = report.getExcelTemplateFile();
-
-            if ( name.equals( fileName ) )
-            {
-                message += (i + 1) + ". " + report.getName() + "<br>";
-
-                i++;
-            }
-        }
-
-        if ( i > 0 )
-        {
-            message = i18n.getString( "report_user_template" ) + "<br>" + message;
-
-            return ERROR;
-        }
-
-        File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
-
-        FileUtils.delete( templateDirectory + File.separator + fileName );
+        selectionManager.setDownloadFilePath( download.getPath() );
 
         return SUCCESS;
     }
-
 }

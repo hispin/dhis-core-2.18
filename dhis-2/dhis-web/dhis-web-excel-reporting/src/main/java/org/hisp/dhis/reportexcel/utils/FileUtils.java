@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.utils;
  */
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -41,7 +42,7 @@ import java.util.*;
 public class FileUtils
 {
 
-    public static List<String> getListFileName( File directory )
+    public static List<String> getListFileName( File directory, String extentions )
     {
         List<String> result = new ArrayList<String>();
 
@@ -49,6 +50,7 @@ public class FileUtils
         {
             for ( File f : directory.listFiles() )
             {
+
                 result.add( f.getName() );
 
             }
@@ -57,23 +59,14 @@ public class FileUtils
         return result;
     }
 
-    public static List<File> getListFile( File directory )
-    {
-        List<File> result = new ArrayList<File>();
-
+    public static List<File> getListFile( File directory, FileFilter fileFilter)
+    {        
         if ( directory != null )
         {
-            result = Arrays.asList( directory.listFiles() );
-        }
-        
-        Collections.sort( result, new Comparator<File>(){         
+            return Arrays.asList( directory.listFiles( fileFilter ) );
+        }       
 
-            public int compare( File o1, File o2 )
-            {                
-                return (int) (o1.lastModified() - o2.lastModified());
-            }} );
-        
-        return result;
+        return new ArrayList<File>();
     }
 
     public static boolean copyFile( String input, String output )

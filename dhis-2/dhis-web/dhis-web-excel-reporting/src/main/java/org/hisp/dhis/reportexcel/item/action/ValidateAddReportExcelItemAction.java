@@ -106,22 +106,35 @@ public class ValidateAddReportExcelItemAction
         if ( name == null )
         {
             message = i18n.getString( "name_is_null" );
+
             return ERROR;
         }
         if ( name.trim().length() == 0 )
         {
             message = i18n.getString( "name_is_null" );
+
             return ERROR;
-        }       
+        }
+
+        ReportExcel reportExcel = reportService.getReportExcel( reportId );
+
+        if ( reportExcel.reportExcelItemIsExist( name, sheetNo ) )
+        {
+            message = i18n.getString( "name_ready_exist" );
+
+            return ERROR;
+        }
 
         if ( expression == null )
         {
             message = i18n.getString( "expression_is_null" );
+
             return ERROR;
         }
         if ( expression.trim().length() == 0 )
         {
             message = i18n.getString( "expression_is_null" );
+
             return ERROR;
         }
         if ( sheetNo == null )
@@ -130,24 +143,24 @@ public class ValidateAddReportExcelItemAction
 
             return ERROR;
         }
-        
-        ReportExcel reportExcel = reportService.getReportExcel( reportId );
-        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name, sheetNo );
 
-        if ( reportItem != null )
-        {
-            message = i18n.getString( "name_ready_exist" );
-            return ERROR;
-        }
-        
         if ( row == null )
         {
             message = i18n.getString( "row_is_null" );
+
             return ERROR;
         }
         if ( column == null )
         {
             message = i18n.getString( "column_is_null" );
+
+            return ERROR;
+        }
+
+        if ( reportExcel.rowAndColumnIsExist( sheetNo, row, column ) )
+        {
+            message = i18n.getString( "cell_exist" );
+
             return ERROR;
         }
 
