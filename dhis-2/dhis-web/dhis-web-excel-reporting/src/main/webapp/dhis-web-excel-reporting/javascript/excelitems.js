@@ -35,7 +35,7 @@ function openUpdateExcelItemReceived( xmlObject )
 	byId("column").value = xmlObject.getElementsByTagName('column')[0].firstChild.nodeValue;
 	byId("sheetNo").value = xmlObject.getElementsByTagName('sheetNo')[0].firstChild.nodeValue;	
 	byId( "okButton" ).onclick = validateUpdateExcelItem;
-	disable("name");
+	enable("name");
 	$("#divExcelitem").showAtCenter( true );
 	
 }
