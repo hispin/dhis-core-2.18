@@ -112,20 +112,7 @@ public abstract class ReportExcel
 
         return results;
 
-    }
-
-    public ReportExcelItem getReportExcelItem( String name, int sheetNo )
-    {
-        for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
-        {
-            if ( reportExcelItem.getName().equalsIgnoreCase( name ) && reportExcelItem.getSheetNo() == sheetNo )
-            {
-                return reportExcelItem;
-            }
-        }
-
-        return null;
-    }
+    }  
 
     public abstract boolean isCategory();
 
@@ -182,6 +169,46 @@ public abstract class ReportExcel
         if ( !name.equals( other.name ) )
             return false;
         return true;
+    }
+
+    // ----------------------------------------------------------------------
+    // Support methord
+    // ----------------------------------------------------------------------
+
+    public boolean reportExcelItemIsExist( String name, int sheetNo )
+    {
+        return getReportExcelItemByName( name, sheetNo ) != null;
+    }
+
+    public boolean rowAndColumnIsExist( int sheet, int row, int column )
+    {
+        return getReportExcelItemBySheetRowColumn( sheet, row, column ) != null;
+    }
+    
+    public ReportExcelItem getReportExcelItemByName( String name, int sheetNo )
+    {
+        for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
+        {
+            if ( reportExcelItem.getName().equalsIgnoreCase( name ) && reportExcelItem.getSheetNo() == sheetNo )
+            {
+                return reportExcelItem;
+            }
+        }
+
+        return null;
+    }
+    
+    public ReportExcelItem getReportExcelItemBySheetRowColumn( int sheet, int row, int column )
+    {
+        for ( ReportExcelItem e : this.reportExcelItems )
+        {
+            if ( e.getSheetNo() == sheet && e.getRow() == row && e.getColumn() == column )
+            {
+                return e;
+            }
+        }
+
+        return null;
     }
 
     // ----------------------------------------------------------------------

@@ -107,42 +107,47 @@ public class ValidateUpdateReportExcelItemAction
         if ( name == null )
         {
             message = i18n.getString( "name_is_null" );
+
             return ERROR;
         }
+
         if ( name.trim().length() == 0 )
         {
             message = i18n.getString( "name_is_null" );
+
+            return ERROR;
+        }
+
+        ReportExcel reportExcel = reportService.getReportExcel( reportId );
+
+        ReportExcelItem reportExcleItem = reportService.getReportExcelItem( reportItemId );
+
+        ReportExcelItem temp = reportExcel.getReportExcelItemByName( name, sheetNo );
+
+        if ( temp != null && !reportExcleItem.equals( temp ) )
+        {
+            message = i18n.getString( "name_ready_exist" );
             return ERROR;
         }
 
         if ( expression == null )
         {
             message = i18n.getString( "expression_is_null" );
+
             return ERROR;
         }
 
         if ( expression.trim().length() == 0 )
         {
             message = i18n.getString( "expression_is_null" );
+
             return ERROR;
         }
 
         if ( sheetNo == null )
         {
             message = i18n.getString( "please_enter_sheet_no" );
-            return ERROR;
-        }
 
-        ReportExcel reportExcel = reportService.getReportExcel( reportId );
-
-        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name, sheetNo );
-
-        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );   
-
-        
-        if ( reportItem!=null && !reportItem.equals( temp ))
-        {     
-            message = i18n.getString( "name_ready_exist" );
             return ERROR;
         }
 
@@ -155,6 +160,15 @@ public class ValidateUpdateReportExcelItemAction
         if ( column == null )
         {
             message = i18n.getString( "column_is_null" );
+            return ERROR;
+        }
+
+        temp = reportExcel.getReportExcelItemBySheetRowColumn( sheetNo, row, column );
+
+        if ( temp != null && reportExcleItem != temp )
+        {
+            message = i18n.getString( "cell_exist" );
+
             return ERROR;
         }
 

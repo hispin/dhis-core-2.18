@@ -1,4 +1,3 @@
-
 package org.hisp.dhis.reportexcel.filemanager.action;
 
 /*
@@ -30,7 +29,7 @@ package org.hisp.dhis.reportexcel.filemanager.action;
 
 import java.io.File;
 
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -48,11 +47,11 @@ public class UploadExcelTemplateAction
     // Dependency
     // -------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
+    private ReportLocationManager reportLocationManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
     {
-        this.systemSettingManager = systemSettingManager;
+        this.reportLocationManager = reportLocationManager;
     }
 
     private SelectionManager selectionManager;
@@ -82,10 +81,9 @@ public class UploadExcelTemplateAction
 
     public String execute()
     {
-        String templateDirectoryConfig = (String) systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+        File templateDirectoryConfig = reportLocationManager.getReportExcelTemplateDirectory();
 
-        File output = new File( templateDirectoryConfig + File.separator + fileName );
+        File output = new File( templateDirectoryConfig, fileName );
 
         selectionManager.setUploadFilePath( output.getAbsolutePath() );
 
