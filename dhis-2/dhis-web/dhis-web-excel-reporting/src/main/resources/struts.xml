@@ -1258,6 +1258,26 @@
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
+		<action name="renameExcelTemplate"
+			class="org.hisp.dhis.reportexcel.filemanager.action.RenameExcelTemplateAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="none" type="velocity-xml">
+				/dhis-web-excel-reporting/responseNone.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
+		</action>
+		
+		<action name="updateReportExcelByTemplate"
+			class="org.hisp.dhis.reportexcel.filemanager.action.UpdateReportExcelByTemplateAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
+		</action>
+
 		<action name="downloadExcelTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.DownloadExcelTemplateFileAction">
 			<result name="success" type="chain">downloadFile</result>

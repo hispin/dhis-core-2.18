@@ -62,9 +62,13 @@ public interface ReportExcelService
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group );
 
+    public Collection<ReportExcel> getReportsByGroup( String group );
+
     public Collection<String> getReportExcelGroups();
 
-    public Collection<ReportExcel> getReportsByGroup( String group );
+    public Collection<String> getALLReportExcelTemplates();
+    
+    public void updateReportExcelSystemByTemplate( String curTemplateName, String newTemplateName );
 
     // --------------------------------------
     // Service of Report Item
@@ -80,7 +84,7 @@ public interface ReportExcelService
 
     public Collection<ReportExcelItem> getALLReportExcelItem();
 
-    public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId );   
+    public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId );
 
     public Collection<Integer> getSheets( Integer reportId );
     
@@ -115,12 +119,12 @@ public interface ReportExcelService
     Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets );
 
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period );
-    
+
     // --------------------------------------
     // Period Column
     // --------------------------------------
-    
+
     public PeriodColumn getPeriodColumn( Integer id );
-    
+
     public void updatePeriodColumn( PeriodColumn periodColumn );
 }

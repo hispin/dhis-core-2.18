@@ -28,16 +28,20 @@ package org.hisp.dhis.reportexcel.filemanager.action;
  */
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelFileFilter;
 import org.hisp.dhis.reportexcel.utils.FileUtils;
+import org.hisp.dhis.reportexcel.utils.StringUtils;
 import org.hisp.dhis.system.comparator.FileNameComparator;
 
 /**
@@ -50,7 +54,7 @@ import org.hisp.dhis.system.comparator.FileNameComparator;
 public class ExcelTemplateListAction
     extends ActionSupport
 {
-    // -------------------------------------------
+ // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
@@ -68,28 +72,40 @@ public class ExcelTemplateListAction
         this.selectionManager = selectionManager;
     }
 
+    private ReportExcelService reportService;
+
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     // -------------------------------------------
     // Output
     // -------------------------------------------
 
-    private List<File> templateFiles = new ArrayList<File>();
+    private String newFileUploadedOrRenamed;
+
+    private Map<String, Boolean> mapTemplateFiles = new HashMap<String, Boolean>();
 
     // -------------------------------------------
     // Getter && Setter
     // -------------------------------------------
 
-    private String newFileUploaded;
-
-    public String getNewFileUploaded()
+    public Map<String, Boolean> getMapTemplateFiles()
     {
-        return newFileUploaded;
+        return mapTemplateFiles;
     }
 
-    public List<File> getTemplateFiles()
+    public String getNewFileUploadedOrRenamed()
     {
-        return templateFiles;
+        return newFileUploadedOrRenamed;
     }
 
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+    
     public String getMessage()
     {
         return message;
@@ -108,34 +124,59 @@ public class ExcelTemplateListAction
     public String execute()
         throws Exception
     {
-
         File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
 
         if ( !templateDirectory.exists() )
         {
             return SUCCESS;
         }
-
+        
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the path of newly uploaded file
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        String newUploadedPath = selectionManager.getUploadFilePath();
+        String newUploadOrRenamePath = selectionManager.getUploadFilePath();
 
-        if ( (newUploadedPath != "") && (newUploadedPath != null) )
+        if ( !StringUtils.isNullOREmpty( newUploadOrRenamePath ) )
         {
-            newFileUploaded = new File( newUploadedPath ).getName();
+            newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
         }
+        else
+        {
+            newUploadOrRenamePath = selectionManager.getRenameFilePath();
+
+            if ( !StringUtils.isNullOREmpty( newUploadOrRenamePath ) )
+            {
+                newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
+            }
+        }
+        
+        System.out.println("\nnewFileUploadedOrRenamed = " + newFileUploadedOrRenamed);
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the list of files
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
+        List<File> templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
 
-        Collections.sort( templateFiles, new FileNameComparator() );
+        Collections.sort( templateFiles, new FileNameComparator() );        
+
+        Collection<String> reportExcelTemplates = reportService.getALLReportExcelTemplates();
+
+        Collections.sort( templateFiles );
+
+        for ( File file : templateFiles )
+        {
+            if ( reportExcelTemplates.contains( file.getName() ) )
+            {
+                mapTemplateFiles.put( file.getName(), true );
+            }
+            else
+            {
+                mapTemplateFiles.put( file.getName(), false );
+            }
+        }
 
         return SUCCESS;
     }
-
 }

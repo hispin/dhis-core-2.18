@@ -138,13 +138,24 @@ public class DefaultReportExcelService
         return reportStore.getReportsByGroup( group );
     }
 
-    @Override
+    public Collection<String> getALLReportExcelTemplates()
+    {
+        return reportStore.getALLReportExcelTemplates();
+    }
+
     public void deleteMultiReportExcelItem( Collection<Integer> ids )
     {
         if ( !ids.isEmpty() )
         {
             reportStore.deleteMultiReportExcelItem( ids );
         }
+    }
+
+    @Override
+    public void updateReportExcelSystemByTemplate( String curName, String newName )
+    {
+        reportStore.updateReportWithExcelTemplate( curName, newName );
+        
     }
 
     // --------------------------------------
@@ -262,5 +273,5 @@ public class DefaultReportExcelService
     {
         reportStore.updatePeriodColumn( periodColumn );
     }
-
+    
 }

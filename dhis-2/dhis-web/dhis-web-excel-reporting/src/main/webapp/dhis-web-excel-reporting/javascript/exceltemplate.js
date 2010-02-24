@@ -6,7 +6,9 @@
 // Regular Expression using for checking excel's file name
 //----------------------------------------------------------
 
-regPattern = /^[^0-9\s\W][a-zA-Z0-9]{5,30}\.xl(?:sx|s)$/;
+//regPattern = /^[^0-9\s\W][a-zA-Z_. 0-9]{5,50}\.xl(?:sx|s)$/;
+// or : 
+regPattern = /^[a-zA-Z][\w\s\d.]{5,50}\.xl(?:sx|s)$/;
 
 /*
 *	Delete Excel Template
@@ -58,9 +60,11 @@ function validateUploadExcelTemplate ( fileName, columnIndex ) {
 	return true;
 }
 
-function openEditExcelTemplate() {
-	
+function openEditExcelTemplate( currentFileName ) {
+
+	byId("currentFileNameHidden").value = currentFileName;
 	$("#editExcelTemplateDiv").showAtCenter( true );
+
 }
 
 function validateRenamingExcelTemplate( fileName, columnIndex ) {
@@ -75,23 +79,25 @@ function validateRenamingExcelTemplate( fileName, columnIndex ) {
 		
 		if ( value.toLowerCase() == fileName.toLowerCase() )
 		{
-			setMessage( i18n_file_exists );
 			disable( "excelTemplateButtonRename" );
+			setMessage( i18n_file_exists );
+			break;
 		}
 		else if ( applyingPatternForFileName( fileName ) == null )
 		{
+			disable( "excelTemplateButtonRename" );
 			setMessage
 			(
 				'<b>' + i18n_filename_wellformed  + '</b><ul><li>'
 				+ i18n_length_filename_min5_max30 + '</li><li>'
 				+ i18n_use_only_letters_numbers_dot_only + '</li>'
 			);
-			disable( "excelTemplateButtonRename" );
+			break;
 		}
 		else
 		{
-			hideMessage();
 			enable( "excelTemplateButtonRename" );
+			hideMessage();
 		}
 	}
 }
@@ -99,4 +105,116 @@ function validateRenamingExcelTemplate( fileName, columnIndex ) {
 function applyingPatternForFileName( fileName ) {
 	
 	return fileName.match( regPattern );
+}
+
+/**
+	param renamingMode::
+	'RUS': Rename file name and update the system
+	'RNUS': Rename file name but non-updating the system
+*/
+
+curTemplateName = '';
+newTemplateName = '';
+
+function checkingStatusExcelTemplate( newFileName, keyColumnIndex, statusColumnIndex ) {
+
+	var curFileName = getFieldValue( "currentFileNameHidden" );
+    var list = byId( 'list' );
+    var rows = list.getElementsByTagName( 'tr' );
+    var flagRename = false;
+
+	curTemplateName = curFileName;
+	newTemplateName = newFileName;
+	
+    for ( var i = 0; i < rows.length; i++ )
+    {
+        var cell = rows[i].getElementsByTagName( 'td' )[keyColumnIndex-1];
+        var value = cell.firstChild.nodeValue;
+		cell = rows[i].getElementsByTagName( 'td' )[statusColumnIndex-1];
+        var statusFile = cell.firstChild.nodeValue;
+		
+        if ( (value.toLowerCase() == curFileName.toLowerCase()) && (statusFile == "true") )
+        {
+            // File exists and being used
+			if ( window.confirm(confirmRenamingMessage) )
+			{
+				renamingExcelTemplate( curFileName, newFileName, "RUS" );
+			}
+			else
+			{
+				hideById('editExcelTemplateDiv');
+				deleteDivEffect();
+			}
+			return;
+        }
+		else
+		{
+			flagRename = true;
+		}
+	}
+	
+	// File exists and pending
+	if ( flagRename )
+	{
+		renamingExcelTemplate( curFileName, newFileName, "RNUS" );
+	}
+	
+}
+
+function renamingExcelTemplate( curFileName, newFileName, renamingMode ) {
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( renamingExcelTemplateReceived );
+	request.send( "renameExcelTemplate.action?newFileName=" + newFileName + "&curFileName=" + curFileName + "&renamingMode=" + renamingMode );
+	
+}
+
+function renamingExcelTemplateReceived( xmlObject ) {
+
+	var type = xmlObject.getAttribute( 'type' );
+	var message = xmlObject.firstChild.nodeValue;
+	
+	if ( type == "success" )
+	{
+		hideById('editExcelTemplateDiv');
+		deleteDivEffect();
+	
+		if ( window.confirm( confirmUpdateSysMessage ) )
+		{
+			alert("update_system");
+			updateReportExcelByTemplate();
+		}
+		else
+		{
+			window.location.href="listAllExcelTemplates.action?message=" + message;
+		}
+	}
+	else if ( type == "none" )
+	{
+		window.location.href="listAllExcelTemplates.action?message=" + message;
+	}
+	else
+	{
+		setMessage( message );
+	}
+}
+
+function updateReportExcelByTemplate() {
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( updateReportExcelByTemplateCompleted );
+	request.send( "updateReportExcelByTemplate.action?curTemplateName=" + curTemplateName + "&newTemplateName=" + newTemplateName);
+}
+
+function updateReportExcelByTemplateCompleted( xmlObject ) {
+
+	var type = xmlObject.getAttribute( 'type' );
+	
+	if ( type != "" )
+	{
+		var message = xmlObject.firstChild.nodeValue;
+		window.location.href="listAllExcelTemplates.action?message=" + message;
+	}
 }

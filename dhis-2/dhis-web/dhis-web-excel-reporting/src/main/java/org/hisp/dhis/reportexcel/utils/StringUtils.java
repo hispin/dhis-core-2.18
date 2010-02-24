@@ -168,4 +168,9 @@ public class StringUtils
 
         return path;
     }
+
+    public static boolean isNullOREmpty( String input )
+    {
+        return (((input == "") || (input == null)) ? true : false);
+    }
 }
