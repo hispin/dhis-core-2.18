@@ -99,7 +99,7 @@ public class ExportDataMartExportAction
         
         process.setProperties( export );
 
-        processCoordinator.requestProcessExecution( executor );
+        processCoordinator.requestProcessExecution( executor );        
 
         setCurrentRunningProcess( PROCESS_KEY_DATAMART, executor.getId() );
         

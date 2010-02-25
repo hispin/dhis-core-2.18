@@ -135,6 +135,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
 		</property>
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.dd.action.dataelementgroup.GetAssignedGroupsByDataElementAction"
+		class="org.hisp.dhis.dd.action.dataelementgroup.GetAssignedGroupsByDataElementAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.dd.action.dataelementgroup.AssignGroupsForDataElementAction"
+		class="org.hisp.dhis.dd.action.dataelementgroup.AssignGroupsForDataElementAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+	</bean>
 
 	<bean
 		id="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction"
