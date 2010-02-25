@@ -3,7 +3,7 @@
 
 <xsl:template match="chapter">
   <h3><xsl:value-of select="title"/></h3>
-  <ul><xsl:apply-templates select="section[@id] | section//section[@id]"/></ul>
+  <ul><xsl:apply-templates select="descendant::section[@id]"/></ul>
 </xsl:template>
 
 <xsl:template match="section">

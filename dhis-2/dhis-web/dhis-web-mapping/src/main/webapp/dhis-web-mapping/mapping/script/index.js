@@ -259,7 +259,7 @@ Ext.onReady( function() {
         checkedCls: 'x-form-radio-checked'
     });
     
-    document.body.oncontextmenu = function() { return false; };
+//    document.body.oncontextmenu = function() { return false; };
 	
 	Ext.QuickTips.init();
     
@@ -3014,7 +3014,7 @@ var feature_popup = new Ext.Window({
 function onHoverSelectChoropleth(feature) {
     if (MAPDATA != null) {
         if (ACTIVEPANEL == 'choropleth') {
-			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span><br><span style="color:#666">' + feature.attributes.value + '</span>', false);
+			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span><br><span style="color:#555">' + feature.attributes.value + '</span>', false);
         }
         else if (ACTIVEPANEL == 'mapping') {
 			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span>', false);
