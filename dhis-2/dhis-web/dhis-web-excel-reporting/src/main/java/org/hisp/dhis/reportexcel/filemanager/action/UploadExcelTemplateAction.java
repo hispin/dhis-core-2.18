@@ -62,25 +62,46 @@ public class UploadExcelTemplateAction
     }
 
     // -------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------
 
     private String fileName;
+
+    private File upload;
+
+    // -------------------------------------------
+    // Output
+    // -------------------------------------------
+
+    private String mode;
+
+    // -------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------
 
     public void setUploadFileName( String fileName )
     {
         this.fileName = fileName;
     }
 
-    private File upload;
-
     public void setUpload( File upload )
     {
         this.upload = upload;
     }
 
+    public String getMode()
+    {
+        return mode;
+    }
+
+    // -------------------------------------------
+    // Action implementation
+    // -------------------------------------------
+
     public String execute()
     {
+        mode = "upload";
+
         File templateDirectoryConfig = reportLocationManager.getReportExcelTemplateDirectory();
 
         File output = new File( templateDirectoryConfig, fileName );

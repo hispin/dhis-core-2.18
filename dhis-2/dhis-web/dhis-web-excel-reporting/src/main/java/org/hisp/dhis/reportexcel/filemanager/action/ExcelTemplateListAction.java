@@ -54,7 +54,7 @@ import org.hisp.dhis.system.comparator.FileNameComparator;
 public class ExcelTemplateListAction
     extends ActionSupport
 {
- // -------------------------------------------
+    // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
@@ -80,6 +80,11 @@ public class ExcelTemplateListAction
     }
 
     // -------------------------------------------
+    // Input
+    // -------------------------------------------
+    private String mode;
+
+    // -------------------------------------------
     // Output
     // -------------------------------------------
 
@@ -101,11 +106,16 @@ public class ExcelTemplateListAction
         return newFileUploadedOrRenamed;
     }
 
+    public void setMode( String mode )
+    {
+        this.mode = mode;
+    }
+
     public void setMessage( String message )
     {
         this.message = message;
     }
-    
+
     public String getMessage()
     {
         return message;
@@ -130,28 +140,29 @@ public class ExcelTemplateListAction
         {
             return SUCCESS;
         }
-        
+
+        String newUploadOrRenamePath = null;
+
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the path of newly uploaded file
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        String newUploadOrRenamePath = selectionManager.getUploadFilePath();
+        if ( !StringUtils.isNullOREmpty( mode ) )
+        {
+            if ( mode.equalsIgnoreCase( "edit" ) )
+            {
+                newUploadOrRenamePath = selectionManager.getRenameFilePath();
+            }
+            else
+            {
+                newUploadOrRenamePath = selectionManager.getUploadFilePath();
+            }
+        }
 
         if ( !StringUtils.isNullOREmpty( newUploadOrRenamePath ) )
         {
             newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
         }
-        else
-        {
-            newUploadOrRenamePath = selectionManager.getRenameFilePath();
-
-            if ( !StringUtils.isNullOREmpty( newUploadOrRenamePath ) )
-            {
-                newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
-            }
-        }
-        
-        System.out.println("\nnewFileUploadedOrRenamed = " + newFileUploadedOrRenamed);
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the list of files
@@ -159,7 +170,7 @@ public class ExcelTemplateListAction
 
         List<File> templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
 
-        Collections.sort( templateFiles, new FileNameComparator() );        
+        Collections.sort( templateFiles, new FileNameComparator() );
 
         Collection<String> reportExcelTemplates = reportService.getALLReportExcelTemplates();
 

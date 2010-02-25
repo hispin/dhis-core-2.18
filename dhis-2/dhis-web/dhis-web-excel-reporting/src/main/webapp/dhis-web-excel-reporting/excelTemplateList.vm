@@ -9,16 +9,19 @@
 				<input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />    
 			</td>   
 		</tr>
-		<tr>
-			<td>
-				$i18n.getString( "filter_by_name" ): 
-			</td>
-			<td>
-				<input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
-			</td>			
-		</tr>
 	</table>
 </form>
+
+<table width="100%">
+	<tr>
+		<td>
+			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues(this.value , 1)" style="width:300px"/>
+		</td>
+		<td align=right>
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px"/>
+		</td>
+	</tr>
+</table>
 
 <table width="100%" class="listTable">
 	<thead>
@@ -45,7 +48,7 @@
 
 <div id="editExcelTemplateDiv" style="position:fixed;display:none;width:444px;z-index:11;background-color: white;border: medium solid silver;height:60px;padding:20px">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('editExcelTemplateDiv');deleteDivEffect();hideMessage();">[x]</div>
-	<input type="text" value="" id="currentFileNameHidden"/>
+	<input type="hidden" value="" id="currentFileNameHidden"/>
 	<table>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -59,7 +62,7 @@
 
 <script language="javascript">
 
-	var mode = 'add';
+	var mode = '';
 	var i18n_confirm_rename = '$encoder.jsEscape($i18n.getString( 'confirm_rename' ) , "'")';
 	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( 'confirm_delete' ) , "'")';
 	var i18n_confirm_override = '$encoder.jsEscape($i18n.getString( 'confirm_override' ) , "'")';
