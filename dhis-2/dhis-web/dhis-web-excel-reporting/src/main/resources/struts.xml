@@ -1243,7 +1243,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js</param>
+			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js,
+				javascript/ajaxfileupload.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -1274,7 +1275,7 @@
 				/dhis-web-excel-reporting/responseError.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
 		</action>
-		
+
 		<action name="updateReportExcelByTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.UpdateReportExcelByTemplateAction">
 			<result name="success" type="velocity-xml">
@@ -1287,6 +1288,15 @@
 		<action name="downloadExcelTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.DownloadExcelTemplateFileAction">
 			<result name="success" type="chain">downloadFile</result>
+		</action>
+
+		<action name="validateUploadExcelTemplate"
+			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate">
+			<interceptor-ref name="fileUploadStack" />
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
 	</package>

@@ -216,3 +216,34 @@ function updateReportExcelByTemplateCompleted( xmlObject ) {
 		window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
 	}
 }
+
+//----------------------------------------------------------
+// Validate Upload Excel Template
+//----------------------------------------------------------
+
+function validateUploadExcelTemplate(){
+
+		$.ajaxFileUpload
+        (
+			{
+				url:'validateUploadExcelTemplate.action',
+				secureuri:false,
+				fileElementId:'upload',
+				dataType: 'xml',
+				success: function (data, status)
+				{
+					data = data.getElementsByTagName('message')[0];
+					var type = data.getAttribute("type");
+					if(type=='error'){                    
+						setMessage(data.firstChild.nodeValue);
+					}else{
+						document.forms['uploadForm'].submit();
+					}
+				},
+				error: function (data, status, e)
+				{
+				
+				}
+			}
+        );
+	}
