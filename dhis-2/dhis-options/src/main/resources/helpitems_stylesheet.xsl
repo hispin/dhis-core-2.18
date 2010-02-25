@@ -2,12 +2,12 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="chapter">
-  <h3><xsl:value-of select="title"/></h3>
+  <h4><xsl:value-of select="title"/></h4>
   <ul><xsl:apply-templates select="descendant::section[@id]"/></ul>
 </xsl:template>
 
 <xsl:template match="section">
-  <li><a href="getHelpContent('{@id}')"><xsl:value-of select="title"/></a></li>
+  <li><a href="javascript:getHelpItemContent('{@id}')"><xsl:value-of select="title"/></a></li>
 </xsl:template>
 
 <xsl:template match="/">
