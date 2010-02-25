@@ -60,9 +60,13 @@ function validateUploadExcelTemplate ( fileName, columnIndex ) {
 	return true;
 }
 
+curTemplateName = '';
+newTemplateName = '';
+
 function openEditExcelTemplate( currentFileName ) {
 
-	byId("currentFileNameHidden").value = currentFileName;
+	//byId("currentFileNameHidden").value = currentFileName;
+	curTemplateName = currentFileName;
 	$("#editExcelTemplateDiv").showAtCenter( true );
 
 }
@@ -113,32 +117,26 @@ function applyingPatternForFileName( fileName ) {
 	'RNUS': Rename file name but non-updating the system
 */
 
-curTemplateName = '';
-newTemplateName = '';
-
 function checkingStatusExcelTemplate( newFileName, keyColumnIndex, statusColumnIndex ) {
 
-	var curFileName = getFieldValue( "currentFileNameHidden" );
     var list = byId( 'list' );
     var rows = list.getElementsByTagName( 'tr' );
     var flagRename = false;
-
-	curTemplateName = curFileName;
 	newTemplateName = newFileName;
 	
-    for ( var i = 0; i < rows.length; i++ )
+	for ( var i = 0; i < rows.length; i++ )
     {
         var cell = rows[i].getElementsByTagName( 'td' )[keyColumnIndex-1];
         var value = cell.firstChild.nodeValue;
 		cell = rows[i].getElementsByTagName( 'td' )[statusColumnIndex-1];
         var statusFile = cell.firstChild.nodeValue;
 		
-        if ( (value.toLowerCase() == curFileName.toLowerCase()) && (statusFile == "true") )
+        if ( (value.toLowerCase() == curTemplateName.toLowerCase()) && (statusFile == "true") )
         {
             // File exists and being used
 			if ( window.confirm(confirmRenamingMessage) )
 			{
-				renamingExcelTemplate( curFileName, newFileName, "RUS" );
+				renamingExcelTemplate( curTemplateName, newFileName, "RUS" );
 			}
 			else
 			{
@@ -156,7 +154,7 @@ function checkingStatusExcelTemplate( newFileName, keyColumnIndex, statusColumnI
 	// File exists and pending
 	if ( flagRename )
 	{
-		renamingExcelTemplate( curFileName, newFileName, "RNUS" );
+		renamingExcelTemplate( curTemplateName, newFileName, "RNUS" );
 	}
 	
 }
@@ -182,17 +180,17 @@ function renamingExcelTemplateReceived( xmlObject ) {
 	
 		if ( window.confirm( confirmUpdateSysMessage ) )
 		{
-			alert("update_system");
+			//alert("update_system");
 			updateReportExcelByTemplate();
 		}
 		else
 		{
-			window.location.href="listAllExcelTemplates.action?message=" + message;
+			window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
 		}
 	}
 	else if ( type == "none" )
 	{
-		window.location.href="listAllExcelTemplates.action?message=" + message;
+		window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
 	}
 	else
 	{
@@ -215,6 +213,6 @@ function updateReportExcelByTemplateCompleted( xmlObject ) {
 	if ( type != "" )
 	{
 		var message = xmlObject.firstChild.nodeValue;
-		window.location.href="listAllExcelTemplates.action?message=" + message;
+		window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
 	}
 }

@@ -46,6 +46,7 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelStore;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
@@ -369,18 +370,19 @@ public class HibernateReportExcelStore
         Session session = sessionFactory.getCurrentSession();
         session.update( periodColumn );
     }
-    
-    @Override
+
+    @Transactional
     public void updateReportWithExcelTemplate( String curTemplateName, String newTemplateName )
     {
         Session session = sessionFactory.getCurrentSession();
-        String sql = "update reportexcels set exceltemplate = " + newTemplateName + " where exceltemplate LIKE '"
-            + curTemplateName + "'";
 
-        SQLQuery query = session.createSQLQuery( sql );
+        String hqlQuery = "update reportexcels set exceltemplate = :newName where exceltemplate = :curName";
+
+        SQLQuery query = session.createSQLQuery( hqlQuery );
+
+        query.setString( "newName", newTemplateName ).setString( "curName", curTemplateName );
 
         query.executeUpdate();
 
     }
-
 }
