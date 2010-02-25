@@ -1,4 +1,4 @@
-<h3>$i18n.getString('reports')</h3>
+<h2>$i18n.getString('reports')</h2>
 <table width=100%>
 	<tr>
 		<td>
@@ -152,7 +152,10 @@
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('excel_template')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="excelTemplateFile"  style="width:20em"/></td>
+			<td>
+				<input type="text" id="excelTemplateFile"  style="width:18em"/>
+				<a href="javascript:getListExcelTemplate();"><img align="absmiddle" src="../images/excel.png" style="cursor:pointer;width:20px;"></a>
+			</td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -360,6 +363,22 @@
 </div>
 
 <span id="message" style="top:100px;right:5px;position:absolute;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
+
+<div id="listExcelTemplate" style="overflow:auto;position:fixed;display:none;width:300px;z-index:10001;background-color: white;border: medium solid silver;height:500px;padding:5px;right:5px;top:5px;">
+	
+</div>	
+
+<style>
+div#listExcelTemplate ul li {
+	padding-top:10px;
+	cursor:pointer;
+}
+
+div#listExcelTemplate ul li:hover{
+	color:red;
+}
+</style>
+	
 
 
 

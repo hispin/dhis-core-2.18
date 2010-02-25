@@ -20,20 +20,6 @@
 	</table>
 </form>
 
-<table width=100%>
-	<tr>
-		<td>
-			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
-		</td>
-		<td>
-
-		</td>
-		<td align=right>
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px"/>
-		</td>
-	</tr>
-</table>
-
 <table width="100%" class="listTable">
 	<thead>
 		<tr>
