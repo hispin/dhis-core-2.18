@@ -123,7 +123,9 @@
     #end
     
     <div id="rightBar">
-      <span id="hideRightBar"><a href="#" onclick="hideHelpContent()"><img src="../images/hide.png" onclick=""></a></span>
+      <span id="hideRightBar"><a href="javascript:hideHelpContent()" title="$i18n.getString( 'close' )">
+        <img src="../images/hide.png" alt="$i18n.getString( 'close' )"></a>
+      </span>
       <div id="rightBarContents"/>
     </div>
     

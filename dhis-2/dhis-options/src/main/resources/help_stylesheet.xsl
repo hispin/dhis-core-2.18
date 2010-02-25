@@ -5,7 +5,7 @@
 
 <xsl:template match="section">
   <h3><xsl:value-of select="title"/></h3>
-  <xsl:apply-templates select="para|orderedlist|itemizedlist"/>
+  <xsl:apply-templates select="para|orderedlist|itemizedlist|section"/>
 </xsl:template>
 
 <xsl:template match="para">
@@ -25,7 +25,7 @@
 </xsl:template>
  
 <xsl:template match="/">
-  <xsl:apply-templates select="book/chapter/section[@id=$sectionId]"/>
+  <xsl:apply-templates select="book/chapter//section[@id=$sectionId]"/>
 </xsl:template>
 
 </xsl:stylesheet>

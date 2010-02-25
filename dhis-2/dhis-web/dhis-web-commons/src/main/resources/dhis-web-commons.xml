@@ -228,11 +228,6 @@
 	<package name="dhis-web-commons-help" extends="dhis-web-commons"
 		namespace="/dhis-web-commons-help">
 
-		<action name="viewDynamicHelp" class="org.hisp.dhis.help.action.PopupHelpAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-commons/help/helpPopup.vm</param>
-		</action>
-		
 		<action name="getHelpContent" class="org.hisp.dhis.help.action.GetHelpContentAction">
 			<result name="success" type="outputStreamResult"></result>
 		</action>

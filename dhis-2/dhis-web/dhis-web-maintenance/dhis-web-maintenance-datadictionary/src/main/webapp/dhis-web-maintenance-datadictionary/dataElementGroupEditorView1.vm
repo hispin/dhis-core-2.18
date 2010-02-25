@@ -21,6 +21,7 @@
 <h3>
 	$i18n.getString( "data_element_group_management" )
 	<a href="dataElementGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img align="absmiddle" src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a>
+	#openHelp( "dataElementGroupEditor" )
 </h3>
 
 <span id='message' style="position:fixed;top:80px;right:5px;"></span>
