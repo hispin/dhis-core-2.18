@@ -22,6 +22,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
   </bean>
   
+  <bean id="org.hisp.dhis.user.UserService"
+    class="org.hisp.dhis.user.DefaultUserService">
+    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+  </bean>
+  
   <!-- DeletionHandlers -->
   
   <bean id="org.hisp.dhis.user.UserDeletionHandler"

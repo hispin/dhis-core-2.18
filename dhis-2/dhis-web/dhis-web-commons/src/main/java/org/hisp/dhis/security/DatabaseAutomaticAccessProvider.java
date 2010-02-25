@@ -37,8 +37,6 @@ import org.hisp.dhis.user.UserCredentials;
  * @author Torgeir Lorange Ostby
  * @version $Id: DatabaseAutomaticAccessProvider.java 3513 2007-08-04 16:16:40Z
  *          torgeilo $
- * @version $Id: DatabaseAutomaticAccessProvider.java 339942 2009-12-21 10:21:03Z 
- * 			chauthutran $
  */
 public class DatabaseAutomaticAccessProvider extends
 		AbstractAutomaticAccessProvider {
@@ -61,8 +59,8 @@ public class DatabaseAutomaticAccessProvider extends
 		// Assumes no UserAuthorityGroup called "Superuser" in database
 		// ---------------------------------------------------------------------
 
-		String username = UserCredentials.SUPER_USER_NAME;
-		String password = UserCredentials.SUPER_USER_PASSWORD;
+		String username = "admin";
+		String password = "district";
 
 		User user = new User();
 		user.setFirstName(username);
@@ -71,7 +69,7 @@ public class DatabaseAutomaticAccessProvider extends
 		userStore.addUser(user);
 
 		UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
-		userAuthorityGroup.setName(UserAuthorityGroup.SUPER_USER_GROUP);
+		userAuthorityGroup.setName("ALL");
 		
 		userAuthorityGroup
 				.setAuthorities(new HashSet<String>(getAuthorities()));

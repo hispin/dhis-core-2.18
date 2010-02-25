@@ -34,15 +34,10 @@ import java.util.Set;
 /**
  * @author Nguyen Hong Duc
  * @version $Id: UserCredentials.java 2869 2007-02-20 14:26:09Z andegje $
- * @version $Id: UserCredentials.java 339942 2009-12-21 10:21:03Z chauthutran $
  */
 public class UserCredentials
     implements Serializable
 {    
-	
-	public static final String SUPER_USER_NAME = "admin";
-	
-	public static final String SUPER_USER_PASSWORD = "district";
 	
     private int id;
 

@@ -30,6 +30,7 @@ package org.hisp.dhis.user.action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.opensymphony.xwork2.Action;
@@ -51,6 +52,13 @@ public class RemoveRoleAction
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,12 +99,21 @@ public class RemoveRoleAction
         {
             try
             {
-                userStore.deleteUserAuthorityGroup( authorityGroup );
+                if ( userService.isLastSuperRole( authorityGroup ) )
+                {
+                    message = i18n.getString( "can_not_remove_last_super_user_role" );
+
+                    return ERROR;
+                }
+                else
+                {
+                    userStore.deleteUserAuthorityGroup( authorityGroup );
+                }
             }
             catch ( DataIntegrityViolationException e )
             {
                 message = i18n.getString( "user_use_group" );
-                
+
                 return ERROR;
             }
         }

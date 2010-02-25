@@ -1,4 +1,4 @@
-package org.hisp.dhis.user.action;
+package org.hisp.dhis.user;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,53 +27,20 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
-
-import com.opensymphony.xwork2.Action;
-
 /**
- * @author Thanh Nguyen
- * @version $Id: GetRoleListAction.java 4079 2007-11-20 11:42:23Z larshelg $
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class GetRoleListAction
-    implements Action
+public interface UserService
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    String ID = UserService.class.getName();
 
-    private UserStore userStore;
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<UserAuthorityGroup> userAuthorityGroups;
-
-    public List<UserAuthorityGroup> getUserAuthorityGroups()
-    {
-        return userAuthorityGroups;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-
-        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
-
-        return SUCCESS;
-    }
+    boolean isSuperUser(UserCredentials userCredentials);
+    
+    boolean isLastSuperUser(UserCredentials userCredentials);
+    
+    boolean isSuperRole(UserAuthorityGroup userAuthorityGroup);
+    
+    boolean isLastSuperRole(UserAuthorityGroup userAuthorityGroup);
+    
 }

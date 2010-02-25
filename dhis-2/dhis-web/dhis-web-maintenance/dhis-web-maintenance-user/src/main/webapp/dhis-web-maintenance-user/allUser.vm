@@ -1,4 +1,4 @@
-
+<div id='warningArea' style='display:none;' onclick="hideById('warningArea')"></div>
 <h3>$i18n.getString( "user_management" )</h3>
 
 <table style="width:100%">
@@ -32,13 +32,9 @@
 					<td onclick="showUserDetails( $userCredentials.id )">$encoder.htmlEncode( $userCredentials.user.surname ), $encoder.htmlEncode( $userCredentials.user.firstName )</td>
 					<td onclick="showUserDetails( $userCredentials.id )">$!encoder.htmlEncode( $userCredentials.user.organisationUnit.name )</td>
 					<td style="text-align:center">
-						#if( $encoder.htmlEncode( $userCredentials.username ) != $!encoder.htmlEncode( $userAdmin ) )
-							<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-						#end
+					<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					<td style="text-align:center">
-						#if( $encoder.htmlEncode( $userCredentials.username ) != $!encoder.htmlEncode( $userAdmin ) )
-							<a href="javascript:removeUser( $userCredentials.id, '$encoder.jsEncode( $userCredentials.username )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-						#end
+					<a href="javascript:removeUser( $userCredentials.id, '$encoder.jsEncode( $userCredentials.username )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 					</td>
 					<td style="text-align:center"><a href="javascript:showUserDetails( $userCredentials.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>
