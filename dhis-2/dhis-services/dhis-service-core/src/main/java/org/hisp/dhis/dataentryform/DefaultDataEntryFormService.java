@@ -56,31 +56,30 @@ public class DefaultDataEntryFormService
     {
         this.dataEntryFormStore = dataEntryFormStore;
     }
-    
+
     private DataEntryFormAssociationService dataEntryFormAssociationService;
-    
-    public void setDataEntryFormAssociationService(
-			DataEntryFormAssociationService dataEntryFormAssociationService )
+
+    public void setDataEntryFormAssociationService( DataEntryFormAssociationService dataEntryFormAssociationService )
     {
         this.dataEntryFormAssociationService = dataEntryFormAssociationService;
     }
-    
+
     // ------------------------------------------------------------------------
     // Implemented Methods
     // ------------------------------------------------------------------------
 
     public int addDataEntryForm( DataEntryForm dataEntryForm, String associationTableName, int associationId )
     {
-        int dataEntryFormId =  dataEntryFormStore.addDataEntryForm( dataEntryForm );
-        
-        DataEntryForm dataEF = dataEntryFormStore.getDataEntryForm( dataEntryFormId );
-       
-        DataEntryFormAssociation dataAssociation = new DataEntryFormAssociation(associationTableName, associationId, dataEF);
-         
+        int dataEntryFormId = dataEntryFormStore.addDataEntryForm( dataEntryForm );
+
+        DataEntryForm form = dataEntryFormStore.getDataEntryForm( dataEntryFormId );
+
+        DataEntryFormAssociation dataAssociation = new DataEntryFormAssociation( associationTableName, associationId, form );
+
         dataEntryFormAssociationService.addDataEntryFormAssociation( dataAssociation );
-        
+
         return dataEntryFormId;
-        
+
     }
 
     public void updateDataEntryForm( DataEntryForm dataEntryForm )
@@ -90,16 +89,15 @@ public class DefaultDataEntryFormService
 
     public void deleteDataEntryForm( DataEntryForm dataEntryForm )
     {
-        
-    	DataEntryFormAssociation entryFormAssociation = dataEntryFormAssociationService.
-        							getDataEntryFormAssociationByDataEntryForm(dataEntryForm);
-    	
-        if( entryFormAssociation != null )
+        DataEntryFormAssociation entryFormAssociation = dataEntryFormAssociationService
+            .getDataEntryFormAssociationByDataEntryForm( dataEntryForm );
+
+        if ( entryFormAssociation != null )
         {
-        	dataEntryFormAssociationService.deleteDataEntryFormAssociation(entryFormAssociation);
+            dataEntryFormAssociationService.deleteDataEntryFormAssociation( entryFormAssociation );
         }
-        
-    	dataEntryFormStore.deleteDataEntryForm( dataEntryForm );
+
+        dataEntryFormStore.deleteDataEntryForm( dataEntryForm );
     }
 
     public DataEntryForm getDataEntryForm( int id )
@@ -114,36 +112,35 @@ public class DefaultDataEntryFormService
 
     public DataEntryForm getDataEntryFormByDataSet( DataSet dataSet )
     {
-        if( dataSet != null )
+        if ( dataSet != null )
         {
-
-        	DataEntryFormAssociation dataAssociation = dataEntryFormAssociationService.getDataEntryFormAssociation(
-        			DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSet.getId());
-        	if( dataAssociation != null )
-        	{
-        		return dataAssociation.getDataEntryForm();
-        	}
-    	
+            DataEntryFormAssociation dataAssociation = dataEntryFormAssociationService.getDataEntryFormAssociation(
+                DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSet.getId() );
+            
+            if ( dataAssociation != null )
+            {
+                return dataAssociation.getDataEntryForm();
+            }
         }
-    	
-    	return null;
+
+        return null;
     }
-    
+
     public DataEntryForm getDataEntryFormByProgramStage( ProgramStage programStage )
     {
-        if( programStage != null )
+        if ( programStage != null )
         {
 
-        	DataEntryFormAssociation dataAssociation = dataEntryFormAssociationService.getDataEntryFormAssociation(
-        			DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, programStage.getId());
-        	if( dataAssociation != null )
-        	{
-        		return dataAssociation.getDataEntryForm();
-        	}
-    	
+            DataEntryFormAssociation dataAssociation = dataEntryFormAssociationService.getDataEntryFormAssociation(
+                DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, programStage.getId() );
+            if ( dataAssociation != null )
+            {
+                return dataAssociation.getDataEntryForm();
+            }
+
         }
-    	
-    	return null;
+
+        return null;
     }
 
     public Collection<DataEntryForm> getAllDataEntryForms()

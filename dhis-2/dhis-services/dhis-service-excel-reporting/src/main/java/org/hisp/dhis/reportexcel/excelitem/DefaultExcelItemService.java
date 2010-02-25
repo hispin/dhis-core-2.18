@@ -39,98 +39,111 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public class DefaultExcelItemService implements ExcelItemService {
+public class DefaultExcelItemService
+    implements ExcelItemService
+{
+    // -------------------------------------------------
+    // Dependency
+    // -------------------------------------------------
 
-	// -------------------------------------------------
-	// Dependency
-	// -------------------------------------------------
+    private ExcelItemStore excelItemStore;
 
-	private ExcelItemStore excelItemStore;
+    public void setExcelItemStore( ExcelItemStore excelItemStore )
+    {
+        this.excelItemStore = excelItemStore;
+    }
 
-	public void setExcelItemStore(ExcelItemStore excelItemStore) {
-		this.excelItemStore = excelItemStore;
-	}
+    // --------------------------------------
+    // Excelitem group Services
+    // --------------------------------------
 
-	// --------------------------------------
-	// Excelitem group Services
-	// --------------------------------------
+    public int addExcelItemGroup( ExcelItemGroup excelItemGroup )
+    {
 
-	public int addExcelItemGroup(ExcelItemGroup excelItemGroup) {
+        return excelItemStore.addExcelItemGroup( excelItemGroup );
+    }
 
-		return excelItemStore.addExcelItemGroup(excelItemGroup);
-	}
+    public void deleteExcelItemGroup( int id )
+    {
 
-	public void deleteExcelItemGroup(int id) {
+        excelItemStore.deleteExcelItemGroup( id );
+    }
 
-		excelItemStore.deleteExcelItemGroup(id);
-	}
+    public Collection<ExcelItemGroup> getAllExcelItemGroup()
+    {
 
-	public Collection<ExcelItemGroup> getAllExcelItemGroup() {
+        return excelItemStore.getAllExcelItemGroup();
+    }
 
-		return excelItemStore.getAllExcelItemGroup();
-	}
+    public ExcelItemGroup getExcelItemGroup( int id )
+    {
 
-	public ExcelItemGroup getExcelItemGroup(int id) {
+        return excelItemStore.getExcelItemGroup( id );
+    }
 
-		return excelItemStore.getExcelItemGroup(id);
-	}
+    public void updateExcelItemGroup( ExcelItemGroup excelItemGroup )
+    {
 
-	public void updateExcelItemGroup(ExcelItemGroup excelItemGroup) {
+        excelItemStore.updateExcelItemGroup( excelItemGroup );
+    }
 
-		excelItemStore.updateExcelItemGroup(excelItemGroup);
-	}
+    public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit( OrganisationUnit organisationUnit )
+    {
 
-	public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit(
-			OrganisationUnit organisationUnit) {
+        return excelItemStore.getExcelItemGroupsByOrganisationUnit( organisationUnit );
+    }
 
-		return excelItemStore
-				.getExcelItemGroupsByOrganisationUnit(organisationUnit);
-	}
+    // --------------------------------------
+    // Excelitem Services
+    // --------------------------------------
 
-	// --------------------------------------
-	// Excelitem Services
-	// --------------------------------------
+    public int addExcelItem( ExcelItem excelItem )
+    {
 
-	public int addExcelItem(ExcelItem excelItem) {
+        return excelItemStore.addExcelItem( excelItem );
+    }
 
-		return excelItemStore.addExcelItem(excelItem);
-	}
+    public void deleteExcelItem( int id )
+    {
 
-	public void deleteExcelItem(int id) {
+        excelItemStore.deleteExcelItem( id );
+    }
 
-		excelItemStore.deleteExcelItem(id);
-	}
+    public Collection<ExcelItem> getAllExcelItem()
+    {
 
-	public Collection<ExcelItem> getAllExcelItem() {
+        return excelItemStore.getAllExcelItem();
+    }
 
-		return excelItemStore.getAllExcelItem();
-	}
+    public void updateExcelItem( ExcelItem excelItem )
+    {
 
-	public void updateExcelItem(ExcelItem excelItem) {
+        excelItemStore.updateExcelItem( excelItem );
+    }
 
-		excelItemStore.updateExcelItem(excelItem);
-	}
+    public ExcelItem getExcelItem( int id )
+    {
 
-	public ExcelItem getExcelItem(int id) {
+        return excelItemStore.getExcelItem( id );
+    }
 
-		return excelItemStore.getExcelItem(id);
-	}
+    // --------------------------------------
+    // DataElement Order
+    // --------------------------------------
 
-	// --------------------------------------
-	// DataElement Order
-	// --------------------------------------
+    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
+    {
+        return excelItemStore.getDataElementGroupOrder( id );
+    }
 
-	public DataElementGroupOrder getDataElementGroupOrder(Integer id) {
-		return excelItemStore.getDataElementGroupOrder(id);
-	}
+    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
+    {
+        excelItemStore.updateDataElementGroupOrder( dataElementGroupOrder );
+    }
 
-	public void updateDataElementGroupOrder(
-			DataElementGroupOrder dataElementGroupOrder) {
-		excelItemStore.updateDataElementGroupOrder(dataElementGroupOrder);
-	}
-
-	public void deleteDataElementGroupOrder(Integer id) {
-		excelItemStore.deleteDataElementGroupOrder(id);
-	}
+    public void deleteDataElementGroupOrder( Integer id )
+    {
+        excelItemStore.deleteDataElementGroupOrder( id );
+    }
 
 }

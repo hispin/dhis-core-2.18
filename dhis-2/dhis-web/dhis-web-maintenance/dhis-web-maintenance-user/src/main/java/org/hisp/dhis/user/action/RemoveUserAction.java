@@ -117,6 +117,7 @@ public class RemoveUserAction
         }
 
         UserCredentials userCredentials = userStore.getUserCredentials( user );
+        
         if ( userService.isLastSuperUser( userCredentials ) )
         {
             message = i18n.getString( "can_not_remove_last_super_user" );
