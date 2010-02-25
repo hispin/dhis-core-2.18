@@ -1,14 +1,13 @@
 package org.hisp.dhis.dataentryform;
 
-import java.sql.Statement;
-
-import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class DataEntryFormPopulator
     extends AbstractStartupRoutine
 {
@@ -18,15 +17,15 @@ public class DataEntryFormPopulator
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     private StatementBuilder statementBuilder;
-    
+
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
@@ -35,18 +34,14 @@ public class DataEntryFormPopulator
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
-    
-    @Transactional
+
     public void execute()
         throws Exception
     {
         log.info( "Remove datasetid column from dataentryform table" );
-        Statement stmnt = statementManager.getHolder().getStatement();
         try
         {
-            stmnt.executeUpdate(  statementBuilder.getDropDatasetForeignKeyForDataEntryFormTable() );
-            stmnt.executeUpdate( "INSERT INTO dataentryformassociation  SELECT 'dataset', datasetid, dataentryformid FROM dataentryform;" );
-            stmnt.executeUpdate( "ALTER TABLE dataentryform DROP COLUMN datasetid;" );
+            executeTransactional();
         }
         catch ( Exception ex )
         {
@@ -54,7 +49,13 @@ public class DataEntryFormPopulator
         }
     }
 
-
-    
+    @Transactional( rollbackFor = Exception.class )
+    public void executeTransactional()
+        throws Exception
+    {
+        jdbcTemplate.execute( "INSERT INTO dataentryformassociation  SELECT 'dataset', datasetid, dataentryformid FROM dataentryform;" );
+        jdbcTemplate.execute( statementBuilder.getDropDatasetForeignKeyForDataEntryFormTable() );
+        jdbcTemplate.execute( "ALTER TABLE dataentryform DROP COLUMN datasetid;" );
+    }
 
 }
