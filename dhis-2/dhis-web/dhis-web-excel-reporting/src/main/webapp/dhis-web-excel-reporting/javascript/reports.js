@@ -314,3 +314,34 @@ function restoreReportExcelReceived( xmlObject ) {
 		window.location.reload();	
 	}
 }
+
+function getListExcelTemplate()
+{
+	var request = new Request();
+    request.setResponseTypeXML( 'files' );
+    request.setCallbackSuccess( getListExcelTemplateReceived );
+	request.send( "getListExcelTemplateFile.action");	
+}
+
+function getListExcelTemplateReceived( files )
+{
+	var html = "<ul>";
+	var excels = files.getElementsByTagName( "file");
+	
+	for( var i=0;i<excels.length;i++){
+	
+		html += "<li onclick='selectExcelTemplate(this);'>" + excels[i].firstChild.nodeValue + "</li>";
+		
+	}
+	
+	html += "</ul>";
+	
+	byId("listExcelTemplate").innerHTML = html;
+	showById( 'listExcelTemplate' );
+}
+
+function selectExcelTemplate( li )
+{
+	byId( 'excelTemplateFile' ).value = li.innerHTML;
+	hideById( 'listExcelTemplate' );
+}
