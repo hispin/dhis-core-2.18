@@ -19,9 +19,7 @@
 </style>
 
 <h3>
-	$i18n.getString( "data_element_group_management" )
-	<a href="dataElementGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img align="absmiddle" src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a>
-	#openHelp( "dataElementGroupEditor" )
+	$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroupEditor" )
 </h3>
 
 <span id='message' style="position:fixed;top:80px;right:5px;"></span>
@@ -30,7 +28,7 @@
 	<tr>
 		<th>$i18n.getString( "data_element_group" )</th>
 		<th><span id="groupNameView" style="display:block;"></span></th>
-		<td></td>
+		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>
 		<th>$i18n.getString( "available_dataelements" )</th>
 
 	</tr>
@@ -38,7 +36,6 @@
 	<tr>
 		<td><input id="dataElementGroupsFilter" type="text" style="width:300px;" onkeyup="filterDataElementGroups();"></td>
 		<td><input id="selecteDataElementsFilter" type="text" style="width:300px;" onkeyup="filterSelectedDataElements();"></td>
-		<td></td>
 		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterAvailableDataElements();"></td>
 	</tr>
 
@@ -53,11 +50,11 @@
 		</td>
 
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedDataElements();" style="width:30px"><br><br>
-			<input type="button" value="&gt;" onclick="removeSelectedDataElements();" style="width:30px">
+			<input type="button" value="&lt;" onclick="addSelectedDataElements();" style="width:42px"><br><br>
+			<input type="button" value="&gt;" onclick="removeSelectedDataElements();" style="width:42px">
 		</td>
 		<td>
-			<select class="select" id="availableDataElements" multiple="multiple" size="30"  ondblclick="addSelectedDataElements();" disabled="true" onMouseOut="javascript: hideToolTip();">
+			<select class="select" id="availableDataElements" multiple="multiple" size="30" ondblclick="addSelectedDataElements();" disabled="true" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 	</tr>
