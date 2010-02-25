@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "indicator_group_management" )</h3>
+<h3>$i18n.getString( "indicator_group_management" ) #openHelp( "indicatorGroup" )</h3>
 
 <table class="mainPageTable">
 	<tr>

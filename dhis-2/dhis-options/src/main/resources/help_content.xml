@@ -1,290 +1,690 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <book>
   <chapter>
-    <title>Data Administration in DHIS 2</title>
-      <para>The data administration module provides a range of functions to ensure that the data stored in the DHIS2 database is integral and that the database performance is optimised. These functions should be executed on a regular basis by a data administrator to ensure that the quality of the data stored is optimal. </para>
-      <section id="dataBrowser">
-        <title>Data browser</title>
-        <para>The data browser maintenance module allows the user to produce a summary of the data contained in the DHIS2 database. This summary provides the number of data element values that have been recorded for a given time interval and then grouped by the following options:</para>
-        <itemizedlist>
-          <listitem>
-            <para>Data sets</para>
-          </listitem>
-          <listitem>
-            <para>Data element groups</para>
-          </listitem>
-          <listitem>
-            <para>Organisational unit groups</para>
-          </listitem>
-          <listitem>
-            <para>Organisational units</para>
-          </listitem>
-        </itemizedlist>
-        <para>Each of these options can be accessed by selecting the desired option from  <guilabel>&quot;Browse by&quot; </guilabel>drop-down menu. </para>
-        <para>In order to produce a summary of submitted data for a given period and grouped by data sets, the user should follow this procedure. Begin by selecting a given periodicity type (e.g. Weekly, monthly, yearly, etc) and then a time interval (e.g. January 2009 to March 2009). Select the type of summary to be produced (e.g. Dataset) from the &quot;Browse by&quot; drop-down menu. Click the &quot;Browse&quot; button to view the summary. </para>
+    <title>Data elements and indicators</title>
+    <para>This sub module is required for the management of the data elements and indicators used by the application. When the ‘Data Elements and Indicators’ options is chosen from the main Maintenance menu, the following screen appears:</para>
+    <screenshot>
+      <mediaobject>
+        <imageobject>
+          <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_main.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+    <para>There are three main functions of this module: addition and attribution of data elements and indicators, and the definition of a data dictionary . </para>
+    <section>
+      <title>Data element maintenance</title>
+      <para>Each of the options for maintenance of  data elements will be described in the following section.</para>
+      <itemizedlist>
+        <listitem>
+          <para>Data element</para>
+          <para>Create, modify, view and delete data elements. </para>
+        </listitem>
+        <listitem>
+          <para>Data element group</para>
+          <para>Create, modify, view and delete data element groups. </para>
+        </listitem>
+        <listitem>
+          <para>Data element group editor</para>
+          <para>Easily add or remove data elements to and from data element groups. </para>
+        </listitem>
+        <listitem>
+          <para>Data element group set editor</para>
+          <para>Create, modify, view and delete data elements group sets.   </para>
+        </listitem>
+        <listitem>
+          <para>Data element categories</para>
+          <para>Create, modify, view and delete data element categories. </para>
+        </listitem>
+      </itemizedlist>
+      <section id="dataElement">
+        <title>Data elements</title>
+        <para>Data elements form the basis of DHIS2. Data elements define what is actually recorded in system, e.g. number of immunisations or number of cases of malaria. The actual creation and definition of the data elements themselves are far beyond the scope of this manual to describe, but it is assumed that an administrator will be provided with a list of standardised data elements for inclusion into the DHIS2 system. </para>
+        <para>To access the data element maintenance module, choose Maintenance-&gt;Data elements-&gt;Data element. </para>
+        <para>The ‘Filter by name’ will allow you to filter a range of data elements if you know either the full name of the data element, or just a part of it. Type the name
+               into the search field and any matching data elements are displayed below.
+               You can also choose ‘Filter by group/view all’ to narrow down a data
+               element search within a particular data element group. In default mode, this
+               field will display all the data elements in the application.
+               The ‘Get PDF’ button can be clicked to generate a .pdf file of all the data
+               elements. The 'Sort' button can be used to sort the data elements into alphabetical order. </para>
         <screenshot>
           <mediaobject>
             <imageobject>
-              <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_browser1.png" format="PNG"/>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_main2.png" format="PNG"/>
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>A summary of the number  of data element values that have been submitted over the user selected time period is shown below. </para>
-        <screenshot>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_browsing_data_sets.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-        <para> By clicking on the name of the individual dataset, a more detailed summary of each data element can be obtained as shown below.  A cross-tab table summarising each time period will be shown. </para>
-        <screenshot>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_browser_dataset_detail.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-        <para>The functionality of the grouping by Datasets, Data element groups, and Organisational groups is essentially the same. </para>
-        <para>The functionality of grouping by organisation units will be discussed below. Begin by selecting &quot;Organisation units&quot; from the &quot;Browse by&quot; drop-down menu. The organisational hierarchy present in the database will now be displayed. Organisational units can be expanded by clicking on the plus symbol in the organisational tree view.</para>
-        <screenshot>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_org_unit1.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-        <para> By clicking on an organisational unit, and the clicking the &quot;Browse&quot; button, a summary of submitted data elements present in the database is returned for all immediate children of the selected organisational as shown below</para>
-        <screenshot>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_orgunit2a.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-        <para>By clicking on one of the organisational units, a detailed list of data elements is presented by each time period as shown below. <screenshot>
+        <para>To add a new data element, click the 'Add new' button. There are various options available from this page that allow the user to modify data elements already present in the database. Each of the options are described below in the "Editing data elements". </para>
+        <section>
+          <title>Editing data elements</title>
+          <para>Click the "Edit"<inlinegraphic fileref="resources/images/dhis2_images/edit.png" align="center"/> button to modify the properties of a data element that has been previously defined. </para>
+          <screenshot>
             <mediaobject>
               <imageobject>
-                <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_orgunit2.png" format="PNG"/>
+                <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_element_edit.png" format="PNG"/>
               </imageobject>
             </mediaobject>
-          </screenshot></para>
-        <para>For each of the data browser summaries, a PDF export can be produced by specifying a filename in the &quot;Filename&quot; field, selecting a font size, a page layout (Landscape or Portrait) and pressing  the <guibutton>&quot;Export PDF&quot;</guibutton> button. You will then be prompted to select a location to save the file to, which can then be viewed with any PDF reader (e.g. Adobe Acrobat Reader, xpdf, etc). </para>
+          </screenshot>
+          <itemizedlist>
+            <listitem>
+              <para>Name: Define the precise name of the data element in this field. Each data element must have a unique name. </para>
+            </listitem>
+            <listitem>
+              <para>Short name: Typically, an abbreviation of the full data element name. This attribute is often used in reports to display the name of the data element, where there is limited space available. </para>
+            </listitem>
+            <listitem>
+              <para>Alternative name: Allows the definition of an alternative name of the data element. </para>
+            </listitem>
+            <listitem>
+              <para>Code: In many countries, data elements are assigned a code. This code can be entered in this field. </para>
+            </listitem>
+            <listitem>
+              <para>Description: Allows a full textual description of the data element to be entered. The user should be as precise as possible, and include full information on how the data element is measured and what its meaning is. </para>
+            </listitem>
+            <listitem>
+              <para>Active: Defines whether a given data element is active or not. Data elements marked as inactive, will not be displayed in the data entry screens. </para>
+            </listitem>
+            <listitem>
+              <para>Domain type: Defines whether a data element is an aggregate or patient type of data element. </para>
+            </listitem>
+            <listitem>
+              <para>Value type: Defines the type of data this data element will be used to record. Currently there are four options: number, text, yes/no (boolean), and date. </para>
+            </listitem>
+            <listitem>
+              <para>Aggregation operator: Defines the default aggregation operation that will be used on this data element. </para>
+            </listitem>
+            <listitem>
+              <para>URL: A URL having an in-depth description of the data element can be entered in the ‘URL’ field. This could be for instance, a link to a metadata repository or registry that contains detailed technical information about the definition and measurement of the data element. </para>
+            </listitem>
+            <listitem>
+              <para>Combination of categories: Defines which category combination the data element should have. </para>
+            </listitem>
+            <listitem>
+              <para>Data element group sets: Click the check box to activate this option  hen choose which data element group sets this data element should belong to. Available data element group sets are displayed din the upper window. Click the desired data element group set, then the <guibutton>"Add selected"</guibutton> button to add the data element to the group set. To remove a data element from a group set, click the data element group set in the lower list, and then click<guibutton> "Remove selected"</guibutton>. </para>
+              <screenshot>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_elements_group_sets.png" format="PNG"/>
+                  </imageobject>
+                </mediaobject>
+              </screenshot>
+            </listitem>
+            <listitem>
+              <para>Calculated: This option is available only when a data element is created. </para>
+              <para>Select the data elements that will be used to define the calculated data element, and then click "Add selected" to add them calculated data element composition list. Fill in the correct factor for the data element calculation component (defaults to 1). Component elements of the calculated data element can be removed from the definition by pressing the "Remove" button. <screenshot><mediaobject><imageobject><imagedata width="60%" align="center" fileref="resources/images/maintainence/data_element_calculated_define.png" format="PNG"/></imageobject></mediaobject></screenshot></para>
+            </listitem>
+            <listitem>
+              <para>Aggregation levels: The Aggregation Levels option allows the data element to be aggregated at one or more levels. When the user clicks on the Aggregation levels option, a drop down menu appears which displays available aggregation levels. The desired aggregation level is then selected by clicking the ‘Add Selected’ button.  By default, the aggregation will start at the lowest assigned organisation unit. <screenshot><mediaobject><imageobject><imagedata width="60%" align="center" fileref="resources/images/maintainence/data_element_aggregation_levels.png" format="PNG"/></imageobject></mediaobject></screenshot></para>
+            </listitem>
+          </itemizedlist>
+          <para>After making the required changes, click ‘Save’ to institute them. The ‘Cancel’ button aborts all changes made.</para>
+        </section>
+        <section>
+          <title>Data element translation</title>
+          <para>DHIS2 provides functionality to translate existing data elements into other languages. Simply press the translate button <inlinegraphic fileref="resources/images/dhis2_images/i18n.png" align="center"/> to get stared. The following dialogue will appear. </para>
+          <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_element_translate.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+          <para>The reference language is displayed in the upper right portion of the dialogue. Choose a locale to translate the data element into by selecting an option from the locale drop-down menu. Specify the name, short-name and description in the target language. Press "Save" to save your changes. </para>
+          <para>The "Details" section of this dialogue will allow you add a new locale if it is not already present in the database. There are two options:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Language code</para>
+              <para>Refers to the ISO 639-1 (two-letter code) language code. Refer to this <ulink url="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">web page</ulink> for a detailed listing of language codes. </para>
+            </listitem>
+            <listitem>
+              <para>Country code</para>
+              <para>Refers to the ISO 3166-1-alpha-2 code. A complete listing is available <ulink url="http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm">here</ulink>. </para>
+            </listitem>
+          </itemizedlist>
+          <para>The combination of these two codes together, forms a "locale" code, which is composed of the combination of the location and language. A very comprehensive discussion of the technical standard (RFC 3066) is available <ulink url="http://www.ietf.org/rfc/rfc3066.txt">here</ulink>.  This <ulink url="http://www.i18nguy.com/unicode/language-identifiers.html">page</ulink> provides a very comprehensive list of recognised locale codes. </para>
+        </section>
+        <section>
+          <title>Deleting a data element</title>
+          <para>Simply press the delete button <inlinegraphic fileref="resources/images/dhis2_images/delete.png" align="center"/> to delete a data element. Note that this operation is only possible if there is no data attached to the data element itself.  The user will be prompted to ensure that the data element should be deleted. </para>
+          <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_delete.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </section>
+        <section>
+          <title>Displaying data element details</title>
+          <para>This operation displays an in-line panel in the browser which displays all metadata about a given data element. Press the information button <inlinegraphic fileref="resources/images/dhis2_images/information.png" align="center"/>to access this view. </para>
+        </section>
       </section>
-      <section id="dataIntegrity">
-        <title>Data integrity</title>
-        <para>DHIS2 can perform a wide range of data integrity checks on the data contained in the database. Identifying and correcting data integrity issues is extremely important for ensuring that the data used for analysis purposes is valid. Each of the data integrity checks that are performed by the system will be described, along with general procedures that can be performed to resolve these issues. </para>
-        <section>
-          <title>Data elements without data set</title>
-          <para>Each data element must be assigned to a data set. Values for data elements will not be able to be entered into the system if a data element is not assigned to a data set. Choose Maintenance-&gt;Datasets-&gt;Edit from the main menu and then add the &quot;orphaned&quot; data element to the appropriate data set. </para>
-        </section>
-        <section>
-          <title>Data elements without groups</title>
-          <para>Some Data Elements have been allocated to several Data Element Groups. This is currently not allowed, because it will result in duplication of linked data records in the PivotSource recordsets that `feed` the pivot tables. Go to Maintenance -&gt; Data Element Groups to review each Data Element identified and remove the incorrect Group allocations.</para>
-        </section>
-        <section>
-          <title>Data elements assigned to data sets with different period types</title>
-          <para>Data Elements should not be assigned to two separate data sets whose period types differ. The recommended approach would be to create two separate data elements (for instance a monthly and yearly data element) and assign these to respective datasets. </para>
-        </section>
-        <section>
-          <title>Data sets not assigned to organisation units</title>
-          <para>All data sets should be assigned to at least one organisation unit. </para>
-        </section>
-        <section>
-          <title>Indicators with identical formulas</title>
-          <para>Although this rule will not affect data quality, it generally does not make sense to have two indicators with the exact same definition. Review the identified indicators and their formulas and delete or modify  any indicator that appears to be the duplicate.</para>
-        </section>
-        <section>
-          <title>Indicators without groups</title>
-          <para>All Data Elements and Indicators must be assigned to at least one group, so these Indicators need to be allocated to their correct Data Element and Indicator Group. Go to Maintenance -&gt; Indicator Groups, and allocate each of the `Orphaned` Indicators to its correct group.</para>
-        </section>
-        <section>
-          <title>Invalid indicator numerators</title>
-          <para>Violations of this rule may be caused by an incorrect reference to a deleted or modified data element. Review the indicator and make corrections to the numerator definition. </para>
-        </section>
-        <section>
-          <title>Invalid indicator denominators</title>
-          <para>Violations of this rule may be caused by an incorrect reference to a deleted or modified data element. Review the indicator and make corrections to the denominator definition. </para>
-        </section>
-        <section>
-          <title> Organisation units with cyclic references</title>
-          <para>Organisation units cannot be both parent and children of each other, directly nor indirectly.</para>
-        </section>
-        <section>
-          <title>Orphaned organisation units</title>
-          <para>All organisation units must exist within the organisation unit hierarchy. Go to Organisation-&gt;Hierarchy Operations and move the offending organisation unit into the proper position in the hierarchy. </para>
-        </section>
-        <section>
-          <title>Organisation units without groups</title>
-          <para>All organisation units <emphasis>must</emphasis> be allocated to at least <emphasis>one</emphasis> group. The problem might either be that you have not defined any `compulsory` OrgUnit Group Set at all, or that there are violations of the `compulsory` rule for some OrgUnits . NOTE: If you have defined no `compulsory` OrgUnit Group Sets, then you must first define them by going to  Maintenance -&gt; Organisation units-&gt;Organisation unit group sets and define at least one `compulsory` Group Set (the group set `OrgUnitType` are nearly universally relevant). If you have the relevant group sets, go to Maintenance -&gt; OrgUnit Groups to review each OrgUnit identified and add the relevant Group allocation.</para>
-        </section>
-        <section>
-          <title>Organisation units violating compulsory group sets</title>
-          <para>These organisation units have not been assigned to the any organisation unit group within one of the  <emphasis>compulsory</emphasis> organisation unit group sets. When a group set is defined as `compulsory`, it means that an organisation unit must be allocated to at least one organisation unit group within that group set. For instance, all organisation units must belong to one of the groups in the `organisation unitType` group set. It might belong to  the `Hospital` or the `Clinic` or any other `type` group - but it must belong to exactly one of them.  Go to Maintenance -&gt; organisation unit-&gt;Organisation unit groups to review each organisation unit identified in the integrity check. Allocate all organisation units to exactly one group. </para>
-        </section>
-        <section>
-          <title>Organisation units violating exclusive group sets</title>
-          <para>Some organisation units have been allocated to several organisation unit groups that are members of the same exclusive organisation unit group set. When a group set is defined as exclusive, it means that an organisation unit can <emphasis>only</emphasis> be allocated to <emphasis>one</emphasis> organisation unit group within that Group Set. For instance, one organisation unit cannot normally belong to the both the &apos;Hospital&apos; and &apos;Clinic&apos; groups , but rather to only to one of them. Go to Maintenance -&gt; organisation unit-&gt;Organisation unit groups to review each organisation unit identified in the integrity check. Remove the organisation unit from all groups except the one that it should be allocated to. </para>
-        </section>
-        <section>
-          <title> Organisation unit groups without group sets</title>
-          <para>The organisation unit groups listed here have not been allocated to a group set. Go to Maintenance-&gt;Organisation unit-&gt;Organisation unit group sets and allocate the Organisation unit group to the appropriate group set. </para>
-        </section>
-        <section>
-          <title>Validation rules without groups</title>
-          <para>All validation rules must be assigned to a group. Go to <command>Services-&gt;Data quality-&gt;Validation rule group</command> and assign the offending validation rule to a group. </para>
-        </section>
-        <section>
-          <title>Invalid validation rule left side expressions</title>
-          <para>An error exists in the left-side validation rule definition. Go to <command>Services-&gt;Data quality-&gt;Validation rule</command> and click the &quot;Edit&quot; icon on the offending rule. Press &quot;Edit left side&quot; and make the corrections that are required. </para>
-        </section>
-        <section>
-          <title>Invalid validation rule right side expressions</title>
-          <para>An error exists in the left-side validation rule definition. Go to <command>Services-&gt;Data quality-&gt;Validation rule</command> and click the &quot;Edit&quot; icon on the offending rule. Press &quot;Edit right side&quot; and make the corrections that are required.</para>
-        </section>
+      <section id="dataElementGroup">
+        <title>Data element groups</title>
+        <para>Data element groups provide a mechanism for classifying related data elements into a common theme. For instance, two data elements "Measles immunisation" and  "BCG Immunisation" might be grouped together into a data element group "Childhood immunisation". To access the data element group maintenance page, click Maintenance-&gt;Data elements and indicators-&gt;Data Element Group . The following screen will be displayed. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_element_groups_main.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Similar to the "Data element" maintenance page, data elements groups can be searched with by entering a search string in the "Filter by name" field. </para>
+        <para>To add a new data element group, click the <guibutton>"Add new"</guibutton> button. <screenshot><mediaobject><imageobject><imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_group_add.png" format="PNG"/></imageobject></mediaobject></screenshot></para>
+        <para>Fill in the "Name" field and then select all data elements that should belong to the group from the left panel. Click the "Move selected" <inlinegraphic fileref="resources/images/dhis2_images/move_right.png" align="center"/>button to add the selected data elements to the data element group. Click the "Remove selected" button to remove all data elements from the group that have been selected in the right panel.  Finally, click the "Add" button to save changes, or the "Cancel" button to discard any changes. </para>
       </section>
-      <section id="dataArchive">
-	    <title>Data Archive</title>
-	    <para>The purpose of the data archive function is to move data which is currently not being used for analysis to a secondary storage location in order to improve performance of the application. Data can be both archived and unarchived. When archiving data one moves it from the primary storage to the secondary storage location, while unarchiving moves it from the secondary storage location to the primary. Analysis functionality in DHIS 2 heavily utilizes queries to the data value database table, and by reducing the size of this table these operations will be significantly faster. Typically one would want to archive data that is older than two years.</para>
-	    <para>To archive data, first enter a start date and an end date for the time span of the data which should be archived. Then press the archive button. The operation might take a few minutes.</para>
-	    <para>To unarchive data, first enter a start date and an end date for the time span of the data which should be unarchived. Then press the unarchive button. The operation might take a few minutes.</para>
-	    <para>In some cases you might end up with overlapping data. For instance one might archive data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
-	  </section>
-      <section id="maintenance">
-        <title>Maintenance</title>
-        <para>The data maintenance module has five options, each described below. </para>
+      <section id="dataElementGroupEditor">
+        <title>Data element group editor</title>
+        <para>The data element group  editor provides advanced functionality to the administrator to allow multiple data elements to be added or removed from a group. It is also possible to create new data element groups, rename existing groups, and delete groups entirely. To access the data element group editor, press <guimenu>"Maintainers-&gt;Data elements and indicators-&gt;Data element group editor"</guimenu> from the main DHIS2 menu. The following screen will appear. <screenshot><mediaobject><imageobject><imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_group_editor_start.png" format="PNG"/></imageobject></mediaobject></screenshot></para>
+        <para>Data element groups area listed alphabetically in the leftmost panel. By clicking on a data element group, the current members of that group (data elements) are listed in the centre panel. Available data elements that can be added to the data element group appear are listed alphabetically in the rightmost panel. To remove an existing data element from the group, click the name of the data element in the centre panel, and then press the "Move right"  <inlinegraphic fileref="resources/images/dhis2_images/move_right.png" align="center"/> button. To add data elements to the group, select them from the leftmost panel, and click the "Move left" <inlinegraphic fileref="resources/images/dhis2_images/move_left.png" align="center"/> button. Press the <guibutton>"Update data element group member"</guibutton> button to save your changes. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_group_editor_select.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </section>
+      <section id="dataElementGroupSet">
+        <title>Data element group sets</title>
+        <para>Data element group sets allow multiple data element groups to be categorised into a set. Data element group sets are used during analysis and reporting to combine similar data element groups into a common theme. To access the data element group set maintenance module, choose "Maintenance-&gt;Data elements and indicators-&gt;Data element group set".  Similar to the other data element maintenance modules, new data element group sets can be added by pressing the "Add new button".  Other operations include Edit, Translate, Delete and Information, similar to the other modules in this section. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_element_group_set_start.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Existing data element group  set members can be edited by clicking the "Edit" button <inlinegraphic fileref="resources/images/dhis2_images/edit.png" align="center"/> of the desired data element group set as seen below.</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_element_group_set.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+        <para>Available data element groups are displayed in the left panel. They can be moved into the selected data element group set by pressing the "Move right" <inlinegraphic fileref="resources/images/dhis2_images/move_right.png" align="center"/> button. Data element groups that are currently members of the data element group set are displayed in the right hand panel. They can be removed from the data element group set by clicking the desired data element group and pressing the "Move left"<inlinegraphic fileref="resources/images/dhis2_images/move_left.png" align="center"/> button.  The ordering of the data element groups can be set with the "Move Up" <inlinegraphic fileref="resources/images/dhis2_images/move_up.png" align="center"/> and "Move Down" <inlinegraphic fileref="resources/images/dhis2_images/move_down.png" align="center"/>arrows. This ordering will be used in the datamart and reports to order the data element groups.  Press the <guibutton>"Update"</guibutton> button to save any changes and the <guibutton>"Cancel"</guibutton> button to discard all changes. </para>
+      </section>
+      <section id="dataElementCategory">
+        <title>Data element categories</title>
+        <para>Data element categories can be used to disaggregate data elements into individual atomic components. Data element categories are typically a concept, such as Gender, Age or  Disease Status. Data elements such as "Number of cases of confirmed malaria" are often broken into smaller component parts to determine, for instance, the number of confirmed malaria cases of particular age groups. As an example, three data element categories: Under 1, 1-5 and Over 5 could be created. They could be assigned as categories to the data element, which would then create in the data entry screens, three separate fields for this data element namely: </para>
         <itemizedlist>
           <listitem>
-            <para>Clear hierarchy history</para>
-            <para>DHIS 2 maintains an audit trail of changes to the organisation unit hierarchy for aggregation purposes. This function clears the hierarchy history.</para>
+            <para>Number of confirmed malaria cases (Under 1)</para>
           </listitem>
           <listitem>
-            <para>Clear data mart (aggregated datavalues)</para>
-            <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated data element values.</para>
+            <para>Number of confirmed malaria cases (1-5)</para>
           </listitem>
           <listitem>
-            <para>Clear data mart (aggregated indicatorvalues)</para>
-            <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated indicator  values.</para>
-          </listitem>
-          <listitem>
-            <para>Clear zero values</para>
-            <para>This function removes zero data values from the database. Values registered for data elements with aggregation operator <emphasis role="italic">average</emphasis> is not removed, as such values will be significant when aggregating the data, contrary to values registered for data elements with aggregation operator <emphasis role="italic">sum</emphasis>. Reducing the number of data values will improve system performance.</para>
-          </listitem>
-          <listitem>
-            <para>Clear dataset completeness</para>
-            <para>This function removes aggregated dataset completeness values. This data is produced and used by report tables.</para>
-          </listitem>
-          <listitem>
-            <para>Prune periods</para>
-            <para>This function removes all periods which have no registered data values. Reducing the number of periods will improve system performance.</para>
+            <para>Number of confirmed malaria cases (Over 5)</para>
           </listitem>
         </itemizedlist>
+        <para>Effective use of data element categories greatly simplifies the process of setting up the DHIS2 system, as the data element categories can be reused to disaggregate many different data elements. Otherwise, each of the data elements listed above, would need to be created separately. Judicious use of data element categories will greatly simplify the DHIS2 implementation, and allow for subsequent advanced analysis. </para>
+        <para>Data element categories are composed of category options. Category options must be defined when a data element category is created for the first time. Subsequent changes to the data element category, i.e.  adding or deleting new category options, are not allowed once the data element category has been created. </para>
+        <caution>
+          <para>It is critical that the proper categories and category options are defined in the initial definition step, as further changes to the category and its options will are not possible. </para>
+        </caution>
+        <para>To access the data element category maintenance module, press "Maintenance-&gt;Data elements and indicators-&gt;Data element category". The following screen will be displayed. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_element_categories_start.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Similar to the other data element maintains modules, data element categories can be filtered by typing the name of the data element category (or a portion of it) into the "Filter by name" field. To add a new data element category, press the "Add new" button which will then display the following screen. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="40%" align="center" fileref="resources/images/maintainence/data_element_categories_add_new.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Type the name of the new data element category in the "Name" field in the "Details" region. Category options can be added by typing the name of the category option in the "Category option" region and pressing the <guibutton>"Add category option"</guibutton> button. Category options can be reordered using the "Move Up"<inlinegraphic fileref="resources/images/dhis2_images/move_up.png" align="center"/> and "Move Down"<inlinegraphic fileref="resources/images/dhis2_images/move_down.png" align="center"/> buttons. Categories options can be deleted by selecting the data element category option and pressing the "Delete"<inlinegraphic fileref="resources/images/dhis2_images/delete.png" align="center"/> button. Once all data element categories options have been added to the data element category, press the <guibutton>"Add"</guibutton> button to save all changes or the <guibutton>"Cancel"</guibutton>  button to discard any changes.<caution><para>All data element category options must be added and defined properly in this step. Subsequent alterations to the data element category (other than reordering of the category options themselves) is not possible. </para></caution></para>
       </section>
-      <section id="resourceTables">
-        <title>Resource tables</title>
-        <para>Resource tables are supporting tables that are used during analysis of data. One would typically join the contents of these tables with the data value table when doing queries from third-party applications like Microsoft Excel. Simply select the tables that should be regenerated and press &quot;Generate tables&quot;. Regeneration of the resource tables should only be done once all data integrity issues are resolved. </para>
+      <section id="dataElementCategoryCombo">
+        <title>Data element category combinations</title>
+        <para>Data element category combinations allow multiple data element categories to be combined into a related set. As an example, a data element "Number of new HIV infections" might be disaggregated according to the following categories. </para>
         <itemizedlist>
           <listitem>
-            <para>Organisation unit structure (orgunitstructure)</para>
-            <para>This table should be regenerated any time there have been any changes made to the organisational unit hierarchy. This table provides information about the organisation unit hierarchy. It has one row for each organisation unit, one  column for each organisation unit level and the organisation unit identifiers for all parents in the lineage as values.</para>
+            <para>Age: "Under 5", "5-15", "15-24", "24 and above"</para>
           </listitem>
           <listitem>
-            <para>Exclusive organisation unit groupset structure normalized (orgunitgroupsetstructure)</para>
-            <para>This table provides information about the which organisation units are member of which organisation unit group sets.</para>
-          </listitem>
-          <listitem>
-            <para>Data element group set structure (_dataelementgroupsetstructure)</para>
-            <para>This table provides information about which data elements are members of which data element group sets. The table has one row for each data element,  one column for each data element group set and the names of the data element group as values.</para>
-          </listitem>
-          <listitem>
-            <para>Indicator group set structure (_indicatorgroupsetstructure)</para>
-            <para>This table provides information about which indicators are members of which indicator group sets. The table has one row for each indicator, one column for each indicator group set and the names of the indicator group as values.</para>
-          </listitem>
-          <listitem>
-            <para>Organisation unit group set structure (_organisationunitgroupsetstructure)</para>
-            <para>This table provides information about which organisation units are members of which organisation unit group sets. The table has one row for each organisation unit, one column for each organisation unit group set and the names of the organisation unit groups as values.</para>
-          </listitem>
-          <listitem>
-            <para>Category structure (_categorystructure)</para>
-            <para>This table provides information about which data elements are members of which categories. The table has one row for each data element, one column for each category and the names of the category options as values.</para>
-          </listitem>
-          <listitem>
-            <para>Data element category option combo name (categoryoptioncomboname)</para>
-            <para>This table should be regenerated any time there have been changes made to the category combination names. It contains readable names for the various combinations of categories.</para>
+            <para>Gender: Male, Female</para>
           </listitem>
         </itemizedlist>
-      </section>
-      <section id="organisationUnitMerge">
-        <title>Organisation unit merge</title>
-        <para>This function is useful when two organisation units need to be merged, eg. it is decided that one facility will be shut down and its services will be provided by a nearby facility.</para>
-        <para>Start by selecting the organisation unit to eliminate from the tree and click <emphasis role="italic">confirm</emphasis>.  Then select the organisation unit to keep and click <emphasis role="italic">confirm</emphasis> again. Finally, verify the selection and click <emphasis role="italic">merge</emphasis>.  </para>
-        <para>In the sitation where data exist  for the organisation unit to eliminate and not for the one to keep, the data will be moved to the one to keep. When data exists for both organisation units, the data will be summarized and moved to the one to keep. When data exists only for the one to keep, no action is taken. The organisation unit to eliminate will eventually be deleted.</para>
-      </section>
-      <section id="duplicateDataElimination">
-        <title>Duplicate data elimination</title>
-        <para>This function is useful when data has been entered mistakenly for two data elements which represents the same phenomena.</para>
-        <para>Start by selecting the data element to eliminate from the list and click confirm. Then select the data element to keep and click confirm again. Finally, verify the selection and click merge.</para>
-        <para>In the situation where data exists for the data element to eliminate and not for the one to keep, the data will be moved to the one to keep. When data exists for both data elements, the data which was updated last will be used. When data exists only for the one to keep, no action will be taken. The data element to eliminate will eventually be deleted, except when it is a multidimensional data element and has other data registered.</para>
-      </section>
-      <section id="dataStatistics">
-        <title>Data statistics</title>
-        <para>The data statistics module provides an overview of the number of objects stored in the DHIS2 database. </para>
+        <para> In this example, there would be two levels of disaggregation, consisting of two separate data element categories, each consisting of several data element category options. In most HMIS systems, different data elements are disaggregated according to a common set of categories. By combining these different categories into a data element category combination and assigning these combinations to data elements, the appropriate disaggregation levels can be applied efficiently and quickly to a large number of data elements. </para>
+        <para>To access the data element category combination maintenance module, select "Maintenance-&gt;Data element and indicators-&gt;Data element category combinations" from the main DHIS2 menu. As with the  other maintains modules, you can filter the listed category combinations by entering the name (or portion thereof) of the category combination. Other operations such as "Edit", "Delete" and "Information" should be familiar to the reader. </para>
+        <para>To add a new category combination, click the "Add new" button. The following dialogue will be displayed. </para>
         <screenshot>
           <mediaobject>
             <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_stats.png" format="PNG"/>
+              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_element_category_combo_add_new.png"/>
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>The total number of each type of object is presented in a table, as well as a graph. </para>
+        <para>Type the name of the category combination in the "Name" field, and then select the desired categories from the left panel. Press the "Move right" button to add the selected categories to the category combination. Press "Move left" to remove any categories that should not be part of the category combination. </para>
+        <caution>
+          <para>Categories can only be added to a category combination at this step. Categories can be removed from category combinations later by editing the category combination, however, it is not allowed to add additional categories once the combination has been created. Ensure that the category combination and its respective categories is final before you create the category combination and assign it to a data element. </para>
+        </caution>
       </section>
-      <section id="dataLocking">
-        <title>Data locking</title>
-        <para>This module gives users the privilege of locking certain datasets for chosen organisation units. This encourages timely data entry and prevents unwanted to changes to the data once it has been entered. When the ‘Data Administration’ option is chosen the data locking interface is displayed. The user has to select the periodicity of the report e.g. monthly, quarterly or
-  yearly for which the data is to be locked. The month, quarter or year for which the reports are to be locked is then specified. </para>
+    </section>
+    <section>
+      <title>Indicator maintenance</title>
+      <para>Indicator maintenance functions essentially the same as each of the respective sections in the previous section on data elements. The basic operations will be described in this section, but the reader should  refer to the corresponding sections above for detailed instructions. </para>
+      <section id="indicator">
+        <title>Indicators</title>
+        <para>Indicators are composed of multiple data elements, and typically consist of a numerator and denominator. Indicators are never entered in DHIS2, but are derived from combinations of data elements and factors. Indicators are used to calculate coverage rates, incidence and other values are are a result of data element values that have been entered into the system. </para>
+        <para>To access the Indicator maintains page, press Maintenance-&gt;Data element and indicators-&gt;Indicators from the main DHIS2 menu. Similar to data elements, you can add, delete, modify and view extra information about the indicators in the system. </para>
         <screenshot>
           <mediaobject>
             <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select1.png" format="PNG"/>
+              <imagedata width="60%" align="center" fileref="resources/images/maintainence/inidcator_maintainance_main.png" format="PNG"/>
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>The unlocked data sets for the period are displayed and the user will then have to choose the data sets to be locked.
-  </para>
+        <para>Indicators can be filtered by entering the name or a part of the indicator name in the "Filter by name" field. Similar to data elements, indicators can be added by pressing the "Add new" button. Other operations available from this menu are as follows. </para>
+        <itemizedlist>
+          <listitem>
+            <para><inlinegraphic fileref="resources/images/dhis2_images/edit.png"/> Existing indicators can be edited. </para>
+          </listitem>
+          <listitem>
+            <para><inlinegraphic fileref="resources/images/dhis2_images/i18n.png"/> Translate an existing indicator. </para>
+          </listitem>
+          <listitem>
+            <para><inlinegraphic fileref="resources/images/dhis2_images/delete.png"/> Delete an existing indicator. </para>
+          </listitem>
+          <listitem>
+            <para><inlinegraphic fileref="resources/images/dhis2_images/information.png"/> Get detailed information about this indicator. </para>
+          </listitem>
+        </itemizedlist>
+        <para>To add a new indicator, click the "Add new" button. The following screen is displayed. </para>
         <screenshot>
           <mediaobject>
             <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select2.png" format="PNG"/>
+              <imagedata width="30%" align="center" fileref="resources/images/maintainence/indicator_add.png" format="PNG"/>
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>After choosing the datasets to be locked, double click on each one by one to display the organisation unit tree in the field below. Click on the organisation unit to lock the dataset.
-  </para>
+        <para>Each of the fields marked with an asterisk are compulsory. A description of each field is provided below. </para>
+        <itemizedlist>
+          <listitem>
+            <para>Name: The full name of the indicator, such as "Incidence of confirmed malaria cases per 1000 population"</para>
+          </listitem>
+          <listitem>
+            <para>Short name: An abbreviated name of the indicator such as "Inc conf. malaria per 1000 pop"</para>
+          </listitem>
+          <listitem>
+            <para>Alternative name: An additional field for a possible alternative name of the indicator. </para>
+          </listitem>
+          <listitem>
+            <para>Code: In many countries, indicator are often assigned a particular code. This code can be entered here. </para>
+          </listitem>
+          <listitem>
+            <para>Description: A brief, informative description of the indicator and how it is calculated can be entered here. </para>
+          </listitem>
+          <listitem>
+            <para>Annualized: Determines whether or not an annualization factor is applied during the calculation of the indicator. Typically, annualized indicator's numerator are multiplied by a factor of 12, and the denominator is for instance a yearly population figure. This allows for monthly coverage values to be calculated with yearly population figures.</para>
+          </listitem>
+          <listitem>
+            <para>Type: This field will determine a factor that will automatically be applied during the calculation of the indicator. Possible choices are determined by the Indicator Types (described below). For instance, a "Percent" indicator will automatically be multiplied by a factor of 100 when exported to the data mart, so that it will display as a percentage. </para>
+          </listitem>
+          <listitem>
+            <para>URL: Can be used as a link to an indicator registry, where a full metadata description of the indicator can be made available. </para>
+          </listitem>
+        </itemizedlist>
+        <para>To define the numerator and denominator, simply press the respective button, and the following dialogue will be displayed. </para>
         <screenshot>
           <mediaobject>
             <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select3.png" format="PNG"/>
+              <imagedata width="50%" align="center" fileref="resources/images/maintainence/indicator_numerator_denominator.png" format="PNG"/>
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>The <guibutton>Apply Locks on All</guibutton> button locks the dataset for all the organisation units to which that dataset has been assigned. <guibutton>‘Remove locks on All’</guibutton> removes all locks put on the organisation units corresponding to the selected dataset. After the operations are completed the user must click <guibutton>‘Save’</guibutton> to apply the settings. The <guibutton>‘Lock at level’</guibutton> button locks datasets at a particular level that the user chooses. . <guibutton>‘Unlock at Level’</guibutton> removes locks that have been put on the organisation units corresponding to the selected dataset at the selected level. After the operations are completed, the user must click <guibutton>‘Save’</guibutton> to apply the settings. The <guibutton>‘Save’</guibutton> button will also lock those organisation unit datasets that have been specified by the user.
-  </para>
+        <para>Essentially, an indicator is a formula that can be composed of multiple data element, constant factors, and mathematical operators. In order to define a new indicator proceed with the following steps.  </para>
+        <orderedlist>
+          <listitem>
+            <para>Provide a description of the numerator can be provided in the "Description field". </para>
+          </listitem>
+          <listitem>
+            <para>Choose the aggregation operator, either as a SUM or COUNT. </para>
+          </listitem>
+          <listitem>
+            <para>Define the formula of the indicator by selecting the data elements that should compose the numerator from the "Data elements" field. Simply select the data element, and double click it. It will now appear in the formula. You formula must be mathematically valid, including the proper use of parentheses when necessary. You can double click on each of the mathematical operator buttons below the indicator formula definition  to add them to your formula. </para>
+          </listitem>
+          <listitem>
+            <para>Click the Save button to save all changes to the numerator. Click cancel to discard any changes that you have made. </para>
+          </listitem>
+          <listitem>
+            <para>Follow the same procedure in order to define the denominator. </para>
+          </listitem>
+        </orderedlist>
       </section>
-      <section id="zeroValueStorage">
-        <title>Zero value storage</title>
-        <para>The zero value storage function makes it possible to define for which data elements the system should store zero values. In most cases zeros are significant only for a subset of the data elements in the database. Zero values will be ignored during data entry for selected data elements.</para>
+      <section id="indicatorType">
+        <title>Indicator types</title>
+        <para>Indicator types simply define a factor that will be applied during aggregation. Indicator values that are calculate during a data mart export or report table generation process will appear properly formatted, and will therefore not require an additional multiplier (e.g. 100 in the case of percents) for the values to appear correctly formatted. </para>
+        <para>The indicator type maintenance panel has all of the same functions (Add new, Edit, Translate, Delete, and Information) as the Indicator maintenance section. </para>
+        <para>There are only two fields that need to be filled-in to create an indicator type, Name and Factor, as seen below. Name refers to the Indicator type (e.g. Per cent, Per thousand, Per ten thousand, etc). The factor is the numeric factor that will be applied during the calculation of the indicator. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="25%" align="center" fileref="resources/images/maintainence/indicator_type.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para/>
       </section>
-      <section id="cacheStatistics">
-        <title>Cache Statistics </title>
-        <para>This option is for system administrators only to use. The cache statistics shows the status of the application level cache. The application level cache refers to the objects and query results that the application is caching in order to speed up performance. If the database has been modified directly the application cache needs to be cleared for it to take effect.</para>
+      <section id="indicatorGroup">
+        <title>Indicator groups</title>
+        <para>Indicator groups function essentially the same as data element groups. Multiple indicators can be assigned to a group for easy filtering and analysis. To assign indicators to groups, simple press Maintenance-&gt;Data elements and indicators-&gt;Indicator groups.  See the section on Data element groups for detailed instructions of how to use this module. </para>
       </section>
+      <section id="indicatorGroupEditor">
+        <title>Indicator group editor</title>
+        <para>The indicator group editor module functions essentially the same as the data element group editor module, except on indicators. You can easily rearrange the groups that indicators belong to with this module. To access it, choose To assign indicators to groups, simple press Maintenance-&gt;Data elements and indicators-&gt;Indicator group editor from the main menu. See the section on Data element group editor for further instructions. </para>
+      </section>
+      <section id="indicatorGroupSet">
+        <title>Indicator group sets</title>
+        <para>Similar to data element group sets, indicator group sets serve to create combined groups of similar indicators. For instance, you might have a group of indicators called "Malaria" and "Leishmaniasis". Both of these groups could be combined into a group set called "Vector-borne diseases". Indicator groups sets are used during analysis of data to combine similar themes of indicators. To access this module choose Maintenance-&gt;Data elements and indicators-&gt;Indicator group sets from the main menu. The following dialogue will appear. </para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" align="center" fileref="resources/images/maintainence/indicator_group_sets.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Supply a name for the indicator group set, and then move the desired members from the "Available Indicator Groups" to the "Group members". Click "Add" to save your changes and "Cancel" to discard any changes. </para>
+      </section>
+    </section>
+    <section id="dataDictionary">
+      <title>Data dictionary</title>
+      <para>Data dictionaries are used to group data elements and indicators during filtering operations. They are useful for combining related groups of data elements and indicators according to the programs to which they belong. For instance a data dictionary called "MCH" could be created, and all maternal and child health data elements and indicators could be added to the dictionary. The data dictionary can be access by choosing Maintenance-&gt;Data elements and indicators-&gt;Data dictionary. The following screen will be displayed in the browser. </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_dictionary.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>Provide a name for the data dictionary in the "Name" field and a description of its contents. Data elements and indicators can be added or removed from the dictionary. Click "Save" if you are creating a new data dictionary or "Add" if you are editing the contents of an existing data dictionary.   </para>
+    </section>
   </chapter>
   <chapter>
-  <title>Data Quality</title>
-  <para>The data quality module provides means to improve the quality of the data in the system. This can be done through validation rules and various statistical checks.</para>
-  <section>
-    <title>Learning Objectives</title>
-    <para>After reading this module you will be able to understand:</para>
+    <title>Data Administration in DHIS 2</title>
+    <para>The data administration module provides a range of functions to ensure that the data stored in the DHIS2 database is integral and that the database performance is optimised. These functions should be executed on a regular basis by a data administrator to ensure that the quality of the data stored is optimal. </para>
+    <section id="dataBrowser">
+      <title>Data browser</title>
+      <para>The data browser maintenance module allows the user to produce a summary of the data contained in the DHIS2 database. This summary provides the number of data element values that have been recorded for a given time interval and then grouped by the following options:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Data sets</para>
+        </listitem>
+        <listitem>
+          <para>Data element groups</para>
+        </listitem>
+        <listitem>
+          <para>Organisational unit groups</para>
+        </listitem>
+        <listitem>
+          <para>Organisational units</para>
+        </listitem>
+      </itemizedlist>
+      <para>Each of these options can be accessed by selecting the desired option from  <guilabel>"Browse by" </guilabel>drop-down menu. </para>
+      <para>In order to produce a summary of submitted data for a given period and grouped by data sets, the user should follow this procedure. Begin by selecting a given periodicity type (e.g. Weekly, monthly, yearly, etc) and then a time interval (e.g. January 2009 to March 2009). Select the type of summary to be produced (e.g. Dataset) from the "Browse by" drop-down menu. Click the "Browse" button to view the summary. </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="70%" align="center" fileref="resources/images/maintainence/data_browser1.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>A summary of the number  of data element values that have been submitted over the user selected time period is shown below. </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_browsing_data_sets.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para> By clicking on the name of the individual dataset, a more detailed summary of each data element can be obtained as shown below.  A cross-tab table summarising each time period will be shown. </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_browser_dataset_detail.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>The functionality of the grouping by Datasets, Data element groups, and Organisational groups is essentially the same. </para>
+      <para>The functionality of grouping by organisation units will be discussed below. Begin by selecting "Organisation units" from the "Browse by" drop-down menu. The organisational hierarchy present in the database will now be displayed. Organisational units can be expanded by clicking on the plus symbol in the organisational tree view.</para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_org_unit1.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para> By clicking on an organisational unit, and the clicking the "Browse" button, a summary of submitted data elements present in the database is returned for all immediate children of the selected organisational as shown below</para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_orgunit2a.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>By clicking on one of the organisational units, a detailed list of data elements is presented by each time period as shown below. <screenshot><mediaobject><imageobject><imagedata width="60%" align="center" fileref="resources/images/maintainence/data_browser_orgunit2.png" format="PNG"/></imageobject></mediaobject></screenshot></para>
+      <para>For each of the data browser summaries, a PDF export can be produced by specifying a filename in the "Filename" field, selecting a font size, a page layout (Landscape or Portrait) and pressing  the <guibutton>"Export PDF"</guibutton> button. You will then be prompted to select a location to save the file to, which can then be viewed with any PDF reader (e.g. Adobe Acrobat Reader, xpdf, etc). </para>
+    </section>
+    <section id="dataIntegrity">
+      <title>Data integrity</title>
+      <para>DHIS2 can perform a wide range of data integrity checks on the data contained in the database. Identifying and correcting data integrity issues is extremely important for ensuring that the data used for analysis purposes is valid. Each of the data integrity checks that are performed by the system will be described, along with general procedures that can be performed to resolve these issues. </para>
+      <section>
+        <title>Data elements without data set</title>
+        <para>Each data element must be assigned to a data set. Values for data elements will not be able to be entered into the system if a data element is not assigned to a data set. Choose Maintenance-&gt;Datasets-&gt;Edit from the main menu and then add the "orphaned" data element to the appropriate data set. </para>
+      </section>
+      <section>
+        <title>Data elements without groups</title>
+        <para>Some Data Elements have been allocated to several Data Element Groups. This is currently not allowed, because it will result in duplication of linked data records in the PivotSource recordsets that `feed` the pivot tables. Go to Maintenance -&gt; Data Element Groups to review each Data Element identified and remove the incorrect Group allocations.</para>
+      </section>
+      <section>
+        <title>Data elements assigned to data sets with different period types</title>
+        <para>Data Elements should not be assigned to two separate data sets whose period types differ. The recommended approach would be to create two separate data elements (for instance a monthly and yearly data element) and assign these to respective datasets. </para>
+      </section>
+      <section>
+        <title>Data sets not assigned to organisation units</title>
+        <para>All data sets should be assigned to at least one organisation unit. </para>
+      </section>
+      <section>
+        <title>Indicators with identical formulas</title>
+        <para>Although this rule will not affect data quality, it generally does not make sense to have two indicators with the exact same definition. Review the identified indicators and their formulas and delete or modify  any indicator that appears to be the duplicate.</para>
+      </section>
+      <section>
+        <title>Indicators without groups</title>
+        <para>All Data Elements and Indicators must be assigned to at least one group, so these Indicators need to be allocated to their correct Data Element and Indicator Group. Go to Maintenance -&gt; Indicator Groups, and allocate each of the `Orphaned` Indicators to its correct group.</para>
+      </section>
+      <section>
+        <title>Invalid indicator numerators</title>
+        <para>Violations of this rule may be caused by an incorrect reference to a deleted or modified data element. Review the indicator and make corrections to the numerator definition. </para>
+      </section>
+      <section>
+        <title>Invalid indicator denominators</title>
+        <para>Violations of this rule may be caused by an incorrect reference to a deleted or modified data element. Review the indicator and make corrections to the denominator definition. </para>
+      </section>
+      <section>
+        <title> Organisation units with cyclic references</title>
+        <para>Organisation units cannot be both parent and children of each other, directly nor indirectly.</para>
+      </section>
+      <section>
+        <title>Orphaned organisation units</title>
+        <para>All organisation units must exist within the organisation unit hierarchy. Go to Organisation-&gt;Hierarchy Operations and move the offending organisation unit into the proper position in the hierarchy. </para>
+      </section>
+      <section>
+        <title>Organisation units without groups</title>
+        <para>All organisation units <emphasis>must</emphasis> be allocated to at least <emphasis>one</emphasis> group. The problem might either be that you have not defined any `compulsory` OrgUnit Group Set at all, or that there are violations of the `compulsory` rule for some OrgUnits . NOTE: If you have defined no `compulsory` OrgUnit Group Sets, then you must first define them by going to  Maintenance -&gt; Organisation units-&gt;Organisation unit group sets and define at least one `compulsory` Group Set (the group set `OrgUnitType` are nearly universally relevant). If you have the relevant group sets, go to Maintenance -&gt; OrgUnit Groups to review each OrgUnit identified and add the relevant Group allocation.</para>
+      </section>
+      <section>
+        <title>Organisation units violating compulsory group sets</title>
+        <para>These organisation units have not been assigned to the any organisation unit group within one of the  <emphasis>compulsory</emphasis> organisation unit group sets. When a group set is defined as `compulsory`, it means that an organisation unit must be allocated to at least one organisation unit group within that group set. For instance, all organisation units must belong to one of the groups in the `organisation unitType` group set. It might belong to  the `Hospital` or the `Clinic` or any other `type` group - but it must belong to exactly one of them.  Go to Maintenance -&gt; organisation unit-&gt;Organisation unit groups to review each organisation unit identified in the integrity check. Allocate all organisation units to exactly one group. </para>
+      </section>
+      <section>
+        <title>Organisation units violating exclusive group sets</title>
+        <para>Some organisation units have been allocated to several organisation unit groups that are members of the same exclusive organisation unit group set. When a group set is defined as exclusive, it means that an organisation unit can <emphasis>only</emphasis> be allocated to <emphasis>one</emphasis> organisation unit group within that Group Set. For instance, one organisation unit cannot normally belong to the both the 'Hospital' and 'Clinic' groups , but rather to only to one of them. Go to Maintenance -&gt; organisation unit-&gt;Organisation unit groups to review each organisation unit identified in the integrity check. Remove the organisation unit from all groups except the one that it should be allocated to. </para>
+      </section>
+      <section>
+        <title> Organisation unit groups without group sets</title>
+        <para>The organisation unit groups listed here have not been allocated to a group set. Go to Maintenance-&gt;Organisation unit-&gt;Organisation unit group sets and allocate the Organisation unit group to the appropriate group set. </para>
+      </section>
+      <section>
+        <title>Validation rules without groups</title>
+        <para>All validation rules must be assigned to a group. Go to <command>Services-&gt;Data quality-&gt;Validation rule group</command> and assign the offending validation rule to a group. </para>
+      </section>
+      <section>
+        <title>Invalid validation rule left side expressions</title>
+        <para>An error exists in the left-side validation rule definition. Go to <command>Services-&gt;Data quality-&gt;Validation rule</command> and click the "Edit" icon on the offending rule. Press "Edit left side" and make the corrections that are required. </para>
+      </section>
+      <section>
+        <title>Invalid validation rule right side expressions</title>
+        <para>An error exists in the left-side validation rule definition. Go to <command>Services-&gt;Data quality-&gt;Validation rule</command> and click the "Edit" icon on the offending rule. Press "Edit right side" and make the corrections that are required.</para>
+      </section>
+    </section>
+    <section id="dataArchive">
+      <title>Data Archive</title>
+      <para>The purpose of the data archive function is to move data which is currently not being used for analysis to a secondary storage location in order to improve performance of the application. Data can be both archived and unarchived. When archiving data one moves it from the primary storage to the secondary storage location, while unarchiving moves it from the secondary storage location to the primary. Analysis functionality in DHIS 2 heavily utilizes queries to the data value database table, and by reducing the size of this table these operations will be significantly faster. Typically one would want to archive data that is older than two years.</para>
+      <para>To archive data, first enter a start date and an end date for the time span of the data which should be archived. Then press the archive button. The operation might take a few minutes.</para>
+      <para>To unarchive data, first enter a start date and an end date for the time span of the data which should be unarchived. Then press the unarchive button. The operation might take a few minutes.</para>
+      <para>In some cases you might end up with overlapping data. For instance one might archive data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
+    </section>
+    <section id="maintenance">
+      <title>Maintenance</title>
+      <para>The data maintenance module has five options, each described below. </para>
+      <itemizedlist>
+        <listitem>
+          <para>Clear hierarchy history</para>
+          <para>DHIS 2 maintains an audit trail of changes to the organisation unit hierarchy for aggregation purposes. This function clears the hierarchy history.</para>
+        </listitem>
+        <listitem>
+          <para>Clear data mart (aggregated datavalues)</para>
+          <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated data element values.</para>
+        </listitem>
+        <listitem>
+          <para>Clear data mart (aggregated indicatorvalues)</para>
+          <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated indicator  values.</para>
+        </listitem>
+        <listitem>
+          <para>Clear zero values</para>
+          <para>This function removes zero data values from the database. Values registered for data elements with aggregation operator <emphasis role="italic">average</emphasis> is not removed, as such values will be significant when aggregating the data, contrary to values registered for data elements with aggregation operator <emphasis role="italic">sum</emphasis>. Reducing the number of data values will improve system performance.</para>
+        </listitem>
+        <listitem>
+          <para>Clear dataset completeness</para>
+          <para>This function removes aggregated dataset completeness values. This data is produced and used by report tables.</para>
+        </listitem>
+        <listitem>
+          <para>Prune periods</para>
+          <para>This function removes all periods which have no registered data values. Reducing the number of periods will improve system performance.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section id="resourceTables">
+      <title>Resource tables</title>
+      <para>Resource tables are supporting tables that are used during analysis of data. One would typically join the contents of these tables with the data value table when doing queries from third-party applications like Microsoft Excel. Simply select the tables that should be regenerated and press "Generate tables". Regeneration of the resource tables should only be done once all data integrity issues are resolved. </para>
+      <itemizedlist>
+        <listitem>
+          <para>Organisation unit structure (orgunitstructure)</para>
+          <para>This table should be regenerated any time there have been any changes made to the organisational unit hierarchy. This table provides information about the organisation unit hierarchy. It has one row for each organisation unit, one  column for each organisation unit level and the organisation unit identifiers for all parents in the lineage as values.</para>
+        </listitem>
+        <listitem>
+          <para>Exclusive organisation unit groupset structure normalized (orgunitgroupsetstructure)</para>
+          <para>This table provides information about the which organisation units are member of which organisation unit group sets.</para>
+        </listitem>
+        <listitem>
+          <para>Data element group set structure (_dataelementgroupsetstructure)</para>
+          <para>This table provides information about which data elements are members of which data element group sets. The table has one row for each data element,  one column for each data element group set and the names of the data element group as values.</para>
+        </listitem>
+        <listitem>
+          <para>Indicator group set structure (_indicatorgroupsetstructure)</para>
+          <para>This table provides information about which indicators are members of which indicator group sets. The table has one row for each indicator, one column for each indicator group set and the names of the indicator group as values.</para>
+        </listitem>
+        <listitem>
+          <para>Organisation unit group set structure (_organisationunitgroupsetstructure)</para>
+          <para>This table provides information about which organisation units are members of which organisation unit group sets. The table has one row for each organisation unit, one column for each organisation unit group set and the names of the organisation unit groups as values.</para>
+        </listitem>
+        <listitem>
+          <para>Category structure (_categorystructure)</para>
+          <para>This table provides information about which data elements are members of which categories. The table has one row for each data element, one column for each category and the names of the category options as values.</para>
+        </listitem>
+        <listitem>
+          <para>Data element category option combo name (categoryoptioncomboname)</para>
+          <para>This table should be regenerated any time there have been changes made to the category combination names. It contains readable names for the various combinations of categories.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section id="organisationUnitMerge">
+      <title>Organisation unit merge</title>
+      <para>This function is useful when two organisation units need to be merged, eg. it is decided that one facility will be shut down and its services will be provided by a nearby facility.</para>
+      <para>Start by selecting the organisation unit to eliminate from the tree and click <emphasis role="italic">confirm</emphasis>.  Then select the organisation unit to keep and click <emphasis role="italic">confirm</emphasis> again. Finally, verify the selection and click <emphasis role="italic">merge</emphasis>.  </para>
+      <para>In the sitation where data exist  for the organisation unit to eliminate and not for the one to keep, the data will be moved to the one to keep. When data exists for both organisation units, the data will be summarized and moved to the one to keep. When data exists only for the one to keep, no action is taken. The organisation unit to eliminate will eventually be deleted.</para>
+    </section>
+    <section id="duplicateDataElimination">
+      <title>Duplicate data elimination</title>
+      <para>This function is useful when data has been entered mistakenly for two data elements which represents the same phenomena.</para>
+      <para>Start by selecting the data element to eliminate from the list and click confirm. Then select the data element to keep and click confirm again. Finally, verify the selection and click merge.</para>
+      <para>In the situation where data exists for the data element to eliminate and not for the one to keep, the data will be moved to the one to keep. When data exists for both data elements, the data which was updated last will be used. When data exists only for the one to keep, no action will be taken. The data element to eliminate will eventually be deleted, except when it is a multidimensional data element and has other data registered.</para>
+    </section>
+    <section id="dataStatistics">
+      <title>Data statistics</title>
+      <para>The data statistics module provides an overview of the number of objects stored in the DHIS2 database. </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_stats.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>The total number of each type of object is presented in a table, as well as a graph. </para>
+    </section>
+    <section id="dataLocking">
+      <title>Data locking</title>
+      <para>This module gives users the privilege of locking certain datasets for chosen organisation units. This encourages timely data entry and prevents unwanted to changes to the data once it has been entered. When the ‘Data Administration’ option is chosen the data locking interface is displayed. The user has to select the periodicity of the report e.g. monthly, quarterly or
+  yearly for which the data is to be locked. The month, quarter or year for which the reports are to be locked is then specified. </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select1.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>The unlocked data sets for the period are displayed and the user will then have to choose the data sets to be locked.
+  </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select2.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>After choosing the datasets to be locked, double click on each one by one to display the organisation unit tree in the field below. Click on the organisation unit to lock the dataset.
+  </para>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata width="80%" align="center" fileref="resources/images/maintainence/data_locking_select3.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+      <para>The <guibutton>Apply Locks on All</guibutton> button locks the dataset for all the organisation units to which that dataset has been assigned. <guibutton>‘Remove locks on All’</guibutton> removes all locks put on the organisation units corresponding to the selected dataset. After the operations are completed the user must click <guibutton>‘Save’</guibutton> to apply the settings. The <guibutton>‘Lock at level’</guibutton> button locks datasets at a particular level that the user chooses. . <guibutton>‘Unlock at Level’</guibutton> removes locks that have been put on the organisation units corresponding to the selected dataset at the selected level. After the operations are completed, the user must click <guibutton>‘Save’</guibutton> to apply the settings. The <guibutton>‘Save’</guibutton> button will also lock those organisation unit datasets that have been specified by the user.
+  </para>
+    </section>
+    <section id="zeroValueStorage">
+      <title>Zero value storage</title>
+      <para>The zero value storage function makes it possible to define for which data elements the system should store zero values. In most cases zeros are significant only for a subset of the data elements in the database. Zero values will be ignored during data entry for selected data elements.</para>
+    </section>
+    <section id="cacheStatistics">
+      <title>Cache Statistics </title>
+      <para>This option is for system administrators only to use. The cache statistics shows the status of the application level cache. The application level cache refers to the objects and query results that the application is caching in order to speed up performance. If the database has been modified directly the application cache needs to be cleared for it to take effect.</para>
+    </section>
+  </chapter>
+  <chapter>
+    <title>Data Quality</title>
+    <para>The data quality module provides means to improve the quality of the data in the system. This can be done through validation rules and various statistical checks.</para>
+    <section>
+      <title>Learning Objectives</title>
+      <para>After reading this module you will be able to understand:</para>
       <orderedlist>
         <listitem>
           <para>What is data quality and its importance for HMIS.</para>
@@ -302,10 +702,10 @@
           <para>How to analyze data status.</para>
         </listitem>
       </orderedlist>
-  </section>
-  <section>
-    <title>Overview of data quality check</title>
-    <para>Ensuring data quality is a key concern in building an effective HMIS. Data quality has different dimensions including:</para>
+    </section>
+    <section>
+      <title>Overview of data quality check</title>
+      <para>Ensuring data quality is a key concern in building an effective HMIS. Data quality has different dimensions including:</para>
       <itemizedlist>
         <listitem>
           <para><emphasis>Correctness:</emphasis> Data should be within the normal range for data collected at that facility. There should be no gross discrepancies when compared with data from related data elements.</para>
@@ -320,74 +720,74 @@
           <para><emphasis>Timeliness:</emphasis> All data from all health facilities/blocks/Taluka/districts should be submitted at the appointed time.</para>
         </listitem>
       </itemizedlist>
-  </section>
-  <section>
-    <title>Data quality checks</title>
-    <para>Data quality checking can be done through various means, including:</para>
-    <orderedlist>
-      <listitem>
-        <para>At point of data entry, the software can check the data entered to see if it falls within the min-max ranges of that data element over the last six months or as defined by the user.</para>
-      </listitem>
-      <listitem>
-        <para>Defining various validation rules, which can be run once the user has finished data entry. The user can also check the entered data for a particular period and Organization Unit(s) against the validation rules, and display the violations for these validation rules. </para>
-      </listitem>
-      <listitem>
-        <para>Analysis of data sets, ie. examining gaps in data.</para>
-      </listitem>
-      <listitem>
-        <para>Data triangulation which is comparing the same data or indicator from different sources.</para>
-      </listitem>
-    </orderedlist>
-  </section>
-  <section>
-    <title>Data quality check at the point of data entry </title>
-    <para>Data quality can be checked at the point of data entry through setting the minimum and maximum value range for each element manually or generating the min-max values using the DHIS 2 if there is historical data available for that data element.
+    </section>
+    <section>
+      <title>Data quality checks</title>
+      <para>Data quality checking can be done through various means, including:</para>
+      <orderedlist>
+        <listitem>
+          <para>At point of data entry, the software can check the data entered to see if it falls within the min-max ranges of that data element over the last six months or as defined by the user.</para>
+        </listitem>
+        <listitem>
+          <para>Defining various validation rules, which can be run once the user has finished data entry. The user can also check the entered data for a particular period and Organization Unit(s) against the validation rules, and display the violations for these validation rules. </para>
+        </listitem>
+        <listitem>
+          <para>Analysis of data sets, ie. examining gaps in data.</para>
+        </listitem>
+        <listitem>
+          <para>Data triangulation which is comparing the same data or indicator from different sources.</para>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section>
+      <title>Data quality check at the point of data entry </title>
+      <para>Data quality can be checked at the point of data entry through setting the minimum and maximum value range for each element manually or generating the min-max values using the DHIS 2 if there is historical data available for that data element.
     </para>
-    <section>
-      <title>Setting the minimum and maximum value range manually </title>
-      <para>If you are using the default entry screen click on the element for which you want to set the min-max value. A pop-up window will appear in which you can enter the vaules. On subsequent data entry if the value entered does not fall within the set min-max range the text box will change colour to red. The user will also get a pop-up as shown below. This change in colour is a prompt to check the data entered and make necessary correction. On the data entry screen the users also have the option to add a comment on how the discrepant figure might be explained (if required). This you can do by using the drop down menu of the ‘comment’ box. In case you are using the custom data entry screen which is displayed when you deselect the ‘default data entry form’ option on the top right corner of the screen. In this case the minimum and maximum values can be added by double-clicking on the data entry box instead of the data element.</para>
+      <section>
+        <title>Setting the minimum and maximum value range manually </title>
+        <para>If you are using the default entry screen click on the element for which you want to set the min-max value. A pop-up window will appear in which you can enter the vaules. On subsequent data entry if the value entered does not fall within the set min-max range the text box will change colour to red. The user will also get a pop-up as shown below. This change in colour is a prompt to check the data entered and make necessary correction. On the data entry screen the users also have the option to add a comment on how the discrepant figure might be explained (if required). This you can do by using the drop down menu of the ‘comment’ box. In case you are using the custom data entry screen which is displayed when you deselect the ‘default data entry form’ option on the top right corner of the screen. In this case the minimum and maximum values can be added by double-clicking on the data entry box instead of the data element.</para>
+      </section>
+      <section>
+        <title>Generated min-max values </title>
+        <para>It is possible to generate the min-max value, element-wise, using the DHIS2. In such case you merely need to click on the ‘Generate min-max’ button near the upper right corner. In case of default data entry screen the min and max values, when generated, will appear on the left and right side of the data entry box. In case you deselect the default data entry form the generated values will appear on the top right end of the screen.</para>
+      </section>
     </section>
-    <section>
-      <title>Generated min-max values </title>
-      <para>It is possible to generate the min-max value, element-wise, using the DHIS2. In such case you merely need to click on the ‘Generate min-max’ button near the upper right corner. In case of default data entry screen the min and max values, when generated, will appear on the left and right side of the data entry box. In case you deselect the default data entry form the generated values will appear on the top right end of the screen.</para>
+    <section id="validationRule">
+      <title>Validation Rule</title>
+      <para>This module provides management of validation rules. A validation rule is based on an expression which defines a relationship between a number of data elements. The expression has a left side and a right side and an operator  which defines whether the former must be less than, equal to or greater than the latter. The expression forms a condition which should assert that certain logical criterias are met. For instance, a validation rule could  assert that the total number of vaccines given to infants is less than or equal to the total number of infants.</para>
+      <para>To add a validation rule, click the add new button. First, provide a descriptive <emphasis role="italic">name</emphasis> for the validation rule. The  name must be unique among the validation rules. Second, provide a description for the validation rule. Third, select an operator. The  operator options are <emphasis role="italic">equal</emphasis>, <emphasis role="italic">not equal</emphasis>, <emphasis role="italic">greater than</emphasis>, <emphasis role="italic">greater than or equal</emphasis>, <emphasis role="italic">less than</emphasis>, <emphasis role="italic">less than or equal to</emphasis>. Then define the left side and right side of the validation rule expression. First, provde a description for the expression. Second, build the expression with the expression builder. The expression is mathematical and contain data elements as well as integers and mathematical operators. Data elements can be included by double-clicking  one in  the available data elements list to the righ. Alternatively one can  select a data element and click the insert button. Mathematical operators can be included by clicking the corresponding button under the expression builder area. Save the expression by clicking <emphasis role="italic">save</emphasis>, then save the validation rule by clicking <emphasis role="italic">save</emphasis>.</para>
+      <para>To edit a validation rule, click the <emphasis role="italic">edit</emphasis>icon next to the relevant validation rule in the list. Then follow the same producedures as  above.</para>
+      <para>To delete a validation rule, click the <emphasis role="italic">delete</emphasis>icon next to the relevant validation rule in the list.</para>
+      <para>To view validation rule details, click the <emphasis role="italic">view details</emphasis>icon next to the relevant validation rule in the list.</para>
     </section>
-  </section>
-  <section id="validationRule">
-    <title>Validation Rule</title>
-    <para>This module provides management of validation rules. A validation rule is based on an expression which defines a relationship between a number of data elements. The expression has a left side and a right side and an operator  which defines whether the former must be less than, equal to or greater than the latter. The expression forms a condition which should assert that certain logical criterias are met. For instance, a validation rule could  assert that the total number of vaccines given to infants is less than or equal to the total number of infants.</para>
-    <para>To add a validation rule, click the add new button. First, provide a descriptive <emphasis role="italic">name</emphasis> for the validation rule. The  name must be unique among the validation rules. Second, provide a description for the validation rule. Third, select an operator. The  operator options are <emphasis role="italic">equal</emphasis>, <emphasis role="italic">not equal</emphasis>, <emphasis role="italic">greater than</emphasis>, <emphasis role="italic">greater than or equal</emphasis>, <emphasis role="italic">less than</emphasis>, <emphasis role="italic">less than or equal to</emphasis>. Then define the left side and right side of the validation rule expression. First, provde a description for the expression. Second, build the expression with the expression builder. The expression is mathematical and contain data elements as well as integers and mathematical operators. Data elements can be included by double-clicking  one in  the available data elements list to the righ. Alternatively one can  select a data element and click the insert button. Mathematical operators can be included by clicking the corresponding button under the expression builder area. Save the expression by clicking <emphasis role="italic">save</emphasis>, then save the validation rule by clicking <emphasis role="italic">save</emphasis>.</para>
-    <para>To edit a validation rule, click the <emphasis role="italic">edit</emphasis>icon next to the relevant validation rule in the list. Then follow the same producedures as  above.</para>
-    <para>To delete a validation rule, click the <emphasis role="italic">delete</emphasis>icon next to the relevant validation rule in the list.</para>
-    <para>To view validation rule details, click the <emphasis role="italic">view details</emphasis>icon next to the relevant validation rule in the list.</para>
-  </section>
-  <section  id="validationRuleGroup">
-    <title>Validation Rule Group</title>
-    <para>A validation rule group provides a mechanism for classifying related data elements. Another advantate of using validation rule grops is that it can later be run separately, contrary to running all validation rules.</para>
-  </section>
-  <section id="validationRuleAnalysis">
-    <title>Validation Rule Analysis</title>
-    <para>The validation rule analysis function will test validation rules against the data in the system. Validation violations will be reported in cases where the condition defined through the validation rule expression is not met, ie. the condition is false. </para>
-    <para>First, enter a start date and an end date for which data should be included in the analysis. The date picker widget may be used to select dates. Second, choose between including all validation rules or a single group. Third, choose between including the selected organisation unit only or the selected organisation unit with all children in the analysis. Fourth, select the organisation unit. Finally, click <emphasis role="italic">validate</emphasis>.</para>
-    <para>The analysis process while run for a while dependending on the amount of data that is being anaylysed. If there were no violations of the validation rules a message saying <emphasis role="italic">validation passed successfully</emphasis> is displayed. If there were validation violations they will be presented in a list. The organisation unit, period, left side description and value, operator, and right side value and description for each validation violation are displayed. The show details icon can be clicked in order to get more information about a validation violation. This will open a popup screen that provides information about the data elements included in the validation rules and their corresponding data values. This information can be used in order to correct incorrect data.</para>
-    <para>The validation violations can be exported to a PDF document by clicking on the export to PDF button and to a Microsoft Excel workbook by clicking on the export to workbook button.</para>
-  </section>
-  <section id="stddevoutlierAnalysis">
-    <title>Std Dev Outlier Analysis</title>
-    <para>The standard deviation based outlier analysis provides a mechanism for revealing values that are numerically distant from the rest of the data. Outliers can occur by chance but they often indicate either measurement error or a heavy-tailed distribution. In the former case one wishes to discard them while in the latter case one should be cautios in using tools or interpretations that assume a normal distribution. The analysis is based on the standard normal distribution.</para>
-    <para>First, select the from and to date for the data to include in the analysis. Second, select the data set from which to pick data elements from. Third, select all or some of the data elements in the data set by double-clicking or marking them and clicking the add/remove buttons. Fourth, select the parent organisation unit to use. All children of the organisation unit will be included. Fifth, select the number of standard deviations. This refers to the number of standard devations the data is allowed to deviate from the mean before it is classified as an outlier.</para>
-    <para>The possible outlier values discovered will be presented in a list after the analysis process is finished. The data element, organisation unit, period, minimum value, actual value, maximum value will be displayed for each outlier. The minimum and maximum value refers to the border values derived from the number of standard deviations selected for the analysis. Each outlier value can be modified directly in the analysis result page. The value can be modified by clicking inside the corresponding field in the value column, entering a value and then navigate away from that field either by clicking tab or anywhere outside the field. The system will provide an alert if the value is still outside the defined minimum and maximum values, but the value will saved in any case. The field will have a red background color if the value is outside the range, and a green if inside. Each outlier value can be marked for further follow-up by clicking the star icon.</para>
-  </section>
-  <section id="minmaxoutlierAnalysis">
-    <title>Min-Max Outlier Analysis</title>
-    <para>The min-max value based outlier analysis provides a mechanism for revealing values that are outside the  defined minimum and maximum values. Minimum and maximum values can be custom defined or automatically defined by the system in the data entry module. See section about Std dev outlier analysis for further details on usage.</para>
-  </section>
-  <section id="gapAnalysis">
-    <title>Gap Analysis</title>
-    <para>The gap analysis provides a mechanism for revealing gaps in the data. A gap exists in the context of a data element and organisation unit. A gap is defined as a period with  preceding and succeeding periods which have registered data values, but without registered data values itself. Such a gap might indicate a data capture error or omission and could be further investigated.  See section about Std dev outlier analysis for further details on usage.</para>
-  </section>
-  <section id="followupAnalysis">
-    <title>Follow-Up Analysis</title>
-    <para>The follow-up analysis function will list all data values which are marked for follup-up. A data value can be marked for follow-up in the data entry module and in the other validation analysis variants in this module.  See section about Std dev outlier analysis for further details on usage.</para>
-  </section>
+    <section id="validationRuleGroup">
+      <title>Validation Rule Group</title>
+      <para>A validation rule group provides a mechanism for classifying related data elements. Another advantate of using validation rule grops is that it can later be run separately, contrary to running all validation rules.</para>
+    </section>
+    <section id="validationRuleAnalysis">
+      <title>Validation Rule Analysis</title>
+      <para>The validation rule analysis function will test validation rules against the data in the system. Validation violations will be reported in cases where the condition defined through the validation rule expression is not met, ie. the condition is false. </para>
+      <para>First, enter a start date and an end date for which data should be included in the analysis. The date picker widget may be used to select dates. Second, choose between including all validation rules or a single group. Third, choose between including the selected organisation unit only or the selected organisation unit with all children in the analysis. Fourth, select the organisation unit. Finally, click <emphasis role="italic">validate</emphasis>.</para>
+      <para>The analysis process while run for a while dependending on the amount of data that is being anaylysed. If there were no violations of the validation rules a message saying <emphasis role="italic">validation passed successfully</emphasis> is displayed. If there were validation violations they will be presented in a list. The organisation unit, period, left side description and value, operator, and right side value and description for each validation violation are displayed. The show details icon can be clicked in order to get more information about a validation violation. This will open a popup screen that provides information about the data elements included in the validation rules and their corresponding data values. This information can be used in order to correct incorrect data.</para>
+      <para>The validation violations can be exported to a PDF document by clicking on the export to PDF button and to a Microsoft Excel workbook by clicking on the export to workbook button.</para>
+    </section>
+    <section id="stddevoutlierAnalysis">
+      <title>Std Dev Outlier Analysis</title>
+      <para>The standard deviation based outlier analysis provides a mechanism for revealing values that are numerically distant from the rest of the data. Outliers can occur by chance but they often indicate either measurement error or a heavy-tailed distribution. In the former case one wishes to discard them while in the latter case one should be cautios in using tools or interpretations that assume a normal distribution. The analysis is based on the standard normal distribution.</para>
+      <para>First, select the from and to date for the data to include in the analysis. Second, select the data set from which to pick data elements from. Third, select all or some of the data elements in the data set by double-clicking or marking them and clicking the add/remove buttons. Fourth, select the parent organisation unit to use. All children of the organisation unit will be included. Fifth, select the number of standard deviations. This refers to the number of standard devations the data is allowed to deviate from the mean before it is classified as an outlier.</para>
+      <para>The possible outlier values discovered will be presented in a list after the analysis process is finished. The data element, organisation unit, period, minimum value, actual value, maximum value will be displayed for each outlier. The minimum and maximum value refers to the border values derived from the number of standard deviations selected for the analysis. Each outlier value can be modified directly in the analysis result page. The value can be modified by clicking inside the corresponding field in the value column, entering a value and then navigate away from that field either by clicking tab or anywhere outside the field. The system will provide an alert if the value is still outside the defined minimum and maximum values, but the value will saved in any case. The field will have a red background color if the value is outside the range, and a green if inside. Each outlier value can be marked for further follow-up by clicking the star icon.</para>
+    </section>
+    <section id="minmaxoutlierAnalysis">
+      <title>Min-Max Outlier Analysis</title>
+      <para>The min-max value based outlier analysis provides a mechanism for revealing values that are outside the  defined minimum and maximum values. Minimum and maximum values can be custom defined or automatically defined by the system in the data entry module. See section about Std dev outlier analysis for further details on usage.</para>
+    </section>
+    <section id="gapAnalysis">
+      <title>Gap Analysis</title>
+      <para>The gap analysis provides a mechanism for revealing gaps in the data. A gap exists in the context of a data element and organisation unit. A gap is defined as a period with  preceding and succeeding periods which have registered data values, but without registered data values itself. Such a gap might indicate a data capture error or omission and could be further investigated.  See section about Std dev outlier analysis for further details on usage.</para>
+    </section>
+    <section id="followupAnalysis">
+      <title>Follow-Up Analysis</title>
+      <para>The follow-up analysis function will list all data values which are marked for follup-up. A data value can be marked for follow-up in the data entry module and in the other validation analysis variants in this module.  See section about Std dev outlier analysis for further details on usage.</para>
+    </section>
   </chapter>
 </book>

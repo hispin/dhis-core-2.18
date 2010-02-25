@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "data_element_category_combo_management" )</h3>
+<h3>$i18n.getString( "data_element_category_combo_management" ) #openHelp( "dataElementCategoryCombo" )</h3>
 
 <table class="mainPageTable">
   <tr>

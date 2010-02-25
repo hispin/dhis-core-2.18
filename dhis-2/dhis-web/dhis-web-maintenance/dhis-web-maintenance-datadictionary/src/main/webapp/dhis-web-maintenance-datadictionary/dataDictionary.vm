@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "data_dictionary_management" )</h3>
+<h3>$i18n.getString( "data_dictionary_management" ) #openHelp( "dataDictionary" )</h3>
 
 <table class="mainPageTable">
 	<tr>

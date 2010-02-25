@@ -530,10 +530,6 @@
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
-
-	<bean id="org.hisp.dhis.help.action.PopupHelpAction" class="org.hisp.dhis.help.action.PopupHelpAction"
-		scope="prototype">
-	</bean>
 	
     <bean id="org.hisp.dhis.help.action.GetHelpContentAction" class="org.hisp.dhis.help.action.GetHelpContentAction"
         scope="prototype">
