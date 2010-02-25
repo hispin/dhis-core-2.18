@@ -371,11 +371,17 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 			}
 		}
 		else {
-			return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + parseFloat(bin.upperBound).toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+            var upper = parseFloat(bin.upperBound);
+            if (binIndex < nbBins-1) {
+                upper -= parseFloat("0.1");
+            }
+            
+			return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + upper.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 		}
     },
 
     classifyWithBounds: function(bounds) {
+
         var bins = [];
         var binCount = [];
         var sortedValues = [];
@@ -436,6 +442,11 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             }
             bounds.push(values[values.length - 1]);
         }
+        
+        for (var i = 0; i < bounds.length; i++) {
+            bounds[i] = parseFloat(bounds[i]);
+        }
+
         return this.classifyWithBounds(bounds);
     },
 
@@ -461,8 +472,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      * {<mapfish.GeoStat.Classification>} Classification
      */
     classify: function(method, nbBins, bounds) {
-    
-        if (method == 0) {
+
+        if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
             var str = Ext.getCmp('bounds').getValue();
             
             for (var i = 0; i < str.length; i++) {
@@ -492,7 +503,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                 
                 if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
                 {
-                    Ext.messageRed.msg('Fixed bounds', 'Class breaks must be higher than ' + msg_highlight_start + this.minVal + msg_highlight_end + ' and lower than ' + msg_highlight_start + this.maxVal + msg_highlight_end + '.');
+                    Ext.messageRed.msg('Fixed breaks', 'Class breaks must be higher than ' + msg_highlight_start + this.minVal + msg_highlight_end + ' and lower than ' + msg_highlight_start + this.maxVal + msg_highlight_end + '.');
                 }
             }
 			
@@ -505,7 +516,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             nbBins = this.sturgesRule();
         }
         switch (method) {
-        case mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS:
+        case mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS :
             classification = this.classifyWithBounds(bounds);
             break;
         case mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS :
@@ -515,7 +526,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             classification = this.classifyByQuantils(nbBins);
             break;
         default:
-            OpenLayers.Console.error("unsupported or invalid classification method");
+            OpenLayers.Console.error("Unsupported or invalid classification method");
         }
         return classification;
     },
