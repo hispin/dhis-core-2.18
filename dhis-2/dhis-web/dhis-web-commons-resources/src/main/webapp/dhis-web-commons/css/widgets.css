@@ -49,6 +49,41 @@ div#rightBar
 }
 
 /*----------------------------------------------------------------------------*/
+/* Help page                                                                  */
+/*----------------------------------------------------------------------------*/
+
+div#helpMenu
+{
+  width: 260px;
+  padding-top: 7px;
+  padding-bottom: 13px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #a0a0a0;
+}
+
+div#helpMenu ul
+{
+  list-style-type: none;
+}
+
+div#helpMenu a
+{
+  text-decoration: none;
+}
+
+div#helpContent
+{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+div#helpContent ul,ol
+{
+  padding-left: 17px;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Thingy                                                                     */
 /*----------------------------------------------------------------------------*/
 

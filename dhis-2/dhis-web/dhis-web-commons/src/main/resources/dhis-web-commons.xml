@@ -228,6 +228,12 @@
 	<package name="dhis-web-commons-help" extends="dhis-web-commons"
 		namespace="/dhis-web-commons-help">
 
+		<action name="help" class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-commons/about/help.vm</param>
+			<param name="javascripts">../dhis-web-commons/about/help.js</param>
+		</action>
+
 		<action name="getHelpContent" class="org.hisp.dhis.help.action.GetHelpContentAction">
 			<result name="success" type="outputStreamResult"></result>
 		</action>
@@ -474,11 +480,12 @@
 			<result name="success" type="redirect">about.action</result>
 		</action>
 
-		<action name="help" class="org.hisp.dhis.about.action.HelpAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-commons/help/help.vm</param>
-			<param name="menu">/dhis-web-commons/about/menu.vm</param>
-		</action>
+        <action name="help" class="org.hisp.dhis.commons.action.NoAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-commons/about/help.vm</param>
+            <param name="menu">/dhis-web-commons/about/menu.vm</param>
+            <param name="javascripts">../dhis-web-commons/about/help.js</param>
+        </action>
 
 		<action name="displayChangeLog" class="org.hisp.dhis.commons.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
