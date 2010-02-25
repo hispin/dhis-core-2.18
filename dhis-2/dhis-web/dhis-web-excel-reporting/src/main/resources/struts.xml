@@ -106,6 +106,12 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
+		<action name="getListExcelTemplateFile"
+			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseFiles.vm</result>
+		</action>
+
 		<action name="deleteReportExcel"
 			class="org.hisp.dhis.reportexcel.action.DeleteReportExcelAction">
 			<result name="success" type="velocity-json">
