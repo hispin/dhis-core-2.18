@@ -530,7 +530,7 @@ Ext.onReady( function() {
     
 	var viewWindow = new Ext.Window({
         id: 'view_w',
-        title: '<font style="' + AA_DARK + '">Favorites</font>',
+        title: '<span style="' + AA_DARK + '">Favorites</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: 260,
@@ -560,7 +560,7 @@ Ext.onReady( function() {
                 items:
                 [
                     {
-                        title: '<font style="' + AA_MED + '">New</font>',
+                        title: '<span style="' + AA_MED + '">New</span>',
                         id: 'view0',
                         items:
                         [
@@ -568,7 +568,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Delete</font>',
+                        title: '<span style="' + AA_MED + '">Delete</span>',
                         id: 'view1',
                         items:
                         [
@@ -576,7 +576,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<span style="' + AA_MED + '">Add to dashboard</span>',
                         id: 'view2',
                         items:
                         [
@@ -939,7 +939,7 @@ Ext.onReady( function() {
     
     var legendSetWindow = new Ext.Window({
         id: 'legendset_w',
-        title: '<font style="' + AA_DARK + '">Legend sets</font>',
+        title: '<span style="' + AA_DARK + '">Legend sets</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: multiselect_width + 37,
@@ -971,7 +971,7 @@ Ext.onReady( function() {
                 items:
                 [
                     {
-                        title: '<font style="' + AA_MED + '">New</font>',
+                        title: '<span style="' + AA_MED + '">New</span>',
                         id: 'legendset0',
                         items:
                         [
@@ -979,7 +979,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Assign to indicators</font>',
+                        title: '<span style="' + AA_MED + '">Assign to indicators</span>',
                         id: 'legendset1',
                         items:
                         [
@@ -987,7 +987,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Delete</font>',
+                        title: '<span style="' + AA_MED + '">Delete</span>',
                         id: 'legendset2',
                         items:
                         [
@@ -1174,7 +1174,7 @@ Ext.onReady( function() {
         var layer = record.get('layer').clone();
         
         var wmsPreviewWindow = new Ext.Window({
-            title: '<font style="' + AA_DARK + '">Preview: ' + record.get("title") + '</font>',
+            title: '<span style="' + AA_DARK + '">Preview: ' + record.get("title") + '</span>',
             width: screen.width * 0.5,
             height: screen.height * 0.3,
             layout: 'fit',
@@ -1189,7 +1189,7 @@ Ext.onReady( function() {
 	
 	var wmsWindow = new Ext.Window({
 		id: 'wms_w',
-		title: '<font style="' + AA_DARK + '">Geoserver shapefiles</font>',
+		title: '<span style="' + AA_DARK + '">Geoserver shapefiles</span>',
 		closeAction: 'hide',
 		width: wmsGrid.width,
 		height: screen.height * 0.4,
@@ -1810,7 +1810,7 @@ Ext.onReady( function() {
 
     shapefilePanel = new Ext.Panel({
         id: 'shapefile_p',
-        title: '<font style="' + AA_DARK + '">Register maps</font>',
+        title: '<span style="' + AA_DARK + '">Register maps</span>',
         items:
         [
             {
@@ -1850,7 +1850,7 @@ Ext.onReady( function() {
                 items:
                 [
                     {
-                        title: '<font style="' + AA_MED + '">New</font>',
+                        title: '<span style="' + AA_MED + '">New</span>',
                         id: 'map0',
                         items:
                         [
@@ -1858,7 +1858,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Edit</font>',
+                        title: '<span style="' + AA_MED + '">Edit</span>',
                         id: 'map1',
                         items:
                         [
@@ -1866,7 +1866,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Delete</font>',
+                        title: '<span style="' + AA_MED + '">Delete</span>',
                         id: 'map2',
                         items:
                         [
@@ -1949,7 +1949,7 @@ Ext.onReady( function() {
         var layer = record.get('layer').clone();
         
         var wmsOverlayPreviewWindow = new Ext.Window({
-            title: '<font style="' + AA_DARK + '">Preview: ' + record.get("title") + '</font>',
+            title: '<span style="' + AA_DARK + '">Preview: ' + record.get("title") + '</span>',
             width: screen.width * 0.4,
             height: screen.height * 0.4,
             layout: 'fit',
@@ -1964,7 +1964,7 @@ Ext.onReady( function() {
 	
 	var wmsOverlayWindow = new Ext.Window({
 		id: 'wmsoverlay_w',
-		title: '<font style="' + AA_DARK + '">Geoserver shapefiles</font>',
+		title: '<span style="' + AA_DARK + '">Geoserver shapefiles</span>',
 		closeAction: 'hide',
 		width: wmsOverlayGrid.width,
 		height: screen.height * 0.4,
@@ -2223,7 +2223,7 @@ Ext.onReady( function() {
     
     var mapLayerPanel = new Ext.Panel({
         id: 'maplayer_p',
-        title: '<font style="' + AA_DARK + '">Register overlays</font>',
+        title: '<span style="' + AA_DARK + '">Register overlays</span>',
         items:
         [
             {
@@ -2251,7 +2251,7 @@ Ext.onReady( function() {
                 items:
                 [
                     {
-                        title: '<font style="' + AA_MED + '">New</font>',
+                        title: '<span style="' + AA_MED + '">New</span>',
                         id: 'maplayer0',
                         items:
                         [
@@ -2259,7 +2259,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: '<font style="' + AA_MED + '">Delete</font>',
+                        title: '<span style="' + AA_MED + '">Delete</span>',
                         id: 'maplayer1',
                         items:
                         [
@@ -2294,14 +2294,14 @@ Ext.onReady( function() {
     /* ADMIN PANEL */
     var adminPanel = new Ext.form.FormPanel({
         id: 'admin_p',
-        title: '<font style="' + AA_DARK + '">Administrator</font>',
+        title: '<span style="' + AA_DARK + '">Administrator</span>',
         items:
         [
 			{ html: '<p style="height:5px;">' },
 			{
 				xtype:'fieldset',
 				columnWidth: 0.5,
-				title: '&nbsp;<font style="' + AA_MED + '">Map source</font>&nbsp;',
+				title: '&nbsp;<span style="' + AA_MED + '">Map source</span>&nbsp;',
 				collapsible: true,
 				animCollapse: true,
 				autoHeight:true,
@@ -2429,7 +2429,7 @@ Ext.onReady( function() {
 			{
 				xtype:'fieldset',
 				columnWidth: 0.5,
-				title: '&nbsp;<font style="' + AA_MED + '">Base coordinate</font>&nbsp;',
+				title: '&nbsp;<span style="' + AA_MED + '">Base coordinate</span>&nbsp;',
 				collapsible: true,
 				animCollapse: true,
 				autoHeight:true,
@@ -2612,7 +2612,7 @@ Ext.onReady( function() {
     }];       
     
     var layerTree = new Ext.tree.TreePanel({
-        title: '<font style="' + AA_DARK + '">Map layers</font>',
+        title: '<span style="' + AA_DARK + '">Map layers</span>',
         enableDD: true,
         bodyStyle: 'padding-bottom:5px;',
         rootVisible: false,
@@ -2627,7 +2627,7 @@ Ext.onReady( function() {
         id: 'choropleth',
         map: MAP,
         layer: choroplethLayer,
-		title: '<font style="' + AA_DARK + '">Thematic map</div>',
+		title: '<span style="' + AA_DARK + '">Thematic map</span>',
         url: 'init',
         featureSelection: false,
         legendDiv: 'choroplethLegend',
@@ -2648,7 +2648,7 @@ Ext.onReady( function() {
         id: 'mapping',
         map: MAP,
         layer: choroplethLayer,
-        title: '<font style="' + AA_DARK + '">Assign organisation units to map</font>',
+        title: '<span style="' + AA_DARK + '">Assign organisation units to map</span>',
         url: 'init',
         featureSelection: false,
         legendDiv: 'choroplethLegend',
@@ -2832,11 +2832,11 @@ Ext.onReady( function() {
                 [
                     layerTree,
                     {
-                        title: '<font style="' + AA_DARK + '">Overview map</font>',
+                        title: '<span style="' + AA_DARK + '">Overview map</span>',
                         html:'<div id="overviewmap" style="height:97px; padding-top:2px;"></div>'
                     },
                     {
-                        title: '<font style="' + AA_DARK + '">Cursor position</font>',
+                        title: '<span style="' + AA_DARK + '">Cursor position</span>',
                         height: 65,
                         contentEl: 'position',
                         anchor: '100%',
@@ -2844,7 +2844,7 @@ Ext.onReady( function() {
                     },
 					{
 						xtype: 'panel',
-						title: '<font style="' + AA_DARK + '">Feature data</font>',
+						title: '<span style="' + AA_DARK + '">Feature data</span>',
 						height: 65,
 						anchor: '100%',
 						bodyStyle: 'padding-left: 4px;',
@@ -2858,7 +2858,7 @@ Ext.onReady( function() {
 						]
 					},
                     {
-                        title: '<font style="' + AA_DARK + '">Map legend</font>',
+                        title: '<span style="' + AA_DARK + '">Map legend</span>',
                         minHeight: 65,
                         autoHeight: true,
                         contentEl: 'legend',
@@ -2892,7 +2892,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'print-multi',
 						id: 'printMultiPage_p',
-						title: '<font style="' + AA_DARK + '">Print multi page PDF</font>',
+						title: '<span style="' + AA_DARK + '">Print multi page PDF</span>',
 						formConfig: {
 							labelWidth: 65,
 							bodyStyle: 'padding: 7px;',
@@ -2956,8 +2956,8 @@ Ext.onReady( function() {
 	MAP.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
-        prefix: '<font color="#666">x: &nbsp;</font>',
-        separator: '<br/><font color="#666">y: &nbsp;</font>'
+        prefix: '<span color="#666">x: &nbsp;</span>',
+        separator: '<br/><span color="#666">y: &nbsp;</span>'
     }));
 
     MAP.addControl(new OpenLayers.Control.OverviewMap({
@@ -2994,7 +2994,7 @@ Ext.onReady( function() {
 /*SELECT FEATURES*/
 
 var feature_popup = new Ext.Window({
-	title: '<font style="' + AA_DARK + '">Assign organisation unit</font>',
+	title: '<span style="' + AA_DARK + '">Assign organisation unit</span>',
 	width: 190,
 	height: 71,
 	closeAction: 'hide',
@@ -3014,16 +3014,16 @@ var feature_popup = new Ext.Window({
 function onHoverSelectChoropleth(feature) {
     if (MAPDATA != null) {
         if (ACTIVEPANEL == 'choropleth') {
-			Ext.getCmp('featureinfo_l').setText('<font style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</font><br><font style="color:#666">' + feature.attributes.value + '</font>', false);
+			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span><br><span style="color:#666">' + feature.attributes.value + '</span>', false);
         }
         else if (ACTIVEPANEL == 'mapping') {
-			Ext.getCmp('featureinfo_l').setText('<font style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</font>', false);
+			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span>', false);
         }
     }
 }
 
 function onHoverUnselectChoropleth(feature) {
-    Ext.getCmp('featureinfo_l').setText('<font style="color:#666">No feature selected.</font>', false);
+    Ext.getCmp('featureinfo_l').setText('<span style="color:#666">No feature selected.</span>', false);
 }
 
 function onClickSelectChoropleth(feature) {
