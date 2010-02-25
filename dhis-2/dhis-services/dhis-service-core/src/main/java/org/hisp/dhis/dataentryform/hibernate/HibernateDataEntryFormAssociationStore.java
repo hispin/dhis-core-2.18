@@ -38,7 +38,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.dataentryform.DataEntryFormAssociationStore;
-import org.springframework.orm.hibernate3.HibernateQueryException;
 
 /**
  * @author Viet
@@ -64,14 +63,8 @@ public class HibernateDataEntryFormAssociationStore
     public void addDataEntryFormAssociation( DataEntryFormAssociation dataEntryFormAssociation )
     {
         Session session = sessionFactory.getCurrentSession();
-        
-        try {
-            System.out.println("save ne");
-            session.save( dataEntryFormAssociation );
-        }catch (HibernateQueryException e) {
-            e.printStackTrace();
-        }
 
+        session.save( dataEntryFormAssociation );        
     }
 
     public void deleteDataEntryFormAssociation( DataEntryFormAssociation dataEntryFormAssociation )
@@ -93,6 +86,7 @@ public class HibernateDataEntryFormAssociationStore
         Criteria criteria = session.createCriteria( DataEntryFormAssociation.class );
         criteria.add( Restrictions.eq( "associationTableName", associationTableName ) ).add(
             Restrictions.eq( "associationId", associationId ) );
+        
         return (DataEntryFormAssociation) criteria.uniqueResult();
     }
 
@@ -110,15 +104,18 @@ public class HibernateDataEntryFormAssociationStore
 
         return (DataEntryFormAssociation) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
-    public Collection<DataEntryForm> listDisctinctDataEntryFormByAssociationIds(String associationName, List<Integer> associationIds )
+    public Collection<DataEntryForm> listDisctinctDataEntryFormByAssociationIds( String associationName,
+        List<Integer> associationIds )
     {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( DataEntryFormAssociation.class )
-        .add( Restrictions.eq( "associationTableName", associationName ) )
-        .add( Restrictions.in( "associationId", associationIds ) )
-        .setProjection( Projections.distinct( Projections.property( "dataEntryForm" ) ) );
+        
+        Criteria criteria = session.createCriteria( DataEntryFormAssociation.class ).add(
+            Restrictions.eq( "associationTableName", associationName ) ).add(
+            Restrictions.in( "associationId", associationIds ) ).setProjection(
+            Projections.distinct( Projections.property( "dataEntryForm" ) ) );
+        
         return criteria.list();
     }
 }

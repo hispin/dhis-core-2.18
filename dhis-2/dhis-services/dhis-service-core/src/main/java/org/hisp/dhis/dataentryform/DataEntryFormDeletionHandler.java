@@ -52,20 +52,20 @@ public class DataEntryFormDeletionHandler
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-    
+
     private DeletionManager deletionManager;
 
     public void setDeletionManager( DeletionManager deletionManager )
     {
         this.deletionManager = deletionManager;
     }
-    
+
     private DataEntryFormAssociationService dataEntryFormAssociationService;
-    
-    public void setDataEntryFormAssociationService(
-    		DataEntryFormAssociationService dataEntryFormAssociationService) {
-		this.dataEntryFormAssociationService = dataEntryFormAssociationService;
-	}
+
+    public void setDataEntryFormAssociationService( DataEntryFormAssociationService dataEntryFormAssociationService )
+    {
+        this.dataEntryFormAssociationService = dataEntryFormAssociationService;
+    }
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -76,38 +76,23 @@ public class DataEntryFormDeletionHandler
     {
         return DataEntryForm.class.getSimpleName();
     }
-    
-//    @Override
-//    public void deleteDataSet( DataSet dataSet )
-//    {
-//        for ( DataEntryForm form : dataEntryFormService.getAllDataEntryForms() )
-//        {
-//            if ( form.getDataSet().equals( dataSet ) )
-//            {
-//                deletionManager.execute( form );
-//                
-//                dataEntryFormService.deleteDataEntryForm( form );
-//            }
-//        }
-//    }  
-//    
+
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-       DataEntryFormAssociation dataEntryFormAssociation = 
-    	   dataEntryFormAssociationService.getDataEntryFormAssociation(
-    		   DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSet.getId());
-       
-       if( dataEntryFormAssociation != null )
-       {
-    	   DataEntryForm dataEntryForm = dataEntryFormAssociation.getDataEntryForm();
-       
-    	   if( dataEntryForm != null )
-    	   {
-    		   deletionManager.execute( dataEntryForm );
-    	         
-               dataEntryFormService.deleteDataEntryForm( dataEntryForm );
-    	   }
-       }
-    } 
+        DataEntryFormAssociation dataEntryFormAssociation = dataEntryFormAssociationService
+            .getDataEntryFormAssociation( DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSet.getId() );
+
+        if ( dataEntryFormAssociation != null )
+        {
+            DataEntryForm dataEntryForm = dataEntryFormAssociation.getDataEntryForm();
+
+            if ( dataEntryForm != null )
+            {                
+                deletionManager.execute( dataEntryForm );
+
+                dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+            }
+        }
+    }
 }

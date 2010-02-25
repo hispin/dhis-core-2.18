@@ -71,7 +71,6 @@ public class GetRoleListAction
     public String execute()
         throws Exception
     {
-
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
 
         return SUCCESS;

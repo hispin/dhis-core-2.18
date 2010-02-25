@@ -46,157 +46,161 @@ import org.hisp.dhis.reportexcel.excelitem.ExcelItemStore;
  * @version $Id$
  */
 
-public class HibernateExcelItemStore implements ExcelItemStore {
+public class HibernateExcelItemStore
+    implements ExcelItemStore
+{
+    // ----------------------------------------------------------------------
+    // Dependencies
+    // ----------------------------------------------------------------------
 
-	// ----------------------------------------------------------------------
-	// Dependencies
-	// ----------------------------------------------------------------------
+    private SessionFactory sessionFactory;
 
-	private SessionFactory sessionFactory;
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	private PeriodStore periodStore;
+    private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
     }
 
-	// ----------------------------------------------------------------------
-	// ExcelItemStore implementation
-	// ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // ExcelItemStore implementation
+    // ----------------------------------------------------------------------
 
-	public int addExcelItem(ExcelItem excelItem) {
-
-		Session session = sessionFactory.getCurrentSession();
+    public int addExcelItem( ExcelItem excelItem )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( excelItem );
-	}
+    }
 
-	public void deleteExcelItem(int id) {
+    public void deleteExcelItem( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = sessionFactory.getCurrentSession();
+        session.delete( getExcelItem( id ) );
+    }
 
-		session.delete(getExcelItem(id));
-	}
+    @SuppressWarnings( "unchecked" )
+    public Collection<ExcelItem> getAllExcelItem()
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	@SuppressWarnings("unchecked")
-	public Collection<ExcelItem> getAllExcelItem() {
+        Criteria criteria = session.createCriteria( ExcelItem.class );
 
-		Session session = sessionFactory.getCurrentSession();
+        return criteria.list();
+    }
 
-		Criteria criteria = session.createCriteria(ExcelItem.class);
+    public void updateExcelItem( ExcelItem excelItem )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		return criteria.list();
-	}
+        session.saveOrUpdate( excelItem );
+    }
 
-	public void updateExcelItem(ExcelItem excelItem) {
+    public ExcelItem getExcelItem( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria( ExcelItem.class );
 
-		session.saveOrUpdate(excelItem);
-	}
+        criteria.add( Restrictions.eq( "id", id ) );
 
-	public ExcelItem getExcelItem(int id) {
+        return (ExcelItem) criteria.uniqueResult();
+    }
 
-		Session session = sessionFactory.getCurrentSession();
+    public int addExcelItemGroup( ExcelItemGroup excelItemGroup )
+    {
+        PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
 
-		Criteria criteria = session.createCriteria(ExcelItem.class);
-
-		criteria.add(Restrictions.eq("id", id));
-
-		return (ExcelItem) criteria.uniqueResult();
-	}
-
-	public int addExcelItemGroup(ExcelItemGroup excelItemGroup) {
-
-		PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
-
-		excelItemGroup.setPeriodType( periodType );
+        excelItemGroup.setPeriodType( periodType );
 
         Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( excelItemGroup );
-	}
+    }
 
-	public void deleteExcelItemGroup(int id) {
+    public void deleteExcelItemGroup( int id )
+    {
 
-		Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
-		session.delete(getExcelItemGroup(id));
-	}
+        session.delete( getExcelItemGroup( id ) );
+    }
 
-	@SuppressWarnings("unchecked")
-	public Collection<ExcelItemGroup> getAllExcelItemGroup() {
+    @SuppressWarnings( "unchecked" )
+    public Collection<ExcelItemGroup> getAllExcelItemGroup()
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria( ExcelItemGroup.class );
 
-		Criteria criteria = session.createCriteria(ExcelItemGroup.class);
+        return criteria.list();
+    }
 
-		return criteria.list();
-	}
+    public ExcelItemGroup getExcelItemGroup( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public ExcelItemGroup getExcelItemGroup(int id) {
+        Criteria criteria = session.createCriteria( ExcelItemGroup.class );
 
-		Session session = sessionFactory.getCurrentSession();
+        criteria.add( Restrictions.eq( "id", id ) );
 
-		Criteria criteria = session.createCriteria(ExcelItemGroup.class);
+        return (ExcelItemGroup) criteria.uniqueResult();
+    }
 
-		criteria.add(Restrictions.eq("id", id));
+    public void updateExcelItemGroup( ExcelItemGroup excelItemGroup )
+    {
+        PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
 
-		return (ExcelItemGroup) criteria.uniqueResult();
-	}
-
-	public void updateExcelItemGroup(ExcelItemGroup excelItemGroup) {
-
-		PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
-
-		excelItemGroup.setPeriodType( periodType );
+        excelItemGroup.setPeriodType( periodType );
 
         Session session = sessionFactory.getCurrentSession();
 
         session.update( excelItemGroup );
-	}
+    }
 
-	@SuppressWarnings("unchecked")
-	public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit(
-			OrganisationUnit organisationUnit) {
+    @SuppressWarnings( "unchecked" )
+    public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit( OrganisationUnit organisationUnit )
+    {
 
-		Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(ExcelItemGroup.class);
+        Criteria criteria = session.createCriteria( ExcelItemGroup.class );
 
-		criteria.createAlias("organisationAssocitions", "o");
+        criteria.createAlias( "organisationAssocitions", "o" );
 
-		criteria.add(Restrictions.eq("o.id", organisationUnit.getId()));
+        criteria.add( Restrictions.eq( "o.id", organisationUnit.getId() ) );
 
-		return criteria.list();
-	}
+        return criteria.list();
+    }
 
-	public DataElementGroupOrder getDataElementGroupOrder(Integer id) {
-		
-		Session session = sessionFactory.getCurrentSession();
-		
-		Criteria criteria = session.createCriteria(DataElementGroupOrder.class);
+    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		criteria.add(Restrictions.eq("id", id.intValue()));
+        Criteria criteria = session.createCriteria( DataElementGroupOrder.class );
 
-		return (DataElementGroupOrder) criteria.uniqueResult();
-	}
+        criteria.add( Restrictions.eq( "id", id.intValue() ) );
 
-	public void updateDataElementGroupOrder(
-			DataElementGroupOrder dataElementGroupOrder) {
-		Session session = sessionFactory.getCurrentSession();
-		session.update(dataElementGroupOrder);
-	}
+        return (DataElementGroupOrder) criteria.uniqueResult();
+    }
 
-	public void deleteDataElementGroupOrder(Integer id) {
-		
-		Session session = sessionFactory.getCurrentSession();
-		
-		session.delete(getDataElementGroupOrder(id));
-	}
+    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.update( dataElementGroupOrder );
+    }
+
+    public void deleteDataElementGroupOrder( Integer id )
+    {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete( getDataElementGroupOrder( id ) );
+    }
 }
