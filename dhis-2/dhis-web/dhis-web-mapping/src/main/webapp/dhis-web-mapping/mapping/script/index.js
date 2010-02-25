@@ -98,10 +98,10 @@ function toggleFeatureLabels(classify) {
 		}
 		
 		if (ACTIVEPANEL == 'choropleth') {
-			choropleth.classify(true);
+			choropleth.classify(false, true);
 		}
 		else if (ACTIVEPANEL == 'mapping') {
-			mapping.classify(true);
+			mapping.classify(false, true);
 		}
 	}
 	else {
