@@ -44,19 +44,21 @@ import org.springframework.core.io.ClassPathResource;
 public class DefaultHelpManager
     implements HelpManager
 {
+    // -------------------------------------------------------------------------
+    // HelpManager implementation
+    // -------------------------------------------------------------------------
+
     public void getHelpContent( OutputStream out, String id )
     {
         try
         {
-            Source stylesheet = new StreamSource( new ClassPathResource( "help_stylesheet.xsl" ).getInputStream() );
-            
-            Transformer transformer = TransformerFactory.newInstance().newTransformer( stylesheet );
-            
-            transformer.setParameter( "sectionId", id );
-            
             Source source = new StreamSource( new ClassPathResource( "help_content.xml" ).getInputStream() );
             
             Result result = new StreamResult( out );
+            
+            Transformer transformer = getTransformer( "help_stylesheet.xsl" );
+            
+            transformer.setParameter( "sectionId", id );
             
             transformer.transform( source, result );
         }
@@ -64,5 +66,33 @@ public class DefaultHelpManager
         {
             throw new RuntimeException( "Failed to get help content", ex );
         }
+    }
+    
+    public void getHelpItems( OutputStream out )
+    {
+        try
+        {
+            Source source = new StreamSource( new ClassPathResource( "help_content.xml" ).getInputStream() );
+            
+            Result result = new StreamResult( out );
+            
+            getTransformer( "helpitems_stylesheet.xsl" ).transform( source, result );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to get help content", ex );
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Transformer getTransformer( String stylesheetName )
+        throws Exception
+    {
+        Source stylesheet = new StreamSource( new ClassPathResource( stylesheetName ).getInputStream() );
+        
+        return TransformerFactory.newInstance().newTransformer( stylesheet );
     }
 }

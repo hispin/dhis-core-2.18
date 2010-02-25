@@ -37,4 +37,6 @@ public interface HelpManager
     final String ID = HelpManager.class.getName();
     
     void getHelpContent( OutputStream out, String id );
+    
+    void getHelpItems( OutputStream out );
 }

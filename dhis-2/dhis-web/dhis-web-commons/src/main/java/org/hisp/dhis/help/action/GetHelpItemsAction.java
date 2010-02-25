@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.help;
+package org.hisp.dhis.help.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,46 +27,44 @@ package org.hisp.dhis.options.help;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Test;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.options.help.HelpManager;
+import org.hisp.dhis.util.StreamActionSupport;
 
 /**
  * @author Lars Helge Overland
  */
-public class HelpManagerTest
-    extends DhisSpringTest
+public class GetHelpItemsAction
+    extends StreamActionSupport
 {
-    private static final Log log = LogFactory.getLog( HelpManagerTest.class );
-    
     private HelpManager helpManager;
     
-    @Override
-    public void setUpTest()
+    public void setHelpManager( HelpManager helpManager )
     {
-        helpManager = (HelpManager) getBean( HelpManager.ID );
+        this.helpManager = helpManager;
     }
 
-    @Test
-    public void testGetEmbeddedHelpContent()
+    @Override
+    protected String execute( HttpServletResponse response, OutputStream out )
+        throws Exception
     {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                
-        helpManager.getHelpContent( out, "overview" );
-        
-        log.debug( out.toString() );        
-    }
-    
-    @Test
-    public void testGetHelpCenterContent()
-    {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        
         helpManager.getHelpItems( out );
         
-        log.debug( out.toString() );        
+        return SUCCESS;
+    }
+
+    @Override
+    protected String getContentType()
+    {
+        return CONTENT_TYPE_HTML;
+    }
+
+    @Override
+    protected String getFilename()
+    {
+        return "help.html";
     }
 }

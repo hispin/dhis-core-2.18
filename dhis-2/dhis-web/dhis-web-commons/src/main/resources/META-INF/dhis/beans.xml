@@ -536,6 +536,11 @@
 		<property name="helpManager" ref="org.hisp.dhis.options.help.HelpManager"/>
     </bean>
     
+    <bean id="org.hisp.dhis.help.action.GetHelpItemsAction" class="org.hisp.dhis.help.action.GetHelpItemsAction"
+        scope="prototype">
+        <property name="helpManager" ref="org.hisp.dhis.options.help.HelpManager"/>
+    </bean>
+    
 	<!-- Common actions -->
 
     <bean id="org.hisp.dhis.commons.action.GetDataElementAction"
