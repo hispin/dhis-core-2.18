@@ -1,4 +1,6 @@
-package org.hisp.dhis.user.action;
+package org.hisp.dhis.user;
+
+import java.util.Collection;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,24 +29,12 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
-import org.hisp.dhis.user.comparator.UsernameComparator;
-
-import com.opensymphony.xwork2.Action;
-
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: GetUserListAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class GetUserListAction
-    implements Action
+public class DefaultUserService
+    implements UserService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -57,39 +47,61 @@ public class GetUserListAction
         this.userStore = userStore;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<UserCredentials> userCredentialsList;
-
-    public List<UserCredentials> getUserCredentialsList()
+    public boolean isSuperUser( UserCredentials userCredentials )
     {
-        return userCredentialsList;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implemantation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        Collection<User> users = userStore.getAllUsers();
-
-        userCredentialsList = new ArrayList<UserCredentials>();
-
-        for ( User user : users )
+        if ( userCredentials == null )
         {
-            UserCredentials userCredentials = userStore.getUserCredentials( user );
-
-            userCredentials.getUser();
-
-            userCredentialsList.add( userCredentials );
+            return false;
         }
 
-        Collections.sort( userCredentialsList, new UsernameComparator() );
+        for ( UserAuthorityGroup group : userCredentials.getUserAuthorityGroups() )
+        {
+            if ( group.getAuthorities().contains( "ALL" ) )
+            {
+                return true;
+            }
+        }
 
-        return SUCCESS;
+        return false;
+    }
+
+    public boolean isLastSuperUser( UserCredentials userCredentials )
+    {
+        Collection<UserCredentials> users = userStore.getAllUserCredentials();
+        
+        for ( UserCredentials user : users )
+        {
+            if ( isSuperUser( user ) && user.getId() != userCredentials.getId() )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isSuperRole( UserAuthorityGroup userAuthorityGroup )
+    {
+        if ( userAuthorityGroup == null )
+        {
+            return false;
+        }
+
+        return (userAuthorityGroup.getAuthorities().contains( "ALL" )) ? true : false;
+    }
+
+    public boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup )
+    {
+        Collection<UserAuthorityGroup> groups = userStore.getAllUserAuthorityGroups();
+
+        for ( UserAuthorityGroup group : groups )
+        {
+            if ( isSuperRole( group ) && group.getId() != userAuthorityGroup.getId() )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

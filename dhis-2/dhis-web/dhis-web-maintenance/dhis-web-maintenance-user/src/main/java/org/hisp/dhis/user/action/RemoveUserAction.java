@@ -29,10 +29,13 @@ package org.hisp.dhis.user.action;
 
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,9 +64,23 @@ public class RemoveUserAction
         this.currentUserService = currentUserService;
     }
 
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     private Integer id;
 
@@ -99,8 +116,18 @@ public class RemoveUserAction
             userStore.deleteUserSetting( userSetting );
         }
 
-        userStore.deleteUserCredentials( userStore.getUserCredentials( user ) );
-        userStore.deleteUser( user );
+        UserCredentials userCredentials = userStore.getUserCredentials( user );
+        if ( userService.isLastSuperUser( userCredentials ) )
+        {
+            message = i18n.getString( "can_not_remove_last_super_user" );
+            
+            return ERROR;
+        }
+        else
+        {
+            userStore.deleteUserCredentials( userStore.getUserCredentials( user ) );
+            userStore.deleteUser( user );
+        }
 
         if ( isCurrentUser )
         {

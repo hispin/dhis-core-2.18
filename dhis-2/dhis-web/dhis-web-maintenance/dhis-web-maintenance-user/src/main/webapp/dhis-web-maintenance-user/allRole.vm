@@ -1,4 +1,5 @@
 <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
+<div id='warningArea' style='display:none;' onclick="hideById(this.id)"></div>
 
 <h3>$i18n.getString( "user_role_management" )</h3>
 
@@ -29,14 +30,10 @@
 					<td onclick="showRoleDetails( $userAuthorityGroup.id )">$!encoder.htmlEncode( $userAuthorityGroup.name )</td>
 					<td onclick="showRoleDetails( $userAuthorityGroup.id )">$!encoder.htmlEncode( $userAuthorityGroup.description )</td>
 					<td style="text-align:center">
-						#if($userAuthorityGroup.name != $!encoder.htmlEncode( $superuserRole ) )
-							<a href="showUpdateRoleForm.action?id=$userAuthorityGroup.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
-						#end
+						<a href="showUpdateRoleForm.action?id=$userAuthorityGroup.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 					</td>
 					<td style="text-align:center">
-						#if($userAuthorityGroup.name != $!encoder.htmlEncode( $superuserRole ) )
-							<a href="javascript:removeRole( $userAuthorityGroup.id, '$encoder.jsEncode( $userAuthorityGroup.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-						#end
+						<a href="javascript:removeRole( $userAuthorityGroup.id, '$encoder.jsEncode( $userAuthorityGroup.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 					</td>
                     <td style="text-align:center"><a href="javascript:showRoleDetails( $userAuthorityGroup.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>

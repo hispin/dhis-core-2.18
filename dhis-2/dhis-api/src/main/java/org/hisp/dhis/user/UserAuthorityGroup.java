@@ -36,13 +36,10 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 /**
  * @author Nguyen Hong Duc
  * @version $Id: UserAuthorityGroup.java 5701 2008-09-14 20:34:46Z larshelg $
- * @version $Id: UserAuthorityGroup.java 339942 2009-12-21 10:21:03Z chauthutran $
  */
 public class UserAuthorityGroup
 {
 
-	public static final String SUPER_USER_GROUP = "Superuser";
-	
     private int id;
 
     /**

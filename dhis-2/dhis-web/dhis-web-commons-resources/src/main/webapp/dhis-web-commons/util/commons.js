@@ -653,7 +653,7 @@ function removeItem( itemId, itemName, confirmation, action )
     	    	}
     	    	else if ( json.response == "error" )
     	    	{
-    	    		setFieldValue( 'warningField', json.message );
+    	    		setFieldValue( 'warningArea', json.message );
         
                     showWarning();
     	    	}

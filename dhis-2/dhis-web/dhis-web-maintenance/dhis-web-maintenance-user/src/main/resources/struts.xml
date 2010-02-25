@@ -51,6 +51,7 @@
     <action name="removeUser" class="org.hisp.dhis.user.action.RemoveUserAction">      
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="logout" type="redirect">/dhis-web-commons-security/logout.action</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="requiredAuthorities">F_USER_DELETE</param>
     </action>
     
