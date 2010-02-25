@@ -495,6 +495,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     <property name="deletionManager"
       ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+    <property name="dataEntryFormAssociationService"
+      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"/>
   </bean>
     
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"
