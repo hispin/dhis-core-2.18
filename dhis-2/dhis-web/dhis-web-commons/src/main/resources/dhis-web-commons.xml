@@ -232,6 +232,10 @@
 			<result name="success" type="outputStreamResult"></result>
 		</action>
 
+        <action name="getHelpItems" class="org.hisp.dhis.help.action.GetHelpItemsAction">
+            <result name="success" type="outputStreamResult"></result>
+        </action>
+
 	</package>
 
 	<!-- Security -->
