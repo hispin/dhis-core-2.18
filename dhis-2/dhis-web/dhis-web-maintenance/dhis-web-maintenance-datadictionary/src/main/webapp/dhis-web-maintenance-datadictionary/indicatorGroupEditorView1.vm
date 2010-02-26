@@ -1,24 +1,3 @@
-<style type="text/css">
-
-.select 
-{
-	border:#666666 thin solid;
-	min-width:300px;
-	size:30;
-}
-
-#tooltip {
-    color:#000; font-size:11px; line-height:1.2;
-    background-color:#FFFFCC; border:1px solid #667295; 
-    width:210px; padding:4px;
-	z-index: 100000;
-	display: none;
-	position:absolute;
-}
-
-
-</style>
-
 <h3>$i18n.getString( "indicator_group_editor" ) #openHelp( "indicatorGroupEditor" )</h3>
 
 <span id='message' style="position:fixed;top:80px;right:5px;"></span>
@@ -27,15 +6,14 @@
 	<tr>
 		<th>$i18n.getString( "indicator_group" )</th>
 		<th><span id="groupNameView" style="display:block;"></span></th>		
-		<td></td>
+		<td rowspan=2><a href="indicatorGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>
 		<th>$i18n.getString( "available_indicators" )</th>
 		
 	</tr>
 	
 	<tr>
 		<td><input id="indicatorGroupsFilter" type="text" style="width:300px;" onkeyup="filterIndicatorGroups();"></td>
-		<td><input id="selecteIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterSelectedIndicators();"></td>
-		<td></td>
+		<td><input id="selecteIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterSelectedIndicators();"></td>		
 		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"></td>
 	</tr>
 

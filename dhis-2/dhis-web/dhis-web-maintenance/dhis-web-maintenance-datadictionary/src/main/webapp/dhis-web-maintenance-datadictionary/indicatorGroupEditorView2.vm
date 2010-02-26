@@ -1,0 +1,102 @@
+<h3>$i18n.getString( "indicator_group_editor" ) #openHelp( "indicatorGroupEditor" )</h3>
+
+<span id='message' style="position:fixed;top:80px;right:5px;z-index:100000"></span>
+
+<table >	
+	<tr>		
+		<th>$i18n.getString( "available_indicators" )</th>
+		<th><span id="groupNameView" style="display:block;"></span></th>		
+		<td rowspan=2><a href="indicatorGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>
+		<th>$i18n.getString( "available_groups" )</th>
+		
+	</tr>
+	
+	<tr>
+		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"></td>
+		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"></td>				
+		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"></td>
+	</tr>
+
+	<tr>
+		<td>
+			<select class="select" id="availableIndicators" size="30" onclick="getAssignedIndicatorGroups(this.value)"  onMouseOut="javascript: hideToolTip();">				
+			</select>
+		</td>		
+		<td>
+			<select class="select" id="assignedGroups" multiple="multiple" size="30"  ondblclick="removeSelectedGroups();"  onMouseOut="javascript: hideToolTip();">
+			</select>
+		</td>
+		
+		<td>
+			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:30px"><br><br>
+			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:30px">
+		</td>
+		
+		<td>
+			<select class="select" id="availableGroups" multiple="multiple"  size="30" onMouseOut="javascript: hideToolTip();" ondblclick="addSelectedGroups();">				
+			</select>
+		</td>
+		
+	</tr>
+	<tr>		
+		
+		<td></td>
+		<td>			
+			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:assignGroupsForIndicator()">
+		</td>
+		<td></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px">
+		</td>
+		
+		
+	</tr>
+</table>
+
+<div id="addIndicatorGroupForm" style="position:fixed;background-color:#FFFFFF;border:thin #000000 solid;height:70px;width:450px;display:none;z-index:10000;">
+
+<table width="100%" height="100%" border="0" cellpadding="2" cellspacing="2"> 
+
+  <tr align="center">
+    <td>$i18n.getString( "name" )</td>
+	<td><input type="text" id="groupName" style="width:20em"/></td>
+	<td><input id="addRenameGroupButton" type="button" value="$i18n.getString( 'ok' )"/>
+	<input type="button" onclick="javascript:cancel();" value="$i18n.getString( 'cancel' )"/></td>
+  </tr>
+
+</table>
+
+</div>
+
+<div id="tooltip"></div>
+
+<script type="text/javascript">
+
+	function cancel(){
+		hideById("addIndicatorGroupForm");
+		deleteDivEffect();
+	}
+
+	var i18n_select_indicator_group = '$encoder.jsEscape( $i18n.getString( "select_indicator_group" ) , "'")';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_indicator_group" ) , "'")';
+	var i18n_member_of = '$encoder.jsEscape( $i18n.getString( "member_of" ) , "'")';
+	var i18n_update_success = '$encoder.jsEscape( $i18n.getString( "update_success" ) , "'")';
+		
+	var availableGroups = new Object();
+	#foreach( $indicatorGroup in $indicatorGroups )
+		availableGroups['$indicatorGroup.id'] = '$encoder.jsEscape( $indicatorGroup.name, "'" )';
+	#end
+
+	var availableIndicators = new Object();
+	#foreach( $indicator in $indicators )
+		availableIndicators['$indicator.id'] = '$encoder.jsEscape( $indicator.name, "'" )';
+	#end
+	
+	var assignedGroups = new Object();	
+	
+	initList();
+	
+</script>
+
