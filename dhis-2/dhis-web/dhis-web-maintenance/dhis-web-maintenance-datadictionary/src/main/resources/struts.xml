@@ -191,8 +191,8 @@
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 
-		<!-- DataElementGroup -->
-
+		<!-- DataElementGroup -->		
+		
 		<action name="dataElementGroup"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -335,15 +335,46 @@
 		</action>
 
 		<!-- Indicator Group Editor -->
-
+		
 		<action name="indicatorGroupEditor"
+			class="org.hisp.dhis.dd.action.SwitchGroupEditorViewAction">
+			<result name="view1" type="chain">indicatorGroupEditorView1</result>
+			<result name="view2" type="chain">indicatorGroupEditorView2</result>
+		</action>
+
+		<action name="indicatorGroupEditorView1"
 			class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditor.vm</param>
+			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditorView1.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupEditor.js</param>
+			<param name="javascripts">javascript/indicatorGroupEditorView1.js</param>
 			<param name="stylesheets">style/indicatorGroupEditor.css</param>
 		</action>
+		
+		<action name="indicatorGroupEditorView2"
+			class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditorView2.vm</param>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+			<param name="javascripts">javascript/indicatorGroupEditorView2.js</param>
+			<param name="stylesheets">style/indicatorGroupEditor.css</param>
+		</action>
+		
+		<action name="getAssignedIndicatorGroups"
+			class="org.hisp.dhis.dd.action.indicatorgroup.GetAssignedIndicatorGroupsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseIndicatorGroups.vm
+			</result>
+		</action>
+		
+		<action name="asignGroupsForIndicator"
+			class="org.hisp.dhis.dd.action.indicatorgroup.AssignGroupsForIndicatorAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseSuccess.vm
+			</result>
+		</action>
+		
+		
 
 		<action name="getIndicatorGroupEditor"
 			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
