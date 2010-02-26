@@ -28,17 +28,17 @@ package org.hisp.dhis.reports.tablecreator.action;
  */
 
 import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+import static org.hisp.dhis.system.util.ConversionUtils.getList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dimension.DimensionService;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -49,7 +49,6 @@ import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.system.util.CollectionConversionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,14 +76,14 @@ public class SaveTableAction
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryComboService categoryComboService;
 
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }    
+    private DimensionService dimensionService;
     
+    public void setDimensionService( DimensionService dimensionService )
+    {
+        this.dimensionService = dimensionService;
+    }
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -145,25 +144,18 @@ public class SaveTableAction
         this.regression = regression;
     }    
     
-    private Integer categoryComboId;
+    private String dimensionSetId;
 
-    public void setCategoryComboId( Integer categoryComboId )
+    public void setDimensionSetId( String dimensionSetId )
     {
-        this.categoryComboId = categoryComboId;
+        this.dimensionSetId = dimensionSetId;
     }
-    
+
     private boolean doIndicators;
 
     public void setDoIndicators( boolean doIndicators )
     {
         this.doIndicators = doIndicators;
-    }
-    
-    private boolean doCategoryOptionCombos;
-
-    public void setDoCategoryOptionCombos( boolean doCategoryOptionCombos )
-    {
-        this.doCategoryOptionCombos = doCategoryOptionCombos;
     }
     
     private boolean doPeriods;
@@ -348,27 +340,14 @@ public class SaveTableAction
     private ReportTable getReportTable()
         throws Exception
     {
-        List<DataElement> dataElements = new CollectionConversionUtils<DataElement>().getList( 
-            dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );
-        
-        List<Indicator> indicators = new CollectionConversionUtils<Indicator>().getList( 
-            indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
-        
-        List<DataSet> dataSets = new CollectionConversionUtils<DataSet>().getList( 
-            dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );
-        
-        List<Period> periods = new CollectionConversionUtils<Period>().getList( 
-            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
-        
-        List<OrganisationUnit> organisationUnits = new CollectionConversionUtils<OrganisationUnit>().getList( 
-            organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
+        List<DataElement> dataElements = getList( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );        
+        List<Indicator> indicators = getList( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );        
+        List<DataSet> dataSets = getList( dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );        
+        List<Period> periods = getList( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
+        List<OrganisationUnit> units = getList( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
-        DataElementCategoryCombo categoryCombo = ( categoryComboId != null ) ? 
-            categoryComboService.getDataElementCategoryCombo( categoryComboId ) : null;
+        DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
         
-        List<DataElementCategoryOptionCombo> categoryOptionCombos = ( categoryCombo != null ) ? 
-            new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() ) : new ArrayList<DataElementCategoryOptionCombo>();
-
         RelativePeriods relatives = new RelativePeriods();
         
         relatives.setReportingMonth( reportingMonth );
@@ -396,8 +375,8 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName, mode, regression,
-                dataElements, indicators, dataSets, categoryOptionCombos, periods, null, organisationUnits, null,
-                doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
+                dataElements, indicators, dataSets, periods, null, units, null,
+                dimensionSet, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
         }
         else
@@ -409,15 +388,14 @@ public class SaveTableAction
             reportTable.setDataElements( dataElements );
             reportTable.setIndicators( indicators );
             reportTable.setDataSets( dataSets );
-            reportTable.setCategoryOptionCombos( categoryOptionCombos );
             reportTable.setPeriods( periods );
-            reportTable.setUnits( organisationUnits );
+            reportTable.setUnits( units );
             reportTable.setDoIndicators( doIndicators );
-            reportTable.setDoCategoryOptionCombos( doCategoryOptionCombos );
             reportTable.setDoPeriods( doPeriods );
             reportTable.setDoUnits( doOrganisationUnits );
             reportTable.setRelatives( relatives );
             reportTable.setReportParams( reportParams );
+            reportTable.setDimensionSet( dimensionSet );
         }
         
         return reportTable;

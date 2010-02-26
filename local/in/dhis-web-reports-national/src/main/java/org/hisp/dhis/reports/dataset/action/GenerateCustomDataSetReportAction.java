@@ -36,9 +36,9 @@ import java.util.TreeMap;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datamart.DataMartStore;
-import org.hisp.dhis.dataset.DataEntryForm;
-import org.hisp.dhis.dataset.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -207,9 +207,9 @@ public class GenerateCustomDataSetReportAction
                     String value = null;
                     DataValue dataValue;
 
-                    if ( dataElement.getType().equals( DataElement.TYPE_INT ) )
+                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                     {
-                        double aggregatedValue;
+                        Double aggregatedValue;
 
                         if ( organisationUnitGroupId.equals( "Selected_Only" ) )
                         {
@@ -220,7 +220,7 @@ public class GenerateCustomDataSetReportAction
                         {
                             aggregatedValue = dataMartStore.getAggregatedValue( dataElement, optionCombo, period,
                                 orgUnit );
-                            value = (aggregatedValue != DataMartStore.NO_VALUES_REGISTERED) ? NumberUtils
+                            value = ( aggregatedValue != null ) ? NumberUtils
                                 .formatDataValue( aggregatedValue ) : "";
                         }
                         else

@@ -70,7 +70,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * @version $Id$
  */
 public class DefaultChartService
-    implements ChartService
+    //implements ChartService
 {
     private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 14 );
     private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
