@@ -54,8 +54,8 @@ import jxl.format.BorderLineStyle;
 import jxl.format.CellFormat;
 import jxl.format.VerticalAlignment;
 import jxl.write.Formula;
-import jxl.write.Number;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
@@ -65,7 +65,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -156,10 +156,10 @@ public class GenerateOrgunitGroupsetReportsResultAction
             this.dataElementService = dataElementService;
         }
         
-        private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+        private DataElementCategoryService dataElementCategoryOptionComboService;
 
         public void setDataElementCategoryOptionComboService(
-            DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+        		DataElementCategoryService dataElementCategoryOptionComboService )
         {
             this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
         }
