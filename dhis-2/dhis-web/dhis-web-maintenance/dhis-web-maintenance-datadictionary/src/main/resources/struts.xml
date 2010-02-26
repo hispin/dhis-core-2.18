@@ -150,15 +150,15 @@
 		<action name="asignGroupsForDataElement"
 			class="org.hisp.dhis.dd.action.dataelementgroup.AssignGroupsForDataElementAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responsedataElementGroups.vm
+				/dhis-web-maintenance-datadictionary/responseSuccess.vm
 			</result>
 		</action>
 
 		<action name="getDataElementGroupEditor"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm
-			</result>
+				/dhis-web-maintenance-datadictionary/responsedataElementGroupSuccess.vm
+			</result>			
 		</action>
 
 		<action name="addDataElementGroupEditor"
