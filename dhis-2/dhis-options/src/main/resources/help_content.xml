@@ -1,89 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <book>
   <chapter>
-    <title>Data entry</title>
-    <section>
-      <title>Learning Objectives</title>
-      <para>After reading this chapter you will be able to understand:</para>
-      <itemizedlist>
-        <listitem>
-          <para>How to do data entry</para>
-        </listitem>
-        <listitem>
-          <para>How to do data validation</para>
-        </listitem>
-        <listitem>
-          <para>How to use standard and customised data entry screens</para>
-        </listitem>
-      </itemizedlist>
-    </section>
-    <section id="dataEntry">
-      <title>Data entry with DHIS 2</title>
-      <para>The data entry module is where data is manually registered in the DHIS 2 database.</para>
-      <section>
-        <title>Opening the “Data Entry” screen</title>
-        <para>Entering data in DHIS 2 is a very simple task, and involves the
-    following steps. Click on the services tab displayed on the main menu. A
-    drop down menu will appear listing the services provided by DHIS2. Click
-    on the <guibutton>Data Entry</guibutton> option.</para>
-        <screenshot>
-          <screeninfo>Open DHIS2 data entry screen</screeninfo>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/open_data_entry_screen.png"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-        <para>You will now enter the data entry module. This module is where the
-    services/ data values are captured / registered into the system. The
-    screen display will be like the screen-shot shown below.</para>
-        <screenshot>
-          <screeninfo>Main data entry screen</screeninfo>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/data_entry_screen_main.png"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-      </section>
-      <section>
-        <title>Navigate organisation tree and select organisation unit</title>
-        <para>In order to enter data you will first have to select the particular
-    organisation unit (e.g. Sub Centre/PHC/districts etc) for which you are
-    going to enter data. Simply clicking on the concerned organisation unit
-    from the organisation units hierarchy displayed on the left side of the
-    data entry screen.</para>
-        <screenshot>
-          <screeninfo>Select Organisational unit</screeninfo>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/data_entry_screen_select_org_unit.png"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-      </section>
-      <section>
-        <title>Entering data</title>
-        <para>When you select an organisational unit (or orgunit) from the
-    organisation unit tree, datasets available for this orgunit will then
-    appear as a drop-down list in the data set box as depicted below.</para>
-        <screenshot>
-          <screeninfo>Select dataset</screeninfo>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/data_entry_select_data_set.png"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
-        <para>If the dataset field is disabled it means that there are no datasets
-    assigned for the selected organisation unit or that your user role is not
-    authorised to enter data. For now we shall limit our concern to data
-    entry. You will learn to create and assign datasets to specific
-    organisation unit in a later module. </para>
-      </section>
-    </section>
-  </chapter>
-  <chapter>
     <title>Data elements and indicators</title>
     <para>This sub module is required for the management of the data elements and indicators used by the application. When the ‘Data Elements and Indicators’ options is chosen from the main Maintenance menu, the following screen appears:</para>
     <screenshot>
@@ -871,6 +788,381 @@
     <section id="followupAnalysis">
       <title>Follow-Up Analysis</title>
       <para>The follow-up analysis function will list all data values which are marked for follup-up. A data value can be marked for follow-up in the data entry module and in the other validation analysis variants in this module.  See section about Std dev outlier analysis for further details on usage.</para>
+    </section>
+  </chapter>
+  <chapter>
+    <title>Import and export</title>
+    <highlights>
+      <para>
+        <emphasis>Learning objectives:</emphasis>
+      </para>
+      <para>
+After reading this module you will be able to understand:</para>
+      <itemizedlist>
+        <listitem>
+          <para>
+Why do we need functions of export and import data.</para>
+        </listitem>
+        <listitem>
+          <para>How to export data from DHIS2</para>
+        </listitem>
+        <listitem>
+          <para>
+How to import data into DHIS2</para>
+        </listitem>
+      </itemizedlist>
+    </highlights>
+    <section>
+      <title>What is import and export?</title>
+      <para>In a primary health system, the HMIS typically involves a distributed application, where the same application is running in different geographical locations (PHCs,CHCs, hospitals, districts, and state). Most of these physical locations do not have Internet connectivity, and hence they work offline. At some point (normally at the district level), the data needs to be synchronised in order to have a consolidated database for the a particular geographical region. For this, it is important to be able to export data from one location (which is working offline, say at the health facility  level) to another one say at the district level where the data would need to be imported. This feature of exporting and importing is thus a crucial function of a HMIS. This feature also helps us overcome the dependency on Internet to some degree, as data updates can be transferred via USB key where there is no connectivity, or through email where there is limited Internet connectivity. DHIS 2 provides robust export-import functionality to fulfil these needs.
+</para>
+    </section>
+    <section id="export">
+      <title>Exporting data</title>
+      <para>In the case on on-line data entry, all data is saved into one database only. In an offline deployment, each deployment will have a separate database in their local system. So the data will be stored in their local database. In an offline deployment, after the data entry is finished, it will need to be manually sent to the next level of where the application is running. In an on-line application, however, that is not required, as all data is stored at a central location using the Internet.
+</para>
+      <section>
+        <title>Exporting from DHIS2</title>
+        <para>The export option can be made use of by selecting it as follows. 
+The import or export is available only when the selected organisation (source/destination) has defined datasets. This is because datasets help to define which data is to be or is being exported. Further, which specific data elements get exported is determined by the composition of the dataset being exported.
+If there are no datasets defined for an organisation unit, it indicates that no data values are registered for this level of organisation or lower.
+To access the main Import-Export module, choose <guimenu>Services-&gt;Import-Export</guimenu></para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/import_export/Import_export_main.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>The exported data values are stored in an ‘xml file’. The file name is defined by the name of the source organisation unit and the period to allow the receiving organisation unit to identify the source and the period of the export file. The XML is placed in your home directory (On Windows this is normally <filename>C:\Documents and Settings\</filename> under the sub-directories <filename>/dhis / import-export</filename>.
+</para>
+      </section>
+      <section>
+        <title>Exporting data to other DHIS2 systems</title>
+        <para>Once the data export screen is displayed, select the Organisation unit, period and dataset for which data export should be selected.Finally click on the export option that will be available on the lower left side of displayed screen.
+If there are no datasets defined for an organisation unit, it indicates that no data values are registered for this level of organisation or lower.
+</para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/import_export/export_to_dhis2.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>A pop-up save option will appear on the displayed screen (see picture below) prompting the saving of the exported data. You may save the export folder on your desktop or any other folder by selecting the ‘Save to Disk’ option from the pop-up prompt.
+</para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="60%" align="center" fileref="resources/images/import_export/export_file_popup.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </section>
+      <section>
+        <title>Exporting metadata to other DHIS2 systems</title>
+        <para/>
+        <section>
+          <title>Metadata export</title>
+          <para>Metadata is "data about data". In the context of DHIS2, metadata consists of definitions of data elements, indicators, the structure and names contained in the organizational hierarchy, and other options. Click on the "Metadata export" link from the main "Data export" screen in order to access this. Just select the feature that you wish to export and click "Export". This metadata file can then be transmitted just like  a data file, except it will contain information on the definitions of the various features, as opposed to the values of the data themselves. </para>
+          <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/import_export/metdata_export.png"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </section>
+        <section>
+          <title>Detailed metadata export</title>
+          <para>The "Detailed metadata" function will allow you to export specific data element and indicator definitions. Just click "Detailed Metadata Export" and select the data elements and indicators that you wish to export. Click "Export" and save the file to a desired location. This file can then be transmitted via email or USB key to other DHIS2 installations. </para>
+          <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/import_export/metadata_detail.png"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </section>
+      </section>
+      <section>
+        <title>IXF data export</title>
+        <para>DHIS2 support export to the Indicator Exchange Format 2  developed by UNAIDS. The IXF data exchange standard has been implemented  ,with various levels of compatibility, between several information management systems including CRIS version 2, DevInfo version 5, KIDS developed by FAO, DHIS 1.4, DHIS2, and HealthMapper version 4 developed by WHO. A more detailed discussion on the use of the IXF data exchange format. </para>
+        <para>The IXF data export is essentially the same as a standard DHIS 2 DXF export, but results in a file format that is compatible with IXF 2. </para>
+      </section>
+      <section>
+        <title>IXF Metadata export</title>
+        <para>The IXF detailed metadata export provides the same functionality of the standard DHIS2 detailed metadata export, except that the resulting file is compatible with the IXF data exchange format. </para>
+      </section>
+      <section>
+        <title>DHIS 1.4 Metadata export</title>
+        <para>The DHIS 1.4 Metadata export functionality provides the same functionality as the standard DHIS2 metadata export, except that the resulting file can be used to transmit metadata information to DHIS 1.4 systems. </para>
+      </section>
+      <section>
+        <title>DHIS 1.4 Detailed Metadata Export</title>
+        <para>The DHIS 1.4 Metadata export functionality provides the same functionality as the detailed DHIS2 metadata export, except that the resulting file can be used to transmit metadata information to DHIS 1.4 systems. Simply select the data elements and indicators that you want and click "Export" to begin the export process.</para>
+      </section>
+      <section>
+        <title>PDF Metadata Export</title>
+        <para>Auctor natoque ve vulputate quam. Quam duis posuere risus felis mus class tempor eu sociosqu. Risus duis penatibus turpis, tristique dictum enim est. Quisque mi pulvinar ultrices, fusce diam porttitor mi hendrerit viverra, augue leo vestibulum rutrum. Ridiculus dictumst luctus. Eros.</para>
+      </section>
+    </section>
+    <section id="import">
+      <title>Importing data</title>
+      <section>
+        <title>DXF Import</title>
+        <para>The Data Exchange Format (DXF) is the default XML schema that is used to transport data between two disconnected DHIS2 systems. Importing data from another DHIS2 system is simple. Just select "Services-&gt;Import-Export-Import". Click the "Browse" button, and select the name of the file that you wish to import as shown below. </para>
+        <screenshot>
+          <screeninfo>Default import screen</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="40%" align="center" fileref="resources/images/import_export/import_default.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </section>
+      <section>
+        <title>Importing data </title>
+        <para>The import option allows different instance of DHIS2 to receive standardised set of data in the absence of a networked system. Typically, a data set is exported from one DHIS instance (e.g. a district level system) to another system (e.g. a provincial level system).  DHIS2 is capable of importing data from other systems that either support the DXF of IXF formats. DHIS2 is capable of importing data directly from a DHIS 1.4 Access database. Each of these options will be discussed in the following sections. </para>
+        <para>DHIS2 is also capable of importing data through the Excel reporting module. The reader is referred to the appropriate chapter for detailed information. </para>
+        <section>
+          <title>Importing data from other DHIS2 systems</title>
+          <para>Data can be imported into different instances of DHIS2 through the use of the DXF data exchange format. There are two screens that are used to import data, with default and advanced options. </para>
+          <para>The default data import menu can be accessed by clicking the <guimenuitem>"Import"</guimenuitem> from the main <guimenuitem>Import-Export</guimenuitem> screen. By clicking the <guibutton>"Browse"</guibutton> button, you can select a file from you local file system. This file may have been received by email, copied from another users system, or received on a CD for example. Simply select the file that you wish to import. </para>
+          <para>There are three separate options for importing data. </para>
+          <itemizedlist>
+            <listitem>
+              <para>Import: This option will import the contents of the import file  directly into the database.</para>
+            </listitem>
+            <listitem>
+              <para>Preview: This option will enable a preview of the contents of the import file. In the preview one can get an overwiev of the data to be imported, discard unwanted elements and match import elements to existing ones.</para>
+            </listitem>
+            <listitem>
+              <para>Analysis: This option will enable an analysis of the contents of the import file. The analysis will search for and examine anomalies in the data, like violations of unique names constraints and invalid indicator formulas. This is useful when importing from external applications where data constraints might be less rigid than in DHIS 2.</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+      </section>
+    </section>
+  </chapter>
+  <chapter>
+    <title>Data entry</title>
+    <section>
+      <title>Learning Objectives</title>
+      <para>After reading this chapter you will be able to understand:</para>
+      <itemizedlist>
+        <listitem>
+          <para>How to do data entry</para>
+        </listitem>
+        <listitem>
+          <para>How to do data validation</para>
+        </listitem>
+        <listitem>
+          <para>How to use standard and customised data entry screens</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section id="dataEntry">
+      <title>Data entry</title>
+      <para>The data entry module is where data is manually registered in the DHIS 2 database.</para>
+      <section>
+        <title>Opening the “Data Entry” screen</title>
+        <para>Entering data in DHIS 2 is a very simple task, and involves the
+    following steps. Click on the services tab displayed on the main menu. A
+    drop down menu will appear listing the services provided by DHIS2. Click
+    on the <guibutton>Data Entry</guibutton> option.</para>
+        <screenshot>
+          <screeninfo>Open DHIS2 data entry screen</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/open_data_entry_screen.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>You will now enter the data entry module. This module is where the
+    services/ data values are captured / registered into the system. The
+    screen display will be like the screen-shot shown below.</para>
+        <screenshot>
+          <screeninfo>Main data entry screen</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/data_entry_screen_main.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </section>
+      <section>
+        <title>Navigate organisation tree and select organisation unit</title>
+        <para>In order to enter data you will first have to select the particular
+    organisation unit (e.g. Sub Centre/PHC/districts etc) for which you are
+    going to enter data. Simply clicking on the concerned organisation unit
+    from the organisation units hierarchy displayed on the left side of the
+    data entry screen.</para>
+        <screenshot>
+          <screeninfo>Select Organisational unit</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/data_entry_screen_select_org_unit.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </section>
+      <section>
+        <title>Entering data</title>
+        <para>When you select an organisational unit (or orgunit) from the
+    organisation unit tree, datasets available for this orgunit will then
+    appear as a drop-down list in the data set box as depicted below.</para>
+        <screenshot>
+          <screeninfo>Select dataset</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="80%" align="center" fileref="resources/images/dhis2UserManual/data_entry_select_data_set.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>If the dataset field is disabled it means that there are no datasets
+    assigned for the selected organisation unit or that your user role is not
+    authorised to enter data. For now we shall limit our concern to data
+    entry. You will learn to create and assign datasets to specific
+    organisation unit in a later module. </para>
+      </section>
+    </section>
+  </chapter>
+  <chapter>
+    <title>Reporting</title>
+    <section>
+      <title>An overview of how reporting and aggregation works</title>
+      <para>
+In the bigger picture of HIS terminology all data in DHIS are usually called aggregated as they are aggregates (e.g. monthly summaries) of medical records or some kind of service registers reported from the health facilities. Aggregation inside DHIS however, which is the topic here, is concerned with how the raw data captured in DHIS (through data entry or import)are further aggregated over time (e.g. from monthly to quarterly values) or up the organisational hierarchy (e.g. from facility to district values). 
+</para>
+      <section>
+        <title>Terminology</title>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>Raw data</emphasis> refers to data that is registered into the DHIS 2 either through data entry or data import, and has not been manipulated by the DHIS aggregation process. All these data are stored in the table (or Java object if you prefer) called DataValue.
+ </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Aggregated data</emphasis>refers to data that has been aggregated by the DHIS2, meaning it is no longer raw data, but some kind of aggregate of the raw data.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Indicator values</emphasis> can also be understood as aggregated data, but these are special in the way that they are calculated based on user defined formulas (factor * numerator/denominator). Indicator values are therefore processed data and not raw data, and are located in the aggregatedindicatorvalue table/object. Indicators are calculated at any level of the organisational hierarchy and these calculations are then based on the aggregated data values available at each level. A level attribute in the aggregateddatavalue table refers to the organisational level of the orgunit the value has been calculated for.
+    </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Period and Period type</emphasis> are used to specify the time dimension of the raw or aggregated values, and data can be aggregated from one period type to another, e.g from monthly to quarterly, or daily to monthly. Each data value has one period and that period has one period type. E.g data values for the periods Jan, Feb, and Mar 2009, all of the monthly period type can be aggregated together to an aggregated data value with the period “Q1 2009” and period type “Quarterly”.
+   </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section>
+        <title>Basic rules of aggregation</title>
+        <section>
+          <title>What is added together</title>
+          <para>Data (raw) can be registered at any organisational level, e.g. at at national hospital at level 2, a health facility at level 5, or at a bigger PHC at level 4. This varies form country to country, but DHIS is flexible in allowing data entry or data import to take place at any level. This means that orgunits that themselves have children can register data, sometimes the same data elements as their children units. The basic rule of aggregation in DHIS 2 is that <emphasis>all raw data is aggregated together</emphasis>, meaning data registered at a facility on level 5 is added to the data registered for a PHC at level 4.</para>
+          <para>
+It is up to the user/system administrator/designer to make sure that no duplication of data entry is taking place and that e.g. data entered at level 4 are not about the same services/visits that are reported by orgunit children at level 5. NOTE that in some cases you want to have “duplication” of data in the system, but in a controlled manner. E.g. when you have two different sources of data for population estimates, both level 5 catchment population data and another population data source for level 4 based on census data (because sum of level 5 catchments is not always the same as level 4 census data). Then you can specify using advanced aggregation settings (see further down) that the system should e.g. not add level 5 population data to the level 4 population data, and that level 3,2,1 population data aggregates are only based on level 4 data and does not include level 5 pop data.</para>
+        </section>
+        <section>
+          <title>How data gets added together</title>
+          <para>How data is aggregated depends on the dimension of aggregation (see further down).</para>
+          <para>Along the orgunit level dimension data is always summed up, simply added together. Note that raw data is never percentages, and therefore can be summed together. Indicator values that can be percentages are treated differently (re-calculated at each level, never summed up).</para>
+          <para>
+Along the time dimension there are several possibilities, the two most common ways to aggregate are sum and average. The user can specify for each data element which method to use by setting the aggregation operator (see further down). Monthly service data are normally summed together over time, e.g. the number of vaccines given in a year is the sum of the vaccines given for each month of that year. For population, equipment, staff and other kind of what is often called semi-permanent data the average method is often the one to use, as, e.g. “number of nurses” working at a facility in a year would not be the sum of the two numbers reported in the six-monthly staffing report, but rather the average of the two numbers. More details further down under “aggregation operators”. 
+</para>
+        </section>
+      </section>
+      <section>
+        <title>Dimensions of aggregation</title>
+        <section>
+          <title>Orgunits and levels</title>
+          <para/>
+        </section>
+        <section>
+          <title>Period</title>
+          <para/>
+        </section>
+        <section>
+          <title>Data Element Categories</title>
+          <para/>
+        </section>
+      </section>
+      <section>
+        <title>Aggregation operators, methods for aggregation</title>
+        <section>
+          <title>Sum</title>
+          <para/>
+        </section>
+        <section>
+          <title>Average</title>
+          <para/>
+        </section>
+        <section>
+          <title>Count</title>
+          <para/>
+        </section>
+        <section>
+          <title>Where to specify </title>
+          <para/>
+        </section>
+      </section>
+      <section>
+        <title>Advanced aggregation settings (aggregation levels)</title>
+        <section>
+          <title>Aggregation levels</title>
+          <para>The normal rule of the system is to aggregate all raw data together when moving up the organisational hierarchy, and the system assumes that data entry is not being duplicated by entering “the same services provided to the same clients” at both facility level and also entering an “aggregated” (sum of all facilities) number at a higher level. This is to more easily facilitate aggregation when the same services are provided but to different clients/catchment populations at facilities on level 5 and a PHC (the parent of the same facilities) at level 4. In this way a facility at level 5 and a PHC at level 4 can share the same data elements and simply add together their numbers to provide the total of services provided in the geographical area.</para>
+          <para>Sometimes such an aggregation is not desired, simply because it would mean duplicating data about the same population. This is the case when you have two different sources of data for two different orgunit levels. E.g. catchment population for facilities can come from a different source than district populations and therefore the sum of the facility catchment populations do not match the district population provided by e.g. census data. If this is the case we would actually want “duplicated” data in the system so that each level can have as accurate numbers as possible, but then we do NOT want to aggregate these data sources together.
+</para>
+          <para>In the Data Element section you can edit data elements and for each of them specify how aggregation is done for each level. In the case described above we need to tell the system NOT to include facility data on population in any of the aggregations above that level, as the level above, in this case the districts have registered their population directly as raw data. The district population data should then be used at all levels above and including the district level, while facility level should use its own data.</para>
+        </section>
+        <section>
+          <title>How to edit data element aggregation</title>
+          <para>This is controlled through something called aggregation levels and at the end of the edit data element screen there is a tick-box called Aggregation Levels. If you tick that one you will see a list of aggregation levels, available and selected. Default is to have no aggregation levels defined, then all raw data in the hierarchy will be added together. To specify the rule described above, and given a hierarchy of Country, Province, District, Facility: select Facility and District as your aggregation levels. Basically you select where you have data. Selecting Facility means that Facilities will use data from facilities (given since this is the lowest level). Selecting District means that the District level raw data will be used when aggregating data for District level (hence no aggregation will take place at that level), and the facility data will not be part of the aggregated District values. When aggregating data at Province level the District level raw data will be used since this is the highest available aggregation level selected. Also for Country level aggregates the District raw data will be used. Just to repeat, if we had not specified that District level was an aggregation level, then the facility data and district data would have been added together and caused duplicate (double) population data for districts and all levels above.</para>
+        </section>
+      </section>
+    </section>
+    <section>
+      <title>Reports</title>
+      <para>The reporting module in DHIS 2 provides a range of reporting alternatives, including canned reports using either JasperReports or BIRT, data set reports, charts, pivot tables and report tables.</para>
+      <section id="reportTable">
+        <title>Report tables</title>
+        <para>
+Report tables are meant to be database tables fulfilling the specific data needs of a report, chart, pivot table or other output format. It can be understood as a mini datamart that contains only the data needed for its purpose (the report). The rationale behind this concept is to automatically provide the data sources for reports without bothering the users every time, like a normal datamart, and to speed up the data processing and aggregation (small targeted datamarts are obviously faster than big ones). 
+</para>
+        <para>
+When created and generated a report table will appear in the DHIS 2 database as a normal table, but always with the prefix _report. This table should not be altered manually as it is controlled by the system. These tables are constantly being deleted and recreated as the user wants new updated data within the same table structure. These tables can then be access and used from any third party tool for displaying data. In DHIS 2 we have integrated with the BIRT report designer from the Eclipse platform and made it especially easy to link BIRT reports to report tables and to run these reports from within DHIS 2. However, we see report tables as a much broader tool and concept than to just support BIRT reports. It can and should (for performance gain and automation) be used for as many data output purposes as possible. e.g. as data sources for the database views used for Excel pivot tables. 
+</para>
+        <para>
+Report tables are meant to be defined once and then run automatically in the background each time a report that depends on it is generated. Reports (BIRT, the default report in DHIS 2) is directly linked to one or more report tables and these are automatically processed in the background when the report is run. To make the report tables reusable over time and across orgunits they can have parameters. Three types of parameters are allowed; orgunit, parent orgunit (for listing of orgunits in one area) and reporting month. As a side note I can mention that we are looking into expanding this to include reporting quarter and year, or to make that period parameter more generic with regard to period type somehow. Be able to use period as a parameter makes the report table reusable over time and as such fits nicely with report needs such as monthly, quarterly or annual reports. When a report is run by the user in the DHIS 2 the user must specify the values for the report tables that are linked to the report, and first the report table is re-generated (deleted and re-created with updated data) and then the report is run (in BIRT report engine). 
+</para>
+        <para>
+Report tables can consist of either values related to data elements or indicators, and not a mix of the two. A third report table type is data completeness, which is related to completeness of reporting across orgunits for a given month. Completeness reports will be covered in a separate section. The reason for not mixing data elements and indicators in one report table is due to the cross tab functionality that would be very complex and less useful with yet another dimension. Since two or more report tables can easily be linked to one report this limitation should not have much effect on report design possibilities. 
+</para>
+        <para>
+There are three dimensions in a report table that identify the data; indicators or data elements, orgunits and periods. For each of these dimensions the user can select which metadata values to include in the report. The user must select one or more data elements or indicators to appear in the report. The orgunit selection can be substituted with a parameter, wither one specific orgunit or an orgunit parent (making all its children appear in the report). If one or more orgunits are selected and no orgunit parameter is used then the report is static with regard to which orgunits to include, which in most cases is an unnecessary restriction to a report. The period selection is more advanced as it can in addition to specific periods like Jan-09, Q1-08, 2007 also contain what is called relative periods. As report usually is run routinely over time a specific period like Jan-09 is not very useful in a report. In stead, if you want to design a monthly report you could use the relative period called Reporting Month. Then you must also include Reporting Month as one of your report parameters to let the system know what exactly is the Reporting Month on the time of report generation. There are many other relative periods available and they all relate to the report parameter Reporting Month. E.g. the relative period called So far this year refers to the accumulative value for the year incl. the Reporting Month. If you want a trend report with multiple periods in stead of one aggregated period you can select e.g. Individual Months this year which would give you values for each month so far in the year, and you can do a similar report with quarters. The idea is to support as many generic report types as possible using relative periods, so if you have other report needs please suggest new relative periods on the mailing list and they will be added to the report table options. 
+</para>
+        <para>
+Cross tabbing is a very powerful functionality in report design as the typical DHIS data table with references to period, data element/indicator and orgunit makes more advanced report design very difficult as you cannot put e.g. specific indicators, periods or orgunits on specific columns. E.g. by cross-tabbing on the indicator dimension in an indicator report table you will get the indicator names on the column headers in you report, in addition to a column referencing orgunit, and another column referencing period. With such a table design you could drag and drop indicator names to specific columns or chart positions in the BIRT report design. Similarly you can cross tab on orgunits or periods to make their names specifically available to report design. E.g. by cross-tabbing on periods and selecting the two relative periods, reporting month and so far this year you can design reports with both the last month and the accumulative annual value for given month as they will be available as column headers in your report table. It is also possible to combine two dimensions in cross-tabbing, e.g. period and indicator, which makes it possible to e.g. look at three selected indicators for two specific relative periods. This would e.g. make it possible to make a table or chart based report with BCG, DPT3 and Measles coverage, both for the last month and the accumulative coverage so far in the year. 
+</para>
+        <para>
+All in all, by combining the functionality of cross tabbing, relative periods and report table parameters you should have a tool to support most report scenarios. If not we would be very happy to receive suggestions to further improvements to report tables. As already mentioned we have started to look at more fine-grained parameters for the period dimension as the Reporting Month does not cover or at least is not intuitive enough when it comes to e.g. quarterly reports.
+</para>
+      </section>
+      <section>
+        <title>BIRT reports</title>
+        <section>
+          <title>Create a report table in DHIS 2</title>
+          <para>To create a report table in DHIS 2 is to create so-called report tables in DHIS, found under Reports module, which will serve as the data table for your report. Normally one table per report, but multiple tables for one report is also possible. A report table can be a cross tabulated table on any of the dimensions period/indicator/data element / orgunit, and also in combination, like “BCG &lt; 1 coverage + last 3 months” and “BCG coverage &lt; 1 year+ last month”. This cross-tabulation makes it a lot easier to control the design of the report which is then done with dragging and dropping column headings onto the report. The report table can also have report parameters like reporting month, organisation unit and organisation unit parent (if you are e.g. listing all sub-districts in a given district).</para>
+        </section>
+        <section>
+          <title>Design the report in BIRT</title>
+          <para>Then you design the report in the stand-alone BIRT designer (based on the Eclipse platform) and access the report table in the DHIS 2 database using a jdbc connection and an sql query (all using the BIRT user interface). When you have connected to the table and selected which columns to use they will be available as fields that you can drag and drop onto your report design. In BIRT you can preview the report at any point, and when you're done you can save the report as an xml file (.rptdesign). More instructions here: http://208.76.222.114/confluence/display/HISP/Birt+designer%27s+notes</para>
+        </section>
+        <section>
+          <title>Define and run the report in DHIS</title>
+          <para>(the very first time you need to configure where the BIRT report viewer is installed, go to Reports→Report→Configure report) In DHIS 2 you can define a report in the Reports module that you link to a report table and provide with a name. Then the report is ready to be generated and displayed, and this can be done in two ways, 1) run report with new data or run report with existing data. This all depends on whether your report table is populated already or not. Most likely you will have to run it with new data and then you are asked to provide values for the report parameters (if defined in the report table) and then the table will be populated in the background and a new window will show the report as soon as it is ready. The new window will actually be generated by the BIRT report viewer, which is a separate web application running on the same tomcat instance.</para>
+        </section>
+      </section>
     </section>
   </chapter>
 </book>

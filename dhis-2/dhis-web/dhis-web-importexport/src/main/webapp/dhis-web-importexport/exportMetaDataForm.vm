@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "$exportFormat" ) $i18n.getString( "metadata_export" )</h3>
+<h3>$i18n.getString( "$exportFormat" ) $i18n.getString( "metadata_export" ) #openHelp( "export" )</h3>
 
 <form id="exportForm" name="exportForm" method="post" action="exportMetaData.action">
 
