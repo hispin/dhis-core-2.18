@@ -3,7 +3,7 @@
 	getImportStatus();
 </script>
 
-<h3>$i18n.getString( "$importFormat" ) $i18n.getString( "import" )</h3>
+<h3>$i18n.getString( "$importFormat" ) $i18n.getString( "import" ) #openHelp( "import" )</h3>
 
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="import.action">
 
