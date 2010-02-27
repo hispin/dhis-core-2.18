@@ -72,6 +72,11 @@ div#helpMenu a
   text-decoration: none;
 }
 
+div#helpMenu h5
+{
+  cursor:pointer;
+}
+
 div#helpContent
 {
   padding-left: 20px;

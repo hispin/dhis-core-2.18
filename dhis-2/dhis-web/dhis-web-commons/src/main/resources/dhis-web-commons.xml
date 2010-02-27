@@ -223,27 +223,6 @@
 
 	</package>
 
-	<!-- Help -->
-
-	<package name="dhis-web-commons-help" extends="dhis-web-commons"
-		namespace="/dhis-web-commons-help">
-
-		<action name="help" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-commons/about/help.vm</param>
-			<param name="javascripts">../dhis-web-commons/about/help.js</param>
-		</action>
-
-		<action name="getHelpContent" class="org.hisp.dhis.help.action.GetHelpContentAction">
-			<result name="success" type="outputStreamResult"></result>
-		</action>
-
-        <action name="getHelpItems" class="org.hisp.dhis.help.action.GetHelpItemsAction">
-            <result name="success" type="outputStreamResult"></result>
-        </action>
-
-	</package>
-
 	<!-- Security -->
 
 	<package name="dhis-web-commons-security" extends="dhis-web-commons"
@@ -484,7 +463,15 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-commons/about/help.vm</param>
             <param name="menu">/dhis-web-commons/about/menu.vm</param>
-            <param name="javascripts">../dhis-web-commons/about/help.js</param>
+            <param name="javascripts">../dhis-web-commons/util/jquery-ui.js,../dhis-web-commons/about/help.js</param>
+        </action>
+
+        <action name="getHelpContent" class="org.hisp.dhis.help.action.GetHelpContentAction">
+            <result name="success" type="outputStreamResult"></result>
+        </action>
+
+        <action name="getHelpItems" class="org.hisp.dhis.help.action.GetHelpItemsAction">
+            <result name="success" type="outputStreamResult"></result>
         </action>
 
 		<action name="displayChangeLog" class="org.hisp.dhis.commons.action.NoAction">
