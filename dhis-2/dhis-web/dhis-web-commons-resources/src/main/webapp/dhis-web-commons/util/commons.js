@@ -21,7 +21,7 @@ function translate( className, objectId )
 function getHelpContent( id )
 {
     $.get( 
-       '../dhis-web-commons-help/getHelpContent.action',
+       '../dhis-web-commons-about/getHelpContent.action',
        { "id": id },
        function( data )
        {
