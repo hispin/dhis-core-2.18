@@ -475,7 +475,7 @@
 				javascript/export.js,
 				javascript/commons.js,
 				javascript/preview.js,
-				javascript/jquery-ui-1.7.2.custom.min.js
+				../dhis-web-commons/util/jquery-ui.js
 			</param>
 		</action>
 
@@ -696,7 +696,7 @@
 				javascript/export.js,
 				javascript/commons.js,
 				javascript/preview.js,
-				javascript/jquery-ui-1.7.2.custom.min.js
+				../dhis-web-commons/util/jquery-ui.js
 			</param>
 		</action>
 
