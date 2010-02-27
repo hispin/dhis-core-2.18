@@ -2,8 +2,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="chapter">
-  <h4><xsl:value-of select="title"/></h4>
-  <ul><xsl:apply-templates select="descendant::section[@id]"/></ul>
+  <h5><xsl:value-of select="title"/></h5>
+  <div>
+    <ul><xsl:apply-templates select="descendant::section[@id]"/></ul>
+  </div>
 </xsl:template>
 
 <xsl:template match="section">

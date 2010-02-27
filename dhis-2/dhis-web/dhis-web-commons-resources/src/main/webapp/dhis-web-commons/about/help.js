@@ -1,18 +1,19 @@
 
 $( document ).ready( function()
-{
+{	
     $.get( 
-       '../dhis-web-commons-help/getHelpItems.action',
+       'getHelpItems.action',
        function( data )
        {
            $( "div#helpMenu" ).html( data );
+           $( "div#helpMenu" ).accordion();
        } );
 } );
 
 function getHelpItemContent( id )
 {
 	$.get( 
-       '../dhis-web-commons-help/getHelpContent.action',
+       'getHelpContent.action',
        { "id": id },
        function( data )
        {
