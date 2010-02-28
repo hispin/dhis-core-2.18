@@ -90,9 +90,9 @@ public class ValidatePatientAction
     private Integer age;
 
     private String genre;
-    
+
     private Integer id;
-    
+
     private boolean checkedDuplicate;
 
     // -------------------------------------------------------------------------
@@ -187,86 +187,95 @@ public class ValidatePatientAction
                 }
             }
         }
-        
-        if( !checkedDuplicate )
-        { 
+
+        if ( !checkedDuplicate )
+        {
             // Check duplication name, birthdate, gender
-            patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ), genre );
-    
+            patients = patientService
+                .getPatient( firstName, middleName, lastName, format.parseDate( birthDate ), genre );
+
             if ( patients != null && patients.size() > 0 )
             {
                 message = i18n.getString( "patient_duplicate" );
                 for ( Patient p : patients )
                 {
-                    if( id != null  && p.getId() != id )
+                    if ( id != null && p.getId() != id )
                     {
                         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
                             .getPatientAttributeValues( p );
-        
+
                         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
                         {
-                            patientAttributeValueMap.put(
-                                p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
-                                    .getValue() );
+                            patientAttributeValueMap
+                                .put( p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(),
+                                    patientAttributeValue.getValue() );
                         }
                     }
                 }
-    
+
                 return PATIENT_DUPLICATE;
             }
         }
 
         // Check ID duplicate
-        
+
         Patient p = new Patient();
-        if (birthDate != null) {
-			birthDate = birthDate.trim();
-
-			if (birthDate.length() != 0) {
-				p.setBirthDate(format.parseDate(birthDate));
-			} else {
-				if (age != null) {
-					p.setBirthDateFromAge(age.intValue());
-				}
-			}
-		} else {
-			if (age != null) {
-				p.setBirthDateFromAge(age.intValue());
-			}
-		}
-        
-        if( p.getIntegerValueOfAge() >= 5 )
+        if ( birthDate != null )
         {
-        	 HttpServletRequest request = ServletActionContext.getRequest();
+            birthDate = birthDate.trim();
 
-             Collection<PatientIdentifierType> identifiers = identifierTypeService.getAllPatientIdentifierTypes();
-
-             if ( identifiers != null && identifiers.size() > 0 )
-             {
-                 String value = null;
-                 String idDuplicate = "";
-                 for ( PatientIdentifierType iden : identifiers )
-                 {
-                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + iden.getId() );
-                     if ( StringUtils.isNotBlank( value ) )
-                     {
-                         PatientIdentifier identifier = patientIdentifierService.get( iden, value );
-                         if( identifier != null && ( id == null || identifier.getPatient().getId() != id  ))
-                         {
-                             idDuplicate += iden.getName()+", ";
-                         }
-                     }
-                 }
-                 
-                 if( StringUtils.isNotBlank( idDuplicate ) ) 
-                 {
-                     idDuplicate = StringUtils.substringBeforeLast( idDuplicate, "," );      
-                     message = i18n.getString("identifier_duplicate") +": "+ idDuplicate;
-                     return INPUT;
-                 }
-             }
+            if ( birthDate.length() != 0 )
+            {
+                p.setBirthDate( format.parseDate( birthDate ) );
+            }
+            else
+            {
+                if ( age != null )
+                {
+                    p.setBirthDateFromAge( age.intValue() );
+                }
+            }
         }
-        
+        else
+        {
+            if ( age != null )
+            {
+                p.setBirthDateFromAge( age.intValue() );
+            }
+        }
+
+        if ( p.getIntegerValueOfAge() >= 5 )
+        {
+            HttpServletRequest request = ServletActionContext.getRequest();
+
+            Collection<PatientIdentifierType> identifiers = identifierTypeService.getAllPatientIdentifierTypes();
+
+            if ( identifiers != null && identifiers.size() > 0 )
+            {
+                String value = null;
+                String idDuplicate = "";
+                for ( PatientIdentifierType iden : identifiers )
+                {
+                    value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + iden.getId() );
+                    if ( StringUtils.isNotBlank( value ) )
+                    {
+                        PatientIdentifier identifier = patientIdentifierService.get( iden, value );
+                        if ( identifier != null && (id == null || identifier.getPatient().getId() != id) )
+                        {
+                            idDuplicate += iden.getName() + ", ";
+                        }
+                    }
+                }
+
+                if ( StringUtils.isNotBlank( idDuplicate ) )
+                {
+                    idDuplicate = StringUtils.substringBeforeLast( idDuplicate, "," );
+                    message = i18n.getString( "identifier_duplicate" ) + ": " + idDuplicate;
+                    return INPUT;
+                }
+            }
+        }
+
         // ---------------------------------------------------------------------
         // Validation success
         // ---------------------------------------------------------------------

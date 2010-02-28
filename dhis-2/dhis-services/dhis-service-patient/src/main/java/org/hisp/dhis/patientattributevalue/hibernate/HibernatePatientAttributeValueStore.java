@@ -29,6 +29,7 @@ package org.hisp.dhis.patientattributevalue.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -97,17 +98,24 @@ public class HibernatePatientAttributeValueStore
         return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).list();
     }
-    
-    
+
     public int delete( DataElementCategoryOptionCombo optionCombo )
     {
         Query query = getQuery( "delete PatientDataValue where optionCombo = :optionCombo" );
         query.setEntity( "optionCombo", optionCombo );
         return query.executeUpdate();
-    }  
-    
+    }
+
     public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
     {
-        return (Integer) getCriteria(Restrictions.eq( "patientAttributeOption", attributeOption )).setProjection( Projections.rowCount() ).uniqueResult();
-    } 
+        return (Integer) getCriteria( Restrictions.eq( "patientAttributeOption", attributeOption ) )
+                .setProjection(Projections.rowCount() ).uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getPatient( PatientAttribute attribute, String value )
+    {
+        return getCriteria( Restrictions.and( Restrictions.eq( "patientAttribute", attribute ), Restrictions.eq( "value", value ) ))
+            .setProjection( Projections.property( "patient" ) ).list();
+    }
 }

@@ -47,5 +47,5 @@ public interface RelationshipTypeService
     RelationshipType getRelationshipType( String aIsToB, String bIsToA );
     
     Collection<RelationshipType> getAllRelationshipTypes();    
-
+    
 }

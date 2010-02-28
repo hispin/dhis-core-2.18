@@ -53,3 +53,4 @@ public interface PatientStore
     
     Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
 }
+

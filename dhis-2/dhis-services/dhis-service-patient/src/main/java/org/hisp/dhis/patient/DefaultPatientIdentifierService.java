@@ -185,4 +185,9 @@ public class DefaultPatientIdentifierService
     {
         return patientIdentifierStore.get( type, identifier );
     }
+
+    public Patient getPatient( PatientIdentifierType idenType, String value )
+    {
+        return patientIdentifierStore.getPatient( idenType, value );
+    }
 }

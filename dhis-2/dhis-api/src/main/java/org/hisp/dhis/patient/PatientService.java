@@ -69,4 +69,13 @@ public interface PatientService
     Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
     
     Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender);
+    
+    /**
+     *  Search Patient base on PatientIdentifierType or Attribute or Patient's name
+     * @param identifierTypeId
+     * @param attributeId
+     * @param value
+     * @return
+     */
+    Collection<Patient> searchPatient( Integer identifierTypeId, Integer attributeId, String value );
 }

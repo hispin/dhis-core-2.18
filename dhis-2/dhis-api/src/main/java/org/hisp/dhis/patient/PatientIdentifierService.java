@@ -70,4 +70,6 @@ public interface PatientIdentifierService
     Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit );
     
     PatientIdentifier get( PatientIdentifierType type, String identifier );
+    
+    Patient getPatient( PatientIdentifierType idenType, String value);
 }

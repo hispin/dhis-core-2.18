@@ -41,6 +41,8 @@ public class PatientIdentifierType
     private String format;
     
     private boolean mandatory;
+    
+    private boolean related;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -141,5 +143,15 @@ public class PatientIdentifierType
 	public void setMandatory(boolean mandatory) {
 		this.mandatory = mandatory;
 	}
+
+    public boolean isRelated()
+    {
+        return related;
+    }
+
+    public void setRelated( boolean related )
+    {
+        this.related = related;
+    }
 
 }
