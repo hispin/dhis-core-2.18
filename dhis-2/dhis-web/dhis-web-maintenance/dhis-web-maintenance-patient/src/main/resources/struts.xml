@@ -372,6 +372,7 @@
 			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js
+				,../dhis-web-commons/util/date.js
 				,../dhis-web-commons/calendar/calendar.js
 				,../dhis-web-commons/calendar/calendar-lang.js
 				,../dhis-web-commons/calendar/calendar-setup.js
@@ -424,7 +425,22 @@
 				/dhis-web-maintenance-patient/responseDuplicate.vm</result>	
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
+		
+		<action name="showAddRepresentative" class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/underAgeForm.vm</param>
+			<param name="javascripts">../dhis-web-commons/util/jquery-ui.js,javascript/underage.js
+			,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js
+			,../dhis-web-commons/calendar/calendar-setup.js
+			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+			,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="stylesheets">../dhis-web-commons/util/css/redmond/jquery-ui.css</param>
+		</action>
+		
+		<action name="searchPerson" class="org.hisp.dhis.patient.action.patient.SearchPersonAction">
+			<result name="success" type="velocity-xml">responsePatients.vm</result>
+		</action>
+		
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"

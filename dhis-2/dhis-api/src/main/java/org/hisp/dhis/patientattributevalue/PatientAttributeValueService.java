@@ -68,4 +68,6 @@ public interface PatientAttributeValueService
     void copyPatientAttributeValues( Patient source, Patient destination );
     
     int countByPatientAttributeoption( PatientAttributeOption attributeOption ); 
+    
+    Collection<Patient> getPatient( PatientAttribute attribute, String value );
 }

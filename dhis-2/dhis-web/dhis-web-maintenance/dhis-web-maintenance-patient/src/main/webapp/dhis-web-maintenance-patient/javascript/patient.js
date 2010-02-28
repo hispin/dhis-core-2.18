@@ -303,6 +303,7 @@ function addValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
+    	removeDisabledIdentifier();
     	document.getElementById('addPatientForm').submit();
     }
     else if ( type == 'error' )
@@ -375,10 +376,18 @@ function getIdParams()
 {
 	var params = "";
 	jQuery("input.idfield").each(function(){
-		if( jQuery(this).val() )
+		if( jQuery(this).val() && !jQuery(this).is(":disabled") )
 			params += "&" + jQuery(this).attr("name") +"="+ jQuery(this).val();
 	});
 	return params;
+}
+
+function removeDisabledIdentifier()
+{
+	jQuery(".idfield").each(function(){
+		if( jQuery(this).is(":disabled"))
+			jQuery(this).remove();
+	});
 }
 
 //-----------------------------------------------------------------------------
@@ -444,8 +453,6 @@ function ageOnchange()
 	jQuery("#birthDate").val("");
 	jQuery("#birthDate").removeClass("error");
 	jQuery("#age").rules("add",{required:true});
-	if( jQuery("#age").val() <= 5 ) toggleChild5(true); 
-	else toggleChild5(false);
 
 }
 
@@ -453,26 +460,8 @@ function bdOnchange()
 {
 	jQuery("#age").rules("remove","required");
 	jQuery("#age").val("")
+	alert(jQuery("#birthDate").val());
 	jQuery("#birthDate").rules("add",{required:true});
-	var date5 = new Date();date5.setFullYear(date5.getFullYear() - 5 );
-	if(  new Date(jQuery("#birthDate").val()) > date5 ) toggleChild5(true);
-	else toggleChild5(false);
-}
-
-function toggleChild5( show )
-{
-	if( show )
-	{
-		jQuery("#childContactType").show();
-		jQuery("#childContactName").show();
-		jQuery("#childContactIdentifierType").rules("add",{required:true});
-		jQuery("#childContactIdentifierName").rules("add",{required:true});
-	}else{
-		jQuery("#childContactType").hide();
-		jQuery("#childContactName").hide();
-		jQuery("#childContactIdentifierType").rules("remove","required");
-		jQuery("#childContactIdentifierName").rules("remove","required");
-	}
 }
 
 function checkDuplicate()
@@ -515,7 +504,7 @@ function checkDuplicateCompleted( messageElement )
     }
 }
 /**
- * Show list patient duplicate found by jQuery thickbox plugin
+ * Show list patient duplicate  by jQuery thickbox plugin
  * @param rootElement : root element of the response xml
  * @param validate  :  is TRUE if this method is called in validation method  
  */
@@ -571,4 +560,11 @@ function validatePatient()
 	if( jQuery("#id").val() )
 		validateUpdatePatient();
 	else validateAddPatient();
+}
+
+function toggleUnderAge(this_)
+{
+	if( jQuery(this_).is(":checked")){
+		tb_show(i18n_child_representative,"showAddRepresentative.action?TB_iframe=true&height=500&width=500",null);
+	}
 }

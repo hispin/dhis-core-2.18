@@ -185,4 +185,11 @@ public class DefaultPatientAttributeValueService
     {
         return patientAttributeValueStore.countByPatientAttributeoption( attributeOption );
     }
+
+    public Collection<Patient> getPatient( PatientAttribute attribute, String value )
+    {
+        return patientAttributeValueStore.getPatient( attribute, value );
+    }
+
+
 }

@@ -58,5 +58,7 @@ public interface PatientAttributeValueStore
     
     Collection<PatientAttributeValue> searchByValue( PatientAttribute patientAttribute, String searchText );  
    
-    int countByPatientAttributeoption( PatientAttributeOption attributeOption ); 
+    int countByPatientAttributeoption( PatientAttributeOption attributeOption );
+    
+    Collection<Patient> getPatient( PatientAttribute attribute, String value );
 }

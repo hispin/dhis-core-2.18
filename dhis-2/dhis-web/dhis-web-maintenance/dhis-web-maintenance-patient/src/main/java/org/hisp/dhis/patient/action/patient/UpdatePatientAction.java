@@ -104,10 +104,6 @@ public class UpdatePatientAction
 
     private String gender;
 
-    private String childContactIdentifierName;
-
-    private String childContactIdentifierType;
-
     // -------------------------------------------------------------------------
     // Output - making the patient available so that its attributes can be
     // edited
@@ -163,7 +159,6 @@ public class UpdatePatientAction
 
         patientService.updatePatient( patient );
 
-        boolean isChild5 = false;
 
         // --------------------------------------------------------------------------------------------------------
         // Save Patient Attributes
@@ -180,73 +175,6 @@ public class UpdatePatientAction
         {
             patient.getAttributes().clear();
             Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
-            // ----------------------------------------------------------------------------
-            // Save Identifier Contact Details for child < 5 years old
-            // ----------------------------------------------------------------------------
-            
-            if ( patient.getIntegerValueOfAge() < 5 )
-            {
-                isChild5 = true;
-                
-                // -----------------------------------------------------------------------------
-                // Get  Child Contact Name attribute
-                // -----------------------------------------------------------------------------
-                
-                PatientAttribute attrChildContactName = patientAttributeService
-                    .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
-                
-                patient.getAttributes().add( attrChildContactName );
-                // -----------------------------------------------------------------------------
-                // Save value for Child Contact Name attribute
-                // -----------------------------------------------------------------------------
-                
-                PatientAttributeValue childContactNameValue = patientAttributeValueService.getPatientAttributeValue( patient,
-                    attrChildContactName );
-                if ( childContactNameValue == null )
-                {
-                    childContactNameValue = new PatientAttributeValue();
-                    childContactNameValue.setPatient( patient );
-                    childContactNameValue.setPatientAttribute( attrChildContactName );
-                    childContactNameValue.setValue( childContactIdentifierName );
-                    patientAttributeValueService.savePatientAttributeValue( childContactNameValue );
-                }
-                else
-                {
-                    childContactNameValue.setValue( childContactIdentifierName );
-                    patientAttributeValueService.updatePatientAttributeValue( childContactNameValue );
-                    patientAttributeValues.remove( childContactNameValue );
-                }
-                
-                // -----------------------------------------------------------------------------
-                // Get Child Contact RelationShip Type attribute
-                // -----------------------------------------------------------------------------
-                
-                PatientAttribute attrChildRelationShipType = patientAttributeService
-                    .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
-                patient.getAttributes().add( attrChildRelationShipType );
-                // -----------------------------------------------------------------------------
-                // Save value for Child Contact RelationShip Type attribute
-                // -----------------------------------------------------------------------------
-                
-                PatientAttributeValue childRelationShipValue = patientAttributeValueService.getPatientAttributeValue(
-                    patient, attrChildRelationShipType );
-                if ( childRelationShipValue == null )
-                {
-                    childRelationShipValue = new PatientAttributeValue();
-                    childRelationShipValue.setPatient( patient );
-                    childRelationShipValue.setPatientAttribute( attrChildRelationShipType );
-                    childRelationShipValue.setValue( childContactIdentifierType );
-                    patientAttributeValueService.savePatientAttributeValue( childRelationShipValue );
-                }
-                else
-                {
-                    childRelationShipValue.setValue( childContactIdentifierType );
-                    patientAttributeValueService.updatePatientAttributeValue( childRelationShipValue );
-                    patientAttributeValues.remove( childRelationShipValue );
-                }
-                
-                patientService.updatePatient( patient );
-            } // End deal with child
             
             // Save other attributes
             
@@ -338,10 +266,6 @@ public class UpdatePatientAction
                         identifier.setPatient( patient );
                         identifier.setOrganisationUnit( organisationUnit );
                         identifier.setIdentifier( value );
-                        // -----------------------------------------------------
-                        // If isChild5 == TRUE : all identifiers is temporary
-                        // -----------------------------------------------------
-                        identifier.setTemporary( isChild5 ? true : false );
                         patientIdentifierService.savePatientIdentifier( identifier );
                         patient.getIdentifiers().add( identifier );
                     }
@@ -438,15 +362,6 @@ public class UpdatePatientAction
         return patient;
     }
 
-    public void setChildContactIdentifierName( String childContactIdentifierName )
-    {
-        this.childContactIdentifierName = childContactIdentifierName;
-    }
-
-    public void setChildContactIdentifierType( String childContactIdentifierType )
-    {
-        this.childContactIdentifierType = childContactIdentifierType;
-    }
 
     public void setAge( Integer age )
     {

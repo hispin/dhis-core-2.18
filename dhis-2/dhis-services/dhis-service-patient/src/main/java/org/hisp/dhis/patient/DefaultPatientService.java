@@ -48,6 +48,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultPatientService
     implements PatientService
 {
+    public static final String SEARCH_TYPE_IDENTIFIER = "id";
+    public static final String SEARCH_TYPE_ATTRIBUTE = "attr";
+    public static final String SEARCH_TYPE_NAME = "name";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -71,6 +74,20 @@ public class DefaultPatientService
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
+    }
+    
+    private PatientAttributeService patientAttributeService;
+    
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+    
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+    
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
     // -------------------------------------------------------------------------
@@ -213,5 +230,36 @@ public class DefaultPatientService
     public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender )
     {
         return patientStore.getPatient( firstName, middleName, lastName, birthdate , gender);
+    }
+
+    public Collection<Patient> searchPatient( Integer identifierTypeId, Integer attributeId, String value )
+    {
+        if( attributeId != null )
+        {
+            PatientAttribute attribute = patientAttributeService.getPatientAttribute( attributeId );
+            if( attribute != null )
+            {
+                return patientAttributeValueService.getPatient( attribute, value );
+            }
+        }
+        else if(  identifierTypeId != null )
+        {
+            PatientIdentifierType idenType = patientIdentifierTypeService.getPatientIdentifierType( identifierTypeId );
+            if( idenType != null )
+            {
+               Patient p = patientIdentifierService.getPatient( idenType, value );
+               if( p != null )
+               {
+                   Set<Patient> set = new HashSet<Patient>();
+                   set.add( p );
+                   return set;
+               }
+            }
+        }
+        else 
+        {
+            return patientStore.getByNames( value );
+        }
+        return null;
     }
 }

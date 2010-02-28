@@ -23,6 +23,5 @@
 		
 		<property name="preferred" not-null="true"/>
 		
-		<property name="temporary" not-null="true"/>
 	</class>
 </hibernate-mapping>

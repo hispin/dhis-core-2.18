@@ -157,7 +157,7 @@ ATTRIBUTE_OPTION =
 	},
 	checkOnSubmit : function ()
 	{
-		if( jQuery("#valueType").val() != "combo" ) 
+		if( jQuery("#valueType").val() != "COMBO" ) 
 		{
 			jQuery("#attrOptionContainer").children().remove();
 			return true;

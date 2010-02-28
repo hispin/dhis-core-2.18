@@ -16,19 +16,21 @@
 
 		<property name="lastName" column="lastname" length="50" />
 
-		<property name="birthDate" column="birthdate" />
+		<property name="birthDate" column="birthdate" not-null="true"/>
 
 		<property name="birthDateEstimated" column="birthdateestimated" />
 
 		<property name="deathDate" column="deathdate" />
 
-		<property name="registrationDate" column="registrationdate" />
+		<property name="registrationDate" column="registrationdate" not-null="true"/>
 
 		<property name="isDead" column="isdead" />
 		
 		<property name="bloodGroup" column="bloodgroup" length="5"/>
 
-		<property name="gender" column="gender" length="5" />
+		<property name="gender" column="gender" length="5" not-null="true"/>
+		
+		<property name="underAge" column="underage" not-null="true"/>
 
 		<set name="identifiers" inverse="true" cascade="all">
 			<key column="patientid" />

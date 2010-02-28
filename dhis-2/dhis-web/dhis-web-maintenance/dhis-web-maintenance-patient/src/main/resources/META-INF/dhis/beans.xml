@@ -271,6 +271,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- Patient -->
+	
+	<bean id="org.hisp.dhis.patient.action.patient.SearchPersonAction" 
+		class="org.hisp.dhis.patient.action.patient.SearchPersonAction">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.SelectAction"
 		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
@@ -405,6 +411,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="identifierTypeService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction"
+		class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction"
+		scope="prototype">
+		<property name="relationshipTypeService" 
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="patientIdentifierTypeService" 
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeService" 
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+			
 	</bean>
 
 	<!-- Patient-Program Enrollment -->

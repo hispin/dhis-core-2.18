@@ -57,10 +57,10 @@ public class Patient
     private String gender;
 
     private Date birthDate;
-    
+
     private String bloodGroup;
 
-	private boolean birthDateEstimated = false;
+    private boolean birthDateEstimated = false;
 
     private Date deathDate;
 
@@ -75,6 +75,8 @@ public class Patient
     private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
 
     private Patient representative;
+    
+    private boolean underAge;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -330,7 +332,7 @@ public class Patient
             return "( " + age + " yr )";
         }
     }
-    
+
     public int getIntegerValueOfAge()
     {
         if ( birthDate == null )
@@ -356,33 +358,45 @@ public class Patient
         }
 
         return age;
-        
+
     }
 
     public void setBirthDateFromAge( int age )
     {
-    	 Calendar todayCalendar = Calendar.getInstance();
+        Calendar todayCalendar = Calendar.getInstance();
 
-         // Assumed relative to the 1st of January
-//         todayCalendar.set( Calendar.DATE, 1 );
-//         todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
-         todayCalendar.add( Calendar.YEAR, -1 * age );
+        // Assumed relative to the 1st of January
+        // todayCalendar.set( Calendar.DATE, 1 );
+        // todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
+        todayCalendar.add( Calendar.YEAR, -1 * age );
 
-         setBirthDate( todayCalendar.getTime() );
-         setBirthDateEstimated( true );
+        setBirthDate( todayCalendar.getTime() );
+        setBirthDateEstimated( true );
     }
 
     public String getFullName()
     {
         return firstName + " " + middleName + " " + lastName;
     }
-    
-    public String getBloodGroup() {
-		return bloodGroup;
-	}
 
-	public void setBloodGroup(String bloodGroup) {
-		this.bloodGroup = bloodGroup;
-	}
+    public String getBloodGroup()
+    {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup( String bloodGroup )
+    {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public boolean isUnderAge()
+    {
+        return underAge;
+    }
+
+    public void setUnderAge( boolean underAge )
+    {
+        this.underAge = underAge;
+    }
 
 }

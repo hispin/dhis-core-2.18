@@ -152,7 +152,8 @@ jQuery.validator.addMethod("url2", function(value, element, param) {
 }, jQuery.validator.messages.url);
 
 jQuery.validator.addMethod("datelessthanequaltoday", function(value, element) {
-	return value ? new Date(value) <= new Date() : true;
+	var choseDate = getDateFromFormat(value,"yyyy-MM-dd");
+	return value ? choseDate <= new Date() : true;
 }, "");
 
 jQuery.validator.addMethod("required_group", function(value, element) {
