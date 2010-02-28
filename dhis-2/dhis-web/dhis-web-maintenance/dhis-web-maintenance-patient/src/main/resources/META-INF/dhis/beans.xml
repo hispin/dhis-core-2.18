@@ -661,6 +661,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- Data Entry Form -->
+	
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="dataEntryManager">
+			<ref bean="org.hisp.dhis.patient.screen.DataEntryManager" />
+		</property>
+	</bean>
+	
 	<bean
 		id="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction"
 		class="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction"

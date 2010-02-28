@@ -16,7 +16,7 @@ function patientAttributeReceived( patientAttributeElement )
 	setFieldValue( 'nameField', getElementValue( patientAttributeElement, 'name' ) );	
     setFieldValue( 'descriptionField', getElementValue( patientAttributeElement, 'description' ) );
     
-    var valueTypeMap = { 'int':i18n_number, 'bool':i18n_yes_no, 'string':i18n_text, 'date':i18n_date };
+    var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
     var valueType = getElementValue( patientAttributeElement, 'valueType' );    
     
     setFieldValue( 'valueTypeField', valueTypeMap[valueType] );    

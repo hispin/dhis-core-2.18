@@ -460,7 +460,6 @@ function bdOnchange()
 {
 	jQuery("#age").rules("remove","required");
 	jQuery("#age").val("")
-	alert(jQuery("#birthDate").val());
 	jQuery("#birthDate").rules("add",{required:true});
 }
 
@@ -472,8 +471,7 @@ function checkDuplicate()
 				'&lastName=' + getFieldValue( 'lastName' ) +
 				'&gender=' + getFieldValue( 'gender' ) +
 				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
-				'&age=' + getFieldValue( 'age' ) +
-				'&genre=' + getFieldValue('gender');
+				'&age=' + getFieldValue( 'age' ) ;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
