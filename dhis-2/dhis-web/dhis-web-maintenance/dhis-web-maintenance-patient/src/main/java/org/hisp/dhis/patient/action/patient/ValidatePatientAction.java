@@ -89,7 +89,7 @@ public class ValidatePatientAction
 
     private Integer age;
 
-    private String genre;
+    private String gender;
 
     private Integer id;
 
@@ -192,7 +192,7 @@ public class ValidatePatientAction
         {
             // Check duplication name, birthdate, gender
             patients = patientService
-                .getPatient( firstName, middleName, lastName, format.parseDate( birthDate ), genre );
+                .getPatient( firstName, middleName, lastName, format.parseDate( birthDate ), gender );
 
             if ( patients != null && patients.size() > 0 )
             {
@@ -349,11 +349,6 @@ public class ValidatePatientAction
         this.age = age;
     }
 
-    public void setGenre( String genre )
-    {
-        this.genre = genre;
-    }
-
     public String getMessage()
     {
         return message;
@@ -387,5 +382,10 @@ public class ValidatePatientAction
     public void setCheckedDuplicate( boolean checkedDuplicate )
     {
         this.checkedDuplicate = checkedDuplicate;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
     }
 }

@@ -1,6 +1,6 @@
 ## Macro for generating the jQuery validation rules 
 #macro( validate $type $require )
-  #if( $type == "int" )
+  #if( $type == "NUMBER" )
   	{validate:{ number:true #if($require), required:true #end }}
   #elseif( $require )
   	{validate:{required:true}}

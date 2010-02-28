@@ -109,7 +109,7 @@ public class HibernatePatientIdentifierStore
 
     public Patient getPatient( PatientIdentifierType idenType, String value )
     {
-        return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "patientIdentifierType", idenType ),
+        return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "identifierType", idenType ),
             Restrictions.eq( "identifier", value ) ) )
             .setProjection( Projections.property( "patient" ) ).uniqueResult();
     }

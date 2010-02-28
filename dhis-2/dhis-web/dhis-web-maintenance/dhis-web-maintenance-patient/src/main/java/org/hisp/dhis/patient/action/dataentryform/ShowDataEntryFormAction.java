@@ -94,11 +94,14 @@ public class ShowDataEntryFormAction implements Action
         throws Exception
     {
 
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
-        
-        if( dataEntryForm != null )
+        if( dataEntryFormId != null )
         {
-            dataEntryFormCode =  dataEntryManager.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) ;
+            DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
+            
+            if( dataEntryForm != null )
+            {
+                dataEntryFormCode =  dataEntryManager.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) ;
+            }
         }
         
         return SUCCESS;

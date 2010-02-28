@@ -39,7 +39,7 @@ div#listPatients td {padding: 2px 5px}
 		<td>
 			<select name="identifierTypeId" id="identifierTypeId">
 				#foreach($identifierType in $identifierTypes)
-					<option value="$identifierType.id>$identifierType.name</option>
+					<option value="$identifierType.id">$identifierType.name</option>
 				#end
 			</select>
 		</td>
@@ -50,7 +50,7 @@ div#listPatients td {padding: 2px 5px}
 		<td>
 			<select name="attributeId" id="attributeId">
 				#foreach($attribute in $attributes)
-					<option value="$attribute.id>$attribute.name</option>
+					<option value="$attribute.id">$attribute.name</option>
 				#end
 			</select>
 		</td>
