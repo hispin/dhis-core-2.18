@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-excel-reporting</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Web Excel Reporting</name>
   
   <build>
