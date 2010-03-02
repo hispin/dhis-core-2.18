@@ -530,10 +530,10 @@ Ext.onReady( function() {
     
 	var viewWindow = new Ext.Window({
         id: 'view_w',
-        title: '<span style="' + AA_DARK + '">Favorites</span>',
+        title: '<span id="window-favorites-title">Favorites</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 260,
+		width: 234,
         items:
         [
             {
@@ -547,7 +547,7 @@ Ext.onReady( function() {
                     tabchange: function(panel, tab)
                     {
                         if (tab.id == 'view0') { 
-                            viewWindow.setHeight(173);
+                            viewWindow.setHeight(188);
                         }
                         else if (tab.id == 'view1') {
                             viewWindow.setHeight(150);
@@ -939,10 +939,10 @@ Ext.onReady( function() {
     
     var legendSetWindow = new Ext.Window({
         id: 'legendset_w',
-        title: '<span style="' + AA_DARK + '">Legend sets</span>',
+        title: '<span id="window-legendset-title">Legend sets</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: multiselect_width + 37,
+		width: 245,
         items:
         [
             {
@@ -2809,7 +2809,7 @@ Ext.onReady( function() {
 				params: { id: ACTIVEPANEL },
 				success: function(r) {
 					var h = new Ext.Window({
-						title: '<span style="' + AA_DARK + '">Help</span>',
+						title: '<span id="window-help-title">Help</span>',
 						html: '<div id="help">' + r.responseText + '</div>',
 						width: 300,
 						height: 400,
