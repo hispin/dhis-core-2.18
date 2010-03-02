@@ -120,7 +120,7 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-excel-reporting</artifactId>
       <version>${version}</version>
@@ -131,7 +131,7 @@
       <artifactId>dhis-web-caseentry</artifactId>
       <version>${version}</version>
       <type>war</type>
-    </dependency>  
+    </dependency> -->  
     
     
     <!-- India modules -->
