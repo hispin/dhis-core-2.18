@@ -386,7 +386,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 													Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + mapping.relation + msg_highlight_end + ' (map) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (database).');
 													Ext.getCmp('grid_gp').getStore().reload();
 													feature_popup.hide();
-													loadMapData('assignment', true);
+													loadMapData(organisationUnitAssignment, true);
 												},
 												failure: function() {
 													alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
@@ -488,7 +488,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 		MASK.msg = 'Loading data...';
         MASK.show();
         
-        loadMapData('assignment', position);
+        loadMapData(organisationUnitAssignment, position);
     },
 
     /**

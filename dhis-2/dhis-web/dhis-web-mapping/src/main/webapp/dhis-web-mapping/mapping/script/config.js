@@ -19,7 +19,17 @@
 	path_geoserver = '../../../geoserver/';
 	ows = 'ows?service=WMS&request=GetCapabilities';
 	wfs = 'wfs?request=GetFeature&typename=';	
-	output = '&outputformat=json&version=1.0.0';	
+	output = '&outputformat=json&version=1.0.0';
+	
+//	Help strings
+
+	thematicMap = 'thematicMap';
+	mapRegistration = 'map';
+	organisationUnitAssignment = 'mapOrganisationUnitRelation';
+	overlayRegistration = 'overlay';
+	administration = 'administration';
+	favorites = 'favoriteMapView';
+	legendSets = 'legendSet';
 
 //  Layout
 
@@ -57,7 +67,8 @@
 	AA_LIGHT = 'font-family:lucida sans unicode,arial; font-weight:normal; font-size:11px; color:#888; letter-spacing:0px;';
 	LABEL = 'padding-bottom:2px; padding-left:3px;';
 	
-	ASSIGNED_ROW_COLOR = '#b1ffa1';
+	// ASSIGNED_ROW_COLOR = '#b1ffa1';
+	ASSIGNED_ROW_COLOR = '#90ee90';
 	UNASSIGNED_ROW_COLOR = '#ffffff';
 
 //  Ext.message

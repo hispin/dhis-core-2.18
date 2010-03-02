@@ -362,7 +362,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      *   nBins - {Integer} Total number of bins
      */
     defaultLabelGenerator: function(bin, binIndex, nbBins) {
-		if (ACTIVEPANEL == 'mapping') {
+		if (ACTIVEPANEL == organisationUnitAssignment) {
 			if (bin.upperBound < 1) {
 				return 'Available' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 			}
