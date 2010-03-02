@@ -81,6 +81,12 @@
 	color:#888;
 }
 
+/* GRID */
+
+#grid_gp .x-grid3-cell-inner {
+	color:#333;
+}
+
 /* LOADING MASK */
 
 .x-mask-loading2 div  {
