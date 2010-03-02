@@ -2802,7 +2802,7 @@ Ext.onReady( function() {
 		iconCls: 'icon-help',
 		tooltip: 'Get help for the active panel',
 		handler: function() {
-
+			ACTIVEPANEL = !ACTIVEPANEL ? thematicMap : ACTIVEPANEL;
 			Ext.Ajax.request({
 				url: '../../dhis-web-commons-about/getHelpContent.action',
 				method: 'POST',
@@ -2816,8 +2816,7 @@ Ext.onReady( function() {
 						autoScroll: true,
 					});
 					h.show();
-				},
-				failure: function() {}
+				}
 			});
 		}
 	});
