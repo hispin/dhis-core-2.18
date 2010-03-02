@@ -4,7 +4,14 @@
 	overflow: hidden;
 }
 
-/* MAPPING GRID */
+/* LABEL */
+
+.x-form-item-label {
+	font:normal 11px lucida sans unicode,arial;
+	color:#777;
+}
+
+/* GRID */
 
 .row-assigned  {
 	background-color:#90ee90;
@@ -118,6 +125,12 @@
 	padding:8px 0 0 0;
 }
 
+.window-orgunit-text {
+	padding:5px 5px 5px 7px;
+	font:normal 11px lucida sans unicode,arial;
+	color:#333;
+}
+
 #window-favorites-title {
 	padding:0 0 3px 20px;
 	background:url('../../../images/favorite_star2.png') no-repeat 0 0 transparent;
@@ -139,6 +152,30 @@
 	color:#111;
 }
 
+/* PANEL */
+
+.panel-title {
+	font:bold 11px arial;
+	color:#111;
+}
+
+.panel-fieldlabel {
+	padding:5px 0 2px 2px;
+	font:normal 11px lucida sans unicode;
+	color:#777;
+}
+
+.panel-fieldlabel-first {
+	padding:0px 0 2px 2px;
+	font:normal 11px lucida sans unicode;
+	color:#777;
+}
+
+.panel-tab-title {
+	font:normal 11px lucida sans unicode,arial;
+	color:#333;
+}
+
 /* HELP */
 
 #help {
@@ -157,4 +194,3 @@
 	font:normal 11px lucida sans unicode,arial;
 	color:#333;
 }
-
