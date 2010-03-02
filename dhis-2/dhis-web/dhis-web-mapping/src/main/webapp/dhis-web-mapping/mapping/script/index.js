@@ -9,7 +9,7 @@ var URL;
 var MAPVIEW;
 var PARAMETER;
 var BOUNDS = 0;
-var ACTIVEPANEL = 'choropleth';
+var ACTIVEPANEL;
 var MAP_SOURCE_TYPE_DATABASE = 'database';
 var MAP_SOURCE_TYPE_GEOJSON = 'geojson';
 var MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
@@ -97,10 +97,10 @@ function toggleFeatureLabels(classify) {
 			activateLabels();
 		}
 		
-		if (ACTIVEPANEL == 'choropleth') {
+		if (ACTIVEPANEL == thematicMap) {
 			choropleth.classify(false, true);
 		}
-		else if (ACTIVEPANEL == 'mapping') {
+		else if (ACTIVEPANEL == organisationUnitAssignment) {
 			mapping.classify(false, true);
 		}
 	}
@@ -1894,6 +1894,13 @@ Ext.onReady( function() {
 						mapLayerPathComboBox.show();
 						mapLayerPathWMSTextField.hide();						
 					}
+					
+					ACTIVEPANEL = mapRegistration;
+				}
+			},
+			collapse: {
+				fn: function() {
+					ACTIVEPANEL = false;
 				}
 			}
 		}
@@ -2286,6 +2293,13 @@ Ext.onReady( function() {
 						mapLayerMapSourceFileComboBox.hide();
 						mapLayerPathWMSOverlayTextField.show();
 					}
+					
+					ACTIVEPANEL = overlayRegistration;
+				}
+			},
+			collapse: {
+				fn: function() {
+					ACTIVEPANEL = false;
 				}
 			}
 		}
@@ -2514,8 +2528,15 @@ Ext.onReady( function() {
                     else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
                         Ext.getCmp('register_chb').disable();
                     }
+					
+					ACTIVEPANEL = administration;
                 }
-            }
+            },
+			collapse: {
+				fn: function() {
+					ACTIVEPANEL = false;
+				}
+			}
         }
     });
 	
@@ -2638,9 +2659,14 @@ Ext.onReady( function() {
                     choroplethLayer.setVisibility(false);
                     choropleth.classify(false);
                     
-                    ACTIVEPANEL = 'choropleth';
+                    ACTIVEPANEL = thematicMap;
                 }
-            }
+            },
+			collapse: {
+				fn: function() {
+					ACTIVEPANEL = false;
+				}
+			}
         }
     });
     
@@ -2659,9 +2685,14 @@ Ext.onReady( function() {
                     choroplethLayer.setVisibility(false);
                     mapping.classify(false);
                     
-                    ACTIVEPANEL = 'mapping';
+                    ACTIVEPANEL = organisationUnitAssignment;
                 }
-            }
+            },
+			collapse: {
+				fn: function() {
+					ACTIVEPANEL = false;
+				}
+			}
         }
     });
 	
@@ -2706,26 +2737,24 @@ Ext.onReady( function() {
 		}
 	});
 	
-	function showFavorites() {
-        var x = Ext.getCmp('center').x + 15;
-        var y = Ext.getCmp('center').y + 41;    
-        viewWindow.setPosition(x,y);
-
-		if (viewWindow.visible) {
-            viewWindow.hide();
-        }
-        else {
-            viewWindow.show();
-        }
-	}
-	
 	var favoritesButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
 		ctCls: 'aa_med',
 		icon: '../../images/favorite_star2.png',
 		text: 'Favorites',
 		tooltip: 'Favorite map views',
-		handler: showFavorites
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;    
+			viewWindow.setPosition(x,y);
+
+			if (viewWindow.visible) {
+				viewWindow.hide();
+			}
+			else {
+				viewWindow.show();
+			}
+		}
 	});
 	
 	function showPdf() {
@@ -2755,21 +2784,43 @@ Ext.onReady( function() {
 		icon: '../../images/color_swatch.png',
 		text: 'Legend sets',
 		tooltip: 'Assign legend sets to indicators',
-		handler: showLegendSets
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;    
+			legendSetWindow.setPosition(x,y);
+		
+			if (legendSetWindow.visible) {
+				legendSetWindow.hide();
+			}
+			else {
+				legendSetWindow.show();
+			}
+		}
 	});
-    	
-	function showLegendSets() {
-        var x = Ext.getCmp('center').x + 15;
-        var y = Ext.getCmp('center').y + 41;    
-        legendSetWindow.setPosition(x,y);
-    
-		if (legendSetWindow.visible) {
-            legendSetWindow.hide();
-        }
-        else {
-            legendSetWindow.show();
-        }
-	}
+	
+	var helpButton = new Ext.Button({
+		iconCls: 'icon-help',
+		tooltip: 'Get help for the active panel',
+		handler: function() {
+
+			Ext.Ajax.request({
+				url: '../../dhis-web-commons-about/getHelpContent.action',
+				method: 'POST',
+				params: { id: ACTIVEPANEL },
+				success: function(r) {
+					var h = new Ext.Window({
+						title: '<span style="' + AA_DARK + '">Help</span>',
+						html: '<div id="help">' + r.responseText + '</div>',
+						width: 300,
+						height: 400,
+						autoScroll: true,
+					});
+					h.show();
+				},
+				failure: function() {}
+			});
+		}
+	});
 	
 	var exitButton = new Ext.Button({
 		text: 'Exit GIS',
@@ -2798,6 +2849,8 @@ Ext.onReady( function() {
 			'-',
 			favoritesButton,
             legendSetButton,
+			'-',
+			helpButton,
 			'->',
 			exitButton
 		]
@@ -2916,6 +2969,7 @@ Ext.onReady( function() {
 						],
 						border: false,
 						map: MAP,
+						layerTree: layerTree,
 						configUrl: printConfigUrl,
 						overrides: layerOverrides
 					}
@@ -2938,6 +2992,7 @@ Ext.onReady( function() {
     shapefilePanel.hide();
 	mapping.hide();
     mapLayerPanel.hide();
+	ACTIVEPANEL = thematicMap;
 	Ext.getCmp('printMultiPage_p').hide();
     
 	/* MAP CONTROLS */
@@ -3010,13 +3065,12 @@ var feature_popup = new Ext.Window({
 	}
 });
 
-
 function onHoverSelectChoropleth(feature) {
     if (MAPDATA != null) {
-        if (ACTIVEPANEL == 'choropleth') {
+        if (ACTIVEPANEL == thematicMap) {
 			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span><br><span style="color:#555">' + feature.attributes.value + '</span>', false);
         }
-        else if (ACTIVEPANEL == 'mapping') {
+        else if (ACTIVEPANEL == organisationUnitAssignment) {
 			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span>', false);
         }
     }
@@ -3031,7 +3085,7 @@ function onClickSelectChoropleth(feature) {
 	var x = east_panel.x - 210;
 	var y = east_panel.y + 41;
 	
-    if (ACTIVEPANEL == 'mapping') {
+    if (ACTIVEPANEL == organisationUnitAssignment) {
 		feature_popup.html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
 		feature_popup.x = x;
 		feature_popup.y = y;
@@ -3052,7 +3106,6 @@ function loadMapData(redirect, position) {
         url: path + 'getMapByMapLayerPath' + type,
         method: 'POST',
         params: { mapLayerPath: URL, format: 'json' },
-
         success: function( responseObject ) {
 		
             MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
@@ -3084,9 +3137,9 @@ function loadMapData(redirect, position) {
 			
 			toggleFeatureLabels(false);
 
-            if (redirect == 'choropleth') {
+            if (redirect == thematicMap) {
                 getChoroplethData(); }
-            else if (redirect == 'assignment') {
+            else if (redirect == organisationUnitAssignment) {
                 getAssignOrganisationUnitData(); }
             else if (redirect == 'auto-assignment') {
                 getAutoAssignOrganisationUnitData(position); }
@@ -3326,7 +3379,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText, position ) {
             Ext.messageBlack.msg('Assign organisation units', '' + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + organisationUnits.length + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + features.length + msg_highlight_end);
             
             Ext.getCmp('grid_gp').getStore().reload();
-            loadMapData('assignment', position);
+            loadMapData(organisationUnitAssignment, position);
         },
         failure: function() {
             alert( 'Error: addOrUpdateMapOrganisationUnitRelations' );

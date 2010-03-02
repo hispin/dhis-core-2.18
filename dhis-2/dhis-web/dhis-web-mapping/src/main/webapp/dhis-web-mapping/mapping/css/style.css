@@ -7,7 +7,7 @@
 /* MAPPING GRID */
 
 .row-assigned  {
-	background-color:#b1ffa1;
+	background-color:#90ee90;
 }
 
 .row-unassigned  {
@@ -56,6 +56,10 @@
 	background-image:url(../../../images/pdf.png);
 }
 
+.x-btn .icon-help {
+	background-image:url(../../../images/help.png);
+}
+
 .aa_dark button  {
 	font-family:lucida sans unicode, arial;
 	font-weight:normal;
@@ -89,39 +93,43 @@
 /* DIALOGUE BOX */
 
 .window-info {
-	font-family:lucida sans unicode,arial;
-	font-weight:normal;
-	font-size:11px;
-	color:#333;
 	padding:0 0 8px 0;
+	font:normal 11px lucida sans unicode,arial;
+	color: #333;
 }
 
 .window-field-label-first {
 	padding:0px 0 3px 3px;
-	font-family:lucida sans unicode,arial;
-	font-weight:normal;
-	font-size:11px;
+	font:normal 11px lucida sans unicode,arial;
 	color:#888;
 }
 
 .window-field-label {
 	padding:8px 0 3px 3px;
-	font-family:lucida sans unicode,arial;
-	font-weight:normal;
-	font-size:11px;
+	font:normal 11px lucida sans unicode,arial;
 	color:#888;
 }
 
 .window-button {
 	padding:8px 0 0 0;
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+/* HELP */
+
+#help {
+	padding:0px 8px 8px 8px;
+}
+
+#help h3 {
+	padding:8px 0 0 0;
+	font:bold 11px arial;
+	color:#333;
+	letter-spacing:0px;
+}
+
+#help p {
+	padding:4px 0 4px 0;
+	font:normal 11px lucida sans unicode,arial;
+	color:#333;
+}
+
