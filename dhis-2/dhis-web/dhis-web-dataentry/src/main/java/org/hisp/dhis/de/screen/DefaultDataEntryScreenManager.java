@@ -43,6 +43,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
@@ -68,8 +70,12 @@ import org.hisp.dhis.period.Period;
 public class DefaultDataEntryScreenManager
     implements DataEntryScreenManager
 {
+    private static final Log log = LogFactory.getLog( DefaultDataEntryScreenManager.class );
+    
     private static final String DEFAULT_FORM = "defaultform";
+
     private static final String MULTI_DIMENSIONAL_FORM = "multidimensionalform";
+
     private static final String EMPTY = "";
 
     // -------------------------------------------------------------------------
@@ -98,7 +104,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -144,13 +150,13 @@ public class DefaultDataEntryScreenManager
                 return true;
             }
         }
-        
+
         return false;
     }
 
     public String getScreenType( DataSet dataSet )
     {
-        return hasMultiDimensionalDataElement( dataSet ) ? MULTI_DIMENSIONAL_FORM : DEFAULT_FORM;        
+        return hasMultiDimensionalDataElement( dataSet ) ? MULTI_DIMENSIONAL_FORM : DEFAULT_FORM;
     }
 
     public Collection<Integer> getAllCalculatedDataElements( DataSet dataSet )
@@ -187,7 +193,7 @@ public class DefaultDataEntryScreenManager
                 if ( !cde.isSaved() )
                 {
                     calculatedDataElementMap.put( cde, dataElementService.getDataElementFactors( cde ) );
-                }                
+                }
             }
         }
 
@@ -239,11 +245,12 @@ public class DefaultDataEntryScreenManager
                 factor = factorMap.get( operandId );
 
                 String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
-                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId.length() );
+                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
+                    .length() );
 
                 DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
-                DataElementCategoryOptionCombo optionCombo = categoryService
-                    .getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );
+                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
+                    .parseInt( optionComboIdString ) );
 
                 dataValue = dataValueService.getDataValue( organisationUnit, element, period, optionCombo );
 
@@ -303,12 +310,11 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-        
+
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
-        // ---------------------------------------------------------------------        
+        // ---------------------------------------------------------------------
 
-        
         while ( dataElementMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -329,7 +335,14 @@ public class DefaultDataEntryScreenManager
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
+
+                if ( dataElement == null )
+                {
+                    log.error( "Data Element exits in data entry form but not in this Data Set: " + dataElementId );
+                    
+                    return "This data element not exits in data set: " + dataElementId;
+                }
+
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -365,8 +378,9 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
-                
-                if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
+
+                if ( dataElement.getType().equals( VALUE_TYPE_BOOL )
+                    || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -407,7 +421,8 @@ public class DefaultDataEntryScreenManager
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
 
                 // -------------------------------------------------------------
-                // Insert title information - Data element id, name, type, min, max
+                // Insert title information - Data element id, name, type, min,
+                // max
                 // -------------------------------------------------------------
 
                 if ( dataElementCode.contains( "title=\"\"" ) )
@@ -581,7 +596,7 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
-        
+
         while ( dataElementMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -601,13 +616,15 @@ public class DefaultDataEntryScreenManager
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
-                DataElement dataElement = dataElementMap.get( dataElementId ); //dataElementService.getDataElement( dataElementId );
-                
-                if( dataElement==null )
+                DataElement dataElement = dataElementMap.get( dataElementId ); // dataElementService.getDataElement(
+                                                                               // dataElementId
+                                                                               // );
+
+                if ( dataElement == null )
                 {
-                    throw new RuntimeException("Data Element Id: " + dataElementId + " not found");
+                    throw new RuntimeException( "Data Element Id: " + dataElementId + " not found" );
                 }
-                
+
                 // -------------------------------------------------------------
                 // Find value type of data element
                 // -------------------------------------------------------------
@@ -643,8 +660,9 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
-                
-                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
+
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL )
+                    || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -683,7 +701,8 @@ public class DefaultDataEntryScreenManager
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
 
                 // -------------------------------------------------------------
-                // Insert title information - Data element id, name, type, min, max
+                // Insert title information - Data element id, name, type, min,
+                // max
                 // -------------------------------------------------------------
 
                 if ( dataElementCode.contains( "title=\"\"" ) )
@@ -802,7 +821,7 @@ public class DefaultDataEntryScreenManager
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }
         }
-        
+
         dataElementMatcher.appendTail( sb );
 
         return sb.toString();
@@ -816,19 +835,21 @@ public class DefaultDataEntryScreenManager
      * Tests whether the given Collection of CustomValues contains a CustomValue
      * with the given data element identifier and category option combo id.
      */
-    private boolean customValuesExists( Collection<CustomValue> customValues, int dataElementId, int categoryOptionComboId )
+    private boolean customValuesExists( Collection<CustomValue> customValues, int dataElementId,
+        int categoryOptionComboId )
     {
         for ( CustomValue customValue : customValues )
         {
-            if ( dataElementId == customValue.getDataElement().getId() && categoryOptionComboId == customValue.getOptionCombo().getId() )
+            if ( dataElementId == customValue.getDataElement().getId()
+                && categoryOptionComboId == customValue.getOptionCombo().getId() )
             {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Returns the value of the DataValue in the Collection of DataValues with
      * the given data element identifier and category option combo id.
@@ -837,7 +858,8 @@ public class DefaultDataEntryScreenManager
     {
         for ( DataValue dataValue : dataValues )
         {
-            if ( dataValue.getDataElement().getId() == dataElementId && dataValue.getOptionCombo().getId() == categoryOptionComboId )
+            if ( dataValue.getDataElement().getId() == dataElementId
+                && dataValue.getOptionCombo().getId() == categoryOptionComboId )
             {
                 return dataValue.getValue();
             }
@@ -845,7 +867,7 @@ public class DefaultDataEntryScreenManager
 
         return EMPTY;
     }
-    
+
     /**
      * Returns the value of the DataValue in the Collection of DataValues with
      * the given data element identifier.
@@ -859,10 +881,10 @@ public class DefaultDataEntryScreenManager
                 return dataValue.getValue();
             }
         }
-        
+
         return EMPTY;
     }
-    
+
     /**
      * Returns a Map of all DataElements in the given DataSet where the key is
      * the DataElement identifier and the value is the DataElement.
@@ -870,12 +892,12 @@ public class DefaultDataEntryScreenManager
     private Map<Integer, DataElement> getDataElementMap( DataSet dataSet )
     {
         Map<Integer, DataElement> map = new HashMap<Integer, DataElement>();
-        
+
         for ( DataElement element : dataSet.getDataElements() )
         {
             map.put( element.getId(), element );
         }
-        
+
         return map;
     }
 }
