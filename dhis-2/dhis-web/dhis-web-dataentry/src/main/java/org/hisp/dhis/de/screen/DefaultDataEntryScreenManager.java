@@ -338,9 +338,9 @@ public class DefaultDataEntryScreenManager
 
                 if ( dataElement == null )
                 {
-                    log.error( "Data Element exits in data entry form but not in this Data Set: " + dataElementId );
+                    log.info( "Data Element does not exist in system : " + dataElementId );
                     
-                    return "This data element not exits in data set: " + dataElementId;
+                    return "Data Element does not exist in system : " + dataElementId;
                 }
 
                 // -------------------------------------------------------------
