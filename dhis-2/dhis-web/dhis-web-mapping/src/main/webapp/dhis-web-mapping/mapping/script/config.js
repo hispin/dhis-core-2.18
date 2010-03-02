@@ -39,7 +39,7 @@
 
     gridpanel_width = west_width - 15;
     
-    multiselect_width = 230;
+    multiselect_width = 210;
 	
     combo_width = 150;
 	combo_list_width = combo_width + 17;
