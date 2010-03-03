@@ -42,7 +42,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
-import org.hisp.dhis.patient.PatientAttributePopulator;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
@@ -53,6 +52,10 @@ import org.hisp.dhis.patient.idgen.PatientIdentifierGenerator;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -88,6 +91,10 @@ public class AddPatientAction
     private PatientAttributeValueService patientAttributeValueService;
 
     private PatientAttributeOptionService patientAttributeOptionService;
+    
+    private RelationshipService relationshipService;
+    
+    private RelationshipTypeService relationshipTypeService;
 
     // -------------------------------------------------------------------------
     // Input - name
@@ -111,10 +118,17 @@ public class AddPatientAction
     private String gender;
 
     private String bloodGroup;
+    
+
+    // -------------------------------------------------------------------------
+    // Input - others
+    // -------------------------------------------------------------------------
 
     private boolean underAge;
     
     private Integer representativeId;
+    
+    private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
     // Output - making the patient available so that its attributes can be
@@ -203,13 +217,31 @@ public class AddPatientAction
         selectedStateManager.clearSearchingAttributeId();
         selectedStateManager.setSearchText( systemGenerateIdentifier.getIdentifier() );
 
+        
         patient.setUnderAge( underAge );
+
         if ( underAge )
         {
-            Patient representative = patientService.getPatient( representativeId );
-            if( representative != null )
+            if( representativeId != null )
             {
-                patient.setRepresentative( representative );
+                Patient representative = patientService.getPatient( representativeId );
+                if( representative != null )
+                {
+                    patient.setRepresentative( representative );
+                }
+                Relationship rel = new Relationship();
+                rel.setPatientA( representative );
+                rel.setPatientB(  patient );
+                
+                if( relationshipTypeId != null )
+                {
+                    RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                    if( relType != null )
+                    {
+                        rel.setRelationshipType( relType );
+                        relationshipService.saveRelationship( rel );
+                    }
+                }
             }
         }
         
@@ -384,13 +416,29 @@ public class AddPatientAction
         this.patientAttributeOptionService = patientAttributeOptionService;
     }
 
-    public void setUnderAge( boolean underAge )
-    {
-        this.underAge = underAge;
-    }
-
     public void setRepresentativeId( Integer representativeId )
     {
         this.representativeId = representativeId;
+    }
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
+
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
+    }
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
+
+
+    public void setUnderAge( boolean underAge )
+    {
+        this.underAge = underAge;
     }
 }

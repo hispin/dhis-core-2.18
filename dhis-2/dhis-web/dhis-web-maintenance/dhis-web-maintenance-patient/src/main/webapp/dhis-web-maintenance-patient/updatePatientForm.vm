@@ -94,6 +94,19 @@ jQuery(document).ready(function(){
 		</td>		
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
+	
+	<!-- UNDERAGE -->
+	
+	<tr>
+		<td>$i18n.getString("is_underage")</td>
+		<td>
+			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($patient.isUnderAge) checked="checked" #end/>
+		</td>
+	</tr>
+	
+	<!--IDENTIFIERS -->
+	
+	<tr><td>&nbsp;</td></tr>	
 	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
 	<tr id="childContactType"  #if( $patient.getIntegerValueOfAge() >= 5 ) style="display: none" #end>
 		<td><label>$i18n.getString( "child_contact_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -119,6 +132,9 @@ jQuery(document).ready(function(){
 	</tr>
 	#end
 	<tr><td>&nbsp;</td></tr>
+	
+	<!-- ATTRIBUTES IN GROUPS -->
+	
 	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>	
 		<tr><th colspan="2">$attributeGroup.name</th></tr>
@@ -159,6 +175,9 @@ jQuery(document).ready(function(){
 		#end
 	#end
 	<tr><td>&nbsp;</td></tr>
+	
+	<!-- ATTRIBUTES NOT IN GROUPS -->
+	
 	#if ( $noGroupAttributes.size() > 0) 	
 		<tr><th colspan="2">$i18n.getString( "Other details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )

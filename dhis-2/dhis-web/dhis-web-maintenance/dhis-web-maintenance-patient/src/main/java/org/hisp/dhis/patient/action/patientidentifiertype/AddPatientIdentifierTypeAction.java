@@ -56,6 +56,8 @@ public class AddPatientIdentifierTypeAction
     private String formatField;
     
     private Boolean mandatory;
+    
+    private Boolean related;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -68,6 +70,7 @@ public class AddPatientIdentifierTypeAction
         patientIdentifierType.setName( nameField );
         patientIdentifierType.setDescription( description );
         patientIdentifierType.setFormat( formatField );
+        patientIdentifierType.setRelated( related.booleanValue() );
         patientIdentifierType.setMandatory( mandatory.booleanValue() );
         
         patientIdentifierTypeService.savePatientIdentifierType( patientIdentifierType );
@@ -103,5 +106,10 @@ public class AddPatientIdentifierTypeAction
     public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory; 
+    }
+
+    public void setRelated( Boolean related )
+    {
+        this.related = related;
     }
 }

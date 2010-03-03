@@ -398,5 +398,10 @@ public class Patient
     {
         this.underAge = underAge;
     }
+    
+    public String getTextGender()
+    {
+        return gender.equalsIgnoreCase( MALE ) ? "male" : "female";
+    }
 
 }

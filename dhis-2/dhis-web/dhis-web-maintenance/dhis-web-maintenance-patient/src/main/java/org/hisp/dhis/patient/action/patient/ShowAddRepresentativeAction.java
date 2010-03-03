@@ -49,7 +49,8 @@ public class ShowAddRepresentativeAction implements Action
     public String execute()
         throws Exception
     {
-        
+        //TODO Have to create identifier Group, it should base on age or somewhat... 
+        // Current ...hard code ...
         RelationshipType r = relationshipTypeService.getRelationshipType( PARENTS, CHILD );
         relationshipTypes.add( r );
         r = relationshipTypeService.getRelationshipType( GUARDIAN, CHILD );
@@ -57,8 +58,6 @@ public class ShowAddRepresentativeAction implements Action
     
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         attributes = patientAttributeService.getAllPatientAttributes();
-        
-        
         
         return SUCCESS;
     }
