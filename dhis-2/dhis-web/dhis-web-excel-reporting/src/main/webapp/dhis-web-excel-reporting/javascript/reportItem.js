@@ -150,21 +150,18 @@ function validateAddReportExcelItemReceived( xmlObject ) {
 	
 function addReportExcelItem() {
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( Completed );
-	
-	var params = "name=" + byId("name").value;
-	params += "&expression=" + byId("expression").value;
-	params += "&row=" + byId("row").value;
-	params += "&column=" + byId("column").value;
-	params += "&reportId=" + reportId;
-	params += "&itemType=" + byId("itemType").value;
-	params += "&periodType=" + byId("periodType").value;
-	params += "&sheetNo=" + byId("sheetNo").value;
-	
-	request.sendAsPost(params);
-	request.send("addReportExcelItem.action");
+	$.post("addReportExcelItem.action",{
+		name:$("#name").val(),		
+		expression:$("#expression").val(),
+		row:$("#row").val(),
+		column:$("#column").val(),		
+		reportId:reportId,
+		itemType:$("#itemType").val(),
+		periodType:$("#periodType").val(),
+		sheetNo:$("#sheetNo").val()
+	}, function (data){
+		window.location.reload();
+	},'xml');
 	
 }
 
@@ -212,22 +209,19 @@ function validateUpdateReportExcelItemReceived( xmlObject ) {
 
 function updateReportExcelItem() {
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( Completed );
-	
-	var params = "id=" + byId("id").value;
-		params += "&name=" + byId("name").value;
-		params += "&expression=" + byId("expression").value;
-		params += "&row=" + byId("row").value;
-		params += "&column=" + byId("column").value;
-		params += "&reportId=" + reportId;
-		params += "&itemType=" + byId("itemType").value;
-		params += "&periodType=" + byId("periodType").value;
-		params += "&sheetNo=" + byId("sheetNo").value;
-	
-	request.sendAsPost(params);
-	request.send("updateReportExcelItem.action");
+	$.post("updateReportExcelItem.action",{
+		id:$("#id").val(),
+		name:$("#name").val(),		
+		expression:$("#expression").val(),
+		row:$("#row").val(),
+		column:$("#column").val(),		
+		reportId:reportId,
+		itemType:$("#itemType").val(),
+		periodType:$("#periodType").val(),
+		sheetNo:$("#sheetNo").val()
+	}, function (data){
+		window.location.reload();
+	},'xml');	
 	
 }
 
