@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "assign_multidataset" )</h3>
+<h3>$i18n.getString( "assign_multidataset_manage" )</h3>
 
 <form id="assignMultiDataSetForm" action="saveAssignMultiDataSetForOrgunit.action" method="post" >
 
@@ -7,22 +7,18 @@
 		<th>$i18n.getString( "available_datasets" )</th><td></td><th>$i18n.getString( "selected_datasets" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableDataSetsFilter" onkeyup="filterAvailableDataSets()" style="width:25em"></td>
+		<td><input type="text" id="availableDataSetsFilter" onkeyup="filterAvailableDataSets()" style="width:25em" /></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-		<td><input type="text" id="selectedDataSetsFilter" onkeyup="filterSelectedDataSets()" style="width:25em"></td>
+		<td><input type="text" id="selectedDataSetsFilter" onkeyup="filterSelectedDataSets()" style="width:25em" /></td>
 	</tr>
 	<tr>
 		<td>
-			<select id="availableDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="addSelectedDataSets()">
-			#foreach($dataSet in $availableDataSets)
-				<option value='$dataSet' >$encoder.htmlEncode( $dataSet.name )</option>
-			#end
-			</select>
+			<select id="availableDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="addSelectedDataSets()" />
 		</td>
 		
 		<td style="text-align:center">			
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addSelectedDataSets()"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeSelectedDataSets()">			
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addSelectedDataSets()" /><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeSelectedDataSets()" />			
 		</td>
 	
 		<td>
