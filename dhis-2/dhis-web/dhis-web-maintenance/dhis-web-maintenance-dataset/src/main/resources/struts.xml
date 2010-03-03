@@ -317,5 +317,13 @@
 	  <result name="success" type="redirect">dataSet.action</result>
 	</action>
 	
+	<action name="showAssignMultiDataSetForOrgunitForm"
+	  class="org.hisp.dhis.dataset.action.assign.multidataset.ShowAssignMultiDataSetForOrgunitAction">
+	  <result name="success" type="velocity">/main.vm</result>
+	  <param name="page">/dhis-web-maintenance-dataset/showAssignMultiDataSetForm.vm</param>
+	  <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+	  <param name="javascripts">javascript/dataSet.js</param>
+	</action>
+	
   </package>
 </struts>
