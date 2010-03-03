@@ -40,7 +40,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
-import org.hisp.dhis.patient.PatientAttributePopulator;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
@@ -181,7 +180,6 @@ public class UpdatePatientAction
             for ( PatientAttribute attribute : attributes )
             {
                 value = request.getParameter( AddPatientAction.PREFIX_ATTRIBUTE + attribute.getId() );
-                System.out.println("attribute value : "+value);
 
                 if ( StringUtils.isNotBlank( value ) )
                 {

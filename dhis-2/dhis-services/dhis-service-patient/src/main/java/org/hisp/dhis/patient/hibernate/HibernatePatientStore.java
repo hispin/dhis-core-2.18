@@ -78,11 +78,6 @@ public class HibernatePatientStore
     {
         Criteria crit = getCriteria( );
         Conjunction con = Restrictions.conjunction();
-        System.out.println("firstName: "+firstName);
-        System.out.println("middleName: "+middleName);
-        System.out.println("lastName: "+lastName);
-        System.out.println("gender: "+gender);
-        System.out.println("birthDate: "+birthdate.toGMTString());
         
         if( StringUtils.isNotBlank( firstName ))
             con.add( Restrictions.eq( "firstName", firstName ) );

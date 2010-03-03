@@ -48,9 +48,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultPatientService
     implements PatientService
 {
-    public static final String SEARCH_TYPE_IDENTIFIER = "id";
-    public static final String SEARCH_TYPE_ATTRIBUTE = "attr";
-    public static final String SEARCH_TYPE_NAME = "name";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

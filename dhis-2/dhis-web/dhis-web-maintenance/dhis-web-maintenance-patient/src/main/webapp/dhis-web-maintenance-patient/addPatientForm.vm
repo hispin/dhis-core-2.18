@@ -29,6 +29,7 @@
 																			
 <form id="addPatientForm" action="addPatient.action" method="post">
 <input type="hidden" id="representativeId" name="representativeId"/> 
+<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <table>	
 	<tr><td>&nbsp;</td></tr>
 	<tr>
@@ -36,15 +37,15 @@
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td><input type="text" id="firstName" name="firstName" style="width:30em"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}" ></td>
+		<td><input type="text" id="firstName" name="firstName" style="width:30em"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td><input type="text" id="middleName" name="middleName" maxlength="30" style="width:30em"   class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
+		<td><input type="text" id="middleName" name="middleName" maxlength="30" style="width:30em"   class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" maxlength="30" style="width:30em"  class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
+		<td><input type="text" id="lastName" name="lastName" maxlength="30" style="width:30em"  class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
 	</tr>	
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
@@ -95,12 +96,12 @@
 	<tr><td colspan="2"><input type="button" value="$i18n.getString('check_duplicate')"  onclick="checkDuplicate();"/></td></tr>
 	<tr><td colspan="2">&nbsp;</td></tr>	
 	
-	<!-- CHILD -->
+	<!-- UNDERAGE -->
 	
 	<tr>
 		<td>$i18n.getString("is_underage")</td>
 		<td>
-			<input type="checkbox" name="underAge" onclick="toggleUnderAge(this);"/>
+			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true"/>
 		</td>
 	</tr>
 	<!--IDENTIFIERS -->
@@ -110,7 +111,7 @@
 	#foreach ($identifierType in $identifierTypes)
 	<tr>
 		<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-		<td><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" style="width:30em" class='idfield #validate( "default"  $identifierType.mandatory )'/></td>	
+		<td><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" style="width:30em" data="{related:$identifierType.related}"  class='idfield  #validate( "default"  $identifierType.mandatory ) '/></td>	
 	</tr>
 	#end
 	

@@ -11,6 +11,7 @@
   #foreach( $identifier in $patient.identifiers )
   	#if( $identifier.identifierType )
 	    <identifier>
+	    	<id>$identifier.identifierType.id</id>
 	        <name>$encoder.xmlEncode( $identifier.identifierType.name )</name>
 	        <value>$encoder.xmlEncode( $identifier.identifier )</value>
 	    </identifier>

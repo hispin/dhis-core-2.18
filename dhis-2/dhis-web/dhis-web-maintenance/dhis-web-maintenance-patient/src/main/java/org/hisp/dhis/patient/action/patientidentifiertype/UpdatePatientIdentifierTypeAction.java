@@ -59,6 +59,8 @@ public class UpdatePatientIdentifierTypeAction
     
     private Boolean mandatory;
     
+    private Boolean related;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -75,6 +77,7 @@ public class UpdatePatientIdentifierTypeAction
             identifierType.setDescription( description );
             identifierType.setFormat( formatField );
             identifierType.setMandatory( mandatory.booleanValue() );
+            identifierType.setRelated( related.booleanValue() );
             patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
         }
         
@@ -113,5 +116,10 @@ public class UpdatePatientIdentifierTypeAction
     public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory;
+    }
+
+    public void setRelated( Boolean related )
+    {
+        this.related = related;
     }
 }

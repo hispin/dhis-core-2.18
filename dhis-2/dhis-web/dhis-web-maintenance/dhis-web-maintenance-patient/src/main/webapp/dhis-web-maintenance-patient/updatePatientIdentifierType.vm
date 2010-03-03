@@ -51,6 +51,18 @@
 		</td>		
 		<td></td>				
 	</tr>
+	
+	<tr>
+		<td width="20em"><label for="related">$i18n.getString( "related" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td>
+			<select id="related" name="related" style="min-width:20em" class="{validate:{required:true}}">
+				<option value="" >[$i18n.getString( "please_select" )]</option>
+				<option value="true" #if( $patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "yes" )</option>
+				<option value="false" #if( !$patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "no" )</option>
+			</select>
+		</td>		
+		<td></td>				
+	</tr>
   	  	
 </table>
 

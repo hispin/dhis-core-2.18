@@ -277,14 +277,17 @@ function validateAddPatient()
 		}
 	}	
 	
-	var params = '&checkedDuplicate='+checkedDuplicate +
-				'&firstName=' + getFieldValue( 'firstName' ) +
-				'&middleName=' + getFieldValue( 'middleName' ) +
-				'&lastName=' + getFieldValue( 'lastName' ) +
-				'&gender=' + getFieldValue( 'gender' ) +
-				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
-				'&age=' + getFieldValue( 'age' ) +
-				'&genre=' + getFieldValue('gender')
+	var params = '&checkedDuplicate='+checkedDuplicate 
+				+'&firstName=' + getFieldValue( 'firstName' ) 
+				+'&middleName=' + getFieldValue( 'middleName' ) 
+				+'&lastName=' + getFieldValue( 'lastName' ) 
+				+'&gender=' + getFieldValue( 'gender' ) 
+				+'&birthDate=' + getFieldValue( 'birthDate' ) 	        
+				+'&age=' + getFieldValue( 'age' ) 
+				+'&genre=' + getFieldValue('gender') 
+				+'&underAge=' + getFieldValue('underAge')
+				+'&representativeId=' + getFieldValue('representativeId');
+				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId');
 				+ getIdParams();
 	
 	var request = new Request();
@@ -329,12 +332,15 @@ function addValidationCompleted( messageElement )
 
 function validateUpdatePatient()
 {
-    var params = 'id=' + getFieldValue( 'id' ) +
-				'&firstName=' + getFieldValue( 'firstName' ) +
-				'&middleName=' + getFieldValue( 'middleName' ) +
-				'&lastName=' + getFieldValue( 'lastName' ) +
-				'&gender=' + getFieldValue( 'gender' ) +
-				'&birthDate=' + getFieldValue( 'birthDate' ) 
+    var params = 'id=' + getFieldValue( 'id' ) 
+				+'&firstName=' + getFieldValue( 'firstName' ) 
+				+'&middleName=' + getFieldValue( 'middleName' ) 
+				+'&lastName=' + getFieldValue( 'lastName' ) 
+				+'&gender=' + getFieldValue( 'gender' ) 
+				+'&birthDate=' + getFieldValue( 'birthDate' ) 
+				+'&underAge=' + getFieldValue('underAge')
+				+'&representativeId=' + getFieldValue('representativeId');
+				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId');
 				+ getIdParams();
 	
 	var request = new Request();
@@ -353,6 +359,7 @@ function updateValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
+    	removeDisabledIdentifier();
     	var form = document.getElementById( 'updatePatientForm' );        
         form.submit();
     }
@@ -371,7 +378,8 @@ function updateValidationCompleted( messageElement )
     		showListPatientDuplicate(messageElement, true);
     }
 }
-
+// get and build a param String of all the identifierType id and its value
+// excluding inherited identifiers
 function getIdParams()
 {
 	var params = "";
@@ -382,11 +390,14 @@ function getIdParams()
 	return params;
 }
 
+// remove value of all the disabled identifier fields
+// an identifier field is disabled when its value is inherited from another person ( underAge is true ) 
+// we don't save inherited identifiers. Only save the representative id.
 function removeDisabledIdentifier()
 {
-	jQuery(".idfield").each(function(){
+	jQuery("input.idfield").each(function(){
 		if( jQuery(this).is(":disabled"))
-			jQuery(this).remove();
+			jQuery(this).val("");
 	});
 }
 
@@ -449,9 +460,7 @@ function selectAll( list )
 
 function ageOnchange()
 {
-	jQuery("#birthDate").rules("remove","required");
-	jQuery("#birthDate").val("");
-	jQuery("#birthDate").removeClass("error");
+	jQuery("#birthDate").val("").removeClass("error").rules("remove","required");
 	jQuery("#age").rules("add",{required:true});
 
 }
@@ -463,6 +472,8 @@ function bdOnchange()
 	jQuery("#birthDate").rules("add",{required:true});
 }
 
+
+// check duplicate patient
 function checkDuplicate()
 {
 	var params = 
@@ -562,7 +573,19 @@ function validatePatient()
 
 function toggleUnderAge(this_)
 {
-	if( jQuery(this_).is(":checked")){
+	if( jQuery(this_).is(":checked"))
+	{
 		tb_show(i18n_child_representative,"showAddRepresentative.action?TB_iframe=true&height=500&width=500",null);
+	}else
+	{
+		jQuery("input.idfield").each(function(){
+			if( jQuery(this).is(":disabled"))
+			{
+				jQuery(this).removeAttr("disabled").val("");
+			}
+		});
+		jQuery("#representativeId").val("");
+		jQuery("#relationshipTypeId").val("");
 	}
 }
+
