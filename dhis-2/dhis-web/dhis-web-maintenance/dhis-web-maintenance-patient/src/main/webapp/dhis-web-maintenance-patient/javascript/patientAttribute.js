@@ -143,7 +143,7 @@ ATTRIBUTE_OPTION =
 {
 	selectValueType : 	function (this_)
 	{
-		if ( jQuery(this_).val() == "combo" )
+		if ( jQuery(this_).val() == "COMBO" )
 		{
 			jQuery("#attributeComboRow").show();
 			if( jQuery("#attrOptionContainer").find("input").length ==0 ) 
