@@ -6,8 +6,7 @@
 			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' ):</td>
 			<td width="82%">
 				<input type="file" id="upload" name="upload" onChange="enable('uploadButton');" />
-				<!-- <input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />    -->
-				<input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelTemplate()" />    
+				<input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />
 			</td>   
 		</tr>
 	</table>
