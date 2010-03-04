@@ -285,7 +285,7 @@ function validateAddPatient()
 				+'&birthDate=' + getFieldValue( 'birthDate' ) 	        
 				+'&age=' + getFieldValue( 'age' ) 
 				+'&genre=' + getFieldValue('gender') 
-				+'&underAge=' + getFieldValue('underAge')
+				+'&underAge=' + jQuery("#underAge").is(":checked")
 				+'&representativeId=' + getFieldValue('representativeId');
 				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId');
 				+ getIdParams();
@@ -338,7 +338,7 @@ function validateUpdatePatient()
 				+'&lastName=' + getFieldValue( 'lastName' ) 
 				+'&gender=' + getFieldValue( 'gender' ) 
 				+'&birthDate=' + getFieldValue( 'birthDate' ) 
-				+'&underAge=' + getFieldValue('underAge')
+				+'&underAge=' + jQuery("#underAge").is(":checked")
 				+'&representativeId=' + getFieldValue('representativeId');
 				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId');
 				+ getIdParams();
