@@ -269,13 +269,6 @@
                   ref="org.hisp.dhis.importexport.invoker.ConverterInvoker" />
     </bean>
 
-<!--    <bean id="org.hisp.dhis.importexport.DXFImportService"
-          class="org.hisp.dhis.importexport.dxf.importer.DefaultDXFImportService">
-        <property name="converter"
-                  ref="org.hisp.dhis.importexport.DXFConverter" />
-    </bean>
--->
-
     <bean id="org.hisp.dhis.importexport.XMLImportService"
           class="org.hisp.dhis.importexport.xml.importer.DefaultXMLImportService">
         <property name="converter"
@@ -284,7 +277,6 @@
                   ref="org.hisp.dhis.external.location.LocationManager" />
 		<property name="dhisResolver"
                   ref="org.hisp.dhis.external.location.LocationManagerResolver" />
-
     </bean>
 
     <bean id="org.hisp.dhis.importexport.invoker.ConverterInvoker"
