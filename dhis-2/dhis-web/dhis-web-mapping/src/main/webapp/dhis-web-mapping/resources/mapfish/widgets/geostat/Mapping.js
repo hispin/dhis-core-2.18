@@ -383,7 +383,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 												success: function( responseObject ) {
 													Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + mapping.relation + msg_highlight_end + ' (map) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (database).');
 													Ext.getCmp('grid_gp').getStore().reload();
-													feature_popup.hide();
+													popup.hide();
 													loadMapData(organisationUnitAssignment, true);
 												},
 												failure: function() {
