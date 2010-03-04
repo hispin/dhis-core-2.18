@@ -38,28 +38,6 @@ function deleteExcelTemplateReceived( xmlObject ) {
 	}
 }
 
-function validateUploadExistExcelTemplate ( fileName, columnIndex ) {
-
-    var list = byId( 'list' );
-    
-    var rows = list.getElementsByTagName( 'tr' );
-    
-    for ( var i = 0; i < rows.length; i++ )
-    {
-        var cell = rows[i].getElementsByTagName( 'td' )[columnIndex-1];
-        var value = cell.firstChild.nodeValue;
-		
-        if ( value.toLowerCase().indexOf( fileName.toLowerCase() ) != -1 )
-        {
-            // file is existsing
-			return window.confirm( i18n_confirm_override );
-        }
-    }
-      
-	// normally upload
-	return true;
-}
-
 curTemplateName = '';
 newTemplateName = '';
 
@@ -221,10 +199,8 @@ function updateReportExcelByTemplateCompleted( xmlObject ) {
 // Validate Upload Excel Template
 //----------------------------------------------------------
 
-function validateUploadExcelTemplate( fileName, columnIndex ) {
-
-	return validateUploadExistExcelTemplate( fileName, columnIndex );
-
+function validateUploadExcelTemplate()
+{
 	$.ajaxFileUpload
 	(
 		{
@@ -238,6 +214,12 @@ function validateUploadExcelTemplate( fileName, columnIndex ) {
 				var type = data.getAttribute("type");
 				if(type=='error'){                    
 					setMessage(data.firstChild.nodeValue);
+				}else if(type=='input'){
+					if(window.confirm( i18n_confirm_override )){
+						document.forms['uploadForm'].submit();
+					}else{
+						return;
+					}
 				}else{
 					document.forms['uploadForm'].submit();
 				}

@@ -1297,6 +1297,8 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-excel-reporting/responseInput.vm</result>	
 		</action>
 
 	</package>

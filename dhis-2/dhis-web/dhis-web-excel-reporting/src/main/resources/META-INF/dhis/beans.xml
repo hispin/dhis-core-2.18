@@ -1314,7 +1314,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate"
 		class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate"
-		scope="prototype">
+		scope="prototype">		
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
 </beans>

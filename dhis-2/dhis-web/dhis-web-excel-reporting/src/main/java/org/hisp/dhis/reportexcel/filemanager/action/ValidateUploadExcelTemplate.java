@@ -1,11 +1,5 @@
 package org.hisp.dhis.reportexcel.filemanager.action;
 
-import java.io.File;
-
-import org.hisp.dhis.i18n.I18n;
-
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -32,6 +26,14 @@ import com.opensymphony.xwork2.Action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.File;
+
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
+
+import com.opensymphony.xwork2.Action;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id
@@ -41,6 +43,17 @@ public class ValidateUploadExcelTemplate
 {
     private static final String TEMPLATE_TYPE = "application/vnd.ms-excel";
 
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
+
+    private ReportLocationManager reportLocationManager;
+
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    {
+        this.reportLocationManager = reportLocationManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -49,9 +62,9 @@ public class ValidateUploadExcelTemplate
 
     private String uploadContentType; // The content type of the file
 
-//    private String uploadFileName; // The uploaded file name
-//
-//    private String fileCaption;// The caption of the file entered by user
+    private String uploadFileName; // The uploaded file name
+    //
+    // private String fileCaption;// The caption of the file entered by user
 
     private String message;
 
@@ -81,6 +94,11 @@ public class ValidateUploadExcelTemplate
         this.i18n = i18n;
     }
 
+    public void setUploadFileName( String uploadFileName )
+    {
+        this.uploadFileName = uploadFileName;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -88,17 +106,31 @@ public class ValidateUploadExcelTemplate
     @Override
     public String execute()
         throws Exception
-    {
+    {       
+        
         if ( upload == null || !upload.exists() )
         {
             message = i18n.getString( "upload_file_null" );
+
+            return ERROR;
+        }
+
+        if ( !TEMPLATE_TYPE.contains( uploadContentType )  )
+        {
+            message = i18n.getString( "file_type_not_supported" );
+
             return ERROR;
         }
         
-        if ( !TEMPLATE_TYPE.contains( uploadContentType ) )
+        File templateDirectoryConfig = reportLocationManager.getReportExcelTemplateDirectory();
+
+        File output = new File( templateDirectoryConfig, uploadFileName );     
+
+        if ( output.exists() )
         {
-            message = i18n.getString( "file_type_not_supported" );
-            return ERROR;
+            message = i18n.getString("override_confirm");
+            
+            return INPUT;
         }
 
         return SUCCESS;
