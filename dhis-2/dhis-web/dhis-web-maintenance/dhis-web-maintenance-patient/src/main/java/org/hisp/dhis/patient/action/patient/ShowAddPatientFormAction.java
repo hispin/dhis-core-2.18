@@ -108,13 +108,6 @@ public class ShowAddPatientFormAction
        
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
         
-        // Remove Child Contact Name, Child Contact RelationShip Type attributes from this list 
-        PatientAttribute attr = new PatientAttribute();
-        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
-        noGroupAttributes.remove( attr );
-        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
-        noGroupAttributes.remove( attr );
-        
         attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
 
         return SUCCESS;

@@ -107,7 +107,7 @@ public class GetPatientAttributeGroupAction
     {
         patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( id );
 
-        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getOptionalPatientAttributesWithoutGroup() );
+        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesNotGroup() );
 
         Collections.sort( patientAttributes, new PatientAttributeComparator() );
 

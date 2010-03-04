@@ -44,7 +44,6 @@ function removePatientIdentifierTypeCompleted( messageElement )
     
     if ( type == 'success' )
     {
-        alert(message);
     	window.location.href = 'patientIdentifierType.action';
     }
     else if ( type = 'error' )
@@ -81,7 +80,6 @@ function addValidationCompleted( messageElement )
     if ( type == 'success' )
     {
         var form = document.getElementById( 'addPatientIdentifierTypeForm' ); 
-        alert(jQuery("#mandatory").val());
         form.submit();
     }
     else if ( type == 'error' )
