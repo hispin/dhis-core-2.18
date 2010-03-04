@@ -212,15 +212,24 @@ function validateUploadExcelTemplate()
 			{
 				data = data.getElementsByTagName('message')[0];
 				var type = data.getAttribute("type");
-				if(type=='error'){                    
+				
+				if ( type == 'error' )
+				{                    
 					setMessage(data.firstChild.nodeValue);
-				}else if(type=='input'){
-					if(window.confirm( i18n_confirm_override )){
+				}
+				else if ( type == 'input' )
+				{
+					if ( window.confirm( i18n_confirm_override ) )
+					{
 						document.forms['uploadForm'].submit();
-					}else{
+					}
+					else
+					{
 						return;
 					}
-				}else{
+				}
+				else
+				{
 					document.forms['uploadForm'].submit();
 				}
 			},

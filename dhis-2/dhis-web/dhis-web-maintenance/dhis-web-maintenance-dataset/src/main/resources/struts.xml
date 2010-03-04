@@ -325,5 +325,10 @@
 	  <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/multiDataSet.js</param>
 	</action>
 	
+	<action name="saveAssignMultiDataSetForOrgunit"
+	  class="org.hisp.dhis.dataset.action.assign.multidataset.SaveAssignMultiDataSetForOrgunitAction">
+	  <result name="success" type="redirect">index.action</result>
+	</action>
+	
   </package>
 </struts>

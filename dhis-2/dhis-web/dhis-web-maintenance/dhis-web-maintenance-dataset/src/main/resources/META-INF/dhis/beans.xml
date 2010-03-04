@@ -405,5 +405,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
+  <bean id="org.hisp.dhis.dataset.action.assign.multidataset.SaveAssignMultiDataSetForOrgunitAction"
+    class="org.hisp.dhis.dataset.action.assign.multidataset.SaveAssignMultiDataSetForOrgunitAction"
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+	</property>
+	<property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+	</property>
+  </bean>
+
   
 </beans>
