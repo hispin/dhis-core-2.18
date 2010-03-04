@@ -100,7 +100,9 @@ public class DefaultPatientAttributeValueService
 
     public Collection<PatientAttributeValue> getPatientAttributeValues( Collection<Patient> patients )
     {
-        return patientAttributeValueStore.get( patients );
+       if( patients != null && patients.size() > 0 )
+           return patientAttributeValueStore.get( patients );
+       return null;
     }
 
     public void savePatientAttributeValue( PatientAttributeValue patientAttributeValue )
