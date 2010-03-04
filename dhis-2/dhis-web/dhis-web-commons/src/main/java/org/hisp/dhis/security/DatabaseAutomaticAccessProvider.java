@@ -38,54 +38,56 @@ import org.hisp.dhis.user.UserCredentials;
  * @version $Id: DatabaseAutomaticAccessProvider.java 3513 2007-08-04 16:16:40Z
  *          torgeilo $
  */
-public class DatabaseAutomaticAccessProvider extends
-		AbstractAutomaticAccessProvider {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public class DatabaseAutomaticAccessProvider
+    extends AbstractAutomaticAccessProvider
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private PasswordManager passwordManager;
+    private PasswordManager passwordManager;
 
-	public void setPasswordManager(PasswordManager passwordManager) {
-		this.passwordManager = passwordManager;
-	}
+    public void setPasswordManager( PasswordManager passwordManager )
+    {
+        this.passwordManager = passwordManager;
+    }
 
-	// -------------------------------------------------------------------------
-	// AdminAccessManager implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // AdminAccessManager implementation
+    // -------------------------------------------------------------------------
 
-	public void initialise() {
-		// ---------------------------------------------------------------------
-		// Assumes no UserAuthorityGroup called "Superuser" in database
-		// ---------------------------------------------------------------------
+    public void initialise()
+    {
+        // ---------------------------------------------------------------------
+        // Assumes no UserAuthorityGroup called "Superuser" in database
+        // ---------------------------------------------------------------------
 
-		String username = "admin";
-		String password = "district";
+        String username = "admin";
+        String password = "district";
 
-		User user = new User();
-		user.setFirstName(username);
-		user.setSurname(username);
+        User user = new User();
+        user.setFirstName( username );
+        user.setSurname( username );
 
-		userStore.addUser(user);
+        userStore.addUser( user );
 
-		UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
-		userAuthorityGroup.setName("ALL");
-		
-		userAuthorityGroup
-				.setAuthorities(new HashSet<String>(getAuthorities()));
+        UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
+        userAuthorityGroup.setName( "ALL" );
 
-		userStore.addUserAuthorityGroup(userAuthorityGroup);
+        userAuthorityGroup.setAuthorities( new HashSet<String>( getAuthorities() ) );
 
-		UserCredentials userCredentials = new UserCredentials();
-		userCredentials.setUsername(username);
-		userCredentials.setPassword(passwordManager.encodePassword(username,
-				password));
-		userCredentials.setUser(user);
-		userCredentials.getUserAuthorityGroups().add(userAuthorityGroup);
-		
-		userStore.addUserCredentials(userCredentials);
-	}
+        userStore.addUserAuthorityGroup( userAuthorityGroup );
 
-	public void access() {
-	}
+        UserCredentials userCredentials = new UserCredentials();
+        userCredentials.setUsername( username );
+        userCredentials.setPassword( passwordManager.encodePassword( username, password ) );
+        userCredentials.setUser( user );
+        userCredentials.getUserAuthorityGroups().add( userAuthorityGroup );
+
+        userStore.addUserCredentials( userCredentials );
+    }
+
+    public void access()
+    {
+    }
 }

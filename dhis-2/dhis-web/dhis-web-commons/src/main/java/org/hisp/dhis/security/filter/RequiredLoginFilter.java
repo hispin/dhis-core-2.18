@@ -117,8 +117,6 @@ public class RequiredLoginFilter
                 targetUrl.append( request.getQueryString() );
             }
 
-            // request.getSession().setAttribute( AbstractProcessingFilter.ACEGI_SECURITY_TARGET_URL_KEY, targetUrl.toString() );
-
             response.sendRedirect( response.encodeRedirectURL( request.getContextPath() + loginPageUrl ) );
 
             return;

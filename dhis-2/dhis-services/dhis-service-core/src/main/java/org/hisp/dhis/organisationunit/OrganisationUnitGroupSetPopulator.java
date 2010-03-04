@@ -64,7 +64,7 @@ public class OrganisationUnitGroupSetPopulator
             type = new OrganisationUnitGroupSet();
             type.setName( "Type" );
             type.setDescription( "Type of organisation unit, examples are PHU, chiefdom and district" );
-            type.setCompulsory( true );
+            type.setCompulsory( false );
             
             organisationUnitGroupService.addOrganisationUnitGroupSet( type );
         }
@@ -76,7 +76,7 @@ public class OrganisationUnitGroupSetPopulator
             ownership = new OrganisationUnitGroupSet();
             ownership.setName( "Ownership" );
             ownership.setDescription( "Ownership of organisation unit, examples are private and public" );
-            ownership.setCompulsory( true );
+            ownership.setCompulsory( false );
             
             organisationUnitGroupService.addOrganisationUnitGroupSet( ownership );
         }

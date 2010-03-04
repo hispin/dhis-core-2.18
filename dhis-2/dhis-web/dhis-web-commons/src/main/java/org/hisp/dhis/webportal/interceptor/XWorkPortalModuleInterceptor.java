@@ -30,30 +30,30 @@ package org.hisp.dhis.webportal.interceptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.webportal.menu.MenuState;
-import org.hisp.dhis.webportal.menu.MenuStateManager;
+import org.hisp.dhis.webportal.module.ModuleManager;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: WebWorkPortalMenuInterceptor.java 2869 2007-02-20 14:26:09Z andegje $
+ * @version $Id: WebWorkPortalModuleInterceptor.java 2869 2007-02-20 14:26:09Z andegje $
  */
-public class WebWorkPortalMenuInterceptor
+public class XWorkPortalModuleInterceptor
     implements Interceptor
 {
-    private static final String KEY_MENU_STATE = "menuState";
+    private static final String KEY_MAINTENANCE_MODULES = "maintenanceModules";
+    private static final String KEY_SERVICE_MODULES = "serviceModules";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MenuStateManager menuStateManager;
+    private ModuleManager moduleManager;
 
-    public void setMenuStateManager( MenuStateManager menuStateManager )
+    public void setModuleManager( ModuleManager moduleManager )
     {
-        this.menuStateManager = menuStateManager;
+        this.moduleManager = moduleManager;
     }
 
     // -------------------------------------------------------------------------
@@ -72,22 +72,16 @@ public class WebWorkPortalMenuInterceptor
         
     }
 
-    public String intercept( ActionInvocation invocation )
+    public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {
-        Map<String, MenuState> menuStateMap = new HashMap<String, MenuState>( 1 );
+        Map<String, Object> handle = new HashMap<String, Object>( 2 );
 
-        MenuState menuState = menuStateManager.getMenuState();
+        handle.put( KEY_MAINTENANCE_MODULES, moduleManager.getMaintenanceMenuModules() );
+        handle.put( KEY_SERVICE_MODULES, moduleManager.getServiceMenuModules() );
 
-        if ( menuState == null )
-        {
-            menuState = MenuState.VISIBLE;
-        }
-
-        menuStateMap.put( KEY_MENU_STATE, menuState );
-
-        invocation.getStack().push( menuStateMap );
+        actionInvocation.getStack().push( handle );
         
-        return invocation.invoke();
+        return actionInvocation.invoke();
     }
 }
