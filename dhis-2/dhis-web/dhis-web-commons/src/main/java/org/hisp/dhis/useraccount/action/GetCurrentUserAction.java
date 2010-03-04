@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 public class GetCurrentUserAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -82,7 +81,6 @@ public class GetCurrentUserAction
     public String execute()
         throws Exception
     {
-
         User user = currentUserService.getCurrentUser();
 
         userCredentials = userStore.getUserCredentials( user );

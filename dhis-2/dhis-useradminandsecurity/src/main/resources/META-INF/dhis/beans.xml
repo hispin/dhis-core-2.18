@@ -3,22 +3,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  
-  <!-- 
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="readOnlyTransactionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.AutomaticAccessManager\.isLoginEnabled.*</value>
-      </list>
-    </property>
-  </bean>
-  -->
-  
+    
   <bean id="org.hisp.dhis.security.PasswordManager"
     class="org.hisp.dhis.security.spring.SpringSecurityPasswordManager">
 	<property name="passwordEncoder" ref="passwordEncoder"/>
-    <property name="authenticationManager" ref="authenticationManager"/>
     <property name="usernameSaltSource" ref="usernameSaltSource"/>
   </bean>
   

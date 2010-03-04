@@ -57,7 +57,6 @@ public class AllRequiredRoleVoter
 
         for ( ConfigAttribute attribute : attributes )
         {
-
             if ( this.supports( attribute ) )
             {
                 ++supported;

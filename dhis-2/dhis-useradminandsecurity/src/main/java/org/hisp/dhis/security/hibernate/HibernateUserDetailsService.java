@@ -84,6 +84,10 @@ public class HibernateUserDetailsService
             true, true, true, authorities );
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private GrantedAuthority[] getGrantedAuthorities( UserCredentials credentials )
     {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();

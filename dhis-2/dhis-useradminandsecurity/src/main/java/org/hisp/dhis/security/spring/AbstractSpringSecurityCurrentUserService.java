@@ -27,11 +27,10 @@ package org.hisp.dhis.security.spring;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import  org.springframework.security.Authentication;
-import  org.springframework.security.context.SecurityContext;
-import  org.springframework.security.context.SecurityContextHolder;
-import  org.springframework.security.userdetails.UserDetails;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -42,9 +41,7 @@ public abstract class AbstractSpringSecurityCurrentUserService
 {
     public String getCurrentUsername()
     {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-
-        Authentication authentication = securityContext.getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if ( authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == null )
         {

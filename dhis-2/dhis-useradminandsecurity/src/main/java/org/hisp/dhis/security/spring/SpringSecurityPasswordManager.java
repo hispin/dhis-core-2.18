@@ -27,14 +27,9 @@ package org.hisp.dhis.security.spring;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import  org.springframework.security.Authentication;
-import  org.springframework.security.AuthenticationException;
-import  org.springframework.security.AuthenticationManager;
-import  org.springframework.security.providers.UsernamePasswordAuthenticationToken;
-import  org.springframework.security.providers.encoding.PasswordEncoder;
-import  org.springframework.security.userdetails.UserDetails;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.UsernameSaltSource;
+import org.springframework.security.providers.encoding.PasswordEncoder;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -54,13 +49,6 @@ public class SpringSecurityPasswordManager
         this.passwordEncoder = passwordEncoder;
     }
 
-    private AuthenticationManager authenticationManager;
-
-    public void setAuthenticationManager( AuthenticationManager authenticationManager )
-    {
-        this.authenticationManager = authenticationManager;
-    }
-
     private UsernameSaltSource usernameSaltSource;
 
     public void setUsernameSaltSource( UsernameSaltSource saltSource )
@@ -75,24 +63,5 @@ public class SpringSecurityPasswordManager
     public final String encodePassword( String username, String password )
     {
         return passwordEncoder.encodePassword( password, usernameSaltSource.getSalt( username ) );
-    }
-
-    public final boolean isPasswordValid( String username, String password )
-    {
-        UserDetails userDetails = new  org.springframework.security.userdetails.User( username, password, true, true, true, true,
-            null );
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken( userDetails, userDetails.getPassword() );
-
-        try
-        {
-            authentication = authenticationManager.authenticate( authentication );
-        }
-        catch ( AuthenticationException e )
-        {
-            return false;
-        }
-
-        return true;
     }
 }

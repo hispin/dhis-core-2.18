@@ -36,6 +36,4 @@ public interface PasswordManager
     String ID = PasswordManager.class.getName();
 
     String encodePassword( String username, String password );
-
-    boolean isPasswordValid( String username, String password );
 }
