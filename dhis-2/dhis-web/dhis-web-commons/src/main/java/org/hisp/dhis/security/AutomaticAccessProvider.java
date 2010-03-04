@@ -28,6 +28,9 @@ package org.hisp.dhis.security;
  */
 
 /**
+ * This interface provides a mechanism for accessing the applications in situations
+ * where no users exist in the database.
+ * 
  * @author Torgeir Lorange Ostby
  * @version $Id: AutomaticAccessProvider.java 3160 2007-03-24 20:15:06Z torgeilo $
  */

@@ -36,6 +36,9 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
 /**
+ * Abstract automatic access provider class. Delegates methods initialise() and 
+ * access() to implementing classes.
+ * 
  * @author Torgeir Lorange Ostby
  * @version $Id: AbstractAutomaticAccessProvider.java 6352 2008-11-20 15:49:52Z larshelg $
  */
@@ -66,7 +69,6 @@ public abstract class AbstractAutomaticAccessProvider
 
     protected abstract void initialise();
     
-
     public final void init()
     {
         if ( isEnabled() )
@@ -79,7 +81,7 @@ public abstract class AbstractAutomaticAccessProvider
     // Support methods
     // -------------------------------------------------------------------------
 
-    protected boolean isEnabled()
+    private boolean isEnabled()
     {
         return ( userStore.getAllUsers().size() == 0);
     }

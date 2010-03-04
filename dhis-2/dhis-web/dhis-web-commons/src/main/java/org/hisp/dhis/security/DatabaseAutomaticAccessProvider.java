@@ -34,6 +34,8 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 
 /**
+ * This access provider will put a user with all granted authorities in the database.
+ * 
  * @author Torgeir Lorange Ostby
  * @version $Id: DatabaseAutomaticAccessProvider.java 3513 2007-08-04 16:16:40Z
  *          torgeilo $

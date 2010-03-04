@@ -42,6 +42,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.hisp.dhis.security.AutomaticAccessProvider;
 
 /**
+ * This filter provides access to the system in situations where no users exists
+ * in the database. Access providers can be registered with the accessProviders map.
+ * The access provider to use must be defined as an init parameter in web.xml in
+ * the various web modules.
+ * 
  * @author Torgeir Lorange Ostby
  * @version $Id: AutomaticAccessFilter.java 3160 2007-03-24 20:15:06Z torgeilo $
  */
