@@ -93,7 +93,14 @@ public class ImportInternalProcess
         log.info( "Import process started" );
         
         importService.importData( params, inputStream, getState() );
-        
-        log.info( "Import process completed" );
+
+        getState().setMessage( "import_process_done" );        
+        log.info( "Import process done" );
+    }
+    
+    @Override
+    protected String getErrorMessage()
+    {
+        return "import_process_failed";
     }
 }

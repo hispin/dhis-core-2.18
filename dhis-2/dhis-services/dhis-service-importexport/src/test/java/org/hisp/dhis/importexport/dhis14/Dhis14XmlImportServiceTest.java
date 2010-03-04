@@ -34,7 +34,7 @@ public class Dhis14XmlImportServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testImport()
+    public void testImport() throws Exception
     {
         ImportParams params = new ImportParams();
 

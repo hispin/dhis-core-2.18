@@ -312,11 +312,8 @@ public class DefaultDhis14FileImportService
         if ( params.isAnalysis() )
         {
             state.setOutput( importAnalyser.getImportAnalysis() );
-            System.out.println( "AN " + importAnalyser.getImportAnalysis() );
         }
-        
-        state.setMessage( "import_process_done" );
-        
+                
         Dhis14PeriodUtil.clear();
 
         NameMappingUtil.clearMapping();

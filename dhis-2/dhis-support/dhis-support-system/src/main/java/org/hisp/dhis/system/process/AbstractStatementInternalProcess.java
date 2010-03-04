@@ -29,6 +29,8 @@ package org.hisp.dhis.system.process;
 
 import org.amplecode.cave.process.Process;
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Lars Helge Overland
@@ -36,7 +38,9 @@ import org.amplecode.quick.StatementManager;
  */
 public abstract class AbstractStatementInternalProcess
     implements Process<OutputHolderState> 
-{    
+{
+    private static final Log log = LogFactory.getLog( AbstractStatementInternalProcess.class );
+    
     private OutputHolderState state;
 
     protected OutputHolderState getState()
@@ -78,6 +82,14 @@ public abstract class AbstractStatementInternalProcess
         {
             executeStatements();
         }
+        catch ( Exception ex )
+        {
+            getState().setMessage( getErrorMessage() );
+            
+            log.error( ex );
+            
+            ex.printStackTrace();
+        }
         finally
         {
             statementManager.destroy();
@@ -89,4 +101,9 @@ public abstract class AbstractStatementInternalProcess
      */
     protected abstract void executeStatements()
         throws Exception;
+    
+    /**
+     * Returns a user friendly error message.
+     */
+    protected abstract String getErrorMessage();
 }

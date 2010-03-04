@@ -120,10 +120,12 @@ public class DataMartInternalProcess
     protected void executeStatements()
         throws Exception
     {
-        getState().setMessage( "export_process_started" );
-        
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, getState() );
-        
-        getState().setMessage( "export_process_finished" );
+    }
+    
+    @Override
+    protected String getErrorMessage()
+    {
+        return "export_process_failed";
     }
 }

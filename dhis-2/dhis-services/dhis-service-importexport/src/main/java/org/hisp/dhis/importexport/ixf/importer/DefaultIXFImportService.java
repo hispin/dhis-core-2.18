@@ -258,8 +258,6 @@ public class DefaultIXFImportService
             }
         }
         
-        state.setMessage( "import_process_done" );
-        
         StreamUtils.closeInputStream( zipIn );
         
         reader.closeReader();
