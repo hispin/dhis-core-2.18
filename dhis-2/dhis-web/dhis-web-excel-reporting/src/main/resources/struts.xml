@@ -1259,8 +1259,7 @@
 
 		<action name="uploadExcelTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction">
-			<result name="success" type="chain">
-				listAllExcelTemplates</result>
+			<result name="success" type="redirect">listAllExcelTemplates.action</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 			<interceptor-ref name="fileUploadStack" />
 		</action>

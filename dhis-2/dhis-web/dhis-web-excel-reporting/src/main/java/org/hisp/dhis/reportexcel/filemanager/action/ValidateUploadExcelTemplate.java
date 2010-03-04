@@ -63,8 +63,8 @@ public class ValidateUploadExcelTemplate
     private String uploadContentType; // The content type of the file
 
     private String uploadFileName; // The uploaded file name
-    //
-    // private String fileCaption;// The caption of the file entered by user
+  
+    private String fileCaption;// The caption of the file entered by user
 
     private String message;
 
