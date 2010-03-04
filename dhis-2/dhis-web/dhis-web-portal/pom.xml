@@ -102,7 +102,6 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-	<!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
@@ -127,7 +126,6 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-	-->
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-caseentry</artifactId>
@@ -151,16 +149,12 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-	
-	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reports-national</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-	-->
-<!--	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-validationrule-local-in</artifactId>

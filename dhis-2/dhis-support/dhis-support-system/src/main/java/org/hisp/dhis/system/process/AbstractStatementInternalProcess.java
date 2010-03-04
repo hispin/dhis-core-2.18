@@ -31,6 +31,7 @@ import org.amplecode.cave.process.Process;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.util.DebugUtils;
 
 /**
  * @author Lars Helge Overland
@@ -87,6 +88,7 @@ public abstract class AbstractStatementInternalProcess
             getState().setMessage( getErrorMessage() );
             
             log.error( ex );
+            log.error( DebugUtils.getStackTrace( ex ) );
             
             ex.printStackTrace();
         }

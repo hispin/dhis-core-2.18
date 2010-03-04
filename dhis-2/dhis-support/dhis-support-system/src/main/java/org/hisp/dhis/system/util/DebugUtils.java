@@ -27,6 +27,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,5 +131,16 @@ public class DebugUtils
         }
         
         return false;
+    }
+
+    public static String getStackTrace( Throwable t )
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter( sw, true );
+        t.printStackTrace( pw );
+        pw.flush();
+        sw.flush();
+        
+        return sw.toString();
     }
 }
