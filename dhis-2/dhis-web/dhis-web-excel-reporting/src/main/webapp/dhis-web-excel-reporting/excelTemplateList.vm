@@ -1,6 +1,6 @@
 <h3>$i18n.getString('excel_template_management')</h3>
 
-<form name="uploadForm" id="uploadForm" action="uploadExcelTemplate.action" onsubmit="return validateUploadExcelTemplate(document.getElementById('upload').value, 1);" method="post" enctype="multipart/form-data">
+<form name="uploadForm" id="uploadForm" action="uploadExcelTemplate.action" method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' ):</td>
@@ -65,7 +65,7 @@
 	var mode = '';
 	var i18n_confirm_rename = '$encoder.jsEscape($i18n.getString( 'confirm_rename' ) , "'")';
 	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( 'confirm_delete' ) , "'")';
-	var i18n_confirm_override = '$encoder.jsEscape($i18n.getString( 'confirm_override' ) , "'")';
+	var i18n_confirm_override = '$encoder.jsEscape($i18n.getString( 'override_confirm' ) , "'")';
 	var i18n_confirm_update_system = '$encoder.jsEscape($i18n.getString( 'confirm_update_system' ) , "'")';
 	var i18n_file_exists = '$encoder.jsEscape($i18n.getString( 'file_exists' ) , "'")';
 	var i18n_file_used_system = '$encoder.jsEscape($i18n.getString( 'file_used_system' ) , "'")';
