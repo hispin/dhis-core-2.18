@@ -2889,7 +2889,7 @@ Ext.onReady( function() {
                     layerTree,
                     {
                         title: '<span class="panel-title">Overview map</span>',
-                        html:'<div id="overviewmap" style="height:97px; padding-top:2px;"></div>'
+                        html:'<div id="overviewmap" style="height:97px; padding-top:0px;"></div>'
                     },
                     {
                         title: '<span class="panel-title">Cursor position</span>',
@@ -3020,7 +3020,7 @@ Ext.onReady( function() {
 
     MAP.addControl(new OpenLayers.Control.OverviewMap({
         div: $('overviewmap'),
-        size: new OpenLayers.Size(180, 95),
+        size: new OpenLayers.Size(188, 97),
         minRectSize: 0
     }));
     
