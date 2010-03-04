@@ -38,7 +38,7 @@ function deleteExcelTemplateReceived( xmlObject ) {
 	}
 }
 
-function validateUploadExcelTemplate ( fileName, columnIndex ) {
+function validateUploadExistExcelTemplate ( fileName, columnIndex ) {
 
     var list = byId( 'list' );
     
@@ -221,29 +221,31 @@ function updateReportExcelByTemplateCompleted( xmlObject ) {
 // Validate Upload Excel Template
 //----------------------------------------------------------
 
-function validateUploadExcelTemplate(){
+function validateUploadExcelTemplate( fileName, columnIndex ) {
 
-		$.ajaxFileUpload
-        (
+	return validateUploadExistExcelTemplate( fileName, columnIndex );
+
+	$.ajaxFileUpload
+	(
+		{
+			url:'validateUploadExcelTemplate.action',
+			secureuri:false,
+			fileElementId:'upload',
+			dataType: 'xml',
+			success: function (data, status)
 			{
-				url:'validateUploadExcelTemplate.action',
-				secureuri:false,
-				fileElementId:'upload',
-				dataType: 'xml',
-				success: function (data, status)
-				{
-					data = data.getElementsByTagName('message')[0];
-					var type = data.getAttribute("type");
-					if(type=='error'){                    
-						setMessage(data.firstChild.nodeValue);
-					}else{
-						document.forms['uploadForm'].submit();
-					}
-				},
-				error: function (data, status, e)
-				{
-				
+				data = data.getElementsByTagName('message')[0];
+				var type = data.getAttribute("type");
+				if(type=='error'){                    
+					setMessage(data.firstChild.nodeValue);
+				}else{
+					document.forms['uploadForm'].submit();
 				}
+			},
+			error: function (data, status, e)
+			{
+			
 			}
-        );
-	}
+		}
+	);
+}
