@@ -53,8 +53,7 @@ public abstract class AbstractAutomaticAccessProvider
         this.userStore = userStore;
     }
 
-    @SuppressWarnings( "unused" )
-    private SystemAuthoritiesProvider systemAuthoritiesProvider;
+    protected SystemAuthoritiesProvider systemAuthoritiesProvider;
 
     public void setSystemAuthoritiesProvider( SystemAuthoritiesProvider systemAuthoritiesProvider )
     {
