@@ -33,6 +33,10 @@ import org.springframework.security.providers.UsernamePasswordAuthenticationToke
 import org.springframework.security.userdetails.UserDetails;
 
 /**
+ * This access provider will put an Authentication object with all GrantedAuthorities
+ * in the SecurityContext in any case. This means that any user will be authenticated
+ * and the login effectively bypassed. 
+ * 
  * @author Torgeir Lorange Ostby
  * @version $Id: GhostAutomaticAccessProvider.java 3160 2007-03-24 20:15:06Z torgeilo $
  */
