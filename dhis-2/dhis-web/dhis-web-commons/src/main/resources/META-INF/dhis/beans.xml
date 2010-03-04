@@ -259,7 +259,7 @@
 		</property>
 	</bean>
 
-	<!-- Security -->
+	<!-- Security : Action -->
 
 	<bean id="org.hisp.dhis.security.action.LoggedInAction" class="org.hisp.dhis.security.action.LoggedInAction"
 		scope="prototype">
@@ -269,6 +269,8 @@
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
+	
+    <!-- Security : Filter -->
 	
 	<bean id="httpSessionContextIntegrationFilter"
 		class="org.springframework.security.context.HttpSessionContextIntegrationFilter" />
@@ -305,6 +307,13 @@
 		</property>
 	</bean>
 
+    <bean id="requiredLoginFilter" class="org.hisp.dhis.security.filter.RequiredLoginFilter">
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="loginPageUrl" value="/dhis-web-commons/security/login.html" />
+    </bean>
+
+    <!-- Security : AccessProvider -->
+    
 	<bean id="databaseAutomaticAccessProvider" class="org.hisp.dhis.security.DatabaseAutomaticAccessProvider">
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="systemAuthoritiesProvider"
@@ -318,11 +327,8 @@
 			ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
 	</bean>
 
-	<bean id="requiredLoginFilter" class="org.hisp.dhis.security.filter.RequiredLoginFilter">
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="loginPageUrl" value="/dhis-web-commons/security/login.html" />
-	</bean>
-
+    <!-- Security : AccessDecion/Voter -->
+    
 	<bean id="accessDecisionManager"
 		class="org.hisp.dhis.security.vote.LogicalOrAccessDecisionManager">
 		<property name="accessDecisionManagers">
@@ -376,6 +382,14 @@
 		<property name="requiredAuthority" value="ALL" />
 	</bean>
 
+    <bean id="org.hisp.dhis.security.ActionAccessResolver" class="org.hisp.dhis.security.SpringSecurityActionAccessResolver">
+        <property name="requiredAuthoritiesProvider"
+            ref="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider" />
+        <property name="accessDecisionManager" ref="accessDecisionManager" />
+    </bean>
+
+    <!-- Security : Interceptor -->
+    
 	<bean id="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor"
 		class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor">
 		<property name="accessDecisionManager" ref="accessDecisionManager" />
@@ -386,19 +400,14 @@
 		<property name="actionAccessResolver" ref="org.hisp.dhis.security.ActionAccessResolver" />
 	</bean>
 
-	<bean id="org.hisp.dhis.security.ActionAccessResolver" class="org.hisp.dhis.security.SpringSecurityActionAccessResolver">
-		<property name="requiredAuthoritiesProvider"
-			ref="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider" />
-		<property name="accessDecisionManager" ref="accessDecisionManager" />
-	</bean>
-
+    <!-- Security : AuthorityProvider -->
+    
 	<bean id="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider"
 		class="org.hisp.dhis.security.authority.DefaultRequiredAuthoritiesProvider">
 		<property name="requiredAuthoritiesKey" value="requiredAuthorities" />
 		<property name="globalAttributes">
 			<set>
-				<value>M_MODULE_ACCESS_VOTER_ENABLED
-				</value>
+				<value>M_MODULE_ACCESS_VOTER_ENABLED</value>
 			</set>
 		</property>
 	</bean>
