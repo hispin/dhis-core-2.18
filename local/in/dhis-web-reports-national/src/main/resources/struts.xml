@@ -711,5 +711,49 @@
             <param name="bufferSize">1024</param>
         </result>
 	</action>
+	
+<!-- NBITS : ActivityPlan Reports -->
+
+	<action name="activePlanReportsAnalyser"
+			class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/activePlanReportsForm.vm</param>
+			<param name="menu">/dhis-web-reports/menuWithTreeForActivePlan.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+		    <interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+
+	<action name="generateActivePlanReport"
+		class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction">
+        <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+	</action>
+
+<!-- NBITS : Portal Reports -->
+        <action name="portalReportsAnalyser"
+			class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/portalReportForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForPortalReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+	<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+
+        <action name="generatePortalReport"
+		class="org.hisp.dhis.reports.portal.action.PortalReportsResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+	</action>
+	
   </package>
 </struts>

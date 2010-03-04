@@ -28,6 +28,10 @@
 		
 
        <li><a href = "populateUsers.action">Populate Users</a></li>-->
+       
+        <li><a href = "activePlanReportsAnalyser.action">NBITS Reports</a></li>
+        <li><a href = "portalReportsAnalyser.action">NBITS Portal Reports</a></li>
+       
 								
     </ul>
 </ul>
