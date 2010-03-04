@@ -81,7 +81,7 @@ function addSelectedDataSets()
     //filterAvailableDataElements();
 }
 
-function removeDataSetMembers()
+function removeSelectedDataSets()
 {
 	var list = document.getElementById( 'selectedDataSets' );
 
