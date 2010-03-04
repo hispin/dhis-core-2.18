@@ -68,7 +68,7 @@ public class IXFImportServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testImport()
+    public void testImport() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
         

@@ -113,8 +113,15 @@ public class ReportTableInternalProcess
     // AbstractStatementInternalProcess implementation
     // -------------------------------------------------------------------------
     
+    @Override
     public void executeStatements()
     {
         reportTableService.createReportTables( id, mode, reportingPeriod, parentOrganisationUnitId, organisationUnitId, format );
+    }
+    
+    @Override
+    public String getErrorMessage()
+    {
+        return "report_table_process_failed";
     }
 }

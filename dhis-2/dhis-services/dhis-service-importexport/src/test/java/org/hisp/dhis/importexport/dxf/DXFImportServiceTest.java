@@ -242,9 +242,8 @@ public class DXFImportServiceTest
     // -------------------------------------------------------------------------
     // TODO Improve test on duplicate GroupMemberAssociations
     @Test
-    public void testSimpleImportWithTransform()
+    public void testSimpleImportWithTransform() throws Exception
     {
-
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
         importService.importData( importParams, inputStreamH );
@@ -254,7 +253,7 @@ public class DXFImportServiceTest
 
     @Ignore
     @Test
-    public void testSDMXImportWithTransform()
+    public void testSDMXImportWithTransform() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
@@ -268,7 +267,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportMetaData()
+    public void testImportMetaData() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
@@ -278,7 +277,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportMetaDataFromXML()
+    public void testImportMetaDataFromXML() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
@@ -288,7 +287,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportMetaDataFromGzip()
+    public void testImportMetaDataFromGzip() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
@@ -298,7 +297,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportMetaDataWithPreview()
+    public void testImportMetaDataWithPreview() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, true, false, false );
 
@@ -310,7 +309,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportMetaDataWithPreviewAndDuplicates()
+    public void testImportMetaDataWithPreviewAndDuplicates() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
@@ -330,7 +329,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportMetaDataWithPreviewAndUpdates()
+    public void testImportMetaDataWithPreviewAndUpdates() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
@@ -350,7 +349,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportDataValues()
+    public void testImportDataValues() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
 
@@ -364,7 +363,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportDataValuesWithUpdates()
+    public void testImportDataValuesWithUpdates() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
 
@@ -390,7 +389,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportDataValuesWithPreview()
+    public void testImportDataValuesWithPreview() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, true, true, false );
 
@@ -404,7 +403,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportDataValuesWithPreviewAndDuplicates()
+    public void testImportDataValuesWithPreviewAndDuplicates() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
 
@@ -428,7 +427,7 @@ public class DXFImportServiceTest
     }
 
     @Test
-    public void testImportDataValuesWithPreviewAndUpdates()
+    public void testImportDataValuesWithPreviewAndUpdates() throws Exception
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
 

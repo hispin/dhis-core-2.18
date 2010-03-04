@@ -101,6 +101,7 @@ public class DefaultXMLImportService
 
     @Override
     public void importData( ImportParams params, InputStream inputStream )
+        throws Exception
     {
         importData( params, inputStream, new OutputHolderState() );
     }
@@ -111,106 +112,97 @@ public class DefaultXMLImportService
 
     @Override
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
+        throws Exception
     {
         XMLReader dxfReader;
 
-        try
+        log.info( "Transform importData()" );
+        state.setMessage( "Transform importData()" );
+
+        // the InputStream carrying the XML to be imported
+        InputStream xmlInStream;
+
+        // Importing of data from xml source is a three phase process
+        // Phase 1: Get the XML stream
+        // this could potentially be from a zip, a gzip or uncompressed
+        // dsource
+        BufferedInputStream bufin = new BufferedInputStream( inputStream );
+
+        if ( StreamUtils.isZip( bufin ) )
         {
-            log.info( "Transform importData()" );
-            state.setMessage( "Transform importData()" );
-
-            // the InputStream carrying the XML to be imported
-            InputStream xmlInStream;
-
-            // Importing of data from xml source is a three phase process
-            // Phase 1: Get the XML stream
-            // this could potentially be from a zip, a gzip or uncompressed
-            // dsource
-            BufferedInputStream bufin = new BufferedInputStream( inputStream );
-
-            if ( StreamUtils.isZip( bufin ) )
+            // TODO: need a smart zip archive analyzer
+            xmlInStream = new ZipInputStream( bufin );
+            StreamUtils.getNextZipEntry( (ZipInputStream) xmlInStream );
+        }
+        else
+        {
+            if ( StreamUtils.isGZip( bufin ) )
             {
-                // TODO: need a smart zip archive analyzer
-                xmlInStream = new ZipInputStream( bufin );
-                StreamUtils.getNextZipEntry( (ZipInputStream) xmlInStream );
+                xmlInStream = new GZIPInputStream( bufin );
             }
             else
             {
-                if ( StreamUtils.isGZip( bufin ) )
-                {
-                    xmlInStream = new GZIPInputStream( bufin );
-                }
-                else
-                {
-                    // assume uncompressed xml
-                    xmlInStream = bufin;
-                }
+                // assume uncompressed xml
+                xmlInStream = bufin;
             }
-
-            // Phase 2: get a STaX eventreader for the stream
-            // On the basis of QName of root element perform additional
-            // transformation(s)
-            XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
-            XMLStreamReader2 streamReader = (XMLStreamReader2) factory.createXMLStreamReader( xmlInStream );
-            XMLEventReader2 eventReader = (XMLEventReader2) factory.createXMLEventReader( streamReader );
-
-            // look for the document root element but don't pluck it from the
-            // stream
-            while ( !eventReader.peek().isStartElement() )
-            {
-                eventReader.nextEvent();
-            }
-
-            StartElement root = eventReader.peek().asStartElement();
-            QName rootName = root.getName();
-
-            log.info( "Importing " + rootName.getLocalPart() + " from " + root.getNamespaceURI( rootName.getPrefix() ) );
-
-            if ( rootName.getLocalPart().equals( DXF_ROOT ) )
-            {
-                // native dxf stream - no transform required
-                dxfReader = XMLFactory.getXMLReader( streamReader );
-            }
-            else
-            {
-                InputStream sheetStream = getStyleSheetForRoot( root );
-                if ( sheetStream == null )
-                {
-                    throw new Exception( "no stylesheet for " + rootName );
-                }
-
-                Source sheet = new StreamSource( sheetStream );
-                // rewind stream to reclaim root element
-                bufin.reset();
-                Source source = new StreamSource( bufin );
-                TransformerTask tt = new TransformerTask( sheet, null );
-
-                // make a pipe to capture output of transform
-                XMLPipe pipe = new XMLPipe();
-                XMLEventWriter pipeinput = pipe.getInput();
-                XMLEventReader2 pipeoutput = pipe.getOutput();
-
-                // set result of transform to input of pipe
-                StAXResult result = new StAXResult( pipeinput );
-                tt.transform( source, result, dhisResolver );
-                log.info( "transform successful - importing dxf" );
-
-                // set dxfReader to output of pipe
-                dxfReader = new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
-            }
-            
-            // Phase 3: pass through to dxf convertor
-            converter.read( dxfReader, params, state );
-            dxfReader.closeReader();
-            StreamUtils.closeInputStream( xmlInStream );
-            state.setMessage( "import_process_done" );
-
         }
-        catch ( Exception ex )
+
+        // Phase 2: get a STaX eventreader for the stream
+        // On the basis of QName of root element perform additional
+        // transformation(s)
+        XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
+        XMLStreamReader2 streamReader = (XMLStreamReader2) factory.createXMLStreamReader( xmlInStream );
+        XMLEventReader2 eventReader = (XMLEventReader2) factory.createXMLEventReader( streamReader );
+
+        // look for the document root element but don't pluck it from the
+        // stream
+        while ( !eventReader.peek().isStartElement() )
         {
-            log.error( "XML import error: " + ex );
-            state.setMessage( "import_process_failed" ); // see log for details
+            eventReader.nextEvent();
         }
+
+        StartElement root = eventReader.peek().asStartElement();
+        QName rootName = root.getName();
+
+        log.info( "Importing " + rootName.getLocalPart() + " from " + root.getNamespaceURI( rootName.getPrefix() ) );
+
+        if ( rootName.getLocalPart().equals( DXF_ROOT ) )
+        {
+            // native dxf stream - no transform required
+            dxfReader = XMLFactory.getXMLReader( streamReader );
+        }
+        else
+        {
+            InputStream sheetStream = getStyleSheetForRoot( root );
+            if ( sheetStream == null )
+            {
+                throw new Exception( "no stylesheet for " + rootName );
+            }
+
+            Source sheet = new StreamSource( sheetStream );
+            // rewind stream to reclaim root element
+            bufin.reset();
+            Source source = new StreamSource( bufin );
+            TransformerTask tt = new TransformerTask( sheet, null );
+
+            // make a pipe to capture output of transform
+            XMLPipe pipe = new XMLPipe();
+            XMLEventWriter pipeinput = pipe.getInput();
+            XMLEventReader2 pipeoutput = pipe.getOutput();
+
+            // set result of transform to input of pipe
+            StAXResult result = new StAXResult( pipeinput );
+            tt.transform( source, result, dhisResolver );
+            log.info( "transform successful - importing dxf" );
+
+            // set dxfReader to output of pipe
+            dxfReader = new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
+        }
+        
+        // Phase 3: pass through to dxf convertor
+        converter.read( dxfReader, params, state );
+        dxfReader.closeReader();
+        StreamUtils.closeInputStream( xmlInStream );
     }
 
     // -------------------------------------------------------------------------

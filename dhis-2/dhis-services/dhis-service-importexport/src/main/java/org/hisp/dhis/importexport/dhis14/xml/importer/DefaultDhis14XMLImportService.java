@@ -317,9 +317,6 @@ public class DefaultDhis14XMLImportService
             state.setOutput( importAnalyser.getImportAnalysis() );
         }
 
-        state.setMessage( "import_process_done" );        
-        log.info( "Import process done" );
-        
         StreamUtils.closeInputStream( zipIn );
 
         NameMappingUtil.clearMapping();

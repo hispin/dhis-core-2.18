@@ -185,7 +185,9 @@ public class DefaultDataMartEngine
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, ProcessState state )
     {   
         int count = 0;
-             
+        
+        state.setMessage( "export_process_started" );
+        
         log.info( "Export process started" );
         
         TimeUtils.start();

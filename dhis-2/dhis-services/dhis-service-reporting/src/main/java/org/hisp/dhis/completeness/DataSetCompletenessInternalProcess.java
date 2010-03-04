@@ -104,4 +104,10 @@ public class DataSetCompletenessInternalProcess
     {
         completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, reportTableId );
     }
+    
+    @Override
+    public String getErrorMessage()
+    {
+        return "export_process_failed";
+    }
 }
