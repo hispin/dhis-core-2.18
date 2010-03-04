@@ -59,8 +59,8 @@
 		</property>
 	</bean>
 
-	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor"
-		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor">
+	<bean id="org.hisp.dhis.webportal.interceptor.XWorkPortalParamsInterceptor"
+		class="org.hisp.dhis.webportal.interceptor.XWorkPortalParamsInterceptor">
 		<property name="standardParams">
 			<set>
 				<value>page</value>
@@ -76,8 +76,8 @@
 		</property>
 	</bean>
 
-	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor"
-		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor">
+	<bean id="org.hisp.dhis.webportal.interceptor.XWorkPortalModuleInterceptor"
+		class="org.hisp.dhis.webportal.interceptor.XWorkPortalModuleInterceptor">
 		<property name="moduleManager">
 			<ref local="org.hisp.dhis.webportal.module.ModuleManager" />
 		</property>
@@ -99,15 +99,15 @@
 		</property>
 	</bean>
 
-	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor"
-		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor">
+	<bean id="org.hisp.dhis.webportal.interceptor.XWorkPortalMenuInterceptor"
+		class="org.hisp.dhis.webportal.interceptor.XWorkPortalMenuInterceptor">
 		<property name="menuStateManager">
 			<ref local="org.hisp.dhis.webportal.menu.MenuStateManager" />
 		</property>
 	</bean>
 
-	<bean id="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor"
-		class="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor">
+	<bean id="org.hisp.dhis.webportal.interceptor.XWorkPortalUserInterceptor"
+		class="org.hisp.dhis.webportal.interceptor.XWorkPortalUserInterceptor">
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService" />
 		</property>
@@ -318,14 +318,6 @@
 			ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
 	</bean>
 
-	<!--
-		<bean
-		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-		<property name="advice" ref="readWriteTransactionInterceptor"/>
-		<property name="pattern" value=".*\.AutomaticAccessProvider\.init.*"/>
-		</bean>
-	-->
-
 	<bean id="requiredLoginFilter" class="org.hisp.dhis.security.filter.RequiredLoginFilter">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="loginPageUrl" value="/dhis-web-commons/security/login.html" />
@@ -384,8 +376,8 @@
 		<property name="requiredAuthority" value="ALL" />
 	</bean>
 
-	<bean id="org.hisp.dhis.security.intercept.WebWorkSecurityInterceptor"
-		class="org.hisp.dhis.security.intercept.WebWorkSecurityInterceptor">
+	<bean id="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor"
+		class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor">
 		<property name="accessDecisionManager" ref="accessDecisionManager" />
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="validateConfigAttributes" value="false" />

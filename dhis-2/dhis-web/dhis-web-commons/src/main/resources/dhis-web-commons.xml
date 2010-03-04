@@ -49,17 +49,17 @@
 				class="org.hisp.dhis.interceptor.StyleInterceptor" />
 
 			<interceptor name="portalParamsInterceptor"
-				class="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor" />
+				class="org.hisp.dhis.webportal.interceptor.XWorkPortalParamsInterceptor" />
 			<interceptor name="portalModuleInterceptor"
-				class="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor" />
+				class="org.hisp.dhis.webportal.interceptor.XWorkPortalModuleInterceptor" />
 			<interceptor name="portalMenuInterceptor"
-				class="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor" />
+				class="org.hisp.dhis.webportal.interceptor.XWorkPortalMenuInterceptor" />
 			<interceptor name="organisationUnitTreeInterceptor"
 				class="org.hisp.dhis.ouwt.interceptor.OrganisationUnitTreeInterceptor" />
 			<interceptor name="portalUserInterceptor"
-				class="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor" />
+				class="org.hisp.dhis.webportal.interceptor.XWorkPortalUserInterceptor" />
 			<interceptor name="securityInterceptor"
-				class="org.hisp.dhis.security.intercept.WebWorkSecurityInterceptor" />
+				class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" />
 
 			<interceptor-stack name="commonInterceptors">
 				<interceptor-ref name="staticParams" />
