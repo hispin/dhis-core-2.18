@@ -227,7 +227,6 @@ public class ValidatePatientAction
             }
         }
         
-        
         // Check Under age information
         
         if( underAge )
