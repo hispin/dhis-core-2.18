@@ -316,15 +316,13 @@
     
 	<bean id="databaseAutomaticAccessProvider" class="org.hisp.dhis.security.DatabaseAutomaticAccessProvider">
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-		<property name="systemAuthoritiesProvider"
-			ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
+		<property name="systemAuthoritiesProvider" ref="simpleSystemAuthoritiesProvider" />
 		<property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
 	</bean>
 
 	<bean id="ghostAutomaticAccessProvider" class="org.hisp.dhis.security.GhostAutomaticAccessProvider">
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-		<property name="systemAuthoritiesProvider"
-			ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
+		<property name="systemAuthoritiesProvider" ref="simpleSystemAuthoritiesProvider" />
 	</bean>
 
     <!-- Security : AccessDecion/Voter -->

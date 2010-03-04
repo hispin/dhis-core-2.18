@@ -88,11 +88,7 @@ public abstract class AbstractAutomaticAccessProvider
 
     protected Collection<String> getAuthorities()
     {
-        //return systemAuthoritiesProvider.getSystemAuthorities();
-
-        HashSet<String> authorities = new HashSet<String>( 1 );
-        authorities.add( "ALL" );
-        return authorities;
+        return systemAuthoritiesProvider.getSystemAuthorities();
     }
 
     protected GrantedAuthority[] getGrantedAuthorities()
