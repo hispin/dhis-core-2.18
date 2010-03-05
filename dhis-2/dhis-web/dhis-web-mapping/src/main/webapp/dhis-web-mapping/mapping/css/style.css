@@ -1,4 +1,6 @@
-﻿/* Ext */
+﻿body {background-color: white }
+
+/* Ext */
 .ext-gecko .x-window-body .x-form-item {
 	overflow: hidden;
 }
