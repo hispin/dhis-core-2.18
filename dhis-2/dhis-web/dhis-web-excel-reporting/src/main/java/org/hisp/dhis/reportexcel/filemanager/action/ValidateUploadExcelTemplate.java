@@ -64,8 +64,6 @@ public class ValidateUploadExcelTemplate
 
     private String uploadFileName; // The uploaded file name
   
-    private String fileCaption;// The caption of the file entered by user
-
     private String message;
 
     private I18n i18n;

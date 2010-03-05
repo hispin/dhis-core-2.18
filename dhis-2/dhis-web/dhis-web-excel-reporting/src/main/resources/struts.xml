@@ -31,7 +31,6 @@
 			</result>
 		</action>
 
-
 		<!-- SYSTEM CONFIGURATION ACTION -->
 
 		<action name="getConfiguration"
@@ -1046,6 +1045,15 @@
 
 		<!-- IMPORT DATA -->
 
+		<action name="validateUploadExcelImport"
+			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate">
+			<interceptor-ref name="fileUploadStack" />
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
 		<action name="uploadExcelImport"
 			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
 			<result name="success" type="redirect">getImportingParams.action
@@ -1061,7 +1069,7 @@
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,
-				javascript/commons.js,javascript/imports.js</param>
+				javascript/commons.js,javascript/imports.js, javascript/ajaxfileupload.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
 

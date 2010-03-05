@@ -31,7 +31,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -39,7 +38,9 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemGroupComparator;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
+import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Chau Thu Tran
@@ -59,6 +60,8 @@ public class GetImportingParamsAction
 
     private SelectionManager selectionManager;
 
+    private CurrentUserService currentUserService;
+
     // -------------------------------------------------------------------------
     // Inputs && Outputs
     // -------------------------------------------------------------------------
@@ -74,6 +77,11 @@ public class GetImportingParamsAction
     public void setSelectionManager( SelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     public void setExcelItemService( ExcelItemService excelItemService )
@@ -92,11 +100,6 @@ public class GetImportingParamsAction
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
-    }
-
-    public Collection<ExcelItemGroup> getExcelItemGroups()
-    {
-        return excelItemGroups;
     }
 
     private File fileExcel;
@@ -142,18 +145,7 @@ public class GetImportingParamsAction
         // Load and sort ExcelItemGroups
         // ---------------------------------------------------------------------
 
-        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService
-            .getExcelItemGroupsByOrganisationUnit( organisationUnit ) );
-
-        Collections.sort( excelItemGroups, new Comparator<ExcelItemGroup>()
-        {
-
-            @Override
-            public int compare( ExcelItemGroup arg0, ExcelItemGroup arg1 )
-            {
-                return arg0.getName().compareTo( arg1.getName() );
-            }
-        } );
+        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getExcelItemGroups( organisationUnit ) );
 
         return SUCCESS;
     }

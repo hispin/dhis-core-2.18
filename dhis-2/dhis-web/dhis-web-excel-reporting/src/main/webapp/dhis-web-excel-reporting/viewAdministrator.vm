@@ -1,14 +1,14 @@
-﻿<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
-<h3>$i18n.getString( "administration" )</h3>
-<ul>
-	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>		
-	<li><a href="listReportExcel.action">$i18n.getString( "reports" )&nbsp;</a></li>		
-	<li><a href="listDataEntryStatus.action">$i18n.getString( "data_status" )&nbsp;</a></li>
-	<li><a href="javascript: cleanUp();">$i18n.getString( "clean_up" )&nbsp;</a></li>
-	<li><a href="listAllExcelItemGroup.action">$i18n.getString( "excel_item" )&nbsp;</a></li>
-	<li><a href="listAllExcelTemplates.action">$i18n.getString( "excel_template_management" )&nbsp;</a></li>
-</ul>
+﻿<h3>$i18n.getString( "administration" )</h3>
 
+<ul class="introList">
+    #introListItem( "getConfiguration.action" "configuration" )
+    #introListItem( "listReportExcel.action" "reports" )
+    #introListItem( "listDataEntryStatus.action" "data_status" )
+	#introListItem( "listAllExcelTemplates.action" "excel_item" )
+    #introListItem( "listAllExcelTemplates.action" "excel_template_management" )
+	#introListItem( "javascript: cleanUp();" "clean_up" )
+
+</ul>
 <script>
 	function go(action){
 		window.location = action;
@@ -24,3 +24,4 @@
 		setMessage(xmlObject.firstChild.nodeValue);
 	}
 </script>
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
