@@ -26,10 +26,13 @@
  */
 package org.hisp.dhis.patient.action.patientattribute;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -71,7 +74,13 @@ public class SavePatientAttributeValueAction
     {
         this.patientAttributeValueService = patientAttributeValueService;
     }
+    
+    private PatientAttributeOptionService patientAttributeOptionService;
 
+    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
+    {
+        this.patientAttributeOptionService = patientAttributeOptionService;
+    }
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -136,9 +145,20 @@ public class SavePatientAttributeValueAction
             {
 
                 LOG.debug( "Adding PatientAttributeValue, value added" );
-
-                patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
-
+                
+                if( patientAttribute.getValueType().equalsIgnoreCase( PatientAttribute.TYPE_COMBO ) )
+                {
+                    PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt( value,0 ) );
+                    if( option != null )
+                    {
+                        patientAttributeValue = new PatientAttributeValue( patientAttribute, patient );
+                        patientAttributeValue.setPatientAttributeOption( option );
+                        patientAttributeValue.setValue( option.getName() );
+                    }
+                }else
+                {
+                    patientAttributeValue = new PatientAttributeValue( patientAttribute, patient, value );
+                }
                 patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
             }
         }
@@ -146,11 +166,23 @@ public class SavePatientAttributeValueAction
         {
             LOG.debug( "Updating PatientAttributeValue, value added/changed" );
 
-            patientAttributeValue.setValue( value );
+            if( patientAttribute.getValueType().equalsIgnoreCase( PatientAttribute.TYPE_COMBO ) )
+            {
+                PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt( value, 0 ) );
+                if( option != null )
+                {
+                    patientAttributeValue.setPatientAttributeOption( option );
+                    patientAttributeValue.setValue( option.getName() );
+                }
+            }else
+            {
+                patientAttributeValue.setValue( value );
+            }
 
             patientAttributeValueService.updatePatientAttributeValue( patientAttributeValue );
         }
 
         return SUCCESS;
     }
+
 }

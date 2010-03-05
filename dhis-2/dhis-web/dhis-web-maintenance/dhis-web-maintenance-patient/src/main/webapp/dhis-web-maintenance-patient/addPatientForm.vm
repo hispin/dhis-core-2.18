@@ -131,15 +131,15 @@
 		                    <option value="false" selected="selected">$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
-		                <input type="text" id="attr$attribute.id"  name="attr$attribute.id" style="width:30em" class=' #validate( "default"  $attribute.mandatory )'>
-		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
-		                    <script type="text/javascript">
-		                        Calendar.setup({
-		                            inputField     :    "attr$attribute.id",      // id of the input field
-		                            ifFormat       :    "$i18n.getString('format.date.label')",       // format of the input field
-		                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
-		                        });
-		                    </script>                    
+	                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+	                	<input type="text" id="attr$attribute.id"  name="attr$attribute.id" style="width:30em" class=' #validate( "default"  $attribute.mandatory )'>
+	                    <script type="text/javascript">
+	                        Calendar.setup({
+	                            inputField     :    "attr$attribute.id",      // id of the input field
+	                            ifFormat       :    "$i18n.getString('format.date.label')",       // format of the input field
+	                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
+	                        });
+	                    </script>                    
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id" style="width:30em" class=' #validate( "default"  $attribute.mandatory )' >
 							 <option value="">[$i18n.getString( "please_select" )]</option>
@@ -171,8 +171,8 @@
 		                    <option value="false" >$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
-		                <input type="text" id="$attribute.id"  style="width:30em" name="attr$attribute.id"  class=' #validate( "default"  $attribute.mandatory )' >
 		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+		                	<input type="text" id="$attribute.id"  style="width:30em" name="attr$attribute.id"  class=' #validate( "default"  $attribute.mandatory )' >
 		                    <script type="text/javascript">
 		                        Calendar.setup({
 		                            inputField     :    "attr$attribute.id",      // id of the input field
