@@ -3,6 +3,7 @@ var numberOfSelects = 0;
 
 function selectAllAtLevel()
 {
+	setMessage( i18n_loading );
 	var request = new Request();
     request.setCallbackSuccess( selectReceived );
     request.send( 'selectLevel.action?level=' + getListValue( 'levelList' ) );
@@ -10,6 +11,7 @@ function selectAllAtLevel()
 
 function unselectAllAtLevel()
 {
+	setMessage( i18n_loading );
 	var request = new Request();
     request.setCallbackSuccess( selectReceived );
     request.send( 'unselectLevel.action?level=' + getListValue( 'levelList' ) );
@@ -17,21 +19,24 @@ function unselectAllAtLevel()
 
 function selectGroup()
 {
-    var request = new Request();
+	setMessage( i18n_loading );
+	var request = new Request();
     request.setCallbackSuccess( selectReceived );
     request.send( 'selectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
 }
 
 function unselectGroup()
 {
-    var request = new Request();
+	setMessage( i18n_loading );
+	var request = new Request();
     request.setCallbackSuccess( selectReceived );
     request.send( 'unselectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
 }
 
 function unselectAll()
 {
-    var request = new Request();
+	setMessage( i18n_loading );
+	var request = new Request();
     request.setCallbackSuccess( selectReceived );
     request.send( 'unselectAll.action' );
 }
@@ -39,6 +44,7 @@ function unselectAll()
 function selectReceived()
 {
     selectionTree.buildSelectionTree();
+    hideMessage();
 }
 
 function treeClicked()
