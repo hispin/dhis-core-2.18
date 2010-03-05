@@ -88,6 +88,13 @@ public class AboutAction
         return version;
     }
 
+    private String revision;
+
+    public String getRevision()
+    {
+        return revision;
+    }
+
     private Date buildTime;
 
     public Date getBuildTime()
@@ -155,6 +162,8 @@ public class AboutAction
         properties.load( in );
 
         version = properties.getProperty( "build.version" );
+
+        revision = properties.getProperty( "build.revision" );
 
         String buildTime = properties.getProperty( "build.time" );
 
