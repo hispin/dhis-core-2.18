@@ -26,8 +26,11 @@
                   <format property="now" pattern="yyyy-MM-dd HH:mm:ss"/>
                 </tstamp>
                 <mkdir dir="${project.build.outputDirectory}"/>
+                <exec executable="bzr" outputproperty="revision">
+                      <arg value="revno"/>
+                </exec>
                 <echo file="${project.build.outputDirectory}/build.properties"
-                  message="build.version = ${version}&#10;build.time = ${now}&#10;"/>
+                  message="build.version = ${version}&#10;build.time = ${now}&#10;build.revision = ${revision}&#10;"/>
               </tasks>
             </configuration>
             <goals>
