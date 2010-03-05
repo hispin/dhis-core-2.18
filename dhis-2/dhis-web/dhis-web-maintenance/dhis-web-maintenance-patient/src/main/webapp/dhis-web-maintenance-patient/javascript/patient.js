@@ -515,7 +515,7 @@ function checkDuplicateCompleted( messageElement )
 /**
  * Show list patient duplicate  by jQuery thickbox plugin
  * @param rootElement : root element of the response xml
- * @param validate  :  is TRUE if this method is called in validation method  
+ * @param validate  :  is TRUE if this method is called from validation method  
  */
 function showListPatientDuplicate(rootElement, validate)
 {
@@ -564,6 +564,7 @@ function showListPatientDuplicate(rootElement, validate)
 		tb_show( message, "#TB_inline?height=500&width=500&inlineId=hiddenModalContent", null);
 	}
 }
+
 function validatePatient()
 {
 	if( jQuery("#id").val() )
@@ -571,6 +572,12 @@ function validatePatient()
 	else validateAddPatient();
 }
 
+//  ------------------------------
+//  checked = TRUE  : show pop up
+//  ------------------------------
+//  checked = FALSE : find all identifier which is disabled, remove its value and enable it
+//  This happen when user chose a representative, but now they dont want this patient to be under age anymore
+//  TODO : if user created a new person, should we delete that person in this case ?
 function toggleUnderAge(this_)
 {
 	if( jQuery(this_).is(":checked"))

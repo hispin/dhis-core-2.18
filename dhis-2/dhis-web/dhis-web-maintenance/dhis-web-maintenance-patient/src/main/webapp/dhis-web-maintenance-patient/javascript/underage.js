@@ -1,5 +1,7 @@
-jQuery(document).ready(function(){
+jQuery(document).ready(function()
+{
 	jQuery("#tabs").tabs();
+	
 	jQuery("#searchForm").validate({
 		 meta:"validate"
 		,errorElement:"td"
@@ -13,6 +15,7 @@ jQuery(document).ready(function(){
 			,searchValue		:"required"
 		}
 	});
+	
 	jQuery("#addRepresentativeForm").validate({
 		 meta:"validate"
 		,errorElement:"td"
@@ -20,9 +23,26 @@ jQuery(document).ready(function(){
 						{
 							validateAddRepresentative();
 						}
+		,rules : {
+			birthDate :{required:true,dateISO:true,datelessthanequaltoday:true}
+		}
 	});
+	
 	jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-	jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
+	
+	// Esc key for jQuery thickbox
+	// jQuery thickbox already has this event
+	// but somehow it's over written by jQuery tabs plugin
+	document.onkeydown = function(e){ 	
+		if (e == null) { // ie
+			keycode = event.keyCode;
+		} else { // mozilla
+			keycode = e.which;
+		}
+		if(keycode == 27){ // close
+			window.parent.tb_remove();
+		}
+	}
 });
 
 
@@ -38,7 +58,6 @@ function validateAddRepresentative()
 	{
 		alert(i18n_please_select_relationshipType);
 	}
-	
 	
 	var params = 
 				'&firstName=' + getFieldValue( 'firstName' ) 
@@ -181,6 +200,7 @@ function showPersons( divContainer, xmlElement )
 	}
 }
 
+// Will be call after save new person successfully
 function autoChoosePerson(xmlElement)
 {
 	jQuery("#tab-2").html("<center><strong>"+i18n_add_person_successfully+"</strong></center>");
@@ -199,6 +219,7 @@ function autoChoosePerson(xmlElement)
 	
 }
 
+// Set Representative information to parent page.
 function choosePerson(this_)
 {
 	

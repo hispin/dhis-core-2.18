@@ -3,6 +3,9 @@
 div#listPatients {font-size: 0.8em}
 div#listPatients label { font-weight: bold;}  
 div#listPatients td {padding: 2px 5px}
+div#popupHeader {text-align: center}
+span#popupHeaderText{position: relative;}
+span#popupHeaderText {left:0}
 </style>
 <!-- TAB Header -->
 <div id="tabs">
@@ -41,6 +44,7 @@ div#listPatients td {padding: 2px 5px}
 		<td>$i18n.getString("identifier_type")</td>
 		<td>
 			<select name="identifierTypeId" id="identifierTypeId" >
+				<option value="">[$i18n.getString( "please_select" )]</option>       
 				#foreach($identifierType in $identifierTypes)
 					<option value="$identifierType.id">$identifierType.name</option>
 				#end
@@ -52,6 +56,7 @@ div#listPatients td {padding: 2px 5px}
 		<td>$i18n.getString("attribute")</td>
 		<td>
 			<select name="attributeId" id="attributeId" >
+				<option value="">[$i18n.getString( "please_select" )]</option>       
 				#foreach($attribute in $attributes)
 					<option value="$attribute.id">$attribute.name</option>
 				#end

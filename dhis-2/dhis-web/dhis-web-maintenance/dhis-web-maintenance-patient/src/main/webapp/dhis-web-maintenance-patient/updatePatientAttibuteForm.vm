@@ -43,11 +43,11 @@
     <tbody>
       <tr>
         <td>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
-        <td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $patientAttribute.name )" style="width:30em" class="{validate:{required:true,rangelength:[4,35],alphanumeric:true}}"></td>
+        <td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $patientAttribute.name )" style="width:30em" class="{validate:{required:true,rangelength:[2,35]}}"></td>
       </tr>   
       <tr>
         <td>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
-        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttribute.description )" style="width:30em" class="{validate:{required:true,minlength:4,alphanumeric:true}}"></td>
+        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttribute.description )" style="width:30em" class="{validate:{required:true,minlength:2}}"></td>
       </tr>
       
       <tr>
