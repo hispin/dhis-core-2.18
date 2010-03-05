@@ -66,7 +66,29 @@ public class AddProgramAction
     public void setDescription( String description )
     {
         this.description = description;
-    }    
+    }   
+    
+    /**
+     * Description of Date of Enrollment
+     * This description is differ from each program
+     */
+    private String dateOfEnrollmentDescription;
+ 
+    public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
+    {
+        this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
+    }
+    
+    /**
+     * Description of Date of Incident
+     * This description is differ from each program
+     */
+    private String dateOfIncidentDescription;
+    
+    public void setDateOfIncidentDescription( String dateOfIncidentDescription )
+    {
+        this.dateOfIncidentDescription = dateOfIncidentDescription;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -80,6 +102,8 @@ public class AddProgramAction
                 
         program.setName( nameField );
         program.setDescription( description );
+        program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
+        program.setDateOfIncidentDescription( dateOfIncidentDescription );
         
 
         programService.saveProgram( program );

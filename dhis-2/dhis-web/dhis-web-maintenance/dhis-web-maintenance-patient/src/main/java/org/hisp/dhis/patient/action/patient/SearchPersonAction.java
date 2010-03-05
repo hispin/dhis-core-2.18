@@ -63,7 +63,7 @@ public class SearchPersonAction implements Action
     
     private Integer attributeId;
     
-    private String value;
+    private String searchValue;
     
     // -------------------------------------------------------------------------
     // Output
@@ -80,24 +80,28 @@ public class SearchPersonAction implements Action
     public String execute()
         throws Exception
     {
-        patients =  patientService.searchPatient( identifierTypeId, attributeId, value );
+        patients =  patientService.searchPatient( identifierTypeId, attributeId, searchValue );
         
-        for ( Patient p : patients )
+        
+        
+        
+        if( patients != null && patients.size() > 0 )
         {
-            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-                .getPatientAttributeValues( p );
-            
-            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+            for ( Patient p : patients )
             {
-                patientAttributeValueMap
-                    .put( p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(),
-                        patientAttributeValue.getValue() );
+                Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+                    .getPatientAttributeValues( p );
+                
+                for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+                {
+                    patientAttributeValueMap
+                        .put( p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(),
+                            patientAttributeValue.getValue() );
+                }
             }
-        }
-        
+        }        
         return SUCCESS;
     }
-    
 
     // -------------------------------------------------------------------------
     // Getter/Setter
@@ -113,11 +117,6 @@ public class SearchPersonAction implements Action
         this.attributeId = attributeId;
     }
 
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
@@ -128,16 +127,20 @@ public class SearchPersonAction implements Action
         return patients;
     }
 
-
     public Map<String, String> getPatientAttributeValueMap()
     {
         return patientAttributeValueMap;
     }
 
-
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+
+    public void setSearchValue( String searchValue )
+    {
+        this.searchValue = searchValue;
     }
 
 

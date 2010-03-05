@@ -35,22 +35,22 @@
     <tbody>
       <tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $program.name )" style="width:30em" class="{validate:{required:true,rangelength:[4,35],alphanumeric:true}}"></td>
+		<td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $program.name )" style="width:30em" class="{validate:{required:true,rangelength:[2,35]}}"></td>
 		<td></td>
 	  </tr>	  
       <tr>
 		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $program.description )" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $program.description )" style="width:30em" class="{validate:{required:true,minlength:2}}"></td>
 		<td></td>
 	  </tr>	
   	  <tr>
 		<td><label>$i18n.getString( "dateOfEnrollmentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$encoder.htmlEncode( $program.dateOfEnrollmentDescription )" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$encoder.htmlEncode( $program.dateOfEnrollmentDescription )" style="width:30em" class="{validate:{required:true,minlength:2}}"></td>
 		<td></td>
 	  </tr>	
 	  <tr>
 		<td><label>$i18n.getString( "dateOfIncidentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$encoder.htmlEncode( $program.dateOfIncidentDescription )" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$encoder.htmlEncode( $program.dateOfIncidentDescription )" style="width:30em" class="{validate:{required:true,minlength:2}}"></td>
 		<td></td>
 	  </tr>	    
       <tr>
