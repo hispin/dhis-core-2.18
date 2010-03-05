@@ -27,8 +27,6 @@ package org.hisp.dhis.caseentry.screen;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
