@@ -48,7 +48,12 @@ function saveBoolean( patientId, patientAttributeId, selectedOption )
 	var valueSaver = new ValueSaver( patientId, patientAttributeId, selectedOption.options[selectedOption.selectedIndex].value, '#ccffcc', selectedOption );
 	valueSaver.save();
 }
-
+function saveCombo( patientId, patientAttributeId, selectedOption )
+{
+	selectedOption.style.backgroundColor = '#ffffcc';
+	var valueSaver = new ValueSaver( patientId, patientAttributeId, selectedOption.options[selectedOption.selectedIndex].value, '#ccffcc', selectedOption );
+	valueSaver.save();
+}
 
 // ------------------------------------------------------------------------------
 // Saver objects
@@ -155,14 +160,19 @@ function ValueSaver( patientId_, patientAttributeId_, value_, resultColor_, sele
      
 		var element;
      
-		if ( type == 'bool' )
+		if ( type == 'YES/NO' )
 		{
 			element = document.getElementById( 'value[' + patientAttributeId + '].boolean' );
-		}		
+		}	
+		else if ( type == "COMBO")
+		{           
+			element = document.getElementById( 'value[' + patientAttributeId + '].combo' );                      
+		}
 		else
 		{           
 			element = document.getElementById( 'value[' + patientAttributeId + '].value' );                      
 		}
+		
              
 		element.style.backgroundColor = color;
 	}

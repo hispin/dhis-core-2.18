@@ -237,11 +237,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction"
 		class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<!--
-			<property name="patientAttributeService"
+		<property name="patientService"
+			 ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		-->
 		<property name="patientAttributeGroupService"
 			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		<property name="patientAttributeValueService"
@@ -257,6 +256,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 	</bean>
 
 	<bean

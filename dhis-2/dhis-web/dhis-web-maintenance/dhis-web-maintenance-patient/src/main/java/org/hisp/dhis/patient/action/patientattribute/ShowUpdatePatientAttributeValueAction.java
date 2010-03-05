@@ -36,6 +36,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -60,13 +61,13 @@ public class ShowUpdatePatientAttributeValueAction
         this.patientService = patientService;
     }
 
-    // private PatientAttributeService patientAttributeService;
-    //
-    // public void setPatientAttributeService( PatientAttributeService
-    // patientAttributeService )
-    // {
-    // this.patientAttributeService = patientAttributeService;
-    // }
+     private PatientAttributeService patientAttributeService;
+    
+     public void setPatientAttributeService( PatientAttributeService
+     patientAttributeService )
+     {
+     this.patientAttributeService = patientAttributeService;
+     }
 
     private PatientAttributeGroupService patientAttributeGroupService;
 
@@ -100,11 +101,11 @@ public class ShowUpdatePatientAttributeValueAction
         return patient;
     }
 
-    Collection<PatientAttribute> patientAttributes;
+    Collection<PatientAttribute> patientNoGroupAttributes;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Collection<PatientAttribute> getPatientNoGroupAttributes()
     {
-        return patientAttributes;
+        return patientNoGroupAttributes;
     }
 
     private Map<Integer, PatientAttributeValue> patientAttributeValueMap;
@@ -147,19 +148,21 @@ public class ShowUpdatePatientAttributeValueAction
     {
         patient = patientService.getPatient( id );
 
-        if ( patientAttributeGroups == null )
+//        if ( patientAttributeGroups == null )
             patientAttributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
 
-        if ( patientAttributeGroupId != 0 )
-        {
-            patientAttributes = new ArrayList<PatientAttribute>();
-
-            patientAttributes = patientAttributeGroupService.getPatientAttributeGroup(
-                patientAttributeGroupId ).getAttributes();
-        }
-
-        // patientAttributes =
-        // patientAttributeService.getAllPatientAttributes();
+//        if ( patientAttributeGroupId != 0 )
+//        {
+//            patientAttributes = new ArrayList<PatientAttribute>();
+//
+//            patientAttributes = patientAttributeGroupService.getPatientAttributeGroup(
+//                patientAttributeGroupId ).getAttributes();
+//        }else 
+//        {
+//             patientAttributes = patientAttributeService.getAllPatientAttributes();
+//        }
+            
+        patientNoGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patient );
