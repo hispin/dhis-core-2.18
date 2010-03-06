@@ -2,7 +2,7 @@ package org.hisp.dhis.useraudit;
 
 import java.util.Date;
 
-public class FailedLogin
+public class LoginFailure
 {
     private int id;
     
@@ -10,11 +10,11 @@ public class FailedLogin
     
     private Date date;
     
-    public FailedLogin()
+    public LoginFailure()
     {
     }
     
-    public FailedLogin( String username, Date date )
+    public LoginFailure( String username, Date date )
     {
         this.username = username;
         this.date = date;

@@ -4,8 +4,8 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.useraudit.FailedLogin" table="failedlogin">
-    <id name="id" column="failedloginid">
+  <class name="org.hisp.dhis.useraudit.LoginFailure" table="loginfailure">
+    <id name="id" column="loginfailureid">
       <generator class="native"/>
     </id>        
     <property name="username"/>

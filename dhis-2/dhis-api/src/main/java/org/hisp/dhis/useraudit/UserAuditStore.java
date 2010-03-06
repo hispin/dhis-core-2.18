@@ -7,9 +7,11 @@ public interface UserAuditStore
 {
     final String ID = UserAuditStore.class.getName();
     
-    void saveFailedLogin( FailedLogin login );
+    void saveLoginFailure( LoginFailure login );
     
-    Collection<FailedLogin> getAllFailedLogins();
+    Collection<LoginFailure> getAllLoginFailures();
     
-    int getFailedLogins( String username, Date date );
+    void deleteLoginFailures( String username );
+    
+    int getLoginFailures( String username, Date date );
 }

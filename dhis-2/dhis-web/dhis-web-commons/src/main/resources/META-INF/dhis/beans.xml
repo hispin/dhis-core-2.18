@@ -268,8 +268,6 @@
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="userAuditService"
-			ref="org.hisp.dhis.useraudit.UserAuditService" />
 	</bean>
 		
     <!-- Security : Filter -->
@@ -319,6 +317,12 @@
         <property name="loginPageUrl" value="/dhis-web-commons/security/login.html" />
     </bean>
 
+    <!-- Security : Listener -->
+	
+    <bean id="authenticationListener" class="org.hisp.dhis.security.listener.AuthenticationListener">       
+        <property name="userAuditService" ref="org.hisp.dhis.useraudit.UserAuditService" />
+    </bean>
+    
     <!-- Security : AccessProvider -->
     
 	<bean id="databaseAutomaticAccessProvider" class="org.hisp.dhis.security.DatabaseAutomaticAccessProvider">
