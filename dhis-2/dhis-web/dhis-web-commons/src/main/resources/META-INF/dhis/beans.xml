@@ -23,9 +23,9 @@
 		
     <bean id="filterChainProxy" class="org.springframework.security.util.FilterChainProxy">
         <sec:filter-chain-map path-type="ant">
-        <sec:filter-chain pattern="/dhis-web-commons/security/**"  filters="none"/>
-        <sec:filter-chain pattern="/dhis-web-commons/util/**"  filters="none"/>
-        <sec:filter-chain pattern="/dhis-web-commons/css/**"  filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/security/**" filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/util/**" filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/css/**" filters="none"/>
         <sec:filter-chain pattern="/**"
             filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,requiredLoginFilter"/>
         </sec:filter-chain-map>
@@ -268,8 +268,10 @@
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="userAuditService"
+			ref="org.hisp.dhis.useraudit.UserAuditService" />
 	</bean>
-	
+		
     <!-- Security : Filter -->
 	
 	<bean id="httpSessionContextIntegrationFilter"
@@ -288,10 +290,15 @@
 		<constructor-arg value="/" />
 		<constructor-arg>
 			<list>
+				<ref bean="userAuditLogoutFilter" />
 				<bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler" />
 			</list>
 		</constructor-arg>
 		<property name="filterProcessesUrl" value="/dhis-web-commons-security/logout.action" />
+	</bean>
+
+	<bean id="userAuditLogoutFilter" class="org.hisp.dhis.security.filter.UserAuditLogoutFilter">
+		<property name="userAuditService" ref="org.hisp.dhis.useraudit.UserAuditService"/>
 	</bean>
 
 	<bean id="automaticAccessFilter" class="org.hisp.dhis.security.filter.AutomaticAccessFilter">
