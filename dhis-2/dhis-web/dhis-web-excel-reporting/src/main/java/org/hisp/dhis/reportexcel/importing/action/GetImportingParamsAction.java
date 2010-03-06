@@ -145,7 +145,7 @@ public class GetImportingParamsAction
         // Load and sort ExcelItemGroups
         // ---------------------------------------------------------------------
 
-        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getExcelItemGroups( organisationUnit ) );
+        //excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getExcelItemGroups( organisationUnit ) );
 
         return SUCCESS;
     }
