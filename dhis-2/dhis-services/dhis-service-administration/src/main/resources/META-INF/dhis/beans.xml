@@ -133,6 +133,19 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		ref="org.hisp.dhis.dataarchive.DataArchiveStore"/>
   </bean>
   
+  <!-- User audit -->
+  
+  <bean id="org.hisp.dhis.useraudit.UserAuditService"
+	class="org.hisp.dhis.useraudit.DefaultUserAuditService">
+	<property name="userAuditStore"
+	  ref="org.hisp.dhis.useraudit.UserAuditStore"/>
+  </bean>
+	
+  <bean id="org.hisp.dhis.useraudit.UserAuditStore"
+    class="org.hisp.dhis.useraudit.hibernate.HibernateUserAuditStore">
+	<property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
   <!--DeletionHandler -->
   
   <bean id="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler"
