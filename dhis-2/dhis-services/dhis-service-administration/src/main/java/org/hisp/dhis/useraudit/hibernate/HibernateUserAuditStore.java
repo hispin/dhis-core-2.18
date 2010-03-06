@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.useraudit.FailedLogin;
+import org.hisp.dhis.useraudit.LoginFailure;
 import org.hisp.dhis.useraudit.UserAuditStore;
 
 public class HibernateUserAuditStore
@@ -18,26 +18,33 @@ public class HibernateUserAuditStore
         this.sessionFactory = sessionFactory;
     }
 
-    public void saveFailedLogin( FailedLogin login )
+    public void saveLoginFailure( LoginFailure login )
     {
         sessionFactory.getCurrentSession().save( login );
     }
     
     @SuppressWarnings( "unchecked" )
-    public Collection<FailedLogin> getAllFailedLogins()
+    public Collection<LoginFailure> getAllLoginFailures()
     {
-        return sessionFactory.getCurrentSession().createCriteria( FailedLogin.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( LoginFailure.class ).list();
     }
     
-    public int getFailedLogins( String username, Date date )
+    public void deleteLoginFailures( String username )
+    {
+        String hql = "delete from LoginFailure where username = :username";
+        
+        sessionFactory.getCurrentSession().createQuery( hql ).setString( "username", username ).executeUpdate();
+    }
+        
+    public int getLoginFailures( String username, Date date )
     {
         Session session = sessionFactory.getCurrentSession();
         
-        String hql = "delete from FailedLogin where date < :date";
+        String hql = "delete from LoginFailure where date < :date";
         
         session.createQuery( hql ).setDate( "date", date ).executeUpdate();
         
-        hql = "select count(*) from FailedLogin where username = :username";
+        hql = "select count(*) from LoginFailure where username = :username";
         
         Long no = (Long) session.createQuery( hql ).setString( "username", username ).uniqueResult();
         

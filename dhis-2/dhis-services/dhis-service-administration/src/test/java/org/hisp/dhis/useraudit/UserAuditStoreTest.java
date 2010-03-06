@@ -19,23 +19,23 @@ public class UserAuditStoreTest
     @Test
     public void save()
     {
-        userAuditStore.saveFailedLogin( new FailedLogin( "userA", getDate( 2000, 1, 3 ) ) );
-        userAuditStore.saveFailedLogin( new FailedLogin( "userA", getDate( 2000, 1, 4 ) ) );
-        userAuditStore.saveFailedLogin( new FailedLogin( "userB", getDate( 2000, 1, 5 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 3 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 4 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userB", getDate( 2000, 1, 5 ) ) );
         
-        assertNotNull( userAuditStore.getAllFailedLogins() );
-        assertEquals( 3, userAuditStore.getAllFailedLogins().size() );
+        assertNotNull( userAuditStore.getAllLoginFailures() );
+        assertEquals( 3, userAuditStore.getAllLoginFailures().size() );
     }
     
     @Test
     public void get()
     {
-        userAuditStore.saveFailedLogin( new FailedLogin( "userA", getDate( 2000, 1, 3 ) ) );
-        userAuditStore.saveFailedLogin( new FailedLogin( "userA", getDate( 2000, 1, 4 ) ) );
-        userAuditStore.saveFailedLogin( new FailedLogin( "userA", getDate( 2000, 1, 5 ) ) );
-        userAuditStore.saveFailedLogin( new FailedLogin( "userA", getDate( 2000, 1, 6 ) ) );
-        userAuditStore.saveFailedLogin( new FailedLogin( "userB", getDate( 2000, 1, 7 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 3 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 4 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 5 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 6 ) ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( "userB", getDate( 2000, 1, 7 ) ) );
         
-        assertEquals( 3, userAuditStore.getFailedLogins( "userA", getDate( 2000, 1, 4 ) ) );
+        assertEquals( 3, userAuditStore.getLoginFailures( "userA", getDate( 2000, 1, 4 ) ) );
     }
 }

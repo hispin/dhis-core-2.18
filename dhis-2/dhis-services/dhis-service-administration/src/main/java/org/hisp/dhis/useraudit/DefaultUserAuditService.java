@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultUserAuditService
     implements UserAuditService
@@ -18,9 +19,9 @@ public class DefaultUserAuditService
         this.userAuditStore = userAuditStore;
     }
 
-    public void registerLogin( String username )
+    public void registerLoginSuccess( String username )
     {
-        log.info( "User login: '" + username + "'" );        
+        log.info( "User login success: '" + username + "'" );        
     }
 
     public void registerLogout( String username )
@@ -28,17 +29,20 @@ public class DefaultUserAuditService
         log.info( "User logout: '" + username + "'" );
     }
 
-    public void registerLoginFailed( String username )
+    @Transactional
+    public void registerLoginFailure( String username )
     {
-        log.info( "User login failed: '" + username + "'" );
+        log.info( "User login failure: '" + username + "'" );
         
-        userAuditStore.saveFailedLogin( new FailedLogin( username, new Date() ) );
+        userAuditStore.saveLoginFailure( new LoginFailure( username, new Date() ) );
         
-        int no = userAuditStore.getFailedLogins( username, getDate() );
+        int no = userAuditStore.getLoginFailures( username, getDate() );
         
-        if ( no > MAX_NUMBER_OF_ATTEMPTS )
+        if ( no >= MAX_NUMBER_OF_ATTEMPTS )
         {
             log.info( "Max number of login attempts exceeded: '" + username + "'" );
+            
+            userAuditStore.deleteLoginFailures( username );
         }
     }
     

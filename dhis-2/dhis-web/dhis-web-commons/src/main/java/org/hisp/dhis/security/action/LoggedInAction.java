@@ -33,8 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.useraudit.UserAuditService;
-import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -70,13 +69,6 @@ public class LoggedInAction
         this.currentUserService = currentUserService;
     }
     
-    private UserAuditService userAuditService;
-
-    public void setUserAuditService( UserAuditService userAuditService )
-    {
-        this.userAuditService = userAuditService;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,21 +76,15 @@ public class LoggedInAction
     public String execute()
         throws Exception
     {
-        String username = currentUserService.getCurrentUsername();
+        User user = currentUserService.getCurrentUser();
         
-        if ( username != null )
+        if ( user != null )
         {
-            // -----------------------------------------------------------------
-            // Register login
-            // -----------------------------------------------------------------
-
-            userAuditService.registerLogin( username );
-
             // -----------------------------------------------------------------
             // Initialize ouwt and selection tree
             // -----------------------------------------------------------------
 
-            Collection<OrganisationUnit> orgUnits = currentUserService.getCurrentUser().getOrganisationUnits();
+            Collection<OrganisationUnit> orgUnits = user.getOrganisationUnits();
 
             if ( orgUnits.size() > 0 )
             {
