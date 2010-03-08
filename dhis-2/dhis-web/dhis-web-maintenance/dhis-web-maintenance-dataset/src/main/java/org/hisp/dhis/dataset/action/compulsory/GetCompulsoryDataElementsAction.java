@@ -28,6 +28,8 @@ package org.hisp.dhis.dataset.action.compulsory;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -51,6 +53,13 @@ public class GetCompulsoryDataElementsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+    
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -99,6 +108,9 @@ public class GetCompulsoryDataElementsAction
         
         availableDataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         availableDataElements.removeAll( selectedDataElements );
+        
+        Collections.sort( availableDataElements, dataElementComparator );
+        Collections.sort( selectedDataElements, dataElementComparator );        
         
         return SUCCESS;
     }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.action.assign.multidataset;
+package org.hisp.dhis.dataset.action.editor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -50,9 +50,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ShowAssignMultiDataSetForOrgunitAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     // -------------------------------------------------------------------------
@@ -129,10 +126,9 @@ public class ShowAssignMultiDataSetForOrgunitAction
 
     public String execute()
     {
-
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
         // Get list of datasets
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
 
         availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
@@ -140,9 +136,9 @@ public class ShowAssignMultiDataSetForOrgunitAction
 
         displayPropertyHandler.handle( availableDataSets );
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
         // Setup the association tree
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
 
         levels = new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() );
 

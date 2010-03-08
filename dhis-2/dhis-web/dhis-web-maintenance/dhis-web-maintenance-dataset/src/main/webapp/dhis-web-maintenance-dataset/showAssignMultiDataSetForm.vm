@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "assign_multidataset_manage" )</h3>
+<h3>$i18n.getString( "dataset_assignment_editor" )</h3>
 
 <form id="assignMultiDataSetForm" action="saveAssignMultiDataSetForOrgunit.action" method="post" onsubmit="selectAllById('selectedDataSets')">
 

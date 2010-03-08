@@ -391,8 +391,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>    
   </bean>
   
-  <bean id="org.hisp.dhis.dataset.action.assign.multidataset.ShowAssignMultiDataSetForOrgunitAction"
-    class="org.hisp.dhis.dataset.action.assign.multidataset.ShowAssignMultiDataSetForOrgunitAction"
+  <bean id="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction"
+    class="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction"
     scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -405,8 +405,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <bean id="org.hisp.dhis.dataset.action.assign.multidataset.SaveAssignMultiDataSetForOrgunitAction"
-    class="org.hisp.dhis.dataset.action.assign.multidataset.SaveAssignMultiDataSetForOrgunitAction"
+  <bean id="org.hisp.dhis.dataset.action.editor.SaveAssignMultiDataSetForOrgunitAction"
+    class="org.hisp.dhis.dataset.action.editor.SaveAssignMultiDataSetForOrgunitAction"
     scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
