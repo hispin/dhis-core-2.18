@@ -1,8 +1,15 @@
-﻿body {background-color: white }
-
-/* Ext */
+﻿/* Ext */
 .ext-gecko .x-window-body .x-form-item {
 	overflow: hidden;
+}
+
+/* Ext theme gray-extend */
+.x-btn-right{
+	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 -21px transparent;
+}
+
+.x-btn-left {
+	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 0 transparent;
 }
 
 /* OpenLayers (include in lib)

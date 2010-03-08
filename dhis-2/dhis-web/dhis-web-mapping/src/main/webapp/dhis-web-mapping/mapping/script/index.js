@@ -2851,6 +2851,7 @@ Ext.onReady( function() {
 			pdfButton,
 			'-',
 			favoritesButton,
+			'-',
             legendSetButton,
 			'-',
 			helpButton,

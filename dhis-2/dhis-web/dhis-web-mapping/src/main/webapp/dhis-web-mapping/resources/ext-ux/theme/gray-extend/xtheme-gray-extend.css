@@ -87,13 +87,13 @@
 /* Buttons */
 
 .x-btn-left{
-	background-image:url(button/btn-sprite2.gif);
+	background-image:url(button/btn-sprite.gif);
 }
 .x-btn-right{
-	background-image:url(button/btn-sprite2.gif);
+	background-image:url(button/btn-sprite.gif);
 }
 .x-btn-center{
-	background-image:url(button/btn-sprite2.gif);
+	background-image:url(button/btn-sprite.gif);
 }
 
 /* Layout classes */
@@ -179,7 +179,7 @@
 	background-image:url(toolbar/tb-btn-sprite.gif);
 }
 .x-toolbar .ytb-sep {
-	background-image: url(../../ext/resources/images/default/grid/grid-split.gif);
+	background-image: url(../../../ext/resources/images/default/grid/grid-split.gif);
 }
 
 /* Tabs */
