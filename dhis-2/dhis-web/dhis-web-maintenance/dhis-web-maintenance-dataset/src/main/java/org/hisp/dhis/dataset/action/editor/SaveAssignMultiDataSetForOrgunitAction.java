@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.action.assign.multidataset;
+package org.hisp.dhis.dataset.action.editor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -46,7 +46,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveAssignMultiDataSetForOrgunitAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -131,5 +130,4 @@ public class SaveAssignMultiDataSetForOrgunitAction
             getUnitsInTheTree( root.getChildren(), unitsInTheTree );
         }
     }
-
 }
