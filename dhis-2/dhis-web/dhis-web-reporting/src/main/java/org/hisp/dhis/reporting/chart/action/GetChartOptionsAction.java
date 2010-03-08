@@ -37,10 +37,12 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -224,8 +226,10 @@ public class GetChartOptionsAction
         
         availableOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
         
+        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
         Collections.sort( availableIndicators, indicatorComparator );
         Collections.sort( availablePeriods, new PeriodComparator() );
+        Collections.sort( levels, new OrganisationUnitLevelComparator() );
         Collections.sort( availableOrganisationUnits, organisationUnitComparator );   
         
         displayPropertyHandler.handle( availableIndicators );
