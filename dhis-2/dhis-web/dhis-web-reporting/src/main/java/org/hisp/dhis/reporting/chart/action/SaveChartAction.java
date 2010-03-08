@@ -40,9 +40,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.reporttable.RelativePeriods;
 
 import com.opensymphony.xwork2.Action;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Lars Helge Overland
@@ -271,23 +274,20 @@ public class SaveChartAction
         Chart chart = new Chart();
 
         List<Indicator> indicators = new ArrayList<Indicator>();
-        List<Period> periods = new ArrayList<Period>();
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        List<Period> periods = new ArrayList<Period>( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
         
         for ( Integer id : getIntegerCollection( selectedIndicators ) )
         {
             indicators.add( indicatorService.getIndicator( id ) );
         }
         
-        for ( Integer id : getIntegerCollection( selectedPeriods ) )
-        {
-            periods.add( periodService.getPeriod( id ) );
-        }
-        
         for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
         {
             organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
         }
+        
+        Collections.sort( periods, new AscendingPeriodComparator() );
         
         chart.setId( id != null ? id : 0 );
         chart.setTitle( title );
