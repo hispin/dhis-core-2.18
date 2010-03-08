@@ -48,7 +48,7 @@ function chartStatusReceived( xmlObject )
 
 function viewChart( url )
 {
-    window.open( url, "_blank", "directories=no, height=560, width=760, location=no, menubar=no, status=no, toolbar=no, resizable=no, scrollbars=no" );
+    window.open( url, "_blank", "directories=no, height=560, width=760, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
 }
 
 // -----------------------------------------------------------------------------
