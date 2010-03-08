@@ -68,22 +68,4 @@ public class ImportPreviewInternalProcess
     {
         importObjectService.importAll();      
     }
-    
-    @Override
-    protected String getStartMessage()
-    {
-        return "preview_process_started";
-    }
-    
-    @Override
-    protected String getSuccessMessage()
-    {
-        return "preview_process_done";
-    }
-    
-    @Override
-    public String getErrorMessage()
-    {
-        return "import_process_failed";
-    }
 }

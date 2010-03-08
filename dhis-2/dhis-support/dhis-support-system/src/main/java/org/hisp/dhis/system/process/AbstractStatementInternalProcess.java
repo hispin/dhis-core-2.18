@@ -40,6 +40,10 @@ import org.hisp.dhis.system.util.DebugUtils;
 public abstract class AbstractStatementInternalProcess
     implements Process<OutputHolderState> 
 {
+    public static final String PROCESS_STARTED = "process_started";
+    public static final String PROCESS_COMPLETED = "process_completed";
+    public static final String PROCESS_FAILED = "process_failed";
+        
     private static final Log log = LogFactory.getLog( AbstractStatementInternalProcess.class );
     
     private OutputHolderState state;
@@ -79,7 +83,7 @@ public abstract class AbstractStatementInternalProcess
 
         statementManager.initialise();
         
-        getState().setMessage( getStartMessage() );
+        getState().setMessage( PROCESS_STARTED );
         
         log.info( "Internal process started" );
         
@@ -87,13 +91,13 @@ public abstract class AbstractStatementInternalProcess
         {
             executeStatements();
             
-            getState().setMessage( getSuccessMessage() );
+            getState().setMessage( PROCESS_COMPLETED );
             
             log.info( "Internal process completed successfully" );
         }
         catch ( Exception ex )
         {
-            getState().setMessage( getErrorMessage() );
+            getState().setMessage( PROCESS_FAILED );
             
             log.error( "Internal process failed", ex );
             log.error( DebugUtils.getStackTrace( ex ) );
@@ -111,10 +115,4 @@ public abstract class AbstractStatementInternalProcess
      */
     protected abstract void executeStatements()
         throws Exception;
-    
-    protected abstract String getStartMessage();
-    
-    protected abstract String getSuccessMessage();
-    
-    protected abstract String getErrorMessage();
 }
