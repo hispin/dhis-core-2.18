@@ -12,7 +12,7 @@ function editValue( valueId )
 	
 	if ( field.value != '' )
 	{
-		if ( !isInt(field.value) )
+		if ( !isInt( field.value ) )
 		{
 			alert( i18n_value_must_be_a_number );
 			
@@ -30,22 +30,25 @@ function editValue( valueId )
 			var max = new Number( maxString );
 			var value = new Number( field.value );
 			
-			if ( value < min )
+			if ( !( min == 0 && max == 0 ) ) // No min max found
 			{
-				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
-				valueSaver.save();
+				if ( value < min )
+				{
+					var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
+					valueSaver.save();
+					
+					alert( i18n_value_is_lower_than_min_value );
+					return;
+				}
 				
-				alert( i18n_value_is_lower_than_min_value );
-				return;
-			}
-			
-			if ( value > max )
-			{
-				var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
-				valueSaver.save();
-				
-				alert( i18n_value_is_higher_than_max_value );
-				return;
+				if ( value > max )
+				{
+					var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ffcccc' );
+					valueSaver.save();
+					
+					alert( i18n_value_is_higher_than_max_value );
+					return;
+				}
 			}
 		}
 	}

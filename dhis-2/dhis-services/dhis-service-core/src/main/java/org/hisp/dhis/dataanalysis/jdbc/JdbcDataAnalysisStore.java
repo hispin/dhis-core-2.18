@@ -104,24 +104,24 @@ public class JdbcDataAnalysisStore
         
         final String periodIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Period.class, periods ) );
         
+        final String sql =
+            "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
+            "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
+            statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
+            statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, cc.categoryoptioncomboname " +
+            "FROM datavalue AS dv " +
+            "JOIN period AS pe USING (periodid) " +
+            "JOIN periodtype AS pt USING (periodtypeid) " +
+            "LEFT JOIN categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
+            "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
+            "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
+            "AND dv.periodid IN (" + periodIds + ") " +
+            "AND dv.sourceid='" + organisationUnit.getId() + "' " +
+            "AND ( CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
+            "OR CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
+        
         try
-        {
-            final String sql =
-                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
-                "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
-                statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
-                statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, cc.categoryoptioncomboname " +
-                "FROM datavalue AS dv " +
-                "JOIN period AS pe USING (periodid) " +
-                "JOIN periodtype AS pt USING (periodtypeid) " +
-                "LEFT JOIN categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
-                "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
-                "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
-                "AND dv.periodid IN (" + periodIds + ") " +
-                "AND dv.sourceid='" + organisationUnit.getId() + "' " +
-                "AND ( CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) < '" + lowerBound + "' " +
-                "OR CAST( dv.value AS " + statementBuilder.getDoubleColumnType() + " ) > '" + upperBound + "' )";
-            
+        {            
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return mapper.getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
@@ -145,27 +145,38 @@ public class JdbcDataAnalysisStore
         
         final String periodIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Period.class, periods ) );
         
-        // TODO minmax
+        final String minValueSql = 
+            "SELECT minvalue FROM minmaxdataelement " +
+            "WHERE sourceid=' " + organisationUnit.getId() + "' " +
+            "AND dataelementid='" + dataElement.getId() + "' " +
+            "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "'";
+    
+        final String maxValueSql = 
+            "SELECT maxvalue FROM minmaxdataelement " +
+            "WHERE sourceid=' " + organisationUnit.getId() + "' " +
+            "AND dataelementid='" + dataElement.getId() + "' " +
+            "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "'";
+        
+        final String sql =
+            "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " +
+            "'" + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId() + "' AS categoryoptioncomboid, " +
+            "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, " +
+            "( " + minValueSql + " ) AS minvalue, ( " + maxValueSql + " ) AS maxvalue, " +
+            statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " +
+            statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, " + 
+            statementBuilder.encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname " + //TODO join?
+            "FROM period AS pe " +
+            "JOIN periodtype AS pt USING (periodtypeid) " +
+            "WHERE periodid IN (" + periodIds + ") " +
+            "AND periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
+            "AND periodid NOT IN ( " +
+                "SELECT periodid FROM datavalue " +
+                "WHERE dataelementid='" + dataElement.getId() + "' " +
+                "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
+                "AND sourceid='" + organisationUnit.getId() + "' )";
         
         try
-        {
-            final String sql =
-                "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " +
-                "'" + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId() + "' AS categoryoptioncomboid, " +
-                "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, '0' as minvalue, '100000' as maxvalue, " +
-                statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " +
-                statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, " + 
-                statementBuilder.encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname " + //TODO join?
-                "FROM period AS pe " +
-                "JOIN periodtype AS pt USING (periodtypeid) " +
-                "WHERE periodid IN (" + periodIds + ") " +
-                "AND periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
-                "AND periodid NOT IN ( " +
-                    "SELECT periodid FROM datavalue " +
-                    "WHERE dataelementid='" + dataElement.getId() + "' " +
-                    "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
-                    "AND sourceid='" + organisationUnit.getId() + "' )";
-            
+        {   
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return mapper.getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
@@ -184,22 +195,22 @@ public class JdbcDataAnalysisStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
+        final String sql =
+            "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
+            "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
+            "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
+            "FROM datavalue AS dv " +
+            "LEFT JOIN minmaxdataelement AS mm using (sourceid, dataelementid, categoryoptioncomboid) " +
+            "JOIN dataelement AS de using (dataelementid) " +
+            "JOIN period AS pe using (periodid) " +
+            "JOIN periodtype AS pt using (periodtypeid) " +
+            "JOIN source AS sr using (sourceid) " +
+            "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
+            "LEFT JOIN categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
+            "WHERE dv.followup=true";
+        
         try
         {
-            final String sql =
-                "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
-                "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
-                "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
-                "FROM datavalue AS dv " +
-                "LEFT JOIN minmaxdataelement AS mm using (sourceid, dataelementid, categoryoptioncomboid) " +
-                "JOIN dataelement AS de using (dataelementid) " +
-                "JOIN period AS pe using (periodid) " +
-                "JOIN periodtype AS pt using (periodtypeid) " +
-                "JOIN source AS sr using (sourceid) " +
-                "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
-                "LEFT JOIN categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
-                "WHERE dv.followup=true";
-
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return new ObjectMapper<DeflatedDataValue>().getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
