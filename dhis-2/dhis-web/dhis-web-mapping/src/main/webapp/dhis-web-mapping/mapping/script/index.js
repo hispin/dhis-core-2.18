@@ -1192,7 +1192,7 @@ Ext.onReady( function() {
 		width: wmsGrid.width,
 		height: screen.height * 0.4,
 		items: [wmsGrid],
-		bbar: new Ext.StatusBar({
+		bbar: new Ext.Toolbar({
 			id: 'wmswindow_sb',
 			items:
 			[
