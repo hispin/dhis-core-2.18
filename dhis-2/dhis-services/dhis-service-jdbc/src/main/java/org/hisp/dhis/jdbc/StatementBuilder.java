@@ -35,6 +35,16 @@ import org.hisp.dhis.period.Period;
  */
 public interface StatementBuilder
 {
+    final String QUOTE = "'";
+    
+    /**
+     * Encodes the provided SQL value.
+     * 
+     * @param value the value.
+     * @return the SQL encoded value.
+     */
+    String encode( String value );
+    
     /**
      * Returns the name of a double column type.
      * @return the name of a double column type.
@@ -93,7 +103,6 @@ public interface StatementBuilder
     int getMaximumNumberOfColumns();
     
     /**
-     *  
      *  Drop Dataset foreign key for DataEntryForm table
      *  
      * @return

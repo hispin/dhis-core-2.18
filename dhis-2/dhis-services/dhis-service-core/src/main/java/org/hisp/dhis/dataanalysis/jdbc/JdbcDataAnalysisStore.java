@@ -109,8 +109,8 @@ public class JdbcDataAnalysisStore
             final String sql =
                 "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
                 "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
-                "'" + dataElement.getName() + "' AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
-                "'" + organisationUnit.getName() + "' AS sourcename, cc.categoryoptioncomboname " +
+                statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
+                statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, cc.categoryoptioncomboname " +
                 "FROM datavalue AS dv " +
                 "JOIN period AS pe USING (periodid) " +
                 "JOIN periodtype AS pt USING (periodtypeid) " +
@@ -153,8 +153,9 @@ public class JdbcDataAnalysisStore
                 "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " +
                 "'" + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId() + "' AS categoryoptioncomboid, " +
                 "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, '0' as minvalue, '100000' as maxvalue, " +
-                "'" + dataElement.getName() + "' AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " +
-                "'" + organisationUnit.getName() + "' AS sourcename, '" + categoryOptionCombo.getName() + "' as categoryoptioncomboname " +
+                statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " +
+                statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, " + 
+                statementBuilder.encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname " + //TODO join?
                 "FROM period AS pe " +
                 "JOIN periodtype AS pt USING (periodtypeid) " +
                 "WHERE periodid IN (" + periodIds + ") " +
