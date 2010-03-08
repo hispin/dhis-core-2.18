@@ -124,7 +124,7 @@
     
     <div id="rightBar">
       <span id="hideRightBar"><a href="javascript:hideHelpContent()" title="$i18n.getString( 'close' )">
-        <img src="../images/hide.png" alt="$i18n.getString( 'close' )"></a>
+        <img id="hideRightBarImg" src="../images/hide.png" alt="$i18n.getString( 'close' )"></a>
       </span>
       <div id="rightBarContents"/>
     </div>

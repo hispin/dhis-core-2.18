@@ -20,7 +20,18 @@ $( document ).ready( function()
     {
         $( this ).removeClass( "listHoverRow" );
     } );
-
+    
+    // Hover on rightbar close image
+    
+    $( "#hideRightBarImg" ).mouseover( function()
+    {
+    	$( this ).attr( "src", "../images/hide_active.png" );
+    } );
+    $( "#hideRightBarImg" ).mouseout( function()
+    {
+        $( this ).attr( "src", "../images/hide.png" );
+    } );
+    
     // Resize UI in case of 800 x 600 screen
 
     if( $( window ).width() <= 800 ) 
