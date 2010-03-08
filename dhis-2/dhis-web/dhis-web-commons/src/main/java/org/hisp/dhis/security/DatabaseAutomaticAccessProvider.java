@@ -74,7 +74,7 @@ public class DatabaseAutomaticAccessProvider
         userStore.addUser( user );
 
         UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
-        userAuthorityGroup.setName( "ALL" );
+        userAuthorityGroup.setName( "Superuser" );
 
         userAuthorityGroup.setAuthorities( new HashSet<String>( getAuthorities() ) );
 

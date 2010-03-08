@@ -13,6 +13,7 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemStore;
+import org.hisp.dhis.user.User;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -165,7 +166,7 @@ public class HibernateExcelItemStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit( OrganisationUnit organisationUnit )
+    public Collection<ExcelItemGroup> getExcelItemGroups( OrganisationUnit organisationUnit )
     {
 
         Session session = sessionFactory.getCurrentSession();
@@ -203,4 +204,5 @@ public class HibernateExcelItemStore
 
         session.delete( getDataElementGroupOrder( id ) );
     }
+    
 }

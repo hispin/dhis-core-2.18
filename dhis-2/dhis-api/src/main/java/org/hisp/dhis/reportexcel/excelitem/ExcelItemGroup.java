@@ -229,7 +229,7 @@ public class ExcelItemGroup
 
     public boolean rowAndColumnIsExist( int sheet, int row, int column )
     {
-       return getExcelItemBySheetRowColumn( sheet, row, column ) != null;
+        return getExcelItemBySheetRowColumn( sheet, row, column ) != null;
     }
 
     public ExcelItem getExcelItemByName( String name )

@@ -325,7 +325,7 @@
 <div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('copyToExcelItem'); deleteDivEffect();">[x]</div>
 <table width="100%">
 	<tr>
-		<td>$i18n.getString('reports')</td>
+		<td>$i18n.getString('excelitem_group')</td>
 		<td>
 			<select id="targetExcelItemGroup" name="targetExcelItemGroup" style="max-width:30em;min-width:30em;">
 			</select>

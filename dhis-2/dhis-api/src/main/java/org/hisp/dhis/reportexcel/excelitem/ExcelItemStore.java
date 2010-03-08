@@ -24,7 +24,7 @@ public interface ExcelItemStore
 
     public ExcelItemGroup getExcelItemGroup( int id );
 
-    public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit( OrganisationUnit organisationUnit );
+    public Collection<ExcelItemGroup> getExcelItemGroups( OrganisationUnit organisationUnit );
 
     // ----------------------------------------------------------------------------
     // Excelitem services

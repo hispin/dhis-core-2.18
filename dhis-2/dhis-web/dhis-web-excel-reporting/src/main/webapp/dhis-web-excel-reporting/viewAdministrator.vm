@@ -4,7 +4,7 @@
     #introListItem( "getConfiguration.action" "configuration" )
     #introListItem( "listReportExcel.action" "reports" )
     #introListItem( "listDataEntryStatus.action" "data_status" )
-	#introListItem( "listAllExcelTemplates.action" "excel_item" )
+	#introListItem( "listAllExcelItemGroup.action" "excel_item" )
     #introListItem( "listAllExcelTemplates.action" "excel_template_management" )
 	#introListItem( "javascript: cleanUp();" "clean_up" )
 

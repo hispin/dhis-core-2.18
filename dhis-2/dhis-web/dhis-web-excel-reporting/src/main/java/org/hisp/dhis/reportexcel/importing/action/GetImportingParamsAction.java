@@ -29,8 +29,6 @@ package org.hisp.dhis.reportexcel.importing.action;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -38,9 +36,7 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemGroupComparator;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
-import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Chau Thu Tran
@@ -60,8 +56,6 @@ public class GetImportingParamsAction
 
     private SelectionManager selectionManager;
 
-    private CurrentUserService currentUserService;
-
     // -------------------------------------------------------------------------
     // Inputs && Outputs
     // -------------------------------------------------------------------------
@@ -79,16 +73,16 @@ public class GetImportingParamsAction
         this.selectionManager = selectionManager;
     }
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     public void setExcelItemService( ExcelItemService excelItemService )
     {
 
         this.excelItemService = excelItemService;
 
+    }
+
+    public List<ExcelItemGroup> getExcelItemGroups()
+    {
+        return excelItemGroups;
     }
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
@@ -103,6 +97,11 @@ public class GetImportingParamsAction
     }
 
     private File fileExcel;
+
+    public void setFileExcel( File fileExcel )
+    {
+        this.fileExcel = fileExcel;
+    }
 
     public File getFileExcel()
     {
@@ -145,7 +144,7 @@ public class GetImportingParamsAction
         // Load and sort ExcelItemGroups
         // ---------------------------------------------------------------------
 
-        //excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getExcelItemGroups( organisationUnit ) );
+        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getExcelItemGroups( organisationUnit ) );
 
         return SUCCESS;
     }
