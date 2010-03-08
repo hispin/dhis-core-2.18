@@ -186,10 +186,6 @@ public class DefaultDataMartEngine
     {   
         int count = 0;
         
-        state.setMessage( "export_process_started" );
-        
-        log.info( "Export process started" );
-        
         TimeUtils.start();
 
         state.setMessage( "deleting_existing_aggregated_data" );
@@ -326,8 +322,6 @@ public class DefaultDataMartEngine
         
         TimeUtils.stop();
 
-        state.setMessage( "export_process_done" );
-        
         aggregationCache.clearCache();
         
         return count;

@@ -28,8 +28,6 @@ package org.hisp.dhis.importexport;
  */
 
 import org.amplecode.cave.process.SerialToGroup;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
 
 /**
@@ -40,7 +38,6 @@ public class ImportPreviewInternalProcess
     extends AbstractStatementInternalProcess implements SerialToGroup
 {
     private static final String PROCESS_GROUP = "ImportProcessGroup";
-    private static final Log log = LogFactory.getLog( ImportPreviewInternalProcess.class );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -69,12 +66,19 @@ public class ImportPreviewInternalProcess
     public void executeStatements()
         throws Exception
     {
-        getState().setMessage( "preview_process_started" );
-        log.info( "Preview process started" );
-        
-        importObjectService.importAll();        
-
-        log.info( "Preview process completed" );        
+        importObjectService.importAll();      
+    }
+    
+    @Override
+    protected String getStartMessage()
+    {
+        return "preview_process_started";
+    }
+    
+    @Override
+    protected String getSuccessMessage()
+    {
+        return "preview_process_done";
     }
     
     @Override

@@ -120,6 +120,8 @@ public class JDBCDataSetCompletenessStore
                 "GROUP BY sourceid ) AS completed " +
             "WHERE completed.no = " + compulsoryElements;
         
+        System.out.println( sql );
+        
         return statementManager.getHolder().queryForInteger( sql );
     }    
 }

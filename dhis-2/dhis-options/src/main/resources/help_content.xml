@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <book>
   <chapter>
     <title>Data elements and indicators</title>
@@ -394,7 +394,7 @@
       </section>
     </section>
     <section id="dataDictionary">
-      <title>Data dictionary</title>
+      <title>Data dictionaries</title>
       <para>Data dictionaries are used to group data elements and indicators during filtering operations. They are useful for combining related groups of data elements and indicators according to the programs to which they belong. For instance a data dictionary called "MCH" could be created, and all maternal and child health data elements and indicators could be added to the dictionary. The data dictionary can be access by choosing Maintenance-&gt;Data elements and indicators-&gt;Data dictionary. The following screen will be displayed in the browser. </para>
       <screenshot>
         <mediaobject>
@@ -404,7 +404,12 @@
         </mediaobject>
       </screenshot>
       <para>Provide a name for the data dictionary in the "Name" field and a description of its contents. Data elements and indicators can be added or removed from the dictionary. Click "Save" if you are creating a new data dictionary or "Add" if you are editing the contents of an existing data dictionary.   </para>
-    </section>
+    </section>	
+  	<section id="translation">
+      <title>Translations</title>
+      <para>DHIS 2 provides functionality for translations of data element, data element group, indicator, indicator group, and data element category names.  These elements can be translated to any number of locales. A locale  represents a specific geographical, political, or cultural region. </para>
+      <para>To add a translation click the Translate icon next to the element you would like to translate. Start by selecting the desired locale from the Locale select box. If your locale is not in the list you need to add it first. Fill in locale language and locale country code. The locale language is a lower-case, two-letter valid ISO Language Code. The locale country is a upper-case, two-letter valid ISO Country Code. Then in the Translate section, select your locale, then enter values for the avaliable element properties. You can select the reference locale, that is the locale the current element is displayed in, from the select box to the right. Translations can be enabled by selecting the desired locale under Database Language under User Settings in the Settings module.</para>
+	</section>
   </chapter>
   <chapter>
     <title>Data Administration</title>
