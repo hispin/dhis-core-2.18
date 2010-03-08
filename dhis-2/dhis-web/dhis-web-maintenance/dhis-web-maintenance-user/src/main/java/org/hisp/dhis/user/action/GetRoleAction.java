@@ -37,6 +37,7 @@ import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
@@ -81,7 +82,7 @@ public class GetRoleAction
     {
         this.reportExcelService = reportExcelService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -146,6 +147,13 @@ public class GetRoleAction
         return reportExcels;
     }
 
+    private List<ExcelItemGroup> availableImportExcels;
+
+    public List<ExcelItemGroup> getAvailableImportExcels()
+    {
+        return availableImportExcels;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -154,7 +162,7 @@ public class GetRoleAction
         throws Exception
     {
         userAuthorityGroup = userStore.getUserAuthorityGroup( id );
-        
+
         // ---------------------------------------------------------------------
         // DataSets
         // ---------------------------------------------------------------------

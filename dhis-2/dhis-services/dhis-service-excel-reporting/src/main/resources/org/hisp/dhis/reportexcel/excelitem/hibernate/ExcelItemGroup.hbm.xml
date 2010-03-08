@@ -15,7 +15,8 @@
 		<property name="type" />
 
 		<many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType"
-			lazy="false" column="periodtypeid" not-null="true" foreign-key="fk_excelitemgroup_periodtypeid" />
+			lazy="false" column="periodtypeid" not-null="true"
+			foreign-key="fk_excelitemgroup_periodtypeid" />
 
 		<set name="excelItems" lazy="false" cascade="delete">
 			<key column="excelitemgroupid" />

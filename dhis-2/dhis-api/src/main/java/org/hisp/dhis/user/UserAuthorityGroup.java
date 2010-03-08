@@ -56,7 +56,7 @@ public class UserAuthorityGroup
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
     private Set<ReportExcel> reportExcels = new HashSet<ReportExcel>();
-
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -163,4 +163,5 @@ public class UserAuthorityGroup
     {
         this.reportExcels = reportExcels;
     }
+
 }

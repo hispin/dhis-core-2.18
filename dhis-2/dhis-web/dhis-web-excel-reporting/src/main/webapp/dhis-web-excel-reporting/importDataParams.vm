@@ -3,10 +3,10 @@
 <div id="messageUpload">
 	$i18n.getString( "upload_file" ) $i18n.getString( "success" )<br>$fileExcel.getName()
 </div>
- <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 
 #end
-   
+   <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
+
  <table width="62%">
 <h2>$i18n.getString('import_data')</h2>
 <form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="post" enctype="multipart/form-data">   
@@ -14,7 +14,7 @@
      <td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
       <td width="82%">
           <input type="file" id="upload" name="upload" onChange="enable('uploadButton');">
-          <input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" disabled />    
+          <input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelImport();" disabled />    
 	  </td>   
   </tr>
   </form>
@@ -64,7 +64,6 @@
 		</tbody>
 		</table>
 	</div>
-
 <script language="javascript">	
 	
 	#if($!fileExcel && $!organisationUnit)

@@ -87,10 +87,10 @@ public class DefaultExcelItemService
         excelItemStore.updateExcelItemGroup( excelItemGroup );
     }
 
-    public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit( OrganisationUnit organisationUnit )
+    public Collection<ExcelItemGroup> getExcelItemGroups( OrganisationUnit organisationUnit )
     {
 
-        return excelItemStore.getExcelItemGroupsByOrganisationUnit( organisationUnit );
+        return excelItemStore.getExcelItemGroups( organisationUnit );
     }
 
     // --------------------------------------

@@ -38,6 +38,6 @@
 			<many-to-many column="reportexcelid" class="org.hisp.dhis.reportexcel.ReportExcel"
 				foreign-key="fk_reportexcelid" />
 		</set>
-
+		
 	</class>
 </hibernate-mapping>

@@ -297,15 +297,73 @@ function nextPeriod() {
 	request.send( 'nextPeriodsGeneric.action' ); 
 }
 
-function validateUploadExcelFileImporting() {
-	
-	if ( (byId("upload").value == "") || (byId("upload").value.length == 0) ) {
-	
-		hideById("messageUpload");
-		setMessage(i18n_warning_upload_is_null);
-		return false;
-	}
-	else {
-		return true;
-	}
+function validateUploadExcelImport ( fileName, columnIndex ) {
+
+    var list = byId( 'list' );
+    
+    var rows = list.getElementsByTagName( 'tr' );
+    
+    for ( var i = 0; i < rows.length; i++ )
+    {
+        var cell = rows[i].getElementsByTagName( 'td' )[columnIndex-1];
+        var value = cell.firstChild.nodeValue;
+		
+        if ( value.toLowerCase().indexOf( fileName.toLowerCase() ) != -1 )
+        {
+            // file is existsing
+			return window.confirm( i18n_confirm_override );
+        }
+    }
+      
+	// normally upload
+	return true;
 }
+
+function validateUploadExcelImport(){
+
+		$.ajaxFileUpload
+        (
+			{
+				url:'validateUploadExcelImport.action',
+				secureuri:false,
+				fileElementId:'upload',
+				dataType: 'xml',
+				success: function (data, status)
+				{
+					data = data.getElementsByTagName('message')[0];
+					var type = data.getAttribute("type");
+					if(type=='error'){                    
+						setMessage(data.firstChild.nodeValue);
+					}else{
+						//document.forms['importingParam'].submit();
+						uploadExcelImport();
+					}
+				},
+				error: function (data, status, e)
+				{
+				
+				}
+			}
+        );
+	}
+	
+	function uploadExcelImport(){
+
+		$.ajaxFileUpload
+        (
+			{
+				url:'uploadExcelImport.action',
+				secureuri:false,
+				fileElementId:'upload',
+				dataType: 'xml',
+				success: function (data, status)
+				{
+					window.location.reload();
+				},
+				error: function (data, status, e)
+				{
+				
+				}
+			}
+        );
+	}
