@@ -372,8 +372,11 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 		}
 		else {
             var upper = parseFloat(bin.upperBound);
-            if (binIndex < nbBins-1) {
-                upper -= parseFloat("0.1");
+            
+            if (bin.upperBound > bin.lowerBound) {
+                if (binIndex < nbBins-1) {
+                    upper -= parseFloat("0.1");
+                }
             }
             
 			return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + upper.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
