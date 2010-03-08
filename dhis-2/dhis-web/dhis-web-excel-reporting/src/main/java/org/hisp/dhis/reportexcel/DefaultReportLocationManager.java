@@ -121,8 +121,13 @@ public class DefaultReportLocationManager
 
     public File getReportExcelTemplateDirectory()
     {
-        return new File( (String) systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY ) );
+        String path = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+        
+        if ( path != null )
+        {
+            return new File( path );
+        }
+        
+        return null;
     }
-
 }

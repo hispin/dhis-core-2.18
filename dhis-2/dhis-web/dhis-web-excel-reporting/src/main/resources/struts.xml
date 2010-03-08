@@ -1071,7 +1071,7 @@
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,
-				javascript/commons.js,javascript/imports.js, javascript/ajaxfileupload.js</param>
+				javascript/commons.js,javascript/imports.js,javascript/ajaxfileupload.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
 

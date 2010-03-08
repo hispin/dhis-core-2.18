@@ -5,10 +5,10 @@
 </div>
 
 #end
-   <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
+<span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 
- <table width="62%">
-<h2>$i18n.getString('import_data')</h2>
+<table width="62%">
+<h3>$i18n.getString('import_data') #openHelp( "excelReportingImportData" )</h3>
 <form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="post" enctype="multipart/form-data">   
   <tr>
      <td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
