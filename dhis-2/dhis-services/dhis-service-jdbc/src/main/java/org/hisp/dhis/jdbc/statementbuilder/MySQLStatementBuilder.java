@@ -44,6 +44,17 @@ public class MySQLStatementBuilder
     {
         return "DOUBLE";
     }
+
+    public String encode( String value )
+    {
+        if ( value != null )
+        {
+            value = value.endsWith( "\\" ) ? value.substring( 0, value.length() - 1 ) : value;
+            value = value.replaceAll( QUOTE, "\\\\" + QUOTE );
+        }
+        
+        return QUOTE + value + QUOTE;
+    }
     
     public String getPeriodIdentifierStatement( Period period )
     {
