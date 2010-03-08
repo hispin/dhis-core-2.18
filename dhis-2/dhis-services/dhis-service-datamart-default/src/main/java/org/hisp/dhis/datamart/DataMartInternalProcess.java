@@ -122,22 +122,4 @@ public class DataMartInternalProcess
     {
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, getState() );
     }
-
-    @Override
-    protected String getStartMessage()
-    {
-        return "export_process_started";
-    }
-    
-    @Override
-    protected String getSuccessMessage()
-    {
-        return "export_process_done";
-    }
-    
-    @Override
-    protected String getErrorMessage()
-    {
-        return "export_process_failed";
-    }
 }

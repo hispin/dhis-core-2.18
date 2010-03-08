@@ -104,22 +104,4 @@ public class DataSetCompletenessInternalProcess
     {
         completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, reportTableId );
     }
-
-    @Override
-    protected String getStartMessage()
-    {
-        return "data_completeness_process_started";
-    }
-    
-    @Override
-    protected String getSuccessMessage()
-    {
-        return "data_completeness_process_done";
-    }
-    
-    @Override
-    public String getErrorMessage()
-    {
-        return "data_completeness_process_failed";
-    }
 }

@@ -118,22 +118,4 @@ public class ReportTableInternalProcess
     {
         reportTableService.createReportTables( id, mode, reportingPeriod, parentOrganisationUnitId, organisationUnitId, format );
     }
-
-    @Override
-    protected String getStartMessage()
-    {
-        return "report_table_process_started";
-    }
-    
-    @Override
-    protected String getSuccessMessage()
-    {
-        return "report_table_process_done";
-    }
-    
-    @Override
-    public String getErrorMessage()
-    {
-        return "report_table_process_failed";
-    }
 }

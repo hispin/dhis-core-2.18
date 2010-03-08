@@ -88,22 +88,4 @@ public class ImportInternalProcess
     {
         importService.importData( params, inputStream, getState() );
     }
-    
-    @Override
-    protected String getStartMessage()
-    {
-        return "import_process_started";
-    }
-    
-    @Override
-    protected String getSuccessMessage()
-    {
-        return "import_process_done";
-    }
-    
-    @Override
-    protected String getErrorMessage()
-    {
-        return "import_process_failed";
-    }
 }
