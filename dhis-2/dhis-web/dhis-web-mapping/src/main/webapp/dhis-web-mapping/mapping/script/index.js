@@ -2803,7 +2803,10 @@ Ext.onReady( function() {
 	});
 	
 	var helpButton = new Ext.Button({
-		iconCls: 'icon-help',
+		cls: 'x-btn-text-icon',
+		ctCls: 'aa_med',
+		icon: '../../images/help.png',
+		text: 'Help',
 		tooltip: 'Get help for the active panel',
 		handler: function() {
 			ACTIVEPANEL = !ACTIVEPANEL ? thematicMap : ACTIVEPANEL;
