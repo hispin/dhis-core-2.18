@@ -17,8 +17,7 @@
         <td></td>
         <td valign="bottom">
         	<input type="button" value="$i18n.getString( 'configuration' )" style="width:150px"
-        	   onclick="window.location.href='displayConfigureDataCompletenessForm.action'">
-        	#openHelp( "dhis-web-reporting.datacompleteness.general" )<br>
+        	   onclick="window.location.href='displayConfigureDataCompletenessForm.action'"><br>
         	<input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:150px"
                 onclick="window.location.href='getDataCompletenessPDF.action'"><input 
                 type="button" value="$i18n.getString( 'generate_workbook' )" style="width:150px"

@@ -704,8 +704,7 @@ h4 {
         <td><input type="text" name="newCustomValue" id="newCustomValue" onkeydown="findSimilar()" maxlength="160" style="min-width:25em" size="60"/>&nbsp;&nbsp;
         </td>
         <td>
-            <button type="button" onclick="addNew()">$i18n.getString( "add_new_custom_value" )</button> &nbsp;
-            #openHelp( "dhis-web-maintenance-dataset.datasetcustomvalue" )
+            <button type="button" onclick="addNew()">$i18n.getString( "add_new_custom_value" )</button>
         </td>
     </tr>
  </tbody>

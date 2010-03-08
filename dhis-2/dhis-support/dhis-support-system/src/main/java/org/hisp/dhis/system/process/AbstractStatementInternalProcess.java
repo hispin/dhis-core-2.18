@@ -79,21 +79,29 @@ public abstract class AbstractStatementInternalProcess
 
         statementManager.initialise();
         
+        getState().setMessage( getStartMessage() );
+        
+        log.info( "Internal process started" );
+        
         try
         {
             executeStatements();
+            
+            getState().setMessage( getSuccessMessage() );
+            
+            log.info( "Internal process completed successfully" );
         }
         catch ( Exception ex )
         {
             getState().setMessage( getErrorMessage() );
             
-            log.error( ex );
+            log.error( "Internal process failed", ex );
             log.error( DebugUtils.getStackTrace( ex ) );
             
             ex.printStackTrace();
         }
         finally
-        {
+        {   
             statementManager.destroy();
         }
     }
@@ -104,8 +112,9 @@ public abstract class AbstractStatementInternalProcess
     protected abstract void executeStatements()
         throws Exception;
     
-    /**
-     * Returns a user friendly error message.
-     */
+    protected abstract String getStartMessage();
+    
+    protected abstract String getSuccessMessage();
+    
     protected abstract String getErrorMessage();
 }

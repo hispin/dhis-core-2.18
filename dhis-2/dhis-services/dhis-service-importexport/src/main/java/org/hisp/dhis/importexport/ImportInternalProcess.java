@@ -30,8 +30,6 @@ package org.hisp.dhis.importexport;
 import java.io.InputStream;
 
 import org.amplecode.cave.process.SerialToGroup;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
 
 /**
@@ -42,7 +40,6 @@ public class ImportInternalProcess
     extends AbstractStatementInternalProcess implements SerialToGroup
 {
     private static final String PROCESS_GROUP = "ImportProcessGroup";
-    private static final Log log = LogFactory.getLog( ImportInternalProcess.class );
     
     // -------------------------------------------------------------------------
     // Properties
@@ -89,13 +86,19 @@ public class ImportInternalProcess
     public void executeStatements()
         throws Exception
     {
-        getState().setMessage( "import_process_started" );        
-        log.info( "Import process started" );
-        
         importService.importData( params, inputStream, getState() );
-
-        getState().setMessage( "import_process_done" );        
-        log.info( "Import process done" );
+    }
+    
+    @Override
+    protected String getStartMessage()
+    {
+        return "import_process_started";
+    }
+    
+    @Override
+    protected String getSuccessMessage()
+    {
+        return "import_process_done";
     }
     
     @Override

@@ -18,9 +18,6 @@
 	#foreach( $stylesheet in $stylesheets )
       <link rel="stylesheet" type="text/css" href="$stylesheet">
 	#end
-	
-   
-    
   </head>
   
   <body>
