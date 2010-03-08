@@ -231,7 +231,7 @@ function choosePerson(this_)
 	}
 	var id = jQuery(this_).attr("id");
 	window.parent.jQuery("#representativeId").val(id);
-	window.parent.jQuery("#relationshipTypeId").val();
+	window.parent.jQuery("#relationshipTypeId").val(relationshipTypeId);
 	jQuery(".identifierRow"+id).each(function(){
 		var inputField = window.parent.jQuery("#"+jQuery(this).attr("id"));
 		if( inputField.metadata({type:"attr",name:"data"}).related  )
