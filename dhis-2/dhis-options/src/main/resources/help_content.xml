@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <book>
   <chapter>
     <title>Data elements and indicators</title>
@@ -404,12 +404,12 @@
         </mediaobject>
       </screenshot>
       <para>Provide a name for the data dictionary in the "Name" field and a description of its contents. Data elements and indicators can be added or removed from the dictionary. Click "Save" if you are creating a new data dictionary or "Add" if you are editing the contents of an existing data dictionary.   </para>
-    </section>	
-  	<section id="translation">
+    </section>
+    <section id="translation">
       <title>Translations</title>
       <para>DHIS 2 provides functionality for translations of data element, data element group, indicator, indicator group, and data element category names.  These elements can be translated to any number of locales. A locale  represents a specific geographical, political, or cultural region. </para>
       <para>To add a translation click the Translate icon next to the element you would like to translate. Start by selecting the desired locale from the Locale select box. If your locale is not in the list you need to add it first. Fill in locale language and locale country code. The locale language is a lower-case, two-letter valid ISO Language Code. The locale country is a upper-case, two-letter valid ISO Country Code. Then in the Translate section, select your locale, then enter values for the avaliable element properties. You can select the reference locale, that is the locale the current element is displayed in, from the select box to the right. Translations can be enabled by selecting the desired locale under Database Language under User Settings in the Settings module.</para>
-	</section>
+    </section>
   </chapter>
   <chapter>
     <title>Data Administration</title>
@@ -1447,6 +1447,623 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
     you create a legend set. When an indicator that has a legend set is
     selected in the <guimenu>Thematic map</guimenu> panel, the number of
     classes, low color and high color is automatically set.</para>
+    </section>
+  </chapter>
+  <chapter>
+    <title>DHIS 2 Excel Reporting</title>
+    <para>A key requirement of a health information system is that the information contained in the system is available in many different formats that are familiar to the end-users. Many health information personnel are familiar with standard office productivity packages such as <productname>Microsoft Office</productname> or OpenOffice. Production of reports in Excel format allows health workers to submit reports to managers and other persons that may not have access to the HMIS, or lack training in its use. Excel offers the capability to deliver powerful, user-friendly reports to many different clients of the information system.</para>
+    <para>Users, especially health workers, can use DHIS 2 easily with the new Excel reporting tool developed by HISP Vietnam team.  This module has been  based on HISP India team’s ideas and technologies.  The module has subsequently been merged into the main DHIS2 application.  This reporting tool with Excel output files uses less memory and  is comparatively faster when compared to other reporting modules</para>
+    <para>The module has two main features: <emphasis role="bold">Administration</emphasis> and<emphasis role="bold"> Generate Report</emphasis>.</para>
+    <screenshot>
+      <graphic fileref="resources/images/ExcelReportModule/administration_page.jpg" width="80%" align="center"/>
+    </screenshot>
+    <orderedlist>
+      <listitem>
+        <itemizedlist>
+          <para>The<emphasis role="bold"> Administration</emphasis> functions includes:</para>
+          <listitem>
+            <para><emphasis role="italic">Configuration</emphasis>: Set a path to the directory where the excel template files are stored.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">List of reports</emphasis>: Allows users to create reports and its items and to assign the organisation units or the organisation unit groups to the reports. There are four types of report, as follows: a report containing standard data elements,  a report listing organisation unit groups as rows, a report listing period of time as columns, a report generating data elements combined with categories</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Data Entry Status</emphasis> (or view the status of the data entry): View the data entry status to know about data  entered, reports finished or not finished yet with data entry. In order to view the data entry status, adding data sets which is equivalent to the data entry is mandatory. </para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Clean temporary directory</emphasis>: Every time a user generates a report, the system creates an Excel file in the temporary directory (<envar>excelreporttemplate</envar> directory). This directory would be larger and larger after some time and occupy a lot of memory. This function will clean those files from temporary directory.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Excel items</emphasis>: In many situations, health workers in the field may not have good Internet access, and will therefore need to enter data "offline" and transmit this data via email or other means, for subsequent importation into the DHIS database.  The Excel Report data import  feature allows users to import data from a pre-designed Excel templates directly into the DHIS database automatically. Alternatively, selected elements may be imported. It supports three types of report, includes a report containing standard data elements,  a report listing organisation unit groups as rows, a report generating data elements combined with categories.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Excel Template Management</emphasis> : Manage Template Excel files which are  used to export reports, includes upload, download, delete and rename files.</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para><emphasis role="bold">Generate Report</emphasis> function has several sub-functions including:</para>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis role="italic">Generate Report</emphasis>: Allow users to generate reports according to parameters such as time period, organisation unit, organisation unit group  and to generate group of reports to many sheets of a single  Excel file.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Generate advanced report</emphasis>: Generates reports by OrgUnit group.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Import excel files</emphasis>: Imports data values from an Excel file to the DHIS database.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Data Set completed reports</emphasis>: Generates the report which show status of completeness of entering data .</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Data entry Status</emphasis>: View data entry status.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Individual reports</emphasis>: Generate user defined reports which list data elements and a list of periods  which can be chosen by the user.</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </orderedlist>
+    <section id="excelReportingConfiguration">
+      <title>Configuration</title>
+      <para>The directory configuration is to set the path of the directory containing the Excel Template (.xls) file. </para>
+      <para>In order to set the directory, choose  <emphasis role="bold">Administrator &gt; Configuration&gt;</emphasis> Set path and specify the path. The procedure is outlined in more detail below. </para>
+      <orderedlist>
+        <listitem>
+          <para>Click <emphasis role="bold">Administration</emphasis> to open Administrator page.</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/configure_directory.jpg" width="80%" align="center"/>
+          </screenshot>
+        </listitem>
+        <listitem>
+          <para>Click <emphasis role="bold">Configuration</emphasis> button</para>
+        </listitem>
+        <listitem>
+          <para>Set a path to the folder containing excel file </para>
+          <para>An Excel template directory is simply a directory that will be used to contain all the necessary files. It is recommended  to create this folder inside the <envar>DHIS2_HOME</envar> folder. </para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/configure_directory1.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Click <emphasis role="bold">OK</emphasis> to save</para>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section id="excelReportingListOfReports">
+      <title>List of reports </title>
+      <para>The function allows users to create reports and its items and to assign the organisation units or the organisation unit groups to the reports</para>
+      <section>
+        <title>Types of report</title>
+        <para>Before generating reports, there is a need to create  Excel report template files.  Reports will be generated in a standard format according to the structure defined in the template. Currently, there are four report types that the module can support.</para>
+        <orderedlist>
+          <listitem>
+            <para>
+              <emphasis role="bold">Standard reports contain default data elements and indicators</emphasis>
+            </para>
+            <para>Standard reports have a fixed model in which number of the columns and the rows are unchangeable. Normally, this report is generated by only one organisation unit or one  organisation unit group at a specified period of time. An example is show below.</para>
+            <screenshot>
+              <graphic fileref="resources/images/ExcelReportModule/standard_report_template.jpg" width="80%" align="center"/>
+            </screenshot>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">Row-based reports with multiple organisational</emphasis>
+            </para>
+            <para>This type of report displays data elements’ name in the fixed columns, and organisation units are be displayed automatically according to the selected parents organisation unit in a period of time. These organisation units are also grouped together following the administrative level, such as: province, district, commune, etc.</para>
+            <screenshot>
+              <graphic fileref="resources/images/ExcelReportModule/list_org_unit_group_report_template.jpg" width="80%" align="center"/>
+            </screenshot>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">Reports list time periods in the columns</emphasis>
+            </para>
+            <para>This report display data values according to the fixed data element names, and the list of time periods are displayed automatically.<screenshot><graphic fileref="resources/images/ExcelReportModule/list_time_period_report_template.jpg" width="80%" align="center"/></screenshot></para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">Reports with data elements and categories</emphasis>
+            </para>
+            <para>This type of report displays data values which are combined of data elements and category combination. Data element names display as rows and category options are displayed as columns. Data elements’ names, codes may be displayed automatically as well as the sequence numbers of the rows</para>
+            <screenshot>
+              <graphic fileref="resources/images/ExcelReportModule/dataelement_category_report_template.jpg" width="80%" align="center"/>
+            </screenshot>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section>
+        <title>Create a new report in DHIS2 with Excel report template file</title>
+        <para>When the Excel report template file is available, creating a new report and the relevant report items are required. A step-by-step procedure is provided below.</para>
+        <orderedlist>
+          <listitem>
+            <para>To create a new report, choose  <emphasis role="bold">Administration</emphasis> --&gt; <emphasis role="bold">List Of Report</emphasis> --&gt; <emphasis role="bold">Add</emphasis> --&gt; Fill the information form --&gt; OK</para>
+          </listitem>
+          <listitem>
+            <para>To create report items in the report  choose <emphasis role="bold">Administration</emphasis> --&gt; <emphasis role="bold">List Of Report</emphasis> --&gt; Choose a report --&gt; <emphasis role="bold">Report Item</emphasis> --&gt; <emphasis role="bold">Add</emphasis> --&gt; Fill information form --&gt; OK</para>
+          </listitem>
+        </orderedlist>
+        <section>
+          <title>Create new report </title>
+          <para>Click <emphasis role="bold">List Of Reports</emphasis> </para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/create_new_report.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Add new report: Click Add button to add new report</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/add_new_report_button.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Fill  information of report in this form:</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/enter_report_information.jpg" width="80%" align="center"/>
+          </screenshot>
+          <itemizedlist>
+            <listitem>
+              <para><emphasis role="italic">Name</emphasis> *: Enter Name of report</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Excel Template</emphasis>*: Enter name of Excel report template file. (include extension) </para>
+            </listitem>
+            <listitem>
+              <para>Report Type *: Choose report type </para>
+              <itemizedlist>
+                <listitem>
+                  <para>Normal : to create reports include just data elements or indicator</para>
+                </listitem>
+                <listitem>
+                  <para>Category : to create reports with data values are combined of data elements and categories </para>
+                </listitem>
+                <listitem>
+                  <para>Period column listing: to create reports which list data values according to time period of specified organisation unit.</para>
+                </listitem>
+                <listitem>
+                  <para>Organisation unit listing: reports which list data values according to organisation units.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>Period position row and Period position column: Row and Column Number in Excel template file where to put Period value.</para>
+            </listitem>
+            <listitem>
+              <para>Organisation Unit Row and Organisation Unit Column: Row and Column Number in Excel template file where to put Organisation Unit Name.</para>
+            </listitem>
+            <listitem>
+              <para>Click OK button to create new report</para>
+            </listitem>
+          </itemizedlist>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/list_of_reports.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>There are  buttons that can be used for various actions as depicted below: </para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/operating_buttons.jpg" width="80%" align="center"/>
+          </screenshot>
+          <itemizedlist>
+            <listitem>
+              <para>Report Associations    <inlinegraphic fileref="resources/images/ExcelReportModule/association_org_unit.jpg"/>for assigning reports to organisation units</para>
+            </listitem>
+            <listitem>
+              <para>Report Item  <inlinegraphic fileref="resources/images/ExcelReportModule/report_item.jpg"/>for creating report items in the report</para>
+            </listitem>
+            <listitem>
+              <para>Remove  <inlinegraphic fileref="resources/images/ExcelReportModule/remove_report.jpg"/>for removing report</para>
+            </listitem>
+            <listitem>
+              <para>Edit  <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing report’s information.</para>
+            </listitem>
+            <listitem>
+              <para>Organisation unit Group    <inlinegraphic fileref="resources/images/ExcelReportModule/assign_org_unit_group.jpg"/>: For choose which organisation group would be list in the report. This button only appear when the Report Type is Organisation Unit Listing</para>
+            </listitem>
+            <listitem>
+              <para>Data element groups <inlinegraphic fileref="resources/images/ExcelReportModule/assign_data_element_group.jpg"/> : This button for create Data element group and these groups of data elements would be list in the report. This button only available when report type is Category. </para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section>
+          <title>Create report items</title>
+          <para>Click <emphasis role="bold">Create Report Item</emphasis> button</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/create_item.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Click <emphasis role="bold">Add</emphasis> button to open a form</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/report_item_function.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Fill the report item’s information</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/enter_report_item_infor.jpg" width="80%" align="center"/>
+          </screenshot>
+          <itemizedlist>
+            <listitem>
+              <para>Name*: Enter report item name (Ex: Total person joined HIA)</para>
+            </listitem>
+            <listitem>
+              <para>Item Type*: Chose item types </para>
+              <itemizedlist>
+                <listitem>
+                  <para>Data element : if this report item is data element</para>
+                </listitem>
+                <listitem>
+                  <para>Indicator: : if this report item is indicator</para>
+                </listitem>
+                <listitem>
+                  <para>Excel formula: if this item describes the excel formula</para>
+                </listitem>
+                <listitem>
+                  <para>Data element Name: if report item is list of data element’s names</para>
+                </listitem>
+                <listitem>
+                  <para>Data element Code: If report item is list of data element’s codes</para>
+                </listitem>
+                <listitem>
+                  <para>Serial : If report item is list of auto generating sequence no</para>
+                </listitem>
+                <listitem>
+                  <para>Organisation: if report item is list of organisation unit.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>Period Type*: Chose period type which data values of that report item would be aggregated and displays according to period parameter that user will choose when generate report. (Last 3 months, Last 6 months, So far this year, Quarterly, Six-Monthly, Yearly).</para>
+            </listitem>
+            <listitem>
+              <para>Expression *: Click Expression button to choose Data element, Indicator, Or just type excel formula if Item type is Excel formula.</para>
+              <screenshot>
+                <graphic fileref="resources/images/ExcelReportModule/create_expression.jpg" width="80%" align="center"/>
+              </screenshot>
+              <screenshot>
+                <graphic fileref="resources/images/ExcelReportModule/create_expression1.jpg" width="80%" align="center"/>
+              </screenshot>
+              <para>The category option would be  <emphasis role="italic">default</emphasis> if data element hasn’t been combined with any category combo. Other options are described below:</para>
+            </listitem>
+            <listitem>
+              <para>Sheet No*: type sheet no where this report item would be display in excel template file</para>
+            </listitem>
+            <listitem>
+              <para>Row*: row number refers to cell where report item would be display in Excel file.</para>
+            </listitem>
+            <listitem>
+              <para>Column*: column number refers to cell where report item would be display in Excel file.</para>
+            </listitem>
+            <listitem>
+              <para>Click OK button to create report item.</para>
+            </listitem>
+          </itemizedlist>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/new_report_item.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>New report item has been created</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/NewReportItem.jpg" width="60%" align="center"/>
+          </screenshot>
+          <tip>
+            <para>There must be at least one period type in a report.</para>
+          </tip>
+          <para><emphasis role="bold">Copy selected items to</emphasis> button: To copy the report items to excel items of an excel item group<orderedlist><listitem><para>From list of reports page, Add  new report</para></listitem><listitem><para>From source report, select report items need to be copied.</para></listitem><listitem><para>Click the <emphasis role="bold">Copy selected items to</emphasis> button</para></listitem><listitem><para><emphasis role="italic">List of report</emphasis>: chose a destination report</para></listitem><listitem><para><emphasis role="italic">Sheet No</emphasis>: Choose the Sheet No which report Item would be display.</para></listitem><listitem><para>Click <emphasis role="bold">OK</emphasis> button to copy</para></listitem></orderedlist><screenshot><graphic fileref="resources/images/ExcelReportModule/copy_report_item.jpg" width="80%" align="center"/></screenshot><tip><para>Copy selected items to other reports for quickly developing many reports with the same data elements but with the different periods.</para></tip><emphasis role="bold">Copy to excel items</emphasis> button: To copy the report items when the new report has an item which can be reused from the existing report. </para>
+          <para>
+            <orderedlist>
+              <listitem>
+                <para>From source report, select report items need to be copied.</para>
+              </listitem>
+              <listitem>
+                <para>Click the <emphasis role="bold">Copy to excel items</emphasis> button</para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="italic">List of groups</emphasis>: chose a destination report</para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="italic">Sheet No</emphasis>: Choose the Sheet No which report Item would be display.</para>
+              </listitem>
+              <listitem>
+                <para>Click <emphasis role="bold">OK</emphasis> button to copy</para>
+              </listitem>
+            </orderedlist>
+            <screenshot>
+              <graphic fileref="resources/images/ExcelReportModule/copy_to_excel_iems_group.png" align="center"/>
+            </screenshot>
+            <tip>
+              <para>Copy selected items to Excel item groups for quickly developing many groups with the same data elements.</para>
+            </tip>
+          </para>
+        </section>
+      </section>
+      <section>
+        <title>Assign report </title>
+        <section>
+          <title>Assign report to Org Units </title>
+          <para>Click <emphasis role="bold">Report Associations</emphasis> button:</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/report_association.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Chose Org Units to assign and click Save button</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/select_org_unit.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Select Org Unit groups which would be available in the report by clicking on each organisational unit. <!--This is not clear. Rephrase. -->There is a difference between Select Org Units to assign to report for OrgUnit generate reports later, which select org unit groups are list of OrgUnit groups would be available in reports.</para>
+          <para>This function only appears in <emphasis role="bold">Organization Unit Listing</emphasis> report type. </para>
+          <para>Click <emphasis role="bold">Organisation Unit group</emphasis> button.</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/select_org_unit_group.jpg" width="80%" align="center"/>
+          </screenshot>
+          <para>Select Organisation unit groups, arrange sequence of these groups, and click <emphasis role="bold">OK</emphasis> to save.</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/select_org_unit_group1.jpg" width="80%" align="center"/>
+          </screenshot>
+        </section>
+        <section>
+          <title>Assign report to user role</title>
+          <para>To manage the authority of using the reports, we should assign reports to user roles. This allows the administrator to decide which users are able to view certain reports.</para>
+          <orderedlist>
+            <listitem>
+              <para>From <emphasis role="bold">Main</emphasis> menu, choose <emphasis role="bold">Maintenance</emphasis> &gt; <emphasis role="bold">Users</emphasis></para>
+            </listitem>
+            <listitem>
+              <para>From Left menu, chose User Role</para>
+              <screenshot>
+                <graphic fileref="resources/images/ExcelReportModule/assign_user_role.jpg" width="80%" align="center"/>
+              </screenshot>
+            </listitem>
+            <listitem>
+              <para>Click <emphasis role="bold">Edit</emphasis> button to edit User role’s information</para>
+              <screenshot>
+                <graphic fileref="resources/images/ExcelReportModule/edit_user_role.jpg" width="80%" align="center"/>
+              </screenshot>
+            </listitem>
+            <listitem>
+              <para>Select Excel reports, click <emphasis role="bold">Save</emphasis> button to assign excel reports to user role.</para>
+              <screenshot>
+                <graphic fileref="resources/images/ExcelReportModule/select_excel_report.jpg" width="80%" align="center"/>
+              </screenshot>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+    </section>
+    <section id="excelReportingDataEntryStatus">
+      <title>Data Entry Status</title>
+      <para>This function allows users to see which datasets are entered with data and how the data values are entered. This helps save time for the health manager to follow the completeness of the data entered. In particular, there is a need of viewing data set entry status.</para>
+      <para>Add data set to view</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/data_entry_status.jpg" width="80%" align="center"/>
+      </screenshot>
+      <para><emphasis role="bold">Data Entry Status</emphasis> page would be displayed. Click <emphasis role="bold">Add</emphasis> button to add data set.</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/add_dataset.jpg" width="80%" align="center"/>
+      </screenshot>
+      <para>Select the desired data set and Organisation Unit from the menu.</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/add_dataset1.jpg" width="80%" align="center"/>
+      </screenshot>
+    </section>
+    <section id="excelReportingExcelItems">
+      <title>Excel items</title>
+      <para>The sub function allows users to import data from a pre-designed Excel templates directly into the DHIS database automatically. Alternatively, selected elements may be imported.</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/excel_item_group.png" align="center"/>
+      </screenshot>
+      <section>
+        <title>Create a template to import</title>
+        <para><orderedlist><listitem><para>To create a group, choose  <emphasis role="bold">Administration</emphasis> --&gt;<emphasis role="bold"> Excel items</emphasis> --&gt; <emphasis role="bold">Add </emphasis>--&gt; Fill the information form --&gt; <emphasis role="bold">OK</emphasis>.</para></listitem><listitem><para>To create items in the grorp,  choose <emphasis role="bold">Administration</emphasis> --&gt; <emphasis role="bold">Excel items</emphasis> --&gt; Choose a group --&gt; <emphasis role="bold">Excel items </emphasis>--&gt; Fill information form -&gt; <emphasis role="bold">OK</emphasis>.</para></listitem></orderedlist>Creating a Excel items group which contains Excel items. A Excel item correspond with a data cell into imputted template Excel files. A step-by-step procedure is provided below.</para>
+        <screenshot>
+          <graphic fileref="resources/images/ExcelReportModule/add_excel_item_group.png" align="center"/>
+        </screenshot>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis role="italic">Name </emphasis>*: Enter Name of report.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Report Type </emphasis>*: Choose report type<itemizedlist><listitem><para><emphasis role="italic">Normal</emphasis> : to create group include just data elements or indicator</para></listitem><listitem><para><emphasis role="italic">Category</emphasis> : to create group  with data values are combined of data elements and categories</para></listitem><listitem><para><emphasis role="italic">Organisation unit listing </emphasis>: groups which list data values according to organisation units.</para></listitem></itemizedlist></para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic">Period Type </emphasis>*: Type of period to import data values.</para>
+          </listitem>
+        </itemizedlist>
+        <para>Click <emphasis role="bold">OK</emphasis> button to create new report.</para>
+        <para>There are buttons that can be used for various actions as depicted below.</para>
+        <screenshot>
+          <graphic fileref="resources/images/ExcelReportModule/operations_excel_item_group.png" align="center"/>
+        </screenshot>
+        <itemizedlist>
+          <listitem>
+            <para> Associations    <inlinegraphic fileref="resources/images/ExcelReportModule/association_org_unit.jpg"/>for assigning a group to organisation units.</para>
+          </listitem>
+          <listitem>
+            <para>Excel item group <inlinegraphic fileref="resources/images/ExcelReportModule/report_item.jpg"/>for creating report items in the report.</para>
+          </listitem>
+          <listitem>
+            <para>Remove  <inlinegraphic fileref="resources/images/ExcelReportModule/remove_report.jpg"/>for removing excel item group.</para>
+          </listitem>
+          <listitem>
+            <para>Edit  <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing  information of group.</para>
+          </listitem>
+          <listitem>
+            <para>Organisation unit Group    <inlinegraphic fileref="resources/images/ExcelReportModule/assign_org_unit_group.jpg"/> for choose which organisation group would be list in the group. This button only appear when the Group Type is Organisation Unit Listing</para>
+          </listitem>
+          <listitem>
+            <para>Data element groups <inlinegraphic fileref="resources/images/ExcelReportModule/assign_data_element_group.jpg"/>  for create Data element group and these groups of data elements would be list in the report. This button only available when report type is Category. </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section>
+        <title>Create excel items</title>
+        <para>Click<emphasis role="bold"> Excel item</emphasis> buttton  <inlinegraphic fileref="resources/images/ExcelReportModule/report_item.jpg"/>to create items.</para>
+        <para>Click <emphasis role="bold">Add</emphasis> button to open a form.<screenshot><graphic fileref="resources/images/ExcelReportModule/add_excel_item.png" align="center"/></screenshot></para>
+        <para>Fill information of an excel items.<itemizedlist><listitem><para>Name*: Enter  item name</para></listitem><listitem><para>Expression *: Click Expression button to choose Data element, Indicator, Or just type excel formula if Item type is Excel formula.</para><screenshot><graphic fileref="resources/images/ExcelReportModule/create_expression.jpg" width="80%" align="center"/></screenshot><screenshot><graphic fileref="resources/images/ExcelReportModule/create_expression1.jpg" width="80%" align="center"/></screenshot><para>The category option would be  <emphasis role="italic">default</emphasis> if data element hasn’t been combined with any category combo. Other options are described below:</para></listitem><listitem><para>Sheet No*: type sheet no where this  item would be display in excel template file</para></listitem><listitem><para>Row*: row number refers to cell where  item would be display in Excel file.</para></listitem><listitem><para>Column*: column number refers to cell where  item would be display in Excel file.</para></listitem><listitem><para>Click <emphasis role="bold">OK</emphasis> button to create  item.</para></listitem></itemizedlist></para>
+        <para><emphasis role="bold">Copy selected items to</emphasis> button: To copy the report items when the new report has an item which can be reused from the existing report<screenshot><graphic fileref="resources/images/ExcelReportModule/copy_excel_item_to.png" align="center"/></screenshot><orderedlist><listitem><para>From List of groups page, select  items need to be copied.</para></listitem><listitem><para>Click the <emphasis role="bold">Copy selected items to</emphasis> button.</para></listitem><listitem><para><emphasis role="italic">List of groups</emphasis>: chose a destination report.</para></listitem><listitem><para><emphasis role="italic">Sheet No</emphasis>: Choose the Sheet No which report Item would be display.</para></listitem><listitem><para>Click <emphasis role="bold">OK</emphasis> button to copy.</para></listitem></orderedlist></para>
+        <tip>
+          <para>Copy selected items to other groups for quickly developing many groups with the same data elements but with the different periods</para>
+        </tip>
+      </section>
+    </section>
+    <section id="excelReportingExcelTemplateManagement">
+      <title>Excel Template Management </title>
+      <para>This is used to manage Template Excel files which are  used to export reports, includes upload, download, delete and rename files.</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/excel_template_management.png" align="center"/>
+      </screenshot>
+      <para>To upload template file, choose <emphasis role="bold">Browse</emphasis> button.<screenshot><graphic fileref="resources/images/ExcelReportModule/upload_template_excel_file.png" align="center"/></screenshot></para>
+      <para>Choose a file from shown dialog<screenshot><graphic fileref="resources/images/ExcelReportModule/choose_upload_file.png" align="center"/></screenshot></para>
+      <para>Click <emphasis role="bold">Open</emphasis> to choose file, and click <emphasis role="bold">Upload</emphasis> button to upload. If to upload successfully, a message shown :<screenshot><graphic fileref="resources/images/ExcelReportModule/upload_success.png" align="center"/></screenshot><tip><para>No upload if the chosen  file is not excel file.</para></tip></para>
+      <para>There three operation functions</para>
+      <itemizedlist>
+        <listitem>
+          <para>Remove  <inlinegraphic fileref="resources/images/ExcelReportModule/remove_report.jpg"/>For removing report</para>
+        </listitem>
+        <listitem>
+          <para>Edit  <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing report’s information.</para>
+        </listitem>
+        <listitem>
+          <para>Download <inlinegraphic fileref="resources/images/ExcelReportModule/download_template_excel_file.png" align="center"/> for dowloading template file. </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section>
+      <title>Generate report</title>
+      <para>To generate a report we just follow these simple steps. </para>
+      <orderedlist>
+        <listitem>
+          <para>Click Generate Report</para>
+        </listitem>
+        <listitem>
+          <para>Select Org Unit</para>
+        </listitem>
+        <listitem>
+          <para>Select report Group </para>
+        </listitem>
+        <listitem>
+          <para>Select Report from list</para>
+        </listitem>
+        <listitem>
+          <para>Select period</para>
+        </listitem>
+        <listitem>
+          <para>Select period</para>
+        </listitem>
+        <listitem>
+          <para>Click Generate Report button</para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/generate_report.jpg" width="80%" align="center"/>
+          </screenshot>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section id="excelReportingCleanTemporaryDirectory">
+      <title>
+        <emphasis role="italic">Clean temporary directory</emphasis>
+      </title>
+      <para>This allows the user to  clean temporary directory.</para>
+      <itemizedlist>
+        <listitem>
+          <para>From <emphasis role="bold">Main</emphasis> menu, choose <emphasis role="bold">Maintenance</emphasis> &gt; <emphasis role="bold">Clean temporary directory </emphasis></para>
+          <screenshot>
+            <graphic fileref="resources/images/ExcelReportModule/clean temporary directory.png" align="center"/>
+          </screenshot>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section id="excelReportingAdvancedReport">
+      <title>Generate advanced report</title>
+      <para>This <emphasis role="italic">Generate Advanced Report</emphasis> function allow users to generate a report according to the parameters such as: <emphasis role="italic">Report group name</emphasis>, <emphasis role="italic">Report name</emphasis>, <emphasis role="italic">selected period</emphasis>, and <emphasis role="italic">organisation unit</emphasis> <emphasis role="italic">group name</emphasis>. The difference between <emphasis role="italic">Generate Advanced Report</emphasis> function and <emphasis role="italic">Generate Report</emphasis> function is that  the advanced function is capable of  generating reports according to groups of Org Units withing the same level as depicted below.</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/advanced_generate_report.jpg" width="80%" align="center"/>
+      </screenshot>
+    </section>
+    <section id="excelReportingIndividualReport">
+      <title>Generate an individual report</title>
+      <para>This function allows users to generate the reports with data elements and a list of period as their individual decision. Another way, user can generate a dirty report by selecting data elements, periods to generate a simple excel report without excel template file or creating report or report items. Then, user can bookmark this report for generating later. The steps to generate individual report are listed below</para>
+      <orderedlist>
+        <listitem>
+          <para>Click Individual report function from the left menu</para>
+        </listitem>
+        <listitem>
+          <para>Select organisation unit</para>
+        </listitem>
+        <listitem>
+          <para>Select data elements</para>
+        </listitem>
+        <listitem>
+          <para>Select category option of selected data element</para>
+        </listitem>
+        <listitem>
+          <para>Click select button</para>
+        </listitem>
+        <listitem>
+          <para>Select period type</para>
+        </listitem>
+        <listitem>
+          <para>Select periods</para>
+        </listitem>
+        <listitem>
+          <para>Click select button</para>
+        </listitem>
+        <listitem>
+          <para>Click generate report button</para>
+        </listitem>
+        <listitem>
+          <para>Click  Book mark button for generate later</para>
+        </listitem>
+      </orderedlist>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/generate_individual_report1.jpg" width="80%" align="center"/>
+      </screenshot>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/generate_individual_report.jpg" width="80%" align="center"/>
+      </screenshot>
+    </section>
+    <section id="excelReportingDataSetCompleteReport">
+      <title>Data set complete reports</title>
+      <para>When users finish entering data for a data set, they need to click the <emphasis role="bold">COMPLETE</emphasis> button to identify that the data set is completely entered. The View Data set complete report function takes care of this completeness. There are two ways of viewing data set complete reports: View as Period or Dataset. When viewing by Period, users can see complete status of 1 dataset in many  periods of time. When view by Dataset , users can see many data sets in only a specified period. This function is only used for management users in the upper Organisation Unit. </para>
+      <para>To view data set complete reports, do steps below</para>
+      <orderedlist>
+        <listitem>
+          <para>From the left menu, click Dataset complete reports</para>
+        </listitem>
+        <listitem>
+          <para>Choose Orgunit name. (Parent Organisation Units)</para>
+        </listitem>
+        <listitem>
+          <para>Select Period Type</para>
+        </listitem>
+        <listitem>
+          <para>Select View Type.</para>
+        </listitem>
+        <listitem>
+          <para>Select data set (Select only 1 data set if view by Period)</para>
+        </listitem>
+        <listitem>
+          <para>Select Period (Select only 1 period if view by Dataset)</para>
+        </listitem>
+        <listitem>
+          <para>Click View Report button</para>
+        </listitem>
+      </orderedlist>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/view_data_set_completed_report.jpg" width="80%" align="center"/>
+      </screenshot>
+      <para>Example of view report by Period</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/view_data_set_completed_report_period.jpg" width="80%" align="center"/>
+      </screenshot>
+      <para>Example of view report by data set</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/view_data_set_completed_report_dataset.jpg" width="80%" align="center"/>
+      </screenshot>
+    </section>
+    <section id="excelReportingDataEntryStatusReport">
+      <title>Data entry status report</title>
+      <para>This function allows users to see which datasets are entered with data and how the data values are entered. This helps save time for the health manager to follow the completeness of the data entered. In particular, there is a need of viewing data set entry status.</para>
+      <para>View Data entry status</para>
+      <para>From Left menu, click Data Entry Status &gt; Select Org Unit name to view.</para>
+      <screenshot>
+        <graphic fileref="resources/images/ExcelReportModule/data_entry_status1.jpg" width="80%" align="center"/>
+      </screenshot>
+      <para>The Data entry status is displayed as percentage. The relative percentage of data elements that were entered in the form. </para>
+    </section>
+    <section id="excelReportingImportData">
+      <title>
+        <emphasis role="bold">Import excel files</emphasis>
+      </title>
+      <para>This feature is current still in development. More information on this feature will be added soon. </para>
+      <para>The <emphasis role="bold">EXCEL REPORTING</emphasis> module is continuing develop and the documentation of it for users will be updated. If there is any other type of report template which are not supported by DHIS, feel free to send the requirements. All feedback will be appreciated, please inform us at <emphasis role="underline"><email>dhis2-documenters@lists.launchpad.net</email></emphasis>.</para>
     </section>
   </chapter>
 </book>

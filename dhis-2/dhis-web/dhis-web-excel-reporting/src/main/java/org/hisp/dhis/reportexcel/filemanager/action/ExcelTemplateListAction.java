@@ -136,7 +136,7 @@ public class ExcelTemplateListAction
     {
         File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
 
-        if ( !templateDirectory.exists() )
+        if ( templateDirectory == null || !templateDirectory.exists() )
         {
             return SUCCESS;
         }

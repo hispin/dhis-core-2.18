@@ -1,4 +1,4 @@
-<h3>$i18n.getString('excelitem_group')</h3>
+<h3>$i18n.getString('excelitem_group') #openHelp( "excelReportingExcelItems" )</h3>
 <table width=100%>
 	<tr>
 		<td>

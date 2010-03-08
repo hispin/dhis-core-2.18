@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "dataset_completed_report" )</h3>
+<h3>$i18n.getString( "dataset_completed_report" ) #openHelp( "excelReportingDataEntryStatusReport" )</h3>
 
 <table width="100%" class="list">
 	<tr>

@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "individual_report" )</h3>
+<h3>$i18n.getString( "individual_report" ) #openHelp( "excelReportingIndividualReport" )</h3>
 <div id="tooltip"></div>
 
 <form id="editDataSetForm" name="editDataSetForm" method="post" onsubmit="submitForm(); return validateEditDataSet()">
