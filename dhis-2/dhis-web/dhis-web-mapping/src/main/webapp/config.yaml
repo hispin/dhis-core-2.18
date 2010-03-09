@@ -68,9 +68,5 @@ layouts:
           - !columns
             items:
               - !text
-                backgroundColor: #FF0000
-                align: left
-                text: Copyright Camptocamp SA
-              - !text
                 align: right
                 text: 'Page ${pageNum}'
