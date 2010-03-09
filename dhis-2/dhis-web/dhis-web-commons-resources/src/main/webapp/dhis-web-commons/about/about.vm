@@ -2,7 +2,8 @@
 
 <dl>
   <dt>$i18n.getString( "current_user" ):</dt><dd>$!currentUsername</dd>
-  <dt>$i18n.getString( "version" ):</dt><dd>$!version - rev: $!revision</dd>
+  <dt>$i18n.getString( "version" ):</dt><dd>$!version</dd>
+  <dt>$i18n.getString( "build_revision" ):</dt><dd>$!revision</dd>
   <dt>$i18n.getString( "build_date" ):</dt><dd>$format.formatDateTime( $!buildTime )</dd>
   <dt>$i18n.getString( "user_agent" ):</dt><dd>$!userAgent</dd>
   <dt>$i18n.getString( "external_configuration_directory" ):</dt><dd>$!externalDirectory</dd>
