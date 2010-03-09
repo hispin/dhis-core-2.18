@@ -253,10 +253,6 @@ function addDataSetMembers()
         
         delete availableDataElements[id];        
     }
-    
-	//Not filter anymore
-    //filterDataSetMembers();
-    //filterAvailableDataElements();
 }
 
 function removeDataSetMembers()
@@ -276,8 +272,4 @@ function removeDataSetMembers()
         
         delete dataSetMembers[id];        
     }
-    
-	//Not filter anymore
-    //filterDataSetMembers();
-    //filterAvailableDataElements();
 }
