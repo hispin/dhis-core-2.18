@@ -1,4 +1,3 @@
-	#set( $paging_html = "1")
 	
 	#set ( $baseLink 		= $pagingUtil.baseLink )
 	#set ( $pageSize 		= $pagingUtil.pageSize )

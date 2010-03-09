@@ -166,8 +166,7 @@ public class SearchPatientAction
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
 
-            //TODO fix!
-            //patients = patientService.getPatientsByOrgUnit( organisationUnit );
+            patients = patientService.getPatientsByOrgUnit( organisationUnit );
 
             searchText = "list_all_patients";
 
@@ -210,8 +209,7 @@ public class SearchPatientAction
         
         if ( listAll )
         {
-            //TODO fix!
-            //patients = patientService.getPatientsByOrgUnit( organisationUnit );
+            patients = patientService.getPatientsByOrgUnit( organisationUnit );
 
             searchText = "list_all_patients";
 

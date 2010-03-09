@@ -120,4 +120,11 @@ public class HibernatePatientIdentifierStore
         .setProjection( Projections.countDistinct(  "patient" ) ).uniqueResult();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
+        .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).list();
+    }
+
 }
