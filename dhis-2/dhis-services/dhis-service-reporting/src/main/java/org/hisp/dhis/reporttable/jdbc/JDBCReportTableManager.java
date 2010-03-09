@@ -132,6 +132,20 @@ public class JDBCReportTableManager
         }
     }
     
+    public boolean reportTableIsGenerated( ReportTable reportTable )
+    {
+        try
+        {
+            statementManager.getHolder().getStatement().executeQuery( "SELECT count(*) FROM " + reportTable.getTableName() );
+            
+            return true;
+        }
+        catch ( Exception ex )
+        {
+            return false;
+        }
+    }
+    
     public Map<String, Double> getAggregatedValueMap( ReportTable reportTable,
         IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
