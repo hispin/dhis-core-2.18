@@ -996,6 +996,107 @@ Ext.onReady( function() {
         ]
     });
 	
+    /* HELP PANEL */
+	
+	function getHelpText(topic, tab) {
+		Ext.Ajax.request({
+			url: '../../dhis-web-commons-about/getHelpContent.action',
+			method: 'POST',
+			params: { id: topic },
+			success: function(r) {
+				Ext.getCmp(tab).body.update('<div id="help">' + r.responseText + '</div>');
+			},
+			failure: function() {
+				alert('Error: getHelpText');
+				return;
+			}
+		});
+	}
+    
+	var helpWindow = new Ext.Window({
+        id: 'help_w',
+        title: '<span id="window-help-title">Help</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: 560,
+		height: 350, 
+        items:
+        [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+				layoutOnTabChange: true,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit'},
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        if (tab.id == 'help0') {
+							getHelpText(thematicMap, tab.id);
+                        }
+                        else if (tab.id == 'help1') {
+							getHelpText(mapRegistration, tab.id);
+                        }
+                        else if (tab.id == 'help2') {
+                            getHelpText(organisationUnitAssignment, tab.id);
+                        }
+						if (tab.id == 'help3') { 
+                            getHelpText(overlayRegistration, tab.id);
+                        }
+                        else if (tab.id == 'help4') {
+                            getHelpText(administration, tab.id);
+                        }
+                        else if (tab.id == 'help5') {
+                            getHelpText(favorites, tab.id);
+                        }
+						else if (tab.id == 'help6') {
+                            getHelpText(legendSets, tab.id);
+                        }
+                    }
+                },
+                items:
+                [
+                    {
+                        title: '<span class="panel-tab-title">Thematic map</span>',
+                        id: 'help0'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">Maps</span>',
+                        id: 'help1'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">Assignment</span>',
+                        id: 'help2'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">Overlays</span>',
+                        id: 'help3'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">Admin</span>',
+                        id: 'help4'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">Favorites</span>',
+                        id: 'help5'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">Legend sets</span>',
+                        id: 'help6'
+                    }
+                ]
+            }
+        ],
+		listeners: {
+			'hide': {
+				fn: function() {
+					mapping.relation = false;
+				}
+			}
+		}
+    });
+
     /* REGISTER MAPS PANEL */
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
@@ -2809,22 +2910,10 @@ Ext.onReady( function() {
 		text: 'Help',
 		tooltip: 'Get help for the active panel',
 		handler: function() {
-			ACTIVEPANEL = !ACTIVEPANEL ? thematicMap : ACTIVEPANEL;
-			Ext.Ajax.request({
-				url: '../../dhis-web-commons-about/getHelpContent.action',
-				method: 'POST',
-				params: { id: ACTIVEPANEL },
-				success: function(r) {
-					var h = new Ext.Window({
-						title: '<span id="window-help-title">Help</span>',
-						html: '<div id="help">' + r.responseText + '</div>',
-						width: 300,
-						height: 400,
-						autoScroll: true,
-					});
-					h.show();
-				}
-			});
+			var c = Ext.getCmp('center').x;
+			var e = Ext.getCmp('east').x;
+			helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
+			helpWindow.show();
 		}
 	});
 	
