@@ -61,6 +61,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -338,6 +340,8 @@ public class GetTableOptionsAction
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
             
             Collections.sort( dataElements, new DataElementNameComparator() );
+            
+            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
             
             displayPropertyHandler.handle( dataElements );
         }
