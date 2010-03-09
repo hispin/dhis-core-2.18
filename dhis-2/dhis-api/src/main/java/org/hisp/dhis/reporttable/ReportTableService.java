@@ -158,4 +158,12 @@ public interface ReportTableService
      * @return a ReportTableData object.
      */
     ReportTableData getReportTableData( int id, I18nFormat format );
+
+    /**
+     * Tests whether the report table has been generated in the database.
+     * 
+     * @param id the ReportTable id.
+     * @return true if the report table has been generated, false it not.
+     */
+    boolean reportTableIsGenerated( int id );
 }

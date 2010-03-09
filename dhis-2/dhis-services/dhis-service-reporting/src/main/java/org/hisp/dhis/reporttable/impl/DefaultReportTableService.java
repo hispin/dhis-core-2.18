@@ -529,6 +529,11 @@ public class DefaultReportTableService
         return reportTableManager.getDisplayReportTableData( reportTable );
     }
     
+    public boolean reportTableIsGenerated( int id )
+    {
+        return reportTableManager.reportTableIsGenerated( getReportTable( id ) );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
