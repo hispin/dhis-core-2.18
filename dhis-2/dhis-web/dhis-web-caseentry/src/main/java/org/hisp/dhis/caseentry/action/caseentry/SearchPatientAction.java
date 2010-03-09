@@ -130,7 +130,7 @@ public class SearchPatientAction
         this.searchingAttributeId = searchingAttributeId;
     }
 
-    Collection<PatientAttribute> patientAttributes;
+    private Collection<PatientAttribute> patientAttributes;
 
     public Collection<PatientAttribute> getPatientAttributes()
     {
@@ -166,7 +166,8 @@ public class SearchPatientAction
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
 
-            patients = patientService.getPatientsByOrgUnit( organisationUnit );
+            //TODO fix!
+            //patients = patientService.getPatientsByOrgUnit( organisationUnit );
 
             searchText = "list_all_patients";
 
@@ -209,7 +210,8 @@ public class SearchPatientAction
         
         if ( listAll )
         {
-            patients = patientService.getPatientsByOrgUnit( organisationUnit );
+            //TODO fix!
+            //patients = patientService.getPatientsByOrgUnit( organisationUnit );
 
             searchText = "list_all_patients";
 
