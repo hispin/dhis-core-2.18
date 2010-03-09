@@ -19,6 +19,14 @@
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
 
+        <action name="splashUpload" class="org.hisp.dhis.mobile.app.action.SplashUploadAction">
+            <result name="success" type="velocity">/dhis-web-mobile/splashUploadResponse.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+            <interceptor-ref name="fileUploadStack">
+                <param name="allowedTypes">image/png</param>
+            </interceptor-ref>
+        </action>
+
         <action name="jarGenerator" class="org.hisp.dhis.mobile.app.action.JarGeneratorAction">
             <result name="success" type="chain">createMobileApp</result>
         </action>
