@@ -264,4 +264,9 @@ public class DefaultPatientService
     {
         return patientIdentifierService.countListPatientByOrganisationUnit( organisationUnit );
     }
+
+    public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit )
+    {
+        return patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
+    }
 }

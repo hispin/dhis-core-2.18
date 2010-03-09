@@ -140,9 +140,7 @@
   <tr>
   	<td colspan="6">
   		<div class="paging-container">
-			<div class="paging-center">
-				#parse( "/dhis-web-maintenance-patient/paging.vm" )
-			</div>
+			#parse( "/dhis-web-maintenance-patient/paging.vm" )
 		</div>
 	</td>
   	<td></td>

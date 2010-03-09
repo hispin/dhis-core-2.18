@@ -196,4 +196,9 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.countListPatientByOrganisationUnit( orgUnit );
     }
 
+    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit );
+    }
+
 }

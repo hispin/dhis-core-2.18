@@ -80,4 +80,6 @@ public interface PatientService
      * @return
      */
     Collection<Patient> searchPatient( Integer identifierTypeId, Integer attributeId, String value );
+    
+    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit );
 }
