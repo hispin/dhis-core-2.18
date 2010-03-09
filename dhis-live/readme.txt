@@ -1,3 +1,5 @@
+Warning: this readme has been superceded by work on the new automated installer 
+
 This  is a  first attempt  at  building a  lite version  of dhis.   It
 creates an  executable jar which  contains jetty server classes  and a
 simple tray icon controller. 
