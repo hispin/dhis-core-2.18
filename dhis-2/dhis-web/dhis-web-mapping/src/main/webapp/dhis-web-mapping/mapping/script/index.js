@@ -3065,7 +3065,6 @@ Ext.onReady( function() {
 						],
 						border: false,
 						map: MAP,
-						layerTree: layerTree,
 						configUrl: printConfigUrl,
 						overrides: layerOverrides
 					}

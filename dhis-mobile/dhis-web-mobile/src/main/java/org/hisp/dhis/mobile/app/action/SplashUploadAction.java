@@ -26,14 +26,17 @@ package org.hisp.dhis.mobile.app.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
-public class CreateMobileAppAction implements Action {
+public class SplashUploadAction extends ActionSupport {
 
-    private String mvnPath;
-    private String mvnStatus;
+    private File file;
+    private String contentType;
+    private String filename;
     private String[] splashImg;
 
     public String[] getSplashImg() {
@@ -56,83 +59,28 @@ public class CreateMobileAppAction implements Action {
         return splashImg;
     }
 
-    public String getMvnPath() {
-        //long startTime = System.currentTimeMillis();
-        String PATH = System.getenv("PATH");
-        String[] locations;
-        if (getOSName().equals("win")) {
-            locations = PATH.split(";");
-        } else {
-            locations = PATH.split(":");
-        }
-        for (String location : locations) {
-            File folder = new File(location);
-            String filePath = scanPath(getOSName(), folder);
-            if (!filePath.equals("")) {
-                mvnPath = filePath;
-                break;
-            }
-        }
-        //long endTime = System.currentTimeMillis();
-        //System.out.println("OS = " + getOSName() + "; Total exec time=" + Long.toString(endTime - startTime) + "ms to find" + mvnPath);
-        return mvnPath;
+    public void setUpload(File file) {
+        this.file = file;
     }
 
-    public void setMvnPath(String path) {
-        File mvnFolder = new File(path);
-        String filePath = scanPath(getOSName(), mvnFolder);
-        if (!filePath.equals("")) {
-            this.mvnPath = filePath;
-        } else {
-            mvnStatus = "Could not find mvn.bat at the location you entered";
-        }
+    public void setUploadContentType(String contentType) {
+        this.contentType = contentType;
     }
 
-    public String getMvnStatus() {
-        return mvnStatus;
-    }
-
-    public void setMvnStatus(String status) {
-        this.mvnStatus = status;
-    }
-
-    private String getOSName() {
-        String osName;
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            osName = "win";
-        } else {
-            osName = "nix";
-        }
-        return osName;
-    }
-
-    private String scanPath(String osName, File folder) {
-        String filePath = new String();
-        if (folder.exists()) {
-            if (folder.isDirectory()) {
-                File[] files = folder.listFiles();
-                for (File file : files) {
-                    if (osName.equals("win")) {
-                        if (file.getName().equals("mvn.bat")) {
-                            filePath = file.getAbsolutePath();
-                            break;
-                        }
-                    } else if (osName.equals("nix")) {
-                        if (file.getName().equals("mvn")) {
-                            filePath = file.getAbsolutePath();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return filePath;
+    public void setUploadFileName(String filename) {
+        this.filename = filename;
     }
 
     @Override
-    public String execute()
-            throws Exception {
-
+    public String execute() {
+        try {
+            String webappPath = ServletActionContext.getServletContext().getRealPath("/");
+            String imgPath = webappPath + "/dhis-web-mobile/javame_src/src/main/resources/splash";
+            File imgFolder = new File(imgPath);
+            FileUtils.copyFile(file, new File(imgFolder, String.valueOf(imgFolder.listFiles().length + 1) + ".png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         return SUCCESS;
     }
 }

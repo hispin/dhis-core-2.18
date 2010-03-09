@@ -27,36 +27,81 @@ package org.hisp.dhis.mobile.app.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import com.opensymphony.xwork2.Action;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
 public class JarGeneratorAction implements Action {
 
-    private String antBin;
+    private String mvnBin;
+    private String splash;
 
-    /**
-     * @return the antBin
-     */
-    public String getAntBin() {
-        return antBin;
+    public String getMvnBin() {
+        return mvnBin;
     }
 
-    /**
-     * @param antBin the antBin to set
-     */
-    public void setAntBin(String antBin) {
-        this.antBin = antBin;
+    public void setMvnBin(String mvnBin) {
+        this.mvnBin = mvnBin;
+    }
+
+    public String getSplash() {
+        return splash;
+    }
+
+    public void setSplash(String splash) {
+        this.splash = splash;
+    }
+
+    private static String readFileAsString(File file) throws java.io.IOException {
+        byte[] buffer = new byte[(int) file.length()];
+        BufferedInputStream f = new BufferedInputStream(new FileInputStream(file));
+        f.read(buffer);
+        f.close();
+        return new String(buffer);
+    }
+
+    public void replaceStringInFile(File dir, String fileName, String match, String replacingString) {
+        try {
+            File srcFile = new File(dir, fileName);
+            File destFile = new File(dir, "temp");
+            if (srcFile.exists()) {
+                String str = readFileAsString(srcFile);
+                str = str.replaceFirst(match, replacingString);
+                FileWriter fw = new FileWriter(destFile);
+                fw.write(str);
+                fw.close();
+            }
+            FileUtils.copyFile(destFile, srcFile);
+            destFile.delete();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public String execute()
-            throws Exception {
-        System.out.println("Generating Jar File...");
-        System.out.println(ServletActionContext.getServletContext().getRealPath("/"));
+    public String execute() throws Exception {
+        String webappPath = ServletActionContext.getServletContext().getRealPath("/");
+        String javameSrc = webappPath + "/dhis-web-mobile/javame_src/src/main/java/org/hisp/dhis/mobile";
 
-        ProcessBuilder pb = new ProcessBuilder(antBin ,"run" ,"-buildfile",ServletActionContext.getServletContext().getRealPath("/")+"\\dhis-web-mobile\\midp_src\\build.xml");
+        File dir = new File(javameSrc);
+        replaceStringInFile(dir, "DHISMobile.java", "\\w*.png", splash);
+
+        System.out.println("MVN BIN = " + mvnBin);
+        System.out.println("Full Exec: " + mvnBin + " install " + "-f " + ServletActionContext.getServletContext().getRealPath("/") + "/dhis-web-mobile/javame_src/pom.xml");
+
+        ProcessBuilder pb = new ProcessBuilder(mvnBin, "install", "-f", ServletActionContext.getServletContext().getRealPath("/") + "/dhis-web-mobile/javame_src/pom.xml");
         pb.redirectErrorStream(true);
         Process p = pb.start();
         InputStream is = p.getInputStream();

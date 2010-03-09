@@ -256,7 +256,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         {
                             xtype: 'button',
                             id: 'autoassign_be',
-                            text: 'Auto-assign',
+                            text: 'Assign all',
 							cls: 'aa_dark',
                             isVisible: false,
                             handler: function()
