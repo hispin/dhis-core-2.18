@@ -1,6 +1,6 @@
-<form id="translateForm" action="translate.action" method="post">
+<form id="translateForm" action="translate.action" method="post" onsubmit="javascript: return validateAddTranslation();">
 
-<h3>$i18n.getString( "translation_translate" ) #openHelp( "translation" )</h3>
+<h3>$i18n.getString( "translation_translate" )</h3>
 
 <div>
 	<input type="hidden" id="id" name="id" value="$objectId">
@@ -49,7 +49,7 @@
 	</tr>
 </table>
 </form>
-<h3>$i18n.getString( "translation_addlocale")</h3>
+<h3>$i18n.getString( "translation_addlocale") #openHelp( "dhis-web-commons.locale" )</h3>
 <table>
 	<tr>
 		<th colspan="2">Details</th>
@@ -72,6 +72,7 @@
 <span id="message"></span>
 
 <script type="text/javascript">
+
     var propNames = new Array()
     #set( $count = 0 )
     #foreach ($propertyName in $propertyNames )
@@ -79,9 +80,12 @@
         #set( $count = $count + 1 )
     #end
 
-    var locale_added = '$i18n.getString( "translation_locale_added" )'
-    var language_must_be_two_chars = '$i18n.getString( "translation_language_must_be_two_chars" )'
-    var country_must_be_two_chars = '$i18n.getString( "translation_country_must_be_two_chars" )'
+    var locale_added = '$i18n.getString( "translation_locale_added" )';
+    var language_must_be_two_chars = '$i18n.getString( "translation_language_must_be_two_chars" )';
+    var country_must_be_two_chars = '$i18n.getString( "translation_country_must_be_two_chars" )';
     var variant_must_be_specified = '$i18n.getString( "translation_variant_must_be_specified" )';
     var locale_already_exists = '$i18n.getString( "translation_locale_already_exists" )';
+	var shortname_invalidated = '$encoder.jsEscape($i18n.getString( 'translation_shortname_wellformed' ) , "'")';
+	var shortname_length = '$encoder.jsEscape($i18n.getString( 'translation_shortname_length' ) , "'")';
+	
 </script>

@@ -72,7 +72,7 @@ function validateRenamingExcelTemplate( fileName, columnIndex ) {
 			(
 				'<b>' + i18n_filename_wellformed  + '</b><ul><li>'
 				+ i18n_length_filename_min5_max30 + '</li><li>'
-				+ i18n_use_only_letters_numbers_dot_only + '</li>'
+				+ i18n_use_only_letters_numbers_dot_only + '</li></ul>'
 			);
 			break;
 		}
