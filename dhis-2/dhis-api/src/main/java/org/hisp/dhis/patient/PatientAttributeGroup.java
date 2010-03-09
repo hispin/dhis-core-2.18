@@ -27,7 +27,8 @@
 package org.hisp.dhis.patient;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,7 +44,7 @@ public class PatientAttributeGroup
 
     private String description;
 
-    private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -126,14 +127,15 @@ public class PatientAttributeGroup
         this.description = description;
     }
 
-    public Set<PatientAttribute> getAttributes()
+    public List<PatientAttribute> getAttributes()
     {
         return attributes;
     }
 
-    public void setAttributes( Set<PatientAttribute> attributes )
+    public void setAttributes( List<PatientAttribute> attributes )
     {
         this.attributes = attributes;
     }
+
 
 }

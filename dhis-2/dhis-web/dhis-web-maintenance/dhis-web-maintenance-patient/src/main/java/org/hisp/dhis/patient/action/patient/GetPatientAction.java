@@ -34,7 +34,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
-import org.hisp.dhis.patient.PatientAttributePopulator;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
@@ -149,36 +148,7 @@ public class GetPatientAction
 
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 
-        // Remove Child Contact Name, Child Contact RelationShip Type attributes from this list
-        
-        PatientAttribute attr = new PatientAttribute();
-        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
-        noGroupAttributes.remove( attr );
-        attr.setName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
-        noGroupAttributes.remove( attr );
-
         attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
-
-        // -----------------------------------------------------------------------------
-        // Get Child Contact Name attribute
-        // -----------------------------------------------------------------------------
-        PatientAttribute attrChildContactName = patientAttributeService
-            .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_CONTACT_NAME );
-        
-        PatientAttributeValue attrName = patientAttributeValueService.getPatientAttributeValue( patient,
-            attrChildContactName );
-        if ( attrName != null )
-            childContactName = attrName.getValue();
-
-        // -----------------------------------------------------------------------------
-        // Get  Child Contact RelationShip Type attribute
-        // -----------------------------------------------------------------------------
-        PatientAttribute arrChildRelationShipType = patientAttributeService
-            .getPatientAttributeByName( PatientAttributePopulator.ATTRIBUTE_CHILD_RELATIONSHIP_TYPE );
-        PatientAttributeValue attrType = patientAttributeValueService.getPatientAttributeValue( patient,
-            arrChildRelationShipType );
-        if ( attrType != null )
-            childContactType = attrType.getValue();
 
         return SUCCESS;
 

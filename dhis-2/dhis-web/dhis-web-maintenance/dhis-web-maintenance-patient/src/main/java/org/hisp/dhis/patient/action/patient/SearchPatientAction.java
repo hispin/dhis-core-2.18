@@ -30,12 +30,15 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.paging.PagingUtil;
+import org.hisp.dhis.patient.paging.RequestUtil;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -144,7 +147,42 @@ public class SearchPatientAction
     {
         return patients;
     }
+    
+    private Integer currentPage;
+    
+    public void setCurrentPage( Integer currentPage )
+    {
+        this.currentPage = currentPage;
+    }
 
+    private Integer pageSize;
+    
+    public void setPageSize( Integer pageSize )
+    {
+        this.pageSize = pageSize;
+    }
+    
+    private Integer defaultPageSize = 10;
+    
+    public void setDefaultPageSize( Integer defaultPageSize )
+    {
+        this.defaultPageSize = defaultPageSize;
+    }
+    
+    private PagingUtil pagingUtil;
+    
+    public PagingUtil getPagingUtil()
+    {
+        return pagingUtil;
+    }
+    
+    private Integer total;
+    
+    public Integer getTotal()
+    {
+        return total;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -166,9 +204,17 @@ public class SearchPatientAction
 
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
-
-            patients = patientService.getPatientsByOrgUnit( organisationUnit );
-
+            
+            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()), pageSize == null ? defaultPageSize : pageSize );
+            
+            pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
+            
+            total = patientService.countGetPatientsByOrgUnit( organisationUnit );
+            
+            pagingUtil.setTotal( total );
+            
+            patients = patientService.getPatientsByOrgUnit( organisationUnit , pagingUtil.getStartPos(), pagingUtil.getPageSize() );
+            
             searchText = "list_all_patients";
 
             return SUCCESS;
@@ -210,8 +256,21 @@ public class SearchPatientAction
         
         if ( listAll )
         {
-            patients = patientService.getPatientsByOrgUnit( organisationUnit );
+            selectedStateManager.setListAll( listAll );
 
+            selectedStateManager.clearSearchingAttributeId();
+            selectedStateManager.clearSearchTest();
+            
+            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()), pageSize == null ? defaultPageSize : pageSize );
+            
+            pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
+            
+            total = patientService.countGetPatientsByOrgUnit( organisationUnit );
+            
+            pagingUtil.setTotal( total );
+            
+            patients = patientService.getPatientsByOrgUnit( organisationUnit , pagingUtil.getStartPos(), pagingUtil.getPageSize() );
+            
             searchText = "list_all_patients";
 
             return SUCCESS;
@@ -239,7 +298,10 @@ public class SearchPatientAction
         
         patients = patientService.getPatients( searchText ); 
         
+        
+        
         return SUCCESS;
 
     }
+
 }

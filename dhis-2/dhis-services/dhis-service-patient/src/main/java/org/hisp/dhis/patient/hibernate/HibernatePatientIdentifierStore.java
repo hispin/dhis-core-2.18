@@ -101,10 +101,10 @@ public class HibernatePatientIdentifierStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
+    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit, int min, int max )
     {
         return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
-            .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).list();
+            .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
     public Patient getPatient( PatientIdentifierType idenType, String value )
@@ -112,6 +112,12 @@ public class HibernatePatientIdentifierStore
         return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "identifierType", idenType ),
             Restrictions.eq( "identifier", value ) ) )
             .setProjection( Projections.property( "patient" ) ).uniqueResult();
+    }
+
+    public int countListPatientByOrganisationUnit( OrganisationUnit orgUnit )
+    {
+        return  (Integer) getCriteria( Restrictions.eq( "organisationUnit", orgUnit ) )
+        .setProjection( Projections.countDistinct(  "patient" ) ).uniqueResult();
     }
 
 }
