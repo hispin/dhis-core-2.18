@@ -1,3 +1,12 @@
+//----------------------------------------------------------
+// Regular Expression using for checking shortname' value
+//----------------------------------------------------------
+
+regexShortName = /^[\w][\w\d]+$/;
+
+//----------------------------------------------------------
+
+
 function updateTranslation()
 {
     var id = document.getElementById("id").value;
@@ -137,3 +146,36 @@ function setMessage( message )
 	document.getElementById('message').style.display = 'block';
 }
 
+
+function applyingPatternForShortName( shortNameValue )
+{
+	return shortNameValue.match( regexShortName );
+}
+
+function validateAddTranslation()
+{
+	var shortNameField = byId( 'shortName' );
+	var shortNameVal = shortNameField.value;
+	
+	if ( shortNameVal.length > 0 )
+	{
+		if ( applyingPatternForShortName( shortNameVal ) == null )
+		{
+			setMessage( shortname_invalidated );
+			shortNameField.select();
+			return false;
+		}
+		else if ( shortNameVal.length > 25 )
+		{
+			setMessage( shortname_length );
+			shortNameField.select();
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	return true;
+}
