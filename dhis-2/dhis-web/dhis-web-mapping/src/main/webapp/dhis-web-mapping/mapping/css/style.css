@@ -136,19 +136,19 @@
 	color:#333;
 }
 #window-favorites-title {
-	padding:0 0 3px 20px;
+	padding:0 0 3px 21px;
 	background:url('../../../images/favorite_star2.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
 #window-legendset-title {
-	padding:0 0 3px 20px;
+	padding:0 0 3px 21px;
 	background:url('../../../images/color_swatch.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
 #window-help-title {
-	padding:0 0 3px 20px;
+	padding:0 0 3px 22px;
 	background:url('../../../images/help.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
