@@ -62,9 +62,11 @@ public interface PatientService
     
     //Collection<Patient> getPatientsByAttribute( PatientAttribute attribute );
     
-    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit );
+    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit , int min, int max);
     
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText );
+    int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit );
+    
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText , int min, int max);
     
     Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
     

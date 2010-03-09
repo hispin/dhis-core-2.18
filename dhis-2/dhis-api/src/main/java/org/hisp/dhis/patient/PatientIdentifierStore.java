@@ -57,9 +57,11 @@ public interface PatientIdentifierStore
     
     PatientIdentifier getPatientIdentifier(PatientIdentifierType identifierType, Patient patient);
     
-    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit );
+    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit , int min, int max);
     
     PatientIdentifier get( PatientIdentifierType type, String identifier );
     
     Patient getPatient( PatientIdentifierType idenType, String value);
+    
+    int countListPatientByOrganisationUnit( OrganisationUnit orgUnit );
 }

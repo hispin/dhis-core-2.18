@@ -211,26 +211,5 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="statementManager" ref="statementManager" />
 	</bean>
 
-	 <!-- Startup routine definitions -->
-		
-	<bean id="org.hisp.dhis.patient.PatientAttributePopulator"
-	    class="org.hisp.dhis.patient.PatientAttributePopulator">
-	    <property name="attributeService"
-	      ref="org.hisp.dhis.patient.PatientAttributeService"/>
-	    <property name="runlevel" value="1"/>
-    </bean>
-
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject"
-      ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
-    <property name="targetMethod" value="addStartupRoutines"/>
-    <property name="arguments">
-      <list>
-        <list>
-          <ref local="org.hisp.dhis.patient.PatientAttributePopulator"/>
-        </list>
-      </list>
-    </property>
-  </bean>
 
 </beans>

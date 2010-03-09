@@ -66,6 +66,12 @@
         </td>
         <td><select multiple id="selectedAttributes" name="selectedAttributes" size="15" style="width:25em " ondblclick="moveSelectedById( 'selectedAttributes', 'availableAttributes' )" >
         </select></td>
+        
+        <td>
+			<a href="javascript:moveUpSelectedOption( 'selectedAttributes')" title="$i18n.getString( "move_up" )"><img src="../images/move_up.png" alt="$i18n.getString( "move_up" )"></a>
+			<br><br>
+			<a href="javascript:moveDownSelectedOption( 'selectedAttributes' )" title="$i18n.getString( "move_down" )"><img src="../images/move_down.png" alt="$i18n.getString( "move_up" )"></a>
+		</td>
     </tr>  
         
 </table>

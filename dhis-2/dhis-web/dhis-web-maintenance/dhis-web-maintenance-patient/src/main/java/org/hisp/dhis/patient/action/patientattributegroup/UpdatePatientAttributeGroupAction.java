@@ -27,8 +27,8 @@
 
 package org.hisp.dhis.patient.action.patientattributegroup;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
@@ -111,7 +111,7 @@ public class UpdatePatientAttributeGroupAction
         patientAttributeGroup.setName( nameField );
         patientAttributeGroup.setDescription( description );
 
-        Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
         for ( String attributeId : selectedAttributes )
         {
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer

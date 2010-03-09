@@ -151,13 +151,13 @@ public class DefaultPatientService
         return patients;
     }
 
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText )
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int  min, int max )
     {
         Collection<Patient> patients = new ArrayList<Patient>();
 
         Collection<Patient> allPatients = getPatients( searchText );
 
-        if ( allPatients.retainAll( getPatientsByOrgUnit( organisationUnit ) ) )
+        if ( allPatients.retainAll( getPatientsByOrgUnit( organisationUnit , min,  max ) ) )
         {
             patients = allPatients;
         }
@@ -165,7 +165,7 @@ public class DefaultPatientService
         return patients;
     }
 
-    public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit )
+    public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
     {
 //        Collection<Patient> patients = new ArrayList<Patient>();
 //
@@ -177,7 +177,7 @@ public class DefaultPatientService
 //        
 //        return patients;
     	
-        return  patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
+        return  patientIdentifierService.listPatientByOrganisationUnit( organisationUnit ,  min,  max );
     }
 
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
@@ -258,5 +258,10 @@ public class DefaultPatientService
             return patientStore.getByNames( value );
         }
         return null;
+    }
+
+    public int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit )
+    {
+        return patientIdentifierService.countListPatientByOrganisationUnit( organisationUnit );
     }
 }

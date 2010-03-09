@@ -176,9 +176,9 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.getPatientIdentifier( identifierType, patient );
     }
 
-    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
+    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit, int min, int max )
     {
-        return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit );
+        return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit, min, max );
     }
 
     public PatientIdentifier get( PatientIdentifierType type, String identifier )
@@ -190,4 +190,10 @@ public class DefaultPatientIdentifierService
     {
         return patientIdentifierStore.getPatient( idenType, value );
     }
+
+    public int countListPatientByOrganisationUnit( OrganisationUnit orgUnit )
+    {
+        return patientIdentifierStore.countListPatientByOrganisationUnit( orgUnit );
+    }
+
 }

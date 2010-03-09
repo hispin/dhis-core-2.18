@@ -67,7 +67,9 @@ public interface PatientIdentifierService
     
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
     
-    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit );
+    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit , int min, int max);
+    
+    int countListPatientByOrganisationUnit( OrganisationUnit orgUnit );
     
     PatientIdentifier get( PatientIdentifierType type, String identifier );
     

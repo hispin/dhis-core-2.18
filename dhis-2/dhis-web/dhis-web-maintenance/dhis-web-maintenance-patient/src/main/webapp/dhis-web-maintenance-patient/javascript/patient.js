@@ -596,3 +596,14 @@ function toggleUnderAge(this_)
 	}
 }
 
+function changePageSize( baseLink )
+{
+	var pageSize = jQuery("#sizeOfPage").val();
+	window.location.href = baseLink +"pageSize=" + pageSize ;
+}
+function jumpToPage( baseLink )
+{
+	var pageSize = jQuery("#sizeOfPage").val();
+	var currentPage = jQuery("#jumpToPage").val();
+	window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
+}
