@@ -23,6 +23,8 @@ function unexpected-exit () {
 
 echo "Starting DHIS2 live ..."
 # java -jar dhis2-live.jar
-$JAVA_HOME/bin/java  -jar dhis2-live.jar
+DHIS2LIVE=`dirname $0`
+#$JAVA_HOME/bin/
+java  -jar $DHIS2LIVE/dhis2-live.jar
 echo "DHIS2 live exited normally"
 
