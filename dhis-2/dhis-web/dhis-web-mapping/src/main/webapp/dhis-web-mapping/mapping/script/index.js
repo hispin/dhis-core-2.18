@@ -1,5 +1,4 @@
-﻿/* reference local blank image */
-Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
+﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 var MAP;
 var BASECOORDINATE;
@@ -408,7 +407,7 @@ Ext.onReady( function() {
 							
 							for (var i = 0; i < mapViews.length; i++) {
 								if (mapViews[i].name == vn) {
-									Ext.messageRed.msg('New map view', 'There is already a map view called ' + msg_highlight_start + vn + msg_highlight_end + '.');
+									Ext.messageRed.msg('New map view', 'There is already a map view called <span class="x-msg-hl">' + vn + '</span>.');
 									return;
 								}
 							}
@@ -419,7 +418,7 @@ Ext.onReady( function() {
 								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb, longitude: lon, latitude: lat, zoom: zoom },
 
 								success: function( responseObject ) {
-									Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
+									Ext.messageBlack.msg('New map view', 'The view <span class="x-msg-hl">' + vn + '</span> was registered.');
 									Ext.getCmp('view_cb').getStore().reload();
 									Ext.getCmp('mapview_cb').getStore().reload();
 									Ext.getCmp('viewname_tf').reset();
@@ -467,7 +466,7 @@ Ext.onReady( function() {
 						params: { id: v },
 
 						success: function( responseObject ) {
-							Ext.messageBlack.msg('Delete map view', 'The map view ' + msg_highlight_start + name + msg_highlight_end + ' was deleted.');
+							Ext.messageBlack.msg('Delete map view', 'The map view <span class="x-msg-hl">' + name + '</span> was deleted.');
 							Ext.getCmp('view_cb').getStore().reload();
 							Ext.getCmp('view_cb').reset();
 							Ext.getCmp('mapview_cb').getStore().reload();
@@ -510,7 +509,7 @@ Ext.onReady( function() {
 						params: { id: v2 },
 
 						success: function( responseObject ) {
-							Ext.messageBlack.msg('Dashboard map view', 'The view ' + msg_highlight_start + nv + msg_highlight_end + ' was added to dashboard.');
+							Ext.messageBlack.msg('Dashboard map view', 'The view <span class="x-msg-hl">' + nv + '</span> was added to dashboard.');
 							
 							Ext.getCmp('view_cb').getStore().reload();
 							Ext.getCmp('view_cb').reset();
@@ -799,7 +798,7 @@ Ext.onReady( function() {
                             var mapLegendSets = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSets;
                             for (var i = 0; i < mapLegendSets.length; i++) {
                                 if (ln == mapLegendSets[i].name) {
-                                    Ext.messageRed.msg('New legend set', 'A legend set called ' + msg_highlight_start + ln + msg_highlight_end + ' already exists.');
+                                    Ext.messageRed.msg('New legend set', 'A legend set called <span class="x-msg-hl">' + ln + '</span> already exists.');
                                     return;
                                 }
                             }
@@ -810,7 +809,7 @@ Ext.onReady( function() {
                                 params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
 
                                 success: function( responseObject ) {
-                                    Ext.messageBlack.msg('New legend set', 'The legend set ' + msg_highlight_start + ln + msg_highlight_end + ' was registered.');
+                                    Ext.messageBlack.msg('New legend set', 'The legend set <span class="x-msg-hl">' + ln + '</span> was registered.');
                                     Ext.getCmp('legendset_cb').getStore().reload();
                                     Ext.getCmp('legendset2_cb').getStore().reload();
                                     Ext.getCmp('legendsetname_tf').reset();
@@ -878,7 +877,7 @@ Ext.onReady( function() {
                         params: { id: ls },
 
                         success: function( responseObject ) {
-                            Ext.messageBlack.msg('Assign to indicators', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was updated.');
+                            Ext.messageBlack.msg('Assign to indicators', 'The legend set <span class="x-msg-hl">' + lsrw + '</span> was updated.');
                             Ext.getCmp('legendset_cb').getStore().reload();
                         },
                         failure: function() {
@@ -917,7 +916,7 @@ Ext.onReady( function() {
                         params: { id: ls },
 
                         success: function( responseObject ) {
-                            Ext.messageBlack.msg('Delete legend set', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was deleted.');
+                            Ext.messageBlack.msg('Delete legend set', 'The legend set <span class="x-msg-hl">' + lsrw + '</span> was deleted.');
                             
                             Ext.getCmp('legendset2_cb').getStore().reload();
                             Ext.getCmp('legendset2_cb').reset();
@@ -1550,28 +1549,28 @@ Ext.onReady( function() {
                     }
                     
                     if (validateInput(nn) == false) {
-                        Ext.messageRed.msg('New map', msg_highlight_start + 'Map name' + msg_highlight_end + ' cannot have more than 25 characters.');
+                        Ext.messageRed.msg('New map', '<span class="x-msg-hl">' + 'Map name' + '</span> cannot have more than 25 characters.');
                         return;
                     }
                     
                     if (!Ext.num(parseFloat(lon), false)) {
-                        Ext.messageRed.msg('New map', msg_highlight_start + 'Longitude' + msg_highlight_end + ' must be a number.');
+                        Ext.messageRed.msg('New map', '<span class="x-msg-hl">' + 'Longitude' + '</span> must be a number.');
                         return;
                     }
                     else {
                         if (lon < -180 || lon > 180) {
-                            Ext.messageRed.msg('New map', msg_highlight_start + 'Longitude' + msg_highlight_end + ' must be between -180 and 180.');
+                            Ext.messageRed.msg('New map', '<span class="x-msg-hl">' + 'Longitude' + '</span> must be between -180 and 180.');
                             return;
                         }
                     }
                     
                     if (!Ext.num(parseFloat(lat), false)) {
-                        Ext.messageRed.msg('New map', msg_highlight_start + 'Latitude' + msg_highlight_end + ' must be a number.');
+                        Ext.messageRed.msg('New map', '<span class="x-msg-hl">' + 'Latitude' + '</span> must be a number.');
                         return;
                     }
                     else {
                         if (lat < -90 || lat > 90) {
-                            Ext.messageRed.msg('New map', msg_highlight_start + 'Latitude' + msg_highlight_end + ' must be between -90 and 90.');
+                            Ext.messageRed.msg('New map', '<span class="x-msg-hl">' + 'Latitude' + '</span> must be between -90 and 90.');
                             return;
                         }
                     }
@@ -1583,11 +1582,11 @@ Ext.onReady( function() {
                             var maps = Ext.util.JSON.decode(responseObject.responseText).maps;
                             for (var i = 0; i < maps.length; i++) {
                                 if (maps[i].name == nn) {
-                                    Ext.messageRed.msg('New map', 'There is already a map called ' + msg_highlight_start + nn + msg_highlight_end + '.');
+                                    Ext.messageRed.msg('New map', 'There is already a map called <span class="x-msg-hl">' + nn + '</span>.');
                                     return;
                                 }
                                 else if (maps[i].mapLayerPath == mlp) {
-                                    Ext.messageRed.msg('New map', 'The source file ' + msg_highlight_start + mlp + msg_highlight_end + ' is already registered.');
+                                    Ext.messageRed.msg('New map', 'The source file <span class="x-msg-hl">' + mlp + '</span> is already registered.');
                                     return;
                                 }
                             }
@@ -1599,7 +1598,7 @@ Ext.onReady( function() {
                                 method: 'POST',
                                 params: { name: nn, mapLayerPath: source, type: t, sourceType: MAPSOURCE, organisationUnitId: oui, organisationUnitLevelId: ouli, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom},
                                 success: function( responseObject ) {
-                                    Ext.messageBlack.msg('New map', 'The map ' + msg_highlight_start + nn + msg_highlight_end + ' (' + msg_highlight_start + source + msg_highlight_end + ') was registered.');
+                                    Ext.messageBlack.msg('New map', 'The map <span class="x-msg-hl">' + nn + '</span> (<span class="x-msg-hl">' + source + '</span>) was registered.');
                                     
                                     Ext.getCmp('map_cb').getStore().reload();
                                     Ext.getCmp('maps_cb').getStore().reload();
@@ -1660,7 +1659,7 @@ Ext.onReady( function() {
                 params: { name: en, mapLayerPath: em, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + en + msg_highlight_end + ' (' + msg_highlight_start + em + msg_highlight_end + ') was updated.');
+                    Ext.messageBlack.msg('Edit map', 'The map <span class="x-msg-hl">' + en + '</span> (<span class="x-msg-hl">' + em + '</span>) was updated.');
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
@@ -1702,7 +1701,7 @@ Ext.onReady( function() {
                 params: { mapLayerPath: mlp },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + mn + msg_highlight_end + ' (' + msg_highlight_start + mlp + msg_highlight_end + ') was deleted.');
+                    Ext.messageBlack.msg('Edit map', 'The map <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) was deleted.');
                     
                     
                     
@@ -1793,7 +1792,7 @@ Ext.onReady( function() {
                         } 
                     });
 					
-					if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+					if (MAPSOURCE == map_source_type_geojson) {
 						Ext.Ajax.request({
 							url: path + 'getGeoJson' + type,
 							method: 'POST',
@@ -1822,7 +1821,7 @@ Ext.onReady( function() {
 							failure: function() {}
 						});
 					}
-					else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+					else if (MAPSOURCE == map_source_type_shapefile) {
 						Ext.Ajax.request({
 							url: path_geoserver + wfs + mlp + output,
 							method: 'POST',
@@ -1988,7 +1987,7 @@ Ext.onReady( function() {
 		listeners: {
 			expand: {
 				fn: function() {
-					if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+					if (MAPSOURCE == map_source_type_shapefile) {
 						mapLayerPathComboBox.hide();
 						mapLayerPathWMSTextField.show();						
 					}
@@ -2236,22 +2235,22 @@ Ext.onReady( function() {
 					
 					for (i in mapLayers) {
 						if (mapLayers[i].name == mln) {
-							Ext.messageRed.msg('New overlay', 'The name ' + msg_highlight_start + mln + msg_highlight_end + ' is already in use.');
+							Ext.messageRed.msg('New overlay', 'The name <span class="x-msg-hl">' + mln + '</span> is already in use.');
 							return;
 						}
 					}
 			
-					var ms = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? mlmsf : mlwmso;
+					var ms = MAPSOURCE == map_source_type_geojson ? mlmsf : mlwmso;
 					
 					Ext.Ajax.request({
 						url: path + 'addOrUpdateMapLayer' + type,
 						method: 'POST',
 						params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
 						success: function( responseObject ) {
-							Ext.messageBlack.msg('New overlay', 'The overlay ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
+							Ext.messageBlack.msg('New overlay', 'The overlay <span class="x-msg-hl">' + mln + '</span> was registered.');
 							Ext.getCmp('maplayer_cb').getStore().reload();
 					
-							var mapurl = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? path + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
+							var mapurl = MAPSOURCE == map_source_type_geojson ? path + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
 							
 							MAP.addLayer(
 								new OpenLayers.Layer.Vector(mln, {
@@ -2303,7 +2302,7 @@ Ext.onReady( function() {
                 params: { id: ml },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Delete overlay', 'The overlay ' + msg_highlight_start + mln + msg_highlight_end + ' was deleted.');
+                    Ext.messageBlack.msg('Delete overlay', 'The overlay <span class="x-msg-hl">' + mln + '</span> was deleted.');
                     Ext.getCmp('maplayer_cb').getStore().reload();
                     Ext.getCmp('maplayer_cb').reset();
                 },
@@ -2394,11 +2393,11 @@ Ext.onReady( function() {
 		listeners: {
 			expand: {
 				fn: function() {
-					if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+					if (MAPSOURCE == map_source_type_geojson) {
 						mapLayerMapSourceFileComboBox.show();
 						mapLayerPathWMSOverlayTextField.hide();
 					}
-					else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+					else if (MAPSOURCE == map_source_type_shapefile) {
 						mapLayerMapSourceFileComboBox.hide();
 						mapLayerPathWMSOverlayTextField.show();
 					}
@@ -2446,7 +2445,7 @@ Ext.onReady( function() {
 						value: MAPSOURCE,
 						store: new Ext.data.SimpleStore({
 							fields: ['id', 'text'],
-							data: [[MAP_SOURCE_TYPE_GEOJSON, 'GeoJSON files'], [MAP_SOURCE_TYPE_SHAPEFILE, 'Shapefiles'], [MAP_SOURCE_TYPE_DATABASE, 'DHIS database']]
+							data: [[map_source_type_geojson, 'GeoJSON files'], [map_source_type_shapefile, 'Shapefiles'], [map_source_type_database, 'DHIS database']]
 						}),
 						listeners:{
 							'select': {
@@ -2455,7 +2454,7 @@ Ext.onReady( function() {
 									var msrw = Ext.getCmp('mapsource_cb').getRawValue();
 									
 									if (MAPSOURCE == msv) {
-										Ext.messageRed.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' is already selected.');
+										Ext.messageRed.msg('Map source', '<span class="x-msg-hl">' + msrw + '</span> is already selected.');
 									}
 									else {
 										Ext.Ajax.request({
@@ -2475,7 +2474,7 @@ Ext.onReady( function() {
 												Ext.getCmp('map_cb').reset();
 												Ext.getCmp('mapview_cb').reset();
 												
-												if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+												if (MAPSOURCE == map_source_type_geojson) {
 													Ext.getCmp('register_chb').enable();
 													
 													if (Ext.getCmp('register_chb').checked) {
@@ -2484,7 +2483,7 @@ Ext.onReady( function() {
 														mapLayerPanel.show();
 													}
 												}
-												else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+												else if (MAPSOURCE == map_source_type_shapefile) {
 													Ext.getCmp('register_chb').enable();
 													
 													if (Ext.getCmp('register_chb').checked) {
@@ -2493,7 +2492,7 @@ Ext.onReady( function() {
 														mapLayerPanel.show();
 													}
 												}
-												else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+												else if (MAPSOURCE == map_source_type_database) {
 													Ext.getCmp('register_chb').disable();
 													
 													mapping.hide();
@@ -2508,7 +2507,7 @@ Ext.onReady( function() {
 												}
 												addOverlaysToMap();
 												
-												Ext.messageBlack.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' is saved as map source.');
+												Ext.messageBlack.msg('Map source', '<span class="x-msg-hl">' + msrw + '</span> is saved as map source.');
 											},
 											failure: function() {
 												alert( 'Status', 'Error while saving data' );
@@ -2607,7 +2606,7 @@ Ext.onReady( function() {
 								
 								success: function() {
 									BASECOORDINATE = {longitude:blo, latitude:bla};
-									Ext.messageBlack.msg('Base coordinate','Longitude ' + msg_highlight_start + blo + msg_highlight_end + ' and latitude ' + msg_highlight_start + bla + msg_highlight_end + ' was saved as base coordinate');
+									Ext.messageBlack.msg('Base coordinate','Longitude <span class="x-msg-hl">' + blo + '</span> and latitude <span class="x-msg-hl">' + bla + '</span> was saved as base coordinate');
 									Ext.getCmp('newlongitude_cb').getStore().reload();
 									Ext.getCmp('newlongitude_cb').setValue(blo);
 									Ext.getCmp('newlatitude_cb').setValue(bla);
@@ -2627,10 +2626,10 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+                    if (MAPSOURCE == map_source_type_geojson) {
                         Ext.getCmp('register_chb').enable();
                     }
-                    else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+                    else if (MAPSOURCE == map_source_type_database) {
                         Ext.getCmp('register_chb').disable();
                     }
 					
@@ -2680,7 +2679,7 @@ Ext.onReady( function() {
 				var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
 				
 				for (var i = 0; i < mapLayers.length; i++) {
-					var mapurl = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? path + 'getGeoJson.action?name=' + mapLayers[i].mapSource : path_geoserver + wfs + mapLayers[i].mapSource + output;
+					var mapurl = MAPSOURCE == map_source_type_geojson ? path + 'getGeoJson.action?name=' + mapLayers[i].mapSource : path_geoserver + wfs + mapLayers[i].mapSource + output;
 					var fillColor = mapLayers[i].fillColor;
 					var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
 					var strokeColor = mapLayers[i].strokeColor;
@@ -3210,7 +3209,7 @@ function loadMapData(redirect, position) {
 		
             MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
             
-            if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+            if (MAPSOURCE == map_source_type_database) {
                 MAPDATA.name = Ext.getCmp('map_cb').getRawValue();
                 MAPDATA.organisationUnit = 'Country';
                 MAPDATA.organisationUnitLevel = Ext.getCmp('map_cb').getValue();
@@ -3219,7 +3218,7 @@ function loadMapData(redirect, position) {
                 MAPDATA.latitude = BASECOORDINATE.latitude;
                 MAPDATA.zoom = 7;
             }
-            else if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON || MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+            else if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
                 MAPDATA.organisationUnitLevel = parseFloat(MAPDATA.organisationUnitLevel);
                 MAPDATA.longitude = parseFloat(MAPDATA.longitude);
                 MAPDATA.latitude = parseFloat(MAPDATA.latitude);
@@ -3259,8 +3258,8 @@ function getChoroplethData() {
     var periodId = Ext.getCmp('period_cb').getValue();
     var mapLayerPath = MAPDATA.mapLayerPath;
 	
-	var url = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON || MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE ? 'getMapValuesByMap' : 'getMapValuesByLevel';
-	var params = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON || MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE ? { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath } : { indicatorId: indicatorId, periodId: periodId, level: URL };
+	var url = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? 'getMapValuesByMap' : 'getMapValuesByLevel';
+	var params = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath } : { indicatorId: indicatorId, periodId: periodId, level: URL };
 
     Ext.Ajax.request({
         url: path + url + type,
@@ -3296,13 +3295,13 @@ function dataReceivedChoropleth( responseText ) {
 		}
 	}
 	
-	if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON || MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+	if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
 		for (var j = 0; j < features.length; j++) {
 			var featureId = features[j].attributes[nameColumn];
 			features[j].attributes.value = mv[featureId] ? mv[featureId] : 0;
 		}
 	}
-	else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+	else if (MAPSOURCE == map_source_type_database) {
 		for (var i = 0; i < mapvalues.length; i++) {
 			for (var j = 0; j < features.length; j++) {
 				if (mapvalues[i].orgUnitName == features[j].attributes.name) {
@@ -3476,7 +3475,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText, position ) {
 			MASK.msg = 'Applying organisation units relations...';
 			MASK.show();
 			
-            Ext.messageBlack.msg('Assign organisation units', '' + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + organisationUnits.length + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + features.length + msg_highlight_end);
+            Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
             
             Ext.getCmp('grid_gp').getStore().reload();
             loadMapData(organisationUnitAssignment, position);

@@ -257,7 +257,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             xtype: 'button',
                             id: 'autoassign_be',
                             text: 'Assign all',
-							cls: 'aa_dark',
+							cls: 'aa_med',
                             isVisible: false,
                             handler: function()
                             {
@@ -294,7 +294,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
                                         
-                                        Ext.messageBlack.msg('Remove all relations', 'All relations for the map ' + msg_highlight_start + Ext.getCmp('maps_cb').getRawValue() + msg_highlight_end + ' removed.');
+                                        Ext.messageBlack.msg('Remove all relations', 'All relations for the map <span class="x-msg-hl">' + Ext.getCmp('maps_cb').getRawValue() + '</span> removed.');
                                         
                                         mapping.classify(true, true);
                                     },
@@ -336,7 +336,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 									msg = 'Selected relations removed.';
 								}
 								else {
-									msg = msg_highlight_start + selection[0].data['organisationUnit'] + msg_highlight_end + ' relation removed.'
+									msg = '<span class="x-msg-hl">' + selection[0].data['organisationUnit'] + '</span> relation removed.'
 								}
 								
 								params += '&mapLayerPath=' + mlp;
@@ -381,7 +381,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 												method: 'POST',
 												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation },
 												success: function( responseObject ) {
-													Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + mapping.relation + msg_highlight_end + ' (map) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (database).');
+													Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + mapping.relation + '</span> (map) assigned to <span class="x-msg-hl">' + name + '</span> (database).');
 													Ext.getCmp('grid_gp').getStore().reload();
 													popup.hide();
 													loadMapData(organisationUnitAssignment, true);
@@ -392,7 +392,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 											});
 										}
 										else {
-											Ext.messageRed.msg('Assign organisation units', msg_highlight_start + name + msg_highlight_end + ' is already assigned.');
+											Ext.messageRed.msg('Assign organisation units', '<span class="x-msg-hl">' + name + '</span> is already assigned.');
 										}
 									}
 								});
@@ -468,10 +468,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             URL = this.newUrl;
             this.newUrl = false;
 			
-			if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+			if (MAPSOURCE == map_source_type_geojson) {
 				this.setUrl(path + 'getGeoJson.action?name=' + URL);
 			}
-			else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+			else if (MAPSOURCE == map_source_type_shapefile) {
 				this.setUrl(path_geoserver + wfs + URL + output);
 			}
         }
