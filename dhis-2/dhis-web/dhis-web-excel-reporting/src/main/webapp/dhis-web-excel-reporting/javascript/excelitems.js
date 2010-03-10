@@ -50,6 +50,7 @@ function validateAddExcelItem()
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
 	request.setCallbackSuccess( validateAddExcelItemReceived );	
+	
 	var params = "name=" + byId("name").value;
 	params += "&expression=" + byId("expression").value;
 	params += "&row=" + byId("row").value;
@@ -57,9 +58,7 @@ function validateAddExcelItem()
 	params += "&sheetNo=" + byId("sheetNo").value;
 	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
 	
-	
 	request.sendAsPost( params );
-	
 	request.send( "validateExcelItem.action" );	
 	
 }
@@ -121,7 +120,7 @@ function validateUpdateExcelItemReceived( xmlObject )
 
 function addExcelItem() {
 	
-	var request = new Request();
+	/* var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
 	request.setCallbackSuccess( Completed );
 	var params = "name=" + byId("name").value;	
@@ -131,7 +130,19 @@ function addExcelItem() {
 	params += "&sheetNo=" + byId("sheetNo").value; 
 	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
 	request.sendAsPost( params );
-	request.send( "addExcelItem.action" );
+	request.send( "addExcelItem.action" ); */
+	
+	$.post("addExcelItem.action",{
+		name:$("#name").val(),		
+		expression:$("#expression").val(),
+		row:$("#row").val(),	
+		column:$("#column").val(),		
+		sheetNo:byId("sheetNo").value,
+		excelItemGroupId:byId("excelItemGroupId").value
+		
+	}, function (data){
+		window.location.reload();
+	},'xml');
 }
 
 function Completed( xmlObject ) {
@@ -144,20 +155,19 @@ function Completed( xmlObject ) {
 // ========================================================================================================================
 
 function updateExcelItem() {
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( Completed );
-	
-	var params = "id=" + byId("id").value; 
-	params += "&name=" + byId("name").value;	
-	params += "&expression=" + byId("expression").value; 
-	params += "&row=" + byId("row").value; 
-	params += "&column=" + byId("column").value; 
-	params += "&sheetNo=" + byId("sheetNo").value; 
-	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
-	request.sendAsPost( params );
-	request.send( "updateExcelItem.action" );	
+
+	$.post("updateExcelItem.action",{
+		id:$("#id").val(),	
+		name:$("#name").val(),		
+		expression:$("#expression").val(),
+		row:$("#row").val(),	
+		column:$("#column").val(),		
+		sheetNo:byId("sheetNo").value,
+		excelItemGroupId:byId("excelItemGroupId").value
+		
+	}, function (data){
+		window.location.reload();
+	},'xml');
 	
 }
 // ===============================================================================

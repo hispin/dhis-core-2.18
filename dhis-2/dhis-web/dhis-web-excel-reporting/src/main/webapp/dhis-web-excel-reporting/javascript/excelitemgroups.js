@@ -77,17 +77,13 @@ function validateExcelItemGroupReceived( xmlObject ) {
 
 function addExcelItemGroup() {
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( addExcelItemGroupReceived );
-	
-	var params = "name=" + byId('name').value;
-		params += "&type=" + byId('type').value;
-		params += "&periodTypeName=" + byId('periodType').value;
-	
-	request.sendAsPost(params);
-	request.send("addExcelItemGroup.action");
-	
+	$.post("addExcelItemGroup.action",{
+		name:$("#name").val(),	
+		type:$("#type").val(),			
+		periodTypeName:$("#periodType").val()
+	}, function (data){
+		window.location.reload();
+	},'xml');
 }
 
 function addExcelItemGroupReceived() {
@@ -97,17 +93,14 @@ function addExcelItemGroupReceived() {
 
 function updateExcelItemGroup() {
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( addExcelItemGroupReceived );
-	
-	var params = "id=" + byId('id').value;
-		params += "&name=" + byId('name').value;
-		params += "&type=" + byId('type').value
-		params += "&periodTypeName=" + byId('periodType').value;
-	
-	request.sendAsPost(params);
-	request.send( "updateExcelItemGroup.action" );
+	$.post("updateExcelItemGroup.action",{
+		id:$("#id").val(),
+		name:$("#name").val(),
+		type:$("#type").val(),			
+		periodTypeName:$("#periodType").val()
+	}, function (data){
+		window.location.reload();
+	},'xml');
 }
 
 // --------------------------------------------------------------------

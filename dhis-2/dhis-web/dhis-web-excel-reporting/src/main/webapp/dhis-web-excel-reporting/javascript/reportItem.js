@@ -150,36 +150,19 @@ function validateAddReportExcelItemReceived( xmlObject ) {
 	
 function addReportExcelItem() {
 	
-	/*$.post("addReportExcelItem.action",{
+	$.post("addReportExcelItem.action",{
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
 		row:$("#row").val(),
-		column:$("#column").val(),		
+		column:$("#column").val(),	
+		sheetNo:$("#sheetNo").val(),		
 		reportId:reportId,
 		itemType:$("#itemType").val(),
 		periodType:$("#periodType").val(),
-		sheetNo:$("#sheetNo").val()
+		
 	}, function (data){
 		window.location.reload();
 	},'xml');
-	*/
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( validateAddReportExcelItemReceived );
-	
-	var params = "name=" + byId("name").value;
-	params += "&expression=" + byId("expression").value;
-	params += "&row=" + byId("row").value;
-	params += "&column=" + byId("column").value;
-	params += "&sheetNo=" + byId("sheetNo").value;
-	params += "&reportId=" + byId("reportId").value;
-	params += "&itemType=" + byId("itemType").value;
-	params += "&periodType=" + byId("periodType").value;
-	
-	
-	//request.sendAsPost(params);
-	request.send( "addReportExcelItem.action?" + params);
 	
 }
 
