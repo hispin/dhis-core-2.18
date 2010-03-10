@@ -1,209 +1,204 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="org.hisp.dhis.i18n.locale.LocaleManagerDb" class="org.hisp.dhis.i18n.locale.SessionLocaleManager">
-    <property name="systemLocale" value="en_GB"/>
-  </bean>
+	<bean id="org.hisp.dhis.i18n.locale.LocaleManagerSession" class="org.hisp.dhis.i18n.locale.SessionLocaleManager">
+		<property name="systemLocale" value="en_GB" />
+	</bean>
 
-  <!-- I18n object definitions -->
+	<bean id="org.hisp.dhis.i18n.locale.LocaleManagerDb" class="org.hisp.dhis.i18n.locale.DatabaseLocaleManager">
+		<property name="userSettingService">
+			<ref bean="org.hisp.dhis.user.UserSettingService" />
+		</property>
+		<property name="userSettingKey">
+			<value>currentLocaleDB</value>
+		</property>
+		<property name="defaultLocale">
+			<value>en_GB</value>
+		</property>
+	</bean>
 
-  <bean id="I18nDataElement"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataElement"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>shortName</value>
-        <value>description</value>
-      </list>
-    </property>
-  </bean>
+	<!-- I18n object definitions -->
 
-  <bean id="I18nDataElementGroup"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataElementGroup"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
-  
-   <bean id="I18nDataElementGroupSet"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataElementGroupSet"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nDataElement" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="DataElement" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+				<value>shortName</value>
+				<value>description</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="I18nDataElementGroup" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="DataElementGroup" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="I18nDataElementGroupSet" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="DataElementGroupSet" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
 
 
-  <bean id="I18nIndicator"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="Indicator"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>shortName</value>
-        <value>description</value>
-        <value>numeratorDescription</value>
-        <value>denominatorDescription</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nIndicator" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="Indicator" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+				<value>shortName</value>
+				<value>description</value>
+				<value>numeratorDescription</value>
+				<value>denominatorDescription</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nIndicatorType"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="IndicatorType"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nIndicatorType" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="IndicatorType" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nIndicatorGroup"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="IndicatorGroup"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
-  
-   <bean id="I18nIndicatorGroupSet"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="IndicatorGroupSet"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
-  
-  <bean id="I18nDataDictionary"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataDictionary"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>description</value>
-        <value>region</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nIndicatorGroup" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="IndicatorGroup" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nOrganisationUnit"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="OrganisationUnit"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>shortName</value>
-        <value>comment</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nIndicatorGroupSet" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="IndicatorGroupSet" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nOrganisationUnitGroup"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="OrganisationUnitGroup"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nDataDictionary" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="DataDictionary" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+				<value>description</value>
+				<value>region</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nOrganisationUnitGroupSet"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="OrganisationUnitGroupSet"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>description</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nOrganisationUnit" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="OrganisationUnit" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+				<value>shortName</value>
+				<value>comment</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nDataSet"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataSet"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
+	<bean id="I18nOrganisationUnitGroup" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="OrganisationUnitGroup" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="I18nDataElementCategory"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataElementCategory"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
-  
-  <!-- I18nService -->
-  
-  <bean id="org.hisp.dhis.i18n.I18nService"
-        class="org.hisp.dhis.i18n.DefaultI18nService">
-    <property name="localeManager">
-      <ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb"/>
-    </property>
-    <property name="translationService">
-      <ref bean="org.hisp.dhis.translation.TranslationService"/>
-    </property>
-    <property name="objects">
-      <list>
-        <ref bean="I18nDataElement"/>
-        <ref bean="I18nDataElementGroup"/>
-        <ref bean="I18nDataElementGroupSet"/>
-        <ref bean="I18nDataDictionary"/>
-        <ref bean="I18nIndicator"/>
-        <ref bean="I18nIndicatorType"/>
-        <ref bean="I18nIndicatorGroup"/>
-        <ref bean="I18nIndicatorGroupSet"/>
-        <ref bean="I18nDataSet"/>
-        <ref bean="I18nOrganisationUnit"/>
-      </list>
-    </property>
-  </bean>
-  
-  <!-- Translation -->
-  
-  <bean id="org.hisp.dhis.translation.TranslationStore"
-    class="org.hisp.dhis.translation.hibernate.HibernateTranslationStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
+	<bean id="I18nOrganisationUnitGroupSet" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="OrganisationUnitGroupSet" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+				<value>description</value>
+			</list>
+		</property>
+	</bean>
 
-  <bean id="org.hisp.dhis.translation.TranslationService"
-    class="org.hisp.dhis.translation.impl.DefaultTranslationService">
-    <property name="translationStore"
-      ref="org.hisp.dhis.translation.TranslationStore"/>
-  </bean>
-  
-  <!-- I81n AOP definitions -->
-  <!--
-  <bean id="i18nObjectInterceptor"
-    class="org.hisp.dhis.i18n.interceptor.I18nObjectInterceptor">
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>  
-  </bean>
-  -->
-  <!--
-  <bean id="i18nTranslationInterceptor"
-    class="org.hisp.dhis.i18n.interceptor.I18nTranslationInterceptor">
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>
-  </bean>
-  -->
+	<bean id="I18nDataSet" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="DataSet" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="I18nDataElementCategory" class="org.hisp.dhis.i18n.I18nObject">
+		<property name="className" value="DataElementCategory" />
+		<property name="propertyNames">
+			<list>
+				<value>name</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- I18nService -->
+
+	<bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
+		<property name="localeManager">
+			<ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
+		</property>
+		<property name="translationService">
+			<ref bean="org.hisp.dhis.translation.TranslationService" />
+		</property>
+		<property name="objects">
+			<list>
+				<ref bean="I18nDataElement" />
+				<ref bean="I18nDataElementGroup" />
+				<ref bean="I18nDataElementGroupSet" />
+				<ref bean="I18nDataDictionary" />
+				<ref bean="I18nIndicator" />
+				<ref bean="I18nIndicatorType" />
+				<ref bean="I18nIndicatorGroup" />
+				<ref bean="I18nIndicatorGroupSet" />
+				<ref bean="I18nDataSet" />
+				<ref bean="I18nOrganisationUnit" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Translation -->
+
+	<bean id="org.hisp.dhis.translation.TranslationStore"
+		class="org.hisp.dhis.translation.hibernate.HibernateTranslationStore">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.translation.TranslationService"
+		class="org.hisp.dhis.translation.impl.DefaultTranslationService">
+		<property name="translationStore" ref="org.hisp.dhis.translation.TranslationStore" />
+	</bean>
+
+	<!-- I81n AOP definitions -->
+	<!--
+		<bean id="i18nObjectInterceptor"
+		class="org.hisp.dhis.i18n.interceptor.I18nObjectInterceptor">
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService"/>
+		</bean>
+	-->
+	<!--
+		<bean id="i18nTranslationInterceptor"
+		class="org.hisp.dhis.i18n.interceptor.I18nTranslationInterceptor">
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService"/>
+		</bean>
+	-->
 </beans>
