@@ -23,7 +23,7 @@ h2 {
     margin:10px 0;
 }
 h3 {
-    font-size:16px;
+    font:16px;
     color:#111111;
     letter-spacing:1px;
 }
@@ -54,6 +54,7 @@ pre.code{
 }
 .msg .x-box-mc {
     font-size:14px;
+    color:#222;
     letter-spacing:1px;
 }
 #msg-div {

@@ -1,13 +1,12 @@
 ﻿/* Ext */
 .ext-gecko .x-window-body .x-form-item {
-	overflow: hidden;
+	overflow:hidden;
 }
 
 /* Ext theme gray-extend */
 .x-btn-right{
 	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 -21px transparent;
 }
-
 .x-btn-left {
 	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 0 transparent;
 }
@@ -51,23 +50,17 @@
 	color:#333;
 }
 .x-grid3-cell-inner, .x-grid3-hd-inner  {
-	font-family:lucida sans unicode, arial;
-	font-weight:normal;
-	font-size:10px;
-	letter-spacing:0px;
+	font:normal 10px lucida sans unicode,arial;
 	color:#777;
 }
 .x-grid3-hd-inner, .x-grid3-hd-organisationUnitId  {
-	font-family:lucida sans unicode, arial;
-	font-weight:normal;
-	font-size:11px;
-	letter-spacing:0px;
+	font-family:normal 11px lucida sans unicode,arial;
 	color:#333;
 }
 
 /* Ext Button */
 .x-btn button {
-	font:10px lucida sans unicode,arial normal;
+	font:normal 10px lucida sans unicode,arial;
 }
 .x-btn .icon-zoomin  {
 	background-image:url(../../../images/zoom_in.png);
@@ -85,19 +78,19 @@
 	background-image:url(../../../images/pdf.png);
 }
 .aa_dark button  {
-	font-family:lucida sans unicode, arial;
+	font-family:lucida sans unicode,arial;
 	font-weight:normal;
 	font-size:10px;
 	color:#111;
 }
 .aa_med button  {
-	font-family:lucida sans unicode, arial;
+	font-family:lucida sans unicode,arial;
 	font-weight:normal;
 	font-size:10px;
 	color:#333;
 }
 .aa_light button  {
-	font-family:lucida sans unicode, arial;
+	font-family:lucida sans unicode,arial;
 	font-weight:bold;
 	font-size:10px;
 	color:#888;
@@ -115,7 +108,7 @@
 .window-info {
 	padding:0 0 8px 0;
 	font:normal 11px lucida sans unicode,arial;
-	color: #333;
+	color:#333;
 }
 .window-field-label-first {
 	padding:0px 0 3px 3px;
@@ -161,16 +154,22 @@
 }
 .panel-fieldlabel {
 	padding:5px 0 2px 2px;
-	font:normal 11px lucida sans unicode;
+	font:normal 11px lucida sans unicode,arial;
 	color:#777;
 }
 .panel-fieldlabel-first {
 	padding:0px 0 2px 2px;
-	font:normal 11px lucida sans unicode;
+	font:normal 11px lucida sans unicode,arial;
 	color:#777;
 }
 .panel-tab-title {
 	font:normal 11px lucida sans unicode,arial;
+	color:#333;
+}
+
+/* Msg */
+.x-msg-hl {
+	font-style:italic;
 	color:#333;
 }
 

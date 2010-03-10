@@ -4,11 +4,7 @@
 
 //  MapFish print module
 
-    var layerOverrides = {
-        "World": {overview: true},
-        Countries: { format: 'image/svg+xml' }
-    };
-
+    var layerOverrides = {"World": {overview: true}, Countries: {format: 'image/svg+xml'}};
     var printConfigUrl = '../../pdf/info.json';
 
 //  Ajax requests
@@ -57,11 +53,6 @@
 	
 //	DHIS variables
 
-	MAP_SOURCE_TYPE_DATABASE = 'database';
-	MAP_SOURCE_TYPE_GEOJSON = 'geojson';
-	MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
-
-//  Ext.message
-
-    msg_highlight_start = '<b><span color="#555555">';
-    msg_highlight_end = '</span></b>';      
+	map_source_type_database = 'database';
+	map_source_type_geojson = 'geojson';
+	map_source_type_shapefile = 'shapefile';

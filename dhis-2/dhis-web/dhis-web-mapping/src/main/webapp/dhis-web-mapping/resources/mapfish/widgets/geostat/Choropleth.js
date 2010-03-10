@@ -1,4 +1,4 @@
-﻿    /*
+﻿/*
  * Copyright (C) 2007-2008  Camptocamp
  *
  * This file is part of MapFish Client
@@ -714,7 +714,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             URL = this.newUrl;
             this.newUrl = false;
 				
-            if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+            if (MAPSOURCE == map_source_type_database) {
                 if (URL == FACILITY_LEVEL) {
                     this.setUrl(path + 'getPointShapefile.action?level=' + URL);
                 }
@@ -722,10 +722,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     this.setUrl(path + 'getPolygonShapefile.action?level=' + URL);
                 }
             }
-            else if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+            else if (MAPSOURCE == map_source_type_geojson) {
                 this.setUrl(path + 'getGeoJson.action?name=' + URL);
             }
-			else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+			else if (MAPSOURCE == map_source_type_shapefile) {
 				this.setUrl(path_geoserver + wfs + URL + output);
 			}
         }
