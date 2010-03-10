@@ -107,7 +107,7 @@ function checkingStatusExcelTemplate( newFileName, keyColumnIndex, statusColumnI
         var cell = rows[i].getElementsByTagName( 'td' )[keyColumnIndex-1];
         var value = cell.firstChild.nodeValue;
 		cell = rows[i].getElementsByTagName( 'td' )[statusColumnIndex-1];
-        var statusFile = cell.firstChild.nodeValue;
+        var statusFile = cell.axis;
 		
         if ( (value.toLowerCase() == curTemplateName.toLowerCase()) && (statusFile == "true") )
         {
