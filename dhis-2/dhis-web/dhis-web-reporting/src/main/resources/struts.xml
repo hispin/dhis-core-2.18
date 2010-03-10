@@ -284,6 +284,11 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
         
+	<action name="verifyReportTable" class="org.hisp.dhis.reporting.tablecreator.action.VerifyReportTableAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+	</action>
+		
     <!-- PivotTable -->
     
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.action.NoAction">
