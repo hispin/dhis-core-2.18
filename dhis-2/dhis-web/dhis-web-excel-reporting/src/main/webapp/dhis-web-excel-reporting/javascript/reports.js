@@ -61,21 +61,19 @@ function validateAddReportExcelReceived( xmlObject ) {
 */
 function addReportExcel() {	
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( Completed );
-	
-	var params = "name=" + byId("name").value;
-		params += "&excel=" + byId("excelTemplateFile").value;
-		params += "&reportType=" + byId("reportType").value;
-		params += "&periodRow=" + byId("periodRow").value;
-		params += "&periodCol=" + byId("periodColumn").value;
-		params += "&organisationRow=" + byId("organisationRow").value;
-		params += "&organisationCol=" + byId("organisationColumn").value;
-		params += "&group=" + byId("group").value;
-	
-	request.sendAsPost(params);
-	request.send( "addReportExcel.action" );	
+	$.post("addReportExcel.action",{
+		name:$("#name").val(),		
+		excel:$("#excelTemplateFile").val(),
+		reportType:$("#reportType").val(),
+		periodRow:$("#periodRow").val(),	
+		periodCol:$("#periodColumn").val(),		
+		organisationRow:byId("organisationRow").value,
+		organisationCol:byId("organisationColumn").value,
+		group:$("#group").val()
+		
+	}, function (data){
+		window.location.reload();
+	},'xml');
 	
 }
 
@@ -157,22 +155,21 @@ function validateUpdateReportExcelReceived ( xmlObject ) {
 }
 
 function updateReportExcel() {
+
+	$.post("updateReportExcel.action",{
+		id:reportId,	
+		name:$("#name").val(),		
+		excel:$("#excelTemplateFile").val(),
+		periodRow:$("#periodRow").val(),	
+		periodCol:$("#periodColumn").val(),		
+		organisationRow:byId("organisationRow").value,
+		organisationCol:byId("organisationColumn").value,
+		group:$("#group").val()
+		
+	}, function (data){
+		window.location.reload();
+	},'xml');
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( Completed );
-	
-	var params = "id=" + reportId;
-		params += "&name=" + byId("name").value;
-		params += "&excel=" + byId("excelTemplateFile").value;
-		params += "&periodRow=" + byId("periodRow").value;
-		params += "&periodCol=" + byId("periodColumn").value;
-		params += "&organisationRow=" + byId("organisationRow").value;
-		params += "&organisationCol=" + byId("organisationColumn").value;
-		params += "&group=" + byId("group").value;
-	
-	request.sendAsPost(params);
-	request.send( "updateReportExcel.action" );
 
 }
 
