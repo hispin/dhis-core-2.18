@@ -36,7 +36,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,11 +56,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -83,8 +89,8 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Dang Duy Hieu
  * @author Tran Thanh Tri
- * @version $Id$
  * @since 2009-09-18
+ * @version $Id: GenerateReportSupport.java 6216 2010-03-10 13:40:42Z Chau Thu Tran$
  */
 public abstract class GenerateReportSupport
     implements Action
@@ -142,6 +148,8 @@ public abstract class GenerateReportSupport
 
     protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
+    protected DataValueService dataValueService;
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
@@ -177,6 +185,11 @@ public abstract class GenerateReportSupport
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
     }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -275,6 +288,8 @@ public abstract class GenerateReportSupport
     protected Date startSixMonthly;
 
     protected Date endSixMonthly;
+
+    private Period period;
 
     // ------------------------------------------
     // Excel format
@@ -380,6 +395,9 @@ public abstract class GenerateReportSupport
 
     protected void installPeriod( Period period )
     {
+
+        this.period = period;
+
         Calendar calendar = Calendar.getInstance();
 
         // Monthly period
@@ -447,7 +465,7 @@ public abstract class GenerateReportSupport
         this.initExcelFormat();
 
         this.installDefaultExcelFormat();
-        
+
         this.initFormulaEvaluating();
 
         ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
@@ -631,23 +649,78 @@ public abstract class GenerateReportSupport
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
-                double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
-                    startDate, endDate, organisationUnit );
-
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( !(dataElement instanceof CalculatedDataElement) )
                 {
-                    replaceString = NULL_REPLACEMENT;
-                }
-                else
-                {
-                    replaceString = String.valueOf( aggregatedValue );
+
+                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                        startDate, endDate, organisationUnit );
+
+                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    {
+                        replaceString = NULL_REPLACEMENT;
+                    }
+                    else
+                    {
+                        replaceString = String.valueOf( aggregatedValue );
+                    }
+
+                    matcher.appendReplacement( buffer, replaceString );
+
+                    matcher.appendTail( buffer );
+
                 }
 
-                matcher.appendReplacement( buffer, replaceString );
+                else if ( dataElement instanceof CalculatedDataElement )
+                {
+                    CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
+
+                    Collection<DataElement> dataElements = dataElement.getDataSets().iterator().next()
+                        .getDataElements();
+
+                    Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period,
+                        dataElements );
+
+                    Map<Integer, DataValue> dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
+
+                    for ( DataValue dataValue : dataValues )
+                    {
+                        dataValueMap.put( dataValue.getDataElement().getId(), dataValue );
+                    }
+
+                    int factor = 0;
+
+                    int value = 0;
+
+                    Map<String, Integer> factorMap = dataElementService.getOperandFactors( calculatedDataElement );
+
+                    Collection<String> operandIds = dataElementService.getOperandIds( calculatedDataElement );
+
+                    for ( String operandId : operandIds )
+                    {
+                        factor = factorMap.get( operandId );
+
+                        dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
+                        optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
+                            .length() );
+
+                        DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
+                        optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
+                            .parseInt( optionComboIdString ) );
+
+                        DataValue dataValue = dataValueService.getDataValue( organisationUnit, element, period, optionCombo );
+
+                        if ( dataValue != null )
+                        {
+                            value += Integer.parseInt( dataValue.getValue() ) * factor;
+                        }
+                    }
+                    
+                    buffer.append( value );
+                    
+                    break;
+                }
             }
-
-            matcher.appendTail( buffer );
-
+            
             return buffer.toString();
         }
         catch ( NumberFormatException ex )

@@ -455,6 +455,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>
 
 	<bean
@@ -480,6 +481,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>
 
 	<bean
@@ -505,6 +507,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>
 
 
@@ -531,6 +534,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>
 
 	<!-- DATA ENTRY STATUS BEAN -->
@@ -1332,7 +1336,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate"
 		class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate"
-		scope="prototype">		
+		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
