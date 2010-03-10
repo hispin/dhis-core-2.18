@@ -34,15 +34,15 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="60" class="{validate:{required:true,minlength:2,maxlength:60}}"></td>
+        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="60" class="{validate:{required:true,minlength:2,maxlength:60}}"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em"  maxlength="60" class="{validate:{maxlength:60}}"></td>
+        <td><input type="text" id="code" name="code" maxlength="20" style="width:20em"  maxlength="60" class="{validate:{maxlength:60}}"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -57,7 +57,7 @@
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
     </tbody>
   </table>
-
+	<br/>&nbsp;
   <table id="dataElementSelectionArea">
     <col> ## Available DataElements
     <col> ## Filter
@@ -70,7 +70,6 @@
       </tr>
     </thead>
     <tbody>
-    	
       <tr>        
         <td>
           <select id="dataElementGroupSelect" name="dataElementGroupSelect" style="min-width:25em"
@@ -81,38 +80,39 @@
             #end
           </select>
         </td>
-        <td>$i18n.getString( "group" )</td>
+        <td>[$i18n.getString( "group" )]</td>
         <td></td>        
       </tr>
       
       <tr>
-      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="min-width:25em"></td>
-      	<td>$i18n.getString( "name" )</td>
-      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterDataSetMembers()" style="min-width:25em"></td>
+      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:25em"></td>
+      	<td>[$i18n.getString( "name" )]</td>
+      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:25em"></td>
       </tr>
       
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="addDataSetMembers()">            
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList')">            
           </select>
         </td>
         <td>
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" onclick="addDataSetMembers()">
-        	<br>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" onclick="removeDataSetMembers()">          
-        </td>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'availableList', 'selectedList')"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="moveSelectedById( 'selectedList', 'availableList')"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableList', 'selectedList' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' )"/>
+		</td>			
         <td>
           <!-- List of all selected DataElements -->
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="removeDataSetMembers()">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' )">
           </select>
         </td>
       </tr>
 
       <tr>
         <td colspan="3">
-          <input type="submit" value="$i18n.getString( "save" )" style="width:13em"><input type="button"
-            onclick="window.location.href='dataSet.action'" value="$i18n.getString( "cancel" )" style="width:12em">
+          <input type="submit" value="$i18n.getString( "save" )" style="width:13em"/><input type="button"
+            onclick="window.location.href='dataSet.action'" value="$i18n.getString( "cancel" )" style="width:12em"/>
         </td>
       </tr>
       
