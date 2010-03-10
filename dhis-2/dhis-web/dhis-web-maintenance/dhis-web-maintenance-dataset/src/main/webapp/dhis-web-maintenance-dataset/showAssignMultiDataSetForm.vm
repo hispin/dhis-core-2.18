@@ -7,22 +7,25 @@
 		<th>$i18n.getString( "available_datasets" )</th><td></td><th>$i18n.getString( "selected_datasets" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableDataSetsFilter" onkeyup="filterAvailableDataSets()" style="width:25em" /></td>
+		<td><input type="text" id="availableDataSetsFilter" onkeyup="filterList( this.value, 'availableDataSets' )" style="width:25em" /></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-		<td><input type="text" id="selectedDataSetsFilter" onkeyup="filterSelectedDataSets()" style="width:25em" /></td>
+		<td><input type="text" id="selectedDataSetsFilter" onkeyup="filterList( this.value, 'selectedDataSets' )" style="width:25em" /></td>
 	</tr>
 	<tr>
 		<td>
-			<select id="availableDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="addSelectedDataSets()" />
+			<select id="availableDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )" />
 		</td>
 		
 		<td style="text-align:center">			
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addSelectedDataSets()" /><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeSelectedDataSets()" />			
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )" /><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )" /><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataSets', 'selectedDataSets' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedDataSets', 'availableDataSets' )"/>
+			
 		</td>
 	
 		<td>
-			<select id="selectedDataSets" name="selectedDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeSelectedDataSets()" />
+			<select id="selectedDataSets" name="selectedDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )" />
 		</td>
 	</tr>
 </table>
