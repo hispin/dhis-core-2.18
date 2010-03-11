@@ -78,6 +78,7 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private CustomValueService customValueService;
 
     public CustomValueService getCustomValueService()
@@ -152,7 +153,7 @@ public class FormAction
     {
         this.categoryService = categoryService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -170,7 +171,6 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
-
     private Comparator<DataElement> dataElementComparator;
 
     public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
@@ -181,7 +181,6 @@ public class FormAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
@@ -192,7 +191,6 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
     private List<CustomValue> customValues = new ArrayList<CustomValue>();
 
     public List<CustomValue> getCustomValues()
@@ -336,7 +334,6 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-
     private Integer selectedDataSetId;
 
     public void setSelectedDataSetId( Integer selectedDataSetId )
@@ -366,7 +363,6 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
     public String execute()
         throws Exception
     {
@@ -387,23 +383,23 @@ public class FormAction
         if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
         {
             disabled = "disabled";
-        }       
-        
+        }
+
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        if ( dataElements.size() == 0 )
+        if ( dataElements.isEmpty() )
         {
             return SUCCESS;
-        }      
-        
-        Collections.sort( dataElements, dataElementComparator );       
-        
+        }
+
+        Collections.sort( dataElements, dataElementComparator );
+
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
-        
-        orderedCategoryCombos = dataElementService.getDataElementCategoryCombos( dataElements );        
+
+        orderedCategoryCombos = dataElementService.getDataElementCategoryCombos( dataElements );
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
-        {            
+        {
             Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
 
             allOptionCombos.addAll( optionCombos );
@@ -443,24 +439,27 @@ public class FormAction
 
             for ( DataElementCategory cat : categoryCombo.getCategories() )
             {
-                catColSpan = catColSpan / cat.getCategoryOptions().size();
-                int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
-                Collection<Integer> cols = new ArrayList<Integer>( total );
-
-                for ( int i = 0; i < total; i++ )
+                if ( !cat.getCategoryOptions().isEmpty() )
                 {
-                    cols.add( i );
+                    catColSpan = catColSpan / cat.getCategoryOptions().size();
+                    int total = optionCombos.size() / ( catColSpan * cat.getCategoryOptions().size() );
+                    Collection<Integer> cols = new ArrayList<Integer>( total );
+
+                    for ( int i = 0; i < total; i++ )
+                    {
+                        cols.add( i );
+                    }
+
+                    /*
+                     * TODO Cols are made to be a collection simply to facilitate a
+                     * for loop in the velocity template - there should be a better
+                     * way of "for" doing a loop.
+                     */
+
+                    colRepeat.put( cat.getId(), cols );
+
+                    catRepeat.put( cat.getId(), catColSpan );
                 }
-
-                /*
-                 * TODO Cols are made to be a collection simply to facilitate a
-                 * for loop in the velocity template - there should be a better
-                 * way of "for" doing a loop.
-                 */
-
-                colRepeat.put( cat.getId(), cols );
-
-                catRepeat.put( cat.getId(), catColSpan );
             }
 
             catColRepeat.put( categoryCombo.getId(), colRepeat );
@@ -527,7 +526,7 @@ public class FormAction
 
         dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
 
-        cdeFormExists = (dataEntryForm != null);
+        cdeFormExists = ( dataEntryForm != null );
 
         if ( cdeFormExists )
         {
@@ -545,7 +544,7 @@ public class FormAction
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {
             des = (List<DataElement>) orderedDataElements.get( categoryCombo );
-          
+
             displayPropertyHandler.handle( des );
             Collections.sort( des, new DataElementSortOrderComparator() );
 
