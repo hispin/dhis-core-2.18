@@ -17,7 +17,7 @@
 			<th>$i18n.getString('name')</th>
 			<th>$i18n.getString('report_type')</th>
 			<th>$i18n.getString('excel_template')</th>		
-			<th width="170px">$i18n.getString('operations')</th>		
+			<th width="200px">$i18n.getString('operations')</th>		
 		</tr>
 	</thead>	
 	<tbody id="list">	
@@ -29,11 +29,9 @@
 			<td align="left">
 				<a href="openDefineAssociationsForm.action?reportId=$report.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
 				<a href="listReportExcelItemAction.action?reportId=$report.id" title="$i18n.getString( 'report_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'report_item' )"></a>
-				<a href="javascript:removeItem( $report.id, '$report.name', '$i18n.getString( 'confirm_delete' )', 'deleteReportExcel.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				<a href="javascript:openUpdateReportReportExcel( $report.id );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-				<!--
-				<a href="javascript:backupReportExcel( $report.id );" title="$i18n.getString( 'backup' )"><img src="../images/open.png" alt="$i18n.getString( 'backup' )"></a>
-				-->
+				<a href="javascript:translate( '$report.getClass().getSimpleName()', '$report.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
+				<a href="javascript:removeItem( $report.id, '$report.name', '$i18n.getString( 'confirm_delete' )', 'deleteReportExcel.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				#if($report.isOrganisationUnitGroupListing())
 				<a href="openUpdateOrgnisationUnitGroupListingReport.action?id=$report.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
 				<a href="organisationUnitAtLevels.action?id=$report.id" title="$i18n.getString( 'set_organisationunit_group_level' )"><img src="images/organisationunitlevel.png" alt="$i18n.getString( 'set_organisationunit_group_level' )"/></a>				

@@ -8,31 +8,33 @@
 	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItem"
 		table="excelitem">
 
+		<cache usage="read-write" />
+
 		<id name="id" column="excelitemid">
 			<generator class="native" />
 		</id>
-		
-		<properties name="uniqueKey" unique="true">		
-		
-			<property name="name" column="name" not-null="true"/>		
-										
+
+		<properties name="uniqueKey" unique="true">
+
+			<property name="name" column="name" not-null="true" />
+
 			<many-to-one name="excelItemGroup" column="excelItemGroupId"
-			class="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
-			foreign-key="fk_exceltitem_group" lazy="false" insert="true" />			
+				class="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
+				foreign-key="fk_exceltitem_group" lazy="false" insert="true" />
 		</properties>
-		
 
-		
 
-		<property name="expression" column="expression" not-null="true"/>
 
-		<property name="row" column="excelrow" not-null="true"/>
 
-		<property name="column" column="excelcolumn" not-null="true"/>
+		<property name="expression" column="expression" not-null="true" />
 
-		<property name="sheetNo" column="sheetNo" not-null="true"/>
+		<property name="row" column="excelrow" not-null="true" />
 
-		
+		<property name="column" column="excelcolumn" not-null="true" />
+
+		<property name="sheetNo" column="sheetNo" not-null="true" />
+
+
 	</class>
 
 </hibernate-mapping>

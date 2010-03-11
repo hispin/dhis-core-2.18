@@ -1,5 +1,7 @@
 package org.hisp.dhis.reportexcel;
 
+import java.io.Serializable;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -31,7 +33,7 @@ package org.hisp.dhis.reportexcel;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ReportExcelItem
+public class ReportExcelItem implements Serializable
 {
     public static class XML_TAG
     {

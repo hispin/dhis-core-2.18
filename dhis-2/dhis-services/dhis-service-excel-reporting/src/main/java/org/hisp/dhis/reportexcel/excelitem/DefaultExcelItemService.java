@@ -27,8 +27,11 @@ package org.hisp.dhis.reportexcel.excelitem;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,44 +56,53 @@ public class DefaultExcelItemService
         this.excelItemStore = excelItemStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // --------------------------------------
     // Excelitem group Services
     // --------------------------------------
 
     public int addExcelItemGroup( ExcelItemGroup excelItemGroup )
     {
+        int id = excelItemStore.addExcelItemGroup( excelItemGroup );
 
-        return excelItemStore.addExcelItemGroup( excelItemGroup );
+        i18nService.addObject( excelItemGroup );
+
+        return id;
     }
 
     public void deleteExcelItemGroup( int id )
     {
+        i18nService.removeObject( excelItemStore.getExcelItemGroup( id ) );
 
         excelItemStore.deleteExcelItemGroup( id );
     }
 
     public Collection<ExcelItemGroup> getAllExcelItemGroup()
     {
-
-        return excelItemStore.getAllExcelItemGroup();
+        return i18n( i18nService, excelItemStore.getAllExcelItemGroup() );
     }
 
     public ExcelItemGroup getExcelItemGroup( int id )
     {
-
-        return excelItemStore.getExcelItemGroup( id );
+        return i18n( i18nService, excelItemStore.getExcelItemGroup( id ) );
     }
 
     public void updateExcelItemGroup( ExcelItemGroup excelItemGroup )
     {
-
         excelItemStore.updateExcelItemGroup( excelItemGroup );
+        
+        i18nService.verify( excelItemGroup );
     }
 
     public Collection<ExcelItemGroup> getExcelItemGroups( OrganisationUnit organisationUnit )
     {
-
-        return excelItemStore.getExcelItemGroups( organisationUnit );
+        return i18n( i18nService, excelItemStore.getExcelItemGroups( organisationUnit ) );
     }
 
     // --------------------------------------
@@ -100,31 +112,39 @@ public class DefaultExcelItemService
     public int addExcelItem( ExcelItem excelItem )
     {
 
-        return excelItemStore.addExcelItem( excelItem );
+        int id = excelItemStore.addExcelItem( excelItem );
+        
+        i18nService.addObject( excelItem );
+         
+        return id;
     }
 
     public void deleteExcelItem( int id )
     {
 
+        i18nService.removeObject( excelItemStore.getExcelItem( id ) );
+        
         excelItemStore.deleteExcelItem( id );
     }
 
     public Collection<ExcelItem> getAllExcelItem()
     {
 
-        return excelItemStore.getAllExcelItem();
+        return i18n( i18nService, excelItemStore.getAllExcelItem() );
     }
 
     public void updateExcelItem( ExcelItem excelItem )
     {
 
         excelItemStore.updateExcelItem( excelItem );
+        
+        i18nService.verify( excelItem );
     }
 
     public ExcelItem getExcelItem( int id )
     {
 
-        return excelItemStore.getExcelItem( id );
+        return i18n( i18nService, excelItemStore.getExcelItem( id ) );
     }
 
     // --------------------------------------

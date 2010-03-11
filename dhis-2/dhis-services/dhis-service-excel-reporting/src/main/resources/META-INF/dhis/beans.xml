@@ -14,6 +14,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
 		<property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 
 
@@ -35,5 +36,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.excelitem.DefaultExcelItemService">
 		<property name="excelItemStore"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 </beans>

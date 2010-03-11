@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.reportexcel;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +40,7 @@ import org.w3c.dom.Document;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public abstract class ReportExcel
+public abstract class ReportExcel implements Serializable
 {
     public static class XML_TAG
     {
@@ -169,6 +170,12 @@ public abstract class ReportExcel
         if ( !name.equals( other.name ) )
             return false;
         return true;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
     }
 
     // ----------------------------------------------------------------------

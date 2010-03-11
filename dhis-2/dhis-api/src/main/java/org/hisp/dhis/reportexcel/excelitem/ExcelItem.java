@@ -1,6 +1,8 @@
 package org.hisp.dhis.reportexcel.excelitem;
 
-public class ExcelItem
+import java.io.Serializable;
+
+public class ExcelItem implements Serializable
 {
 
     private int id;

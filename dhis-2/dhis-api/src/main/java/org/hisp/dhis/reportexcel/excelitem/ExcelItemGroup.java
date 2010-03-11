@@ -27,6 +27,7 @@ package org.hisp.dhis.reportexcel.excelitem;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
  * @version $Id$
  */
 
-public class ExcelItemGroup
+public class ExcelItemGroup implements Serializable
 {
     private int id;
 

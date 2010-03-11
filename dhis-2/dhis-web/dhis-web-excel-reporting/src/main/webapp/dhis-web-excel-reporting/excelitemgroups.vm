@@ -29,22 +29,15 @@
 			<td align="left">
 				<a href="openExcelItemGroupAssociations.action?excelItemGroupId=$excelItemGroup.id" title="$i18n.getString( 'associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'associations' )"></a>
 				<a href="listExcelItems.action?excelItemGroupId=$excelItemGroup.id" title="$i18n.getString( 'excel_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'excelitem' )"></a>
-				<a href="javascript:removeItem($excelItemGroup.id, '$excelItemGroup.name','$i18n.getString( 'confirm_delete' )', 'deleteExcelItemGroup.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				<a href="javascript:mode = 'edit'; openUpdateExcelItemGroup( '$excelItemGroup.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="javascript:translate( 'ExcelItemGroup', '$excelItemGroup.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
+				<a href="javascript:removeItem($excelItemGroup.id, '$excelItemGroup.name','$i18n.getString( 'confirm_delete' )', 'deleteExcelItemGroup.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				#if($excelItemGroup.isOrganisationUnitGroupListing())
 				<a href="openUpdateOrgnisationUnitGroupForExcelItemGroup.action?id=$excelItemGroup.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
 				#end
 				#if($excelItemGroup.isCategory())				
 				<a href="listDataElementGroupOrderForExcelItemGroup.action?id=$excelItemGroup.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg"/></a>
 				#end
-				<!-- #if($report.isOrganisationUnitGroupListing())
-				<a href="openUpdateOrgnisationUnitGroupListingReport.action?id=$report.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
-				#end 
-				#if($report.isCategory())				
-				<a href="listDataElementGroupOrder.action?id=$report.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg"/></a>
-				
-				#end-->
-
 			</td>
 		</tr>	
 		

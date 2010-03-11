@@ -65,7 +65,7 @@ public class I18nObject
         {
             return false;
         }
-
+        
         return className.equalsIgnoreCase( object.getClass().getSimpleName() );
     }
 }
