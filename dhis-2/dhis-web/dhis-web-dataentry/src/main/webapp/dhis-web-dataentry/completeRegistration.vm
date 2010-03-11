@@ -7,7 +7,7 @@
 	    <td>
 	        <input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end>
 	        <input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration || $periods.size() == 0 ) disabled="disabled"#end>
-	        <input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end onchange="checkDate(this.value); ">
+	        <input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end>
 	        <div id="dateDiv" name="dateDiv" #if( $registration || $periods.size() == 0 ) style="display:none"#else style="display:inline"#end>
 	        <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateField" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
 	        </div>
@@ -26,18 +26,4 @@
 <script type="text/javascript">
     var i18n_confirm_complete = '$encoder.jsEscape( $i18n.getString( "confirm_complete" ) , "'")';
     var i18n_confirm_undo = '$encoder.jsEscape( $i18n.getString( "confirm_undo" ) , "'")';
-	var i18n_invalid_date = '$encoder.jsEscape( $i18n.getString( "invalid_date" ) , "'")';
-	
-	function checkDate(value){
-		var bo = isDate(value,'$i18n.getString("format.date.label")');
-		if(!bo){
-			alert(i18n_invalid_date + "\n\n" + byId('dateField').value );			
-			var d = new Date(); 
-			var month = d.getMonth() + 1;
-			month = (month > 9) ? month: ('0'+ month);
-			var day = d.getDate();
-			day = (day > 9) ? day: ('0'+ day);
-			byId('dateField').value = d.getFullYear() + "-" + month + "-" + day;
-		} 
-	} 
 </script>
