@@ -6,8 +6,6 @@
 	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
 		table="excelitemgroup">
 
-		<cache usage="read-write" />
-
 		<id name="id" column="excelitemgroupid">
 			<generator class="native" />
 		</id>
