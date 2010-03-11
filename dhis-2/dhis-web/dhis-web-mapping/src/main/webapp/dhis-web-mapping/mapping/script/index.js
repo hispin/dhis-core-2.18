@@ -1017,8 +1017,8 @@ Ext.onReady( function() {
         title: '<span id="window-help-title">Help</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 560,
-		height: 350, 
+		width: 607,
+		height: 430, 
         items:
         [
             {
