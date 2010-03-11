@@ -213,8 +213,7 @@ function updateDataElementGroupMembers()
 function updateDataElementGroupMembersReceived( xmlObject )
 {
     dataElementGroupsSelect = document.getElementById( 'dataElementGroups' );
-    document.getElementById('message').style.display='block';
-    document.getElementById('message').innerHTML = i18n_update_success + " : " + dataElementGroupsSelect.options[ dataElementGroupsSelect.selectedIndex ].text;
+    setHeaderDelayMessage( i18n_update_success + " : " + dataElementGroupsSelect.options[ dataElementGroupsSelect.selectedIndex ].text );
 }
 
 function deleteDataElementGroup()
