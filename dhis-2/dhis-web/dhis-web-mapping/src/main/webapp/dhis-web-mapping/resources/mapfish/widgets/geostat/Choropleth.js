@@ -24,7 +24,6 @@
 
 Ext.namespace('mapfish.widgets', 'mapfish.widgets.geostat');
 
-     
 /**
  * Class: mapfish.widgets.geostat.Choropleth
  * Use this class to create a widget allowing to display choropleths

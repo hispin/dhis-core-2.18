@@ -19,13 +19,14 @@
 	
 //	Help strings
 
-	thematicMap = 'thematicMap';
-	mapRegistration = 'map';
-	organisationUnitAssignment = 'mapOrganisationUnitRelation';
-	overlayRegistration = 'overlay';
-	administration = 'administration';
-	favorites = 'favoriteMapView';
-	legendSets = 'legendSet';
+	thematicMap = 'gisThematicMap';
+	mapRegistration = 'gisMap';
+	organisationUnitAssignment = 'gisMapOrganisationUnitRelation';
+	overlayRegistration = 'gisOverlay';
+	administration = 'gisAdministration';
+	favorites = 'gisFavoriteMapView';
+	legendSets = 'gisLegendSet';
+	pdfprint = 'gisPdfPrint';
 
 //  Layout
 
