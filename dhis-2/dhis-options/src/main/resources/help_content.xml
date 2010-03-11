@@ -1227,7 +1227,7 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
       it manually and copy your GeoJSON files there.</para>
       </section>
     </section>
-    <section id="administration">
+    <section id="gisAdministration">
       <title>Administrator panel</title>
       <screenshot>
         <graphic fileref="resources/images/GIS/admin_panel.png" align="center"/>
@@ -1237,10 +1237,11 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
           <varlistentry>
             <term>Map source</term>
             <listitem>
-              <para><guimenuitem>GeoJSON</guimenuitem>: you will find your own
+              <para><guilabel>GeoJSON files:</guilabel> you will find your own
             registered maps in the Map combo box in the Thematic map panel.
             The Admin panels check box will become visible.</para>
-              <para><guimenu>DHIS Database:</guimenu> the Map combo box will
+              <para><guilabel>Shapefiles:</guilabel> same as GeoJSON files, except that the files are generated from shapefiles installed in your running version of Geoserver on the fly. </para>
+              <para><guilabel>DHIS database:</guilabel> the Map combo box will
             simply be populated by the existing organisation unit levels and
             GeoJSON files will be created by the application automatically
             Organisation units must have coordinates stored in the database in
@@ -1250,17 +1251,21 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
             </listitem>
           </varlistentry>
           <varlistentry>
-            <term>
-              <guibutton>Admin panel</guibutton>
-            </term>
+            <term>Admin panels</term>
             <listitem>
               <para>Show/hide the shapefile management panels.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>Longitude/latitude</term>
+            <listitem>
+              <para>The base coordinate for the current country. This coordinate will appear as default when registering maps and overlays.</para>
             </listitem>
           </varlistentry>
         </variablelist>
       </para>
     </section>
-    <section id="map">
+    <section id="gisMap">
       <title>Registering geographical information</title>
       <para>In order to view data in the GIS module, you must import your
     geographical data into your DHIS installation. Once you have produced
@@ -1364,7 +1369,7 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
         </varlistentry>
       </variablelist>
     </section>
-    <section id="mapOrganisationUnitRelation">
+    <section id="gisMapOrganisationUnitRelation">
       <title>Assign organization units to map</title>
       <para>Select a registered map and wait for it to load. The organisation
     units (OU) in your database on this level will appear in the list and
@@ -1424,15 +1429,17 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
         </listitem>
       </itemizedlist>
     </section>
-    <section id="thematicMap">
+    <section id="gisThematicMap">
       <title>Thematic map</title>
-      <para>This panel should be rather self-explanatory . Calculation method
-    alludes to the legend interval size and set to <guimenuitem>Equal intervals</guimenuitem> they will be “highest map value – lowest map value
-    / number of classes”. Choose <guimenuitem>Fixed bounds </guimenuitem>and
-    you may set your own legend limits, e.g. “20,40,60” using a comma to
-    seperate each of the class break values. </para>
+      <para>This panel lets you use your registered maps for thematic mapping. All you need to do is selecting your desired indicator-period-map combination in the left side menu.</para>
+      <para>Calculation method
+    alludes to the  size  of the legend classes. Set to <guimenuitem>Equal intervals</guimenuitem> they will be “highest map value – lowest map value
+    / number of classes”. Set to <guimenuitem>Equal group count</guimenuitem> the legend creator will try to distribute the organisation units evenly. Choose <guimenuitem>Fixed bounds </guimenuitem>and
+    you may define your own class break values, e.g. “20,40,60” using a comma to
+    seperate each of them.</para>
+      <para>The map view combo box lists all map views (favorites) saved by the user. The settings that are stored in the map view will be automatically applied to the thematic map panel.</para>
     </section>
-    <section id="favoriteMapView">
+    <section id="gisFavoriteMapView">
       <title>Register favorite map views</title>
       <para>This panel will save the current thematic map view in order to
     restore it whenever you want via the <guimenuitem>Map view </guimenuitem>combo box in the <guimenu>Thematic map</guimenu> panel. By
@@ -1440,13 +1447,18 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
     inserting <guimenuitem>Map views</guimenuitem> into one of link
     areas.</para>
     </section>
-    <section id="legendSet">
+    <section id="gisLegendSet">
       <title>Register legend sets</title>
       <para>A legend set may be connected to many indicators, but an indicator
     may only have one legend set. Thus, you may select many indicators when
     you create a legend set. When an indicator that has a legend set is
     selected in the <guimenu>Thematic map</guimenu> panel, the number of
     classes, low color and high color is automatically set.</para>
+    </section>
+    <section id="gisPdfPrint">
+      <title>Print map as PDF</title>
+      <para>Click the PDF icon on the map toolbar and the left side print panel will open. You may add several pages to your PDF document by clicking the "add page" button on the bottom toolbar. Change the size of the focus rectangle in the "scale" column. The rectangle can be rotated by inserting a number (degrees) "rotation" column or by dragging the rotation knob. Your "map title" and "comment" will appear above and below the picture in the PDF document respectively. The higher "dots per inch" value you choose, the better quality of the image and the larger file size of the document.</para>
+      <para>To get out of print mode you can simply expand a different panel or hide the print panel by clicking the PDF icon on the map toolbar again.</para>
     </section>
   </chapter>
   <chapter>
