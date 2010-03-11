@@ -109,6 +109,10 @@
       </div>      
     </div>
         
+    <div id="headerMessageContainer">
+      <div id="headerMessage"></div>
+    </div>        
+        
     <div class="page" id="mainPage">
       #if( !$page )
         <p>$i18n.getString( "no_page_specified" )</p>

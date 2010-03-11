@@ -392,6 +392,17 @@ function hideMessage()
 	$( '#message' ).slideUp( 'fast' );
 }
 
+function setHeaderMessage( message )
+{
+    $( 'div#headerMessage' ).html( message );
+    $( 'div#headerMessage' ).slideDown( 'slow' );
+}
+
+function hideHeaderMessage()
+{
+    $( 'div#headerMessage' ).slideUp( 'slow' );
+}   
+
 function setInfo( message )
 {
     $( '#info' ).html( message );
