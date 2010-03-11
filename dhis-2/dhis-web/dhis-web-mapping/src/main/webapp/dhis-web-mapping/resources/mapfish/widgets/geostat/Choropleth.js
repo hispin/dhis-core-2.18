@@ -247,9 +247,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     fn: function() {
                         if (MAPVIEW) {
                             Ext.getCmp('period_cb').setValue(MAPVIEW.periodId);
-                            
                             var mst = MAPVIEW.mapSourceType;
-                            
+
                             Ext.Ajax.request({
                                 url: path + 'setMapSourceTypeUserSetting' + type,
                                 method: 'POST',
@@ -286,7 +285,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         if (MAPVIEW) {
                             Ext.getCmp('map_cb').setValue(MAPVIEW.mapSource);
                             choropleth.classify(false, true);
-                            MAPVIEW = false;
                         }
                     }
                 }
@@ -323,10 +321,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
                             success: function( responseObject ) {
                                 MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
-								MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
-                                
-                                MAPSOURCE = MAPVIEW.mapSourceType;
-                                
+								MAPSOURCE = MAPVIEW.mapSourceType;
+								
                                 Ext.getCmp('numClasses').setValue(MAPVIEW.classes);
                                 Ext.getCmp('colorA_cf').setValue(MAPVIEW.colorLow);
                                 Ext.getCmp('colorB_cf').setValue(MAPVIEW.colorHigh);

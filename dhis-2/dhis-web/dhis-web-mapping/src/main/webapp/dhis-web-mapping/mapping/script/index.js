@@ -3201,7 +3201,7 @@ function loadMapData(redirect, position) {
         params: { mapLayerPath: URL, format: 'json' },
         success: function( responseObject ) {
 		
-            MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
+            MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];	
             
             if (MAPSOURCE == map_source_type_database) {
                 MAPDATA.name = Ext.getCmp('map_cb').getRawValue();
@@ -3220,13 +3220,20 @@ function loadMapData(redirect, position) {
             }
 			
 			if (!position) {
-           
 				if (MAPDATA.zoom != MAP.getZoom()) {
 					MAP.zoomTo(MAPDATA.zoom);
 				}
-				
 				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
 			}
+			
+			if (MAPVIEW.longitude && MAPVIEW.latitude && MAPVIEW.zoom) {
+				MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
+			}
+			else {
+				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
+			}
+			
+			MAPVIEW = false;
 			
 			toggleFeatureLabels(false);
 
