@@ -2761,16 +2761,10 @@ Ext.onReady( function() {
             expand: {
                 fn: function() {
                     choroplethLayer.setVisibility(false);
-                    choropleth.classify(false);
-                    
+                    choropleth.classify(false, true);
                     ACTIVEPANEL = thematicMap;
                 }
-            },
-			collapse: {
-				fn: function() {
-					ACTIVEPANEL = false;
-				}
-			}
+            }
         }
     });
     
@@ -2787,16 +2781,10 @@ Ext.onReady( function() {
             expand: {
                 fn: function() {
                     choroplethLayer.setVisibility(false);
-                    mapping.classify(false);
-                    
+                    mapping.classify(false, true);
                     ACTIVEPANEL = organisationUnitAssignment;
                 }
-            },
-			collapse: {
-				fn: function() {
-					ACTIVEPANEL = false;
-				}
-			}
+            }
         }
     });
 	
@@ -2862,6 +2850,7 @@ Ext.onReady( function() {
 	});
 	
 	function showPdf() {
+		var active = ACTIVEPANEL;
 		var printMultiPagePanel = Ext.getCmp('printMultiPage_p');
 		if (printMultiPagePanel.hidden) {
             printMultiPagePanel.show();
@@ -2870,7 +2859,12 @@ Ext.onReady( function() {
         else {
 			printMultiPagePanel.collapse();
 			printMultiPagePanel.hide();
-			choropleth.expand();
+			if (active == thematicMap) {
+				choropleth.expand();
+			}
+			else if (active == organisationUnitAssignment) {
+				mapping.expand();
+			}
         }
 	}	
 	
@@ -3086,8 +3080,8 @@ Ext.onReady( function() {
     shapefilePanel.hide();
 	mapping.hide();
     mapLayerPanel.hide();
-	ACTIVEPANEL = thematicMap;
 	Ext.getCmp('printMultiPage_p').hide();
+	ACTIVEPANEL = thematicMap;
     
 	/* MAP CONTROLS */
 	var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
