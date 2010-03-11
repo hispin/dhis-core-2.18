@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-dataentry</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Data Entry</name>
   
   <build>
