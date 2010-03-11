@@ -285,6 +285,7 @@ div#warningArea
 
 div#headerMessageContainer
 {
+  position: fixed;
   top: 0px;
   width: 100%;
   height: 26px;

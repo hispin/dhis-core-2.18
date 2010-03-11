@@ -7,6 +7,8 @@ var tempChartId;
 
 function runAndViewChart( chartId )
 {
+	setHeaderWaitMessage( "Please wait" );
+	
     tempChartId = chartId;
     
     var request = new Request();
@@ -20,7 +22,7 @@ function runAndViewChartReceived( messageElement )
 }
 
 function getChartStatus()
-{   
+{
     var url = "getStatus.action";
     
     var request = new Request();
@@ -34,8 +36,12 @@ function chartStatusReceived( xmlObject )
     var statusMessage = getElementValue( xmlObject, "statusMessage" );
     var finished = getElementValue( xmlObject, "finished" );
     
+    updateHeaderWaitMessage( statusMessage );
+    
     if ( finished == "true" )
     {
+    	hideHeaderMessage();
+    	
         var url = "viewChart.action?id=" + tempChartId;
         
         viewChart( url );
