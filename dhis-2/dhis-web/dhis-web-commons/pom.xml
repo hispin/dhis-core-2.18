@@ -26,7 +26,7 @@
                   <format property="now" pattern="yyyy-MM-dd HH:mm:ss"/>
                 </tstamp>
                 <mkdir dir="${project.build.outputDirectory}"/>
-                <exec executable="bzr" outputproperty="revision">
+                <exec executable="bzr" outputproperty="revision" failifexecutionfails="false">
                       <arg value="revno"/>
                 </exec>
                 <echo file="${project.build.outputDirectory}/build.properties"
