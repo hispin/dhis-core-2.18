@@ -37,9 +37,9 @@
 					<td style="text-align:center"><a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a></td>
                     <td style="text-align:center"><a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&dimension=$table.isDimensional()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
                     <td style="text-align:center"><a href="displayTable.action?id=$table.id" title="$i18n.getString( "display" )"><img src="../images/display.png" alt="$i18n.getString( "display" )"></a></td>
-                    <td style="text-align:center"><a href="generateTableDataWorkbook.action?id=$table.id" title="$i18n.getString( "export_to_excel" )"><img src="../images/excel.png" alt="$i18n.getString( "export_to_excel" )"></a></td>
-                    <td style="text-align:center"><a href="getTableData.action?id=$table.id" title="$i18n.getString( "export_to_html" )"><img src="../images/html.png" alt="$i18n.getString( "export_to_html" )"></a></td>
-                    <td style="text-align:center"><a href="getTableDataExport.action?id=$table.id&exportFormat=CSV" title="$i18n.getString( "export_to_csv" )"><img src="../images/csv.png" alt="$i18n.getString( "export_to_csv" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:exportToExcel( $table.id )" title="$i18n.getString( "export_to_excel" )"><img src="../images/excel.png" alt="$i18n.getString( "export_to_excel" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:exportToHtml( $table.id )" title="$i18n.getString( "export_to_html" )"><img src="../images/html.png" alt="$i18n.getString( "export_to_html" )"></a></td>
+                    <td style="text-align:center"><a href="javascript:exportToCsv( $table.id )" title="$i18n.getString( "export_to_csv" )"><img src="../images/csv.png" alt="$i18n.getString( "export_to_csv" )"></a></td>
                     <td style="text-align:center"><a href="javascript:addReportTableToDashboard( '$table.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a></td>
                     <td style="text-align:center"><a href="javascript:removeTable( $table.id, '$encoder.jsEncode( $table.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
 					<td style="text-align:center"><a href="javascript:showTableDetails( $table.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
@@ -70,6 +70,7 @@
 </table>
 
 <script type="text/javascript">
+	var i18n_generate_before_export = '$encoder.jsEscape( $i18n.getString( "generate_before_export" ) , "'")';
 	var i18n_confirm_add_report_table_to_dashboard = '$encoder.jsEscape( $i18n.getString( "confirm_add_report_table_to_dashboard" ) , "'")';
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_table" ) , "'")';
     var i18n_yes = '$encoder.jsEscape( $i18n.getString( "yes" ) , "'")';

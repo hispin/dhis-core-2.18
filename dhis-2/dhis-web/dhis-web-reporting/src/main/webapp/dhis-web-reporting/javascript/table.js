@@ -332,3 +332,40 @@ function saveDisplayTableReceived( messageElement )
 {
     window.location.href = 'displayManageTableForm.action';
 }
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+function exportToExcel( id )
+{	
+	verifyAndExport( id, "generateTableDataWorkbook.action?id=" + id );
+}
+
+function exportToHtml( id )
+{
+	verifyAndExport( id, "getTableData.action?id=" + id );
+}
+
+function exportToCsv( id )
+{
+	verifyAndExport( id, "getTableDataExport.action?exportFormat=CSV&id=" + id );
+}
+
+function verifyAndExport( id, url )
+{   
+    $.getJSON( 
+       "verifyReportTable.action",
+       { "id": id },
+       function( json )
+       {
+           if ( json.response == "error" )
+           {
+               setHeaderDelayMessage( i18n_generate_before_export );
+           }
+           else
+           {
+               window.location.href = "generateTableDataWorkbook.action?id=" + id;
+           }
+       } );
+}
