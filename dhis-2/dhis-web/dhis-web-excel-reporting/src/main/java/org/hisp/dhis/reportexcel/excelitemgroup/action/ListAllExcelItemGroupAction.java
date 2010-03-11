@@ -39,57 +39,65 @@ import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemGroupComparator;
 
 import com.opensymphony.xwork2.Action;
 
-public class ListAllExcelItemGroupAction implements Action {
+public class ListAllExcelItemGroupAction
+    implements Action
+{
 
-	// -------------------------------------------------------------
-	// Dependency
-	// -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------
 
-	private ExcelItemService excelItemService;
-	
-	private PeriodService periodService;
+    private ExcelItemService excelItemService;
 
-	// -------------------------------------------------------------
-	// Input && Output
-	// -------------------------------------------------------------
+    private PeriodService periodService;
 
-	private List<ExcelItemGroup> excelItemGroups;
-	
-	private List<PeriodType> periodTypes;
+    // -------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------
 
-	// -------------------------------------------------------------
-	// Getters and Setters
-	// -------------------------------------------------------------
+    private List<ExcelItemGroup> excelItemGroups;
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    private List<PeriodType> periodTypes;
 
-	public List<ExcelItemGroup> getExcelItemGroups() {
-		return excelItemGroups;
-	}
+    // -------------------------------------------------------------
+    // Getters and Setters
+    // -------------------------------------------------------------
 
-	public List<PeriodType> getPeriodTypes() {
-		return periodTypes;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
+    public List<ExcelItemGroup> getExcelItemGroups()
+    {
+        return excelItemGroups;
+    }
 
-	// -------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
+    }
 
-	public String execute() throws Exception {
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
-		excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getAllExcelItemGroup());
+    // -------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------
 
-		Collections.sort( excelItemGroups, new ExcelItemGroupComparator());
-		
-		periodTypes = periodService.getAllPeriodTypes();
-		
-		return SUCCESS;
-	}
+    public String execute()
+        throws Exception
+    {
+
+        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getAllExcelItemGroup() );
+
+        Collections.sort( excelItemGroups, new ExcelItemGroupComparator() );
+
+        periodTypes = periodService.getAllPeriodTypes();
+
+        return SUCCESS;
+    }
 
 }

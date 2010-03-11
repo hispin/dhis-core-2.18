@@ -26,10 +26,13 @@
  */
 package org.hisp.dhis.reportexcel;
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
@@ -41,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
+ * @version $Id: DefaultReportExcelService.java 2010-03-11 11:52:20Z Chau Thu Tran $ $
  */
 @Transactional
 public class DefaultReportExcelService
@@ -65,50 +68,65 @@ public class DefaultReportExcelService
         this.userStore = userStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService i18nService )
+    {
+        this.i18nService = i18nService;
+    }
+
     // --------------------------------------
     // Service of Report
     // --------------------------------------
 
     public int addReportExcel( ReportExcel report )
     {
-        return reportStore.addReportExcel( report );
+        int id = reportStore.addReportExcel( report );
+        
+        i18nService.addObject( report );
+        
+        return id;
     }
 
     public void updateReportExcel( ReportExcel report )
     {
         reportStore.updateReportExcel( report );
+
+        i18nService.verify( report );
     }
 
     public void deleteReportExcel( int id )
     {
+        i18nService.removeObject( reportStore.getReportExcel( id ) );
+
         reportStore.deleteReportExcel( id );
     }
 
     public ReportExcel getReportExcel( int id )
     {
-        return reportStore.getReportExcel( id );
+        return i18n( i18nService, reportStore.getReportExcel( id ) );
     }
 
     public ReportExcel getReportExcel( String name )
     {
-        return reportStore.getReportExcel( name );
+        return i18n( i18nService, reportStore.getReportExcel( name ) );
     }
 
     public Collection<ReportExcel> getReportExcelsByOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        return reportStore.getReportExcelsByOrganisationUnit( organisationUnit );
+        return i18n( i18nService, reportStore.getReportExcelsByOrganisationUnit( organisationUnit ) );
     }
 
     public Collection<ReportExcel> getALLReportExcel()
     {
-        return reportStore.getALLReportExcel();
+        return i18n( i18nService, reportStore.getALLReportExcel() );
     }
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
     {
         if ( user == null || superUser )
         {
-            return this.getReportsByGroup( group );
+            return i18n( i18nService, this.getReportsByGroup( group ) );
         }
 
         else
@@ -119,10 +137,10 @@ public class DefaultReportExcelService
 
             for ( UserAuthorityGroup ugroup : credentials.getUserAuthorityGroups() )
             {
-                reports.addAll( ugroup.getReportExcels() );
+                reports.addAll( i18n( i18nService, ugroup.getReportExcels() ) );
             }
 
-            reports.retainAll( this.getReportsByGroup( group ) );
+            reports.retainAll( i18n( i18nService, this.getReportsByGroup( group ) ) );
 
             return reports;
         }
@@ -130,12 +148,12 @@ public class DefaultReportExcelService
 
     public Collection<String> getReportExcelGroups()
     {
-        return reportStore.getReportExcelGroups();
+        return i18n( i18nService, reportStore.getReportExcelGroups() );
     }
 
     public Collection<ReportExcel> getReportsByGroup( String group )
     {
-        return reportStore.getReportsByGroup( group );
+        return i18n( i18nService, reportStore.getReportsByGroup( group ) );
     }
 
     public Collection<String> getALLReportExcelTemplates()
@@ -155,7 +173,7 @@ public class DefaultReportExcelService
     public void updateReportExcelSystemByTemplate( String curName, String newName )
     {
         reportStore.updateReportWithExcelTemplate( curName, newName );
-        
+
     }
 
     // --------------------------------------
@@ -165,31 +183,37 @@ public class DefaultReportExcelService
     public void addReportExcelItem( ReportExcelItem reportItem )
     {
         reportStore.addReportExcelItem( reportItem );
+        
+        i18nService.addObject( reportItem );
     }
 
     public void updateReportExcelItem( ReportExcelItem reportItem )
     {
         reportStore.updateReportExcelItem( reportItem );
+        
+        i18nService.verify( reportItem );
     }
 
     public void deleteReportExcelItem( int id )
     {
+        i18nService.removeObject( reportStore.getReportExcelItem( id ) );
+
         reportStore.deleteReportExcelItem( id );
     }
 
     public ReportExcelItem getReportExcelItem( int id )
     {
-        return reportStore.getReportExcelItem( id );
+        return i18n( i18nService, reportStore.getReportExcelItem( id ) );
     }
 
     public Collection<ReportExcelItem> getALLReportExcelItem()
     {
-        return reportStore.getALLReportExcelItem();
+        return i18n( i18nService, reportStore.getALLReportExcelItem() );
     }
 
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId )
     {
-        return reportStore.getReportExcelItem( sheetNo, reportId );
+        return i18n( i18nService, reportStore.getReportExcelItem( sheetNo, reportId ) );
     }
 
     public Collection<Integer> getSheets( Integer reportId )
@@ -273,5 +297,5 @@ public class DefaultReportExcelService
     {
         reportStore.updatePeriodColumn( periodColumn );
     }
-    
+
 }

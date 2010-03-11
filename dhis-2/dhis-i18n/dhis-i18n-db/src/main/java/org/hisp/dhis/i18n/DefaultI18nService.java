@@ -84,7 +84,7 @@ public class DefaultI18nService
     // -------------------------------------------------------------------------
 
     public void internationalise( Object object )
-    {
+    { 
         if ( isCollection( object ) )
         {
             internationaliseCollection( (Collection<?>)object );
@@ -96,7 +96,7 @@ public class DefaultI18nService
     private void internationalise( Object object, Locale locale )
     {
         I18nObject i18nObject = isI18nObject( object );
-
+        
         if ( i18nObject != null && locale != null )
         {
             Collection<Translation> translations = translationService.getTranslations( getClassName( object ), getId( object ), locale );
@@ -143,27 +143,27 @@ public class DefaultI18nService
         {
             return;
         }
-        
+       
         I18nObject i18nObject = isI18nObject( intObjects.iterator().next() );
-
+        
+        
         Locale locale = localeManager.getCurrentLocale();
 
         if ( i18nObject != null && locale != null )
-        {            
+        {    
             Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(), locale );
-                                
+            
             Collection<Translation> fallbackTranslations = null; // Not initialized unless needed
             Map<String, String> fallbackTranslationsMap = null; // Not initialized unless needed
 
             for ( Object object : intObjects )
             {
                 Map<String, String> translations = getTranslationsForObject( allTranslations, getId( object ) );
-
                 for ( Map.Entry<String,String> translation : translations.entrySet() )
                 {
                     String property = translation.getKey();
                     String value = translation.getValue();
-
+                    
                     if ( value != null && !value.isEmpty() )
                     {
                         setProperty( object, property, value );
@@ -196,7 +196,7 @@ public class DefaultI18nService
     public void addObject( Object object )
     {
         I18nObject i18nObject = isI18nObject( object );
-
+        
         Locale locale = localeManager.getCurrentLocale();
 
         if ( i18nObject != null && locale != null )

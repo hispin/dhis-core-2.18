@@ -154,16 +154,14 @@ function addReportExcelItem() {
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
 		row:$("#row").val(),
-		column:$("#column").val(),	
-		sheetNo:$("#sheetNo").val(),		
+		column:$("#column").val(),		
 		reportId:reportId,
 		itemType:$("#itemType").val(),
 		periodType:$("#periodType").val(),
-		
+		sheetNo:$("#sheetNo").val()
 	}, function (data){
 		window.location.reload();
 	},'xml');
-	
 }
 
 /*

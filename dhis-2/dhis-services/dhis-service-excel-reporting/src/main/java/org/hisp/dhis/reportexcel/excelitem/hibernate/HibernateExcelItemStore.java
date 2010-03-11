@@ -13,7 +13,6 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemStore;
-import org.hisp.dhis.user.User;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
