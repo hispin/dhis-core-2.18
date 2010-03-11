@@ -1228,111 +1228,88 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
       </section>
     </section>
     <section id="gisAdministration">
-      <title>Administrator panel</title>
-      <screenshot>
-        <graphic fileref="resources/images/GIS/admin_panel.png" align="center"/>
-      </screenshot>
-      <para>
-        <variablelist>
-          <varlistentry>
-            <term>Map source</term>
+    <title>Administrator panel</title>
+    <screenshot>
+      <graphic fileref="resources/images/GIS/admin_panel.png" align="center"/>
+    </screenshot>
+    <para>
+        <itemizedlist>
             <listitem>
-              <para><guilabel>GeoJSON files:</guilabel> you will find your own
-            registered maps in the Map combo box in the Thematic map panel.
-            The Admin panels check box will become visible.</para>
-              <para><guilabel>Shapefiles:</guilabel> same as GeoJSON files, except that the files are generated from shapefiles installed in your running version of Geoserver on the fly. </para>
-              <para><guilabel>DHIS database:</guilabel> the Map combo box will
-            simply be populated by the existing organisation unit levels and
-            GeoJSON files will be created by the application automatically
-            Organisation units must have coordinates stored in the database in
-            order to be displayed in the map. This function is mainly intended
-            for the facility level as it is easy to maintain and thus will
-            offer up-to-date shapefiles.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>Admin panels</term>
-            <listitem>
-              <para>Show/hide the shapefile management panels.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>Longitude/latitude</term>
-            <listitem>
-              <para>The base coordinate for the current country. This coordinate will appear as default when registering maps and overlays.</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-      </para>
-    </section>
+                <para>Map source</para>
+                <para><guilabel>GeoJSON files:</guilabel> you will find your own
+                registered maps in the Map combo box in the Thematic map panel.
+                The Admin panels check box will become visible.</para>
+                <para><guilabel>Shapefiles:</guilabel> same as GeoJSON files, except that the files are generated from shapefiles installed in your running version of Geoserver on the fly.</para>
+                <para><guilabel>DHIS database:</guilabel> the Map combo box will
+                simply be populated by the existing organisation unit levels and
+                GeoJSON files will be created by the application automatically
+                Organisation units must have coordinates stored in the database in
+                order to be displayed in the map. This function is mainly intended
+                for the facility level as it is easy to maintain and thus will
+                offer up-to-date shapefiles.</para>
+          </listitem>
+          <listitem>
+                <para>Admin panels: Show/hide the shapefile management panels.</para>
+          </listitem>
+          <listitem>
+                <para>Longitude/latitude: The base coordinate for the current country. This coordinate will appear as default when registering maps and overlays.</para>
+          </listitem>
+        </itemizedlist>
+  </para>
+  </section>
     <section id="gisMap">
-      <title>Registering geographical information</title>
-      <para>In order to view data in the GIS module, you must import your
+    <title>Registering geographical information</title>
+    <para>In order to view data in the GIS module, you must import your
     geographical data into your DHIS installation. Once you have produced
     GeoJSON files according to the procedure above, and imported them into the
     system, you will need to establish a correspondence between the
     information in the DHIS database, and the GeoJSON file.</para>
-      <screenshot>
-        <screeninfo>Register Geodata Panel</screeninfo>
-        <mediaobject>
-          <imageobject>
-            <imagedata align="center" fileref="resources/images/GIS/register_geodata.png"/>
-          </imageobject>
-        </mediaobject>
-      </screenshot>
-      <variablelist>
-        <varlistentry>
-          <term>Organisation unit level</term>
-          <listitem>
-            <para>The level of the organization units displayed in the GeoJSON
-          file.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Map source file</term>
-          <listitem>
-            <para>The GeoJSON file name. These files must be placed in the
+    <screenshot>
+      <screeninfo>Register Geodata Panel</screeninfo>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="resources/images/GIS/register_geodata.png"/>
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+    <itemizedlist>
+      <listitem>
+        <para><guilabel>Display name:</guilabel> Represents your map in the Map combo box in the Thematic map panel.</para>
+      </listitem>
+      <listitem>
+        <para><guilabel>Organisation unit level:</guilabel> The level of the organization units displayed in the GeoJSON file.</para>
+      </listitem>
+      <listitem>
+        <para><guilabel>Map source file:</guilabel> The GeoJSON file name. These files must be placed in the
           mapping/geojson folder. Use e.g. Geoserver 2.0 (currently RC1) to
           easily produce GeoJSON from your shapefiles.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Display name</term>
-          <listitem>
-            <para>Represents your map in the Map combo box in the Thematic map
-          panel.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Name column</term>
-          <listitem>
-            <para>The shapefile data column (case sensitive!) that will be
+      </listitem>
+      
+      <listitem>
+        <para><guilabel>Name column:</guilabel> The shapefile data column (case sensitive!) that will be
           matched against DHIS organisation unit names. If you have an
           instance of Geoserver installed, you can view the layer through the
           built-in OpenLayers client. Click on a particular area, and the
           possible fields will be displayed.</para>
-            <screenshot>
-              <screeninfo>Identification of the name column with Geoserver's OpenLayers client</screeninfo>
-              <mediaobject>
-                <imageobject>
-                  <imagedata width="80%" align="center" fileref="resources/images/GIS/get_name_geoserver.png"/>
-                </imageobject>
-              </mediaobject>
-            </screenshot>
-            <screenshot>
-              <screeninfo>Identification of the name column directly in the GeoJSON file</screeninfo>
-              <mediaobject>
-                <imageobject>
-                  <imagedata width="80%" align="center" fileref="resources/images/GIS/get_name_geojson.png"/>
-                </imageobject>
-              </mediaobject>
-            </screenshot>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Longitude / latitude</term>
-          <listitem>
-            <para>The longitude and latitude refer to the approximate point
+          <screenshot>
+            <screeninfo>Identification of the name column with Geoserver&apos;s OpenLayers client</screeninfo>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/GIS/get_name_geoserver.png"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+          <screenshot>
+            <screeninfo>Identification of the name column directly in the GeoJSON file</screeninfo>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/GIS/get_name_geojson.png"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+      </listitem>
+      <listitem>
+        <para><guilabel>Longitude / latitude:</guilabel> The longitude and latitude refer to the approximate point
           where the map will be centered after rendering. If you have
           Geoserver running, you can view the layer through the integrated
           OpenLayers client and determine a good center point for your map.
@@ -1340,38 +1317,34 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
           determine an approximate location. You may need to experiment a bit
           with the center point and zoom level in order to get it
           correct.</para>
-            <screenshot>
-              <screeninfo>Using Geoserver OpenLayers client to get the map center point</screeninfo>
-              <mediaobject>
-                <imageobject>
-                  <imagedata width="80%" align="center" fileref="resources/images/GIS/geoserver_center_point.png"/>
-                </imageobject>
-              </mediaobject>
-            </screenshot>
-            <screenshot>
-              <screeninfo>Using DHIS GIS Module to get the map center point</screeninfo>
-              <mediaobject>
-                <imageobject>
-                  <imagedata width="80%" align="center" fileref="resources/images/GIS/dhis_gis_center_point.png"/>
-                </imageobject>
-              </mediaobject>
-            </screenshot>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Zoom</term>
-          <listitem>
-            <para>The zoom level controls the extent of the map. Some
+          <screenshot>
+            <screeninfo>Using Geoserver OpenLayers client to get the map center point</screeninfo>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/GIS/geoserver_center_point.png"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+          <screenshot>
+            <screeninfo>Using DHIS GIS Module to get the map center point</screeninfo>
+            <mediaobject>
+              <imageobject>
+                <imagedata width="80%" align="center" fileref="resources/images/GIS/dhis_gis_center_point.png"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+      </listitem>
+      <listitem>
+        <para><guilabel>Zoom:</guilabel> The zoom level controls the extent of the map. Some
           experimentation will be required to get the correct zoom level.
-          Start with a value of "7" and increase or decrease the zoom level
+          Start with a value of &quot;7&quot; and increase or decrease the zoom level
           depending on the extent of the map that should be displayed.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
+      </listitem>
+    </itemizedlist>
+  </section>
     <section id="gisMapOrganisationUnitRelation">
-      <title>Assign organization units to map</title>
-      <para>Select a registered map and wait for it to load. The organisation
+    <title>Assign organization units to map</title>
+    <para>Select a registered map and wait for it to load. The organisation
     units (OU) in your database on this level will appear in the list and
     colors will appear in the map. What we want to do here is creating
     relations between OUs in the database and the corresponding OUs in the
@@ -1381,85 +1354,84 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
     the OUs with a matching OU name in the shapefile. The polygons that remain
     white, you will have to link manually by first selecting a white OU in the
     list and then click the corresponding OU in the map.</para>
-      <screenshot>
-        <screeninfo>Assigning Organizational Units to the map</screeninfo>
-        <mediaobject>
-          <imageobject>
-            <imagedata width="80%" align="center" fileref="resources/images/GIS/assign_org_units.png"/>
-          </imageobject>
-        </mediaobject>
-      </screenshot>
-      <para>The remove button at the button tool bar removes the selected OU’s
+    <screenshot>
+      <screeninfo>Assigning Organizational Units to the map</screeninfo>
+      <mediaobject>
+        <imageobject>
+          <imagedata width="80%" align="center" fileref="resources/images/GIS/assign_org_units.png"/>
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+    <para>The remove button at the button tool bar removes the selected OU’s
     link. The remove all button removes all OU links for the selected
     map.</para>
-    </section>
+  </section>
     <section id="gisOverlay">
-      <title>Register overlays</title>
-      <para>Overlays are geographical layers that do not have any direct linkage
+    <title>Register overlays</title>
+    <para>Overlays are geographical layers that do not have any direct linkage
     to data in the database. Example include roads, rivers, airports, ports,
     and other geographical information that you may want to display on your
     map, but that is not neccsarily linked ot data contained in the DHIS
     database. The <guimenu>Register Overlay</guimenu> panel will allow you to
     add new layers and determine how they will be represented visually on the
     map. </para>
-      <itemizedlist>
-        <listitem>
-          <para><guilabel>Display name:</guilabel> Represents your overlay in
+    <itemizedlist>
+      <listitem>
+        <para><guilabel>Display name: </guilabel>Represents your overlay in
         the layer tree in the upper right corner.</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Map source file: </guilabel>The GeoJSON file
+      </listitem>
+      <listitem>
+        <para><guilabel>Map source file: </guilabel>The GeoJSON file
         name.</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Fill color: </guilabel>Decides the fill color if the
+      </listitem>
+      <listitem>
+        <para><guilabel>Fill color: </guilabel>Decides the fill color if the
         layer is a polygon layer. </para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Fill opacity: </guilabel>Select an opacity level
+      </listitem>
+      <listitem>
+        <para><guilabel>Fill opacity: </guilabel>Select an opacity level
         between 0 (invisible) and 1 (solid).</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Stroke color: </guilabel>The stroke color over lines
+      </listitem>
+      <listitem>
+        <para><guilabel>Stroke color: </guilabel>The stroke color over lines
         and polygon borders.</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Stroke width: </guilabel>Select a stroke width between
+      </listitem>
+      <listitem>
+        <para><guilabel>Stroke width: </guilabel>Select a stroke width between
         0 and 4.</para>
-        </listitem>
-      </itemizedlist>
-    </section>
+      </listitem>
+    </itemizedlist>
+  </section>
     <section id="gisThematicMap">
-      <title>Thematic map</title>
-      <para>This panel lets you use your registered maps for thematic mapping. All you need to do is selecting your desired indicator-period-map combination in the left side menu.</para>
-      <para>Calculation method
+    <title>Thematic map</title>
+    <para>This panel lets you use your registered maps for thematic mapping. All you need to do is selecting your desired indicator-period-map combination in the left side menu.</para>
+    <para>Calculation method
     alludes to the  size  of the legend classes. Set to <guimenuitem>Equal intervals</guimenuitem> they will be “highest map value – lowest map value
     / number of classes”. Set to <guimenuitem>Equal group count</guimenuitem> the legend creator will try to distribute the organisation units evenly. Choose <guimenuitem>Fixed bounds </guimenuitem>and
     you may define your own class break values, e.g. “20,40,60” using a comma to
     seperate each of them.</para>
-      <para>The map view combo box lists all map views (favorites) saved by the user. The settings that are stored in the map view will be automatically applied to the thematic map panel.</para>
-    </section>
-    <section id="gisFavoriteMapView">
-      <title>Register favorite map views</title>
-      <para>This panel will save the current thematic map view in order to
-    restore it whenever you want via the <guimenuitem>Map view </guimenuitem>combo box in the <guimenu>Thematic map</guimenu> panel. By
+    <para>The map view combo box lists all map views (favorites) saved by the user. The settings that are stored in the map view will be automatically applied to the thematic map panel.</para>
+  </section>
+  <section id="gisFavoriteMapView">
+    <title>Register favorite map views</title>
+    <para>This window will save the current thematic map view in order to
+    restore it whenever you want via the <guimenuitem>map view</guimenuitem> combo box in the <guimenu>thematic map</guimenu> panel. By
     adding your views to DHIS 2 Dashboard you may access them there by
-    inserting <guimenuitem>Map views</guimenuitem> into one of link
+    inserting <guimenuitem>map views</guimenuitem> into one of the link
     areas.</para>
-    </section>
-    <section id="gisLegendSet">
-      <title>Register legend sets</title>
-      <para>A legend set may be connected to many indicators, but an indicator
+  </section>
+  <section id="gisLegendSet">
+    <title>Register legend sets</title>
+    <para>A legend set may be connected to many indicators, but an indicator
     may only have one legend set. Thus, you may select many indicators when
     you create a legend set. When an indicator that has a legend set is
-    selected in the <guimenu>Thematic map</guimenu> panel, the number of
+    selected in the <guimenu>thematic map</guimenu> panel, the number of
     classes, low color and high color is automatically set.</para>
-    </section>
-    <section id="gisPdfPrint">
-      <title>Print map as PDF</title>
-      <para>Click the PDF icon on the map toolbar and the left side print panel will open. You may add several pages to your PDF document by clicking the "add page" button on the bottom toolbar. Change the size of the focus rectangle in the "scale" column. The rectangle can be rotated by inserting a number (degrees) "rotation" column or by dragging the rotation knob. Your "map title" and "comment" will appear above and below the picture in the PDF document respectively. The higher "dots per inch" value you choose, the better quality of the image and the larger file size of the document.</para>
-      <para>To get out of print mode you can simply expand a different panel or hide the print panel by clicking the PDF icon on the map toolbar again.</para>
-    </section>
+  </section>
+  <section id="gisPdfPrint">
+    <title>Print map as PDF</title>
+    <para>Click the PDF icon on the map toolbar and the left side print panel will open. You may add several pages to your PDF document by clicking the "add page" button on the bottom toolbar. Change the size of the focus rectangle in the "scale" column. The rectangle can be rotated by inserting a number (degrees) "rotation" column or by dragging the rotation knob. Your "map title" and "comment" will appear above and below the picture in the PDF document respectively. The higher "dots per inch" value you choose, the better quality of the image and the larger file size of the document.</para><para>To get out of print mode you can simply expand a different panel or hide the print panel by clicking the PDF icon on the map toolbar again.</para>
+  </section>
   </chapter>
   <chapter>
     <title>DHIS 2 Excel Reporting</title>
