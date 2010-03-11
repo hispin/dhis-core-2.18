@@ -130,8 +130,6 @@ public class HibernateReportExcelStore
 
         Criteria criteria = session.createCriteria( ReportExcel.class );
 
-        criteria.setCacheable( true );
-        
         return criteria.list();
 
     }

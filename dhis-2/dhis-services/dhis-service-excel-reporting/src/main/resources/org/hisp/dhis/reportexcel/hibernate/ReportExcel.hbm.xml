@@ -5,8 +5,6 @@
 <hibernate-mapping>
 	<class name="org.hisp.dhis.reportexcel.ReportExcel" table="reportexcels">
 	
-		<cache usage="read-write"/>
-    
 		<id name="id" column="reportexcelid">
 			<generator class="native" />
 		</id>

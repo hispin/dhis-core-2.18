@@ -8,8 +8,6 @@
 	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItem"
 		table="excelitem">
 
-		<cache usage="read-write" />
-
 		<id name="id" column="excelitemid">
 			<generator class="native" />
 		</id>
