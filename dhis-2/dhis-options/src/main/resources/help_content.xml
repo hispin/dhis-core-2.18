@@ -1393,7 +1393,7 @@ the DHIS mapping client expects the ordering of the coordinates in "lat/long" fo
     link. The remove all button removes all OU links for the selected
     map.</para>
     </section>
-    <section id="overlay">
+    <section id="gisOverlay">
       <title>Register overlays</title>
       <para>Overlays are geographical layers that do not have any direct linkage
     to data in the database. Example include roads, rivers, airports, ports,
