@@ -1,4 +1,10 @@
 
+// -----------------------------------------------------------------------------
+// Global variables
+// -----------------------------------------------------------------------------
+
+var headerMessageTimeout = -1;
+
 /**
  * Redirects to the translate GUI.
  * 
@@ -449,7 +455,10 @@ function updateHeaderWaitMessage( message )
 function setHeaderDelayMessage( message )
 {
 	setHeaderMessage( message );
-	setTimeout( "hideHeaderMessage();", 3000 );
+	
+	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
+	
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 3000 );
 }
 
 /**
