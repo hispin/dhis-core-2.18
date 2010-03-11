@@ -378,7 +378,7 @@ function updateIndicatorGroupMembers()
 function updateIndicatorGroupMembersReceived( xmlObject ){       
     
 	var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
-    setMessage(i18n_update_success + " : " + name);
+    setHeaderDelayMessage(i18n_update_success + " : " + name);
 }
 
 /*==============================================================================

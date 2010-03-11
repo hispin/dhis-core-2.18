@@ -219,7 +219,7 @@ function validateAddIndicatorGroupReceived( xmlObject )
     
     if ( type=='input' )
     {
-        setMessage(xmlObject.firstChild.nodeValue);
+        setHeaderDelayMessage(xmlObject.firstChild.nodeValue);
     }
     if ( type=='success' )
     {
@@ -257,7 +257,7 @@ function showRenameIndicatorGroupForm()
 	
 	if( list.value== '' )
 	{
-		setMessage(i18n_select_indicator_group);
+		setHeaderDelayMessage(i18n_select_indicator_group);
 	}
 	else
 	{
@@ -285,7 +285,7 @@ function validateRenameIndicatorGroupReceived( xmlObject )
     
     if( type=='input' )
     {
-        setMessage(xmlObject.firstChild.nodeValue);
+        setHeaderDelayMessage(xmlObject.firstChild.nodeValue);
     }
     
     if( type=='success' )
@@ -313,8 +313,7 @@ function renameGroup()
 function assignGroupsForIndicator()
 {
 	try
-	{
-		
+	{		
 	    var indicatorId = byId('availableIndicators').value;	
 		
 	    var request = new Request();
@@ -337,14 +336,13 @@ function assignGroupsForIndicator()
 	}
 	catch( e )
 	{
-		setMessage( i18n_select_indicator_group );
+		setHeaderDelayMessage( i18n_select_indicator_group );
 	}
 }
 
 function assignGroupsForIndicatorReceived( xmlObject )
-{           
-	
-    setMessage( i18n_update_success );
+{	
+    setHeaderDelayMessage( i18n_update_success );
 }
 
 /*==============================================================================
@@ -359,7 +357,7 @@ function deleteIndicatorGroup()
 	
 		if( list.value== '' )
 		{
-			setMessage(i18n_select_indicator_group);
+			setHeaderDelayMessage(i18n_select_indicator_group);
 		}else{			
 			var request = new Request();
 			request.setResponseTypeXML( 'xmlObject' );

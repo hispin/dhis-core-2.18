@@ -1,7 +1,5 @@
 <h3>$i18n.getString( "indicator_group_editor" ) #openHelp( "indicatorGroupEditor" )</h3>
 
-<span id='message' style="position:fixed;top:80px;right:5px;"></span>
-
 <table >	
 	<tr>
 		<th>$i18n.getString( "indicator_group" )</th>

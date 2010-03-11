@@ -335,8 +335,9 @@ function assignGroupsForDataElement()
 {
     var dataElementId = byId( 'availableDataElements' ).value;   
 	
-	if( dataElementId=="" ){
-		setMessage( i18n_select_dataelement );
+	if( dataElementId=="" )
+	{
+		setHeaderDelayMessage( i18n_select_dataelement );
 		return;
 	}
 
@@ -360,5 +361,5 @@ function assignGroupsForDataElement()
 
 function assignGroupsForDataElementReceived( message )
 {	
-	setMessage( i18n_update_success );
+	setHeaderDelayMessage( i18n_update_success );
 }
