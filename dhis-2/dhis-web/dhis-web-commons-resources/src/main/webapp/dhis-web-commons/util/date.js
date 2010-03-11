@@ -193,6 +193,7 @@ function getDateFromFormat(val,format) {
 	var year=now.getYear();
 	var month=now.getMonth()+1;
 	var date=1;
+	
 	while (i_format < format.length) {
 		// Get next token from format string
 		c=format.charAt(i_format);
@@ -227,7 +228,6 @@ function getDateFromFormat(val,format) {
 					}
 				}
 			if ((month < 1)||(month>12)){return 0;}
-
 			}
 		else if (token=="EE"||token=="E"){
 			for (var i=0; i<DAY_NAMES.length; i++) {
@@ -238,7 +238,7 @@ function getDateFromFormat(val,format) {
 					}
 				}
 			}
-		else if (token=="MM"||token=="M" || token=="mm") {
+		else if (token=="MM"||token=="M") {
 			month=_getInt(val,i_val,token.length,2);
 			if(month==null||(month<1)||(month>12)){return 0;}
 			i_val+=month.length;}
@@ -266,7 +266,6 @@ function getDateFromFormat(val,format) {
 		}
 	// Correct hours value
 	var newdate=new Date(year,month-1,date);
-	
 	return newdate.getTime();
 	}
 
