@@ -369,7 +369,7 @@ function getFieldValue( fieldId )
 }
 
 /**
- * Sets a message in the "message" span and makes the span visible.
+ * Shows the message span and sets the message as text.
  * 
  * @param message the message. 
  */
@@ -379,6 +379,11 @@ function setMessage( message )
     $( '#message' ).slideDown( 'fast' );
 }
 
+/**
+ * Shows the message span and sets the message as text together with a wait animation.
+ * 
+ * @param message the message.
+ */
 function setWaitMessage( message )
 {
 	setMessage( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
@@ -392,23 +397,70 @@ function hideMessage()
 	$( '#message' ).slideUp( 'fast' );
 }
 
+/**
+ * Slides down the header message div and sets the message as text.
+ * 
+ * @param message the message.
+ */
 function setHeaderMessage( message )
 {
     $( 'div#headerMessage' ).html( message );
-    $( 'div#headerMessage' ).slideDown( 'slow' );
+    $( 'div#headerMessage' ).slideDown();
 }
 
+/**
+ * Updates the text in the header message div with the message.
+ * 
+ * @param message the message.
+ */
+function updateHeaderMessage( message )
+{
+	$( 'div#headerMessage' ).html( message );
+}
+
+/**
+ * Slides down the header message div and sets the message as text together with a wait animation.
+ * 
+ * @param message the message.
+ */
+function setHeaderWaitMessage( message )
+{
+	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
+    $( 'div#headerMessage' ).slideDown();
+}
+
+/**
+ * Updates the text in the header message div with the message.
+ * 
+ * @param message the message.
+ */
+function updateHeaderWaitMessage( message )
+{
+	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
+}
+
+/**
+ * Hides the header message div.
+ */
 function hideHeaderMessage()
 {
-    $( 'div#headerMessage' ).slideUp( 'slow' );
+    $( 'div#headerMessage' ).slideUp();
 }   
 
+/**
+ * Slides down the info message div and sets the message as text.
+ * 
+ * @param message the message.
+ */
 function setInfo( message )
 {
     $( '#info' ).html( message );
     $( '#info' ).slideDown( 'fast' );
 }
 
+/**
+ * Hides the info div.
+ */
 function hideInfo()
 {
     $( '#info' ).slideUp( 'fast' );
