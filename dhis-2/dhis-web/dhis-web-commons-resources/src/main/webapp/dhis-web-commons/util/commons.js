@@ -368,6 +368,10 @@ function getFieldValue( fieldId )
     return htmlEncode( document.getElementById( fieldId ).value );
 }
 
+// -----------------------------------------------------------------------------
+// Message, warning, info, headerMessage
+// -----------------------------------------------------------------------------
+
 /**
  * Shows the message span and sets the message as text.
  * 
@@ -437,6 +441,15 @@ function setHeaderWaitMessage( message )
 function updateHeaderWaitMessage( message )
 {
 	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
+}
+
+/**
+ * Sets the header message and hides it after 3 seconds.
+ */
+function setHeaderDelayMessage( message )
+{
+	setHeaderMessage( message );
+	setTimeout( "hideHeaderMessage();", 3000 );
 }
 
 /**
