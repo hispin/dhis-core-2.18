@@ -1052,6 +1052,9 @@ Ext.onReady( function() {
 						else if (tab.id == 'help6') {
                             getHelpText(legendSets, tab.id);
                         }
+						else if (tab.id == 'help7') {
+                            getHelpText(pdfprint, tab.id);
+                        }
                     }
                 },
                 items:
@@ -1083,6 +1086,10 @@ Ext.onReady( function() {
                     {
                         title: '<span class="panel-tab-title">Legend sets</span>',
                         id: 'help6'
+                    },
+                    {
+                        title: '<span class="panel-tab-title">PDF print</span>',
+                        id: 'help7'
                     }
                 ]
             }
