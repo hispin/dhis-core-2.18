@@ -7,7 +7,7 @@ var tempChartId;
 
 function runAndViewChart( chartId )
 {
-	setHeaderWaitMessage( "Please wait" );
+	setHeaderWaitMessage( i18n_please_wait );
 	
     tempChartId = chartId;
     
