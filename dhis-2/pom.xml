@@ -197,6 +197,11 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-service-patient</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-excel-reporting</artifactId>
         <version>${version}</version>
       </dependency>
