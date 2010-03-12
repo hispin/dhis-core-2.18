@@ -7,7 +7,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.i18n.locale.LocaleManagerSession" class="org.hisp.dhis.i18n.locale.SessionLocaleManager">
 		<property name="systemLocale" value="en_GB" />
 	</bean>
-
+<!--
 	<bean id="org.hisp.dhis.i18n.locale.LocaleManagerDb" class="org.hisp.dhis.i18n.locale.DatabaseLocaleManager">
 		<property name="userSettingService">
 			<ref bean="org.hisp.dhis.user.UserSettingService" />
@@ -19,7 +19,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<value>en_GB</value>
 		</property>
 	</bean>
-
+-->
 	<!-- I18n object definitions -->
 
 	<bean id="I18nDataElement" class="org.hisp.dhis.i18n.I18nObject">
@@ -218,7 +218,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
 		<property name="localeManager">
-			<ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
+			<ref bean="org.hisp.dhis.i18n.locale.LocaleManagerSession" />
 		</property>
 		<property name="translationService">
 			<ref bean="org.hisp.dhis.translation.TranslationService" />
