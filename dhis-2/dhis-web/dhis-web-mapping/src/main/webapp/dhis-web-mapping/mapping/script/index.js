@@ -2459,7 +2459,7 @@ Ext.onReady( function() {
 							fields: ['id', 'text'],
 							data: [[map_source_type_geojson, 'GeoJSON files'], [map_source_type_shapefile, 'Shapefiles'], [map_source_type_database, 'DHIS database']]
 						}),
-						listeners:{
+						listeners: {
 							'select': {
 								fn: function() {
 									var msv = Ext.getCmp('mapsource_cb').getValue();
@@ -3238,14 +3238,15 @@ function loadMapData(redirect, position) {
 				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
 			}
 			
-			if (MAPVIEW.longitude && MAPVIEW.latitude && MAPVIEW.zoom) {
-				MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
+			if (MAPVIEW) {
+				if (MAPVIEW.longitude && MAPVIEW.latitude && MAPVIEW.zoom) {
+					MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
+				}
+				else {
+					MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
+				}
+				MAPVIEW = false;
 			}
-			else if (MAPVIEW) {
-				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
-			}
-			
-			MAPVIEW = false;
 			
 			toggleFeatureLabels(false);
 
@@ -3300,18 +3301,14 @@ function dataReceivedChoropleth( responseText ) {
 		MASK.hide();
 		return;
 	}
-	
+
 	for (var i = 0; i < mapvalues.length; i++) {
-		var featureId = mapvalues[i].featureId;
-		if (featureId != '') {
-			mv[featureId] = mapvalues[i].value;
-		}
+		mv[mapvalues[i].featureId] = mapvalues[i].featureId ? mapvalues[i].value : '';
 	}
-	
+
 	if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
 		for (var j = 0; j < features.length; j++) {
-			var featureId = features[j].attributes[nameColumn];
-			features[j].attributes.value = mv[featureId] ? mv[featureId] : 0;
+			features[j].attributes.value = mv[features[j].attributes[nameColumn]] ? mv[features[j].attributes[nameColumn]] : 0;
 		}
 	}
 	else if (MAPSOURCE == map_source_type_database) {
@@ -3324,7 +3321,7 @@ function dataReceivedChoropleth( responseText ) {
 			}
 		}
     }
-	
+
 	var options = {};
 	
 	/*hidden*/
@@ -3488,7 +3485,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText, position ) {
 			MASK.msg = 'Applying organisation units relations...';
 			MASK.show();
 			
-            Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
+            Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br/><br/>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
             
             Ext.getCmp('grid_gp').getStore().reload();
             loadMapData(organisationUnitAssignment, position);
