@@ -78,7 +78,7 @@ public class I18nServiceTranslationTest
     {
         i18nService = (I18nService) getBean( I18nService.ID );
 
-        localeManager = (LocaleManager) getBean( "org.hisp.dhis.i18n.locale.LocaleManagerSession" );
+        localeManager = (LocaleManager) getBean( "org.hisp.dhis.i18n.locale.LocaleManagerDb" );
         
         translationService = (TranslationService) getBean( TranslationService.ID );
         
