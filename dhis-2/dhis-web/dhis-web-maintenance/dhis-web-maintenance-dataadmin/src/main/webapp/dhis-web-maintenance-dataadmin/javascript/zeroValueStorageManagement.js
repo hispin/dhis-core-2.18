@@ -1,19 +1,15 @@
 function init()
 {
-	var list = byId('ignoreZeroValueDataElements');
-	var id;
-	for ( id in ignoreZeroValueDataElements )
+    var id;
+    for ( id in ignoreZeroValueDataElements )
     {
-        list.add( new Option( ignoreZeroValueDataElements[id], id ), null );
+        $("#ignoreZeroValueDataElements").append( $( "<option></option>" ).attr( "value",id ).text( ignoreZeroValueDataElements[id] )) ;
     }
-	
-	list = byId('zeroDataValueElements');
-	
-	for ( id in zeroDataValueElements )
+
+    for ( id in zeroDataValueElements )
     {
-        list.add( new Option( zeroDataValueElements[id], id ), null );
+        $("#zeroDataValueElements").append( $( "<option></option>" ).attr( "value",id ).text( zeroDataValueElements[id] )) ;
     }
-	
 }
 
 function getDataElementsByGroupIgnoreZeroValue ( dataElementGroupId )
