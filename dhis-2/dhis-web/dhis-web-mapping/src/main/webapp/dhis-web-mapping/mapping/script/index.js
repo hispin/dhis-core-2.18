@@ -2873,7 +2873,7 @@ Ext.onReady( function() {
 				mapping.expand();
 			}
         }
-	}	
+	}
 	
 	var pdfButton = new Ext.Button({
 		iconCls: 'icon-pdf',
@@ -3236,7 +3236,7 @@ function loadMapData(redirect, position) {
 			if (MAPVIEW.longitude && MAPVIEW.latitude && MAPVIEW.zoom) {
 				MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
 			}
-			else {
+			else if (MAPVIEW) {
 				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
 			}
 			
