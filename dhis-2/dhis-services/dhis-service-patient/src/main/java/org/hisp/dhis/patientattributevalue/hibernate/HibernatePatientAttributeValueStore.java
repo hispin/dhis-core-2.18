@@ -29,7 +29,6 @@ package org.hisp.dhis.patientattributevalue.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Query;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
