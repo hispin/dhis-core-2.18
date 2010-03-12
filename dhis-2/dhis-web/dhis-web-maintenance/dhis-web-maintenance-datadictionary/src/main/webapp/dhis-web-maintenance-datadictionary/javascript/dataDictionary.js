@@ -167,32 +167,24 @@ function initLists()
 {
     var id;
 
-    var list = document.getElementById( 'selectedDataElements' );
-    
     for ( id in selectedDataElements )
     {
-        list.add( new Option( selectedDataElements[id], id ), null );
+        $("#selectedDataElements").append( $( "<option></option>" ).attr( "value",id ).text( selectedDataElements[id] )) ;
     }
-
-    list = document.getElementById( 'availableDataElements' );
 
     for ( id in availableDataElements )
     {
-        list.add( new Option( availableDataElements[id], id ), null );
-    }    
-    
-    list = document.getElementById( 'selectedIndicators' );
-    
-    for ( id in selectedIndicators )
-    {
-        list.add( new Option( selectedIndicators[id], id ), null );
+        $("#availableDataElements").append( $( "<option></option>" ).attr( "value",id ).text( availableDataElements[id] )) ;
     }
 
-    list = document.getElementById( 'availableIndicators' );
+    for ( id in selectedIndicators )
+    {
+        $("#selectedIndicators").append( $( "<option></option>" ).attr( "value",id ).text( selectedIndicators[id] )) ;
+    }
 
     for ( id in availableIndicators )
     {
-        list.add( new Option( availableIndicators[id], id ), null );
+        $("#availableIndicators").append( $( "<option></option>" ).attr( "value",id ).text( availableIndicators[id] )) ;
     }
 }
 

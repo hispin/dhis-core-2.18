@@ -6,18 +6,14 @@
 function initLists()
 {
     var id;
-	
-	var list = document.getElementById( 'selectedDataSets' );
-	
-    for ( id in selectedDataSets )
+
+	for ( id in selectedDataSets )
     {
-        list.add( new Option( selectedDataSets[id], id ), null );
-    }	
-	
-    list = document.getElementById( 'availableDataSets' );
-    
+        $("#selectedDataSets").append( $( "<option></option>" ).attr( "value",id ).text( selectedDataSets[id] )) ;
+    }
+
     for ( id in availableDataSets )
     {
-        list.add( new Option( availableDataSets[id], id ), null );
+        $("#availableDataSets").append( $( "<option></option>" ).attr( "value",id ).text( availableDataSets[id] )) ;
     }
 }

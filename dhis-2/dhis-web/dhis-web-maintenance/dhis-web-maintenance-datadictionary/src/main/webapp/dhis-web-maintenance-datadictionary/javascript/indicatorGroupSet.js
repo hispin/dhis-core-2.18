@@ -82,19 +82,16 @@ function showDetailsCompleted( indicatorGroupSet ){
 
 function initLists()
 {
-    var list = document.getElementById( 'groupMembers' );
     var id;
 
     for ( id in groupMembers )
     {
-        list.add( new Option( groupMembers[id], id ), null );
+        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMembers[id] )) ;
     }
-
-    list = document.getElementById( 'availableIndicatorGroups' );
 
     for ( id in availableIndicatorGroups )
     {
-        list.add( new Option( availableIndicatorGroups[id], id ), null );
+        $("#availableIndicatorGroups").append( $( "<option></option>" ).attr( "value",id ).text( availableIndicatorGroups[id] )) ;
     }
 }
 

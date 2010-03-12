@@ -185,17 +185,13 @@ function initLists()
 {
     var id;
 	
-	var list = document.getElementById( 'selectedList' );
-	
     for ( id in dataSetMembers )
     {
-        list.add( new Option( dataSetMembers[id], id ), null );
-    }	
-	
-    list = document.getElementById( 'availableList' );
-    
+        $("#selectedList").append( $( "<option></option>" ).attr( "value",id ).text( dataSetMembers[id] )) ;
+    }
+		
     for ( id in availableDataElements )
     {
-        list.add( new Option( availableDataElements[id], id ), null );
+        $("#availableList").append( $( "<option></option>" ).attr( "value",id ).text( availableDataElements[id] )) ;
     }
 }

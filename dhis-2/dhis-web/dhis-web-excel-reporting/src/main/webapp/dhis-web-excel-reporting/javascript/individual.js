@@ -121,8 +121,8 @@ function filterAvailableDataElements()
 
 function initLists()
 {
-    var list = document.getElementById( 'availableDataElements' );
-    
+    var id;
+
     for ( id in availableAllDataElements )
     {
 		var option = new Option( availableAllDataElements[id], id );
@@ -130,8 +130,7 @@ function initLists()
 		option.onmousemove  = function(e){
 			showToolTip(e, this.text);
 		}
-		
-        list.add(option , null );
+		$("#availableDataElements").append( option ) ;
     }
 }
 
