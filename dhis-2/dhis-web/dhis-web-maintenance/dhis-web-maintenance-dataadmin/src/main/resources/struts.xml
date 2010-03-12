@@ -145,7 +145,7 @@
 		<action name="getPeriodsForLock"
 			class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction">
 			<result name="success" type="velocity">
-				/dhis-web-commons/ajax/responsePeriod.vm</result>
+				/dhis-web-commons/ajax/xmlPeriods.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
