@@ -284,6 +284,21 @@ function moveSelectedOptionToBottom( listId ) {
 }
 
 /**
+ * Creates a hidden select list used for temporarily storing
+ * options for filtering
+ *
+ * TODO: avoid performance hit on page with many selects, by checking use of filterList method
+ */
+$(document).ready(function() {
+    $("select").each(function(i,o){
+        var m = document.createElement("select");
+        m.id = o.id+"_storage";
+        m.style.visibility="hidden";
+        document.body.appendChild(m);
+    });
+});
+
+/**
  * Filters out options in a select list that don't match the filter string by
  * hiding them.
  *
@@ -291,18 +306,26 @@ function moveSelectedOptionToBottom( listId ) {
  * @param listId the id of the list to filter.
  */
 function filterList( filter, listId ) {
-    var list = document.getElementById( listId );
+    //Fastest cross-browser way to filter
+    $("#"+listId+" option").filter(function(i) {
+        var toMatch = $(this).text().toString().toLowerCase();
+        var filterLower = filter.toString().toLowerCase();
+        return toMatch.indexOf(filterLower) == -1;
+    }).appendTo("#"+listId+"_storage");
+    $("#"+listId+"_storage option").filter(function(i) {
+        var toMatch = $(this).text().toString().toLowerCase();
+        var filterLower = filter.toString().toLowerCase();
+        return toMatch.indexOf(filterLower) != -1;
+    }).appendTo("#"+listId);
+    var sortedVals = $.makeArray($("#"+listId+" option")).sort(function(a,b){
+        return $(a).text() > $(b).text() ? 1: -1;
+    });
+    $("#"+listId).empty().html(sortedVals);
+    $("#"+listId).val('--');
 
-    for ( var i=0; i<list.options.length; i++ ) {
-        var value = list.options[i].text;
-
-        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 ) {
-            list.options[i].style.display = "block";
-        }
-        else {
-            list.options[i].style.display = "none";
-        }
-    }
+    /* For FF only - no performance issues
+    $("#" + listId).find('option').hide();
+    $("#" + listId).find('option:Contains("' + filter + '")').show();*/
 }
 
 /**
