@@ -1133,7 +1133,10 @@ Ext.onReady( function() {
 	var wmsMapStore = new GeoExt.data.WMSCapabilitiesStore({
 		url: path_geoserver + ows
 	});
-	wmsMapStore.load();
+	
+	if (MAPSOURCE == map_source_type_shapefile) {
+		wmsMapStore.load();
+	}
 	
 	var geojsonStore = new Ext.data.JsonStore({
         url: path + 'getGeoJsonFiles' + type,
@@ -1361,7 +1364,7 @@ Ext.onReady( function() {
             data: [['Polygon']]
         })
     });
-	
+
 	var newNameColumnComboBox = new Ext.form.ComboBox({
         id: 'newnamecolumn_cb',
         editable: false,
@@ -1410,7 +1413,6 @@ Ext.onReady( function() {
 				}
 			}
 		}				
-					
 	});
     
 	var editNameColumnComboBox = new Ext.form.ComboBox({
@@ -2018,7 +2020,10 @@ Ext.onReady( function() {
 	var wmsOverlayStore = new GeoExt.data.WMSCapabilitiesStore({
 		url: path_geoserver + ows
 	});
-	wmsOverlayStore.load();
+	
+	if (MAPSOURCE == map_source_type_shapefile) {
+		wmsOverlayStore.load();
+	}
 	
     var mapLayerNameTextField = new Ext.form.TextField({
         id: 'maplayername_tf',
