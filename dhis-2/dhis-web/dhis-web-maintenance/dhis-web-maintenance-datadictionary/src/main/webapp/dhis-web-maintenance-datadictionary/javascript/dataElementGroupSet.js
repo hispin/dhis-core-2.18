@@ -4,22 +4,22 @@
 
 function validateUpdateDataElementGroupSet(){
 
-	var request = new Request();
+    var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( validateUpdateDataElementGroupSetCompleted );
-	request.sendAsPost( "id=" + getFieldValue("id") + "&name=" +  getFieldValue("name"));
-	request.send( "validateDataElementGroupSet.action");    
+    request.sendAsPost( "id=" + getFieldValue("id") + "&name=" +  getFieldValue("name"));
+    request.send( "validateDataElementGroupSet.action");
 	
 }
 
 function validateUpdateDataElementGroupSetCompleted( message ){
-	var type = message.getAttribute("type");
-	if(type=="success"){
-		selectAllById("groupMembers");
-		document.forms['updateDataElementGroupSet'].submit();
-	}else{
-		setMessage(message.firstChild.nodeValue);
-	}
+    var type = message.getAttribute("type");
+    if(type=="success"){
+        selectAllById("groupMembers");
+        document.forms['updateDataElementGroupSet'].submit();
+    }else{
+        setMessage(message.firstChild.nodeValue);
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -28,26 +28,26 @@ function validateUpdateDataElementGroupSetCompleted( message ){
 
 function validateAddDataElementGroupSet()
 {	
-	var request = new Request();
+    var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( validateAddDataElementGroupSetCompleted );    
-	request.sendAsPost( "name=" +  getFieldValue( "name" ) );
-	request.send( "validateDataElementGroupSet.action");	
+    request.sendAsPost( "name=" +  getFieldValue( "name" ) );
+    request.send( "validateDataElementGroupSet.action");
 }
 
 function validateAddDataElementGroupSetCompleted( message )
 {
-	var type = message.getAttribute("type");
+    var type = message.getAttribute("type");
 	
-	if( type == "success" )
-	{
-		selectAllById( "groupMembers" );
-		document.forms[ 'addDataElementGroupSet' ].submit();
-	}
-	else
-	{
-		setMessage(message.firstChild.nodeValue);
-	}
+    if( type == "success" )
+    {
+        selectAllById( "groupMembers" );
+        document.forms[ 'addDataElementGroupSet' ].submit();
+    }
+    else
+    {
+        setMessage(message.firstChild.nodeValue);
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ function validateAddDataElementGroupSetCompleted( message )
 
 function deleteDataElementGroupSet( groupSetId, groupSetName ){
 	
-	removeItem( groupSetId, groupSetName, i18n_confirm_delete, "deleteDataElementGroupSet.action" );
+    removeItem( groupSetId, groupSetName, i18n_confirm_delete, "deleteDataElementGroupSet.action" );
 }
 
 // -----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ function deleteDataElementGroupSet( groupSetId, groupSetName ){
 
 function showDataElementGroupSetDetails( id ){
 
-	var request = new Request();
+    var request = new Request();
     request.setResponseTypeXML( 'dataElementGroupSet' );
     request.setCallbackSuccess( showDetailsCompleted );
     request.send( "showDataElementGroupSetDetails.action?id=" + id);	
@@ -74,7 +74,7 @@ function showDataElementGroupSetDetails( id ){
 
 function showDetailsCompleted( dataElementGroupSet ){
 
-	setFieldValue( 'nameField', getElementValue( dataElementGroupSet, 'name' ) );
+    setFieldValue( 'nameField', getElementValue( dataElementGroupSet, 'name' ) );
     setFieldValue( 'memberCountField', getElementValue( dataElementGroupSet, 'memberCount' ) );
 
     showDetails();
@@ -86,19 +86,16 @@ function showDetailsCompleted( dataElementGroupSet ){
 
 function initLists()
 {
-    var list = document.getElementById( 'groupMembers' );
     var id;
 
     for ( id in groupMembers )
     {
-        list.add( new Option( groupMembers[id], id ), null );
+        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMembers[id] )) ;
     }
-
-    list = document.getElementById( 'availableDataElementGroups' );
 
     for ( id in availableDataElementGroups )
     {
-        list.add( new Option( availableDataElementGroups[id], id ), null );
+        $("#availableDataElementGroups").append( $( "<option></option>" ).attr( "value",id ).text( availableDataElementGroups[id] )) ;
     }
 }
 

@@ -130,19 +130,15 @@ function updateValidationCompleted( messageElement )
 
 function initLists()
 {
-    var list = document.getElementById( 'groupMembers' );
     var id;
-
     for ( id in groupMembers )
     {
-        list.add( new Option( groupMembers[id], id ), null );
+        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMembers[id] )) ;
     }
-
-    list = document.getElementById( 'availableValidationRules' );
 
     for ( id in availableValidationRules )
     {
-        list.add( new Option( availableValidationRules[id], id ), null );
+        $("#availableValidationRules").append( $( "<option></option>" ).attr( "value",id ).text( availableValidationRules[id] )) ;
     }
 }
 

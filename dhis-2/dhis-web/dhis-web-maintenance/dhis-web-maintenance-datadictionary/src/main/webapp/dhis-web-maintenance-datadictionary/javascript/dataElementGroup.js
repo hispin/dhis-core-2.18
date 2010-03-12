@@ -25,7 +25,7 @@ function dataElementGroupReceived( dataElementGroupElement )
 
 function removeDataElementGroup( dataElementGroupId, dataElementGroupName )
 {
-	removeItem( dataElementGroupId, dataElementGroupName, i18n_confirm_delete, "removeDataElementGroup.action" );
+    removeItem( dataElementGroupId, dataElementGroupName, i18n_confirm_delete, "removeDataElementGroup.action" );
 }
 
 // -----------------------------------------------------------------------------
@@ -111,19 +111,15 @@ function updateValidationCompleted( messageElement )
 
 function initLists()
 {
-    var list = document.getElementById( 'groupMembers' );
     var id;
 
     for ( id in groupMembers )
     {
-        list.add( new Option( groupMembers[id], id ), null );
+        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMember[id] )) ;
     }
-
-    list = document.getElementById( 'availableDataElements' );
 
     for ( id in availableDataElements )
     {
-        list.add( new Option( availableDataElements[id], id ), null );
+        $("#availableDataElements").append( $( "<option></option>" ).attr( "value",id ).text( availableDataElements[id] )) ;
     }
 }
-
