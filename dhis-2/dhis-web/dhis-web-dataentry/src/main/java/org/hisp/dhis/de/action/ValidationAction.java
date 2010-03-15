@@ -53,6 +53,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
+ * @author Lars Helge Overland
  * @version $Id: ValidationAction.java 5426 2008-06-16 04:33:05Z larshelg $
  */
 public class ValidationAction
@@ -157,15 +158,29 @@ public class ValidationAction
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
 
+        // ---------------------------------------------------------------------
+        // Min-max and outlier analysis
+        // ---------------------------------------------------------------------
+
+        Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.
+            analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), STD_DEV );
+
+        Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.
+            analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), null );
+        
+        dataValues = CollectionUtils.union( stdDevs, minMaxs );
+        
+        log.info( "Number of outlier values: " + dataValues.size() );
+
+        // ---------------------------------------------------------------------
+        // Validation rule analysis
+        // ---------------------------------------------------------------------
+
         results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
 
         log.info( "Number of validation violations: " + results.size() );
-        
-        if ( results.size() == 0 )
-        {
-            return NONE;
-        }
-        else
+                
+        if ( results.size()> 0 )
         {
             leftsideFormulaMap = new HashMap<Integer, String>( results.size() );
             rightsideFormulaMap = new HashMap<Integer, String>( results.size() );
@@ -179,16 +194,6 @@ public class ValidationAction
             }
         }
         
-        Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.
-            analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), STD_DEV );
-
-        Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.
-            analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), null );
-        
-        dataValues = CollectionUtils.union( stdDevs, minMaxs );
-        
-        log.info( "Number of outlier values: " + dataValues.size() );
-        
-        return SUCCESS;
+        return dataValues.size() == 0 && results.size() == 0 ? NONE : SUCCESS;
     }
 }

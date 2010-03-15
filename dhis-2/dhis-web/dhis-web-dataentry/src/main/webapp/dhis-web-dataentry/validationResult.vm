@@ -1,9 +1,13 @@
 <h3>$encoder.htmlEncode( $i18n.getString( "validation_result" ) )</h3>
 
-#if( $results.size() == 0)
+#if( $results.size() == 0 && $dataValues.size() == 0 )  
     <p><b>$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</b></p>
 #else
     <p><b>$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</b></p>
+#end
+
+#if( $results.size() > 0)
+    <p><b>$encoder.htmlEncode( $i18n.getString( "the_following_values_violates_rules" ) )</b></p>
     <table class="listTable" width="100%">
         <tr>
             <th style="width:110px">$encoder.htmlEncode( $i18n.getString( "validation_rule" ) )</th>                
@@ -34,14 +38,10 @@
             #set( $mark = true )
         #end
         #end
-    </table>            
+    </table><br>       
 #end
 
-<br>
-
-#if( $dataValues.size() == 0 )
-	<p><b>$encoder.htmlEncode( $i18n.getString( "no_outlier_values_found" ) )</b></p>
-#else
+#if( $dataValues.size() > 0 )
     <p><b>$encoder.htmlEncode( $i18n.getString( "the_following_values_are_outliers" ) )</b></p>
     <table class="listTable" style="width:100%">
 	    <tr>
