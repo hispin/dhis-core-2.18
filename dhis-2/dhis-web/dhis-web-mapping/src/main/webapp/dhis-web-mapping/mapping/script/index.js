@@ -3271,7 +3271,6 @@ function getChoroplethData() {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
     var mapLayerPath = MAPDATA.mapLayerPath;
-	
 	var url = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? 'getMapValuesByMap' : 'getMapValuesByLevel';
 	var params = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath } : { indicatorId: indicatorId, periodId: periodId, level: URL };
 
@@ -3280,64 +3279,58 @@ function getChoroplethData() {
         method: 'POST',
         params: params,
 
-        success: function( responseObject ) {
-            dataReceivedChoropleth( responseObject.responseText );
+        success: function(r) {
+			var layers = MAP.getLayersByName('Thematic map');
+			var features = layers[0].features;
+			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+			var mv = new Array();
+			var nameColumn = MAPDATA.nameColumn;
+			var options = {};
+			
+			if (mapvalues.length == 0) {
+				Ext.messageRed.msg('Thematic map', 'The selected indicator, period and level returned no data.');
+				MASK.hide();
+				return;
+			}
+
+			for (var i = 0; i < mapvalues.length; i++) {
+				mv[mapvalues[i].featureId] = mapvalues[i].featureId ? mapvalues[i].value : '';
+			}
+
+			if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
+				for (var j = 0; j < features.length; j++) {
+					features[j].attributes.value = mv[features[j].attributes[nameColumn]] ? mv[features[j].attributes[nameColumn]] : 0;
+				}
+			}
+			else if (MAPSOURCE == map_source_type_database) {
+				for (var i = 0; i < mapvalues.length; i++) {
+					for (var j = 0; j < features.length; j++) {
+						if (mapvalues[i].orgUnitName == features[j].attributes.name) {
+							features[j].attributes.value = parseFloat(mapvalues[i].value);
+							break;
+						}
+					}
+				}
+			}
+
+			choropleth.indicator = 'value';
+			choropleth.indicatorText = 'Indicator';
+			options.indicator = choropleth.indicator;
+			
+			options.method = Ext.getCmp('method').getValue();
+			options.numClasses = Ext.getCmp('numClasses').getValue();
+			options.colors = choropleth.getColors();
+			
+			choropleth.coreComp.updateOptions(options);
+			choropleth.coreComp.applyClassification();
+			choropleth.classificationApplied = true;
+			
+			MASK.hide();		
         },
         failure: function() {
             alert( 'Error: getMapValues' );
         } 
     });
-}
-
-function dataReceivedChoropleth( responseText ) {
-    var layers = MAP.getLayersByName('Thematic map');
-    var features = layers[0].features;
-    var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
-	var mv = new Array();
-	var nameColumn = MAPDATA.nameColumn;
-	
-	if (mapvalues.length == 0) {
-		Ext.messageRed.msg('Thematic map', 'The selected indicator, period and level returned no data.');
-		MASK.hide();
-		return;
-	}
-
-	for (var i = 0; i < mapvalues.length; i++) {
-		mv[mapvalues[i].featureId] = mapvalues[i].featureId ? mapvalues[i].value : '';
-	}
-
-	if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
-		for (var j = 0; j < features.length; j++) {
-			features[j].attributes.value = mv[features[j].attributes[nameColumn]] ? mv[features[j].attributes[nameColumn]] : 0;
-		}
-	}
-	else if (MAPSOURCE == map_source_type_database) {
-		for (var i = 0; i < mapvalues.length; i++) {
-			for (var j = 0; j < features.length; j++) {
-				if (mapvalues[i].orgUnitName == features[j].attributes.name) {
-					features[j].attributes.value = parseFloat(mapvalues[i].value);
-					break;
-				}
-			}
-		}
-    }
-
-	var options = {};
-	
-	/*hidden*/
-	choropleth.indicator = 'value';
-	choropleth.indicatorText = 'Indicator';
-	options.indicator = choropleth.indicator;
-	
-	options.method = Ext.getCmp('method').getValue();
-	options.numClasses = Ext.getCmp('numClasses').getValue();
-	options.colors = choropleth.getColors();
-	
-	choropleth.coreComp.updateOptions(options);
-	choropleth.coreComp.applyClassification();
-	choropleth.classificationApplied = true;
-	
-	MASK.hide();
 }
 
 /*MAPPING*/
@@ -3364,13 +3357,11 @@ function getAssignOrganisationUnitData() {
 function dataReceivedAssignOrganisationUnit( responseText ) {
     var layers = MAP.getLayersByName('Thematic map');
     features = layers[0]['features'];
-    
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
-    
     var nameColumn = MAPDATA.nameColumn;
-	
 	var noCls = 1;
 	var noAssigned = 0;
+	var options = {};
 	
 	for (var i = 0; i < features.length; i++) {
         features[i].attributes['value'] = 0;
@@ -3387,18 +3378,9 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
         }
     }
 	
-	var color = unassigned_row_color;
+	var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
+	noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
 	
-	if (noCls > 1) {
-		if (noAssigned == features.length) {
-			noCls = 1;
-			color = assigned_row_color;
-		}
-	}
-	
-    var options = {};
-        
-    /*hidden*/
     mapping.indicator = 'value';
     mapping.indicatorText = 'Indicator';
     options.indicator = mapping.indicator;
@@ -3485,7 +3467,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText, position ) {
 			MASK.msg = 'Applying organisation units relations...';
 			MASK.show();
 			
-            Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br/><br/>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
+            Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
             
             Ext.getCmp('grid_gp').getStore().reload();
             loadMapData(organisationUnitAssignment, position);
