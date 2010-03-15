@@ -179,7 +179,7 @@ public class ValidationAction
         results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
 
         log.info( "Number of validation violations: " + results.size() );
-                
+        
         if ( results.size()> 0 )
         {
             leftsideFormulaMap = new HashMap<Integer, String>( results.size() );
