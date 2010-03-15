@@ -322,7 +322,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								var mlp = Ext.getCmp('maps_cb').getValue();
 								var msg;
 								
-                                if (!selection) {
+                                if (selection == '') {
                                     Ext.messageRed.msg('Remove relation', 'Please select at least one organisation unit in the list.');
                                     return;
                                 }
@@ -384,6 +384,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 													Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + mapping.relation + '</span> (map) assigned to <span class="x-msg-hl">' + name + '</span> (database).');
 													Ext.getCmp('grid_gp').getStore().reload();
 													popup.hide();
+													mapping.relation = false;
 													loadMapData(organisationUnitAssignment, true);
 												},
 												failure: function() {
