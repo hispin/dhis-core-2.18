@@ -3409,67 +3409,58 @@ function getAutoAssignOrganisationUnitData(position) {
         method: 'POST',
         params: { level: level, format: 'json' },
 
-        success: function( responseObject ) {
-            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText, position );			
+        success: function(r) {
+		    var layers = MAP.getLayersByName('Thematic map');
+			var features = layers[0]['features'];
+			var organisationUnits = Ext.util.JSON.decode(r.responseText).organisationUnits;
+			var nameColumn = MAPDATA.nameColumn;
+			var mlp = MAPDATA.mapLayerPath;
+			var count_match = 0;
+			var relations = '';
+			var featureName, orgunitName;
+			
+			for ( var i = 0; i < features.length; i++ ) {
+				features[i].attributes.compareName = features[i].attributes[nameColumn].split(' ').join('').toLowerCase();
+			}
+	
+			for ( var i = 0; i < organisationUnits.length; i++ ) {
+				organisationUnits[i].compareName = organisationUnits[i].name.split(' ').join('').toLowerCase();
+			}
+			
+			for ( var i=0; i < organisationUnits.length; i++ ) {
+				for ( var j=0; j < features.length; j++ ) {
+					if (features[j].attributes.compareName == organisationUnits[i].compareName) {
+						count_match++;
+						relations += organisationUnits[i].id + '::' + features[j].attributes[nameColumn] + ';;';
+						break;
+					}
+				}
+			}
+			
+			MASK.msg = count_match == 0 ? 'No organisation units assigned...' : 'Assigning ' + count_match + ' organisation units...';
+			MASK.show();
+
+			Ext.Ajax.request({
+				url: path + 'addOrUpdateMapOrganisationUnitRelations' + type,
+				method: 'POST',
+				params: { mapLayerPath: mlp, relations: relations },
+
+				success: function( responseObject ) {
+					MASK.msg = 'Applying organisation units relations...';
+					MASK.show();
+					
+					Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
+					
+					Ext.getCmp('grid_gp').getStore().reload();
+					loadMapData(organisationUnitAssignment, position);
+				},
+				failure: function() {
+					alert( 'Error: addOrUpdateMapOrganisationUnitRelations' );
+				} 
+			});
         },
         failure: function() {
             alert( 'Status', 'Error while retrieving data' );
         } 
     });
-}
-
-function dataReceivedAutoAssignOrganisationUnit( responseText, position ) {
-    var layers = MAP.getLayersByName('Thematic map');
-    var features = layers[0]['features'];
-    var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
-    var nameColumn = MAPDATA.nameColumn;
-    var mlp = MAPDATA.mapLayerPath;
-    var count_match = 0;
-    var relations = '';
-	var featureName, orgunitName;
-	
-	for ( var i = 0; i < features.length; i++ ) {
-		features[i].attributes.compareName = features[i].attributes[nameColumn].split(' ').join('').toLowerCase();
-	}
-	
-	for ( var i = 0; i < organisationUnits.length; i++ ) {
-		organisationUnits[i].compareName = organisationUnits[i].name.split(' ').join('').toLowerCase();
-	}
-	
-    for ( var i=0; i < organisationUnits.length; i++ ) {
-        for ( var j=0; j < features.length; j++ ) {
-			if (features[j].attributes.compareName == organisationUnits[i].compareName) {
-                count_match++;
-                relations += organisationUnits[i].id + '::' + features[j].attributes[nameColumn] + ';;';
-				break;
-            }
-        }
-    }
-	
-	if (count_match == 0) {
-		MASK.msg = 'No organisation units assigned...';
-	}
-	else {
-		MASK.msg = 'Assigning ' + count_match + ' organisation units...';
-	}
-	MASK.show();
-
-    Ext.Ajax.request({
-        url: path + 'addOrUpdateMapOrganisationUnitRelations' + type,
-        method: 'POST',
-        params: { mapLayerPath: mlp, relations: relations },
-
-        success: function( responseObject ) {
-			MASK.msg = 'Applying organisation units relations...';
-			MASK.show();
-			
-            Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + count_match + '</span> organisation units assigned.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
-            
-            Ext.getCmp('grid_gp').getStore().reload();
-            loadMapData(organisationUnitAssignment, position);
-        },
-        failure: function() {
-            alert( 'Error: addOrUpdateMapOrganisationUnitRelations' );
-        } 
-    });                
 }
