@@ -3345,60 +3345,56 @@ function getAssignOrganisationUnitData() {
         method: 'GET',
         params: { mapLayerPath: mlp, format: 'json' },
 
-        success: function( responseObject ) {
-            dataReceivedAssignOrganisationUnit( responseObject.responseText );
+        success: function(r) {
+			var layers = MAP.getLayersByName('Thematic map');
+			features = layers[0]['features'];
+			var relations = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelations;
+			var nameColumn = MAPDATA.nameColumn;
+			var noCls = 1;
+			var noAssigned = 0;
+			var options = {};
+			
+			for (var i = 0; i < features.length; i++) {
+				features[i].attributes['value'] = 0;
+			
+				for (var j=0; j < relations.length; j++) {
+					if (relations[j].featureId == features[i].attributes[nameColumn]) {
+						features[i].attributes['value'] = 1;
+						noAssigned++;
+						if (noCls < 2) {
+							noCls = 2;
+						}
+						break;
+					}
+				}
+			}
+	
+			var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
+			noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
+			
+			mapping.indicator = 'value';
+			mapping.indicatorText = 'Indicator';
+			options.indicator = mapping.indicator;
+			
+			options.method = 1;
+			options.numClasses = noCls;
+			
+			var colorA = new mapfish.ColorRgb();
+			colorA.setFromHex(color);
+			var colorB = new mapfish.ColorRgb();
+			colorB.setFromHex(assigned_row_color);
+			options.colors = [colorA, colorB];
+			
+			mapping.coreComp.updateOptions(options);
+			mapping.coreComp.applyClassification();
+			mapping.classificationApplied = true;
+			
+			MASK.hide();
         },
         failure: function() {
             alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
         } 
     });
-}
-
-function dataReceivedAssignOrganisationUnit( responseText ) {
-    var layers = MAP.getLayersByName('Thematic map');
-    features = layers[0]['features'];
-    var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
-    var nameColumn = MAPDATA.nameColumn;
-	var noCls = 1;
-	var noAssigned = 0;
-	var options = {};
-	
-	for (var i = 0; i < features.length; i++) {
-        features[i].attributes['value'] = 0;
-        
-        for (var j=0; j < relations.length; j++) {
-            if (relations[j].featureId == features[i].attributes[nameColumn]) {
-                features[i].attributes['value'] = 1;
-				noAssigned++;
-				if (noCls < 2) {
-					noCls = 2;
-				}
-				break;
-            }
-        }
-    }
-	
-	var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
-	noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
-	
-    mapping.indicator = 'value';
-    mapping.indicatorText = 'Indicator';
-    options.indicator = mapping.indicator;
-    
-    options.method = 1;
-    options.numClasses = noCls;
-    
-    var colorA = new mapfish.ColorRgb();
-    colorA.setFromHex(color);
-    var colorB = new mapfish.ColorRgb();
-    colorB.setFromHex(assigned_row_color);
-    options.colors = [colorA, colorB];
-    
-    mapping.coreComp.updateOptions(options);
-    mapping.coreComp.applyClassification();
-    mapping.classificationApplied = true;
-    
-    MASK.hide();
 }
 
 /*AUTO MAPPING*/
