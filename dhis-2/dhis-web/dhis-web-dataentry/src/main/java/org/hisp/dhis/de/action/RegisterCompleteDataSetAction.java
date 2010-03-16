@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 
 import com.opensymphony.xwork2.Action;
@@ -46,7 +47,7 @@ public class RegisterCompleteDataSetAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( RegisterCompleteDataSetAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -57,14 +58,14 @@ public class RegisterCompleteDataSetAction
     {
         this.registrationService = registrationService;
     }
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -82,24 +83,58 @@ public class RegisterCompleteDataSetAction
     {
         this.date = date;
     }
-    
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        Date oDate;
+
+        if ( date == null || date.trim().length() == 0 )
+        {
+            message = i18n.getString( "enter_a_valid_inputting_date" );
+
+            return INPUT;
+        }
+        else
+        {
+            oDate = format.parseDate( date.trim() );
+
+            if ( oDate == null )
+            {
+                message = i18n.getString( "specify_an_inputing_date" );
+
+                return INPUT;
+            }
+        }
+
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
-        
+
         registration.setDataSet( selectedStateManager.getSelectedDataSet() );
         registration.setPeriod( selectedStateManager.getSelectedPeriod() );
         registration.setSource( selectedStateManager.getSelectedOrganisationUnit() );
-        registration.setDate( ( date != null && date.trim().length() > 0 ) ? format.parseDate( date ) : new Date() );
-                
+        registration.setDate( oDate );
+
         registrationService.saveCompleteDataSetRegistration( registration );
-        
+
         log.info( "DataSet registered as complete: " + registration );
-        
+
         return SUCCESS;
     }
 }

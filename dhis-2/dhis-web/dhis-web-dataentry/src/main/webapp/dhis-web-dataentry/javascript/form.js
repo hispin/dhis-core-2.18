@@ -276,18 +276,20 @@ function registerCompleteDataSet( messageElement )
 {
     var type = messageElement.getAttribute( 'type' );
     
-    if ( type != "none" )
+    if ( type == "none" )
     {
-    	window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
-    }
+        var date = document.getElementById( "dateField" ).value;
     
-    var date = document.getElementById( "dateField" ).value;
-
-    var url = "registerCompleteDataSet.action?date=" + date;
-
-    var request = new Request();
-    request.setCallbackSuccess( registerReceived );
-    request.send( url );
+        var url = "registerCompleteDataSet.action?date=" + date;
+    
+        var request = new Request();
+        request.setCallbackSuccess( registerReceived );
+        request.send( url );
+    }
+    else
+    {
+        window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
+    }
 }
 
 function registerReceived( messageElement )
