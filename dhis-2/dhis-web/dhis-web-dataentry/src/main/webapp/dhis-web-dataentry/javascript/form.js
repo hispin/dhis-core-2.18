@@ -283,6 +283,7 @@ function registerCompleteDataSet( messageElement )
         var url = "registerCompleteDataSet.action?date=" + date;
     
         var request = new Request();
+		request.setResponseTypeXML( 'message' );
         request.setCallbackSuccess( registerReceived );
         request.send( url );
     }
@@ -294,6 +295,12 @@ function registerCompleteDataSet( messageElement )
 
 function registerReceived( messageElement )
 {
+
+	var type = messageElement.getAttribute( 'type' );
+    if(type=='input'){
+		setMessage(messageElement.firstChild.nodeValue);
+		return;
+	}
 	document.getElementById( "completeButton" ).disabled = true;
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
