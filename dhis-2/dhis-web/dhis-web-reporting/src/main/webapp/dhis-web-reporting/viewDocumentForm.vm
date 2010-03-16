@@ -25,8 +25,9 @@
                 #foreach ( $document in $documents )
                 <tr id="tr${document.id}">
                     <td>$encoder.htmlEncode( $document.name )</td>
-                    <td style="text-align:center">
-                    	#if ( $document.external )
+                    <td style="text-align:center; width: 60px">	
+						<a href="displayUpdateDocumentForm.action?id=$document.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+						#if ( $document.external )
                     	   <a href="$document.url" title="$i18n.getString( 'view_report' )">
                     	#else
                     	   <a href="javascript:window.location.href='loadDocument.action?id=$document.id'" title="$i18n.getString( 'view_report' )">

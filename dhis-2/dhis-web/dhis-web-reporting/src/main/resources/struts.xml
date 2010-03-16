@@ -22,6 +22,12 @@
       <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
     </action>
     
+    <action name="updateDocument" class="org.hisp.dhis.reporting.document.action.UpdateDocumentAction">
+      <result name="success" type="redirect">displayViewDocumentForm.action</result>      
+      <interceptor-ref name="fileUploadStack"/>
+      <param name="requiredAuthorities">F_DOCUMENT_UPDATE</param>
+    </action>
+    
     <action name="removeDocument" class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_DOCUMENT_DELETE</param>
@@ -39,6 +45,14 @@
       <param name="page">/dhis-web-reporting/addDocumentForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/document.js</param>
+    </action>
+    
+    <action name="displayUpdateDocumentForm" class="org.hisp.dhis.reporting.document.action.GetDocumentAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/updateDocumentForm.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">javascript/document.js</param>
+      <param name="requiredAuthorities">F_DOCUMENT_UPDATE</param>
     </action>
     
     <action name="validateDocument" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction">
