@@ -108,7 +108,7 @@ public class RegisterCompleteDataSetAction
 
         if ( date == null || date.trim().length() == 0 )
         {
-            message = i18n.getString( "enter_a_valid_inputting_date" );
+            message = i18n.getString( "specify_input_date" );
 
             return INPUT;
         }
@@ -118,7 +118,7 @@ public class RegisterCompleteDataSetAction
 
             if ( oDate == null )
             {
-                message = i18n.getString( "specify_an_inputing_date" );
+                message = i18n.getString( "specify_valid_input_date" );
 
                 return INPUT;
             }

@@ -295,17 +295,19 @@ function registerCompleteDataSet( messageElement )
 
 function registerReceived( messageElement )
 {
-
 	var type = messageElement.getAttribute( 'type' );
-    if(type=='input'){
-		setMessage(messageElement.firstChild.nodeValue);
+	
+    if ( type=='input' )
+    {
+		setHeaderDelayMessage( messageElement.firstChild.nodeValue );
 		return;
 	}
+	
 	document.getElementById( "completeButton" ).disabled = true;
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
     document.getElementById( "dateDiv" ).style.display = "none";
-	hideById('message');
+    
 	changeInputTextStatus( true );
 }
 
