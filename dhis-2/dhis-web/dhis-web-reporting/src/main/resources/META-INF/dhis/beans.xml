@@ -18,15 +18,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.external.location.LocationManager"/>
   </bean>
   
-   <bean id="org.hisp.dhis.reporting.document.action.UpdateDocumentAction"
-    class="org.hisp.dhis.reporting.document.action.UpdateDocumentAction"
-    scope="prototype">
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
-    <property name="locationManager"
-      ref="org.hisp.dhis.external.location.LocationManager"/>
-  </bean>
-  
   <bean id="org.hisp.dhis.reporting.document.action.GetDocumentAction"
     class="org.hisp.dhis.reporting.document.action.GetDocumentAction"
     scope="prototype">

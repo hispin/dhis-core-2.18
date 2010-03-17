@@ -45,10 +45,11 @@ public class SaveDocumentAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( SaveDocumentAction.class );
-    
+
     private static final String HTTP_PREFIX = "http://";
+
     private static final String HTTPS_PREFIX = "https://";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -66,10 +67,17 @@ public class SaveDocumentAction
     {
         this.locationManager = locationManager;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private String name;
 
@@ -98,21 +106,21 @@ public class SaveDocumentAction
     {
         this.file = file;
     }
-    
+
     private String fileName;
-    
+
     public void setUploadFileName( String fileName )
     {
         this.fileName = fileName;
     }
-    
+
     private String contentType;
-    
+
     public void setUploadContentType( String contentType )
     {
         this.contentType = contentType;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -120,35 +128,46 @@ public class SaveDocumentAction
     public String execute()
         throws Exception
     {
-        if ( !external )
+        Document document = new Document();
+        
+        if ( id != null )
         {
-            log.info( "Uploading file: '" + fileName + "', content-type: '" + contentType + "'" );
+            document = documentService.getDocument( id );
 
-            File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
-            
-            boolean fileMoved = file.renameTo( destination );
-            
-            if ( !fileMoved )
-            {
-                throw new RuntimeException( "File was not uploaded" );
-            }
-            
-            url = fileName;
+            document.setName( name );
         }
         else
         {
-            if ( !( url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX ) ) )
+            if ( !external )
             {
-                url = HTTP_PREFIX + url;
+                log.info( "Uploading file: '" + fileName + "', content-type: '" + contentType + "'" );
+
+                File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
+
+                boolean fileMoved = file.renameTo( destination );
+
+                if ( !fileMoved )
+                {
+                    throw new RuntimeException( "File was not uploaded" );
+                }
+
+                url = fileName;
             }
+            else
+            {
+                if ( !(url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX )) )
+                {
+                    url = HTTP_PREFIX + url;
+                }
+            }
+
+            log.info( "Document name: '" + name + "', url: '" + url + "', external: '" + external + "'" );
+
+            document = new Document( name, url, external );
         }
-        
-        log.info( "Document name: '" + name + "', url: '" + url + "', external: '" + external + "'" );
-        
-        Document document = new Document( name, url, external );
-        
+
         documentService.saveDocument( document );
-        
+
         return SUCCESS;
     }
 }
