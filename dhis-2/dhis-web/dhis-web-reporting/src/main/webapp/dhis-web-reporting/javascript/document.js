@@ -1,17 +1,7 @@
 
 function saveDocument()
 {
-    var url = "validateDocument.action?name=" + getFieldValue( "name" );
-	
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( saveDocumentReceived );
-    request.send( url );
-}
-
-function updateDocument()
-{
-    var url = "validateDocument.action?name=" + getFieldValue( "name" ) + "&id=" + getFieldValue('id');
+    var url = "validateDocument.action?name=" + getFieldValue( "name" ) + "&id=" + getFieldValue( "id" );
 	
     var request = new Request();
     request.setResponseTypeXML( 'message' );

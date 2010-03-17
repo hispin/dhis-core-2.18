@@ -14,10 +14,16 @@
     <tr>
     	<td><label for="external">$i18n.getString( "type" )</label></td>
     	<td>
-    		<select id="external" name="external" style="width:20em" onchange="toggleExternal()" #if($!document) disabled=false else disabled=true #end>
-    			<option value="false" #if(!$document.external) selected #end>$i18n.getString( "upload_file" )</option>
-    			<option value="true" #if($document.external) selected #end>$i18n.getString( "external_url" )</option>
-		    </select>
+			<select id="external" name="external" style="width:20em" onchange="toggleExternal()">
+				#if( $!document && !$!document.external )
+				<option value="false">$i18n.getString( "upload_file" )</option>
+				#elseif( $!document)
+				<option value="true">$i18n.getString( "external_url" )</option>
+				#else
+				<option value="false">$i18n.getString( "upload_file" )</option>
+				<option value="true">$i18n.getString( "external_url" )</option>
+				#end
+			</select>
 	    </td>
     </tr>
 </table>
@@ -26,7 +32,7 @@
 <table>
     <tr>
         <td style="width:70px"><label for="upload">$i18n.getString( "file" )</label></td>
-        <td><input type="file" id="upload" name="upload" size="25" #if($!document) disabled=true value="$!document.url" #end></td>
+        <td><input type="file" id="upload" name="upload" size="25"></td>
     </tr>
 </table>
 </div>
@@ -35,7 +41,7 @@
 <table>
     <tr>
         <td style="width:70px"><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em" #if($!document) disabled=true value="$!document.url" #else value="http://" #end></td>
+        <td><input type="text" id="url" name="url" style="width:20em" #if($!document) value="$!document.url" #else value="http://" #end></td>
     </tr>
 </table>
 </div>
@@ -56,4 +62,6 @@
 </form>
 
 <span id="message"#if ( $message ) style="display:block"#end>$!message</span>
-<script>toggleExternal();</script>
+<script>
+	toggleExternal();
+</script>
