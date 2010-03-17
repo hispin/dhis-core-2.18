@@ -117,6 +117,9 @@
 	    <strong>$i18n.getString( "from_date" ):</strong> $i18n.getString( "earliest" ) 
 	    <strong>$i18n.getString( "to_date" ):</strong> $i18n.getString( "latest" ) 
 	    <strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
+	#elseif ( $fromToDate != "" )
+	    <strong>$i18n.getString( "from_date" ):</strong> $fromToDate
+		<strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
 	#else
 	    <strong>$i18n.getString( "from_date" ):</strong> $fromDate
 	    <strong>$i18n.getString( "to_date" ):</strong> $toDate 
@@ -155,6 +158,17 @@
 			#end
 			</tr>
 		#end
+
 	</tbody>
-	</table>	
+	</table>
 #end
+
+	<br/>
+
+	<div>
+		<table>
+			<tr>
+				<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='displayDataBrowserForm.action'" style="width:10em"/>
+			</tr>
+		</table>
+	</div>
