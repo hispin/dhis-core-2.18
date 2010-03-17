@@ -29,16 +29,16 @@ package org.hisp.dhis.dataelement.comparator;
 
 import java.util.Comparator;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
  */
-public class OperandNameComparator
-    implements Comparator<Operand>
+public class DataElementOperandNameComparator
+    implements Comparator<DataElementOperand>
 {
     @Override
-    public int compare( Operand o0, Operand o1 )
+    public int compare( DataElementOperand o0, DataElementOperand o1 )
     {
         return o0.getOperandName().compareTo( o1.getOperandName() );
     }

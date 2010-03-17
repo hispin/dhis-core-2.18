@@ -40,8 +40,8 @@ import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
@@ -215,9 +215,9 @@ public class DefaultDataMartEngine
         allDataElementIds.addAll( dataElementInIndicatorIds );
         allDataElementIds.addAll( dataElementInCalculatedDataElementIds );
 
-        final Collection<Operand> allDataElementOperands = categoryService.getOperandsByIds( allDataElementIds );
-        final Collection<Operand> dataElementInIndicatorOperands = categoryService.getOperandsByIds( dataElementInIndicatorIds );
-        final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryService.getOperandsByIds( dataElementInCalculatedDataElementIds );
+        final Collection<DataElementOperand> allDataElementOperands = categoryService.getOperandsByIds( allDataElementIds );
+        final Collection<DataElementOperand> dataElementInIndicatorOperands = categoryService.getOperandsByIds( dataElementInIndicatorIds );
+        final Collection<DataElementOperand> dataElementInCalculatedDataElementOperands = categoryService.getOperandsByIds( dataElementInCalculatedDataElementIds );
 
         log.info( "Filtered data elements" );
         
@@ -240,7 +240,7 @@ public class DefaultDataMartEngine
         
         state.setMessage( "crosstabulating_data" );
 
-        final Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 
+        final Collection<DataElementOperand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 
             getIdsWithChildren( organisationUnitIds ) );
 
         log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
@@ -251,10 +251,10 @@ public class DefaultDataMartEngine
         
         final Collection<DataElement> dataElements = dataElementService.getDataElements( nonCalculatedDataElementIds );
         
-        final Collection<Operand> sumIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_INT );
-        final Collection<Operand> averageIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_INT );
-        final Collection<Operand> sumBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_BOOL );
-        final Collection<Operand> averageBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_BOOL );
+        final Collection<DataElementOperand> sumIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_INT );
+        final Collection<DataElementOperand> averageIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_INT );
+        final Collection<DataElementOperand> sumBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_BOOL );
+        final Collection<DataElementOperand> averageBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_BOOL );
 
         // ---------------------------------------------------------------------
         // Data element export
@@ -433,7 +433,7 @@ public class DefaultDataMartEngine
      * Sorts out the data element identifers of the given aggregation operator and 
      * the given type.
      */
-    private Collection<Operand> getOperands( final Collection<DataElement> dataElements, String aggregationOperator, String valueType )
+    private Collection<DataElementOperand> getOperands( final Collection<DataElement> dataElements, String aggregationOperator, String valueType )
     {
         final Collection<Integer> section = new ArrayList<Integer>();
         

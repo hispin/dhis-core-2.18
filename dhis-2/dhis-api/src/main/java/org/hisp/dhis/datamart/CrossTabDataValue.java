@@ -30,7 +30,7 @@ package org.hisp.dhis.datamart;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -45,7 +45,7 @@ public class CrossTabDataValue
     /**
      * Contains Operand (data element id and category option combo id) and data value.
      */
-    private Map<Operand, String> valueMap = new HashMap<Operand, String>();
+    private Map<DataElementOperand, String> valueMap = new HashMap<DataElementOperand, String>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -55,7 +55,7 @@ public class CrossTabDataValue
     {   
     }
     
-    public CrossTabDataValue( int periodId, int sourceId, Map<Operand, String> valueMap )
+    public CrossTabDataValue( int periodId, int sourceId, Map<DataElementOperand, String> valueMap )
     {
         this.periodId = periodId;
         this.sourceId = sourceId;
@@ -86,12 +86,12 @@ public class CrossTabDataValue
         this.sourceId = sourceId;
     }
 
-    public Map<Operand, String> getValueMap()
+    public Map<DataElementOperand, String> getValueMap()
     {
         return valueMap;
     }
 
-    public void setValueMap( Map<Operand, String> valueMap )
+    public void setValueMap( Map<DataElementOperand, String> valueMap )
     {
         this.valueMap = valueMap;
     }

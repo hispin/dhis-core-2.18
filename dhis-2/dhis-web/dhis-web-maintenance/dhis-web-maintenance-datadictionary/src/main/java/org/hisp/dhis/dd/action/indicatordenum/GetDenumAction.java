@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.expression.ExpressionService;
@@ -102,9 +102,9 @@ public class GetDenumAction
         return textualFormula;
     }
     
-    private List<Operand> operands = new ArrayList<Operand>();
+    private List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
-    public List<Operand> getOperands()
+    public List<DataElementOperand> getOperands()
     {
         return operands;
     }

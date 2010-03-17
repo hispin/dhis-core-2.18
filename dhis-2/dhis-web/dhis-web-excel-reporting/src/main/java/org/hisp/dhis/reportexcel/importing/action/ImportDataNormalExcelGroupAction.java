@@ -37,8 +37,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -199,7 +199,7 @@ public class ImportDataNormalExcelGroupAction
 
                 if ( value.length() > 0 )
                 {
-                    Operand operand = expressionService.getOperandsInExpression( excelItem.getExpression() ).iterator()
+                    DataElementOperand operand = expressionService.getOperandsInExpression( excelItem.getExpression() ).iterator()
                         .next();
 
                     DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );

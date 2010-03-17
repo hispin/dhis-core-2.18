@@ -36,7 +36,7 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.jdbc.StatementBuilder;
 
 /**
@@ -68,7 +68,7 @@ public class JDBCCrossTabStore
     // CrossTabStore implementation
     // -------------------------------------------------------------------------
 
-    public void createCrossTabTable( final List<Operand> operands )
+    public void createCrossTabTable( final List<DataElementOperand> operands )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -79,7 +79,7 @@ public class JDBCCrossTabStore
             sql.append( "periodid INTEGER NOT NULL, " );
             sql.append( "sourceid INTEGER NOT NULL, " );
             
-            for ( Operand operand : operands )
+            for ( DataElementOperand operand : operands )
             {
                 sql.append( COLUMN_PREFIX ).append( operand.getDataElementId() ).append(
                     SEPARATOR ).append( operand.getOptionComboId() ).append( " VARCHAR(30), " );
@@ -192,7 +192,7 @@ public class JDBCCrossTabStore
         }
     }
     
-    public void createTrimmedCrossTabTable( Collection<Operand> operands )
+    public void createTrimmedCrossTabTable( Collection<DataElementOperand> operands )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -200,7 +200,7 @@ public class JDBCCrossTabStore
         {            
             final StringBuffer buffer = new StringBuffer( "CREATE TABLE datavaluecrosstabtrimmed AS SELECT periodid, sourceid, " );
             
-            for ( final Operand operand : operands )
+            for ( final DataElementOperand operand : operands )
             {
                 buffer.append( COLUMN_PREFIX ).append( operand.getDataElementId() ).append( SEPARATOR ).append( operand.getOptionComboId() ).append( ", " );
             }
@@ -225,7 +225,7 @@ public class JDBCCrossTabStore
         }
     }
     
-    public int validateCrossTabTable( final Collection<Operand> operands )
+    public int validateCrossTabTable( final Collection<DataElementOperand> operands )
     {
         int maxColumns = statementBuilder.getMaximumNumberOfColumns();
         

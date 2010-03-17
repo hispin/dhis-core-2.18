@@ -30,7 +30,7 @@ package org.hisp.dhis.datamart.crosstab;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -40,14 +40,14 @@ public interface CrossTabService
 {
     String ID = CrossTabService.class.getName();
     
-    Collection<Operand> populateCrossTabTable( Collection<Operand> operands, 
+    Collection<DataElementOperand> populateCrossTabTable( Collection<DataElementOperand> operands, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
 
     void dropCrossTabTable();
     
-    void trimCrossTabTable( Collection<Operand> emptyOperands );
+    void trimCrossTabTable( Collection<DataElementOperand> emptyOperands );
 
-    Map<Operand, Integer> getOperandIndexMap( Collection<Operand> operands );
+    Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands );
     
-    int validateCrossTabTable( Collection<Operand> operands );
+    int validateCrossTabTable( Collection<DataElementOperand> operands );
 }

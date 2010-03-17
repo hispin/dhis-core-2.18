@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
@@ -73,7 +73,7 @@ public class AverageBoolAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, 
+    public Map<DataElementOperand, Double> getAggregatedValues( final Map<DataElementOperand, Integer> operandIndexMap, 
         final Period period, final OrganisationUnit unit, int unitLevel )
     {
         final OrganisationUnitHierarchy hierarchy = aggregationCache.getLatestOrganisationUnitHierarchy();
@@ -81,14 +81,14 @@ public class AverageBoolAggregator
         final Collection<CrossTabDataValue> crossTabValues = 
             getCrossTabDataValues( operandIndexMap, period.getStartDate(), period.getEndDate(), unit.getId(), hierarchy );
         
-        final Map<Operand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
+        final Map<DataElementOperand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
             period.getEndDate(), period.getStartDate(), period.getEndDate(), unitLevel ); // <data element id, [total value, total relevant days]>
 
-        final Map<Operand, Double> values = new HashMap<Operand, Double>( entries.size() ); // <Operand, total value>
+        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>( entries.size() ); // <Operand, total value>
 
         double average = 0.0;
         
-        for ( final Entry<Operand, double[]> entry : entries.entrySet() )
+        for ( final Entry<DataElementOperand, double[]> entry : entries.entrySet() )
         {
             if ( entry.getValue() != null && entry.getValue()[ 1 ] > 0 )
             {
@@ -102,7 +102,7 @@ public class AverageBoolAggregator
         
     }
     
-    public Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
+    public Collection<CrossTabDataValue> getCrossTabDataValues( final Map<DataElementOperand, Integer> operandIndexMap, 
         final Date startDate, final Date endDate, final int parentId, final OrganisationUnitHierarchy hierarchy )
     {
         final Collection<Integer> sourceIds = aggregationCache.getChildren( hierarchy, parentId );
@@ -119,10 +119,10 @@ public class AverageBoolAggregator
         return dataMartStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceIds );
     }
     
-    public Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+    public Map<DataElementOperand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel )
     {
-        final Map<Operand, double[]> totalSums = new HashMap<Operand, double[]>(); // <Operand, [total value, total relevant days]>
+        final Map<DataElementOperand, double[]> totalSums = new HashMap<DataElementOperand, double[]>(); // <Operand, [total value, total relevant days]>
         
         Period period = null;
         Date currentStartDate = null;
@@ -149,7 +149,7 @@ public class AverageBoolAggregator
             
             if ( duration > 0 )
             {
-                for ( final Entry<Operand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
+                for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
                 {
                     if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
                     {

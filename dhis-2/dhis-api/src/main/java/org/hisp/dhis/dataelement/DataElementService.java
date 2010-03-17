@@ -489,5 +489,5 @@ public interface DataElementService
      * 
      * @return a collection of all Operands.
      */
-    Collection<Operand> getAllOperands();
+    Collection<DataElementOperand> getAllOperands();
 }

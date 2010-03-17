@@ -28,10 +28,10 @@ package org.hisp.dhis.datamart.indicator;
  */
 
 import static org.hisp.dhis.datamart.util.ParserUtil.generateExpression;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,8 +42,8 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
@@ -149,13 +149,13 @@ public class DefaultIndicatorDataMart
     // -------------------------------------------------------------------------
     
     public int exportIndicatorValues( final Collection<Integer> indicatorIds, final Collection<Integer> periodIds, 
-        final Collection<Integer> organisationUnitIds, final Collection<Operand> operands )
+        final Collection<Integer> organisationUnitIds, final Collection<DataElementOperand> operands )
     {
-        final Collection<Operand> sumOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_SUM );
-        final Collection<Operand> averageOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        final Collection<DataElementOperand> sumOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_SUM );
+        final Collection<DataElementOperand> averageOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_AVERAGE );
         
-        final Map<Operand, Integer> sumOperandIndexMap = crossTabService.getOperandIndexMap( sumOperands );
-        final Map<Operand, Integer> averageOperandIndexMap = crossTabService.getOperandIndexMap( averageOperands );
+        final Map<DataElementOperand, Integer> sumOperandIndexMap = crossTabService.getOperandIndexMap( sumOperands );
+        final Map<DataElementOperand, Integer> averageOperandIndexMap = crossTabService.getOperandIndexMap( averageOperands );
         
         final Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );        
         final Collection<Period> periods = periodService.getPeriods( periodIds );
@@ -168,13 +168,13 @@ public class DefaultIndicatorDataMart
         int count = 0;
         int level = 0;
         
-        Map<Operand, Double> sumIntValueMap = null;
-        Map<Operand, Double> averageIntValueMap = null;
+        Map<DataElementOperand, Double> sumIntValueMap = null;
+        Map<DataElementOperand, Double> averageIntValueMap = null;
         
-        Map<String, Map<Operand, Double>> valueMapMap = null;
+        Map<String, Map<DataElementOperand, Double>> valueMapMap = null;
         
-        Map<Operand, Double> numeratorValueMap = null;
-        Map<Operand, Double> denominatorValueMap = null;
+        Map<DataElementOperand, Double> numeratorValueMap = null;
+        Map<DataElementOperand, Double> denominatorValueMap = null;
         
         PeriodType periodType = null;
         
@@ -199,7 +199,7 @@ public class DefaultIndicatorDataMart
                 sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level );                
                 averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level );
                 
-                valueMapMap = new HashMap<String, Map<Operand, Double>>( 2 );
+                valueMapMap = new HashMap<String, Map<DataElementOperand, Double>>( 2 );
                 
                 valueMapMap.put( DataElement.AGGREGATION_OPERATOR_SUM, sumIntValueMap );
                 valueMapMap.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, averageIntValueMap );
@@ -268,11 +268,11 @@ public class DefaultIndicatorDataMart
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<Operand> filterOperands( final Collection<Operand> operands, final String aggregationOperator )
+    private Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final String aggregationOperator )
     {
-        final Collection<Operand> filteredOperands = new ArrayList<Operand>();
+        final Collection<DataElementOperand> filteredOperands = new ArrayList<DataElementOperand>();
         
-        for ( final Operand operand : operands )
+        for ( final DataElementOperand operand : operands )
         {
             final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
             

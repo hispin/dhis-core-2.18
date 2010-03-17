@@ -37,8 +37,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -105,9 +105,9 @@ public class GetDataElementGroupMembersAction
         this.dataElementGroupId = dataElementGroupId;
     }
 
-    private List<Operand> operands = new ArrayList<Operand>();
+    private List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
-    public List<Operand> getOperands()
+    public List<DataElementOperand> getOperands()
     {
         return operands;
     }
@@ -143,14 +143,14 @@ public class GetDataElementGroupMembersAction
             {
                 for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
                 {
-                    Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
+                    DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
                         + optionCombo.getName() );
                     operands.add( operand );
                 }
             }
             else
             {
-                Operand operand = new Operand( dataElement.getId(), optionCombos.iterator().next().getId(), dataElement
+                DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombos.iterator().next().getId(), dataElement
                     .getName() );
                 operands.add( operand );
             }

@@ -29,7 +29,7 @@ package org.hisp.dhis.datamart.dataelement;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 
 /**
@@ -38,6 +38,6 @@ import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
  */
 public interface DataElementDataMart
 {
-    int exportDataValues( Collection<Operand> operands, Collection<Integer> periodIds, 
+    int exportDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         Collection<Integer> organisationUnitIds, DataElementAggregator dataElementAggregator );
 }

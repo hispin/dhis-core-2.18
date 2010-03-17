@@ -35,7 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.CalculatedDataElement;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -67,9 +67,9 @@ public class Dhis14ParsingUtils
      * @param calculatedDataElement the calculated data element.
      * @return a map with operands and factors.
      */
-    public static Map<Operand, Double> getOperandFactors( CalculatedDataElement calculatedDataElement )
+    public static Map<DataElementOperand, Double> getOperandFactors( CalculatedDataElement calculatedDataElement )
     {
-        Map<Operand, Double> factorMap = new HashMap<Operand, Double>();
+        Map<DataElementOperand, Double> factorMap = new HashMap<DataElementOperand, Double>();
 
         Pattern pattern = Pattern.compile( "\\[(\\d+\\.\\d+)\\]\\s*\\*\\s*(-?\\d+)" ); // "[id] * factor"
 
@@ -77,7 +77,7 @@ public class Dhis14ParsingUtils
 
         while ( matcher.find() )
         {
-            final Operand operand = new Operand();
+            final DataElementOperand operand = new DataElementOperand();
             
             String operandString = matcher.group( 1 );
             

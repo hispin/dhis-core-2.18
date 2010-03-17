@@ -42,8 +42,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -122,9 +122,9 @@ public class ShowUpdateDataElementFormAction
         return factorMap;
     }
     
-    private Collection<Operand> operands = new ArrayList<Operand>();
+    private Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
-    public Collection<Operand> getOperands()
+    public Collection<DataElementOperand> getOperands()
     {
         return operands;
     }
@@ -201,7 +201,7 @@ public class ShowUpdateDataElementFormAction
     		DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
     		DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );    			    			
     			
-        	Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + optionCombo.getName() );
+    		DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + optionCombo.getName() );
         		
         	operands.add( operand );
             }            

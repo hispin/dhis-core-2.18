@@ -36,8 +36,8 @@ import java.util.List;
  * @author Abyot Asalefew
  * @version $Id$
  */
-public class Operand
-    implements Serializable, Comparable<Operand>
+public class DataElementOperand
+    implements Serializable, Comparable<DataElementOperand>
 {
     public static final String SEPARATOR = ".";
 
@@ -55,18 +55,18 @@ public class Operand
     // Constructors
     // -------------------------------------------------------------------------
 
-    public Operand()
+    public DataElementOperand()
     {
     }
     
-    public Operand( int dataElementId, int optionComboId )
+    public DataElementOperand( int dataElementId, int optionComboId )
     {
         this.id = dataElementId + SEPARATOR + optionComboId;
         this.dataElementId = dataElementId;
         this.optionComboId = optionComboId;
     }
 
-    public Operand( int dataElementId, int optionComboId, String operandName )
+    public DataElementOperand( int dataElementId, int optionComboId, String operandName )
     {
         this.id = dataElementId + SEPARATOR + optionComboId;
         this.dataElementId = dataElementId;
@@ -74,7 +74,7 @@ public class Operand
         this.operandName = operandName;
     }
 
-    public Operand( int dataElementId, int optionComboId, String operandName, List<Integer> aggregationLevels )
+    public DataElementOperand( int dataElementId, int optionComboId, String operandName, List<Integer> aggregationLevels )
     {
         this.id = dataElementId + SEPARATOR + optionComboId;
         this.dataElementId = dataElementId;
@@ -220,7 +220,7 @@ public class Operand
             return false;
         }
         
-        final Operand other = (Operand) object;
+        final DataElementOperand other = (DataElementOperand) object;
         
         return dataElementId == other.dataElementId && optionComboId == other.optionComboId;
     }
@@ -239,7 +239,7 @@ public class Operand
     // compareTo
     // -------------------------------------------------------------------------
 
-    public int compareTo( Operand other )
+    public int compareTo( DataElementOperand other )
     {
         if ( this.getDataElementId() != other.getDataElementId() )
         {

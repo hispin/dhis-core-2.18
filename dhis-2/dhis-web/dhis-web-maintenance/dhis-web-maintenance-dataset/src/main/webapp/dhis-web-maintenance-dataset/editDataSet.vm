@@ -101,17 +101,18 @@
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="addDataSetMembers()">            
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList')">            
           </select>
         </td>
         <td>
-          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addDataSetMembers()">
-          <br>
-          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeDataSetMembers()">
-        </td>
+            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'availableList', 'selectedList')"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="moveSelectedById( 'selectedList', 'availableList')"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableList', 'selectedList' )"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' )"/>
+        </td>       
         <td>
           <!-- List of all selected DataElements -->
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="removeDataSetMembers()">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' )">
           </select>
         </td>
       </tr>

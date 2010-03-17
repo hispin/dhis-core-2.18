@@ -33,8 +33,8 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -172,7 +172,7 @@ public class GetValidationResultDetailsAction
 
         Source source = organisationUnitService.getOrganisationUnit( sourceId );
 
-        for ( Operand operand : expressionService.getOperandsInExpression( validationRule.getLeftSide().getExpression() ) )
+        for ( DataElementOperand operand : expressionService.getOperandsInExpression( validationRule.getLeftSide().getExpression() ) )
         {
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
             DataElementCategoryOptionCombo categoryOptionCombo = categoryService
@@ -186,7 +186,7 @@ public class GetValidationResultDetailsAction
                 categoryOptionCombo.getName(), value );
         }
 
-        for ( Operand operand : expressionService.getOperandsInExpression( validationRule.getRightSide().getExpression() ) )
+        for ( DataElementOperand operand : expressionService.getOperandsInExpression( validationRule.getRightSide().getExpression() ) )
         {
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
             DataElementCategoryOptionCombo categoryOptionCombo = categoryService
