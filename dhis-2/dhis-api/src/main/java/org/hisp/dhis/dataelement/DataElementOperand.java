@@ -41,11 +41,11 @@ public class DataElementOperand
 {
     public static final String SEPARATOR = ".";
 
-    private String id;
-
     private int dataElementId;
 
     private int optionComboId;
+
+    private String operandId;
 
     private String operandName;
     
@@ -61,24 +61,24 @@ public class DataElementOperand
     
     public DataElementOperand( int dataElementId, int optionComboId )
     {
-        this.id = dataElementId + SEPARATOR + optionComboId;
         this.dataElementId = dataElementId;
         this.optionComboId = optionComboId;
+        this.operandId = dataElementId + SEPARATOR + optionComboId;
     }
 
     public DataElementOperand( int dataElementId, int optionComboId, String operandName )
     {
-        this.id = dataElementId + SEPARATOR + optionComboId;
         this.dataElementId = dataElementId;
         this.optionComboId = optionComboId;
+        this.operandId = dataElementId + SEPARATOR + optionComboId;
         this.operandName = operandName;
     }
 
     public DataElementOperand( int dataElementId, int optionComboId, String operandName, List<Integer> aggregationLevels )
     {
-        this.id = dataElementId + SEPARATOR + optionComboId;
         this.dataElementId = dataElementId;
         this.optionComboId = optionComboId;
+        this.operandId = dataElementId + SEPARATOR + optionComboId;
         this.operandName = operandName;
         this.aggregationLevels = aggregationLevels;
     }
@@ -135,26 +135,6 @@ public class DataElementOperand
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId( String id )
-    {
-        this.id = id;
-    }
-
-    public String getOperandName()
-    {
-        return operandName;
-    }
-
-    public void setOperandName( String operandName )
-    {
-        this.operandName = operandName;
-    }
-
     public int getDataElementId()
     {
         return dataElementId;
@@ -173,6 +153,26 @@ public class DataElementOperand
     public void setOptionComboId( int optionComboId )
     {
         this.optionComboId = optionComboId;
+    }
+
+    public String getOperandId()
+    {
+        return operandId;
+    }
+
+    public void setOperandId( String operandId )
+    {
+        this.operandId = operandId;
+    }
+
+    public String getOperandName()
+    {
+        return operandName;
+    }
+
+    public void setOperandName( String operandName )
+    {
+        this.operandName = operandName;
     }
 
     public List<Integer> getAggregationLevels()

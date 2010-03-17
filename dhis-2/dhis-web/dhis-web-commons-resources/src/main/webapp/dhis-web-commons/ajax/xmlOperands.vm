@@ -2,11 +2,10 @@
 <operands>
 #foreach ( $operand in $operands )
     <operand>
-        <id>$operand.id</id>
-        <name>$encoder.xmlEncode( $operand.operandName )</name>
         <dataElementId>$operand.dataElementId</dataElementId>
         <categoryOptionComboId>$operand.optionComboId</categoryOptionComboId>
-        <operandName>$operand.operandName</operandName>
+        <operandId>$operand.operandId</operandId>
+        <operandName>$encoder.xmlEncode( $operand.operandName )</operandName>
     </operand>
 #end
 </operands>

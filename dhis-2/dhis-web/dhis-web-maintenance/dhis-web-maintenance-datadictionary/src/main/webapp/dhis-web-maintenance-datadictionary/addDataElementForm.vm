@@ -126,7 +126,7 @@
 			</select><br>
 			<select id="availableDataElements" size="5" multiple="multiple" style="width:450px">
 	            #foreach( $operand in $operands )
-					<option value="[$operand.id]">$encoder.htmlEncode( $operand.operandName )</option>
+					<option value="[$operand.operandId]">$encoder.htmlEncode( $operand.operandName )</option>
 				#end             
 	        </select>		
 		</td>

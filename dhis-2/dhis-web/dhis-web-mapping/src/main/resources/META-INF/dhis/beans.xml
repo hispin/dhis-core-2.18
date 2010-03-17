@@ -160,15 +160,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- MapLegendSet -->
   
-  <bean id="org.hisp.dhis.mapping.action.AddMapLegendSetAction"
-    class="org.hisp.dhis.mapping.action.AddMapLegendSetAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-  </bean>
-	
   <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction"
     class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction"
     scope="prototype">

@@ -61,7 +61,7 @@
 	  <select id="dataElementId" name="dataElementId" size="10" style="min-width:450px"		
 	    ondblclick="insertText( 'formula', this.options[ this.selectedIndex ].value, 'aggregationOperator' )">
 	    #foreach( $operand in $operands )
-	      <option value="[$operand.id]">$encoder.htmlEncode( $operand.operandName )</option>
+	      <option value="[$operand.operandId]">$encoder.htmlEncode( $operand.operandName )</option>
 	    #end
 	  </select>
 	</td>

@@ -163,8 +163,8 @@
                 </tr>
 				#foreach ( $operand in $operands )
 				<tr>
-					<td>$operand.operandName<input type="hidden" name="dataElementIds" value="$operand.id"></td>
-					<td><input type="text" name="factors" value="$factorMap.get($operand.id)"></td>
+					<td>$operand.operandName<input type="hidden" name="dataElementIds" value="$operand.operandId"></td>
+					<td><input type="text" name="factors" value="$factorMap.get($operand.operandId)"></td>
 					<td><button type="button" title="$i18n.getString('remove_all')"><img src="../images/delete.png" alt="$i18n.getString('delete_icon')"></button></td>
 				</tr>
 				#end

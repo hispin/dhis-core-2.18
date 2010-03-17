@@ -69,8 +69,8 @@ function getFilteredDataElementsReceived( xmlObject )
 	
 	for ( var i = 0; i < operands.length; i++)
 	{
-		var id = operands[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var elementName = operands[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+		var id = operands[ i ].getElementsByTagName( "operandId" )[0].firstChild.nodeValue;
+		var elementName = operands[ i ].getElementsByTagName( "operandName" )[0].firstChild.nodeValue;
 		
 		var option = document.createElement( "option" );
 		option.value = "[" + id + "]";
