@@ -40,8 +40,6 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemGroupComparator;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
 import com.opensymphony.xwork2.Action;
