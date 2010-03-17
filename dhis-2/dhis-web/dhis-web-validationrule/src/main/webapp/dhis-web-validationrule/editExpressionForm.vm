@@ -56,7 +56,7 @@
 	  	onmouseover="this.title = this.options[this.selectedIndex].text;"
 		ondblclick="insertText( 'expression', this.options[ this.selectedIndex ].value )">
 	    #foreach( $operand in $operands )
-	      <option value="[$operand.id]">$encoder.htmlEncode( $operand.operandName )</option>
+	      <option value="[$operand.operandId]">$encoder.htmlEncode( $operand.operandName )</option>
 	    #end
 	  </select>
 	  
