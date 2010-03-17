@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operands>
+#foreach ( $operand in $operands )
+    <operand>
+        <id>$operand.id</id>
+        <name>$encoder.xmlEncode( $operand.operandName )</name>
+        <dataElementId>$operand.dataElementId</dataElementId>
+        <categoryOptionComboId>$operand.optionComboId</categoryOptionComboId>
+        <operandName>$operand.operandName</operandName>
+    </operand>
+#end
+</operands>

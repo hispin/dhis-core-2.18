@@ -55,7 +55,7 @@
 		<action name="getDataElementGroupMembers"
 			class="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseOperandList.vm</result>
+				/dhis-web-commons/ajax/xmlOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -735,7 +735,7 @@
 		<action name="getFilteredDataElements"
 			class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseOperandList.vm</result>
+				/dhis-web-commons/ajax/xmlOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 

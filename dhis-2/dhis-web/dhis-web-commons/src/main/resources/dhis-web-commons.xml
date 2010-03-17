@@ -340,6 +340,12 @@
             <param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+        <action name="getOperands" class="org.hisp.dhis.commons.action.GetOperandsAction">
+            <result name="success" type="velocity-xml">
+                /dhis-web-commons/ajax/xmlOperands.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+		
 	</package>
 
     <!-- Common actions JSON -->

@@ -89,7 +89,7 @@
     </action>    
     
     <action name="getFilteredDataElements" class="org.hisp.dhis.validationrule.action.GetFilteredDataElementsAction">
-      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseOperandList.vm</result>			
+      <result name="success" type="velocity-xml">/dhis-web-commons/ajax/xmlOperands.vm</result>			
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
