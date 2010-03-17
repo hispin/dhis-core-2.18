@@ -42,11 +42,14 @@ import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
@@ -75,9 +78,18 @@ public class SearchAction
 
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
 
+    private static final String HYPHEN = " - ";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -212,6 +224,13 @@ public class SearchAction
     public void setFromDate( String fromDate )
     {
         this.fromDate = fromDate;
+    }
+
+    private String fromToDate;
+
+    public String getFromToDate()
+    {
+        return fromToDate;
     }
 
     private String periodTypeId;
@@ -484,6 +503,14 @@ public class SearchAction
         // Set DataBrowserTable variable for PDF export
         setExportPDFVariables();
 
+        // Get format standard for periods which appropriate with from date, to date and period type
+        fromToDate = getFromToDateFormat( periodType, fromDate, toDate );
+
+        if ( fromToDate == null )
+        {
+            fromToDate = "";
+        }
+
         return SUCCESS;
     }
 
@@ -547,10 +574,72 @@ public class SearchAction
     private void convertColumnNames( DataBrowserTable dataBrowserTable )
     {
         allColumnsConverted = dataBrowserTable.getColumns();
-        
+
         for ( MetaValue col : allColumnsConverted )
         {
             col.setName( DateUtils.convertDate( col.getName() ) );
         }
+    }
+
+    /**
+     * This is a helper method for checking if the fromDate is later than the
+     * toDate. This is necessary in case a user sends the dates with HTTP GET.
+     * 
+     * @param fromDate
+     * @param toDate
+     * @return List of Periods
+     */
+
+    @SuppressWarnings( "unused" )
+    private List<Period> getPeriodsList( PeriodType periodType, String fromDate, String toDate )
+    {
+        String formatString = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat( formatString );
+
+        Date date1 = new Date();
+        Date date2 = new Date();
+
+        try
+        {
+            date1 = sdf.parse( fromDate );
+            date2 = sdf.parse( toDate );
+
+            List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType, date1,
+                date2 ) );
+
+            if ( periods.isEmpty() )
+            {
+                CalendarPeriodType calendarPeriodType = (CalendarPeriodType) periodType;
+
+                periods.add( calendarPeriodType.createPeriod( date1 ) );
+                periods.add( calendarPeriodType.createPeriod( date2 ) );
+            }
+
+            return periods;
+        }
+        catch ( ParseException e )
+        {
+            return null; // The user hasn't specified any dates
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private String getFromToDateFormat( PeriodType periodType, String fromDate, String toDate )
+    {
+        String stringFormatDate = "";
+        List<Period> periods = new ArrayList( this.getPeriodsList( periodType, fromDate, toDate ) );
+
+        for ( @SuppressWarnings( "unused" )
+        Period period : periods )
+        {
+            String sTemp = format.formatPeriod( period );
+            
+            if ( !stringFormatDate.contains( sTemp ) )
+            {
+                stringFormatDate += HYPHEN + sTemp;
+            }
+        }
+
+        return stringFormatDate;
     }
 }
