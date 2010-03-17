@@ -305,6 +305,7 @@ function registerReceived( messageElement )
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
     document.getElementById( "dateDiv" ).style.display = "none";
+	hideById('message');
 	changeInputTextStatus( true );
 }
 

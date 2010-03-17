@@ -60,7 +60,7 @@ public class GetDocumentAction
     {
         this.id = id;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -71,16 +71,17 @@ public class GetDocumentAction
     {
         return document;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        document = documentService.getDocument( id );
-        
+        if ( id != null )
+        {
+            document = documentService.getDocument( id );
+        }
         return SUCCESS;
     }
 }
-
