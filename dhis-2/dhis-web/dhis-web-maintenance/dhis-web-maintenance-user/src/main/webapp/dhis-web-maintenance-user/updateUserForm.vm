@@ -72,7 +72,7 @@
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" maxlength="80" style="width:20em" class="{validate:{number:true,maxlength:80}}"></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" maxlength="80" style="width:20em" class="{validate:{maxlength:80}}"></td>
         <td></td>
         <td></td>       
     </tr>
