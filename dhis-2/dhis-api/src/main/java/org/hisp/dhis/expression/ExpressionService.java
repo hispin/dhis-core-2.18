@@ -30,8 +30,9 @@ package org.hisp.dhis.expression;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
@@ -128,7 +129,7 @@ public interface ExpressionService
      * @param expression The expression string.
      * @return A Set of Operands.
      */
-    Set<Operand> getOperandsInExpression( String expression );
+    Set<DataElementOperand> getOperandsInExpression( String expression );
     
     /**
      * Converts the given expression based on the maps of corresponding data element

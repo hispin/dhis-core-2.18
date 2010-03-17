@@ -35,8 +35,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -191,7 +191,7 @@ public class ImportDataCategoryExcelGroupAction
 
     private void addDataValue( String expression, String value, OrganisationUnit organisationUnit, Period period )
     {
-        Operand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
+        DataElementOperand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
 
         DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 

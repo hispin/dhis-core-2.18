@@ -40,7 +40,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.jdbc.batchhandler.DataValueCrossTabBatchHandler;
@@ -85,14 +85,14 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<Operand> populateCrossTabTable( final Collection<Operand> operands, 
+    public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands, 
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {
-        final Set<Operand> operandsWithData = new HashSet<Operand>( operands );
+        final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>( operands );
 
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
-            final List<Operand> operandList = new ArrayList<Operand>( operands );
+            final List<DataElementOperand> operandList = new ArrayList<DataElementOperand>( operands );
             
             Collections.sort( operandList );
 
@@ -108,7 +108,7 @@ public class DefaultCrossTabService
             
             batchHandler.init();
             
-            Map<Operand, String> map = null;
+            Map<DataElementOperand, String> map = null;
             
             List<String> valueList = null;
             
@@ -129,7 +129,7 @@ public class DefaultCrossTabService
 
                     hasValues = false;
                     
-                    for ( Operand operand : operandList )
+                    for ( DataElementOperand operand : operandList )
                     {
                         value = map.get( operand );
                         
@@ -173,7 +173,7 @@ public class DefaultCrossTabService
         crossTabStore.dropCrossTabTable();
     }
     
-    public void trimCrossTabTable( Collection<Operand> operands )
+    public void trimCrossTabTable( Collection<DataElementOperand> operands )
     {
         // TODO use H2 in-memory table for datavaluecrosstab table ?
         
@@ -184,13 +184,13 @@ public class DefaultCrossTabService
         crossTabStore.renameTrimmedCrossTabTable();
     }
     
-    public Map<Operand, Integer> getOperandIndexMap( Collection<Operand> operands )
+    public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands )
     {
         final Map<String, Integer> columnNameIndexMap = crossTabStore.getCrossTabTableColumns();
 
-        final Map<Operand, Integer> operandMap = new HashMap<Operand, Integer>();
+        final Map<DataElementOperand, Integer> operandMap = new HashMap<DataElementOperand, Integer>();
         
-        for ( Operand operand : operands )
+        for ( DataElementOperand operand : operands )
         {
             final String key = CrossTabStore.COLUMN_PREFIX + operand.getDataElementId() + CrossTabStore.SEPARATOR + operand.getOptionComboId();
             
@@ -203,7 +203,7 @@ public class DefaultCrossTabService
         return operandMap;
     }
 
-    public int validateCrossTabTable( Collection<Operand> operands )
+    public int validateCrossTabTable( Collection<DataElementOperand> operands )
     {
         return crossTabStore.validateCrossTabTable( operands );
     }
@@ -215,7 +215,7 @@ public class DefaultCrossTabService
     /**
      * Validates whether the given collections of identifiers are not null and of size greater than 0.
      */
-    private boolean validate( Collection<Operand> operands, Collection<Integer> periodIds, Collection<Integer> unitIds )
+    private boolean validate( Collection<DataElementOperand> operands, Collection<Integer> periodIds, Collection<Integer> unitIds )
     {
         if ( operands == null || operands.size() == 0 )
         {

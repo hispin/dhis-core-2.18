@@ -44,10 +44,10 @@ import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
-import org.hisp.dhis.system.objectmapper.OperandMapper;
+import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -418,9 +418,9 @@ public class HibernateDataElementStore
     // Operand
     // -------------------------------------------------------------------------
     
-    public Collection<Operand> getAllOperands()
+    public Collection<DataElementOperand> getAllOperands()
     {
-        final ObjectMapper<Operand> mapper = new ObjectMapper<Operand>();
+        final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
         
         final String sql =
             "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
@@ -433,7 +433,7 @@ public class HibernateDataElementStore
         {
             ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
             
-            return mapper.getCollection( resultSet, new OperandMapper() );
+            return mapper.getCollection( resultSet, new DataElementOperandMapper() );
         }
         catch ( SQLException ex )
         {

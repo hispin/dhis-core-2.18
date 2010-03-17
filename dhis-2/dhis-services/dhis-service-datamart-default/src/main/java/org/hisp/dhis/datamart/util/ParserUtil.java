@@ -27,15 +27,15 @@ package org.hisp.dhis.datamart.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hisp.dhis.dataelement.Operand;
-
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -88,7 +88,7 @@ public class ParserUtil
      * @param formula The formula to parse.
      * @param valueMap The map containing data element identifiers and aggregated value.
      */
-    public static String generateExpression( final String formula, final Map<Operand, Double> valueMap )
+    public static String generateExpression( final String formula, final Map<DataElementOperand, Double> valueMap )
     {       
         try
         {           
@@ -109,7 +109,7 @@ public class ParserUtil
                 int dataElementId = Integer.parseInt( replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) ) );
                 int categoryOptionComboId = Integer.parseInt( replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1 ) );
                 
-                final Operand operand = new Operand( dataElementId, categoryOptionComboId );
+                final DataElementOperand operand = new DataElementOperand( dataElementId, categoryOptionComboId );
                 
                 aggregatedValue = valueMap.get( operand );
                 

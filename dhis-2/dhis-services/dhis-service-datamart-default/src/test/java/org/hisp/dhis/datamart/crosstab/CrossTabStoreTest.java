@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class CrossTabStoreTest
 {
     private CrossTabStore crossTabStore;
     
-    private List<Operand> operands;
+    private List<DataElementOperand> operands;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -27,11 +27,11 @@ public class CrossTabStoreTest
     {
         crossTabStore = (CrossTabStore) getBean( CrossTabStore.ID );
         
-        operands = new ArrayList<Operand>();
-        operands.add( new Operand( 1, 1 ) );
-        operands.add( new Operand( 1, 2 ) );
-        operands.add( new Operand( 2, 1 ) );
-        operands.add( new Operand( 2, 2 ) );        
+        operands = new ArrayList<DataElementOperand>();
+        operands.add( new DataElementOperand( 1, 1 ) );
+        operands.add( new DataElementOperand( 1, 2 ) );
+        operands.add( new DataElementOperand( 2, 1 ) );
+        operands.add( new DataElementOperand( 2, 2 ) );        
     }
 
     @Override

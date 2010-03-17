@@ -39,7 +39,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
@@ -142,9 +142,9 @@ public class DefaultImportAnalyser
         
         for ( Indicator indicator : indicators )
         {
-            Set<Operand> operands = expressionService.getOperandsInExpression( indicator.getNumerator() );
+            Set<DataElementOperand> operands = expressionService.getOperandsInExpression( indicator.getNumerator() );
             
-            for ( Operand operand : operands )
+            for ( DataElementOperand operand : operands )
             {
                 if ( !dataElementIdentifiers.contains( operand.getDataElementId() ) )
                 {
@@ -154,7 +154,7 @@ public class DefaultImportAnalyser
             
             operands = expressionService.getOperandsInExpression( indicator.getDenominator() );
             
-            for ( Operand operand : operands )
+            for ( DataElementOperand operand : operands )
             {
                 if ( !dataElementIdentifiers.contains( operand.getDataElementId() ) )
                 {

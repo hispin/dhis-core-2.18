@@ -271,5 +271,5 @@ public interface DataElementStore
      * 
      * @return a collection of all Operands.
      */
-    Collection<Operand> getAllOperands();
+    Collection<DataElementOperand> getAllOperands();
 }

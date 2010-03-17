@@ -39,12 +39,13 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.amplecode.quick.mapper.ObjectMapper;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
@@ -60,7 +61,6 @@ import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
-import org.amplecode.quick.mapper.ObjectMapper;
 
 /**
  * @author Lars Helge Overland
@@ -369,7 +369,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public Map<Operand, String> getDataValueMap( int periodId, int sourceId )
+    public Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();
             
@@ -383,11 +383,11 @@ public class JdbcDataMartStore
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            final Map<Operand, String> map = new HashMap<Operand, String>();
+            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
             
             while ( resultSet.next() )
             {
-                final Operand operand = new Operand( resultSet.getInt( 1 ), resultSet.getInt( 2 ), null );
+                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ), null );
                 
                 map.put( operand, resultSet.getString( 3 ) );
             }
@@ -408,7 +408,7 @@ public class JdbcDataMartStore
     // CrossTabDataValue
     // -------------------------------------------------------------------------
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<Operand, Integer> operandIndexMap, 
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, 
         Collection<Integer> periodIds, Collection<Integer> sourceIds )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -435,7 +435,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<Operand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -474,7 +474,7 @@ public class JdbcDataMartStore
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Map<Operand, Integer> operandIndexMap )
+    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Map<DataElementOperand, Integer> operandIndexMap )
         throws SQLException
     {
         final Collection<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
@@ -488,7 +488,7 @@ public class JdbcDataMartStore
             value.setPeriodId( resultSet.getInt( 1 ) );
             value.setSourceId( resultSet.getInt( 2 ) );
             
-            for ( Map.Entry<Operand, Integer> entry : operandIndexMap.entrySet() )
+            for ( Map.Entry<DataElementOperand, Integer> entry : operandIndexMap.entrySet() )
             {
                 columnValue = resultSet.getString( entry.getValue() );
                 

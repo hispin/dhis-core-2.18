@@ -36,8 +36,8 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -116,9 +116,9 @@ public class GetFilteredDataElementsAction
         return dataElements;
     }
 
-    private List<Operand> operands = new ArrayList<Operand>();
+    private List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
-    public List<Operand> getOperands()
+    public List<DataElementOperand> getOperands()
     {
         return operands;
     }
@@ -154,17 +154,17 @@ public class GetFilteredDataElementsAction
         // Create Operands
         // ---------------------------------------------------------------------
 
-        operands = new ArrayList<Operand>( categoryService.getOperands( dataElements ) );
+        operands = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
         
         // ---------------------------------------------------------------------
         // String filter
         // ---------------------------------------------------------------------
 
-        Iterator<Operand> iterator = operands.iterator();
+        Iterator<DataElementOperand> iterator = operands.iterator();
         
         while ( iterator.hasNext() )
         {
-            Operand operand = iterator.next();
+            DataElementOperand operand = iterator.next();
             
             if ( !operand.getOperandName().toLowerCase().contains( filter.toLowerCase() ) )
             {

@@ -44,8 +44,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -69,7 +69,7 @@ public class CrossTabServiceTest
     
     private Iterator<Period> generatedPeriods;
 
-    private Collection<Operand> operands;
+    private Collection<DataElementOperand> operands;
     private Collection<Integer> periodIds;
     private Collection<Integer> organisationUnitIds;
     
@@ -186,7 +186,7 @@ public class CrossTabServiceTest
     {
         crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
 
-        Map<Operand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
+        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
 
         Collection<CrossTabDataValue> values = dataMartStore.getCrossTabDataValues( operandIndexMap, periodIds, organisationUnitIds );
         
@@ -213,7 +213,7 @@ public class CrossTabServiceTest
     @Test
     public void testTrimCrossTabTable()
     {
-        Collection<Operand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
         
         crossTabService.trimCrossTabTable( operandsWithData );
     }
@@ -223,18 +223,18 @@ public class CrossTabServiceTest
     {
         crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
 
-        Map<Operand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
+        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
         
         assertEquals( operands.size(), operandIndexMap.size() );
         
-        Iterator<Operand> iterator = operands.iterator();
+        Iterator<DataElementOperand> iterator = operands.iterator();
         
         int minIndex = 3;
         int maxIndex = operands.size() + 2;
         
         while ( iterator.hasNext() )
         {
-            Operand operand = iterator.next();
+            DataElementOperand operand = iterator.next();
             Integer index = operandIndexMap.get( operand );
             
             assertNotNull( index );

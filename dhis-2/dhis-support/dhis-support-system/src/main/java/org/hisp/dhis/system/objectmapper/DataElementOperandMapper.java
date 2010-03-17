@@ -27,24 +27,24 @@ package org.hisp.dhis.system.objectmapper;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.DEFAULT_TOSTRING;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.amplecode.quick.mapper.RowMapper;
-import org.hisp.dhis.dataelement.Operand;
-
-import static org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.DEFAULT_TOSTRING;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
  */
-public class OperandMapper
-    implements RowMapper<Operand>
+public class DataElementOperandMapper
+    implements RowMapper<DataElementOperand>
 {
     private static final String SEPARATOR = " ";
     
     @Override
-    public Operand mapRow( ResultSet resultSet )
+    public DataElementOperand mapRow( ResultSet resultSet )
         throws SQLException
     {
         String operandName = resultSet.getString( 2 );
@@ -56,7 +56,7 @@ public class OperandMapper
             operandName += SEPARATOR + cocName;
         }
                 
-        final Operand operand = new Operand(
+        final DataElementOperand operand = new DataElementOperand(
             resultSet.getInt( 1 ),
             resultSet.getInt( 3 ),
             operandName );

@@ -38,7 +38,7 @@ import java.util.Map.Entry;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
@@ -101,10 +101,10 @@ public class DefaultDataElementDataMart
     // DataMart functionality
     // -------------------------------------------------------------------------
     
-    public int exportDataValues( final Collection<Operand> operands, final Collection<Integer> periodIds, 
+    public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Integer> periodIds, 
         final Collection<Integer> organisationUnitIds, final DataElementAggregator dataElementAggregator )
     {
-        final Map<Operand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
+        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
         
         final Collection<Period> periods = getPeriods( periodIds );
 
@@ -117,7 +117,7 @@ public class DefaultDataElementDataMart
         int count = 0;
         int level = 0;
         
-        Map<Operand, Double> valueMap = null;
+        Map<DataElementOperand, Double> valueMap = null;
         
         PeriodType periodType = null;
         
@@ -133,7 +133,7 @@ public class DefaultDataElementDataMart
                 
                 periodType = period.getPeriodType();
                 
-                for ( Entry<Operand, Double> entry : valueMap.entrySet() )
+                for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
                 {
                     value.clear();
                     

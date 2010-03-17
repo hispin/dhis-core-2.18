@@ -36,8 +36,8 @@ import java.util.Map.Entry;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
@@ -92,9 +92,9 @@ public class CalculatedDataElementAssociationConverter
         {
             for ( CalculatedDataElement element : elements )
             {
-                Map<Operand, Double> factorMap = Dhis14ParsingUtils.getOperandFactors( element );
+                Map<DataElementOperand, Double> factorMap = Dhis14ParsingUtils.getOperandFactors( element );
                 
-                for ( Entry<Operand, Double> entry : factorMap.entrySet() )
+                for ( Entry<DataElementOperand, Double> entry : factorMap.entrySet() )
                 {
                     writer.openElement( ELEMENT_NAME );
                     

@@ -29,7 +29,7 @@ package org.hisp.dhis.datamart.indicator;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -38,5 +38,5 @@ import org.hisp.dhis.dataelement.Operand;
 public interface IndicatorDataMart
 {
     int exportIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, 
-        Collection<Integer> organisationUnitIds, Collection<Operand> operands );
+        Collection<Integer> organisationUnitIds, Collection<DataElementOperand> operands );
 }

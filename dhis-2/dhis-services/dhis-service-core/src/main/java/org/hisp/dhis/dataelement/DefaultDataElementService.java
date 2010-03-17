@@ -613,7 +613,7 @@ public class DefaultDataElementService
     // Operand
     // -------------------------------------------------------------------------
     
-    public Collection<Operand> getAllOperands()
+    public Collection<DataElementOperand> getAllOperands()
     {
         return dataElementStore.getAllOperands();
     }

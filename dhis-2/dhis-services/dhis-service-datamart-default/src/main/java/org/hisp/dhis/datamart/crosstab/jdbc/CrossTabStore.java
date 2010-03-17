@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -43,7 +43,7 @@ public interface CrossTabStore
     String COLUMN_PREFIX = "de";
     String SEPARATOR = "_";
     
-    void createCrossTabTable( List<Operand> operands );
+    void createCrossTabTable( List<DataElementOperand> operands );
 
     Map<String, Integer> getCrossTabTableColumns();
     
@@ -53,7 +53,7 @@ public interface CrossTabStore
     
     void renameTrimmedCrossTabTable();
     
-    void createTrimmedCrossTabTable( Collection<Operand> operands );
+    void createTrimmedCrossTabTable( Collection<DataElementOperand> operands );
     
-    int validateCrossTabTable( Collection<Operand> operands );
+    int validateCrossTabTable( Collection<DataElementOperand> operands );
 }

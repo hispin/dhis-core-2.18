@@ -374,16 +374,16 @@ public class DefaultDataElementCategoryService
         return categoryCombo.getOptionCombos().iterator().next();
     }
 
-    public Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
+    public Collection<DataElementOperand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
     {
         Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIdentifiers );
 
         return getOperands( dataElements );
     }
 
-    public Collection<Operand> getOperands( Collection<DataElement> dataElements )
+    public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements )
     {
-        Collection<Operand> operands = new ArrayList<Operand>();
+        Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -394,7 +394,7 @@ public class DefaultDataElementCategoryService
             {
                 for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
                 {
-                    Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
+                    DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
                         + optionCombo.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
 
                     operands.add( operand );
@@ -402,7 +402,7 @@ public class DefaultDataElementCategoryService
             }
             else
             {
-                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
+                DataElementOperand operand = new DataElementOperand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
                     dataElement.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
 
                 operands.add( operand );

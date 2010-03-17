@@ -43,8 +43,8 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.Period;
@@ -179,13 +179,13 @@ public class ExpressionServiceTest
     @Test
     public void testGetOperandsInExpression()
     {
-        Set<Operand> operands = expressionService.getOperandsInExpression( expressionA );
+        Set<DataElementOperand> operands = expressionService.getOperandsInExpression( expressionA );
         
         assertNotNull( operands );
         assertEquals( 2, operands.size() );
         
-        Operand operandA = new Operand( dataElementIdA, categoryOptionComboId );
-        Operand operandB = new Operand( dataElementIdB, categoryOptionComboId );
+        DataElementOperand operandA = new DataElementOperand( dataElementIdA, categoryOptionComboId );
+        DataElementOperand operandB = new DataElementOperand( dataElementIdB, categoryOptionComboId );
         
         assertTrue( operands.contains( operandA ) );
         assertTrue( operands.contains( operandB ) );

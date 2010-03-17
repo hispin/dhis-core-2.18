@@ -35,7 +35,7 @@ import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -213,7 +213,7 @@ public interface DataMartStore
      * @param sourceId the Source identifier.
      * @return map of data values.
      */
-    Map<Operand, String> getDataValueMap( int periodId, int sourceId );
+    Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId );
 
     // ----------------------------------------------------------------------
     // CrossTabDataValue
@@ -227,7 +227,7 @@ public interface DataMartStore
      * @param sourceIds the source identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<Operand, Integer> operandIndexMap, Collection<Integer> periodIds, Collection<Integer> sourceIds );
+    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, Collection<Integer> sourceIds );
 
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and the source id.
@@ -237,7 +237,7 @@ public interface DataMartStore
      * @param sourceId the source identifier.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<Operand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId );
+    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId );
 
     // ----------------------------------------------------------------------
     // Period

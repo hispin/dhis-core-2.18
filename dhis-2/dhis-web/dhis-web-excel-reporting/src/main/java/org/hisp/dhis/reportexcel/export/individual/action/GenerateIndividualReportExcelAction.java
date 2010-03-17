@@ -33,7 +33,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -143,7 +143,7 @@ public class GenerateIndividualReportExcelAction
 
         for ( int i = 0; i < operands.length; i++ )
         {
-            Operand operand = expressionService.getOperandsInExpression( "[" + operands[i] + "]" ).iterator().next();
+            DataElementOperand operand = expressionService.getOperandsInExpression( "[" + operands[i] + "]" ).iterator().next();
 
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 

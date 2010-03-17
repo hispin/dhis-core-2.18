@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
@@ -49,12 +49,12 @@ public interface DataElementAggregator
     // DataElementAggregator
     // -------------------------------------------------------------------------
 
-    Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, 
+    Map<DataElementOperand, Double> getAggregatedValues( final Map<DataElementOperand, Integer> operandIndexMap, 
         final Period period, final OrganisationUnit unit, int unitLevel );
     
-    Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
+    Collection<CrossTabDataValue> getCrossTabDataValues( final Map<DataElementOperand, Integer> operandIndexMap, 
         final Date startDate, final Date endDate, final int parentId, final OrganisationUnitHierarchy hierarchy );
     
-    Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+    Map<DataElementOperand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel );
 }

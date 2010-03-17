@@ -45,8 +45,8 @@ import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
@@ -191,7 +191,7 @@ public class DefaultExpressionService
             {
                 String match = matcher.group();
 
-                final Operand operand = getOperand( match );
+                final DataElementOperand operand = getOperand( match );
                 
                 final Integer mappedDataElementId = dataElementMapping.get( operand.getDataElementId() );
                 final Integer mappedCategoryOptionComboId = categoryOptionComboMapping.get( operand.getOptionComboId() );
@@ -222,13 +222,13 @@ public class DefaultExpressionService
         return convertedFormula.toString();
     }
 
-    public Set<Operand> getOperandsInExpression( String expression )
+    public Set<DataElementOperand> getOperandsInExpression( String expression )
     {
-        Set<Operand> operandsInExpression = null;
+        Set<DataElementOperand> operandsInExpression = null;
 
         if ( expression != null )
         {
-            operandsInExpression = new HashSet<Operand>();
+            operandsInExpression = new HashSet<DataElementOperand>();
 
             final Matcher matcher = FORMULA_PATTERN.matcher( expression );
 
@@ -324,7 +324,7 @@ public class DefaultExpressionService
             {
                 String replaceString = matcher.group();
                 
-                final Operand operand = getOperand( replaceString );
+                final DataElementOperand operand = getOperand( replaceString );
                 
                 final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
                 final DataElementCategoryOptionCombo categoryOptionCombo = 
@@ -417,7 +417,7 @@ public class DefaultExpressionService
             {
                 String replaceString = matcher.group();
 
-                final Operand operand = getOperand( replaceString );
+                final DataElementOperand operand = getOperand( replaceString );
                 
                 final String value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(), operand.getOptionComboId() );
                 
@@ -441,13 +441,13 @@ public class DefaultExpressionService
     // Supportive methods
     // -------------------------------------------------------------------------
     
-    private Operand getOperand( String formula )
+    private DataElementOperand getOperand( String formula )
     {
         formula = formula.replaceAll( "[\\[\\]]", "" );
         
         final int dataElementId = Integer.parseInt( formula.substring( 0, formula.indexOf( SEPARATOR ) ) );
         final int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1, formula.length() ) );
         
-        return new Operand( dataElementId, categoryOptionComboId ); 
+        return new DataElementOperand( dataElementId, categoryOptionComboId ); 
     }
 }

@@ -30,9 +30,9 @@ package org.hisp.dhis.commons.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.dataelement.comparator.OperandNameComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,9 +59,9 @@ public class GetOperandsAction
     // Output
     // -------------------------------------------------------------------------
 
-    public List<Operand> operands;
+    public List<DataElementOperand> operands;
     
-    public List<Operand> getOperands()
+    public List<DataElementOperand> getOperands()
     {
         return operands;
     }
@@ -72,9 +72,9 @@ public class GetOperandsAction
 
     public String execute()
     {
-        operands = new ArrayList<Operand>( dataElementService.getAllOperands() );
+        operands = new ArrayList<DataElementOperand>( dataElementService.getAllOperands() );
         
-        Collections.sort( operands, new OperandNameComparator() );
+        Collections.sort( operands, new DataElementOperandNameComparator() );
         
         return SUCCESS;
     }
