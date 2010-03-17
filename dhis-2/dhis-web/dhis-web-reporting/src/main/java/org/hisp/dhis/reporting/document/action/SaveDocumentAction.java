@@ -129,42 +129,45 @@ public class SaveDocumentAction
         throws Exception
     {
         Document document = new Document();
-        
+
         if ( id != null )
         {
             document = documentService.getDocument( id );
 
-            document.setName( name );
         }
-        else
+        
+        if ( !external && file != null )
         {
-            if ( !external )
+            log.info( "Uploading file: '" + fileName + "', content-type: '" + contentType + "'" );
+
+            File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
+
+            boolean fileMoved = file.renameTo( destination );
+
+            if ( !fileMoved )
             {
-                log.info( "Uploading file: '" + fileName + "', content-type: '" + contentType + "'" );
-
-                File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
-
-                boolean fileMoved = file.renameTo( destination );
-
-                if ( !fileMoved )
-                {
-                    throw new RuntimeException( "File was not uploaded" );
-                }
-
-                url = fileName;
+                throw new RuntimeException( "File was not uploaded" );
             }
-            else
+
+            url = fileName;
+            document.setUrl( url );
+        }
+
+        else if ( external )
+        {
+            if ( !(url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX )) )
             {
-                if ( !(url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX )) )
-                {
-                    url = HTTP_PREFIX + url;
-                }
+                url = HTTP_PREFIX + url;
             }
 
             log.info( "Document name: '" + name + "', url: '" + url + "', external: '" + external + "'" );
 
-            document = new Document( name, url, external );
+            document.setUrl( url );
         }
+
+        document.setExternal( external );
+
+        document.setName( name );
 
         documentService.saveDocument( document );
 
