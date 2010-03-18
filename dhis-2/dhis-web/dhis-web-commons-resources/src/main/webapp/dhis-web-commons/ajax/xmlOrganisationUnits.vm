@@ -5,7 +5,7 @@
 	    <id>$unit.id</id>
 	    <name>$!encoder.xmlEncode( $unit.name )</name>
 	    <shortName>$!encoder.xmlEncode( $unit.shortName )</shortName>
-	    <code>$!encoder.xmlEncode( $unit.organisationUnitCode )</code>
+	    <code>$!encoder.xmlEncode( $unit.code )</code>
 	</organisationUnit>
 #end
 </organisationUnits>

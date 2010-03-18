@@ -1002,8 +1002,8 @@ $.extend($.validator, {
 	
 		// http://docs.jquery.com/Plugins/Validation/Methods/dateISO
 		dateISO: function(value, element) {
-			//return this.optional(element) || /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(value);
-			return this.optional(element) || isDate(value, 'yyyy-MM-dd');
+			return this.optional(element) || /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(value);
+			//return this.optional(element) || isDate(value, 'yyyy-MM-dd');
 		},
 	
 
