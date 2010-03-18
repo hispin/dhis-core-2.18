@@ -12,6 +12,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.mobile.app.action.CreateMobileAppAction"
 		class="org.hisp.dhis.mobile.app.action.CreateMobileAppAction"
 		scope="prototype">
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.mobile.app.action.GetDataElementsAction"
+		class="org.hisp.dhis.mobile.app.action.GetDataElementsAction"
+		scope="prototype">
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     </bean>
 
     <bean id="org.hisp.dhis.mobile.app.action.SplashUploadAction"
@@ -30,13 +38,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
    <!-- Mobile Importing -->
-   <bean id="org.hisp.dhis.mobileimport.api.MobileImportService"
+    <bean id="org.hisp.dhis.mobileimport.api.MobileImportService"
 		class="org.hisp.dhis.mobileimport.api.DefaultMobileImportService"
 		scope="prototype">
-   </bean>
+    </bean>
 	         
-   <bean id="org.hisp.dhis.mobileimport.action.MobileImportProcessAction"
+    <bean id="org.hisp.dhis.mobileimport.action.MobileImportProcessAction"
 		class="org.hisp.dhis.mobileimport.action.MobileImportProcessAction"
 		scope="prototype">
-   </bean>
+    </bean>
 </beans>
