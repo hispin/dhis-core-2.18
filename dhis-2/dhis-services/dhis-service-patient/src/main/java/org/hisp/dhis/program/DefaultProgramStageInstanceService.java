@@ -99,7 +99,7 @@ public class DefaultProgramStageInstanceService
 
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            if ( programStageInstance.getExecutionDate() != null )
+            if ( programStageInstance.isCompleted() )
             {
                 colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_GREEN );
             }
