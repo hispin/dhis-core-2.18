@@ -613,8 +613,8 @@ public class DefaultDataElementService
     // Operand
     // -------------------------------------------------------------------------
     
-    public Collection<DataElementOperand> getAllOperands()
+    public Collection<DataElementOperand> getAllGeneratedOperands()
     {
-        return dataElementStore.getAllOperands();
+        return dataElementStore.getAllGeneratedOperands();
     }
 }
