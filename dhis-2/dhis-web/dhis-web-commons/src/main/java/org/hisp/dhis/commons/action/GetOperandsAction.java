@@ -72,7 +72,7 @@ public class GetOperandsAction
 
     public String execute()
     {
-        operands = new ArrayList<DataElementOperand>( dataElementService.getAllOperands() );
+        operands = new ArrayList<DataElementOperand>( dataElementService.getAllGeneratedOperands() );
         
         Collections.sort( operands, new DataElementOperandNameComparator() );
         

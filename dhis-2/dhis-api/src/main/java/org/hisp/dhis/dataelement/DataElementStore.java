@@ -266,10 +266,10 @@ public interface DataElementStore
     // -------------------------------------------------------------------------
 
     /**
-     * Returns all Operands. Requires the categoryoptioncomboname resource table
-     * to be populated.
+     * Returns all generated permutations of Operands. Requires the 
+     * categoryoptioncomboname resource table to be populated.
      * 
      * @return a collection of all Operands.
      */
-    Collection<DataElementOperand> getAllOperands();
+    Collection<DataElementOperand> getAllGeneratedOperands();
 }

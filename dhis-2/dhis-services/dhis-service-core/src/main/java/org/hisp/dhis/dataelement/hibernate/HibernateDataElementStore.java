@@ -418,7 +418,7 @@ public class HibernateDataElementStore
     // Operand
     // -------------------------------------------------------------------------
     
-    public Collection<DataElementOperand> getAllOperands()
+    public Collection<DataElementOperand> getAllGeneratedOperands()
     {
         final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
         
