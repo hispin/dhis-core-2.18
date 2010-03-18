@@ -3,7 +3,7 @@
 	<id>$organisationUnit.id</id>
 	<name>$!encoder.xmlEncode( $organisationUnit.name )</name>
     <shortName>$!encoder.xmlEncode( $organisationUnit.shortName )</shortName>
-    <code>$!encoder.xmlEncode( $organisationUnit.organisationUnitCode )</code>
+    <code>$!encoder.xmlEncode( $organisationUnit.code )</code>
     <openingDate>$!format.formatPeriod( $organisationUnit.openingDate )</openingDate>
     <closedDate>$!format.formatPeriod( $organisationUnit.closedDate )</closedDate>
     <active>$organisationUnit.active</active>

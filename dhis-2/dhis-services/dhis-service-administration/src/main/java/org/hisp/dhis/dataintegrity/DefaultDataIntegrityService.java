@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,7 +61,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
+ * @version $Id: DefaultDataIntegrityService.java 2010-03-18 11:52:20Z Chau Thu Tran $
  */
 @Transactional
 public class DefaultDataIntegrityService
@@ -194,7 +194,7 @@ public class DefaultDataIntegrityService
 
     public Collection<Indicator> getIndicatorsWithIdenticalFormulas()
     {
-        List<String> formulas = new ArrayList<String>();
+        Hashtable<String, Indicator> formulas = new Hashtable<String, Indicator>();
         
         Set<Indicator> targets = new HashSet<Indicator>();
         
@@ -204,13 +204,14 @@ public class DefaultDataIntegrityService
         {
             final String formula = indicator.getNumerator() + FORMULA_SEPARATOR + indicator.getDenominator();
             
-            if ( formulas.contains( formula ) )
+            if(formulas.containsKey( formula ))
             {
+                targets.add (formulas.get( formula ));
                 targets.add( indicator );
             }
             else
             {
-                formulas.add( formula );
+                formulas.put( formula, indicator );
             }
         }
         
