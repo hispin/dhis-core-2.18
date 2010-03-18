@@ -36,7 +36,7 @@
       <td></td>
     </tr>      
     <tr>
-      <td><label>$i18n.getString( "concept_name" )</td>
+      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
       <td><input type="text" id="conceptName" name="conceptName" value="$!encoder.htmlEncode( $dataElementCategory.conceptName )" style="width:25em" maxlength="160" class="{validate:{minlength:2,maxlength:160}}"></td>
       <td></td>
     </tr>  
