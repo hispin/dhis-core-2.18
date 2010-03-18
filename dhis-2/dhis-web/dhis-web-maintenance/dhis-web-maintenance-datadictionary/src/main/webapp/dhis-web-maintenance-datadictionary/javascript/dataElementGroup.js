@@ -115,7 +115,7 @@ function initLists()
 
     for ( id in groupMembers )
     {
-        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMember[id] )) ;
+        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMembers[id] )) ;
     }
 
     for ( id in availableDataElements )

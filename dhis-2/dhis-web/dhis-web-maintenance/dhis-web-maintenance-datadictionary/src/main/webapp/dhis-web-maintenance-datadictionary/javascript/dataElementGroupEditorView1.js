@@ -29,7 +29,6 @@ function hideToolTip(){
 // ========================================================================
 function initAllList()
 {
-    var list = document.getElementById( 'dataElementGroups' );
     var id;
 
     for ( id in dataElementGroups )
@@ -38,10 +37,10 @@ function initAllList()
 		option.onmousemove  = function(e){
 			showToolTip( e, this.text);
 		}
-        list.add( option, null );
+        $("#dataElementGroups").append(option);
     }
 
-    list = document.getElementById( 'availableDataElements' );
+    var list = document.getElementById( 'availableDataElements' );
 
     for ( id in availableDataElements )
     {
@@ -49,7 +48,7 @@ function initAllList()
 		option.onmousemove  = function(e){
 			showToolTip( e, this.text);
 		}
-        list.add( option, null );        
+        $("#availableDataElements").append(option);
     }
 
     if(list.selectedIndex==-1)
