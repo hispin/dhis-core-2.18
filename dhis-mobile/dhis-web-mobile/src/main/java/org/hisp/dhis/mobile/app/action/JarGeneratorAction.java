@@ -94,12 +94,19 @@ public class JarGeneratorAction implements Action {
     public String execute() throws Exception {
         String webappPath = ServletActionContext.getServletContext().getRealPath("/");
         String javameSrc = webappPath + "/dhis-web-mobile/javame_src/src/main/java/org/hisp/dhis/mobile";
-
         File dir = new File(javameSrc);
+
+        //For splash screen
         replaceStringInFile(dir, "DHISMobile.java", "\\w*.png", splash);
 
-        System.out.println("MVN BIN = " + mvnBin);
-        System.out.println("Full Exec: " + mvnBin + " install " + "-f " + ServletActionContext.getServletContext().getRealPath("/") + "/dhis-web-mobile/javame_src/pom.xml");
+        //For dataset
+        //replaceStringInFile(dir, "DHISMobile.java", "", dataset);
+        
+        //For language
+        //replaceStringInFile(dir, "DHISMobile.java", "", language);
+
+        //For patient-program stage
+        //replaceStringInFile(dir, "DHISMobile.java", "", patient_program);
 
         ProcessBuilder pb = new ProcessBuilder(mvnBin, "install", "-f", ServletActionContext.getServletContext().getRealPath("/") + "/dhis-web-mobile/javame_src/pom.xml");
         pb.redirectErrorStream(true);

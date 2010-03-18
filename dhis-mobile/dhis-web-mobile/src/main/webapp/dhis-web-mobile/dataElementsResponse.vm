@@ -1,0 +1,5 @@
+<select multiple="false" style="width: 250px; height: 180px;">
+#foreach( $dataElement in $dataElements )
+        <option value="$dataElement.id">$dataElement.name</option>
+#end
+</select>

@@ -8,14 +8,23 @@
             collapsible: true
         });
         $("#splashUpdate input:radio:first").attr("checked","checked");
-        var options = {
+        var splashOptions = {
             url: 'splashUpload.action',
             target: '#splashUpdate',
             success: function(){
                 $("#splashUpdate input:radio:first").attr("checked","checked");
             }
         }
-        $("#splashForm").ajaxForm(options);
+        $("#splashForm").ajaxForm(splashOptions);
+
+        var dataElementsOptions = {
+            url: 'getDataElements.action',
+            type: 'POST',
+            success: function(responseXML){
+                $("#dataElementsListDiv").append(responseXML);
+            }
+        }
+        $("#dataSetForm").ajaxForm(dataElementsOptions);
     });
 
     function showPathField(){
@@ -46,6 +55,10 @@
         document.body.appendChild(form);
         form.style.visibility = "hidden";
         form.submit();
+    }
+
+    function addDataSet(){
+        $("#dataSetForm").submit();
     }
 
 </script>
@@ -105,11 +118,23 @@
     </div>
     <h3><a href="#">Step 2: Dataset Selection</a></h3>
     <div id="dataSetSelector">
+        <form id="dataSetForm">
+            <select name="dataSetName" style="vertical-align: top" >
+                #foreach($var in $availableDatasets)
+                <option>$var</option>
+                #end
+            </select>
+            <a href="#" onclick="addDataSet()"><img src="../images/add.png" alt="" align="top" width="16" /></a>
+            <span id="dataElementsListDiv"></span>
+        </form>
+    </div>
+    <h3><a href="#">Step 3: Set Pages</a></h3>
+    <div id="pageSelector">
         <p>
 
         </p>
     </div>
-    <h3><a href="#">Step 3: Select Language Or Translate Data Elements</a></h3>
+    <h3><a href="#">Step 4: Select Language Or Translate Data Elements</a></h3>
     <div id="languageSelector">
         <table>
             <tr>
@@ -119,8 +144,8 @@
             </tr>
         </table>
     </div>
-    <h3><a href="#">Step 4: Generate Application</a></h3>
-        <div id="jarGenerator">
-            <input type="button" value="Generate Mobile Application" onclick="submitJarGenerator()" />
-        </div>
+    <h3><a href="#">Step 5: Generate Application</a></h3>
+    <div id="jarGenerator">
+        <input type="button" value="Generate Mobile Application" onclick="submitJarGenerator()" />
+    </div>
 </div>

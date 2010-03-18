@@ -19,6 +19,11 @@
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
 
+        <action name="getDataElements" class="org.hisp.dhis.mobile.app.action.GetDataElementsAction">
+            <result name="success" type="velocity">	/dhis-web-mobile/dataElementsResponse.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+
         <action name="splashUpload" class="org.hisp.dhis.mobile.app.action.SplashUploadAction">
             <result name="success" type="velocity">/dhis-web-mobile/splashUploadResponse.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
