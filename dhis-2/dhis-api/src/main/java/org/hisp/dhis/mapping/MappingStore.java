@@ -199,6 +199,22 @@ public interface MappingStore
     int deleteMapOrganisationUnitRelations( Map map );
     
     // -------------------------------------------------------------------------
+    // MapLegend
+    // -------------------------------------------------------------------------
+    
+    int addMapLegend( MapLegend legend );
+    
+    void updateMapLegend( MapLegend legend );
+    
+    void deleteMapLegend( MapLegend legend );
+    
+    MapLegend getMapLegend( int id );
+    
+    MapLegend getMapLegendByName( String name );
+    
+    Collection<MapLegend> getAllMapLegends();
+    
+    // -------------------------------------------------------------------------
     // MapLegendSet
     // -------------------------------------------------------------------------    
     
