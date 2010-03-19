@@ -1069,8 +1069,9 @@ $.extend($.validator, {
 	//--------------------------------------------------
 	loadLocaled : function(code)
 	{
-		this.messages = eval(code);
-		if( !this.messages )
+		try {
+			this.messages = eval(code);
+		}catch(e)
 		{
 			this.messages = eval("en_GB");
 		}
