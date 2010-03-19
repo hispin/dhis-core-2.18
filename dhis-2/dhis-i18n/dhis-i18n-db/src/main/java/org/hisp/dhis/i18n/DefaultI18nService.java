@@ -145,8 +145,7 @@ public class DefaultI18nService
         }
        
         I18nObject i18nObject = isI18nObject( intObjects.iterator().next() );
-        
-        
+                
         Locale locale = localeManager.getCurrentLocale();
 
         if ( i18nObject != null && locale != null )

@@ -100,7 +100,7 @@ public class JDBCDataSetCompletenessStore
     
     public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
     {           
-        final int compulsoryElements = dataSet.getCompulsoryDataElements().size();
+        final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();
         final int periodId = period.getId();
         final int dataSetId = dataSet.getId();                
         

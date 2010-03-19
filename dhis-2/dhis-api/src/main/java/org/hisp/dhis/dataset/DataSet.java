@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
@@ -58,10 +59,10 @@ public class DataSet
     private Collection<DataElement> dataElements = new HashSet<DataElement>();
     
     /**
-     * The DataElements for which data must be entered in order for the DataSet to
+     * The DataElementOperands for which data must be entered in order for the DataSet to
      * be considered as complete.
      */
-    private Set<DataElement> compulsoryDataElements = new HashSet<DataElement>();
+    private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
     
     /**
      * All Sources that register data with this DataSet.
@@ -183,14 +184,14 @@ public class DataSet
         this.dataElements = dataElements;
     }
 
-    public Set<DataElement> getCompulsoryDataElements()
+    public Set<DataElementOperand> getCompulsoryDataElementOperands()
     {
-        return compulsoryDataElements;
+        return compulsoryDataElementOperands;
     }
 
-    public void setCompulsoryDataElements( Set<DataElement> compulsoryDataElements )
+    public void setCompulsoryDataElementOperands( Set<DataElementOperand> compulsoryDataElementOperands )
     {
-        this.compulsoryDataElements = compulsoryDataElements;
+        this.compulsoryDataElementOperands = compulsoryDataElementOperands;
     }
 
     public Set<Source> getSources()

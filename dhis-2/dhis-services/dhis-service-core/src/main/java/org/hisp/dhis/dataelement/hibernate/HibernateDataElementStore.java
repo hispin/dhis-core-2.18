@@ -43,11 +43,14 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
+import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.TextUtils;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -415,7 +418,7 @@ public class HibernateDataElementStore
     }
 
     // -------------------------------------------------------------------------
-    // Operand
+    // DataElementOperand
     // -------------------------------------------------------------------------
     
     public Collection<DataElementOperand> getAllGeneratedOperands()
@@ -439,5 +442,51 @@ public class HibernateDataElementStore
         {
             throw new RuntimeException( "Failed to get all operands", ex );
         }   
+    }
+    
+    public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
+    {
+        final String dataElementString = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
+        
+        final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
+        
+        final String sql =
+            "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
+            "FROM dataelement as de " +
+            "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
+            "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
+            "JOIN categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid " +
+            "WHERE de.dataelementid IN (" + dataElementString + ");";
+        
+        try
+        {
+            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
+            
+            return mapper.getCollection( resultSet, new DataElementOperandMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get all operands", ex );
+        }   
+    }
+    
+    public int addDataElementOperand( DataElementOperand operand )
+    {
+        return (Integer) sessionFactory.getCurrentSession().save( operand );
+    }
+    
+    public DataElementOperand getDataElementOperand( DataElement element, DataElementCategoryOptionCombo categoryOptionCombo )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataElementOperand.class );
+        
+        criteria.add( Restrictions.eq( "dataElement", element ) );
+        criteria.add( Restrictions.eq( "categoryOptionCombo", categoryOptionCombo ) );
+        
+        return (DataElementOperand) criteria.uniqueResult();
+    }
+    
+    public void deleteDataElementOperand( DataElementOperand operand )
+    {
+        sessionFactory.getCurrentSession().delete( operand );
     }
 }
