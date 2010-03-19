@@ -90,9 +90,9 @@ public class GetDataIntegrityAction
         return dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
     }
 
-    private Collection<Indicator> indicatorsWithIdenticalFormulas;
+    private Collection<Collection<Indicator>> indicatorsWithIdenticalFormulas;
 
-    public Collection<Indicator> getIndicatorsWithIdenticalFormulas()
+    public Collection<Collection<Indicator>> getIndicatorsWithIdenticalFormulas()
     {
         return indicatorsWithIdenticalFormulas;
     }

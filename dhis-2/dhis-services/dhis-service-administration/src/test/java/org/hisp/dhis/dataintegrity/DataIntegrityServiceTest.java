@@ -280,7 +280,7 @@ public class DataIntegrityServiceTest
     @Test
     public void testGetIndicatorsWithIdenticalFormulas()
     {
-        Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
+        Collection<Collection<Indicator>> expected = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
         
         assertTrue( message( expected ), equals( expected, indicatorC ) );
     }
