@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * This object can act both as a hydrated persisted object and as a wrapper object.
+ * 
  * @author Abyot Asalefew
  * @version $Id$
  */
@@ -40,7 +42,15 @@ public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>
 {
     public static final String SEPARATOR = ".";
+    
+    private static final String SPACE = "";
 
+    private int id;
+    
+    private DataElement dataElement;
+    
+    private DataElementCategoryOptionCombo categoryOptionCombo;
+    
     private int dataElementId;
 
     private int optionComboId;
@@ -58,7 +68,13 @@ public class DataElementOperand
     public DataElementOperand()
     {
     }
-    
+
+    public DataElementOperand( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
+    {
+        this.dataElement = dataElement;
+        this.categoryOptionCombo = categoryOptionCombo;
+    }
+
     public DataElementOperand( int dataElementId, int optionComboId )
     {
         this.dataElementId = dataElementId;
@@ -82,7 +98,7 @@ public class DataElementOperand
         this.operandName = operandName;
         this.aggregationLevels = aggregationLevels;
     }
-
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -129,11 +145,76 @@ public class DataElementOperand
         }
         
         return null;
+    }    
+
+    /**
+     * Generates a DataElementOperand based on the given formula. The formula needs
+     * to be on the form "[<dataelementid>,<categoryoptioncomboid>]".
+     * 
+     * @param formula the formula.
+     * @return a DataElementOperand.
+     */
+    public static DataElementOperand generateOperand( String formula )
+    {        
+        final int dataElementId = Integer.parseInt( formula.substring( 0, formula.indexOf( SEPARATOR ) ) );
+        final int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1, formula.length() ) );
+        
+        return new DataElementOperand( dataElementId, categoryOptionComboId ); 
+    }
+
+    /**
+     * Returns a name based on the DataElement and the DataElementCategoryOptionCombo.
+     * 
+     * @return the name.
+     */
+    public String getPersistedName()
+    {
+        return dataElement.getName() + SPACE + categoryOptionCombo.getName();
     }
     
+    /**
+     * Returns an id based on the DataElement and the DataElementCategoryOptionCombo.
+     * 
+     * @return the id.
+     */
+    public String getPersistedId()
+    {
+        return dataElement.getId() + SEPARATOR + categoryOptionCombo.getId();
+    }
+
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
+
+    public void setDataElement( DataElement dataElement )
+    {
+        this.dataElement = dataElement;
+    }
+
+    public DataElementCategoryOptionCombo getCategoryOptionCombo()
+    {
+        return categoryOptionCombo;
+    }
+
+    public void setCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+    {
+        this.categoryOptionCombo = categoryOptionCombo;
+    }
 
     public int getDataElementId()
     {
@@ -186,16 +267,17 @@ public class DataElementOperand
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
+    // hashCode, equals, toString, compareTo 
     // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
-        
         int result = 1;
         
+        result = prime * result + ( ( categoryOptionCombo == null ) ? 0 : categoryOptionCombo.hashCode() );
+        result = prime * result + ( ( dataElement == null ) ? 0 : dataElement.hashCode() );
         result = prime * result + dataElementId;
         result = prime * result + optionComboId;
         
@@ -222,22 +304,48 @@ public class DataElementOperand
         
         final DataElementOperand other = (DataElementOperand) object;
         
-        return dataElementId == other.dataElementId && optionComboId == other.optionComboId;
+        if ( categoryOptionCombo == null )
+        {
+            if ( other.categoryOptionCombo != null )
+            {
+                return false;
+            }
+        }
+        else if ( !categoryOptionCombo.equals( other.categoryOptionCombo ) )
+        {
+            return false;
+        }
+        
+        if ( dataElement == null )
+        {
+            if ( other.dataElement != null )
+            {
+                return false;
+            }
+        }
+        else if ( !dataElement.equals( other.dataElement ) )
+        {
+            return false;
+        }
+        
+        if ( dataElementId != other.dataElementId )
+        {
+            return false;
+        }
+        
+        if ( optionComboId != other.optionComboId )
+        {
+            return false;
+        }
+        
+        return true;
     }
-
-    // -------------------------------------------------------------------------
-    // toString
-    // -------------------------------------------------------------------------
-
+    
     @Override
     public String toString()
     {
         return "[DataElementId: " + dataElementId + ", CategoryOptionComboId: " + optionComboId + "]";
     }
-    
-    // -------------------------------------------------------------------------
-    // compareTo
-    // -------------------------------------------------------------------------
 
     public int compareTo( DataElementOperand other )
     {
@@ -247,5 +355,5 @@ public class DataElementOperand
         }
         
         return this.getOptionComboId() - other.getOptionComboId();
-    }
+    }    
 }

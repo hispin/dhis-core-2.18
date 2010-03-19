@@ -21,15 +21,15 @@
     <set name="dataElements" table="datasetmembers">
       <key column="datasetid"/>
       <many-to-many class="org.hisp.dhis.dataelement.DataElement" 
-          column="dataelementid" foreign-key="fk_dataset_dataelementid"/>
+        column="dataelementid" foreign-key="fk_dataset_dataelementid"/>
     </set>
-    
-    <set name="compulsoryDataElements" table="compulsorydatasetmembers">
-      <key column="datasetid"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElement" 
-          column="dataelementid" foreign-key="fk_dataset_compulsorydataelementid"/>
-    </set>
-    
+        
+	<set name="compulsoryDataElementOperands" table="datasetoperands" cascade="all-delete-orphan">
+	  <key column="datasetid"/>
+	  <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand"
+		column="dataelementoperandid" foreign-key="fk_dataset_dataelementoperandid"/>
+	</set>
+		
     <set name="sources" table="datasetsource">
       <key column="datasetid"/>
       <many-to-many column="sourceid" 

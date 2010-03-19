@@ -3,7 +3,7 @@
 	
 function saveCompulsoryDataElements()
 {
-    selectAllById( "selectedDataElements" );
+    selectAllById( "selectedOperands" );
     document.getElementById( "compulsoryDataElementsForm" ).submit();
 }
 
@@ -21,21 +21,21 @@ function saveCompulsoryDataElements()
     </tr>
     <tr>
         <td>
-    	    <select id="availableDataElements" name="availableDataElements" size="15" style="width:325px" multiple="multiple">
-    	    #foreach( $element in $availableDataElements )
-    	    	<option value="${element.id}">$encoder.htmlEncode( $element.name )</option>
+    	    <select id="availableOperands" name="availableOperands" size="15" style="width:325px" multiple="multiple" ondblclick="moveSelectedById( 'availableOperands', 'selectedOperands' )">
+    	    #foreach( $operand in $availableOperands )
+    	    	<option value="${operand.operandId}">$encoder.htmlEncode( $!operand.operandName )</option>
     	    #end
    	        </select>
     	</td>
     	<td>    	
-    		<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
+    		<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'availableOperands', 'selectedOperands' )">
             <br>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveSelectedById( 'selectedOperands', 'availableOperands' )">
         </td>
         <td>
-            <select id="selectedDataElements" name="selectedDataElements" size="15" style="width:325px" multiple="multiple">
-            #foreach( $element in $selectedDataElements )
-                <option value="${element.id}">$encoder.htmlEncode( $element.name )</option>
+            <select id="selectedOperands" name="selectedOperands" size="15" style="width:325px" multiple="multiple" ondblclick="moveSelectedById( 'selectedOperands', 'availableOperands' )">
+            #foreach( $operand in $selectedOperands )
+                <option value="${operand.persistedId}">$encoder.htmlEncode( $!operand.persistedName )</option>
             #end
             </select>
         </td>        

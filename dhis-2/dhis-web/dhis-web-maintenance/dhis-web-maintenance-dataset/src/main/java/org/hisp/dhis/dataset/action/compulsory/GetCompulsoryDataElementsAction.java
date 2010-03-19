@@ -29,10 +29,11 @@ package org.hisp.dhis.dataset.action.compulsory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 
@@ -55,11 +56,11 @@ public class GetCompulsoryDataElementsAction
         this.dataSetService = dataSetService;
     }
     
-    private Comparator<DataElement> dataElementComparator;
+    private DataElementService dataElementService;
 
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.dataElementComparator = dataElementComparator;
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -82,18 +83,18 @@ public class GetCompulsoryDataElementsAction
     // Output
     // -------------------------------------------------------------------------
     
-    private List<DataElement> availableDataElements;
-    
-    public List<DataElement> getAvailableDataElements()
+    private List<DataElementOperand> availableOperands;
+
+    public List<DataElementOperand> getAvailableOperands()
     {
-        return availableDataElements;
+        return availableOperands;
     }
 
-    private List<DataElement> selectedDataElements;
+    private List<DataElementOperand> selectedOperands;
 
-    public List<DataElement> getSelectedDataElements()
+    public List<DataElementOperand> getSelectedOperands()
     {
-        return selectedDataElements;
+        return selectedOperands;
     }
 
     // -------------------------------------------------------------------------
@@ -104,13 +105,12 @@ public class GetCompulsoryDataElementsAction
     {
         DataSet dataSet = dataSetService.getDataSet( id );
 
-        selectedDataElements = new ArrayList<DataElement>( dataSet.getCompulsoryDataElements() );
+        selectedOperands = new ArrayList<DataElementOperand>( dataSet.getCompulsoryDataElementOperands() );
         
-        availableDataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
-        availableDataElements.removeAll( selectedDataElements );
+        availableOperands = new ArrayList<DataElementOperand>( dataElementService.getAllGeneratedOperands( dataSet.getDataElements() ) );
+        availableOperands.removeAll( selectedOperands );
         
-        Collections.sort( availableDataElements, dataElementComparator );
-        Collections.sort( selectedDataElements, dataElementComparator );        
+        Collections.sort( availableOperands, new DataElementOperandNameComparator() );        
         
         return SUCCESS;
     }

@@ -204,19 +204,21 @@ public class DefaultDataIntegrityService
         for ( Indicator indicator : indicators )
         {
             final String formula = indicator.getNumerator() + FORMULA_SEPARATOR + indicator.getDenominator();
-            
-            if(formulas.containsKey( formula ))
-            {  
-                if(targets.containsKey( formula )){
+
+            if ( formulas.containsKey( formula ) )
+            {
+                if ( targets.containsKey( formula ) )
+                {
                     targets.get( formula ).add( indicator );
                 }
-                else{
+                else
+                {
                     Set<Indicator> elements = new HashSet<Indicator>();
-                    
+
                     elements.add( indicator );
-                    elements.add (formulas.get( formula ));
-                    
-                    targets.put( formula,  elements);
+                    elements.add( formulas.get( formula ) );
+
+                    targets.put( formula, elements );
                     targets.get( formula ).add( indicator );
                 }
             }

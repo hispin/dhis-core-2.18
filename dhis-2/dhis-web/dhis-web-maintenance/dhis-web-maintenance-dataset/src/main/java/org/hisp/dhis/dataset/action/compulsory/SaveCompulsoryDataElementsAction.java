@@ -30,6 +30,8 @@ package org.hisp.dhis.dataset.action.compulsory;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -60,6 +62,13 @@ public class SaveCompulsoryDataElementsAction
         this.dataElementService = dataElementService;
     }
     
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -71,11 +80,11 @@ public class SaveCompulsoryDataElementsAction
         this.id = id;
     }
 
-    private Collection<String> selectedDataElements = new ArrayList<String>();
+    private Collection<String> selectedOperands = new ArrayList<String>();
 
-    public void setSelectedDataElements( Collection<String> selectedDataElements )
+    public void setSelectedOperands( Collection<String> selectedOperands )
     {
-        this.selectedDataElements = selectedDataElements;
+        this.selectedOperands = selectedOperands;
     }
 
     // -------------------------------------------------------------------------
@@ -85,11 +94,18 @@ public class SaveCompulsoryDataElementsAction
     public String execute()
     {
         DataSet dataSet = dataSetService.getDataSet( id );
-        dataSet.getCompulsoryDataElements().clear();
         
-        for ( String id : selectedDataElements )
-        {
-            dataSet.getCompulsoryDataElements().add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+        dataSet.getCompulsoryDataElementOperands().clear();
+        
+        for ( String id : selectedOperands )
+        {        
+            DataElementOperand temp = DataElementOperand.generateOperand( id );
+            
+            DataElementOperand operand = new DataElementOperand( 
+                dataElementService.getDataElement( temp.getDataElementId() ),
+                categoryService.getDataElementCategoryOptionCombo( temp.getOptionComboId() ) ); 
+        
+            dataSet.getCompulsoryDataElementOperands().add( operand );
         }
         
         dataSetService.updateDataSet( dataSet );

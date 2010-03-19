@@ -30,6 +30,7 @@ package org.hisp.dhis.dataintegrity;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -281,8 +282,13 @@ public class DataIntegrityServiceTest
     public void testGetIndicatorsWithIdenticalFormulas()
     {
         Collection<Collection<Indicator>> expected = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
+
+        Collection<Indicator> violation = expected.iterator().next();
         
-        assertTrue( message( expected ), equals( expected, indicatorC ) );
+        assertEquals( 1, expected.size());        
+        assertEquals( 2, violation.size() );
+        assertTrue( violation.contains( indicatorB ) );
+        assertTrue( violation.contains( indicatorC ) );
     }
 
     @Test

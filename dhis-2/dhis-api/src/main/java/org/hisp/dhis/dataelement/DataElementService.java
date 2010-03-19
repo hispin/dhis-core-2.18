@@ -480,7 +480,7 @@ public interface DataElementService
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
 
     // -------------------------------------------------------------------------
-    // Operand
+    // DataElementOperand
     // -------------------------------------------------------------------------
 
     /**
@@ -490,4 +490,38 @@ public interface DataElementService
      * @return a collection of all Operands.
      */
     Collection<DataElementOperand> getAllGeneratedOperands();
+
+    /**
+     * Returns all generated permutations of Operands for the given collection of
+     * DataElements. Requires the categoryoptioncomboname resource table to be populated.
+     * 
+     * @param dataElements the DataElements.
+     * @return a collection of all Operands.
+     */
+    Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );
+    
+    /**
+     * Adds a DataElementOperand.
+     * 
+     * @param operand the DataElementOperand.
+     * @return the generated identifier.
+     */
+    int addDataElementOperand( DataElementOperand operand );
+    
+    /**
+     * Returns the DataElementOperand representing the given DataElement and
+     * DataElementCategoryOptionCombo.
+     * 
+     * @param element the DataElement.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
+     * @return the DataElementOperand.
+     */
+    DataElementOperand getDataElementOperand( DataElement element, DataElementCategoryOptionCombo categoryOptionCombo );
+    
+    /**
+     * Deletes the given DataElementOperand.
+     * 
+     * @param operand the DataElementOperand.
+     */
+    void deleteDataElementOperand( DataElementOperand operand );
 }

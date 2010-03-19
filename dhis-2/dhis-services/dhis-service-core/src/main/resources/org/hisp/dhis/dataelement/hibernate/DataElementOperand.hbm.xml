@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.dataelement.DataElementOperand" table="dataelementoperand">
+    
+    <id name="id" column="categoryid">
+      <generator class="native"/>
+    </id>
+	
+	<many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
+		column="dataelementid" foreign-key="fk_dataelementoperand_dataelement"/>
+	
+	<many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
+		column="categoryoptioncomboid" foreign-key="fk_dataelementoperand_dataelementcategoryoptioncombo"/>
+ 
+  </class>
+</hibernate-mapping>

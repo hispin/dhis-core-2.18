@@ -243,9 +243,14 @@ public abstract class DhisConvenienceTest
         return true;
     }
     
-    public static String message( Object object )
+    public static String message( Object expected )
     {
-        return "Expected was: " + ( ( object != null ) ? "[" + object.toString() + "]" : "[null]" );
+        return "Expected was: " + ( ( expected != null ) ? "[" + expected.toString() + "]" : "[null]" );
+    }
+
+    public static String message( Object expected, Object actual )
+    {
+        return message( expected ) + " Actual was: " + ( ( actual != null ) ? "[" + actual.toString() + "]" : "[null]" );
     }
 
     // -------------------------------------------------------------------------
