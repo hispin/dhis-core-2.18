@@ -489,6 +489,51 @@ public class DefaultMappingService
     }
 
     // -------------------------------------------------------------------------
+    // MapLegend
+    // -------------------------------------------------------------------------
+    
+    public void addOrUpdateMapLegend( String name, Double startValue, Double endValue, String color )
+    {
+        MapLegend mapLegend = getMapLegendByName( name );
+
+        if ( mapLegend != null )
+        {
+            mapLegend.setName( name );
+            mapLegend.setStartValue( startValue );
+            mapLegend.setEndValue( endValue );
+            mapLegend.setColor( color );
+
+            mappingStore.updateMapLegend( mapLegend );
+        }
+        else
+        {
+            mapLegend = new MapLegend( name, startValue, endValue, color );
+
+            mappingStore.addMapLegend( mapLegend );
+        }
+    }
+    
+    public void deleteMapLegend( MapLegend mapLegend )
+    {
+        mappingStore.deleteMapLegend( mapLegend );
+    }
+
+    public MapLegend getMapLegend( int id )
+    {
+        return mappingStore.getMapLegend( id );
+    }
+
+    public MapLegend getMapLegendByName( String name )
+    {
+        return mappingStore.getMapLegendByName( name );
+    }
+    
+    public Collection<MapLegend> getAllMapLegends()
+    {
+        return mappingStore.getAllMapLegends();
+    }
+    
+    // -------------------------------------------------------------------------
     // MapLegendSet
     // -------------------------------------------------------------------------
 

@@ -313,6 +313,20 @@ public interface MappingService
      * @return the number of deleted objects.
      */
     int deleteMapOrganisationUnitRelations( Map map );
+    
+    // -------------------------------------------------------------------------
+    // MapLegend
+    // -------------------------------------------------------------------------
+    
+    void addOrUpdateMapLegend( String name, Double startValue, Double endValue, String color );
+    
+    void deleteMapLegend( MapLegend legend );
+    
+    MapLegend getMapLegend( int id );
+    
+    MapLegend getMapLegendByName( String name );
+    
+    Collection<MapLegend> getAllMapLegends();
 
     // -------------------------------------------------------------------------
     // MapLegendSet

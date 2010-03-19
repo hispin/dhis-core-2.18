@@ -36,6 +36,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLayer;
+import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MapView;
@@ -233,6 +234,59 @@ public class HibernateMappingStore
         Query query = session.createQuery( "delete from MapOrganisationUnitRelation where map = :map" );
 
         return query.setParameter( "map", map ).executeUpdate();
+    }
+    
+    // -------------------------------------------------------------------------
+    // MapLegendSet
+    // -------------------------------------------------------------------------
+
+    public int addMapLegend( MapLegend legend )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return (Integer) session.save( legend );
+    }
+
+    public void updateMapLegend( MapLegend legend )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.update( legend );
+    }
+
+    public void deleteMapLegend( MapLegend legend )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete( legend );
+    }
+
+    public MapLegend getMapLegend( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return (MapLegend) session.get( MapLegend.class, id );
+    }
+
+    public MapLegend getMapLegendByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLegendSet.class );
+
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (MapLegend) criteria.uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapLegend> getAllMapLegends()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLegend.class );
+
+        return criteria.list();
     }
 
     // -------------------------------------------------------------------------
