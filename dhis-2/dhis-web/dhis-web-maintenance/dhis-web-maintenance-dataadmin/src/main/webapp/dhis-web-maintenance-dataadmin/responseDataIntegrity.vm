@@ -7,6 +7,17 @@
 ]
 #end
 
+#macro( violationWithCollection $name $list )
+#set( $listSize = $list.size() )
+"${name}": [
+#foreach( $o in $list )
+#set( $oSize = $o.size() )
+"#foreach( $p in $o ) ${p.name} #if( $velocityCount < $oSize ), #end
+#end "#if( $velocityCount < $listSize ),#end
+#end
+]
+#end
+
 #macro( violationWithMap $name $map )
 #set( $size = $map.keySet().size() )
 "${name}": [
@@ -31,7 +42,7 @@
     #violation( "dataElementsWithoutGroups" $dataElementsWithoutGroups ),    
     #violationWithMapList( "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" $dataElementsAssignedToDataSetsWithDifferentPeriodTypes ),    
     #violation( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits ),
-    #violation( "indicatorsWithIdenticalFormulas" $indicatorsWithIdenticalFormulas ),
+    #violationWithCollection( "indicatorsWithIdenticalFormulas" $indicatorsWithIdenticalFormulas ),
     #violation( "indicatorsWithoutGroups" $indicatorsWithoutGroups ),    
     #violationWithMap( "invalidIndicatorNumerators" $invalidIndicatorNumerators ),
     #violationWithMap( "invalidIndicatorDenominators" $invalidIndicatorDenominators ),        

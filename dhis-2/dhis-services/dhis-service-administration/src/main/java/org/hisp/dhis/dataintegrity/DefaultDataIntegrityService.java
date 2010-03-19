@@ -61,14 +61,15 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDataIntegrityService.java 2010-03-18 11:52:20Z Chau Thu Tran $
+ * @version $Id: DefaultDataIntegrityService.java 2010-03-18 11:52:20Z Chau Thu
+ *          Tran $
  */
 @Transactional
 public class DefaultDataIntegrityService
     implements DataIntegrityService
 {
     private static final String FORMULA_SEPARATOR = "#";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -100,21 +101,21 @@ public class DefaultDataIntegrityService
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     private ValidationRuleService validationRuleService;
 
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
     }
-    
+
     private ExpressionService expressionService;
 
     public void setExpressionService( ExpressionService expressionService )
@@ -137,22 +138,22 @@ public class DefaultDataIntegrityService
 
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
-        return dataElementService.getDataElementsWithoutGroups();        
+        return dataElementService.getDataElementsWithoutGroups();
     }
-    
+
     public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
     {
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
-        
+
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
-        
+
         Map<DataElement, Collection<DataSet>> targets = new HashMap<DataElement, Collection<DataSet>>();
-                
+
         for ( DataElement element : dataElements )
         {
             final Set<PeriodType> targetPeriodTypes = new HashSet<PeriodType>();
             final Collection<DataSet> targetDataSets = new HashSet<DataSet>();
-            
+
             for ( DataSet dataSet : dataSets )
             {
                 if ( dataSet.getDataElements().contains( element ) )
@@ -161,13 +162,13 @@ public class DefaultDataIntegrityService
                     targetDataSets.add( dataSet );
                 }
             }
-            
+
             if ( targetPeriodTypes.size() > 1 )
             {
                 targets.put( element, targetDataSets );
-            }          
+            }
         }
-        
+
         return targets;
     }
 
@@ -178,25 +179,25 @@ public class DefaultDataIntegrityService
     public Collection<DataSet> getDataSetsNotAssignedToOrganisationUnits()
     {
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
-        
+
         return FilterUtils.filter( dataSets, new Filter<DataSet>()
+        {
+            public boolean retain( DataSet object )
             {
-                public boolean retain( DataSet object )
-                {
-                    return object.getSources() == null || object.getSources().size() == 0;
-                }
-            } );
+                return object.getSources() == null || object.getSources().size() == 0;
+            }
+        } );
     }
-    
+
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
 
-    public Collection<Indicator> getIndicatorsWithIdenticalFormulas()
+    public Collection<Collection<Indicator>> getIndicatorsWithIdenticalFormulas()
     {
         Hashtable<String, Indicator> formulas = new Hashtable<String, Indicator>();
         
-        Set<Indicator> targets = new HashSet<Indicator>();
+        Hashtable<String,Collection<Indicator>> targets = new Hashtable<String,Collection<Indicator>>();
         
         Collection<Indicator> indicators = indicatorService.getAllIndicators();
         
@@ -205,9 +206,19 @@ public class DefaultDataIntegrityService
             final String formula = indicator.getNumerator() + FORMULA_SEPARATOR + indicator.getDenominator();
             
             if(formulas.containsKey( formula ))
-            {
-                targets.add (formulas.get( formula ));
-                targets.add( indicator );
+            {  
+                if(targets.containsKey( formula )){
+                    targets.get( formula ).add( indicator );
+                }
+                else{
+                    Set<Indicator> elements = new HashSet<Indicator>();
+                    
+                    elements.add( indicator );
+                    elements.add (formulas.get( formula ));
+                    
+                    targets.put( formula,  elements);
+                    targets.get( formula ).add( indicator );
+                }
             }
             else
             {
@@ -215,48 +226,48 @@ public class DefaultDataIntegrityService
             }
         }
         
-        return targets;
+        return targets.values();
     }
 
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
         return indicatorService.getIndicatorsWithoutGroups();
     }
-    
+
     public Map<Indicator, String> getInvalidIndicatorNumerators()
     {
         Map<Indicator, String> invalids = new HashMap<Indicator, String>();
-        
+
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             String result = expressionService.expressionIsValid( indicator.getNumerator() );
-            
+
             if ( !result.equals( ExpressionService.VALID ) )
             {
                 invalids.put( indicator, result );
             }
         }
-        
+
         return invalids;
     }
 
     public Map<Indicator, String> getInvalidIndicatorDenominators()
     {
         Map<Indicator, String> invalids = new HashMap<Indicator, String>();
-        
+
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             String result = expressionService.expressionIsValid( indicator.getDenominator() );
-            
+
             if ( !result.equals( ExpressionService.VALID ) )
             {
                 invalids.put( indicator, result );
             }
         }
-        
+
         return invalids;
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -264,52 +275,55 @@ public class DefaultDataIntegrityService
     public Collection<OrganisationUnit> getOrganisationUnitsWithCyclicReferences()
     {
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
-        
+
         Set<OrganisationUnit> cyclic = new HashSet<OrganisationUnit>();
-        
+
         Set<OrganisationUnit> visited = new HashSet<OrganisationUnit>();
-        
+
         OrganisationUnit parent = null;
-        
+
         for ( OrganisationUnit unit : organisationUnits )
         {
             parent = unit;
-                        
-            while ( ( parent = parent.getParent() ) != null )
+
+            while ( (parent = parent.getParent()) != null )
             {
                 if ( parent.equals( unit ) ) // Cyclic reference
                 {
                     cyclic.add( unit );
 
-                    break;                    
+                    break;
                 }
-                else if ( visited.contains( parent ) ) // Ends in cyclic reference but not part of it
+                else if ( visited.contains( parent ) ) // Ends in cyclic
+                                                       // reference but not part
+                                                       // of it
                 {
                     break;
                 }
-                else // Remember visited
+                else
+                // Remember visited
                 {
                     visited.add( parent );
                 }
             }
-            
+
             visited.clear();
         }
-        
+
         return cyclic;
     }
 
     public Collection<OrganisationUnit> getOrphanedOrganisationUnits()
     {
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
-        
+
         return FilterUtils.filter( organisationUnits, new Filter<OrganisationUnit>()
+        {
+            public boolean retain( OrganisationUnit object )
             {
-                public boolean retain( OrganisationUnit object )
-                {
-                    return object.getParent() == null && ( object.getChildren() == null || object.getChildren().size() == 0 );
-                }
-            } );
+                return object.getParent() == null && (object.getChildren() == null || object.getChildren().size() == 0);
+            }
+        } );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
@@ -319,12 +333,13 @@ public class DefaultDataIntegrityService
 
     public Collection<OrganisationUnit> getOrganisationUnitsViolatingCompulsoryGroupSets()
     {
-        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets();
-                
+        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService
+            .getCompulsoryOrganisationUnitGroupSets();
+
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
-        
+
         Set<OrganisationUnit> targets = new HashSet<OrganisationUnit>();
-        
+
         for ( OrganisationUnit unit : organisationUnits )
         {
             for ( OrganisationUnitGroupSet groupSet : groupSets )
@@ -335,28 +350,29 @@ public class DefaultDataIntegrityService
                 }
             }
         }
-        
+
         return targets;
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsViolatingExclusiveGroupSets()
-    {        
+    {
         Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
 
         Set<OrganisationUnit> targets = new HashSet<OrganisationUnit>();
 
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
-            targets.addAll( getDuplicates( new ArrayList<OrganisationUnit>( groupSet.getOrganisationUnits() ), new OrganisationUnitNameComparator() ) );
+            targets.addAll( getDuplicates( new ArrayList<OrganisationUnit>( groupSet.getOrganisationUnits() ),
+                new OrganisationUnitNameComparator() ) );
         }
-        
+
         return targets;
     }
 
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithoutGroupSets()
     {
         Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getAllOrganisationUnitGroups();
-        
+
         return FilterUtils.filter( groups, new OrganisationUnitGroupWithoutGroupSetFilter() );
     }
 
@@ -367,47 +383,49 @@ public class DefaultDataIntegrityService
     public Collection<ValidationRule> getValidationRulesWithoutGroups()
     {
         Collection<ValidationRule> validationRules = validationRuleService.getAllValidationRules();
-        
+
         return FilterUtils.filter( validationRules, new Filter<ValidationRule>()
+        {
+            public boolean retain( ValidationRule object )
             {
-                public boolean retain( ValidationRule object )
-                {
-                    return object.getGroups() == null || object.getGroups().size() == 0;
-                }
-            } );
+                return object.getGroups() == null || object.getGroups().size() == 0;
+            }
+        } );
     }
-    
+
     public Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
     {
         Map<ValidationRule, String> invalids = new HashMap<ValidationRule, String>();
-        
+
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
             String result = expressionService.expressionIsValid( rule.getLeftSide().getExpression() );
-            
+
             if ( !result.equals( ExpressionService.VALID ) )
             {
                 invalids.put( rule, result );
             }
         }
-        
+
         return invalids;
     }
-    
+
     public Map<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
     {
         Map<ValidationRule, String> invalids = new HashMap<ValidationRule, String>();
-        
+
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
             String result = expressionService.expressionIsValid( rule.getRightSide().getExpression() );
-            
+
             if ( !result.equals( ExpressionService.VALID ) )
             {
                 invalids.put( rule, result );
             }
         }
-        
+
         return invalids;
     }
 }
+
+
