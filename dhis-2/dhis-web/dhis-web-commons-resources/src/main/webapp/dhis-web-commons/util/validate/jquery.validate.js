@@ -1070,6 +1070,10 @@ $.extend($.validator, {
 	loadLocaled : function(code)
 	{
 		this.messages = eval(code);
+		if( !this.messages )
+		{
+			this.messages = eval("en_GB");
+		}
 	}
 	
 });
