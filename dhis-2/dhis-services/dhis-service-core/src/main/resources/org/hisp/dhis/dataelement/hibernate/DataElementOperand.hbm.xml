@@ -6,7 +6,7 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementOperand" table="dataelementoperand">
     
-    <id name="id" column="categoryid">
+    <id name="id" column="dataelementoperandid">
       <generator class="native"/>
     </id>
 	
