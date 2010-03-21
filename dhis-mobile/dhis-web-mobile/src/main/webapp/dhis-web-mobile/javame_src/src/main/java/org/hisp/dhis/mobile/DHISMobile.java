@@ -22,10 +22,7 @@ public class DHISMobile extends MIDlet implements ActionListener {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc=" Declarations: Program Flow ">
-    private static String[][] dataElements = {{"Total No. of Pregnant Women", "No. Registered Within 1st Trimester",
-        "No. of New Women Registered Under JSY", "No. of Women Received 3 ANC Checkup",
-        "No. of Women Given TT1", "No. of Women Given TT2 / Booster", "No. of Women Given 100 IFA Tablets",
-        "New Pregnant Women with Hypertension", "No. of Pregnant Women Having HB < 11"},{""},};
+    private static String[][] dataElements = {{"Total No. of Pregnant Women", "No. Registered Within 1st Trimester", "No. of New Women Registered Under JSY", "No. of Women Received 3 ANC Checkup", "No. of Women Given TT1", "No. of Women Given TT2 / Booster", "No. of Women Given 100 IFA Tablets", "New Pregnant Women with Hypertension", "No. of Pregnant Women Having HB < 11"},{""},};
     private static final FormsListPage formListPage = new FormsListPage();
     private static final PeriodPage periodPage = new PeriodPage();
     private static final DatasetPage datasetPage = new DatasetPage(dataElements[0]);

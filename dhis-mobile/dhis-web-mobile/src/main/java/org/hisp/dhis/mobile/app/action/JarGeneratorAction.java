@@ -43,6 +43,16 @@ public class JarGeneratorAction implements Action {
 
     private String mvnBin;
     private String splash;
+    private String selectDataSet;
+    private String dataElements;
+
+    public void setDataElements(String dataElements) {
+        this.dataElements = dataElements;
+    }
+
+    public void setSelectDataSet(String selectDataSet) {
+        this.selectDataSet = selectDataSet;
+    }
 
     public String getMvnBin() {
         return mvnBin;
@@ -100,8 +110,11 @@ public class JarGeneratorAction implements Action {
         replaceStringInFile(dir, "DHISMobile.java", "\\w*.png", splash);
 
         //For dataset
-        //replaceStringInFile(dir, "DHISMobile.java", "", dataset);
-        
+        replaceStringInFile(dir, "FormsListPage.java", "formNames\\[].*;", "formNames[] = {\"" + selectDataSet + "\"};");
+
+        //For dataElements
+        replaceStringInFile(dir, "DHISMobile.java", "dataElements =.*\\},\\{", "dataElements = {{" + dataElements + "},{");
+
         //For language
         //replaceStringInFile(dir, "DHISMobile.java", "", language);
 
