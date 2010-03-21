@@ -56,6 +56,10 @@ public class GetDataElementsAction implements Action
         this.dataSetName = dataSetName;
     }
 
+    public String getDataSetName(){
+        return this.dataSetName;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -75,11 +79,6 @@ public class GetDataElementsAction implements Action
     {
         DataSet dataSet = dataSetService.getDataSetByName( dataSetName );
         dataElements = dataSet.getDataElements();
-        for ( DataElement de : dataElements )
-        {
-            System.out.println( "DataElement = " + de.getName() );
-        }
-        System.out.println( "===================================" );
         return SUCCESS;
     }
 }

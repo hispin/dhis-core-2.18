@@ -1,95 +1,45 @@
 <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/util/css/redmond/jquery-ui.css">
 <script type="text/javascript" src="../dhis-web-commons/util/jquery-ui.js"></script>
 <script type="text/javascript" src="javascript/jquery-form.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#mvnDiv").hide();
-        $("#accordion").accordion({
-            collapsible: true
-        });
-        $("#splashUpdate input:radio:first").attr("checked","checked");
-        var splashOptions = {
-            url: 'splashUpload.action',
-            target: '#splashUpdate',
-            success: function(){
-                $("#splashUpdate input:radio:first").attr("checked","checked");
-            }
-        }
-        $("#splashForm").ajaxForm(splashOptions);
-
-        var dataElementsOptions = {
-            url: 'getDataElements.action',
-            type: 'POST',
-            success: function(responseXML){
-                $("#dataElementsListDiv").append(responseXML);
-            }
-        }
-        $("#dataSetForm").ajaxForm(dataElementsOptions);
-    });
-
-    function showPathField(){
-        $("#mvnDiv").toggle(200);
-    }
-
-    function submitMvnForm(){
-        $("#mvnForm").submit();
-    }
-
-    function submitJarGenerator(){
-        var form = document.createElement("form");
-        form.setAttribute("method", "get");
-        form.setAttribute("action", "jarGenerator.action");
-
-        var aField = document.createElement("input");
-        aField.setAttribute("type", "radio");
-        aField.setAttribute("name", "splash");
-        aField.setAttribute("checked", "checked");
-        aField.setAttribute("value", $('input[name=splash]:checked').val());
-        form.appendChild(aField);
-        var bField = document.createElement("input");
-        bField.setAttribute("type", "text");
-        bField.setAttribute("name", "mvnBin");
-        bField.setAttribute("value", $("#mvnBin").attr("value"));
-        form.appendChild(bField);
-
-        document.body.appendChild(form);
-        form.style.visibility = "hidden";
-        form.submit();
-    }
-
-    function addDataSet(){
-        $("#dataSetForm").submit();
-    }
-
-</script>
-
-<h1>Create Mobile Application</h1>
-<div id="mvnStatusDiv">
-    #set ($path = "$!mvnPath")
-    #if($path != "")
-    #set ($status = "$!mvnStatus")
-    #if($status != "")
-    <span style="color:red">$status</span> <br/>
-    #end
-    <img src="../images/check.png" alt="" /> Using mvn found in PATH at $path (<a href="javascript: showPathField()">Change</a>)<br/><br/>
-    <div id="mvnDiv">
-        <form id="mvnForm" method="post">
-            Enter mvn Folder Path: <input name="mvnPath" type="text" value="$!mvnPath" size="40" />
-            <input type="button" value="Set mvn Path" onclick="submitMvnForm()" />
-        </form>
-    </div>
-    #else
-    #set ($status = "$!mvnStatus")
-    #if($status != "")
-    <span style="color:red">$status</span>
-    #end
-    mvn not found... Please configure mvn location <br/>
-    <form id="mvnForm" method="post">
-        Enter mvn Folder Path: <input name="mvnPath" type="text" value="$!mvnPath" size="40" />
-        <input type="button" value="Set mvn Path" onclick="submitMvnForm()" />
-    </form>
-    #end
-</div>
+<script type="text/javascript" src="javascript/createMobileApp.js"></script>
+<table width="100%">
+    <tr>
+        <td>
+            <h1>Create Mobile Application</h1>
+            <div id="mvnStatusDiv">
+                #set ($path = "$!mvnPath")
+                #if($path != "")
+                #set ($status = "$!mvnStatus")
+                #if($status != "")
+                <span style="color:red">$status</span> <br/>
+                #end
+                <img src="../images/check.png" alt="" /> Using mvn found in PATH at $path (<a href="javascript: showPathField()">Change</a>)<br/><br/>
+                <div id="mvnDiv">
+                    <form id="mvnForm" method="post">
+                        Enter mvn Folder Path: <input name="mvnPath" type="text" value="$!mvnPath" size="40" />
+                        <input type="button" value="Set mvn Path" onclick="submitMvnForm()" />
+                    </form>
+                </div>
+                #else
+                #set ($status = "$!mvnStatus")
+                #if($status != "")
+                <span style="color:red">$status</span>
+                #end
+                mvn not found... Please configure mvn location <br/>
+                <form id="mvnForm" method="post">
+                    Enter mvn Folder Path: <input name="mvnPath" type="text" value="$!mvnPath" size="40" />
+                    <input type="button" value="Set mvn Path" onclick="submitMvnForm()" />
+                </form>
+                #end
+            </div>
+        </td>
+        <td align="right">
+            #if ($mobileAppFilename)
+            <a href="javame_src/target/$mobileAppFilename">Download $mobileAppFilename</a>
+            #end
+        </td>
+    </tr>
+</table>
 
 <input id="mvnBin" style=" visibility: hidden" name="mvnBin" value="$path"/>
 <div id="accordion">
@@ -146,6 +96,6 @@
     </div>
     <h3><a href="#">Step 5: Generate Application</a></h3>
     <div id="jarGenerator">
-        <input type="button" value="Generate Mobile Application" onclick="submitJarGenerator()" />
+        <input id="genButton" type="button" value="Generate Mobile Application" onclick="submitJarGenerator()" />
     </div>
 </div>
