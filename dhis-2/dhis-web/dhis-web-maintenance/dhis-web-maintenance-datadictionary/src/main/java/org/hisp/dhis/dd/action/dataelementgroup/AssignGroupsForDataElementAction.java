@@ -1,7 +1,5 @@
 package org.hisp.dhis.dd.action.dataelementgroup;
 
-
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -30,6 +28,8 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id:
+ * @version $Id: AssignGroupsForDataElementAction.java 2869 2010-03-27 14:26:09Z Chau Thu Tran $
  */
 
 public class AssignGroupsForDataElementAction
@@ -79,20 +79,32 @@ public class AssignGroupsForDataElementAction
     public String execute()
         throws Exception
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );        
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+        Set<DataElementGroup> selectedGroups = new HashSet<DataElementGroup>();
 
         for ( Integer id : dataElementGroups )
         {
             DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
-            
-            dataElementGroup.getMembers().add( dataElement );
-            
-            dataElementService.updateDataElementGroup( dataElementGroup );
-        }
 
+            selectedGroups.add( dataElementGroup );
+
+            dataElementGroup.getMembers().add( dataElement );
+
+            dataElementService.updateDataElementGroup( dataElementGroup );
+
+        }
         
+        Set<DataElementGroup>removeGroups = new HashSet<DataElementGroup>( dataElementService
+            .getGroupsContainingDataElement( dataElement ) );
+        removeGroups.removeAll( selectedGroups );
+        
+        for ( DataElementGroup removeGroup : removeGroups )
+        {
+            removeGroup.getMembers().remove( dataElement );
+            dataElementService.updateDataElementGroup( removeGroup );
+        }
 
         return SUCCESS;
     }
-
 }

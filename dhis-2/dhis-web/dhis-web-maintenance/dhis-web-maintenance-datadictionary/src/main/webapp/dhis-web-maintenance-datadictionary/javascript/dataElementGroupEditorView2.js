@@ -71,13 +71,34 @@ function getAssignedGroupsCompleted( xmlObject )
 	}
 	
 	filterAssignedGroups();
-	
+	visableAvailableDataElementGroups();
 }
 
+function visableAvailableDataElementGroups()
+{
+	var assignedGroups = byId( 'assignedGroups' );
+	var availableGroups = byId( 'availableGroups' );
+	var assignedOptions = assignedGroups.options;
+	var availableOptions = availableGroups.options;
+	
+	for(var i=0;i<availableGroups.length;i++){
+		availableGroups.options[i].style.display='block';
+		for(var j=0;j<assignedOptions.length;j++){			
+			if(availableGroups[i].value==assignedOptions[j].value){				
+				availableGroups.options[i].style.display='none';
+			}
+		}
+	}
+}
 
 function addSelectedGroups()
 {
-    var list = document.getElementById( 'availableGroups' );
+	if(byId('availableDataElements').selectedIndex == -1){
+		setMessage(i18n_select_dataelement_group);
+		return;
+	}
+	
+    var list = byId( 'availableGroups' );
 
     while ( list.selectedIndex != -1 )
     {
@@ -89,12 +110,13 @@ function addSelectedGroups()
 
     }
 
-    filterAssignedGroups();   
+    filterAssignedGroups();
+	visableAvailableDataElementGroups();
 }
 
 function removeSelectedGroups()
 {
-    var list = document.getElementById( 'assignedGroups' );
+    var list = byId( 'assignedGroups' );
 
     while ( list.selectedIndex != -1 )
     {
@@ -102,18 +124,19 @@ function removeSelectedGroups()
 
         list.options[list.selectedIndex].selected = false;      
 
-		availableGroups[id] = assignedGroups[id];		
-
-        delete assignedGroups[id];
+		availableGroups[id] = assignedGroups[id];
+        
+		delete assignedGroups[id];
     }
 
-    filterAssignedGroups();    
+    filterAssignedGroups();
+	visableAvailableDataElementGroups();
 }
 
 function filterAvailableDataElements()
 {
-    var filter = document.getElementById( 'availableDataElementsFilter' ).value;
-    var list = document.getElementById( 'availableDataElements' );
+    var filter = byId( 'availableDataElementsFilter' ).value;
+    var list = byId( 'availableDataElements' );
 
     list.options.length = 0;
 
@@ -134,8 +157,8 @@ function filterAvailableDataElements()
 
 function filterAssignedGroups()
 {
-    var filter = document.getElementById( 'assignedGroupsFilter' ).value;
-    var list = document.getElementById( 'assignedGroups' );
+    var filter = byId( 'assignedGroupsFilter' ).value;
+    var list = byId( 'assignedGroups' );
 
     list.options.length = 0;
 
@@ -149,16 +172,15 @@ function filterAssignedGroups()
 			option.onmousemove  = function(e){
 				showToolTip( e, value);				
 			}
-            list.add( option, null );			
-
+            list.add( option, null );
         }
     }
 }
 
 function filterAvailableGroups()
 {
-    var filter = document.getElementById( 'availableGroupsFilter' ).value;
-    var list = document.getElementById( 'availableGroups' );
+    var filter = byId( 'availableGroupsFilter' ).value;
+    var list = byId( 'availableGroups' );
 
     list.options.length = 0;
 
@@ -180,7 +202,7 @@ function filterAvailableGroups()
 
 function deleteDataElementGroup()
 {
-    var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
+    var dataElementGroupsSelect = byId( 'availableGroups' );
 
     try
     {
@@ -206,7 +228,7 @@ function deleteDataElementGroupReceived( xmlObject )
 
     if ( type=='success' )
     {
-        var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
+        var dataElementGroupsSelect = byId( 'availableGroups' );
         dataElementGroupsSelect.remove( dataElementGroupsSelect.selectedIndex );                
     }
 }
@@ -232,7 +254,7 @@ function showRenameDataElementGroupForm()
 
 function validateRenameDataElementGroup()
 {
-    var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
+    var dataElementGroupsSelect = byId( 'availableGroups' );
     var id = dataElementGroupsSelect.options[ dataElementGroupsSelect.selectedIndex ].value;
     var name = document.getElementById( 'groupName' ).value;
     var request = new Request();
@@ -270,17 +292,25 @@ function renameDataElementGroup()
 function renameDataElementGroupReceived( xmlObject )
 {
     var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
-    var list = document.getElementById( 'availableGroups' );
-    list.options[ list.selectedIndex ].text = name;
-    document.getElementById( 'groupNameView' ).innerHTML = name;
+	var id = xmlObject.getElementsByTagName( "id" )[0].firstChild.nodeValue;
+    
+	var list = byId( 'availableGroups' );
+    availableGroups[id] = name;
+	var option = list.options[ list.selectedIndex ];
+		option.text = name;
+		option.onmousemove  = function(e){
+				showToolTip( e, name);				
+		}
+	
+    byId( 'groupNameView' ).innerHTML = name;
     showHideDiv( 'addDataElementGroupForm' );
     deleteDivEffect();
 }
 
 function showAddDataElementGroupForm()
 {
-    document.getElementById( 'groupName' ).value='';
-    document.getElementById( 'addRenameGroupButton' ).onclick=validateAddDataElementGroup;
+    byId( 'groupName' ).value='';
+    byId( 'addRenameGroupButton' ).onclick=validateAddDataElementGroup;
     setPositionCenter( 'addDataElementGroupForm' );
 	showById('addDataElementGroupForm');
     showDivEffect();
@@ -288,7 +318,7 @@ function showAddDataElementGroupForm()
 
 function validateAddDataElementGroup()
 {
-    var name = document.getElementById( 'groupName' ).value;
+    var name = byId( 'groupName' ).value;
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateAddDataElementGroupReceived );
@@ -311,7 +341,7 @@ function validateAddDataElementGroupReceived( xmlObject )
 
 function createNewGroup()
 {
-    var name = document.getElementById( 'groupName' ).value;
+    var name = byId( 'groupName' ).value;
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( createNewGroupReceived );
@@ -323,7 +353,14 @@ function createNewGroupReceived( xmlObject )
     var id = xmlObject.getElementsByTagName( "id" )[0].firstChild.nodeValue;
     var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;    
 	availableGroups[id] = name;
-    filterAvailableGroups();
+	var list = byId( 'availableGroups' );
+	var option = new Option(name, id);
+		option.text = name;
+		option.onmousemove  = function(e){
+				showToolTip( e, name);				
+		}
+	list.add(option, null);
+    //filterAvailableGroups();
     showHideDiv( 'addDataElementGroupForm' );
     deleteDivEffect();
 }
@@ -350,6 +387,7 @@ function assignGroupsForDataElement()
     {
         params += '&dataElementGroups=' + selectedGroups.options[i].value;
     }
+	
     request.sendAsPost( params );
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( assignGroupsForDataElementReceived );

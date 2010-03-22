@@ -28,6 +28,8 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -37,7 +39,8 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id: $
+ * @version $Id: AssignGroupsForIndicatorAction.java 2869 2010-03-27 15:01:079Z
+ *          Chau Thu Tran $
  */
 public class AssignGroupsForIndicatorAction
     implements Action
@@ -79,14 +82,28 @@ public class AssignGroupsForIndicatorAction
 
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
+        Set<IndicatorGroup> selectedGroups = new HashSet<IndicatorGroup>();
+
         for ( Integer id : indicatorGroups )
         {
             IndicatorGroup group = indicatorService.getIndicatorGroup( id );
 
+            selectedGroups.add( group );
+            
             group.getMembers().add( indicator );
 
             indicatorService.updateIndicatorGroup( group );
 
+        }
+
+        Set<IndicatorGroup> removeGroups = new HashSet<IndicatorGroup>( indicatorService
+            .getGroupsContainingIndicator( indicator ) );
+        removeGroups.removeAll( selectedGroups );
+
+        for ( IndicatorGroup removeGroup : removeGroups )
+        {
+            removeGroup.getMembers().remove( indicator );
+            indicatorService.updateIndicatorGroup( removeGroup );
         }
 
         return SUCCESS;
