@@ -280,30 +280,5 @@ public interface DataElementStore
      * @param dataElements the DataElements.
      * @return a collection of all Operands.
      */
-    Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );
-    
-    /**
-     * Adds a DataElementOperand.
-     * 
-     * @param operand the DataElementOperand.
-     * @return the generated identifier.
-     */
-    int addDataElementOperand( DataElementOperand operand );
-    
-    /**
-     * Returns the DataElementOperand representing the given DataElement and
-     * DataElementCategoryOptionCombo.
-     * 
-     * @param element the DataElement.
-     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
-     * @return the DataElementOperand.
-     */
-    DataElementOperand getDataElementOperand( DataElement element, DataElementCategoryOptionCombo categoryOptionCombo );
-    
-    /**
-     * Deletes the given DataElementOperand.
-     * 
-     * @param operand the DataElementOperand.
-     */
-    void deleteDataElementOperand( DataElementOperand operand );
+    Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );    
 }

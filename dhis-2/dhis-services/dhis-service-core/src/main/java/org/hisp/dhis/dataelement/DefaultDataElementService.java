@@ -621,20 +621,5 @@ public class DefaultDataElementService
     public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
-    }
-    
-    public int addDataElementOperand( DataElementOperand operand )
-    {
-        return dataElementStore.addDataElementOperand( operand );
-    }
-    
-    public DataElementOperand getDataElementOperand( DataElement element, DataElementCategoryOptionCombo categoryOptionCombo )
-    {
-        return dataElementStore.getDataElementOperand( element, categoryOptionCombo );
-    }
-    
-    public void deleteDataElementOperand( DataElementOperand operand )
-    {
-        dataElementStore.deleteDataElementOperand( operand );
-    }
+    }    
 }

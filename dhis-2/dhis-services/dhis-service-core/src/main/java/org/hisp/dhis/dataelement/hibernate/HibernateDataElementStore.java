@@ -43,7 +43,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
@@ -468,25 +467,5 @@ public class HibernateDataElementStore
         {
             throw new RuntimeException( "Failed to get all operands", ex );
         }   
-    }
-    
-    public int addDataElementOperand( DataElementOperand operand )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( operand );
-    }
-    
-    public DataElementOperand getDataElementOperand( DataElement element, DataElementCategoryOptionCombo categoryOptionCombo )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataElementOperand.class );
-        
-        criteria.add( Restrictions.eq( "dataElement", element ) );
-        criteria.add( Restrictions.eq( "categoryOptionCombo", categoryOptionCombo ) );
-        
-        return (DataElementOperand) criteria.uniqueResult();
-    }
-    
-    public void deleteDataElementOperand( DataElementOperand operand )
-    {
-        sessionFactory.getCurrentSession().delete( operand );
     }
 }
