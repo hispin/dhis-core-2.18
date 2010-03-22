@@ -15,6 +15,6 @@
 	
 	<many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
 		column="categoryoptioncomboid" foreign-key="fk_dataelementoperand_dataelementcategoryoptioncombo"/>
- 
+
   </class>
 </hibernate-mapping>
