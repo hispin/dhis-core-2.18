@@ -280,7 +280,7 @@
     </action>
     
     <action name="getDimensionSetDataElements" class="org.hisp.dhis.reporting.tablecreator.action.GetDimensionSetDataElementsAction">
-      <result name="success" type="velocity">/dhis-web-commons/ajax/responseDataElement.vm</result>
+      <result name="success" type="velocity">/dhis-web-commons/ajax/xmlDataElements.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
         
