@@ -22,12 +22,12 @@
 	$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroupEditor" )
 </h3>
 
-<span id='message' style="position:fixed;top:80px;right:5px;"></span>
+<span id='message' style="position:fixed;top:80px;right:5px;" onclick="hideById('message');"></span>
 
 <table >
 	<tr>
 		<th>$i18n.getString( "available_dataelements" )</th>		
-		<th><span id="groupNameView" style="display:block;"></span></th>
+		<th><span id="groupNameView" style="display:block;"><span id="groupNameView" style="display:block;">$i18n.getString( "data_element_groups" )</span></span></th>
 		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>		
 		<th>$i18n.getString( "available_groups" )</th>
 	</tr>
@@ -52,9 +52,9 @@
 			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:42px">
 		</td>	
 		<td>
-			<select class="select" id="availableGroups" multiple="multiple" size="30" ondblclick="addSelectedGroups()" onMouseOut="javascript: hideToolTip();">
-			</select>
-		</td>		
+          <select name="select" size="30" multiple="multiple" class="select" id="availableGroups" ondblclick="addSelectedGroups()" onmouseout="javascript: hideToolTip();">
+          </select>
+</td>		
 	</tr>
 	<tr>
 		<td></td>	

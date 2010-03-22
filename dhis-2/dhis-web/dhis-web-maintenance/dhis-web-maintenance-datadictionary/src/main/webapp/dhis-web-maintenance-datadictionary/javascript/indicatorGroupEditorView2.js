@@ -71,7 +71,8 @@ function addSelectedGroups()
 
     }
 
-    filterAssignedGroups();   
+    filterAssignedGroups();
+	visableAvailableIndicatorGroups();
 }
 
 function removeSelectedGroups()
@@ -89,7 +90,8 @@ function removeSelectedGroups()
         delete assignedGroups[id];
     }
 
-    filterAssignedGroups();    
+    filterAssignedGroups();
+	visableAvailableIndicatorGroups();
 }
 
 /*==============================================================================
@@ -99,17 +101,17 @@ function removeSelectedGroups()
 function getAssignedIndicatorGroups( indicatorId )
 {
 	var request = new Request();
-    request.setResponseTypeXML( 'indicatorGroups' );
+    request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( getAssignedIndicatorGroupsCompleted );
     request.send( 'getAssignedIndicatorGroups.action?indicatorId=' + indicatorId );    
 }
 
-function getAssignedIndicatorGroupsCompleted( indicatorGroups )
+function getAssignedIndicatorGroupsCompleted( xmlObject )
 {
 	assignedGroups = new Object();
 	
-	var availableIndicatorGroups = indicatorGroups.getElementsByTagName( 'indicatorGroup' );
-	
+	var availableIndicatorGroups = xmlObject.getElementsByTagName( 'indicatorGroup' );
+    
 	for( var i=0;i<availableIndicatorGroups.length;i++)
 	{
 		var id = availableIndicatorGroups.item(i).getElementsByTagName( 'id' )[0].firstChild.nodeValue;
@@ -118,6 +120,23 @@ function getAssignedIndicatorGroupsCompleted( indicatorGroups )
 	}
 	
 	filterAssignedGroups();
+	visableAvailableIndicatorGroups();
+}
+
+function visableAvailableIndicatorGroups()
+{
+	var assignedGroups = byId( 'assignedGroups' );
+	var availableGroups = byId( 'availableGroups' );
+	var assignedOptions = assignedGroups.options;
+	var availableOptions = availableGroups.options;
+	for(var i=0;i<availableGroups.length;i++){
+		availableGroups.options[i].style.display='block';
+		for(var j=0;j<assignedOptions.length;j++){		
+			if(availableGroups[i].value==assignedOptions[j].value){				
+				availableGroups.options[i].style.display ='none';
+			}
+		}
+	}
 }
 
 /*==============================================================================
@@ -242,7 +261,14 @@ function createNewGroupReceived( xmlObject )
     var id = xmlObject.getElementsByTagName( "id" )[0].firstChild.nodeValue;
     var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
     availableGroups[id] = name;
-    filterAvailableGroups();
+	var list = byId( 'availableGroups' );
+	var option = new Option(name, id);
+		option.text = name;
+		option.onmousemove  = function(e){
+				showToolTip( e, name);				
+		}
+	list.add(option, null);
+    //filterAvailableGroups();
     toggleById( 'addIndicatorGroupForm' );
     deleteDivEffect();  
 }
@@ -299,12 +325,28 @@ function renameGroup()
 	var name = document.getElementById( 'groupName' ).value;    
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( createNewGroupReceived );
+    request.setCallbackSuccess( renameGroupReceived );
 	var params = "name=" + name +  "&mode=editor&id=" +  byId('availableGroups').value;
 	request.sendAsPost( params );
     request.send( 'renameIndicatorGroupEditor.action');	
 }
 
+function renameGroupReceived( xmlObject )
+{       
+    var id = xmlObject.getElementsByTagName( "id" )[0].firstChild.nodeValue;
+    var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
+    availableGroups[id] = name;
+	var list = byId( 'availableGroups' );
+	var option = list.options[ list.selectedIndex ];
+		option.text = name;
+		option.onmousemove  = function(e){
+				showToolTip( e, name);				
+		}
+	list.add(option, null);
+    //filterAvailableGroups();
+    toggleById( 'addIndicatorGroupForm' );
+    deleteDivEffect();  
+}
 
 /*==============================================================================
  * Update Member of Indicator Group
