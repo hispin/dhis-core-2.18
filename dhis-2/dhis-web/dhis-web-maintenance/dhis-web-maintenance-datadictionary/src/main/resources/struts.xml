@@ -143,7 +143,7 @@
 		<action name="getAssignedDataElementGroups"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetAssignedGroupsByDataElementAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responsedataElementGroups.vm
+				/dhis-web-maintenance-datadictionary/responseDataElementGroups.vm
 			</result>
 		</action>
 		
@@ -157,7 +157,7 @@
 		<action name="getDataElementGroupEditor"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responsedataElementGroupSuccess.vm
+				/dhis-web-maintenance-datadictionary/responseDataElementGroupSuccess.vm
 			</result>			
 		</action>
 
