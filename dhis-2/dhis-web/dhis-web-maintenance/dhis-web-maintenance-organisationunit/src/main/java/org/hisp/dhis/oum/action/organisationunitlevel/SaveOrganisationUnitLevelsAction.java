@@ -27,7 +27,9 @@ package org.hisp.dhis.oum.action.organisationunitlevel;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -62,10 +64,10 @@ public class SaveOrganisationUnitLevelsAction
     // -------------------------------------------------------------------------
 
     public String execute()
-    {
-        organisationUnitService.deleteOrganisationUnitLevels();
-        
+    {        
         Map<String, String> params = ContextUtils.getParameterMap( ServletActionContext.getRequest() );
+        
+        Set<Integer> levels = new HashSet<Integer>(); 
         
         for ( Entry<String, String> param : params.entrySet() )
         {
@@ -76,12 +78,16 @@ public class SaveOrganisationUnitLevelsAction
             {
                 if ( value != null && value.trim().length() > 0 )
                 {
-                    String level = key.substring( LEVEL_PARAM_PREFIX.length(), key.length() );
+                    int level = Integer.parseInt( key.substring( LEVEL_PARAM_PREFIX.length(), key.length() ) );
                     
-                    organisationUnitService.addOrganisationUnitLevel( new OrganisationUnitLevel( Integer.parseInt( level ), value ) );
+                    organisationUnitService.addOrUpdateOrganisationUnitLevel( new OrganisationUnitLevel( level, value ) );
+                    
+                    levels.add( level );
                 }
             }            
-        }   
+        }
+        
+        organisationUnitService.pruneOrganisationUnitLevels( levels );
         
         return SUCCESS;
     }
