@@ -1,3 +1,26 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addDataSetEditorForm
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#addDataSetEditorForm").validate({
+				 	 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+										validateAddDataSetEditor();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#name").focus();
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "dataset_assignment_editor" )</h3>
 
 <form id="assignMultiDataSetForm" action="saveAssignMultiDataSetForOrgunit.action" method="post" onsubmit="selectAllById('selectedDataSets')">
@@ -8,7 +31,7 @@
 	</tr>
 	<tr>		
 		<td><input type="text" id="availableDataSetsFilter" onkeyup="filterList( this.value, 'availableDataSets' )" style="width:25em" /></td>
-		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
+		<td style="text-align:center">&lt; $i18n.getString( "filter" ) &gt;</td>
 		<td><input type="text" id="selectedDataSetsFilter" onkeyup="filterList( this.value, 'selectedDataSets' )" style="width:25em" /></td>
 	</tr>
 	<tr>
@@ -26,6 +49,20 @@
 	
 		<td>
 			<select id="selectedDataSets" name="selectedDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="javascript:sortList( 'availableDataSets', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'availableDataSets', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataSetEditorForm()" style="width:70px" />
+			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataSetEditorForm()" style="width:70px" />
+			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataSetEditor()" style="width:50%" />
+		</td>
+		<td></td>
+		<td>
+			<a href="javascript:sortList( 'selectedDataSets', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'selectedDataSets', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
 		</td>
 	</tr>
 </table>
@@ -139,6 +176,7 @@
       </td>
     </tr>
 </table>
+
 <p>
 	<input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em"><input type="button" 
 	onclick="window.location.href='index.action'" value="$i18n.getString( "cancel" )" style="width:10em">
@@ -146,13 +184,89 @@
 
 </form>
 
-<span id="message"></span>
+<!-- Add new Div -->
+
+<div id="addDataSetEditorDiv" style="position:fixed;display:none;width:350px;z-index:11;background-color: white;border: medium solid silver;height:220px;padding:20px;">
+<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="javascript: closeDiv('addDataSetEditorDiv')">[x]</div>
+<h4 align="center">$i18n.getString( "add_dataset" )</h4>
+
+<form id="addDataSetEditorForm" name="addDataSetEditorForm" action="addDataSetEditor.action" method="post" >
+	<table id="detailsList">
+		<col> ## Labels
+		<col> ## Input
+		<thead>
+			<tr>
+				<th colspan="2">$i18n.getString( "dataset_details" )</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
+		</tr>
+		<tr>
+			<td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="60" class="{validate:{required:true,minlength:2,maxlength:60}}"/></td>
+		</tr>
+		<tr>
+			<td><label>$i18n.getString( "code" )</label></td>
+			<td><input type="text" id="code" name="code" maxlength="20" style="width:20em"  maxlength="60" class="{validate:{maxlength:60}}"/></td>
+		</tr>
+		<tr>
+			<td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td>
+				<select id="frequencySelect" name="frequencySelect" style="min-width:20em" class="{validate:{required:true}}">
+				</select>
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+	    <tr>
+			<td colspan="3" align="center">
+				<input type="submit" value="$i18n.getString( "save" )" style="width:13em"/>
+				<input type="button" onclick="javascript: closeDiv('addDataSetEditorDiv')" value="$i18n.getString( "cancel" )" style="width:12em"/>
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+		</tbody>
+	</table>
+</form>
+</div>
+
+<!-- Rename Div -->
+<div id="renameDataSetEditorDiv" style="position:fixed;display:none;width:550px;z-index:11;background-color: white;border: medium solid silver;height:50px;padding:10px;">
+<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="javascript: closeDiv('renameDataSetEditorDiv')">[x]</div>
+<table width="100%" height="100%" border="0" cellpadding="2" cellspacing="2">
+		<tr align="center">
+			<td>$i18n.getString( "name" ): </td>
+			<td><input type="text" id="dateSetNameField" style="width:30em" onkeyup="javascript: checkKeyCodeAndValidateRenameField(event);"/></td>
+			<td>
+				<input id="addRenameDataSetButton" type="button" value="$i18n.getString( 'ok' )"/>
+				<input type="button" onclick="javascript: closeDiv( 'renameDataSetEditorDiv' );" value="$i18n.getString( 'cancel' )"/>
+			</td>
+		</tr>	  
+	</table>
+	
+</div>
+
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
 
 <script type="text/javascript">
 
-	var selectedDataSets = new Object();
+	#if ( $message )
+		byId( "message" ).style.width = '$i18n.getString( "$message" )'.length + '$i18n.getString( "$name" )'.length;
+		setMessage( '$i18n.getString( "$message" )' + '<br/><br/>[<strong>' + '$i18n.getString( "$name" ) </strong>]' );
+	#end
+	
+	var previousName = '';
 
+	var i18n_add_success = '$encoder.jsEscape( $i18n.getString( "add_success" ) , "'")';
+	var i18n_rename_success = '$encoder.jsEscape( $i18n.getString( "rename_success" ) , "'")';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'")';
+	var i18n_dataset_unselected = '$encoder.jsEscape( $i18n.getString( "choose_dataset" ) , "'")';
+	
+	var selectedDataSets = new Object();
 	var availableDataSets = new Object();
+	
 #foreach( $dataSet in $availableDataSets )
 	availableDataSets['$dataSet.id'] = '$encoder.jsEscape( $dataSet.name, "'" )';
 #end

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.action;
+package org.hisp.dhis.dataset.action.editor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,16 +27,18 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Kristian
- * @version $Id: DelDataSetAction.java 3575 2007-09-28 17:22:01Z larshelg $
+ * @author Dang Duy Hieu
+ * @version $Id$
+ * @since 2010-03-22
  */
-public class DelDataSetAction
+public class ValidateRenameDataSetEditorAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -51,14 +53,21 @@ public class DelDataSetAction
     }
 
     // -------------------------------------------------------------------------
-    // Getters & setters
+    // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer dataSetId;
 
-    public void setId( Integer id )
+    public void setDataSetId( Integer dataSetId )
     {
-        this.id = id;
+        this.dataSetId = dataSetId;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -75,7 +84,7 @@ public class DelDataSetAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private String message;
 
     public String getMessage()
@@ -84,17 +93,36 @@ public class DelDataSetAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Execution
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        dataSetService.deleteDataSet( dataSetService.getDataSet( id ) );
+        // ---------------------------------------------------------------------
+        // Name
+        // ---------------------------------------------------------------------
 
-        message = i18n.getString( "delete_success" );
+        if ( (name == null) || (name.trim().length() == 0) )
+        {
+            message = i18n.getString( "specify_name" );
+
+            return INPUT;
+        }
+        else
+        {
+            DataSet match = dataSetService.getDataSetByName( name );
+
+            if ( match != null && (dataSetId == null || match.getId() != dataSetId) )
+            {
+                message = i18n.getString( "duplicate_names" );
+
+                return INPUT;
+            }
+        }
+
+        message = "OK";
 
         return SUCCESS;
     }
-
 }
