@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
@@ -270,6 +271,10 @@ public interface OrganisationUnitService
     int addOrganisationUnitLevel( OrganisationUnitLevel level );
     
     void updateOrganisationUnitLevel( OrganisationUnitLevel level );
+    
+    void addOrUpdateOrganisationUnitLevel( OrganisationUnitLevel level );
+    
+    void pruneOrganisationUnitLevels( Set<Integer> currentLevels );
     
     OrganisationUnitLevel getOrganisationUnitLevel( int id );
     

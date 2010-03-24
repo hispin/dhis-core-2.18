@@ -72,16 +72,14 @@ public class MapDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteOrganisationUnitLevel( OrganisationUnitLevel level )
+    public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
         for ( Map map : mappingService.getAllMaps() )
         {
             if ( map.getOrganisationUnitLevel().equals( level ) )
             {
-                return false;
+                mappingService.deleteMap( map );
             }
         }
-        
-        return true;
     }
 }

@@ -4,7 +4,6 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<class name="org.hisp.dhis.reportexcel.PeriodColumn" table="reportexcel_periodcolumns">
-		<cache usage="read-write"/>
 		<id name="id" column="periodcolumnid">
 			<generator class="native" />
 		</id>

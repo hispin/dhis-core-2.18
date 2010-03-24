@@ -475,6 +475,33 @@ public class DefaultOrganisationUnitService
         organisationUnitStore.updateOrganisationUnitLevel( level );
     }
     
+    public void addOrUpdateOrganisationUnitLevel( OrganisationUnitLevel level )
+    {
+        OrganisationUnitLevel existing = getOrganisationUnitLevelByLevel( level.getLevel() );
+        
+        if ( existing == null )
+        {
+            addOrganisationUnitLevel( level );
+        }
+        else
+        {
+            existing.setName( level.getName() );
+            
+            updateOrganisationUnitLevel( existing );
+        }
+    }
+    
+    public void pruneOrganisationUnitLevels( Set<Integer> currentLevels )
+    {
+        for ( OrganisationUnitLevel level : getOrganisationUnitLevels() )
+        {
+            if ( !currentLevels.contains( level.getLevel() ) )
+            {
+                deleteOrganisationUnitLevel( level );
+            }
+        }
+    }
+    
     public OrganisationUnitLevel getOrganisationUnitLevel( int id )
     {
         return organisationUnitStore.getOrganisationUnitLevel( id );
