@@ -397,6 +397,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</property>
   </bean>
   
+  <!-- Editor -->
+  
   <bean id="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction"
     class="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction"
     scope="prototype">
@@ -421,6 +423,39 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 	</property>
   </bean>
-
+  
+  <bean id="org.hisp.dhis.dataset.action.editor.AddDataSetEditorAction"
+    class="org.hisp.dhis.dataset.action.editor.AddDataSetEditorAction" 
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>
+	<property name="userStore">
+		<ref bean="org.hisp.dhis.user.UserStore"/>
+	</property>  	 
+	<property name="currentUserService">
+		<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+	</property>  	
+  </bean>
+  
+  
+  <bean id="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction"
+    class="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction" 
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataset.action.editor.RenameDataSetEditorAction"
+    class="org.hisp.dhis.dataset.action.editor.RenameDataSetEditorAction" 
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+  </bean>
   
 </beans>

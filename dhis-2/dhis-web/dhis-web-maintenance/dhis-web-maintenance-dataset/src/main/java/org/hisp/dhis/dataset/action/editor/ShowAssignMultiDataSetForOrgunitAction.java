@@ -101,6 +101,10 @@ public class ShowAssignMultiDataSetForOrgunitAction
 
     private List<OrganisationUnitGroup> groups;
 
+    private String name;
+
+    private String message;
+
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
@@ -118,6 +122,26 @@ public class ShowAssignMultiDataSetForOrgunitAction
     public List<OrganisationUnitGroup> getGroups()
     {
         return groups;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -143,9 +167,10 @@ public class ShowAssignMultiDataSetForOrgunitAction
         levels = new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() );
 
         groups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-        
-        Collections.sort(groups, new OrganisationUnitGroupNameComparator() );
+
+        Collections.sort( groups, new OrganisationUnitGroupNameComparator() );
 
         return SUCCESS;
     }
+
 }

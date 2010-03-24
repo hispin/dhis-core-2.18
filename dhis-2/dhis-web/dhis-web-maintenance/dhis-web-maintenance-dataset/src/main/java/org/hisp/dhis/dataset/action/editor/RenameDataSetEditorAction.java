@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.action;
+package org.hisp.dhis.dataset.action.editor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,16 +27,18 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Kristian
- * @version $Id: DelDataSetAction.java 3575 2007-09-28 17:22:01Z larshelg $
+ * @author Dang Duy Hieu
+ * @version $Id$
+ * @since 2010-03-22
  */
-public class DelDataSetAction
+public class RenameDataSetEditorAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -51,20 +53,25 @@ public class DelDataSetAction
     }
 
     // -------------------------------------------------------------------------
-    // Getters & setters
+    // Input
     // -------------------------------------------------------------------------
+    private String name;
 
-    private Integer id;
-
-    public void setId( Integer id )
+    public void setName( String name )
     {
-        this.id = id;
+        this.name = name;
+    }
+
+    private int dataSetId;
+
+    public void setDataSetId( int dataSetId )
+    {
+        this.dataSetId = dataSetId;
     }
 
     // -------------------------------------------------------------------------
-    // I18n
+    // I18n Object
     // -------------------------------------------------------------------------
-
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -75,7 +82,7 @@ public class DelDataSetAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private String message;
 
     public String getMessage()
@@ -90,11 +97,25 @@ public class DelDataSetAction
     public String execute()
         throws Exception
     {
-        dataSetService.deleteDataSet( dataSetService.getDataSet( id ) );
+        // ---------------------------------------------------------------------
+        // Update values
+        // ---------------------------------------------------------------------
 
-        message = i18n.getString( "delete_success" );
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+        if ( dataSet == null )
+        {
+            message = i18n.getString( "rename_failed" );
+
+            return ERROR;
+
+        }
+
+        dataSet.setName( name );
+        dataSetService.updateDataSet( dataSet );
+
+        message = name;
 
         return SUCCESS;
     }
-
 }
