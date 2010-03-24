@@ -48,6 +48,9 @@ public interface MappingService
     final String MAP_SOURCE_TYPE_DATABASE = "database";
     final String MAP_SOURCE_TYPE_GEOJSON = "geojson";
     final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
+    final String MAP_TEMPL_DIR = "map_temp";
+    
+    
     
     // -------------------------------------------------------------------------
     // MapValue
