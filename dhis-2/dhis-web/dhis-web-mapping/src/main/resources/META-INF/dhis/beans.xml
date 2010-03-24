@@ -1,342 +1,298 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  
-  <!-- No -->
-  
-  <bean id="org.hisp.dhis.mapping.action.NoAction"
-    class="org.hisp.dhis.mapping.action.NoAction"
-    scope="prototype"/>
-	
-  <!-- OrganisationUnit -->
-  
-  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
-    class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
-    scope="prototype">
-    <property name="organisationUnitService" 
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
-    class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
-    scope="prototype">
-    <property name="organisationUnitService" 
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
-  <!-- Map -->
-  
-  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapAction"
-    class="org.hisp.dhis.mapping.action.AddOrUpdateMapAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetAllMapsAction"
-    class="org.hisp.dhis.mapping.action.GetAllMapsAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction"
-    class="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.GetMapsByTypeAction"
-    class="org.hisp.dhis.mapping.action.GetMapsByTypeAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>	
-  
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetMapValuesByMapAction"
-    class="org.hisp.dhis.mapping.action.GetMapValuesByMapAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction"
-    class="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>	
-	
-  <bean id="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
-    class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
-    scope="prototype">
-    <property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
-  </bean>
 
-  <bean id="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
-    class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
-    scope="prototype">
-    <property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
-  </bean>
+	<!-- No -->
 
-  <bean id="org.hisp.dhis.mapping.action.GetBaseCoordinateAction"
-    class="org.hisp.dhis.mapping.action.GetBaseCoordinateAction"
-    scope="prototype">
-    <property name="systemSettingManager" 
-      ref="org.hisp.dhis.options.SystemSettingManager"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.SetBaseCoordinateAction"
-    class="org.hisp.dhis.mapping.action.SetBaseCoordinateAction"
-    scope="prototype">
-    <property name="systemSettingManager" 
-      ref="org.hisp.dhis.options.SystemSettingManager"/>
-  </bean>
-	
-  <!-- MapOrganisationUnitRelation -->
-    
-  <bean id="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction"
-    class="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
-    class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction"
-    class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
+	<bean id="org.hisp.dhis.mapping.action.NoAction" class="org.hisp.dhis.mapping.action.NoAction"
+		scope="prototype" />
 
-  <bean id="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction"
-    class="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
-    class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
-  <!-- MapLegendSet -->
-  
-  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction"
-    class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-    
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction"
-    class="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
+	<!-- OrganisationUnit -->
+
+	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
+		class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
+		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<!-- Map -->
+
+	<bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapAction"
+		class="org.hisp.dhis.mapping.action.AddOrUpdateMapAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllMapsAction" class="org.hisp.dhis.mapping.action.GetAllMapsAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction"
+		class="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapsByTypeAction" class="org.hisp.dhis.mapping.action.GetMapsByTypeAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.DeleteMapAction" class="org.hisp.dhis.mapping.action.DeleteMapAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapValuesByMapAction"
+		class="org.hisp.dhis.mapping.action.GetMapValuesByMapAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction"
+		class="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
+		class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
+		scope="prototype">
+		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
+		class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
+		scope="prototype">
+		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetBaseCoordinateAction"
+		class="org.hisp.dhis.mapping.action.GetBaseCoordinateAction" scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.SetBaseCoordinateAction"
+		class="org.hisp.dhis.mapping.action.SetBaseCoordinateAction" scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+	<!-- MapOrganisationUnitRelation -->
+
+	<bean
+		id="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction"
+		class="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
+		class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction"
+		class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction"
+		class="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
+		class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction"
+		class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction"
+		class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<!-- MapLegendSet -->
+
+	<bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction"
+		class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction"
+		class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction"
+		class="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapLegendSetAction"
+		class="org.hisp.dhis.mapping.action.GetMapLegendSetAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction"
+		class="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction"
+		class="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+	<!-- MapView -->
+
+	<bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction"
+		class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.DeleteMapViewAction" class="org.hisp.dhis.mapping.action.DeleteMapViewAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetMapViewAction" class="org.hisp.dhis.mapping.action.GetMapViewAction"
+		scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllMapViewsAction"
+		class="org.hisp.dhis.mapping.action.GetAllMapViewsAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
+		class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
+		scope="prototype">
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<!-- MapLayer -->
+
+	<bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction"
+		class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.DeleteMapLayerAction"
+		class="org.hisp.dhis.mapping.action.DeleteMapLayerAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllMapLayersAction"
+		class="org.hisp.dhis.mapping.action.GetAllMapLayersAction" scope="prototype">
+		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+	</bean>
+
+	<!-- Indicator -->
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
+		class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
+		scope="prototype">
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction"
+		class="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction"
+		scope="prototype">
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllIndicatorsAction"
+		class="org.hisp.dhis.mapping.action.GetAllIndicatorsAction" scope="prototype">
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+	<!-- Period -->
+
+	<bean id="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
+		class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction" scope="prototype">
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
+		class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<!-- Shapefile -->
+
+	<bean
+		id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
+		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
+		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<!-- GeoJson -->
+
+	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonAction" class="org.hisp.dhis.mapping.action.GetGeoJsonAction"
+		scope="prototype">
+		<property name="locationManager"
+			ref="org.hisp.dhis.external.location.LocationManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
+		class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction" scope="prototype">
+		<property name="locationManager"
+			ref="org.hisp.dhis.external.location.LocationManager" />
+	</bean>
+
+	<!-- Export Map -->
 	
-  <bean id="org.hisp.dhis.mapping.action.GetMapLegendSetAction"
-    class="org.hisp.dhis.mapping.action.GetMapLegendSetAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>	
-  
-  <bean id="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction"
-    class="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction"
-    class="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-	<property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-  </bean>
-	
-  <!-- MapView -->
-	
-  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction"
-    class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapViewAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapViewAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>	
-	
-  <bean id="org.hisp.dhis.mapping.action.GetMapViewAction"
-    class="org.hisp.dhis.mapping.action.GetMapViewAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.GetAllMapViewsAction"
-    class="org.hisp.dhis.mapping.action.GetAllMapViewsAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
-    class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
-    scope="prototype">
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService"
-      ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <!-- MapLayer -->
-	
-  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction"
-    class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.DeleteMapLayerAction"
-    class="org.hisp.dhis.mapping.action.DeleteMapLayerAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>	
-	
-  <bean id="org.hisp.dhis.mapping.action.GetAllMapLayersAction"
-    class="org.hisp.dhis.mapping.action.GetAllMapLayersAction"
-    scope="prototype">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-  
-  <!-- Indicator -->
-    
-  <bean id="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
-    class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
-    scope="prototype">
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction"
-    class="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction"
-    scope="prototype">
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.mapping.action.GetAllIndicatorsAction"
-    class="org.hisp.dhis.mapping.action.GetAllIndicatorsAction"
-    scope="prototype">
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-  </bean>
-  
-  <!-- Period -->
-  
-  <bean id="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
-    class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
-    scope="prototype">
-    <property name="periodStore"
-      ref="org.hisp.dhis.period.PeriodStore"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
-    class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
-    scope="prototype">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-  </bean>
-  
-  <!-- Shapefile -->
-  
-  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
-    class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
-    scope="prototype">
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
-    class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
-    scope="prototype">
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
-  <!-- GeoJson -->
-  
-  <bean id="org.hisp.dhis.mapping.action.GetGeoJsonAction"
-    class="org.hisp.dhis.mapping.action.GetGeoJsonAction"
-    scope="prototype">
-    <property name="locationManager"
-      ref="org.hisp.dhis.external.location.LocationManager"/>  
-  </bean>
-  
-  <bean id="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
-    class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
-    scope="prototype">
-    <property name="locationManager"
-      ref="org.hisp.dhis.external.location.LocationManager"/>  
-  </bean>
-  
+	<bean id="org.hisp.dhis.mapping.action.ConvertSVGToImageAction"
+		class="org.hisp.dhis.mapping.action.ConvertSVGToImageAction" scope="prototype">
+		<property name="locationManager"
+			ref="org.hisp.dhis.external.location.LocationManager" />
+	</bean>
+
+
 </beans>

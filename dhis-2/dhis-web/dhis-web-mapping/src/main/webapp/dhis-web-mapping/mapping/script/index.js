@@ -590,6 +590,239 @@ Ext.onReady( function() {
 			}
 		}
     });
+	
+	
+	/* EXPORT MAP PANEL */
+	var exportImagePanel = new Ext.form.FormPanel({
+        id: 'export_image_p',        
+        items:
+        [
+			{
+				xtype: 'textfield',
+				id: 'export_image_title',
+				fieldLabel: 'Image title',
+				labelSeparator: labelseparator,
+				editable: true,
+				valueField: 'id',
+				displayField: 'text',
+				isFormField: true,
+				width: combo_width_fieldset,
+				minListWidth: combo_list_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				value: 'Image Title'						
+			},
+			{
+				xtype: 'numberfield',
+				id: 'export_image_width',
+				fieldLabel: 'Image width',
+				labelSeparator: labelseparator,
+				editable: true,
+				valueField: 'id',
+				displayField: 'text',
+				isFormField: true,
+				width: combo_width_fieldset,
+				minListWidth: combo_list_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				value: 1000
+						
+			},			
+			{
+				xtype: 'numberfield',
+				id: 'export_image_height',
+				fieldLabel: 'Image height',
+				labelSeparator: labelseparator,
+				editable: true,
+				valueField: 'id',
+				displayField: 'text',
+				isFormField: true,
+				width: combo_width_fieldset,
+				minListWidth: combo_list_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				value: 1000						
+			},
+			{
+				xtype: 'checkbox',
+				id: 'export_image_include_legend',
+				fieldLabel: 'Include legend',
+				labelSeparator: labelseparator,				
+				isFormField: true		
+			},
+			{
+				xtype: 'button',
+                id: 'export_image_button',
+				isFormField: true,
+				hideLabel: false,
+				cls: 'window-button',
+				text: 'Export Image',
+				handler: function() {					
+					MASK.msg = 'Exporting image...';
+					MASK.show();
+					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
+					var title = Ext.getCmp('export_image_title').getValue();
+					var w = Ext.getCmp('export_image_width').getValue();
+					var h = Ext.getCmp('export_image_height').getValue();
+					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+					Ext.Ajax.request({
+						url: path + 'convertSVGToImage' + type,
+						method: 'POST',
+						params: { 
+								title: title,
+								svg: svg,
+								width:w,
+								height:h,
+								includeLegend: includeLegend
+						},
+						success: function( responseObject ) {
+							MASK.hide();
+							var file =  Ext.util.JSON.decode(responseObject.responseText).file;
+							window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/image" );
+						}
+					});						
+						
+				}
+			}	
+		]
+	});
+	
+	var exportExcelPanel = new Ext.form.FormPanel({
+        id: 'export_excel_p',        
+        items:
+        [
+			{
+				xtype: 'textfield',
+				id: 'export_excel_title',
+				fieldLabel: 'Map title',
+				labelSeparator: labelseparator,
+				editable: true,
+				valueField: 'id',
+				displayField: 'text',
+				isFormField: true,
+				width: combo_width_fieldset,
+				minListWidth: combo_list_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				value: 'Map Title'						
+			},	
+			{
+				xtype: 'checkbox',
+				id: 'export_excel_include_legend',
+				fieldLabel: 'Include legend',				
+				isFormField: true							
+			},	
+			{
+				xtype: 'checkbox',
+				id: 'export_excel_include_value',
+				fieldLabel: 'Include values',
+				labelSeparator: labelseparator,
+				editable: true,
+				valueField: 'id',
+				displayField: 'text',
+				isFormField: true,
+				width: combo_width_fieldset,
+				minListWidth: combo_list_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				value: true						
+			},
+			{
+				xtype: 'button',
+                id: 'export_excel_button',
+				isFormField: true,
+				hideLabel: false,
+				cls: 'window-button',
+				text: 'Export Excel',
+				handler: function() {					
+					MASK.msg = 'Exporting excel...';
+					MASK.show();
+					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
+					var title = Ext.getCmp('export_image_title').getValue();
+					var w = Ext.getCmp('export_image_width').getValue();
+					var h = Ext.getCmp('export_image_height').getValue();
+					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+					Ext.Ajax.request({
+						url: path + 'convertSVGToImage' + type,
+						method: 'POST',
+						params: { 
+								title: title,
+								svg: svg,
+								width:w,
+								height:h,
+								includeLegend: includeLegend
+						},
+						success: function( responseObject ) {
+							MASK.hide();
+							var file =  Ext.util.JSON.decode(responseObject.responseText).file;
+							window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/image" );
+						}
+					});						
+						
+				}
+			}	
+		]
+	});
+	
+	/* EXPORT MAP WINDOW */
+	
+	var exportMapWindow = new Ext.Window({
+        id: 'view_export_map_w',
+        title: '<span id="window-export-map-title">Export Map</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: 250,
+        items:
+        [            
+		   {
+                xtype: 'tabpanel',
+                activeTab: 0,
+				layoutOnTabChange: true,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        if (tab.id == 'export-image') { 
+                            exportMapWindow.setHeight(220);
+                        }
+                        else if (tab.id == 'export-excel') {
+                            exportMapWindow.setHeight(200);
+                        }                        
+                    }
+                },
+                items:
+                [
+                    {
+                        title: '<span class="panel-tab-title">Export Image</span>',
+                        id: 'export-image',
+                        items:
+                        [
+							exportImagePanel							
+                        ]
+                    },
+					{
+                        title: '<span class="panel-tab-title">Export Excel</span>',
+                        id: 'export-excel',
+                        items:
+                        [
+							exportExcelPanel							
+                        ]
+                    }
+                ]
+            }
+        ],
+		listeners: {
+			'hide': {
+				fn: function() {
+					mapping.relation = false;
+				}
+			}
+		}
+    });
+	
+	
     
     /* LEGEND SET PANEL */
     var legendSetNameTextField = new Ext.form.TextField({
@@ -2861,6 +3094,30 @@ Ext.onReady( function() {
 		}
 	});
 	
+	function showExportMap(){			
+		
+		var x = Ext.getCmp('center').x + 15;
+		var y = Ext.getCmp('center').y + 41;   
+		
+		exportMapWindow.setPosition(x,y);
+
+		if (exportMapWindow.visible) {
+			exportMapWindow.hide();
+		}
+		else {
+			exportMapWindow.show();
+		}
+		
+	}
+	
+	var exportMapButton = new Ext.Button({
+		iconCls: 'icon-export-map',
+		tooltip: 'Export map to image/excel',
+		handler: function() {
+			showExportMap();				
+		}
+	});
+	
 	function showPdf() {
 		var active = ACTIVEPANEL;
 		var printMultiPagePanel = Ext.getCmp('printMultiPage_p');
@@ -2946,6 +3203,8 @@ Ext.onReady( function() {
 			labelsButton,
 			'-',
 			pdfButton,
+			'-',
+			exportMapButton,
 			'-',
 			favoritesButton,
 			'-',

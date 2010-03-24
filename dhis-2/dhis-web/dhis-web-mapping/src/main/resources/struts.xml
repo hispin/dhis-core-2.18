@@ -4,226 +4,329 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-  <include file="dhis-web-commons.xml"/>
-  
-  <package name="dhis-web-mapping" extends="dhis-web-commons"
-    namespace="/dhis-web-mapping">
-        
-    <!-- Default -->
-  
-    <action name="index" class="org.hisp.dhis.mapping.action.NoAction">
-      <result name="success" type="redirect">mapping/index.html</result>
-    </action>
-	  
-	<!-- SystemSetting -->
-  
-    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
-    </action>
-    
-    <!-- OrganisationUnit -->
-  
-    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
-    </action>
-        
-    <action name="getOrganisationUnitsAtLevel" class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnits.vm</result>
-    </action>
-        
-    <!-- Map -->
-    
-    <action name="addOrUpdateMap" class="org.hisp.dhis.mapping.action.AddOrUpdateMapAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-    
-    <action name="getAllMaps" class="org.hisp.dhis.mapping.action.GetAllMapsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMaps.vm</result>
-    </action>
-    
-    <action name="getMapByMapLayerPath" class="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMap.vm</result>
-    </action>
-	  
-	<action name="getMapsByType" class="org.hisp.dhis.mapping.action.GetMapsByTypeAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMaps.vm</result>
-    </action>  
-    
-    <action name="deleteMap" class="org.hisp.dhis.mapping.action.DeleteMapAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-    
-    <action name="getMapValuesByMap" class="org.hisp.dhis.mapping.action.GetMapValuesByMapAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
-    </action>
-	  
-	<action name="getMapValuesByLevel" class="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
-    </action>	  
-	
-	<action name="setMapSourceTypeUserSetting" class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="getMapSourceTypeUserSetting" class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonUserSetting.vm</result>
-    </action>
+	<include file="dhis-web-commons.xml" />
 
-	<action name="getBaseCoordinate" class="org.hisp.dhis.mapping.action.GetBaseCoordinateAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonBaseCoordinate.vm</result>
-    </action>
+	<package name="dhis-web-mapping" extends="dhis-web-commons"
+		namespace="/dhis-web-mapping">
 
-	<action name="setBaseCoordinate" class="org.hisp.dhis.mapping.action.SetBaseCoordinateAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-    
-    <!-- MapOrganisationUnitRelations -->
-    
-    <action name="addMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="addOrUpdateMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="addOrUpdateMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="getMapOrganisationUnitRelationByFeatureId" class="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapOrganisationUnitRelation.vm</result>
-    </action>  
-    
-    <action name="getAvailableMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapOrganisationUnitRelations.vm</result>
-    </action>
-    
-    <action name="deleteMapOrganisationUnitRelationsByMap" class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-    
-    <action name="deleteMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-    
-    <!-- MapLegendSet -->
-    
-    <action name="addOrUpdateMapLegendSet" class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-    
-    <action name="deleteMapLegendSet" class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-        
-    <action name="getAllMapLegendSets" class="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMapLegendSets.vm</result>
-    </action>
-        
-    <action name="getMapLegendSet" class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSet.vm</result>
-    </action>        
-    
-	<action name="getMapLegendSetByIndicator" class="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSet.vm</result>
-    </action>
-	
-	<action name="getMapLegendSetIndicators" class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
-		<result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSetIndicators.vm</result>
-	</action>
-	    
-	<action name="assignIndicatorsToMapLegendSet" class="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>	
-	  
-	<!-- MapView -->
-	  
-	<action name="addOrUpdateMapView" class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
+		<!-- Default -->
 
-	<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="getMapView" class="org.hisp.dhis.mapping.action.GetMapViewAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapView.vm</result>
-    </action>
+		<action name="index" class="org.hisp.dhis.mapping.action.NoAction">
+			<result name="success" type="redirect">mapping/index.html
+			</result>
+		</action>
 
-	<action name="getAllMapViews" class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapViews.vm</result>
-    </action>
-	  
-	<action name="getAllMapViewsMin" class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMapViews.vm</result>
-    </action>
-    
-    <action name="addMapViewToDashboard" class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<!-- MapLayer -->
-	  
-	<action name="addOrUpdateMapLayer" class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="deleteMapLayer" class="org.hisp.dhis.mapping.action.DeleteMapLayerAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
-    </action>
-	  
-	<action name="getAllMapLayers" class="org.hisp.dhis.mapping.action.GetAllMapLayersAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLayers.vm</result>
-    </action>
-        
-    <!-- Indicator -->
-    
-    <action name="getAllIndicatorGroups" class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonIndicatorGroups.vm</result>
-    </action>
-    
-    <action name="getIndicatorsByIndicatorGroup" class="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminIndicators.vm</result>
-    </action>
-	  
-	<action name="getAllIndicators" class="org.hisp.dhis.mapping.action.GetAllIndicatorsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminIndicators.vm</result>
-    </action>  
-    
-    <!-- Period -->
-    
-    <action name="getAllPeriodTypes" class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonPeriodTypes.vm</result>
-    </action>
-    
-    <action name="getPeriodsByPeriodType" class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonPeriods.vm</result>
-    </action>
-    
-    <!-- Shapefile -->
-      
-    <action name="getPointShapefile" class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
-    </action>
-      
-    <action name="getPolygonShapefile" class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
-    </action>
-    
-    <!-- GeoJson -->
-      
-    <action name="getGeoJson" class="org.hisp.dhis.mapping.action.GetGeoJsonAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/json</param>
-        <param name="inputName">inputStream</param>
-        <param name="bufferSize">10240</param>
-      </result>
-    </action>    
-      
-    <action name="getGeoJsonFiles" class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction">
-      <result name="success" type="velocity">/dhis-web-mapping/jsonGeoJsonFiles.vm</result>
-    </action>
-      
-  </package>
+		<!-- SystemSetting -->
+
+		<action name="getOrganisationUnitLevels"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
+		</action>
+
+		<!-- OrganisationUnit -->
+
+		<action name="getOrganisationUnitLevels"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
+		</action>
+
+		<action name="getOrganisationUnitsAtLevel"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonOrganisationUnits.vm</result>
+		</action>
+
+		<!-- Map -->
+
+		<action name="addOrUpdateMap"
+			class="org.hisp.dhis.mapping.action.AddOrUpdateMapAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getAllMaps" class="org.hisp.dhis.mapping.action.GetAllMapsAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonminMaps.vm
+			</result>
+		</action>
+
+		<action name="getMapByMapLayerPath"
+			class="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonMap.vm
+			</result>
+		</action>
+
+		<action name="getMapsByType" class="org.hisp.dhis.mapping.action.GetMapsByTypeAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonminMaps.vm
+			</result>
+		</action>
+
+		<action name="deleteMap" class="org.hisp.dhis.mapping.action.DeleteMapAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getMapValuesByMap"
+			class="org.hisp.dhis.mapping.action.GetMapValuesByMapAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
+		</action>
+
+		<action name="getMapValuesByLevel"
+			class="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
+		</action>
+
+		<action name="setMapSourceTypeUserSetting"
+			class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getMapSourceTypeUserSetting"
+			class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonUserSetting.vm</result>
+		</action>
+
+		<action name="getBaseCoordinate"
+			class="org.hisp.dhis.mapping.action.GetBaseCoordinateAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonBaseCoordinate.vm</result>
+		</action>
+
+		<action name="setBaseCoordinate"
+			class="org.hisp.dhis.mapping.action.SetBaseCoordinateAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<!-- MapOrganisationUnitRelations -->
+
+		<action name="addMapOrganisationUnitRelation"
+			class="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="addOrUpdateMapOrganisationUnitRelation"
+			class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="addOrUpdateMapOrganisationUnitRelations"
+			class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getMapOrganisationUnitRelationByFeatureId"
+			class="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonMapOrganisationUnitRelation.vm</result>
+		</action>
+
+		<action name="getAvailableMapOrganisationUnitRelations"
+			class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonMapOrganisationUnitRelations.vm</result>
+		</action>
+
+		<action name="deleteMapOrganisationUnitRelationsByMap"
+			class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="deleteMapOrganisationUnitRelations"
+			class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<!-- MapLegendSet -->
+
+		<action name="addOrUpdateMapLegendSet"
+			class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="deleteMapLegendSet"
+			class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getAllMapLegendSets"
+			class="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonminMapLegendSets.vm</result>
+		</action>
+
+		<action name="getMapLegendSet"
+			class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonMapLegendSet.vm</result>
+		</action>
+
+		<action name="getMapLegendSetByIndicator"
+			class="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonMapLegendSet.vm</result>
+		</action>
+
+		<action name="getMapLegendSetIndicators"
+			class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonMapLegendSetIndicators.vm</result>
+		</action>
+
+		<action name="assignIndicatorsToMapLegendSet"
+			class="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<!-- MapView -->
+
+		<action name="addOrUpdateMapView"
+			class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getMapView" class="org.hisp.dhis.mapping.action.GetMapViewAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonMapView.vm
+			</result>
+		</action>
+
+		<action name="getAllMapViews"
+			class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonMapViews.vm
+			</result>
+		</action>
+
+		<action name="getAllMapViewsMin"
+			class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonminMapViews.vm</result>
+		</action>
+
+		<action name="addMapViewToDashboard"
+			class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<!-- MapLayer -->
+
+		<action name="addOrUpdateMapLayer"
+			class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="deleteMapLayer"
+			class="org.hisp.dhis.mapping.action.DeleteMapLayerAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+			</result>
+		</action>
+
+		<action name="getAllMapLayers"
+			class="org.hisp.dhis.mapping.action.GetAllMapLayersAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonMapLayers.vm</result>
+		</action>
+
+		<!-- Indicator -->
+
+		<action name="getAllIndicatorGroups"
+			class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonIndicatorGroups.vm</result>
+		</action>
+
+		<action name="getIndicatorsByIndicatorGroup"
+			class="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonminIndicators.vm</result>
+		</action>
+
+		<action name="getAllIndicators"
+			class="org.hisp.dhis.mapping.action.GetAllIndicatorsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonminIndicators.vm</result>
+		</action>
+
+		<!-- Period -->
+
+		<action name="getAllPeriodTypes"
+			class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonPeriodTypes.vm</result>
+		</action>
+
+		<action name="getPeriodsByPeriodType"
+			class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonPeriods.vm
+			</result>
+		</action>
+
+		<!-- Shapefile -->
+
+		<action name="getPointShapefile"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/pointShapefile.vm</result>
+		</action>
+
+		<action name="getPolygonShapefile"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/polygonShapefile.vm</result>
+		</action>
+
+		<!-- GeoJson -->
+
+		<action name="getGeoJson" class="org.hisp.dhis.mapping.action.GetGeoJsonAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/json</param>
+				<param name="inputName">inputStream</param>
+				<param name="bufferSize">10240</param>
+			</result>
+		</action>
+
+		<action name="getGeoJsonFiles"
+			class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction">
+			<result name="success" type="velocity">
+				/dhis-web-mapping/jsonGeoJsonFiles.vm</result>
+		</action>
+
+		<!-- Export Map -->
+
+		<action name="convertSVGToImage"
+			class="org.hisp.dhis.mapping.action.ConvertSVGToImageAction">
+			<result name="success" type="velocity-json">/dhis-web-mapping/jsonOutputFile.vm</result>
+		</action>
+
+		<action name="download" class="org.hisp.dhis.mapping.action.DownloadFileAction">
+			<result name="success" type="stream">
+				<param name="contentType">${outputFormat}</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">10240</param>
+			</result>
+		</action>
+
+
+	</package>
 </struts>
