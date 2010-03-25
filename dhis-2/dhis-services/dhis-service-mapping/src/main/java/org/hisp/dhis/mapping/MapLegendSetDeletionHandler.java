@@ -59,6 +59,18 @@ public class MapLegendSetDeletionHandler
     }
     
     @Override
+    public void deleteMapLegend( MapLegend mapLegend )
+    {
+        for ( MapLegendSet legendSet : mappingService.getAllMapLegendSets() )
+        {
+            if ( legendSet.getMapLegends().remove( mapLegend ) )
+            {
+                mappingService.updateMapLegendSet( legendSet );
+            }
+        }
+    }
+    
+    @Override
     public void deleteIndicator( Indicator indicator )
     {
         for ( MapLegendSet legendSet : mappingService.getAllMapLegendSets() )

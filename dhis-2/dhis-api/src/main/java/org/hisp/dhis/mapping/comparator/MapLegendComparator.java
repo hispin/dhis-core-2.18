@@ -31,20 +31,16 @@ import java.util.Comparator;
 
 import org.hisp.dhis.mapping.MapLegend;
 
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-
-public class MapLegendComparator 
-	implements Comparator<MapLegend> 
+public class MapLegendComparator
+    implements Comparator<MapLegend>
 {
-
-	@Override
-	public int compare( MapLegend o1, MapLegend o2 ) 
-	{		
-		return o1.getStartValue().compareTo( o2.getStartValue() );
-	}
-
+    @Override
+    public int compare( MapLegend o1, MapLegend o2 )
+    {
+        return o1.getStartValue().compareTo( o2.getStartValue() );
+    }
 }

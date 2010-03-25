@@ -51,6 +51,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MapView;
@@ -441,6 +442,15 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteMap( Map map )
+    {
+        return true;
+    }
+    
+    public void deleteMapLegend( MapLegend mapLegend )
+    {
+    }
+    
+    public boolean allowDeleteMapLegend( MapLegend mapLegend )
     {
         return true;
     }
