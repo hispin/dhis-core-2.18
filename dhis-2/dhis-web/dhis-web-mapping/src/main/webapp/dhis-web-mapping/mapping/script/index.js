@@ -1229,8 +1229,7 @@ Ext.onReady( function() {
         url: path + 'getAllMapLegends' + type,
         root: 'mapLegends',
 		id: 'id',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
+        fields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
         autoLoad: true
     });
 	
@@ -1310,9 +1309,9 @@ Ext.onReady( function() {
         id: 'predefinednewmaplegend_ms',
 		isFormField: true,
 		hideLabel: true,
-        dataFields: ['id', 'name', 'startValue', 'endValue', 'color'], 
+        dataFields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'], 
         valueField: 'id',
-        displayField: 'name',
+        displayField: 'displayString',
         width: multiselect_width,
         height: getMultiSelectHeight(),
         store: predefinedMapLegendStore
@@ -1466,7 +1465,7 @@ Ext.onReady( function() {
                 handler: function() {
                     var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
                     var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
-                    
+					
                     if (!mlsv) {
                         Ext.messageRed.msg('New legend set', 'Please select a legend set.');
                         return;

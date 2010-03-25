@@ -32,8 +32,11 @@ import java.util.List;
 
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapLegendComparator;
 
 import com.opensymphony.xwork2.Action;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Jan Henrik Overland
@@ -71,6 +74,8 @@ public class GetAllMapLegendsAction
     public String execute()
     {
         this.object = new ArrayList<MapLegend>( this.mappingService.getAllMapLegends() );
+        
+        Collections.sort( this.object, new MapLegendComparator() );
 
         return SUCCESS;
     }
