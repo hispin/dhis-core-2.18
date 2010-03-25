@@ -26,6 +26,9 @@
  */
 package org.hisp.dhis.reportexcel.item.action;
 
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 
@@ -33,25 +36,51 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
+ * @version $Id GetReportExcelItemAction.java 2010-03-25 02:25:20Z Chau Thu Tran
+ *          $
  */
 
 public class GetReportExcelItemAction
     implements Action
 {
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
-    // -------------------------------------------
+    private ExpressionService expressionService;
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
     private ReportExcelItem reportItem;
+
+    private String textualFormula;
+
+    // -------------------------------------------------------------------------
+    // Getters & Setters
+    // -------------------------------------------------------------------------
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
+    public String getTextualFormula()
+    {
+        return textualFormula;
+    }
 
     public void setReportService( ReportExcelService reportService )
     {
@@ -73,7 +102,18 @@ public class GetReportExcelItemAction
     {
         reportItem = reportService.getReportExcelItem( id );
 
+        if ( !reportItem.getReportExcel().getReportType().equals( ReportExcel.TYPE.CATEGORY ) )
+        {
+            textualFormula = expressionService.getExpressionDescription( reportItem.getExpression() );
+        }
+        else
+        {
+            String formula = reportItem.getExpression().replaceAll( "[\\[\\]]", "" );
+            int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( "." ) + 1, formula
+                .length() ) );
+            textualFormula = "*."
+                + dataElementCategoryService.getDataElementCategoryOptionCombo( categoryOptionComboId ).getName();
+        }
         return SUCCESS;
     }
-
 }

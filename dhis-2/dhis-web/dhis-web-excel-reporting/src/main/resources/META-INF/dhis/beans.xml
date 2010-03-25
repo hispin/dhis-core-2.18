@@ -335,6 +335,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.GetReportExcelItemAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="dataElementCategoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.item.action.AddReportExcelItemAction"
@@ -395,6 +398,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.GetListSheetAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
+		class="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
+		scope="prototype">
+		<property name="expressionService">
+			<ref bean="org.hisp.dhis.expression.ExpressionService" />
+		</property>
 	</bean>
 
 	<!-- EXPORT REPORT EXCEL -->

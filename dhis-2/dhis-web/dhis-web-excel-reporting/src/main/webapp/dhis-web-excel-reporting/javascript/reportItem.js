@@ -99,6 +99,10 @@ function openUpdateReportItemReceived( xmlObject ) {
 	byId( "expression" ).value = getElementValue( xmlObject, 'expression' );
 	byId( "sheetNo" ).value = getElementValue( xmlObject, 'sheetNo' );
 	
+	var formulaName = getElementValue( xmlObject, 'textualFormula' );
+	byId( "formulaDiv").innerHTML = formulaName;
+	byId( "categoryFormulaDiv").innerHTML = formulaName;
+	
 	byId( "reportItemButton" ).onclick = function(e) {
 	
 		validateUpdateReportExcelItem();
@@ -226,13 +230,16 @@ function updateReportExcelItem() {
 
 function insertFormulaText( sourceId, targetId ) {
 
-	byId(targetId).value += byId(sourceId).value;
+	var source = byId(sourceId);
+	//byId(targetId).value += source.value;
+	byId(targetId).value = source.value;
+	byId(targetId + "Div").innerHTML = source[source.selectedIndex].text;
 }
 
-function insertOperation( target, value ) {
-
+ function insertOperation( target, value ) {
 	byId(target).value += value;
-}
+	byId(target + "Div").innerHTML += value;
+} 
 
 function selectALL( checked ) {
 
@@ -611,6 +618,9 @@ function openDataElementExpression() {
 	enable("dataElementGroup");
 	enable("availableDataElements");
 	byId("availableDataElements").onchange = function(e){ getOptionCombos() };
+	if(mode=='update'){
+		updateFormulaText( 'formula' );
+	}
 	
 	$("#normal").showAtCenter( true );
 }
@@ -704,6 +714,7 @@ function insertDataElementId() {
 
 	var dataElementComboId = "[" + byId("availableDataElements").value + "." + byId("optionCombos").value + "]";
 	byId("formula").value += dataElementComboId;
+	updateFormulaText("formula");
 }
 
 /**
@@ -729,9 +740,10 @@ function getIndicatorGroups() {
 	list.options.length = 0;
 	list.add( new Option( "ALL", "ALL" ), null );
 	
+	var formula = byId("formulaIndicator").value;
 	for ( id in indicatorGroups )
 	{
-		list.add( new Option( indicatorGroups[id], id ), null );
+		list.add(  new Option( indicatorGroups[id], id ), null );
 	}
 }
 
@@ -759,6 +771,13 @@ function filterIndicatorsCompleted( xmlObject ) {
 		option.value = "[" + id + "]";
 		option.text = indicatorName;
 		indiatorList.add( option, null );	
+		
+		var formula = byId('formulaIndicator').value;
+		if(formula==option.value){
+			option.selected = true;
+			byId("formulaIndicatorDiv").innerHTML = indicatorName;
+		}
+		
 	}
 }
 
@@ -801,7 +820,7 @@ function openCategoryExpressionReceived( data ) {
 	enable( "availableDataElements_" );
 	byId( "availableDataElements_" ).onchange = function(e){ getOptionCombos_() };
 	
-	showDivEffect();
+	//showDivEffect();
 	$( "#category" ).show();	
 }
 
@@ -863,12 +882,40 @@ function getOptionCombos_Received( xmlObject ) {
 		
 		option.value = id ;
 		option.text = name;
-		optionComboList.add( option, null );	
+		optionComboList.add( option, null );
 	}
 }
 
 function insertDataElementId_() {
 
-	var dataElementComboId = "[*." + byId("optionCombos_").value + "]";
-	byId("categoryFormula").value += dataElementComboId;
+	var optionCombo = byId("optionCombos_");
+	var dataElementComboId = "[*." + optionCombo.value + "]";
+	//byId("categoryFormula").value += dataElementComboId;
+	byId("categoryFormula").value = dataElementComboId;
+	byId("categoryFormulaDiv").innerHTML = "*." + optionCombo[optionCombo.selectedIndex].text ;
+}
+
+function clearFormula(formulaFieldName){
+	byId(formulaFieldName).value = '';
+	byId(formulaFieldName + "Div").innerHTML = ''
+}
+// -------------------------------------------------------------------------------
+// Show textFormula
+// -------------------------------------------------------------------------------
+
+function updateFormulaText( formulaFieldName )
+{		
+	var formula = htmlEncode( byId( formulaFieldName ).value );
+	var url = "getFormulaText.action?formula=" + formula;
+	
+	var request = new Request();
+	request.setCallbackSuccess( updateFormulaTextReceived );
+    request.send( url );
+}
+
+function updateFormulaTextReceived( messageElement )
+{
+	byId( "formulaDiv").innerHTML = messageElement;
+	//byId( "formulaIndicatorDiv" ).innerHTML = messageElement;
+	//byId( "categoryFormulaDiv" ).innerHTML = messageElement;
 }

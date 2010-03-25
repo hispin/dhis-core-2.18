@@ -17,7 +17,7 @@
 			<th>$i18n.getString('name')</th>
 			<th>$i18n.getString('type')</th>
 			<th>$i18n.getString('period_type')</th>		
-			<th width="110px">$i18n.getString('operations')</th>		
+			<th width="140px">$i18n.getString('operations')</th>		
 		</tr>
 	</thead>
 	<tbody id="list">	

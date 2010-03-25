@@ -13,7 +13,7 @@
 			</select>
 		</td>
 		<td align="right">		
-			<input type="button" onclick="openAddReportItemForm()" value="$i18n.getString('add')" style="width:150px"/><br>
+			<input type="button" onclick="mode='add'; openAddReportItemForm()" value="$i18n.getString('add')" style="width:150px"/><br>
 			<input type="button" onclick="window.location='listReportExcel.action'" value="$i18n.getString('cancel')" style="width:150px"/><br>
 			<input type="button" onclick="copySelectedReportItemToReport()" value="$i18n.getString('copy_selected_item_to')" style="width:150px"/><br>
 			<input type="button" onclick="copySelectedReportItemToExcelItemGroup()" value="$i18n.getString('copy_selected_item_to_excel_item')" style="width:150px"/><br>
@@ -33,7 +33,7 @@
 			<th>$i18n.getString('column')</th>		
 			<th>$i18n.getString('expression')</th>		
 			<th>$i18n.getString('sheet_no')</th>	
-			<th width="70px">$i18n.getString('operations')</th>		
+			<th width="80px">$i18n.getString('operations')</th>		
 		</tr>
 	</thead>
 	<tbody id="list">	
@@ -48,7 +48,7 @@
 			<td>$encoder.htmlEncode( $reportItem.expression )</td>
 			<td>$encoder.htmlEncode( $reportItem.sheetNo )</td>
 			<td align="center">				
-				<a href="javascript:openUpdateReportItem( '$reportItem.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="javascript:mode='update'; openUpdateReportItem( '$reportItem.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 				<a href="javascript:translate( 'ReportExcelItem', '$reportItem.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
 				<a href="javascript:removeItem($reportItem.id, '$reportItem.name','$i18n.getString( 'confirm_delete' )', 'deleteReportExcelItem.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 			</td>
@@ -153,33 +153,38 @@
 			<th>$i18n.getString( "dataelement" )</th>
 		<tr>
 		<tr valign="top">
-			<td>
-				<textarea id="formula" cols="15" rows="11" style="width:250px; height:180px" wrap="virtual">$encoder.htmlEncode( $formula )</textarea><br>
+			<td height="139">
+				<textarea id="formula" cols="15" rows="5" wrap="virtual" style="width:250px; height:100px" wrap="virtual" onkeyup="updateFormulaText('formula')">$encoder.htmlEncode( $formula )</textarea><br>
 				<a href="#" onclick="insertOperation( 'formula','(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
 				<a href="#" onclick="insertOperation( 'formula',')' )"><img src="images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','*' )"><img src="images/multiply.png" alt="$i18n.getString( 'multiply' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','/' )"><img src="images/divide.png" alt="$i18n.getString( 'divide' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
-				<a href="#" onclick="insertOperation( 'formula','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
-			</td>
-			<td valign="bottom">
+				<a href="#" onclick="insertOperation( 'formula','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a></td>
+			<td rowspan="3" valign="bottom">
 				<input type="button" value="<" onclick="insertDataElementId()"/>
 			</td>
-			<td>	
+			<td rowspan="3">	
 				<select id="dataElementGroup" style="width:500px" onchange="getDataElementsByGroup()"></select>				
 				<select id="availableDataElements" size="11" style="width:500px;" onMouseOut="javascript: hideToolTip();"></select>	
-				<select id="optionCombos" size=4 style="width:500px;"></select>	
+				<select id="optionCombos" size=4 style="width:500px;" ondblclick="insertDataElementId()"></select>	
 			</td>
-		</tr>	
+		</tr>
+		<tr valign="top">
+		  <th>$i18n.getString("description")</th>
+	  </tr>
+		<tr valign="top">
+		  <td class='itemDrescription'><span id='formulaDiv'></span></td>
+	  </tr>
 	</table>	
 	<p>
 	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formula').value;hideById('normal');" style="width:100px"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="byId('formula').value = ''" style="width:100px"/></p>
+	<input type="button" value="$i18n.getString('clean')" onclick="clearFormula('formula')" style="width:100px"/></p>
 </div>
 <!-- This form use for indicator-->
 
 <div id="indicatorForm" style="position:fixed;display:none;width:800px;z-index:10002;background-color: white;border: medium solid silver;height:300px;padding:20px;">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#indicatorForm').hide();deleteDivEffect();">[x]</div>
+	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#indicatorForm').hide();">[x]</div>
 	<table width="100%">
 		<tr>
 			<th>$i18n.getString( "formula" )</th>
@@ -187,34 +192,41 @@
 			<th>$i18n.getString( "indicator" )</th>
 		<tr>
 		<tr valign="top">
-			<td>
-				<textarea id="formulaIndicator" cols="15" rows="11" style="width:250px; height:180px" wrap="virtual">$encoder.htmlEncode( $formula )</textarea><br>
-				<a href="#" onclick="insertOperation( 'formulaIndicator','(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
+			<td height="103">
+				<textarea id="formulaIndicator" disabled cols="15" rows="5" style="width:250px; height:100px" wrap="virtual">$encoder.htmlEncode( $formula )</textarea><br>
+			<!-- <a href="#" onclick="insertOperation( 'formulaIndicator','(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
 				<a href="#" onclick="insertOperation( 'formulaIndicator',')' )"><img src="images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"></a>
 				<a href="#" onclick="insertOperation( 'formulaIndicator','*' )"><img src="images/multiply.png" alt="$i18n.getString( 'multiply' )"></a>
 				<a href="#" onclick="insertOperation( 'formulaIndicator','/' )"><img src="images/divide.png" alt="$i18n.getString( 'divide' )"></a>
 				<a href="#" onclick="insertOperation( 'formulaIndicator','+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
 				<a href="#" onclick="insertOperation( 'formulaIndicator','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
-			</td>
-			<td valign="bottom">
+			-->		  </td>
+			<td rowspan="3" valign="bottom">
 				<input type="button" value="<" onclick="insertFormulaText('availableIndicators','formulaIndicator')"/>
 			</td>
-			<td>	
-				<select id="indicatorGroups" style="min-width:450px" onchange="filterIndicators()"></select>				
-				<select id="availableIndicators" size="11" style="min-width:450px" ondblclick="insertFormulaText(this.id, 'formulaIndicator');"></select>
-			</td>
+			<td rowspan="3">	
+              <select name="select" id="indicatorGroups" style="min-width:450px" onChange="filterIndicators()">
+              </select>				
+          <select id="availableIndicators" size="11" style="min-width:450px; min-height: 200px" ondblclick="insertFormulaText(this.id, 'formulaIndicator');"></select>		  </td>
 		</tr>
+		<tr valign="top">
+		  <th>$i18n.getString("description")</th>
+	  </tr>
+		<tr valign="top">
+		  <td class='itemDrescription'><span id='formulaIndicatorDiv'></span></td>
+	  </tr>
+
 		
 	</table>	
 	<p>
 	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('formulaIndicator').value;hideById('indicatorForm');" style="width:100px"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="byId('formulaIndicator').value=''" style="width:100px"/></p>
+	<input type="button" value="$i18n.getString('clean')" onclick="clearFormula('formulaIndicator');" style="width:100px"/></p>
 </div>
 
 <!-- This form use for  category report -->
 
 <div id="category" style="position:fixed;display:none;width:800px;z-index:10002;background-color: white;border: medium solid silver;height:300px;padding:20px;">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#category').hide();deleteDivEffect();">[x]</div>
+	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#category').hide();">[x]</div>
 	<table width="100%">
 		<tr>
 			<th>$i18n.getString( "formula" )</th>
@@ -222,28 +234,35 @@
 			<th>$i18n.getString( "dataelement" )</th>
 		<tr>
 		<tr valign="top">
-			<td>
-				<textarea id="categoryFormula" name='categoryFormula' cols="15" rows="11" style="width:250px; height:180px" wrap="virtual">$encoder.htmlEncode( $formula )</textarea><br>
-				<a href="#" onclick="insertOperation( 'formula','(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
+			<td height="139">
+				<textarea id="categoryFormula" disabled name='categoryFormula' cols="15" rows="5" style="width:250px; height:100px" wrap="virtual" onkeypress="updateFormulaText('categoryFormula')">$encoder.htmlEncode( $formula )</textarea><br>
+				<!-- <a href="#" onclick="insertOperation( 'formula','(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
 				<a href="#" onclick="insertOperation( 'formula',')' )"><img src="images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','*' )"><img src="images/multiply.png" alt="$i18n.getString( 'multiply' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','/' )"><img src="images/divide.png" alt="$i18n.getString( 'divide' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
 				<a href="#" onclick="insertOperation( 'formula','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
+			--> </td>
+			<td rowspan="3" valign="bottom">
+				<input type="button" value="<" onclick="insertDataElementId_();"/>
 			</td>
-			<td valign="bottom">
-				<input type="button" value="<" onclick="insertDataElementId_()"/>
-			</td>
-			<td>	
+			<td rowspan="3">	
 				<select id="dataElementGroup_" style="min-width:500px" onchange="getDataElementGroupOrder()"></select>				
-				<select id="availableDataElements_" size="11" style="min-width:500px"></select>	
-				<select id="optionCombos_" size=4 style="min-width:500px"></select>	
+				<select id="availableDataElements_" size="11" style="min-width:500px" onMouseOut="javascript: hideToolTip();"></select>	
+				<select id="optionCombos_" size=4 style="min-width:500px" ondblclick="insertDataElementId_();"></select>	
 			</td>
-		</tr>	
+		</tr>
+		<tr valign="top">
+		  <th>$i18n.getString("description")</th>
+	  </tr>
+		<tr valign="top">
+		  <td class='itemDrescription'><span id='categoryFormulaDiv'></span></td>
+	  </tr>
+		
 	</table>	
 	<p>
 	<input type="button" value="$i18n.getString('ok')" onclick="byId('expression').value = byId('categoryFormula').value ;hideById('category');" style="width:100px"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="byId('categoryFormula').value = ''" style="width:100px"/></p>
+	<input type="button" value="$i18n.getString('clean')" onclick="clearFormula('categoryFormula');" style="width:100px"/></p>
 </div>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
@@ -254,6 +273,7 @@
 	var reportId = $!reportExcel.id;
 	var sheetNo = "$sheetNo";
 	var reportItemId;
+	var mode = 'add';
 
 	var dataElementGroups = new Object();
 	#foreach( $dataElementGroup in $dataElementGroups )
