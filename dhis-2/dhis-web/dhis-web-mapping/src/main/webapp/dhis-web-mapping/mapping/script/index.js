@@ -12,6 +12,7 @@ var ACTIVEPANEL;
 var MASK;
 var LABELS;
 var COLORINTERPOLATION;
+var EXPORTVALUES;
 
 function getUrlParam(strParamName) {
     var output = '';
@@ -3618,6 +3619,8 @@ Ext.onReady( function() {
 			'-',
 			pdfButton,
 			'-',
+			exportMapButton,
+			'-',
 			favoritesButton,
 			'-',
             automaticMapLegendSetButton,
@@ -3936,6 +3939,27 @@ function loadMapData(redirect, position) {
     });
 }
 
+function getExportDataValueJSON( mapvalues ){
+	var json = '{';
+	json += '"datavalues":';
+	json += '[';	
+	for (var i = 0; i < mapvalues.length; i++) {		
+		json += '{';
+		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
+		json += '"value": "' + mapvalues[i].value + '" ';
+		if(i < mapvalues.length-1){
+			json += '},';
+		}else{
+			json += '}';
+		}
+	}
+	json += ']';
+	json += '}';
+	
+	return json;
+	
+}
+
 /*CHOROPLETH*/
 function getChoroplethData() {
 	MASK.msg = 'Creating choropleth...';
@@ -3956,6 +3980,9 @@ function getChoroplethData() {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+			
+			EXPORTVALUES = getExportDataValueJSON( mapvalues );	
+			
 			var mv = new Array();
 			var nameColumn = MAPDATA.nameColumn;
 			var options = {};

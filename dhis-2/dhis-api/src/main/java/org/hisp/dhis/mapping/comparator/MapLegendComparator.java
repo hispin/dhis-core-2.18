@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapping.action;
+package org.hisp.dhis.mapping.comparator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,72 +27,24 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.util.Comparator;
 
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.mapping.MapLegend;
+
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DownloadFileAction
-    implements Action
+
+public class MapLegendComparator 
+	implements Comparator<MapLegend> 
 {
 
-    // -------------------------------------------
-    // Output & Input
-    // -------------------------------------------
+	@Override
+	public int compare( MapLegend o1, MapLegend o2 ) 
+	{		
+		return o1.getStartValue().compareTo( o2.getStartValue() );
+	}
 
-    private String path;
-
-    private String fileName;
-
-    private InputStream inputStream;
-
-    private String outputFormat;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public String getFileName()
-    {
-        return fileName;
-    }
-
-    public void setPath( String path )
-    {
-        this.path = path;
-    }
-
-    public String getOutputFormat()
-    {
-        return outputFormat;
-    }
-
-    public void setOutputFormat( String outputFormat )
-    {
-        this.outputFormat = outputFormat;
-    }
-
-    public InputStream getInputStream()
-    {
-        return inputStream;
-    }
-
-    public String execute()
-        throws Exception
-    {
-
-        File output = new File( path );
-
-        fileName = output.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( output ) );
-
-        return SUCCESS;
-    }
 }
