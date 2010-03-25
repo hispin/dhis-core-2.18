@@ -75,9 +75,6 @@
           <artifactId>xercesImpl</artifactId>
         </exclusion>
       </exclusions>
-<<<<<<< TREE
-    </dependency>	
-=======
     </dependency>
 	
 	<!-- JSON -->
@@ -88,8 +85,6 @@
 		<version>2.2.3</version>
 		<classifier>jdk15</classifier>
 	</dependency>
-	
->>>>>>> MERGE-SOURCE
 	
 	<!-- Batik -->
 
