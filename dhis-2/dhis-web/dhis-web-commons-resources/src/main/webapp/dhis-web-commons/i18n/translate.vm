@@ -73,6 +73,10 @@
 
 <script type="text/javascript">
 
+	#if ( $message )
+		setMessage( '$i18n.getString("$message")' );
+	#end
+
     var propNames = new Array()
     #set( $count = 0 )
     #foreach ($propertyName in $propertyNames )

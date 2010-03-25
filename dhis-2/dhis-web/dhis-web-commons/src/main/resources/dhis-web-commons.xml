@@ -246,10 +246,10 @@
 		</action>
 
 		<action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">
-			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm
-			</result>
+			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm</result>
+			<result name="input" type="chain">i18n</result>
 		</action>
-
+		
 		<action name="getTranslations" class="org.hisp.dhis.i18n.action.GetTranslationsAction">
 			<result name="success" type="velocity">
 				/dhis-web-commons/i18n/responseTranslations.vm</result>
