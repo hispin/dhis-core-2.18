@@ -201,11 +201,11 @@ public class ExportExcelAction
         this.includeValues = includeValues;
     }
 
-    private boolean includeLegend;
+    private boolean includeLegends;
 
-    public void setIncludeLegend( boolean includeLegend )
+    public void setIncludeLegends( boolean includeLegends )
     {
-        this.includeLegend = includeLegend;
+        this.includeLegends = includeLegends;
     }
 
     // -------------------------------------------
@@ -241,6 +241,11 @@ public class ExportExcelAction
         svgDocument.setPeriod( p );
 
         svgDocument.setIndicator( i );
+        
+        svgDocument.setLegends( this.legends );
+        
+        svgDocument.setIncludeLegends( this.includeLegends );
+        
 
         int random = (int) (Math.random() * 1000);
 
@@ -295,26 +300,11 @@ public class ExportExcelAction
         sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, i.getName(), header ) );
         sheet.addCell( new Label( titlePositionCol, titlePositionRow + 2, i18n.getString( "period" ), header ) );
         sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, p.getName(), header ) );
-
-        if ( includeLegend )
-        {
-
-            WritableCellFormat legendHeader = new WritableCellFormat();
-            legendHeader.setBorder( Border.ALL, BorderLineStyle.THIN );
-            legendHeader.setAlignment( Alignment.CENTRE );
-            legendHeader.setBackground( Colour.ICE_BLUE );
-
-            sheet.mergeCells( legendPositionCol, legendPositionRow, legendPositionCol + 2, legendPositionRow );
-            sheet.addCell( new Label( legendPositionCol, legendPositionRow, i18n.getString( "legend" ), legendHeader ) );
-            sheet
-                .addCell( new Label( legendPositionCol, legendPositionRow + 1, i18n.getString( "color" ), legendHeader ) );
-            sheet.addCell( new Label( legendPositionCol + 1, legendPositionRow + 1, i18n.getString( "min" ),
-                legendHeader ) );
-            sheet.addCell( new Label( legendPositionCol + 2, legendPositionRow + 1, i18n.getString( "max" ),
-                legendHeader ) );
-
-        }
-
+        
+        
+       
+        /* TODO write data values*/
+        
         if ( includeValues )
         {
             WritableCellFormat datavalueHeader = new WritableCellFormat();
