@@ -27,6 +27,8 @@ package org.hisp.dhis.i18n.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -36,20 +38,29 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.util.LocaleUtils;
+import org.hisp.dhis.translation.Translation;
+import org.hisp.dhis.translation.TranslationService;
 
-import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Oyvind Brucker
+ * @version $Id$
+ * @modifier Dang Duy Hieu
+ * @since 2010-03-24
  */
-public class TranslateAction 
+public class TranslateAction
     implements Action
 {
+    private static final String PROPERTY_NAME = "name";
+
+    private static final String PROPERTY_SHORTNAME = "shortname";
+
     private static final Log log = LogFactory.getLog( TranslateAction.class );
-    
+
     private String className;
 
     private String id;
@@ -57,6 +68,10 @@ public class TranslateAction
     private String loc;
 
     private String returnUrl;
+
+    private String message;
+
+    private String objectId;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -67,6 +82,13 @@ public class TranslateAction
     public void setI18nService( I18nService i18nService )
     {
         this.i18nService = i18nService;
+    }
+
+    private TranslationService translationService;
+
+    public void setTranslationService( TranslationService translationService )
+    {
+        this.translationService = translationService;
     }
 
     // -------------------------------------------------------------------------
@@ -93,9 +115,19 @@ public class TranslateAction
         this.returnUrl = returnUrl;
     }
 
+    public String getObjectId()
+    {
+        return objectId;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     public String getClassName()
     {
@@ -125,7 +157,29 @@ public class TranslateAction
         throws Exception
     {
         log.info( "Classname: " + className + ", id: " + id + ", loc: " + loc );
-        
+
+        this.objectId = this.id;
+
+        Locale thisLocale = LocaleUtils.getLocale( loc );
+
+        // ---------------------------------------------------------------------
+        // Gets collection of the available translations AND
+        // collection of the translating translations if any
+        // ---------------------------------------------------------------------
+
+        Collection<Translation> availableTranslations = new HashSet<Translation>( translationService.getTranslations(
+            className, thisLocale ) );
+
+        Collection<Translation> translatedTranslations = new HashSet<Translation>( translationService.getTranslations(
+            className, Integer.parseInt( id ), thisLocale ) );
+
+        // -------------------------------------------------------------
+        // Removes all the translating translation objects
+        // from the available translation collection
+        // -------------------------------------------------------------
+
+        availableTranslations.removeAll( translatedTranslations );
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Map<String, String> translations = new Hashtable<String, String>();
@@ -138,13 +192,33 @@ public class TranslateAction
 
             if ( translation != null && translation.length > 0 && translation[0].length() > 0 )
             {
+                // -------------------------------------------------------------
+                // Checking duplicated name or short name
+                // -------------------------------------------------------------
+
+                message = checkDuplicatedNameOrShortname( availableTranslations, propertyName, translation[0] );
+
+                if ( message != null )
+                {
+                    if ( message.equalsIgnoreCase( PROPERTY_NAME ) )
+                    {
+                        message = "translation_duplicated_name";
+
+                        return INPUT;
+                    }
+                    else if ( message.equalsIgnoreCase( PROPERTY_SHORTNAME ) )
+                    {
+                        message = "translation_duplicated_shortname";
+
+                        return INPUT;
+                    }
+                }
+
                 translations.put( propertyName, translation[0] );
             }
         }
 
         log.info( "Translations: " + translations );
-        
-        Locale thisLocale = LocaleUtils.getLocale( loc );
 
         if ( thisLocale != null && !loc.equals( "heading" ) )
         {
@@ -153,4 +227,27 @@ public class TranslateAction
 
         return SUCCESS;
     }
+
+    // -------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------
+
+    private String checkDuplicatedNameOrShortname( Collection<Translation> translations, String propertyName,
+        String value )
+    {
+        if ( propertyName.equalsIgnoreCase( PROPERTY_NAME ) || propertyName.equalsIgnoreCase( PROPERTY_SHORTNAME ) )
+        {
+            for ( Translation curTranslation : translations )
+            {
+                if ( curTranslation.getProperty().equals( propertyName )
+                    && curTranslation.getValue().equalsIgnoreCase( value.toLowerCase() ) )
+                {
+                    return propertyName;
+                }
+            }
+        }
+
+        return null;
+    }
+
 }

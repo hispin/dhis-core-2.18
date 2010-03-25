@@ -40,8 +40,11 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Oyvind Brucker
+ * @version $Id$
+ * @modifier Dang Duy Hieu
+ * @since 2010-03-24
  */
-public class I18nAction 
+public class I18nAction
     implements Action
 {
     private String className;
@@ -49,6 +52,8 @@ public class I18nAction
     private String objectId;
 
     private String returnUrl;
+
+    private String message;
 
     private Map<String, String> translations = new Hashtable<String, String>();
 
@@ -107,10 +112,19 @@ public class I18nAction
         return objectId;
     }
 
-
     public String getReturnUrl()
     {
         return returnUrl;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
     }
 
     public Collection<Locale> getAvailableLocales()
@@ -160,7 +174,8 @@ public class I18nAction
 
         translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );
 
-        referenceTranslations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentRefLocale() );
+        referenceTranslations = i18nService.getTranslations( className, Integer.parseInt( objectId ),
+            getCurrentRefLocale() );
 
         /**
          * Fill in empty strings for null values
@@ -177,7 +192,8 @@ public class I18nAction
                 referenceTranslations.put( property, "" );
             }
         }
-        
+
         return SUCCESS;
     }
+
 }

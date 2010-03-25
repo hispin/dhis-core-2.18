@@ -38,6 +38,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Oyvind Brucker
  */
+@SuppressWarnings("serial")
 public class GetTranslationsAction 
     extends ActionSupport
 {
