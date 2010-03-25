@@ -32,8 +32,11 @@ import java.util.List;
 
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapLegendComparator;
 
 import com.opensymphony.xwork2.Action;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Jan Henrik Overland
@@ -45,25 +48,25 @@ public class GetMapLegendsByMapLegendSetAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private MappingService mappingService;
-    
+
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private int mapLegendSetId;
-    
+
     public void setMapLegendSetId( int mapLegendSetId )
     {
         this.mapLegendSetId = mapLegendSetId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -74,7 +77,7 @@ public class GetMapLegendsByMapLegendSetAction
     {
         return this.object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -82,7 +85,10 @@ public class GetMapLegendsByMapLegendSetAction
     public String execute()
         throws Exception
     {
-        this.object = new ArrayList<MapLegend>( this.mappingService.getMapLegendSet( this.mapLegendSetId ).getMapLegends() );
+        this.object = new ArrayList<MapLegend>( this.mappingService.getMapLegendSet( this.mapLegendSetId )
+            .getMapLegends() );
+
+        Collections.sort( this.object, new MapLegendComparator() );
 
         return SUCCESS;
     }

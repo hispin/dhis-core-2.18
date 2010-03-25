@@ -136,7 +136,7 @@ public class ExportExcelAction
     }
 
     // -------------------------------------------
-    // Output & Input
+    // Input
     // -------------------------------------------
 
     private String svg;
@@ -144,6 +144,13 @@ public class ExportExcelAction
     public void setSvg( String svg )
     {
         this.svg = svg;
+    }
+
+    private String legends;
+
+    public void setLegends( String legends )
+    {
+        this.legends = legends;
     }
 
     private String title;
@@ -165,13 +172,6 @@ public class ExportExcelAction
     public void setPeriod( Integer period )
     {
         this.period = period;
-    }
-
-    private String outputFile;
-
-    public String getOutputFile()
-    {
-        return outputFile;
     }
 
     private Integer width;
@@ -207,6 +207,17 @@ public class ExportExcelAction
     public void setIncludeLegend( boolean includeLegend )
     {
         this.includeLegend = includeLegend;
+    }
+
+    // -------------------------------------------
+    // Output
+    // -------------------------------------------
+
+    private String outputFile;
+
+    public String getOutputFile()
+    {
+        return outputFile;
     }
 
     @Override
@@ -296,9 +307,12 @@ public class ExportExcelAction
 
             sheet.mergeCells( legendPositionCol, legendPositionRow, legendPositionCol + 2, legendPositionRow );
             sheet.addCell( new Label( legendPositionCol, legendPositionRow, i18n.getString( "legend" ), legendHeader ) );
-            sheet.addCell( new Label( legendPositionCol, legendPositionRow + 1, i18n.getString( "color" ), legendHeader ) );
-            sheet.addCell( new Label( legendPositionCol + 1, legendPositionRow + 1, i18n.getString( "min" ), legendHeader ) );
-            sheet.addCell( new Label( legendPositionCol + 2, legendPositionRow + 1, i18n.getString( "max" ), legendHeader ) );
+            sheet
+                .addCell( new Label( legendPositionCol, legendPositionRow + 1, i18n.getString( "color" ), legendHeader ) );
+            sheet.addCell( new Label( legendPositionCol + 1, legendPositionRow + 1, i18n.getString( "min" ),
+                legendHeader ) );
+            sheet.addCell( new Label( legendPositionCol + 2, legendPositionRow + 1, i18n.getString( "max" ),
+                legendHeader ) );
 
         }
 
@@ -309,21 +323,21 @@ public class ExportExcelAction
             datavalueHeader.setAlignment( Alignment.CENTRE );
             datavalueHeader.setBackground( Colour.ICE_BLUE );
 
-            sheet.addCell( new Label( orgunitPositionCol, orgunitPositionRow, i18n.getString( "name" ), datavalueHeader ) );
+            sheet
+                .addCell( new Label( orgunitPositionCol, orgunitPositionRow, i18n.getString( "name" ), datavalueHeader ) );
 
-            sheet.addCell( new Label( orgunitPositionCol + 1, orgunitPositionRow, i18n.getString( "value" ), datavalueHeader ) );
-            
-            
+            sheet.addCell( new Label( orgunitPositionCol + 1, orgunitPositionRow, i18n.getString( "value" ),
+                datavalueHeader ) );
+
             WritableCellFormat valCellFormat = new WritableCellFormat();
             valCellFormat.setAlignment( Alignment.LEFT );
-            valCellFormat.setBorder( Border.ALL, BorderLineStyle.THIN );      
-            
-            int rowValue = orgunitPositionRow + 1;            
-            
+            valCellFormat.setBorder( Border.ALL, BorderLineStyle.THIN );
+
+            int rowValue = orgunitPositionRow + 1;
+
             JSONObject datavalue;
 
-            OrganisationUnit organisationUnit;         
-           
+            OrganisationUnit organisationUnit;
 
             JSONObject json = (JSONObject) JSONSerializer.toJSON( datavalues );
 
@@ -336,11 +350,11 @@ public class ExportExcelAction
 
                 organisationUnit = organisationUnitService.getOrganisationUnit( datavalue.getInt( "organisation" ) );
 
-                double value = datavalue.getDouble( "value" );   
-                         
+                double value = datavalue.getDouble( "value" );
+
                 sheet.addCell( new Label( orgunitPositionCol, rowValue, organisationUnit.getName(), valCellFormat ) );
-                
-                sheet.addCell( new Number( orgunitPositionCol + 1, rowValue, value , valCellFormat ) );     
+
+                sheet.addCell( new Number( orgunitPositionCol + 1, rowValue, value, valCellFormat ) );
 
                 rowValue++;
 
