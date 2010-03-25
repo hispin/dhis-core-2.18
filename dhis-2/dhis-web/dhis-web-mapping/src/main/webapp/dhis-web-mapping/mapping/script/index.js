@@ -11,6 +11,7 @@ var BOUNDS = 0;
 var ACTIVEPANEL;
 var MASK;
 var LABELS;
+var EXPORTVALUES;
 
 function getUrlParam(strParamName) {
     var output = '';
@@ -647,13 +648,14 @@ Ext.onReady( function() {
 				xtype: 'checkbox',
 				id: 'export_image_include_legend',
 				fieldLabel: 'Include legend',
-				labelSeparator: labelseparator,				
+				labelSeparator: '',				
 				isFormField: true		
 			},
 			{
 				xtype: 'button',
                 id: 'export_image_button',
 				isFormField: true,
+				labelSeparator: labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
 				text: 'Export Image',
@@ -665,15 +667,19 @@ Ext.onReady( function() {
 					var w = Ext.getCmp('export_image_width').getValue();
 					var h = Ext.getCmp('export_image_height').getValue();
 					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+					var period = Ext.getCmp('period_cb').getValue();
+					var indicator = Ext.getCmp('indicator_cb').getValue();
 					Ext.Ajax.request({
-						url: path + 'convertSVGToImage' + type,
+						url: path + 'exportImage' + type,
 						method: 'POST',
 						params: { 
 								title: title,
 								svg: svg,
-								width:w,
-								height:h,
-								includeLegend: includeLegend
+								width: w,
+								height: h,
+								includeLegend: includeLegend,
+								period: period,
+								indicator: indicator
 						},
 						success: function( responseObject ) {
 							MASK.hide();
@@ -716,46 +722,44 @@ Ext.onReady( function() {
 				xtype: 'checkbox',
 				id: 'export_excel_include_value',
 				fieldLabel: 'Include values',
-				labelSeparator: labelseparator,
-				editable: true,
-				valueField: 'id',
-				displayField: 'text',
-				isFormField: true,
-				width: combo_width_fieldset,
-				minListWidth: combo_list_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all',
-				value: true						
+				labelSeparator: '',				
+				isFormField: true								
 			},
 			{
 				xtype: 'button',
                 id: 'export_excel_button',
 				isFormField: true,
+				labelSeparator: labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
 				text: 'Export Excel',
 				handler: function() {					
 					MASK.msg = 'Exporting excel...';
 					MASK.show();
-					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
-					var title = Ext.getCmp('export_image_title').getValue();
-					var w = Ext.getCmp('export_image_width').getValue();
-					var h = Ext.getCmp('export_image_height').getValue();
+					var title = Ext.getCmp('export_excel_title').getValue();
+					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;					
 					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+					var includeValues = Ext.getCmp('export_excel_include_value').getValue();
+					var period = Ext.getCmp('period_cb').getValue();
+					var indicator = Ext.getCmp('indicator_cb').getValue();					
 					Ext.Ajax.request({
-						url: path + 'convertSVGToImage' + type,
+						url: path + 'exportExcel' + type,
 						method: 'POST',
-						params: { 
+						params: { 	
 								title: title,
-								svg: svg,
-								width:w,
-								height:h,
-								includeLegend: includeLegend
+								width:500,
+								height:500,
+								svg: svg,							
+								includeLegend: includeLegend,
+								includeValues: includeValues,
+								period: period,
+								indicator: indicator,
+								datavalues: EXPORTVALUES								
 						},
 						success: function( responseObject ) {
 							MASK.hide();
 							var file =  Ext.util.JSON.decode(responseObject.responseText).file;
-							window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/image" );
+							window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/ms-excel" );
 						}
 					});						
 						
@@ -3094,18 +3098,26 @@ Ext.onReady( function() {
 		}
 	});
 	
-	function showExportMap(){			
+	function showExportMap(){		
 		
-		var x = Ext.getCmp('center').x + 15;
-		var y = Ext.getCmp('center').y + 41;   
+		if(ACTIVEPANEL == thematicMap
+			&& Ext.getCmp('period_cb').getValue()!='' 
+			&& Ext.getCmp('indicator_cb').getValue()!=''
+			&& Ext.getCmp('map_cb').getValue()!=''){
 		
-		exportMapWindow.setPosition(x,y);
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;   
+			
+			exportMapWindow.setPosition(x,y);
 
-		if (exportMapWindow.visible) {
-			exportMapWindow.hide();
-		}
-		else {
-			exportMapWindow.show();
+			if (exportMapWindow.visible) {
+				exportMapWindow.hide();
+			}
+			else {
+				exportMapWindow.show();
+			}
+		}else{
+			Ext.messageRed.msg('Please render the map fist!','Form does not completed');
 		}
 		
 	}
@@ -3522,6 +3534,27 @@ function loadMapData(redirect, position) {
     });
 }
 
+function getExportDataValueJSON( mapvalues ){
+	var json = '{';
+	json += '"datavalues":';
+	json += '[';	
+	for (var i = 0; i < mapvalues.length; i++) {		
+		json += '{';
+		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
+		json += '"value": "' + mapvalues[i].value + '" ';
+		if(i < mapvalues.length-1){
+			json += '},';
+		}else{
+			json += '}';
+		}
+	}
+	json += ']';
+	json += '}';
+	
+	return json;
+	
+}
+
 /*CHOROPLETH*/
 function getChoroplethData() {
 	MASK.msg = 'Creating choropleth...';
@@ -3542,6 +3575,9 @@ function getChoroplethData() {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+			
+			EXPORTVALUES = getExportDataValueJSON( mapvalues );	
+			
 			var mv = new Array();
 			var nameColumn = MAPDATA.nameColumn;
 			var options = {};
