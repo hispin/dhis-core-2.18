@@ -8,10 +8,12 @@
     "periodId": "$!{object.period.id}",
     "mapSourceType": "$!encoder.jsEncode( ${object.mapSourceType} )",
     "mapSource": "$!encoder.jsEncode( ${object.mapSource} )",
+    "mapLegendType": "$!encoder.jsEncode( ${object.mapLegendType} )",
     "method": "$!{object.method}",
     "classes": "$!{object.classes}",
     "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
     "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )",
+    "mapLegendSetId": "$!{object.mapLegendSetId}",
     "longitude": "$!encoder.jsEncode( ${object.longitude} )",
     "latitude": "$!encoder.jsEncode( ${object.latitude} )",
     "zoom": "$!{object.zoom}"

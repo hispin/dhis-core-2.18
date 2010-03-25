@@ -94,6 +94,13 @@ public class AddOrUpdateMapViewAction
     {
         this.mapSource = mapSource;
     }
+    
+    private String mapLegendType;
+    
+    public void setMapLegendType( String mapLegendType )
+    {
+        this.mapLegendType = mapLegendType;
+    }
 
     private int method;
 
@@ -121,6 +128,13 @@ public class AddOrUpdateMapViewAction
     public void setColorHigh( String colorHigh )
     {
         this.colorHigh = colorHigh;
+    }
+    
+    private int mapLegendSetId;
+    
+    public void setMapLegendSetId( int mapLegendSetId )
+    {
+        this.mapLegendSetId = mapLegendSetId;
     }
 
     private String longitude;
@@ -152,7 +166,7 @@ public class AddOrUpdateMapViewAction
         throws Exception
     {
         mappingService.addOrUpdateMapView( name, indicatorGroupId, indicatorId, periodTypeId, periodId, mapSource,
-            method, classes, colorLow, colorHigh, longitude, latitude, zoom );
+            mapLegendType, method, classes, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
 
         return SUCCESS;
     }

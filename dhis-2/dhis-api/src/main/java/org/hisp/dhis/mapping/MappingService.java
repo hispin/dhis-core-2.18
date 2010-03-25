@@ -341,8 +341,8 @@ public interface MappingService
 
     void updateMapLegendSet( MapLegendSet legendSet );
 
-    void addOrUpdateMapLegendSet( String name, String type, int method, int classes, String colorLow,
-        String colorHigh, Set<MapLegend> mapLegends );
+    void addOrUpdateMapLegendSet( String name, String type, int method, int classes, String colorLow, String colorHigh,
+        Set<MapLegend> mapLegends );
 
     void deleteMapLegendSet( MapLegendSet legendSet );
 
@@ -365,14 +365,14 @@ public interface MappingService
     int addMapView( MapView mapView );
 
     int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh,
-        String longitude, String latitude, int zoom );
+        String mapSourceType, String mapSource, String mapLegendType, int method, int classes, String colorLow,
+        String colorHigh, int mapLegendSetId, String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude,
-        String latitude, int zoom );
+        String mapSource, String mapLegendType, int method, int classes, String colorLow, String colorHigh,
+        int mapLegendSetId, String longitude, String latitude, int zoom );
 
     void deleteMapView( MapView view );
 

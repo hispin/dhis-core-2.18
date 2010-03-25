@@ -35,6 +35,7 @@ import org.hisp.dhis.mapping.MapLegend;
  * @author Tran Thanh Tri
  * @version $Id$
  */
+
 public class MapLegendComparator
     implements Comparator<MapLegend>
 {

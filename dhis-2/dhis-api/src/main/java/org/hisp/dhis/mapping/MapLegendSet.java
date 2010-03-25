@@ -37,6 +37,10 @@ import org.hisp.dhis.indicator.Indicator;
  */
 public class MapLegendSet
 {
+    public static final String MAPLEGENDSET_TYPE_AUTOMATIC = "automatic";
+    
+    public static final String MAPLEGENDSET_TYPE_PREDEFINED = "predefined";
+    
     private int id;
 
     private String name;

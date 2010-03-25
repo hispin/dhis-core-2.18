@@ -205,7 +205,7 @@ public class MappingServiceTest extends DhisSpringTest {
 
 		MapView mapView = new MapView("MapViewA", indicatorGroup, indicator,
 				periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE,
-				"sl_districts", 1, 1, "A", "B", "1", "1", 1);
+				"sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B", 1, "1", "1", 1);
 
 		int idA = mappingService.addMapView(mapView);
 

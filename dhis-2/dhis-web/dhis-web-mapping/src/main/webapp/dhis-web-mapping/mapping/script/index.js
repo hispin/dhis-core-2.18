@@ -12,7 +12,6 @@ var ACTIVEPANEL;
 var MASK;
 var LABELS;
 var COLORINTERPOLATION;
-var EXPORTVALUES;
 
 function getUrlParam(strParamName) {
     var output = '';
@@ -304,7 +303,7 @@ Ext.onReady( function() {
 								params: { mapSourceType: MAPSOURCE },
 								success: function() {
 			
-    /* VIEW PANEL */
+    /* MAPVIEW PANEL */
 	var viewStore = new Ext.data.JsonStore({
         url: path + 'getAllMapViews' + type,
         root: 'mapViews',
@@ -379,9 +378,11 @@ Ext.onReady( function() {
 					var pt = Ext.getCmp('periodtype_cb').getValue();
 					var p = Ext.getCmp('period_cb').getValue();
 					var ms = Ext.getCmp('map_cb').getValue();
+					var mlt = Ext.getCmp('maplegendtype_cb').getValue();
 					var c = Ext.getCmp('numClasses').getValue();
 					var ca = Ext.getCmp('colorA_cf').getValue();
 					var cb = Ext.getCmp('colorB_cf').getValue();
+					var mlsid = Ext.getCmp('maplegendset_cb').getValue() ? Ext.getCmp('maplegendset_cb').getValue() : 0;
 					var lon = MAP.getCenter().lon;
 					var lat = MAP.getCenter().lat;
 					var zoom = parseInt(MAP.getZoom());
@@ -405,7 +406,7 @@ Ext.onReady( function() {
 						url: path + 'getAllMapViews' + type,
 						method: 'GET',
 						success: function(r) {
-							var mapViews = Ext.util.JSON.decode( r.responseText ).mapViews;
+							var mapViews = Ext.util.JSON.decode(r.responseText).mapViews;
 							
 							for (var i = 0; i < mapViews.length; i++) {
 								if (mapViews[i].name == vn) {
@@ -417,7 +418,7 @@ Ext.onReady( function() {
 							Ext.Ajax.request({
 								url: path + 'addOrUpdateMapView' + type,
 								method: 'POST',
-								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb, longitude: lon, latitude: lat, zoom: zoom },
+								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, mapLegendType: mlt, method: 2, classes: c, colorLow: ca, colorHigh: cb, mapLegendSetId: mlsid, longitude: lon, latitude: lat, zoom: zoom },
 
 								success: function(r) {
 									Ext.messageBlack.msg('New map view', 'The view <span class="x-msg-hl">' + vn + '</span> was registered.');
@@ -1551,7 +1552,7 @@ Ext.onReady( function() {
         title: '<span id="window-legendset-title">Predefined legend sets</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 245,
+		width: 311,
         items:
         [
 			{
@@ -3619,8 +3620,6 @@ Ext.onReady( function() {
 			'-',
 			pdfButton,
 			'-',
-			exportMapButton,
-			'-',
 			favoritesButton,
 			'-',
             automaticMapLegendSetButton,
@@ -3939,27 +3938,6 @@ function loadMapData(redirect, position) {
     });
 }
 
-function getExportDataValueJSON( mapvalues ){
-	var json = '{';
-	json += '"datavalues":';
-	json += '[';	
-	for (var i = 0; i < mapvalues.length; i++) {		
-		json += '{';
-		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
-		json += '"value": "' + mapvalues[i].value + '" ';
-		if(i < mapvalues.length-1){
-			json += '},';
-		}else{
-			json += '}';
-		}
-	}
-	json += ']';
-	json += '}';
-	
-	return json;
-	
-}
-
 /*CHOROPLETH*/
 function getChoroplethData() {
 	MASK.msg = 'Creating choropleth...';
@@ -3980,9 +3958,6 @@ function getChoroplethData() {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
-			
-			EXPORTVALUES = getExportDataValueJSON( mapvalues );	
-			
 			var mv = new Array();
 			var nameColumn = MAPDATA.nameColumn;
 			var options = {};
