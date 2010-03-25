@@ -1,4 +1,5 @@
 package org.hisp.dhis.mapping.action;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -112,11 +113,18 @@ public class ExportImageAction
         this.period = period;
     }
 
-    private String outputFile;
+    private String legends;
 
-    public String getOutputFile()
+    public void setLegends( String legends )
     {
-        return outputFile;
+        this.legends = legends;
+    }
+
+    private boolean includeLegends;
+
+    public void setIncludeLegends( boolean includeLegends )
+    {
+        this.includeLegends = includeLegends;
     }
 
     private Integer width;
@@ -133,32 +141,43 @@ public class ExportImageAction
         this.height = height;
     }
 
+    private String outputFile;
+
+    public String getOutputFile()
+    {
+        return outputFile;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
 
         Period p = periodService.getPeriod( period );
-        
+
         p.setName( format.formatPeriod( p ) );
-        
+
         Indicator i = indicatorService.getIndicator( indicator );
-        
+
         int random = (int) (Math.random() * 100);
 
         File temporaryDir = locationManager.getFileForWriting( MappingService.MAP_TEMPL_DIR );
 
         File svgTemporary = new File( temporaryDir, "svg_" + random + ".svg" );
 
-        SVGDocument svgDocument = new SVGDocument(); 
-        
+        SVGDocument svgDocument = new SVGDocument();
+
         svgDocument.setTitle( this.title );
 
         svgDocument.setSvg( this.svg );
-        
+
         svgDocument.setPeriod( p );
-        
-        svgDocument.setIndicator( i );        
+
+        svgDocument.setIndicator( i );
+
+        svgDocument.setLegends( legends );
+
+        svgDocument.setIncludeLegends( includeLegends );
 
         StreamUtils.writeContent( svgTemporary, svgDocument.getSVGForImage() );
 

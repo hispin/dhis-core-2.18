@@ -615,11 +615,11 @@ Ext.onReady( function() {
 				value: 'Image Title'						
 			},
 			{
-				xtype: 'numberfield',
-				id: 'export_image_width',
-				fieldLabel: 'Image width',
+				xtype: 'combo',
+				id: 'export_image_quality',
+				fieldLabel: 'Image Quality',
 				labelSeparator: labelseparator,
-				editable: true,
+				editable: false,
 				valueField: 'id',
 				displayField: 'text',
 				isFormField: true,
@@ -627,23 +627,11 @@ Ext.onReady( function() {
 				minListWidth: combo_list_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all',
-				value: 1000
-						
-			},			
-			{
-				xtype: 'numberfield',
-				id: 'export_image_height',
-				fieldLabel: 'Image height',
-				labelSeparator: labelseparator,
-				editable: true,
-				valueField: 'id',
-				displayField: 'text',
-				isFormField: true,
-				width: combo_width_fieldset,
-				minListWidth: combo_list_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all',
-				value: 1000						
+				value: 2,
+				store: new Ext.data.SimpleStore({
+					fields: ['id', 'text'],
+					data: [[1, 'Small'], [2, 'Medium'], [4, 'Large']]
+				})					
 			},
 			{
 				xtype: 'checkbox',
@@ -664,9 +652,17 @@ Ext.onReady( function() {
 					MASK.msg = 'Exporting image...';
 					MASK.show();
 					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
+					
+					var objectSVGDocument = document.getElementById('OpenLayers.Layer.Vector_17').childNodes[0];
+					
+					var viewBox = objectSVGDocument.getAttribute('viewBox');
+					
 					var title = Ext.getCmp('export_image_title').getValue();
-					var w = Ext.getCmp('export_image_width').getValue();
-					var h = Ext.getCmp('export_image_height').getValue();
+					
+					var q = Ext.getCmp('export_image_quality').getValue();
+					
+					var w = objectSVGDocument.getAttribute('width') * q;
+					var h = objectSVGDocument.getAttribute('height') * q;
 					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
 					var period = Ext.getCmp('period_cb').getValue();
 					var indicator = Ext.getCmp('indicator_cb').getValue();
@@ -675,12 +671,14 @@ Ext.onReady( function() {
 						method: 'POST',
 						params: { 
 								title: title,
+								viewBox: viewBox,
 								svg: svg,
 								width: w,
 								height: h,
-								includeLegend: includeLegend,
+								includeLegends: includeLegend,
 								period: period,
-								indicator: indicator
+								indicator: indicator,
+								legends: getLegendsJSON()
 						},
 						success: function( responseObject ) {
 							MASK.hide();
@@ -738,8 +736,11 @@ Ext.onReady( function() {
 					MASK.msg = 'Exporting excel...';
 					MASK.show();
 					var title = Ext.getCmp('export_excel_title').getValue();
-					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;					
-					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+					
+					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
+					
+					
+					var includeLegend = Ext.getCmp('export_excel_include_legend').getValue();
 					var includeValues = Ext.getCmp('export_excel_include_value').getValue();
 					var period = Ext.getCmp('period_cb').getValue();
 					var indicator = Ext.getCmp('indicator_cb').getValue();					
@@ -751,11 +752,12 @@ Ext.onReady( function() {
 								width:500,
 								height:500,
 								svg: svg,							
-								includeLegend: includeLegend,
+								includeLegends: includeLegend,
 								includeValues: includeValues,
 								period: period,
 								indicator: indicator,
-								datavalues: EXPORTVALUES								
+								datavalues: EXPORTVALUES,
+								legends: getLegendsJSON()								
 						},
 						success: function( responseObject ) {
 							MASK.hide();
@@ -3483,6 +3485,7 @@ Ext.onReady( function() {
 	});
 	
 	function showExportMap() {		
+	
 		if (ACTIVEPANEL == thematicMap
 			&& Ext.getCmp('period_cb').getValue()!='' 
 			&& Ext.getCmp('indicator_cb').getValue()!=''
@@ -3503,6 +3506,7 @@ Ext.onReady( function() {
 		else {
 			Ext.messageRed.msg('Please render the map fist!','Form does not completed');
 		}
+		
 	}
 	
 	var exportMapButton = new Ext.Button({
@@ -3935,6 +3939,50 @@ function loadMapData(redirect, position) {
             alert( 'Error while retrieving map data: loadMapData' );
         } 
     });
+}
+
+function getExportDataValueJSON( mapvalues ){
+	var json = '{';
+	json += '"datavalues":';
+	json += '[';	
+	for (var i = 0; i < mapvalues.length; i++) {		
+		json += '{';
+		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
+		json += '"value": "' + mapvalues[i].value + '" ';
+		if(i < mapvalues.length-1){
+			json += '},';
+		}else{
+			json += '}';
+		}
+	}
+	json += ']';
+	json += '}';
+	
+	return json;
+	
+}
+
+function getLegendsJSON(){
+	var legends = choropleth.imageLegend;
+	var json = '{';
+	json += '"legends":';
+	json += '[';
+	
+	for ( var i=0; i<legends.length; i++ ) {
+		json += '{';
+		json += '"label": "' + legends[i].label + '",';
+		json += '"color": "' + legends[i].color + '" ';
+		if(i < legends.length-1){
+			json += '},';
+		}else{
+			json += '}';
+		}
+	}
+	
+	json += ']';
+	json += '}';
+	
+	return json;
 }
 
 /*CHOROPLETH*/
