@@ -77,9 +77,6 @@
 .x-btn .icon-pdf {
 	background-image:url(../../../images/pdf.png);
 }
-.x-btn .icon-export-map {
-	background-image:url(../../../images/export.png);
-}
 .aa_dark button  {
 	font-family:lucida sans unicode,arial;
 	font-weight:normal;
@@ -152,12 +149,6 @@
 #window-help-title {
 	padding:0 0 3px 22px;
 	background:url('../../../images/help.png') no-repeat 0 0 transparent;
-	font:bold 11px arial;
-	color:#111;
-}
-#window-export-map-title {
-	padding:0 0 3px 21px;
-	background:url('../../../images/export.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }

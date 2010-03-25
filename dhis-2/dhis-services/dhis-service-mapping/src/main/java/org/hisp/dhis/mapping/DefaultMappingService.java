@@ -649,8 +649,8 @@ public class DefaultMappingService
     }
 
     public int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh,
-        String longitude, String latitude, int zoom )
+        String mapSourceType, String mapSource, String mapLegendType, int method, int classes, String colorLow,
+        String colorHigh, int mapLegendSetId, String longitude, String latitude, int zoom )
     {
         MapView mapView = new MapView();
 
@@ -670,10 +670,12 @@ public class DefaultMappingService
         mapView.setPeriod( period );
         mapView.setMapSourceType( mapSourceType );
         mapView.setMapSource( mapSource );
+        mapView.setMapLegendType( mapLegendType );
         mapView.setMethod( method );
         mapView.setClasses( classes );
         mapView.setColorLow( colorLow );
         mapView.setColorHigh( colorHigh );
+        mapView.setMapLegendSetId( mapLegendSetId );
         mapView.setLongitude( longitude );
         mapView.setLatitude( latitude );
         mapView.setZoom( zoom );
@@ -687,8 +689,8 @@ public class DefaultMappingService
     }
 
     public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName,
-        int periodId, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude,
-        String latitude, int zoom )
+        int periodId, String mapSource, String mapLegendType, int method, int classes, String colorLow, String colorHigh,
+        int mapLegendSetId, String longitude, String latitude, int zoom )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
@@ -713,10 +715,12 @@ public class DefaultMappingService
             mapView.setPeriod( period );
             mapView.setMapSourceType( mapSourceType );
             mapView.setMapSource( mapSource );
+            mapView.setMapLegendType( mapLegendType );
             mapView.setMethod( method );
             mapView.setClasses( classes );
             mapView.setColorLow( colorLow );
             mapView.setColorHigh( colorHigh );
+            mapView.setMapLegendSetId( mapLegendSetId );
             mapView.setLongitude( longitude );
             mapView.setLatitude( latitude );
             mapView.setZoom( zoom );
@@ -726,7 +730,7 @@ public class DefaultMappingService
         else
         {
             mapView = new MapView( name, indicatorGroup, indicator, periodType, period, mapSourceType, mapSource,
-                method, classes, colorLow, colorHigh, longitude, latitude, zoom );
+                mapLegendType, method, classes, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
 
             addMapView( mapView );
         }

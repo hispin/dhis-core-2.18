@@ -60,6 +60,8 @@ public class MapView
 
     private String mapSource;
 
+    private String mapLegendType;
+
     private int method;
 
     private int classes;
@@ -67,6 +69,8 @@ public class MapView
     private String colorLow;
 
     private String colorHigh;
+
+    private int mapLegendSetId;
 
     private String longitude;
 
@@ -79,8 +83,8 @@ public class MapView
     }
 
     public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType,
-        Period period, String mapSourceType, String mapSource, int method, int classes, String colorLow,
-        String colorHigh, String longitude, String latitude, int zoom )
+        Period period, String mapSourceType, String mapSource, String mapLegendType, int method, int classes,
+        String colorLow, String colorHigh, int mapLegendSetId, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.indicatorGroup = indicatorGroup;
@@ -89,10 +93,12 @@ public class MapView
         this.period = period;
         this.mapSourceType = mapSourceType;
         this.mapSource = mapSource;
+        this.mapLegendType = mapLegendType;
         this.method = method;
         this.classes = classes;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
+        this.mapLegendSetId = mapLegendSetId;
         this.longitude = longitude;
         this.latitude = latitude;
         this.zoom = zoom;
@@ -216,6 +222,16 @@ public class MapView
         this.mapSource = mapSource;
     }
 
+    public String getMapLegendType()
+    {
+        return mapLegendType;
+    }
+
+    public void setMapLegendType( String mapLegendType )
+    {
+        this.mapLegendType = mapLegendType;
+    }
+
     public int getMethod()
     {
         return method;
@@ -254,6 +270,16 @@ public class MapView
     public void setColorHigh( String colorHigh )
     {
         this.colorHigh = colorHigh;
+    }
+
+    public int getMapLegendSetId()
+    {
+        return mapLegendSetId;
+    }
+
+    public void setMapLegendSetId( int mapLegendSetId )
+    {
+        this.mapLegendSetId = mapLegendSetId;
     }
 
     public String getLongitude()
