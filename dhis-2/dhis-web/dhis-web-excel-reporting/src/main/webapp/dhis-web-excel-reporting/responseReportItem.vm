@@ -8,4 +8,5 @@
 	<column>$reportItem.column</column>
 	<expression>$encoder.xmlEncode( $reportItem.expression )</expression>
 	<sheetNo>$encoder.xmlEncode( $reportItem.sheetNo )</sheetNo>
+	<textualFormula>$encoder.xmlEncode( $textualFormula )</textualFormula>
 </reportItem>
