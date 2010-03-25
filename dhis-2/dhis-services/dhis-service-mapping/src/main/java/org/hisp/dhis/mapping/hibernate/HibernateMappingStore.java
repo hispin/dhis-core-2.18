@@ -61,7 +61,7 @@ public class HibernateMappingStore
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -116,7 +116,7 @@ public class HibernateMappingStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getMapsBySourceType( String sourceType )
     {
@@ -127,7 +127,7 @@ public class HibernateMappingStore
         criteria.add( Restrictions.eq( "sourceType", sourceType ) );
 
         return criteria.list();
-    }    
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getAllMaps()
@@ -175,7 +175,7 @@ public class HibernateMappingStore
 
         session.delete( mapOrganisationUnitRelation );
     }
-    
+
     public MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -235,9 +235,9 @@ public class HibernateMappingStore
 
         return query.setParameter( "map", map ).executeUpdate();
     }
-    
+
     // -------------------------------------------------------------------------
-    // MapLegendSet
+    // MapLegend
     // -------------------------------------------------------------------------
 
     public int addMapLegend( MapLegend legend )
@@ -331,6 +331,18 @@ public class HibernateMappingStore
 
         return (MapLegendSet) criteria.uniqueResult();
     }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapLegendSet> getMapLegendSetsByType( String type )
+    {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLegendSet.class );
+
+        criteria.add( Restrictions.eq( "type", type ) );
+
+        return criteria.list();
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<MapLegendSet> getAllMapLegendSets()
@@ -356,7 +368,7 @@ public class HibernateMappingStore
     public void updateMapView( MapView view )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         session.update( view );
     }
 
@@ -384,7 +396,7 @@ public class HibernateMappingStore
 
         return (MapView) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<MapView> getMapViewsByMapSourceType( String mapSourceType )
     {
@@ -406,25 +418,25 @@ public class HibernateMappingStore
 
         return criteria.list();
     }
-    
+
     // -------------------------------------------------------------------------
     // MapLayer
     // -------------------------------------------------------------------------
-    
+
     public int addMapLayer( MapLayer mapLayer )
     {
         Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( mapLayer );
     }
-    
+
     public void updateMapLayer( MapLayer mapLayer )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         session.update( mapLayer );
     }
-    
+
     public void deleteMapLayer( MapLayer mapLayer )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -438,7 +450,7 @@ public class HibernateMappingStore
 
         return (MapLayer) session.get( MapLayer.class, id );
     }
-    
+
     public MapLayer getMapLayerByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -449,7 +461,7 @@ public class HibernateMappingStore
 
         return (MapLayer) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<MapLayer> getMapLayersByMapSourceType( String mapSourceType )
     {
@@ -461,7 +473,7 @@ public class HibernateMappingStore
 
         return criteria.list();
     }
-    
+
     public MapLayer getMapLayerByMapSource( String mapSource )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -472,7 +484,7 @@ public class HibernateMappingStore
 
         return (MapLayer) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<MapLayer> getAllMapLayers()
     {

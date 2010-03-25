@@ -103,7 +103,7 @@ mapfish.ColorRgb = OpenLayers.Class(mapfish.Color, {
      * Parameters:
      * rgbHexString - {String} Hex color string (format: #rrggbb)
      */
-    setFromHex: function(rgbHexString) {        
+    setFromHex: function(rgbHexString) {
         var rgbArray = this.hex2rgbArray(rgbHexString);
         this.redLevel = rgbArray[0];
         this.greenLevel = rgbArray[1];

@@ -61,8 +61,9 @@ public class DefaultMappingService
     implements MappingService
 {
     private static final Log log = LogFactory.getLog( DefaultMappingService.class );
-    
+
     private static final String RELATION_SEPARATOR = ";;";
+
     private static final String PAIR_SEPARATOR = "::";
 
     // -------------------------------------------------------------------------
@@ -103,7 +104,7 @@ public class DefaultMappingService
     {
         this.userSettingService = userSettingService;
     }
-    
+
     private DataMartStore dataMartStore;
 
     public void setDataMartStore( DataMartStore dataMartStore )
@@ -122,42 +123,43 @@ public class DefaultMappingService
     public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
-        
+
         int level = map.getOrganisationUnitLevel().getLevel();
-        
+
         Collection<AggregatedMapValue> mapValues = dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
-        
+
         java.util.Map<Integer, String> relations = getOrganisationUnitFeatureMap( getMapOrganisationUnitRelationsByMap( map ) );
-        
+
         for ( AggregatedMapValue value : mapValues )
         {
             value.setFeatureId( relations.get( value.getOrganisationUnitId() ) );
         }
-        
+
         return mapValues;
     }
-    
+
     public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level )
     {
         return dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
     }
-    
+
     /**
-     * Returns a map for the given MapOrganisationUnitRelations where the key
-     * is the OrganisationUnit identifier and the value is the feature identifier.
+     * Returns a map for the given MapOrganisationUnitRelations where the key is
+     * the OrganisationUnit identifier and the value is the feature identifier.
      */
-    private java.util.Map<Integer, String> getOrganisationUnitFeatureMap( Collection<MapOrganisationUnitRelation> relations )
+    private java.util.Map<Integer, String> getOrganisationUnitFeatureMap(
+        Collection<MapOrganisationUnitRelation> relations )
     {
         java.util.Map<Integer, String> map = new HashMap<Integer, String>();
-        
+
         for ( MapOrganisationUnitRelation relation : relations )
         {
             map.put( relation.getOrganisationUnit().getId(), relation.getFeatureId() );
         }
-        
+
         return map;
     }
-    
+
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -181,8 +183,9 @@ public class DefaultMappingService
         return addMap( map );
     }
 
-    public void addOrUpdateMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId,
-        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom )
+    public void addOrUpdateMap( String name, String mapLayerPath, String type, String sourceType,
+        int organisationUnitId, int organisationUnitLevelId, String nameColumn, String longitude, String latitude,
+        int zoom )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
 
@@ -239,12 +242,12 @@ public class DefaultMappingService
     {
         return mappingStore.getMapsByType( type );
     }
-    
+
     public Collection<Map> getMapsBySourceType()
     {
         String sourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-        
-        return mappingStore.getMapsBySourceType( sourceType );        
+
+        return mappingStore.getMapsBySourceType( sourceType );
     }
 
     public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
@@ -306,76 +309,78 @@ public class DefaultMappingService
     public void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations )
     {
         String[] rels = relations.split( RELATION_SEPARATOR );
-        
+
         Map map = getMapByMapLayerPath( mapLayerPath );
 
         java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationsByMap( map ) );
-        
-        relationsLoop : for ( int i = 0; i < rels.length; i++ )
+
+        relationsLoop: for ( int i = 0; i < rels.length; i++ )
         {
             final String[] rel = rels[i].split( PAIR_SEPARATOR );
 
             if ( rel.length != 2 )
             {
                 log.warn( "Pair '" + toString( rel ) + "' is invalid for input '" + rels[i] + "'" );
-                
+
                 continue relationsLoop;
             }
-            
-            if ( !isNumeric( rel[0]) )
+
+            if ( !isNumeric( rel[0] ) )
             {
-                log.warn( "Organisation unit id '" + rel[0] + "' belonging to feature id '" + rel[1] + "' is not numeric" );
-                
+                log.warn( "Organisation unit id '" + rel[0] + "' belonging to feature id '" + rel[1]
+                    + "' is not numeric" );
+
                 continue relationsLoop;
             }
-            
+
             final int organisationUnitId = Integer.parseInt( rel[0] );
             final String featureId = rel[1];
-            
+
             MapOrganisationUnitRelation mapOrganisationUnitRelation = relationMap.get( organisationUnitId );
 
             if ( mapOrganisationUnitRelation != null )
-            {            
+            {
                 mapOrganisationUnitRelation.setFeatureId( featureId );
 
                 updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
             }
             else
             {
-                final OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+                final OrganisationUnit organisationUnit = organisationUnitService
+                    .getOrganisationUnit( organisationUnitId );
 
                 mapOrganisationUnitRelation = new MapOrganisationUnitRelation( map, organisationUnit, featureId );
 
                 addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-            }            
+            }
         }
     }
-    
+
     /**
      * Provides a textual representation of the contents of a String array.
      */
     private String toString( String[] array )
     {
         final StringBuffer buffer = new StringBuffer( "{" );
-        
+
         for ( int i = 0; i < array.length; i++ )
         {
             buffer.append( "[" + array[i] + "]," );
         }
-        
+
         return buffer.append( "}" ).toString();
     }
 
     public void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
-        
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );
-        
+
         if ( mapOrganisationUnitRelation != null )
-        {            
+        {
             mapOrganisationUnitRelation.setFeatureId( featureId );
 
             updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
@@ -407,21 +412,21 @@ public class DefaultMappingService
     {
         return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
     }
-    
+
     public MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId, String mapLayerPath )
-    {   
+    {
         Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
-        
+
         Collection<MapOrganisationUnitRelation> relations = mappingStore.getMapOrganisationUnitRelationsByMap( map );
-        
+
         for ( MapOrganisationUnitRelation relation : relations )
         {
-            if ( relation.getFeatureId().equals( featureId ))
+            if ( relation.getFeatureId().equals( featureId ) )
             {
                 return relation;
             }
         }
-        
+
         return null;
     }
 
@@ -436,38 +441,39 @@ public class DefaultMappingService
     }
 
     public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map )
-    {        
+    {
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map
             .getOrganisationUnitLevel().getLevel() );
 
         java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationsByMap( map ) );
-        
+
         Collection<MapOrganisationUnitRelation> availableRelations = new ArrayList<MapOrganisationUnitRelation>();
-        
+
         for ( OrganisationUnit unit : organisationUnits )
         {
             MapOrganisationUnitRelation relation = relationMap.get( unit.getId() );
-            
+
             availableRelations.add( relation != null ? relation : new MapOrganisationUnitRelation( map, unit, null ) );
         }
-        
+
         return availableRelations;
     }
-    
+
     /**
-     * Returns a Map<Integer, MapOrganisationUnitRelation> where the key is the 
+     * Returns a Map<Integer, MapOrganisationUnitRelation> where the key is the
      * OrganisationUnit identifier and the value the MapOrganisationUnitRelation
      * itself.
      */
-    private java.util.Map<Integer, MapOrganisationUnitRelation> getRelationshipMap( Collection<MapOrganisationUnitRelation> relations )
+    private java.util.Map<Integer, MapOrganisationUnitRelation> getRelationshipMap(
+        Collection<MapOrganisationUnitRelation> relations )
     {
         java.util.Map<Integer, MapOrganisationUnitRelation> map = new HashMap<Integer, MapOrganisationUnitRelation>();
-        
+
         for ( MapOrganisationUnitRelation relation : relations )
         {
             map.put( relation.getOrganisationUnit().getId(), relation );
         }
-        
+
         return map;
     }
 
@@ -491,7 +497,7 @@ public class DefaultMappingService
     // -------------------------------------------------------------------------
     // MapLegend
     // -------------------------------------------------------------------------
-    
+
     public void addOrUpdateMapLegend( String name, Double startValue, Double endValue, String color )
     {
         MapLegend mapLegend = getMapLegendByName( name );
@@ -512,7 +518,7 @@ public class DefaultMappingService
             mappingStore.addMapLegend( mapLegend );
         }
     }
-    
+
     public void deleteMapLegend( MapLegend mapLegend )
     {
         mappingStore.deleteMapLegend( mapLegend );
@@ -527,12 +533,12 @@ public class DefaultMappingService
     {
         return mappingStore.getMapLegendByName( name );
     }
-    
+
     public Collection<MapLegend> getAllMapLegends()
     {
         return mappingStore.getAllMapLegends();
     }
-    
+
     // -------------------------------------------------------------------------
     // MapLegendSet
     // -------------------------------------------------------------------------
@@ -547,27 +553,30 @@ public class DefaultMappingService
         mappingStore.updateMapLegendSet( mapLegendSet );
     }
 
-    public void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh )
+    public void addOrUpdateMapLegendSet( String name, String type, int method, int classes, String colorLow,
+        String colorHigh, Set<MapLegend> mapLegends )
     {
         MapLegendSet mapLegendSet = getMapLegendSetByName( name );
 
-        Set<Indicator> indicatorSet = new HashSet<Indicator>();
+        Set<Indicator> indicators = new HashSet<Indicator>();
 
         if ( mapLegendSet != null )
         {
+            mapLegendSet.setType( type );
             mapLegendSet.setMethod( method );
             mapLegendSet.setClasses( classes );
             mapLegendSet.setColorLow( colorLow );
             mapLegendSet.setColorHigh( colorHigh );
-            mapLegendSet.setIndicators( indicatorSet );
+            mapLegendSet.setMapLegends( mapLegends );
+            mapLegendSet.setIndicators( indicators );
 
-            mappingStore.updateMapLegendSet( mapLegendSet );
+            this.mappingStore.updateMapLegendSet( mapLegendSet );
         }
         else
         {
-            mapLegendSet = new MapLegendSet( name, method, classes, colorLow, colorHigh, indicatorSet );
+            mapLegendSet = new MapLegendSet( name, type, method, classes, colorLow, colorHigh, mapLegends, indicators );
 
-            mappingStore.addMapLegendSet( mapLegendSet );
+            this.mappingStore.addMapLegendSet( mapLegendSet );
         }
     }
 
@@ -584,6 +593,11 @@ public class DefaultMappingService
     public MapLegendSet getMapLegendSetByName( String name )
     {
         return mappingStore.getMapLegendSetByName( name );
+    }
+
+    public Collection<MapLegendSet> getMapLegendSetsByType( String type )
+    {
+        return this.mappingStore.getMapLegendSetsByType( type );
     }
 
     public MapLegendSet getMapLegendSetByIndicator( int indicatorId )
@@ -635,7 +649,8 @@ public class DefaultMappingService
     }
 
     public int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom )
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh,
+        String longitude, String latitude, int zoom )
     {
         MapView mapView = new MapView();
 
@@ -672,7 +687,8 @@ public class DefaultMappingService
     }
 
     public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName,
-        int periodId, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom )
+        int periodId, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude,
+        String latitude, int zoom )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
@@ -682,8 +698,9 @@ public class DefaultMappingService
             .getClass() );
 
         Period period = periodService.getPeriod( periodId );
-        
-        String mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+
+        String mapSourceType = (String) userSettingService
+            .getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
 
         MapView mapView = mappingStore.getMapViewByName( name );
 
@@ -729,11 +746,11 @@ public class DefaultMappingService
     {
         return mappingStore.getMapViewByName( name );
     }
-    
+
     public Collection<MapView> getMapViewsByMapSourceType()
     {
         String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-        
+
         return mappingStore.getMapViewsByMapSourceType( type );
     }
 
@@ -777,8 +794,9 @@ public class DefaultMappingService
         String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
-        
-        String mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+
+        String mapSourceType = (String) userSettingService
+            .getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
 
         if ( mapLayer != null )
         {
@@ -795,7 +813,8 @@ public class DefaultMappingService
         }
         else
         {
-            addMapLayer( new MapLayer( name, type, mapSourceType, mapSource, fillColor, fillOpacity, strokeColor, strokeWidth ) );
+            addMapLayer( new MapLayer( name, type, mapSourceType, mapSource, fillColor, fillOpacity, strokeColor,
+                strokeWidth ) );
         }
     }
 
@@ -813,11 +832,11 @@ public class DefaultMappingService
     {
         return mappingStore.getMapLayerByName( name );
     }
-    
+
     public Collection<MapLayer> getMapLayersByMapSourceType()
     {
         String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-        
+
         return mappingStore.getMapLayersByMapSourceType( type );
     }
 

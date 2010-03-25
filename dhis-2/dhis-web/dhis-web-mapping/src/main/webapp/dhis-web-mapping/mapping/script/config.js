@@ -1,4 +1,4 @@
-//  Country dependent
+//  Country dependent variables
 
     FACILITY_LEVEL = 4;
 
@@ -57,3 +57,5 @@
 	map_source_type_database = 'database';
 	map_source_type_geojson = 'geojson';
 	map_source_type_shapefile = 'shapefile';
+	map_legend_type_automatic = 'automatic';
+	map_legend_type_predefined = 'predefined';

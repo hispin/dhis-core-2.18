@@ -40,35 +40,42 @@ public class MapLegendSet
     private int id;
 
     private String name;
-    
+
+    private String type;
+
     private int method;
-    
+
     private int classes;
-    
+
     private String colorLow;
-    
+
     private String colorHigh;
-    
+
+    private Set<MapLegend> mapLegends;
+
     private Set<Indicator> indicators;
 
     public MapLegendSet()
     {
     }
 
-    public MapLegendSet( String name, int method, int classes, String colorLow, String colorHigh, Set<Indicator> indicators )
+    public MapLegendSet( String name, String type, int method, int classes, String colorLow, String colorHigh,
+        Set<MapLegend> mapLegends, Set<Indicator> indicators )
     {
         this.name = name;
+        this.type = type;
         this.method = method;
         this.classes = classes;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
+        this.mapLegends = mapLegends;
         this.indicators = indicators;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
@@ -82,22 +89,22 @@ public class MapLegendSet
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         MapLegendSet other = (MapLegendSet) object;
-        
+
         return name.equals( other.name );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -122,6 +129,16 @@ public class MapLegendSet
         this.name = name;
     }
     
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     public int getMethod()
     {
         return method;
@@ -160,6 +177,16 @@ public class MapLegendSet
     public void setColorHigh( String colorHigh )
     {
         this.colorHigh = colorHigh;
+    }
+
+    public Set<MapLegend> getMapLegends()
+    {
+        return mapLegends;
+    }
+
+    public void setMapLegends( Set<MapLegend> mapLegends )
+    {
+        this.mapLegends = mapLegends;
     }
 
     public Set<Indicator> getIndicators()

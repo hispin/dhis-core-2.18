@@ -129,7 +129,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         var h = screen.height;
         
         if (h <= 800) {
-            return 120;
+            return 180;
         }
         else if (h <= 1050) {
             return 480;

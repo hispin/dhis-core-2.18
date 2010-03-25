@@ -11,7 +11,7 @@ var BOUNDS = 0;
 var ACTIVEPANEL;
 var MASK;
 var LABELS;
-var EXPORTVALUES;
+var COLORINTERPOLATION;
 
 function getUrlParam(strParamName) {
     var output = '';
@@ -403,8 +403,8 @@ Ext.onReady( function() {
 					Ext.Ajax.request({
 						url: path + 'getAllMapViews' + type,
 						method: 'GET',
-						success: function( responseObject ) {
-							var mapViews = Ext.util.JSON.decode( responseObject.responseText ).mapViews;
+						success: function(r) {
+							var mapViews = Ext.util.JSON.decode( r.responseText ).mapViews;
 							
 							for (var i = 0; i < mapViews.length; i++) {
 								if (mapViews[i].name == vn) {
@@ -418,7 +418,7 @@ Ext.onReady( function() {
 								method: 'POST',
 								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb, longitude: lon, latitude: lat, zoom: zoom },
 
-								success: function( responseObject ) {
+								success: function(r) {
 									Ext.messageBlack.msg('New map view', 'The view <span class="x-msg-hl">' + vn + '</span> was registered.');
 									Ext.getCmp('view_cb').getStore().reload();
 									Ext.getCmp('mapview_cb').getStore().reload();
@@ -466,7 +466,7 @@ Ext.onReady( function() {
 						method: 'POST',
 						params: { id: v },
 
-						success: function( responseObject ) {
+						success: function(r) {
 							Ext.messageBlack.msg('Delete map view', 'The map view <span class="x-msg-hl">' + name + '</span> was deleted.');
 							Ext.getCmp('view_cb').getStore().reload();
 							Ext.getCmp('view_cb').reset();
@@ -509,7 +509,7 @@ Ext.onReady( function() {
 						method: 'POST',
 						params: { id: v2 },
 
-						success: function( responseObject ) {
+						success: function(r) {
 							Ext.messageBlack.msg('Dashboard map view', 'The view <span class="x-msg-hl">' + nv + '</span> was added to dashboard.');
 							
 							Ext.getCmp('view_cb').getStore().reload();
@@ -591,7 +591,6 @@ Ext.onReady( function() {
 			}
 		}
     });
-	
 	
 	/* EXPORT MAP PANEL */
 	var exportImagePanel = new Ext.form.FormPanel({
@@ -769,7 +768,6 @@ Ext.onReady( function() {
 	});
 	
 	/* EXPORT MAP WINDOW */
-	
 	var exportMapWindow = new Ext.Window({
         id: 'view_export_map_w',
         title: '<span id="window-export-map-title">Export Map</span>',
@@ -825,20 +823,18 @@ Ext.onReady( function() {
 			}
 		}
     });
-	
-	
     
-    /* LEGEND SET PANEL */
-    var legendSetNameTextField = new Ext.form.TextField({
-        id: 'legendsetname_tf',
+    /* AUTOMATIC MAP LEGEND SET PANEL */
+    var automaticMapLegendSetNameTextField = new Ext.form.TextField({
+        id: 'automaticmaplegendsetname_tf',
 		isFormField: true,
 		hideLabel: true,
         emptyText: emptytext,
         width: combo_width
     });
     
-    var legendSetMethodComboBox = new Ext.form.ComboBox({
-        id: 'legendsetmethod_cb',
+    var automaticMapLegendSetMethodComboBox = new Ext.form.ComboBox({
+        id: 'automaticmaplegendsetmethod_cb',
 		isFormField: true,
 		hideLabel: true,
         editable: false,
@@ -855,8 +851,8 @@ Ext.onReady( function() {
         })
     });
     
-    var legendSetClassesComboBox = new Ext.form.ComboBox({
-        id: 'legendsetclasses_cb',
+    var automaticMapLegendSetClassesComboBox = new Ext.form.ComboBox({
+        id: 'automaticmaplegendsetclasses_cb',
 		isFormField: true,
 		hideLabel: true,
         editable: false,
@@ -874,8 +870,8 @@ Ext.onReady( function() {
         })
     });
     
-    var legendSetLowColorColorPalette = new Ext.ux.ColorField({
-        id: 'legendsetlowcolor_cp',
+    var automaticMapLegendSetLowColorColorPalette = new Ext.ux.ColorField({
+        id: 'automaticmaplegendsetlowcolor_cp',
 		isFormField: true,
 		hideLabel: true,
         allowBlank: false,
@@ -884,8 +880,8 @@ Ext.onReady( function() {
         value: "#FFFF00"
     });
     
-    var legendSetHighColorColorPalette = new Ext.ux.ColorField({
-        id: 'legendsethighcolor_cp',
+    var automaticMapLegendSetHighColorColorPalette = new Ext.ux.ColorField({
+        id: 'automaticmaplegendsethighcolor_cp',
 		isFormField: true,
 		hideLabel: true,
         allowBlank: false,
@@ -894,8 +890,9 @@ Ext.onReady( function() {
         value: "#FF0000"
     });
         
-    var legendSetStore = new Ext.data.JsonStore({
-        url: path + 'getAllMapLegendSets' + type,
+    var automaticMapLegendSetStore = new Ext.data.JsonStore({
+        url: path + 'getMapLegendSetsByType' + type,
+		baseParams: { type: map_legend_type_automatic },
         root: 'mapLegendSets',
 		id: 'id',
         fields: ['id', 'name'],
@@ -903,8 +900,8 @@ Ext.onReady( function() {
         autoLoad: true
     });
 	
-	var legendSetComboBox = new Ext.form.ComboBox({
-        id: 'legendset_cb',
+	var automaticMapLegendSetComboBox = new Ext.form.ComboBox({
+        id: 'automaticmaplegendset_cb',
 		isFormField: true,
 		hideLabel: true,
         typeAhead: true,
@@ -918,19 +915,18 @@ Ext.onReady( function() {
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_list_width,
-        store: legendSetStore,
+        store: automaticMapLegendSetStore,
 		listeners:{
 			'select': {
 				fn: function() {
-					var lsid = Ext.getCmp('legendset_cb').getValue();
+					var lsid = Ext.getCmp('automaticmaplegendset_cb').getValue();
 					
 					Ext.Ajax.request({
 						url: path + 'getMapLegendSetIndicators' + type,
 						method: 'POST',
 						params: { id:lsid },
-
-						success: function( responseObject ) {
-							var indicators = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSet[0].indicators;
+						success: function(r) {
+							var indicators = Ext.util.JSON.decode(r.responseText).mapLegendSet[0].indicators;
 							var indicatorString = '';
 							
 							for (var i = 0; i < indicators.length; i++) {
@@ -940,7 +936,7 @@ Ext.onReady( function() {
 								}
 							}
 							
-							Ext.getCmp('legendsetindicator_ms').setValue(indicatorString);							
+							Ext.getCmp('automaticmaplegendsetindicator_ms').setValue(indicatorString);							
 						},
 						failure: function() {
 							alert( 'Status', 'Error while saving data' );
@@ -951,7 +947,7 @@ Ext.onReady( function() {
 		}					
     });
 
-    var legendSetIndicatorStore = new Ext.data.JsonStore({
+    var automaticMapLegendSetIndicatorStore = new Ext.data.JsonStore({
         url: path + 'getAllIndicators' + type,
         root: 'indicators',
         fields: ['id', 'name', 'shortName'],
@@ -959,8 +955,8 @@ Ext.onReady( function() {
         autoLoad: true
     });
     
-    var legendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
-        id: 'legendsetindicator_ms',
+    var automaticMapLegendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
+        id: 'automaticmaplegendsetindicator_ms',
 		isFormField: true,
 		hideLabel: true,
         dataFields: ['id', 'name', 'shortName'], 
@@ -968,11 +964,11 @@ Ext.onReady( function() {
         displayField: 'shortName',
         width: multiselect_width,
         height: getMultiSelectHeight(),
-        store: legendSetIndicatorStore
+        store: automaticMapLegendSetIndicatorStore
     });
 	    
-    var legendSet2ComboBox = new Ext.form.ComboBox({
-        id: 'legendset2_cb',
+    var automaticMapLegendSet2ComboBox = new Ext.form.ComboBox({
+        id: 'automaticmaplegendset2_cb',
 		isFormField: true,
 		hideLabel: true,
         typeAhead: true,
@@ -986,36 +982,36 @@ Ext.onReady( function() {
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_list_width,
-        store: legendSetStore
+        store: automaticMapLegendSetStore
     });
-    
-    var newLegendSetPanel = new Ext.form.FormPanel({   
-        id: 'newlegendset_p',
+	
+	var newAutomaticMapLegendSetPanel = new Ext.form.FormPanel({   
+        id: 'newautomaticmaplegendset_p',
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
             { html: '<div class="window-field-label-first">Display name</div>' },
-            legendSetNameTextField,
+            automaticMapLegendSetNameTextField,
 /*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Method</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
             { html: '<div class="window-field-label">Classes</div>' },
-            legendSetClassesComboBox,
+            automaticMapLegendSetClassesComboBox,
             { html: '<div class="window-field-label">Lowest value color</div>' },
-            legendSetLowColorColorPalette,
+            automaticMapLegendSetLowColorColorPalette,
             { html: '<div class="window-field-label">Highest value color</div>' },
-            legendSetHighColorColorPalette,
+            automaticMapLegendSetHighColorColorPalette,
             {
                 xtype: 'button',
-                id: 'newlegendset_b',
+                id: 'newautomaticmaplegendset_b',
 				isFormField: true,
 				hideLabel: true,
                 text: 'Save',
 				cls: 'window-button',
                 handler: function() {
-                    var ln = Ext.getCmp('legendsetname_tf').getValue();
-        /*            var lm = Ext.getCmp('legendsetmethod_cb').getValue();*/
-                    var lc = Ext.getCmp('legendsetclasses_cb').getValue();            
-                    var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
-                    var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
+                    var ln = Ext.getCmp('automaticmaplegendsetname_tf').getValue();
+        /*            var lm = Ext.getCmp('automaticmaplegendsetmethod_cb').getValue();*/
+                    var lc = Ext.getCmp('automaticmaplegendsetclasses_cb').getValue();            
+                    var llc = Ext.getCmp('automaticmaplegendsetlowcolor_cp').getValue();
+                    var lhc = Ext.getCmp('automaticmaplegendsethighcolor_cp').getValue();
                     
                     if (!ln || !lc) {
                         Ext.messageRed.msg('New legend set', 'Form is not complete.');
@@ -1030,9 +1026,8 @@ Ext.onReady( function() {
                     Ext.Ajax.request({
                         url: path + 'getAllMapLegendSets' + type,
                         method: 'GET',
-
-                        success: function( responseObject ) {
-                            var mapLegendSets = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSets;
+						success: function(r) {
+                            var mapLegendSets = Ext.util.JSON.decode(r.responseText).mapLegendSets;
                             for (var i = 0; i < mapLegendSets.length; i++) {
                                 if (ln == mapLegendSets[i].name) {
                                     Ext.messageRed.msg('New legend set', 'A legend set called <span class="x-msg-hl">' + ln + '</span> already exists.');
@@ -1043,16 +1038,14 @@ Ext.onReady( function() {
                             Ext.Ajax.request({
                                 url: path + 'addOrUpdateMapLegendSet' + type,
                                 method: 'POST',
-                                params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
-
-                                success: function( responseObject ) {
+                                params: { name: ln, type: map_legend_type_automatic, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
+                                success: function(r) {
                                     Ext.messageBlack.msg('New legend set', 'The legend set <span class="x-msg-hl">' + ln + '</span> was registered.');
-                                    Ext.getCmp('legendset_cb').getStore().reload();
-                                    Ext.getCmp('legendset2_cb').getStore().reload();
-                                    Ext.getCmp('legendsetname_tf').reset();
-                                    Ext.getCmp('legendsetclasses_cb').reset();
-                                    Ext.getCmp('legendsetlowcolor_cp').reset();
-                                    Ext.getCmp('legendsethighcolor_cp').reset();
+                                    Ext.getCmp('automaticmaplegendset_cb').getStore().reload();
+                                    Ext.getCmp('automaticmaplegendsetname_tf').reset();
+                                    Ext.getCmp('automaticmaplegendsetclasses_cb').reset();
+                                    Ext.getCmp('automaticmaplegendsetlowcolor_cp').reset();
+                                    Ext.getCmp('automaticmaplegendsethighcolor_cp').reset();
                                 },
                                 failure: function() {
                                     alert( 'Status', 'Error while saving data' );
@@ -1065,27 +1058,27 @@ Ext.onReady( function() {
                     });
                 }
             }
-        ]
+        ]	
     });
 	
-	var assignLegendSetPanel = new Ext.form.FormPanel({   
-        id: 'assignlegendset_p',
+	var assignAutomaticMapLegendSetPanel = new Ext.form.FormPanel({   
+        id: 'assignautomaticmaplegendset_p',
 		bodyStyle: 'border:0px',
         items:
         [   
             { html: '<div class="window-field-label-first">Legend set</div>' },
-            legendSetComboBox,
+            automaticMapLegendSetComboBox,
             { html: '<div class="window-field-label">Indicators</div>' },
-			legendSetIndicatorMultiSelect,
+			automaticMapLegendSetIndicatorMultiSelect,
             {
                 xtype: 'button',
-                id: 'assignlegendset_b',
+                id: 'assignautomaticmaplegendset_b',
                 text: 'Assign to indicators',
 				cls: 'window-button',
                 handler: function() {
-                    var ls = Ext.getCmp('legendset_cb').getValue();
-                    var lsrw = Ext.getCmp('legendset_cb').getRawValue();
-                    var lims = Ext.getCmp('legendsetindicator_ms').getValue();
+                    var ls = Ext.getCmp('automaticmaplegendset_cb').getValue();
+                    var lsrw = Ext.getCmp('automaticmaplegendset_cb').getRawValue();
+                    var lims = Ext.getCmp('automaticmaplegendsetindicator_ms').getValue();
                     
                     if (!ls) {
                         Ext.messageRed.msg('Assign to indicators', 'Please select a legend set.');
@@ -1113,9 +1106,9 @@ Ext.onReady( function() {
                         method: 'POST',
                         params: { id: ls },
 
-                        success: function( responseObject ) {
+                        success: function(r) {
                             Ext.messageBlack.msg('Assign to indicators', 'The legend set <span class="x-msg-hl">' + lsrw + '</span> was updated.');
-                            Ext.getCmp('legendset_cb').getStore().reload();
+                            Ext.getCmp('automaticmaplegendset_cb').getStore().reload();
                         },
                         failure: function() {
                             alert( 'Error: assignIndicatorsToMapLegendSet' );
@@ -1126,21 +1119,21 @@ Ext.onReady( function() {
         ]
     });
     
-    var deleteLegendSetPanel = new Ext.form.FormPanel({
-        id: 'deletelegendset_p',
+    var deleteAutomaticMapLegendSetPanel = new Ext.form.FormPanel({
+        id: 'deleteautomaticmaplegendset_p',
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
             { html: '<div class="window-field-label-first">Legend set</p>' },
-            legendSet2ComboBox,
+            automaticMapLegendSet2ComboBox,
             {
                 xtype: 'button',
-                id: 'deletelegendset_b',
+                id: 'deleteautomaticmaplegendset_b',
                 text: 'Delete',
 				cls: 'window-button',
                 handler: function() {
-                    var ls = Ext.getCmp('legendset2_cb').getValue();
-                    var lsrw = Ext.getCmp('legendset2_cb').getRawValue();
+                    var ls = Ext.getCmp('automaticmaplegendset2_cb').getValue();
+                    var lsrw = Ext.getCmp('automaticmaplegendset2_cb').getRawValue();
                     
                     if (!ls) {
                         Ext.messageRed.msg('Delete legend set', 'Please select a legend set.');
@@ -1151,15 +1144,12 @@ Ext.onReady( function() {
                         url: path + 'deleteMapLegendSet' + type,
                         method: 'GET',
                         params: { id: ls },
-
-                        success: function( responseObject ) {
+                        success: function(r) {
                             Ext.messageBlack.msg('Delete legend set', 'The legend set <span class="x-msg-hl">' + lsrw + '</span> was deleted.');
-                            
-                            Ext.getCmp('legendset2_cb').getStore().reload();
-                            Ext.getCmp('legendset2_cb').reset();
-                            Ext.getCmp('legendset_cb').getStore().reload();
-                            Ext.getCmp('legendset_cb').reset();
-                            Ext.getCmp('legendsetindicator_ms').reset();
+                            Ext.getCmp('automaticmaplegendset_cb').getStore().reload();
+                            Ext.getCmp('automaticmaplegendset_cb').reset();
+							Ext.getCmp('automaticmaplegendset2_cb').reset();
+                            Ext.getCmp('automaticmaplegendsetindicator_ms').reset();
                         },
                         failure: function() {
                             alert( 'Status', 'Error while saving data' );
@@ -1170,70 +1160,463 @@ Ext.onReady( function() {
         ]
     });
     
-    var legendSetWindow = new Ext.Window({
-        id: 'legendset_w',
-        title: '<span id="window-legendset-title">Legend sets</span>',
+    var automaticMapLegendSetWindow = new Ext.Window({
+        id: 'automaticmaplegendset_w',
+        title: '<span id="window-legendset-title">Automatic legend sets</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: 245,
         items:
         [
-            {
-                xtype: 'tabpanel',
-                activeTab: 0,
+			{
+				xtype: 'tabpanel',
+				activeTab: 0,
 				layoutOnTabChange: true,
-                deferredRender: false,
-                plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        var w = Ext.getCmp('legendset_w');
-                        
-                        if (tab.id == 'legendset0') { 
-                            w.setHeight(306);
-                        }
-                        else if (tab.id == 'legendset1') {
-                            w.setHeight(getMultiSelectHeight() + 180);
-                        }
-                        else if (tab.id == 'legendset2') {
-                            w.setHeight(149);
-                        }
+				deferredRender: false,
+				plain: true,
+				defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+				listeners: {
+					tabchange: function(panel, tab)
+					{
+						var w = Ext.getCmp('automaticmaplegendset_w');
+						
+						if (tab.id == 'automaticmaplegendset0') { 
+							w.setHeight(306);
+						}
+						else if (tab.id == 'automaticmaplegendset1') {
+							w.setHeight(getMultiSelectHeight() + 180);
+						}
+						else if (tab.id == 'automaticmaplegendset2') {
+							w.setHeight(149);
+						}
+					}
+				},
+				items:
+				[
+					{
+						title: '<span class="panel-tab-title">New</span>',
+						id: 'automaticmaplegendset0',
+						items:
+						[
+							newAutomaticMapLegendSetPanel
+						]
+					},
+					{
+						title: '<span class="panel-tab-title">Assign to indicators</span>',
+						id: 'automaticmaplegendset1',
+						items:
+						[
+							assignAutomaticMapLegendSetPanel
+						]
+					},
+					{
+						title: '<span class="panel-tab-title">Delete</span>',
+						id: 'automaticmaplegendset2',
+						items:
+						[
+							deleteAutomaticMapLegendSetPanel
+						]
+					}
+				]
+			}
+        ]
+    });
+	
+	/* PREDEFINED MAP LEGEND SET PANEL */
+	var predefinedMapLegendStore = new Ext.data.JsonStore({
+        url: path + 'getAllMapLegends' + type,
+        root: 'mapLegends',
+		id: 'id',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+	
+	var predefinedMapLegendSetStore = new Ext.data.JsonStore({
+        url: path + 'getMapLegendSetsByType' + type,
+		baseParams: { type: map_legend_type_predefined },
+        root: 'mapLegendSets',
+		id: 'id',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+	
+	var predefinedMapLegendNameTextField = new Ext.form.TextField({
+		id: 'predefinedmaplegendname_tf',
+		isFormField: true,
+		hideLabel: true,
+		emptyText: emptytext,
+		width: combo_width
+	});
+	
+	var predefinedMapLegendStartValueTextField = new Ext.form.TextField({
+		id: 'predefinedmaplegendstartvalue_tf',
+		isFormField: true,
+		hideLabel: true,
+		emptyText: emptytext,
+		width: combo_number_width,
+		minListWidth: combo_number_list_width
+	});
+	
+	var predefinedMapLegendEndValueTextField = new Ext.form.TextField({
+		id: 'predefinedmaplegendendvalue_tf',
+		isFormField: true,
+		hideLabel: true,
+		emptyText: emptytext,
+		width: combo_number_width,
+		minListWidth: combo_number_list_width
+	});
+	
+    var predefinedMapLegendColorColorPalette = new Ext.ux.ColorField({
+		id: 'predefinedmaplegendcolor_cp',
+		isFormField: true,
+		hideLabel: true,
+		allowBlank: false,
+		width: combo_width,
+		minListWidth: combo_list_width,
+		value: "#FFFF00"
+	});
+	
+	var predefinedMapLegendComboBox = new Ext.form.ComboBox({
+        id: 'predefinedmaplegend_cb',
+		isFormField: true,
+		hideLabel: true,
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: emptytext,
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: predefinedMapLegendStore
+    });
+	
+	var predefinedMapLegendSetNameTextField = new Ext.form.TextField({
+		id: 'predefinedmaplegendsetname_tf',
+		isFormField: true,
+		hideLabel: true,
+		emptyText: emptytext,
+		width: combo_width
+	});
+	
+	var predefinedNewMapLegendMultiSelect = new Ext.ux.Multiselect({
+        id: 'predefinednewmaplegend_ms',
+		isFormField: true,
+		hideLabel: true,
+        dataFields: ['id', 'name', 'startValue', 'endValue', 'color'], 
+        valueField: 'id',
+        displayField: 'name',
+        width: multiselect_width,
+        height: getMultiSelectHeight(),
+        store: predefinedMapLegendStore
+    });
+	
+	var predefinedMapLegendSetComboBox = new Ext.form.ComboBox({
+        id: 'predefinedmaplegendset_cb',
+		isFormField: true,
+		hideLabel: true,
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: emptytext,
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: predefinedMapLegendSetStore
+    });
+	
+	var newPredefinedMapLegendPanel = new Ext.form.FormPanel({   
+        id: 'newpredefinedmaplegend_p',
+		bodyStyle: 'border:0px solid #fff',
+        items:
+        [   
+            { html: '<div class="window-field-label-first">Display name</div>' },
+            predefinedMapLegendNameTextField,
+            { html: '<div class="window-field-label">Start value</div>' },
+            predefinedMapLegendStartValueTextField,
+            { html: '<div class="window-field-label">End value</div>' },
+            predefinedMapLegendEndValueTextField,
+            { html: '<div class="window-field-label">Color</div>' },
+            predefinedMapLegendColorColorPalette,
+            {
+                xtype: 'button',
+                id: 'newpredefinedmaplegend_b',
+				isFormField: true,
+				hideLabel: true,
+                text: 'Save',
+				cls: 'window-button',
+                handler: function() {
+                    var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
+                    var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue();            
+                    var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue();
+                    var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
+                    
+                    if (!mln || !mlsv || !mlev || !mlc) {
+                        Ext.messageRed.msg('New legend', 'Form is not complete.');
+                        return;
                     }
-                },
-                items:
-                [
-                    {
-                        title: '<span class="panel-tab-title">New</span>',
-                        id: 'legendset0',
-                        items:
-                        [
-							newLegendSetPanel
-                        ]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">Assign to indicators</span>',
-                        id: 'legendset1',
-                        items:
-                        [
-                            assignLegendSetPanel
-                        ]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">Delete</span>',
-                        id: 'legendset2',
-                        items:
-                        [
-                            deleteLegendSetPanel
-                        ]
+                    
+                    if (validateInput(mln) == false) {
+                        Ext.messageRed.msg('New legend set', 'Legend name cannot be longer than 25 characters.');
+                        return;
                     }
-                ]
+                    
+                    Ext.Ajax.request({
+                        url: path + 'getAllMapLegends' + type,
+                        method: 'GET',
+						success: function(r) {
+                            var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
+                            for (var i = 0; i < mapLegends.length; i++) {
+                                if (mln == mapLegends[i].name) {
+                                    Ext.messageRed.msg('New legend', 'A legend called <span class="x-msg-hl">' + ln + '</span> already exists.');
+                                    return;
+                                }
+                            }
+                            
+                            Ext.Ajax.request({
+                                url: path + 'addOrUpdateMapLegend' + type,
+                                method: 'POST',
+                                params: { name: mln, startValue: mlsv, endValue: mlev, color: mlc },
+                                success: function(r) {
+                                    Ext.messageBlack.msg('New legend', 'The legend <span class="x-msg-hl">' + mln + '</span> was registered.');
+                                    Ext.getCmp('predefinedmaplegend_cb').getStore().reload();
+                                    Ext.getCmp('predefinedmaplegendname_tf').reset();
+                                    Ext.getCmp('predefinedmaplegendstartvalue_tf').reset();
+                                    Ext.getCmp('predefinedmaplegendendvalue_tf').reset();
+                                    Ext.getCmp('predefinedmaplegendcolor_cp').reset();
+                                },
+                                failure: function() {
+                                    alert( 'Error: addOrUpdateMapLegend' );
+                                }
+                            });
+                        },
+                        failure: function() {
+                            alert( 'Error: getAllMapLegends' );
+                        }
+                    });
+                }
+            }
+        ]	
+    });
+	
+	var deletePredefinedMapLegendPanel = new Ext.form.FormPanel({
+        id: 'deletepredefinedmaplegend_p',
+		bodyStyle: 'border:0px solid #fff',
+        items:
+        [   
+            { html: '<div class="window-field-label-first">Legend</p>' },
+            predefinedMapLegendComboBox,
+            {
+                xtype: 'button',
+                id: 'deletepredefinedmaplegend_b',
+                text: 'Delete',
+				cls: 'window-button',
+                handler: function() {
+                    var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
+                    var mlrv = Ext.getCmp('predefinedmaplegend_cb').getRawValue();
+                    
+                    if (!mlv) {
+                        Ext.messageRed.msg('Delete legend', 'Please select a legend.');
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: path + 'deleteMapLegend' + type,
+                        method: 'POST',
+                        params: { id: mlv },
+                        success: function(r) {
+                            Ext.messageBlack.msg('Delete legend', 'The legend <span class="x-msg-hl">' + mlrv + '</span> was deleted.');
+                            Ext.getCmp('predefinedmaplegend_cb').getStore().reload();
+                            Ext.getCmp('predefinedmaplegend_cb').reset();
+                        },
+                        failure: function() {
+                            alert( 'Error: deleteMapLegend' );
+                        }
+                    });
+                }
             }
         ]
     });
 	
-    /* HELP PANEL */
+	var newPredefinedMapLegendSetPanel = new Ext.form.FormPanel({   
+        id: 'newpredefinedmaplegendset_p',
+		bodyStyle: 'border:0px',
+        items:
+        [   
+            { html: '<div class="window-field-label-first">Display name</div>' },
+            predefinedMapLegendSetNameTextField,
+            { html: '<div class="window-field-label">Legends</div>' },
+			predefinedNewMapLegendMultiSelect,
+            {
+                xtype: 'button',
+                id: 'newpredefinedmaplegendset_b',
+                text: 'Save',
+				cls: 'window-button',
+                handler: function() {
+                    var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
+                    var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
+                    
+                    if (!mlsv) {
+                        Ext.messageRed.msg('New legend set', 'Please select a legend set.');
+                        return;
+                    }
+                    
+                    if (!mlms) {
+                        Ext.messageRed.msg('New legend set', 'Please select at least one legend.');
+                        return;
+                    }
+                    
+                    var array = new Array();
+                    array = mlms.split(',');
+                    var params = '?mapLegends=' + array[0];
+                    
+                    if (array.length > 1) {
+                        for (var i = 1; i < array.length; i++) {
+                            array[i] = '&mapLegends=' + array[i];
+                            params += array[i];
+                        }
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: path + 'addOrUpdateMapLegendSet.action' + params,
+                        method: 'POST',
+                        params: { name: mlsv, type: map_legend_type_predefined },
+                        success: function(r) {
+                            Ext.messageBlack.msg('New legend set', 'The legend set <span class="x-msg-hl">' + mlsv + '</span> was registered.');
+                            Ext.getCmp('predefinedmaplegendset_cb').getStore().reload();
+							Ext.getCmp('maplegendset_cb').getStore().reload();
+							Ext.getCmp('predefinedmaplegendsetname_tf').reset();
+							Ext.getCmp('predefinednewmaplegend_ms').reset();							
+                        },
+                        failure: function() {
+                            alert( 'Error: addOrUpdateMapLegendSet' );
+                        }
+                    });
+                }
+            }
+        ]
+    });
 	
+	var deletePredefinedMapLegendSetPanel = new Ext.form.FormPanel({
+        id: 'deletepredefinedmaplegendset_p',
+		bodyStyle: 'border:0px solid #fff',
+        items:
+        [   
+            { html: '<div class="window-field-label-first">Legend set</p>' },
+            predefinedMapLegendSetComboBox,
+            {
+                xtype: 'button',
+                id: 'deletepredefinedmaplegendset_b',
+                text: 'Delete',
+				cls: 'window-button',
+                handler: function() {
+                    var mlsv = Ext.getCmp('predefinedmaplegendset_cb').getValue();
+                    var mlsrv = Ext.getCmp('predefinedmaplegendset_cb').getRawValue();
+                    
+                    if (!mlsv) {
+                        Ext.messageRed.msg('Delete legend set', 'Please select a legend set.');
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: path + 'deleteMapLegendSet' + type,
+                        method: 'POST',
+                        params: { id: mlsv },
+                        success: function(r) {
+                            Ext.messageBlack.msg('Delete legend set', 'The legend set <span class="x-msg-hl">' + mlsrv + '</span> was deleted.');
+                            Ext.getCmp('predefinedmaplegendset_cb').getStore().reload();
+                            Ext.getCmp('predefinedmaplegendset_cb').reset();
+                        },
+                        failure: function() {
+                            alert( 'Error: deleteMapLegendSet' );
+                        }
+                    });
+                }
+            }
+        ]
+    });
+	
+	var predefinedMapLegendSetWindow = new Ext.Window({
+        id: 'predefinedmaplegendset_w',
+        title: '<span id="window-legendset-title">Predefined legend sets</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: 245,
+        items:
+        [
+			{
+				xtype: 'tabpanel',
+				activeTab: 0,
+				layoutOnTabChange: true,
+				deferredRender: false,
+				plain: true,
+				defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+				listeners: {
+					tabchange: function(panel, tab)
+					{
+						var w = Ext.getCmp('predefinedmaplegendset_w');
+						
+						if (tab.id == 'predefinedmaplegendset0') { 
+							w.setHeight(306);
+						}
+						else if (tab.id == 'predefinedmaplegendset1') {
+							w.setHeight(149);
+						}
+						else if (tab.id == 'predefinedmaplegendset2') {
+							w.setHeight(getMultiSelectHeight() + 180);
+						}
+						else if (tab.id == 'predefinedmaplegendset3') {
+							w.setHeight(149);
+						}
+					}
+				},
+				items:
+				[
+					{
+						title: '<span class="panel-tab-title">New legend</span>',
+						id: 'predefinedmaplegendset0',
+						items: [
+							newPredefinedMapLegendPanel
+						]
+					},
+					{
+						title: '<span class="panel-tab-title">Delete</span>',
+						id: 'predefinedmaplegendset1',
+						items: [
+							deletePredefinedMapLegendPanel
+						]
+					},
+					{
+						title: '<span class="panel-tab-title">New legend set</span>',
+						id: 'predefinedmaplegendset2',
+						items: [
+							newPredefinedMapLegendSetPanel
+						]
+					},
+					{
+						title: '<span class="panel-tab-title">Delete</span>',
+						id: 'predefinedmaplegendset3',
+						items: [
+							deletePredefinedMapLegendSetPanel
+						]
+					}
+				]
+			}
+        ]
+    });
+    
+
+	
+    /* HELP PANEL */
 	function getHelpText(topic, tab) {
 		Ext.Ajax.request({
 			url: '../../dhis-web-commons-about/getHelpContent.action',
@@ -1773,8 +2156,8 @@ Ext.onReady( function() {
                 method: 'POST',
                 params: { level: 1, format: 'json' },
 
-                success: function( responseObject ) {
-                    var oui = Ext.util.JSON.decode( responseObject.responseText ).organisationUnits[0].id;
+                success: function(r) {
+                    var oui = Ext.util.JSON.decode( r.responseText ).organisationUnits[0].id;
                     var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
                     var nn = Ext.getCmp('newname_tf').getValue();
                     var t = Ext.getCmp('type_cb').getValue();
@@ -1824,8 +2207,8 @@ Ext.onReady( function() {
                     Ext.Ajax.request({
                         url: path + 'getAllMaps' + type,
                         method: 'GET',
-                        success: function( responseObject ) {
-                            var maps = Ext.util.JSON.decode(responseObject.responseText).maps;
+                        success: function(r) {
+                            var maps = Ext.util.JSON.decode(r.responseText).maps;
                             for (var i = 0; i < maps.length; i++) {
                                 if (maps[i].name == nn) {
                                     Ext.messageRed.msg('New map', 'There is already a map called <span class="x-msg-hl">' + nn + '</span>.');
@@ -1843,7 +2226,7 @@ Ext.onReady( function() {
                                 url: path + 'addOrUpdateMap' + type,
                                 method: 'POST',
                                 params: { name: nn, mapLayerPath: source, type: t, sourceType: MAPSOURCE, organisationUnitId: oui, organisationUnitLevelId: ouli, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom},
-                                success: function( responseObject ) {
+                                success: function(r) {
                                     Ext.messageBlack.msg('New map', 'The map <span class="x-msg-hl">' + nn + '</span> (<span class="x-msg-hl">' + source + '</span>) was registered.');
                                     
                                     Ext.getCmp('map_cb').getStore().reload();
@@ -1904,7 +2287,7 @@ Ext.onReady( function() {
                 method: 'GET',
                 params: { name: en, mapLayerPath: em, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
-                success: function( responseObject ) {
+                success: function(r) {
                     Ext.messageBlack.msg('Edit map', 'The map <span class="x-msg-hl">' + en + '</span> (<span class="x-msg-hl">' + em + '</span>) was updated.');
                     
                     Ext.getCmp('map_cb').getStore().reload();
@@ -1946,7 +2329,7 @@ Ext.onReady( function() {
                 method: 'GET',
                 params: { mapLayerPath: mlp },
 
-                success: function( responseObject ) {
+                success: function(r) {
                     Ext.messageBlack.msg('Edit map', 'The map <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) was deleted.');
                     
                     
@@ -1992,7 +2375,7 @@ Ext.onReady( function() {
                 fn: function() {
                     var level = Ext.getCmp('newmap_cb').getValue();
                     organisationUnitStore.baseParams = { level: level, format: 'json' };
-                    organisationUnitStore.reload();
+                    organisationUnit();
                 },
                 scope: this
             }
@@ -2024,8 +2407,8 @@ Ext.onReady( function() {
                         method: 'GET',
                         params: { mapLayerPath: mlp, format: 'json' },
 
-                        success: function( responseObject ) {
-                            var map = Ext.util.JSON.decode( responseObject.responseText ).map[0];
+                        success: function(r) {
+                            var map = Ext.util.JSON.decode( r.responseText ).map[0];
                             
                             Ext.getCmp('editname_tf').setValue(map.name);
                             Ext.getCmp('editnamecolumn_cb').setValue(map.nameColumn);
@@ -2495,7 +2878,7 @@ Ext.onReady( function() {
 						url: path + 'addOrUpdateMapLayer' + type,
 						method: 'POST',
 						params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
-						success: function( responseObject ) {
+						success: function(r) {
 							Ext.messageBlack.msg('New overlay', 'The overlay <span class="x-msg-hl">' + mln + '</span> was registered.');
 							Ext.getCmp('maplayer_cb').getStore().reload();
 					
@@ -2550,7 +2933,7 @@ Ext.onReady( function() {
                 method: 'POST',
                 params: { id: ml },
 
-                success: function( responseObject ) {
+                success: function(r) {
                     Ext.messageBlack.msg('Delete overlay', 'The overlay <span class="x-msg-hl">' + mln + '</span> was deleted.');
                     Ext.getCmp('maplayer_cb').getStore().reload();
                     Ext.getCmp('maplayer_cb').reset();
@@ -2710,7 +3093,7 @@ Ext.onReady( function() {
 											url: path + 'setMapSourceTypeUserSetting' + type,
 											method: 'POST',
 											params: { mapSourceType: msv },
-											success: function( responseObject ) {
+											success: function(r) {
 												MAPSOURCE = msv;
 												
 												Ext.getCmp('map_cb').getStore().reload();
@@ -2924,8 +3307,8 @@ Ext.onReady( function() {
 		Ext.Ajax.request({
 			url: path + 'getAllMapLayers' + type,
 			method: 'GET',
-			success: function(responseObject) {
-				var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
+			success: function(r) {
+				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
 				
 				for (var i = 0; i < mapLayers.length; i++) {
 					var mapurl = MAPSOURCE == map_source_type_geojson ? path + 'getGeoJson.action?name=' + mapLayers[i].mapSource : path_geoserver + wfs + mapLayers[i].mapSource + output;
@@ -3098,12 +3481,11 @@ Ext.onReady( function() {
 		}
 	});
 	
-	function showExportMap(){		
-		
-		if(ACTIVEPANEL == thematicMap
+	function showExportMap() {		
+		if (ACTIVEPANEL == thematicMap
 			&& Ext.getCmp('period_cb').getValue()!='' 
 			&& Ext.getCmp('indicator_cb').getValue()!=''
-			&& Ext.getCmp('map_cb').getValue()!=''){
+			&& Ext.getCmp('map_cb').getValue()!='') {
 		
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   
@@ -3116,10 +3498,10 @@ Ext.onReady( function() {
 			else {
 				exportMapWindow.show();
 			}
-		}else{
+		}
+		else {
 			Ext.messageRed.msg('Please render the map fist!','Form does not completed');
 		}
-		
 	}
 	
 	var exportMapButton = new Ext.Button({
@@ -3157,22 +3539,42 @@ Ext.onReady( function() {
 		}
 	});
 
-    var legendSetButton = new Ext.Button({
+    var automaticMapLegendSetButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
 		ctCls: 'aa_med',
 		icon: '../../images/color_swatch.png',
-		text: 'Legend sets',
+		text: 'Automatic LS',
 		tooltip: 'Assign legend sets to indicators',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
-			legendSetWindow.setPosition(x,y);
+			automaticMapLegendSetWindow.setPosition(x,y);
 		
-			if (legendSetWindow.visible) {
-				legendSetWindow.hide();
+			if (automaticMapLegendSetWindow.visible) {
+				automaticMapLegendSetWindow.hide();
 			}
 			else {
-				legendSetWindow.show();
+				automaticMapLegendSetWindow.show();
+			}
+		}
+	});
+	
+	var predefinedMapLegendSetButton = new Ext.Button({
+		cls: 'x-btn-text-icon',
+		ctCls: 'aa_med',
+		icon: '../../images/color_swatch.png',
+		text: 'Predefined LS',
+		tooltip: 'Assign legend sets to indicators',
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;    
+			predefinedMapLegendSetWindow.setPosition(x,y);
+		
+			if (predefinedMapLegendSetWindow.visible) {
+				predefinedMapLegendSetWindow.hide();
+			}
+			else {
+				predefinedMapLegendSetWindow.show();
 			}
 		}
 	});
@@ -3216,11 +3618,11 @@ Ext.onReady( function() {
 			'-',
 			pdfButton,
 			'-',
-			exportMapButton,
-			'-',
 			favoritesButton,
 			'-',
-            legendSetButton,
+            automaticMapLegendSetButton,
+			'-',
+			predefinedMapLegendSetButton,
 			'-',
 			helpButton,
 			'->',
@@ -3482,9 +3884,9 @@ function loadMapData(redirect, position) {
         url: path + 'getMapByMapLayerPath' + type,
         method: 'POST',
         params: { mapLayerPath: URL, format: 'json' },
-        success: function( responseObject ) {
+        success: function(r) {
 		
-            MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];	
+            MAPDATA = Ext.util.JSON.decode(r.responseText).map[0];	
             
             if (MAPSOURCE == map_source_type_database) {
                 MAPDATA.name = Ext.getCmp('map_cb').getRawValue();
@@ -3534,27 +3936,6 @@ function loadMapData(redirect, position) {
     });
 }
 
-function getExportDataValueJSON( mapvalues ){
-	var json = '{';
-	json += '"datavalues":';
-	json += '[';	
-	for (var i = 0; i < mapvalues.length; i++) {		
-		json += '{';
-		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
-		json += '"value": "' + mapvalues[i].value + '" ';
-		if(i < mapvalues.length-1){
-			json += '},';
-		}else{
-			json += '}';
-		}
-	}
-	json += ']';
-	json += '}';
-	
-	return json;
-	
-}
-
 /*CHOROPLETH*/
 function getChoroplethData() {
 	MASK.msg = 'Creating choropleth...';
@@ -3575,9 +3956,6 @@ function getChoroplethData() {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
-			
-			EXPORTVALUES = getExportDataValueJSON( mapvalues );	
-			
 			var mv = new Array();
 			var nameColumn = MAPDATA.nameColumn;
 			var options = {};
@@ -3740,7 +4118,7 @@ function getAutoAssignOrganisationUnitData(position) {
 				method: 'POST',
 				params: { mapLayerPath: mlp, relations: relations },
 
-				success: function( responseObject ) {
+				success: function(r) {
 					MASK.msg = 'Applying organisation units relations...';
 					MASK.show();
 					
