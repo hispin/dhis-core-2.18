@@ -378,7 +378,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     upper -= parseFloat("0.1");
                 }
             }
-            
+			
 			return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + upper.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 		}
     },
@@ -408,12 +408,16 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         }
 
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
+		
+		choropleth.imageLegend = new Array();
 
         for (var i = 0; i < nbBins; i++) {
             bins[i] = new mapfish.GeoStat.Bin(binCount[i], bounds[i], bounds[i + 1],
                 i == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
             bins[i].label = labelGenerator(bins[i], i, nbBins);
+			choropleth.imageLegend[i] = new Object();
+			choropleth.imageLegend[i].label = bins[i].label;
         }
         return new mapfish.GeoStat.Classification(bins);
     },
@@ -475,44 +479,65 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      * {<mapfish.GeoStat.Classification>} Classification
      */
     classify: function(method, nbBins, bounds) {
-
-        if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-            var str = Ext.getCmp('bounds').getValue();
-            
-            for (var i = 0; i < str.length; i++) {
-                str = str.replace(' ','');
-            }
-            
-            if (str.charAt(str.length-1) == ',') {
-                str = str.substring(0, str.length-1);
-            }
-            
-            var bounds = new Array();
-            bounds = str.split(',');
-			
-            for (var i = 0; i < bounds.length; i++) {
-				if (!Ext.num(parseFloat(bounds[i]), false)) {
-                    bounds.remove(bounds[i]);
-                    i--;
+		var mlt = Ext.getCmp('maplegendtype_cb').getValue();
+		if (mlt == map_legend_type_automatic) {
+			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
+				var str = Ext.getCmp('bounds').getValue();
+				
+				for (var i = 0; i < str.length; i++) {
+					str = str.replace(' ','');
 				}
+				
+				if (str.charAt(str.length-1) == ',') {
+					str = str.substring(0, str.length-1);
+				}
+				
+				var bounds = new Array();
+				bounds = str.split(',');
+				
+				for (var i = 0; i < bounds.length; i++) {
+					if (!Ext.num(parseFloat(bounds[i]), false)) {
+						bounds.remove(bounds[i]);
+						i--;
+					}
+				}
+				
+				var newInput = bounds.join(',');
+				Ext.getCmp('bounds').setValue(newInput);
+				
+				for (var i = 0; i < bounds.length; i++)
+				{
+					bounds[i] = parseFloat(bounds[i]);
+					
+					if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
+					{
+						Ext.messageRed.msg('Fixed breaks', 'Class breaks must be higher than <span class="x-msg-hl">' + this.minVal + '</span> and lower than <span class="x-msg-hl">' + this.maxVal + '</span>.');
+					}
+				}
+				
+				bounds.unshift(this.minVal);
+				bounds.push(this.maxVal);
+			}
+		}
+		else if (mlt == map_legend_type_predefined) {
+			bounds = choropleth.bounds;
+			if (bounds[0] <= this.minVal) {
+				bounds[0] = this.minVal;
+			}
+			else {
+				bounds.unshift(this.minVal);
+				choropleth.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
 			}
 			
-			var newInput = bounds.join(',');
-			Ext.getCmp('bounds').setValue(newInput);
-			
-            for (var i = 0; i < bounds.length; i++)
-            {
-				bounds[i] = parseFloat(bounds[i]);
-                
-                if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
-                {
-                    Ext.messageRed.msg('Fixed breaks', 'Class breaks must be higher than ' + msg_highlight_start + this.minVal + msg_highlight_end + ' and lower than ' + msg_highlight_start + this.maxVal + msg_highlight_end + '.');
-                }
-            }
-			
-            bounds.unshift(this.minVal);
-            bounds.push(this.maxVal);
-        }
+			if (bounds[bounds.length-1] >= this.maxVal) {
+				bounds[bounds.length-1] = this.maxVal;
+			}
+			else {
+				bounds.push(this.maxVal);
+				choropleth.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
+			}
+			method = mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
+		}
         
         var classification = null;
         if (!nbBins) {

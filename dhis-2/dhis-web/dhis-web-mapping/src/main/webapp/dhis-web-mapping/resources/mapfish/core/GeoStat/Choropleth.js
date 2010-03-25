@@ -98,7 +98,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         this.addOptions(newOptions);
         if (newOptions) {
             this.setClassification();
-            this.createColorInterpolation();
+            // this.createColorInterpolation();
         }
     },
 
@@ -109,12 +109,19 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
     createColorInterpolation: function() {
         var initialColors = this.colors;
         var numColors = this.classification.bins.length;
-        this.colorInterpolation =
-            mapfish.ColorRgb.getColorsArrayByRgbInterpolation(
-                initialColors[0], initialColors[1], numColors
-            );
+		var mapLegendType = Ext.getCmp('maplegendtype_cb').getValue();
+		
+		if (mapLegendType == map_legend_type_automatic) {
+			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
+			for (var i = 0; i < choropleth.imageLegend.length; i++) {
+				choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+			}
+		}
+		else if (mapLegendType == map_legend_type_predefined) {
+			this.colorInterpolation = choropleth.colorInterpolation;
+		}
     },
-
+	
     /**
      * Method: setClassification
      *      Creates a classification with the features.

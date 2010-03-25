@@ -28,6 +28,7 @@ package org.hisp.dhis.mapping;
  */
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -46,20 +47,21 @@ public interface MappingService
     final String KEY_MAP_SOURCE_TYPE = "mapSource";
 
     final String MAP_SOURCE_TYPE_DATABASE = "database";
+
     final String MAP_SOURCE_TYPE_GEOJSON = "geojson";
+
     final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
+
     final String MAP_TEMPL_DIR = "map_temp";
-    
-    
-    
+
     // -------------------------------------------------------------------------
     // MapValue
     // -------------------------------------------------------------------------
 
     Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath );
-    
+
     Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level );
-    
+
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -90,8 +92,8 @@ public interface MappingService
      * @param zoom
      * @return a generated unique id of the added Map.
      */
-    int addMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId, int organisationUnitLevelId,
-        String nameColumn, String longitude, String latitude, int zoom );
+    int addMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId,
+        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom );
 
     /**
      * Adds a map. If a map with the same mapLayerPath already exists, the map
@@ -149,7 +151,7 @@ public interface MappingService
      * @return a Collection<Map>.
      */
     Collection<Map> getMapsByType( String type );
-    
+
     /**
      * Returns a Collection<Map> of maps by sourceType.
      * 
@@ -172,14 +174,14 @@ public interface MappingService
      * @return a Collection of all registered Maps.
      */
     Collection<Map> getAllMaps();
-    
+
     /**
      * Returns a Collection of all generated Maps.
      * 
      * @return a Collection of all generated Maps.
      */
     Collection<Map> getAllGeneratedMaps();
-    
+
     /**
      * Returns a Collection of all Maps.
      * 
@@ -210,7 +212,7 @@ public interface MappingService
      * @return a generated unique id of the added MapOrganisationUnitRelation.
      */
     int addMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId );
-    
+
     void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations );
 
     /**
@@ -255,11 +257,11 @@ public interface MappingService
      * @param map, the foreign Map in the MapOrganisationUnitRelation.
      * @param map, the foreign OrganisationUnit in the
      *        MapOrganisationUnitRelation.
-     * @return a Collection<MapOrganisationUnitRelation> which contains the given Map and
-     *         OrganisationUnit.
+     * @return a Collection<MapOrganisationUnitRelation> which contains the
+     *         given Map and OrganisationUnit.
      */
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
-    
+
     MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId, String mapLayerPath );
 
     /**
@@ -316,19 +318,19 @@ public interface MappingService
      * @return the number of deleted objects.
      */
     int deleteMapOrganisationUnitRelations( Map map );
-    
+
     // -------------------------------------------------------------------------
     // MapLegend
     // -------------------------------------------------------------------------
-    
+
     void addOrUpdateMapLegend( String name, Double startValue, Double endValue, String color );
-    
+
     void deleteMapLegend( MapLegend legend );
-    
+
     MapLegend getMapLegend( int id );
-    
+
     MapLegend getMapLegendByName( String name );
-    
+
     Collection<MapLegend> getAllMapLegends();
 
     // -------------------------------------------------------------------------
@@ -339,13 +341,16 @@ public interface MappingService
 
     void updateMapLegendSet( MapLegendSet legendSet );
 
-    void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh );
+    void addOrUpdateMapLegendSet( String name, String type, int method, int classes, String colorLow,
+        String colorHigh, Set<MapLegend> mapLegends );
 
     void deleteMapLegendSet( MapLegendSet legendSet );
 
     MapLegendSet getMapLegendSet( int id );
 
     MapLegendSet getMapLegendSetByName( String name );
+
+    Collection<MapLegendSet> getMapLegendSetsByType( String type );
 
     MapLegendSet getMapLegendSetByIndicator( int indicatorId );
 
@@ -360,42 +365,45 @@ public interface MappingService
     int addMapView( MapView mapView );
 
     int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom );
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh,
+        String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude, String latitude, int zoom );
+        String mapSource, int method, int classes, String colorLow, String colorHigh, String longitude,
+        String latitude, int zoom );
 
     void deleteMapView( MapView view );
 
     MapView getMapView( int id );
 
     MapView getMapViewByName( String name );
-    
+
     Collection<MapView> getMapViewsByMapSourceType();
 
     Collection<MapView> getAllMapViews();
-    
+
     // -------------------------------------------------------------------------
     // MapLayer
     // -------------------------------------------------------------------------
 
     int addMapLayer( MapLayer mapLayer );
-    
+
     void updateMapLayer( MapLayer mapLayer );
-    
-    void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity, String strokeColor, int strokeWidth );
-    
+
+    void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity,
+        String strokeColor, int strokeWidth );
+
     void deleteMapLayer( MapLayer mapLayer );
-    
+
     MapLayer getMapLayer( int id );
-    
+
     MapLayer getMapLayerByName( String name );
-    
+
     Collection<MapLayer> getMapLayersByMapSourceType();
-    
+
     MapLayer getMapLayerByMapSource( String mapSource );
-    
+
     Collection<MapLayer> getAllMapLayers();
 }

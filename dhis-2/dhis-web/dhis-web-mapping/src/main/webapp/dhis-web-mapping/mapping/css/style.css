@@ -77,9 +77,6 @@
 .x-btn .icon-pdf {
 	background-image:url(../../../images/pdf.png);
 }
-.x-btn .icon-export-map {
-	background-image:url(../../../images/export.png);
-}
 .aa_dark button  {
 	font-family:lucida sans unicode,arial;
 	font-weight:normal;
@@ -137,7 +134,13 @@
 	font:bold 11px arial;
 	color:#111;
 }
-#window-legendset-title {
+#window-automaticlegendset-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/color_swatch2.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-predefinedlegendset-title {
 	padding:0 0 3px 21px;
 	background:url('../../../images/color_swatch.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
@@ -146,13 +149,6 @@
 #window-help-title {
 	padding:0 0 3px 22px;
 	background:url('../../../images/help.png') no-repeat 0 0 transparent;
-	font:bold 11px arial;
-	color:#111;
-}
-
-#window-export-map-title {
-	padding:0 0 3px 21px;
-	background:url('../../../images/export.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
@@ -179,8 +175,8 @@
 
 /* Msg */
 .x-msg-hl {
-	font-style:italic;
-	color:#333;
+	font-weight:bold;
+	color:#666;
 }
 
 /* DHIS Help */

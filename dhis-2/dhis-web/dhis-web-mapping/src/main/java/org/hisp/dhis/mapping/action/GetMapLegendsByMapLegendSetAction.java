@@ -27,9 +27,8 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MappingService;
@@ -40,92 +39,51 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class AddOrUpdateMapLegendSetAction
+public class GetMapLegendsByMapLegendSetAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private MappingService mappingService;
-
+    
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private String name;
-
-    public void setName( String name )
+    private int mapLegendSetId;
+    
+    public void setMapLegendSetId( int mapLegendSetId )
     {
-        this.name = name;
+        this.mapLegendSetId = mapLegendSetId;
     }
+    
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-    private String type;
+    private List<MapLegend> object;
 
-    public void setType( String type )
+    public List<MapLegend> getObject()
     {
-        this.type = type;
+        return this.object;
     }
-
-    private int method;
-
-    public void setMethod( int method )
-    {
-        this.method = method;
-    }
-
-    private int classes;
-
-    public void setClasses( int classes )
-    {
-        this.classes = classes;
-    }
-
-    private String colorLow;
-
-    public void setColorLow( String colorLow )
-    {
-        this.colorLow = colorLow;
-    }
-
-    private String colorHigh;
-
-    public void setColorHigh( String colorHigh )
-    {
-        this.colorHigh = colorHigh;
-    }
-
-    private Collection<String> mapLegends;
-
-    public void setMapLegends( Collection<String> mapLegends )
-    {
-        this.mapLegends = mapLegends;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
+        throws Exception
     {
-        Set<MapLegend> legends = new HashSet<MapLegend>();
+        this.object = new ArrayList<MapLegend>( this.mappingService.getMapLegendSet( this.mapLegendSetId ).getMapLegends() );
 
-        if ( this.mapLegends != null )
-        {
-            for ( String legend : this.mapLegends )
-            {
-                legends.add( this.mappingService.getMapLegend( Integer.parseInt( legend ) ) );
-            }
-        }
-
-        this.mappingService.addOrUpdateMapLegendSet( this.name, this.type, this.method, this.classes, this.colorLow,
-            this.colorHigh, legends );
-
-        return "success";
+        return SUCCESS;
     }
 }

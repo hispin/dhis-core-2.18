@@ -39,7 +39,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 public interface MappingStore
 {
     String ID = MappingStore.class.getName();
-    
+
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -81,7 +81,7 @@ public interface MappingStore
      * @return a Map.
      */
     Map getMapByMapLayerPath( String mapLayerPath );
-    
+
     /**
      * Returns a Collection<Map> of maps with the right type.
      * 
@@ -89,7 +89,7 @@ public interface MappingStore
      * @return a Collection<Map>.
      */
     Collection<Map> getMapsByType( String type );
-    
+
     /**
      * Returns a Collection<Map> of maps with the right sourceType.
      * 
@@ -113,7 +113,7 @@ public interface MappingStore
      * @return a Collection with all Maps at the given level.
      */
     Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel );
-    
+
     // -------------------------------------------------------------------------
     // MapOrganisationUnitRelation
     // -------------------------------------------------------------------------
@@ -142,7 +142,7 @@ public interface MappingStore
      *        delete.
      */
     void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-    
+
     /**
      * Returns a MapOrganisationUnitRelation.
      * 
@@ -157,18 +157,18 @@ public interface MappingStore
      * @param map, the foreign Map in the MapOrganisationUnitRelation.
      * @param map, the foreign OrganisationUnit in the
      *        MapOrganisationUnitRelation.
-     * @return a Collection<MapOrganisationUnitRelation> which contains the given Map and
-     *         OrganisationUnit.
+     * @return a Collection<MapOrganisationUnitRelation> which contains the
+     *         given Map and OrganisationUnit.
      */
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
-    
+
     /**
      * Returns a Collection of MapOrganisationUnitRelations.
      * 
      * @return a Collection of all MapOrganisationUnitRelations.
      */
     Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations();
-    
+
     /**
      * Returns a Collection of all MapOrganisationUnitRelations connected to the
      * given Map.
@@ -179,7 +179,7 @@ public interface MappingStore
      *         given Map.
      */
     Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map );
-    
+
     /**
      * Deletes all MapOrganisationUnitRelations associated with the given
      * OrganisationUnit.
@@ -190,81 +190,82 @@ public interface MappingStore
     int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit );
 
     /**
-     * Deletes all MapOrganisationUnitRelations associated with the given
-     * Map.
+     * Deletes all MapOrganisationUnitRelations associated with the given Map.
      * 
      * @param map the Map.
      * @return the number of deleted objects.
      */
     int deleteMapOrganisationUnitRelations( Map map );
-    
+
     // -------------------------------------------------------------------------
     // MapLegend
     // -------------------------------------------------------------------------
-    
+
     int addMapLegend( MapLegend legend );
-    
+
     void updateMapLegend( MapLegend legend );
-    
+
     void deleteMapLegend( MapLegend legend );
-    
+
     MapLegend getMapLegend( int id );
-    
+
     MapLegend getMapLegendByName( String name );
-    
+
     Collection<MapLegend> getAllMapLegends();
-    
+
     // -------------------------------------------------------------------------
     // MapLegendSet
-    // -------------------------------------------------------------------------    
-    
+    // -------------------------------------------------------------------------
+
     int addMapLegendSet( MapLegendSet legendSet );
-    
+
     void updateMapLegendSet( MapLegendSet legendSet );
-    
+
     void deleteMapLegendSet( MapLegendSet legendSet );
-    
+
     MapLegendSet getMapLegendSet( int id );
-    
+
     MapLegendSet getMapLegendSetByName( String name );
     
+    Collection<MapLegendSet> getMapLegendSetsByType( String type );
+
     Collection<MapLegendSet> getAllMapLegendSets();
-    
+
     // -------------------------------------------------------------------------
     // MapView
-    // -------------------------------------------------------------------------    
-    
+    // -------------------------------------------------------------------------
+
     int addMapView( MapView mapView );
-    
+
     void updateMapView( MapView mapView );
-    
+
     void deleteMapView( MapView view );
-    
+
     MapView getMapView( int id );
-    
+
     MapView getMapViewByName( String name );
-    
+
     Collection<MapView> getMapViewsByMapSourceType( String mapSourceType );
-    
+
     Collection<MapView> getAllMapViews();
-    
+
     // -------------------------------------------------------------------------
     // MapLayer
     // -------------------------------------------------------------------------
 
     int addMapLayer( MapLayer mapLayer );
-    
+
     void updateMapLayer( MapLayer mapLayer );
-    
+
     void deleteMapLayer( MapLayer mapLayer );
-    
+
     MapLayer getMapLayer( int id );
-    
+
     MapLayer getMapLayerByName( String name );
-    
+
     Collection<MapLayer> getMapLayersByMapSourceType( String mapSourceType );
-    
+
     MapLayer getMapLayerByMapSource( String mapSource );
-    
+
     Collection<MapLayer> getAllMapLayers();
 }

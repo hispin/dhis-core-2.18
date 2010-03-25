@@ -136,6 +136,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      * Method: initComponent
      *    Inits the component
      */
+	 
+	colorInterpolation: false,
+	
+	imageLegend: false,
+	
+	bounds: false,
      
     newUrl: false,
 	
@@ -289,13 +295,30 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 }
             }
         });
+		
+		predefinedMapLegendSetStore = new Ext.data.JsonStore({
+            url: path + 'getMapLegendSetsByType' + type,
+            baseParams: { type: map_legend_type_predefined },
+            root: 'mapLegendSets',
+            fields: ['id', 'name'],
+            autoLoad: true,
+            listeners: {
+                'load': {
+                    fn: function() {
+                        // if (MAPVIEW) {
+                            // Ext.getCmp('maplegendset_cb').setValue(MAPVIEW.legendType);
+                        // }
+                    }
+                }
+            }
+        });
         
         this.items = [
          
         {
             xtype: 'combo',
             id: 'mapview_cb',
-            fieldLabel: 'Map view',
+            fieldLabel: 'Favorite',
             typeAhead: true,
             editable: false,
             valueField: 'id',
@@ -524,6 +547,105 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         },
         
         { html: '<br>' },
+		
+		{
+            xtype: 'combo',
+            fieldLabel: 'Legend type',
+            id: 'maplegendtype_cb',
+            editable: false,
+            valueField: 'value',
+            displayField: 'text',
+            mode: 'local',
+            emptyText: emptytext,
+			labelSeparator: labelseparator,
+            value: map_legend_type_automatic,
+            triggerAction: 'all',
+            width: combo_width,
+            store: new Ext.data.SimpleStore({
+                fields: ['value', 'text'],
+                data: [
+					[map_legend_type_automatic, 'Automatic'],
+					[map_legend_type_predefined, 'Predefined']
+				]
+            }),
+            listeners: {
+                'select': {
+                    fn: function() {
+                        if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_predefined) {
+                            Ext.getCmp('method').hide();
+							Ext.getCmp('bounds').hide();
+                            Ext.getCmp('numClasses').hide();
+							Ext.getCmp('colorA_cf').hide();
+							Ext.getCmp('colorB_cf').hide();
+							Ext.getCmp('maplegendset_cb').show();
+                        }
+                        else if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_automatic) {
+                            Ext.getCmp('method').show();
+							Ext.getCmp('bounds').hide();
+                            Ext.getCmp('numClasses').show();
+							Ext.getCmp('colorA_cf').show();
+							Ext.getCmp('colorB_cf').show();
+							Ext.getCmp('maplegendset_cb').hide();
+                            
+                            this.classify(false);
+                        }
+                    },
+                    scope: this
+                }
+            }
+        },
+		
+		{
+            xtype: 'combo',
+            fieldLabel: 'Legend set',
+            id: 'maplegendset_cb',
+            editable: false,
+            valueField: 'id',
+            displayField: 'name',
+            mode: 'remote',
+            emptyText: emptytext,
+			labelSeparator: labelseparator,
+            triggerAction: 'all',
+            width: combo_width,
+			hidden: true,
+            store: predefinedMapLegendSetStore,
+            listeners: {
+                'select': {
+                    fn: function() {
+						var mapLegendSet = Ext.getCmp('maplegendset_cb').getValue();
+						var bounds = [];
+						Ext.Ajax.request({
+							url: path + 'getMapLegendsByMapLegendSet' + type,
+							method: 'POST',
+							params: { mapLegendSetId: mapLegendSet },
+							success: function(r) {
+								var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
+								var colors = [];
+								var bounds = [];
+								for (var i = 0; i < mapLegends.length; i++) {
+									if (bounds[bounds.length-1] != mapLegends[i].startValue) {
+										if (bounds.length != 0) {
+											colors.push(new mapfish.ColorRgb(240,240,240));
+										}
+										bounds.push(mapLegends[i].startValue);
+									}
+									colors.push(new mapfish.ColorRgb());
+									colors[colors.length-1].setFromHex(mapLegends[i].color);
+									bounds.push(mapLegends[i].endValue);
+								}
+								choropleth.colorInterpolation = colors;
+								choropleth.bounds = bounds;
+								choropleth.classify(false);								
+							},
+							failure: function() {
+								alert('Error: getMapLegendsByMapLegendSet');
+							}
+						});
+                    },
+                    scope: this
+                }
+            }
+        },
 
         {
             xtype: 'combo',
