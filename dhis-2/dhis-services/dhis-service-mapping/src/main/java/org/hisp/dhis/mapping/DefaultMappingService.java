@@ -663,6 +663,8 @@ public class DefaultMappingService
 
         Period period = periodService.getPeriod( periodId );
 
+        MapLegendSet mapLegendSet = getMapLegendSet( mapLegendSetId );
+        
         mapView.setName( name );
         mapView.setIndicatorGroup( indicatorGroup );
         mapView.setIndicator( indicator );
@@ -675,7 +677,7 @@ public class DefaultMappingService
         mapView.setClasses( classes );
         mapView.setColorLow( colorLow );
         mapView.setColorHigh( colorHigh );
-        mapView.setMapLegendSetId( mapLegendSetId );
+        mapView.setMapLegendSet( mapLegendSet );
         mapView.setLongitude( longitude );
         mapView.setLatitude( latitude );
         mapView.setZoom( zoom );
@@ -701,6 +703,8 @@ public class DefaultMappingService
 
         Period period = periodService.getPeriod( periodId );
 
+        MapLegendSet mapLegendSet = getMapLegendSet( mapLegendSetId );
+        
         String mapSourceType = (String) userSettingService
             .getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
 
@@ -720,7 +724,7 @@ public class DefaultMappingService
             mapView.setClasses( classes );
             mapView.setColorLow( colorLow );
             mapView.setColorHigh( colorHigh );
-            mapView.setMapLegendSetId( mapLegendSetId );
+            mapView.setMapLegendSet( mapLegendSet );
             mapView.setLongitude( longitude );
             mapView.setLatitude( latitude );
             mapView.setZoom( zoom );
@@ -730,7 +734,7 @@ public class DefaultMappingService
         else
         {
             mapView = new MapView( name, indicatorGroup, indicator, periodType, period, mapSourceType, mapSource,
-                mapLegendType, method, classes, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
+                mapLegendType, method, classes, colorLow, colorHigh, mapLegendSet, longitude, latitude, zoom );
 
             addMapView( mapView );
         }
