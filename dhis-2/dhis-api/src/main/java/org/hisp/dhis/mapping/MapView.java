@@ -70,7 +70,7 @@ public class MapView
 
     private String colorHigh;
 
-    private int mapLegendSetId;
+    private MapLegendSet mapLegendSet;     
 
     private String longitude;
 
@@ -84,7 +84,7 @@ public class MapView
 
     public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType,
         Period period, String mapSourceType, String mapSource, String mapLegendType, int method, int classes,
-        String colorLow, String colorHigh, int mapLegendSetId, String longitude, String latitude, int zoom )
+        String colorLow, String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.indicatorGroup = indicatorGroup;
@@ -98,7 +98,7 @@ public class MapView
         this.classes = classes;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
-        this.mapLegendSetId = mapLegendSetId;
+        this.mapLegendSet = mapLegendSet;
         this.longitude = longitude;
         this.latitude = latitude;
         this.zoom = zoom;
@@ -272,14 +272,14 @@ public class MapView
         this.colorHigh = colorHigh;
     }
 
-    public int getMapLegendSetId()
+    public MapLegendSet getMapLegendSet()
     {
-        return mapLegendSetId;
+        return mapLegendSet;
     }
 
-    public void setMapLegendSetId( int mapLegendSetId )
+    public void setMapLegendSet( MapLegendSet mapLegendSet )
     {
-        this.mapLegendSetId = mapLegendSetId;
+        this.mapLegendSet = mapLegendSet;
     }
 
     public String getLongitude()

@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.indicator.Indicator;
@@ -55,9 +56,9 @@ public class MapLegendSet
 
     private String colorHigh;
 
-    private Set<MapLegend> mapLegends;
+    private Set<MapLegend> mapLegends = new HashSet<MapLegend>();
 
-    private Set<Indicator> indicators;
+    private Set<Indicator> indicators = new HashSet<Indicator>();
 
     public MapLegendSet()
     {

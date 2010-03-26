@@ -39,7 +39,8 @@
 			
 		<property name="colorHigh"/>
 		
-		<property name="mapLegendSetId"/>
+		<many-to-one name="mapLegendSet" class="org.hisp.dhis.mapping.MapLegendSet"
+			column="maplegendsetid" foreign-key="fk_mapview_maplegendsetid"/>
 		
 		<property name="longitude"/>
         
