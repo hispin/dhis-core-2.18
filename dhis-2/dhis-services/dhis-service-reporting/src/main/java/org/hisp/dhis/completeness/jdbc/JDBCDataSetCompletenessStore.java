@@ -108,17 +108,15 @@ public class JDBCDataSetCompletenessStore
         final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
         
         final String sql = 
-            "SELECT COUNT(sourceid) FROM ( " +
-                "SELECT sourceid, count(DISTINCT dataelementid) AS no " +
+            "SELECT COUNT(completed) FROM ( " +
+                "SELECT COUNT(sourceid) AS sources " +
                 "FROM datavalue " +
+                "JOIN dataelementoperand USING (dataelementid, categoryoptioncomboid) " +
+                "JOIN datasetoperands USING (dataelementoperandid) " +
                 "WHERE periodid = " + periodId + " " + deadlineCriteria +
                 "AND sourceid IN (" + childrenIds + ") " +
-                "AND dataelementid IN ( " +
-                    "SELECT dataelementid " +
-                    "FROM compulsorydatasetmembers " +
-                    "WHERE datasetid = " + dataSetId + " ) " +
-                "GROUP BY sourceid ) AS completed " +
-            "WHERE completed.no = " + compulsoryElements;
+                "AND datasetid = " + dataSetId + ") AS completed " +
+            "WHERE completed.sources = " + compulsoryElements;
         
         return statementManager.getHolder().queryForInteger( sql );
     }    

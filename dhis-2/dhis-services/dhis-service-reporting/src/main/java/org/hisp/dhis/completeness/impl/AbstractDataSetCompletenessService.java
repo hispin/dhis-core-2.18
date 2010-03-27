@@ -252,7 +252,7 @@ public abstract class AbstractDataSetCompletenessService
     {
         final Period period = periodService.getPeriod( periodId );
 
-        Date deadline = getConfiguration().getDeadline( period );
+        Date deadline = getConfiguration() != null ? getConfiguration().getDeadline( period ) : null;
         
         final DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
