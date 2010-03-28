@@ -109,13 +109,13 @@ public class JDBCDataSetCompletenessStore
         
         final String sql = 
             "SELECT COUNT(completed) FROM ( " +
-                "SELECT COUNT(sourceid) AS sources " +
+                "SELECT sourceid, COUNT(sourceid) AS sources " +
                 "FROM datavalue " +
                 "JOIN dataelementoperand USING (dataelementid, categoryoptioncomboid) " +
                 "JOIN datasetoperands USING (dataelementoperandid) " +
                 "WHERE periodid = " + periodId + " " + deadlineCriteria +
                 "AND sourceid IN (" + childrenIds + ") " +
-                "AND datasetid = " + dataSetId + ") AS completed " +
+                "AND datasetid = " + dataSetId + " GROUP BY sourceid) AS completed " +
             "WHERE completed.sources = " + compulsoryElements;
         
         return statementManager.getHolder().queryForInteger( sql );
