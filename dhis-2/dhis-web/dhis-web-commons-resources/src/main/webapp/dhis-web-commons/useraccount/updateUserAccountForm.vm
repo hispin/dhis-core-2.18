@@ -1,7 +1,35 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for addUserForm
+//
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#updateUserinforForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,beforeValidateHandler : function()
+											{
+												//selectAllById('selectedList');
+											}
+					,submitHandler: function(form)
+									{
+										updateUser();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery("#rawPassword").focus();
+				//selectionTree.buildSelectionTree();
+			}
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <h3>$i18n.getString( "update_user" )</h3>
 
-<form id="updateUserinforForm" action="updateUserAccount.action" method="post">
+<form id="updateUserinforForm" action="updateUserAccount.action" method="post" onsubmit='return false;'>
 	
   <div>
 	<input type="hidden" id="id" name="id" value="$userCredentials.id">
@@ -13,15 +41,19 @@
 	</tr>
 	<tr>
 		<td><label for="username">$i18n.getString( "user_name" )</label></td>
-		<td><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled"></td>
+		<td><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled" class="{validate:{required:true,firstletteralphabet:true,minlength:2,maxlength:50,alphanumeric:true}}"></td>
 	</tr>
 	<tr>
-		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em"></td>
+		<td><label for="rawPassword">$i18n.getString( "old_password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="password" id="oldPassword" name="oldPassword" style="width:20em" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,notequalto:'#username'}}"></td>
 	</tr>
 	<tr>
-		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em"></td>
+		<td><label for="rawPassword">$i18n.getString( "new_password" )</label></td>
+		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" style="width:20em" class="{validate:{required:false,minlength:5,maxlength:50,notequalto:'#username'}}" ></td>
+	</tr>
+	<tr>
+		<td><label for="retypePassword">$i18n.getString( "retype_new_password" )</label></td>
+		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em"  class="{validate:{required:false,minlength:5,maxlength:50,equalTo:'#rawPassword'}}"></td>
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -41,7 +73,7 @@
     </tr>
 	<tr>
 		<td></td>
-		<td valign="top"><input type="button" value="$i18n.getString( "save" )" style="width:10em" onclick="validateUpdateUser()"></td>
+		<td valign="top"><input type="submit" value="$i18n.getString( "save" )" style="width:10em"></td>
 	</tr>
 </table>
 
@@ -51,24 +83,31 @@
 
 <script type="text/javascript">
 
-	var surnameField = document.getElementById( 'surname' );
-	surnameField.select();
-	surnameField.focus();
+	var oldPassword = byId( 'oldPassword' );
+	oldPassword.select();
+	oldPassword.focus();
 	
-	function validateUpdateUser()
+	function updateUser()
 	{
-		var rawPassword = getFieldValue( 'rawPassword' );
-		var retypePassword = getFieldValue( 'retypePassword' );	        
-	    if( rawPassword==retypePassword )
-		{
-			document.getElementById( 'updateUserinforForm' ).submit();			
-		}else
-		{
-			window.alert( '$encoder.jsEscape( $i18n.getString( "password_not_match" ) , "'")');
-		}
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess(updateUserReceived);
+		
+		var params = "id=" + byId('id').value;
+			params += "&oldPassword=" + byId('oldPassword').value;
+			params += "&rawPassword=" + byId('rawPassword').value;
+			params += "&retypePassword=" + byId('retypePassword').value;
+			params += "&surname=" + byId('surname').value;
+			params += "&firstName=" + byId('firstName').value;
+			params += "&email=" + byId('email').value;
+			params += "&phoneNumber=" + byId('phoneNumber').value;
+		request.sendAsPost( params );
+		request.send( 'updateUserAccount.action');
+		
 	}
 	
+	function updateUserReceived(xmlObject){
+			setMessage(xmlObject.firstChild.nodeValue);
+	}
 	
-	
-
 </script>

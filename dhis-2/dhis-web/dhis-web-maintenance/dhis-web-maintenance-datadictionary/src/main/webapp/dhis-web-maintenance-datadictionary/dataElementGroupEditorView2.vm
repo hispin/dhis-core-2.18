@@ -27,7 +27,7 @@
 <table >
 	<tr>
 		<th>$i18n.getString( "available_dataelements" )</th>		
-		<th><span id="groupNameView" style="display:block;"><span id="groupNameView" style="display:block;">$i18n.getString( "data_element_groups" )</span></span></th>
+		<th><span id="groupNameView" style="display:block;"></span></th>
 		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>		
 		<th>$i18n.getString( "available_groups" )</th>
 	</tr>

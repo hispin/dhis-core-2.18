@@ -1,1 +1,2 @@
-<h2>$i18n.getString( "update_user_success" )</h2>
+<?xml version="1.0" encoding="UTF-8"?>
+<message type="success">$encoder.xmlEncode( $message )</message>

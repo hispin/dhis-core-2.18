@@ -27,6 +27,7 @@ package org.hisp.dhis.useraccount.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
@@ -50,13 +51,17 @@ public class UpdateUserAccountAction
     private UserStore userStore;
 
     private PasswordManager passwordManager;
+    
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
+    private I18n i18n;
+    
     private Integer id;
 
+    private String oldPassword;
+    
     private String rawPassword;
 
     private String surname;
@@ -66,6 +71,8 @@ public class UpdateUserAccountAction
     private String email;
 
     private String phoneNumber;
+    
+    private String message;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -81,6 +88,11 @@ public class UpdateUserAccountAction
         this.userStore = userStore;
     }
 
+    public void setOldPassword( String oldPassword )
+    {
+        this.oldPassword = oldPassword;
+    }
+
     public void setRawPassword( String rawPassword )
     {
         this.rawPassword = rawPassword;
@@ -89,6 +101,16 @@ public class UpdateUserAccountAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     public void setPhoneNumber( String phoneNumber )
@@ -133,12 +155,22 @@ public class UpdateUserAccountAction
             rawPassword = null;
         }
 
+        User user = userStore.getUser( id );
+        
+        UserCredentials userCredentials = userStore.getUserCredentials( user );
+
+        String encodeOldPassword = passwordManager.encodePassword( userCredentials.getUsername(), oldPassword);
+        String currentPassword = userCredentials.getPassword();
+        if(!encodeOldPassword.equals( currentPassword)){
+            message = i18n.getString( "wrong_password" );
+            return INPUT;
+        }
+        
         // ---------------------------------------------------------------------
         // Update userCredentials and user
         // ---------------------------------------------------------------------
 
-        User user = userStore.getUser( id );
-
+        
         user.setSurname( surname );
 
         user.setFirstName( firstName );
@@ -147,7 +179,6 @@ public class UpdateUserAccountAction
 
         user.setPhoneNumber( phoneNumber );
 
-        UserCredentials userCredentials = userStore.getUserCredentials( user );
 
         if ( rawPassword != null )
         {
@@ -159,6 +190,8 @@ public class UpdateUserAccountAction
         
         userStore.updateUser( user );
 
+        message = i18n.getString( "update_user_success" );
+        
         return SUCCESS;
     }
 }

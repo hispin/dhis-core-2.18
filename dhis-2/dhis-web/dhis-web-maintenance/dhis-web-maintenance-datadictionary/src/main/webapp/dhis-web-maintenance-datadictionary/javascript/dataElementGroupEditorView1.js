@@ -163,7 +163,8 @@ function getDataElementGroupCompleted( xmlObject )
         var value = dataElement.firstChild.nodeValue;
         selectedDataElements[id] = value;
     }
-
+	document.getElementById( 'groupNameView' ).innerHTML = name;
+	
     filterSelectedDataElements();
     document.getElementById('availableDataElements').disabled=false;
 	visableAvailableDataElements();	
@@ -277,7 +278,8 @@ function validateRenameDataElementGroup()
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateRenameDataElementGroupReceived );
-    request.send( 'validateDataElementGroup.action?id=' + id + '&name=' + name );
+	request.sendAsPost('id=' + id + '&name=' + name);
+    request.send( 'validateDataElementGroup.action' );
 }
 
 function validateRenameDataElementGroupReceived( xmlObject )
@@ -302,7 +304,8 @@ function renameDataElementGroup()
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( renameDataElementGroupReceived );
-    request.send( 'renameDataElementGroupEditor.action?id=' + id + '&name=' + name );
+	request.sendAsPost('id=' + id + '&name=' + name);
+    request.send( 'renameDataElementGroupEditor.action' );
 
 }
 
@@ -311,7 +314,7 @@ function renameDataElementGroupReceived( xmlObject )
     var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
     var list = document.getElementById( 'dataElementGroups' );
     list.options[ list.selectedIndex ].text = name;
-    document.getElementById( 'groupNameView' ).innerHTML = name;
+    byId( 'groupNameView' ).innerHTML = name;
     showHideDiv( 'addDataElementGroupForm' );
     deleteDivEffect();
 }
@@ -331,7 +334,8 @@ function validateAddDataElementGroup()
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateAddDataElementGroupReceived );
-    request.send( 'validateDataElementGroup.action?name=' + name );
+	request.sendAsPost('name=' + name);
+    request.send( 'validateDataElementGroup.action' );
 }
 
 function validateAddDataElementGroupReceived( xmlObject )
@@ -354,7 +358,8 @@ function createNewGroup()
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( createNewGroupReceived );
-    request.send( 'addDataElementGroupEditor.action?name=' + name );
+	request.sendAsPost('name=' + name);
+    request.send( 'addDataElementGroupEditor.action' );
 }
 
 function createNewGroupReceived( xmlObject )
