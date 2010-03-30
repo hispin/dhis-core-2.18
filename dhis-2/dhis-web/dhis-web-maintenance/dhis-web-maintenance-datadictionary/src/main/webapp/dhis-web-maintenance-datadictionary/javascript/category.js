@@ -136,10 +136,36 @@ function validateAddCategoryOption() {
 		{
 			setMessage( xmlObject.firstChild.nodeValue );
 		}
-		else 
+		else if(mode == "update"){
+			updateCategoryOptionName();
+		}
+		else
 		{
 			addCategoryOptionToCategory( categoryName );
 		}
 	}, "xml");
+}
+
+
+// ----------------------------------------------------------------------
+// Rename Category Option
+// ----------------------------------------------------------------------
+
+function updateCategoryOptionName(){
+	validateAddCategoryOption();
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( updateCategoryOptionNameReceived );
+	var params = "id=" + byId('categoryOptions').value;
+		params += '&name=' + byId('categoryOptionName').value;
+	request.sendAsPost(params);
+	request.send('updateDataElementCategoryOption.action');
+}
+
+function updateCategoryOptionNameReceived(xmlObject){
+	var categoryOptions = byId('categoryOptions');
+		categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
+	setMessage( i18n_option_rename_successfully );
+	
 }
 
