@@ -61,7 +61,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
@@ -89,7 +88,8 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @author Tran Thanh Tri
  * @since 2009-09-18
- * @version $Id: GenerateReportSupport.java 6216 2010-03-10 13:40:42Z Chau Thu Tran$
+ * @version $Id: GenerateReportSupport.java 6216 2010-03-10 13:40:42Z Chau Thu
+ *          Tran$
  */
 public abstract class GenerateReportSupport
     implements Action
@@ -650,19 +650,8 @@ public abstract class GenerateReportSupport
 
                 if ( !(dataElement instanceof CalculatedDataElement) )
                 {
-
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
-                        startDate, endDate, organisationUnit );
-
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
-                    {
-                        replaceString = NULL_REPLACEMENT;
-                    }
-                    else
-                    {
-                        replaceString = String.valueOf( aggregatedValue );
-                    }
-
+                    replaceString = getValue( dataElement, optionCombo, organisationUnit ) + "";
+                 
                     matcher.appendReplacement( buffer, replaceString );
 
                     matcher.appendTail( buffer );
@@ -675,12 +664,12 @@ public abstract class GenerateReportSupport
 
                     int factor = 0;
 
-                    int value = 0;
+                    double value = 0.0;
 
                     Map<String, Integer> factorMap = dataElementService.getOperandFactors( calculatedDataElement );
 
                     Collection<String> operandIds = dataElementService.getOperandIds( calculatedDataElement );
-
+                    
                     for ( String operandId : operandIds )
                     {
                         factor = factorMap.get( operandId );
@@ -689,29 +678,43 @@ public abstract class GenerateReportSupport
                         optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
                             .length() );
 
-                        DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
+                        DataElement element = dataElementService
+                            .getDataElement( Integer.parseInt( dataElementIdString ) );
                         optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
                             .parseInt( optionComboIdString ) );
-                        DataValue dataValue = dataValueService.getDataValue( organisationUnit, element, period, optionCombo );
 
-                        if ( dataValue != null )
-                        {
-                            value += Integer.parseInt( dataValue.getValue() ) * factor;
-                        }
+                        double dataValue = getValue( element, optionCombo, organisationUnit );
+
+                        value += dataValue * factor;
+
                     }
-                    
+
                     buffer.append( value );
-                    
+
                     break;
                 }
             }
-            
+
             return buffer.toString();
         }
         catch ( NumberFormatException ex )
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
+    }
+
+    private double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
+        OrganisationUnit organisationUnit )
+    {
+        double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
+            endDate, organisationUnit );
+
+        if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+        {
+            aggregatedValue = 0;
+        }
+
+        return aggregatedValue;
     }
 
     protected void installReadTemplateFile( ReportExcel reportExcel, Period period,
