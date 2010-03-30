@@ -74,16 +74,18 @@ function validateAddIndicator()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
-    request.send( 'validateIndicator.action?name=' + getFieldValue( 'name' ) +
-    	'&shortName=' + getFieldValue( 'shortName' ) +
-    	'&alternativeName=' + getFieldValue( 'alternativeName' ) +
-        '&indicatorTypeId=' + getListValue( 'indicatorTypeId' ) +
-        '&numerator=' + getFieldValue( 'numerator' ) +
-        '&numeratorDescription=' + getFieldValue( 'numeratorDescription' ) +
-        '&numeratorAggregationOperator=' + getFieldValue( 'numeratorAggregationOperator' ) +
-        '&denominator=' + getFieldValue( 'denominator' ) +
-        '&denominatorDescription=' + getFieldValue( 'denominatorDescription' ) +
-        '&denominatorAggregationOperator=' + getFieldValue( 'denominatorAggregationOperator' ) );
+	var params = 'name=' + getFieldValue( 'name' );
+		params += '&shortName=' + getFieldValue( 'shortName' );
+		params += '&alternativeName=' + getFieldValue( 'alternativeName' );
+		params += '&indicatorTypeId=' + getListValue( 'indicatorTypeId' );
+		params += '&numerator=' + getFieldValue( 'numerator' );
+		params += '&numeratorDescription=' + getFieldValue( 'numeratorDescription' );
+		params += '&numeratorAggregationOperator=' + getFieldValue( 'numeratorAggregationOperator' );
+		params += '&denominator=' + getFieldValue( 'denominator' );
+		params += '&denominatorDescription=' + getFieldValue( 'denominatorDescription' );
+		params += '&denominatorAggregationOperator=' + getFieldValue( 'denominatorAggregationOperator' ) ;
+	request.sendAsPost(params);
+    request.send( 'validateIndicator.action');
 
     return false;
 }
