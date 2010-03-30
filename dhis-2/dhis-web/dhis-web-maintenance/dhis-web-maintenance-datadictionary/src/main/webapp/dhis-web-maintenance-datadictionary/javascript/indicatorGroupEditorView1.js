@@ -123,6 +123,8 @@ function getIndicatorGroupCompleted( xmlObject )
     }
     filterSelectedIndicators();       
     document.getElementById('availableIndicators').disabled=false;
+	
+	document.getElementById( 'groupNameView' ).innerHTML = name;
 	visableAvailableIndicators();
     
 }
@@ -234,7 +236,8 @@ function validateAddIndicatorGroup()
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateAddIndicatorGroupReceived );
-    request.send( 'validateIndicatorGroup.action?name=' + name ); 
+	request.sendAsPost('name=' + name );
+    request.send( 'validateIndicatorGroup.action'); 
 }
 
 function validateAddIndicatorGroupReceived( xmlObject )
@@ -257,7 +260,8 @@ function createNewGroup()
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( createNewGroupReceived );
-    request.send( 'addIndicatorGroupEditor.action?name=' + name + "&mode=editor"  );    
+	request.sendAsPost('name=' + name + '&mode=editor' );
+    request.send( 'addIndicatorGroupEditor.action'  );    
 }
 
 function createNewGroupReceived( xmlObject )
@@ -266,9 +270,13 @@ function createNewGroupReceived( xmlObject )
     var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
     var list = document.getElementById( 'indicatorGroups' );
     var option = new Option( name, id );
-    option.selected = true;
-    list.add(option , null );   
-    document.getElementById( 'groupNameView' ).innerHTML = name;        
+		option.selected = true;
+		option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+		}
+	list.add(option , null );
+    document.getElementById( 'groupNameView' ).innerHTML = name;
+	
     selectedIndicators = new Object();
     filterSelectedIndicators();
     toggleById( 'addIndicatorGroupForm' );
@@ -327,7 +335,8 @@ function renameGroup()
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( renameGroupReceived );
-    request.send( 'renameIndicatorGroupEditor.action?name=' + name + "&mode=editor&id=" +  byId('indicatorGroups').value);	
+	request.sendAsPost('name=' + name + '&mode=editor&id=' +  byId('indicatorGroups').value);
+    request.send( 'renameIndicatorGroupEditor.action');	
 }
 
 function renameGroupReceived( xmlObject )

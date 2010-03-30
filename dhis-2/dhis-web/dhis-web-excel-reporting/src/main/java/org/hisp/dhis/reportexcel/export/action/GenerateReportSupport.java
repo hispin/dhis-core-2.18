@@ -38,7 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -674,19 +673,6 @@ public abstract class GenerateReportSupport
                 {
                     CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
 
-                    Collection<DataElement> dataElements = dataElement.getDataSets().iterator().next()
-                        .getDataElements();
-
-                    Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period,
-                        dataElements );
-
-                    Map<Integer, DataValue> dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
-
-                    for ( DataValue dataValue : dataValues )
-                    {
-                        dataValueMap.put( dataValue.getDataElement().getId(), dataValue );
-                    }
-
                     int factor = 0;
 
                     int value = 0;
@@ -706,7 +692,6 @@ public abstract class GenerateReportSupport
                         DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
                         optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
                             .parseInt( optionComboIdString ) );
-
                         DataValue dataValue = dataValueService.getDataValue( organisationUnit, element, period, optionCombo );
 
                         if ( dataValue != null )
