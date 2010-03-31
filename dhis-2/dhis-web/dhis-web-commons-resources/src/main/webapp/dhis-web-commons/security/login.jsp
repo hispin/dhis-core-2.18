@@ -1,3 +1,6 @@
+<jsp:useBean id="userAuditService" type="org.hisp.dhis.useraudit.UserAuditService" scope="application" />
+<jsp:useBean id="userAuditStore" type="org.hisp.dhis.useraudit.UserAuditStore" scope="application" />
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
@@ -14,6 +17,22 @@
     <body>
         <div class="loginField" align="center">
             <p><img alt="" src="logo_banner.png"></p>
+                <%
+                    Object obj = session.getAttribute( "SPRING_SECURITY_LAST_USERNAME" );
+                    boolean formVisible = true;
+                    if( obj != null )
+                    {
+                        String username = obj.toString();
+                        if( userAuditService.getLoginFailures(username) >= userAuditService.getMaxAttempts() )
+                        {
+                            formVisible = false;
+                %>
+            <span class="loginMessage">Maximum Tries exceeded... Please try after <%=userAuditService.getLockoutTimeframe() %> mins</span>
+            <%
+                        }
+                    }
+            %>
+            <% if(formVisible){%>
             <form action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
                     <tr>
@@ -34,6 +53,7 @@
                     </tr>
                 </table>
             </form>
+            <% } %>
         </div>
     </body>
 </html>

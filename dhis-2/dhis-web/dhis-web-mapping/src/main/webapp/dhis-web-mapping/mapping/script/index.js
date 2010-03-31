@@ -12,6 +12,7 @@ var ACTIVEPANEL;
 var MASK;
 var LABELS;
 var COLORINTERPOLATION;
+var EXPORTVALUES;
 
 function getUrlParam(strParamName) {
     var output = '';
@@ -3623,6 +3624,8 @@ Ext.onReady( function() {
 			'-',
 			pdfButton,
 			'-',
+			exportMapButton,
+			'-',
 			favoritesButton,
 			'-',
             automaticMapLegendSetButton,
@@ -4005,6 +4008,9 @@ function getChoroplethData() {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+			
+			EXPORTVALUES = getExportDataValueJSON( mapvalues );
+			
 			var mv = new Array();
 			var nameColumn = MAPDATA.nameColumn;
 			var options = {};

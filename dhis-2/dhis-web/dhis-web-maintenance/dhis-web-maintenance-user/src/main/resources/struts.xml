@@ -17,16 +17,6 @@
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     </action>
 
-    <action name="changePassword" class="org.hisp.dhis.user.action.ChangePasswordAction">
-      <result name="input" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-user/changePassword.vm</param>  
-      <param name="menu">/dhis-web-maintenance-user/orgunitMenu.vm</param>
-      <param name="javascripts">
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
-      <result name="success" type="redirect">changePassword.action</result>      
-    </action>
-    
      <action name="user" class="org.hisp.dhis.user.action.GetOrgunitUserListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/user.vm</param>  

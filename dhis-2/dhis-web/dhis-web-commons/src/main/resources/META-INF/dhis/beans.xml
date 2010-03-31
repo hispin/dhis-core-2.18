@@ -278,7 +278,7 @@
 	<bean id="authenticationProcessingFilter"
 		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="authenticationFailureUrl" value="/dhis-web-commons/security/loginfailed.html" />
+		<property name="authenticationFailureUrl" value="/dhis-web-commons/security/loginfailed.jsp" />
 		<property name="defaultTargetUrl" value="/dhis-web-commons-security/loggedIn.action" />
 		<property name="filterProcessesUrl" value="/dhis-web-commons-security/login.action" />
 		<property name="alwaysUseDefaultTargetUrl" value="true" />
@@ -314,7 +314,20 @@
 
     <bean id="requiredLoginFilter" class="org.hisp.dhis.security.filter.RequiredLoginFilter">
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-        <property name="loginPageUrl" value="/dhis-web-commons/security/login.html" />
+        <property name="loginPageUrl" value="/dhis-web-commons/security/login.jsp" />
+    </bean>
+
+    <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+        <property name="attributes">
+            <map>
+                <entry key="userAuditService">
+                    <ref bean="org.hisp.dhis.useraudit.UserAuditService"/>
+                </entry>
+                <entry key="userAuditStore">
+                    <ref bean="org.hisp.dhis.useraudit.UserAuditStore"/>
+                </entry>
+            </map>
+        </property>
     </bean>
 
     <!-- Security : Listener -->
@@ -491,6 +504,18 @@
 
 	<bean id="org.hisp.dhis.i18n.action.TranslateAction" 
 		class="org.hisp.dhis.i18n.action.TranslateAction">
+		<property name="i18nService">
+			<ref bean="org.hisp.dhis.i18n.I18nService" />
+		</property>
+		<!--
+		<property name="translationService">
+			<ref bean="org.hisp.dhis.translation.TranslationService" />
+		</property>
+		-->
+	</bean>
+	
+	<bean id="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction" 
+		class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
 		<property name="i18nService">
 			<ref bean="org.hisp.dhis.i18n.I18nService" />
 		</property>

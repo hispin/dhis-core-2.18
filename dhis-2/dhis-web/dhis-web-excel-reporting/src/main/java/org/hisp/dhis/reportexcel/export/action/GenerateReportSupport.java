@@ -650,7 +650,7 @@ public abstract class GenerateReportSupport
 
                 if ( !(dataElement instanceof CalculatedDataElement) )
                 {
-                    replaceString = getValue( dataElement, optionCombo, organisationUnit ) + "";
+                    replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate ) + "";
                  
                     matcher.appendReplacement( buffer, replaceString );
 
@@ -683,7 +683,7 @@ public abstract class GenerateReportSupport
                         optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
                             .parseInt( optionComboIdString ) );
 
-                        double dataValue = getValue( element, optionCombo, organisationUnit );
+                        double dataValue = getValue( element, optionCombo, organisationUnit,startDate, endDate );
 
                         value += dataValue * factor;
 
@@ -704,7 +704,7 @@ public abstract class GenerateReportSupport
     }
 
     private double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
-        OrganisationUnit organisationUnit )
+        OrganisationUnit organisationUnit,Date startDate, Date endDate )
     {
         double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
             endDate, organisationUnit );

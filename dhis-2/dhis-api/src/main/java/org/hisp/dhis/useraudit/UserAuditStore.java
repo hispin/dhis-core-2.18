@@ -43,5 +43,7 @@ public interface UserAuditStore
     
     void deleteLoginFailures( String username );
     
+    void resetLoginFailures( String username, Date date );
+    
     int getLoginFailures( String username, Date date );
 }

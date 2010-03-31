@@ -53,8 +53,6 @@ public class I18nAction
 
     private String returnUrl;
 
-    private String message;
-
     private Map<String, String> translations = new Hashtable<String, String>();
 
     private Map<String, String> referenceTranslations = new Hashtable<String, String>();
@@ -115,16 +113,6 @@ public class I18nAction
     public String getReturnUrl()
     {
         return returnUrl;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
     }
 
     public Collection<Locale> getAvailableLocales()

@@ -25,19 +25,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean id="org.hisp.dhis.user.action.ChangePasswordAction" class="org.hisp.dhis.user.action.ChangePasswordAction"
-		scope="prototype">
-		<property name="userStore">
-			<ref bean="org.hisp.dhis.user.UserStore" />
-		</property>
-		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService" />
-		</property>
-		<property name="passwordManager">
-			<ref bean="org.hisp.dhis.security.PasswordManager" />
-		</property>
-	</bean>
-
 	<bean id="org.hisp.dhis.user.action.GetUserAction" class="org.hisp.dhis.user.action.GetUserAction"
 		scope="prototype">
 		<property name="userStore">

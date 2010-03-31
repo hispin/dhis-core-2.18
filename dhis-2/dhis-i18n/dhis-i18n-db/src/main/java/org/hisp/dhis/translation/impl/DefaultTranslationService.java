@@ -102,4 +102,9 @@ public class DefaultTranslationService
     {
         return translationStore.getAvailableLocales();
     }
+
+    public Translation getTranslation( String className, Locale locale, String property, String value, int nonId )
+    {
+        return translationStore.getTranslation( className, locale, property, value, nonId );
+    }
 }

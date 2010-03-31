@@ -253,7 +253,6 @@
 <script type="text/javascript">
 
 	#if ( $message )
-		byId( "message" ).style.width = '$i18n.getString( "$message" )'.length + '$i18n.getString( "$name" )'.length;
 		setMessage( '$i18n.getString( "$message" )' + '<br/><br/>[<strong>' + '$i18n.getString( "$name" ) </strong>]' );
 	#end
 	

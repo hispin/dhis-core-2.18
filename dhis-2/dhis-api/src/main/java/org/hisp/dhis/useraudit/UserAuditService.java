@@ -32,12 +32,20 @@ package org.hisp.dhis.useraudit;
  */
 public interface UserAuditService
 {
-    final int TIMEFRAME_NUMBER_OF_HOURS = 1;
-    final int MAX_NUMBER_OF_ATTEMPTS = 3;
+    final int TIMEFRAME_MINUTES = 10; //TODO: through System Settings
+    final int MAX_NUMBER_OF_ATTEMPTS = 5; //TODO: through System Settings
     
     void registerLoginSuccess( String username );
     
     void registerLogout( String username );
     
     void registerLoginFailure( String username );
+
+    void resetLockoutTimeframe( String username );
+
+    int getLoginFailures( String username );
+
+    int getMaxAttempts();
+
+    int getLockoutTimeframe();
 }

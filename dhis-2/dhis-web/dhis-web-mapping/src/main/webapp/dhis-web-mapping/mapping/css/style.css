@@ -77,6 +77,9 @@
 .x-btn .icon-pdf {
 	background-image:url(../../../images/pdf.png);
 }
+.x-btn .icon-export-map {
+	background-image:url(../../../images/export.png);
+}
 .aa_dark button  {
 	font-family:lucida sans unicode,arial;
 	font-weight:normal;
