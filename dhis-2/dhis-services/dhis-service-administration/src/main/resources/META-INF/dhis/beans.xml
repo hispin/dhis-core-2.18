@@ -137,8 +137,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.useraudit.UserAuditService"
 	class="org.hisp.dhis.useraudit.DefaultUserAuditService">
-	<property name="userAuditStore"
-	  ref="org.hisp.dhis.useraudit.UserAuditStore"/>
+	<property name="userAuditStore" ref="org.hisp.dhis.useraudit.UserAuditStore"/>
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
 	
   <bean id="org.hisp.dhis.useraudit.UserAuditStore"

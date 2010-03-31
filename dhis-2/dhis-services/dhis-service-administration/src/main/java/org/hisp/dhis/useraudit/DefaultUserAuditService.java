@@ -32,16 +32,33 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 
 /**
  * @author Lars Helge Overland
+ *
+ * TODO: Cleanup code by MAX_NUMBER_OF_ATTEMPTS and TIMEFRAME_MINUTES loading
+ * in system setting with default values through startup routine
  */
 public class DefaultUserAuditService
     implements UserAuditService
 {
 
     private static final Log log = LogFactory.getLog( DefaultUserAuditService.class );
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
     private UserAuditStore userAuditStore;
 
@@ -74,17 +91,20 @@ public class DefaultUserAuditService
 
         int no = userAuditStore.getLoginFailures( username, getDate() );
 
+        int MAX_NUMBER_OF_ATTEMPTS = 5; //DEFAULT
+
+        if ( systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) != null )
+        {
+            MAX_NUMBER_OF_ATTEMPTS = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS );
+        } else
+        {
+            systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, 5 );
+        }
+
         if ( no >= MAX_NUMBER_OF_ATTEMPTS )
         {
             log.info( "Max number of login attempts exceeded: '" + username + "'" );
         }
-    }
-
-    private Date getDate()
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.add( Calendar.MINUTE, TIMEFRAME_MINUTES * -1 );
-        return cal.getTime();
     }
 
     @Transactional
@@ -98,12 +118,32 @@ public class DefaultUserAuditService
     @Override
     public int getMaxAttempts()
     {
+        int MAX_NUMBER_OF_ATTEMPTS = 5;
+
+        if ( systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) != null )
+        {
+            MAX_NUMBER_OF_ATTEMPTS = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS );
+        } else
+        {
+            systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, 5 );
+        }
+
         return MAX_NUMBER_OF_ATTEMPTS;
     }
 
     @Override
     public int getLockoutTimeframe()
     {
+        int TIMEFRAME_MINUTES = 10; //DEFAULT
+
+        if ( systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) != null )
+        {
+            TIMEFRAME_MINUTES = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES );
+        } else
+        {
+            systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, 10 );
+        }
+
         return TIMEFRAME_MINUTES;
     }
 
@@ -111,5 +151,22 @@ public class DefaultUserAuditService
     public void resetLockoutTimeframe( String username )
     {
         userAuditStore.resetLoginFailures( username, getDate() );
+    }
+
+    private Date getDate()
+    {
+        int TIMEFRAME_MINUTES = 10;
+
+        if ( systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) != null )
+        {
+            TIMEFRAME_MINUTES = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES );
+        } else
+        {
+            systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, 10 );
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.add( Calendar.MINUTE, TIMEFRAME_MINUTES * -1 );
+        return cal.getTime();
     }
 }

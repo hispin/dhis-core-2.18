@@ -28,6 +28,8 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
@@ -61,12 +63,25 @@ public class SetSystemSettingsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
     private String applicationTitle;
 
     public void setApplicationTitle( String applicationTitle )
     {
         this.applicationTitle = applicationTitle;
+    }
+
+    private int maxAttempts;
+
+    public void setMaxAttempts( int maxAttempts )
+    {
+        this.maxAttempts = maxAttempts;
+    }
+
+    private int lockoutTimeframe;
+
+    public void setLockoutTimeframe( int lockoutTimeframe )
+    {
+        this.lockoutTimeframe = lockoutTimeframe;
     }
 
     private String flag;
@@ -121,7 +136,6 @@ public class SetSystemSettingsAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
     public String execute()
     {
         if ( applicationTitle != null && applicationTitle.trim().length() == 0 )
@@ -140,6 +154,8 @@ public class SetSystemSettingsAction
         }
 
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
+        systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, maxAttempts );
+        systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, lockoutTimeframe );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         systemSettingManager.saveSystemSetting( KEY_REPORT_FRAMEWORK, reportFramework );
@@ -147,8 +163,7 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_FORUM_INTEGRATION, forumIntegration );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
             omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager
-            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
 
         return SUCCESS;
     }
