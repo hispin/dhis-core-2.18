@@ -36,6 +36,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAudit;
+import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -79,6 +81,14 @@ public class SaveValueAction
         this.dataValueService = dataValueService;
     }
 
+    private DataValueAuditService dataValueAuditService;
+
+    public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
+    {
+        this.dataValueAuditService = dataValueAuditService;
+    }
+    
+    
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -194,6 +204,12 @@ public class SaveValueAction
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );
+            
+            /*
+             * Add DataValueAudit
+             */
+            DataValueAudit audit = new DataValueAudit(dataValue, "", storedBy, new Date(), "");
+            dataValueAuditService.addDataValueAudit( audit );
         }
 
         if ( dataValue != null )
