@@ -28,6 +28,8 @@ package org.hisp.dhis.interceptor;
  */
 
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
@@ -81,6 +83,8 @@ public class SystemSettingInterceptor
         Map<String, Object> map = new HashMap<String, Object>( 2 );
         
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
+        map.put( KEY_MAX_NUMBER_OF_ATTEMPTS, systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) );
+        map.put( KEY_TIMEFRAME_MINUTES, systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) );
         map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
         map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE ) );
         map.put( KEY_REPORT_FRAMEWORK, systemSettingManager.getSystemSetting( KEY_REPORT_FRAMEWORK, Report.TYPE_DEFAULT ) );
