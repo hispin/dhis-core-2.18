@@ -152,7 +152,7 @@ function applyingPatternForShortName( shortNameValue )
 	return shortNameValue.match( regexShortName );
 }
 
-function validateAddTranslation()
+function checkingShortNameTranslation()
 {
 	var shortNameField = byId( 'shortName' );
 	var shortNameVal = shortNameField.value;
@@ -171,11 +171,56 @@ function validateAddTranslation()
 			shortNameField.select();
 			return false;
 		}
-		else
+	}
+}
+
+function validateAddTranslation()
+{
+	if ( checkingShortNameTranslation() == false )
+	{
+		return false;
+	}
+	else
+	{
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( validateAddDuplicatedTranslationCompleted );
+
+		var name = getFieldValue( 'name' );
+		var shortName = getFieldValue( 'shortName' );
+		
+		var params	=	'className=' + getFieldValue( 'className' );
+			params	+=	'&id=' + getFieldValue( 'id' );
+			params	+=	'&loc=' + getFieldValue( 'loc' );
+		
+		if ( name.length > 0 )
 		{
-			return true;
+			params	+=	'&name=' + name;
 		}
+		if ( shortName.length > 0 )
+		{
+			params	+=	'&shortName=' + shortName;
+		}
+
+		request.sendAsPost( params );
+		request.send( 'validateAddDuplicatedTranslation.action' );
 	}
 	
-	return true;
+	return false;
+}
+
+function validateAddDuplicatedTranslationCompleted( xmlObject )
+{
+	var type = xmlObject.getAttribute( 'type' );
+	
+	if ( type == 'input' )
+	{
+		byId("name").select();
+		setMessage( xmlObject.firstChild.nodeValue );
+	}
+	else if ( type == 'success' )
+	{
+		setMessage( xmlObject.firstChild.nodeValue );
+		byId( "translateForm" ).submit();
+	}
 }

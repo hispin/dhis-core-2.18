@@ -40,48 +40,76 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultUserAuditService
     implements UserAuditService
 {
+
     private static final Log log = LogFactory.getLog( DefaultUserAuditService.class );
-    
+
     private UserAuditStore userAuditStore;
-    
+
     public void setUserAuditStore( UserAuditStore userAuditStore )
     {
         this.userAuditStore = userAuditStore;
     }
 
+    @Override
     public void registerLoginSuccess( String username )
     {
-        log.info( "User login success: '" + username + "'" );        
+        log.info( "User login success: '" + username + "'" );
+
+        resetLockoutTimeframe( username );
     }
 
+    @Override
     public void registerLogout( String username )
     {
         log.info( "User logout: '" + username + "'" );
     }
 
     @Transactional
+    @Override
     public void registerLoginFailure( String username )
     {
         log.info( "User login failure: '" + username + "'" );
-        
+
         userAuditStore.saveLoginFailure( new LoginFailure( username, new Date() ) );
-        
+
         int no = userAuditStore.getLoginFailures( username, getDate() );
-        
+
         if ( no >= MAX_NUMBER_OF_ATTEMPTS )
         {
             log.info( "Max number of login attempts exceeded: '" + username + "'" );
-            
-            userAuditStore.deleteLoginFailures( username );
         }
     }
-    
+
     private Date getDate()
     {
-        Calendar cal = Calendar.getInstance();        
-        cal.clear();
-        cal.add( Calendar.HOUR, TIMEFRAME_NUMBER_OF_HOURS * -1 );
-        
+        Calendar cal = Calendar.getInstance();
+        cal.add( Calendar.MINUTE, TIMEFRAME_MINUTES * -1 );
         return cal.getTime();
+    }
+
+    @Transactional
+    @Override
+    public int getLoginFailures( String username )
+    {
+        int no = userAuditStore.getLoginFailures( username, getDate() );
+        return no;
+    }
+
+    @Override
+    public int getMaxAttempts()
+    {
+        return MAX_NUMBER_OF_ATTEMPTS;
+    }
+
+    @Override
+    public int getLockoutTimeframe()
+    {
+        return TIMEFRAME_MINUTES;
+    }
+
+    @Override
+    public void resetLockoutTimeframe( String username )
+    {
+        userAuditStore.resetLoginFailures( username, getDate() );
     }
 }

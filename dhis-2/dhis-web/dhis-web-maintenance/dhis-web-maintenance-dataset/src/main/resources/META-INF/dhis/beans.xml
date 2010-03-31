@@ -441,7 +441,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</property>  	
   </bean>
   
-  
   <bean id="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction"
     class="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction" 
     scope="prototype">

@@ -88,7 +88,7 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "property", property ) );
 
         criteria.setCacheable( true );
-        
+
         return (Translation) criteria.uniqueResult();
     }
 
@@ -104,7 +104,7 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
 
         criteria.setCacheable( true );
-        
+
         return criteria.list();
     }
 
@@ -119,7 +119,7 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
 
         criteria.setCacheable( true );
-        
+
         return criteria.list();
     }
 
@@ -131,7 +131,7 @@ public class HibernateTranslationStore
         Criteria criteria = session.createCriteria( Translation.class );
 
         criteria.setCacheable( true );
-        
+
         return criteria.list();
     }
 
@@ -178,5 +178,23 @@ public class HibernateTranslationStore
         }
 
         return locales;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Translation getTranslation( String className, Locale locale, String property, String value, int nonId )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Translation.class );
+
+        criteria.add( Restrictions.eq( "className", className ) );
+        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+        criteria.add( Restrictions.eq( "property", property ) );
+        criteria.add( Restrictions.ilike( "value", value.toLowerCase() ) );
+        criteria.add( Restrictions.ne( "id", nonId ) );
+
+        criteria.setCacheable( true );
+
+        return (Translation) criteria.uniqueResult();
     }
 }

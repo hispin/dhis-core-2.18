@@ -63,6 +63,19 @@ public interface TranslationStore
     Translation getTranslation( String className, int id, Locale locale, String property );
 
     /**
+     * Retrieved Collection of Translations
+     * 
+     * @param className className is the string of object's class name
+     * @param locale locale of translation object
+     * @param property property of the translation object
+     * @param nonId nonId is not the identify of translation object
+     * 
+     * @return a collection of translation objects
+     * 
+     */
+    Translation getTranslation( String className, Locale locale, String property, String value, int nonId );
+
+    /**
      * Retrieves a Collection of Translations.
      * 
      * @param className the class name.

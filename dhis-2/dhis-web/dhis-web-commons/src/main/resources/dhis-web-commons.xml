@@ -246,9 +246,13 @@
 		</action>
 
 		<action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">
-			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm
-			</result>
-			<result name="input" type="chain">i18n</result>
+			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm</result>
+		</action>
+		
+		<action name="validateAddDuplicatedTranslation" class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
+			<result name="success" type="velocity-xml">/dhis-web-commons/i18n/responseTranslationSuccess.vm</result>
+			<result name="input" type="velocity-xml">/dhis-web-commons/i18n/responseTranslationInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="getTranslations" class="org.hisp.dhis.i18n.action.GetTranslationsAction">
