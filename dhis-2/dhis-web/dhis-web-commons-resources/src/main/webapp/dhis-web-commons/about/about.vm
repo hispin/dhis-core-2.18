@@ -13,3 +13,5 @@
   <dt>$i18n.getString( "database_user" ):</dt><dd>$!info.user</dd>
   <dt>$i18n.getString( "java_opts" ):</dt><dd>$!javaOpts</dd>
 </dl>
+<br/>
+<div><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='help.action'" style="width:140px"/></div>

@@ -31,7 +31,14 @@ function validateForm()
 
 <p><textarea id="stackTrace" name="stackTrace" style="width:500px; height:150px"></textarea></p>
 
-<p><input type="button" value="$i18n.getString( 'send' )" onclick="validateForm()" style="width:140px"></p>
+<p>
+<table>
+<tr>
+<td><input type="button" value="$i18n.getString( 'send' )" onclick="validateForm()" style="width:140px"/></td>
+<td><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='help.action'" style="width:140px"/></td>
+</tr>
+</table>
+</p>
 
 </form>
 
