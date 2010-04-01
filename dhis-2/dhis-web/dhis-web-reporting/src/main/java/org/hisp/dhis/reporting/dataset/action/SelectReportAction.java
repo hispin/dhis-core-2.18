@@ -146,7 +146,7 @@ public class SelectReportAction
         throws Exception
     {  
     	dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-    	
+    	selectedStateManager.clearSelectedOrganisationUnits();
     	// ---------------------------------------------------------------------
         // Remove DataSets which don't have a CalendarPeriodType
         // ---------------------------------------------------------------------
