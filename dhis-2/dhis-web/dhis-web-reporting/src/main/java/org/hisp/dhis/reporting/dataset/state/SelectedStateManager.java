@@ -60,4 +60,6 @@ public interface SelectedStateManager
     void nextPeriodSpan();
 
     void previousPeriodSpan();
+    
+    void clearSelectedOrganisationUnits();
 }

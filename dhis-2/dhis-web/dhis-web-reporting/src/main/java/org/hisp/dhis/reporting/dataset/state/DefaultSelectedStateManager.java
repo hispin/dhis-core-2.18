@@ -288,5 +288,7 @@ public class DefaultSelectedStateManager
     {
         return ActionContext.getContext().getSession();
     }   
-  
+    public void clearSelectedOrganisationUnits(){
+        selectionTreeManager.clearSelectedOrganisationUnits();
+    }
 }
