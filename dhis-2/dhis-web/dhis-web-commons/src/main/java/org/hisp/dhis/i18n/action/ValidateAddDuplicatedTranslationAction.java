@@ -180,31 +180,35 @@ public class ValidateAddDuplicatedTranslationAction
 
                 if ( objMatch != null )
                 {
-                    message = i18n.getString( WARNING_MESSAGE + PROPERTY_NAME + "_with" ) + " <br/><br/> <center><strong>[ "
-                        + i18n.getString( "id" ) + ":: " + objMatch.getId() + " ]  -  [ " + i18n.getString( "name" )
-                        + ":: " + objMatch.getValue() + " ]</strong></center>";
+                    message = i18n.getString( WARNING_MESSAGE + PROPERTY_NAME + "_with" )
+                        + " <br/><br/> <center><strong>[ " + className + " ]  -  [ "
+                        + i18n.getString( "translation_label_id" ) + ":= " + objMatch.getId() + " ]  -  [ "
+                        + i18n.getString( "translation_label_name" ) + ":= " + objMatch.getValue()
+                        + " ]</strong></center>";
 
                     return INPUT;
                 }
             }
             else if ( propertyName.equalsIgnoreCase( PROPERTY_SHORTNAME ) )
             {
-                Translation objMatch = translationService.getTranslation( className, thisLocale, propertyName, name,
-                    Integer.parseInt( id ) );
+                Translation objMatch = translationService.getTranslation( className, thisLocale, propertyName,
+                    shortName, Integer.parseInt( id ) );
 
                 if ( objMatch != null )
                 {
-                    message = i18n.getString( WARNING_MESSAGE + PROPERTY_NAME + "_with" ) + " <br/><br/> <center><strong>[ "
-                        + i18n.getString( "id" ) + ":: " + objMatch.getId() + " ]  -  [ " + i18n.getString( "name" )
-                        + ":: " + objMatch.getValue() + " ]</strong></center>";
+                    message = i18n.getString( WARNING_MESSAGE + PROPERTY_SHORTNAME + "_with" )
+                        + " <br/><br/> <center><strong>[ " + className + " ]  -  [ "
+                        + i18n.getString( "translation_label_id" ) + ":= " + objMatch.getId() + " ]  -  [ "
+                        + i18n.getString( "translation_label_short_name" ) + ":= " + objMatch.getValue()
+                        + " ]</strong></center>";
 
                     return INPUT;
                 }
             }
         }
-        
+
         message = "OK";
-        
+
         return SUCCESS;
     }
 

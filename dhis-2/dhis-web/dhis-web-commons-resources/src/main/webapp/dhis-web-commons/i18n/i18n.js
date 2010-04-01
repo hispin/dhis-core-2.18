@@ -213,14 +213,14 @@ function validateAddDuplicatedTranslationCompleted( xmlObject )
 {
 	var type = xmlObject.getAttribute( 'type' );
 	
+	setMessage( xmlObject.firstChild.nodeValue );
+	
 	if ( type == 'input' )
 	{
 		byId("name").select();
-		setMessage( xmlObject.firstChild.nodeValue );
 	}
 	else if ( type == 'success' )
 	{
-		setMessage( xmlObject.firstChild.nodeValue );
 		byId( "translateForm" ).submit();
 	}
 }
