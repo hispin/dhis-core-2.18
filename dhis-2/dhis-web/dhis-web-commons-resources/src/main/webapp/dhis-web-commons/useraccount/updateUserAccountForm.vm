@@ -32,7 +32,7 @@
 <form id="updateUserinforForm" action="updateUserAccount.action" method="post" onsubmit='return false;'>
 	
   <div>
-	<input type="hidden" id="id" name="id" value="$userCredentials.id">
+	<input type="hidden" id="id" name="id" value="$userCredentials.id"/>
   </div>
 
 <table>
@@ -41,39 +41,40 @@
 	</tr>
 	<tr>
 		<td><label for="username">$i18n.getString( "user_name" )</label></td>
-		<td><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled" class="{validate:{required:true,firstletteralphabet:true,minlength:2,maxlength:50,alphanumeric:true}}"></td>
+		<td><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled" class="{validate:{required:true,firstletteralphabet:true,minlength:2,maxlength:50,alphanumeric:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "old_password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="password" id="oldPassword" name="oldPassword" style="width:20em" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,notequalto:'#username'}}"></td>
+		<td><input type="password" id="oldPassword" name="oldPassword" style="width:20em" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:50,notequalto:'#username'}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "new_password" )</label></td>
-		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" style="width:20em" class="{validate:{required:false,minlength:5,maxlength:50,notequalto:'#username'}}" ></td>
+		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" style="width:20em" class="{validate:{required:false,minlength:5,maxlength:50,notequalto:'#username'}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_new_password" )</label></td>
-		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em"  class="{validate:{required:false,minlength:5,maxlength:50,equalTo:'#rawPassword'}}"></td>
+		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em" class="{validate:{required:false,minlength:5,maxlength:50,equalTo:'#rawPassword'}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"></td>
+		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em"></td>
+		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em"/></td>
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em"></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em"/></td>
     </tr>
 	<tr>
 		<td></td>
-		<td valign="top"><input type="submit" value="$i18n.getString( "save" )" style="width:10em"></td>
+		<td valign="top"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>&nbsp;
+		<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='help.action'" style="width:10em"/></td>
 	</tr>
 </table>
 
