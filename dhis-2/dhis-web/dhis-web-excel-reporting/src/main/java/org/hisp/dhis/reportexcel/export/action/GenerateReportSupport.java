@@ -294,8 +294,6 @@ public abstract class GenerateReportSupport
     // Excel format
     // ------------------------------------------
 
-    protected HSSFHeader header;
-
     protected DataFormat dFormat;
 
     protected Font csFont;
@@ -305,8 +303,6 @@ public abstract class GenerateReportSupport
     protected Font csFont10Bold;
 
     protected Font csFont12BoldCenter;
-
-    protected CellStyle csHeader;
 
     protected CellStyle csNumber;
 
@@ -330,13 +326,11 @@ public abstract class GenerateReportSupport
         throws Exception
     {
         sheetPOI = templateWorkbook.getSheetAt( 0 );
-        header = (HSSFHeader) sheetPOI.getHeader();
         csFont = templateWorkbook.createFont();
         csFont10Bold = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
         csFont12BoldCenter = templateWorkbook.createFont();
         dFormat = templateWorkbook.createDataFormat();
-        csHeader = templateWorkbook.createCellStyle();
         csNumber = templateWorkbook.createCellStyle();
         csFormula = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
@@ -356,7 +350,6 @@ public abstract class GenerateReportSupport
     protected void installDefaultExcelFormat()
         throws Exception
     {
-        initPOIStylesManager.initDefaultHeader( header );
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
 
