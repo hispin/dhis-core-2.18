@@ -27,6 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -34,6 +35,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAudit;
+import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
 import org.hisp.dhis.de.history.DataElementHistory;
@@ -99,6 +102,13 @@ public class HistoryAction
         this.standardCommentsManager = standardCommentsManager;
     }
 
+    private DataValueAuditService dataValueAuditService;
+
+    public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
+    {
+        this.dataValueAuditService = dataValueAuditService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -161,6 +171,13 @@ public class HistoryAction
         return standardComments;
     }
 
+    private Collection<DataValueAudit> dataValueAudits;
+    
+    public Collection<DataValueAudit> getDataValueAudits()
+    {
+        return dataValueAudits;
+    }
+   
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -200,6 +217,12 @@ public class HistoryAction
         {
             isHistoryValid = false;
         }
+
+        /*
+         * Data Value Audit
+         */
+        
+        dataValueAudits = dataValueAuditService.getDataValueAuditByDataValue( dataValue );
 
         return SUCCESS;
     }

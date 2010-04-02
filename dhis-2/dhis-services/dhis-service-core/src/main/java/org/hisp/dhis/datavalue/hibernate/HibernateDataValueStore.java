@@ -42,6 +42,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAuditStore;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
@@ -49,7 +50,8 @@ import org.hisp.dhis.source.Source;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: HibernateDataValueStore.java 5715 2008-09-17 14:05:28Z larshelg $
+ * @version $Id: HibernateDataValueStore.java 5715 2008-09-17 14:05:28Z larshelg
+ *          $
  */
 public class HibernateDataValueStore
     implements DataValueStore
@@ -78,7 +80,14 @@ public class HibernateDataValueStore
     {
         this.periodStore = periodStore;
     }
-    
+
+    private DataValueAuditStore dataValueAuditStore;
+
+    public void setDataValueAuditStore( DataValueAuditStore dataValueAuditStore )
+    {
+        this.dataValueAuditStore = dataValueAuditStore;
+    }
+
     // -------------------------------------------------------------------------
     // Support methods for reloading periods
     // -------------------------------------------------------------------------
@@ -134,31 +143,40 @@ public class HibernateDataValueStore
     public void deleteDataValue( DataValue dataValue )
     {
         Session session = sessionFactory.getCurrentSession();
-
+        session.beginTransaction();
+        dataValueAuditStore.deleteDataValuesByDataValue( dataValue );
         session.delete( dataValue );
     }
 
     public int deleteDataValuesBySource( Source source )
     {
         Session session = sessionFactory.getCurrentSession();
-
+        session.beginTransaction();
+        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.source = :source" );
+        queryAudit.setEntity( "source", source );
+        queryAudit.executeUpdate();
+        
         Query query = session.createQuery( "delete DataValue where source = :source" );
         query.setEntity( "source", source );
-
         return query.executeUpdate();
     }
 
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
-
+        session.beginTransaction();
+        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.dataElement = :dataElement" );
+        queryAudit.setEntity( "dataElement", dataElement );
+        queryAudit.executeUpdate();
+        
         Query query = session.createQuery( "delete DataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
 
-        return query.executeUpdate();    
+        return query.executeUpdate();
     }
 
-    public DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo )
+    public DataValue getDataValue( Source source, DataElement dataElement, Period period,
+        DataElementCategoryOptionCombo optionCombo )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -177,20 +195,16 @@ public class HibernateDataValueStore
 
         return (DataValue) criteria.uniqueResult();
     }
-    
+
     public String getValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId )
     {
-        final String sql = 
-            "SELECT value " + 
-            "FROM datavalue " + 
-            "WHERE dataelementid='" + dataElementId + "' " +
-            "AND periodid='" + periodId + "' " +
-            "AND sourceid='" + sourceId + "' " + 
-            "AND categoryoptioncomboid='" + categoryOptionComboId + "'";
-        
+        final String sql = "SELECT value " + "FROM datavalue " + "WHERE dataelementid='" + dataElementId + "' "
+            + "AND periodid='" + periodId + "' " + "AND sourceid='" + sourceId + "' " + "AND categoryoptioncomboid='"
+            + categoryOptionComboId + "'";
+
         return statementManager.getHolder().queryForString( sql );
     }
-    
+
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------
@@ -269,7 +283,8 @@ public class HibernateDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> optionCombos  )
+    public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements,
+        Collection<DataElementCategoryOptionCombo> optionCombos )
     {
         Period storedPeriod = reloadPeriod( period );
 
@@ -290,7 +305,8 @@ public class HibernateDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataValue> getDataValues( DataElement dataElement, Period period, Collection<? extends Source> sources )
+    public Collection<DataValue> getDataValues( DataElement dataElement, Period period,
+        Collection<? extends Source> sources )
     {
         Period storedPeriod = reloadPeriod( period );
 
@@ -336,7 +352,7 @@ public class HibernateDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
+    public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         Collection<Period> periods, Collection<? extends Source> sources )
     {
         Collection<Period> storedPeriods = new ArrayList<Period>();
@@ -396,7 +412,7 @@ public class HibernateDataValueStore
             criteria.addOrder( Order.asc( "dataElement" ) );
             criteria.addOrder( Order.asc( "period" ) );
             criteria.addOrder( Order.asc( "source" ) );
-    
+
             criteria.setFirstResult( firstResult );
             criteria.setMaxResults( maxResults );
         }
@@ -409,7 +425,7 @@ public class HibernateDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( DataValue.class );        
+        Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.in( "optionCombo", optionCombos ) );
 
         return criteria.list();
@@ -420,7 +436,7 @@ public class HibernateDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( DataValue.class );        
+        Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 
         return criteria.list();

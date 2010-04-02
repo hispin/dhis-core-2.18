@@ -198,7 +198,9 @@ public class SaveValueAction
         else
         {
             LOG.debug( "Updating DataValue, value added/changed" );
-
+            
+            DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), storedBy, new Date(), value);
+            
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );
@@ -208,8 +210,10 @@ public class SaveValueAction
             /*
              * Add DataValueAudit
              */
-            DataValueAudit audit = new DataValueAudit(dataValue, "", storedBy, new Date(), "");
-            dataValueAuditService.addDataValueAudit( audit );
+            if ( value != null )
+            {
+                dataValueAuditService.addDataValueAudit( audit );
+            }
         }
 
         if ( dataValue != null )
