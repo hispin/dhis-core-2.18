@@ -25,60 +25,77 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.hisp.dhis.mobile;
+
 
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 
-public class Compressor {
+public class Compressor
+{
 
     /* Tailored to int as 32bit signed */
     private final static int FIRST_QUARTER = 0x200000;
+
     private final static int THIRD_QUARTER = 0x600000;
+
     private final static int HALF = 0x400000;
+
     private final static int HIGH = 0x7fffff;
+
     private final static int INITIAL_READ = 23;
 
-    public static byte[] compress(byte[] in) {
+    public static byte[] compress( byte[] in )
+    {
 
-        class BitOutputBuffer {
+        class BitOutputBuffer
+        {
 
             ByteArrayOutputStream buf;
+
             byte[] currentByte;
+
             byte currentBit;
 
-            BitOutputBuffer() {
+            BitOutputBuffer()
+            {
                 buf = new ByteArrayOutputStream();
                 currentByte = new byte[1];
                 currentByte[0] = 0;
                 currentBit = 0;
             }
 
-            void writeBit(byte bit) throws IOException {
-                currentByte[0] = (byte) ((currentByte[0]) << 1);
+            void writeBit( byte bit ) throws IOException
+            {
+                currentByte[0] = (byte) ( ( currentByte[0] ) << 1 );
                 currentByte[0] += bit;
                 currentBit += 1;
-                if (currentBit == 8) {
-                    buf.write(currentByte);
+                if ( currentBit == 8 )
+                {
+                    buf.write( currentByte );
                     currentByte[0] = 0;
                     currentBit = 0;
                 }
             }
 
-            void flush() throws IOException {
+            void flush() throws IOException
+            {
                 /* Pad the buffer with zeros */
-                while (currentBit != 0) {
-                    writeBit((byte) 0);
+                while ( currentBit != 0 )
+                {
+                    writeBit( (byte) 0 );
                 }
                 buf.flush();
             }
 
-            byte[] toByteArray() {
-                try {
+            byte[] toByteArray()
+            {
+                try
+                {
                     buf.flush();
                     return buf.toByteArray();
-                } catch (IOException e) {
+                } catch ( IOException e )
+                {
                     return null;
                 }
             }
@@ -93,61 +110,76 @@ public class Compressor {
 
         /* Initialize frequency table */
         int[] freq = new int[257];
-        for (int i = 0; i < 257; i++) {
+        for ( int i = 0; i < 257; i++ )
+        {
             freq[i] = 1;
         }
         total = 257;
 
-        try {
+        try
+        {
 
-            for (int i = 0; i < in.length + 1; i++) {
+            for ( int i = 0; i < in.length + 1; i++ )
+            {
 
-                if (i == in.length) {
+                if ( i == in.length )
+                {
                     /* Encode terminator if necessary */
                     low = total - 1;
                     high = total;
-                } else {
+                } else
+                {
                     /* Otherwise retrieve cumulative freq */
                     current = in[i] & 0xff; // Get unsigned value
                     low = 0;
-                    for (int j = 0; j < current; j++) {
+                    for ( int j = 0; j < current; j++ )
+                    {
                         low += freq[j];
                     }
                     high = low + freq[current];
                 }
 
                 /* 2. Update the coder */
-                mStep = (mHigh - mLow + 1) / total;
-                mHigh = (mLow + mStep * high) - 1;
+                mStep = ( mHigh - mLow + 1 ) / total;
+                mHigh = ( mLow + mStep * high ) - 1;
                 mLow = mLow + mStep * low;
 
                 /* Renormalize if possible */
-                while ((mHigh < HALF) || (mLow >= HALF)) {
-                    if (mHigh < HALF) {
-                        bitBuf.writeBit((byte) 0);
+                while ( ( mHigh < HALF ) || ( mLow >= HALF ) )
+                {
+                    if ( mHigh < HALF )
+                    {
+                        bitBuf.writeBit( (byte) 0 );
                         mLow = mLow * 2;
                         mHigh = mHigh * 2 + 1;
 
                         /* Perform e3 mappings */
-                        for (; mScale > 0; mScale--) {
-                            bitBuf.writeBit((byte) 1);
+                        for ( ; mScale > 0; mScale-- )
+                        {
+                            bitBuf.writeBit( (byte) 1 );
                         }
-                    } else if (mLow >= HALF) {
-                        bitBuf.writeBit((byte) 1);
-                        mLow = (mLow - HALF) * 2;
-                        mHigh = (mHigh - HALF) * 2 + 1;
+                    } else
+                    {
+                        if ( mLow >= HALF )
+                        {
+                            bitBuf.writeBit( (byte) 1 );
+                            mLow = ( mLow - HALF ) * 2;
+                            mHigh = ( mHigh - HALF ) * 2 + 1;
 
-                        /* Perform e3 mappings */
-                        for (; mScale > 0; mScale--) {
-                            bitBuf.writeBit((byte) 0);
+                            /* Perform e3 mappings */
+                            for ( ; mScale > 0; mScale-- )
+                            {
+                                bitBuf.writeBit( (byte) 0 );
+                            }
                         }
                     }
                 }
 
-                while ((FIRST_QUARTER <= mLow) && (mHigh < THIRD_QUARTER)) {
+                while ( ( FIRST_QUARTER <= mLow ) && ( mHigh < THIRD_QUARTER ) )
+                {
                     mScale++;
-                    mLow = (mLow - FIRST_QUARTER) * 2;
-                    mHigh = (mHigh - FIRST_QUARTER) * 2 + 1;
+                    mLow = ( mLow - FIRST_QUARTER ) * 2;
+                    mHigh = ( mHigh - FIRST_QUARTER ) * 2 + 1;
                 }
 
                 /* 3. Update model */
@@ -156,45 +188,58 @@ public class Compressor {
 
             }
             /* Finish encoding */
-            if (mLow < FIRST_QUARTER) {
+            if ( mLow < FIRST_QUARTER )
+            {
                 /* Case: mLow < FirstQuarter < Half <= mHigh */
-                bitBuf.writeBit((byte) 0);
+                bitBuf.writeBit( (byte) 0 );
                 /* Perform e3-scaling */
-                for (int i = 0; i < mScale + 1; i++) {
-                    bitBuf.writeBit((byte) 1);
+                for ( int i = 0; i < mScale + 1; i++ )
+                {
+                    bitBuf.writeBit( (byte) 1 );
                 }
-            } else {
+            } else
+            {
                 /* Case: mLow < Half < ThirdQuarter <= mHigh */
-                bitBuf.writeBit((byte) 1);
+                bitBuf.writeBit( (byte) 1 );
             }
             bitBuf.flush();
-        } catch (IOException e) {
+        } catch ( IOException e )
+        {
             return null;
         }
         return bitBuf.toByteArray();
     }
 
-    public static byte[] decompress(byte[] in) {
+    public static byte[] decompress( byte[] in )
+    {
 
-        class BitInputBuffer {
+        class BitInputBuffer
+        {
 
             byte[] source;
+
             int bytep = 0, bitp = 0;
+
             byte currentByte = 0;
 
-            BitInputBuffer(byte[] source) {
+            BitInputBuffer( byte[] source )
+            {
                 this.source = source;
                 currentByte = source[0];// & 0xff;
             }
 
-            int readBit() {
-                int result = (currentByte >> 7) & 1;
-                currentByte = (byte) (currentByte << 1);
-                if (bitp++ == 7) {
+            int readBit()
+            {
+                int result = ( currentByte >> 7 ) & 1;
+                currentByte = (byte) ( currentByte << 1 );
+                if ( bitp++ == 7 )
+                {
                     bytep++;
-                    if (bytep > source.length - 1) {
+                    if ( bytep > source.length - 1 )
+                    {
                         currentByte = 0;
-                    } else {
+                    } else
+                    {
                         currentByte = source[bytep];
                         bitp = 0;
                     }
@@ -207,7 +252,8 @@ public class Compressor {
         /* Initialise frequency table */
 
         int[] freq = new int[257];
-        for (int i = 0; i < 257; i++) {
+        for ( int i = 0; i < 257; i++ )
+        {
             freq[i] = 1;
         }
         int total = 257;
@@ -215,28 +261,32 @@ public class Compressor {
         int value;
         int low = 0, high = HIGH;
         int mLow = low, mHigh = high, mStep = 0, mScale = 0, mBuffer = 0;
-        BitInputBuffer inbuf = new BitInputBuffer(in);
+        BitInputBuffer inbuf = new BitInputBuffer( in );
         /*	Fill buffer with bits from the input stream */
 
-        for (int i = 0; i < INITIAL_READ; i++) {
+        for ( int i = 0; i < INITIAL_READ; i++ )
+        {
             mBuffer = 2 * mBuffer;
             mBuffer += inbuf.readBit();
         }
 
-        while (true) {
+        while ( true )
+        {
             /* 1. Retrieve current byte */
-            mStep = (mHigh - mLow + 1) / total;
-            value = (mBuffer - mLow) / mStep;
+            mStep = ( mHigh - mLow + 1 ) / total;
+            value = ( mBuffer - mLow ) / mStep;
             low = 0;
-            for (current = 0; current < 256 && low + freq[current] <= value; current++) {
+            for ( current = 0; current < 256 && low + freq[current] <= value; current++ )
+            {
                 low += freq[current];
             }
 
-            if (current == 256) {
+            if ( current == 256 )
+            {
                 break;
             }
 
-            buf.write(current);
+            buf.write( current );
             high = low + freq[current];
 
             /* 2. Update the decoder */
@@ -246,15 +296,21 @@ public class Compressor {
             mLow = mLow + mStep * low;
 
             /* e1/e2 mapping */
-            while ((mHigh < HALF) || (mLow >= HALF)) {
-                if (mHigh < HALF) {
+            while ( ( mHigh < HALF ) || ( mLow >= HALF ) )
+            {
+                if ( mHigh < HALF )
+                {
                     mLow = mLow * 2;
-                    mHigh = ((mHigh * 2) + 1);
-                    mBuffer = (2 * mBuffer);
-                } else if (mLow >= HALF) {
-                    mLow = 2 * (mLow - HALF);
-                    mHigh = 2 * (mHigh - HALF) + 1;
-                    mBuffer = 2 * (mBuffer - HALF);
+                    mHigh = ( ( mHigh * 2 ) + 1 );
+                    mBuffer = ( 2 * mBuffer );
+                } else
+                {
+                    if ( mLow >= HALF )
+                    {
+                        mLow = 2 * ( mLow - HALF );
+                        mHigh = 2 * ( mHigh - HALF ) + 1;
+                        mBuffer = 2 * ( mBuffer - HALF );
+                    }
                 }
 
                 mBuffer += inbuf.readBit();
@@ -262,11 +318,12 @@ public class Compressor {
             }
 
             /* e3 mapping */
-            while ((FIRST_QUARTER <= mLow) && (mHigh < THIRD_QUARTER)) {
+            while ( ( FIRST_QUARTER <= mLow ) && ( mHigh < THIRD_QUARTER ) )
+            {
                 mScale++;
-                mLow = 2 * (mLow - FIRST_QUARTER);
-                mHigh = 2 * (mHigh - FIRST_QUARTER) + 1;
-                mBuffer = 2 * (mBuffer - FIRST_QUARTER);
+                mLow = 2 * ( mLow - FIRST_QUARTER );
+                mHigh = 2 * ( mHigh - FIRST_QUARTER ) + 1;
+                mBuffer = 2 * ( mBuffer - FIRST_QUARTER );
                 mBuffer += inbuf.readBit();
             }
 
@@ -278,4 +335,3 @@ public class Compressor {
         return buf.toByteArray();
     }
 }
-
