@@ -61,11 +61,11 @@ public class DefaultInitializePOIStylesManager
 
     private static final short STYLE_DEFAULT_BORDER = CellStyle.BORDER_THIN;
 
-    private static final short STYLE_DEFAULT_FONT_COLOR = IndexedColors.DARK_YELLOW.getIndex();
+    private static final short STYLE_DEFAULT_FONT_COLOR = IndexedColors.BROWN.getIndex();
 
     private static final short STYLE_DEFAULT_BACK_FORE_GROUND_COLOR = IndexedColors.WHITE.getIndex();
 
-    private static final short STYLE_DEFAULT_BORDER_COLOR = IndexedColors.LIGHT_ORANGE.getIndex();
+    private static final short STYLE_DEFAULT_BORDER_COLOR = IndexedColors.DARK_BLUE.getIndex();
 
     /***************************************************************************
      * Default Methods - Using for XLS Extension
@@ -74,11 +74,10 @@ public class DefaultInitializePOIStylesManager
     @SuppressWarnings( "static-access" )
     public void initDefaultHeader( HSSFHeader test_header )
     {
-
         test_header.setCenter( this.STYLE_DEFAULT_TITLE_CENTER );
         test_header.setLeft( this.STYLE_DEFAULT_TITLE_LEFT );
         test_header.setRight( this.STYLE_DEFAULT_TITLE_RIGHT );
-
+        
     }
 
     @SuppressWarnings( "static-access" )
@@ -88,6 +87,7 @@ public class DefaultInitializePOIStylesManager
         test_font.setFontHeightInPoints( this.STYLE_DEFAULT_FONT_HEIGHT );
         test_font.setBoldweight( this.STYLE_DEFAULT_FONT_WEIGHT );
         test_font.setColor( this.STYLE_DEFAULT_FONT_COLOR );
+        
     }
 
     @SuppressWarnings( "static-access" )
