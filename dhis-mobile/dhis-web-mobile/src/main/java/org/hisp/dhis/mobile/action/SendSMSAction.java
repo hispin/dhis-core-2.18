@@ -28,13 +28,74 @@ package org.hisp.dhis.mobile.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.mobile.SmsService;
 
 public class SendSMSAction implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    SmsService smsService;
+
+    public void setSmsService( SmsService smsService )
+    {
+        this.smsService = smsService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+    boolean smsServiceStatus;
+
+    public boolean getSmsServiceStatus()
+    {
+        smsServiceStatus = smsService.getServiceStatus();
+        return smsServiceStatus;
+    }
+
+    String statAction;
+
+    public void setStatAction( String statAction )
+    {
+        if ( statAction.equalsIgnoreCase( "Start" ) )
+        {
+            smsService.startService();
+        } else
+        {
+            smsService.stopService();
+        }
+    }
+
+    String recipient;
+
+    public void setRecipient( String recipient )
+    {
+        this.recipient = recipient;
+    }
+
+    String msg;
+
+    public void setMsg( String msg )
+    {
+        this.msg = msg;
+    }
+
+    String send;
+
+    public void setSend( String send )
+    {
+        this.send = send;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
+        if ( this.send != null )
+        {
+            smsService.sendMessage( recipient, msg );
+        } 
         return SUCCESS;
     }
 }

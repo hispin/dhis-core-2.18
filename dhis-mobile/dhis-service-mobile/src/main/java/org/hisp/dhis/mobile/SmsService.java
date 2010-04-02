@@ -35,8 +35,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hisp.dhis.messaging.api.MessageService;
 import org.hisp.dhis.mobile.api.DefaultMobileImportService;
 import org.hisp.dhis.user.User;
@@ -49,7 +47,6 @@ import org.smslib.InboundBinaryMessage;
 import org.smslib.InboundMessage;
 import org.smslib.Message.MessageTypes;
 import org.smslib.OutboundMessage;
-import org.smslib.SMSLibException;
 import org.smslib.Service;
 import org.smslib.TimeoutException;
 import org.smslib.modem.SerialModemGateway;
@@ -57,7 +54,7 @@ import org.smslib.modem.SerialModemGateway;
 public class SmsService implements MessageService
 {
 
-    private final static String CONFIG_FILE = "C:\\SMSServer.conf";
+    private static String CONFIG_FILE = "SMSServer.conf";
 
     private static Service serv;
 
@@ -100,15 +97,10 @@ public class SmsService implements MessageService
         {
             try
             {
+                loadConfiguration();
                 serv.startService();
                 setServiceStatus( true );
-            } catch ( SMSLibException ex )
-            {
-                ex.printStackTrace();
-            } catch ( IOException ex )
-            {
-                ex.printStackTrace();
-            } catch ( InterruptedException ex )
+            } catch ( Exception ex )
             {
                 ex.printStackTrace();
             }
@@ -124,13 +116,7 @@ public class SmsService implements MessageService
             {
                 serv.stopService();
                 setServiceStatus( false );
-            } catch ( SMSLibException ex )
-            {
-                ex.printStackTrace();
-            } catch ( IOException ex )
-            {
-                ex.printStackTrace();
-            } catch ( InterruptedException ex )
+            } catch ( Exception ex )
             {
                 ex.printStackTrace();
             }
@@ -217,6 +203,7 @@ public class SmsService implements MessageService
     //<editor-fold defaultstate="collapsed" desc=" Load Configuration from DHIS2 HOME ">
     private void loadConfiguration() throws Exception
     {
+        CONFIG_FILE = System.getenv( "DHIS2_HOME" ) + "/SMSServer.conf";
         FileInputStream f = new FileInputStream( CONFIG_FILE );
         this.props = new Properties();
         getProperties().load( f );
