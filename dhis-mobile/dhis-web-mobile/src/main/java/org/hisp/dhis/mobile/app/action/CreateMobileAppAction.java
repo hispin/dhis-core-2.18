@@ -168,6 +168,8 @@ public class CreateMobileAppAction implements Action {
     @Override
     public String execute()
             throws Exception {
+        //SMSService service = new SMSService();
+        //service.testSMSService();
         return SUCCESS;
     }
 }
