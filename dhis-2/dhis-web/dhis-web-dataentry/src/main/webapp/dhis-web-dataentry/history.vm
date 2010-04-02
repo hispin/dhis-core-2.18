@@ -93,6 +93,21 @@
 			    categoryOptionComboId=${dataElementHistory.optionCombo.id}">			
         </td>
     </tr>
+	<tr>
+		<!-- Data Value History -->
+		<td colspan="2">
+			<h4>$encoder.htmlEncode( $i18n.getString( "datavalue_history" ) )</h4>
+			#foreach( $eachDataValueAudit in $dataValueAudits )
+				<p>
+					$encoder.htmlEncode( $i18n.getString( "on" ) ) $eachDataValueAudit.timeStamp, 
+					$eachDataValueAudit.storedBy 
+					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value 
+					$encoder.htmlEncode( $i18n.getString( "to" ) ) $eachDataValueAudit.comment.
+				</p>
+			#end					
+        </td>
+    </tr>
+
 </table>
 
 <p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" onclick="window.opener.location.reload();window.close()"></p>

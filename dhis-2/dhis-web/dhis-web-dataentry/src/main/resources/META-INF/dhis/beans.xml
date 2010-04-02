@@ -259,6 +259,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="standardCommentsManager"
 			ref="org.hisp.dhis.de.comments.StandardCommentsManager" />
+		<property name="dataValueAuditService" ref="org.hisp.dhis.datavalue.DataValueAuditService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.MinMaxGeneratingAction" class="org.hisp.dhis.de.action.MinMaxGeneratingAction"
