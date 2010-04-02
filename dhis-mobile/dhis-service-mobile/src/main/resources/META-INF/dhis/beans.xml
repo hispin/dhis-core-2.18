@@ -7,6 +7,6 @@
 
     <!-- Service definitions -->
     <bean id="org.hisp.dhis.mobile.SmsService"
-          class="org.hisp.dhis.mobile.SmsService" scope="singleton">
+          class="org.hisp.dhis.mobile.SmsService">
     </bean>
 </beans>
