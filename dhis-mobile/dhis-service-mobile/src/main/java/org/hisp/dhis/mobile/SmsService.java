@@ -58,6 +58,8 @@ public class SmsService implements MessageService
 
     private static Service serv;
 
+    private static boolean gatewayLoaded;
+
     private boolean serviceStatus;
 
     private Properties props;
@@ -145,6 +147,9 @@ public class SmsService implements MessageService
             {
                 getService().getLogger().logError( "Interrupted Exception in sending message", ex, null );
             }
+        } else
+        {
+            getService().getLogger().logError( "Service not running", null, null );
         }
     }
 
@@ -298,8 +303,10 @@ public class SmsService implements MessageService
                 {
                     gateway.setOutbound( false );
                 }
-
-                getService().addGateway( gateway );
+                if ( !gatewayLoaded )
+                {
+                    getService().addGateway( gateway );
+                }
                 getService().getLogger().logInfo( "SMSServer: added gateway " + i + " / ", null, null );
             } catch ( Exception e )
             {
@@ -307,6 +314,7 @@ public class SmsService implements MessageService
                 e.printStackTrace();
             }
         }
+        gatewayLoaded = true;
         //</editor-fold>
     }
     //</editor-fold>
