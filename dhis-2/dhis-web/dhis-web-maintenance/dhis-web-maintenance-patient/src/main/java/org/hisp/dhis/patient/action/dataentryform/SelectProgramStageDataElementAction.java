@@ -43,79 +43,81 @@ import com.opensymphony.xwork2.Action;
  * @author Viet Nguyen
  * @version $Id$
  */
-public class SelectProgramStageDataElementAction implements Action {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public class SelectProgramStageDataElementAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private ProgramStageService programStageService;
+    private ProgramStageService programStageService;
 
-	public void setProgramStageService(ProgramStageService programStageService) {
-		this.programStageService = programStageService;
-	}
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
 
-	// -------------------------------------------------------------------------
-	// Getters & Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Getters & Setters
+    // -------------------------------------------------------------------------
 
-	private int programStageId;
+    private int programStageId;
 
-	public void setProgramStageId(int programStageId) {
-		this.programStageId = programStageId;
-	}
+    public void setProgramStageId( int programStageId )
+    {
+        this.programStageId = programStageId;
+    }
 
-	private boolean typeTextOnly;
+    private List<ProgramStage> programStages;
 
-	public void setTypeTextOnly(boolean typeTextOnly) {
-		this.typeTextOnly = typeTextOnly;
-	}
+    public List<ProgramStage> getProgramStages()
+    {
+        return programStages;
+    }
 
-	private List<ProgramStage> programStages;
+    private ProgramStage programStage;
 
-	public List<ProgramStage> getProgramStages() {
-		return programStages;
-	}
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
+    }
 
-	private ProgramStage programStage;
+    public String getAssociationName()
+    {
+        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
+    }
 
-	public ProgramStage getProgramStage() {
-		return programStage;
-	}
+    // -------------------------------------------------------------------------
+    // Execute
+    // -------------------------------------------------------------------------
 
-	public String getAssociationName() {
-		return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
-	}
+    public String execute()
+        throws Exception
+    {
+        programStage = programStageService.getProgramStage( programStageId );
 
-	// -------------------------------------------------------------------------
-	// Execute
-	// -------------------------------------------------------------------------
+        if ( programStage != null )
+        {
 
-	public String execute() throws Exception 
-	{
-		programStage = programStageService.getProgramStage( programStageId );
+            Program program = programStage.getProgram();
 
-		if ( programStage != null ) 
-		{
+            if ( program != null )
+            {
 
-			Program program = programStage.getProgram();
+                programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+                for ( ProgramStage ps : programStages )
+                {
+                    if ( ps.equals( programStage ) )
+                    {
+                        programStages.remove( ps );
+                        break;
+                    }
+                }
 
-			if ( program != null ) {
-
-				programStages = new ArrayList( program.getProgramStages() );
-				for ( ProgramStage ps : programStages ) 
-				{
-					if ( ps.equals( programStage ) )
-					{
-						programStages.remove( ps );
-						break;
-					}
-				}
-
-				Collections.sort( programStages, new ProgramStageNameComparator() );
-
-			}
-
-		}
-		return SUCCESS;
-	}
+                Collections.sort( programStages, new ProgramStageNameComparator() );
+            }
+        }
+        
+        return SUCCESS;
+    }
 }

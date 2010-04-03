@@ -103,8 +103,6 @@ public class GetProgramListAction
         this.programs = programs;
     }
 
-    private String associationName;
-
     public String getAssociationName()
     {
         return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
@@ -127,7 +125,6 @@ public class GetProgramListAction
             Program program = programService.getProgram( id );
 
             associations = program.getProgramStages();
-
         }
 
         return SUCCESS;

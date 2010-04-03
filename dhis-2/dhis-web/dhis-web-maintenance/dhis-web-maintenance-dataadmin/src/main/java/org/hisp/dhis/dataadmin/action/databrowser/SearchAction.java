@@ -589,8 +589,6 @@ public class SearchAction
      * @param toDate
      * @return List of Periods
      */
-
-    @SuppressWarnings( "unused" )
     private List<Period> getPeriodsList( PeriodType periodType, String fromDate, String toDate )
     {
         String formatString = "yyyy-MM-dd";
@@ -629,8 +627,7 @@ public class SearchAction
         String stringFormatDate = "";
         List<Period> periods = new ArrayList( this.getPeriodsList( periodType, fromDate, toDate ) );
 
-        for ( @SuppressWarnings( "unused" )
-        Period period : periods )
+        for ( Period period : periods )
         {
             String sTemp = format.formatPeriod( period );
             

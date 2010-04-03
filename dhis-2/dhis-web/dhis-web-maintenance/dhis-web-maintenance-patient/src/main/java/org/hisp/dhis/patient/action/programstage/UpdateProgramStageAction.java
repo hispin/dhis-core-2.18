@@ -136,7 +136,7 @@ public class UpdateProgramStageAction
         
         programStageService.updateProgramStage( programStage );
         
-        Set<ProgramStageDataElement> programStageDataElements = new HashSet(programStage.getProgramStageDataElements()); 
+        Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>(programStage.getProgramStageDataElements()); 
         
         if( StringUtils.isNotBlank( selectedList ) )
         {

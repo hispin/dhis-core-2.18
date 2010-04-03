@@ -27,7 +27,6 @@
 package org.hisp.dhis.patient.action.patientattribute;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;

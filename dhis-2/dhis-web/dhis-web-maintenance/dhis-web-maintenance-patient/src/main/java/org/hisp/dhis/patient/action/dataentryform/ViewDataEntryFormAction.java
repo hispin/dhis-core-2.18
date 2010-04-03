@@ -38,7 +38,6 @@ import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.patient.screen.DataEntryManager;
-import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 

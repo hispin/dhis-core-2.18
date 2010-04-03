@@ -28,7 +28,6 @@ package org.hisp.dhis.security;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserStore;

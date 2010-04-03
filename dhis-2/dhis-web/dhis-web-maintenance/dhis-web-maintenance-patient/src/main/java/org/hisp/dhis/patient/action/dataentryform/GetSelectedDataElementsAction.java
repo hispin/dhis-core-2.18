@@ -54,10 +54,11 @@ public class GetSelectedDataElementsAction
 
     private ProgramStageService programStageService;
 
-    public void setProgramStageService(ProgramStageService programStageService) {
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
         this.programStageService = programStageService;
     }
-    
+
     private Comparator<DataElement> dataElementComparator;
 
     public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
@@ -71,11 +72,10 @@ public class GetSelectedDataElementsAction
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+
     private ProgramStageDataElementService programStageDataElementService;
-    
-    public void setProgramStageDataElementService(
-        ProgramStageDataElementService programStageDataElementService )
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
     }
@@ -86,7 +86,8 @@ public class GetSelectedDataElementsAction
 
     private int associationId;
 
-    public void setAssociationId(int associationId) {
+    public void setAssociationId( int associationId )
+    {
         this.associationId = associationId;
     }
 
@@ -97,25 +98,24 @@ public class GetSelectedDataElementsAction
         return dataElementList;
     }
 
-    private String associationName;
-
-    public String getAssociationName() {
-        return  DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
+    public String getAssociationName()
+    {
+        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
     }
 
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
         ProgramStage programStage = programStageService.getProgramStage( associationId );
 
-        dataElementList = new ArrayList<DataElement>(programStageDataElementService.getListDataElement( programStage ) );
+        dataElementList = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
 
         Collections.sort( dataElementList, dataElementComparator );
-        
+
         displayPropertyHandler.handle( dataElementList );
 
         return SUCCESS;

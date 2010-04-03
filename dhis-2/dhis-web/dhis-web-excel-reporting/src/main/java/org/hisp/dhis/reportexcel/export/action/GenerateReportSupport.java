@@ -43,7 +43,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementManager;
-import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -288,8 +287,6 @@ public abstract class GenerateReportSupport
 
     protected Date endSixMonthly;
 
-    private Period period;
-
     // ------------------------------------------
     // Excel format
     // ------------------------------------------
@@ -387,8 +384,6 @@ public abstract class GenerateReportSupport
 
     protected void installPeriod( Period period )
     {
-
-        this.period = period;
 
         Calendar calendar = Calendar.getInstance();
 
