@@ -40,7 +40,6 @@ import com.opensymphony.xwork2.Action;
  * @version $Id: UpdateUserAction.java 5556 2008-08-20 11:36:20Z abyot $
  * @version $Id: UpdateUserAction.java 5556 2009-11-30 11:18:30Z Chau Thu Tran $
  */
-
 public class UpdateUserAccountAction
     implements Action
 {
@@ -51,17 +50,16 @@ public class UpdateUserAccountAction
     private UserStore userStore;
 
     private PasswordManager passwordManager;
-    
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
     private I18n i18n;
-    
+
     private Integer id;
 
     private String oldPassword;
-    
+
     private String rawPassword;
 
     private String surname;
@@ -71,7 +69,7 @@ public class UpdateUserAccountAction
     private String email;
 
     private String phoneNumber;
-    
+
     private String message;
 
     // -------------------------------------------------------------------------
@@ -156,21 +154,22 @@ public class UpdateUserAccountAction
         }
 
         User user = userStore.getUser( id );
-        
+
         UserCredentials userCredentials = userStore.getUserCredentials( user );
 
-        String encodeOldPassword = passwordManager.encodePassword( userCredentials.getUsername(), oldPassword);
+        String encodeOldPassword = passwordManager.encodePassword( userCredentials.getUsername(), oldPassword );
         String currentPassword = userCredentials.getPassword();
-        if(!encodeOldPassword.equals( currentPassword)){
+        
+        if ( !encodeOldPassword.equals( currentPassword ) )
+        {
             message = i18n.getString( "wrong_password" );
             return INPUT;
         }
-        
+
         // ---------------------------------------------------------------------
         // Update userCredentials and user
         // ---------------------------------------------------------------------
 
-        
         user.setSurname( surname );
 
         user.setFirstName( firstName );
@@ -179,19 +178,18 @@ public class UpdateUserAccountAction
 
         user.setPhoneNumber( phoneNumber );
 
-
         if ( rawPassword != null )
         {
             userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
-            
+
             userStore.updateUserCredentials( userCredentials );
-            
+
         }
-        
+
         userStore.updateUser( user );
 
         message = i18n.getString( "update_user_success" );
-        
+
         return SUCCESS;
     }
 }

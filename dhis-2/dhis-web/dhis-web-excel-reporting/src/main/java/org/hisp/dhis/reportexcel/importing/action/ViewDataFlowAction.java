@@ -29,18 +29,12 @@ package org.hisp.dhis.reportexcel.importing.action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemComparator;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 

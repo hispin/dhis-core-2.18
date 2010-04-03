@@ -1,4 +1,5 @@
 package org.hisp.dhis.patient.paging;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -25,6 +26,7 @@ package org.hisp.dhis.patient.paging;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -75,7 +77,7 @@ public class RequestUtil
             return session.getAttribute( attributeName ).toString();
     }
 
-    public static Object getSessionObject( HttpServletRequest request, String attributeName, Class clazz )
+    public static Object getSessionObject( HttpServletRequest request, String attributeName, Class<?> clazz )
     {
         HttpSession session = request.getSession();
         if ( session != null )

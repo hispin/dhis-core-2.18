@@ -102,8 +102,6 @@ public class GetProgramStageListAction
     {
         this.programs = programs;
     }
-    
-    private String associationName;
 
     public String getAssociationName()
     {
@@ -117,18 +115,18 @@ public class GetProgramStageListAction
     public String execute()
         throws Exception
     {
+        programs = programService.getAllPrograms();
 
-	  programs = programService.getAllPrograms();
+        if ( id != null )
+        {
+            Program program = programService.getProgram( id );
 
-      if ( id != null )
-      {
-          Program program = programService.getProgram( id );
-
-          associations = program.getProgramStages();
-
-      }else{
-          associations = programStageService.getAllProgramStages();
-      }
+            associations = program.getProgramStages();
+        }
+        else
+        {
+            associations = programStageService.getAllProgramStages();
+        }
 
         return SUCCESS;
     }

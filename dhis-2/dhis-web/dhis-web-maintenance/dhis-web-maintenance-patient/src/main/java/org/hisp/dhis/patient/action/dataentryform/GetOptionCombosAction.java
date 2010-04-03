@@ -43,37 +43,47 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
  * @version $Id$
  */
 public class GetOptionCombosAction
-        implements Action {
+    implements Action
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private DataElementService dataElementService;
 
-    public void setDataElementService(DataElementService dataElementService) {
+    public void setDataElementService( DataElementService dataElementService )
+    {
         this.dataElementService = dataElementService;
     }
+
     private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryService(DataElementCategoryService dataElementCategoryService) {
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
         this.dataElementCategoryService = dataElementCategoryService;
     }
+
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
     private int dataElementId;
 
-    public void setDataElementId(int dataElementId) {
+    public void setDataElementId( int dataElementId )
+    {
         this.dataElementId = dataElementId;
     }
+
     private List<String> optionComboIds;
 
-    public List<String> getOptionComboIds() {
+    public List<String> getOptionComboIds()
+    {
         return optionComboIds;
     }
+
     private List<String> optionComboNames;
 
-    public List<String> getOptionComboNames() {
+    public List<String> getOptionComboNames()
+    {
         return optionComboNames;
     }
 
@@ -81,53 +91,59 @@ public class GetOptionCombosAction
     // Execute
     // -------------------------------------------------------------------------
     public String execute()
-            throws Exception {
+        throws Exception
+    {
         optionComboIds = new ArrayList<String>();
         optionComboNames = new ArrayList<String>();
 
-        DataElement dataElement = dataElementService.getDataElement(dataElementId);
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
 
         List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-                dataElementCategoryCombo.getOptionCombos());
+            dataElementCategoryCombo.getOptionCombos() );
 
         String dataElementType = dataElement.getType();
-        System.out.println("Type = " + dataElementType);
+        System.out.println( "Type = " + dataElementType );
 
-       /*if (dataElementType.equals("string")) {
-
-            DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
-            optionComboNames.add(DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME);
-
-            optionComboIds.add(String.valueOf(optionCombo.getId()));
-
-            return SUCCESS;
-
-        }*/
-        
+        /*
+         * if (dataElementType.equals("string")) {
+         * 
+         * DataElementCategoryOptionCombo optionCombo =
+         * dataElementCategoryService
+         * .getDefaultDataElementCategoryOptionCombo();
+         * optionComboNames.add(DataElementCategoryCombo
+         * .DEFAULT_CATEGORY_COMBO_NAME);
+         * 
+         * optionComboIds.add(String.valueOf(optionCombo.getId()));
+         * 
+         * return SUCCESS;
+         * 
+         * }
+         */
 
         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
 
-
-        while (optionComboIterator.hasNext()) {
+        while ( optionComboIterator.hasNext() )
+        {
             DataElementCategoryOptionCombo optionCombo = optionComboIterator.next();
 
             String optionComboName = optionCombo.getName();
 
-            String optionComboId = String.valueOf(optionCombo.getId());
+            String optionComboId = String.valueOf( optionCombo.getId() );
 
-
-            if (optionComboId != null) {
-                if (optionComboName == null || optionComboName.trim().length() == 0) {
+            if ( optionComboId != null )
+            {
+                if ( optionComboName == null || optionComboName.trim().length() == 0 )
+                {
                     optionComboName = DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
                 }
             }
 
-            System.out.println("optionComboId = "+optionComboId);
-            optionComboNames.add(optionComboName);
+            System.out.println( "optionComboId = " + optionComboId );
+            optionComboNames.add( optionComboName );
 
-            optionComboIds.add(optionComboId);
+            optionComboIds.add( optionComboId );
         }
 
         return SUCCESS;

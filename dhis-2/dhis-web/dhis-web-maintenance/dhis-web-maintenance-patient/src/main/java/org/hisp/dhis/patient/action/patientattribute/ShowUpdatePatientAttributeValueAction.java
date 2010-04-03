@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,13 +60,12 @@ public class ShowUpdatePatientAttributeValueAction
         this.patientService = patientService;
     }
 
-     private PatientAttributeService patientAttributeService;
-    
-     public void setPatientAttributeService( PatientAttributeService
-     patientAttributeService )
-     {
-     this.patientAttributeService = patientAttributeService;
-     }
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
 
     private PatientAttributeGroupService patientAttributeGroupService;
 
@@ -148,20 +146,22 @@ public class ShowUpdatePatientAttributeValueAction
     {
         patient = patientService.getPatient( id );
 
-//        if ( patientAttributeGroups == null )
-            patientAttributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+        // if ( patientAttributeGroups == null )
+        patientAttributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
 
-//        if ( patientAttributeGroupId != 0 )
-//        {
-//            patientAttributes = new ArrayList<PatientAttribute>();
-//
-//            patientAttributes = patientAttributeGroupService.getPatientAttributeGroup(
-//                patientAttributeGroupId ).getAttributes();
-//        }else 
-//        {
-//             patientAttributes = patientAttributeService.getAllPatientAttributes();
-//        }
-            
+        // if ( patientAttributeGroupId != 0 )
+        // {
+        // patientAttributes = new ArrayList<PatientAttribute>();
+        //
+        // patientAttributes =
+        // patientAttributeGroupService.getPatientAttributeGroup(
+        // patientAttributeGroupId ).getAttributes();
+        // }else
+        // {
+        // patientAttributes =
+        // patientAttributeService.getAllPatientAttributes();
+        // }
+
         patientNoGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService

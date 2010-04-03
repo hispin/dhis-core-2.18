@@ -40,19 +40,19 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 
 /**
  * @author Lars Helge Overland
- *
- * TODO: Cleanup code by MAX_NUMBER_OF_ATTEMPTS and TIMEFRAME_MINUTES loading
- * in system setting with default values through startup routine
+ * 
+ *         TODO: Cleanup code by MAX_NUMBER_OF_ATTEMPTS and TIMEFRAME_MINUTES
+ *         loading in system setting with default values through startup routine
  */
 public class DefaultUserAuditService
     implements UserAuditService
 {
-
     private static final Log log = LogFactory.getLog( DefaultUserAuditService.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -91,12 +91,13 @@ public class DefaultUserAuditService
 
         int no = userAuditStore.getLoginFailures( username, getDate() );
 
-        int MAX_NUMBER_OF_ATTEMPTS = 5; //DEFAULT
+        int MAX_NUMBER_OF_ATTEMPTS = 5; // DEFAULT
 
         if ( systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) != null )
         {
             MAX_NUMBER_OF_ATTEMPTS = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS );
-        } else
+        }
+        else
         {
             systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, 5 );
         }
@@ -111,8 +112,7 @@ public class DefaultUserAuditService
     @Override
     public int getLoginFailures( String username )
     {
-        int no = userAuditStore.getLoginFailures( username, getDate() );
-        return no;
+        return userAuditStore.getLoginFailures( username, getDate() );
     }
 
     @Override
@@ -123,7 +123,8 @@ public class DefaultUserAuditService
         if ( systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) != null )
         {
             MAX_NUMBER_OF_ATTEMPTS = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS );
-        } else
+        }
+        else
         {
             systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, 5 );
         }
@@ -134,12 +135,13 @@ public class DefaultUserAuditService
     @Override
     public int getLockoutTimeframe()
     {
-        int TIMEFRAME_MINUTES = 10; //DEFAULT
+        int TIMEFRAME_MINUTES = 10; // DEFAULT
 
         if ( systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) != null )
         {
             TIMEFRAME_MINUTES = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES );
-        } else
+        }
+        else
         {
             systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, 10 );
         }
@@ -160,13 +162,15 @@ public class DefaultUserAuditService
         if ( systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) != null )
         {
             TIMEFRAME_MINUTES = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES );
-        } else
+        }
+        else
         {
             systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, 10 );
         }
 
         Calendar cal = Calendar.getInstance();
         cal.add( Calendar.MINUTE, TIMEFRAME_MINUTES * -1 );
+        
         return cal.getTime();
     }
 }
