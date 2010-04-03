@@ -53,7 +53,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
     <property name="statementManager" ref="statementManager"/>
     <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
-	<property name="dataValueAuditStore" ref="org.hisp.dhis.datavalue.DataValueAuditStore"/>
   </bean>
   
   <bean id="org.hisp.dhis.indicator.IndicatorStore"
