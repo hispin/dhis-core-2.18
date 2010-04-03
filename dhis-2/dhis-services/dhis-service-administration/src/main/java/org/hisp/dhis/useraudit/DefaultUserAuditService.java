@@ -39,16 +39,17 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEM
 import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 
 /**
+ * @author Saptarshi Purkayastha
  * @author Lars Helge Overland
- * 
- *         TODO: Cleanup code by MAX_NUMBER_OF_ATTEMPTS and TIMEFRAME_MINUTES
- *         loading in system setting with default values through startup routine
  */
-public class DefaultUserAuditService
+public class DefaultUserAuditService    
     implements UserAuditService
 {
     private static final Log log = LogFactory.getLog( DefaultUserAuditService.class );
 
+    private static final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 5;
+    private static final int DEFAULT_TIMEFRAME_MINUTES = 10;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -91,18 +92,9 @@ public class DefaultUserAuditService
 
         int no = userAuditStore.getLoginFailures( username, getDate() );
 
-        int MAX_NUMBER_OF_ATTEMPTS = 5; // DEFAULT
-
-        if ( systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) != null )
-        {
-            MAX_NUMBER_OF_ATTEMPTS = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS );
-        }
-        else
-        {
-            systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, 5 );
-        }
-
-        if ( no >= MAX_NUMBER_OF_ATTEMPTS )
+        int max = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, DEFAULT_MAX_NUMBER_OF_ATTEMPTS );
+        
+        if ( no >= max )
         {
             log.info( "Max number of login attempts exceeded: '" + username + "'" );
         }
@@ -118,35 +110,13 @@ public class DefaultUserAuditService
     @Override
     public int getMaxAttempts()
     {
-        int MAX_NUMBER_OF_ATTEMPTS = 5;
-
-        if ( systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS ) != null )
-        {
-            MAX_NUMBER_OF_ATTEMPTS = (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS );
-        }
-        else
-        {
-            systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, 5 );
-        }
-
-        return MAX_NUMBER_OF_ATTEMPTS;
+        return (Integer) systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, DEFAULT_MAX_NUMBER_OF_ATTEMPTS );
     }
 
     @Override
     public int getLockoutTimeframe()
     {
-        int TIMEFRAME_MINUTES = 10; // DEFAULT
-
-        if ( systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) != null )
-        {
-            TIMEFRAME_MINUTES = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES );
-        }
-        else
-        {
-            systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, 10 );
-        }
-
-        return TIMEFRAME_MINUTES;
+        return (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES, DEFAULT_TIMEFRAME_MINUTES );
     }
 
     @Override
@@ -157,19 +127,10 @@ public class DefaultUserAuditService
 
     private Date getDate()
     {
-        int TIMEFRAME_MINUTES = 10;
-
-        if ( systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES ) != null )
-        {
-            TIMEFRAME_MINUTES = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES );
-        }
-        else
-        {
-            systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, 10 );
-        }
+        int timeframe = (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES, DEFAULT_TIMEFRAME_MINUTES );
 
         Calendar cal = Calendar.getInstance();
-        cal.add( Calendar.MINUTE, TIMEFRAME_MINUTES * -1 );
+        cal.add( Calendar.MINUTE, timeframe * -1 );
         
         return cal.getTime();
     }
