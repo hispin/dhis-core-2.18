@@ -27,106 +27,14 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
 /**
  * @author Quang Nguyen
  * @version Mar 30, 2010 9:13:36 PM
  */
-
 public class DataValueAudit
+    extends DataValue
 {
-    private int id;
-
-    private DataValue dataValue;
-
-    private String value;
-
-    private String storedBy;
-
-    private Date timeStamp;
-
-    private String comment;
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
     public DataValueAudit()
     {
-
     }
-
-    public DataValueAudit( DataValue dataValue, String value, String storedBy, Date timeStamp, String comment )
-    {
-        this.dataValue = dataValue;
-        this.value = value;
-        this.storedBy = storedBy;
-        this.timeStamp = timeStamp;
-        this.comment = comment;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public DataValue getDataValue()
-    {
-        return dataValue;
-    }
-
-    public void setDataValue( DataValue dataValue )
-    {
-        this.dataValue = dataValue;
-    }
-
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
-    public String getStoredBy()
-    {
-        return storedBy;
-    }
-
-    public void setStoredBy( String storedBy )
-    {
-        this.storedBy = storedBy;
-    }
-
-    public Date getTimeStamp()
-    {
-        return timeStamp;
-    }
-
-    public void setTimeStamp( Date timeStamp )
-    {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getComment()
-    {
-        return comment;
-    }
-
-    public void setComment( String comment )
-    {
-        this.comment = comment;
-    }
-
 }

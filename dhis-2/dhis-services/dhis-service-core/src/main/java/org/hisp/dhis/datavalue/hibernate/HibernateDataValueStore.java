@@ -42,7 +42,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueAuditStore;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
@@ -79,13 +78,6 @@ public class HibernateDataValueStore
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
-    }
-
-    private DataValueAuditStore dataValueAuditStore;
-
-    public void setDataValueAuditStore( DataValueAuditStore dataValueAuditStore )
-    {
-        this.dataValueAuditStore = dataValueAuditStore;
     }
 
     // -------------------------------------------------------------------------
@@ -143,32 +135,24 @@ public class HibernateDataValueStore
     public void deleteDataValue( DataValue dataValue )
     {
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        dataValueAuditStore.deleteDataValuesByDataValue( dataValue );
+
         session.delete( dataValue );
     }
 
     public int deleteDataValuesBySource( Source source )
     {
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.source = :source" );
-        queryAudit.setEntity( "source", source );
-        queryAudit.executeUpdate();
-        
+
         Query query = session.createQuery( "delete DataValue where source = :source" );
         query.setEntity( "source", source );
+
         return query.executeUpdate();
     }
 
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.dataElement = :dataElement" );
-        queryAudit.setEntity( "dataElement", dataElement );
-        queryAudit.executeUpdate();
-        
+
         Query query = session.createQuery( "delete DataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
 
