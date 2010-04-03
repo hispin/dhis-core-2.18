@@ -71,6 +71,7 @@ public class ImportAction
         "application/x-zip-compressed", 
         "application/zip", 
         "application/x-gzip", 
+        "application/octet-stream", 
         "text/xml" );
     
     // -------------------------------------------------------------------------
