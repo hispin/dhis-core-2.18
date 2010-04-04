@@ -62,7 +62,6 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
     private Integer id;
 
     public void setId( Integer id )
@@ -90,7 +89,7 @@ public class ValidateUserAction
     {
         this.firstName = firstName;
     }
-    
+
     private String email;
 
     public void setEmail( String email )
@@ -115,7 +114,6 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
     private String message;
 
     public String getMessage()
@@ -126,7 +124,6 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
     public String execute()
         throws Exception
     {
@@ -137,8 +134,7 @@ public class ValidateUserAction
                 message = i18n.getString( "specify_username" );
 
                 return INPUT;
-            }
-            else
+            } else
             {
                 username = username.trim();
 
@@ -174,7 +170,22 @@ public class ValidateUserAction
 
             return INPUT;
         }
-        
+
+        if ( id == null )
+        {
+            if ( rawPassword.trim().length() < 8 )
+            {
+                message = i18n.getString( "password_length_not_valid" );
+
+                return INPUT;
+            }
+            if ( !( rawPassword.matches( ".*\\d+.*" ) && rawPassword.matches( ".*[A-Z]+.*" ) ) )
+            {
+                message = i18n.getString( "password_is_not_valid" );
+                return INPUT;
+            }
+        }
+
         if ( id == null && ( !ValidationUtils.passwordIsValid( rawPassword ) ) )
         {
             message = i18n.getString( "password_is_not_valid" );
@@ -204,7 +215,7 @@ public class ValidateUserAction
         if ( email != null && email.trim().length() > 0 && !ValidationUtils.emailIsValid( email ) )
         {
             message = i18n.getString( "email_is_not_valid" );
-            
+
             return INPUT;
         }
 

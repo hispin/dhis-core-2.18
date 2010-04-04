@@ -90,6 +90,10 @@ jQuery.validator.addMethod("unique", function(value, element, param) {
 	 return true;
 }, "");
 
+jQuery.validator.addMethod("password", function(value, element, param) {
+	return this.optional(element) || /[a-z]+/.test(value) && /\d+/.test(value);
+});
+
 /**
   * Return true, if the value is a valid date, also making this formal check dd/mm/yyyy.
   *
