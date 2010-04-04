@@ -46,13 +46,13 @@
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "password" )</label></td>
-		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="50" class="{validate:{minlength:5,maxlength:50,notequalto:'#username'}}"></td>
+		<td><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="50" class="{validate:{rangelength:[8,35],password:true,notequalto:'#username'}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) </label></td>
-		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="50" class="{validate:{minlength:5,maxlength:50,equalTo:'#rawPassword'}}"></td>
+		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="50" class="{validate:{rangelength:[8,35],equalTo:'#rawPassword'}}"></td>
 		<td></td>
 		<td></td>		
 	</tr>

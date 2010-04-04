@@ -33,14 +33,13 @@ en_GB = {
         ,minWords : $.validator.format("Please enter at least {0} words.")
         ,rangeWords : $.validator.format("Please enter between {0} and {1} words.")
         ,lettersonly : "Letters only please." 
-        ,decimals : "Digits/Decimal only please"
         ,nowhitespace : "No white space please"
         ,ziprange : "Your ZIP-code must be in the range 902xx-xxxx to 905-xx-xxxx"
-        ,unique : "Value must be unique."
         ,time : "Please enter a valid time, between 00:00 and 23:59"
         ,phone : "Please specify a valid phone number"
         ,strippedminlength : "Please enter at least {0} characters"
         ,datelessthanequaltoday: "This date can not be after today."
         ,required_group : "Please fill out at least one of these fields."
+        ,password: "Password must contain at least one capital letter and one digit"
 };
 
