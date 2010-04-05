@@ -6,16 +6,25 @@
     <!-- use the DHIS web portal default -->
     <include file="dhis-web-commons.xml"/>
     <package name="dhis-web-mobile" extends="dhis-web-commons" namespace="/dhis-web-mobile">
+
+        <!-- Pages -->
         <action name="index" class="org.hisp.dhis.mobile.action.MobileHomePageAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/welcome.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
+        <action name="receiveImport"
+                class="org.hisp.dhis.mobile.action.ReceiveImportPageAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-mobile/receiveImportPage.vm</param>
+            <param name="menu">/dhis-web-mobile/menu.vm</param>
+            <param name="stylesheets">css/receiveImportPage.css</param>
+        </action>
 
         <!-- Create Mobile Application -->
         <action name="createMobileApp" class="org.hisp.dhis.mobile.app.action.CreateMobileAppAction">
             <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-mobile/createMobileApp.vm</param>
+            <param name="page">/dhis-web-mobile/createMobileAppPage.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
 
@@ -43,7 +52,7 @@
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
 
-        <!-- Process Mobile Importing -->
+        <!-- Mobile Importing -->
         <action name="processMobileImport"
                 class="org.hisp.dhis.mobileimport.action.MobileImportProcessAction">
             <result name="success" type="velocity">/main.vm</result>
