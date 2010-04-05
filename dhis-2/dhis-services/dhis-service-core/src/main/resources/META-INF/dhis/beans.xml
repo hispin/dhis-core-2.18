@@ -634,7 +634,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="organisationUnitGroupService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
   </bean>
-    
+  
+  <bean id="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler"
+    class="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler">
+    <property name="dataValueAuditService"
+      ref="org.hisp.dhis.datavalue.DataValueAuditService"/>
+  </bean>
+
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -661,6 +667,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler"/>
           <ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler"/>
+		  <ref local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler"/>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"/>
         </list>
