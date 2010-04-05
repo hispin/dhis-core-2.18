@@ -101,8 +101,7 @@
 				<p>
 					$encoder.htmlEncode( $i18n.getString( "on" ) ) $eachDataValueAudit.timeStamp, 
 					$eachDataValueAudit.storedBy 
-					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value 
-					$encoder.htmlEncode( $i18n.getString( "to" ) ) $eachDataValueAudit.comment.
+					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value.
 				</p>
 			#end					
         </td>

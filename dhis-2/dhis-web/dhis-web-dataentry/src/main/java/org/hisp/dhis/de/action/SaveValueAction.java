@@ -199,7 +199,7 @@ public class SaveValueAction
         {
             LOG.debug( "Updating DataValue, value added/changed" );
             
-            DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), storedBy, new Date(), value);
+            DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), storedBy, new Date(), "");
             
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
