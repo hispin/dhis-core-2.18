@@ -34,15 +34,19 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
+@Transactional
 public class HibernatePatientStore
     extends HibernateGenericStore<Patient> implements PatientStore
 {    
@@ -97,4 +101,22 @@ public class HibernatePatientStore
         
         return crit.list();
     }
+
+    public int countGetPatientsByNames( String name )
+    {
+        return (Integer)getCriteria( 
+            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getPatientsByNames( String name, int min, int max )
+    {
+        return getCriteria( 
+            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setFirstResult( min ).setMaxResults( max ).list(); 
+    }
+    
 }

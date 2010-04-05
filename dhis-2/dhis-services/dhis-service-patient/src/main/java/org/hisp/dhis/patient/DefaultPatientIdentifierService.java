@@ -201,4 +201,14 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit );
     }
 
+    public int countGetPatientsByIdentifier( String identifier )
+    {
+        return patientIdentifierStore.countGetPatientsByIdentifier( identifier );
+    }
+
+    public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
+    {
+        return patientIdentifierStore.getPatientsByIdentifier( identifier, min, max );
+    }
+
 }

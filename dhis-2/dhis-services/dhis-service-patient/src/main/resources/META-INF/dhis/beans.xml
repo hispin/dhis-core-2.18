@@ -160,6 +160,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService"/>	
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientIdentifierService" class="org.hisp.dhis.patient.DefaultPatientIdentifierService">

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -38,6 +39,10 @@ import java.util.TreeMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -85,6 +90,20 @@ public class DefaultPatientService
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+    
+    private RelationshipService relationshipService;
+    
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
+    }
+    
+    private RelationshipTypeService relationshipTypeService;
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
     }
 
     // -------------------------------------------------------------------------
@@ -167,16 +186,6 @@ public class DefaultPatientService
 
     public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
     {
-//        Collection<Patient> patients = new ArrayList<Patient>();
-//
-//        for ( PatientIdentifier patientIdentifier : patientIdentifierService
-//            .getPatientIdentifiersByOrgUnit( organisationUnit ) )
-//        {
-//            patients.add( patientIdentifier.getPatient() );
-//        }
-//        
-//        return patients;
-    	
         return  patientIdentifierService.listPatientByOrganisationUnit( organisationUnit ,  min,  max );
     }
 
@@ -269,4 +278,158 @@ public class DefaultPatientService
     {
         return patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
     }
+
+    public int countGetPatients( String searchText )
+    {
+        return patientStore.countGetPatientsByNames( searchText )+patientIdentifierService.countGetPatientsByIdentifier( searchText );
+    }
+
+    public Collection<Patient> getPatients( String searchText, int min, int max )
+    {
+        int countPatientName = patientStore.countGetPatientsByNames( searchText );
+        
+        Set<Patient> patients = new HashSet<Patient>();
+        
+        if( max < countPatientName )
+        {
+            patients.addAll(  getPatientsByNames( searchText, min, max ) );
+            
+            min = min - patients.size();
+        }else {
+            if( min <= countPatientName )
+            {
+                patients.addAll(  getPatientsByNames( searchText, min, countPatientName ) );
+                
+                min = 0;
+                max = max - countPatientName;
+                
+                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier( searchText, min, max );
+                
+                patients.addAll( patientsByIdentifier );
+            }else
+            {
+                min = 0;
+                max = max - countPatientName;
+                
+                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier( searchText, min, max );
+                
+                patients.addAll( patientsByIdentifier );
+            }
+        }
+        return patients;
+    }
+
+    public int countnGetPatientsByNames( String name )
+    {
+        return patientStore.countGetPatientsByNames( name );
+    }
+
+    public Collection<Patient> getPatientsByNames( String name, int min, int max )
+    {
+        return patientStore.getPatientsByNames( name, min, max );
+    }
+   
+    public void createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+        Integer relationshipTypeId,  List<PatientAttributeValue> patientAttributeValues ) 
+    {
+        
+        patientStore.save( patient );
+
+        Integer.parseInt( "ABC" );
+        
+        for( PatientAttributeValue pav : patientAttributeValues )
+        {
+            patientAttributeValueService.savePatientAttributeValue( pav );
+        }
+        
+        
+        //-------------------------------------------------------------------------
+        // If underAge = true : save representative information.
+        //-------------------------------------------------------------------------
+        
+        if ( patient.isUnderAge() )
+        {
+            if( representativeId != null )
+            {
+                Patient representative = patientStore.get( representativeId );
+                if( representative != null )
+                {
+                    patient.setRepresentative( representative );
+                
+                    Relationship rel = new Relationship();
+                    rel.setPatientA( representative );
+                    rel.setPatientB(  patient );
+                    
+                    if( relationshipTypeId != null )
+                    {
+                        RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                        if( relType != null )
+                        {
+                            rel.setRelationshipType( relType );
+                            relationshipService.saveRelationship( rel );
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    public void updatePatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+        Integer relationshipTypeId,  List<PatientAttributeValue> valuesForSave,    List<PatientAttributeValue> valuesForUpdate,  Collection<PatientAttributeValue> valuesForDelete ) 
+    {
+        
+        patientStore.update( patient );
+
+        for( PatientAttributeValue av : valuesForSave )
+        {
+            patientAttributeValueService.savePatientAttributeValue( av );
+        }
+        
+        for ( PatientAttributeValue av : valuesForUpdate )
+        {
+            patientAttributeValueService.updatePatientAttributeValue( av );
+        }
+        
+        for ( PatientAttributeValue av : valuesForDelete )
+        {
+            patientAttributeValueService.deletePatientAttributeValue( av );
+        }
+        
+        //-------------------------------------------------------------------------
+        // If underAge = true : save representative information.
+        //-------------------------------------------------------------------------
+        
+        if ( patient.isUnderAge() )
+        {
+          
+            if( representativeId != null  )
+            {
+                if( patient.getRepresentative() == null ||  patient.getRepresentative().getId() != representativeId )
+                {
+                    Patient representative = patientStore.get( representativeId );
+                    
+                    if( representative != null )
+                    {
+                        patient.setRepresentative( representative );
+                    
+                        Relationship rel = new Relationship();
+                        rel.setPatientA( representative );
+                        rel.setPatientB(  patient );
+                        
+                        if( relationshipTypeId != null )
+                        {
+                            RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                            if( relType != null )
+                            {
+                                rel.setRelationshipType( relType );
+                                relationshipService.saveRelationship( rel );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

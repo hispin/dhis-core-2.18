@@ -193,5 +193,16 @@ public class DefaultPatientAttributeValueService
         return patientAttributeValueStore.getPatient( attribute, value );
     }
 
+    public int countSearchPatientAttributeValue( PatientAttribute patientAttribute, String searchText )
+    {
+        return patientAttributeValueStore.countSearchPatientAttributeValue( patientAttribute, searchText );
+    }
+
+    public Collection<Patient> searchPatientAttributeValue( PatientAttribute patientAttribute,
+        String searchText, int min, int max )
+    {
+        return patientAttributeValueStore.searchPatientAttributeValue( patientAttribute, searchText, min, max );
+    }
+
 
 }
