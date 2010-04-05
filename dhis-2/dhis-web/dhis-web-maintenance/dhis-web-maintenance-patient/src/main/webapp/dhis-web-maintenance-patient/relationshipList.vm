@@ -40,8 +40,11 @@
                 <tr>
                     <td></td>
                     <td></td> 
-                    <td colspan="2" style="text-align:right">
+                    <td style="text-align:right">
                         <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:showAddRelationship()">                                                              
+                    </td>
+                    <td style="text-align:right">
+                        <input type="button" value="$i18n.getString( "add_new_patient" )" onclick="javascript:showAddRelationshipPatient()">                                                              
                     </td>
                 </tr>
           

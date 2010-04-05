@@ -1,36 +1,7 @@
-/*
- * Copyright (c) 2004-2009, University of Oslo
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without
- *   specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+package org.hisp.dhis.patient.action.relationship;
 
-package org.hisp.dhis.patient.action.patient;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,15 +24,16 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.idgen.PatientIdentifierGenerator;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
- */
-public class AddPatientAction
-    implements Action
+
+public class AddRelationshipPatientAction implements Action
 {
     public static final String PREFIX_ATTRIBUTE = "attr";
 
@@ -85,7 +57,13 @@ public class AddPatientAction
 
     private PatientAttributeService patientAttributeService;
 
+    private PatientAttributeValueService patientAttributeValueService;
+
     private PatientAttributeOptionService patientAttributeOptionService;
+    
+    private RelationshipService relationshipService;
+    
+    private RelationshipTypeService relationshipTypeService;
 
     // -------------------------------------------------------------------------
     // Input - name
@@ -117,7 +95,7 @@ public class AddPatientAction
 
     private boolean underAge;
     
-    private Integer representativeId;
+    private Integer relationshipId;
     
     private Integer relationshipTypeId;
 
@@ -153,7 +131,7 @@ public class AddPatientAction
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
         patient.setUnderAge( underAge );
-        
+
         if ( birthDate != null )
         {
             birthDate = birthDate.trim();
@@ -181,36 +159,6 @@ public class AddPatientAction
 
         patient.setRegistrationDate( new Date() );
 
-        // -----------------------------------------------------------------------------
-        //  Prepare Patient Identifiers
-        // -----------------------------------------------------------------------------
-        
-        HttpServletRequest request = ServletActionContext.getRequest();
-        
-        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        
-        String value = null;
-        
-        PatientIdentifier pIdentifier = null;
-
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
-        {
-            for ( PatientIdentifierType identifierType : identifierTypes )
-            {
-                value = request.getParameter( PREFIX_IDENTIFIER + identifierType.getId() );
-
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    pIdentifier = new PatientIdentifier();
-                    pIdentifier.setIdentifierType( identifierType );
-                    pIdentifier.setPatient( patient );
-                    pIdentifier.setOrganisationUnit( organisationUnit );
-                    pIdentifier.setIdentifier( value.trim() );
-                    patient.getIdentifiers().add( pIdentifier );
-                }
-            }
-        }
-        
         // --------------------------------------------------------------------------------
         // Generate system id with this format :
         // (BirthDate)(Gender)(XXXXXX)(checkdigit)
@@ -230,20 +178,73 @@ public class AddPatientAction
         systemGenerateIdentifier.setIdentifier( identifier );
         systemGenerateIdentifier.setOrganisationUnit( organisationUnit );
         systemGenerateIdentifier.setPatient( patient );
-        
+
         patient.getIdentifiers().add( systemGenerateIdentifier );
 
         selectedStateManager.clearListAll();
         selectedStateManager.clearSearchingAttributeId();
         selectedStateManager.setSearchText( systemGenerateIdentifier.getIdentifier() );
+
+        // -----------------------------------------------------------------------------
+        // Save Patient Identifiers
+        // -----------------------------------------------------------------------------
+        
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        String value = null;
+        
+        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        PatientIdentifier pIdentifier = null;
+
+        if ( identifierTypes != null && identifierTypes.size() > 0 )
+        {
+            for ( PatientIdentifierType identifierType : identifierTypes )
+            {
+                value = request.getParameter( PREFIX_IDENTIFIER + identifierType.getId() );
+
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    pIdentifier = new PatientIdentifier();
+                    pIdentifier.setIdentifierType( identifierType );
+                    pIdentifier.setPatient( patient );
+                    pIdentifier.setOrganisationUnit( organisationUnit );
+                    pIdentifier.setIdentifier( value.trim() );
+                    patient.getIdentifiers().add( pIdentifier );
+                }
+            }
+        }
+      
+        patientService.savePatient( patient );
+
+        if( relationshipId != null && relationshipTypeId != null )
+        {
+            Patient relationship = patientService.getPatient( relationshipId );
+            if( relationship != null )
+            {
+                if( underAge )
+                    patient.setRepresentative( relationship );
+                
+                Relationship rel = new Relationship();
+                rel.setPatientA( relationship );
+                rel.setPatientB(  patient );
+                
+                if( relationshipTypeId != null )
+                {
+                    RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                    if( relType != null )
+                    {
+                        rel.setRelationshipType( relType );
+                        relationshipService.saveRelationship( rel );
+                    }
+                }
+            }
+        }
         
         // -----------------------------------------------------------------------------
-        // Prepare Patient Attributes
+        // Save Patient Attributes
         // -----------------------------------------------------------------------------
-        
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
-        
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
 
         PatientAttributeValue attributeValue = null;
 
@@ -281,17 +282,11 @@ public class AddPatientAction
                     {
                         attributeValue.setValue( value.trim() );
                     }
-                    patientAttributeValues.add( attributeValue );
+                    patientAttributeValueService.savePatientAttributeValue( attributeValue );
                 }
             }
         }
-        
-        //-------------------------------------------------------------------------
-        // Save patient
-        //-------------------------------------------------------------------------
-        
-            patientService.createPatient( patient, organisationUnit, representativeId,
-                relationshipTypeId,  patientAttributeValues );
+
 
         return SUCCESS;
     }
@@ -340,6 +335,11 @@ public class AddPatientAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
     public void setFirstName( String firstName )
     {
         this.firstName = firstName;
@@ -380,18 +380,28 @@ public class AddPatientAction
         this.patientAttributeOptionService = patientAttributeOptionService;
     }
 
-    public void setRepresentativeId( Integer representativeId )
-    {
-        this.representativeId = representativeId;
-    }
-
     public void setRelationshipTypeId( Integer relationshipTypeId )
     {
         this.relationshipTypeId = relationshipTypeId;
     }
 
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
+    }
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
+
     public void setUnderAge( boolean underAge )
     {
         this.underAge = underAge;
+    }
+
+    public void setRelationshipId( Integer relationshipId )
+    {
+        this.relationshipId = relationshipId;
     }
 }

@@ -26,7 +26,9 @@
  */
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -102,6 +104,12 @@ public class UpdatePatientAction
     private boolean birthDateEstimated;
 
     private String gender;
+    
+    private boolean underAge;
+    
+    private Integer representativeId;
+    
+    private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
     // Output - making the patient available so that its attributes can be
@@ -129,7 +137,8 @@ public class UpdatePatientAction
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
         patient.setGender( gender );
-
+        patient.setUnderAge( underAge );
+        
         if ( birthDate != null )
         {
 
@@ -156,8 +165,47 @@ public class UpdatePatientAction
             }
         }
 
-        patientService.updatePatient( patient );
 
+        // -------------------------------------------------------------------------------------
+        // Save PatientIdentifier
+        // -------------------------------------------------------------------------------------
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        String value = null;
+        
+        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        PatientIdentifier identifier = null;
+
+        if ( identifierTypes != null && identifierTypes.size() > 0 )
+        {
+            for ( PatientIdentifierType identifierType : identifierTypes )
+            {
+                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
+
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    value = value.trim();
+
+                    identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
+
+                    if ( identifier == null )
+                    {
+                        identifier = new PatientIdentifier();
+                        identifier.setIdentifierType( identifierType );
+                        identifier.setPatient( patient );
+                        identifier.setOrganisationUnit( organisationUnit );
+                        identifier.setIdentifier( value );
+                        patient.getIdentifiers().add( identifier );
+                    }
+                    else
+                    {
+                        identifier.setIdentifier( value );
+                        patient.getIdentifiers().add( identifier );
+                    }
+                }
+            }
+        }
 
         // --------------------------------------------------------------------------------------------------------
         // Save Patient Attributes
@@ -165,15 +213,16 @@ public class UpdatePatientAction
 
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
 
-        HttpServletRequest request = ServletActionContext.getRequest();
-
+        List<PatientAttributeValue> valuesForSave = new ArrayList<PatientAttributeValue>();
+        List<PatientAttributeValue> valuesForUpdate = new ArrayList<PatientAttributeValue>();
+        Collection<PatientAttributeValue> valuesForDelete = null ;
+        
         PatientAttributeValue attributeValue = null;
-        String value = null;
 
         if ( attributes != null && attributes.size() > 0 )
         {
             patient.getAttributes().clear();
-            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+            valuesForDelete = patientAttributeValueService.getPatientAttributeValues( patient );
             
             // Save other attributes
             
@@ -208,7 +257,7 @@ public class UpdatePatientAction
                         }else{
                             attributeValue.setValue( value.trim() );
                         }
-                        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+                        valuesForSave.add( attributeValue );
                     }
                     else
                     {
@@ -225,58 +274,15 @@ public class UpdatePatientAction
                         }else{
                             attributeValue.setValue( value.trim() );
                         }
-                        patientAttributeValueService.updatePatientAttributeValue( attributeValue );
-                        patientAttributeValues.remove( attributeValue );
+                        valuesForUpdate.add( attributeValue );
+                        valuesForDelete.remove( attributeValue );
                     }
                 }
             }
-            for ( PatientAttributeValue av : patientAttributeValues )
-            {
-                patientAttributeValueService.deletePatientAttributeValue( av );
-            }
-            patientService.updatePatient( patient );
         }
-
-        // -------------------------------------------------------------------------------------
-        // Save PatientIdentifier
-        // -------------------------------------------------------------------------------------
-
-        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
-        PatientIdentifier identifier = null;
-
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
-        {
-            for ( PatientIdentifierType identifierType : identifierTypes )
-            {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
-
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    value = value.trim();
-
-                    identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
-
-                    if ( identifier == null )
-                    {
-                        identifier = new PatientIdentifier();
-                        identifier.setIdentifierType( identifierType );
-                        identifier.setPatient( patient );
-                        identifier.setOrganisationUnit( organisationUnit );
-                        identifier.setIdentifier( value );
-                        patientIdentifierService.savePatientIdentifier( identifier );
-                        patient.getIdentifiers().add( identifier );
-                    }
-                    else
-                    {
-                        identifier.setIdentifier( value );
-                        patientIdentifierService.updatePatientIdentifier( identifier );
-                        patient.getIdentifiers().add( identifier );
-                    }
-                }
-            }
-            patientService.updatePatient( patient );
-        }
+        
+        patientService.updatePatient( patient, organisationUnit, representativeId, relationshipTypeId, valuesForSave
+            , valuesForUpdate, valuesForDelete );
 
         return SUCCESS;
     }
@@ -369,5 +375,20 @@ public class UpdatePatientAction
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
+    }
+
+    public void setUnderAge( boolean underAge )
+    {
+        this.underAge = underAge;
+    }
+
+    public void setRepresentativeId( Integer representativeId )
+    {
+        this.representativeId = representativeId;
+    }
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
     }
 }

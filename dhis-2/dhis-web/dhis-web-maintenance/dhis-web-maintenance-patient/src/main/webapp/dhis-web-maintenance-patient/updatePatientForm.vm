@@ -23,12 +23,15 @@ jQuery(document).ready(function(){
 		jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
 		jQuery("#firstName").focus();
+		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});
 });
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "update_patient" )</h3>
 
 <form id="updatePatientForm" action="updatePatient.action" method="post">
+<input type="hidden" id="representativeId" name="representativeId"/> 
+<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <div>
 	<input type="hidden" id="id" name="id" value="$patient.id">
 </div>
@@ -42,15 +45,15 @@ jQuery(document).ready(function(){
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" )</label></td>
-		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
+		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30],alphanumeric:true}}"></td>
+		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
@@ -100,35 +103,25 @@ jQuery(document).ready(function(){
 	<tr>
 		<td>$i18n.getString("is_underage")</td>
 		<td>
-			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($patient.isUnderAge) checked="checked" #end/>
+			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($patient.underAge) checked="checked" #end/>
 		</td>
 	</tr>
+	#if($patient.underAge)
+		<tr>
+			<td>$i18n.getString("representative")</td>
+			<td>$patient.representative.getFullName() <a title="$i18n.getString('patient_info')" href="#" id="btnRepresentativeInfo" rel="#representativeInfo"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+			<script>jQuery("#btnRepresentativeInfo").cluetip({width:'350px'});</script>
+		</tr>
+	#end
 	
 	<!--IDENTIFIERS -->
-	
-	<tr><td>&nbsp;</td></tr>	
-	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
-	<tr id="childContactType"  #if( $patient.getIntegerValueOfAge() >= 5 ) style="display: none" #end>
-		<td><label>$i18n.getString( "child_contact_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td>
-			<select name="childContactIdentifierType" id="childContactIdentifierType" style="width:30em" >
-				<option value="">[$i18n.getString( "please_select" )]</option>
-				<option value="Father"   #if($childContactType == "Father") selected="selected" #end>$i18n.getString( "father" )</option>	
-				<option value="Mother"   #if($childContactType == "Mother") selected="selected" #end>$i18n.getString( "mother" )</option>	
-				<option value="Guardian" #if($childContactType == "Guardian") selected="selected" #end>$i18n.getString( "guardian" )</option>	
-			</select>
-		</td>
-	</tr>
-	<tr id="childContactName"  #if( $patient.getIntegerValueOfAge() >= 5 ) style="display: none" #end>
-		<td><label>$i18n.getString( "child_contact_name" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" name="childContactIdentifierName" value="$!childContactName" id="childContactIdentifierName" maxlength="160" class="{validate:{firstletteralphabet:true,alphanumeric:true}}" style="width:30em"/></td>
-	</tr>
+	<tr><th colspan="2">$i18n.getString("patient_identifiers")</th></tr>
 	#foreach ($identifierType in $identifierTypes)
 	#set( $identifier = "" )
 	#set( $identifier = $identiferMap.get( $identifierType.id ) )
 	<tr>
 			<td><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-			<td><input type="text" name="iden$identifierType.id" value="$identifier" class='#validate( "default"  $identifierType.mandatory )' style="width:30em" /></td>	
+			<td><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class='#validate( "default"  $identifierType.mandatory )' style="width:30em" /></td>	
 	</tr>
 	#end
 	<tr><td>&nbsp;</td></tr>
@@ -255,6 +248,49 @@ div#hiddenModalContent td {padding: 2px 5px}
        	var i18n_edit_this_patient = '$encoder.jsEscape( $i18n.getString( "edit_this_patient" ) , "'")';
        	var i18n_no_duplicate_found = '$encoder.jsEscape( $i18n.getString( "no_duplicate_found" ) , "'")';
        	var i18n_patient_system_id = '$encoder.jsEscape( $i18n.getString( "patient_system_id" ) , "'")';
+   		var i18n_child_representative = '$encoder.jsEscape( $i18n.getString( "child_representative" ) , "'")';
         var checkedDuplicate = false;
 </script>
 
+<div id="representativeInfo" style="display:none">
+<table>
+	<tr>
+		<td><strong>$i18n.getString("full_name")</strong></td>
+		<td>$patient.getFullName()</td>
+	</tr>
+	<tr>
+		<td><strong>$i18n.getString("gender")</strong></td>
+		<td> $patient.gender</td>
+	</tr>
+	<tr>
+		<td><strong>$i18n.getString("birth_date")</strong></td>
+		<td>$format.formatDate( $patient.birthDate )</td>
+	</tr>
+	<tr>
+		<td><strong>$i18n.getString("age")</strong></td>
+		<td> $patient.getAge() </td>
+	</tr>
+	<tr>
+		<td><strong>$i18n.getString("blood_group")</strong></td>
+		<td>$patient.getBloodGroup()</td>
+	</tr>
+	#foreach( $patientIdentifier in $patient.identifiers )
+	  <tr>  
+	  	<td><strong>#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name #else $i18n.getString("system_identifier") #end</strong></td>      
+	      <td> $patientIdentifier.identifier </td>
+	   </tr>
+	#end
+	<tr>
+		<td><strong>$i18n.getString("programs")</strong></td>
+		<td>  
+			 #foreach( $program in $patient.programs )
+			 	#if( $velocityCount == 1 )
+	      			 $program.name
+	      		#else ,  $program.name 
+	      		#end
+			 #end  
+		</td>
+	</tr>
+	       
+</table>
+</div>

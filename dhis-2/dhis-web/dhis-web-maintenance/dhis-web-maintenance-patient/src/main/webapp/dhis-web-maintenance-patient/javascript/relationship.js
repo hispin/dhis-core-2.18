@@ -439,3 +439,11 @@ function removeRepresentativeCompleted( messageElement )
 	}
 }
 
+//----------------------------------------------------
+// Add new relationship with new patient
+// ---------------------------------------------------
+
+function showAddRelationshipPatient()
+{
+	window.location = "showAddRelationshipPatient.action";
+}

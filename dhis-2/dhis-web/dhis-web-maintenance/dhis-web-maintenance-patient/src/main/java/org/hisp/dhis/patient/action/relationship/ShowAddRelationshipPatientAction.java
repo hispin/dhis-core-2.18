@@ -1,5 +1,6 @@
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,45 +25,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.patient.action.patient;
+package org.hisp.dhis.patient.action.relationship;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
+
 /**
- * @author Abyot Asalefew Gizaw
+ * @author Viet
+ *
  * @version $Id$
  */
-public class ShowAddPatientFormAction
-    implements Action
+public class ShowAddRelationshipPatientAction implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private SelectedStateManager selectedStateManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
-        this.selectionManager = selectionManager;
-    }
-
-    private PatientIdentifierService patientIdentifierService;
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
+        this.selectedStateManager = selectedStateManager;
     }
     
     private PatientAttributeService patientAttributeService;
@@ -86,6 +86,8 @@ public class ShowAddPatientFormAction
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
     
+    private RelationshipTypeService relationshipTypeService;
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -95,6 +97,12 @@ public class ShowAddPatientFormAction
     private Collection<PatientAttributeGroup> attributeGroups;
     
     private Collection<PatientIdentifierType> identifierTypes;
+    
+    private Collection<RelationshipType> relationshipTypes;
+    
+    private Patient patient;
+    
+    private Map<Integer, String> identiferMap;
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -108,14 +116,26 @@ public class ShowAddPatientFormAction
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
         
         attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
+        
+        relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
+        
+        patient = selectedStateManager.getSelectedPatient();
+        
+        identiferMap = new HashMap<Integer, String>();
+
+        for ( PatientIdentifier identifier : patient.getIdentifiers() )
+        {
+            if ( identifier.getIdentifierType() != null )
+                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+        }
 
         return SUCCESS;
     }
-
     
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
+    
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
@@ -129,4 +149,25 @@ public class ShowAddPatientFormAction
     {
         return noGroupAttributes;
     }
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
+
+    public Collection<RelationshipType> getRelationshipTypes()
+    {
+        return relationshipTypes;
+    }
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public Map<Integer, String> getIdentiferMap()
+    {
+        return identiferMap;
+    }
+
 }

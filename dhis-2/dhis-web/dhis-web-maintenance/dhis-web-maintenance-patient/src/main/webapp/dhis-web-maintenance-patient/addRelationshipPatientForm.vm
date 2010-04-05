@@ -1,7 +1,7 @@
 <style>
 td.input-column { width : 30em;}
 td.input-column input, td.input-column select { width: 28.5em; float:right ;}
-td.error {padding-left:1em}
+
 </style>
 
 ## Macro for generating the jQuery validation rules 
@@ -17,38 +17,47 @@ td.error {padding-left:1em}
 	  //init jQuery validation for addPatientForm
 	  //-----------------------------------------------------------------------
 		jQuery(document).ready(function(){
-			jQuery("#addPatientForm").validate({
+			jQuery("#addRelationshipPatientForm").validate({
 				 meta:"validate"
 				,errorElement:"td"
 				,submitHandler: function(form)
 								{
-									validateAddPatient();
+									validateAddRelationshipPatient();
 								}
 			});
 			jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 			jQuery("#firstName").focus();
-			var dateFormat = '$encoder.jsEscape( $i18n.getString( "format.date.label" ) , "'")'; 
-			jQuery("#birthDate").rules("add",{required:true,date:dateFormat,datelessthanequaltoday:true});
+			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
 		});
 </script>
-<h3>$i18n.getString( "add_new_patient" )</h3>
+<h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>	
 																			
-<form id="addPatientForm" action="addPatient.action" method="post">
-<input type="hidden" id="representativeId" name="representativeId"/> 
-<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+<form  id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="post">
+<input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
 <table>	
+	<tr>
+		<td ><strong>$i18n.getString("relationship_type")</strong></td>
+		<td >
+			<select name="relationshipTypeId" id="relationshipTypeId" class="{validate:{required:true}}" >
+				<option value="">[$i18n.getString( "please_select" )]</option>        
+				#foreach ($relationship in $relationshipTypes)
+					<option value="$relationship.id">${relationship.aIsToB} - ${relationship.bIsToA}</option>
+				#end
+			</select>
+		</td>
+	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
 		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
+		<td class="input-column"><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td class="input-column"> <input type="text" id="middleName" name="middleName" maxlength="30"   class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
+		<td class="input-column"><input type="text" id="middleName" name="middleName" maxlength="30"    class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
@@ -62,7 +71,7 @@ td.error {padding-left:1em}
 	<tr>
 		<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column">
-			<select id="gender" name="gender" style="min-width:20em" class="{validate:{required:true}}">
+			<select id="gender" name="gender" class="{validate:{required:true}}">
 				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="M" >$i18n.getString( "male" )</option>
 				<option value="F">$i18n.getString( "female" )</option>
@@ -85,9 +94,9 @@ td.error {padding-left:1em}
 	</tr>
  	<tr>
 		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
-		<td class="input-column">
+		<td class="input-column" >
 			<select type="text" id="bloodGroup" name="bloodGroup"  >
-				 <option value="">[$i18n.getString( "please_select" )]</option>
+				<option value="">[$i18n.getString( "please_select" )]</option>
 				<option value="A+">A+</option>
 				<option value="A-">A-</option>
 				<option value="AB+">AB+</option>
@@ -108,18 +117,21 @@ td.error {padding-left:1em}
 	<tr>
 		<td>$i18n.getString("is_underage")</td>
 		<td>
-			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true"/>
+			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderage(this);" value="true"/>
 		</td>
 	</tr>
+	
 	<!--IDENTIFIERS -->
 	
 	<tr><td colspan="2">&nbsp;</td></tr>	
 	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
-	<tr>
-		<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-		<td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related}"  class='idfield  #validate( "default"  $identifierType.mandatory ) '/></td>	
-	</tr>
+		#set( $identifier = "" )
+		#set( $identifier = $identiferMap.get( $identifierType.id ) )
+		<tr>
+			<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+			<td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related,id:'$identifier'}"  class='idfield  #validate( "default"  $identifierType.mandatory ) '/></td>	
+		</tr>
 	#end
 	
 	<!-- ATTRIBUTES IN GROUPS -->
@@ -128,7 +140,7 @@ td.error {padding-left:1em}
 		<tr><td>&nbsp;</td></tr>
 		<tr><th colspan="2">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes )
-			<tr>
+			<tr >
 				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
 					#if( $attribute.valueType == "YES/NO" )
@@ -248,3 +260,5 @@ div#hiddenModalContent td {padding: 2px 5px}
 	var i18n_child_representative = '$encoder.jsEscape( $i18n.getString( "child_representative" ) , "'")';
 	var checkedDuplicate = false;
 </script>
+
+
