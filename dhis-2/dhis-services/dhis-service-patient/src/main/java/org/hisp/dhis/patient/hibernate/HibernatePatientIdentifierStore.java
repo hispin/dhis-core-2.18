@@ -127,4 +127,15 @@ public class HibernatePatientIdentifierStore
         .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).list();
     }
 
+    public int countGetPatientsByIdentifier( String identifier )
+    {
+        return (Integer)getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
+    {
+        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+    }
+
 }
