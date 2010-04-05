@@ -338,9 +338,9 @@ function validateUpdatePatient()
 				+'&lastName=' + getFieldValue( 'lastName' ) 
 				+'&gender=' + getFieldValue( 'gender' ) 
 				+'&birthDate=' + getFieldValue( 'birthDate' ) 
-				+'&underAge=' + jQuery("#underAge").is(":checked")
-				+'&representativeId=' + getFieldValue('representativeId')
-				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId')
+//				+'&underAge=' + jQuery("#underAge").is(":checked")
+//				+'&representativeId=' + getFieldValue('representativeId')
+//				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId')
 				+ getIdParams();
 	
 	var request = new Request();
@@ -512,6 +512,7 @@ function checkDuplicateCompleted( messageElement )
     	showListPatientDuplicate(messageElement, false);
     }
 }
+
 /**
  * Show list patient duplicate  by jQuery thickbox plugin
  * @param rootElement : root element of the response xml
@@ -536,6 +537,7 @@ function showListPatientDuplicate(rootElement, validate)
         	var identifiers =  patients[i].getElementsByTagName('identifier');
         	if( identifiers && identifiers.length > 0 )
         	{
+        		sPatient += "<tr><td colspan='2'><strong>"+i18n_patient_identifiers+"</strong></td></tr>"
         		for( var j = 0; j < identifiers.length ; j++ )
         		{
         			sPatient +="<tr class='identifierRow'>"
@@ -547,6 +549,7 @@ function showListPatientDuplicate(rootElement, validate)
         	var attributes =  patients[i].getElementsByTagName('attribute');
         	if( attributes && attributes.length > 0 )
         	{
+        		sPatient += "<tr><td colspan='2'><strong>"+i18n_patient_attributes+"</strong></td></tr>"
         		for( var k = 0; k < attributes.length ; k++ )
         		{
         			sPatient +="<tr class='attributeRow'>"

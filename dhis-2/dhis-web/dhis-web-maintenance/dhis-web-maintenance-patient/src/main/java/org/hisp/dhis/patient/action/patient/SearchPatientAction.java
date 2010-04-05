@@ -162,7 +162,7 @@ public class SearchPatientAction
         this.pageSize = pageSize;
     }
     
-    private Integer defaultPageSize = 10;
+    private Integer defaultPageSize = 50;
     
     public void setDefaultPageSize( Integer defaultPageSize )
     {
@@ -205,7 +205,7 @@ public class SearchPatientAction
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
             
-            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()), pageSize == null ? defaultPageSize : pageSize );
+            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?listAll=true", pageSize == null ? defaultPageSize : pageSize );
             
             pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
             
@@ -228,14 +228,19 @@ public class SearchPatientAction
             selectedStateManager.setSearchText( searchText );
 
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
+            
+            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) 
+                + "?searchingAttributeId=" + searchingAttributeId + "&searchText=" + searchText
+                , pageSize == null ? defaultPageSize : pageSize );
+            
+            pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
+            
+            total = patientAttributeValueService.countSearchPatientAttributeValue( patientAttribute, searchText );
+            
+            pagingUtil.setTotal( total );
 
-            Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
-                patientAttribute, searchText );
-
-            for ( PatientAttributeValue patientAttributeValue : matching )
-            {
-                patients.add( patientAttributeValue.getPatient() );
-            }
+            patients = patientAttributeValueService.searchPatientAttributeValue(
+                patientAttribute, searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
 
             return SUCCESS;
         }
@@ -246,8 +251,16 @@ public class SearchPatientAction
             selectedStateManager.clearSearchingAttributeId();
 
             selectedStateManager.setSearchText( searchText );
-
-            patients = patientService.getPatients( searchText );
+            
+            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?searchText=" + searchText, pageSize == null ? defaultPageSize : pageSize );
+            
+            pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
+            
+            total = patientService.countGetPatients( searchText );
+            
+            pagingUtil.setTotal( total );
+            
+            patients = patientService.getPatients( searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
 
             return SUCCESS;
         }
@@ -282,22 +295,32 @@ public class SearchPatientAction
         
         if ( searchingAttributeId != null && searchText != null )
         {
-            
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
+            
+            pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) 
+                + "?searchingAttributeId=" + searchingAttributeId + "&searchText=" + searchText
+                , pageSize == null ? defaultPageSize : pageSize );
+            
+            pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
+            
+            total = patientAttributeValueService.countSearchPatientAttributeValue( patientAttribute, searchText );
+            
+            pagingUtil.setTotal( total );
 
-            Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
-                patientAttribute, searchText );
-
-            for ( PatientAttributeValue patientAttributeValue : matching )
-            {
-                patients.add( patientAttributeValue.getPatient() );
-            }
-
-            return SUCCESS;
+            patients = patientAttributeValueService.searchPatientAttributeValue(
+                patientAttribute, searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
         }
         
-        patients = patientService.getPatients( searchText ); 
         
+        pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?searchText=" + searchText, pageSize == null ? defaultPageSize : pageSize );
+        
+        pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
+        
+        total = patientService.countGetPatients( searchText );
+        
+        pagingUtil.setTotal( total );
+        
+        patients = patientService.getPatients( searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
         
         
         return SUCCESS;

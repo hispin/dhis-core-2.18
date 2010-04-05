@@ -1,31 +1,4 @@
-/*
- * Copyright (c) 2004-2009, University of Oslo
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without
- *   specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-package org.hisp.dhis.patient.action.patient;
+package org.hisp.dhis.patient.action.relationship;
 
 import java.util.Collection;
 import java.util.Date;
@@ -45,17 +18,15 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.action.patient.AddPatientAction;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
- */
-public class ValidatePatientAction
-    implements Action
+
+public class ValidateAddRelationshipPatientAction
+implements Action
 {
     public static final String PATIENT_DUPLICATE = "duplicate";
 
@@ -97,7 +68,7 @@ public class ValidatePatientAction
     
     private boolean underAge;
     
-    private Integer representativeId;
+    private Integer relationshipId;
     
     private Integer relationshipTypeId;
 
@@ -125,6 +96,7 @@ public class ValidatePatientAction
     {
 
         Date dateOfBirth;
+        System.out.println("selectionManager: "+selectionManager);
 
         if ( selectionManager.getSelectedOrganisationUnit() == null )
         {
@@ -206,7 +178,7 @@ public class ValidatePatientAction
                 boolean flagDuplicate = false;
                 for ( Patient p : patients )
                 {
-                    if ( p.getId().intValue() != id.intValue() )
+                    if ( id == null ||  ( id != null &&  p.getId().intValue() != id.intValue() ) )
                     {
                         flagDuplicate = true;
                         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
@@ -225,23 +197,8 @@ public class ValidatePatientAction
             }
         }
         
-        // Check Under age information
         
-        if( underAge )
-        {
-            if(  representativeId == null )
-            {
-                message = i18n.getString("please_choose_representative_for_this_under_age_patient");
-                return INPUT;
-            }
-            if(  relationshipTypeId == null )
-            {
-                message = i18n.getString("please_choose_relationshipType_for_this_under_age_patient");
-                return INPUT;
-            }
-        }
-        
-        // Check ID duplicate
+        // Check Identifiers duplicate
 
         Patient p = new Patient();
         if ( birthDate != null )
@@ -419,13 +376,13 @@ public class ValidatePatientAction
         this.underAge = underAge;
     }
 
-    public void setRepresentativeId( Integer representativeId )
-    {
-        this.representativeId = representativeId;
-    }
-
     public void setRelationshipTypeId( Integer relationshipTypeId )
     {
         this.relationshipTypeId = relationshipTypeId;
+    }
+
+    public void setRelationshipId( Integer relationshipId )
+    {
+        this.relationshipId = relationshipId;
     }
 }

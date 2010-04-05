@@ -98,7 +98,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/relationshipList.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
+			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/relationship.js</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_UPDATE</param>
 		</action>
@@ -175,6 +175,48 @@
 				/dhis-web-maintenance-patient/responseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="showAddRelationshipPatient"
+			class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addRelationshipPatientForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
+			<param name="menuTreeHeight">285</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js
+				,../dhis-web-commons/util/date.js
+				,../dhis-web-commons/calendar/calendar.js
+				,../dhis-web-commons/calendar/calendar-lang.js
+				,../dhis-web-commons/calendar/calendar-setup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,javascript/jquery/thickbox/thickbox-compressed.js
+				,javascript/relationshipPatient.js</param>
+			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css</param>
+			<param name="requiredAuthorities">F_PATIENT_ADD</param>
+		</action>
+		
+		<action name="validateAddRelationshipPatient"
+			class="org.hisp.dhis.patient.action.relationship.ValidateAddRelationshipPatientAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseError.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseInput.vm</result>
+			<result name="duplicate" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseDuplicate.vm</result>	
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="addRelationshipPatient"
+			class="org.hisp.dhis.patient.action.relationship.AddRelationshipPatientAction">
+			<result name="success" type="redirect">patientform.action</result>
+			<param name="requiredAuthorities">F_PATIENT_ADD</param>
+		</action>
 
 		<!-- PatientAttribute -->
 
@@ -225,7 +267,9 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
+				,javascript/jquery/cluetip/jquery.cluetip.min.js</param>
+			<param name="stylesheets">javascript/jquery/cluetip/jquery.cluetip.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -330,6 +374,7 @@
 			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="stylesheets">style/paging.css</param>
 		</action>
 
 		<action name="listAllPatients"
@@ -406,8 +451,9 @@
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
 				,javascript/jquery/thickbox/thickbox-compressed.js
+				,javascript/jquery/cluetip/jquery.cluetip.min.js
 				,javascript/patient.js</param>
-			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css</param>
+			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css,javascript/jquery/cluetip/jquery.cluetip.css</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
