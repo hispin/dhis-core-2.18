@@ -79,7 +79,7 @@ public class HibernateDataValueStore
     {
         this.periodStore = periodStore;
     }
-
+    
     // -------------------------------------------------------------------------
     // Support methods for reloading periods
     // -------------------------------------------------------------------------
@@ -135,7 +135,11 @@ public class HibernateDataValueStore
     public void deleteDataValue( DataValue dataValue )
     {
         Session session = sessionFactory.getCurrentSession();
-
+        
+        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue = :dataValue" );
+        queryAudit.setEntity( "dataValue", dataValue );
+        queryAudit.executeUpdate();
+        
         session.delete( dataValue );
     }
 
@@ -143,6 +147,10 @@ public class HibernateDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
+        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.source = :source" );
+        queryAudit.setEntity( "source", source );
+        queryAudit.executeUpdate();
+        
         Query query = session.createQuery( "delete DataValue where source = :source" );
         query.setEntity( "source", source );
 
@@ -153,6 +161,10 @@ public class HibernateDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
+        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.dataElement = :dataElement" );
+        queryAudit.setEntity( "dataElement", dataElement );
+        queryAudit.executeUpdate();
+        
         Query query = session.createQuery( "delete DataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
 
