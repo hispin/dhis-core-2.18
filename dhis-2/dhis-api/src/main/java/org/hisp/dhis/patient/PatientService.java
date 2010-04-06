@@ -29,8 +29,10 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -48,7 +50,7 @@ public interface PatientService
 
     Patient getPatient( int id );
 
-    Collection<Patient> getAllPatients();    
+    Collection<Patient> getAllPatients();
 
     Collection<Patient> getAllPatients( Boolean isDead );
 
@@ -57,29 +59,46 @@ public interface PatientService
     Collection<Patient> getPatientsByBirthDate( Date birthDate );
 
     Collection<Patient> getPatientsByNames( String name );
-    
+
     Collection<Patient> getPatients( String searchText );
-    
-    //Collection<Patient> getPatientsByAttribute( PatientAttribute attribute );
-    
-    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit , int min, int max);
-    
+
+    // Collection<Patient> getPatientsByAttribute( PatientAttribute attribute );
+
+    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max );
+
     int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit );
-    
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText , int min, int max);
-    
+
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max );
+
     Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
-    
-    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender);
-    
+
+    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
+
     /**
-     *  Search Patient base on PatientIdentifierType or Attribute or Patient's name
+     * Search Patient base on PatientIdentifierType or Attribute or Patient's
+     * name
+     * 
      * @param identifierTypeId
      * @param attributeId
      * @param value
      * @return
      */
     Collection<Patient> searchPatient( Integer identifierTypeId, Integer attributeId, String value );
-    
+
     Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit );
+
+    Collection<Patient> getPatients( String searchText, int min, int max );
+
+    int countGetPatients( String searchText );
+
+    Collection<Patient> getPatientsByNames( String name, int min, int max );
+
+    int countnGetPatientsByNames( String name );
+
+    void createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+        Integer relationshipTypeId, List<PatientAttributeValue> patientAttributeValues );
+
+    public void updatePatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+        Integer relationshipTypeId, List<PatientAttributeValue> valuesForSave,
+        List<PatientAttributeValue> valuesForUpdate, Collection<PatientAttributeValue> valuesForDelete );
 }
