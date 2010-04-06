@@ -57,7 +57,7 @@
 	<div style="width:100%;overflow:auto">
 	<table width="100%">		
 		<tr>
-			<td colspan="3">
+			<td colspan="4">
 				<select id="availableDataElementGroups" onchange="getDataElementsByGroup(this.value)" style="width:300px"></select>
 			</td>			
 		</tr>
@@ -65,15 +65,20 @@
 		  <td width="23%">
 			<select id="availableDataElements" name="availableDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('availableDataElements','dataElementIds');showText('dataElementIds')" onMouseOut="javascript: hideToolTip();"></select>
 			</td>
-			<td width="17%" align="center">
+			<td width="7%" align="center">
 				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
 				<input type="button" value="<" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
 				<input type="button" value=">>" onclick="moveAllById('availableDataElements' , 'dataElementIds' );" style="width:50px"/><br>
 				<input type="button" value="<<" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
-			<td width="60%">
+			<td width="23%">
 				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' ); showText('availableDataElements');" onMouseOut="javascript: hideToolTip();"></select>
 			</td>
+		    <td width="47%"><a href="javascript:moveSelectedOptionToTop( 'dataElementIds' );"><img src="../images/move_top.png" style="cursor: pointer; width: 20px;" align="absmiddle"></a><br><br>			
+			<a href="javascript:moveUpSelectedOption( 'dataElementIds' );"><img src="../images/move_up.png" style="cursor: pointer; width: 20px;" align="absmiddle"></a><br><br>		
+			<a href="javascript:moveDownSelectedOption( 'dataElementIds' );"><img src="../images/move_down.png" style="cursor: pointer; width: 20px;" align="absmiddle"></a><br><br>		
+			<a href="javascript:moveSelectedOptionToBottom( 'dataElementIds' );"><img src="../images/move_bottom.png" style="cursor: pointer; width: 20px;" align="absmiddle"></a>			
+		</td>
 		</tr>
 	</table>
 	</div>
