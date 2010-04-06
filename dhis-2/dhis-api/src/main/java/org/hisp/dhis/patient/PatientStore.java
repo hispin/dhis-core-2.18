@@ -52,5 +52,10 @@ public interface PatientStore
     //Collection<Patient> getByAttribute( PatientAttribute attribute );
     
     Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    
+    Collection<Patient> getPatientsByNames( String name, int min, int max );
+    
+    int countGetPatientsByNames( String name );
+    
 }
 
