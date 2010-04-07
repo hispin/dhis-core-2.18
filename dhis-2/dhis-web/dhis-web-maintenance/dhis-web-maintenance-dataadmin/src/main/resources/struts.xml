@@ -199,17 +199,17 @@
 
 		<!-- Data integrity -->
 
-		<action name="displayDataIntegrityForm"
-			class="org.hisp.dhis.dataadmin.action.NoAction">
+		<action name="displayDataIntegrityForm" class="org.hisp.dhis.dataadmin.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-dataadmin/dataIntegrityForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
 			<param name="javascripts">javascript/dataIntegrity.js</param>
 		</action>
-		
+
 		<action name="getDataIntegrity"
 			class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/responseDataIntegrity.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-dataadmin/responseDataIntegrity.vm</result>
 		</action>
 
 		<!-- Statistics -->
@@ -311,18 +311,18 @@
 		</action>
 
 		<!-- Duplicate data elimination -->
-		
+
 		<action name="displayDuplicateDataEliminationForm" class="org.hisp.dhis.dataadmin.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-maintenance-dataadmin/duplicateDataEliminationForm.vm</param>
-            <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-            <param name="javascripts">javascript/duplicateDataElimination.js</param>
-        </action>
+			<param name="page">/dhis-web-maintenance-dataadmin/duplicateDataEliminationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="javascripts">javascript/duplicateDataElimination.js</param>
+		</action>
 
-		<action name="eliminateDuplicateData" 
+		<action name="eliminateDuplicateData"
 			class="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction">
 			<result name="success" type="redirect">
-                displayDuplicateDataEliminationForm.action</result>
+				displayDuplicateDataEliminationForm.action</result>
 		</action>
 
 		<!-- Data Element Zero Value Storage Management -->
@@ -348,23 +348,112 @@
 
 		<!-- Data archive -->
 
-		<action name="displayDataArchiveForm"
-			class="org.hisp.dhis.dataadmin.action.NoAction">
+		<action name="displayDataArchiveForm" class="org.hisp.dhis.dataadmin.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-maintenance-dataadmin/dataArchiveForm.vm</param>
-            <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-            <param name="javascripts">javascript/dataArchive.js</param>
+			<param name="page">/dhis-web-maintenance-dataadmin/dataArchiveForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="javascripts">javascript/dataArchive.js</param>
 		</action>
 
 		<action name="archiveData"
 			class="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
 		</action>
 
 		<action name="getNumberOfOverlaps"
 			class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
-        </action>
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+		</action>
+
+		<!-- Min/Max validation -->
+		
+		<action name="getMinMaxValidationParams"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.MinMaxGeneratingAction">
+			<result name="success" type="chain">
+				getMinMaxValidationParamsChain</result>
+			<result name="input" type="chain">
+				getMinMaxValidationParamsChain</result>
+		</action>
+
+		<action name="getMinMaxValidationParamsChain"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-dataadmin/minMaxValidation.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="stylesheets">style/ui.all.css</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js,
+				../dhis-web-commons/util/jquery-ui.js,
+				../dhis-web-commons/util/validate/jquery.validate.js,
+				../dhis-web-commons/util/jquery.metadata.js,
+				../dhis-web-commons/util/validate/additional-methods.js,
+				../dhis-web-commons/util/validate/messages_locale.js,
+				../dhis-web-commons/calendar/calendar.js,
+				../dhis-web-commons/calendar/calendar-lang.js,
+				../dhis-web-commons/calendar/calendar-setup.js,
+				javascript/minMaxValidation.js
+            </param>
+		</action>
+
+		<!-- Min/Max validation - Factor -->
+
+		<action name="getFactor"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetFactoryAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-dataadmin/factor.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="stylesheets">style/ui.all.css</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js,
+				../dhis-web-commons/util/jquery-ui.js,
+				../dhis-web-commons/util/validate/jquery.validate.js,
+				../dhis-web-commons/util/jquery.metadata.js,
+				../dhis-web-commons/util/validate/additional-methods.js,
+				../dhis-web-commons/util/validate/messages_locale.js,
+				javascript/minMaxValidation.js
+            </param>
+		</action>
+
+		<action name="saveFactor"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SaveFactoryAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+		</action>
+
+		<!-- Min/Max validation - Organisation units -->
+
+		<action name="selectLevel"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectLevelAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+		</action>
+
+		<action name="unselectLevel"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+		</action>
+
+		<action name="selectOrganisationUnitGroup"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectOrganisationUnitGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+		</action>
+
+		<action name="unselectOrganisationUnitGroup"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectOrganisationUnitGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+		</action>
+
+		<action name="unselectAll"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectAllAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+		</action>
 
 	</package>
 </struts>
