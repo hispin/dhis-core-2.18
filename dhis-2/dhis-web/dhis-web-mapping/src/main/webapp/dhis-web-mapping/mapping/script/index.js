@@ -1533,6 +1533,7 @@ Ext.onReady( function() {
                             Ext.messageBlack.msg('Delete legend set', 'The legend set <span class="x-msg-hl">' + mlsrv + '</span> was deleted.');
                             Ext.getCmp('predefinedmaplegendset_cb').getStore().reload();
                             Ext.getCmp('predefinedmaplegendset_cb').reset();
+							Ext.getCmp('maplegendset_cb').getStore().reload();
                         },
                         failure: function() {
                             alert( 'Error: deleteMapLegendSet' );
