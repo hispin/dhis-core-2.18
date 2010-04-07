@@ -39,7 +39,6 @@ import org.hisp.dhis.period.Period;
  */
 public class SVGDocument
 {
-
     static final String doctype = "<?xml version='1.0' encoding='UTF-8'?>"
         + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\" ["
         + "<!ATTLIST svg   xmlns:attrib CDATA #IMPLIED> <!ATTLIST path attrib:divname CDATA #IMPLIED>]>";
@@ -60,7 +59,6 @@ public class SVGDocument
 
     public SVGDocument()
     {
-
     }
 
     public StringBuffer getSVGForImage()
@@ -68,20 +66,22 @@ public class SVGDocument
         String title_ = "<g id=\"title\" style=\"display: block; visibility: visible;\"><text id=\"title\" x=\"15\" y=\"15\" font-size=\"14\" font-weight=\"bold\"><tspan>"
             + this.title + "</tspan></text></g>";
 
+        String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"45\" font-size=\"12\"><tspan>"
+            + this.indicator.getName() + "</tspan></text></g>";
+
         String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"15\" y=\"30\" font-size=\"12\"><tspan>"
             + this.period.getName() + "</tspan></text></g>";
-
-        String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"15\" y=\"45\" font-size=\"12\"><tspan>"
-            + this.indicator.getName() + "</tspan></text></g>";
 
         String svg_ = doctype + this.svg;
 
         svg_ = svg_.replaceFirst( "<svg", "<svg " + namespace );
 
-        svg_ = svg_.replaceFirst( "</svg>", title_ + period_ + indicator_ + "</svg>" );
+        svg_ = svg_.replaceFirst( "</svg>", title_ + indicator_ + period_ + "</svg>" );
 
         if ( this.includeLegends )
         {
+            svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 30, 45 ) + "</svg>" );
+
             svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 15, 70 ) + "</svg>" );
         }
 
@@ -92,29 +92,28 @@ public class SVGDocument
     {
         String svg_ = doctype + this.svg;
 
-        svg_ = svg_.replaceFirst( "<svg", "<svg " + namespace );   
-        
+        svg_ = svg_.replaceFirst( "<svg", "<svg " + namespace );
+
         if ( this.includeLegends )
         {
             svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 10, 10 ) + "</svg>" );
         }
-        
+
         return new StringBuffer( svg_ );
     }
 
-    public String getLegendScriptForExcel()    
+    public String getLegendScriptForExcel()
     {
-        
         JSONObject legend;
 
         JSONObject json = (JSONObject) JSONSerializer.toJSON( this.legends );
 
         JSONArray jsonLegends = json.getJSONArray( "legends" );
-        
+
         String result = doctype;
         result += "<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' ";
         result += "xmlns:attrib='http://www.carto.net/attrib/' viewBox='0 0 1 " + jsonLegends.size() + "'>";
-        result += "<g id='legend'>";  
+        result += "<g id='legend'>";
 
         int x = 0;
 
@@ -147,30 +146,28 @@ public class SVGDocument
     private String getLegendScript( int x, int y )
     {
         String result = "<g id='legend'>";
-        result += "<text id=\"indicator\" x=\"" + x + "\" y=\"" + y + "\" font-size=\"14\"><tspan>Legends</tspan></text>";
 
         JSONObject legend;
 
         JSONObject json = (JSONObject) JSONSerializer.toJSON( this.legends );
 
-        JSONArray jsonLegends = json.getJSONArray( "legends" );   
+        JSONArray jsonLegends = json.getJSONArray( "legends" );
 
         for ( int index = 0; index < jsonLegends.size(); index++ )
         {
-
             legend = jsonLegends.getJSONObject( index );
 
             String label = legend.getString( "label" );
 
             String color = legend.getString( "color" );
 
-            result += "<rect x='" + x + "' y='" + (y + 10) + "' height='10' width='30' fill='" + color
+            result += "<rect x='" + x + "' y='" + (y + 15) + "' height='15' width='30' fill='" + color
                 + "' stroke='#000000' stroke-width='1'/>";
 
-            result += "<text id=\"indicator\" x='" + (x + 35) + "' y='" + (y + 22) + "' font-size=\"12\"><tspan>"
+            result += "<text id=\"indicator\" x='" + (x + 40) + "' y='" + (y + 27) + "' font-size=\"12\"><tspan>"
                 + label + "</tspan></text>";
 
-            y += 10;
+            y += 15;
         }
 
         result += "</g>";
@@ -244,5 +241,4 @@ public class SVGDocument
     {
         return this.svg;
     }
-
 }

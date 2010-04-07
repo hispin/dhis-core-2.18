@@ -1,14 +1,33 @@
-﻿/* Ext */
+﻿/* Ext override */
 .ext-gecko .x-window-body .x-form-item {
 	overflow:hidden;
 }
 
-/* Ext theme gray-extend */
+/* Ext theme gray-extend override */
 .x-btn-right{
 	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 -21px transparent;
 }
 .x-btn-left {
 	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 0 transparent;
+}
+.x-toolbar .x-btn-over .x-btn-left{
+	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif);
+}
+.x-toolbar .x-btn-over .x-btn-right{
+	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif);
+}
+.x-toolbar .x-btn-over .x-btn-center{
+	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif);
+}
+.x-toolbar .ytb-sep {
+    background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
+    height:25px;
+}
+.x-panel-tbar .x-toolbar {
+    padding:0;
+}
+.x-btn-icon .x-btn-center .x-btn-text {
+	height:17px;
 }
 
 /* OpenLayers (include in lib)
@@ -74,37 +93,43 @@
 .x-btn .icon-labels {
 	background-image:url(../../../images/labels.png);
 }
+.x-btn .icon-image {
+	background-image:url(../../../images/image.png);
+}
+.x-btn .icon-excel {
+	background-image:url(../../../images/excel.gif);
+}
 .x-btn .icon-pdf {
 	background-image:url(../../../images/pdf.png);
 }
-.x-btn .icon-export-map {
-	background-image:url(../../../images/export.png);
+.x-btn .icon-favorite {
+	background-image:url(../../../images/favorite_star2.png);
+}
+.x-btn .icon-automaticlegendset {
+	background-image:url(../../../images/color_swatch2.png);
+}
+.x-btn .icon-predefinedlegendset {
+	background-image:url(../../../images/color_swatch.png);
+}
+.x-btn .icon-help {
+	background-image:url(../../../images/help.png);
 }
 .aa_dark button  {
-	font-family:lucida sans unicode,arial;
-	font-weight:normal;
-	font-size:10px;
 	color:#111;
 }
 .aa_med button  {
-	font-family:lucida sans unicode,arial;
-	font-weight:normal;
-	font-size:10px;
 	color:#333;
 }
 .aa_light button  {
-	font-family:lucida sans unicode,arial;
-	font-weight:bold;
-	font-size:10px;
 	color:#888;
 }
 
 /* Ext Loading Mask */
 .x-mask-loading2 div  {
-	padding:2px 11px 3px 32px;
+	padding:5px 11px 6px 32px;
 	background:#fbfbfb url('../../../images/loader.gif') no-repeat 5px 2px;
 	line-height:20px;
-	font-weight:normal;
+	font:normal 10px lucida sans unicode;
 }
 
 /* Ext Window */
@@ -114,14 +139,14 @@
 	color:#333;
 }
 .window-field-label-first {
-	padding:0px 0 3px 3px;
+	padding:0 0 3px 3px;
 	font:normal 11px lucida sans unicode,arial;
 	color:#888;
 }
 .window-field-label {
-	padding:8px 0 3px 3px;
+	padding:6px 0 2px 3px;
 	font:normal 11px lucida sans unicode,arial;
-	color:#888;
+	color:#888;	
 }
 .window-button {
 	padding:8px 0 0 0;
@@ -152,6 +177,18 @@
 #window-help-title {
 	padding:0 0 3px 22px;
 	background:url('../../../images/help.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-image-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/image.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-excel-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/excel.gif') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }

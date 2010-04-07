@@ -315,21 +315,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.external.location.LocationManager" />
 	</bean>
 
-
 	<!-- Export Map -->
 
 	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction"
 		scope="prototype">
-		<property name="locationManager"
-			ref="org.hisp.dhis.external.location.LocationManager" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mapping.action.ExportExcelAction" class="org.hisp.dhis.mapping.action.ExportExcelAction"
 		scope="prototype">
-		<property name="locationManager"
-			ref="org.hisp.dhis.external.location.LocationManager" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="organisationUnitService"

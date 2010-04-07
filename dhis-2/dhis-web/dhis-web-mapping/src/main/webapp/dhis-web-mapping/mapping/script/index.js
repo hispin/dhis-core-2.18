@@ -585,14 +585,7 @@ Ext.onReady( function() {
                     }
                 ]
             }
-        ],
-		listeners: {
-			'hide': {
-				fn: function() {
-					mapping.relation = false;
-				}
-			}
-		}
+        ]
     });
 	
 	/* EXPORT MAP PANEL */
@@ -608,17 +601,17 @@ Ext.onReady( function() {
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
+				emptyText: 'Image title',
 				isFormField: true,
 				width: combo_width_fieldset,
 				minListWidth: combo_list_width_fieldset,
 				mode: 'local',
-				triggerAction: 'all',
-				value: 'Image Title'						
+				triggerAction: 'all'						
 			},
 			{
 				xtype: 'combo',
 				id: 'export_image_quality',
-				fieldLabel: 'Image Quality',
+				fieldLabel: 'Image quality',
 				labelSeparator: labelseparator,
 				editable: false,
 				valueField: 'id',
@@ -648,29 +641,31 @@ Ext.onReady( function() {
 				labelSeparator: labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
-				text: 'Export Image',
-				handler: function() {					
-					MASK.msg = 'Exporting image...';
-					MASK.show();
-					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
+				text: 'Export image',
+				handler: function() {
+					if (ACTIVEPANEL == thematicMap
+						&& Ext.getCmp('period_cb').getValue()!='' 
+						&& Ext.getCmp('indicator_cb').getValue()!=''
+						&& Ext.getCmp('map_cb').getValue()!='') {
 					
-					var objectSVGDocument = document.getElementById('OpenLayers.Layer.Vector_17').childNodes[0];
-					
-					var viewBox = objectSVGDocument.getAttribute('viewBox');
-					
-					var title = Ext.getCmp('export_image_title').getValue();
-					
-					var q = Ext.getCmp('export_image_quality').getValue();
-					
-					var w = objectSVGDocument.getAttribute('width') * q;
-					var h = objectSVGDocument.getAttribute('height') * q;
-					var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
-					var period = Ext.getCmp('period_cb').getValue();
-					var indicator = Ext.getCmp('indicator_cb').getValue();
-					Ext.Ajax.request({
-						url: path + 'exportImage' + type,
-						method: 'POST',
-						params: { 
+						MASK.msg = 'Exporting image...';
+						MASK.show();
+
+						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
+						var objectSVGDocument = document.getElementById('OpenLayers.Layer.Vector_17').childNodes[0];
+						var viewBox = objectSVGDocument.getAttribute('viewBox');
+						var title = Ext.getCmp('export_image_title').getValue();
+						var q = Ext.getCmp('export_image_quality').getValue();
+						var w = objectSVGDocument.getAttribute('width') * q;
+						var h = objectSVGDocument.getAttribute('height') * q;
+						var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+						var period = Ext.getCmp('period_cb').getValue();
+						var indicator = Ext.getCmp('indicator_cb').getValue();
+
+						Ext.Ajax.request({
+							url: path + 'exportImage' + type,
+							method: 'POST',
+							params: {
 								title: title,
 								viewBox: viewBox,
 								svg: svg,
@@ -680,14 +675,17 @@ Ext.onReady( function() {
 								period: period,
 								indicator: indicator,
 								legends: getLegendsJSON()
-						},
-						success: function( responseObject ) {
-							MASK.hide();
-							var file =  Ext.util.JSON.decode(responseObject.responseText).file;
-							window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/image" );
-						}
-					});						
-						
+							},
+							success: function(r) {
+								MASK.hide();
+								var file =  Ext.util.JSON.decode(r.responseText).file;
+								window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/image" );
+							}
+						});
+					}
+					else {
+						Ext.messageRed.msg('Export map as image', 'Please render the thematic map first.');
+					}
 				}
 			}	
 		]
@@ -705,25 +703,26 @@ Ext.onReady( function() {
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
+				emptyText: 'Map title',
 				isFormField: true,
 				width: combo_width_fieldset,
 				minListWidth: combo_list_width_fieldset,
 				mode: 'local',
-				triggerAction: 'all',
-				value: 'Map Title'						
+				triggerAction: 'all'
 			},	
 			{
 				xtype: 'checkbox',
 				id: 'export_excel_include_legend',
-				fieldLabel: 'Include legend',				
-				isFormField: true							
+				fieldLabel: 'Include legend',
+				labelSeparator: '',
+				isFormField: true
 			},	
 			{
 				xtype: 'checkbox',
 				id: 'export_excel_include_value',
 				fieldLabel: 'Include values',
-				labelSeparator: '',				
-				isFormField: true								
+				labelSeparator: '',
+				isFormField: true
 			},
 			{
 				xtype: 'button',
@@ -732,26 +731,28 @@ Ext.onReady( function() {
 				labelSeparator: labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
-				text: 'Export Excel',
-				handler: function() {					
-					MASK.msg = 'Exporting excel...';
-					MASK.show();
-					var title = Ext.getCmp('export_excel_title').getValue();
-					
-					var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
-					
-					
-					var includeLegend = Ext.getCmp('export_excel_include_legend').getValue();
-					var includeValues = Ext.getCmp('export_excel_include_value').getValue();
-					var period = Ext.getCmp('period_cb').getValue();
-					var indicator = Ext.getCmp('indicator_cb').getValue();					
-					Ext.Ajax.request({
-						url: path + 'exportExcel' + type,
-						method: 'POST',
-						params: { 	
+				text: 'Export spreadsheet',
+				handler: function() {
+					if (ACTIVEPANEL == thematicMap
+						&& Ext.getCmp('period_cb').getValue()!='' 
+						&& Ext.getCmp('indicator_cb').getValue()!=''
+						&& Ext.getCmp('map_cb').getValue()!='') {
+						
+						MASK.msg = 'Exporting spreadsheet...';
+						MASK.show();
+						var title = Ext.getCmp('export_excel_title').getValue();
+						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
+						var includeLegend = Ext.getCmp('export_excel_include_legend').getValue();
+						var includeValues = Ext.getCmp('export_excel_include_value').getValue();
+						var period = Ext.getCmp('period_cb').getValue();
+						var indicator = Ext.getCmp('indicator_cb').getValue();					
+						Ext.Ajax.request({
+							url: path + 'exportExcel' + type,
+							method: 'POST',
+							params: { 	
 								title: title,
-								width:500,
-								height:500,
+								width: 500,
+								height: 500,
 								svg: svg,							
 								includeLegends: includeLegend,
 								includeValues: includeValues,
@@ -759,74 +760,57 @@ Ext.onReady( function() {
 								indicator: indicator,
 								datavalues: EXPORTVALUES,
 								legends: getLegendsJSON()								
-						},
-						success: function( responseObject ) {
-							MASK.hide();
-							var file =  Ext.util.JSON.decode(responseObject.responseText).file;
-							window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/ms-excel" );
-						}
-					});						
-						
+							},
+							success: function(r) {
+								MASK.hide();
+								var file =  Ext.util.JSON.decode(r.responseText).file;
+								window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/ms-excel" );
+							}
+						});
+					}
+					else {
+						Ext.messageRed.msg('Export map as Excel spreadsheet', 'Please render the thematic map first.');
+					}
 				}
 			}	
 		]
 	});
 	
-	/* EXPORT MAP WINDOW */
-	var exportMapWindow = new Ext.Window({
-        id: 'view_export_map_w',
-        title: '<span id="window-export-map-title">Export Map</span>',
+	/* EXPORT MAP WINDOWS */
+	var exportImageWindow = new Ext.Window({
+        id: 'exportimage_w',
+        title: '<span id="window-image-title">Export map as image</span>',
 		layout: 'fit',
         closeAction: 'hide',
+		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
 		width: 250,
-        items:
-        [            
+		height: 155,
+        items: [
 		   {
-                xtype: 'tabpanel',
-                activeTab: 0,
-				layoutOnTabChange: true,
-                deferredRender: false,
-                plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        if (tab.id == 'export-image') { 
-                            exportMapWindow.setHeight(220);
-                        }
-                        else if (tab.id == 'export-excel') {
-                            exportMapWindow.setHeight(200);
-                        }                        
-                    }
-                },
-                items:
-                [
-                    {
-                        title: '<span class="panel-tab-title">Export Image</span>',
-                        id: 'export-image',
-                        items:
-                        [
-							exportImagePanel							
-                        ]
-                    },
-					{
-                        title: '<span class="panel-tab-title">Export Excel</span>',
-                        id: 'export-excel',
-                        items:
-                        [
-							exportExcelPanel							
-                        ]
-                    }
-                ]
-            }
-        ],
-		listeners: {
-			'hide': {
-				fn: function() {
-					mapping.relation = false;
-				}
+                xtype: 'panel',
+                items: [
+					exportImagePanel
+				]
 			}
-		}
+		]
+    });
+	
+	var exportExcelWindow = new Ext.Window({
+        id: 'exportexcel_w',
+        title: '<span id="window-excel-title">Export map as Excel spreadsheet</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+		width: 252,
+		height: 155,
+        items: [
+		   {
+                xtype: 'panel',
+                items: [
+					exportExcelPanel
+				]
+			}
+		]
     });
     
     /* AUTOMATIC MAP LEGEND SET PANEL */
@@ -1167,7 +1151,7 @@ Ext.onReady( function() {
     
     var automaticMapLegendSetWindow = new Ext.Window({
         id: 'automaticmaplegendset_w',
-        title: '<span id="window-legendset-title">Automatic legend sets</span>',
+        title: '<span id="window-automaticlegendset-title">Automatic legend sets</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: 245,
@@ -1186,13 +1170,13 @@ Ext.onReady( function() {
 						var w = Ext.getCmp('automaticmaplegendset_w');
 						
 						if (tab.id == 'automaticmaplegendset0') { 
-							w.setHeight(306);
+							w.setHeight(298);
 						}
 						else if (tab.id == 'automaticmaplegendset1') {
 							w.setHeight(getMultiSelectHeight() + 180);
 						}
 						else if (tab.id == 'automaticmaplegendset2') {
-							w.setHeight(149);
+							w.setHeight(151);
 						}
 					}
 				},
@@ -1360,16 +1344,18 @@ Ext.onReady( function() {
 				cls: 'window-button',
                 handler: function() {
                     var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
-                    var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue();            
-                    var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue();
+					var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue();
+					var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue();
+                    // var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue() != "0" ? Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue() : 1;
+                    // var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue() != "0" ? Ext.getCmp('predefinedmaplegendendvalue_tf').getValue() : 1;
                     var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
-                    
-                    if (!mln || !mlsv || !mlev || !mlc) {
+					
+					if (!mln || mlsv == "" || mlev == "" || !mlc) {
                         Ext.messageRed.msg('New legend', 'Form is not complete.');
                         return;
                     }
                     
-                    if (validateInput(mln) == false) {
+                    if (!validateInput(mln)) {
                         Ext.messageRed.msg('New legend set', 'Legend name cannot be longer than 25 characters.');
                         return;
                     }
@@ -1385,7 +1371,7 @@ Ext.onReady( function() {
                                     return;
                                 }
                             }
-                            
+
                             Ext.Ajax.request({
                                 url: path + 'addOrUpdateMapLegend' + type,
                                 method: 'POST',
@@ -1468,21 +1454,41 @@ Ext.onReady( function() {
                 handler: function() {
                     var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
                     var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
+					var array = new Array();
+					
+					if (mlms) {
+						array = mlms.split(',');
+						if (array.length > 1) {
+							for (var i = 0; i < array.length; i++) {
+								var sv = predefinedMapLegendStore.getById(array[i]).get('startValue');
+								var ev = predefinedMapLegendStore.getById(array[i]).get('endValue');
+								for (var j = 0; j < array.length; j++) {
+									if (j != i) {
+										var temp_sv = predefinedMapLegendStore.getById(array[j]).get('startValue');
+										var temp_ev = predefinedMapLegendStore.getById(array[j]).get('endValue');
+										for (var k = sv+1; k < ev; k++) {
+											if (k > temp_sv && k < temp_ev) {
+												Ext.messageRed.msg('New legend set', 'Overlapping legends are not allowed.');
+												return;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					else {
+						Ext.messageRed.msg('New legend set', 'Please select at least one legend.');
+                        return;
+					}
 					
                     if (!mlsv) {
-                        Ext.messageRed.msg('New legend set', 'Please select a legend set.');
+                        Ext.messageRed.msg('New legend set', 'Form is not complete.');
                         return;
                     }
                     
-                    if (!mlms) {
-                        Ext.messageRed.msg('New legend set', 'Please select at least one legend.');
-                        return;
-                    }
-                    
-                    var array = new Array();
                     array = mlms.split(',');
                     var params = '?mapLegends=' + array[0];
-                    
                     if (array.length > 1) {
                         for (var i = 1; i < array.length; i++) {
                             array[i] = '&mapLegends=' + array[i];
@@ -1551,7 +1557,7 @@ Ext.onReady( function() {
 	
 	var predefinedMapLegendSetWindow = new Ext.Window({
         id: 'predefinedmaplegendset_w',
-        title: '<span id="window-legendset-title">Predefined legend sets</span>',
+        title: '<span id="window-predefinedlegendset-title">Predefined legend sets</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: 311,
@@ -1570,16 +1576,16 @@ Ext.onReady( function() {
 						var w = Ext.getCmp('predefinedmaplegendset_w');
 						
 						if (tab.id == 'predefinedmaplegendset0') { 
-							w.setHeight(306);
+							w.setHeight(298);
 						}
 						else if (tab.id == 'predefinedmaplegendset1') {
-							w.setHeight(149);
+							w.setHeight(151);
 						}
 						else if (tab.id == 'predefinedmaplegendset2') {
 							w.setHeight(getMultiSelectHeight() + 180);
 						}
 						else if (tab.id == 'predefinedmaplegendset3') {
-							w.setHeight(149);
+							w.setHeight(151);
 						}
 					}
 				},
@@ -1617,8 +1623,6 @@ Ext.onReady( function() {
 			}
         ]
     });
-    
-
 	
     /* HELP PANEL */
 	function getHelpText(topic, tab) {
@@ -2845,9 +2849,8 @@ Ext.onReady( function() {
             var mlfo = Ext.getCmp('maplayerfillopacity_cb').getRawValue();
             var mlsc = Ext.getCmp('maplayerstrokecolor_cf').getValue();
             var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getRawValue();
-			
 			var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
-			var mlwmso = Ext.getCmp('maplayerpathwmsoverlay_tf').getValue();			
+			var mlwmso = Ext.getCmp('maplayerpathwmsoverlay_tf').getValue();
             
             if (!mln) {
                 Ext.messageRed.msg('New overlay', 'Overlay form is not complete.');
@@ -2960,7 +2963,7 @@ Ext.onReady( function() {
             { html: '<div class="panel-fieldlabel">Fill color</div>' }, mapLayerFillColorColorField,
             { html: '<div class="panel-fieldlabel">Fill opacity</div>' }, mapLayerFillOpacityComboBox,
             { html: '<div class="panel-fieldlabel">Stroke color</div>' }, mapLayerStrokeColorColorField,
-            { html: '<div class="panel-fieldlabel">Stroke width</div>' }, mapLayerStrokeWidthComboBox,
+            { html: '<div class="panel-fieldlabel">Stroke width</div>' }, mapLayerStrokeWidthComboBox
         ]
     });
     
@@ -3466,10 +3469,7 @@ Ext.onReady( function() {
 	});
 	
 	var favoritesButton = new Ext.Button({
-		cls: 'x-btn-text-icon',
-		ctCls: 'aa_med',
-		icon: '../../images/favorite_star2.png',
-		text: 'Favorites',
+		iconCls: 'icon-favorite',
 		tooltip: 'Favorite map views',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
@@ -3485,72 +3485,68 @@ Ext.onReady( function() {
 		}
 	});
 	
-	function showExportMap() {		
-	
-		if (ACTIVEPANEL == thematicMap
-			&& Ext.getCmp('period_cb').getValue()!='' 
-			&& Ext.getCmp('indicator_cb').getValue()!=''
-			&& Ext.getCmp('map_cb').getValue()!='') {
-		
+	var exportImageButton = new Ext.Button({
+		iconCls: 'icon-image',
+		tooltip: 'Export map as image (PNG)',
+		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   
 			
-			exportMapWindow.setPosition(x,y);
+			exportImageWindow.setPosition(x,y);
 
-			if (exportMapWindow.visible) {
-				exportMapWindow.hide();
+			if (exportImageWindow.visible) {
+				exportImageWindow.hide();
 			}
 			else {
-				exportMapWindow.show();
+				exportImageWindow.show();
 			}
-		}
-		else {
-			Ext.messageRed.msg('Please render the map fist!','Form does not completed');
-		}
-		
-	}
-	
-	var exportMapButton = new Ext.Button({
-		iconCls: 'icon-export-map',
-		tooltip: 'Export map to image/excel',
-		handler: function() {
-			showExportMap();				
 		}
 	});
 	
-	function showPdf() {
-		var active = ACTIVEPANEL;
-		var printMultiPagePanel = Ext.getCmp('printMultiPage_p');
-		if (printMultiPagePanel.hidden) {
-            printMultiPagePanel.show();
-			printMultiPagePanel.expand();
-        }
-        else {
-			printMultiPagePanel.collapse();
-			printMultiPagePanel.hide();
-			if (active == thematicMap) {
-				choropleth.expand();
+	var exportExcelButton = new Ext.Button({
+		iconCls: 'icon-excel',
+		tooltip: 'Export map as Excel spreadsheet (XLS)',
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;   
+			
+			exportExcelWindow.setPosition(x,y);
+
+			if (exportExcelWindow.visible) {
+				exportExcelWindow.hide();
 			}
-			else if (active == organisationUnitAssignment) {
-				mapping.expand();
+			else {
+				exportExcelWindow.show();
 			}
-        }
-	}
+		}
+	});
 	
 	var pdfButton = new Ext.Button({
 		iconCls: 'icon-pdf',
-		tooltip: 'Show/hide PDF printing panel',
+		tooltip: 'Export map as PDF',
 		handler: function() {
-			showPdf();				
+			var active = ACTIVEPANEL;
+			var printMultiPagePanel = Ext.getCmp('printMultiPage_p');
+			if (printMultiPagePanel.hidden) {
+				printMultiPagePanel.show();
+				printMultiPagePanel.expand();
+			}
+			else {
+				printMultiPagePanel.collapse();
+				printMultiPagePanel.hide();
+				if (active == thematicMap) {
+					choropleth.expand();
+				}
+				else if (active == organisationUnitAssignment) {
+					mapping.expand();
+				}
+			}			
 		}
 	});
 
     var automaticMapLegendSetButton = new Ext.Button({
-		cls: 'x-btn-text-icon',
-		ctCls: 'aa_med',
-		icon: '../../images/color_swatch.png',
-		text: 'Automatic LS',
-		tooltip: 'Assign legend sets to indicators',
+		iconCls: 'icon-automaticlegendset',
+		tooltip: 'Create legend sets for legend type "automatic"',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -3566,11 +3562,8 @@ Ext.onReady( function() {
 	});
 	
 	var predefinedMapLegendSetButton = new Ext.Button({
-		cls: 'x-btn-text-icon',
-		ctCls: 'aa_med',
-		icon: '../../images/color_swatch.png',
-		text: 'Predefined LS',
-		tooltip: 'Assign legend sets to indicators',
+		iconCls: 'icon-predefinedlegendset',
+		tooltip: 'Create legend sets for legend type "predefined"',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -3586,11 +3579,8 @@ Ext.onReady( function() {
 	});
 	
 	var helpButton = new Ext.Button({
-		cls: 'x-btn-text-icon',
-		ctCls: 'aa_med',
-		icon: '../../images/help.png',
-		text: 'Help',
-		tooltip: 'Get help for the active panel',
+		iconCls: 'icon-help',
+		tooltip: 'Get help with GIS',
 		handler: function() {
 			var c = Ext.getCmp('center').x;
 			var e = Ext.getCmp('east').x;
@@ -3618,18 +3608,16 @@ Ext.onReady( function() {
 			' ',' ',' ',' ',' ',
 			zoomInButton,
 			zoomOutButton,
-            ' ',
 			zoomMaxExtentButton,
 			labelsButton,
 			'-',
+			exportImageButton,
+			exportExcelButton,
 			pdfButton,
-			'-',
-			exportMapButton,
 			'-',
 			favoritesButton,
 			'-',
             automaticMapLegendSetButton,
-			'-',
 			predefinedMapLegendSetButton,
 			'-',
 			helpButton,
@@ -3948,21 +3936,17 @@ function getExportDataValueJSON( mapvalues ){
 	var json = '{';
 	json += '"datavalues":';
 	json += '[';	
+	
 	for (var i = 0; i < mapvalues.length; i++) {		
 		json += '{';
 		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
 		json += '"value": "' + mapvalues[i].value + '" ';
-		if(i < mapvalues.length-1){
-			json += '},';
-		}else{
-			json += '}';
-		}
+		json += i < mapvalues.length-1 ? '},' : '}';
 	}
 	json += ']';
 	json += '}';
 	
 	return json;
-	
 }
 
 function getLegendsJSON(){
@@ -3975,13 +3959,8 @@ function getLegendsJSON(){
 		json += '{';
 		json += '"label": "' + legends[i].label + '",';
 		json += '"color": "' + legends[i].color + '" ';
-		if(i < legends.length-1){
-			json += '},';
-		}else{
-			json += '}';
-		}
-	}
-	
+		json += i < legends.length-1 ? '},' : '}';
+	}	
 	json += ']';
 	json += '}';
 	
@@ -4008,9 +3987,7 @@ function getChoroplethData() {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
-			
 			EXPORTVALUES = getExportDataValueJSON( mapvalues );
-			
 			var mv = new Array();
 			var nameColumn = MAPDATA.nameColumn;
 			var options = {};

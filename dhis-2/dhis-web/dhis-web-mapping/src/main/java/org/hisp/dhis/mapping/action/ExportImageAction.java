@@ -26,39 +26,29 @@ package org.hisp.dhis.mapping.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import java.io.OutputStream;
 
-import org.hisp.dhis.external.location.LocationManager;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.StreamUtils;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.util.StreamActionSupport;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
 public class ExportImageAction
-    implements Action
+    extends StreamActionSupport
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private LocationManager locationManager;
-
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
 
     private PeriodService periodService;
 
@@ -81,9 +71,9 @@ public class ExportImageAction
         this.format = format;
     }
 
-    // -------------------------------------------
-    // Output & Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    // Output & input
+    // -------------------------------------------------------------------------
 
     private String svg;
 
@@ -140,54 +130,45 @@ public class ExportImageAction
     {
         this.height = height;
     }
-
-    private String outputFile;
-
-    public String getOutputFile()
-    {
-        return outputFile;
+        
+    @Override
+    protected String execute( HttpServletResponse response, OutputStream out )
+        throws Exception
+    {        
+        SVGUtils.convertToPNG( getSvg(), out, width, height );
+        
+        return SUCCESS;
     }
 
     @Override
-    public String execute()
-        throws Exception
+    protected String getContentType()
     {
+        return "image/png";
+    }
 
+    @Override
+    protected String getFilename()
+    {
+        return "dhis2-gis-image.png";
+    }
+
+    private StringBuffer getSvg()
+    {
         Period p = periodService.getPeriod( period );
 
         p.setName( format.formatPeriod( p ) );
 
         Indicator i = indicatorService.getIndicator( indicator );
 
-        int random = (int) (Math.random() * 100);
-
-        File temporaryDir = locationManager.getFileForWriting( MappingService.MAP_TEMPL_DIR );
-
-        File svgTemporary = new File( temporaryDir, "svg_" + random + ".svg" );
-
         SVGDocument svgDocument = new SVGDocument();
 
         svgDocument.setTitle( this.title );
-
         svgDocument.setSvg( this.svg );
-
         svgDocument.setPeriod( p );
-
         svgDocument.setIndicator( i );
-
         svgDocument.setLegends( legends );
-
         svgDocument.setIncludeLegends( includeLegends );
 
-        StreamUtils.writeContent( svgTemporary, svgDocument.getSVGForImage() );
-
-        File output = new File( temporaryDir, "svg_" + random + ".png" );
-
-        SVGUtils.convertSVG2PNG( svgTemporary, output, width, height );
-
-        outputFile = output.getAbsolutePath();
-
-        return SUCCESS;
+        return svgDocument.getSVGForImage();
     }
-
 }

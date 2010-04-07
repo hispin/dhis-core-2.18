@@ -39,35 +39,36 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 public class Map
 {
     private int id;
-    
+
     private String name;
 
     private String mapLayerPath;
-    
+
     private String type;
-    
+
     private String sourceType;
-    
+
     private OrganisationUnit organisationUnit;
 
     private OrganisationUnitLevel organisationUnitLevel;
 
     private String nameColumn;
-    
+
     private String longitude;
-    
+
     private String latitude;
-    
+
     private int zoom;
-    
+
     private Set<String> staticMapLayerPaths;
-    
+
     public Map()
     {
     }
 
-    public Map( String name, String mapLayerPath, String type, String sourceType, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
-        String nameColumn, String longitude, String latitude, int zoom, Set<String> staticMapLayerPaths )
+    public Map( String name, String mapLayerPath, String type, String sourceType, OrganisationUnit organisationUnit,
+        OrganisationUnitLevel organisationUnitLevel, String nameColumn, String longitude, String latitude, int zoom,
+        Set<String> staticMapLayerPaths )
     {
         this.name = name;
         this.mapLayerPath = mapLayerPath;
@@ -81,11 +82,11 @@ public class Map
         this.zoom = zoom;
         this.staticMapLayerPaths = staticMapLayerPaths;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
@@ -99,22 +100,22 @@ public class Map
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final Map other = (Map) object;
-        
+
         return mapLayerPath.equals( other.mapLayerPath );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -128,7 +129,7 @@ public class Map
     {
         this.id = id;
     }
-    
+
     public String getName()
     {
         return name;
@@ -138,7 +139,7 @@ public class Map
     {
         this.name = name;
     }
-    
+
     public String getMapLayerPath()
     {
         return mapLayerPath;
@@ -148,7 +149,7 @@ public class Map
     {
         this.mapLayerPath = mapLayerPath;
     }
-    
+
     public String getType()
     {
         return type;
@@ -158,7 +159,7 @@ public class Map
     {
         this.type = type;
     }
-    
+
     public String getSourceType()
     {
         return sourceType;
@@ -198,7 +199,7 @@ public class Map
     {
         this.nameColumn = nameColumn;
     }
-    
+
     public String getLongitude()
     {
         return longitude;
@@ -228,7 +229,7 @@ public class Map
     {
         this.zoom = zoom;
     }
-    
+
     public Set<String> getStaticMapLayerPaths()
     {
         return staticMapLayerPaths;
