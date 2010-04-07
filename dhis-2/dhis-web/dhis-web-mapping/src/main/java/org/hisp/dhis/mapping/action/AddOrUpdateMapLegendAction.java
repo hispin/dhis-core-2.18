@@ -48,10 +48,6 @@ public class AddOrUpdateMapLegendAction
         this.mappingService = mappingService;
     }
 
-    
-
-    
-    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -63,16 +59,16 @@ public class AddOrUpdateMapLegendAction
         this.name = name;
     }
 
-    private Double startValue;
+    private String startValue;
     
-    public void setStartValue( Double startValue )
+    public void setStartValue( String startValue )
     {
         this.startValue = startValue;
     }
 
-    private Double endValue;
+    private String endValue;
     
-    public void setEndValue( Double endValue )
+    public void setEndValue( String endValue )
     {
         this.endValue = endValue;
     }
@@ -90,7 +86,7 @@ public class AddOrUpdateMapLegendAction
 
     public String execute()
     {
-        this.mappingService.addOrUpdateMapLegend( this.name, this.startValue, this.endValue, this.color );
+        this.mappingService.addOrUpdateMapLegend( name, Double.parseDouble( startValue ), Double.parseDouble( endValue ), color );
 
         return SUCCESS;
     }

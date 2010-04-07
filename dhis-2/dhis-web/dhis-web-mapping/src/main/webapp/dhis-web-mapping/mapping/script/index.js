@@ -595,13 +595,12 @@ Ext.onReady( function() {
         [
 			{
 				xtype: 'textfield',
-				id: 'export_image_title',
+				id: 'exportimagetitle_tf',
 				fieldLabel: 'Image title',
 				labelSeparator: labelseparator,
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
-				emptyText: 'Image title',
 				isFormField: true,
 				width: combo_width_fieldset,
 				minListWidth: combo_list_width_fieldset,
@@ -610,7 +609,7 @@ Ext.onReady( function() {
 			},
 			{
 				xtype: 'combo',
-				id: 'export_image_quality',
+				id: 'exportimagequality_cb',
 				fieldLabel: 'Image quality',
 				labelSeparator: labelseparator,
 				editable: false,
@@ -629,7 +628,7 @@ Ext.onReady( function() {
 			},
 			{
 				xtype: 'checkbox',
-				id: 'export_image_include_legend',
+				id: 'exportimageincludelegend_chb',
 				fieldLabel: 'Include legend',
 				labelSeparator: '',				
 				isFormField: true,
@@ -637,7 +636,7 @@ Ext.onReady( function() {
 			},
 			{
 				xtype: 'button',
-                id: 'export_image_button',
+                id: 'exportimage_b',
 				isFormField: true,
 				labelSeparator: labelseparator,
 				hideLabel: false,
@@ -648,17 +647,19 @@ Ext.onReady( function() {
 						&& Ext.getCmp('period_cb').getValue()!='' 
 						&& Ext.getCmp('indicator_cb').getValue()!=''
 						&& Ext.getCmp('map_cb').getValue()!='') {
-					
+						
 						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
 						var objectSVGDocument = document.getElementById('OpenLayers.Layer.Vector_17').childNodes[0];
 						var viewBox = objectSVGDocument.getAttribute('viewBox');
-						var title = Ext.getCmp('export_image_title').getValue();
-						var q = Ext.getCmp('export_image_quality').getValue();
+						var title = Ext.getCmp('exportimagetitle_tf').getValue();
+						var q = Ext.getCmp('exportimagequality_cb').getValue();
 						var w = objectSVGDocument.getAttribute('width') * q;
 						var h = objectSVGDocument.getAttribute('height') * q;
-						var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
+						var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
 						var period = Ext.getCmp('period_cb').getValue();
 						var indicator = Ext.getCmp('indicator_cb').getValue();
+						
+						Ext.getCmp('exportimagetitle_tf').reset();
                         
                         var exportForm = document.getElementById('exportForm');
                         exportForm.action = '../exportImage.action';
@@ -690,13 +691,12 @@ Ext.onReady( function() {
         [
 			{
 				xtype: 'textfield',
-				id: 'export_excel_title',
+				id: 'exportexceltitle_ft',
 				fieldLabel: 'Map title',
 				labelSeparator: labelseparator,
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
-				emptyText: 'Map title',
 				isFormField: true,
 				width: combo_width_fieldset,
 				minListWidth: combo_list_width_fieldset,
@@ -705,7 +705,7 @@ Ext.onReady( function() {
 			},	
 			{
 				xtype: 'checkbox',
-				id: 'export_excel_include_legend',
+				id: 'exportexcelincludelegend_chb',
 				fieldLabel: 'Include legend',
 				labelSeparator: '',
 				isFormField: true,
@@ -713,7 +713,7 @@ Ext.onReady( function() {
 			},	
 			{
 				xtype: 'checkbox',
-				id: 'export_excel_include_value',
+				id: 'exportexcelincludevalue_chb',
 				fieldLabel: 'Include values',
 				labelSeparator: '',
 				isFormField: true,
@@ -721,7 +721,7 @@ Ext.onReady( function() {
 			},
 			{
 				xtype: 'button',
-                id: 'export_excel_button',
+                id: 'exportexcel_b',
 				isFormField: true,
 				labelSeparator: labelseparator,
 				hideLabel: false,
@@ -732,13 +732,15 @@ Ext.onReady( function() {
 						&& Ext.getCmp('period_cb').getValue()!='' 
 						&& Ext.getCmp('indicator_cb').getValue()!=''
 						&& Ext.getCmp('map_cb').getValue()!='') {
-						
-						var title = Ext.getCmp('export_excel_title').getValue();
+												
+						var title = Ext.getCmp('exportexceltitle_ft').getValue();
 						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
-						var includeLegend = Ext.getCmp('export_excel_include_legend').getValue();
-						var includeValues = Ext.getCmp('export_excel_include_value').getValue();
+						var includeLegend = Ext.getCmp('exportexcelincludelegend_chb').getValue();
+						var includeValues = Ext.getCmp('exportexcelincludevalue_chb').getValue();
 						var period = Ext.getCmp('period_cb').getValue();
-						var indicator = Ext.getCmp('indicator_cb').getValue();	
+						var indicator = Ext.getCmp('indicator_cb').getValue();
+						
+						Ext.getCmp('exportexceltitle_ft').reset();
 											
                         var exportForm = document.getElementById('exportForm');
                         exportForm.action = '../exportExcel.action';
