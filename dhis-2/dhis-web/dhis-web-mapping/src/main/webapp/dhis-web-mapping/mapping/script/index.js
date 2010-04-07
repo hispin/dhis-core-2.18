@@ -1,4 +1,4 @@
-﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
+﻿﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 var MAP;
 var BASECOORDINATE;
@@ -621,10 +621,10 @@ Ext.onReady( function() {
 				minListWidth: combo_list_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all',
-				value: 2,
+				value: 1,
 				store: new Ext.data.SimpleStore({
 					fields: ['id', 'text'],
-					data: [[1, 'Small'], [2, 'Medium'], [4, 'Large']]
+					data: [[1, 'Medium'], [2, 'Large']]
 				})					
 			},
 			{
@@ -648,9 +648,6 @@ Ext.onReady( function() {
 						&& Ext.getCmp('indicator_cb').getValue()!=''
 						&& Ext.getCmp('map_cb').getValue()!='') {
 					
-						MASK.msg = 'Exporting image...';
-						MASK.show();
-
 						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
 						var objectSVGDocument = document.getElementById('OpenLayers.Layer.Vector_17').childNodes[0];
 						var viewBox = objectSVGDocument.getAttribute('viewBox');
@@ -661,27 +658,22 @@ Ext.onReady( function() {
 						var includeLegend = Ext.getCmp('export_image_include_legend').getValue();
 						var period = Ext.getCmp('period_cb').getValue();
 						var indicator = Ext.getCmp('indicator_cb').getValue();
+                        
+                        var exportForm = document.getElementById('exportForm');
+                        exportForm.action = '../exportImage.action';
+                        exportForm.target = '_blank';
+                        
+                        document.getElementById('titleField').value = title;   
+                        document.getElementById('viewBoxField').value = viewBox;  
+                        document.getElementById('svgField').value = svg;  
+                        document.getElementById('widthField').value = w;  
+                        document.getElementById('heightField').value = h;  
+                        document.getElementById('includeLegendsField').value = includeLegend;  
+                        document.getElementById('periodField').value = period;  
+                        document.getElementById('indicatorField').value = indicator;   
+                        document.getElementById('legendsField').value = getLegendsJSON();
 
-						Ext.Ajax.request({
-							url: path + 'exportImage' + type,
-							method: 'POST',
-							params: {
-								title: title,
-								viewBox: viewBox,
-								svg: svg,
-								width: w,
-								height: h,
-								includeLegends: includeLegend,
-								period: period,
-								indicator: indicator,
-								legends: getLegendsJSON()
-							},
-							success: function(r) {
-								MASK.hide();
-								var file =  Ext.util.JSON.decode(r.responseText).file;
-								window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/image" );
-							}
-						});
+                        exportForm.submit();
 					}
 					else {
 						Ext.messageRed.msg('Export map as image', 'Please render the thematic map first.');
@@ -738,35 +730,28 @@ Ext.onReady( function() {
 						&& Ext.getCmp('indicator_cb').getValue()!=''
 						&& Ext.getCmp('map_cb').getValue()!='') {
 						
-						MASK.msg = 'Exporting spreadsheet...';
-						MASK.show();
 						var title = Ext.getCmp('export_excel_title').getValue();
 						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
 						var includeLegend = Ext.getCmp('export_excel_include_legend').getValue();
 						var includeValues = Ext.getCmp('export_excel_include_value').getValue();
 						var period = Ext.getCmp('period_cb').getValue();
-						var indicator = Ext.getCmp('indicator_cb').getValue();					
-						Ext.Ajax.request({
-							url: path + 'exportExcel' + type,
-							method: 'POST',
-							params: { 	
-								title: title,
-								width: 500,
-								height: 500,
-								svg: svg,							
-								includeLegends: includeLegend,
-								includeValues: includeValues,
-								period: period,
-								indicator: indicator,
-								datavalues: EXPORTVALUES,
-								legends: getLegendsJSON()								
-							},
-							success: function(r) {
-								MASK.hide();
-								var file =  Ext.util.JSON.decode(r.responseText).file;
-								window.open(path + "download" + type + "?path=" + file + "&outputFormat=application/ms-excel" );
-							}
-						});
+						var indicator = Ext.getCmp('indicator_cb').getValue();	
+											
+                        var exportForm = document.getElementById('exportForm');
+                        exportForm.action = '../exportExcel.action';
+                        
+                        document.getElementById('titleField').value = title;
+                        document.getElementById('svgField').value = svg;  
+                        document.getElementById('widthField').value = 500;  
+                        document.getElementById('heightField').value = 500;  
+                        document.getElementById('includeLegendsField').value = includeLegend;  
+                        document.getElementById('includeValuesField').value = includeValues; 
+                        document.getElementById('periodField').value = period;  
+                        document.getElementById('indicatorField').value = indicator;   
+                        document.getElementById('legendsField').value = getLegendsJSON();
+                        document.getElementById('dataValuesField').value = EXPORTVALUES;
+
+                        exportForm.submit();
 					}
 					else {
 						Ext.messageRed.msg('Export map as Excel spreadsheet', 'Please render the thematic map first.');
