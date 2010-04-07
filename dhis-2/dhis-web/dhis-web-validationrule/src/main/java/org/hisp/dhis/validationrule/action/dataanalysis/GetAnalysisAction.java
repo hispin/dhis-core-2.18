@@ -220,7 +220,7 @@ public class GetAnalysisAction
         {
             log.info( "Data analysis type: " + key );
             
-            dataValues = service.analyse( organisationUnit, dataElements, periods, standardDeviation );
+            dataValues = (Collection<DeflatedDataValue>) service.analyse( organisationUnit, dataElements, periods, standardDeviation );
         }
         
         return SUCCESS;

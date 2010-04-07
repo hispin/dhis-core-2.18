@@ -30,7 +30,6 @@ package org.hisp.dhis.dataanalysis;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -43,6 +42,6 @@ public interface DataAnalysisService
 {
     String ID = DataAnalysisService.class.getName();
 
-    Collection<DeflatedDataValue> analyse( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
+    Collection<?> analyse( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
         Collection<Period> periods, Double stdDevFactor );
 }
