@@ -1336,8 +1336,6 @@ Ext.onReady( function() {
                     var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
 					var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue();
 					var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue();
-                    // var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue() != "0" ? Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue() : 1;
-                    // var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue() != "0" ? Ext.getCmp('predefinedmaplegendendvalue_tf').getValue() : 1;
                     var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
 					
 					if (!mln || mlsv == "" || mlev == "" || !mlc) {
