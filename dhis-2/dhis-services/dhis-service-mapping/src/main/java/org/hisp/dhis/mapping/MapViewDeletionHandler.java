@@ -73,7 +73,7 @@ public class MapViewDeletionHandler
         
         return true;
     }
-    
+        
     @Override
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
@@ -104,6 +104,18 @@ public class MapViewDeletionHandler
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
             if ( mapView.getMapSource().equals( map.getMapLayerPath() ) )
+            {
+                mappingService.deleteMapView( mapView );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteMapLegendSet( MapLegendSet mapLegendSet )
+    {
+        for ( MapView mapView : mappingService.getAllMapViews() )
+        {
+            if ( mapView.getMapLegendSet().equals( mapLegendSet ) )
             {
                 mappingService.deleteMapView( mapView );
             }
