@@ -1,0 +1,14 @@
+<h3>$i18n.getString( "set_factor" )</h3>
+
+<table>
+<tr>
+	<td>$i18n.getString('factor')</td>
+	<td><input id='factor' name="factor" value='$!factor' style="width: 15em"></td>
+	<td><input type="button" onClick="saveFactor();" value="$i18n.getString('save')" style="width:10em"></td>
+</tr>
+</table>
+<span id="message"></span>
+<script>
+	var i18n_save_factory_success = '$encoder.jsEncode( $i18n.getString( "save_factory_success" ) )';
+</script>
+
