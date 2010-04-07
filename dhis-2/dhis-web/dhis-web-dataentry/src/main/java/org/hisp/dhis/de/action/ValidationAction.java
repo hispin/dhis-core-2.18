@@ -162,10 +162,10 @@ public class ValidationAction
         // Min-max and outlier analysis
         // ---------------------------------------------------------------------
 
-        Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.
+        Collection<DeflatedDataValue> stdDevs = (Collection<DeflatedDataValue>)stdDevOutlierAnalysisService.
             analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), STD_DEV );
 
-        Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.
+        Collection<DeflatedDataValue> minMaxs = (Collection<DeflatedDataValue>)minMaxOutlierAnalysisService.
             analyse( orgUnit, dataSet.getDataElements(), ListUtils.getCollection( period ), null );
         
         dataValues = CollectionUtils.union( stdDevs, minMaxs );
