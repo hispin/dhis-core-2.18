@@ -63,13 +63,13 @@ public class SVGDocument
 
     public StringBuffer getSVGForImage()
     {
-        String title_ = "<g id=\"title\" style=\"display: block; visibility: visible;\"><text id=\"title\" x=\"15\" y=\"15\" font-size=\"14\" font-weight=\"bold\"><tspan>"
+        String title_ = "<g id=\"title\" style=\"display: block; visibility: visible;\"><text id=\"title\" x=\"30\" y=\"15\" font-size=\"14\" font-weight=\"bold\"><tspan>"
             + this.title + "</tspan></text></g>";
 
         String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"45\" font-size=\"12\"><tspan>"
             + this.indicator.getName() + "</tspan></text></g>";
 
-        String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"15\" y=\"30\" font-size=\"12\"><tspan>"
+        String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"30\" y=\"30\" font-size=\"12\"><tspan>"
             + this.period.getName() + "</tspan></text></g>";
 
         String svg_ = doctype + this.svg;
@@ -81,8 +81,6 @@ public class SVGDocument
         if ( this.includeLegends )
         {
             svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 30, 45 ) + "</svg>" );
-
-            svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 15, 70 ) + "</svg>" );
         }
 
         return new StringBuffer( svg_ );
@@ -111,8 +109,11 @@ public class SVGDocument
         JSONArray jsonLegends = json.getJSONArray( "legends" );
 
         String result = doctype;
+        
         result += "<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' ";
+
         result += "xmlns:attrib='http://www.carto.net/attrib/' viewBox='0 0 1 " + jsonLegends.size() + "'>";
+        
         result += "<g id='legend'>";
 
         int x = 0;
@@ -138,6 +139,7 @@ public class SVGDocument
         }
 
         result += "</g>";
+        
         result += "</svg>";
 
         return result;
