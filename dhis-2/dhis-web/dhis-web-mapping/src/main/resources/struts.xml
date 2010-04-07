@@ -343,26 +343,14 @@
 				/dhis-web-mapping/jsonGeoJsonFiles.vm</result>
 		</action>
 
-
 		<!-- Export Map -->
 
 		<action name="exportImage" class="org.hisp.dhis.mapping.action.ExportImageAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonOutputFile.vm</result>
+			<result name="success" type="outputStreamResult"/>
 		</action>
 
 		<action name="exportExcel" class="org.hisp.dhis.mapping.action.ExportExcelAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonOutputFile.vm</result>
-		</action>
-
-		<action name="download" class="org.hisp.dhis.mapping.action.DownloadFileAction">
-			<result name="success" type="stream">
-				<param name="contentType">${outputFormat}</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${fileName}"</param>
-				<param name="bufferSize">10240</param>
-			</result>
+            <result name="success" type="outputStreamResult"/>
 		</action>
 
 	</package>

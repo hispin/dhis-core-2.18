@@ -340,17 +340,17 @@ public class StreamUtils
 
     /**
      * Test for zip stream signature.
-     *
+     * 
      * @param instream the BufferedInputStream to test.
      */
-    public static boolean isZip(BufferedInputStream instream)
+    public static boolean isZip( BufferedInputStream instream )
     {
         /*
-        Signature of zip stream from http://www.pkware.com/documents/casestudies/APPNOTE.TXT
-        Local file header:
-        local file header signature     4 bytes  (0x04034b50)
+         * Signature of zip stream from
+         * http://www.pkware.com/documents/casestudies/APPNOTE.TXT Local file
+         * header: local file header signature 4 bytes (0x04034b50)
          */
-        instream.mark(4);
+        instream.mark( 4 );
         byte[] b = new byte[4];
         byte[] zipSig = new byte[4];
         zipSig[0] = 0x50;
@@ -358,45 +358,56 @@ public class StreamUtils
         zipSig[2] = 0x03;
         zipSig[3] = 0x04;
 
-        try {
-            instream.read(b, 0, 4);
-        } catch (Exception ex) {
+        try
+        {
+            instream.read( b, 0, 4 );
+        }
+        catch ( Exception ex )
+        {
             throw new RuntimeException( "Couldn't read header from stream ", ex );
         }
-        try {
+        try
+        {
             instream.reset();
-        } catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
             throw new RuntimeException( "Couldn't reset stream ", ex );
         }
-        return Arrays.equals(b, zipSig) ? true : false;
+        
+        return Arrays.equals( b, zipSig ) ? true : false;
     }
 
     /**
      * Test for Gzip stream signature.
-     *
+     * 
      * @param instream the BufferedInputStream to test.
      */
-    public static boolean isGZip(BufferedInputStream instream)
+    public static boolean isGZip( BufferedInputStream instream )
     {
         /*
-        Signature of gzip stream from RFC 1952:
-        ID1 (IDentification 1)
-        ID2 (IDentification 2)
-        These have the fixed values ID1 = 31 (0x1f, \037), ID2 = 139
-        (0x8b, \213), to identify the file as being in gzip format.
+         * Signature of gzip stream from RFC 1952: ID1 (IDentification 1) ID2
+         * (IDentification 2) These have the fixed values ID1 = 31 (0x1f, \037),
+         * ID2 = 139 (0x8b, \213), to identify the file as being in gzip format.
          */
-        instream.mark(2);
+        instream.mark( 2 );
         byte[] b = new byte[2];
 
-        try {
-            instream.read(b, 0, 2);
-        } catch (Exception ex) {
-            throw new RuntimeException("Couldn't read header from stream ", ex);
+        try
+        {
+            instream.read( b, 0, 2 );
         }
-        try {
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Couldn't read header from stream ", ex );
+        }
+        try
+        {
             instream.reset();
-        } catch (Exception ex) {
-            throw new RuntimeException("Couldn't reset stream ", ex);
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Couldn't reset stream ", ex );
         }
 
         return (b[0] == 31 && b[1] == -117) ? true : false;

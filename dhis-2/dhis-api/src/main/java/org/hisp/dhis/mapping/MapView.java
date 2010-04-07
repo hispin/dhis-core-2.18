@@ -70,7 +70,7 @@ public class MapView
 
     private String colorHigh;
 
-    private MapLegendSet mapLegendSet;     
+    private MapLegendSet mapLegendSet;
 
     private String longitude;
 

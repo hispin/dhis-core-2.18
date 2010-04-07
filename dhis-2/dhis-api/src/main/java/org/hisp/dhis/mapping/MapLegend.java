@@ -27,7 +27,6 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 /**
  * @author Jan Henrik Overland
  * @version $Id$
@@ -37,13 +36,13 @@ public class MapLegend
     private int id;
 
     private String name;
-    
+
     private Double startValue;
-    
+
     private Double endValue;
-    
-    private String color; 
-    
+
+    private String color;
+
     public MapLegend()
     {
     }
@@ -55,11 +54,11 @@ public class MapLegend
         this.endValue = endValue;
         this.color = color;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
@@ -73,25 +72,25 @@ public class MapLegend
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         MapLegend other = (MapLegend) object;
-        
+
         return name.equals( other.name );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
-    // -------------------------------------------------------------------------    
+    // -------------------------------------------------------------------------
 
     public int getId()
     {

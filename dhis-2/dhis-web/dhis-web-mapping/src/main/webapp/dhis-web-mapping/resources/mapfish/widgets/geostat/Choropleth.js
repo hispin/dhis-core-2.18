@@ -362,7 +362,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 							Ext.Ajax.request({
 								url: path + 'getMapLegendSet' + type,
 								method: 'POST',
-								params: { mapLegendSetId: MAPVIEW.mapLegendSetId },
+								params: { id: MAPVIEW.mapLegendSetId },
 								success: function(r) {
 									var mls = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
 									Ext.getCmp('maplegendset_cb').setValue(mls.id);

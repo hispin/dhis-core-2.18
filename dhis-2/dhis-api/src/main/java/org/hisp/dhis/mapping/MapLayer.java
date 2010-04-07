@@ -36,26 +36,27 @@ public class MapLayer
     private int id;
 
     private String name;
-    
+
     private String type;
-    
+
     private String mapSourceType;
-    
+
     private String mapSource;
-    
+
     private String fillColor;
-    
+
     private double fillOpacity;
-    
+
     private String strokeColor;
-    
+
     private int strokeWidth;
-    
+
     public MapLayer()
     {
     }
 
-    public MapLayer( String name, String type, String mapSourceType, String mapSource, String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
+    public MapLayer( String name, String type, String mapSourceType, String mapSource, String fillColor,
+        double fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
         this.type = type;
@@ -66,11 +67,11 @@ public class MapLayer
         this.strokeColor = strokeColor;
         this.strokeWidth = strokeWidth;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
@@ -84,22 +85,22 @@ public class MapLayer
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final MapLayer other = (MapLayer) object;
-        
+
         return name.equals( other.name );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -132,7 +133,7 @@ public class MapLayer
     public void setType( String type )
     {
         this.type = type;
-    }    
+    }
 
     public String getMapSourceType()
     {
