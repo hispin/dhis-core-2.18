@@ -80,6 +80,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
     <aop:aspect ref="deletionInterceptor">      
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMap(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegend(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegendSet(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapOrganisationUnitRelation(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapView(..) )" method="intercept"/>

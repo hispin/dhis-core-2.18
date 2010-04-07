@@ -632,7 +632,8 @@ Ext.onReady( function() {
 				id: 'export_image_include_legend',
 				fieldLabel: 'Include legend',
 				labelSeparator: '',				
-				isFormField: true		
+				isFormField: true,
+				checked: true
 			},
 			{
 				xtype: 'button',
@@ -707,14 +708,16 @@ Ext.onReady( function() {
 				id: 'export_excel_include_legend',
 				fieldLabel: 'Include legend',
 				labelSeparator: '',
-				isFormField: true
+				isFormField: true,
+				checked: true
 			},	
 			{
 				xtype: 'checkbox',
 				id: 'export_excel_include_value',
 				fieldLabel: 'Include values',
 				labelSeparator: '',
-				isFormField: true
+				isFormField: true,
+				checked: true
 			},
 			{
 				xtype: 'button',
