@@ -12,5 +12,6 @@
     #introListItem( "viewStatistics.action" "data_statistics" )
     #introListItem( "displayLockingForm.action" "data_locking" )
     #introListItem( "zeroValueStorageManagement.action" "zero_storage_management" ) 
+	#introListItem( "getMinMaxValidationParams.action" "min_max_validation" ) 
     #introListItem( "showCache.action" "cache_statistics" )
 </ul>

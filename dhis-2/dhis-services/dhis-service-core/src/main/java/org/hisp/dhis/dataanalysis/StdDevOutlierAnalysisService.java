@@ -58,12 +58,12 @@ public class StdDevOutlierAnalysisService
     }
 
     private OrganisationUnitService organisationUnitService;
-    
+
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // OutlierAnalysisService implementation
     // -------------------------------------------------------------------------
@@ -71,21 +71,24 @@ public class StdDevOutlierAnalysisService
     public final Collection<DeflatedDataValue> analyse( OrganisationUnit organisationUnit,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
-        
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit
+            .getId() );
+
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
-        
+
         for ( DataElement dataElement : dataElements )
         {
             if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-            {                    
-                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
-                
+            {
+                Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo()
+                    .getOptionCombos();
+
                 for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                 {
                     for ( OrganisationUnit unit : units )
                     {
-                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods,
+                            stdDevFactor ) );
                     }
                 }
             }
@@ -98,23 +101,23 @@ public class StdDevOutlierAnalysisService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
+    private Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement,
         DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
     {
         Double stdDev = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
-                
-        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist when 0.0
+
+        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist
+        // when 0.0
         {
             Double avg = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
-            
-            double deviation = stdDev * stdDevFactor;        
+
+            double deviation = stdDev * stdDevFactor;
             Double lowerBound = avg - deviation;
             Double upperBound = avg + deviation;
-            
-            return dataAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods, 
-                organisationUnit, lowerBound.intValue(), upperBound.intValue() );            
+            return dataAnalysisStore.getDeflatedDataValues( dataElement, categoryOptionCombo, periods,
+                organisationUnit, lowerBound.intValue(), upperBound.intValue() );
         }
-        
+
         return new ArrayList<DeflatedDataValue>();
     }
 }
