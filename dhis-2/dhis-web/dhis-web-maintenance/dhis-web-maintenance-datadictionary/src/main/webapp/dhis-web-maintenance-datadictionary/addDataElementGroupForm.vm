@@ -49,6 +49,9 @@
 	<tr>
 		<td>
 			<select id="availableDataElements" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableDataElements', 'groupMembers' )">
+			    #foreach( $element in $availableDataElements )
+			    	<option value="$element.id">$encoder.htmlEncode( $element.name )</option>
+    			#end
 			</select>
 		</td>
 		
@@ -57,7 +60,6 @@
 			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'groupMembers', 'availableDataElements' )"/><br/>
 			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataElements', 'groupMembers' )"/><br/>
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'groupMembers', 'availableDataElements' )"/>
-
 		</td>
 	
 		<td>
@@ -73,18 +75,6 @@
 <span id="message"></span>
 
 <script type="text/javascript">
-
-	var groupMembers = new Object();
-#foreach( $dataElement in $groupMembers )
-	groupMembers['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-
-	var availableDataElements = new Object();
-#foreach( $dataElement in $availableDataElements )
-	availableDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-
-	initLists();
 
 	var nameField = document.getElementById( 'name' );
 	nameField.select();

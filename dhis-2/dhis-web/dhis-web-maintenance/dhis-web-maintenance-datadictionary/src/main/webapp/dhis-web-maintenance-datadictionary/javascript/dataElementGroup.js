@@ -104,22 +104,3 @@ function updateValidationCompleted( messageElement )
         setMessage( message );
     }
 }
-
-// -----------------------------------------------------------------------------
-// Select lists
-// -----------------------------------------------------------------------------
-
-function initLists()
-{
-    var id;
-
-    for ( id in groupMembers )
-    {
-        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMembers[id] )) ;
-    }
-
-    for ( id in availableDataElements )
-    {
-        $("#availableDataElements").append( $( "<option></option>" ).attr( "value",id ).text( availableDataElements[id] )) ;
-    }
-}

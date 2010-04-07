@@ -42,23 +42,29 @@
 		<th>$i18n.getString( "available_dataelementgroup" )</th><td></td><th>$i18n.getString( "group_members" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterAvailableDataElementGroups()" style="width:25em"></td>
+		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterList( this.value, 'availableDataElementGroups' )" style="width:25em"></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-		<td><input type="text" id="groupMembersFilter" onkeyup="filterGroupMembers()" style="width:25em"></td>
+		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"></td>
 	</tr>
 	<tr>
 		<td>
-			<select id="availableDataElementGroups" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="addGroupMembers()">
+			<select id="availableDataElementGroups" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableDataElementGroups', 'groupMembers' )">
+				#foreach( $dataElementGroup in $availableGroups )
+					<option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
+				#end
 			</select>
 		</td>
 		
-		<td style="text-align:center">			
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addGroupMembers()"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeGroupMembers()">			
-		</td>
-	
+        <td style="text-align:center">          
+            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataElementGroups', 'groupMembers' )"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'groupMembers', 'availableDataElementGroups' )"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataElementGroups', 'groupMembers' )"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'groupMembers', 'availableDataElementGroups' )"/>
+        </td>
+    
 		<td>
-			<select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
+			<select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableDataElementGroups' )">
+			</select>
 		</td>
 		<td>
 			<a href="javascript:moveUpSelectedOption( 'groupMembers')" title="$i18n.getString( "move_up" )"><img src="../images/move_up.png" alt="$i18n.getString( "move_up" )"></a>
@@ -76,19 +82,9 @@
 
 <script type="text/javascript">
 
-	var groupMembers = new Object();
-	
-	var availableDataElementGroups = new Object();
-#foreach( $dataElementGroup in $availableGroups )
-	availableDataElementGroups['$dataElementGroup.id'] = '$encoder.jsEscape( $dataElementGroup.name, "'" )';
-#end
-
-	initLists();
-
 	var nameField = document.getElementById( 'name' );
 	nameField.select();
 	nameField.focus();
 	
 </script>
-
 

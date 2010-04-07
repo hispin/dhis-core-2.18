@@ -119,6 +119,9 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 		}
 		else if (mapLegendType == map_legend_type_predefined) {
 			this.colorInterpolation = choropleth.colorInterpolation;
+			for (var i = 0; i < choropleth.colorInterpolation.length; i++) {
+				choropleth.imageLegend[i].color = choropleth.colorInterpolation[i].toHexString();
+			}
 		}
     },
 	

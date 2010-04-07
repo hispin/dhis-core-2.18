@@ -48,17 +48,26 @@
 	</tr>
 	<tr>
 		<td>
-			<select id="availableDataElementGroups" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="addGroupMembers()">
+			<select id="availableDataElementGroups" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableDataElementGroups', 'groupMembers' )">
+				#foreach( $dataElementGroup in $availableGroups )
+                    <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
+                #end
 			</select>
 		</td>
 		
-		<td style="text-align:center">			
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addGroupMembers()"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeGroupMembers()">			
-		</td>
-	
+        <td style="text-align:center">          
+            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataElementGroups', 'groupMembers' )"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'groupMembers', 'availableDataElementGroups' )"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataElementGroups', 'groupMembers' )"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'groupMembers', 'availableDataElementGroups' )"/>
+        </td>
+    
 		<td>
-			<select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
+			<select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableDataElementGroups' )">
+				#foreach( $dataElementGroup in $selectedGroups )
+                    <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
+                #end
+			</select>
 		</td>
 		
 		<td>
@@ -76,17 +85,6 @@
 <span id='message'></span>
 
 <script type="text/javascript">
-
-	var groupMembers = new Object();
-#foreach( $dataElement in $selectedGroups )
-	groupMembers['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-	var availableDataElementGroups = new Object();
-#foreach( $dataElement in $availableGroups )
-	availableDataElementGroups['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-
-	initLists();
 
 	var nameField = document.getElementById( 'name' );
 	nameField.select();

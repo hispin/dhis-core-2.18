@@ -51,21 +51,26 @@
 		<th>$i18n.getString( "selected_data_elements" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="width:100%"></td>
+		<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableDataElements' )" style="width:100%"></td>
 		<td style="text-align:center">$i18n.getString( "filters" )</td>
-		<td><input type="text" id="selectedDataElementsFilter" onkeyup="filterSelectedDataElements()" style="width:100%"></td>		
+		<td><input type="text" id="selectedDataElementsFilter" onkeyup="filterList( this.value, 'selectedDataElements' )" style="width:100%"></td>		
 	</tr>
 	<tr>
 		<td>
-			<select id="availableDataElements" name="availableDataElements" size="2" multiple="multiple" style="min-width:25em; height:20em" ondblclick="addDataElements()">
+			<select id="availableDataElements" name="availableDataElements" size="2" multiple="multiple" style="min-width:25em; height:20em" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
+				#foreach( $dataElement in $availableDataElements )
+					<option value="$dataElement.id">$encoder.htmlEncode( $dataElement.name )</option>
+				#end
 			</select>
 		</td>
-		<td style="text-align:center">
-			<input type="button" value="&gt;" onclick="addDataElements()"><br><br>
-			<input type="button" value="&lt;" onclick="removeDataElements()">
-		</td>
+        <td style="text-align:center">          
+            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedDataElements', 'availableDataElements' )"/>
+        </td>    
 		<td>
-			<select id="selectedDataElements" name="selectedDataElements" size="2" multiple="multiple" style="min-width:25em; height:20em" ondblclick="removeDataElements()">				
+			<select id="selectedDataElements" name="selectedDataElements" size="2" multiple="multiple" style="min-width:25em; height:20em" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">				
 			</select>
 		</td>		
 	</tr>
@@ -79,21 +84,26 @@
 		<th>$i18n.getString( "selected_indicators" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableIndicatorsFilter" onkeyup="filterAvailableIndicators()" style="width:100%"></td>
+		<td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'availableIndicators' )" style="width:100%"></td>
 		<td style="text-align:center">$i18n.getString( "filters" )</td>		
-		<td><input type="text" id="selectedIndicatorsFilter" onkeyup="filterSelectedIndicators()" style="width:100%"></td>
+		<td><input type="text" id="selectedIndicatorsFilter" onkeyup="filterList( this.value, 'selectedIndicators' )" style="width:100%"></td>
 	</tr>
 	<tr>	
 		<td>
-			<select id="availableIndicators" name="availableIndicators" size="2" multiple="multiple" style="width:100%; height:20em" ondblclick="addIndicators()">
+			<select id="availableIndicators" name="availableIndicators" size="2" multiple="multiple" style="width:100%; height:20em" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">
+				#foreach( $indicator in $availableIndicators )
+					<option value="$indicator.id">$encoder.htmlEncode( $indicator.name )</option>
+				#end
 			</select>
 		</td>	
-		<td style="text-align:center">
-			<input type="button" value="&gt;" onclick="addIndicators()"><br><br>
-			<input type="button" value="&lt;" onclick="removeIndicators()">
-		</td>		
+        <td style="text-align:center">          
+            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )"/>
+        </td>   	
 		<td>
-			<select id="selectedIndicators" name="selectedIndicators" size="2" multiple="multiple" style="width:100%; height:20em" ondblclick="removeIndicators()">				
+			<select id="selectedIndicators" name="selectedIndicators" size="2" multiple="multiple" style="width:100%; height:20em" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">				
 			</select>
 		</td>
 	</tr>
@@ -108,28 +118,6 @@
 <span id="message"></span>
 
 <script type="text/javascript">
-
-	var selectedDataElements = new Object();
-#foreach( $dataElement in $selectedDataElements )
-	selectedDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-
-	var availableDataElements = new Object();
-#foreach( $dataElement in $availableDataElements )
-	availableDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-
-	var selectedIndicators = new Object();
-#foreach( $indicator in $selectedIndicators )
-	selectedIndicators['$indicator.id'] = '$encoder.jsEscape( $indicator.name, "'" )';
-#end
-
-	var availableIndicators = new Object();
-#foreach( $indicator in $availableIndicators )
-	availableIndicators['$indicator.id'] = '$encoder.jsEscape( $indicator.name, "'" )';
-#end
-
-	initLists();
 
 	var nameField = document.getElementById( 'name' );
 	nameField.select();
