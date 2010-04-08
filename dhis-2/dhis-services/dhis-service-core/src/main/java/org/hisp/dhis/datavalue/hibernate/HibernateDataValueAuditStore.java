@@ -34,9 +34,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueAuditStore;
+import org.hisp.dhis.source.Source;
 
 /**
  * @author Quang Nguyen
@@ -71,7 +73,7 @@ public class HibernateDataValueAuditStore
         session.delete( dataValueAudit );
     }
 
-    public int deleteDataValuesByDataValue( DataValue dataValue )
+    public int deleteDataValueAuditByDataValue( DataValue dataValue )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -79,6 +81,16 @@ public class HibernateDataValueAuditStore
         query.setEntity( "dataValue", dataValue );
 
         return query.executeUpdate();
+    }
+
+    public void deleteDataValueAuditBySource( Source source )
+    {
+        for(DataValueAudit each : getAll()) {
+            if(each.getDataValue().getSource().equals( source ))
+            {
+                deleteDataValueAudit( each );
+            }
+        }
     }
 
     @SuppressWarnings( "unchecked" )
@@ -93,7 +105,6 @@ public class HibernateDataValueAuditStore
     }
 
     @SuppressWarnings( "unchecked" )
-    @Override
     public Collection<DataValueAudit> getAll()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -101,6 +112,16 @@ public class HibernateDataValueAuditStore
         Criteria criteria = session.createCriteria( DataValueAudit.class );
 
         return criteria.list();
+    }
+
+    public void deleteDataValueAuditByDataElement( DataElement dataElement )
+    {
+        for(DataValueAudit each : getAll()) {
+            if(each.getDataValue().getDataElement().equals( dataElement ))
+            {
+                deleteDataValueAudit( each );
+            }
+        }
     }
 
 }

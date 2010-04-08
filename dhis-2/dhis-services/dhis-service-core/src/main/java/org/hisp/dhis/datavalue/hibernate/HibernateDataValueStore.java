@@ -42,10 +42,12 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAuditStore;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -78,6 +80,13 @@ public class HibernateDataValueStore
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
+    }
+    
+    private DataValueAuditStore dataValueAuditStore;
+    
+    public void setDataValueAuditStore( DataValueAuditStore dataValueAuditStore )
+    {
+        this.dataValueAuditStore = dataValueAuditStore;
     }
     
     // -------------------------------------------------------------------------
@@ -132,38 +141,36 @@ public class HibernateDataValueStore
         session.update( dataValue );
     }
 
+    @Transactional
     public void deleteDataValue( DataValue dataValue )
     {
-        Session session = sessionFactory.getCurrentSession();
+        dataValueAuditStore.deleteDataValueAuditByDataValue( dataValue );
         
-        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue = :dataValue" );
-        queryAudit.setEntity( "dataValue", dataValue );
-        queryAudit.executeUpdate();
+        Session session = sessionFactory.getCurrentSession();
         
         session.delete( dataValue );
     }
-
+    
+    @Transactional
     public int deleteDataValuesBySource( Source source )
     {
+        dataValueAuditStore.deleteDataValueAuditBySource(source);
+        
         Session session = sessionFactory.getCurrentSession();
-
-        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.source = :source" );
-        queryAudit.setEntity( "source", source );
-        queryAudit.executeUpdate();
         
         Query query = session.createQuery( "delete DataValue where source = :source" );
         query.setEntity( "source", source );
-
-        return query.executeUpdate();
+        query.executeUpdate();
+        
+        return 0;
     }
 
+    @Transactional
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
+        dataValueAuditStore.deleteDataValueAuditByDataElement( dataElement );
+        
         Session session = sessionFactory.getCurrentSession();
-
-        Query queryAudit = session.createQuery( "delete DataValueAudit where dataValue.dataElement = :dataElement" );
-        queryAudit.setEntity( "dataElement", dataElement );
-        queryAudit.executeUpdate();
         
         Query query = session.createQuery( "delete DataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
