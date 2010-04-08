@@ -93,7 +93,10 @@
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList')">            
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList')">
+              #foreach ( $availableDataElement in $dataElements )
+                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
+              #end       
           </select>
         </td>
         <td>
@@ -121,19 +124,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-
-	var dataSetMembers = new Object();
-
-	var availableDataElements = new Object();	
-	
-	#foreach ( $availableDataElement in $dataElements )
-		availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
-	#end
-
-	initLists();
-
-	var previousName = '';
-
-</script>
