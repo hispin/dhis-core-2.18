@@ -31,6 +31,7 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import jxl.CellView;
 import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
@@ -87,7 +88,7 @@ public class ExportExcelAction
 
     int legendPositionRow = 5;
 
-    int orgunitPositionCol = 13;
+    int orgunitPositionCol = 9;
 
     int orgunitPositionRow = 5;
 
@@ -250,7 +251,7 @@ public class ExportExcelAction
         // ---------------------------------------------------------------------
 
         sheet.mergeCells( mapPositionCol, mapPositionCRow, mapPositionCol + 6, mapPositionCRow + 25 );
-
+        
         WritableImage map = new WritableImage( mapPositionCol, mapPositionCRow, 7, 26, image.toByteArray() );
 
         sheet.addImage( map );
@@ -266,22 +267,25 @@ public class ExportExcelAction
         // ---------------------------------------------------------------------
 
         WritableCellFormat header = new WritableCellFormat();
-        header.setBackground( Colour.ICE_BLUE );
+        header.setBackground( Colour.GREY_25_PERCENT );
         header.setBorder( Border.ALL, BorderLineStyle.THIN );
-
+        
+        WritableCellFormat headerContent = new WritableCellFormat();
+        headerContent.setBorder( Border.ALL, BorderLineStyle.THIN );
+        
         sheet.mergeCells( titlePositionCol, titlePositionRow, titlePositionCol + 1, titlePositionRow );
         sheet.mergeCells( titlePositionCol + 2, titlePositionRow, titlePositionCol + 6, titlePositionRow );
         sheet.mergeCells( titlePositionCol, titlePositionRow + 1, titlePositionCol + 1, titlePositionRow + 1 );
         sheet.mergeCells( titlePositionCol + 2, titlePositionRow + 1, titlePositionCol + 6, titlePositionRow + 1 );
         sheet.mergeCells( titlePositionCol, titlePositionRow + 2, titlePositionCol + 1, titlePositionRow + 2 );
         sheet.mergeCells( titlePositionCol + 2, titlePositionRow + 2, titlePositionCol + 6, titlePositionRow + 2 );
-
-        sheet.addCell( new Label( titlePositionCol, titlePositionRow, i18n.getString( "title" ), header ) );
-        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow, this.title, header ) );
-        sheet.addCell( new Label( titlePositionCol, titlePositionRow + 1, i18n.getString( "indicator" ), header ) );
-        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, i.getName(), header ) );
-        sheet.addCell( new Label( titlePositionCol, titlePositionRow + 2, i18n.getString( "period" ), header ) );
-        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, p.getName(), header ) );
+        
+        sheet.addCell( new Label( titlePositionCol, titlePositionRow, i18n.getString( "Title" ), header ) );
+        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow, this.title, headerContent ) );
+        sheet.addCell( new Label( titlePositionCol, titlePositionRow + 1, i18n.getString( "Indicator" ), header ) );
+        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, i.getName(), headerContent ) );
+        sheet.addCell( new Label( titlePositionCol, titlePositionRow + 2, i18n.getString( "Period" ), header ) );
+        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, p.getName(), headerContent ) );
 
         // ---------------------------------------------------------------------
         // Write data values to workbook
@@ -292,11 +296,11 @@ public class ExportExcelAction
             WritableCellFormat datavalueHeader = new WritableCellFormat();
             datavalueHeader.setBorder( Border.ALL, BorderLineStyle.THIN );
             datavalueHeader.setAlignment( Alignment.CENTRE );
-            datavalueHeader.setBackground( Colour.ICE_BLUE );
+            datavalueHeader.setBackground( Colour.GREY_25_PERCENT );
 
-            sheet.addCell( new Label( orgunitPositionCol, orgunitPositionRow, i18n.getString( "name" ), datavalueHeader ) );
+            sheet.addCell( new Label( orgunitPositionCol, orgunitPositionRow, i18n.getString( "Name" ), datavalueHeader ) );
 
-            sheet.addCell( new Label( orgunitPositionCol + 1, orgunitPositionRow, i18n.getString( "value" ), datavalueHeader ) );
+            sheet.addCell( new Label( orgunitPositionCol + 1, orgunitPositionRow, i18n.getString( "Value" ), datavalueHeader ) );
 
             WritableCellFormat valCellFormat = new WritableCellFormat();
             valCellFormat.setAlignment( Alignment.LEFT );
@@ -311,6 +315,10 @@ public class ExportExcelAction
             JSONObject json = (JSONObject) JSONSerializer.toJSON( datavalues );
 
             JSONArray jsonDataValues = json.getJSONArray( "datavalues" );
+            
+            CellView cellView = new CellView();
+            
+            cellView.setSize( 7000 );
 
             for ( int index = 0; index < jsonDataValues.size(); index++ )
             {
@@ -321,6 +329,8 @@ public class ExportExcelAction
                 double value = datavalue.getDouble( "value" );
 
                 sheet.addCell( new Label( orgunitPositionCol, rowValue, organisationUnit.getName(), valCellFormat ) );
+                
+                sheet.setColumnView( orgunitPositionCol, cellView ); 
 
                 sheet.addCell( new Number( orgunitPositionCol + 1, rowValue, value, valCellFormat ) );
 

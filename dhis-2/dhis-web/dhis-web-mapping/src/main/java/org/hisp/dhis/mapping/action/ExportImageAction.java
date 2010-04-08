@@ -170,8 +170,8 @@ public class ExportImageAction
 
         svgDocument.setTitle( this.title );
         svgDocument.setSvg( this.svg );
-        svgDocument.setPeriod( p );
         svgDocument.setIndicator( i );
+        svgDocument.setPeriod( p );
         svgDocument.setLegends( legends );
         svgDocument.setIncludeLegends( includeLegends );
 
