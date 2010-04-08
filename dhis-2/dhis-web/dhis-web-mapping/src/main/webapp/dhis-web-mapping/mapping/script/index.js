@@ -3921,11 +3921,16 @@ function loadMapData(redirect, position) {
     });
 }
 
+function sortByValue(a, b) {
+	return b.value - a.value;
+}
+
 function getExportDataValueJSON( mapvalues ){
 	var json = '{';
 	json += '"datavalues":';
-	json += '[';	
-	
+	json += '[';
+	mapvalues.sort(sortByValue);
+
 	for (var i = 0; i < mapvalues.length; i++) {		
 		json += '{';
 		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
@@ -3938,17 +3943,17 @@ function getExportDataValueJSON( mapvalues ){
 	return json;
 }
 
-function getLegendsJSON(){
+function getLegendsJSON() {
 	var legends = choropleth.imageLegend;
 	var json = '{';
 	json += '"legends":';
 	json += '[';
 	
-	for ( var i=0; i<legends.length; i++ ) {
+	for (var i = 0; i < choropleth.imageLegend.length; i++) {
 		json += '{';
-		json += '"label": "' + legends[i].label + '",';
-		json += '"color": "' + legends[i].color + '" ';
-		json += i < legends.length-1 ? '},' : '}';
+		json += '"label": "' + choropleth.imageLegend[i].label + '",';
+		json += '"color": "' + choropleth.imageLegend[i].color + '" ';
+		json += i < choropleth.imageLegend.length-1 ? '},' : '}';
 	}	
 	json += ']';
 	json += '}';

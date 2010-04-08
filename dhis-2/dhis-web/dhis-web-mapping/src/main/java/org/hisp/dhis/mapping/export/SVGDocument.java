@@ -120,10 +120,9 @@ public class SVGDocument
 
         int y = 0;
 
-        for ( int index = 0; index < jsonLegends.size(); index++ )
+        for ( int i = 0; i < jsonLegends.size(); i++ )
         {
-
-            legend = jsonLegends.getJSONObject( index );
+            legend = jsonLegends.getJSONObject( i );
 
             String label = legend.getString( "label" );
 
@@ -155,9 +154,9 @@ public class SVGDocument
 
         JSONArray jsonLegends = json.getJSONArray( "legends" );
 
-        for ( int index = 0; index < jsonLegends.size(); index++ )
+        for ( int i = 0; i < jsonLegends.size(); i++ )
         {
-            legend = jsonLegends.getJSONObject( index );
+            legend = jsonLegends.getJSONObject( i );
 
             String label = legend.getString( "label" );
 
