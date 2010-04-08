@@ -31,6 +31,8 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.source.Source;
 
 /**
  * @author Quang Nguyen
@@ -66,9 +68,9 @@ public class DefaultDataValueAuditService
         dataValueAuditStore.deleteDataValueAudit( dataValueAudit );
     }
 
-    public int deleteDataValuesByDataValue( DataValue dataValue )
+    public int deleteDataValueAuditByDataValue( DataValue dataValue )
     {
-        return dataValueAuditStore.deleteDataValuesByDataValue( dataValue );
+        return dataValueAuditStore.deleteDataValueAuditByDataValue( dataValue );
     }
 
     public Collection<DataValueAudit> getDataValueAuditByDataValue( DataValue dataValue )
@@ -79,5 +81,16 @@ public class DefaultDataValueAuditService
     public Collection<DataValueAudit> getAll()
     {
         return dataValueAuditStore.getAll();
+    }
+
+    public void deleteDataValueAuditBySource( Source source )
+    {
+        dataValueAuditStore.deleteDataValueAuditBySource( source );
+    }
+
+    public void deleteDataValueAuditByDataElement( DataElement dataElement )
+    {
+        dataValueAuditStore.deleteDataValueAuditByDataElement( dataElement );
+        
     }
 }

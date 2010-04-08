@@ -29,6 +29,9 @@ package org.hisp.dhis.datavalue;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.source.Source;
+
 /**
  * @author Quang Nguyen
  * @version Mar 30, 2010 9:39:38 PM
@@ -42,7 +45,11 @@ public interface DataValueAuditService
 
     void deleteDataValueAudit( DataValueAudit dataValueAudit );
 
-    int deleteDataValuesByDataValue( DataValue dataValue );
+    int deleteDataValueAuditByDataValue( DataValue dataValue );
+    
+    void deleteDataValueAuditBySource( Source source );
+    
+    void deleteDataValueAuditByDataElement( DataElement dataElement );
 
     Collection<DataValueAudit> getDataValueAuditByDataValue( DataValue dataValue );
 
