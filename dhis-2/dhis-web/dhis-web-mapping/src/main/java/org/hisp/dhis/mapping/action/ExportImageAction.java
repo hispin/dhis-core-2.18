@@ -30,6 +30,8 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -46,6 +48,8 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class ExportImageAction
     extends StreamActionSupport
 {
+    private static final Log log = LogFactory.getLog( ExportImageAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -130,11 +134,13 @@ public class ExportImageAction
     {
         this.height = height;
     }
-        
+    
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
-    {        
+    {
+        log.info( "Exporting image, width: " + width + ", height: " + height );
+        
         SVGUtils.convertToPNG( getSvg(), out, width, height );
         
         return SUCCESS;
@@ -153,7 +159,7 @@ public class ExportImageAction
     }
 
     private StringBuffer getSvg()
-    {
+    {   
         Period p = periodService.getPeriod( period );
 
         p.setName( format.formatPeriod( p ) );

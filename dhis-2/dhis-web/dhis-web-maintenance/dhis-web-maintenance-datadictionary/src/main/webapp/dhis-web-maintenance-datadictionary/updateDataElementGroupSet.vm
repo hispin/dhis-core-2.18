@@ -42,7 +42,7 @@
 		<th>$i18n.getString( "available_dataelementgroup" )</th><td></td><th>$i18n.getString( "group_members" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterList( this.value, 'availableDataElements' )" style="width:25em"></td>
+		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterList( this.value, 'availableDataElementGroups' )" style="width:25em"></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
 		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"></td>
 	</tr>

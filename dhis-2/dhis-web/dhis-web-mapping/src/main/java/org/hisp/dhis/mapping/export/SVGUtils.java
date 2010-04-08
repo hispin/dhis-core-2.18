@@ -27,9 +27,6 @@ package org.hisp.dhis.mapping.export;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -43,48 +40,16 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
  * @author Tran Thanh Tri
  */
 public class SVGUtils
-{
-    public static void convertSVG2PNG( File svgFile, File outputImage, Integer w, Integer h )
-        throws TranscoderException, IOException
-    {
-        if ( w == null )
-        {
-            w = 500;
-        }
-        
-        if ( h == null )
-        {
-            h = 500;
-        }
-        
-        PNGTranscoder t = new PNGTranscoder();
-
-        // Set the transcoding hints
-        t.addTranscodingHint( PNGTranscoder.KEY_HEIGHT, new Float( h ) );
-        t.addTranscodingHint( PNGTranscoder.KEY_WIDTH, new Float( w ) );
-
-        TranscoderInput input = new TranscoderInput( new FileInputStream( svgFile ) );
-        // Create the transcoder output
-        OutputStream ostream = new FileOutputStream( outputImage );
-        TranscoderOutput output = new TranscoderOutput( ostream );
-
-        // Save the image
-        t.transcode( input, output );
-
-        // Flush and close the stream
-        ostream.flush();
-        ostream.close();
-    }
-    
+{    
     public static void convertToPNG( StringBuffer buffer, OutputStream out, Integer width, Integer height )
         throws TranscoderException, IOException
     {
-        if ( width == null )
+        if ( width == null || width < 10 )
         {
             width = 500;
         }
         
-        if ( height == null )
+        if ( height == null || height < 10 )
         {
             height = 500;
         }
