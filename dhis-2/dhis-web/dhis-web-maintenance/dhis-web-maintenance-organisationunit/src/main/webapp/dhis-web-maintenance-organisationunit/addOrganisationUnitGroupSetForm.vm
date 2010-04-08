@@ -67,10 +67,14 @@
   		<td></td>
   		<th>$i18n.getString( "selected_groups" )</th>
 	</tr>
-	
+	<tr>       
+        <td><input type="text" onkeyup="filterList( this.value, 'availableGroups' )" style="width:25em"></td>
+        <td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
+        <td><input type="text" onkeyup="filterList( this.value, 'selectedGroups' )" style="width:25em"></td>
+    </tr>
 	<tr>
 		<td>
-			<select multiple size="6" id="availableGroups" name="availableGroups" style="width:100%" ondblclick="moveSelectedById( 'availableGroups', 'selectedGroups' )">
+			<select multiple size="8" id="availableGroups" name="availableGroups" style="width:100%" ondblclick="moveSelectedById( 'availableGroups', 'selectedGroups' )">
 				#foreach ( $group in $availableGroups )
     				<option value="$group.id">$group.name</option>
     			#end
@@ -83,7 +87,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedGroups', 'availableGroups' )">
 		</td>
 		<td>
-			<select multiple size="6" id="selectedGroups" name="selectedGroups" style="width:100%" ondblclick="moveSelectedById( 'selectedGroups', 'availableGroups' )">
+			<select multiple size="8" id="selectedGroups" name="selectedGroups" style="width:100%" ondblclick="moveSelectedById( 'selectedGroups', 'availableGroups' )">
 			</select>
 		</td>
 	</tr>

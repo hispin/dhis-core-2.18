@@ -176,22 +176,3 @@ function editDataSetValidationCompleted( messageElement )
     document.getElementById( 'message' ).style.display = 'block';
   }
 }
-
-// ----------------------------------------------------------------------
-// List
-// ----------------------------------------------------------------------
-
-function initLists()
-{
-    var id;
-	
-    for ( id in dataSetMembers )
-    {
-        $("#selectedList").append( $( "<option></option>" ).attr( "value",id ).text( dataSetMembers[id] )) ;
-    }
-		
-    for ( id in availableDataElements )
-    {
-        $("#availableList").append( $( "<option></option>" ).attr( "value",id ).text( availableDataElements[id] )) ;
-    }
-}

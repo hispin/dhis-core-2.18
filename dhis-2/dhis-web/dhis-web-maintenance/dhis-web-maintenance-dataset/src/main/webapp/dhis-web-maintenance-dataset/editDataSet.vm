@@ -93,15 +93,18 @@
       </tr>
       
       <tr>
-        <td><input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="min-width:20em"></td>
+        <td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:20em"></td>
       	<td>$i18n.getString( "name" )</td>
-      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterDataSetMembers()" style="min-width:20em"></td>        
+      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:20em"></td>        
       </tr>
       
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList')">            
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList')">
+              #foreach ( $availableDataElement in $dataElements )
+                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
+              #end               
           </select>
         </td>
         <td>
@@ -113,6 +116,9 @@
         <td>
           <!-- List of all selected DataElements -->
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' )">
+              #foreach ( $availableDataElement in $dataSetDataElements )
+                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
+              #end   
           </select>
         </td>
       </tr>
@@ -129,18 +135,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-
-	var dataSetMembers = new Object();
-#foreach ( $dataElement in $dataSetDataElements )
-	dataSetMembers['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-#end
-
-	var availableDataElements = new Object();	
-#foreach ( $availableDataElement in $dataElements )
-	availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
-#end
-
-	initLists();
-</script>
