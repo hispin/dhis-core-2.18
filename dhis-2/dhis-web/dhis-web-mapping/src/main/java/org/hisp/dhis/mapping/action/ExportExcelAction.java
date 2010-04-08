@@ -47,6 +47,8 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
@@ -67,6 +69,8 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class ExportExcelAction
     extends StreamActionSupport
 {
+    private static final Log log = LogFactory.getLog( ExportExcelAction.class );
+    
     // -------------------------------------------------------------------------
     // Map position in excel
     // -------------------------------------------------------------------------
@@ -208,6 +212,8 @@ public class ExportExcelAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
+        log.info( "Exporting workbook, width: " + width + ", height: " + height );
+        
         Period p = periodService.getPeriod( period );
 
         p.setName( format.formatPeriod( p ) );

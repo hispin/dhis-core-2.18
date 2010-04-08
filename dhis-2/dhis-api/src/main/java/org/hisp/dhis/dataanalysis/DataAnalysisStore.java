@@ -40,15 +40,59 @@ import org.hisp.dhis.period.Period;
  */
 public interface DataAnalysisStore
 {
+    /**
+     * Calculates the standard deviation of the DataValues registered for the given
+     * data element, category option combo and organisation unit.
+     * 
+     * @param dataElement the DataElement.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
+     * @param organisationUnit the OrganisationUnit.
+     * @return the standard deviation.
+     */
     Double getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit );
     
+    /**
+     * Calculates the average of the DataValues registered for the given
+     * data element, category option combo and organisation unit.
+     * 
+     * @param dataElement the DataElement.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
+     * @param organisationUnit the OrganisationUnit.
+     * @return the average.
+     */
     Double getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit );
     
+    /**
+     * Returns a collection of DeflatedDataValues for the given input.
+     * 
+     * @param dataElement the DataElement.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
+     * @param periods the collection of Periods.
+     * @param organisationUnit the OrganisationUnit.
+     * @param lowerBound the lower bound for the registered MinMaxDataElement.
+     * @param upperBound the upper bound for the registered MinMaxDataElement.
+     * @return
+     */
     Collection<DeflatedDataValue> getDeflatedDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound );
     
+    /**
+     * Returns a collection of gap DeflatedDataValues for the given input. A gap
+     * is a period for which there is no registered data values among the input periods.
+     * 
+     * @param dataElement the DataElement.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
+     * @param periods the collection of Periods.
+     * @param organisationUnit the OrganisationUnit.
+     * @return
+     */
     Collection<DeflatedDataValue> getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, OrganisationUnit organisationUnit );
 
+    /**
+     * Returns a collection of DeflatedDataValues which are marked for followup.
+     * 
+     * @return a collection of DeflatedDataValues.
+     */
     Collection<DeflatedDataValue> getDataValuesMarkedForFollowup();
 }

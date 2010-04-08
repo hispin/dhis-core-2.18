@@ -262,6 +262,20 @@
         <groupId>org.apache.struts</groupId>
         <artifactId>struts2-spring-plugin</artifactId>
         <version>2.1.6</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>velocity</groupId>
@@ -404,6 +418,12 @@
         <groupId>org.amplecode</groupId>
         <artifactId>cave-process</artifactId>
         <version>1.0.3</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>joda-time</groupId>
@@ -505,7 +525,7 @@
         <groupId>jasperreports</groupId>
         <artifactId>jasperreports</artifactId>
         <version>3.7.0</version>
-		<exclusions>
+        <exclusions>
           <exclusion>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
@@ -566,6 +586,23 @@
         <scope>test</scope>
         <type>jar</type>
       </dependency>
+      <!-- GIS -->
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-transcoder</artifactId>
+        <version>1.7</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-codec</artifactId>
+        <version>1.7</version>
+      </dependency>	
 
       <!-- Relaxng schema validation. -->
       <dependency>
