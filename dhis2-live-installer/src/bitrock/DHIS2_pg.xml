@@ -1,18 +1,14 @@
 <project>
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
-    <version>2.0.4</version>
-    <installerFilename></installerFilename>
+    <version>2.0.3</version>
+    <installerFilename>${product_shortname}-${product_version}-${platform_name}--lite-installer.${platform_exec_suffix}</installerFilename>
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
     <leftImage>../../resources/images/dhis2-logo-rotated.png</leftImage>
     <logoImage>../../resources/images/dhis2-logo.png</logoImage>
     <splashImage>../../resources/images/dhis2-logo.png</splashImage>
     <preBuildActionList>
-        <copyFile>
-            <destination>${build_project_directory}/temp/</destination>
-            <origin>${env(DHIS2_SRC)}/dhis-2/dhis-web/dhis-web-portal/target/dhis.war</origin>
-        </copyFile>
         <copyFile>
             <abortOnError>0</abortOnError>
             <customErrorMessage>BIRT was not detected. Skipping. </customErrorMessage>
@@ -24,18 +20,42 @@
                     <value>FALSE</value>
                 </setInstallerVariable>
             </onErrorActionList>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>{$build_project_directory}/temp/birt.war</path>
+                </fileExists>
+            </ruleList>
         </copyFile>
         <copyFile>
             <destination>${build_project_directory}/temp/dhis2-live.jar</destination>
             <origin>${env(DHIS2_SRC)}/dhis-live/target/dhis2-live-jar-with-dependencies.jar</origin>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>{$build_project_directory}/temp/dhis2-live.jar</path>
+                </fileExists>
+            </ruleList>
         </copyFile>
         <copyFile>
             <destination>${build_project_directory}/temp/dhis2-live.exe</destination>
             <origin>${env(DHIS2_SRC)}/dhis-live/target/dhis2-live.exe</origin>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>{$project_build_directory}/temp/dhis2-live.exe</path>
+                </fileExists>
+            </ruleList>
         </copyFile>
         <copyFile>
             <destination>${build_project_directory}/temp/</destination>
-            <origin>${env(DHIS2_DOCS)}//target/site/en/pdf/dhis2_user_manual_en.pdf</origin>
+            <origin>${env(DHIS2_DOCS)}/target/site/en/pdf/dhis2_user_manual_en.pdf</origin>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>{$build_project_directory}/temp/dhis2_user_manual.pdf</path>
+                </fileExists>
+            </ruleList>
         </copyFile>
     </preBuildActionList>
     <preInstallationActionList>
@@ -51,7 +71,7 @@
             <validVersionList>
                 <validVersion>
                     <maxVersion></maxVersion>
-                    <minVersion>1.6.0_18</minVersion>
+                    <minVersion>1.6.0_14</minVersion>
                     <requireJDK>0</requireJDK>
                     <vendor></vendor>
                 </validVersion>
@@ -59,10 +79,6 @@
         </autodetectJava>
     </preInstallationActionList>
     <readyToInstallActionList>
-        <createDirectory>
-            <path>${installdir}/database</path>
-            <progressText>Creating database directory.</progressText>
-        </createDirectory>
         <createDirectory>
             <path>${installdir}/log</path>
         </createDirectory>
@@ -172,75 +188,6 @@
             </startMenuShortcutList>
         </component>
         <component>
-            <name>birt</name>
-            <description>Birt Reporting Framework</description>
-            <canBeEdited>1</canBeEdited>
-            <detailedDescription>The Birt Reporting Framework. Install this compoenent if you plan to use BIRT reports.</detailedDescription>
-            <selected>0</selected>
-            <show>1</show>
-            <folderList>
-                <folder>
-                    <description>birt</description>
-                    <destination>${installdir}/webapps/birt</destination>
-                    <name>birt</name>
-                    <platforms>all</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>temp/birt.war</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-            <postInstallationActionList>
-                <unzip>
-                    <destinationDirectory>${installdir}/webapps/birt/</destinationDirectory>
-                    <explanation>Unpacking BIRT</explanation>
-                    <progressText>Unpacking BIRT</progressText>
-                    <zipFile>${installdir}/webapps/birt/birt.war</zipFile>
-                </unzip>
-                <deleteFile>
-                    <explanation>Cleaning up BIRT.</explanation>
-                    <path>${installdir}/webapps/birt/birt.war</path>
-                    <progressText>Cleaning up BIRT.</progressText>
-                </deleteFile>
-            </postInstallationActionList>
-        </component>
-        <component>
-            <name>demodb</name>
-            <description>Demo database</description>
-            <canBeEdited>1</canBeEdited>
-            <selected>0</selected>
-            <show>1</show>
-            <folderList>
-                <folder>
-                    <description>demodb</description>
-                    <destination>${installdir}/database</destination>
-                    <name>demodb</name>
-                    <platforms>all</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>../../resources/demodb/database.h2.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/database.trace.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.12.log.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.data.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.index.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.trace.db</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-        </component>
-        <component>
             <name>dhis2core</name>
             <description>DHIS2 Core</description>
             <canBeEdited>0</canBeEdited>
@@ -293,6 +240,122 @@
                 </folder>
             </folderList>
         </component>
+        <component>
+            <name>embeddedjre</name>
+            <description>Java Runtime Enviornment</description>
+            <canBeEdited>0</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>jre</description>
+                    <destination>${installdir}/</destination>
+                    <name>jre</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>temp/jre6</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+        </component>
+        <component>
+            <name>postgres</name>
+            <description>Postgresql Database</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>0</selected>
+            <show>0</show>
+            <folderList>
+                <folder>
+                    <description>postgres</description>
+                    <destination>${installdir}/temp/postgres</destination>
+                    <name>postgres</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>temp/postgresql-8.4.2-1-windows.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../../resources/scripts/win32/generate_user.bat</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <runProgram>
+                    <program>${installdir}/temp/postgres/generate_user.bat</program>
+                    <programArguments></programArguments>
+                </runProgram>
+                <runProgram>
+                    <program>${installdir}/temp/postgres/postgresql-8.4.2-1-windows.exe</program>
+                    <programArguments>--mode unattended  --port 5433 --serviceaccount pg_dhis2 --servicepassword postgres</programArguments>
+                </runProgram>
+            </postInstallationActionList>
+            <preUninstallationActionList>
+                <showQuestion>
+                    <default>yes</default>
+                    <text>Do you want to uninstall the Postgresql server?</text>
+                    <variable>pg_uninstall</variable>
+                </showQuestion>
+                <runProgram>
+                    <program>${installdir}/postgres/uninstall-postgres.exe</program>
+                    <programArguments></programArguments>
+                    <ruleList>
+                        <compareValues>
+                            <logic>equals</logic>
+                            <value1>pg_uninstall</value1>
+                            <value2>yes</value2>
+                        </compareValues>
+                    </ruleList>
+                </runProgram>
+            </preUninstallationActionList>
+        </component>
+        <component>
+            <name>birt</name>
+            <description>BIRT Reporting Framework</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>birt_dest</description>
+                    <destination>${installdir}/webapps/birt/</destination>
+                    <name>birt_dest</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>temp/birt.war</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <unzip>
+                    <destinationDirectory>${installdir}/webapps/birt/</destinationDirectory>
+                    <explanation>Unzipping BIRT.</explanation>
+                    <progressText>Unzipping BIRT.</progressText>
+                    <zipFile>${installdir}/webapps/birt/birt.war</zipFile>
+                </unzip>
+                <deleteFile>
+                    <explanation>Cleaning up BIRT.</explanation>
+                    <path>${installdir}/webapps/birt/birt.war</path>
+                    <progressText>Cleaning up BIRT.</progressText>
+                </deleteFile>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>h2</name>
+            <description>H2 Database Framework</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>0</selected>
+            <show>0</show>
+            <readyToInstallActionList>
+                <createDirectory>
+                    <path>${installdir}/database</path>
+                </createDirectory>
+            </readyToInstallActionList>
+        </component>
     </componentList>
     <finalPageActionList>
         <runProgram>
@@ -315,14 +378,37 @@
             <mustExist>0</mustExist>
             <width>40</width>
         </directoryParameter>
-        <booleanParameter>
-            <name>installbirt</name>
-            <description></description>
+        <choiceParameter>
+            <name>database</name>
+            <title>Please select a database system. </title>
+            <description>Please select a database system. </description>
             <explanation></explanation>
-            <value></value>
-            <default>TRUE</default>
-            <displayStyle>radiobuttons</displayStyle>
-        </booleanParameter>
+            <value>database</value>
+            <default>postgres</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <displayType>combobox</displayType>
+            <width>40</width>
+            <optionList>
+                <option>
+                    <description>H2</description>
+                    <image></image>
+                    <text>H2</text>
+                    <value>h2</value>
+                </option>
+                <option>
+                    <description>PostgreSQL</description>
+                    <image></image>
+                    <text>PostgreSQL</text>
+                    <value>postgres</value>
+                </option>
+            </optionList>
+            <postShowPageActionList>
+                <componentSelection>
+                    <deselect></deselect>
+                    <select>${database}</select>
+                </componentSelection>
+            </postShowPageActionList>
+        </choiceParameter>
     </parameterList>
     <platformOptionsList>
         <platformOptions>

@@ -2,7 +2,7 @@
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
     <version>2.0.4</version>
-    <installerFilename></installerFilename>
+   <installerFilename>${product_shortname}-${product_version}-${platform_name}-demo-installer.${platform_exec_suffix}</installerFilename> 
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
     <leftImage>../../resources/images/dhis2-logo-rotated.png</leftImage>
