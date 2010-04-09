@@ -42,7 +42,6 @@ import org.hisp.dhis.useraudit.UserAuditStore;
 public class HibernateUserAuditStore
     implements UserAuditStore
 {
-
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
@@ -81,7 +80,6 @@ public class HibernateUserAuditStore
         Query q = session.createQuery( hql );
 
         q.setString( "username", username );
-
         q.setTimestamp( "date", date );
 
         Long no = (Long) q.list().get( 0 );

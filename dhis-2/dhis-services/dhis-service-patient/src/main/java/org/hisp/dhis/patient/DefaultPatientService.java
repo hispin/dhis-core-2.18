@@ -335,7 +335,7 @@ public class DefaultPatientService
         
         patientStore.save( patient );
 
-        Integer.parseInt( "ABC" );
+        //Integer.parseInt( "ABC" );
         
         for( PatientAttributeValue pav : patientAttributeValues )
         {
