@@ -24,7 +24,7 @@
           <executable>${env.BITROCK_HOME}/bin/builder</executable>
           <arguments>
             <argument>build</argument>
-            <argument>${basedir}/src/bitrock/DHIS2_lite.xml</argument>
+            <argument>${basedir}/src/bitrock/DHIS2.xml</argument>
             <argument>windows</argument>
           </arguments>
         </configuration>
