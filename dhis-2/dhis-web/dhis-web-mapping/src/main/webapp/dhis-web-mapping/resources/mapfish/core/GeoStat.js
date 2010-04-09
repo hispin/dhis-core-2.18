@@ -384,7 +384,6 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     },
 
     classifyWithBounds: function(bounds) {
-
         var bins = [];
         var binCount = [];
         var sortedValues = [];
@@ -410,10 +409,9 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
 		
 		choropleth.imageLegend = new Array();
-
+		
         for (var i = 0; i < nbBins; i++) {
-            bins[i] = new mapfish.GeoStat.Bin(binCount[i], bounds[i], bounds[i + 1],
-                i == (nbBins - 1));
+            bins[i] = new mapfish.GeoStat.Bin(binCount[i], bounds[i], bounds[i + 1], i == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
             bins[i].label = labelGenerator(bins[i], i, nbBins);
 			choropleth.imageLegend[i] = new Object();
@@ -491,8 +489,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				if (str.charAt(str.length-1) == ',') {
 					str = str.substring(0, str.length-1);
 				}
-				
-				var bounds = new Array();
+				//
+				bounds = new Array();
 				bounds = str.split(',');
 				
 				for (var i = 0; i < bounds.length; i++) {
@@ -536,13 +534,15 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				bounds.push(this.maxVal);
 				choropleth.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
 			}
-			method = mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
+			
+			method = ACTIVEPANEL == organisationUnitAssignment ? mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS : mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
 		}
         
         var classification = null;
         if (!nbBins) {
             nbBins = this.sturgesRule();
         }
+
         switch (method) {
         case mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS :
             classification = this.classifyWithBounds(bounds);

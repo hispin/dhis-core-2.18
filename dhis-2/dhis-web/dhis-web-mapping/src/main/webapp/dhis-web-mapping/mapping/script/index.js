@@ -2118,7 +2118,7 @@ Ext.onReady( function() {
         value: 7,
         store: new Ext.data.SimpleStore({
             fields: ['value','text'],
-            data: [[5, '5 (out)'], [6,'6'], [7,'7'], [8,'8'], [9,'9 (in)']]
+            data: [[3, '3 (out)'], [4, '4'], [5, '5'], [6,'6'], [7,'7'], [8,'8'], [9,'9'], [10,'10 (in)']]
         })
     });
     
@@ -3862,9 +3862,50 @@ function onClickSelectChoropleth(feature) {
 
 function onClickUnselectChoropleth(feature) {}
 
+/* EXPORT */
+function sortByValue(a, b) {
+	return b.value - a.value;
+}
+
+function getExportDataValueJSON( mapvalues ){
+	var json = '{';
+	json += '"datavalues":';
+	json += '[';
+	
+	mapvalues.sort(sortByValue);
+
+	for (var i = 0; i < mapvalues.length; i++) {		
+		json += '{';
+		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
+		json += '"value": "' + mapvalues[i].value + '" ';
+		json += i < mapvalues.length-1 ? '},' : '}';
+	}
+	json += ']';
+	json += '}';
+	
+	return json;
+}
+
+function getLegendsJSON() {
+	var legends = choropleth.imageLegend;
+	var json = '{';
+	json += '"legends":';
+	json += '[';
+	
+	for (var i = 0; i < choropleth.imageLegend.length; i++) {
+		json += '{';
+		json += '"label": "' + choropleth.imageLegend[i].label + '",';
+		json += '"color": "' + choropleth.imageLegend[i].color + '" ';
+		json += i < choropleth.imageLegend.length-1 ? '},' : '}';
+	}	
+	json += ']';
+	json += '}';
+	
+	return json;
+}
+
 /*MAP DATA*/
 function loadMapData(redirect, position) {
-
     Ext.Ajax.request({
         url: path + 'getMapByMapLayerPath' + type,
         method: 'POST',
@@ -3921,45 +3962,7 @@ function loadMapData(redirect, position) {
     });
 }
 
-function sortByValue(a, b) {
-	return b.value - a.value;
-}
 
-function getExportDataValueJSON( mapvalues ){
-	var json = '{';
-	json += '"datavalues":';
-	json += '[';
-	mapvalues.sort(sortByValue);
-
-	for (var i = 0; i < mapvalues.length; i++) {		
-		json += '{';
-		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
-		json += '"value": "' + mapvalues[i].value + '" ';
-		json += i < mapvalues.length-1 ? '},' : '}';
-	}
-	json += ']';
-	json += '}';
-	
-	return json;
-}
-
-function getLegendsJSON() {
-	var legends = choropleth.imageLegend;
-	var json = '{';
-	json += '"legends":';
-	json += '[';
-	
-	for (var i = 0; i < choropleth.imageLegend.length; i++) {
-		json += '{';
-		json += '"label": "' + choropleth.imageLegend[i].label + '",';
-		json += '"color": "' + choropleth.imageLegend[i].color + '" ';
-		json += i < choropleth.imageLegend.length-1 ? '},' : '}';
-	}	
-	json += ']';
-	json += '}';
-	
-	return json;
-}
 
 /*CHOROPLETH*/
 function getChoroplethData() {
@@ -4015,7 +4018,7 @@ function getChoroplethData() {
 			choropleth.indicator = 'value';
 			choropleth.indicatorText = 'Indicator';
 			options.indicator = choropleth.indicator;
-			
+
 			options.method = Ext.getCmp('method').getValue();
 			options.numClasses = Ext.getCmp('numClasses').getValue();
 			options.colors = choropleth.getColors();
@@ -4056,7 +4059,7 @@ function getAssignOrganisationUnitData() {
 			for (var i = 0; i < features.length; i++) {
 				features[i].attributes['value'] = 0;
 			
-				for (var j=0; j < relations.length; j++) {
+				for (var j = 0; j < relations.length; j++) {
 					if (relations[j].featureId == features[i].attributes[nameColumn]) {
 						features[i].attributes['value'] = 1;
 						noAssigned++;
@@ -4126,8 +4129,8 @@ function getAutoAssignOrganisationUnitData(position) {
 				organisationUnits[i].compareName = organisationUnits[i].name.split(' ').join('').toLowerCase();
 			}
 			
-			for ( var i=0; i < organisationUnits.length; i++ ) {
-				for ( var j=0; j < features.length; j++ ) {
+			for ( var i = 0; i < organisationUnits.length; i++ ) {
+				for ( var j = 0; j < features.length; j++ ) {
 					if (features[j].attributes.compareName == organisationUnits[i].compareName) {
 						count_match++;
 						relations += organisationUnits[i].id + '::' + features[j].attributes[nameColumn] + ';;';
