@@ -1,7 +1,7 @@
 <project>
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <installerFilename>${product_shortname}-${product_version}-${platform_name}--lite-installer.${platform_exec_suffix}</installerFilename>
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
@@ -19,7 +19,7 @@
         </copyFile>
         <copyFile>
             <destination>${build_project_directory}/temp/</destination>
-            <origin>${env(DHIS2_DOCS)}//target/site/en/pdf/dhis2_user_manual_en.pdf</origin>
+            <origin>${env(DHIS2_DOCS)}/target/site/en/pdf/dhis2_user_manual_en.pdf</origin>
         </copyFile>
     </preBuildActionList>
     <preInstallationActionList>
