@@ -42,6 +42,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueAuditStore;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.period.Period;
@@ -82,11 +83,11 @@ public class HibernateDataValueStore
         this.periodStore = periodStore;
     }
     
-    private DataValueAuditStore dataValueAuditStore;
+    private DataValueAuditService dataValueAuditService;
     
-    public void setDataValueAuditStore( DataValueAuditStore dataValueAuditStore )
+    public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
     {
-        this.dataValueAuditStore = dataValueAuditStore;
+        this.dataValueAuditService = dataValueAuditService;
     }
     
     // -------------------------------------------------------------------------
@@ -144,7 +145,7 @@ public class HibernateDataValueStore
     @Transactional
     public void deleteDataValue( DataValue dataValue )
     {
-        dataValueAuditStore.deleteDataValueAuditByDataValue( dataValue );
+        dataValueAuditService.deleteDataValueAuditByDataValue( dataValue );
         
         Session session = sessionFactory.getCurrentSession();
         
@@ -154,7 +155,7 @@ public class HibernateDataValueStore
     @Transactional
     public int deleteDataValuesBySource( Source source )
     {
-        dataValueAuditStore.deleteDataValueAuditBySource(source);
+        dataValueAuditService.deleteDataValueAuditBySource(source);
         
         Session session = sessionFactory.getCurrentSession();
         
@@ -168,7 +169,7 @@ public class HibernateDataValueStore
     @Transactional
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
-        dataValueAuditStore.deleteDataValueAuditByDataElement( dataElement );
+        dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
         
         Session session = sessionFactory.getCurrentSession();
         
