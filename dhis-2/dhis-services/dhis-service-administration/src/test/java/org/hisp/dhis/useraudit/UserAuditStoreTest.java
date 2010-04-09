@@ -66,6 +66,6 @@ public class UserAuditStoreTest
         userAuditStore.saveLoginFailure( new LoginFailure( "userA", getDate( 2000, 1, 6 ) ) );
         userAuditStore.saveLoginFailure( new LoginFailure( "userB", getDate( 2000, 1, 7 ) ) );
         
-        assertEquals( 3, userAuditStore.getLoginFailures( "userA", getDate( 2000, 1, 4 ) ) );
+        assertEquals( 2, userAuditStore.getLoginFailures( "userA", getDate( 2000, 1, 4 ) ) );
     }
 }
