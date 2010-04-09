@@ -27,6 +27,8 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+
 import java.util.Collection;
 
 import org.apache.commons.logging.Log;
@@ -36,8 +38,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.dataelement.DataElement.*;
 
 /**
  * @author Kristian Nordal
@@ -59,6 +59,13 @@ public class DefaultDataValueService
     public void setDataValueStore( DataValueStore dataValueStore )
     {
         this.dataValueStore = dataValueStore;
+    }
+    
+    private DataValueAuditService dataValueAuditService;
+    
+    public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
+    {
+        this.dataValueAuditService = dataValueAuditService;
     }
 
     // -------------------------------------------------------------------------
@@ -85,7 +92,7 @@ public class DefaultDataValueService
     {
         if ( dataValue.isNullValue() )
         {
-            dataValueStore.deleteDataValue( dataValue );
+            this.deleteDataValue( dataValue );
         }
         else
         {
@@ -101,18 +108,27 @@ public class DefaultDataValueService
         }
     }
 
+    @Transactional
     public void deleteDataValue( DataValue dataValue )
     {
+        dataValueAuditService.deleteDataValueAuditByDataValue( dataValue );
+
         dataValueStore.deleteDataValue( dataValue );
     }
 
+    @Transactional
     public int deleteDataValuesBySource( Source source )
     {
+        dataValueAuditService.deleteDataValueAuditBySource(source);
+
         return dataValueStore.deleteDataValuesBySource( source );
     }
 
+    @Transactional
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
+        dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
+        
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 
