@@ -108,6 +108,8 @@ public class HibernateCompleteDataSetRegistrationStore
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         sessionFactory.getCurrentSession().delete( registration );
+        
+        sessionFactory.getCurrentSession().flush();
     }
 
     @SuppressWarnings( "unchecked" )

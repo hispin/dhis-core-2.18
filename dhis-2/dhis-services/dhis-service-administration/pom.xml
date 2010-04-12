@@ -33,6 +33,14 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-options</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-patient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-reporting</artifactId>
+    </dependency>
     
     <!-- Other -->
     
