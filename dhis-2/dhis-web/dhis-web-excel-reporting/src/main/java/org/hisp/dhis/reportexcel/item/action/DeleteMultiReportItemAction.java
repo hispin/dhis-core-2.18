@@ -6,7 +6,7 @@ import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
