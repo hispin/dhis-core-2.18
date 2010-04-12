@@ -413,7 +413,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction"
-		class="oorg.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction"
+		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction"
 		scope="prototype">
 		<property name="selectionTreeManager">
 			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />

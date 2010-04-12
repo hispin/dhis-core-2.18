@@ -44,6 +44,21 @@
               <goal>exec</goal>
             </goals>
           </execution> 
+          <execution>
+             <id>DHIS2 Linux Demo</id>
+             <phase>package</phase>
+               <configuration>
+                <executable>${env.BITROCK_HOME}/bin/builder</executable>
+                <arguments>
+                <argument>build</argument>
+                <argument>${basedir}/src/bitrock/DHIS2_demo_birt.xml</argument>
+                <argument>linux</argument>
+                </arguments>
+               </configuration>
+             <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
