@@ -284,4 +284,44 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>                 
   </bean>
   
+  <!-- Case Aggregation -->
+  <bean id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
+    class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction" 
+    scope="prototype">     
+    <property name="dataSetService"
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.caseentry.action.caseaggregation.GetOrgUnitsAction"
+	class="org.hisp.dhis.caseentry.action.caseaggregation.GetOrgUnitsAction"
+	scope="prototype">
+	  <property name="organisationUnitService"
+		ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.caseentry.action.caseaggregation.GetDataSetPeriodsAction"
+	class="org.hisp.dhis.caseentry.action.caseaggregation.GetDataSetPeriodsAction"
+	scope="prototype">
+	  <property name="periodService"
+		ref="org.hisp.dhis.period.PeriodService"/>
+	  <property name="dataSetService"
+		ref="org.hisp.dhis.dataset.DataSetService"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction"
+    class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction" 
+    scope="prototype">     
+    <property name="organisationUnitService" 
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="periodService" 
+      ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="dataSetService" 
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="caseAggregationService" 
+      ref="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"/>
+    <property name="dataValueService" 
+      ref="org.hisp.dhis.datavalue.DataValueService"/>
+    <property name="currentUserService" 
+      ref="org.hisp.dhis.user.CurrentUserService"/>
+  </bean>
 </beans>
