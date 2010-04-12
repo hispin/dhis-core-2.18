@@ -212,6 +212,21 @@
 				/dhis-web-maintenance-dataadmin/responseDataIntegrity.vm</result>
 		</action>
 
+		<!-- Prune Organisation unit -->
+
+		<action name="displayPruneOrganisationUnitForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-dataadmin/pruneOrganisationUnitForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/pruneOrganisationUnit.js</param>
+		</action>
+
+		<action name="pruneOrganisationUnit"
+			class="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction">
+			<result name="success" type="redirect">
+				displayPruneOrganisationUnitForm.action</result>
+		</action>
+
 		<!-- Statistics -->
 
 		<action name="viewStatistics"
