@@ -1,7 +1,7 @@
 package org.hisp.dhis.reports.dataset.utils;
 
 /*
- * Copyright (c) 2004-2007, Lars Helge �verland
+ * Copyright (c) 2004-2010, Lars Helge �verland
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -3,7 +3,7 @@ package org.hisp.dhis.reportexcel;
 import java.io.Serializable;
 
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
