@@ -370,7 +370,7 @@
 		<!-- Min/Max validation -->
 		
 		<action name="getMinMaxValidationParams"
-			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.MinMaxGeneratingAction">
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
 			<result name="success" type="chain">
 				getMinMaxValidationParamsChain</result>
 			<result name="input" type="chain">

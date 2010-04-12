@@ -380,12 +380,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>  
   </bean>
   
-  <bean id="org.hisp.dhis.dataanalysis.MinMaxValuesGeneratingService" 
-    class="org.hisp.dhis.dataanalysis.MinMaxValuesGeneratingService">
-    <property name="dataAnalysisStore"
-      ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>
-  </bean>
-  
   <bean id="dataAnalysisServiceProvider"
 	class="org.hisp.dhis.common.ServiceProvider">
 	<property name="services">
@@ -406,10 +400,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
                 <key><value>followup</value></key>
                 <ref bean="org.hisp.dhis.dataanalysis.FollowupAnalysisService"/>
             </entry>
-            <!-- <entry>
-                <key><value>minmax</value></key>
-                <ref bean="org.hisp.dhis.dataanalysis.MinMaxValuesGeneratingService"/>
-            </entry> -->
 		</map>		
 	</property>
   </bean>
@@ -704,6 +694,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <ref local="org.hisp.dhis.startup.TableCreator"/>
       </list>
     </property>
+  </bean>
+  
+  <!-- Min/Max validation -->
+  
+ <bean id="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService"
+    class="org.hisp.dhis.minmax.validation.DefaultMinMaxValuesGenerationService">
+    <property name="dataAnalysisStore"
+      ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"/>
   </bean>
   
   <!-- AOP definitions -->

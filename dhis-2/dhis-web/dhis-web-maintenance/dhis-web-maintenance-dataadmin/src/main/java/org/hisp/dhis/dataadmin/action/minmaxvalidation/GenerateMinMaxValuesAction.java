@@ -30,13 +30,13 @@ package org.hisp.dhis.dataadmin.action.minmaxvalidation;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
+import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -50,7 +50,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class MinMaxGeneratingAction
+public class GenerateMinMaxValuesAction
     implements Action
 {
     // -------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ public class MinMaxGeneratingAction
 
     private PeriodService periodService;
 
-    private DataAnalysisService minMaxValuesGeneratingService;
+    private MinMaxValuesGenerationService minMaxValuesGenerationService;
 
     private MinMaxDataElementService minMaxDataElementService;
 
@@ -124,9 +124,9 @@ public class MinMaxGeneratingAction
         this.i18n = i18n;
     }
 
-    public void setMinMaxValuesGeneratingService( DataAnalysisService minMaxValuesGeneratingService )
+    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
     {
-        this.minMaxValuesGeneratingService = minMaxValuesGeneratingService;
+        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
     }
 
     public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
@@ -162,6 +162,11 @@ public class MinMaxGeneratingAction
     public String execute()
         throws Exception
     {
+        if ( startDateStr == null || endDateStr == null )
+        {
+            return INPUT;
+        }
+        
         Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
 
         if ( orgUnits == null )
@@ -169,15 +174,9 @@ public class MinMaxGeneratingAction
             message = i18n.getString( "not_choose_organisation" );
             return INPUT;
         }
-
-        if ( startDateStr == null || endDateStr == null )
-        {
-            return INPUT;
-        }
-
+        
         // Get startDate and endDate
         Date startDate = format.parseDate( startDateStr.trim() );
-        ;
         Date endDate = format.parseDate( endDateStr.trim() );
 
         // Get factor
@@ -197,8 +196,8 @@ public class MinMaxGeneratingAction
                         startDate, endDate );
 
                     // Get min/max values for dataelements into dataset
-                    Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGeneratingService
-                        .analyse( orgUnit, dataSet.getDataElements(), periods, factor );
+                    Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGenerationService
+                        .getMinMaxValues( orgUnit, dataSet.getDataElements(), periods, factor );
 
                     // Save min / max value
                     for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )

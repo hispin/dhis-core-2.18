@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataanalysis;
+package org.hisp.dhis.minmax.validation;
 
 /*
  * Copyright (c) 2004-2009, University of Oslo
@@ -30,19 +30,18 @@ package org.hisp.dhis.dataanalysis;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
- * @author Dag Haavi Finstad
- * @version $Id: StdDevOutlierAnalysisService.java 882 2009-05-14 23:09:31Z
- *          daghf $
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public interface DataAnalysisService
+public interface MinMaxValuesGenerationService
 {
-    String ID = DataAnalysisService.class.getName();
+    String ID = MinMaxValuesGenerationService.class.getName();
 
-    Collection<DeflatedDataValue> analyse( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
+    Collection<MinMaxDataElement> getMinMaxValues( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
         Collection<Period> periods, Double stdDevFactor );
 }
