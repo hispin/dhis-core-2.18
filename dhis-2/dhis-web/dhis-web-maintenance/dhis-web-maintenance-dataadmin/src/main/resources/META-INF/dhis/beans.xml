@@ -343,8 +343,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.MinMaxGeneratingAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.MinMaxGeneratingAction">
+		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction"
+		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
 		<property name="organisationUnitSelectionManager">
 			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		</property>
@@ -352,8 +352,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="minMaxValuesGeneratingService"
-			ref="org.hisp.dhis.dataanalysis.MinMaxValuesGeneratingService" />
+		<property name="minMaxValuesGenerationService"
+			ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" />
 		<property name="minMaxDataElementService"
 			ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="systemSettingManager">
