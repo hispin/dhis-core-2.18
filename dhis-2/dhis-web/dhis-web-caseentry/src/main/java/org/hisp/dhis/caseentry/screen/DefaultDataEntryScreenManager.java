@@ -986,9 +986,9 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 if( patientDataValue != null )
                 {
-                    System.out.println("optioncomboId: "+patientDataValue.getOptionCombo().getId() + " ===name: "+ patientDataValue.getOptionCombo().getName());
+//                    System.out.println("optioncomboId: "+patientDataValue.getOptionCombo().getId() + " ===name: "+ patientDataValue.getOptionCombo().getName());
                     appendCode = appendCode.replace( "id=\"combo["+patientDataValue.getOptionCombo().getId()+"].combo\"", "id=\"combo["+patientDataValue.getOptionCombo().getId()+"].combo\" selected=\"selected\"");
-                    System.out.println("appendCode: "+appendCode);
+//                    System.out.println("appendCode: "+appendCode);
                 }
 
                 appendCode += "</select>";
