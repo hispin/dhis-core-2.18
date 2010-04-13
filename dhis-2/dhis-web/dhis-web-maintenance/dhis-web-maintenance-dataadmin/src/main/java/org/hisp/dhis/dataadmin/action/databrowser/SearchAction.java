@@ -52,6 +52,7 @@ import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
 
@@ -62,6 +63,8 @@ import edu.emory.mathcs.backport.java.util.Collections;
 /**
  * @author espenjac, joakibj, briane, eivinhb
  * @version $Id$
+ * @modifier Dang Duy Hieu
+ * @since 2010-04-06
  */
 public class SearchAction
     implements Action
@@ -78,7 +81,9 @@ public class SearchAction
 
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
 
-    private static final String HYPHEN = " - ";
+    private static final String SPACE = " ";
+
+    private static final String DASH = " - ";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -410,7 +415,7 @@ public class SearchAction
         // date
         if ( fromDate.length() == 0 && toDate.length() == 0 )
         {
-            if ( checkDates( fromDate, toDate ) )
+            if ( DateUtils.checkDates( fromDate, toDate ) )
             {
                 return ERROR;
             }
@@ -462,7 +467,6 @@ public class SearchAction
             }
             else
             {
-
                 dataBrowserTable = dataBrowserService.getDataElementGroupsInPeriod( fromDate, toDate, periodType );
             }
         }
@@ -503,7 +507,8 @@ public class SearchAction
         // Set DataBrowserTable variable for PDF export
         setExportPDFVariables();
 
-        // Get format standard for periods which appropriate with from date, to date and period type
+        // Get format standard for periods which appropriate with from date, to
+        // date and period type
         fromToDate = getFromToDateFormat( periodType, fromDate, toDate );
 
         if ( fromToDate == null )
@@ -517,42 +522,6 @@ public class SearchAction
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * This is a helper method for checking if the fromDate is later than the
-     * toDate. This is necessary in case a user sends the dates with HTTP GET.
-     * 
-     * @param fromDate
-     * @param toDate
-     * @return boolean
-     */
-    private boolean checkDates( String fromDate, String toDate )
-    {
-        String formatString = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat( formatString );
-
-        Date date1 = new Date();
-        Date date2 = new Date();
-
-        try
-        {
-            date1 = sdf.parse( fromDate );
-            date2 = sdf.parse( toDate );
-        }
-        catch ( ParseException e )
-        {
-            return false; // The user hasn't specified any dates
-        }
-
-        if ( !date1.before( date2 ) )
-        {
-            return true; // Return true if date2 is earlier than date1
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     /**
      * This is a helper method for setting session variables for PDF export
@@ -577,7 +546,7 @@ public class SearchAction
 
         for ( MetaValue col : allColumnsConverted )
         {
-            col.setName( DateUtils.convertDate( col.getName() ) );
+            col.setName( DateUtils.convertDate( periodService, col.getName(), format ) );
         }
     }
 
@@ -591,7 +560,7 @@ public class SearchAction
      */
     private List<Period> getPeriodsList( PeriodType periodType, String fromDate, String toDate )
     {
-        String formatString = "yyyy-MM-dd";
+        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
 
         Date date1 = new Date();
@@ -613,6 +582,8 @@ public class SearchAction
                 periods.add( calendarPeriodType.createPeriod( date2 ) );
             }
 
+            Collections.sort( periods, new AscendingPeriodComparator() );
+
             return periods;
         }
         catch ( ParseException e )
@@ -630,10 +601,14 @@ public class SearchAction
         for ( Period period : periods )
         {
             String sTemp = format.formatPeriod( period );
-            
-            if ( !stringFormatDate.contains( sTemp ) )
+
+            if ( stringFormatDate.isEmpty() )
             {
-                stringFormatDate += HYPHEN + sTemp;
+                stringFormatDate = SPACE + sTemp;
+            }
+            else if ( !stringFormatDate.contains( sTemp ) )
+            {
+                stringFormatDate += DASH + sTemp;
             }
         }
 

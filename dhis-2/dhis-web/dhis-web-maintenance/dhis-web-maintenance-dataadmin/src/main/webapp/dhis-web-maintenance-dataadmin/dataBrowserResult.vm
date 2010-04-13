@@ -119,6 +119,7 @@
 	    <strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
 	#elseif ( $fromToDate != "" )
 	    <strong>$i18n.getString( "from_date" ):</strong> $fromToDate
+		<br/>
 		<strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
 	#else
 	    <strong>$i18n.getString( "from_date" ):</strong> $fromDate
@@ -135,7 +136,7 @@
 	<thead>
 		<tr>
 		#foreach ( $col in $allColumnsConverted )
-			<th title="$col.metaValue">$col.name</th>
+			<th title="$col.metaValue">$i18n.getString( $col.name )</th>
 		#end
 		</tr>
 	</thead>

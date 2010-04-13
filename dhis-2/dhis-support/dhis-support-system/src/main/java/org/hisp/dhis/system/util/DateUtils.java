@@ -33,6 +33,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.validator.DateValidator;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -61,7 +66,7 @@ public class DateUtils
 
         return date != null ? format.format( date ) : null;
     }
-    
+
     /**
      * Formats a Date to the IXF date format which is YYYY-MM-DD'T'HH:MM:SS.
      * 
@@ -155,8 +160,8 @@ public class DateUtils
      * @param baseDate the date used as base for the test.
      * @param startDate the start date.
      * @param endDate the end date.
-     * @return <code>true</code> if the base date is between the start date and
-     *         end date, <code>false</code> otherwise.
+     * @return <code>true</code> if the base date is between the start date
+     *         and end date, <code>false</code> otherwise.
      */
     public static boolean between( Date baseDate, Date startDate, Date endDate )
     {
@@ -181,8 +186,8 @@ public class DateUtils
      * @param baseDate the date used as base for the test.
      * @param startDate the start date.
      * @param endDate the end date.
-     * @return <code>true</code> if the base date is between the start date and
-     *         end date, <code>false</code> otherwise.
+     * @return <code>true</code> if the base date is between the start date
+     *         and end date, <code>false</code> otherwise.
      */
     public static boolean strictlyBetween( Date baseDate, Date startDate, Date endDate )
     {
@@ -351,6 +356,38 @@ public class DateUtils
     }
 
     /**
+     * This method converts a string from the date format "yyyy-MM-dd" to "MMMM
+     * yyyy". Default is Monthly period type.
+     * 
+     * @param date is the string to be converted.
+     * @param periodService service of period
+     * @param format is i18n format object
+     * @return converted string if the date is valid, else the original string
+     *         is returned
+     */
+    public static String convertDate( PeriodService periodService, String dateString, I18nFormat format )
+    {
+        if ( !dateIsValid( dateString ) )
+        {
+            return dateString;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat( DEFAULT_DATE_FORMAT );
+
+        try
+        {
+            Date date = dateFormat.parse( dateString );
+            CalendarPeriodType calendarPeriodType = (CalendarPeriodType) getMonthlyPeriodType( periodService );
+
+            return format.formatPeriod( calendarPeriodType.createPeriod( date ) );
+        }
+        catch ( ParseException pe )
+        {
+            throw new RuntimeException( "Date string could not be parsed: " + dateString );
+        }
+    }
+
+    /**
      * This method adds days to a date
      * 
      * @param date the date.
@@ -365,4 +402,51 @@ public class DateUtils
 
         return cal.getTime();
     }
+
+    /**
+     * This is a helper method for checking if the fromDate is later than the
+     * toDate. This is necessary in case a user sends the dates with HTTP GET.
+     * 
+     * @param fromDate
+     * @param toDate
+     * @return boolean
+     */
+    private boolean checkDates( String fromDate, String toDate )
+    {
+        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
+        SimpleDateFormat sdf = new SimpleDateFormat( formatString );
+
+        Date date1 = new Date();
+        Date date2 = new Date();
+
+        try
+        {
+            date1 = sdf.parse( fromDate );
+            date2 = sdf.parse( toDate );
+        }
+        catch ( ParseException e )
+        {
+            return false; // The user hasn't specified any dates
+        }
+
+        if ( !date1.before( date2 ) )
+        {
+            return true; // Return true if date2 is earlier than date1
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * This method returns monthly period type is default
+     * 
+     * @param periodService service of period persistent object
+     */
+    public static final PeriodType getMonthlyPeriodType( PeriodService periodService )
+    {
+        return periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
+    }
+
 }
