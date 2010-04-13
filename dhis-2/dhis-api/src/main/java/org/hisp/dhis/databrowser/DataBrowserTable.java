@@ -100,7 +100,7 @@ public class DataBrowserTable
      * 
      * Adds one Column to the table structure.
      * 
-     * ResultSet contents: index 1: Id index 2: Name index 3: Count
+     * ResultSet contents: index 1: Id index 2: Name index 3: counts_of_aggregated_values
      * 
      * The ResultSet can also contain index 4: PeriodId AND index 5: ColumnName
      * if it does, this functions will add data to rows divided in new columns
@@ -208,7 +208,7 @@ public class DataBrowserTable
 
     public void addZeroColumn()
     {
-        this.addColumnName( "Count" );
+        this.addColumnName( "counts_of_aggregated_values" );
         for ( List<Integer> rowItem : this.counts )
         {
             rowItem.add( 0 );
