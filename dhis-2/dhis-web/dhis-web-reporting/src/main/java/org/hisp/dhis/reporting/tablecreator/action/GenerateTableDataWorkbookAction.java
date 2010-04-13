@@ -27,21 +27,20 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.util.StreamActionSupport;
 import org.hisp.dhis.workbook.WorkbookService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GenerateTableDataWorkbookAction
-    implements Action
+    extends StreamActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -73,35 +72,27 @@ public class GenerateTableDataWorkbookAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private InputStream inputStream;
-
-    public InputStream getInputStream()
-    {
-        return inputStream;
-    }
-
-    private String fileName;
-
-    public String getFileName()
-    {
-        return fileName;
-    }
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    protected String execute( HttpServletResponse response, OutputStream out )
+        throws Exception
     {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbookService.writeReportTableData( out, id, format );
         
-        fileName = workbookService.writeReportTableData( out, id, format );
-
-        inputStream = new ByteArrayInputStream( out.toByteArray() );
-                
         return SUCCESS;
+    }
+
+    @Override
+    protected String getContentType()
+    {
+        return CONTENT_TYPE_EXCEL;
+    }
+
+    @Override
+    protected String getFilename()
+    {
+        return "ReportTable.xls";
     }
 }

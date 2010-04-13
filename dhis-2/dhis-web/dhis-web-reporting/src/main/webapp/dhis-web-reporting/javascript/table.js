@@ -365,7 +365,7 @@ function verifyAndExport( id, url )
            }
            else
            {
-               window.location.href = "generateTableDataWorkbook.action?id=" + id;
+               window.location.href = url;
            }
        } );
 }
