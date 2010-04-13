@@ -38,15 +38,17 @@ import java.util.List;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DateUtils;
 
 /**
  * @author joakibj, briane, eivinhb, jetonm
  * @version $Id$
  */
-public class DefaultDataBrowserService 
+public class DefaultDataBrowserService
     implements DataBrowserService
 {
     private static final String STARTDATE = "1900-01-01";
+
     private static final String ENDDATE = "3000-01-01";
 
     // -------------------------------------------------------------------------
@@ -105,8 +107,8 @@ public class DefaultDataBrowserService
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
 
         return dataBrowserStore.getOrgUnitGroupsBetweenPeriods( betweenPeriodIds );
-    }    
-    
+    }
+
     public DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
         PeriodType periodType )
     {
@@ -122,7 +124,9 @@ public class DefaultDataBrowserService
 
         Integer numResults = dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
         if ( numResults == 0 )
+        {
             table.addZeroColumn();
+        }
 
         return table;
     }
@@ -221,7 +225,7 @@ public class DefaultDataBrowserService
     private List<Integer> getAllPeriodIdsBetweenDatesOnPeriodType( String startDate, String endDate,
         PeriodType periodType )
     {
-        String formatString = "yyyy-MM-dd";
+        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
         Date date1 = new Date();
         Date date2 = new Date();
@@ -250,7 +254,7 @@ public class DefaultDataBrowserService
         {
             betweenPeriodIds.add( -1 );
         }
-        
+
         return betweenPeriodIds;
     }
 }
