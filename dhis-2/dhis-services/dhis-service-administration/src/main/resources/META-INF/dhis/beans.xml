@@ -126,24 +126,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataprune.DefaultDataPruneService">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-	<property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-	<property name="reportExcelService"
-      ref="org.hisp.dhis.reportexcel.ReportExcelService"/>
-	<property name="excelItemService"
-      ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService"/>
 	<property name="completeDataSetRegistrationService"
       ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
 	<property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
-	<property name="userStore"
-      ref="org.hisp.dhis.user.UserStore"/>
-	<property name="organisationUnitGroupService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-	<property name="patientIdentifierService"
-      ref="org.hisp.dhis.patient.PatientIdentifierService"/>
-	<property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
   </bean> 
   
   <!-- Data archive -->
