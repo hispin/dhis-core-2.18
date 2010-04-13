@@ -663,14 +663,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- PREVIEW REPORT BEANS -->
-	<bean
-		id="org.hisp.dhis.reportexcel.export.action.ValidateGenerateReportAction"
-		class="org.hisp.dhis.reportexcel.export.action.ValidateGenerateReportAction"
-		scope="prototype">
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-	</bean>
-
+	
 	<bean
 		id="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager"
 		class="org.hisp.dhis.reportexcel.preview.manager.DefaultInitializePOIStylesManager" />
@@ -958,32 +951,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateRolesAssociationAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateRolesAssociationAction"
-		scope="prototype">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateRolesAssociationsAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateRolesAssociationsAction"
-		scope="prototype">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-	</bean>
-
-	<!--
-		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	-->
-	<!--  DATA ELEMENT GROUP ORDER FOR EXCEL ITEM 							 -->
-	<!--
-		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	-->
+	
+	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	<!--  DATA ELEMENT GROUP ORDER FOR EXCEL ITEM 						 -->
+	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<bean
 		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.DeleteDataElementGroupOrderForCategoryAction"
