@@ -69,7 +69,7 @@ public class DataBrowserServiceTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "DataSet", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 3, table.getRows().size() );
@@ -97,7 +97,7 @@ public class DataBrowserServiceTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "DataSet", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 1, table.getRows().size() );
@@ -124,7 +124,7 @@ public class DataBrowserServiceTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "DataElementGroup", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 3, table.getRows().size() );
@@ -153,7 +153,7 @@ public class DataBrowserServiceTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "DataElementGroup", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 1, table.getRows().size() );
@@ -180,7 +180,7 @@ public class DataBrowserServiceTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "OrgUnitGroup", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 2, table.getRows().size() );
@@ -251,7 +251,7 @@ public class DataBrowserServiceTest
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "OrganisationUnit", table.getColumns().get( 0 ).getName() );
         // Service layer adds "zero-column"
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         assertEquals( "Metarows", 0, table.getRows().size() );
     }
@@ -434,7 +434,7 @@ public class DataBrowserServiceTest
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
         // Service layer adds "zero-column"
-        assertEquals( "Period column header", "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Period column header", "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by name
         assertEquals( "Metarows", 0, table.getRows().size() );
