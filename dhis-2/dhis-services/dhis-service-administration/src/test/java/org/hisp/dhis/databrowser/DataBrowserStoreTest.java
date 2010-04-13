@@ -76,7 +76,7 @@ public class DataBrowserStoreTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "DataSet", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 3, table.getRows().size() );
@@ -155,7 +155,7 @@ public class DataBrowserStoreTest
 
         assertEquals( "Metacolumns", 2, table.getColumns().size() );
         assertEquals( "OrgUnitGroup", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
 
         // Sorted by count
         assertEquals( "Metarows", 2, table.getRows().size() );
