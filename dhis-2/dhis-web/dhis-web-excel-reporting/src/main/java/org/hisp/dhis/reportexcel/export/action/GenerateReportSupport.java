@@ -104,7 +104,7 @@ public abstract class GenerateReportSupport
 
     protected static final short CELLSTYLE_BORDER = CellStyle.BORDER_THIN;
 
-    protected static final short CELLSTYLE_BORDER_COLOR = IndexedColors.LIGHT_ORANGE.getIndex();
+    protected static final short CELLSTYLE_BORDER_COLOR = IndexedColors.DARK_BLUE.getIndex();
 
     private static final String NULL_REPLACEMENT = "0";
 
