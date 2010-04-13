@@ -65,46 +65,46 @@ public class DefaultInitializePOIStylesManager
 
     private static final short STYLE_DEFAULT_BACK_FORE_GROUND_COLOR = IndexedColors.WHITE.getIndex();
 
-    private static final short STYLE_DEFAULT_BORDER_COLOR = IndexedColors.DARK_BLUE.getIndex();
+    private static final short STYLE_DEFAULT_BORDER_COLOR = IndexedColors.LIGHT_ORANGE.getIndex();
 
     /***************************************************************************
      * Default Methods - Using for XLS Extension
      **************************************************************************/
 
     @SuppressWarnings( "static-access" )
-    public void initDefaultHeader( HSSFHeader test_header )
+    public void initDefaultHeader( HSSFHeader poi_header )
     {
-        test_header.setCenter( this.STYLE_DEFAULT_TITLE_CENTER );
-        test_header.setLeft( this.STYLE_DEFAULT_TITLE_LEFT );
-        test_header.setRight( this.STYLE_DEFAULT_TITLE_RIGHT );
+        poi_header.setCenter( this.STYLE_DEFAULT_TITLE_CENTER );
+        poi_header.setLeft( this.STYLE_DEFAULT_TITLE_LEFT );
+        poi_header.setRight( this.STYLE_DEFAULT_TITLE_RIGHT );
         
     }
 
     @SuppressWarnings( "static-access" )
-    public void initDefaultFont( Font test_font )
+    public void initDefaultFont( Font poi_font )
     {
-        test_font.setFontName( this.STYLE_DEFAULT_FONT_NAME );
-        test_font.setFontHeightInPoints( this.STYLE_DEFAULT_FONT_HEIGHT );
-        test_font.setBoldweight( this.STYLE_DEFAULT_FONT_WEIGHT );
-        test_font.setColor( this.STYLE_DEFAULT_FONT_COLOR );
+        poi_font.setFontName( this.STYLE_DEFAULT_FONT_NAME );
+        poi_font.setFontHeightInPoints( this.STYLE_DEFAULT_FONT_HEIGHT );
+        poi_font.setBoldweight( this.STYLE_DEFAULT_FONT_WEIGHT );
+        poi_font.setColor( this.STYLE_DEFAULT_FONT_COLOR );
         
     }
 
     @SuppressWarnings( "static-access" )
-    public void initDefaultCellStyle( CellStyle test_cs, Font test_font )
+    public void initDefaultCellStyle( CellStyle poi_cs, Font poi_font )
     {
-        test_cs.setFont( test_font );
-        test_cs.setFillBackgroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
-        test_cs.setFillForegroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
-        test_cs.setFillPattern( this.STYLE_DEFAULT_PATTERN );
-        test_cs.setBorderBottom( this.STYLE_DEFAULT_BORDER );
-        test_cs.setBottomBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
-        test_cs.setBorderTop( this.STYLE_DEFAULT_BORDER );
-        test_cs.setTopBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
-        test_cs.setBorderLeft( this.STYLE_DEFAULT_BORDER );
-        test_cs.setLeftBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
-        test_cs.setBorderRight( this.STYLE_DEFAULT_BORDER );
-        test_cs.setRightBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        poi_cs.setFont( poi_font );
+        poi_cs.setFillBackgroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
+        poi_cs.setFillForegroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
+        poi_cs.setFillPattern( this.STYLE_DEFAULT_PATTERN );
+        poi_cs.setBorderBottom( this.STYLE_DEFAULT_BORDER );
+        poi_cs.setBottomBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        poi_cs.setBorderTop( this.STYLE_DEFAULT_BORDER );
+        poi_cs.setTopBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        poi_cs.setBorderLeft( this.STYLE_DEFAULT_BORDER );
+        poi_cs.setLeftBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        poi_cs.setBorderRight( this.STYLE_DEFAULT_BORDER );
+        poi_cs.setRightBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
 
     }
 
@@ -112,65 +112,65 @@ public class DefaultInitializePOIStylesManager
     /** Customized Methods - Using for XLS Extension */
     /** ************************************************** */
 
-    public void initHeader( HSSFHeader test_header, String center, String left, String right )
+    public void initHeader( HSSFHeader poi_header, String center, String left, String right )
     {
 
-        test_header.setCenter( center );
-        test_header.setLeft( left );
-        test_header.setRight( right );
+        poi_header.setCenter( center );
+        poi_header.setLeft( left );
+        poi_header.setRight( right );
 
     }
 
-    public void initFont( Font test_font, String fontName, short fontHeightInPoints, short boldWeight, short fontColor )
+    public void initFont( Font poi_font, String fontName, short fontHeightInPoints, short boldWeight, short fontColor )
     {
 
-    	test_font.setFontName( fontName );
-        test_font.setFontHeightInPoints( fontHeightInPoints );
-        test_font.setBoldweight( boldWeight );
-        test_font.setColor( fontColor );
+    	poi_font.setFontName( fontName );
+        poi_font.setFontHeightInPoints( fontHeightInPoints );
+        poi_font.setBoldweight( boldWeight );
+        poi_font.setColor( fontColor );
 
     }
 
-    public void initCellStyle( CellStyle test_cs, Font font, short borderBottom, short bottomBorderColor,
+    public void initCellStyle( CellStyle poi_cs, Font font, short borderBottom, short bottomBorderColor,
         short borderTop, short topBorderColor, short borderLeft, short leftBorderColor, short borderRight,
         short rightBorderColor, short alignment, boolean bAutoWrap )
     {
 
-        test_cs.setFont( font );
-        test_cs.setBorderBottom( borderBottom );
-        test_cs.setBottomBorderColor( bottomBorderColor );
-        test_cs.setBorderTop( borderTop );
-        test_cs.setTopBorderColor( topBorderColor );
-        test_cs.setBorderLeft( borderLeft );
-        test_cs.setLeftBorderColor( leftBorderColor );
-        test_cs.setBorderRight( borderRight );
-        test_cs.setRightBorderColor( rightBorderColor );
-        test_cs.setAlignment( alignment );
-        test_cs.setWrapText( bAutoWrap );
+        poi_cs.setFont( font );
+        poi_cs.setBorderBottom( borderBottom );
+        poi_cs.setBottomBorderColor( bottomBorderColor );
+        poi_cs.setBorderTop( borderTop );
+        poi_cs.setTopBorderColor( topBorderColor );
+        poi_cs.setBorderLeft( borderLeft );
+        poi_cs.setLeftBorderColor( leftBorderColor );
+        poi_cs.setBorderRight( borderRight );
+        poi_cs.setRightBorderColor( rightBorderColor );
+        poi_cs.setAlignment( alignment );
+        poi_cs.setWrapText( bAutoWrap );
 
     }
 
-    public void initCellStyle( CellStyle test_cs, Font font, short fillBgColor, short fillFgColor, short fillPattern,
+    public void initCellStyle( CellStyle poi_cs, Font font, short fillBgColor, short fillFgColor, short fillPattern,
         short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor, short borderLeft,
         short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat, short alignment,
         boolean bAutoWrap )
     {
 
-        test_cs.setFont( font );
-        test_cs.setFillBackgroundColor( fillBgColor );
-        test_cs.setFillForegroundColor( fillFgColor );
-        test_cs.setFillPattern( fillPattern );
-        test_cs.setBorderBottom( borderBottom );
-        test_cs.setBottomBorderColor( bottomBorderColor );
-        test_cs.setBorderTop( borderTop );
-        test_cs.setTopBorderColor( topBorderColor );
-        test_cs.setBorderLeft( borderLeft );
-        test_cs.setLeftBorderColor( leftBorderColor );
-        test_cs.setBorderRight( borderRight );
-        test_cs.setRightBorderColor( rightBorderColor );
-        test_cs.setDataFormat( dataFormat );
-        test_cs.setAlignment( alignment );
-        test_cs.setWrapText( bAutoWrap );
+        poi_cs.setFont( font );
+        poi_cs.setFillBackgroundColor( fillBgColor );
+        poi_cs.setFillForegroundColor( fillFgColor );
+        poi_cs.setFillPattern( fillPattern );
+        poi_cs.setBorderBottom( borderBottom );
+        poi_cs.setBottomBorderColor( bottomBorderColor );
+        poi_cs.setBorderTop( borderTop );
+        poi_cs.setTopBorderColor( topBorderColor );
+        poi_cs.setBorderLeft( borderLeft );
+        poi_cs.setLeftBorderColor( leftBorderColor );
+        poi_cs.setBorderRight( borderRight );
+        poi_cs.setRightBorderColor( rightBorderColor );
+        poi_cs.setDataFormat( dataFormat );
+        poi_cs.setAlignment( alignment );
+        poi_cs.setWrapText( bAutoWrap );
     }
 
 }
