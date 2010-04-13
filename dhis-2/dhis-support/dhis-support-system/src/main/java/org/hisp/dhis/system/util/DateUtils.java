@@ -411,7 +411,7 @@ public class DateUtils
      * @param toDate
      * @return boolean
      */
-    private boolean checkDates( String fromDate, String toDate )
+    public static boolean checkDates( String fromDate, String toDate )
     {
         String formatString = DateUtils.DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
