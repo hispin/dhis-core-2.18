@@ -115,7 +115,7 @@ public class MapViewDeletionHandler
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
-            if ( mapView.getMapLegendSet().equals( mapLegendSet ) )
+            if ( mapView.getMapLegendSet() != null && mapView.getMapLegendSet().equals( mapLegendSet ) ) // MapLegendSet is optional
             {
                 mappingService.deleteMapView( mapView );
             }
