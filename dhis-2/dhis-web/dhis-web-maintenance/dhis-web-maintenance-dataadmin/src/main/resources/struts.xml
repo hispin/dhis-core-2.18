@@ -440,13 +440,13 @@
 
 		<!-- Min/Max validation - Organisation units -->
 
-		<action name="selectLevel"
+		<action name="selectLevelMinMax"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectLevelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
 		</action>
 
-		<action name="unselectLevel"
+		<action name="unselectLevelMinMax"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
@@ -464,7 +464,7 @@
 				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
 		</action>
 
-		<action name="unselectAll"
+		<action name="unselectAllMinMax"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectAllAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>

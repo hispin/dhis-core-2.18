@@ -43,13 +43,13 @@ function selectCompleted( selectedUnits )
 function unselectAllAtLevel( id ){
 	var request = new Request();
     request.setCallbackSuccess( selectReceived );
-	request.send( 'unselectLevel.action?level=' + getFieldValue('levelList') + '&id=' + id);
+	request.send( 'unselectLevelMinMax.action?level=' + getFieldValue('levelList'));
 }
 
 function selectAllAtLevel( id ){
 	var request = new Request();
     request.setCallbackSuccess( selectReceived );
-    request.send( 'selectLevel.action?level=' + getFieldValue('levelList') + '&id=' + id );
+    request.send( 'selectLevelMinMax.action?level=' + getFieldValue('levelList'));
 }
 
 function unselectGroup()
@@ -70,7 +70,7 @@ function unselectAll()
 {
     var request = new Request();
     request.setCallbackSuccess( selectReceived );
-    request.send( 'unselectAll.action' );
+    request.send( 'unselectAllMinMax.action' );
 }
 
 function selectReceived()
