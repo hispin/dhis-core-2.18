@@ -33,11 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.validator.DateValidator;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.period.CalendarPeriodType;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -356,38 +351,6 @@ public class DateUtils
     }
 
     /**
-     * This method converts a string from the date format "yyyy-MM-dd" to "MMMM
-     * yyyy". Default is Monthly period type.
-     * 
-     * @param date is the string to be converted.
-     * @param periodService service of period
-     * @param format is i18n format object
-     * @return converted string if the date is valid, else the original string
-     *         is returned
-     */
-    public static String convertDate( PeriodService periodService, String dateString, I18nFormat format )
-    {
-        if ( !dateIsValid( dateString ) )
-        {
-            return dateString;
-        }
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat( DEFAULT_DATE_FORMAT );
-
-        try
-        {
-            Date date = dateFormat.parse( dateString );
-            CalendarPeriodType calendarPeriodType = (CalendarPeriodType) getMonthlyPeriodType( periodService );
-
-            return format.formatPeriod( calendarPeriodType.createPeriod( date ) );
-        }
-        catch ( ParseException pe )
-        {
-            throw new RuntimeException( "Date string could not be parsed: " + dateString );
-        }
-    }
-
-    /**
      * This method adds days to a date
      * 
      * @param date the date.
@@ -437,16 +400,6 @@ public class DateUtils
         {
             return false;
         }
-    }
-
-    /**
-     * This method returns monthly period type is default
-     * 
-     * @param periodService service of period persistent object
-     */
-    public static final PeriodType getMonthlyPeriodType( PeriodService periodService )
-    {
-        return periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
     }
 
 }

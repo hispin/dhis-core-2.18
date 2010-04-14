@@ -100,7 +100,8 @@ public class DataBrowserTable
      * 
      * Adds one Column to the table structure.
      * 
-     * ResultSet contents: index 1: Id index 2: Name index 3: counts_of_aggregated_values
+     * ResultSet contents: index 1: Id index 2: Name index 3:
+     * counts_of_aggregated_values
      * 
      * The ResultSet can also contain index 4: PeriodId AND index 5: ColumnName
      * if it does, this functions will add data to rows divided in new columns
@@ -126,9 +127,13 @@ public class DataBrowserTable
             if ( data.getColumnCount() == 5 )
             {
                 if ( data.getColumnLabel( 5 ).equalsIgnoreCase( "ColumnHeader" ) )
+                {
                     hasColumnName = true;
+                }
                 if ( data.getColumnLabel( 4 ).equalsIgnoreCase( "PeriodId" ) )
+                {
                     hasPeriodIds = true;
+                }
             }
         }
         catch ( SQLException e1 )
@@ -147,6 +152,7 @@ public class DataBrowserTable
 
             Integer prid = 0;
             boolean makeEmptyCol = false;
+
             while ( resultSet.next() )
             {
                 if ( resultSet.isFirst() )
@@ -164,13 +170,15 @@ public class DataBrowserTable
                 if ( hasPeriodIds )
                 {
                     int tmp = resultSet.getInt( 4 );
+
                     if ( prid == 0 )
+                    {
                         prid = tmp;
+                    }
                     if ( tmp != prid )
                     {
                         prid = tmp;
                         makeEmptyCol = true;
-
                     }
 
                     if ( makeEmptyCol )
@@ -202,7 +210,9 @@ public class DataBrowserTable
         }
 
         if ( countRows == 0 )
+        {
             this.addZeroColumn();
+        }
         return countRows;
     }
 
@@ -344,7 +354,7 @@ public class DataBrowserTable
     {
         queryCount++;
     }
-    
+
     /**
      * This overridden toString method writes out the DataBrowserTable as a
      * table to screen. Very handy in case of debugging and testing.
@@ -353,14 +363,20 @@ public class DataBrowserTable
     public String toString()
     {
         String ret = "\n\n";
+
         for ( MetaValue col : this.getColumns() )
         {
             ret += "|" + col.getName();
         }
+
         ret += "|\n";
         int i = ret.length();
+
         for ( int o = 0; o < i; o++ )
+        {
             ret += "-";
+        }
+
         ret += "\n";
         Iterator<MetaValue> it = this.getRows().iterator();
 
@@ -368,14 +384,16 @@ public class DataBrowserTable
         {
             MetaValue rowMeta = it.next();
             ret += "|" + rowMeta.getName();
+
             for ( Integer rowItem : col )
             {
                 ret += "|" + rowItem;
             }
             ret += "|\n";
         }
+
         ret += "\n\n";
         return ret;
     }
-    
+
 }

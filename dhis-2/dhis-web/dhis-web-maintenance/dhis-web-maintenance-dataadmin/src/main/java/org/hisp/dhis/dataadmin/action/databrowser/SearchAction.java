@@ -27,11 +27,8 @@ package org.hisp.dhis.dataadmin.action.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -48,11 +45,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.period.CalendarPeriodType;
-import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
 
@@ -80,10 +75,6 @@ public class SearchAction
     private static final String KEY_DATABROWSERPERIODTYPE = "dataBrowserPeriodType";
 
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
-
-    private static final String SPACE = " ";
-
-    private static final String DASH = " - ";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -509,7 +500,7 @@ public class SearchAction
 
         // Get format standard for periods which appropriate with from date, to
         // date and period type
-        fromToDate = getFromToDateFormat( periodType, fromDate, toDate );
+        fromToDate = dataBrowserService.getFromToDateFormat( periodType, fromDate, toDate, format );
 
         if ( fromToDate == null )
         {
@@ -543,75 +534,11 @@ public class SearchAction
     private void convertColumnNames( DataBrowserTable dataBrowserTable )
     {
         allColumnsConverted = dataBrowserTable.getColumns();
+        PeriodType monthlyPeriodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
 
         for ( MetaValue col : allColumnsConverted )
         {
-            col.setName( DateUtils.convertDate( periodService, col.getName(), format ) );
+            col.setName( dataBrowserService.convertDate( monthlyPeriodType, col.getName(), format ) );
         }
-    }
-
-    /**
-     * This is a helper method for checking if the fromDate is later than the
-     * toDate. This is necessary in case a user sends the dates with HTTP GET.
-     * 
-     * @param fromDate
-     * @param toDate
-     * @return List of Periods
-     */
-    private List<Period> getPeriodsList( PeriodType periodType, String fromDate, String toDate )
-    {
-        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
-        SimpleDateFormat sdf = new SimpleDateFormat( formatString );
-
-        Date date1 = new Date();
-        Date date2 = new Date();
-
-        try
-        {
-            date1 = sdf.parse( fromDate );
-            date2 = sdf.parse( toDate );
-
-            List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType, date1,
-                date2 ) );
-
-            if ( periods.isEmpty() )
-            {
-                CalendarPeriodType calendarPeriodType = (CalendarPeriodType) periodType;
-
-                periods.add( calendarPeriodType.createPeriod( date1 ) );
-                periods.add( calendarPeriodType.createPeriod( date2 ) );
-            }
-
-            Collections.sort( periods, new AscendingPeriodComparator() );
-
-            return periods;
-        }
-        catch ( ParseException e )
-        {
-            return null; // The user hasn't specified any dates
-        }
-    }
-
-    @SuppressWarnings( "unchecked" )
-    private String getFromToDateFormat( PeriodType periodType, String fromDate, String toDate )
-    {
-        String stringFormatDate = "";
-        List<Period> periods = new ArrayList( this.getPeriodsList( periodType, fromDate, toDate ) );
-
-        for ( Period period : periods )
-        {
-            String sTemp = format.formatPeriod( period );
-
-            if ( stringFormatDate.isEmpty() )
-            {
-                stringFormatDate = SPACE + sTemp;
-            }
-            else if ( !stringFormatDate.contains( sTemp ) )
-            {
-                stringFormatDate += DASH + sTemp;
-            }
-        }
-
-        return stringFormatDate;
     }
 }
