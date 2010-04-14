@@ -86,7 +86,7 @@
 
       <span id="headerText">
         #if ( $applicationTitle )
-          $applicationTitle
+          $encoder.htmlEncode( $applicationTitle )
         #else
           District Health Information Software 2
         #end
