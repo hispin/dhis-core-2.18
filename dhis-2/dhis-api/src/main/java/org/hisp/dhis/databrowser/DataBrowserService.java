@@ -27,6 +27,7 @@ package org.hisp.dhis.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.PeriodType;
 
 /**
@@ -47,7 +48,8 @@ public interface DataBrowserService
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
     DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType );
 
@@ -58,30 +60,33 @@ public interface DataBrowserService
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
     DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType );
-  
+
     /**
-     * Method that retrieves - all OrganisationUnitGroups with DataElement quantity - in
-     * a given period and type (OrgUnitGroup | Count)
+     * Method that retrieves - all OrganisationUnitGroups with DataElement
+     * quantity - in a given period and type (OrgUnitGroup | Count)
      * 
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
     DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType );
 
     /**
-     * Method that retrieves - all OrganisationUnits with DataElement quantity - in a
-     * given period - that is child of a given OrganisationUnit parent.
+     * Method that retrieves - all OrganisationUnits with DataElement quantity -
+     * in a given period - that is child of a given OrganisationUnit parent.
      * 
      * @param orgUnitParent the OrganisationUnit parent
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
     DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate, PeriodType periodType );
 
@@ -93,48 +98,80 @@ public interface DataBrowserService
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
     DataBrowserTable getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate, String endDate,
         PeriodType periodType );
 
     /**
      * Method that retrieves - all the DataElements count - in a given period -
-     * for a given DataElementGroup and returns a DataBrowserTable with the data.
+     * for a given DataElementGroup and returns a DataBrowserTable with the
+     * data.
      * 
      * @param dataElementGroupId the DataElementGroup id
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
     DataBrowserTable getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId, String startDate,
         String endDate, PeriodType periodType );
 
     /**
      * Method retrieves - all the DataElementGroups count - in a given period -
-     * for a given OrganisationUnitGroup and returns a DataBrowserTable with the data.
+     * for a given OrganisationUnitGroup and returns a DataBrowserTable with the
+     * data.
      * 
      * @param orgUnitGroupId the OrganisationUnitGroup id
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
-     */  
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
+     */
     DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
         String endDate, PeriodType periodType );
 
     /**
-     * Method that retrieves - all the DataElements count - in a given period - 
-     * for a given OrganisationUnit and returns a DataBrowserTable with the data.
+     * Method that retrieves - all the DataElements count - in a given period -
+     * for a given OrganisationUnit and returns a DataBrowserTable with the
+     * data.
      * 
      * @param orgUnitId the OrganisationUnit id
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
-     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     * @return DataBrowserTable the DataBrowserTable with structure for
+     *         presentation
      */
-    DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate,
-        String endDate, PeriodType periodType );    
+    DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate, String endDate,
+        PeriodType periodType );
+
+    /**
+     * This method converts a string from the date format "yyyy-MM-dd" to "MMMM
+     * yyyy". Default is Monthly period type.
+     * 
+     * @param date is the string to be converted.
+     * @param periodService service of period
+     * @param format is i18n format object
+     * @return converted string if the date is valid, else the original string
+     *         is returned
+     */
+    String convertDate( PeriodType periodType, String dateString, I18nFormat format );
+
+    /**
+     * This method returns the string of name of periods in the list which
+     * between fromDate and toDate input params
+     * 
+     * @param periodType is the type of period
+     * @param fromDate the beginning date
+     * @param toDate the end date
+     * @param format is i18n format object
+     * @return The name of periods in the list which between fromDate and toDate
+     *         input params will be returned.
+     */
+    String getFromToDateFormat( PeriodType periodType, String fromDate, String toDate, I18nFormat format );
 
 }
