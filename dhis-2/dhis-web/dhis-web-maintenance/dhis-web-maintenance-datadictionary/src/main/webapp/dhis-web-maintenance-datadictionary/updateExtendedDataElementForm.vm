@@ -81,7 +81,7 @@
     </tr>
 	<tr>
 		<td><label for="mnemonic">$i18n.getString( "mnemonic" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="mnemonic" name="mnemonic" maxlength="255" value="$!encoder.htmlEncode( $dataElement.extended.mnemonic )" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
+		<td><input type="text" id="mnemonic" name="mnemonic" value="$!encoder.htmlEncode( $dataElement.extended.mnemonic )" style="width:20em" maxlength="255" class="{validate:{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -223,7 +223,7 @@
 	</tr>
 	<tr>
 		<td><label for="location">$i18n.getString( "location" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="location" name="location" value="$!encoder.htmlEncode( $dataElement.extended.location )" style="width:20em" class="{validate{required:true,maxlength:255}}"></td>
+		<td><input type="text" id="location" name="location" value="$!encoder.htmlEncode( $dataElement.extended.location )" style="width:20em" maxlength="255" class="{validate{required:true,maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="reportingMethods">$i18n.getString( "reporting_methods" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -243,7 +243,7 @@
 	</tr>
 	<tr>
 		<td><label for="sourceOrganisation">$i18n.getString( "source_organisation" )</label></td>
-		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" value="$!encoder.htmlEncode( $dataElement.extended.sourceOrganisation )" style="width:20em"  maxlength="255" class="{validate{maxlength:255}}"></td>
+		<td><input type="text" id="sourceOrganisation" name="sourceOrganisation" value="$!encoder.htmlEncode( $dataElement.extended.sourceOrganisation )" style="width:20em" maxlength="255" class="{validate{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>

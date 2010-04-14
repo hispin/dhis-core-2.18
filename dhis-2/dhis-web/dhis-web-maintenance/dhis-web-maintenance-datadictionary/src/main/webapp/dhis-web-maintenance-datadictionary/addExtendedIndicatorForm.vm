@@ -42,7 +42,7 @@
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
+		<td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
@@ -54,7 +54,7 @@
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em"  class="{validate:{required:true}}"></td>
+		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true}}"></td>
 	</tr>
 	<tr>
         <td><label for="annualized">$i18n.getString( "annualized" )</label></td>
