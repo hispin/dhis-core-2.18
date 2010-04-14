@@ -167,11 +167,11 @@
 	</tr>
 	<tr>
 		<td><label for="minimumSize">$i18n.getString( "minimum_size" )</label></td>
-		<td><input type="text" id="minimumSize" name="minimumSize" value="$!encoder.htmlEncode( $indicator.extended.minimumSize )" style="width:20em" class="{validate:{number:true,maxlength:11}}"></td>
+		<td><input type="text" id="minimumSize" name="minimumSize" value="$!encoder.htmlEncode( $indicator.extended.minimumSize )" style="width:20em" maxlength="11" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="maximumSize">$i18n.getString( "maximum_size" )</label></td>
-		<td><input type="text" id="maximumSize" name="maximumSize" value="$!encoder.htmlEncode( $indicator.extended.maximumSize )" style="width:20em" class="{validate:{number:true,maxlength:11}}"></td>
+		<td><input type="text" id="maximumSize" name="maximumSize" value="$!encoder.htmlEncode( $indicator.extended.maximumSize )" style="width:20em" maxlength="11" class="{validate:{number:true,maxlength:11}}"></td>
 	</tr>
 	<tr>
 		<td><label for="dataDomain">$i18n.getString( "data_domain" )</label></td>

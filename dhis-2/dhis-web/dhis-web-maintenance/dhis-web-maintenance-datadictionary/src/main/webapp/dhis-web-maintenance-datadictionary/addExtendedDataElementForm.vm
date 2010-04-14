@@ -33,7 +33,7 @@
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
+		<td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -80,7 +80,7 @@
 	</tr>
 	<tr>
 		<td><label for="synonyms">$i18n.getString( "synonyms" )</label></td>
-		<td><input type="text" id="synonyms" name="synonyms" style="width:20em" maxlength="255" maxlength="255" class="{validate:{maxlength:255}}"></td>
+		<td><input type="text" id="synonyms" name="synonyms" style="width:20em" maxlength="255" class="{validate:{maxlength:255}}"></td>
 	</tr>
 	<tr>
 		<td><label for="hononyms">$i18n.getString( "hononyms" )</label></td>
