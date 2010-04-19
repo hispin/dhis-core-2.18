@@ -311,8 +311,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                 url: path + 'setMapSourceTypeUserSetting' + type,
                                 method: 'POST',
                                 params: { mapSourceType: mst },
-
-                                success: function( responseObject ) {
+								success: function(r) {
                                     Ext.getCmp('map_cb').getStore().reload();
                                     Ext.getCmp('maps_cb').getStore().reload();
                                     
