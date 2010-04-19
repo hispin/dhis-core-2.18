@@ -108,14 +108,15 @@ mapfish.widgets.print.MultiPage = Ext.extend(mapfish.widgets.print.BaseWidget, {
 
     setUp: function() {
         if (this.config) {
-            if(Ext.isGecko3) {
-                //ugly hack to fix a FF3 bug that makes the inner panels miss-aligned
-                var buggyDiv = this.formPanel.getEl().parent();
-                buggyDiv.setStyle("position", "absolute");
-                setTimeout(function() {
-                    buggyDiv.setStyle("position", "relative");
-                }, 20);
-            }
+		
+            // if(Ext.isGecko3) {
+                /*ugly hack to fix a FF3 bug that makes the inner panels miss-aligned*/
+                // var buggyDiv = this.formPanel.getEl().parent();
+                // buggyDiv.setStyle("position", "absolute");
+                // setTimeout(function() {
+                    // buggyDiv.setStyle("position", "relative");
+                // }, 20);
+            // }
             mapfish.widgets.print.BaseWidget.prototype.setUp.call(this);
         }
     },

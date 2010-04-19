@@ -1,34 +1,57 @@
-﻿/* Ext override */
+﻿/* Gray-extend theme overrides */
 .ext-gecko .x-window-body .x-form-item {
 	overflow:hidden;
 }
-
-/* Ext theme gray-extend override */
-.x-btn-right{
-	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 -21px transparent;
+#ext-gen60 {
+	border-top:1px solid #d0d0d0;
 }
-.x-btn-left {
-	background:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif) no-repeat scroll 0 0 transparent;
+.x-panel-body-noheader, .x-panel-mc .x-panel-body {
+	border-top:0px none;
 }
-.x-toolbar .x-btn-over .x-btn-left{
-	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif);
+.x-panel-body {
+	border:0px;
 }
-.x-toolbar .x-btn-over .x-btn-right{
-	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif);
+.x-form-field {
+	font:10px lucida sans unicode,arial,tahoma,helvetica,sans-serif;
 }
-.x-toolbar .x-btn-over .x-btn-center{
-	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn-sprite.gif);
+.x-combo-list {
+	font:10px lucida sans unicode,arial,tahoma,helvetica,sans-serif;
 }
-.x-toolbar .ytb-sep {
+.x-tree-node {
+	font:10px lucida sans unicode,arial,tahoma,helvetica,sans-serif;
+}
+.x-panel-mc {
+	font:10px lucida sans unicode,arial,tahoma,helvetica,sans-serif;
+}
+.x-tree-node a span, .x-dd-drag-ghost a span {
+	padding:1px 3px 1px 4px;
+}
+.x-tree .x-panel-body {
+	background-color:#F8F8F8;
+}
+.x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
+	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn.gif);
+}
+.ext-gecko .x-btn button, .ext-webkit .x-btn button {
+	padding-left:7px;
+	padding-right:7px;
+}
+.x-toolbar .xtb-sep {
     background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
     height:25px;
 }
 .x-panel-tbar .x-toolbar {
     padding:0;
 }
-.x-btn-icon .x-btn-center .x-btn-text {
-	height:17px;
+.ux-mselect-item {
+	font:10px lucida sans unicode,tahoma,arial,helvetica,sans-serif;
+	padding:1px;
 }
+.x-box-mc {
+	font-family:myriad pro,myriad web,arial,tahoma,helvetica;
+	font-weight:normal;
+}
+
 
 /* OpenLayers (include in lib)
 .olControlOverviewMapElement {
@@ -212,11 +235,14 @@
 	font:normal 11px lucida sans unicode,arial;
 	color:#333;
 }
+.x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
+	padding-left:20px;
+}
 
 /* Msg */
 .x-msg-hl {
 	font-weight:bold;
-	color:#666;
+	color:#555;
 }
 
 /* DHIS Help */

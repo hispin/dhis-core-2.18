@@ -111,153 +111,19 @@ function toggleFeatureLabels(classify) {
 			
 Ext.onReady( function() {
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-    
-    Ext.override(Ext.layout.FormLayout, {
-        renderItem : function(c, position, target) {
-            if (c && !c.rendered && c.isFormField && c.inputType != 'hidden') {
-                var args = [
-                    c.id, c.fieldLabel,
-                    c.labelStyle||this.labelStyle||'',
-                    this.elementStyle||'',
-                    typeof c.labelSeparator == 'undefined' ? this.labelSeparator : c.labelSeparator,
-                    (c.itemCls||this.container.itemCls||'') + (c.hideLabel ? ' x-hide-label' : ''),
-                    c.clearCls || 'x-form-clear-left' 
-                ];
-                
-                if (typeof position == 'number') {
-                    position = target.dom.childNodes[position] || null;
-                }
-                
-                if (position) {
-                    c.formItem = this.fieldTpl.insertBefore(position, args, true);
-                }
-                else {
-                    c.formItem = this.fieldTpl.append(target, args, true);
-                }
-                c.actionMode = 'formItem';
-                c.render('x-form-el-'+c.id);
-                c.container = c.formItem;
-                c.actionMode = 'container';
-            }
-            else {
-                Ext.layout.FormLayout.superclass.renderItem.apply(this, arguments);
-            }
-        }
-    });
-
-    Ext.override(Ext.form.TriggerField, {
-        actionMode: 'wrap',
-        onShow: Ext.form.TriggerField.superclass.onShow,
-        onHide: Ext.form.TriggerField.superclass.onHide
-    });
-    
-    Ext.override(Ext.form.Checkbox, {
-        onRender: function(ct, position) {
-            Ext.form.Checkbox.superclass.onRender.call(this, ct, position);
-            if(this.inputValue !== undefined) {
-                this.el.dom.value = this.inputValue;
-            }
-            /*this.el.addClass('x-hidden');*/
-            this.innerWrap = this.el.wrap({
-                /*tabIndex: this.tabIndex,*/
-                cls: this.baseCls+'-wrap-inner'
-            });
-            
-            this.wrap = this.innerWrap.wrap({cls: this.baseCls+'-wrap'});
-            
-            this.imageEl = this.innerWrap.createChild({
-                tag: 'img',
-                src: Ext.BLANK_IMAGE_URL,
-                cls: this.baseCls
-            });
-            
-            if(this.boxLabel){
-                this.labelEl = this.innerWrap.createChild({
-                    tag: 'label',
-                    htmlFor: this.el.id,
-                    cls: 'x-form-cb-label',
-                    html: this.boxLabel
-                });
-            }
-            /*this.imageEl = this.innerWrap.createChild({
-                tag: 'img',
-                src: Ext.BLANK_IMAGE_URL,
-                cls: this.baseCls
-            }, this.el);*/
-            if(this.checked) {
-                this.setValue(true);
-            }
-            else {
-                this.checked = this.el.dom.checked;
-            }
-            this.originalValue = this.checked;
-        },
-        afterRender: function() {
-            Ext.form.Checkbox.superclass.afterRender.call(this);
-            /*this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);*/
-            this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
-        },
-        initCheckEvents: function() {
-            /*this.innerWrap.removeAllListeners();*/
-            this.innerWrap.addClassOnOver(this.overCls);
-            this.innerWrap.addClassOnClick(this.mouseDownCls);
-            this.innerWrap.on('click', this.onClick, this);
-            /*this.innerWrap.on('keyup', this.onKeyUp, this);*/
-        },
-        onFocus: function(e) {
-            Ext.form.Checkbox.superclass.onFocus.call(this, e);
-            /*this.el.addClass(this.focusCls);*/
-            this.innerWrap.addClass(this.focusCls);
-        },
-        onBlur: function(e) {
-            Ext.form.Checkbox.superclass.onBlur.call(this, e);
-            /*this.el.removeClass(this.focusCls);*/
-            this.innerWrap.removeClass(this.focusCls);
-        },
-        onClick: function(e) {
-            if (e.getTarget().htmlFor != this.el.dom.id) {
-                if (e.getTarget() !== this.el.dom) {
-                    this.el.focus();
-                }
-                if (!this.disabled && !this.readOnly) {
-                    this.toggleValue();
-                }
-            }
-            /*e.stopEvent();*/
-        },
-        onEnable: Ext.form.Checkbox.superclass.onEnable,
-        onDisable: Ext.form.Checkbox.superclass.onDisable,
-        onKeyUp: undefined,
-        setValue: function(v) {
-            var checked = this.checked;
-            this.checked = (v === true || v === 'true' || v == '1' || String(v).toLowerCase() == 'on');
-            if (this.rendered) {
-                this.el.dom.checked = this.checked;
-                this.el.dom.defaultChecked = this.checked;
-                /*this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);*/
-                this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
-            }
-            if (checked != this.checked) {
-                this.fireEvent("check", this, this.checked);
-                if(this.handler){
-                    this.handler.call(this.scope || this, this, this.checked);
-                }
-            }
-        },
-        getResizeEl: function() {
-            /*if(!this.resizeEl){
-                this.resizeEl = Ext.isSafari ? this.wrap : (this.wrap.up('.x-form-element', 5) || this.wrap);
-            }
-            return this.resizeEl;*/
-            return this.wrap;
-        }
-    });
-    
-    Ext.override(Ext.form.Radio, {
-        checkedCls: 'x-form-radio-checked'
-    });
-    
-//    document.body.oncontextmenu = function() { return false; };
+	
+	Ext.override(Ext.form.Field, {
+		showField : function(){
+			this.show();
+			this.container.up('div.x-form-item').setDisplayed( true );
+		},
+		hideField : function(){
+			this.hide();
+			this.container.up('div.x-form-item').setDisplayed( false );
+		}
+	});
+	
+    document.body.oncontextmenu = function() { return false; };
 	
 	Ext.QuickTips.init();
     
@@ -335,7 +201,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: viewStore
     });
     
@@ -353,7 +219,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: viewStore
     });
     
@@ -774,7 +640,7 @@ Ext.onReady( function() {
         closeAction: 'hide',
 		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
 		width: 250,
-		height: 155,
+		height: 157,
         items: [
 		   {
                 xtype: 'panel',
@@ -792,7 +658,7 @@ Ext.onReady( function() {
         closeAction: 'hide',
 		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
 		width: 252,
-		height: 155,
+		height: 157,
         items: [
 		   {
                 xtype: 'panel',
@@ -823,7 +689,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         triggerAction: 'all',
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: new Ext.data.SimpleStore({
             fields: ['value', 'text'],
             data: [[2, 'Distributed values'], [1, 'Equal intervals']]
@@ -842,7 +708,7 @@ Ext.onReady( function() {
         triggerAction: 'all',
 		value: 5,
         width: combo_number_width,
-        minListWidth: combo_number_list_width,
+        minListWidth: combo_number_width,
         store: new Ext.data.SimpleStore({
             fields: ['value'],
             data: [[1], [2], [3], [4], [5], [6], [7], [8]]
@@ -855,7 +721,7 @@ Ext.onReady( function() {
 		hideLabel: true,
         allowBlank: false,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         value: "#FFFF00"
     });
     
@@ -865,7 +731,7 @@ Ext.onReady( function() {
 		hideLabel: true,
         allowBlank: false,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         value: "#FF0000"
     });
         
@@ -893,7 +759,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: automaticMapLegendSetStore,
 		listeners:{
 			'select': {
@@ -960,7 +826,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: automaticMapLegendSetStore
     });
 	
@@ -1234,7 +1100,7 @@ Ext.onReady( function() {
 		hideLabel: true,
 		emptyText: emptytext,
 		width: combo_number_width,
-		minListWidth: combo_number_list_width
+		minListWidth: combo_number_width
 	});
 	
 	var predefinedMapLegendEndValueTextField = new Ext.form.TextField({
@@ -1243,7 +1109,7 @@ Ext.onReady( function() {
 		hideLabel: true,
 		emptyText: emptytext,
 		width: combo_number_width,
-		minListWidth: combo_number_list_width
+		minListWidth: combo_number_width
 	});
 	
     var predefinedMapLegendColorColorPalette = new Ext.ux.ColorField({
@@ -1252,7 +1118,7 @@ Ext.onReady( function() {
 		hideLabel: true,
 		allowBlank: false,
 		width: combo_width,
-		minListWidth: combo_list_width,
+		minListWidth: combo_width,
 		value: "#FFFF00"
 	});
 	
@@ -1270,7 +1136,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: predefinedMapLegendStore
     });
 	
@@ -1308,7 +1174,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: predefinedMapLegendSetStore
     });
 	
@@ -1788,7 +1654,7 @@ Ext.onReady( function() {
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: organisationUnitStore
     });
     
@@ -1805,7 +1671,7 @@ Ext.onReady( function() {
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: organisationUnitLevelStore
     });
 
@@ -1832,7 +1698,7 @@ Ext.onReady( function() {
 		emptyText: emptytext,
 		hideLabel: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         triggerAction: 'all',
         mode: 'remote',
         store: geojsonStore,
@@ -1972,7 +1838,7 @@ Ext.onReady( function() {
 		emptyText: emptytext,
 		hideLabel: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         triggerAction: 'all',
         mode: 'local',
         value: 'Polygon',
@@ -1990,7 +1856,7 @@ Ext.onReady( function() {
 		emptyText: emptytext,
 		hideLabel: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         triggerAction: 'all',
         mode: 'local',
         store: nameColumnStore,
@@ -2040,7 +1906,7 @@ Ext.onReady( function() {
 		emptyText: emptytext,
 		hideLabel: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         triggerAction: 'all',
         mode: 'local',
         store: nameColumnStore
@@ -2054,7 +1920,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
 		hideLabel: true,
         width: combo_number_width,
-		minListWidth: combo_number_list_width,
+		minListWidth: combo_number_width,
 		triggerAction: 'all',
 		value: BASECOORDINATE.longitude,
 		mode: 'remote',
@@ -2069,7 +1935,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
 		hideLabel: true,
         width: combo_number_width,
-		minListWidth: combo_number_list_width,
+		minListWidth: combo_number_width,
 		triggerAction: 'all',
 		mode: 'remote',
 		store: baseCoordinateStore
@@ -2084,7 +1950,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
 		hideLabel: true,
         width: combo_number_width,
-		minListWidth: combo_number_list_width,
+		minListWidth: combo_number_width,
 		triggerAction: 'all',
 		value: BASECOORDINATE.latitude,
 		mode: 'remote',
@@ -2099,7 +1965,7 @@ Ext.onReady( function() {
         emptyText: emptytext,
 		hideLabel: true,
         width: combo_number_width,
-		minListWidth: combo_number_list_width,
+		minListWidth: combo_number_width,
 		triggerAction: 'all',
 		mode: 'remote',
 		store: baseCoordinateStore
@@ -2112,7 +1978,7 @@ Ext.onReady( function() {
         valueField: 'value',
 		hideLabel: true,
         width: combo_number_width,
-        minListWidth: combo_number_list_width,
+        minListWidth: combo_number_width,
         triggerAction: 'all',
         mode: 'local',
         value: 7,
@@ -2365,7 +2231,7 @@ Ext.onReady( function() {
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: organisationUnitLevelStore,
         listeners: {
             'select': {
@@ -2392,7 +2258,7 @@ Ext.onReady( function() {
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: existingMapsStore,
         listeners: {
             'select': {
@@ -2495,7 +2361,7 @@ Ext.onReady( function() {
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: existingMapsStore
     });
     
@@ -2657,7 +2523,7 @@ Ext.onReady( function() {
 		emptyText: emptytext,
 		hideLabel: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         triggerAction: 'all',
         mode: 'remote',
         store: geojsonStore
@@ -2770,7 +2636,7 @@ Ext.onReady( function() {
         mode: 'local',
         triggerAction: 'all',
         width: combo_number_width,
-        minListWidth: combo_number_list_width,
+        minListWidth: combo_number_width,
         value: 0.5,
         store: new Ext.data.SimpleStore({
             fields: ['value'],
@@ -2795,7 +2661,7 @@ Ext.onReady( function() {
         mode: 'local',
         triggerAction: 'all',
         width: combo_number_width,
-        minListWidth: combo_number_list_width,
+        minListWidth: combo_number_width,
         value: 2,
         store: new Ext.data.SimpleStore({
             fields: ['value'],
@@ -2824,7 +2690,7 @@ Ext.onReady( function() {
 		hideLabel: true,
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_list_width,
+        minListWidth: combo_width,
         store: mapLayerStore
     });
     
@@ -3193,7 +3059,7 @@ Ext.onReady( function() {
 						isFormField: true,
 						emptyText: emptytext,
 						width: combo_number_width,
-						minListWidth: combo_number_list_width,
+						minListWidth: combo_number_width,
 						triggerAction: 'all',
 						value: BASECOORDINATE.longitude,
 						mode: 'remote',
@@ -3209,7 +3075,7 @@ Ext.onReady( function() {
 						isFormField: true,
 						emptyText: emptytext,
 						width: combo_number_width,
-						minListWidth: combo_number_list_width,
+						minListWidth: combo_number_width,
 						triggerAction: 'all',
 						value: BASECOORDINATE.latitude,
 						mode: 'remote',
@@ -3395,7 +3261,7 @@ Ext.onReady( function() {
             }
         }
     });
-    
+	
     mapping = new mapfish.widgets.geostat.Mapping({
         id: 'mapping',
         map: MAP,
@@ -3602,7 +3468,6 @@ Ext.onReady( function() {
 			'-',
 			exportImageButton,
 			exportExcelButton,
-			pdfButton,
 			'-',
 			favoritesButton,
 			'-',
@@ -3633,6 +3498,7 @@ Ext.onReady( function() {
                 region: 'east',
                 id: 'east',
                 collapsible: true,
+				header: false,
                 width: 200,
                 margins: '0 5 0 5',
                 defaults: {
@@ -3683,7 +3549,7 @@ Ext.onReady( function() {
                 region: 'west',
                 id: 'west',
                 split: true,
-				title: '',
+				header: false,
                 collapsible: true,
 				collapseMode: 'mini',
                 width: west_width,
@@ -3769,8 +3635,8 @@ Ext.onReady( function() {
 	MAP.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
-        prefix: '<span color="#666">x: &nbsp;</span>',
-        separator: '<br/><span color="#666">y: &nbsp;</span>'
+        prefix: '<span style="color:#666;">x: &nbsp;</span>',
+        separator: '<br/><span style="color:#666;">y: &nbsp;</span>'
     }));
 
     MAP.addControl(new OpenLayers.Control.OverviewMap({
@@ -3795,6 +3661,9 @@ Ext.onReady( function() {
             }
         }
     });
+	
+	Ext.getCmp('maplegendset_cb').hideField();
+	Ext.getCmp('bounds').hideField();
 	
     Ext.get('loading').fadeOut({remove: true});
 	
@@ -3856,7 +3725,8 @@ function onClickSelectChoropleth(feature) {
 		mapping.relation = feature.attributes[MAPDATA.nameColumn];
     }
 	else {
-		MAP.setCenter(feature.geometry.getBounds().getCenterLonLat(), MAP.getZoom()+1);
+		// MAP.setCenter(feature.geometry.getBounds().getCenterLonLat(), MAP.getZoom()+1);
+		sc(feature.attributes[MAPDATA.nameColumn], Ext.getCmp('indicator_cb').getRawValue());
 	}
 }
 
@@ -3909,10 +3779,9 @@ function loadMapData(redirect, position) {
     Ext.Ajax.request({
         url: path + 'getMapByMapLayerPath' + type,
         method: 'POST',
-        params: { mapLayerPath: URL, format: 'json' },
+        params: { mapLayerPath: URL },
         success: function(r) {
-		
-            MAPDATA = Ext.util.JSON.decode(r.responseText).map[0];	
+			MAPDATA = Ext.util.JSON.decode(r.responseText).map[0];
             
             if (MAPSOURCE == map_source_type_database) {
                 MAPDATA.name = Ext.getCmp('map_cb').getRawValue();
@@ -3963,7 +3832,6 @@ function loadMapData(redirect, position) {
 }
 
 
-
 /*CHOROPLETH*/
 function getChoroplethData() {
 	MASK.msg = 'Creating choropleth...';
@@ -3973,13 +3841,12 @@ function getChoroplethData() {
     var periodId = Ext.getCmp('period_cb').getValue();
     var mapLayerPath = MAPDATA.mapLayerPath;
 	var url = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? 'getMapValuesByMap' : 'getMapValuesByLevel';
-	var params = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath } : { indicatorId: indicatorId, periodId: periodId, level: URL };
+	var params = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath } : { indicatorId: indicatorId, periodId: periodId, level: mapLayerPath };
 
     Ext.Ajax.request({
         url: path + url + type,
         method: 'POST',
         params: params,
-
         success: function(r) {
 			var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0].features;
@@ -4042,64 +3909,51 @@ function getAssignOrganisationUnitData() {
 	
     var mlp = MAPDATA.mapLayerPath;
     
-    Ext.Ajax.request({
-        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
-        method: 'GET',
-        params: { mapLayerPath: mlp, format: 'json' },
-
-        success: function(r) {
-			var layers = MAP.getLayersByName('Thematic map');
-			features = layers[0]['features'];
-			var relations = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelations;
-			var nameColumn = MAPDATA.nameColumn;
-			var noCls = 1;
-			var noAssigned = 0;
-			var options = {};
-			
-			for (var i = 0; i < features.length; i++) {
-				features[i].attributes['value'] = 0;
-			
-				for (var j = 0; j < relations.length; j++) {
-					if (relations[j].featureId == features[i].attributes[nameColumn]) {
-						features[i].attributes['value'] = 1;
-						noAssigned++;
-						if (noCls < 2) {
-							noCls = 2;
-						}
-						break;
-					}
-				}
-			}
+	var relations =	 Ext.getCmp('grid_gp').getStore();
+	var layers = MAP.getLayersByName('Thematic map');
+	features = layers[0]['features'];
+	var nameColumn = MAPDATA.nameColumn;
+	var noCls = 1;
+	var noAssigned = 0;
+	var options = {};
 	
-			var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
-			noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
-			
-			mapping.indicator = 'value';
-			mapping.indicatorText = 'Indicator';
-			options.indicator = mapping.indicator;
-			
-			options.method = 1;
-			options.numClasses = noCls;
-			
-			var colorA = new mapfish.ColorRgb();
-			colorA.setFromHex(color);
-			var colorB = new mapfish.ColorRgb();
-			colorB.setFromHex(assigned_row_color);
-			options.colors = [colorA, colorB];
-			
-			mapping.coreComp.updateOptions(options);
-			mapping.coreComp.applyClassification();
-			mapping.classificationApplied = true;
-			
-			MASK.hide();
-        },
-        failure: function() {
-            alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
-        } 
-    });
+	for (var i = 0; i < features.length; i++) {
+		features[i].attributes['value'] = 0;
+	
+		for (var j = 0; j < relations.getTotalCount(); j++) {
+			if (relations.getAt(j).data.featureId == features[i].attributes[nameColumn]) {
+				features[i].attributes['value'] = 1;
+				noAssigned++;
+				noCls = noCls < 2 ? 2 : noCls;
+				break;
+			}
+		}
+	}
+
+	var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
+	noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
+	
+	mapping.indicator = 'value';
+	mapping.indicatorText = 'Indicator';
+	options.indicator = mapping.indicator;
+	
+	options.method = 1;
+	options.numClasses = noCls;
+	
+	var colorA = new mapfish.ColorRgb();
+	colorA.setFromHex(color);
+	var colorB = new mapfish.ColorRgb();
+	colorB.setFromHex(assigned_row_color);
+	options.colors = [colorA, colorB];
+	
+	mapping.coreComp.updateOptions(options);
+	mapping.coreComp.applyClassification();
+	mapping.classificationApplied = true;
+	
+	MASK.hide();
 }
 
-/*AUTO MAPPING*/
+/*AUTO-MAPPING*/
 function getAutoAssignOrganisationUnitData(position) {
 	MASK.msg = 'Loading data...';
 	MASK.show();
@@ -4109,8 +3963,7 @@ function getAutoAssignOrganisationUnitData(position) {
     Ext.Ajax.request({
         url: path + 'getOrganisationUnitsAtLevel' + type,
         method: 'POST',
-        params: { level: level, format: 'json' },
-
+        params: { level: level },
         success: function(r) {
 		    var layers = MAP.getLayersByName('Thematic map');
 			var features = layers[0]['features'];
@@ -4119,7 +3972,6 @@ function getAutoAssignOrganisationUnitData(position) {
 			var mlp = MAPDATA.mapLayerPath;
 			var count_match = 0;
 			var relations = '';
-			var featureName, orgunitName;
 			
 			for ( var i = 0; i < features.length; i++ ) {
 				features[i].attributes.compareName = features[i].attributes[nameColumn].split(' ').join('').toLowerCase();
