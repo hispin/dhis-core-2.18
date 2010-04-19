@@ -36,7 +36,7 @@
     gridpanel_width = west_width - 15;
     multiselect_width = 210;
 	combo_width = 150;
-	combo_list_width = combo_width + 17;
+	// combo_list_width = combo_width + 17;
 	combo_width2 = 133;
 	combo_list_width2 = combo_width2 + 17;
 	combo_width_fieldset = 112;

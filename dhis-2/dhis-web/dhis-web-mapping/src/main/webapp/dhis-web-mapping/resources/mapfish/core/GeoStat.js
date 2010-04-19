@@ -201,6 +201,10 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.removeFeatures(this.layer.features);
         this.layer.addFeatures(format.read(doc));
         this.requestSuccess(request);
+
+		if (URL) {
+			loadMapData(ACTIVEPANEL, false);
+		}
     },
 
     /**

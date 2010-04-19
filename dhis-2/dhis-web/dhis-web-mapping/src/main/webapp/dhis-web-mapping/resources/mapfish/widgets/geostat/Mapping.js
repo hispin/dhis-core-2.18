@@ -161,12 +161,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             root: 'mapOrganisationUnitRelations',
             fields: ['id', 'organisationUnit', 'organisationUnitId', 'featureId'],
             sortInfo: { field: 'organisationUnit', direction: 'ASC' },
+			idProperty: 'organisationUnit',
             autoLoad: false
         });
 
         gridView = new Ext.grid.GridView({ 
             forceFit: true,
-            sortClasses: ['sort-asc'],
             getRowClass: function(row,index) {
                 var cls = ''; 
                 switch (row.data.featureId) {
@@ -176,7 +176,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     default:
                         cls = 'row-assigned';
                 }
-                
                 return cls;
             }
         });
@@ -197,21 +196,21 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 emptyText: emptytext,
                 selectOnFocus: true,
 				labelSeparator: labelseparator,
-                width: combo_width2,
-                minListWidth: combo_list_width2,
+                width: combo_width,
+                minListWidth: combo_width,
                 store: mapStore,
                 listeners: {
                     'select': {
                         fn: function() {
                             var mlp = Ext.getCmp('maps_cb').getValue();
                             this.newUrl = mlp;
-                            
-                            Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
+							
+                            Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp };
                             Ext.getCmp('grid_gp').getStore().reload();
 							
 							Ext.getCmp('filter_tf').enable();
-                            
-                            this.classify(false);
+							
+							mapping.classify(false);
                         },
                         scope: this
                     }
@@ -245,7 +244,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 				autoExpandColumn: 'organisationUnitId',
 				enableHdMenu: true,
                 width: gridpanel_width,
-                height: this.getGridPanelHeight(),				 
+                height: this.getGridPanelHeight(),
                 view: gridView,
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
@@ -265,7 +264,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                     Ext.messageRed.msg('Auto-assign', 'Please select a map.');
                                     return;
                                 }
-
                                 loadMapData('auto-assignment', true);
                             },
                             scope: this
@@ -288,7 +286,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                     url: path + 'deleteMapOrganisationUnitRelationsByMap' + type,
                                     method: 'GET',
                                     params: { mapLayerPath: mlp },
-
                                     success: function( responseObject ) {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
@@ -461,14 +458,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     classify: function(exception, position) {
         if (!this.ready) {
-
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
         }
         
         if (this.newUrl) {
             URL = this.newUrl;
-            this.newUrl = false;
 			
 			if (MAPSOURCE == map_source_type_geojson) {
 				this.setUrl(path + 'getGeoJson.action?name=' + URL);
@@ -488,7 +483,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 		MASK.msg = 'Loading data...';
         MASK.show();
         
-        loadMapData(organisationUnitAssignment, position);
+		if (!this.newUrl) {
+			loadMapData(organisationUnitAssignment, position);
+		}
     },
 
     /**
