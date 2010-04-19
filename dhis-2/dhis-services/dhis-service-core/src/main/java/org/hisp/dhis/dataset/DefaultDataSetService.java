@@ -35,14 +35,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.util.AuditLogLevel;
+import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -53,6 +57,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataSetService
     implements DataSetService
 {
+    private Logger logger = Logger.getLogger( getClass() );
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -77,6 +82,14 @@ public class DefaultDataSetService
     {
         i18nService = service;
     }
+    
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
 
     // -------------------------------------------------------------------------
     // DataSet
@@ -87,14 +100,26 @@ public class DefaultDataSetService
         int id = dataSetStore.addDataSet( dataSet );
 
         i18nService.addObject( dataSet );
-
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_ADD , 
+            DataSet.class.getSimpleName(), 
+            dataSet.getName()) );
+        
         return id;
     }
 
     public void updateDataSet( DataSet dataSet )
     {
         dataSetStore.updateDataSet( dataSet );
-
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_EDIT, 
+            DataSet.class.getSimpleName(), 
+            dataSet.getName()) );
+        
         i18nService.verify( dataSet );
     }
 
@@ -103,6 +128,12 @@ public class DefaultDataSetService
         i18nService.removeObject( dataSet );
 
         dataSetStore.deleteDataSet( dataSet );
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_DELETE, 
+            DataSet.class.getSimpleName(), 
+            dataSet.getName()) );
     }
 
     public DataSet getDataSet( int id )

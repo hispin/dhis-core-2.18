@@ -30,12 +30,16 @@ package org.hisp.dhis.user.hibernate;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.AuditLogLevel;
+import org.hisp.dhis.system.util.AuditLogUtil;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -51,6 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class HibernateUserStore
     implements UserStore
 {
+    private Logger logger = Logger.getLogger( getClass() );
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -61,6 +66,14 @@ public class HibernateUserStore
     {
         this.sessionFactory = sessionFactory;
     }
+    
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
 
     // -------------------------------------------------------------------------
     // User
@@ -70,6 +83,12 @@ public class HibernateUserStore
     {
         Session session = sessionFactory.getCurrentSession();
 
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_ADD , 
+            User.class.getSimpleName(), 
+            user.getName()) );
+        
         return (Integer) session.save( user );
     }
 
@@ -78,6 +97,12 @@ public class HibernateUserStore
         Session session = sessionFactory.getCurrentSession();
 
         session.update( user );
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+                AuditLogUtil.ACTION_EDIT , 
+                User.class.getSimpleName(), 
+                user.getName()) );
     }
 
     public User getUser( int id )
@@ -134,6 +159,12 @@ public class HibernateUserStore
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( user );
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_DELETE , 
+            User.class.getSimpleName(), 
+            user.getName()) );
     }
 
     // -------------------------------------------------------------------------

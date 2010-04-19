@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -43,7 +44,10 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.system.util.AuditLogLevel;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -106,6 +110,12 @@ public class DefaultPatientService
         this.relationshipTypeService = relationshipTypeService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
     // -------------------------------------------------------------------------
     // PatientDataValue
     // -------------------------------------------------------------------------
@@ -333,16 +343,12 @@ public class DefaultPatientService
         Integer relationshipTypeId,  List<PatientAttributeValue> patientAttributeValues ) 
     {
         
-        patientStore.save( patient );
+        savePatient( patient );
 
-        //Integer.parseInt( "ABC" );
-        
         for( PatientAttributeValue pav : patientAttributeValues )
         {
             patientAttributeValueService.savePatientAttributeValue( pav );
         }
-        
-        
         //-------------------------------------------------------------------------
         // If underAge = true : save representative information.
         //-------------------------------------------------------------------------

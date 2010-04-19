@@ -206,7 +206,7 @@ public class ValidatePatientAction
                 boolean flagDuplicate = false;
                 for ( Patient p : patients )
                 {
-                    if ( p.getId().intValue() != id.intValue() )
+                    if ( id == null || ( id != null && p.getId().intValue() != id.intValue() ) )
                     {
                         flagDuplicate = true;
                         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService

@@ -258,6 +258,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>
+     <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
   </bean>
 
   <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"
@@ -338,6 +340,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.source.SourceStore"/>
     <property name="organisationUnitStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitStore"/>
+    <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"

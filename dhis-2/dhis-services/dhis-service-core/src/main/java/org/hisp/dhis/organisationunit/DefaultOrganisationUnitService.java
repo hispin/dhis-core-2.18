@@ -39,12 +39,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.source.SourceStore;
+import org.hisp.dhis.system.util.AuditLogLevel;
+import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -56,6 +60,8 @@ public class DefaultOrganisationUnitService
     implements OrganisationUnitService
 {
     private static final String LEVEL_PREFIX = "Level ";
+    
+    private Logger logger = Logger.getLogger( getClass() );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -75,6 +81,13 @@ public class DefaultOrganisationUnitService
         this.organisationUnitStore = organisationUnitStore;
     }
 
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+       
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -92,6 +105,12 @@ public class DefaultOrganisationUnitService
 
         addOrganisationUnitHierarchy( organisationUnit.getOpeningDate() );
         
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_ADD , 
+            OrganisationUnit.class.getSimpleName(), 
+            organisationUnit.getName()) );
+        
         return id;
     }
 
@@ -100,6 +119,12 @@ public class DefaultOrganisationUnitService
         organisationUnit.setLastUpdated( new Date() );
         
         sourceStore.updateSource( organisationUnit );
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_EDIT ,  
+            OrganisationUnit.class.getSimpleName(), 
+            organisationUnit.getName()) );
     }
     
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
@@ -132,6 +157,12 @@ public class DefaultOrganisationUnitService
         sourceStore.deleteSource( organisationUnit );
         
         addOrganisationUnitHierarchy( organisationUnit.getClosedDate() != null ? organisationUnit.getClosedDate() : new Date() );
+        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, 
+            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_DELETE , 
+            OrganisationUnit.class.getSimpleName(),
+            organisationUnit.getName()) );
     }
 
     public OrganisationUnit getOrganisationUnit( int id )

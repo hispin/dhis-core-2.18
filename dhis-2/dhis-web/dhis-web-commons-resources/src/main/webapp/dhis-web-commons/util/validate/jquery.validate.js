@@ -4,7 +4,7 @@
  * http://bassistance.de/jquery-plugins/jquery-plugin-validation/
  * http://docs.jquery.com/Plugins/Validation
  *
- * Copyright (c) 2006 - 2008 Jörn Zaefferer
+ * Copyright (c) 2006 - 2008 Jï¿½rn Zaefferer
  *
  * $Id: jquery.validate.js 6403 2009-06-17 14:27:16Z joern.zaefferer $
  *
@@ -1077,8 +1077,9 @@ $.extend($.validator, {
 	},
 	
 	//-------------------------------------------------
-	// Dynamic load localization file
-	// @author Viet Nguyen
+	// Load messages and methods base on locale code
+	// Format of locale code : languageCode_countryCode
+	// Ex :  en_GB
 	//--------------------------------------------------
 	loadLocaled : function(code)
 	{
@@ -1087,6 +1088,12 @@ $.extend($.validator, {
 		}catch(e)
 		{
 			this.messages = eval("en_GB");
+		}
+		try {
+			eval("methods_"+code)();
+		}catch(e)
+		{
+			eval("methods_en_GB")();
 		}
 	}
 	
