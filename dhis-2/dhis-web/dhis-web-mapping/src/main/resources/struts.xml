@@ -35,7 +35,7 @@
 		<action name="getOrganisationUnitsAtLevel"
 			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonOrganisationUnits.vm</result>
+				/dhis-web-mapping/jsonminOrganisationUnits.vm</result>
 		</action>
 
 		<!-- Map -->
@@ -132,7 +132,7 @@
 		<action name="getAvailableMapOrganisationUnitRelations"
 			class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonMapOrganisationUnitRelations.vm</result>
+				/dhis-web-mapping/jsonminMapOrganisationUnitRelations.vm</result>
 		</action>
 
 		<action name="deleteMapOrganisationUnitRelationsByMap"
