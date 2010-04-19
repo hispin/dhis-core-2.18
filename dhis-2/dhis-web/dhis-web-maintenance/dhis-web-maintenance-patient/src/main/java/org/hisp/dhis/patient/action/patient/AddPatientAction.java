@@ -53,6 +53,7 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.idgen.PatientIdentifierGenerator;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -86,7 +87,7 @@ public class AddPatientAction
     private PatientAttributeService patientAttributeService;
 
     private PatientAttributeOptionService patientAttributeOptionService;
-
+    
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------

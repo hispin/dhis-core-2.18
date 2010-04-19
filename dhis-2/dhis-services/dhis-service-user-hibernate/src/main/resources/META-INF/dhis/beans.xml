@@ -9,6 +9,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.user.UserStore" 
     class="org.hisp.dhis.user.hibernate.HibernateUserStore">
     <property name="sessionFactory" ref="sessionFactory"/>
+   	 <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
   </bean>
     
   <bean id="org.hisp.dhis.user.CurrentUserService"
