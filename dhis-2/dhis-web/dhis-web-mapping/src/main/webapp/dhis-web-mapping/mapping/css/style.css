@@ -51,7 +51,11 @@
 	font-family:myriad pro,myriad web,arial,tahoma,helvetica;
 	font-weight:normal;
 }
-
+.loading-indicator {
+	font-size:10px;
+	color:#666;
+	padding-left:21px;
+}
 
 /* OpenLayers (include in lib)
 .olControlOverviewMapElement {
