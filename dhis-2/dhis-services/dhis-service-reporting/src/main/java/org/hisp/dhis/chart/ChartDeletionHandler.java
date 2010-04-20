@@ -89,16 +89,14 @@ public class ChartDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteSource( Source source )
+    public void deleteSource( Source source )
     {
         for ( Chart chart : chartService.getAllCharts() )
         {
-            if ( chart.getOrganisationUnits().contains( source ) )
+            if ( chart.getOrganisationUnits().remove( source ) )
             {
-                return false;
+                chartService.saveChart( chart );
             }
         }
-        
-        return true;
     }
 }

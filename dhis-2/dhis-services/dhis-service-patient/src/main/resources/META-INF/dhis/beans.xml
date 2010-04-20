@@ -217,5 +217,24 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="statementManager" ref="statementManager" />
 	</bean>
 
+	<!-- DeletionHandlers -->
+	
+	<bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" 
+		class="org.hisp.dhis.patient.PatientIdentifierDeletionHandler">
+		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService"/>
+	</bean>
 
+	<!-- DeletionManager -->
+  
+  	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+		<property name="targetMethod" value="addDeletionHandlers"/>
+		<property name="arguments">
+		  <list>
+			<list>
+			  <ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"/>
+			</list>
+		  </list>
+		</property>
+	</bean>
 </beans>

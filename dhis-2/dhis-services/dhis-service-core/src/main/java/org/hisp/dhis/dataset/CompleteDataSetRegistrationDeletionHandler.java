@@ -82,10 +82,14 @@ public class CompleteDataSetRegistrationDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteSource( Source source )
+    public void deleteSource( Source source )
     {
-        String sql = "SELECT COUNT(*) FROM completedatasetregistration where sourceid=" + source.getId();
-    
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        for(CompleteDataSetRegistration registration : completeDataSetRegistrationService.getAllCompleteDataSetRegistrations())
+        {
+            if(registration.getSource().equals( source ))
+            {
+                completeDataSetRegistrationService.deleteCompleteDataSetRegistration( registration );
+            }
+        }
     }
 }

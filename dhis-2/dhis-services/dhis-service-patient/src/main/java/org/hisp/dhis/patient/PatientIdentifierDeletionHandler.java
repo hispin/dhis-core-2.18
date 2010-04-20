@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporttable;
+package org.hisp.dhis.patient;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,31 +27,28 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.period.Period;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
- * @author Lars Helge Overland
+ * @author Quang Nguyen
  * @version $Id$
  */
-public class ReportTableDeletionHandler
+public class PatientIdentifierDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportTableService reportTableService;
+    private PatientIdentifierService patientIdentifierService;
 
-    public void setReportTableService( ReportTableService reportTableService )
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
-        this.reportTableService = reportTableService;
+        this.patientIdentifierService = patientIdentifierService;
     }
-
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -59,74 +56,15 @@ public class ReportTableDeletionHandler
     @Override
     public String getClassName()
     {
-        return ReportTable.class.getSimpleName();
-    }
-    
-    @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataElements().contains( dataElement ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-            
-    @Override
-    public boolean allowDeleteIndicator( Indicator indicator )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getIndicators().contains( indicator ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    @Override
-    public boolean allowDeleteDataSet( DataSet dataSet )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataSets().contains( dataSet ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-
-    @Override
-    public boolean allowDeletePeriod( Period period )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getPeriods().contains( period ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
+        return PatientIdentifier.class.getSimpleName();
     }
 
     @Override
     public void deleteSource( Source source )
     {
-        for(ReportTable reportTable : reportTableService.getAllReportTables())
+        for ( PatientIdentifier patientIdentifier : patientIdentifierService.getPatientIdentifiersByOrgUnit( (OrganisationUnit) source ) )
         {
-            if(reportTable.getUnits().remove( source ))
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
+            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
         }
     }
 }
