@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporttable;
+package org.hisp.dhis.reportexcel;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,29 +27,25 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
- * @author Lars Helge Overland
+ * @author Quang Nguyen
  * @version $Id$
  */
-public class ReportTableDeletionHandler
+public class ReportExcelDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportTableService reportTableService;
+    private ReportExcelService reportExcelService;
 
-    public void setReportTableService( ReportTableService reportTableService )
+    public void setReportExcelService( ReportExcelService reportExcelService )
     {
-        this.reportTableService = reportTableService;
+        this.reportExcelService = reportExcelService;
     }
 
     // -------------------------------------------------------------------------
@@ -59,73 +55,17 @@ public class ReportTableDeletionHandler
     @Override
     public String getClassName()
     {
-        return ReportTable.class.getSimpleName();
-    }
-    
-    @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataElements().contains( dataElement ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-            
-    @Override
-    public boolean allowDeleteIndicator( Indicator indicator )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getIndicators().contains( indicator ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    @Override
-    public boolean allowDeleteDataSet( DataSet dataSet )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataSets().contains( dataSet ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-
-    @Override
-    public boolean allowDeletePeriod( Period period )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getPeriods().contains( period ) )
-            {
-                return false;
-            }
-        }
-        
-        return true;
+        return ReportExcel.class.getSimpleName();
     }
 
     @Override
     public void deleteSource( Source source )
     {
-        for(ReportTable reportTable : reportTableService.getAllReportTables())
+        for ( ReportExcel reportExcel : reportExcelService.getALLReportExcel() )
         {
-            if(reportTable.getUnits().remove( source ))
+            if ( reportExcel.getOrganisationAssocitions().remove( source ) )
             {
-                reportTableService.updateReportTable( reportTable );
+                reportExcelService.updateReportExcel( reportExcel );
             }
         }
     }
