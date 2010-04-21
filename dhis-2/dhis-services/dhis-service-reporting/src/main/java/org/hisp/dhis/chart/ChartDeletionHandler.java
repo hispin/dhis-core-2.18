@@ -59,7 +59,7 @@ public class ChartDeletionHandler
     {
         return Chart.class.getSimpleName();
     }
-    
+
     @Override
     public boolean allowDeleteIndicator( Indicator indicator )
     {
@@ -70,10 +70,10 @@ public class ChartDeletionHandler
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public boolean allowDeletePeriod( Period period )
     {
@@ -84,10 +84,10 @@ public class ChartDeletionHandler
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public void deleteSource( Source source )
     {

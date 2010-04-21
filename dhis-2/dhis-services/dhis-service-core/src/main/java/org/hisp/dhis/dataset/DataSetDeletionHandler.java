@@ -44,7 +44,7 @@ public class DataSetDeletionHandler
     // -------------------------------------------------------------------------
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -59,7 +59,7 @@ public class DataSetDeletionHandler
     {
         return DataSet.class.getSimpleName();
     }
-    
+
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
@@ -71,7 +71,7 @@ public class DataSetDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteSource( Source source )
     {
@@ -83,7 +83,7 @@ public class DataSetDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deletePeriod( Period period )
     {

@@ -85,8 +85,9 @@ public class HibernateDataValueAuditStore
 
     public void deleteDataValueAuditBySource( Source source )
     {
-        for(DataValueAudit each : getAll()) {
-            if(each.getDataValue().getSource().equals( source ))
+        for ( DataValueAudit each : getAll() )
+        {
+            if ( each.getDataValue().getSource().equals( source ) )
             {
                 deleteDataValueAudit( each );
             }
@@ -116,8 +117,9 @@ public class HibernateDataValueAuditStore
 
     public void deleteDataValueAuditByDataElement( DataElement dataElement )
     {
-        for(DataValueAudit each : getAll()) {
-            if(each.getDataValue().getDataElement().equals( dataElement ))
+        for ( DataValueAudit each : getAll() )
+        {
+            if ( each.getDataValue().getDataElement().equals( dataElement ) )
             {
                 deleteDataValueAudit( each );
             }

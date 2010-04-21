@@ -61,7 +61,7 @@ public class ReportTableDeletionHandler
     {
         return ReportTable.class.getSimpleName();
     }
-    
+
     @Override
     public boolean allowDeleteDataElement( DataElement dataElement )
     {
@@ -72,10 +72,10 @@ public class ReportTableDeletionHandler
                 return false;
             }
         }
-        
+
         return true;
     }
-            
+
     @Override
     public boolean allowDeleteIndicator( Indicator indicator )
     {
@@ -86,10 +86,10 @@ public class ReportTableDeletionHandler
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public boolean allowDeleteDataSet( DataSet dataSet )
     {
@@ -100,7 +100,7 @@ public class ReportTableDeletionHandler
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -114,16 +114,16 @@ public class ReportTableDeletionHandler
                 return false;
             }
         }
-        
+
         return true;
     }
 
     @Override
     public void deleteSource( Source source )
     {
-        for(ReportTable reportTable : reportTableService.getAllReportTables())
+        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
-            if(reportTable.getUnits().remove( source ))
+            if ( reportTable.getUnits().remove( source ) )
             {
                 reportTableService.updateReportTable( reportTable );
             }
