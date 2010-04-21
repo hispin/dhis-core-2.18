@@ -51,11 +51,11 @@ public class UpdateSectionAction
         this.sectionService = sectionService;
     }
 
-    private DataElementService dataElementServcie;
+    private DataElementService dataElementService;
 
-    public void setDataElementServcie( DataElementService dataElementServcie )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.dataElementServcie = dataElementServcie;
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -64,13 +64,22 @@ public class UpdateSectionAction
 
     private Integer sectionId;
 
+    private Integer dataSetId;
+
     private String sectionLabel;
 
     private List<String> selectedList;
 
+    private List<String> availableList;
+
     public void setSectionId( Integer sectionId )
     {
         this.sectionId = sectionId;
+    }
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
     }
 
     public void setSectionLabel( String sectionLabel )
@@ -81,6 +90,11 @@ public class UpdateSectionAction
     public void setSelectedList( List<String> selectedList )
     {
         this.selectedList = selectedList;
+    }
+
+    public void setAvailableList( List<String> availableList )
+    {
+        this.availableList = availableList;
     }
 
     // -------------------------------------------------------------------------
@@ -101,7 +115,7 @@ public class UpdateSectionAction
 
         for ( String id : selectedList )
         {
-            DataElement d = dataElementServcie.getDataElement( Integer.parseInt( id ) );
+            DataElement d = dataElementService.getDataElement( Integer.parseInt( id ) );
             dataElements.add( d );
         }
 

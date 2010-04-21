@@ -27,18 +27,14 @@ package org.hisp.dhis.dataprune;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.emory.mathcs.backport.java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Quang Nguyen
@@ -61,13 +57,6 @@ public class DefaultDataPruneService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
-
-    public void setCompleteDataSetRegistrationService( CompleteDataSetRegistrationService completeDataSetRegistrationService )
-    {
-        this.completeDataSetRegistrationService = completeDataSetRegistrationService;
-    }
-    
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -82,37 +71,21 @@ public class DefaultDataPruneService
     @Transactional
     public void pruneOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        if(organisationUnit.getParent() != null) {
-            deleteSiblings(organisationUnit);
-
-            deleteParents(organisationUnit);
-        }
-    }
-
-    private void deleteParents( OrganisationUnit organisationUnit )
-    {
-        /*
-         * Not implemented yet.
-         */
-    }
-
-    @SuppressWarnings( "unchecked" )
-    private void deleteSiblings( OrganisationUnit organisationUnit )
-    {
-        List<OrganisationUnit> copiedSiblingList = new CopyOnWriteArrayList(organisationUnit.getParent().getChildren());
-        
-        for ( OrganisationUnit sibling : copiedSiblingList )
+        if ( organisationUnit.getParent() != null )
         {
-            if ( !sibling.equals( organisationUnit ) )
-            //if ( sibling.getId() == 988 )
-            {   
-                System.out.println("delete sibling: " + sibling.getName());
-                deleteABranch( sibling );
+            organisationUnit.setParent( null );
+            organisationUnitService.updateOrganisationUnit( organisationUnit );
+        }
+        
+        for(OrganisationUnit eachRoot : organisationUnitService.getRootOrganisationUnits())
+        {
+            if(!eachRoot.equals( organisationUnit ))
+            {
+                deleteABranch( eachRoot );
             }
         }
-
     }
-
+    
     private void deleteABranch(OrganisationUnit organisationUnit) {
         if(!organisationUnit.getChildren().isEmpty()) {
             Set<OrganisationUnit> tmp = organisationUnit.getChildren();
@@ -123,6 +96,16 @@ public class DefaultDataPruneService
                 deleteABranch( (OrganisationUnit)eachChild );
             }
         }
-      //removeOrganisationUnitAndBelonging( organisationUnit );
+        
+        dataValueService.deleteDataValuesBySource( organisationUnit );
+        
+        try
+        {
+            organisationUnitService.deleteOrganisationUnit( organisationUnit );
+        }
+        catch ( HierarchyViolationException e )
+        {
+            e.printStackTrace();
+        }
     }
 }

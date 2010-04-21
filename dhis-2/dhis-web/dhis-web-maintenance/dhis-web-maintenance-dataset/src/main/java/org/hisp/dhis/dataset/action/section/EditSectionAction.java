@@ -68,7 +68,7 @@ public class EditSectionAction
 
     private Section section;
 
-    private List<DataElement> selectedList = new ArrayList<DataElement>();
+    private List<DataElement> dataElementsOfSection = new ArrayList<DataElement>();
 
     private DataSet dataSet;
 
@@ -94,14 +94,14 @@ public class EditSectionAction
         this.section = section;
     }
 
-    public List<DataElement> getSelectedList()
+    public List<DataElement> getDataElementsOfSection()
     {
-        return selectedList;
+        return dataElementsOfSection;
     }
 
-    public void setSelectedList( List<DataElement> selectedList )
+    public void setDataElementsOfSection( List<DataElement> dataElementsOfSection )
     {
-        this.selectedList = selectedList;
+        this.dataElementsOfSection = dataElementsOfSection;
     }
 
     public Collection<DataElement> getDataElementOfDataSet()
@@ -133,7 +133,7 @@ public class EditSectionAction
     {
         section = sectionService.getSection( sectionId.intValue() );
 
-        selectedList = section.getDataElements();
+        dataElementsOfSection = section.getDataElements();
 
         dataSet = dataSetService.getDataSet( section.getDataSet().getId() );
 
