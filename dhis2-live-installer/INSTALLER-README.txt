@@ -51,6 +51,14 @@ To get started just execute, just go to the dhis2-live-installer directory
 and execute the build.sh script if you are on Linux (be sure it is executable)
 or the build.bat script if you are using Windows.
 
+There are several options you will need to pass to the build script. 
+
+./build.sh all Build everything. 
+./build.sh docs Build only the documentation.
+./build.sh installer Build only the installer.
+./build.sh dhis2 Build only DHIS2. 
+
+
 You will now enter into a rather lengthy
 process depending on the speed of your machine. At the end you will
 have a Windows installer based on the latest source code and
