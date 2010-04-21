@@ -103,7 +103,7 @@ public class HibernateCaseAggregationMappingStore
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery( sQuery );
         
-        Iterator  it = query.iterate(); 
+        Iterator<?>  it = query.iterate(); 
         int rs = 0;
         while( it.hasNext() )
         {
@@ -115,6 +115,7 @@ public class HibernateCaseAggregationMappingStore
         return rs;
     }
 
+    @SuppressWarnings("unchecked")
     public List<PatientDataValue> executeMappingQueryForListPatientDataValue( String squery )
     {
         Session session = sessionFactory.getCurrentSession();

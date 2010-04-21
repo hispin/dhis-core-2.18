@@ -2,7 +2,6 @@ package org.hisp.dhis.system.util;
 
 public class AuditLogUtil
 {
-
     public static final String ACTION_ADD = "added";
     
     public static final String ACTION_EDIT = "edited";
