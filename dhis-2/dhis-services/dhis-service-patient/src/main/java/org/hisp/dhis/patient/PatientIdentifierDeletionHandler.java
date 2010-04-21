@@ -48,7 +48,7 @@ public class PatientIdentifierDeletionHandler
     {
         this.patientIdentifierService = patientIdentifierService;
     }
-    
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -62,7 +62,8 @@ public class PatientIdentifierDeletionHandler
     @Override
     public void deleteSource( Source source )
     {
-        for ( PatientIdentifier patientIdentifier : patientIdentifierService.getPatientIdentifiersByOrgUnit( (OrganisationUnit) source ) )
+        for ( PatientIdentifier patientIdentifier : patientIdentifierService
+            .getPatientIdentifiersByOrgUnit( (OrganisationUnit) source ) )
         {
             patientIdentifierService.deletePatientIdentifier( patientIdentifier );
         }

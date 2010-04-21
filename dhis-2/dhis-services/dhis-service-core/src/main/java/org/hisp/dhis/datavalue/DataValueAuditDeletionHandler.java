@@ -48,7 +48,6 @@ public class DataValueAuditDeletionHandler
         this.dataValueAuditService = dataValueAuditService;
     }
 
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -58,11 +57,11 @@ public class DataValueAuditDeletionHandler
     {
         return DataValueAudit.class.getSimpleName();
     }
-    
+
     @Override
     public boolean allowDeleteDataValue( DataValue dataValue )
     {
         return dataValueAuditService.getDataValueAuditByDataValue( dataValue ).size() == 0;
     }
-    
+
 }

@@ -207,9 +207,10 @@ public class SaveValueAction
 
             dataValueService.updateDataValue( dataValue );
             
-            /*
-             * Add DataValueAudit
-             */
+            // ---------------------------------------------------------------------
+            // Add DataValueAudit
+            // ---------------------------------------------------------------------
+            
             if ( value != null )
             {
                 dataValueAuditService.addDataValueAudit( audit );

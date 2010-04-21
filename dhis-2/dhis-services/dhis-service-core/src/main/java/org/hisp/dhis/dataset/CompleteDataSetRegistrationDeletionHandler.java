@@ -45,7 +45,8 @@ public class CompleteDataSetRegistrationDeletionHandler
 
     public CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
-    public void setCompleteDataSetRegistrationService( CompleteDataSetRegistrationService completeDataSetRegistrationService )
+    public void setCompleteDataSetRegistrationService(
+        CompleteDataSetRegistrationService completeDataSetRegistrationService )
     {
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
@@ -66,27 +67,28 @@ public class CompleteDataSetRegistrationDeletionHandler
     {
         return CompleteDataSetRegistration.class.getSimpleName();
     }
-    
+
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
         completeDataSetRegistrationService.deleteCompleteDataSetRegistrations( dataSet );
     }
-    
+
     @Override
     public boolean allowDeletePeriod( Period period )
-    {        
+    {
         String sql = "SELECT COUNT(*) FROM completedatasetregistration where periodid=" + period.getId();
-        
+
         return jdbcTemplate.queryForInt( sql ) == 0;
     }
-    
+
     @Override
     public void deleteSource( Source source )
     {
-        for(CompleteDataSetRegistration registration : completeDataSetRegistrationService.getAllCompleteDataSetRegistrations())
+        for ( CompleteDataSetRegistration registration : completeDataSetRegistrationService
+            .getAllCompleteDataSetRegistrations() )
         {
-            if(registration.getSource().equals( source ))
+            if ( registration.getSource().equals( source ) )
             {
                 completeDataSetRegistrationService.deleteCompleteDataSetRegistration( registration );
             }

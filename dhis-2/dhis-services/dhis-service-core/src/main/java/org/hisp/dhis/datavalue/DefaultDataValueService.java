@@ -119,7 +119,7 @@ public class DefaultDataValueService
     @Transactional
     public int deleteDataValuesBySource( Source source )
     {
-        dataValueAuditService.deleteDataValueAuditBySource(source);
+        dataValueAuditService.deleteDataValueAuditBySource( source );
 
         return dataValueStore.deleteDataValuesBySource( source );
     }
@@ -128,7 +128,7 @@ public class DefaultDataValueService
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
         dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
-        
+
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 

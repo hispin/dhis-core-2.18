@@ -46,9 +46,9 @@ public interface DataValueAuditService
     void deleteDataValueAudit( DataValueAudit dataValueAudit );
 
     int deleteDataValueAuditByDataValue( DataValue dataValue );
-    
+
     void deleteDataValueAuditBySource( Source source );
-    
+
     void deleteDataValueAuditByDataElement( DataElement dataElement );
 
     Collection<DataValueAudit> getDataValueAuditByDataValue( DataValue dataValue );

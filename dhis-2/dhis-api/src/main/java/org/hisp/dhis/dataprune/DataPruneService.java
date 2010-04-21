@@ -29,7 +29,6 @@ package org.hisp.dhis.dataprune;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-
 /**
  * @author Quang Nguyen
  * @version Apr 6, 2010 5:44:47 PM

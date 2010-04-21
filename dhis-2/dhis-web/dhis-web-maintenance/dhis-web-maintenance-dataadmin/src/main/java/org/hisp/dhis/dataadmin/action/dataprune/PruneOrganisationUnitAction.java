@@ -55,7 +55,7 @@ public class PruneOrganisationUnitAction
     {
         this.dataPruneService = dataPruneService;
     }
-   
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -68,7 +68,7 @@ public class PruneOrganisationUnitAction
     // -------------------------------------------------------------------------
 
     private Integer organisationUnitSelected;
-    
+
     public void setOrganisationUnitSelected( Integer organisationUnitSelected )
     {
         this.organisationUnitSelected = organisationUnitSelected;
@@ -81,12 +81,12 @@ public class PruneOrganisationUnitAction
     {
         OrganisationUnit kept = organisationUnitService.getOrganisationUnit( organisationUnitSelected );
 
-        log.info( "Pruning Organisation Unit, " + kept + " is kept");
-        
+        log.info( "Pruning Organisation Unit, " + kept + " is kept" );
+
         dataPruneService.pruneOrganisationUnit( kept );
-        
+
         log.info( "Pruning complete" );
-        
+
         return SUCCESS;
     }
 }
