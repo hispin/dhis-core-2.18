@@ -126,8 +126,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataprune.DefaultDataPruneService">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-	<property name="completeDataSetRegistrationService"
-      ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
 	<property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
   </bean> 

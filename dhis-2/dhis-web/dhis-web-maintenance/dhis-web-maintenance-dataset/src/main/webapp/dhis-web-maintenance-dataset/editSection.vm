@@ -10,7 +10,10 @@
 					,errorElement:"td"
 					,submitHandler: function(form)
 									{
-										submitForm();
+										// select all in the selectedList!
+                                        submitForm();
+                                        // actually submit the form
+                                        document.forms['editDataSetForm'].submit();
 									}
 				});
 				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
@@ -25,7 +28,7 @@
 <form id="editDataSetForm" name="editDataSetForm" action="updateSection.action" method="post" >
   <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id">
-  <input type="hidden" id="sectionId" name="sectionId" value="$sectionId">
+  <input type="hidden" id="sectionId" name="sectionId" value="$section.id">
   </div>
   
   <table id="detailsList">
@@ -65,7 +68,7 @@
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="dataElementOfDataSet" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
             <!-- Show all available DataElements -->
             #foreach ( $availableDataElement in $dataElementOfDataSet )
               <option value="$availableDataElement.id"> $availableDataElement.name</option>
@@ -79,7 +82,7 @@
         </td>
 		<td>
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
-            #foreach ( $dataElement in $selectedList )
+            #foreach ( $dataElement in $dataElementsOfSection )
               <option value="$dataElement.id">$dataElement.name</option>
             #end
           </select>
