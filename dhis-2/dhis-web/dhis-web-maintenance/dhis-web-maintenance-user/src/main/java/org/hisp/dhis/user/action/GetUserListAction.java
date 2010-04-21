@@ -38,6 +38,7 @@ import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.user.comparator.UsernameComparator;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -57,6 +58,12 @@ public class GetUserListAction
         this.userStore = userStore;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -68,6 +75,14 @@ public class GetUserListAction
         return userCredentialsList;
     }
 
+    private String currentUserName;
+
+    public String getCurrentUserName()
+    {
+        return currentUserName;
+    }
+
+      
     // -------------------------------------------------------------------------
     // Action implemantation
     // -------------------------------------------------------------------------
@@ -89,7 +104,10 @@ public class GetUserListAction
         }
 
         Collections.sort( userCredentialsList, new UsernameComparator() );
+        User currentUser = userStore.getUser( currentUserService.getCurrentUser().getId() );
+        UserCredentials userCredentials = userStore.getUserCredentials( currentUser );
 
+        currentUserName = userCredentials.getUsername();
         return SUCCESS;
     }
 }
