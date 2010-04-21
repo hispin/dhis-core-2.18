@@ -162,9 +162,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
-		<property name="reportExcelService">
-			<ref bean="org.hisp.dhis.reportexcel.ReportExcelService" />
-		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.user.action.GetRoleAction" class="org.hisp.dhis.user.action.GetRoleAction"
@@ -177,9 +174,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="authoritiesProvider"
 			ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
-		<property name="reportExcelService">
-			<ref bean="org.hisp.dhis.reportexcel.ReportExcelService" />
-		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.user.action.GetRoleListAction" class="org.hisp.dhis.user.action.GetRoleListAction"
@@ -207,9 +201,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
-		<property name="reportExcelService">
-			<ref bean="org.hisp.dhis.reportexcel.ReportExcelService" />
-		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.user.action.SetupRoleAction" class="org.hisp.dhis.user.action.SetupRoleAction"
@@ -219,9 +210,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="authoritiesProvider">
 			<ref bean="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
-		</property>
-		<property name="reportExcelService">
-			<ref bean="org.hisp.dhis.reportexcel.ReportExcelService" />
 		</property>
 	</bean>
 

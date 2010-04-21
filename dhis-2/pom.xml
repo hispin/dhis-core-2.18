@@ -22,10 +22,8 @@
   <modules>
     <module>dhis-api</module>
     <module>dhis-i18n</module>
-    <module>dhis-options</module>
     <module>dhis-services</module>
     <module>dhis-support</module>
-    <module>dhis-useradminandsecurity</module>
   </modules>
 
   <licenses>
@@ -147,12 +145,12 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-options</artifactId>
+        <artifactId>dhis-service-core</artifactId>
         <version>${version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-service-core</artifactId>
+        <artifactId>dhis-service-options</artifactId>
         <version>${version}</version>
       </dependency>
       <dependency>
@@ -187,11 +185,6 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-service-user-hibernate</artifactId>
-        <version>${version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-reporting</artifactId>
         <version>${version}</version>
       </dependency>
@@ -207,19 +200,19 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-service-jdbc</artifactId>
-        <version>${version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-service-jdbc-test</artifactId>
-        <version>${version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-administration</artifactId>
         <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-support-jdbc</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-support-jdbc-test</artifactId>
+        <version>${version}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
@@ -240,11 +233,6 @@
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-external</artifactId>
-        <version>${version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-useradminandsecurity</artifactId>
         <version>${version}</version>
       </dependency>
       <dependency>

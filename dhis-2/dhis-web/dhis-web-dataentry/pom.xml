@@ -40,8 +40,8 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-options</artifactId>
-    </dependency>  
+      <artifactId>dhis-service-options</artifactId>
+    </dependency>
         
     <!-- Other -->
     

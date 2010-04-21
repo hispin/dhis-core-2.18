@@ -15,15 +15,11 @@
   
   <dependencies>
     
-    <!-- DHIS -->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-test</artifactId>
+      <artifactId>dhis-service-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-user-hibernate</artifactId>
-    </dependency>
+	
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

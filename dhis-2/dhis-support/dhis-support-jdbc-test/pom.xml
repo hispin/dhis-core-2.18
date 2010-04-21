@@ -5,13 +5,13 @@
   
   <parent>
     <groupId>org.hisp.dhis</groupId>
-    <artifactId>dhis-services</artifactId>
+    <artifactId>dhis-support</artifactId>
     <version>2.0.5-SNAPSHOT</version>
   </parent>
   
-  <artifactId>dhis-service-jdbc</artifactId>
+  <artifactId>dhis-support-jdbc-test</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS JDBC Service</name>
+  <name>DHIS JDBC Test Project</name>
   
   <dependencies>
     
@@ -20,28 +20,37 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api</artifactId>
+	</dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-jdbc</artifactId>
+      <scope>test</scope>
+    </dependency>  
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-importexport</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-hibernate</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.amplecode</groupId>
       <artifactId>quick</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjweaver</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-system</artifactId>
-    </dependency>
-        
+    
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

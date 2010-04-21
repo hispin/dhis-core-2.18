@@ -37,8 +37,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
@@ -81,13 +79,6 @@ public class SetupRoleAction
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    private ReportExcelService reportExcelService;
-
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
     }
 
     // -------------------------------------------------------------------------
@@ -145,10 +136,6 @@ public class SetupRoleAction
         availableAuthorities = new ArrayList<String>( authoritiesProvider.getSystemAuthorities() );
 
         Collections.sort( availableAuthorities );
-
-        availableReportExcels = new ArrayList<ReportExcel>( reportExcelService.getALLReportExcel() );
-
-        Collections.sort( availableReportExcels, new ReportExcelNameComparator() );
 
         return SUCCESS;
     }

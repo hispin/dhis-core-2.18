@@ -15,37 +15,6 @@
 
   <dependencies>
 
-    <!-- DHIS -->
-
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-user-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-datamart-default</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-system</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-test</artifactId>
-    </dependency>
-
     <!-- Other -->
 
     <dependency>
@@ -56,11 +25,13 @@
       <groupId>org.codehaus.woodstox</groupId>
       <artifactId>stax2-api</artifactId>
     </dependency>
-    <!--     <dependency> -->
-<!--       <groupId>stax</groupId> -->
-<!--       <artifactId>stax-api</artifactId> -->
-<!--       <version>1.0.1</version> -->
-<!--     </dependency> -->
+    <!--
+	<dependency>
+	  <groupId>stax</groupId>
+	  <artifactId>stax-api</artifactId>
+	  <version>1.0.1</version>
+	</dependency>
+	-->
     <dependency>
       <groupId>org.codehaus.woodstox</groupId>
       <artifactId>woodstox-core-asl</artifactId>
@@ -76,19 +47,17 @@
       <scope>test</scope>
     </dependency>
 
-<!--Sun's multi-schema-validator jars are required for relaxng validation-->
+	<!--Sun's multi-schema-validator jars are required for relaxng validation-->
     <dependency>
       <groupId>net.java.dev.msv</groupId>
       <artifactId>msv</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>net.java.dev.msv</groupId>
       <artifactId>relaxngDatatype</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>net.java.dev.msv</groupId>
       <artifactId>xsdlib</artifactId>
