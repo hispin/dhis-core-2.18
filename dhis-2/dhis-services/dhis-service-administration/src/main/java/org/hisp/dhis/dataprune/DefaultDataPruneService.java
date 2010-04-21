@@ -28,8 +28,7 @@ package org.hisp.dhis.dataprune;
  */
 
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -44,8 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataPruneService
     implements DataPruneService
 {
-    private static final Log log = LogFactory.getLog( DefaultDataPruneService.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -63,7 +60,7 @@ public class DefaultDataPruneService
     {
         this.dataValueService = dataValueService;
     }
-    
+
     // -------------------------------------------------------------------------
     // DataPruneService implementation
     // -------------------------------------------------------------------------
@@ -76,29 +73,31 @@ public class DefaultDataPruneService
             organisationUnit.setParent( null );
             organisationUnitService.updateOrganisationUnit( organisationUnit );
         }
-        
-        for(OrganisationUnit eachRoot : organisationUnitService.getRootOrganisationUnits())
+
+        for ( OrganisationUnit eachRoot : organisationUnitService.getRootOrganisationUnits() )
         {
-            if(!eachRoot.equals( organisationUnit ))
+            if ( !eachRoot.equals( organisationUnit ) )
             {
-                deleteABranch( eachRoot );
+                deleteBranch( eachRoot );
             }
         }
     }
-    
-    private void deleteABranch(OrganisationUnit organisationUnit) {
-        if(!organisationUnit.getChildren().isEmpty()) {
+
+    private void deleteBranch( OrganisationUnit organisationUnit )
+    {
+        if ( !organisationUnit.getChildren().isEmpty() )
+        {
             Set<OrganisationUnit> tmp = organisationUnit.getChildren();
             Object[] childrenAsArray = tmp.toArray();
-            
+
             for ( Object eachChild : childrenAsArray )
             {
-                deleteABranch( (OrganisationUnit)eachChild );
+                deleteBranch( (OrganisationUnit) eachChild );
             }
         }
-        
+
         dataValueService.deleteDataValuesBySource( organisationUnit );
-        
+
         try
         {
             organisationUnitService.deleteOrganisationUnit( organisationUnit );

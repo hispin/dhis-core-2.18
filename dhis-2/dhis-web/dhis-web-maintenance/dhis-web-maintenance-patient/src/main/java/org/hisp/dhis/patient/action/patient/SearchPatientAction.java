@@ -40,7 +40,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.paging.PagingUtil;
 import org.hisp.dhis.patient.paging.RequestUtil;
 import org.hisp.dhis.patient.state.SelectedStateManager;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
@@ -52,7 +51,6 @@ import com.opensymphony.xwork2.Action;
 public class SearchPatientAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

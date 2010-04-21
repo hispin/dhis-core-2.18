@@ -30,7 +30,6 @@ package org.hisp.dhis.dataintegrity;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 

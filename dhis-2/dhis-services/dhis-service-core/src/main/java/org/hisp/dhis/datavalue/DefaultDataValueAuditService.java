@@ -29,8 +29,6 @@ package org.hisp.dhis.datavalue;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.source.Source;
 
@@ -42,8 +40,6 @@ import org.hisp.dhis.source.Source;
 public class DefaultDataValueAuditService
     implements DataValueAuditService
 {
-    private static final Log log = LogFactory.getLog( DefaultDataValueAuditService.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
