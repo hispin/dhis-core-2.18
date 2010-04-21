@@ -29,6 +29,8 @@ package org.hisp.dhis.dataset.action.section;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -36,6 +38,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,7 +62,29 @@ public class EditSectionAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
+    }
+
+    // -------------------------------------------------------------------------
+    // DisplayPropertyHandler
+    // -------------------------------------------------------------------------
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
+    }
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -72,7 +97,7 @@ public class EditSectionAction
 
     private DataSet dataSet;
 
-    private Collection<DataElement> dataElementOfDataSet = new ArrayList<DataElement>();
+    private List<DataElement> dataElementOfDataSet = new ArrayList<DataElement>();
 
     public Integer getSectionId()
     {
@@ -104,12 +129,12 @@ public class EditSectionAction
         this.dataElementsOfSection = dataElementsOfSection;
     }
 
-    public Collection<DataElement> getDataElementOfDataSet()
+    public List<DataElement> getDataElementOfDataSet()
     {
         return dataElementOfDataSet;
     }
 
-    public void setDataElementOfDataSet( Collection<DataElement> dataElementOfDataSet )
+    public void setDataElementOfDataSet( List<DataElement> dataElementOfDataSet )
     {
         this.dataElementOfDataSet = dataElementOfDataSet;
     }
@@ -137,7 +162,7 @@ public class EditSectionAction
 
         dataSet = dataSetService.getDataSet( section.getDataSet().getId() );
 
-        dataElementOfDataSet = dataSet.getDataElements();
+        dataElementOfDataSet = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         Collection<Section> sections = sectionService.getSectionByDataSet( dataSet );
 
@@ -146,6 +171,12 @@ public class EditSectionAction
             dataElementOfDataSet.removeAll( s.getDataElements() );
         }
 
+        Collections.sort( dataElementsOfSection, dataElementComparator );
+        Collections.sort( dataElementOfDataSet, dataElementComparator );
+        
+        displayPropertyHandler.handle( dataElementsOfSection );
+        displayPropertyHandler.handle( dataElementOfDataSet );
+        
         return SUCCESS;
     }
 }
