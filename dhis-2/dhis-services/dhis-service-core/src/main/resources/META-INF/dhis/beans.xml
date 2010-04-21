@@ -185,6 +185,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
+  <bean id="org.hisp.dhis.user.UserStore" 
+    class="org.hisp.dhis.user.hibernate.HibernateUserStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+     <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
+  </bean>
+    
   <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.customvalue.CustomValueService"
@@ -406,6 +413,22 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             </entry>
 		</map>		
 	</property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.CurrentUserService"
+    class="org.hisp.dhis.user.DefaultCurrentUserService">
+    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.UserSettingService"
+    class="org.hisp.dhis.user.DefaultUserSettingService">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.UserService"
+    class="org.hisp.dhis.user.DefaultUserService">
+    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
   </bean>
   
   <!-- Startup routine definitions -->
@@ -646,6 +669,65 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datavalue.DataValueAuditService"/>
   </bean>
 
+  <bean id="org.hisp.dhis.user.UserDeletionHandler"
+    class="org.hisp.dhis.user.UserDeletionHandler">
+    <property name="userStore"
+      ref="org.hisp.dhis.user.UserStore"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler"
+    class="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler">
+    <property name="userStore"
+      ref="org.hisp.dhis.user.UserStore"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.UserCredentialsDeletionHandler"
+    class="org.hisp.dhis.user.UserCredentialsDeletionHandler">
+    <property name="userStore"
+      ref="org.hisp.dhis.user.UserStore"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.user.UserSettingDeletionHandler"
+    class="org.hisp.dhis.user.UserSettingDeletionHandler">
+    <property name="userSettingService"
+      ref="org.hisp.dhis.user.UserSettingService"/>
+  </bean>
+  
+  <!-- Security -->
+  
+  <bean id="org.hisp.dhis.security.PasswordManager"
+    class="org.hisp.dhis.security.spring.SpringSecurityPasswordManager">
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+    <property name="usernameSaltSource" ref="usernameSaltSource"/>
+  </bean>
+  
+  <bean id="authenticationManager"
+    class="org.springframework.security.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <ref local="daoAuthenticationProvider"/>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="daoAuthenticationProvider"
+    class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+    <property name="userDetailsService" ref="userDetailsService"/>
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+    <property name="saltSource" ref="usernameSaltSource"/>
+  </bean>
+  
+  <bean id="userDetailsService"
+    class="org.hisp.dhis.security.hibernate.HibernateUserDetailsService">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="passwordEncoder"
+    class="org.springframework.security.providers.encoding.Md5PasswordEncoder"/>
+  
+  <bean id="usernameSaltSource"
+    class="org.hisp.dhis.security.DefaultUsernameSaltSource"/>
+
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -675,6 +757,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		  <ref local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler"/>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"/>
+		  <ref local="org.hisp.dhis.user.UserDeletionHandler"/>
+          <ref local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler"/>
+          <ref local="org.hisp.dhis.user.UserCredentialsDeletionHandler"/>
+          <ref local="org.hisp.dhis.user.UserSettingDeletionHandler"/>
         </list>
       </list>
     </property>
@@ -724,6 +810,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.period.PeriodService.delete*(..) )" method="intercept"/>
 	  <aop:before pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitGroupService.delete*(..) )" method="intercept"/>
+	  <aop:before pointcut="execution( * org.hisp.dhis.user.UserStore.delete*(..) )" method="intercept"/>
     </aop:aspect>
       
     <aop:aspect ref="statementInterceptor">

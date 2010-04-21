@@ -35,8 +35,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -74,13 +72,6 @@ public class GetRoleAction
     public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
     {
         this.authoritiesProvider = authoritiesProvider;
-    }
-
-    private ReportExcelService reportExcelService;
-
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
     }
     
     // -------------------------------------------------------------------------
@@ -190,20 +181,6 @@ public class GetRoleAction
         roleAuthorities = new ArrayList<String>( userAuthorityGroup.getAuthorities() );
 
         Collections.sort( roleAuthorities );
-
-        // ---------------------------------------------------------------------
-        // Report Excel
-        // ---------------------------------------------------------------------
-
-        availableReportExcels = new ArrayList<ReportExcel>( reportExcelService.getALLReportExcel() );
-
-        reportExcels = new ArrayList<ReportExcel>( userAuthorityGroup.getReportExcels() );
-
-        availableReportExcels.removeAll( reportExcels );
-
-        Collections.sort( availableReportExcels, new ReportExcelNameComparator() );
-
-        Collections.sort( reportExcels, new ReportExcelNameComparator() );
 
         return SUCCESS;
     }

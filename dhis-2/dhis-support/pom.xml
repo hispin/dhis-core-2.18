@@ -18,6 +18,8 @@
     <module>dhis-support-hibernate</module>
     <module>dhis-support-system</module>
     <module>dhis-support-external</module>
+    <module>dhis-support-jdbc</module>
+    <module>dhis-support-jdbc-test</module>
   </modules>
   <properties>
     <rootDir>../</rootDir>

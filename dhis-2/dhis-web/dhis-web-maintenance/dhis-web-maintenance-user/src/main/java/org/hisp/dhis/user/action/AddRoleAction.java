@@ -32,8 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
 
@@ -62,13 +60,6 @@ public class AddRoleAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private ReportExcelService reportExcelService;
-
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
     }
 
     // -------------------------------------------------------------------------
@@ -103,13 +94,6 @@ public class AddRoleAction
         this.selectedListAuthority = selectedListAuthority;
     }
 
-    private Collection<String> selectedReportExcel = new ArrayList<String>();
-
-    public void setSelectedReportExcel( Collection<String> selectedReportExcel )
-    {
-        this.selectedReportExcel = selectedReportExcel;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -127,14 +111,6 @@ public class AddRoleAction
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
 
             group.getDataSets().add( dataSet );
-        }
-
-        for ( String id : selectedReportExcel )
-        {
-
-            ReportExcel reportExcel = reportExcelService.getReportExcel( Integer.parseInt( id ) );
-
-            group.getReportExcels().add( reportExcel );
         }
 
         group.getAuthorities().addAll( selectedListAuthority );

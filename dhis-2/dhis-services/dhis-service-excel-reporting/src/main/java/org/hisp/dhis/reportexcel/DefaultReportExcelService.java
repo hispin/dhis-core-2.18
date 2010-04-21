@@ -28,7 +28,6 @@ package org.hisp.dhis.reportexcel;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -37,9 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
-import org.hisp.dhis.user.UserAuthorityGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -124,6 +121,11 @@ public class DefaultReportExcelService
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
     {
+        return i18n( i18nService, this.getReportsByGroup( group ) );
+        
+        //TODO Changed due to dependency problem, please fix
+        
+        /*
         if ( user == null || superUser )
         {
             return i18n( i18nService, this.getReportsByGroup( group ) );
@@ -143,7 +145,7 @@ public class DefaultReportExcelService
             reports.retainAll( i18n( i18nService, this.getReportsByGroup( group ) ) );
 
             return reports;
-        }
+        }*/
     }
 
     public Collection<String> getReportExcelGroups()

@@ -27,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-options</artifactId>
+      <artifactId>dhis-service-options</artifactId>
     </dependency>
     
     <!-- Other -->
