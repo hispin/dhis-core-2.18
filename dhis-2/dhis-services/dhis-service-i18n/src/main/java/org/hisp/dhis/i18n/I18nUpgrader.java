@@ -59,6 +59,10 @@ import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
 
 /**
+ * The purpose of the I18nUpgrader is to give all objects in the database a default
+ * translation at startup time. Objects might be added with other means than the 
+ * DHIS 2 API and will so need to be given a default translation.
+ * 
  * @author Oyvind Brucker
  */
 public class I18nUpgrader

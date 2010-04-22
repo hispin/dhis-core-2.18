@@ -5,11 +5,11 @@
 
   <parent>
     <groupId>org.hisp.dhis</groupId>
-    <artifactId>dhis-i18n</artifactId>
+    <artifactId>dhis-support</artifactId>
     <version>2.0.5-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dhis-i18n-db</artifactId>
+  <artifactId>dhis-support-i18n</artifactId>
   <packaging>jar</packaging>
   <name>DHIS I18n DB</name>
 
@@ -24,6 +24,10 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-system</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-test</artifactId>
     </dependency>
     
     <!-- Other -->

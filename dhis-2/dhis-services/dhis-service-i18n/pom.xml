@@ -5,17 +5,15 @@
   
   <parent>
     <groupId>org.hisp.dhis</groupId>
-    <artifactId>dhis-i18n</artifactId>
+    <artifactId>dhis-services</artifactId>
     <version>2.0.5-SNAPSHOT</version>
   </parent>
   
-  <artifactId>dhis-i18n-upgrader</artifactId>
+  <artifactId>dhis-service-i18n</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS I18n Upgrader</name>
+  <name>DHIS I18n Static</name>
   
   <dependencies>
-    
-   <!-- DHIS -->
     
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -25,16 +23,14 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
     </dependency>
-    
-    <!-- Other -->
-    
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
-
+	
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>
   </properties>
 </project>
+

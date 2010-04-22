@@ -43,7 +43,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-i18n-db</artifactId>
+      <artifactId>dhis-support-i18n</artifactId>
     </dependency>
 
     <!-- Spring Security -->

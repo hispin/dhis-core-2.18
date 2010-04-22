@@ -98,7 +98,7 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategory( DataElementCategory dataElementCategory )
     {
-	if ( dataElementCategory.getUuid() == null )
+	if ( dataElementCategory != null && dataElementCategory.getUuid() == null )
 	{
 	    dataElementCategory.setUuid( UUIdUtils.getUUId() );
 	}
@@ -150,6 +150,11 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
+        if ( dataElementCategoryOption != null && dataElementCategoryOption.getUuid() == null )
+        {
+            dataElementCategoryOption.setUuid( UUIdUtils.getUUId() );
+        }
+        
         return dataElementCategoryOptionStore.save( dataElementCategoryOption );
     }
 
