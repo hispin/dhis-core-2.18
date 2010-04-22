@@ -219,6 +219,11 @@
 	font:bold 11px arial;
 	color:#111;
 }
+#window-maplayer-title {
+	padding:0 0 3px 0px;
+	font:bold 11px arial;
+	color:#111;
+}
 
 /* Ext Panel */
 .panel-title {

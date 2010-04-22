@@ -1,4 +1,4 @@
-﻿﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
+﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 var MAP;
 var BASECOORDINATE;
@@ -2694,93 +2694,10 @@ Ext.onReady( function() {
         store: mapLayerStore
     });
     
-    var newMapLayerButton = new Ext.Button({
-        id: 'newmaplayer_b',
-        text: 'Register new overlay',
-		cls: 'aa_med',
-        handler: function() {
-            var mln = Ext.getCmp('maplayername_tf').getRawValue();
-            var mlfc = Ext.getCmp('maplayerfillcolor_cf').getValue();
-            var mlfo = Ext.getCmp('maplayerfillopacity_cb').getRawValue();
-            var mlsc = Ext.getCmp('maplayerstrokecolor_cf').getValue();
-            var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getRawValue();
-			var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
-			var mlwmso = Ext.getCmp('maplayerpathwmsoverlay_tf').getValue();
-            
-            if (!mln) {
-                Ext.messageRed.msg('New overlay', 'Overlay form is not complete.');
-                return;
-            }
-			else if (!mlmsf && !mlwmso) {
-				Ext.messageRed.msg('New overlay', 'Overlay form is not complete.');
-                return;
-			}
-            
-            if (validateInput(mln) == false) {
-                Ext.messageRed.msg('New overlay', 'Overlay name cannot be longer than 25 characters.');
-                return;
-            }
-			
-			Ext.Ajax.request({
-                url: path + 'getAllMapLayers' + type,
-                method: 'GET',
-                success: function(r) {
-					var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
-					
-					for (i in mapLayers) {
-						if (mapLayers[i].name == mln) {
-							Ext.messageRed.msg('New overlay', 'The name <span class="x-msg-hl">' + mln + '</span> is already in use.');
-							return;
-						}
-					}
-			
-					var ms = MAPSOURCE == map_source_type_geojson ? mlmsf : mlwmso;
-					
-					Ext.Ajax.request({
-						url: path + 'addOrUpdateMapLayer' + type,
-						method: 'POST',
-						params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
-						success: function(r) {
-							Ext.messageBlack.msg('New overlay', 'The overlay <span class="x-msg-hl">' + mln + '</span> was registered.');
-							Ext.getCmp('maplayer_cb').getStore().reload();
-					
-							var mapurl = MAPSOURCE == map_source_type_geojson ? path + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
-							
-							MAP.addLayer(
-								new OpenLayers.Layer.Vector(mln, {
-									'visibility': false,
-									'styleMap': new OpenLayers.StyleMap({
-										'default': new OpenLayers.Style(
-											OpenLayers.Util.applyDefaults(
-												{'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
-												OpenLayers.Feature.Vector.style['default']
-											)
-										)
-									}),
-									'strategies': [new OpenLayers.Strategy.Fixed()],
-									'protocol': new OpenLayers.Protocol.HTTP({
-										'url': mapurl,
-										'format': new OpenLayers.Format.GeoJSON()
-									})
-								})
-							);
-							
-							Ext.getCmp('maplayername_tf').reset();
-							Ext.getCmp('maplayermapsourcefile_cb').reset();
-							Ext.getCmp('maplayerpathwmsoverlay_tf').reset();
-						},
-						failure: function() {}
-					});
-				},
-				failure: function() {}
-			});
-        }
-    });
-    
     var deleteMapLayerButton = new Ext.Button({
         id: 'deletemaplayer_b',
         text: 'Delete overlay',
-		cls: 'aa_med',
+ 		cls: 'window-button',
         handler: function() {
             var ml = Ext.getCmp('maplayer_cb').getValue();
             var mln = Ext.getCmp('maplayer_cb').getRawValue();
@@ -2818,7 +2735,90 @@ Ext.onReady( function() {
             { html: '<div class="panel-fieldlabel">Fill color</div>' }, mapLayerFillColorColorField,
             { html: '<div class="panel-fieldlabel">Fill opacity</div>' }, mapLayerFillOpacityComboBox,
             { html: '<div class="panel-fieldlabel">Stroke color</div>' }, mapLayerStrokeColorColorField,
-            { html: '<div class="panel-fieldlabel">Stroke width</div>' }, mapLayerStrokeWidthComboBox
+            { html: '<div class="panel-fieldlabel">Stroke width</div>' }, mapLayerStrokeWidthComboBox,
+            {
+				xtype: 'button',
+				id: 'newmaplayer_b',
+				text: 'Register new overlay',
+				cls: 'window-button',
+				handler: function() {
+					var mln = Ext.getCmp('maplayername_tf').getRawValue();
+					var mlfc = Ext.getCmp('maplayerfillcolor_cf').getValue();
+					var mlfo = Ext.getCmp('maplayerfillopacity_cb').getRawValue();
+					var mlsc = Ext.getCmp('maplayerstrokecolor_cf').getValue();
+					var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getRawValue();
+					var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
+					var mlwmso = Ext.getCmp('maplayerpathwmsoverlay_tf').getValue();
+					
+					if (!mln) {
+						Ext.messageRed.msg('New overlay', 'Overlay form is not complete.');
+						return;
+					}
+					else if (!mlmsf && !mlwmso) {
+						Ext.messageRed.msg('New overlay', 'Overlay form is not complete.');
+						return;
+					}
+					
+					if (validateInput(mln) == false) {
+						Ext.messageRed.msg('New overlay', 'Overlay name cannot be longer than 25 characters.');
+						return;
+					}
+					
+					Ext.Ajax.request({
+						url: path + 'getAllMapLayers' + type,
+						method: 'GET',
+						success: function(r) {
+							var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
+							
+							for (i in mapLayers) {
+								if (mapLayers[i].name == mln) {
+									Ext.messageRed.msg('New overlay', 'The name <span class="x-msg-hl">' + mln + '</span> is already in use.');
+									return;
+								}
+							}
+					
+							var ms = MAPSOURCE == map_source_type_geojson ? mlmsf : mlwmso;
+							
+							Ext.Ajax.request({
+								url: path + 'addOrUpdateMapLayer' + type,
+								method: 'POST',
+								params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
+								success: function(r) {
+									Ext.messageBlack.msg('New overlay', 'The overlay <span class="x-msg-hl">' + mln + '</span> was registered.');
+									Ext.getCmp('maplayer_cb').getStore().reload();
+							
+									var mapurl = MAPSOURCE == map_source_type_geojson ? path + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
+									
+									MAP.addLayer(
+										new OpenLayers.Layer.Vector(mln, {
+											'visibility': false,
+											'styleMap': new OpenLayers.StyleMap({
+												'default': new OpenLayers.Style(
+													OpenLayers.Util.applyDefaults(
+														{'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
+														OpenLayers.Feature.Vector.style['default']
+													)
+												)
+											}),
+											'strategies': [new OpenLayers.Strategy.Fixed()],
+											'protocol': new OpenLayers.Protocol.HTTP({
+												'url': mapurl,
+												'format': new OpenLayers.Format.GeoJSON()
+											})
+										})
+									);
+									
+									Ext.getCmp('maplayername_tf').reset();
+									Ext.getCmp('maplayermapsourcefile_cb').reset();
+									Ext.getCmp('maplayerpathwmsoverlay_tf').reset();
+								},
+								failure: function() {}
+							});
+						},
+						failure: function() {}
+					});
+				}
+			}
         ]
     });
     
@@ -2826,16 +2826,20 @@ Ext.onReady( function() {
         id: 'deletemaplayer_p',
         items:
         [
-            { html: '<div class="panel-fieldlabel-first">Overlay</div>' }, mapLayerComboBox
+            { html: '<div class="panel-fieldlabel-first">Overlay</div>' }, mapLayerComboBox,
+            deleteMapLayerButton
         ]
     });
-    
-    var mapLayerPanel = new Ext.Panel({
-        id: 'maplayer_p',
-        title: '<span class="panel-title">Register overlays</span>',
+
+	var mapLayerWindow = new Ext.Window({
+        id: 'maplayer_w',
+        title: '<span id="window-maplayer-title">Overlays</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: 234,
         items:
         [
-            {
+			{
                 xtype: 'tabpanel',
                 activeTab: 0,
                 deferredRender: false,
@@ -2844,16 +2848,11 @@ Ext.onReady( function() {
                 listeners: {
                     tabchange: function(panel, tab)
                     {
-                        var nml_b = Ext.getCmp('newmaplayer_b');
-                        var dml_b = Ext.getCmp('deletemaplayer_b');
-                        
-                        if (tab.id == 'maplayer0') { 
-                            nml_b.setVisible(true);
-                            dml_b.setVisible(false);
+                        if (tab.id == 'maplayer0') {
+							Ext.getCmp('maplayer_w').setHeight(390);                        
                         }
                         else if (tab.id == 'maplayer1') {
-                            nml_b.setVisible(false);
-                            dml_b.setVisible(true);
+							Ext.getCmp('maplayer_w').setHeight(155);
                         }
                     }
                 },
@@ -2876,16 +2875,10 @@ Ext.onReady( function() {
                         ]
                     }
                 ]
-            },
-            
-            { html: '<br>' },
-            
-            newMapLayerButton,
-            
-            deleteMapLayerButton
+            }
         ],
 		listeners: {
-			expand: {
+			show: {
 				fn: function() {
 					if (MAPSOURCE == map_source_type_geojson) {
 						mapLayerMapSourceFileComboBox.show();
@@ -2895,13 +2888,6 @@ Ext.onReady( function() {
 						mapLayerMapSourceFileComboBox.hide();
 						mapLayerPathWMSOverlayTextField.show();
 					}
-					
-					ACTIVEPANEL = overlayRegistration;
-				}
-			},
-			collapse: {
-				fn: function() {
-					ACTIVEPANEL = false;
 				}
 			}
 		}
@@ -2946,7 +2932,7 @@ Ext.onReady( function() {
 								fn: function() {
 									var msv = Ext.getCmp('mapsource_cb').getValue();
 									var msrw = Ext.getCmp('mapsource_cb').getRawValue();
-									
+
 									if (MAPSOURCE == msv) {
 										Ext.messageRed.msg('Map source', '<span class="x-msg-hl">' + msrw + '</span> is already selected.');
 									}
@@ -2974,7 +2960,6 @@ Ext.onReady( function() {
 													if (Ext.getCmp('register_chb').checked) {
 														mapping.show();
 														shapefilePanel.show();
-														mapLayerPanel.show();
 													}
 												}
 												else if (MAPSOURCE == map_source_type_shapefile) {
@@ -2983,7 +2968,6 @@ Ext.onReady( function() {
 													if (Ext.getCmp('register_chb').checked) {
 														mapping.show();
 														shapefilePanel.show();
-														mapLayerPanel.show();
 													}
 												}
 												else if (MAPSOURCE == map_source_type_database) {
@@ -2991,7 +2975,6 @@ Ext.onReady( function() {
 													
 													mapping.hide();
 													shapefilePanel.hide();
-													mapLayerPanel.hide();
 												}
 												
 												if (MAP.layers.length > 2) {
@@ -3007,6 +2990,15 @@ Ext.onReady( function() {
 												alert( 'Status', 'Error while saving data' );
 											}
 										});
+										
+										if (MAPSOURCE == map_source_type_geojson) {
+											mapLayerMapSourceFileComboBox.showField();
+											mapLayerPathWMSOverlayTextField.hideField();
+										}
+										else if (MAPSOURCE == map_source_type_shapefile) {
+											mapLayerMapSourceFileComboBox.hideField();
+											mapLayerPathWMSOverlayTextField.showField();
+										}
 									}
 								}
 							}
@@ -3024,13 +3016,11 @@ Ext.onReady( function() {
 									if (checked) {
 										mapping.show();
 										shapefilePanel.show();
-										mapLayerPanel.show();
 										Ext.getCmp('west').doLayout();
 									}
 									else {
 										mapping.hide();
 										shapefilePanel.hide();
-										mapLayerPanel.hide();
 										Ext.getCmp('west').doLayout();
 									}
 								},
@@ -3237,9 +3227,26 @@ Ext.onReady( function() {
         rootVisible: false,
         root: {
             nodeType: 'async',
-            children: layerTreeConfig
-        }
-    });
+            children: layerTreeConfig            
+        }, 
+        bbar: new Ext.StatusBar({
+			id: 'maplayers_sb',
+			items:
+			[
+				{
+					xtype: 'button',
+					id: 'overlays_b',
+					text: 'Overlays',
+					cls: 'x-btn-text-icon',
+					ctCls: 'aa_med',
+					icon: '../../images/add_small.png',
+					handler: function() {
+						Ext.getCmp('maplayer_w').show();
+					}
+				}
+			]
+		})
+	});
 	
     /* WIDGETS */
     choropleth = new mapfish.widgets.geostat.Choropleth({
@@ -3565,7 +3572,6 @@ Ext.onReady( function() {
                     choropleth,
                     shapefilePanel,
                     mapping,
-                    mapLayerPanel,
 					adminPanel,
 					{
 						xtype: 'print-multi',
@@ -3615,7 +3621,6 @@ Ext.onReady( function() {
 	
     shapefilePanel.hide();
 	mapping.hide();
-    mapLayerPanel.hide();
 	Ext.getCmp('printMultiPage_p').hide();
 	ACTIVEPANEL = thematicMap;
     
