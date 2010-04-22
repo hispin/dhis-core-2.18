@@ -21,7 +21,6 @@
 
   <modules>
     <module>dhis-api</module>
-    <module>dhis-i18n</module>
     <module>dhis-services</module>
     <module>dhis-support</module>
   </modules>
@@ -135,12 +134,7 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-i18n-static</artifactId>
-        <version>${version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-i18n-db</artifactId>
+        <artifactId>dhis-service-i18n</artifactId>
         <version>${version}</version>
       </dependency>
       <dependency>
@@ -221,6 +215,11 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-support-i18n</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-test</artifactId>
         <version>${version}</version>
         <scope>test</scope>
@@ -233,11 +232,6 @@
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-external</artifactId>
-        <version>${version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-i18n-upgrader</artifactId>
         <version>${version}</version>
       </dependency>
       <!--Other -->
