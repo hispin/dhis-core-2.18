@@ -34,6 +34,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataarchive.DataArchiveStore;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static org.hisp.dhis.system.util.DateUtils.*;
+
 /**
  * @author Lars Helge Overland
  */
@@ -66,16 +68,16 @@ public class JdbcDataArchiveStore
             "INSERT INTO datavaluearchive ( " +
                 "SELECT d.* FROM datavalue AS d " +
                 "JOIN period as p USING (periodid) " +
-                "WHERE p.startdate>'" + startDate + "' " +
-                "AND p.enddate<='" + endDate + "' );" +
+                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
+                "AND p.enddate<='" + getMediumDateString( endDate ) + "' );" +
             
             // Delete data from datavalue
             
             "DELETE FROM datavalue AS d " +
             "USING period as p " +
             "WHERE d.periodid=p.periodid " +
-            "AND p.startdate>'" + startDate + "' " +
-            "AND p.enddate<='" + endDate + "';";
+            "AND p.startdate>='" + getMediumDateString( startDate ) + "' " +
+            "AND p.enddate<='" + getMediumDateString( endDate ) + "';";
     
         log.info( sql );
         
@@ -91,16 +93,16 @@ public class JdbcDataArchiveStore
             "INSERT INTO datavalue ( " +
                 "SELECT a.* FROM datavaluearchive AS a " +
                 "JOIN period as p USING (periodid) " +
-                "WHERE p.startdate>'" + startDate + "' " +
-                "AND p.enddate<='" + endDate + "' );" +
+                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
+                "AND p.enddate<='" + getMediumDateString( endDate ) + "' );" +
             
             // Delete data from datavalue
             
             "DELETE FROM datavaluearchive AS a " +
             "USING period AS p " +
             "WHERE a.periodid=p.periodid " +
-            "AND p.startdate>'" + startDate + "' " +
-            "AND p.enddate<='" + endDate + "';";
+            "AND p.startdate>='" + getMediumDateString( startDate ) + "' " +
+            "AND p.enddate<='" + getMediumDateString( endDate ) + "';";
 
         log.info( sql );
         
