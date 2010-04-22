@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2007-2008  Camptocamp
  *
  * This file is part of MapFish Client
@@ -676,9 +676,15 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 							Ext.getCmp('maplegendset_cb').showField();
                         }
                         else if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_automatic) {
-                            Ext.getCmp('method').showField();
-							Ext.getCmp('bounds').hideField();
-                            Ext.getCmp('numClasses').showField();
+							Ext.getCmp('method').showField();
+							if (Ext.getCmp('method').getValue() == 0) {
+								Ext.getCmp('bounds').showField();
+								Ext.getCmp('numClasses').hideField();
+							}
+							else {
+								Ext.getCmp('bounds').hideField();
+								Ext.getCmp('numClasses').showField();
+							}
 							Ext.getCmp('colorA_cf').showField();
 							Ext.getCmp('colorB_cf').showField();
 							Ext.getCmp('maplegendset_cb').hideField();
