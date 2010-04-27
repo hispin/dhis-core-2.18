@@ -49,6 +49,7 @@
         <div id="selectionTree" style="width:40em;height:30em;overflow:auto;border:1px solid #cccccc">			
 			<script type="text/javascript">
           		selectionTreeSelection.setMultipleSelectionAllowed( false );
+				selectionTree.clearSelectedOrgUnitsBefore();
           		selectionTree.buildSelectionTree();
         	</script>
 		</div>	

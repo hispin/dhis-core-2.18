@@ -165,19 +165,6 @@
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
-		<action name="backupReportExcel"
-			class="org.hisp.dhis.reportexcel.action.BackupReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-		</action>
-
-		<action name="uploadBackupFile"
-			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
-			<result name="success" type="redirect">listReportExcel.action
-			</result>
-			<interceptor-ref name="fileUploadStack" />
-		</action>
-
 		<action name="restoreReportExcel"
 			class="org.hisp.dhis.reportexcel.action.RestoreReportExcelAction">
 			<result name="success" type="velocity-xml">
@@ -342,6 +329,21 @@
 			</result>
 		</action>
 
+		<!-- REPORT EXCEL USER ROLES -->
+
+		<action name="openReportExcelUserRole"
+			class="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/reportExcelUserRoles.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/userRoles.js</param>
+		</action>
+
+		<action name="updateReportExcelUserRole"
+			class="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction">
+			<result name="success" type="redirect">listReportExcel.action</result>
+		</action>
+
 		<!-- REPORT EXCEL ITEM ACTION -->
 
 		<action name="listReportExcelItemAction"
@@ -464,7 +466,7 @@
 				/dhis-web-excel-reporting/responseFormulaText.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<!-- GENERATE REPORT EXCEL ACTION -->
 
 		<action name="selectExportReportParam"
@@ -477,11 +479,12 @@
 			<param name="stylesheets">style/previewStyle.css,
 				style/ui.all.css</param>
 			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
 				javascript/commons.js,
 				javascript/preview.js,
-				../dhis-web-commons/util/jquery-ui.js
+				../dhis-web-commons/ouwt/ouwt.js,
+				../dhis-web-commons/util/jquery-ui.js,
+				../dhis-web-commons/util/jquery.jqprint.0.3.js
 			</param>
 		</action>
 
@@ -1062,7 +1065,7 @@
 			<result name="input" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
-		
+
 		<action name="uploadExcelImport"
 			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
 			<result name="success" type="redirect">getImportingParams.action
@@ -1276,7 +1279,8 @@
 
 		<action name="uploadExcelTemplate"
 			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction">
-			<result name="success" type="redirect">listAllExcelTemplates.action</result>
+			<result name="success" type="redirect">listAllExcelTemplates.action
+			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
@@ -1314,7 +1318,7 @@
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-excel-reporting/responseInput.vm</result>	
+				/dhis-web-excel-reporting/responseInput.vm</result>
 		</action>
 
 	</package>

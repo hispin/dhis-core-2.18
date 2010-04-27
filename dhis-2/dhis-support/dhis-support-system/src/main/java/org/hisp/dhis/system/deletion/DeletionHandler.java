@@ -60,6 +60,7 @@ import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -478,6 +479,15 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteMapView( MapView mapView )
+    {
+        return true;
+    }
+
+    public void deletePatient( Patient patient )
+    {
+    }
+
+    public boolean allowDeletePatient( Patient patient )
     {
         return true;
     }

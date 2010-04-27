@@ -68,6 +68,7 @@ public class OptionsCategoriesDefaultSortOrderPopulator
     @Transactional
     public void execute()
     {
+        executeSql( "drop table datavalueaudit" );
         executeSql( "drop table columnorder" );
         executeSql( "drop table roworder" );
         executeSql( "alter table dataelementcategoryoption drop column categoryid" );

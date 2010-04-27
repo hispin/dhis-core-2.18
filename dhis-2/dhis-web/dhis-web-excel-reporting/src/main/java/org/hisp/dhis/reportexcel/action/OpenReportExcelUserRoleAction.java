@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,70 +26,86 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel;
-
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserStore;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ReportExcelCategory
-    extends ReportExcel
+public class OpenReportExcelUserRoleAction
+    implements Action
 {
 
-    private List<DataElementGroupOrder> dataElementOrders;
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+    private ReportExcelService reportService;
 
-    public ReportExcelCategory()
+    public void setReportService( ReportExcelService reportService )
     {
-        super();
+        this.reportService = reportService;
     }
 
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
+    private UserStore userStore;
 
-    public List<DataElementGroupOrder> getDataElementOrders()
+    public void setUserStore( UserStore userStore )
     {
-        return dataElementOrders;
+        this.userStore = userStore;
     }
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
+    // -------------------------------------------
+    // Output
+    // -------------------------------------------
+
+    private List<UserAuthorityGroup> userRoles;
+
+    public List<UserAuthorityGroup> getUserRoles()
     {
-        this.dataElementOrders = dataElementOrders;
+        return userRoles;
+    }
+
+    private ReportExcel reportExcel;
+
+    public ReportExcel getReportExcel()
+    {
+        return reportExcel;
+    }
+
+    // -------------------------------------------
+    // Input
+    // -------------------------------------------
+
+    /*
+     * Report excel id
+     */
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
     }
 
     @Override
-    public String getReportType()
+    public String execute()
+        throws Exception
     {
-        return ReportExcel.TYPE.CATEGORY;
+        reportExcel = reportService.getReportExcel( id );
+
+        userRoles = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
+
+        userRoles.removeAll( reportExcel.getUserRoles() );
+
+        return SUCCESS;
     }
 
-    @Override
-    public boolean isCategory()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isNormal()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOrganisationUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
 }

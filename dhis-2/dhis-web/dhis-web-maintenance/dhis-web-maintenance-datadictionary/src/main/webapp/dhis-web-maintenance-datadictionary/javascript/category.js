@@ -136,7 +136,8 @@ function validateAddCategoryOption() {
 		{
 			setMessage( xmlObject.firstChild.nodeValue );
 		}
-		else if(mode == "update"){
+		else if ( mode == "update" )
+		{
 			updateCategoryOptionName();
 		}
 		else
@@ -152,7 +153,6 @@ function validateAddCategoryOption() {
 // ----------------------------------------------------------------------
 
 function updateCategoryOptionName(){
-	validateAddCategoryOption();
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( updateCategoryOptionNameReceived );

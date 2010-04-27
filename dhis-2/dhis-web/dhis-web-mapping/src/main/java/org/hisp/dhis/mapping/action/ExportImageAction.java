@@ -45,11 +45,12 @@ import org.hisp.dhis.util.StreamActionSupport;
  * @author Tran Thanh Tri
  * @version $Id$
  */
+@SuppressWarnings( "serial" )
 public class ExportImageAction
     extends StreamActionSupport
 {
     private static final Log log = LogFactory.getLog( ExportImageAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -134,32 +135,49 @@ public class ExportImageAction
     {
         this.height = height;
     }
-    
+
+    private String imageFormat;
+
+    public void setImageFormat( String imageFormat )
+    {
+        this.imageFormat = imageFormat;
+    }
+
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        log.info( "Exporting image, width: " + width + ", height: " + height );
-        
-        SVGUtils.convertToPNG( getSvg(), out, width, height );
-        
+        log.info( "Exporting image, width: " + width + ", height: " + height + ", format: " + this.format );
+
+        if ( imageFormat.equalsIgnoreCase( "image/png" ) )
+        {
+
+            SVGUtils.convertToPNG( getSvg(), out, width, height );
+        }
+        else
+        {
+            SVGUtils.convertToJPEG( getSvg(), out, width, height );
+        }
+
         return SUCCESS;
     }
 
     @Override
     protected String getContentType()
     {
-        return "image/png";
+        return this.imageFormat;
     }
 
     @Override
     protected String getFilename()
     {
-        return "dhis2-gis-image.png";
+        if ( imageFormat.equalsIgnoreCase( "image/png" ) )
+            return "dhis2-gis-image.png";
+        return "dhis2-gis-image.jpg";
     }
 
     private StringBuffer getSvg()
-    {   
+    {
         Period p = periodService.getPeriod( period );
 
         p.setName( format.formatPeriod( p ) );

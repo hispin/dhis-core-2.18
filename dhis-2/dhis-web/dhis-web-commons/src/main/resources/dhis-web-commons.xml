@@ -151,6 +151,15 @@
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="clearSelectedOrgUnitsBefore"
+			class="org.hisp.dhis.oust.action.ClearSelectedOrgUnitsBeforeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ouwt/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-commons/ouwt/responseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 	</package>
 

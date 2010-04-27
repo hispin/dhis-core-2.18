@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,49 +26,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel;
 
-import java.io.Serializable;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.w3c.dom.Document;
+import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public abstract class ReportExcel implements Serializable
+public abstract class ReportExcel
+
 {
-    public static class XML_TAG
-    {
-        public static final String REPORT_EXCEL = "report-excel";
-
-        public static final String NAME = "name";
-
-        public static final String PERIOD_ROW = "period-row";
-
-        public static final String PERIOD_COLUMN = "period-column";
-
-        public static final String ORGANISATIONUNIT_ROW = "organisation-row";
-
-        public static final String ORGANISATIONUNIT_COLUMN = "organisation-column";
-
-        public static final String GROUP = "group";
-
-        public static final String EXCEL_FILE = "excel-file";
-
-        public static final String EXCEL_REPORT_TYPE = "report-excel-type";
-
-        public static final String ASSOCIATION = "associations";
-
-        public static final String ID = "id";
-
-    }
 
     private int id;
 
@@ -87,6 +62,8 @@ public abstract class ReportExcel implements Serializable
     private String group;
 
     private String excelTemplateFile;
+
+    private Collection<UserAuthorityGroup> userRoles;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -113,7 +90,7 @@ public abstract class ReportExcel implements Serializable
 
         return results;
 
-    }  
+    }
 
     public abstract boolean isCategory();
 
@@ -171,7 +148,7 @@ public abstract class ReportExcel implements Serializable
             return false;
         return true;
     }
-    
+
     @Override
     public String toString()
     {
@@ -191,7 +168,7 @@ public abstract class ReportExcel implements Serializable
     {
         return getReportExcelItemBySheetRowColumn( sheet, row, column ) != null;
     }
-    
+
     public ReportExcelItem getReportExcelItemByName( String name, int sheetNo )
     {
         for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
@@ -204,7 +181,7 @@ public abstract class ReportExcel implements Serializable
 
         return null;
     }
-    
+
     public ReportExcelItem getReportExcelItemBySheetRowColumn( int sheet, int row, int column )
     {
         for ( ReportExcelItem e : this.reportExcelItems )
@@ -322,7 +299,14 @@ public abstract class ReportExcel implements Serializable
         this.excelTemplateFile = excelTemplateFile;
     }
 
-    public abstract Document createDocument()
-        throws ParserConfigurationException;
+    public Collection<UserAuthorityGroup> getUserRoles()
+    {
+        return userRoles;
+    }
+
+    public void setUserRoles( Collection<UserAuthorityGroup> userRoles )
+    {
+        this.userRoles = userRoles;
+    }
 
 }

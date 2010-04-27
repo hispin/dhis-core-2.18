@@ -258,6 +258,14 @@
 			<ref local="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		</property>
 	</bean>
+	
+	<bean id="org.hisp.dhis.oust.action.ClearSelectedOrgUnitsBeforeAction"
+		class="org.hisp.dhis.oust.action.ClearSelectedOrgUnitsBeforeAction"
+		scope="prototype">
+		<property name="selectionTreeManager">
+			<ref local="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
 
 	<!-- Security : Action -->
 

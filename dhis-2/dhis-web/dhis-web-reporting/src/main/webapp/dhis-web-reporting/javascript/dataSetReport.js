@@ -109,3 +109,9 @@ function dataSetReportStatusReceived( xmlObject )
         setTimeout( "getDataSetReportStatus();", 2000 );
     }
 }
+
+function printDateSetReportPreview()
+{
+	var o = $("div#printDateSetPreviewDiv");
+	o.jqprint(); 
+}

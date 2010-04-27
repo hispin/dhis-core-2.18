@@ -36,6 +36,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -69,23 +70,24 @@ public class DefaultDeletionManager
     @SuppressWarnings( "unchecked" )
     public void execute( Object object )
     {
+
         Class clazz = object.getClass();
-        
-        if ( clazz.getSuperclass().equals( Source.class ) )
+
+        if ( object instanceof OrganisationUnit )
         {
-            clazz = clazz.getSuperclass(); // Set class of Source implementations to Source 
+            clazz = Source.class; // Set class of Source implementations to Source
         }
-        
+
         String className = clazz.getSimpleName();
 
         // ---------------------------------------------------------------------
         // Verify that object is allowed to be deleted
         // ---------------------------------------------------------------------
-        
+
         String allowMethodName = ALLOW_METHOD_PREFIX + className;
 
         String currentHandler = null;
-        
+
         try
         {
             Method allowMethod = DeletionHandler.class.getMethod( allowMethodName, new Class[] { clazz }  );

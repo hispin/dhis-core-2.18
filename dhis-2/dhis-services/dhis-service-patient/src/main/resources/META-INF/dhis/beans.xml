@@ -224,6 +224,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService"/>
 	</bean>
 
+	<bean id="org.hisp.dhis.program.ProgramInstanceDeleteHandler" 
+		class="org.hisp.dhis.program.ProgramInstanceDeleteHandler">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
+	</bean>
+
 	<!-- DeletionManager -->
   
   	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -233,6 +238,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		  <list>
 			<list>
 			  <ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"/>
+			  <ref local="org.hisp.dhis.program.ProgramInstanceDeleteHandler"/>
 			</list>
 		  </list>
 		</property>

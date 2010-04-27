@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,21 +26,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.action;
 
-import java.io.File;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.state.SelectionManager;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,66 +42,63 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class BackupReportExcelAction
+
+public class UpdateReportExcelUserRoleAction
     implements Action
 {
-    private static final String xml = ".xml";
 
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    private ReportExcelService reportExcelService;
+    private ReportExcelService reportService;
 
-    private ReportLocationManager locationManager;
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
 
-    private SelectionManager selectionManager;
+    private UserStore userStore;
+
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
 
     // -------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------
+
+    private Collection<Integer> userRoles;
+
+    public void setUserRoles( Collection<Integer> userRoles )
+    {
+        this.userRoles = userRoles;
+    }
 
     private Integer id;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
-    }
-
-    public void setLocationManager( ReportLocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
+    @Override
     public String execute()
         throws Exception
     {
-        ReportExcel reportExcel = reportExcelService.getReportExcel( id );
+        ReportExcel report = reportService.getReportExcel( id );
 
-        Source source = new DOMSource( reportExcel.createDocument() );
+        Set<UserAuthorityGroup> userAutorities = new HashSet<UserAuthorityGroup>();
 
-        File file = new File( locationManager.getReportExcelTempDirectory() + File.separator + (Math.random() * id)
-            + xml );
-        Result result = new StreamResult( file );
+        for ( Integer i : this.userRoles )
+        {
+            userAutorities.add( userStore.getUserAuthorityGroup( i ) );
+        }
 
-        Transformer xformer = TransformerFactory.newInstance().newTransformer();
-        xformer.transform( source, result );
+        report.setUserRoles( userAutorities );
 
-        selectionManager.setDownloadFilePath( file.getAbsolutePath() );
+        reportService.updateReportExcel( report );
 
         return SUCCESS;
     }

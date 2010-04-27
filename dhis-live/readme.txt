@@ -1,12 +1,10 @@
-Warning: this readme has been superceded by work on the new automated installer 
 
-This  is a  first attempt  at  building a  lite version  of dhis.   It
-creates an  executable jar which  contains jetty server classes  and a
+Creates an  executable jar which  contains jetty server classes  and a
 simple tray icon controller. 
 
-mvn assembly:assembly
+mvn package
 
-to build the jar.  
+to build the jar and the exe file.  
 
 On Ubuntu (and other gnome-ish environments).  The java systemtray
 is not supported on fancy 3d enhanced window managers.  To work on
@@ -16,12 +14,11 @@ metacity --replace
 
 to get back to a vanilla WM.
 
-The application no longer depends on DHIS2_HOME being set. Rather the application
-looks for a dhis2.home system property that is being set by the lite jar.
+The application looks for a dhis2.home system property that is being set by the Live jar.
 
 The expected structure looks like this:
 
-/ dhis2-lite.jar
+/ dhis2-live.jar
 / startup.bat (optional)
 / conf /
 / conf / hibernate.properties
@@ -29,7 +26,7 @@ The expected structure looks like this:
 / log /
 / webapps /
 / webapps / dhis
-/ webapps / birt
+/ webapps / birt (optional)
 
 After that you are away.  The application will install an icon in your
 system tray or equivalent).  The icons are currently crap but they can
@@ -61,3 +58,4 @@ TODO
 click on the tray icon
 postgres and h2, though the latter (and JavaDB) is targeted.
 2.  make richer configuration of jetty through web.xml or similar
+

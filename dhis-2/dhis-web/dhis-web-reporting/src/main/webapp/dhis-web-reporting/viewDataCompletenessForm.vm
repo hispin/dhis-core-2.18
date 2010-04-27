@@ -11,6 +11,7 @@
 		            
 		    <script type="text/javascript">
 		        selectionTreeSelection.setMultipleSelectionAllowed( false );
+				selectionTree.clearSelectedOrgUnitsBefore();
 		        selectionTree.buildSelectionTree();
 		    </script>
         </td>

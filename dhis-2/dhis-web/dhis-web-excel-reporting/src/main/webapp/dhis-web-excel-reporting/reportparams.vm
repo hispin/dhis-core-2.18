@@ -59,6 +59,11 @@
 <div id="previewDiv">
 
 </div>
+<br/>
+
+<div id="printDiv">
+	<input type="button" id="printExcelReportButton" value='$i18n.getString("print")' onclick="printExcelReportPreview();" disabled />
+</div>
 
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
 	

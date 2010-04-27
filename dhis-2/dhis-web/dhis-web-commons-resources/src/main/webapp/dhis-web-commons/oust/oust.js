@@ -113,6 +113,15 @@ function SelectionTreeSelection()
 
 function SelectionTree()
 {
+    this.clearSelectedOrgUnitsBefore = function()
+    {
+        var request = new Request();
+        request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( clearSelectedOrgUnitsCompleted );
+		request.send( selectionTreePath + 'clearSelectedOrgUnitsBefore.action' );
+
+    };
+
     this.toggle = function( unitId )
     {
         var parentTag = document.getElementById( getTagId( unitId ));
@@ -332,4 +341,17 @@ function SelectionTree()
     {
         treeTag.style.backgroundImage = 'none';
     }
+		
+	function clearSelectedOrgUnitsCompleted( xmlObject )
+	{
+		if ( xmlObject != null )
+		{
+			var type = xmlObject.getAttribute( 'type' );
+			
+			if ( type == 'error' )
+			{
+				alert( xmlObject.firstChild.nodeValue );
+			}
+		}		
+	}
 }

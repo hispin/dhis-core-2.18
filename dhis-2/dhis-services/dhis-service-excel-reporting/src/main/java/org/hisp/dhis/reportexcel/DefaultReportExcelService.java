@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,24 +26,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id: DefaultReportExcelService.java 2010-03-11 11:52:20Z Chau Thu Tran $ $
+ * @version $Id: DefaultReportExcelService.java 2010-03-11 11:52:20Z Chau Thu
+ *          Tran $ $
  */
 @Transactional
 public class DefaultReportExcelService
@@ -79,9 +85,9 @@ public class DefaultReportExcelService
     public int addReportExcel( ReportExcel report )
     {
         int id = reportStore.addReportExcel( report );
-        
+
         i18nService.addObject( report );
-        
+
         return id;
     }
 
@@ -121,11 +127,7 @@ public class DefaultReportExcelService
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
     {
-        return i18n( i18nService, this.getReportsByGroup( group ) );
-        
-        //TODO Changed due to dependency problem, please fix
-        
-        /*
+
         if ( user == null || superUser )
         {
             return i18n( i18nService, this.getReportsByGroup( group ) );
@@ -133,19 +135,20 @@ public class DefaultReportExcelService
 
         else
         {
+            Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( user ).getUserAuthorityGroups();
+
             Collection<ReportExcel> reports = new ArrayList<ReportExcel>();
 
-            UserCredentials credentials = userStore.getUserCredentials( user );
-
-            for ( UserAuthorityGroup ugroup : credentials.getUserAuthorityGroups() )
+            for ( ReportExcel report : this.getReportsByGroup( group ) )
             {
-                reports.addAll( i18n( i18nService, ugroup.getReportExcels() ) );
+                if ( CollectionUtils.intersection( report.getUserRoles(), userRoles ).size() > 0 )
+                {
+                    reports.add( report );
+                }
             }
 
-            reports.retainAll( i18n( i18nService, this.getReportsByGroup( group ) ) );
-
-            return reports;
-        }*/
+            return i18n( i18nService, reports );
+        }
     }
 
     public Collection<String> getReportExcelGroups()
@@ -185,14 +188,14 @@ public class DefaultReportExcelService
     public void addReportExcelItem( ReportExcelItem reportItem )
     {
         reportStore.addReportExcelItem( reportItem );
-        
+
         i18nService.addObject( reportItem );
     }
 
     public void updateReportExcelItem( ReportExcelItem reportItem )
     {
         reportStore.updateReportExcelItem( reportItem );
-        
+
         i18nService.verify( reportItem );
     }
 

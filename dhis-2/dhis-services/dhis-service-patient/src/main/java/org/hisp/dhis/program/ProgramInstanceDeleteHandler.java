@@ -1,3 +1,5 @@
+package org.hisp.dhis.program;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,70 +26,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel;
 
-import java.util.List;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
- * @author Tran Thanh Tri
+ * @author Quang Nguyen
  * @version $Id$
  */
-public class ReportExcelCategory
-    extends ReportExcel
+public class ProgramInstanceDeleteHandler
+    extends DeletionHandler
 {
-
-    private List<DataElementGroupOrder> dataElementOrders;
-
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    public ReportExcelCategory()
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
-        super();
+        this.programInstanceService = programInstanceService;
     }
 
     // -------------------------------------------------------------------------
-    // Getters and setters
+    // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
-    public List<DataElementGroupOrder> getDataElementOrders()
+    @Override
+    public String getClassName()
     {
-        return dataElementOrders;
-    }
-
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
-    {
-        this.dataElementOrders = dataElementOrders;
+        return ProgramInstance.class.getSimpleName();
     }
 
     @Override
-    public String getReportType()
+    public void deletePatient( Patient patient )
     {
-        return ReportExcel.TYPE.CATEGORY;
-    }
-
-    @Override
-    public boolean isCategory()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isNormal()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOrganisationUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
+        for(ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ))
+        {
+            programInstanceService.deleteProgramInstance( programInstance );
+        }
     }
 }

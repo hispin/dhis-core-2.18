@@ -1,4 +1,4 @@
-package org.hisp.dhis.dd.action.category;
+package org.hisp.dhis.oust.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,68 +27,32 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * @author Abyot Asalefew
+ * @author Dang Duy Hieu
  * @version $Id$
+ * @since 2010-04-27
  */
-public class ValidateDataElementCategoryAction
+public class ClearSelectedOrgUnitsBeforeAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryService dataElementCategoryService;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    private String conceptName;
-
-    public void setConceptName( String conceptName )
-    {
-        this.conceptName = conceptName;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
     private String message;
 
     public String getMessage()
@@ -99,47 +63,22 @@ public class ValidateDataElementCategoryAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
     public String execute()
     {
-        if ( name == null || name.isEmpty() )
+        try
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
+            selectionTreeManager.clearSelectedOrganisationUnits();
         }
-        else
+        catch ( Exception e )
         {
-            DataElementCategory match = dataElementCategoryService.getDataElementCategoryByName( name );
+            message = "cannot_clear_selected_orgunits";
 
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "name_in_use" );
-
-                return INPUT;
-            }
+            return ERROR;
         }
 
-        if ( conceptName != null || !conceptName.isEmpty() )
-        {
-            // -----------------------------------------------------------------
-            // This string will be used as an XML attribute name.
-            // Start with a letter. No funny characters please. Max length 10.
-            // -----------------------------------------------------------------
-
-            Pattern conceptNamePattern = Pattern.compile( "^[a-zA-Z][a-zA-Z0-9_]{0,9}$" );
-            Matcher matcher = conceptNamePattern.matcher( conceptName );
-
-            if ( !matcher.matches() )
-            {
-                message = i18n.getString( "illegal_concept_name" );
-
-                return INPUT;
-            }
-        }
-
-        message = "ok";
+        message = "OK";
 
         return SUCCESS;
     }
+
 }
