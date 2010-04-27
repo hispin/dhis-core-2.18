@@ -475,7 +475,6 @@ public class SearchAction
             {
                 dataBrowserTable = dataBrowserService.getOrgUnitsInPeriod( selectedUnit.getId(), fromDate, toDate,
                     periodType );
-
             }
             else
             {
@@ -497,15 +496,6 @@ public class SearchAction
 
         // Set DataBrowserTable variable for PDF export
         setExportPDFVariables();
-
-        // Get format standard for periods which appropriate with from date, to
-        // date and period type
-        fromToDate = dataBrowserService.getFromToDateFormat( periodType, fromDate, toDate, format );
-
-        if ( fromToDate == null )
-        {
-            fromToDate = "";
-        }
 
         return SUCCESS;
     }

@@ -68,4 +68,15 @@ public class PatientIdentifierDeletionHandler
             patientIdentifierService.deletePatientIdentifier( patientIdentifier );
         }
     }
+    
+    @Override
+    public void deletePatient( Patient patient )
+    {
+        PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
+
+        if ( patientIdentifier != null )
+        {
+            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
+        }
+    }
 }

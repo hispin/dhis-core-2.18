@@ -117,10 +117,6 @@
 	    <strong>$i18n.getString( "from_date" ):</strong> $i18n.getString( "earliest" ) 
 	    <strong>$i18n.getString( "to_date" ):</strong> $i18n.getString( "latest" ) 
 	    <strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
-	#elseif ( $fromToDate != "" )
-	    <strong>$i18n.getString( "from_date" ):</strong> $fromToDate
-		<br/>
-		<strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
 	#else
 	    <strong>$i18n.getString( "from_date" ):</strong> $fromDate
 	    <strong>$i18n.getString( "to_date" ):</strong> $toDate 

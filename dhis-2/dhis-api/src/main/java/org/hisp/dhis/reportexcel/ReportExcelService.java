@@ -60,7 +60,7 @@ public interface ReportExcelService
 
     public Collection<ReportExcel> getALLReportExcel();
 
-    public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group );
+    public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group );    
 
     public Collection<ReportExcel> getReportsByGroup( String group );
 

@@ -3,12 +3,12 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.hisp.dhis.datavalue.DataValueAudit" table="datavalueaudit">
+	<class name="org.hisp.dhis.datavalue.DataValueAudit" table="datavalue_audit">
 		<id name="id">
 			<generator class="native" />
 		</id>
 		<many-to-one name="dataValue" class="org.hisp.dhis.datavalue.DataValue" 
-			cascade="delete">
+			cascade="delete" foreign-key="fk_datavalueaudit_datavalue">
 			<column name="dataelementid" />
 			<column name="periodid" />
 			<column name="sourceid" />

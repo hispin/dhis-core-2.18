@@ -44,6 +44,7 @@ import org.hisp.dhis.reporting.dataset.state.SelectedStateManager;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class SelectReportAction
     extends AbstractAction
 {
@@ -146,7 +147,7 @@ public class SelectReportAction
         throws Exception
     {  
     	dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-    	selectedStateManager.clearSelectedOrganisationUnits();
+    	
     	// ---------------------------------------------------------------------
         // Remove DataSets which don't have a CalendarPeriodType
         // ---------------------------------------------------------------------

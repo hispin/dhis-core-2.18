@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping.export;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -34,13 +35,14 @@ import java.io.StringReader;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 
 /**
  * @author Tran Thanh Tri
  */
 public class SVGUtils
-{    
+{
     public static void convertToPNG( StringBuffer buffer, OutputStream out, Integer width, Integer height )
         throws TranscoderException, IOException
     {
@@ -48,21 +50,48 @@ public class SVGUtils
         {
             width = 500;
         }
-        
+
         if ( height == null || height < 10 )
         {
             height = 500;
         }
-        
+
         PNGTranscoder t = new PNGTranscoder();
-        
+
         t.addTranscodingHint( PNGTranscoder.KEY_HEIGHT, new Float( height ) );
-        t.addTranscodingHint( PNGTranscoder.KEY_WIDTH, new Float( width ) );
-        
+        t.addTranscodingHint( PNGTranscoder.KEY_WIDTH, new Float( width ) );        
+
         TranscoderInput input = new TranscoderInput( new StringReader( buffer.toString() ) );
-        
+
         TranscoderOutput output = new TranscoderOutput( out );
-        
+
+        t.transcode( input, output );
+    }
+
+    public static void convertToJPEG( StringBuffer buffer, OutputStream out, Integer width, Integer height )
+        throws TranscoderException, IOException
+    {
+        if ( width == null || width < 10 )
+        {
+            width = 500;
+        }
+
+        if ( height == null || height < 10 )
+        {
+            height = 500;
+        }
+
+        JPEGTranscoder t = new JPEGTranscoder();
+
+        t.addTranscodingHint( JPEGTranscoder.KEY_HEIGHT, new Float( height ) );
+        t.addTranscodingHint( JPEGTranscoder.KEY_WIDTH, new Float( width ) );
+        t.addTranscodingHint( JPEGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE );
+        t.addTranscodingHint( JPEGTranscoder.KEY_QUALITY, new Float( .8 ) );
+
+        TranscoderInput input = new TranscoderInput( new StringReader( buffer.toString() ) );
+
+        TranscoderOutput output = new TranscoderOutput( out );
+
         t.transcode( input, output );
     }
 }

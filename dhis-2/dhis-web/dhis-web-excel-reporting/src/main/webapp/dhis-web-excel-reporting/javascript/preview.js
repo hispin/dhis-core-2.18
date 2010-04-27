@@ -180,8 +180,18 @@ function exportFromXMLtoHTML( parentElement ) {
 	}
 	
 	showById("tabs");
+	showById("printExcelReportButton");
 	
 	window.status = "DATAWARE HOUSE";
 	window.stop();
 }
 
+function printExcelReportPreview()
+{
+	var o = $("div#previewDiv");
+	o.jqprint();
+	
+	// or
+	//$("#tabs").jqprint();
+	//$('#divOpera').jqprint({ operaSupport: true });
+}

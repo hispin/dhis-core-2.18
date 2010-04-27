@@ -34,7 +34,7 @@
     </tr>      
     <tr>
       <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="conceptName" name="conceptName" style="width:25em" maxlength="160" class="{validate:{minlength:2,maxlength:160}}"></td>
+      <td><input type="text" id="conceptName" name="conceptName" style="width:25em" maxlength="10" class="{validate:{minlength:2,maxlength:10}}"></td>
       <td></td>
     </tr>   
     <tr>

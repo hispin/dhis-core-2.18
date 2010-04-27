@@ -475,6 +475,25 @@ Ext.onReady( function() {
 			},
 			{
 				xtype: 'combo',
+				id: 'exportimageformat_cb',
+				fieldLabel: 'Image format',
+				labelSeparator: labelseparator,
+				editable: false,
+				valueField: 'id',
+				displayField: 'text',
+				isFormField: true,
+				width: combo_width_fieldset,
+				minListWidth: combo_list_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				value: 'image/jpeg',
+				store: new Ext.data.SimpleStore({
+					fields: ['id', 'text'],
+					data: [['image/png', 'PNG'], ['image/jpeg', 'JPEG']]
+				})					
+			},
+			{
+				xtype: 'combo',
 				id: 'exportimagequality_cb',
 				fieldLabel: 'Image quality',
 				labelSeparator: labelseparator,
@@ -524,6 +543,7 @@ Ext.onReady( function() {
 						var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
 						var period = Ext.getCmp('period_cb').getValue();
 						var indicator = Ext.getCmp('indicator_cb').getValue();
+						var imageFormat = Ext.getCmp('exportimageformat_cb').getValue();
 						
 						Ext.getCmp('exportimagetitle_tf').reset();
                         
@@ -540,6 +560,7 @@ Ext.onReady( function() {
                         document.getElementById('periodField').value = period;  
                         document.getElementById('indicatorField').value = indicator;   
                         document.getElementById('legendsField').value = getLegendsJSON();
+						document.getElementById('imageFormat').value = imageFormat;
 
                         exportForm.submit();
 					}
@@ -640,7 +661,7 @@ Ext.onReady( function() {
         closeAction: 'hide',
 		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
 		width: 250,
-		height: 157,
+		height: 190,
         items: [
 		   {
                 xtype: 'panel',
@@ -657,7 +678,7 @@ Ext.onReady( function() {
 		layout: 'fit',
         closeAction: 'hide',
 		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-		width: 252,
+		width: 260,
 		height: 157,
         items: [
 		   {
@@ -3349,7 +3370,7 @@ Ext.onReady( function() {
 	
 	var exportImageButton = new Ext.Button({
 		iconCls: 'icon-image',
-		tooltip: 'Export map as image (PNG)',
+		tooltip: 'Export map as image',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   

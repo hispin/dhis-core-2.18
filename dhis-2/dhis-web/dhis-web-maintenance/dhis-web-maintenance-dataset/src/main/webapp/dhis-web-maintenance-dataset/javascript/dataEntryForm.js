@@ -62,9 +62,6 @@ function validateDataEntryForm()
 
   params += '&dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
     
-  var htmlCode = document.getElementById( 'designTextarea' ).value;
-  params += '&designCode=' + htmlCode;
-  
   request.sendAsPost( params );
   request.send( requestString );
 

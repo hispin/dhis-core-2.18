@@ -224,6 +224,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
+	
+	<!-- REPORT EXCEL USER ROLE BEAN -->
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction"
+		class="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction"
+		class="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
 
 	<!-- REPORT EXCEL CATEGORY BEAN -->
 
