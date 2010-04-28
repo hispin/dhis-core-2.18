@@ -259,8 +259,8 @@
 		</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.oust.action.ClearSelectedOrgUnitsBeforeAction"
-		class="org.hisp.dhis.oust.action.ClearSelectedOrgUnitsBeforeAction"
+	<bean id="org.hisp.dhis.oust.action.ClearSelectedOrganisationUnitsAction"
+		class="org.hisp.dhis.oust.action.ClearSelectedOrganisationUnitsAction"
 		scope="prototype">
 		<property name="selectionTreeManager">
 			<ref local="org.hisp.dhis.oust.manager.SelectionTreeManager" />

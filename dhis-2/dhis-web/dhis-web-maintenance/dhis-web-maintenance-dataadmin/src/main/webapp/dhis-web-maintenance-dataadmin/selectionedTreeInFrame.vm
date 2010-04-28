@@ -26,6 +26,7 @@
                       selectionTreeSelection.setMultipleSelectionAllowed( true );
                       selectionTreeSelection.setOnSelectFunction( treeClicked );
                       selectionTreeSelection.setListenerFunction( selectCompleted );
+					  selectionTree.clearSelectedOrganisationUnits();
                       selectionTree.buildSelectionTree();				  
                 </script>  			
                 <script type="text/javascript">

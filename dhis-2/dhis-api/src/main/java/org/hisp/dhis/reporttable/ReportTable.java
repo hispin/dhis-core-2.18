@@ -153,7 +153,7 @@ public class ReportTable
     /**
      * The {@link org.hisp.dhis.dimension.DimensionType} for the ReportTable.
      */
-    private DimensionType dimensionType;
+    private String dimensionType;
     
     /**
      * The DataElementCategoryCombo for the ReportTable.
@@ -607,9 +607,9 @@ public class ReportTable
     {
         if ( dimensionSet != null )
         {
-            dimensionType = dimensionSet.getDimensionType();
-            categoryCombo = dimensionType.equals( DimensionType.CATEGORY ) ? dimensionSet : null;
-            dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET ) ? dimensionSet.getDimensions() : null;
+            dimensionType = dimensionSet.getDimensionType().name();
+            categoryCombo = dimensionType.equals( DimensionType.CATEGORY.name() ) ? dimensionSet : null;
+            dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET.name() ) ? dimensionSet.getDimensions() : null;
             
             verify( dimensionType != null, "Dimension type cannot be null" );
         }
@@ -755,7 +755,7 @@ public class ReportTable
      */
     public boolean isDimensional( DimensionType dimensionType )
     {
-        return isDimensional() && this.dimensionType.equals( dimensionType );
+        return isDimensional() && this.dimensionType.equals( dimensionType.name() );
     }
     
     /**
@@ -1174,12 +1174,12 @@ public class ReportTable
         this.units = units;
     }
 
-    public DimensionType getDimensionType()
+    public String getDimensionType()
     {
         return dimensionType;
     }
 
-    public void setDimensionType( DimensionType dimensionType )
+    public void setDimensionType( String dimensionType )
     {
         this.dimensionType = dimensionType;
     }

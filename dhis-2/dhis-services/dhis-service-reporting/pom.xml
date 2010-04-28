@@ -53,10 +53,6 @@
       <artifactId>jxl</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-    </dependency>
-    <dependency>
       <groupId>commons-math</groupId>
       <artifactId>commons-math</artifactId>
     </dependency>

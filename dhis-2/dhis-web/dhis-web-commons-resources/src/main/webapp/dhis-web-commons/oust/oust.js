@@ -113,12 +113,12 @@ function SelectionTreeSelection()
 
 function SelectionTree()
 {
-    this.clearSelectedOrgUnitsBefore = function()
+    this.clearSelectedOrganisationUnits = function()
     {
         var request = new Request();
         request.setResponseTypeXML( 'xmlObject' );
 		request.setCallbackSuccess( clearSelectedOrgUnitsCompleted );
-		request.send( selectionTreePath + 'clearSelectedOrgUnitsBefore.action' );
+		request.send( selectionTreePath + 'clearSelectedOrganisationUnits.action' );
 
     };
 

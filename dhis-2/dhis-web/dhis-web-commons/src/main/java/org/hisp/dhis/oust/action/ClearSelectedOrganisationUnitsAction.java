@@ -36,7 +36,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  * @since 2010-04-27
  */
-public class ClearSelectedOrgUnitsBeforeAction
+public class ClearSelectedOrganisationUnitsAction
     implements Action
 {
     // -------------------------------------------------------------------------

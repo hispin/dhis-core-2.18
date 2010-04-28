@@ -152,8 +152,8 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-		<action name="clearSelectedOrgUnitsBefore"
-			class="org.hisp.dhis.oust.action.ClearSelectedOrgUnitsBeforeAction">
+		<action name="clearSelectedOrganisationUnits"
+			class="org.hisp.dhis.oust.action.ClearSelectedOrganisationUnitsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ouwt/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
@@ -525,7 +525,7 @@
 			<result name="input" type="velocity">
 				/dhis-web-commons/useraccount/updateUserInput.vm</result>
 		</action>
-
+		
 	</package>
 
 </struts>
