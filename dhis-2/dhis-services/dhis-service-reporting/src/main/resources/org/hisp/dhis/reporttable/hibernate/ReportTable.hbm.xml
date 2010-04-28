@@ -45,7 +45,7 @@
         class="org.hisp.dhis.dataset.DataSet"/>
     </list>
     
-	<property name="dimensionType"/>
+	<property name="dimensionType" column="dimension_type"/>
 	
     <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo"
       column="categorycomboid" foreign-key="fk_reporttable_categorycombo"/>

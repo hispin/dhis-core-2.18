@@ -42,6 +42,9 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-administration</artifactId>
     </dependency>
+	
+	<!-- Other -->
+	
     <dependency>
       <groupId>com.lowagie</groupId>
       <artifactId>itext</artifactId>

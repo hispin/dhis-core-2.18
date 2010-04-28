@@ -20,6 +20,8 @@
 				});
 				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 				jQuery("#username").focus();
+				
+				selectionTree.clearSelectedOrganisationUnits();
 				selectionTree.buildSelectionTree();
 			}
 	);

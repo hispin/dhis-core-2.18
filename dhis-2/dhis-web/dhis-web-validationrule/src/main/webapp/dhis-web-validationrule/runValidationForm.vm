@@ -66,6 +66,7 @@
 
 <script type="text/javascript">
 	selectionTreeSelection.setMultipleSelectionAllowed( true );
+	selectionTree.clearSelectedOrganisationUnits();
 	selectionTree.buildSelectionTree();
 	
 	Calendar.setup({
