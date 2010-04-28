@@ -28,8 +28,8 @@ package org.hisp.dhis.tallysheet;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -37,14 +37,11 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.tallysheet.TallySheet;
-import org.hisp.dhis.tallysheet.TallySheetService;
-import org.hisp.dhis.tallysheet.TallySheetTuple;
 
 /**
- * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
+ * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben
+ *         Wangberg
  * @version $Id$
  */
 public class DefaultTallySheetService
@@ -53,77 +50,84 @@ public class DefaultTallySheetService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
     }
-    
+
     // -------------------------------------------------------------------------
     // TallySheetService implementation
     // -------------------------------------------------------------------------
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-    
-    public TallySheet createTallySheet( OrganisationUnit organisationUnit, List<DataElement> dataElements, boolean a3Format,
-        boolean displayFacilityName, DataSet selectedDataSet, String tallySheetName )
+
+    public TallySheet createTallySheet( OrganisationUnit organisationUnit, List<DataElement> dataElements,
+        boolean a3Format, boolean displayFacilityName, DataSet selectedDataSet, String tallySheetName )
     {
-        PeriodType periodType = selectedDataSet.getPeriodType();
+        PeriodType periodType = selectedDataSet.getPeriodType();        
 
-        Calendar calendar = Calendar.getInstance();
-        int thisYear = calendar.get( Calendar.YEAR );
-        int lastYear = thisYear - 1;
-        calendar.set( Calendar.YEAR, lastYear );
+        Collection<DataValue> dataValues = new HashSet<DataValue>();
 
-        Period period = periodType.createPeriod( calendar.getTime() );
+        for ( DataElement dataElement : dataElements )
+        {           
 
-        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements );
+            DataValue dataValue = dataValueService.getLatestDataValues( dataElement, periodType, organisationUnit );
 
-        return internalCreateTallySheet( organisationUnit, dataElements, dataValues, period, a3Format, displayFacilityName, tallySheetName );
+            if ( dataValue != null )
+            {
+                dataValues.add( dataValue );
+            }
+
+        }
+
+        return internalCreateTallySheet( organisationUnit, dataElements, dataValues, a3Format,
+            displayFacilityName, tallySheetName );
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private TallySheet internalCreateTallySheet( OrganisationUnit organisationUnit, List<DataElement> dataElements,
-        Collection<DataValue> dataValues, Period period, boolean a3Format, boolean displayFacilityName, String tallySheetName )
+        Collection<DataValue> dataValues, boolean a3Format, boolean displayFacilityName,
+        String tallySheetName )
     {
         TallySheet tallySheet = new TallySheet();
-        
+
         tallySheet.setTallySheetName( tallySheetName );
         tallySheet.setA3Format( a3Format );
         tallySheet.setDisplayFacilityName( displayFacilityName );
         tallySheet.setOrganisationUnit( organisationUnit );
 
         List<TallySheetTuple> tallySheetTuples = new ArrayList<TallySheetTuple>();
-        
+
         for ( DataElement dataElement : dataElements )
         {
             int calculatedNumberOfElements = 0;
 
             for ( DataValue dataValue : dataValues )
             {
-                if ( dataValue.getPeriod().equals( period ) && dataValue.getSource().equals( organisationUnit )
+                if ( dataValue.getSource().equals( organisationUnit )
                     && dataValue.getDataElement().equals( dataElement ) )
                 {
                     calculatedNumberOfElements = Integer.parseInt( dataValue.getValue() );
-                    
+
                     break;
                 }
             }
-            
+
             TallySheetTuple tallySheetTuple = new TallySheetTuple();
             tallySheetTuple.setTallySheetTuple( calculatedNumberOfElements, dataElement, tallySheet.getRowWidth() );
             tallySheetTuples.add( tallySheetTuple );
         }
 
         tallySheet.setTallySheetTuples( tallySheetTuples );
-        
+
         return tallySheet;
     }
 }
