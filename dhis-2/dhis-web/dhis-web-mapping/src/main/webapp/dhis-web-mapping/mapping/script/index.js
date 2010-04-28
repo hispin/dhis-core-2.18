@@ -1,146 +1,22 @@
 ﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
-var MAP;
-var BASECOORDINATE;
-var MAPSOURCE;
-var MAPDATA;
-var URL;
-var MAPVIEW;
-var PARAMETER;
-var BOUNDS = 0;
-var ACTIVEPANEL;
-var MASK;
-var LABELS;
-var COLORINTERPOLATION;
-var EXPORTVALUES;
+var MAP,BASECOORDINATE,MAPSOURCE,MAPDATA,URL,MAPVIEW,PARAMETER,ACTIVEPANEL,MASK,LABELS,COLORINTERPOLATION,EXPORTVALUES,BOUNDS = 0;
 
-function getUrlParam(strParamName) {
-    var output = '';
-    var strHref = window.location.href;
-    if ( strHref.indexOf('?') > -1 ) {
-        var strQueryString = strHref.substr(strHref.indexOf('?')).toLowerCase();
-        var aQueryString = strQueryString.split('&');
-        for ( var iParam = 0; iParam < aQueryString.length; iParam++ ) {
-            if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + '=') > -1 ) {
-                var aParam = aQueryString[iParam].split('=');
-                output = aParam[1];
-                break;
-            }
-        }
-    }
-    return unescape(output);
-}
+function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
+function validateInput(name){return (name.length<=25);}
+function getMultiSelectHeight(){var h=screen.height;if(h<=800){return 220;}else if(h<=1050){return 310;}else if(h<=1200){return 470;}else{return 900;}}
+function toggleFeatureLabels(classify){var layer=MAP.getLayersByName('Thematic map')[0];function activateLabels(){layer.styleMap=new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${'+MAPDATA.nameColumn+'}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});layer.refresh();LABELS=true;}function deactivateLabels(){layer.styleMap=new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});layer.refresh();LABELS=false;}if(classify){if(LABELS){deactivateLabels();}else{activateLabels();}if(ACTIVEPANEL==thematicMap){choropleth.classify(false,true);}else if(ACTIVEPANEL==organisationUnitAssignment){mapping.classify(false,true);}}else{if(LABELS){activateLabels();}}}
 
-function validateInput(name) {
-    return (name.length <= 25);
-}
-
-function getMultiSelectHeight() {
-    var h = screen.height;
-    
-    if (h <= 800) {
-        return 220;
-    }
-    else if (h <= 1050) {
-        return 310;
-    }
-    else if (h <= 1200) {
-        return 470;
-    }
-    else {
-        return 900;
-    }
-}
-
-function toggleFeatureLabels(classify) {
-	var layer = MAP.getLayersByName('Thematic map')[0];
-	
-	function activateLabels() {
-		layer.styleMap = new OpenLayers.StyleMap({
-			'default': new OpenLayers.Style(
-				OpenLayers.Util.applyDefaults(
-					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'label': '${' + MAPDATA.nameColumn + '}', 'fontFamily': 'arial, lucida sans unicode', 'fontWeight': 'bold', 'fontSize': 14 },
-					OpenLayers.Feature.Vector.style['default']
-				)
-			),
-			'select': new OpenLayers.Style(
-				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-			)
-		});
-		layer.refresh();
-		LABELS = true;
-	}
-	
-	function deactivateLabels() {
-		layer.styleMap = new OpenLayers.StyleMap({
-			'default': new OpenLayers.Style(
-				OpenLayers.Util.applyDefaults(
-					{'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1 },
-					OpenLayers.Feature.Vector.style['default']
-				)
-			),
-			'select': new OpenLayers.Style(
-				{'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-			)
-		});
-		layer.refresh();
-		LABELS = false;
-	}
-	
-	if (classify) {
-		if (LABELS) {
-			deactivateLabels();
-		}
-		else {
-			activateLabels();
-		}
-		
-		if (ACTIVEPANEL == thematicMap) {
-			choropleth.classify(false, true);
-		}
-		else if (ACTIVEPANEL == organisationUnitAssignment) {
-			mapping.classify(false, true);
-		}
-	}
-	else {
-		if (LABELS) {
-			activateLabels();
-		}
-	}
-}
-			
 Ext.onReady( function() {
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-	
-	Ext.override(Ext.form.Field, {
-		showField : function(){
-			this.show();
-			this.container.up('div.x-form-item').setDisplayed( true );
-		},
-		hideField : function(){
-			this.hide();
-			this.container.up('div.x-form-item').setDisplayed( false );
-		}
-	});
-	
-    document.body.oncontextmenu = function() { return false; };
-	
+	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed( true );},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed( false );}});
+    document.body.oncontextmenu = function(){return false;};
 	Ext.QuickTips.init();
     
-    MAP = new OpenLayers.Map({
-		controls: [
-			new OpenLayers.Control.Navigation(),
-			new OpenLayers.Control.ArgParser(),
-			new OpenLayers.Control.Attribution()
-		]
-	});
+    MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	MASK = new Ext.LoadMask(Ext.getBody(),{msg:'Loading...',msgCls:'x-mask-loading2'});
 	
-	MASK = new Ext.LoadMask(Ext.getBody(), {msg: 'Loading...', msgCls: 'x-mask-loading2'});
-	
-    if (getUrlParam('view')) {
-        PARAMETER = getUrlParam('view');
-    }
-	
+    if (getUrlParam('view')){PARAMETER=getUrlParam('view');}	
 	var mapViewParam = PARAMETER ? PARAMETER : 0;
 	
 	Ext.Ajax.request({
@@ -171,57 +47,11 @@ Ext.onReady( function() {
 								success: function() {
 			
     /* MAPVIEW PANEL */
-	var viewStore = new Ext.data.JsonStore({
-        url: path + 'getAllMapViews' + type,
-        root: 'mapViews',
-        fields: ['id', 'name'],
-        id: 'id',
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
 	
-    var viewNameTextField = new Ext.form.TextField({
-        id: 'viewname_tf',
-        emptyText: '',
-        width: combo_width,
-		hideLabel: true
-    });
-    
-    var viewComboBox = new Ext.form.ComboBox({
-        id: 'view_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: emptytext,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: viewStore
-    });
-    
-    var view2ComboBox = new Ext.form.ComboBox({
-        id: 'view2_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: emptytext,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: viewStore
-    });
+	var viewStore=new Ext.data.JsonStore({url:path+'getAllMapViews'+type,root:'mapViews',fields:['id','name'],id:'id',sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
+	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptyText:'',width:combo_width,hideLabel:true});
+	var viewComboBox=new Ext.form.ComboBox({id:'view_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:viewStore});
+	var view2ComboBox=new Ext.form.ComboBox({id:'view2_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:viewStore});
     
     var newViewPanel = new Ext.form.FormPanel({
         id: 'newview_p',
@@ -654,117 +484,16 @@ Ext.onReady( function() {
 	});
 	
 	/* EXPORT MAP WINDOWS */
-	var exportImageWindow = new Ext.Window({
-        id: 'exportimage_w',
-        title: '<span id="window-image-title">Export map as image</span>',
-		layout: 'fit',
-        closeAction: 'hide',
-		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-		width: 250,
-		height: 190,
-        items: [
-		   {
-                xtype: 'panel',
-                items: [
-					exportImagePanel
-				]
-			}
-		]
-    });
+	var exportImageWindow=new Ext.Window({id:'exportimage_w',title:'<span id="window-image-title">Export map as image</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:250,height:190,items:[{xtype:'panel',items:[exportImagePanel]}]});
+	var exportExcelWindow=new Ext.Window({id:'exportexcel_w',title:'<span id="window-excel-title">Export map as Excel spreadsheet</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:260,height:157,items:[{xtype:'panel',items:[exportExcelPanel]}]});
 	
-	var exportExcelWindow = new Ext.Window({
-        id: 'exportexcel_w',
-        title: '<span id="window-excel-title">Export map as Excel spreadsheet</span>',
-		layout: 'fit',
-        closeAction: 'hide',
-		defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-		width: 260,
-		height: 157,
-        items: [
-		   {
-                xtype: 'panel',
-                items: [
-					exportExcelPanel
-				]
-			}
-		]
-    });
-    
     /* AUTOMATIC MAP LEGEND SET PANEL */
-    var automaticMapLegendSetNameTextField = new Ext.form.TextField({
-        id: 'automaticmaplegendsetname_tf',
-		isFormField: true,
-		hideLabel: true,
-        emptyText: emptytext,
-        width: combo_width
-    });
-    
-    var automaticMapLegendSetMethodComboBox = new Ext.form.ComboBox({
-        id: 'automaticmaplegendsetmethod_cb',
-		isFormField: true,
-		hideLabel: true,
-        editable: false,
-        valueField: 'value',
-        displayField: 'text',
-        mode: 'local',
-        emptyText: emptytext,
-        triggerAction: 'all',
-        width: combo_width,
-        minListWidth: combo_width,
-        store: new Ext.data.SimpleStore({
-            fields: ['value', 'text'],
-            data: [[2, 'Distributed values'], [1, 'Equal intervals']]
-        })
-    });
-    
-    var automaticMapLegendSetClassesComboBox = new Ext.form.ComboBox({
-        id: 'automaticmaplegendsetclasses_cb',
-		isFormField: true,
-		hideLabel: true,
-        editable: false,
-        valueField: 'value',
-        displayField: 'value',
-        mode: 'local',
-        emptyText: emptytext,
-        triggerAction: 'all',
-		value: 5,
-        width: combo_number_width,
-        minListWidth: combo_number_width,
-        store: new Ext.data.SimpleStore({
-            fields: ['value'],
-            data: [[1], [2], [3], [4], [5], [6], [7], [8]]
-        })
-    });
-    
-    var automaticMapLegendSetLowColorColorPalette = new Ext.ux.ColorField({
-        id: 'automaticmaplegendsetlowcolor_cp',
-		isFormField: true,
-		hideLabel: true,
-        allowBlank: false,
-        width: combo_width,
-        minListWidth: combo_width,
-        value: "#FFFF00"
-    });
-    
-    var automaticMapLegendSetHighColorColorPalette = new Ext.ux.ColorField({
-        id: 'automaticmaplegendsethighcolor_cp',
-		isFormField: true,
-		hideLabel: true,
-        allowBlank: false,
-        width: combo_width,
-        minListWidth: combo_width,
-        value: "#FF0000"
-    });
-        
-    var automaticMapLegendSetStore = new Ext.data.JsonStore({
-        url: path + 'getMapLegendSetsByType' + type,
-		baseParams: { type: map_legend_type_automatic },
-        root: 'mapLegendSets',
-		id: 'id',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
+	var automaticMapLegendSetNameTextField=new Ext.form.TextField({id:'automaticmaplegendsetname_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_width});
+	var automaticMapLegendSetMethodComboBox=new Ext.form.ComboBox({id:'automaticmaplegendsetmethod_cb',isFormField:true,hideLabel:true,editable:false,valueField:'value',displayField:'text',mode:'local',emptyText:emptytext,triggerAction:'all',width:combo_width,minListWidth:combo_width,store:new Ext.data.SimpleStore({fields:['value','text'],data:[[2,'Distributed values'],[1,'Equal intervals']]})});
+	var automaticMapLegendSetClassesComboBox=new Ext.form.ComboBox({id:'automaticmaplegendsetclasses_cb',isFormField:true,hideLabel:true,editable:false,valueField:'value',displayField:'value',mode:'local',emptyText:emptytext,triggerAction:'all',value:5,width:combo_number_width,minListWidth:combo_number_width,store:new Ext.data.SimpleStore({fields:['value'],data:[[1],[2],[3],[4],[5],[6],[7],[8]]})});
+	var automaticMapLegendSetLowColorColorPalette=new Ext.ux.ColorField({id:'automaticmaplegendsetlowcolor_cp',isFormField:true,hideLabel:true,allowBlank:false,width:combo_width,minListWidth:combo_width,value:"#FFFF00"});
+	var automaticMapLegendSetHighColorColorPalette=new Ext.ux.ColorField({id:'automaticmaplegendsethighcolor_cp',isFormField:true,hideLabel:true,allowBlank:false,width:combo_width,minListWidth:combo_width,value:"#FF0000"});
+	var automaticMapLegendSetStore=new Ext.data.JsonStore({url:path+'getMapLegendSetsByType'+type,baseParams:{type:map_legend_type_automatic},root:'mapLegendSets',id:'id',fields:['id','name'],sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
 	
 	var automaticMapLegendSetComboBox = new Ext.form.ComboBox({
         id: 'automaticmaplegendset_cb',
@@ -812,45 +541,11 @@ Ext.onReady( function() {
 			}
 		}					
     });
-
-    var automaticMapLegendSetIndicatorStore = new Ext.data.JsonStore({
-        url: path + 'getAllIndicators' + type,
-        root: 'indicators',
-        fields: ['id', 'name', 'shortName'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-    
-    var automaticMapLegendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
-        id: 'automaticmaplegendsetindicator_ms',
-		isFormField: true,
-		hideLabel: true,
-        dataFields: ['id', 'name', 'shortName'], 
-        valueField: 'id',
-        displayField: 'shortName',
-        width: multiselect_width,
-        height: getMultiSelectHeight(),
-        store: automaticMapLegendSetIndicatorStore
-    });
-	    
-    var automaticMapLegendSet2ComboBox = new Ext.form.ComboBox({
-        id: 'automaticmaplegendset2_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: emptytext,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: automaticMapLegendSetStore
-    });
 	
+	var automaticMapLegendSetIndicatorStore=new Ext.data.JsonStore({url:path+'getAllIndicators'+type,root:'indicators',fields:['id','name','shortName'],sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
+	var automaticMapLegendSetIndicatorMultiSelect=new Ext.ux.Multiselect({id:'automaticmaplegendsetindicator_ms',isFormField:true,hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:multiselect_width,height:getMultiSelectHeight(),store:automaticMapLegendSetIndicatorStore});
+	var automaticMapLegendSet2ComboBox=new Ext.form.ComboBox({id:'automaticmaplegendset2_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:automaticMapLegendSetStore});
+
 	var newAutomaticMapLegendSetPanel = new Ext.form.FormPanel({   
         id: 'newautomaticmaplegendset_p',
 		bodyStyle: 'border:0px solid #fff',
@@ -1089,115 +784,16 @@ Ext.onReady( function() {
     });
 	
 	/* PREDEFINED MAP LEGEND SET PANEL */
-	var predefinedMapLegendStore = new Ext.data.JsonStore({
-        url: path + 'getAllMapLegends' + type,
-        root: 'mapLegends',
-		id: 'id',
-        fields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
-        autoLoad: true
-    });
-	
-	var predefinedMapLegendSetStore = new Ext.data.JsonStore({
-        url: path + 'getMapLegendSetsByType' + type,
-		baseParams: { type: map_legend_type_predefined },
-        root: 'mapLegendSets',
-		id: 'id',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-	
-	var predefinedMapLegendNameTextField = new Ext.form.TextField({
-		id: 'predefinedmaplegendname_tf',
-		isFormField: true,
-		hideLabel: true,
-		emptyText: emptytext,
-		width: combo_width
-	});
-	
-	var predefinedMapLegendStartValueTextField = new Ext.form.TextField({
-		id: 'predefinedmaplegendstartvalue_tf',
-		isFormField: true,
-		hideLabel: true,
-		emptyText: emptytext,
-		width: combo_number_width,
-		minListWidth: combo_number_width
-	});
-	
-	var predefinedMapLegendEndValueTextField = new Ext.form.TextField({
-		id: 'predefinedmaplegendendvalue_tf',
-		isFormField: true,
-		hideLabel: true,
-		emptyText: emptytext,
-		width: combo_number_width,
-		minListWidth: combo_number_width
-	});
-	
-    var predefinedMapLegendColorColorPalette = new Ext.ux.ColorField({
-		id: 'predefinedmaplegendcolor_cp',
-		isFormField: true,
-		hideLabel: true,
-		allowBlank: false,
-		width: combo_width,
-		minListWidth: combo_width,
-		value: "#FFFF00"
-	});
-	
-	var predefinedMapLegendComboBox = new Ext.form.ComboBox({
-        id: 'predefinedmaplegend_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: emptytext,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: predefinedMapLegendStore
-    });
-	
-	var predefinedMapLegendSetNameTextField = new Ext.form.TextField({
-		id: 'predefinedmaplegendsetname_tf',
-		isFormField: true,
-		hideLabel: true,
-		emptyText: emptytext,
-		width: combo_width
-	});
-	
-	var predefinedNewMapLegendMultiSelect = new Ext.ux.Multiselect({
-        id: 'predefinednewmaplegend_ms',
-		isFormField: true,
-		hideLabel: true,
-        dataFields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'], 
-        valueField: 'id',
-        displayField: 'displayString',
-        width: multiselect_width,
-        height: getMultiSelectHeight(),
-        store: predefinedMapLegendStore
-    });
-	
-	var predefinedMapLegendSetComboBox = new Ext.form.ComboBox({
-        id: 'predefinedmaplegendset_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: emptytext,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: predefinedMapLegendSetStore
-    });
+	var predefinedMapLegendStore=new Ext.data.JsonStore({url:path+'getAllMapLegends'+type,root:'mapLegends',id:'id',fields:['id','name','startValue','endValue','color','displayString'],autoLoad:true});
+	var predefinedMapLegendSetStore=new Ext.data.JsonStore({url:path+'getMapLegendSetsByType'+type,baseParams:{type:map_legend_type_predefined},root:'mapLegendSets',id:'id',fields:['id','name'],sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
+	var predefinedMapLegendNameTextField=new Ext.form.TextField({id:'predefinedmaplegendname_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_width});
+	var predefinedMapLegendStartValueTextField=new Ext.form.TextField({id:'predefinedmaplegendstartvalue_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_number_width,minListWidth:combo_number_width});
+	var predefinedMapLegendEndValueTextField=new Ext.form.TextField({id:'predefinedmaplegendendvalue_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_number_width,minListWidth:combo_number_width});
+	var predefinedMapLegendColorColorPalette=new Ext.ux.ColorField({id:'predefinedmaplegendcolor_cp',isFormField:true,hideLabel:true,allowBlank:false,width:combo_width,minListWidth:combo_width,value:"#FFFF00"});
+	var predefinedMapLegendComboBox=new Ext.form.ComboBox({id:'predefinedmaplegend_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:predefinedMapLegendStore});
+	var predefinedMapLegendSetNameTextField=new Ext.form.TextField({id:'predefinedmaplegendsetname_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_width});
+	var predefinedNewMapLegendMultiSelect=new Ext.ux.Multiselect({id:'predefinednewmaplegend_ms',isFormField:true,hideLabel:true,dataFields:['id','name','startValue','endValue','color','displayString'],valueField:'id',displayField:'displayString',width:multiselect_width,height:getMultiSelectHeight(),store:predefinedMapLegendStore});
+	var predefinedMapLegendSetComboBox=new Ext.form.ComboBox({id:'predefinedmaplegendset_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:predefinedMapLegendSetStore});
 	
 	var newPredefinedMapLegendPanel = new Ext.form.FormPanel({   
         id: 'newpredefinedmaplegend_p',
@@ -1608,108 +1204,22 @@ Ext.onReady( function() {
     });
 
     /* REGISTER MAPS PANEL */
-    var organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: path + 'getOrganisationUnitLevels' + type,
-		id: 'id',
-        baseParams: { format: 'json' },
-        root: 'organisationUnitLevels',
-        fields: ['id', 'level', 'name'],
-        autoLoad: true
-    });
-
-    var organisationUnitStore = new Ext.data.JsonStore({
-        url: path + 'getOrganisationUnitsAtLevel' + type,
-        baseParams: { level: 1, format: 'json' },
-        root: 'organisationUnits',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: false
-    });
-    
-    var existingMapsStore = new Ext.data.JsonStore({
-        url: path + 'getAllMaps' + type,
-        baseParams: { format: 'jsonmin' },
-        root: 'maps',
-        fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
-        autoLoad: true
-    });
-	
-	var wmsMapStore = new GeoExt.data.WMSCapabilitiesStore({
-		url: path_geoserver + ows
-	});
+	var organisationUnitLevelStore=new Ext.data.JsonStore({url:path+'getOrganisationUnitLevels'+type,id:'id',baseParams:{format:'json'},root:'organisationUnitLevels',fields:['id','level','name'],autoLoad:true});
+	var organisationUnitStore=new Ext.data.JsonStore({url:path+'getOrganisationUnitsAtLevel'+type,baseParams:{level:1,format:'json'},root:'organisationUnits',fields:['id','name'],sortInfo:{field:'name',direction:'ASC'},autoLoad:false});
+	var existingMapsStore=new Ext.data.JsonStore({url:path+'getAllMaps'+type,baseParams:{format:'jsonmin'},root:'maps',fields:['id','name','mapLayerPath','organisationUnitLevel'],autoLoad:true});
+	var wmsMapStore=new GeoExt.data.WMSCapabilitiesStore({url:path_geoserver+ows});
+	var geojsonStore=new Ext.data.JsonStore({url:path+'getGeoJsonFiles'+type,root:'files',fields:['name'],autoLoad:true});
+	var nameColumnStore=new Ext.data.SimpleStore({fields:['name'],data:[]});
+	var baseCoordinateStore=new Ext.data.JsonStore({url:path+'getBaseCoordinate'+type,root:'baseCoordinate',fields:['longitude','latitude'],autoLoad:true});
+	var organisationUnitComboBox=new Ext.form.ComboBox({id:'organisationunit_cb',fieldLabel:'Organisation unit',typeAhead:true,editable:false,valueField:'id',displayField:'name',emptyText:emptytext,hideLabel:true,mode:'remote',forceSelection:true,triggerAction:'all',selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:organisationUnitStore});
+	var organisationUnitLevelComboBox=new Ext.form.ComboBox({id:'organisationunitlevel_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',emptyText:emptytext,hideLabel:true,mode:'remote',forceSelection:true,triggerAction:'all',selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:organisationUnitLevelStore});
+	var newNameTextField=new Ext.form.TextField({id:'newname_tf',emptyText:emptytext,hideLabel:true,width:combo_width});
+	var editNameTextField=new Ext.form.TextField({id:'editname_tf',emptyText:emptytext,hideLabel:true,width:combo_width});
 	
 	if (MAPSOURCE == map_source_type_shapefile) {
 		wmsMapStore.load();
 	}
 	
-	var geojsonStore = new Ext.data.JsonStore({
-        url: path + 'getGeoJsonFiles' + type,
-        root: 'files',
-        fields: ['name'],
-        autoLoad: true
-    });
-	
-	var nameColumnStore = new Ext.data.SimpleStore({
-		fields: ['name'],
-		data: []
-	});
-	
-	var baseCoordinateStore = new Ext.data.JsonStore({
-        url: path + 'getBaseCoordinate' + type,
-        root: 'baseCoordinate',
-        fields: ['longitude','latitude'],
-        autoLoad: true
-    });
-	
-    var organisationUnitComboBox = new Ext.form.ComboBox({
-        id: 'organisationunit_cb',
-        fieldLabel: 'Organisation unit',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        emptyText: emptytext,
-		hideLabel: true,
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: organisationUnitStore
-    });
-    
-    var organisationUnitLevelComboBox = new Ext.form.ComboBox({
-        id: 'organisationunitlevel_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        emptyText: emptytext,
-		hideLabel: true,
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: organisationUnitLevelStore
-    });
-
-    var newNameTextField = new Ext.form.TextField({
-        id: 'newname_tf',
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_width
-    });
-    
-    var editNameTextField = new Ext.form.TextField({
-        id: 'editname_tf',
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_width
-    });
-    
 	var mapLayerPathComboBox = new Ext.form.ComboBox({
         id: 'maplayerpath_cb',
 		typeAhead: true,
@@ -1851,23 +1361,23 @@ Ext.onReady( function() {
 		}
 	});
 	
-    var typeComboBox = new Ext.form.ComboBox({
-        id: 'type_cb',
-        editable: false,
-        displayField: 'name',
-        valueField: 'name',
-		emptyText: emptytext,
-		hideLabel: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        triggerAction: 'all',
-        mode: 'local',
-        value: 'Polygon',
-        store: new Ext.data.SimpleStore({
-            fields: ['name'],
-            data: [['Polygon']]
-        })
-    });
+    // var typeComboBox = new Ext.form.ComboBox({
+        // id: 'type_cb',
+        // editable: false,
+        // displayField: 'name',
+        // valueField: 'name',
+		// emptyText: emptytext,
+		// hideLabel: true,
+        // width: combo_width,
+        // minListWidth: combo_width,
+        // triggerAction: 'all',
+        // mode: 'local',
+        // value: 'Polygon',
+        // store: new Ext.data.SimpleStore({
+            // fields: ['name'],
+            // data: [['Polygon']]
+        // })
+    // });
 
 	var newNameColumnComboBox = new Ext.form.ComboBox({
         id: 'newnamecolumn_cb',
@@ -1918,113 +1428,14 @@ Ext.onReady( function() {
 			}
 		}				
 	});
-    
-	var editNameColumnComboBox = new Ext.form.ComboBox({
-        id: 'editnamecolumn_cb',
-        editable: false,
-        displayField: 'name',
-        valueField: 'name',
-		emptyText: emptytext,
-		hideLabel: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        triggerAction: 'all',
-        mode: 'local',
-        store: nameColumnStore
-	});
 	
-    var newLongitudeComboBox = new Ext.form.ComboBox({
-        id: 'newlongitude_cb',
-		valueField: 'longitude',
-		displayField: 'longitude',
-		editable: true,
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_number_width,
-		minListWidth: combo_number_width,
-		triggerAction: 'all',
-		value: BASECOORDINATE.longitude,
-		mode: 'remote',
-		store: baseCoordinateStore
-    });
-    
-    var editLongitudeComboBox = new Ext.form.ComboBox({
-        id: 'editlongitude_cb',
-		valueField: 'longitude',
-		displayField: 'longitude',
-		editable: true,
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_number_width,
-		minListWidth: combo_number_width,
-		triggerAction: 'all',
-		mode: 'remote',
-		store: baseCoordinateStore
-
-    });
-	
-    var newLatitudeComboBox = new Ext.form.ComboBox({
-        id: 'newlatitude_cb',
-		valueField: 'latitude',
-		displayField: 'latitude',
-		editable: true,
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_number_width,
-		minListWidth: combo_number_width,
-		triggerAction: 'all',
-		value: BASECOORDINATE.latitude,
-		mode: 'remote',
-		store: baseCoordinateStore
-    });
-    
-    var editLatitudeComboBox = new Ext.form.ComboBox({
-        id: 'editlatitude_cb',
-		valueField: 'latitude',
-		displayField: 'latitude',
-		editable: true,
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_number_width,
-		minListWidth: combo_number_width,
-		triggerAction: 'all',
-		mode: 'remote',
-		store: baseCoordinateStore
-    });
-    
-    var newZoomComboBox = new Ext.form.ComboBox({
-        id: 'newzoom_cb',
-        editable: true,
-        displayField: 'text',
-        valueField: 'value',
-		hideLabel: true,
-        width: combo_number_width,
-        minListWidth: combo_number_width,
-        triggerAction: 'all',
-        mode: 'local',
-        value: 7,
-        store: new Ext.data.SimpleStore({
-            fields: ['value','text'],
-            data: [[3, '3 (out)'], [4, '4'], [5, '5'], [6,'6'], [7,'7'], [8,'8'], [9,'9'], [10,'10 (in)']]
-        })
-    });
-    
-    var editZoomComboBox = new Ext.form.ComboBox({
-        id: 'editzoom_cb',
-        editable: false,
-        emptyText: '',
-        displayField: 'value',
-        valueField: 'value',
-		hideLabel: true,
-        width: combo_number_width,
-        minListWidth: combo_number_width + 17,
-        triggerAction: 'all',
-        mode: 'local',
-        store: new Ext.data.SimpleStore({
-            fields: ['value','text'],
-            data: [[5, '5 (out)'], [6,'6'], [7,'7'], [8,'8'], [9,'9 (in)']]
-        })
-    });
+	var editNameColumnComboBox=new Ext.form.ComboBox({id:'editnamecolumn_cb',editable:false,displayField:'name',valueField:'name',emptyText:emptytext,hideLabel:true,width:combo_width,minListWidth:combo_width,triggerAction:'all',mode:'local',store:nameColumnStore});
+	var newLongitudeComboBox=new Ext.form.ComboBox({id:'newlongitude_cb',valueField:'longitude',displayField:'longitude',editable:true,emptyText:emptytext,hideLabel:true,width:combo_number_width,minListWidth:combo_number_width,triggerAction:'all',value:BASECOORDINATE.longitude,mode:'remote',store:baseCoordinateStore});
+	var editLongitudeComboBox=new Ext.form.ComboBox({id:'editlongitude_cb',valueField:'longitude',displayField:'longitude',editable:true,emptyText:emptytext,hideLabel:true,width:combo_number_width,minListWidth:combo_number_width,triggerAction:'all',mode:'remote',store:baseCoordinateStore});
+	var newLatitudeComboBox=new Ext.form.ComboBox({id:'newlatitude_cb',valueField:'latitude',displayField:'latitude',editable:true,emptyText:emptytext,hideLabel:true,width:combo_number_width,minListWidth:combo_number_width,triggerAction:'all',value:BASECOORDINATE.latitude,mode:'remote',store:baseCoordinateStore});
+	var editLatitudeComboBox=new Ext.form.ComboBox({id:'editlatitude_cb',valueField:'latitude',displayField:'latitude',editable:true,emptyText:emptytext,hideLabel:true,width:combo_number_width,minListWidth:combo_number_width,triggerAction:'all',mode:'remote',store:baseCoordinateStore});
+	var newZoomComboBox=new Ext.form.ComboBox({id:'newzoom_cb',editable:true,displayField:'text',valueField:'value',hideLabel:true,width:combo_number_width,minListWidth:combo_number_width,triggerAction:'all',mode:'local',value:7,store:new Ext.data.SimpleStore({fields:['value','text'],data:[[3,'3 (out)'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8'],[9,'9'],[10,'10 (in)']]})});
+	var editZoomComboBox=new Ext.form.ComboBox({id:'editzoom_cb',editable:false,emptyText:'',displayField:'value',valueField:'value',hideLabel:true,width:combo_number_width,minListWidth:combo_number_width+17,triggerAction:'all',mode:'local',store:new Ext.data.SimpleStore({fields:['value','text'],data:[[5,'5 (out)'],[6,'6'],[7,'7'],[8,'8'],[9,'9 (in)']]})});
     
     var newMapButton = new Ext.Button({
         id: 'newmap_b',
@@ -2212,11 +1623,8 @@ Ext.onReady( function() {
                 url: path + 'deleteMap' + type,
                 method: 'GET',
                 params: { mapLayerPath: mlp },
-
                 success: function(r) {
                     Ext.messageBlack.msg('Edit map', 'The map <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) was deleted.');
-                    
-                    
                     
                     Ext.getCmp('map_cb').getStore().reload();
 					
@@ -2239,32 +1647,32 @@ Ext.onReady( function() {
         }
     });
     
-    var newMapComboBox = new Ext.form.ComboBox({
-        id: 'newmap_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'level',
-        displayField: 'name',
-        emptyText: emptytext,
-		hideLabel: true,
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: organisationUnitLevelStore,
-        listeners: {
-            'select': {
-                fn: function() {
-                    var level = Ext.getCmp('newmap_cb').getValue();
-                    organisationUnitStore.baseParams = { level: level, format: 'json' };
-                    organisationUnit();
-                },
-                scope: this
-            }
-        }
-    });
+    // var newMapComboBox = new Ext.form.ComboBox({
+        // id: 'newmap_cb',
+        // typeAhead: true,
+        // editable: false,
+        // valueField: 'level',
+        // displayField: 'name',
+        // emptyText: emptytext,
+		// hideLabel: true,
+        // mode: 'remote',
+        // forceSelection: true,
+        // triggerAction: 'all',
+        // selectOnFocus: true,
+        // width: combo_width,
+        // minListWidth: combo_width,
+        // store: organisationUnitLevelStore,
+        // listeners: {
+            // 'select': {
+                // fn: function() {
+                    // var level = Ext.getCmp('newmap_cb').getValue();
+                    // organisationUnitStore.baseParams = { level: level, format: 'json' };
+                    // organisationUnit();
+                // },
+                // scope: this
+            // }
+        // }
+    // });
     
     var editMapComboBox = new Ext.form.ComboBox({
         id: 'editmap_cb',
@@ -2521,34 +1929,14 @@ Ext.onReady( function() {
     });
     
     /* OVERLAY PANEL */
-	var wmsOverlayStore = new GeoExt.data.WMSCapabilitiesStore({
-		url: path_geoserver + ows
-	});
+	
+	var wmsOverlayStore=new GeoExt.data.WMSCapabilitiesStore({url:path_geoserver+ows});
+	var mapLayerNameTextField=new Ext.form.TextField({id:'maplayername_tf',emptyText:emptytext,hideLabel:true,width:combo_width});
+	var mapLayerMapSourceFileComboBox=new Ext.form.ComboBox({id:'maplayermapsourcefile_cb',editable:false,displayField:'name',valueField:'name',emptyText:emptytext,hideLabel:true,width:combo_width,minListWidth:combo_width,triggerAction:'all',mode:'remote',store:geojsonStore});
 	
 	if (MAPSOURCE == map_source_type_shapefile) {
 		wmsOverlayStore.load();
 	}
-	
-    var mapLayerNameTextField = new Ext.form.TextField({
-        id: 'maplayername_tf',
-        emptyText: emptytext,
-		hideLabel: true,
-        width: combo_width
-    });
-	
-	var mapLayerMapSourceFileComboBox = new Ext.form.ComboBox({
-        id: 'maplayermapsourcefile_cb',
-        editable: false,
-        displayField: 'name',
-        valueField: 'name',
-		emptyText: emptytext,
-		hideLabel: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        triggerAction: 'all',
-        mode: 'remote',
-        store: geojsonStore
-    });
 	
 	var wmsOverlayGrid = new Ext.grid.GridPanel({
 		id: 'wmsoverlay_g',
@@ -2639,81 +2027,13 @@ Ext.onReady( function() {
 			}
 		}
 	});
-    
-    var mapLayerFillColorColorField = new Ext.ux.ColorField({
-        id: 'maplayerfillcolor_cf',
-		hideLabel: true,
-        allowBlank: false,
-        width: combo_width,
-        value: '#FF0000'
-    });
-    
-    var mapLayerFillOpacityComboBox = new Ext.form.ComboBox({
-        id: 'maplayerfillopacity_cb',
-		hideLabel: true,
-        editable: true,
-        valueField: 'value',
-        displayField: 'value',
-        mode: 'local',
-        triggerAction: 'all',
-        width: combo_number_width,
-        minListWidth: combo_number_width,
-        value: 0.5,
-        store: new Ext.data.SimpleStore({
-            fields: ['value'],
-            data: [[0.0], [0.1], [0.2], [0.3], [0.4], [0.5], [0.6], [0.7], [0.8], [0.9], [1.0]]
-        })
-    });
-    
-    var mapLayerStrokeColorColorField = new Ext.ux.ColorField({
-        id: 'maplayerstrokecolor_cf',
-		hideLabel: true,
-        allowBlank: false,
-        width: combo_width,
-        value: '#222222'
-    });
-    
-    var mapLayerStrokeWidthComboBox = new Ext.form.ComboBox({
-        id: 'maplayerstrokewidth_cb',
-		hideLabel: true,
-        editable: true,
-        valueField: 'value',
-        displayField: 'value',
-        mode: 'local',
-        triggerAction: 'all',
-        width: combo_number_width,
-        minListWidth: combo_number_width,
-        value: 2,
-        store: new Ext.data.SimpleStore({
-            fields: ['value'],
-            data: [[0], [1], [2], [3], [4]]
-        })
-    });
-    
-    var mapLayerStore = new Ext.data.JsonStore({
-        url: path + 'getAllMapLayers' + type,
-        root: 'mapLayers',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-    
-    var mapLayerComboBox = new Ext.form.ComboBox({
-        id: 'maplayer_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: emptytext,
-		hideLabel: true,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width,
-        store: mapLayerStore
-    });
+	
+	var mapLayerFillColorColorField=new Ext.ux.ColorField({id:'maplayerfillcolor_cf',hideLabel:true,allowBlank:false,width:combo_width,value:'#FF0000'});
+	var mapLayerFillOpacityComboBox=new Ext.form.ComboBox({id:'maplayerfillopacity_cb',hideLabel:true,editable:true,valueField:'value',displayField:'value',mode:'local',triggerAction:'all',width:combo_number_width,minListWidth:combo_number_width,value:0.5,store:new Ext.data.SimpleStore({fields:['value'],data:[[0.0],[0.1],[0.2],[0.3],[0.4],[0.5],[0.6],[0.7],[0.8],[0.9],[1.0]]})});
+	var mapLayerStrokeColorColorField=new Ext.ux.ColorField({id:'maplayerstrokecolor_cf',hideLabel:true,allowBlank:false,width:combo_width,value:'#222222'});
+	var mapLayerStrokeWidthComboBox=new Ext.form.ComboBox({id:'maplayerstrokewidth_cb',hideLabel:true,editable:true,valueField:'value',displayField:'value',mode:'local',triggerAction:'all',width:combo_number_width,minListWidth:combo_number_width,value:2,store:new Ext.data.SimpleStore({fields:['value'],data:[[0],[1],[2],[3],[4]]})});
+	var mapLayerStore=new Ext.data.JsonStore({url:path+'getAllMapLayers'+type,root:'mapLayers',fields:['id','name'],sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
+	var mapLayerComboBox=new Ext.form.ComboBox({id:'maplayer_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,hideLabel:true,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:mapLayerStore});
     
     var deleteMapLayerButton = new Ext.Button({
         id: 'deletemaplayer_b',
