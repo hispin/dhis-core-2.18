@@ -22,7 +22,6 @@
 	thematicMap = 'gisThematicMap';
 	mapRegistration = 'gisMap';
 	organisationUnitAssignment = 'gisMapOrganisationUnitRelation';
-	overlayRegistration = 'gisOverlay';
 	administration = 'gisAdministration';
 	favorites = 'gisFavoriteMapView';
 	legendSets = 'gisLegendSet';
