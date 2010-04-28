@@ -654,7 +654,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             mode: 'local',
             emptyText: emptytext,
 			labelSeparator: labelseparator,
-            value: map_legend_type_automatic,
+            value: LEGEND.type,
             triggerAction: 'all',
             width: combo_width,
             store: new Ext.data.SimpleStore({
@@ -667,15 +667,21 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             listeners: {
                 'select': {
                     fn: function() {
-                        if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_predefined) {
+                        if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_predefined && Ext.getCmp('maplegendtype_cb').getValue() != LEGEND.type ) {
+							LEGEND.type = map_legend_type_predefined;
 							Ext.getCmp('method').hideField();
 							Ext.getCmp('bounds').hideField();
                             Ext.getCmp('numClasses').hideField();
 							Ext.getCmp('colorA_cf').hideField();
 							Ext.getCmp('colorB_cf').hideField();
 							Ext.getCmp('maplegendset_cb').showField();
+							
+							if (Ext.getCmp('maplegendset_cb').getValue()) {
+								this.classify(false);
+							}
                         }
-                        else if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_automatic) {
+                        else if (Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_automatic && Ext.getCmp('maplegendtype_cb').getValue() != LEGEND.type) {
+							LEGEND.type = map_legend_type_automatic;
 							Ext.getCmp('method').showField();
 							if (Ext.getCmp('method').getValue() == 0) {
 								Ext.getCmp('bounds').showField();
@@ -731,7 +737,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             mode: 'local',
             emptyText: emptytext,
 			labelSeparator: labelseparator,
-            value: 1,
+            value: LEGEND.method,
             triggerAction: 'all',
             width: combo_width,
             store: new Ext.data.SimpleStore({
@@ -739,16 +745,19 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 data: [
 					[1, 'Equal intervals'],
 					[2, 'Equal group count'],
-					[0, 'Fixed breaks']]
+					[0, 'Fixed breaks']
+				]
             }),
             listeners: {
                 'select': {
                     fn: function() {
-                        if (Ext.getCmp('method').getValue() == 0) {
+                        if (Ext.getCmp('method').getValue() == 0 && Ext.getCmp('method').getValue() != LEGEND.method) {
+							LEGEND.method = 0;
                             Ext.getCmp('bounds').showField();
                             Ext.getCmp('numClasses').hideField();
                         }
-                        else {
+                        else if (Ext.getCmp('method').getValue() != LEGEND.method) {
+							LEGEND.method = Ext.getCmp('method').getValue();
                             Ext.getCmp('bounds').hideField();
                             Ext.getCmp('numClasses').showField();
                             
@@ -780,7 +789,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             valueField: 'value',
             displayField: 'value',
             mode: 'local',
-            value: 5,
+            value: LEGEND.classes,
             triggerAction: 'all',
             width: combo_width,
             store: new Ext.data.SimpleStore({
@@ -793,8 +802,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
-                        
-                        this.classify(false);
+						
+						if (Ext.getCmp('numClasses').getValue() != LEGEND.classes) {
+							LEGEND.classes = Ext.getCmp('numClasses').getValue();
+							this.classify(false);
+						}
                     },
                     scope: this
                 }

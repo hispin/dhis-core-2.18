@@ -1,5 +1,36 @@
 ﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
-var MAP,BASECOORDINATE,MAPSOURCE,MAPDATA,URL,MAPVIEW,PARAMETER,ACTIVEPANEL,MASK,LABELS,COLORINTERPOLATION,EXPORTVALUES,BOUNDS = 0;
+
+/* OpenLayers map */
+var MAP;
+/* Center point of the country */
+var BASECOORDINATE;
+/* Geojson, shapefile or database */
+var MAPSOURCE;
+/* A map object */
+var MAPDATA;
+/* Filename or level */
+var URL;
+/* Active mapview object  */
+var MAPVIEW;
+/* Active mapview id parameter from URL */
+var PARAMETER;
+/* Current expanded accordion panel */
+var ACTIVEPANEL;
+/* Mask */
+var MASK;
+/* Boolean  */
+var LABELS;
+/* Legend colors for export  */
+var COLORINTERPOLATION;
+/* Export values  */
+var EXPORTVALUES;
+/* Currently selected vector feature  */
+var FEATURE;
+/* Current legend type and method */
+var LEGEND = new Object();
+LEGEND.type = map_legend_type_automatic;
+LEGEND.method = 1;
+LEGEND.classes = 5;
 
 /* Detect mapview parameter in URL */
 function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
@@ -24,9 +55,8 @@ Ext.onReady( function() {
 	document.body.oncontextmenu = function(){return false;};
 	/* Activate tooltip */
 	Ext.QuickTips.init();
-    /* OpenLayers map */
+
     MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
-	/* Loading mask */
 	MASK = new Ext.LoadMask(Ext.getBody(),{msg:'Loading...',msgCls:'x-mask-loading2'});
 	
     if (getUrlParam('view')){PARAMETER=getUrlParam('view');}	
@@ -3032,6 +3062,19 @@ Ext.onReady( function() {
 /* Section: select features */
 var popup;
 
+var featureMenu = new Ext.menu.Menu({});
+featureMenu.add({
+	html: 'Centre',
+	iconCls: 'no-icon',
+	listeners: {
+		'click': {
+			fn: function() {
+				alert(1);
+			}
+		}
+	}
+});
+
 function onHoverSelectChoropleth(feature) {
     if (MAPDATA != null) {
         if (ACTIVEPANEL == thematicMap) {
@@ -3048,6 +3091,8 @@ function onHoverUnselectChoropleth(feature) {
 }
 
 function onClickSelectChoropleth(feature) {
+	FEATURE = feature;
+
 	var east_panel = Ext.getCmp('east');
 	var x = east_panel.x - 210;
 	var y = east_panel.y + 41;
@@ -3080,12 +3125,15 @@ function onClickSelectChoropleth(feature) {
 		mapping.relation = feature.attributes[MAPDATA.nameColumn];
     }
 	else {
+		featureMenu.showAt([300,200]);
 		// MAP.setCenter(feature.geometry.getBounds().getCenterLonLat(), MAP.getZoom()+1);
-		sc(feature.attributes[MAPDATA.nameColumn], Ext.getCmp('indicator_cb').getRawValue());
+		// sc(feature.attributes[MAPDATA.nameColumn], Ext.getCmp('indicator_cb').getRawValue());
 	}
 }
 
 function onClickUnselectChoropleth(feature) {}
+
+
 
 /* Section: map data */
 function loadMapData(redirect, position) {
