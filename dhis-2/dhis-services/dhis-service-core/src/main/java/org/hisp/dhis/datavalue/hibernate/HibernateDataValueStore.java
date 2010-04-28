@@ -43,8 +43,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -79,7 +81,7 @@ public class HibernateDataValueStore
     {
         this.periodStore = periodStore;
     }
-    
+
     // -------------------------------------------------------------------------
     // Support methods for reloading periods
     // -------------------------------------------------------------------------
@@ -135,24 +137,24 @@ public class HibernateDataValueStore
     public void deleteDataValue( DataValue dataValue )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         session.delete( dataValue );
     }
-    
+
     public int deleteDataValuesBySource( Source source )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Query query = session.createQuery( "delete DataValue where source = :source" );
         query.setEntity( "source", source );
-        
+
         return query.executeUpdate();
     }
 
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Query query = session.createQuery( "delete DataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
 
@@ -424,5 +426,27 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 
         return criteria.list();
+    }
+
+
+    @Override
+    public DataValue getLatestDataValues( DataElement dataElement, PeriodType periodType,
+        OrganisationUnit organisationUnit )
+    {
+        final String hsql = "SELECT v FROM DataValue v, Period p WHERE  v.dataElement =:dataElement "
+            + " AND v.period=p AND p.periodType=:periodType AND v.source=:source ORDER BY p.endDate DESC";
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( hsql );
+
+        query.setParameter( "dataElement", dataElement );
+        query.setParameter( "periodType", periodType );
+        query.setParameter( "source", organisationUnit );
+        
+        query.setFirstResult( 0 );
+        query.setMaxResults( 1 );
+
+        return (DataValue) query.uniqueResult();
     }
 }

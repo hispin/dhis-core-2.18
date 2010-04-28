@@ -31,7 +31,9 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -254,4 +256,19 @@ public interface DataValueService
      * @return a collection of all DataValues which mach the given collection of DataElements.
      */
     Collection<DataValue> getDataValues( DataElement dataElement );
+    
+    /**
+     * Returns Latest DataValues for a given DataElement, PeriodType and OrganisationUnit
+     * 
+     * @param dataElement the DataElements of the DataValue.
+     * @param periodType the Period Type of period of the DataValue
+     * @param organisationUnit the Organisation Unit of the DataValue
+     * @return a Latest DataValue 
+     */   
+    
+    DataValue getLatestDataValues( DataElement dataElement, PeriodType periodType, OrganisationUnit organisationUnit );
+    
+    
 }
+
+
