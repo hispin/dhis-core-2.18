@@ -3874,8 +3874,7 @@ function getChoroplethData() {
         method: 'POST',
         params: params,
         success: function(r) {
-			var layers = MAP.getLayersByName('Thematic map');
-			var features = layers[0].features;
+			var features = MAP.getLayersByName('Thematic map')[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
 			EXPORTVALUES = getExportDataValueJSON( mapvalues );
 			var mv = new Array();
@@ -3908,10 +3907,7 @@ function getChoroplethData() {
 				}
 			}
 
-			choropleth.indicator = 'value';
-			choropleth.indicatorText = 'Indicator';
-			options.indicator = choropleth.indicator;
-
+			choropleth.indicator = options.indicator = 'value';
 			options.method = Ext.getCmp('method').getValue();
 			options.numClasses = Ext.getCmp('numClasses').getValue();
 			options.colors = choropleth.getColors();
@@ -3934,10 +3930,8 @@ function getAssignOrganisationUnitData() {
 	MASK.show();
 	
     var mlp = MAPDATA.mapLayerPath;
-    
 	var relations =	 Ext.getCmp('grid_gp').getStore();
-	var layers = MAP.getLayersByName('Thematic map');
-	features = layers[0]['features'];
+	var features = MAP.getLayersByName('Thematic map')[0].features;
 	var nameColumn = MAPDATA.nameColumn;
 	var noCls = 1;
 	var noAssigned = 0;
@@ -3959,10 +3953,7 @@ function getAssignOrganisationUnitData() {
 	var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
 	noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
 	
-	mapping.indicator = 'value';
-	mapping.indicatorText = 'Indicator';
-	options.indicator = mapping.indicator;
-	
+	mapping.indicator = options.indicator = 'value';
 	options.method = 1;
 	options.numClasses = noCls;
 	
