@@ -1,19 +1,32 @@
 ﻿Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
-
 var MAP,BASECOORDINATE,MAPSOURCE,MAPDATA,URL,MAPVIEW,PARAMETER,ACTIVEPANEL,MASK,LABELS,COLORINTERPOLATION,EXPORTVALUES,BOUNDS = 0;
 
+/* Detect mapview parameter in URL */
 function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
+/* Input validation */
 function validateInput(name){return (name.length<=25);}
+/* Decide multiselect height based on screen resolution */
 function getMultiSelectHeight(){var h=screen.height;if(h<=800){return 220;}else if(h<=1050){return 310;}else if(h<=1200){return 470;}else{return 900;}}
+/* Toggle feature labels */
 function toggleFeatureLabels(classify){var layer=MAP.getLayersByName('Thematic map')[0];function activateLabels(){layer.styleMap=new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${'+MAPDATA.nameColumn+'}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});layer.refresh();LABELS=true;}function deactivateLabels(){layer.styleMap=new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});layer.refresh();LABELS=false;}if(classify){if(LABELS){deactivateLabels();}else{activateLabels();}if(ACTIVEPANEL==thematicMap){choropleth.classify(false,true);}else if(ACTIVEPANEL==organisationUnitAssignment){mapping.classify(false,true);}}else{if(LABELS){activateLabels();}}}
+/* Sort method */
+function sortByValue(a,b){return b.value-a.value;}
+/* Create JSON for map export */
+function getExportDataValueJSON(mapvalues){var json='{';json+='"datavalues":';json+='[';mapvalues.sort(sortByValue);for(var i=0;i<mapvalues.length;i++){json+='{';json+='"organisation": "'+mapvalues[i].orgUnitId+'",';json+='"value": "'+mapvalues[i].value+'" ';json+=i<mapvalues.length-1?'},':'}'}json+=']';json+='}';return json}
+function getLegendsJSON(){var legends=choropleth.imageLegend;var json='{';json+='"legends":';json+='[';for(var i=0;i<choropleth.imageLegend.length;i++){json+='{';json+='"label": "'+choropleth.imageLegend[i].label+'",';json+='"color": "'+choropleth.imageLegend[i].color+'" ';json+=i<choropleth.imageLegend.length-1?'},':'}'}json+=']';json+='}';return json}
 
 Ext.onReady( function() {
+	/* Cookie provider */
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+	/* Ext 3.2.0 override */
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed( true );},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed( false );}});
-    document.body.oncontextmenu = function(){return false;};
+    /* Disallow right clicks */
+	document.body.oncontextmenu = function(){return false;};
+	/* Activate tooltip */
 	Ext.QuickTips.init();
-    
+    /* OpenLayers map */
     MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	/* Loading mask */
 	MASK = new Ext.LoadMask(Ext.getBody(),{msg:'Loading...',msgCls:'x-mask-loading2'});
 	
     if (getUrlParam('view')){PARAMETER=getUrlParam('view');}	
@@ -46,8 +59,7 @@ Ext.onReady( function() {
 								params: { mapSourceType: MAPSOURCE },
 								success: function() {
 			
-    /* MAPVIEW PANEL */
-	
+	/* Section: mapview */
 	var viewStore=new Ext.data.JsonStore({url:path+'getAllMapViews'+type,root:'mapViews',fields:['id','name'],id:'id',sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
 	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptyText:'',width:combo_width,hideLabel:true});
 	var viewComboBox=new Ext.form.ComboBox({id:'view_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:emptytext,selectOnFocus:true,width:combo_width,minListWidth:combo_width,store:viewStore});
@@ -284,7 +296,7 @@ Ext.onReady( function() {
         ]
     });
 	
-	/* EXPORT MAP PANEL */
+	/* Section: export map */
 	var exportImagePanel = new Ext.form.FormPanel({
         id: 'export_image_p',        
         items:
@@ -483,11 +495,10 @@ Ext.onReady( function() {
 		]
 	});
 	
-	/* EXPORT MAP WINDOWS */
 	var exportImageWindow=new Ext.Window({id:'exportimage_w',title:'<span id="window-image-title">Export map as image</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:250,height:190,items:[{xtype:'panel',items:[exportImagePanel]}]});
 	var exportExcelWindow=new Ext.Window({id:'exportexcel_w',title:'<span id="window-excel-title">Export map as Excel spreadsheet</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:260,height:157,items:[{xtype:'panel',items:[exportExcelPanel]}]});
 	
-    /* AUTOMATIC MAP LEGEND SET PANEL */
+    /* Section: automatic legend set */
 	var automaticMapLegendSetNameTextField=new Ext.form.TextField({id:'automaticmaplegendsetname_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_width});
 	var automaticMapLegendSetMethodComboBox=new Ext.form.ComboBox({id:'automaticmaplegendsetmethod_cb',isFormField:true,hideLabel:true,editable:false,valueField:'value',displayField:'text',mode:'local',emptyText:emptytext,triggerAction:'all',width:combo_width,minListWidth:combo_width,store:new Ext.data.SimpleStore({fields:['value','text'],data:[[2,'Distributed values'],[1,'Equal intervals']]})});
 	var automaticMapLegendSetClassesComboBox=new Ext.form.ComboBox({id:'automaticmaplegendsetclasses_cb',isFormField:true,hideLabel:true,editable:false,valueField:'value',displayField:'value',mode:'local',emptyText:emptytext,triggerAction:'all',value:5,width:combo_number_width,minListWidth:combo_number_width,store:new Ext.data.SimpleStore({fields:['value'],data:[[1],[2],[3],[4],[5],[6],[7],[8]]})});
@@ -783,7 +794,7 @@ Ext.onReady( function() {
         ]
     });
 	
-	/* PREDEFINED MAP LEGEND SET PANEL */
+	/* Section: predefined legend set */
 	var predefinedMapLegendStore=new Ext.data.JsonStore({url:path+'getAllMapLegends'+type,root:'mapLegends',id:'id',fields:['id','name','startValue','endValue','color','displayString'],autoLoad:true});
 	var predefinedMapLegendSetStore=new Ext.data.JsonStore({url:path+'getMapLegendSetsByType'+type,baseParams:{type:map_legend_type_predefined},root:'mapLegendSets',id:'id',fields:['id','name'],sortInfo:{field:'name',direction:'ASC'},autoLoad:true});
 	var predefinedMapLegendNameTextField=new Ext.form.TextField({id:'predefinedmaplegendname_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_width});
@@ -1096,7 +1107,7 @@ Ext.onReady( function() {
         ]
     });
 	
-    /* HELP PANEL */
+    /* Section: help */
 	function getHelpText(topic, tab) {
 		Ext.Ajax.request({
 			url: '../../dhis-web-commons-about/getHelpContent.action',
@@ -1203,7 +1214,7 @@ Ext.onReady( function() {
 		}
     });
 
-    /* REGISTER MAPS PANEL */
+    /* Section: register maps */
 	var organisationUnitLevelStore=new Ext.data.JsonStore({url:path+'getOrganisationUnitLevels'+type,id:'id',baseParams:{format:'json'},root:'organisationUnitLevels',fields:['id','level','name'],autoLoad:true});
 	var organisationUnitStore=new Ext.data.JsonStore({url:path+'getOrganisationUnitsAtLevel'+type,baseParams:{level:1,format:'json'},root:'organisationUnits',fields:['id','name'],sortInfo:{field:'name',direction:'ASC'},autoLoad:false});
 	var existingMapsStore=new Ext.data.JsonStore({url:path+'getAllMaps'+type,baseParams:{format:'jsonmin'},root:'maps',fields:['id','name','mapLayerPath','organisationUnitLevel'],autoLoad:true});
@@ -1928,8 +1939,7 @@ Ext.onReady( function() {
 		}
     });
     
-    /* OVERLAY PANEL */
-	
+    /* Section: overlays */
 	var wmsOverlayStore=new GeoExt.data.WMSCapabilitiesStore({url:path_geoserver+ows});
 	var mapLayerNameTextField=new Ext.form.TextField({id:'maplayername_tf',emptyText:emptytext,hideLabel:true,width:combo_width});
 	var mapLayerMapSourceFileComboBox=new Ext.form.ComboBox({id:'maplayermapsourcefile_cb',editable:false,displayField:'name',valueField:'name',emptyText:emptytext,hideLabel:true,width:combo_width,minListWidth:combo_width,triggerAction:'all',mode:'remote',store:geojsonStore});
@@ -2234,7 +2244,7 @@ Ext.onReady( function() {
 		}
     });
 	
-    /* ADMIN PANEL */
+    /* Section: administrator */
     var adminPanel = new Ext.form.FormPanel({
         id: 'admin_p',
         title: '<span class="panel-title">Administrator</span>',
@@ -2469,7 +2479,7 @@ Ext.onReady( function() {
         }
     });
 	
-	/* LAYERS */
+	/* Section: layers */
 	var vmap0 = new OpenLayers.Layer.WMS(
         'World',
         'http://labs.metacarta.com/wms/vmap0', 
@@ -2589,7 +2599,7 @@ Ext.onReady( function() {
 		})
 	});
 	
-    /* WIDGETS */
+    /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
         map: MAP,
@@ -2630,7 +2640,7 @@ Ext.onReady( function() {
         }
     });
 	
-	/* TOOLBAR */  
+	/* Section: map toolbar */  
 	var mapLabel = new Ext.form.Label({
 		text: 'Map',
 		style: 'font:bold 11px arial; color:#333;'
@@ -2828,7 +2838,7 @@ Ext.onReady( function() {
 		]
 	});
     
-	/* VIEWPORT */
+	/* Section: viewport */
     viewport = new Ext.Viewport({
         id: 'viewport',
         layout: 'border',
@@ -2965,7 +2975,7 @@ Ext.onReady( function() {
 	Ext.getCmp('printMultiPage_p').hide();
 	ACTIVEPANEL = thematicMap;
     
-	/* MAP CONTROLS */
+	/* Section: map controls */
 	var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer, {
             onClickSelect: onClickSelectChoropleth,
@@ -3019,8 +3029,7 @@ Ext.onReady( function() {
 	}});
 });
 
-/*SELECT FEATURES*/
-
+/* Section: select features */
 var popup;
 
 function onHoverSelectChoropleth(feature) {
@@ -3078,49 +3087,7 @@ function onClickSelectChoropleth(feature) {
 
 function onClickUnselectChoropleth(feature) {}
 
-/* EXPORT */
-function sortByValue(a, b) {
-	return b.value - a.value;
-}
-
-function getExportDataValueJSON( mapvalues ){
-	var json = '{';
-	json += '"datavalues":';
-	json += '[';
-	
-	mapvalues.sort(sortByValue);
-
-	for (var i = 0; i < mapvalues.length; i++) {		
-		json += '{';
-		json += '"organisation": "' + mapvalues[i].orgUnitId + '",';
-		json += '"value": "' + mapvalues[i].value + '" ';
-		json += i < mapvalues.length-1 ? '},' : '}';
-	}
-	json += ']';
-	json += '}';
-	
-	return json;
-}
-
-function getLegendsJSON() {
-	var legends = choropleth.imageLegend;
-	var json = '{';
-	json += '"legends":';
-	json += '[';
-	
-	for (var i = 0; i < choropleth.imageLegend.length; i++) {
-		json += '{';
-		json += '"label": "' + choropleth.imageLegend[i].label + '",';
-		json += '"color": "' + choropleth.imageLegend[i].color + '" ';
-		json += i < choropleth.imageLegend.length-1 ? '},' : '}';
-	}	
-	json += ']';
-	json += '}';
-	
-	return json;
-}
-
-/*MAP DATA*/
+/* Section: map data */
 function loadMapData(redirect, position) {
     Ext.Ajax.request({
         url: path + 'getMapByMapLayerPath' + type,
@@ -3178,7 +3145,7 @@ function loadMapData(redirect, position) {
 }
 
 
-/*CHOROPLETH*/
+/* Section: choropleth */
 function getChoroplethData() {
 	MASK.msg = 'Creating choropleth...';
 	MASK.show();
@@ -3244,7 +3211,7 @@ function getChoroplethData() {
     });
 }
 
-/*MAPPING*/
+/* Section: mapping */
 function getAssignOrganisationUnitData() {
 	MASK.msg = 'Creating map...';
 	MASK.show();
@@ -3290,7 +3257,7 @@ function getAssignOrganisationUnitData() {
 	MASK.hide();
 }
 
-/*AUTO-MAPPING*/
+/* Section: auto-mapping */
 function getAutoAssignOrganisationUnitData(position) {
 	MASK.msg = 'Loading data...';
 	MASK.show();
