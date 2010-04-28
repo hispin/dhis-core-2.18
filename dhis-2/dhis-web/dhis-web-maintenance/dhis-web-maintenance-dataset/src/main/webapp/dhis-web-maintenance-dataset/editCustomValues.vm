@@ -331,9 +331,7 @@ function findDataElementCount()
   var requestString = 'getSelectedDataElements.action';
   
   var params = 'dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
-        
-  params += '&designCode=' + htmlCode;
-  
+         
   request.sendAsPost( params );
   request.send( requestString );
 
