@@ -99,11 +99,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableDataSetBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableIndicatorBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableOrganisationUnitBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTablePeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
@@ -1189,66 +1184,6 @@ public class DefaultImportObjectManager
         importObjectStore.deleteImportObjects( ReportTable.class );
         
         log.info( "Imported ReportTables" );
-    }
-
-    @Transactional
-    public void importReportTableDataElements()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataElementBatchHandler.class );
-        
-        importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_DATAELEMENT,
-            objectMappingGenerator.getReportTableMapping( false ),
-            objectMappingGenerator.getDataElementMapping( false ) );
-        
-        log.info( "Imported ReportTable DataElements" );
-    }
-
-    @Transactional
-    public void importReportTableIndicators()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableIndicatorBatchHandler.class );
-        
-        importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_INDICATOR,
-            objectMappingGenerator.getReportTableMapping( false ),
-            objectMappingGenerator.getIndicatorMapping( false ) );
-        
-        log.info( "Imported ReportTable Indicators" );
-    }
-
-    @Transactional
-    public void importReportTableDataSets()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataSetBatchHandler.class );
-        
-        importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_DATASET,
-            objectMappingGenerator.getReportTableMapping( false ),
-            objectMappingGenerator.getDataSetMapping( false ) );
-        
-        log.info( "Imported ReportTable DataSets" );
-    }
-
-    @Transactional
-    public void importReportTablePeriods()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTablePeriodBatchHandler.class );
-        
-        importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_PERIOD,
-            objectMappingGenerator.getReportTableMapping( false ),
-            objectMappingGenerator.getPeriodMapping( false ) );
-        
-        log.info( "Imported ReportTable Periods" );
-    }
-
-    @Transactional
-    public void importReportTableOrganisationUnits()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
-        
-        importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_ORGANISATIONUNIT,
-            objectMappingGenerator.getReportTableMapping( false ),
-            objectMappingGenerator.getOrganisationUnitMapping( false ) );
-        
-        log.info( "Imported ReportTable OrganisationUnits" );
     }
 
     @Transactional

@@ -8,7 +8,6 @@ function saveDefaultValues(){
 	request.setCallbackSuccess( saveDefaultValuesCompleted );	
 	var params = 'minValue=' + getFieldValue('minValue');
 		params += '&maxValue=' + getFieldValue('maxValue');
-	//request.sendAsPost(params);
 	request.send( 'saveDefaultMinMaxValues.action?' + params );	
 }
 
@@ -79,8 +78,7 @@ function selectReceived()
 }
 
 function validateForm(){
-
-	if(byId('dataSetId').value=='')
+	if(byId('dataSetIds').value=='')
 	{
 		setMessage(i18n_not_choose_dataset);
 		return false;

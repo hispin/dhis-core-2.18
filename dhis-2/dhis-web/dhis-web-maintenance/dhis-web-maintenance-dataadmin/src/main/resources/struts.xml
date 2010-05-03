@@ -412,34 +412,7 @@
 				javascript/minMaxValidation.js
             </param>
 		</action>
-
-		<!-- Min/Max validation - Factor -->
-
-		<action name="getFactor"
-			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetFactoryAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-dataadmin/factor.vm</param>
-			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="stylesheets">style/ui.all.css</param>
-			<param name="javascripts">
-				../dhis-web-commons/oust/oust.js,
-				../dhis-web-commons/util/jquery-ui.js,
-				../dhis-web-commons/util/validate/jquery.validate.js,
-				../dhis-web-commons/util/jquery.metadata.js,
-				../dhis-web-commons/util/validate/additional-methods.js,
-				../dhis-web-commons/util/validate/messages_locale.js,
-				javascript/minMaxValidation.js
-            </param>
-		</action>
-
-		<action name="saveFactor"
-			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SaveFactoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
-		</action>
-
-		<!-- Min/Max validation - Organisation units -->
-
+		
 		<action name="selectLevelMinMax"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectLevelAction">
 			<result name="success" type="velocity-xml">

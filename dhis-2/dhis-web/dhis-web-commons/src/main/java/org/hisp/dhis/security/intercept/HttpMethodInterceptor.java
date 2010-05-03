@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataadmin.action.minmaxvalidation;
+package org.hisp.dhis.security.intercept;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,62 +27,55 @@ package org.hisp.dhis.dataadmin.action.minmaxvalidation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 
-import org.hisp.dhis.options.SystemSettingManager;
-
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
- * @author Chau Thu Tran
- * @version $Id$
+ * @author Lars Helge Overland
  */
-
-public class GetFactoryAction
-    implements Action
+public class HttpMethodInterceptor
+    implements Interceptor
 {
-    // -------------------------------------------------------------------
-    // Dependency
-    // -------------------------------------------------------------------
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    private static final Log log = LogFactory.getLog( HttpMethodInterceptor.class );
+    
+    private static final String DEFAULT_METHOD = "POST";
+    
+    protected String allowedMethod = DEFAULT_METHOD;
+    
+    public void setAllowedMethod( String allowedMethod )
     {
-        this.systemSettingManager = systemSettingManager;
+        this.allowedMethod = allowedMethod;
     }
-
-    // -------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------
-
-    private Double factor;
-
-    public Double getFactor()
-    {
-        return factor;
-    }
-
-    // -------------------------------------------------------------------
-    // Implementation Action
-    // -------------------------------------------------------------------
 
     @Override
-    public String execute()
+    public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        Serializable value = systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION );
-        if ( value == null )
+        String method = ServletActionContext.getRequest().getMethod();
+        
+        log.info( "Method: " + method );
+        
+        if ( method == null || !method.trim().toLowerCase().equals( allowedMethod.trim().toLowerCase() ) )
         {
-            factor = 2.0;
-            systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION, factor );
+            log.warn( "HTTP method ' " + allowedMethod + "' only allowed for this request" );
+            
+            return null;
         }
-        else
-        {
-            factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION );
-        }
-
-        return SUCCESS;
+        
+        return invocation.invoke();
     }
-    
+
+    @Override
+    public void init()
+    {
+    }
+
+    @Override
+    public void destroy()
+    {        
+    }
 }

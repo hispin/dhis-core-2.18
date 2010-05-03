@@ -27,11 +27,10 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.importexport.ExportParams;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.reader.XMLReader;
+import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
@@ -54,6 +53,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -100,11 +100,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableDataSetBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableIndicatorBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableOrganisationUnitBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTablePeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -932,109 +927,21 @@ public class DXFConverter
 
                 batchHandler.init();
 
-                XMLConverter converter = new ReportTableConverter( batchHandler, reportTableService,
-                    importObjectService );
+                XMLConverter converter = new ReportTableConverter( reportTableService, importObjectService,
+                    dataElementService, categoryService, indicatorService, dataSetService, periodService, organisationUnitService,
+                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+                    objectMappingGenerator.getDataElementGroupSetMapping( params.skipMapping() ),
+                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
+                    objectMappingGenerator.getIndicatorMapping( params.skipMapping() ),
+                    objectMappingGenerator.getDataSetMapping( params.skipMapping() ),
+                    objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
+                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
 
                 batchHandler.flush();
 
                 log.info( "Imported ReportTables" );
-            }
-            else if ( reader.isStartElement( ReportTableDataElementConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_report_table_dataelements" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-                    .createBatchHandler( ReportTableDataElementBatchHandler.class );
-
-                batchHandler.init();
-
-                XMLConverter converter = new ReportTableDataElementConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
-                        .getDataElementMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ReportTable DataElements" );
-            }
-            else if ( reader.isStartElement( ReportTableIndicatorConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_report_table_indicators" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-                    .createBatchHandler( ReportTableIndicatorBatchHandler.class );
-
-                batchHandler.init();
-
-                XMLConverter converter = new ReportTableIndicatorConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
-                        .getIndicatorMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ReportTable Indicators" );
-            }
-            else if ( reader.isStartElement( ReportTableDataSetConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_report_table_datasets" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-                    .createBatchHandler( ReportTableDataSetBatchHandler.class );
-
-                batchHandler.init();
-
-                XMLConverter converter = new ReportTableDataSetConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
-                        .getDataSetMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ReportTable DataSets" );
-            }
-            else if ( reader.isStartElement( ReportTablePeriodConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_report_table_periods" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-                    .createBatchHandler( ReportTablePeriodBatchHandler.class );
-
-                batchHandler.init();
-
-                XMLConverter converter = new ReportTablePeriodConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
-                        .getPeriodMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ReportTable Periods" );
-            }
-            else if ( reader.isStartElement( ReportTableOrganisationUnitConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_report_table_organisation_units" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-                    .createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
-
-                batchHandler.init();
-
-                XMLConverter converter = new ReportTableOrganisationUnitConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
-                        .getOrganisationUnitMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ReportTable OrganisationUnits" );
             }
             else if ( reader.isStartElement( OlapUrlConverter.COLLECTION_NAME ) )
             {

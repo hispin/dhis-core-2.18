@@ -60,6 +60,8 @@
 				class="org.hisp.dhis.webportal.interceptor.XWorkPortalUserInterceptor" />
 			<interceptor name="securityInterceptor"
 				class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" />
+            <interceptor name="postHttpMethodInterceptor"
+                class="org.hisp.dhis.security.intercept.HttpMethodInterceptor" />
 
 			<interceptor-stack name="commonInterceptors">
 				<interceptor-ref name="staticParams" />

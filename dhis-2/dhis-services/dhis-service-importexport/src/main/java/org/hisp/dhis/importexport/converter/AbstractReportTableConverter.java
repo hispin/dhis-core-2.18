@@ -27,6 +27,12 @@ package org.hisp.dhis.importexport.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 
@@ -38,6 +44,18 @@ public class AbstractReportTableConverter
     extends AbstractConverter<ReportTable>
 {
     protected ReportTableService reportTableService;
+    
+    protected DataElementService dataElementService;
+    
+    protected DataElementCategoryService categoryService;
+    
+    protected IndicatorService indicatorService;
+    
+    protected DataSetService dataSetService;
+    
+    protected PeriodService periodService;
+    
+    protected OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
     // Overridden methods
@@ -45,7 +63,7 @@ public class AbstractReportTableConverter
 
     protected void importUnique( ReportTable object )
     {
-        batchHandler.addObject( object );       
+        reportTableService.saveReportTable( object );
     }
 
     protected void importMatching( ReportTable object, ReportTable match )

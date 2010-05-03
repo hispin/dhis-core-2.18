@@ -28,45 +28,32 @@ package org.hisp.dhis.de.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.de.history.DataElementHistory;
-import org.hisp.dhis.de.history.HistoryRetriever;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
+import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
  * @version $Id: MinMaxGeneratingAction.java 5568 2008-08-21 13:47:11Z larshelg $
+ * @version $Id: MinMaxGeneratingAction.java 2010-04-16 13:47:11Z Chau Thu Tran $
  */
-public class MinMaxGeneratingAction
-    implements Action
-{
+public class MinMaxGeneratingAction implements Action {
     private static final Log log = LogFactory.getLog( MinMaxGeneratingAction.class );
-    
-    private static final int HISTORY_LENGTH = 6;
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private HistoryRetriever historyRetriever;
-
-    public void setHistoryRetriever( HistoryRetriever historyRetriever )
-    {
-        this.historyRetriever = historyRetriever;
-    }
 
     private MinMaxDataElementService minMaxDataElementService;
 
@@ -75,18 +62,25 @@ public class MinMaxGeneratingAction
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    private DataElementOrderManager dataElementOrderManager;
-
-    public void setDataElementOrderManager( DataElementOrderManager dataElementOrderManager )
-    {
-        this.dataElementOrderManager = dataElementOrderManager;
-    }
-
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    private MinMaxValuesGenerationService minMaxValuesGenerationService;
+
+    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
+    {
+        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -106,103 +100,44 @@ public class MinMaxGeneratingAction
 
     public String execute()
         throws Exception
-    {    	
+    {
         log.info( "Starting min-max limits generation" );
-        
-    	minMaxDataElements = new ArrayList<MinMaxDataElement>();
 
-        Period period = selectedStateManager.getSelectedPeriod();
+        minMaxDataElements = new ArrayList<MinMaxDataElement>();
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
 
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementOrderManager
-            .getOrderedDataElements( dataSet ) );
+        Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
+            2.0 );
 
-        for ( DataElement dataelement : dataElements )
-        {        	
-            if ( dataelement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-            {            	
-                for ( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
-                {                	
-                    DataElementHistory dataElementHistory = historyRetriever.getHistory( 
-                        dataelement, optionCombo, organisationUnit, period, HISTORY_LENGTH );                	
-                    setMinMaxLimits( dataElementHistory, organisationUnit, dataelement, optionCombo );
-                }
-            	
-            }
-        }        
-        
-        log.info( "Generated min-max limits" );
-        
-        return SUCCESS;
-    }
+        // Get min/max values for dataelements into dataset
+        Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGenerationService
+            .getMinMaxValues( organisationUnit, dataSet.getDataElements(), factor );
 
-    /**
-     * Finds the maximum and the minimum entred value for each dataelement in
-     * the given orgunit, and creates min/max limits 10% lower/higher then the
-     * entred values.
-     * 
-     * @param dataElementHistory DateElementHistory
-     * @param organisationUnit OrganisationUnit
-     * @param dataelement DataElement
-     * @throws Exception
-     */
-    private void setMinMaxLimits( DataElementHistory dataElementHistory, OrganisationUnit organisationUnit,
-        DataElement dataelement, DataElementCategoryOptionCombo optionCombo )
-        throws Exception
-    {
-        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
-            dataelement, optionCombo );
-
-        if ( minMaxDataElement != null )
+        // Save min / max value
+        for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
         {
-            if ( !minMaxDataElement.isGenerated() )
-            {
-                return;
-            }
-        }
+            MinMaxDataElement minMaxValue = minMaxDataElementService.getMinMaxDataElement( minMaxDataElement
+                .getSource(), minMaxDataElement.getDataElement(), minMaxDataElement.getOptionCombo() );
 
-        double maxValue = dataElementHistory.getMaxValue();
-
-        if ( maxValue != Double.NEGATIVE_INFINITY )
-        {
-            double maxLimit;
-            double minLimit;
-            double minValue = dataElementHistory.getMinValue();
-
-            if ( maxValue > 0 )
+            if ( minMaxValue != null )
             {
-                maxLimit = Math.ceil( maxValue + (maxValue * 0.1) );
-                minLimit = Math.floor( minValue - (minValue * 0.1) );
-            }
-            else if ( maxValue == 0 )
-            {
-                return;
+                minMaxValue.setMax( minMaxDataElement.getMax() );
+                minMaxValue.setMin( minMaxDataElement.getMin() );
+                minMaxDataElementService.updateMinMaxDataElement( minMaxValue );
             }
             else
             {
-                maxLimit = Math.ceil( maxValue - (maxValue * 0.1) );
-                minLimit = Math.floor( minValue + (minValue * 0.1) );
-            }
-
-            if ( minMaxDataElement == null )
-            {
-                minMaxDataElement = new MinMaxDataElement( organisationUnit, dataelement, optionCombo, (int) minLimit,
-                    (int) maxLimit, true );
-                
+                minMaxDataElement.setGenerated( true );
                 minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
             }
-            else
-            {
-                minMaxDataElement.setMax( (int) maxLimit );
-                minMaxDataElement.setMin( (int) minLimit );
-                
-                minMaxDataElementService.updateMinMaxDataElement( minMaxDataElement );
-            }
-
-            minMaxDataElements.add( minMaxDataElement );
         }
+
+        log.info( "Generated min-max limits" );
+
+        return SUCCESS;
     }
+    
 }

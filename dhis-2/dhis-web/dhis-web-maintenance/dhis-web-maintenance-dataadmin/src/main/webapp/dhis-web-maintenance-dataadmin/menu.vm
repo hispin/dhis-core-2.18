@@ -12,14 +12,9 @@
         <li><a href="displayLockingForm.action">$i18n.getString( "data_locking" )&nbsp;</a></li>
 		<li><a href="zeroValueStorageManagement.action">$i18n.getString( "zero_storage_management" )&nbsp;</a></li>
 		<li><a href="displayPruneOrganisationUnitForm.action">$i18n.getString( "prune_organisation_unit" )&nbsp;</a></li>
-	</ul>
-		
-<h2>$i18n.getString( "min_max_validation" )&nbsp;</h2>
-	<ul>
-		<li><a href="getFactor.action">$i18n.getString( "set_factor")&nbsp;</a></li>
 		<li><a href="getMinMaxValidationParams.action">$i18n.getString( "generate_min_max_values")&nbsp;</a></li>
 	</ul>
-	
+		
 <h2>$i18n.getString( "system_administration" )&nbsp;</h2>
     <ul>
         <li><a href="showCache.action">$i18n.getString( "cache_statistics" )&nbsp;</a></li>

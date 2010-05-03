@@ -87,11 +87,6 @@ import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitLevelConverter;
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitRelationshipConverter;
 import org.hisp.dhis.importexport.dxf.converter.PeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTableDataElementConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTableDataSetConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTableIndicatorConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTableOrganisationUnitConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.olap.OlapURLService;
@@ -301,11 +296,6 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new PeriodConverter( periodService ) );
             
             thread.registerXMLConverter( new ReportTableConverter( reportTableService ) );
-            thread.registerXMLConverter( new ReportTableDataElementConverter( reportTableService ) );
-            thread.registerXMLConverter( new ReportTableIndicatorConverter( reportTableService ) );
-            thread.registerXMLConverter( new ReportTableDataSetConverter( reportTableService ) );
-            thread.registerXMLConverter( new ReportTablePeriodConverter( reportTableService ) );
-            thread.registerXMLConverter( new ReportTableOrganisationUnitConverter( reportTableService ) );
             
             thread.registerXMLConverter( new OlapUrlConverter( olapURLService ) );
             

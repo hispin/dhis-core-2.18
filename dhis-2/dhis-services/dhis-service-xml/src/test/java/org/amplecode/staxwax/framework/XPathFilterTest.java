@@ -57,20 +57,20 @@ public class XPathFilterTest extends TestCase
         inputStreamB.close();
     }
 
-    public synchronized void testFindNode()
-    {
-        Node result;
-        result = XPathFilter.findNode( inputStreamB,
-            "/dataElements/dataElement[@code='code2']/description" );
-        assertEquals( "description2", result.getTextContent() );
-    }
-
     public synchronized void testFindText()
     {
         String result;
         result = XPathFilter.findText( inputStreamB,
             "/dataElements/dataElement[@code='code2']/description" );
         assertEquals( "description2", result );
+    }
+
+    public synchronized void testFindNode()
+    {
+        Node result;
+        result = XPathFilter.findNode( inputStreamB,
+            "/dataElements/dataElement[@code='code2']/description" );
+        assertEquals( "description2", result.getTextContent() );
     }
 
     public synchronized void testFindNodes()

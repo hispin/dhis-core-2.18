@@ -37,6 +37,8 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -158,12 +160,12 @@ public class ReportTable
     /**
      * The DataElementCategoryCombo for the ReportTable.
      */
-    private DimensionSet categoryCombo;
+    private DataElementCategoryCombo categoryCombo;
     
     /**
      * The DataElementGropSets for the ReportTable.
      */
-    private List<? extends Dimension> dataElementGroupSets = new ArrayList<Dimension>();
+    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
     
     /**
      * Whether to crosstabulate on the Indicator dimension, which also represents DataElements and DataSets.
@@ -603,13 +605,14 @@ public class ReportTable
      * Sets the appropriate dimension related properties depending on the dimension 
      * set type.
      */
+    @SuppressWarnings( "unchecked" )
     public void setDimensionSet( DimensionSet dimensionSet )
     {
         if ( dimensionSet != null )
         {
             dimensionType = dimensionSet.getDimensionType().name();
-            categoryCombo = dimensionType.equals( DimensionType.CATEGORY.name() ) ? dimensionSet : null;
-            dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET.name() ) ? dimensionSet.getDimensions() : null;
+            categoryCombo = dimensionType.equals( DimensionType.CATEGORY.name() ) ? (DataElementCategoryCombo)dimensionSet : null;
+            dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET.name() ) ? (List<DataElementGroupSet>)dimensionSet.getDimensions() : null;
             
             verify( dimensionType != null, "Dimension type cannot be null" );
         }
@@ -1184,22 +1187,22 @@ public class ReportTable
         this.dimensionType = dimensionType;
     }
 
-    public DimensionSet getCategoryCombo()
+    public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
     }
 
-    public void setCategoryCombo( DimensionSet categoryCombo )
+    public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         this.categoryCombo = categoryCombo;
     }
 
-    public List<? extends Dimension> getDataElementGroupSets()
+    public List<DataElementGroupSet> getDataElementGroupSets()
     {
         return dataElementGroupSets;
     }
 
-    public void setDataElementGroupSets( List<? extends Dimension> dataElementGroupSets )
+    public void setDataElementGroupSets( List<DataElementGroupSet> dataElementGroupSets )
     {
         this.dataElementGroupSets = dataElementGroupSets;
     }
