@@ -665,11 +665,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importValidationRules();
         importObjectManager.importPeriods();
         importObjectManager.importReportTables();
-        importObjectManager.importReportTableDataElements();
-        importObjectManager.importReportTableIndicators();
-        importObjectManager.importReportTableDataSets();
-        importObjectManager.importReportTablePeriods();
-        importObjectManager.importReportTableOrganisationUnits();
         importObjectManager.importOlapURLs();
         importObjectManager.importCompleteDataSetRegistrations();        
         importObjectManager.importDataValues();

@@ -30,6 +30,7 @@ package org.hisp.dhis.minmax.validation;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -42,6 +43,9 @@ public interface MinMaxValuesGenerationService
 {
     String ID = MinMaxValuesGenerationService.class.getName();
 
-    Collection<MinMaxDataElement> getMinMaxValues( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
-        Collection<Period> periods, Double stdDevFactor );
+    Collection<MinMaxDataElement> getMinMaxValues( OrganisationUnit organisationUnit,
+        Collection<DataElement> dataElements, Double stdDevFactor );
+
+    Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, Collection<Period> periods,
+        Collection<MinMaxDataElement> minMaxDataElements );
 }

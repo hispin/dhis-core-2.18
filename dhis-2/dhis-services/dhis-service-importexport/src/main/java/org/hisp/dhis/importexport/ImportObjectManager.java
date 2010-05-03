@@ -101,16 +101,6 @@ public interface ImportObjectManager
     
     void importReportTables();
     
-    void importReportTableDataElements();
-    
-    void importReportTableIndicators();
-    
-    void importReportTableDataSets();
-    
-    void importReportTablePeriods();
-    
-    void importReportTableOrganisationUnits();
-    
     void importOlapURLs();
     
     void importCompleteDataSetRegistrations();

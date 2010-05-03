@@ -1,10 +1,14 @@
 package org.amplecode.staxwax.framework;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.xpath.XPath;
@@ -64,18 +68,18 @@ public class XPathFilter
      * @param xpathExpr
      * @return
      */
-    public static synchronized Node findNode( InputStream in, String xpathExpr )
+    public static Node findNode( InputStream in, String xpathExpr )
     {
 
         Node result = null;
 
         try
         {
-            XPathFactory factory = XPathFactory.newInstance();
-            XPath xpath = factory.newXPath();
+            XPathExpression expr = compileXPath(xpathExpr);
 
-            XPathExpression expr = xpath.compile( xpathExpr );
-            result = (Node) expr.evaluate( new InputSource( in ), XPathConstants.NODE );
+            Document doc = parseDocument(in);
+            
+            result = (Node) expr.evaluate( doc, XPathConstants.NODE );
 
         } catch ( Exception ex )
         {
@@ -91,18 +95,18 @@ public class XPathFilter
      * @param xpathExpr
      * @return
      */
-    public static synchronized NodeList findNodes( InputStream in, String xpathExpr )
+    public static NodeList findNodes( InputStream in, String xpathExpr )
     {
 
         NodeList result = null;
 
         try
         {
-            XPathFactory factory = XPathFactory.newInstance();
-            XPath xpath = factory.newXPath();
+            XPathExpression expr = compileXPath(xpathExpr);
 
-            XPathExpression expr = xpath.compile( xpathExpr );
-            result = (NodeList) expr.evaluate( new InputSource( in ), XPathConstants.NODESET );
+            Document doc = parseDocument(in);
+
+            result = (NodeList) expr.evaluate( doc, XPathConstants.NODESET );
 
         } catch ( Exception ex )
         {
@@ -118,23 +122,90 @@ public class XPathFilter
      * @param xpathExpr
      * @return
      */
-    public static synchronized String findText( InputStream in, String xpathExpr )
+    public static String findText( InputStream in, String xpathExpr )
     {
 
         String result = null;
 
         try
         {
-            XPathFactory factory = XPathFactory.newInstance();
-            XPath xpath = factory.newXPath();
+            XPathExpression expr = compileXPath(xpathExpr);
 
-            XPathExpression expr = xpath.compile( xpathExpr );
-            result = (String) expr.evaluate( new InputSource( in ), XPathConstants.STRING );
+            Document doc = parseDocument(in);
+
+            result = (String) expr.evaluate( doc, XPathConstants.STRING );
 
         } catch ( Exception ex )
         {
             log.info( ex );
         }
         return result;
+    }
+
+    /**
+     * Find numeric data in stream
+     *
+     * @param in
+     * @param xpathExpr
+     * @return
+     */
+    public static Integer findNumber( InputStream in, String xpathExpr )
+    {
+
+        Integer result = null;
+
+        try
+        {
+            XPathExpression expr = compileXPath(xpathExpr);
+
+            Document doc = parseDocument(in);
+
+            result = (Integer) expr.evaluate( doc, XPathConstants.NUMBER );
+
+        } catch ( Exception ex )
+        {
+            log.info( ex );
+        }
+        return result;
+    }
+
+    private static synchronized XPathExpression compileXPath(String xpathString)
+    {
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+
+        XPathExpression expr = null;
+        try
+        {
+            expr = xpath.compile( xpathString );
+        } catch ( XPathExpressionException ex )
+        {
+            log.info( "Failed to compile xpath: " + xpathString + " : " + ex.getCause());
+        }
+
+        return expr;
+
+    }
+
+    private static synchronized Document parseDocument(InputStream in)
+    {
+        Document doc = null;
+
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+
+        // keep life simple using xpath 1.0
+        docBuilderFactory.setNamespaceAware( false);
+
+        try {
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            doc = docBuilder.parse(in);
+        }
+        catch (Exception ex)
+        {
+            log.info( "XPath: Failed to parse input stream" + ex.getCause());
+        }
+
+        return doc;
+
     }
 }

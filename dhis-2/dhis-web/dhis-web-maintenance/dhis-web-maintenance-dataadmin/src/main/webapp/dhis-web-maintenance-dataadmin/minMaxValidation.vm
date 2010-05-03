@@ -15,7 +15,7 @@
 											}
 					,submitHandler: function(form)
 									{
-										validateDataSet();
+										validateForm();
 									}
 				});
 				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
@@ -33,17 +33,13 @@
     <th>$i18n.getString('organisation_unit')</th>
   </tr>
   <tr>
-    <td>$i18n.getString('start_date')<em title="$i18n.getString( "required" )" class="required">*</em></td>
-    <td><input type="text" id="startDateStr" name="startDateStr" style="width:15em" class="{validate:{required:true,dateISO:true}}">
-		<img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "start_date" )">
-		<script type="text/javascript">
-        Calendar.setup({
-            inputField     :    "startDateStr",      // id of the input field
-            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-            button         :    "getStartDate"   // trigger for the calendar (button ID)
-        });
-  	</script>
-	</td>
+    <td colspan="2" rowspan="3">	<select size="26px" multiple style="width:30em" id='dataSetIds' name='dataSetIds'>
+         
+	#foreach( $dataSet in $dataSets )
+      <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
+	#end
+    
+    </select></td>
     <td style="width:10px ">&nbsp;</td>
     <td><input type="button" value="$i18n.getString( "select_all_at_level_min_max" )" onclick="selectAllAtLevel()" style="width:12em">
 		<select id="levelList" name="levelList" style="width:12em">
@@ -56,17 +52,6 @@
 	  </td>
   </tr>
   <tr>
-    <td>$i18n.getString('end_date')<em title="$i18n.getString( "required" )" class="required">*</em></td>
-    <td><input type="text" id="endDateStr" name="endDateStr" style="width:15em" class="{validate:{required:true,dateISO:true}}">
-	    <img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "end_date" )">
-		<script type="text/javascript">
-        Calendar.setup({
-            inputField     :    "endDateStr",      // id of the input field
-            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-            button         :    "getEndDate"   // trigger for the calendar (button ID)
-        });
-  	</script>
-	</td>
     <td style="width:10px ">&nbsp;</td>
     <td><input type="button" value="$i18n.getString( "select_all_in_group" )" onclick="selectGroup()" style="width:12em">
 	  	<select id="groupList" name="groupList" style="width:12em">
@@ -78,22 +63,20 @@
   	  </td>
   </tr>
   <tr>
-    <td colspan="2"><select size="26px" multiple style="width:30em" id='dataSetIds' name='dataSetIds'>   
-	#foreach( $dataSet in $dataSets )
-      <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
-	#end
-    </select></td>
     <td style="width:10px ">&nbsp;</td>
     <td>
-<div id="selectionTree" style="width:50em;height:30em;overflow:auto;border:1px solid #cccccc"></div>
+<div id="selectionTree" style="width:50em;height:28em;overflow:auto;border:1px solid #cccccc"></div>
  
 </td>
   </tr>
   <tr>
-    <td colspan="4" align="center">
-      <input type="submit" id="submitButton" style="width:10em" value="$i18n.getString( 'save' )">
+    <td align="center"> </td>
+       <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="left"><input type="submit" id="submitButton" style="width:10em" value="$i18n.getString( 'save' )">
 	  <input type="button"" style="width:10em" onClick="window.location.href='listReportExcel.action'" value="$i18n.getString( 'cancel' )"></td>
-    </tr>
+  
+  </tr>
 </table>
 </form>
 <span id='message' style='display: block'>$!message</span>

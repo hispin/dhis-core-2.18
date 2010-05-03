@@ -70,6 +70,12 @@
 <input type="checkbox" id="disableDataEntryWhenCompleted" name="disableDataEntryWhenCompleted" value="true" #if( $dataEntryFormCompleted )checked="checked"#end>
 </p>
 
+<h4>$i18n.getString( "data_analysis_factor" )</h4>
+
+<p>
+<input type="text" id="factorDeviation" name="factorDeviation" value="$factorDeviation">
+</p>
+
 <p><input type="submit" value="$i18n.getString( "save" )" style="width:10em"></p>
 
 </form>

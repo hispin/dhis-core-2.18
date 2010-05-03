@@ -37,6 +37,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZER
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 
 import org.hisp.dhis.options.SystemSettingManager;
 
@@ -133,6 +134,13 @@ public class SetSystemSettingsAction
         this.disableDataEntryWhenCompleted = disableDataEntryWhenCompleted;
     }
 
+    private Double factorDeviation;
+
+    public void setFactorDeviation( Double factorDeviation )
+    {
+        this.factorDeviation = factorDeviation;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -163,7 +171,10 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_FORUM_INTEGRATION, forumIntegration );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
             omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager
+            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        
+        systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
 
         return SUCCESS;
     }

@@ -28,20 +28,16 @@ package org.hisp.dhis.dataadmin.action.minmaxvalidation;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,180 +46,142 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class GenerateMinMaxValuesAction
-    implements Action
-{
-    // -------------------------------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------------------------------
+public class GenerateMinMaxValuesAction implements Action {
+	// -------------------------------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+	private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    private DataSetService dataSetService;
+	private DataSetService dataSetService;
 
-    private PeriodService periodService;
+//	private PeriodService periodService;
 
-    private MinMaxValuesGenerationService minMaxValuesGenerationService;
+	private MinMaxValuesGenerationService minMaxValuesGenerationService;
 
-    private MinMaxDataElementService minMaxDataElementService;
+	private MinMaxDataElementService minMaxDataElementService;
 
-    private SystemSettingManager systemSettingManager;
+	private SystemSettingManager systemSettingManager;
 
-    // -------------------------------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------------------------------
 
-    private Integer[] dataSetIds;
+	private Integer[] dataSetIds;
+	
+	private String message;
 
-    private String startDateStr;
+	private I18n i18n;
 
-    private String endDateStr;
+	// -------------------------------------------------------------------------------------------------
+	// Setters
+	// -------------------------------------------------------------------------------------------------
 
-    private String message;
+	public void setOrganisationUnitSelectionManager(
+			OrganisationUnitSelectionManager organisationUnitSelectionManager) {
+		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+	}
 
-    private I18nFormat format;
+	public void setSystemSettingManager(
+			SystemSettingManager systemSettingManager) {
+		this.systemSettingManager = systemSettingManager;
+	}
 
-    private I18n i18n;
+	public void setDataSetService(DataSetService dataSetService) {
+		this.dataSetService = dataSetService;
+	}
 
-    // -------------------------------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------------------------------
+//	public void setPeriodService(PeriodService periodService) {
+//		this.periodService = periodService;
+//	}
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
+	}
 
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
+	public void setMinMaxValuesGenerationService(
+			MinMaxValuesGenerationService minMaxValuesGenerationService) {
+		this.minMaxValuesGenerationService = minMaxValuesGenerationService;
+	}
 
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
+	public void setMinMaxDataElementService(
+			MinMaxDataElementService minMaxDataElementService) {
+		this.minMaxDataElementService = minMaxDataElementService;
+	}
 
-    public String getMessage()
-    {
-        return message;
-    }
+	public void setDataSetIds(Integer[] dataSetIds) {
+		this.dataSetIds = dataSetIds;
+	}
 
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
+	// -------------------------------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------------------------------
 
-    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
-    {
-        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
-    }
+	@Override
+	public String execute() throws Exception {
 
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-    {
-        this.minMaxDataElementService = minMaxDataElementService;
-    }
+		Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager
+				.getSelectedOrganisationUnits();
 
-    public void setDataSetIds( Integer[] dataSetIds )
-    {
-        this.dataSetIds = dataSetIds;
-    }
+		if (dataSetIds == null) {
+			message = i18n.getString("not_choose_dataset");
+			return INPUT;
+		}
+		
+		if (orgUnits == null) {
+			message = i18n.getString("not_choose_organisation");
+			return INPUT;
+		}
+		
+		// Get factor
+		Double factor = (Double) systemSettingManager
+				.getSystemSetting(SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0);
 
-    public void setStartDateStr( String startDateStr )
-    {
-        this.startDateStr = startDateStr;
-    }
+		for (Integer dataSetId : dataSetIds) {
+			// Get dataset
+			DataSet dataSet = dataSetService.getDataSet(dataSetId);
 
-    public void setEndDateStr( String endDateStr )
-    {
-        this.endDateStr = endDateStr;
-    }
+			for (OrganisationUnit orgUnit : orgUnits) {
+				if (orgUnit.getDataSets().contains(dataSet)) {
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
+					// Get min/max values for dataelements into dataset
+					Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGenerationService
+							.getMinMaxValues(orgUnit,
+									dataSet.getDataElements(), factor);
 
-    // -------------------------------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------------------------------
+					// Save min / max value
+					for (MinMaxDataElement minMaxDataElement : minMaxDataElements) {
+						MinMaxDataElement minMaxValue = minMaxDataElementService
+								.getMinMaxDataElement(minMaxDataElement
+										.getSource(), minMaxDataElement
+										.getDataElement(), minMaxDataElement
+										.getOptionCombo());
 
-    @Override
-    public String execute()
-        throws Exception
-    {
-        if ( startDateStr == null || endDateStr == null )
-        {
-            return INPUT;
-        }
-        
-        Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
+						if (minMaxValue != null) {
+							minMaxValue.setMax(minMaxDataElement.getMax());
+							minMaxValue.setMin(minMaxDataElement.getMin());
+							minMaxDataElementService
+									.updateMinMaxDataElement(minMaxValue);
+						} else {
+							minMaxDataElement.setGenerated(true);
+							minMaxDataElementService
+									.addMinMaxDataElement(minMaxDataElement);
+						}
+					}
+				}
+			}
+		}
 
-        if ( orgUnits == null )
-        {
-            message = i18n.getString( "not_choose_organisation" );
-            return INPUT;
-        }
-        
-        // Get startDate and endDate
-        Date startDate = format.parseDate( startDateStr.trim() );
-        Date endDate = format.parseDate( endDateStr.trim() );
+		message = i18n.getString("generate_values_success");
 
-        // Get factor
-        Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION );
-
-        for ( Integer dataSetId : dataSetIds )
-        {
-            // Get dataset
-            DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
-            for ( OrganisationUnit orgUnit : orgUnits )
-            {
-                if ( orgUnit.getDataSets().contains( dataSet ) )
-                {
-                    // Get periods
-                    Collection<Period> periods = periodService.getPeriodsBetweenDates( dataSet.getPeriodType(),
-                        startDate, endDate );
-
-                    // Get min/max values for dataelements into dataset
-                    Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGenerationService
-                        .getMinMaxValues( orgUnit, dataSet.getDataElements(), periods, factor );
-
-                    // Save min / max value
-                    for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
-                    {
-                        MinMaxDataElement minMaxValue = minMaxDataElementService.getMinMaxDataElement(
-                            minMaxDataElement.getSource(), minMaxDataElement.getDataElement(), minMaxDataElement
-                                .getOptionCombo() );
-
-                        if ( minMaxValue != null )
-                        {
-                            minMaxValue.setMax( minMaxDataElement.getMax() );
-                            minMaxValue.setMin( minMaxDataElement.getMin() );
-                            minMaxDataElementService.updateMinMaxDataElement( minMaxValue );
-                        }
-                        else
-                        {
-                            minMaxDataElement.setGenerated( true );
-                            minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
-                        }
-                    }
-                }
-            }
-        }
-
-        message = i18n.getString( "generate_values_success" );
-
-        return SUCCESS;
-    }
+		return SUCCESS;
+	}
 }
