@@ -1402,23 +1402,23 @@ Ext.onReady( function() {
 		}
 	});
 	
-    // var typeComboBox = new Ext.form.ComboBox({
-        // id: 'type_cb',
-        // editable: false,
-        // displayField: 'name',
-        // valueField: 'name',
-		// emptyText: emptytext,
-		// hideLabel: true,
-        // width: combo_width,
-        // minListWidth: combo_width,
-        // triggerAction: 'all',
-        // mode: 'local',
-        // value: 'Polygon',
-        // store: new Ext.data.SimpleStore({
-            // fields: ['name'],
-            // data: [['Polygon']]
-        // })
-    // });
+    var typeComboBox = new Ext.form.ComboBox({
+        id: 'type_cb',
+        editable: false,
+        displayField: 'name',
+        valueField: 'name',
+		emptyText: emptytext,
+		hideLabel: true,
+        width: combo_width,
+        minListWidth: combo_width,
+        triggerAction: 'all',
+        mode: 'local',
+        value: 'Polygon',
+        store: new Ext.data.SimpleStore({
+            fields: ['name'],
+            data: [['Polygon']]
+        })
+    });
 
 	var newNameColumnComboBox = new Ext.form.ComboBox({
         id: 'newnamecolumn_cb',
@@ -3062,14 +3062,25 @@ Ext.onReady( function() {
 /* Section: select features */
 var popup;
 
-var featureMenu = new Ext.menu.Menu({});
-featureMenu.add({
+var featureWindow = new Ext.Window({
+    title: 'tittel',
+    closeAction: 'hide',
+    items: [
+        {
+            xtype: 'menu',
+            id: 'feature_m',
+            floating: false
+        }
+    ]
+});
+
+Ext.getCmp('feature_m').add({
 	html: 'Centre',
 	iconCls: 'no-icon',
 	listeners: {
 		'click': {
 			fn: function() {
-				alert(1);
+				MAP.setCenter(FEATURE.geometry.getBounds().getCenterLonLat());
 			}
 		}
 	}
@@ -3125,7 +3136,12 @@ function onClickSelectChoropleth(feature) {
 		mapping.relation = feature.attributes[MAPDATA.nameColumn];
     }
 	else {
-		// featureMenu.showAt([300,200]);
+        // var x = Ext.getCmp('east').x - 100;
+        // var y = Ext.getCmp('center').y + 41; 
+		// featureMenu.showAt([x,y]);
+        featureWindow.setPagePosition(Ext.getCmp('east').x - 120, Ext.getCmp('center').y + 41);
+        featureWindow.setTitle(FEATURE.attributes[MAPDATA.nameColumn]);
+        featureWindow.show();
 		// MAP.setCenter(feature.geometry.getBounds().getCenterLonLat(), MAP.getZoom()+1);
 		// sc(feature.attributes[MAPDATA.nameColumn], Ext.getCmp('indicator_cb').getRawValue());
 	}
