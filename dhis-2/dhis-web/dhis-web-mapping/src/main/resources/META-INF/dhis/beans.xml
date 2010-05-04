@@ -317,8 +317,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Export Map -->
 
-	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction"
-		scope="prototype">
+	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
