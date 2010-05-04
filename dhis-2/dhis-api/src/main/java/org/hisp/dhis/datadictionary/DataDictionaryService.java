@@ -29,6 +29,8 @@ package org.hisp.dhis.datadictionary;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElement;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -86,4 +88,12 @@ public interface DataDictionaryService
      * @return a collection of DataDictionaries.
      */
     Collection<DataDictionary> getAllDataDictionaries();
+    
+    /**
+     * Returns data elements with identifier in the given id.
+     * 
+     * @param dictionaryId is the id of data dictionary.
+     * @return data elements with identifier in the given id.
+     */
+    Collection<DataElement> getDataElementsByDictionaryId( int dictionaryId );
 }

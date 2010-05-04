@@ -242,7 +242,7 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementsByType( type ) );
     }
-    
+
     public Collection<DataElement> getDataElementsByPeriodType( final PeriodType periodType )
     {
         Collection<DataElement> dataElements = getAllDataElements();
@@ -323,14 +323,14 @@ public class DefaultDataElementService
             }
         }
 
-        return dataElements;
+        return i18n( i18nService, dataElements );
     }
-    
+
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutGroups() );
     }
-    
+
     public Collection<DataElement> getDataElementsWithoutDataSets()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutDataSets() );
@@ -340,12 +340,12 @@ public class DefaultDataElementService
     {
         return dataElementStore.dataElementExists( id );
     }
-    
+
     public boolean dataElementCategoryOptionComboExists( int id )
     {
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
-    
+
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------
@@ -554,6 +554,11 @@ public class DefaultDataElementService
         return groups;
     }
 
+    public Collection<DataElement> getDataElementsByGroupId( int groupId )
+    {
+        return i18n( i18nService, dataElementGroupStore.get( groupId ).getMembers() );
+    }
+
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -617,9 +622,10 @@ public class DefaultDataElementService
     {
         return dataElementStore.getAllGeneratedOperands();
     }
-    
+
     public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
-    }    
+    }
+
 }

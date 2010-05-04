@@ -13,7 +13,7 @@ var headerMessageTimeout = -1;
  */
 function translate( className, objectId )
 {
-    var url = "../dhis-web-commons/i18n.action?className=" + className + "&objectId=" + objectId + "&returnUrl=" + window.location.href; 
+    var url = "../dhis-web-commons/i18n.action?className=" + className + "&objectId=" + objectId + "&returnUrl=" + htmlEncode( window.location.href ); 
     
     window.location.href = url; 
 }
@@ -742,6 +742,10 @@ function removeItem( itemId, itemName, confirmation, action )
         
                     showWarning();
     	    	}
+				else if ( json.response == "nonSufficientAuthority" )
+				{
+					window.location.href = "../dhis-web-commons-about/showSufficientFeedbackForm.action";
+				}
     	    }
     	);
     }
