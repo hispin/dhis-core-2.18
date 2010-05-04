@@ -435,6 +435,15 @@ public interface DataElementService
      */
     Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement );
 
+    
+    /**
+     * Returns data elements with identifier in the given id.
+     * 
+     * @param groupId is the id of data element group.
+     * @return data elements with identifier in the given id.
+     */
+    Collection<DataElement> getDataElementsByGroupId( int groupId );
+    
     /**
      * Return void
      * 

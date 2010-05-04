@@ -27,9 +27,13 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,10 +51,17 @@ public class DefaultDataDictionaryService
     // -------------------------------------------------------------------------
 
     private GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore;
-    
+
     public void setDataDictionaryStore( GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore )
     {
         this.dataDictionaryStore = dataDictionaryStore;
+    }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
     }
 
     // -------------------------------------------------------------------------
@@ -58,40 +69,45 @@ public class DefaultDataDictionaryService
     // -------------------------------------------------------------------------
 
     public int saveDataDictionary( DataDictionary dataDictionary )
-    {   
-        return dataDictionaryStore.save( dataDictionary );     
+    {
+        return dataDictionaryStore.save( dataDictionary );
     }
-    
+
     public DataDictionary getDataDictionary( int id )
     {
-        return dataDictionaryStore.get( id );
+        return i18n( i18nService, dataDictionaryStore.get( id ) );
     }
-    
+
     public Collection<DataDictionary> getDataDictionaries( final Collection<Integer> identifiers )
     {
         Collection<DataDictionary> dictionaries = getAllDataDictionaries();
-        
+
         return identifiers == null ? dictionaries : FilterUtils.filter( dictionaries, new Filter<DataDictionary>()
+        {
+            public boolean retain( DataDictionary object )
             {
-                public boolean retain( DataDictionary object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
-    
+
     public void deleteDataDictionary( DataDictionary dataDictionary )
     {
         dataDictionaryStore.delete( dataDictionary );
     }
-    
+
     public DataDictionary getDataDictionaryByName( String name )
     {
-        return dataDictionaryStore.getByName( name );
+        return i18n( i18nService, dataDictionaryStore.getByName( name ) );
     }
-    
+
     public Collection<DataDictionary> getAllDataDictionaries()
     {
-        return dataDictionaryStore.getAll();
+        return i18n( i18nService, dataDictionaryStore.getAll() );
+    }
+
+    public Collection<DataElement> getDataElementsByDictionaryId( int dictionaryId )
+    {
+        return i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getDataElements() );
     }
 }

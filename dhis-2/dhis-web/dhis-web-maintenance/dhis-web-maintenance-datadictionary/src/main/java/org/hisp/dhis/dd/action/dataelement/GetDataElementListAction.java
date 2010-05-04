@@ -165,17 +165,19 @@ public class GetDataElementListAction
         {
             dataDictionaryId = dataDictionaryModeManager.getCurrentDataDictionary();
         }
-        else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
+        else if ( dataDictionaryId == -1 ) // All, reset current data
+        // dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( null );
-            
+
             dataDictionaryId = null;
         }
-        else // Specified, set current data dictionary
+        else
+        // Specified, set current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( dataDictionaryId );
         }
-        
+
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
@@ -190,17 +192,18 @@ public class GetDataElementListAction
 
         if ( dataDictionaryId != null && dataElementGroupId == null )
         {
-            dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements() );
+            dataElements = new ArrayList<DataElement>( dataDictionaryService
+                .getDataElementsByDictionaryId( dataDictionaryId ) );
         }
         else if ( dataDictionaryId == null && dataElementGroupId != null )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId ).getMembers() );
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( dataElementGroupId ) );
         }
         else if ( dataDictionaryId != null && dataElementGroupId != null )
         {
-            Collection<DataElement> dictionary = dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements();
+            Collection<DataElement> dictionary = dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId );
 
-            Collection<DataElement> members = dataElementService.getDataElementGroup( dataElementGroupId ).getMembers();
+            Collection<DataElement> members = dataElementService.getDataElementsByGroupId( dataElementGroupId );
 
             dataElements = new ArrayList<DataElement>( CollectionUtils.intersection( dictionary, members ) );
         }
