@@ -147,11 +147,10 @@ public class ExportImageAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        log.info( "Exporting image, width: " + width + ", height: " + height + ", format: " + this.format );
+        log.info( "Exporting image, width: " + width + ", height: " + height + ", format: " + this.imageFormat );
 
         if ( imageFormat.equalsIgnoreCase( "image/png" ) )
         {
-
             SVGUtils.convertToPNG( getSvg(), out, width, height );
         }
         else
