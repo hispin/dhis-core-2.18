@@ -29,7 +29,7 @@ package org.hisp.dhis.security.authority;
 
 import java.util.Collection;
 
-import org.springframework.security.intercept.ObjectDefinitionSource;
+import org.springframework.security.access.SecurityMetadataSource;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 
@@ -40,25 +40,25 @@ import com.opensymphony.xwork2.config.entities.ActionConfig;
 public interface RequiredAuthoritiesProvider
 {
     /**
-     * Creates an ObjectDefinitionSource based on the required authorities for
+     * Creates an SecurityMetadataSource based on the required authorities for
      * the action config. The specified action config is set as the secure
-     * object. The ObjectDefinitionSource may include additional attributes if
+     * object. The SecurityMetadataSource may include additional attributes if
      * needed.
      * 
      * @param actionConfig the secure actionConfig to get required authorities
      *        from.
      */
-    public ObjectDefinitionSource createObjectDefinitionSource( ActionConfig actionConfig );
+    public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig );
 
     /**
-     * Creates an ObjectDefinitionSource for a specified secure object based on
+     * Creates an SecurityMetadataSource for a specified secure object based on
      * the required authorities for the action config. The
-     * ObjectDefinitionSource may include additional attributes if needed.
+     * SecurityMetadataSource may include additional attributes if needed.
      * 
      * @param actionConfig the actionConfig to get required authorities from.
      * @param object the secure object.
      */
-    public ObjectDefinitionSource createObjectDefinitionSource( ActionConfig actionConfig, Object object );
+    public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig, Object object );
 
     /**
      * Returns the required authorities of an action configuration.

@@ -31,6 +31,7 @@ import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +49,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Hans S. Toemmerholt

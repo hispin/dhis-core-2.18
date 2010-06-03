@@ -29,18 +29,18 @@ package org.hisp.dhis.security.vote;
 
 import java.util.Collection;
 
-import org.springframework.security.Authentication;
-import org.springframework.security.ConfigAttribute;
-import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.vote.RoleVoter;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
- * RoleVoter which requires all  org.springframework.security.ConfigAttributes to be granted
- * authorities, given that the ConfigAttributes have the specified prefix
- * ("ROLE_" by default). If there are no supported ConfigAttributes it abstains
- * from voting.
+ * RoleVoter which requires all org.springframework.security.ConfigAttributes to
+ * be granted authorities, given that the ConfigAttributes have the specified
+ * prefix ("ROLE_" by default). If there are no supported ConfigAttributes it
+ * abstains from voting.
  * 
- * @see  org.springframework.security.vote.RoleVoter
+ * @see org.springframework.security.access.vote.RoleVoter
  * 
  * @author Torgeir Lorange Ostby
  * @version $Id: AllRequiredRoleVoter.java 6070 2008-10-28 17:49:23Z larshelg $
@@ -48,12 +48,9 @@ import org.springframework.security.vote.RoleVoter;
 public class AllRequiredRoleVoter
     extends RoleVoter
 {
-    public int vote( Authentication authentication, Object object, ConfigAttributeDefinition config )
+    public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         int supported = 0;
-
-        @SuppressWarnings( "unchecked" )
-        Collection<ConfigAttribute> attributes = config.getConfigAttributes();
 
         for ( ConfigAttribute attribute : attributes )
         {
@@ -62,9 +59,9 @@ public class AllRequiredRoleVoter
                 ++supported;
                 boolean found = false;
 
-                for ( int i = 0; i < authentication.getAuthorities().length; i++ )
+                for ( GrantedAuthority authority : authentication.getAuthorities() )
                 {
-                    if ( attribute.getAttribute().equals( authentication.getAuthorities()[i].getAuthority() ) )
+                    if ( attribute.getAttribute().equals( authority ) )
                     {
                         found = true;
                         break;

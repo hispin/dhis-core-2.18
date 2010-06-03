@@ -45,6 +45,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -56,16 +57,13 @@ public class HibernateUserStore
     implements UserStore
 {
     private Logger logger = Logger.getLogger( getClass() );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
     
     private CurrentUserService currentUserService;
     
@@ -73,7 +71,6 @@ public class HibernateUserStore
     {
         this.currentUserService = currentUserService;
     }
-
 
     // -------------------------------------------------------------------------
     // User

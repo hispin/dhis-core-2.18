@@ -44,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.jdbc.batchhandler.DataValueCrossTabBatchHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -60,13 +61,9 @@ public class DefaultCrossTabService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
         
-    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
-    {
-        this.batchHandlerFactory = batchHandlerFactory;
-    }
-    
     private CrossTabStore crossTabStore;
         
     public void setCrossTabStore( CrossTabStore crossTabTableManager )

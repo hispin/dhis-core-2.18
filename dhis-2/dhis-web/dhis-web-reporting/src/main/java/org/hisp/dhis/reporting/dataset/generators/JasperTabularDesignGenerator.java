@@ -47,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.reporting.dataset.utils.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -66,13 +67,9 @@ public class JasperTabularDesignGenerator
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private LocationManager locationManager;
         
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-
     // -------------------------------------------------------------------------
     // TabularDesignGenerator implementation
     // -------------------------------------------------------------------------

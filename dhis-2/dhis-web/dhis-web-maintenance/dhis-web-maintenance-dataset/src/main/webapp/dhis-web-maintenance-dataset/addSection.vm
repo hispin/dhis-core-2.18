@@ -10,6 +10,7 @@
 					,errorElement:"td"
 					,submitHandler: function(form)
 									{
+										selectAllById( 'selectedList' );
 										validateAddSection();
 									}
 				});
@@ -17,7 +18,6 @@
 				jQuery("#sectionName").focus();
 			}
 	);
-
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "add_section" )</h3>
@@ -65,7 +65,7 @@
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'selectedList' ) )">
             <!-- Show all available DataElements -->
             #foreach ( $availableDataElement in $dataElements )
               <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
@@ -74,13 +74,13 @@
         </td>
 		
         <td valign="top">
-          <input type="button" value=">" title="$i18n.getString('move_selected')" onclick="move( 'availableList' )">
+          <input type="button" value=">" title="$i18n.getString('move_selected')" onclick="moveSelected( document.getElementById( 'availableList' ), document.getElementById( 'selectedList' ) )">
           <br>
-          <input type="button" value="<" title="$i18n.getString('remove_selected')" onclick="move ( 'selectedList' )">
+          <input type="button" value="<" title="$i18n.getString('remove_selected')" onclick="moveSelected( document.getElementById( 'selectedList' ), document.getElementById( 'availableList' ) )">
         </td>
        
 		 <td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'availableList' ) )">
             <!-- initially empty -->			
           </select>
 		</td>

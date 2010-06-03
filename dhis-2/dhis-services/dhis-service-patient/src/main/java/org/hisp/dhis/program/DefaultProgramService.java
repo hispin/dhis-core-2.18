@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -81,8 +82,8 @@ public class DefaultProgramService
     public Program getProgram( int id )
     {
         return programStore.get( id );
-    }   
-    
+    }
+
     public Program getProgramByName( String name )
     {
         return programStore.getByName( name );
@@ -91,16 +92,31 @@ public class DefaultProgramService
     public Collection<Program> getPrograms( OrganisationUnit organisationUnit )
     {
         Set<Program> programs = new HashSet<Program>();
-        
-        for( Program program : getAllPrograms() )
+
+        for ( Program program : getAllPrograms() )
         {
-            if( program.getOrganisationUnits().contains( organisationUnit ) )
+            if ( program.getOrganisationUnits().contains( organisationUnit ) )
             {
-                programs.add( program );                
+                programs.add( program );
             }
         }
-        
+
         return programs;
-    }    
-    
+    }
+
+    public Collection<Program> getPrograms( ValidationCriteria validationCriteria )
+    {
+        Set<Program> programs = new HashSet<Program>();
+        
+        for ( Program program : getAllPrograms() )
+        {
+            if ( program.getPatientValidationCriteria().contains( validationCriteria ) )
+            {
+                programs.add( program );
+            }
+        }
+
+        return programs;
+    }
+
 }

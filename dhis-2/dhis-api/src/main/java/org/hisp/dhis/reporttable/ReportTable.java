@@ -27,7 +27,6 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +57,7 @@ import org.hisp.dhis.period.Period;
  * @version $Id$
  */
 public class ReportTable
-    implements Serializable
+    extends IdentifiableObject
 {
     public static final String DATAELEMENT_ID = "dataelementid";
     public static final String DATAELEMENT_NAME = "dataelementname";
@@ -96,16 +95,6 @@ public class ReportTable
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
-
-    /**
-     * The internal identifier.
-     */
-    private int id;
-    
-    /**
-     * The name of the ReportTable object.
-     */
-    private String name;
 
     /**
      * The name of the database table corresponding to the ReportTable object name.
@@ -1056,26 +1045,6 @@ public class ReportTable
     // -------------------------------------------------------------------------
     // Get- and set-methods for persisted properties
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public String getTableName()
     {

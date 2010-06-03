@@ -130,9 +130,6 @@ public class ValidatePatientAttributeGroupAction
             }
 
             PatientAttributeGroup match = patientAttributeGroupService.getPatientAttributeGroupByName( nameField );
-            System.out.println("nameField: "+nameField);
-            System.out.println("id: "+id);
-            System.out.println("macth:" +match);
             
             if ( match != null && (id == null || match.getId() != id.intValue()) )
             {

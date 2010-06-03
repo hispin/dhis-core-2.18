@@ -1,12 +1,6 @@
 
 $( document ).ready( function()
 {	
-	$( "div#helpBack" ).click(
-		function()
-		{
-			window.location.href="/dhis/dhis-web-portal/intro.action";
-		});
-
     $.get( 
        'getHelpItems.action',
        function( data )

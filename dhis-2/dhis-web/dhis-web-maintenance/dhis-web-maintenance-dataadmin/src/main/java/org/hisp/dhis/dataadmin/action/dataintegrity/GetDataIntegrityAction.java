@@ -27,16 +27,25 @@ package org.hisp.dhis.dataadmin.action.dataintegrity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -62,23 +71,23 @@ public class GetDataIntegrityAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<DataElement> dataElementsWithoutDataSet;
+    private List<DataElement> dataElementsWithoutDataSet;
 
-    public Collection<DataElement> getDataElementsWithoutDataSet()
+    public List<DataElement> getDataElementsWithoutDataSet()
     {
         return dataElementsWithoutDataSet;
     }
 
-    private Collection<DataElement> dataElementsWithoutGroups;
+    private List<DataElement> dataElementsWithoutGroups;
 
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
         return dataElementsWithoutGroups;
     }
 
-    private Collection<DataSet> dataSetsNotAssignedToOrganisationUnits; 
+    private List<DataSet> dataSetsNotAssignedToOrganisationUnits; 
 
-    public Collection<DataSet> getDataSetsNotAssignedToOrganisationUnits()
+    public List<DataSet> getDataSetsNotAssignedToOrganisationUnits()
     {
         return dataSetsNotAssignedToOrganisationUnits;
     }
@@ -97,9 +106,9 @@ public class GetDataIntegrityAction
         return indicatorsWithIdenticalFormulas;
     }
 
-    private Collection<Indicator> indicatorsWithoutGroups;
+    private List<Indicator> indicatorsWithoutGroups;
 
-    public Collection<Indicator> getIndicatorsWithoutGroups()
+    public List<Indicator> getIndicatorsWithoutGroups()
     {
         return indicatorsWithoutGroups;
     }
@@ -118,51 +127,51 @@ public class GetDataIntegrityAction
         return invalidIndicatorDenominators;
     }
 
-    private Collection<OrganisationUnit> organisationUnitsWithCyclicReferences;
+    private List<OrganisationUnit> organisationUnitsWithCyclicReferences;
 
-    public Collection<OrganisationUnit> getOrganisationUnitsWithCyclicReferences()
+    public List<OrganisationUnit> getOrganisationUnitsWithCyclicReferences()
     {
         return organisationUnitsWithCyclicReferences;
     }
 
-    private Collection<OrganisationUnit> orphanedOrganisationUnits;
+    private List<OrganisationUnit> orphanedOrganisationUnits;
 
-    public Collection<OrganisationUnit> getOrphanedOrganisationUnits()
+    public List<OrganisationUnit> getOrphanedOrganisationUnits()
     {
         return orphanedOrganisationUnits;
     }
 
-    private Collection<OrganisationUnit> organisationUnitsWithoutGroups;
+    private List<OrganisationUnit> organisationUnitsWithoutGroups;
 
-    public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
+    public List<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
         return organisationUnitsWithoutGroups;
     }
 
-    private Collection<OrganisationUnit> organisationUnitsViolatingCompulsoryGroupSets;
+    private List<OrganisationUnit> organisationUnitsViolatingCompulsoryGroupSets;
 
-    public Collection<OrganisationUnit> getOrganisationUnitsViolatingCompulsoryGroupSets()
+    public List<OrganisationUnit> getOrganisationUnitsViolatingCompulsoryGroupSets()
     {
         return organisationUnitsViolatingCompulsoryGroupSets;
     }
 
-    private Collection<OrganisationUnit> organisationUnitsViolatingExclusiveGroupSets;
+    private List<OrganisationUnit> organisationUnitsViolatingExclusiveGroupSets;
 
-    public Collection<OrganisationUnit> getOrganisationUnitsViolatingExclusiveGroupSets()
+    public List<OrganisationUnit> getOrganisationUnitsViolatingExclusiveGroupSets()
     {
         return organisationUnitsViolatingExclusiveGroupSets;
     }
 
-    private Collection<OrganisationUnitGroup> organisationUnitGroupsWithoutGroupSets;
+    private List<OrganisationUnitGroup> organisationUnitGroupsWithoutGroupSets;
 
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithoutGroupSets()
+    public List<OrganisationUnitGroup> getOrganisationUnitGroupsWithoutGroupSets()
     {
         return organisationUnitGroupsWithoutGroupSets;
     }
 
-    private Collection<ValidationRule> validationRulesWithoutGroups;
+    private List<ValidationRule> validationRulesWithoutGroups;
 
-    public Collection<ValidationRule> getValidationRulesWithoutGroups()
+    public List<ValidationRule> getValidationRulesWithoutGroups()
     {
         return validationRulesWithoutGroups;
     }
@@ -187,28 +196,35 @@ public class GetDataIntegrityAction
 
     public String execute()
     {
-        dataElementsWithoutDataSet = dataIntegrityService.getDataElementsWithoutDataSet();
-        dataElementsWithoutGroups = dataIntegrityService.getDataElementsWithoutGroups();
-        dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
-        
-        dataSetsNotAssignedToOrganisationUnits = dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits();
-        
+        dataElementsWithoutDataSet = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutDataSet() );
+        dataElementsWithoutGroups = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutGroups() );
+        dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();        
+        dataSetsNotAssignedToOrganisationUnits = new ArrayList<DataSet>( dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits() );        
         indicatorsWithIdenticalFormulas = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
-        indicatorsWithoutGroups = dataIntegrityService.getIndicatorsWithoutGroups();
+        indicatorsWithoutGroups = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsWithoutGroups() );
         invalidIndicatorNumerators = dataIntegrityService.getInvalidIndicatorNumerators();
-        invalidIndicatorDenominators = dataIntegrityService.getInvalidIndicatorDenominators();
-        
-        organisationUnitsWithCyclicReferences = dataIntegrityService.getOrganisationUnitsWithCyclicReferences();
-        orphanedOrganisationUnits = dataIntegrityService.getOrphanedOrganisationUnits();
-        organisationUnitsWithoutGroups = dataIntegrityService.getOrganisationUnitsWithoutGroups();
-        organisationUnitsViolatingCompulsoryGroupSets = dataIntegrityService.getOrganisationUnitsViolatingCompulsoryGroupSets();
-        organisationUnitsViolatingExclusiveGroupSets = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
-        
-        organisationUnitGroupsWithoutGroupSets = dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets();
-        
-        validationRulesWithoutGroups = dataIntegrityService.getValidationRulesWithoutGroups();
+        invalidIndicatorDenominators = dataIntegrityService.getInvalidIndicatorDenominators();        
+        organisationUnitsWithCyclicReferences = new ArrayList<OrganisationUnit>( dataIntegrityService.getOrganisationUnitsWithCyclicReferences() );
+        orphanedOrganisationUnits = new ArrayList<OrganisationUnit>( dataIntegrityService.getOrphanedOrganisationUnits() );
+        organisationUnitsWithoutGroups = new ArrayList<OrganisationUnit>( dataIntegrityService.getOrganisationUnitsWithoutGroups() );
+        organisationUnitsViolatingCompulsoryGroupSets = new ArrayList<OrganisationUnit>( dataIntegrityService.getOrganisationUnitsViolatingCompulsoryGroupSets() );
+        organisationUnitsViolatingExclusiveGroupSets = new ArrayList<OrganisationUnit>( dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets() );        
+        organisationUnitGroupsWithoutGroupSets = new ArrayList<OrganisationUnitGroup>( dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets() );        
+        validationRulesWithoutGroups = new ArrayList<ValidationRule>( dataIntegrityService.getValidationRulesWithoutGroups() );
         invalidValidationRuleLeftSideExpressions = dataIntegrityService.getInvalidValidationRuleLeftSideExpressions();
         invalidValidationRuleRightSideExpressions = dataIntegrityService.getInvalidValidationRuleRightSideExpressions();
+        
+        Collections.sort( dataElementsWithoutDataSet, new DataElementNameComparator() );
+        Collections.sort( dataElementsWithoutGroups, new DataElementNameComparator() );
+        Collections.sort( dataSetsNotAssignedToOrganisationUnits, new DataSetNameComparator() );
+        Collections.sort( indicatorsWithoutGroups, new IndicatorNameComparator() );
+        Collections.sort( organisationUnitsWithCyclicReferences, new OrganisationUnitNameComparator() );
+        Collections.sort( orphanedOrganisationUnits, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnitsWithoutGroups, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnitsViolatingCompulsoryGroupSets, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnitsViolatingExclusiveGroupSets, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnitGroupsWithoutGroupSets, new OrganisationUnitGroupNameComparator() );
+        Collections.sort( validationRulesWithoutGroups, new ValidationRuleNameComparator() );
         
         return SUCCESS;
     }

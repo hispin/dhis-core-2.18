@@ -119,7 +119,7 @@ public class ValidateProgramStageAction
             }
 
             ProgramStage match = programStageService.getProgramStageByName( nameField );
-
+            
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "duplicate_names" );

@@ -35,6 +35,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.useraudit.LoginFailure;
 import org.hisp.dhis.useraudit.UserAuditStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -42,12 +43,8 @@ import org.hisp.dhis.useraudit.UserAuditStore;
 public class HibernateUserAuditStore
     implements UserAuditStore
 {
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public void saveLoginFailure( LoginFailure login )

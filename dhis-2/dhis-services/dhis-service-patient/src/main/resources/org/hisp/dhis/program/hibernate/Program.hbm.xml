@@ -27,7 +27,13 @@
       <key column="programid"/>
       <many-to-many column="organisationunitid" 
         class="org.hisp.dhis.organisationunit.OrganisationUnit"/>
-    </set>      
+    </set>  
+    
+    <set name="patientValidationCriteria" table="program_criteria">
+      <key column="programid"/>
+      <many-to-many column="validationcriteriaid" 
+      	class="org.hisp.dhis.validation.ValidationCriteria" />
+    </set>    
     
   </class>
 </hibernate-mapping>

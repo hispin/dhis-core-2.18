@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
@@ -96,7 +97,7 @@ public class JExcelWorkbookService
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -108,10 +109,15 @@ public class JExcelWorkbookService
     // Properties
     // -------------------------------------------------------------------------
 
-    private static final WritableCellFormat FORMAT_TTTLE = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
-    private static final WritableCellFormat FORMAT_LABEL = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true ) );   
-    private static final WritableCellFormat FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11, WritableFont.NO_BOLD, false ) );
-    
+    private static final WritableCellFormat FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
+        WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
+
+    private static final WritableCellFormat FORMAT_LABEL = new WritableCellFormat( new WritableFont(
+        WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true ) );
+
+    private static final WritableCellFormat FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL,
+        11, WritableFont.NO_BOLD, false ) );
+
     // -------------------------------------------------------------------------
     // WorkbookService implementation
     // -------------------------------------------------------------------------
@@ -119,32 +125,32 @@ public class JExcelWorkbookService
     public String writeReportTableData( OutputStream outputStream, int id, I18nFormat format )
     {
         ReportTableData data = reportTableService.getReportTableData( id, format );
-        
+
         try
         {
             WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-            
+
             WritableSheet sheet = workbook.createSheet( "Report table data", 0 );
-            
+
             int rowNumber = 1;
-            
+
             int columnIndex = 0;
-            
+
             sheet.addCell( new Label( 0, rowNumber++, data.getName(), FORMAT_TTTLE ) );
-            
+
             rowNumber++;
-            
+
             for ( String column : data.getPrettyPrintColumns() )
             {
                 sheet.addCell( new Label( columnIndex++, rowNumber, column, FORMAT_LABEL ) );
             }
-            
+
             rowNumber++;
-            
+
             for ( SortedMap<Integer, String> row : data.getRows() )
             {
                 columnIndex = 0;
-                
+
                 for ( String value : row.values() )
                 {
                     if ( isNumeric( value ) )
@@ -156,38 +162,38 @@ public class JExcelWorkbookService
                         sheet.addCell( new Label( columnIndex++, rowNumber, value, FORMAT_TEXT ) );
                     }
                 }
-                
+
                 rowNumber++;
             }
-            
+
             workbook.write();
-            
+
             workbook.close();
         }
         catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to generate workbook for data elements", ex );
         }
-        
+
         return data.getName();
     }
-    
+
     public void writeAllDataElements( OutputStream outputStream )
     {
         try
         {
             WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-            
+
             WritableSheet sheet = workbook.createSheet( "Data elements", 0 );
-            
+
             int rowNumber = 1;
-            
+
             for ( DataElement element : dataElementService.getAllDataElements() )
-            {            
+            {
                 sheet.addCell( new Label( 0, rowNumber++, element.getName(), FORMAT_TTTLE ) );
-                
+
                 rowNumber++;
-                
+
                 sheet.addCell( new Label( 0, rowNumber, "Alternative name", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, element.getAlternativeName(), FORMAT_TEXT ) );
 
@@ -207,13 +213,14 @@ public class JExcelWorkbookService
                 sheet.addCell( new Label( 1, rowNumber++, getType().get( element.getType() ), FORMAT_TEXT ) );
 
                 sheet.addCell( new Label( 0, rowNumber, "Aggregation operator", FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, getAggregationOperator().get( element.getAggregationOperator() ), FORMAT_TEXT ) );
-                
+                sheet.addCell( new Label( 1, rowNumber++, getAggregationOperator().get(
+                    element.getAggregationOperator() ), FORMAT_TEXT ) );
+
                 rowNumber++;
             }
 
             workbook.write();
-            
+
             workbook.close();
         }
         catch ( Exception ex )
@@ -227,17 +234,17 @@ public class JExcelWorkbookService
         try
         {
             WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-            
+
             WritableSheet sheet = workbook.createSheet( "Indicators", 0 );
-            
+
             int rowNumber = 1;
-            
+
             for ( Indicator indicator : indicatorService.getAllIndicators() )
-            {            
+            {
                 sheet.addCell( new Label( 0, rowNumber++, indicator.getName(), FORMAT_TTTLE ) );
-                
+
                 rowNumber++;
-                
+
                 sheet.addCell( new Label( 0, rowNumber, "Alternative name", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getAlternativeName(), FORMAT_TEXT ) );
 
@@ -255,18 +262,18 @@ public class JExcelWorkbookService
 
                 sheet.addCell( new Label( 0, rowNumber, "Indicator type", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getIndicatorType().getName(), FORMAT_TEXT ) );
-                
+
                 sheet.addCell( new Label( 0, rowNumber, "Numerator description", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getNumeratorDescription(), FORMAT_TEXT ) );
 
                 sheet.addCell( new Label( 0, rowNumber, "Denominator description", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getDenominatorDescription(), FORMAT_TEXT ) );
-                
+
                 rowNumber++;
             }
 
             workbook.write();
-            
+
             workbook.close();
         }
         catch ( Exception ex )
@@ -280,17 +287,17 @@ public class JExcelWorkbookService
         try
         {
             WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-            
+
             WritableSheet sheet = workbook.createSheet( "Organisation units", 0 );
-            
+
             int rowNumber = 1;
-            
+
             for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
             {
                 sheet.addCell( new Label( 0, rowNumber++, unit.getName(), FORMAT_TTTLE ) );
-                
+
                 rowNumber++;
-                
+
                 sheet.addCell( new Label( 0, rowNumber, "Short name", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, unit.getShortName(), FORMAT_TEXT ) );
 
@@ -305,12 +312,12 @@ public class JExcelWorkbookService
 
                 sheet.addCell( new Label( 0, rowNumber, "Geo code", FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, unit.getGeoCode(), FORMAT_TEXT ) );
-                
+
                 rowNumber++;
             }
 
             workbook.write();
-            
+
             workbook.close();
         }
         catch ( Exception ex )
@@ -319,38 +326,45 @@ public class JExcelWorkbookService
         }
     }
 
-    public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet )
+    public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
+        I18n i18n, OrganisationUnit unit, DataSet dataSet )
     {
-        final int MARGIN_LEFT = 1;        
-        
-        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15, WritableFont.NO_BOLD, false ) );
-        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
-        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11, WritableFont.NO_BOLD, true ) );
-        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11, WritableFont.NO_BOLD, false ) );            
-        
+        final int MARGIN_LEFT = 1;
+
+        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15,
+            WritableFont.NO_BOLD, false ) );
+        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13,
+            WritableFont.NO_BOLD, false ) );
+        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11,
+            WritableFont.NO_BOLD, true ) );
+        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11,
+            WritableFont.NO_BOLD, false ) );
+
         try
         {
             WritableWorkbook workbook = Workbook.createWorkbook( out );
-        
+
             WritableSheet sheet = workbook.createSheet( "Data completeness", 0 );
 
             String dataSetName = dataSet != null ? " - " + dataSet.getName() : "";
-            
-            sheet.addCell( new Label( MARGIN_LEFT, 1, i18n.getString( "data_completeness_report" ) + " - " + unit.getName() + dataSetName, documentTitle ) );
-            
-            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - " + DateUtils.getMediumDateString(), subTitle ) );
-            
+
+            sheet.addCell( new Label( MARGIN_LEFT, 1, i18n.getString( "data_completeness_report" ) + " - "
+                + unit.getName() + dataSetName, documentTitle ) );
+
+            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - "
+                + DateUtils.getMediumDateString(), subTitle ) );
+
             int row = 5;
-            
+
             sheet.addCell( new Label( MARGIN_LEFT, row, i18n.getString( "name" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 1, row, i18n.getString( "actual" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 2, row, i18n.getString( "target" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 3, row, i18n.getString( "percent" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( "on_time" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 5, row, i18n.getString( "percent" ), columnHeader ) );
-            
+
             row = 7;
-            
+
             for ( DataSetCompletenessResult result : results )
             {
                 sheet.addCell( new Label( MARGIN_LEFT, row, result.getName(), text ) );
@@ -359,12 +373,12 @@ public class JExcelWorkbookService
                 sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getPercentage(), text ) );
                 sheet.addCell( new Number( MARGIN_LEFT + 4, row, result.getRegistrationsOnTime(), text ) );
                 sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getPercentageOnTime(), text ) );
-                
+
                 row++;
             }
 
             workbook.write();
-            
+
             workbook.close();
         }
         catch ( IOException ex )
@@ -380,28 +394,34 @@ public class JExcelWorkbookService
             throw new RuntimeException( "Write failed", ex );
         }
     }
-    
-    public void writeValidationResult( Collection<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
+
+    public void writeValidationResult( Map<String, List<ValidationResult>> results, OutputStream out, I18n i18n,
+        I18nFormat format )
     {
         final int MARGIN_LEFT = 1;
-        
-        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15, WritableFont.NO_BOLD, false ) );
-        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
-        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11, WritableFont.NO_BOLD, true ) );
-        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11, WritableFont.NO_BOLD, false ) );            
-        
+
+        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15,
+            WritableFont.NO_BOLD, false ) );
+        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13,
+            WritableFont.NO_BOLD, false ) );
+        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11,
+            WritableFont.NO_BOLD, true ) );
+        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11,
+            WritableFont.NO_BOLD, false ) );
+
         try
-        {            
+        {
             WritableWorkbook workbook = Workbook.createWorkbook( out );
-            
+
             WritableSheet sheet = workbook.createSheet( "Validation results", 0 );
-            
+
             sheet.addCell( new Label( MARGIN_LEFT, 1, i18n.getString( "data_quality_report" ), documentTitle ) );
-            
-            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - " + DateUtils.getMediumDateString(), subTitle ) );
-            
+
+            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - "
+                + DateUtils.getMediumDateString(), subTitle ) );
+
             int row = 5;
-            
+
             sheet.addCell( new Label( MARGIN_LEFT + 0, row, i18n.getString( "source" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 1, row, i18n.getString( "period" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 2, row, i18n.getString( "left_side_description" ), columnHeader ) );
@@ -409,29 +429,43 @@ public class JExcelWorkbookService
             sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( "operator" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 5, row, i18n.getString( "value" ), columnHeader ) );
             sheet.addCell( new Label( MARGIN_LEFT + 6, row, i18n.getString( "right_side_description" ), columnHeader ) );
-            
+
             row = 7;
-            
-            for ( ValidationResult result : results )
+
+            if ( results != null )
             {
-                OrganisationUnit unit = (OrganisationUnit) result.getSource();
+                for ( String periodTypeName : results.keySet() )
+                {
+                    List<ValidationResult> validationResults = results.get( periodTypeName );
+                    
+                    sheet.addCell( new Label( MARGIN_LEFT + 0, row++, periodTypeName, columnHeader ) );
+                    
+                    for ( ValidationResult result : validationResults )
+                    {
+                        OrganisationUnit unit = (OrganisationUnit) result.getSource();
+
+                        Period period = result.getPeriod();
+
+                        sheet.addCell( new Label( MARGIN_LEFT + 0, row, unit.getName(), text ) );
+                        sheet.addCell( new Label( MARGIN_LEFT + 1, row, format.formatPeriod( period ), text ) );
+                        sheet.addCell( new Label( MARGIN_LEFT + 2, row, result.getValidationRule().getLeftSide()
+                            .getDescription(), text ) );
+                        sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getLeftsideValue(), text ) );
+                        sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule()
+                            .getOperator() ), text ) );
+                        sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getRightsideValue(), text ) );
+                        sheet.addCell( new Label( MARGIN_LEFT + 6, row, result.getValidationRule().getRightSide()
+                            .getDescription(), text ) );
+
+                        row++;
+                    }
+                }
+
+                workbook.write();
+
+                workbook.close();
                 
-                Period period = result.getPeriod();
-                
-                sheet.addCell( new Label( MARGIN_LEFT + 0, row, unit.getName(), text ) );
-                sheet.addCell( new Label( MARGIN_LEFT + 1, row, format.formatPeriod( period ), text ) );
-                sheet.addCell( new Label( MARGIN_LEFT + 2, row, result.getValidationRule().getLeftSide().getDescription(), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getLeftsideValue(), text ) );
-                sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule().getOperator() ), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getRightsideValue(), text ) );
-                sheet.addCell( new Label( MARGIN_LEFT + 6, row, result.getValidationRule().getRightSide().getDescription(), text ) );
-                
-                row++;
-            }
-            
-            workbook.write();
-            
-            workbook.close();                        
+            }// end if
         }
         catch ( IOException ex )
         {
@@ -446,7 +480,7 @@ public class JExcelWorkbookService
             throw new RuntimeException( "Write failed", ex );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -458,7 +492,7 @@ public class JExcelWorkbookService
         map.put( false, "No" );
         return map;
     }
-    
+
     private Map<String, String> getType()
     {
         Map<String, String> map = new HashMap<String, String>();
@@ -467,7 +501,7 @@ public class JExcelWorkbookService
         map.put( DataElement.VALUE_TYPE_BOOL, "Yes/No" );
         return map;
     }
-    
+
     private Map<String, String> getAggregationOperator()
     {
         Map<String, String> map = new HashMap<String, String>();

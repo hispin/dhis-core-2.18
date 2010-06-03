@@ -751,6 +751,6 @@ public class DefaultReportTableService
             period = persistedPeriod;
         }
         
-        return period;
+        return new Period( period );
     }
 }

@@ -33,11 +33,10 @@ import java.util.Map;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractIndicatorTypeConverter;
+import org.hisp.dhis.importexport.importer.IndicatorTypeImporter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 
@@ -46,7 +45,7 @@ import org.hisp.dhis.indicator.IndicatorType;
  * @version $Id: IndicatorTypeConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class IndicatorTypeConverter
-    extends AbstractIndicatorTypeConverter implements XMLConverter
+    extends IndicatorTypeImporter implements XMLConverter
 {
     public static final String ELEMENT_NAME = "IndicatorType";
     
@@ -112,6 +111,6 @@ public class IndicatorTypeConverter
         type.setName( values.get( FIELD_NAME ) );
         type.setFactor( Integer.parseInt( values.get( FIELD_FACTOR ) ) );
            
-        read( type, GroupMemberType.NONE, params );
+        importObject( type, params );
     }
 }

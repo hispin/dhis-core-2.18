@@ -226,7 +226,7 @@ public interface MappingStore
     MapLegendSet getMapLegendSet( int id );
 
     MapLegendSet getMapLegendSetByName( String name );
-    
+
     Collection<MapLegendSet> getMapLegendSetsByType( String type );
 
     Collection<MapLegendSet> getAllMapLegendSets();
@@ -262,6 +262,8 @@ public interface MappingStore
     MapLayer getMapLayer( int id );
 
     MapLayer getMapLayerByName( String name );
+
+    Collection<MapLayer> getMapLayersByType( String type );
 
     Collection<MapLayer> getMapLayersByMapSourceType( String mapSourceType );
 

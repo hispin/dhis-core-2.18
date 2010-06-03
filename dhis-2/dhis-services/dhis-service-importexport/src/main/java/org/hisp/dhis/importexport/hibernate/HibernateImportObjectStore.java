@@ -38,6 +38,7 @@ import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.ImportObjectStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -50,12 +51,8 @@ public class HibernateImportObjectStore
     // Dependencies
     // ----------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     // ----------------------------------------------------------------------
     // ImportObjectStore implementation

@@ -30,37 +30,35 @@ package org.hisp.dhis.hibernate;
 import java.util.Properties;
 
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Component("hibernateProperties")
 public class HibernatePropertiesFactoryBean
-    implements FactoryBean
+    implements FactoryBean<Properties>
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private HibernateConfigurationProvider hibernateConfigurationProvider;
-
-    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
-    {
-        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
-    }
 
     // -------------------------------------------------------------------------
     // FactoryBean implementation
     // -------------------------------------------------------------------------
 
-    public Object getObject()
+    public Properties getObject()
         throws Exception
     {
         return hibernateConfigurationProvider.getConfiguration().getProperties();
     }
 
-    @SuppressWarnings("unchecked")
-    public Class getObjectType()
+    public Class<Properties> getObjectType()
     {
         return Properties.class;
     }

@@ -28,6 +28,7 @@
 package org.hisp.dhis.patient.action.patientidentifiertype;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -35,8 +36,6 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.comparator.PatientIdentifierTypeComparator;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Viet 

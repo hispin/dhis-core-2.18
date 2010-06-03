@@ -25,6 +25,7 @@
     <action name="removeDocument" class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_DOCUMENT_DELETE</param>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="displayViewDocumentForm" class="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction">
@@ -76,6 +77,7 @@
     <action name="removeChart" class="org.hisp.dhis.reporting.chart.action.RemoveChartAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_CHART_DELETE</param>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="displayAddChartForm" class="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction">
@@ -132,6 +134,7 @@
     <action name="removeReport" class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	  <param name="requiredAuthorities">F_REPORT_DELETE</param>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
@@ -189,6 +192,7 @@
     <action name="removeTable" class="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_REPORTTABLE_DELETE</param>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="saveTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction">

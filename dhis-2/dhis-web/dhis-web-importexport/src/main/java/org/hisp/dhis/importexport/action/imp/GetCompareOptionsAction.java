@@ -27,6 +27,7 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectService;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -70,9 +71,9 @@ public class GetCompareOptionsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Object importObject;
+    private ImportObject importObject;
 
-    public Object getImportObject()
+    public ImportObject getImportObject()
     {
         return importObject;
     }

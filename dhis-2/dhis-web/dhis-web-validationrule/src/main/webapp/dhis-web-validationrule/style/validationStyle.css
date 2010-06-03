@@ -78,3 +78,7 @@ span#message {
   width: 500px;
   clear: both;
 }
+
+legend{
+	font-weight:bold;
+}

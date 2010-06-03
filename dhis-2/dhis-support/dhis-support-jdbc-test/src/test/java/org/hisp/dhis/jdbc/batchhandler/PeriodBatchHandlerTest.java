@@ -44,6 +44,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -52,6 +53,7 @@ import org.junit.Test;
 public class PeriodBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler<Period> batchHandler;
@@ -97,8 +99,6 @@ public class PeriodBatchHandlerTest
         calendar.set( 2000, 3, 1 );
         
         dateD = calendar.getTime();
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         

@@ -27,21 +27,18 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ValidationRuleGroup
-    implements Serializable
+    extends IdentifiableObject
 {
-    private int id;
-    
-    private String name;
-    
     private String description;
     
     private Set<ValidationRule> members = new HashSet<ValidationRule>();
@@ -99,26 +96,6 @@ public class ValidationRuleGroup
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------     
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public String getDescription()
     {

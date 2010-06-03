@@ -42,6 +42,13 @@
 
             <div id="detailsArea" style="display:none; padding-top:1em; padding-bottom:1em"></div>
             
+			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
+				<div style="float:right">
+					<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+				</div>
+				<p><span id="warningField"></span></p>
+			</div>
+
         </td>
     </tr>
 </table>

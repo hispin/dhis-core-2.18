@@ -35,11 +35,10 @@ import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
-import org.hisp.dhis.importexport.converter.AbstractIndicatorConverter;
+import org.hisp.dhis.importexport.importer.IndicatorImporter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -52,7 +51,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: IndicatorRowHandler.java 6461 2008-11-24 11:32:37Z larshelg $
  */
 public class IndicatorRowHandler
-    extends AbstractIndicatorConverter implements RowHandler
+    extends IndicatorImporter implements RowHandler
 {
     private Map<Object, Integer> indicatorTypeMap;
     
@@ -96,8 +95,6 @@ public class IndicatorRowHandler
     {
         final Indicator indicator = (Indicator) object;
         
-        NameMappingUtil.addIndicatorMapping( indicator.getId(), indicator.getName() );
-        
         indicator.setUuid( UUIdUtils.getUUId() );
 
         if ( indicator.getAlternativeName() != null && indicator.getAlternativeName().trim().length() == 0 )
@@ -121,6 +118,6 @@ public class IndicatorRowHandler
         indicator.setNumerator( convertExpressionFromDhis14( indicator.getNumerator(), dataElementMap, categoryOptionCombo.getId(), indicator.getName() ) );
         indicator.setDenominator( convertExpressionFromDhis14( indicator.getDenominator(), dataElementMap, categoryOptionCombo.getId(), indicator.getName() ) );
         
-        read( indicator, GroupMemberType.NONE, params );
+        importObject( indicator, params );
     }
 }

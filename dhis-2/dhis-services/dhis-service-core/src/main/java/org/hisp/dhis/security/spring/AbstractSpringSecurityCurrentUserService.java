@@ -28,9 +28,9 @@ package org.hisp.dhis.security.spring;
  */
 
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author Torgeir Lorange Ostby

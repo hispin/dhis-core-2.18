@@ -28,9 +28,9 @@ package org.amplecode.staxwax.transformer;
  */
 
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
@@ -39,7 +39,9 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stax.StAXResult;
 import javax.xml.transform.stream.StreamSource;
+
 import junit.framework.TestCase;
+
 import org.amplecode.staxwax.framework.XMLPipe;
 import org.junit.Test;
 
@@ -58,8 +60,6 @@ public class TransformerTaskTest extends TestCase
     private Map<String, String> params;
 
     private TransformerTask tt;
-
-    private StringWriter sb;
 
     // -------------------------------------------------------------------------
     // Fixture

@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- Import                                                        -->
@@ -222,24 +222,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataIntegrityService"
 			ref="org.hisp.dhis.dataintegrity.DataIntegrityService" />
-	</bean>
-
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- IXF Configuration                                             -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-	<bean id="org.hisp.dhis.importexport.action.ixf.GetIXFConfigurationAction"
-		class="org.hisp.dhis.importexport.action.ixf.GetIXFConfigurationAction"
-		scope="prototype">
-		<property name="configurationManager"
-			ref="org.hisp.dhis.importexport.ixf.config.IXFConfigurationManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.importexport.action.ixf.SetIXFConfigurationAction"
-		class="org.hisp.dhis.importexport.action.ixf.SetIXFConfigurationAction"
-		scope="prototype">
-		<property name="configurationManager"
-			ref="org.hisp.dhis.importexport.ixf.config.IXFConfigurationManager" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

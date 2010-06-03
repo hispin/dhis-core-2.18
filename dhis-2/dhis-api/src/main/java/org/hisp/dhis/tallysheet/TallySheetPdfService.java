@@ -32,13 +32,14 @@ import java.io.InputStream;
 import org.hisp.dhis.i18n.I18n;
 
 /**
- * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
+ * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben
+ *         Wangberg
  * @version $Id$
  */
 public interface TallySheetPdfService
 {
     final String ID = TallySheetPdfService.class.getName();
-    
+
     /**
      * Returns an InputStream representing the tally sheet The InputStream will
      * give the opportunity to either print or save the tally sheet.

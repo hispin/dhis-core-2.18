@@ -13,6 +13,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 // Work in progress!
 
@@ -38,12 +39,8 @@ public class DefaultPatientDataValueAggregationEngine
         this.periodService = periodService;
     }
 
+    @Autowired
     private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
 
     /*
      * interface: startDate, endDate, organisationUnit

@@ -34,19 +34,17 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryComboConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataElementCategoryComboImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: AbstractConverter.java 6298 2008-11-17 17:31:14Z larshelg $
  */
 public class DataElementCategoryComboConverter
-    extends AbstractDataElementCategoryComboConverter implements XMLConverter
+    extends DataElementCategoryComboImporter implements XMLConverter
 {
     /**
      * Constructor for read operations.
@@ -74,8 +72,6 @@ public class DataElementCategoryComboConverter
     {
         DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
 
-        NameMappingUtil.addCategoryComboMapping( categoryCombo.getId(), categoryCombo.getName() );
-        
-        read( categoryCombo, GroupMemberType.NONE, params );
+        importObject( categoryCombo, params );
     }
 }

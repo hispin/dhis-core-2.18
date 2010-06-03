@@ -55,12 +55,22 @@ public interface MappingService
     final String MAP_TEMPL_DIR = "map_temp";
 
     // -------------------------------------------------------------------------
-    // MapValue
+    // DataMapValue
+    // -------------------------------------------------------------------------
+    
+    Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, String mapLayerPath );
+    
+    Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level );
+
+    // -------------------------------------------------------------------------
+    // IndicatorMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath );
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, Collection<Integer> periodIds, String mapLayerPath, String featureId );
+    
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, String mapLayerPath );
 
-    Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level );
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level );
 
     // -------------------------------------------------------------------------
     // Map
@@ -392,7 +402,7 @@ public interface MappingService
 
     void updateMapLayer( MapLayer mapLayer );
 
-    void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity,
+    void addOrUpdateMapLayer( String name, String type, String mapSource, String layer, String fillColor, double fillOpacity,
         String strokeColor, int strokeWidth );
 
     void deleteMapLayer( MapLayer mapLayer );
@@ -400,6 +410,8 @@ public interface MappingService
     MapLayer getMapLayer( int id );
 
     MapLayer getMapLayerByName( String name );
+    
+    Collection<MapLayer> getMapLayersByType( String type );
 
     Collection<MapLayer> getMapLayersByMapSourceType();
 

@@ -60,7 +60,7 @@ public class SelectOrganisationUnitGroupAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -71,7 +71,7 @@ public class SelectOrganisationUnitGroupAction
     {
         this.organisationUnitGroupId = organisationUnitGroupId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -79,16 +79,16 @@ public class SelectOrganisationUnitGroupAction
     public String execute()
     {
         OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId );
-        
+
         if ( group != null )
         {
             Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
-            
+
             units.addAll( group.getMembers() );
-            
+
             selectionTreeManager.setSelectedOrganisationUnits( units );
         }
-        
+
         return SUCCESS;
     }
 }

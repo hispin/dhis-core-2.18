@@ -29,7 +29,6 @@ package org.hisp.dhis.dataset;
 
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
 
 /**
  * @author Lars Helge Overland
@@ -49,13 +48,6 @@ public class FrequencyOverrideAssociationDeletionHandler
         this.dataSetService = dataSetService;
     }
     
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -71,8 +63,6 @@ public class FrequencyOverrideAssociationDeletionHandler
     {
         for ( FrequencyOverrideAssociation association : dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet ) )
         {
-            deletionManager.execute( association );
-            
             dataSetService.deleteFrequencyOverrideAssociation( association );
         }
     }
@@ -82,8 +72,6 @@ public class FrequencyOverrideAssociationDeletionHandler
     {
         for ( FrequencyOverrideAssociation association : dataSetService.getFrequencyOverrideAssociationsBySource( source ) )
         {
-            deletionManager.execute( association );
-            
             dataSetService.deleteFrequencyOverrideAssociation( association );
         }
     }

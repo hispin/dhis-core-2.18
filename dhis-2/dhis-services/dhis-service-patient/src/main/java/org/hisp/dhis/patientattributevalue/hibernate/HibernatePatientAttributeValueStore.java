@@ -107,8 +107,9 @@ public class HibernatePatientAttributeValueStore
 
     public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
     {
-        return (Integer) getCriteria( Restrictions.eq( "patientAttributeOption", attributeOption ) )
+        Number rs =  (Number) getCriteria( Restrictions.eq( "patientAttributeOption", attributeOption ) )
                 .setProjection(Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )

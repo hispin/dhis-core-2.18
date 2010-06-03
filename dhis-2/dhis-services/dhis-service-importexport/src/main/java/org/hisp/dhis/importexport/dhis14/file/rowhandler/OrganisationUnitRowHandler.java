@@ -28,12 +28,10 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
-import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
@@ -47,7 +45,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: OrganisationUnitRowHandler.java 6298 2008-11-17 17:31:14Z larshelg $
  */
 public class OrganisationUnitRowHandler
-    extends AbstractOrganisationUnitConverter implements RowHandler
+    extends OrganisationUnitImporter implements RowHandler
 {    
     private ImportParams params;
     
@@ -78,16 +76,18 @@ public class OrganisationUnitRowHandler
     {
         final OrganisationUnit unit = (OrganisationUnit) object;
         
-        NameMappingUtil.addOrganisationUnitMapping( unit.getId(), unit.getName() );
-
         unit.setUuid( UUIdUtils.getUUId() );
-        unit.setShortName( unit.getShortName() + EMPTY + MathUtils.getRandom() );
+        
+        if ( unit.getShortName() != null && unit.getShortName().length() > 30 )
+        {
+            unit.setShortName( unit.getShortName().substring( 30 ) + MathUtils.getRandom() );
+        }
             
         if ( unit.getCode() != null && unit.getCode().trim().length() == 0 )
         {
             unit.setCode( null );                
         }
         
-        read( unit, GroupMemberType.NONE, params );
+        importObject( unit, params );
     }
 }

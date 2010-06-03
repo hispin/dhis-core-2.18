@@ -38,11 +38,10 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractCompleteDataSetRegistrationConverter;
+import org.hisp.dhis.importexport.importer.CompleteDataSetRegistrationImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -57,7 +56,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id$
  */
 public class CompleteDataSetRegistrationConverter
-    extends AbstractCompleteDataSetRegistrationConverter implements XMLConverter
+    extends CompleteDataSetRegistrationImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "completeDataSetRegistrations";
     public static final String ELEMENT_NAME = "registration";
@@ -71,6 +70,8 @@ public class CompleteDataSetRegistrationConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private CompleteDataSetRegistrationService registrationService;
+    
     private DataSetService dataSetService;
     
     private OrganisationUnitService organisationUnitService;
@@ -95,7 +96,7 @@ public class CompleteDataSetRegistrationConverter
         OrganisationUnitService organisationUnitService,
         PeriodService periodService )
     {   
-        this.completeDataSetRegistrationService = completeDataSetRegistrationService;
+        this.registrationService = completeDataSetRegistrationService;
         this.dataSetService = dataSetService;
         this.organisationUnitService = organisationUnitService;
         this.periodService = periodService;
@@ -145,7 +146,7 @@ public class CompleteDataSetRegistrationConverter
             {
                 writer.openElement( COLLECTION_NAME );
                 
-                registrations = completeDataSetRegistrationService.getCompleteDataSetRegistrations( dataSets, units, periods );
+                registrations = registrationService.getCompleteDataSetRegistrations( dataSets, units, periods );
                 
                 for ( final CompleteDataSetRegistration registration : registrations )
                 {
@@ -184,7 +185,7 @@ public class CompleteDataSetRegistrationConverter
                         
             registration.setDate( DateUtils.getMediumDate( values.get( FIELD_DATE ) ) );
             
-            read( registration, GroupMemberType.NONE, params );
+            importObject( registration, params );
         }
     }
 }

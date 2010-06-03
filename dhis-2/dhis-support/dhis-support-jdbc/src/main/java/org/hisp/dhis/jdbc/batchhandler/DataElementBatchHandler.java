@@ -105,7 +105,7 @@ public class DataElementBatchHandler
         statementBuilder.setColumn( "extendeddataelementid" );
         statementBuilder.setColumn( "categorycomboid" );
         statementBuilder.setColumn( "sortorder" );
-        statementBuilder.setColumn( "lastUpdated" );
+        statementBuilder.setColumn( "lastupdated" );
     }
     
     protected void setValues( DataElement dataElement )

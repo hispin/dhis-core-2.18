@@ -19,6 +19,8 @@
 		
 		<property name="mapSource" column="mapsource" unique="true"/>
 		
+		<property name="layer" column="layer"/>
+		
 		<property name="fillColor" column="fillcolor"/>
 		
 		<property name="fillOpacity" column="fillopacity"/>

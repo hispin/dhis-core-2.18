@@ -27,7 +27,6 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,12 +36,10 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -53,19 +50,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class RenderReportAction
     extends StreamActionSupport
 {
-    private static final Log log = LogFactory.getLog( RenderReportAction.class );
-    
-    private static final String TEMPLATE_DIR = "templates";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocationManager locationManager;
-    
-    public void setLocationManager( LocationManager locationManager )
+    private ReportService reportService;
+        
+    public void setReportService( ReportService reportService )
     {
-        this.locationManager = locationManager;
+        this.reportService = reportService;
     }
 
     private JdbcTemplate jdbcTemplate;
@@ -79,11 +72,11 @@ public class RenderReportAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String template;
+    private Integer id;
     
-    public void setTemplate( String template )
+    public void setId( Integer id )
     {
-        this.template = template;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
@@ -93,16 +86,12 @@ public class RenderReportAction
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
-    {        
-        File file = locationManager.getFileForReading( template, TEMPLATE_DIR );
-            
-        log.info( "Report template: " + file );
+    {
+        Report report = reportService.getReport( id );
         
-        JasperDesign design = JRXmlLoader.load( file );
+        JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
         
-        JasperReport report = JasperCompileManager.compileReport( design );
-        
-        JasperPrint print = JasperFillManager.fillReport( report, null, jdbcTemplate.getDataSource().getConnection() );
+        JasperPrint print = JasperFillManager.fillReport( jasperReport, null, jdbcTemplate.getDataSource().getConnection() );
         
         JasperExportManager.exportReportToPdfStream( print, out );
                 

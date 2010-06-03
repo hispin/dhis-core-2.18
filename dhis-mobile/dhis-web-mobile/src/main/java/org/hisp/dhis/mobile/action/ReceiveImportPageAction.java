@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,20 @@ package org.hisp.dhis.mobile.action;
 
 import com.opensymphony.xwork2.Action;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hisp.dhis.mobile.SmsService;
+import org.hisp.dhis.mobile.api.MobileImportService;
 
-public class ReceiveImportPageAction implements Action
+public class ReceiveImportPageAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     SmsService smsService;
 
     public void setSmsService( SmsService smsService )
@@ -46,9 +50,23 @@ public class ReceiveImportPageAction implements Action
         this.smsService = smsService;
     }
 
+    private MobileImportService mobileImportService;
+
+    public void setMobileImportService( MobileImportService mobileImportService )
+    {
+        this.mobileImportService = mobileImportService;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
+    String result;
+
+    public String getResult()
+    {
+        return result;
+    }
+
     boolean smsServiceStatus;
 
     public boolean getSmsServiceStatus()
@@ -63,22 +81,29 @@ public class ReceiveImportPageAction implements Action
     {
         if ( statAction.equalsIgnoreCase( "Start" ) )
         {
-            smsService.startService();
-        } else
-        {
-            smsService.stopService();
+            this.result = smsService.startService();
         }
+        else
+        {
+            this.result = smsService.stopService();
+        }
+    }
+
+    String importAction;
+
+    public void setImportAction( String importAction )
+    {
+
+        startImportingMessages();
     }
 
     private List<File> pending;
 
     public List<File> getPending()
     {
-        File pendingFolder = new File( System.getenv( "DHIS2_HOME" ), "mi/pending" );
-        pending = (List<File>) FileUtils.listFiles( pendingFolder, new String[]
-            {
-                "xml"
-            }, false );
+        File pendingFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator
+            + "pending" );
+        pending = new ArrayList<File>( FileUtils.listFiles( pendingFolder, new String[] { "xml" }, false ) );
         return pending;
     }
 
@@ -86,11 +111,9 @@ public class ReceiveImportPageAction implements Action
 
     public List<File> getBounced()
     {
-        File bouncedFolder = new File( System.getenv( "DHIS2_HOME" ), "mi/bounced" );
-        bounced = (List<File>) FileUtils.listFiles( bouncedFolder, new String[]
-            {
-                "xml"
-            }, false );
+        File bouncedFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator
+            + "bounced" );
+        bounced = new ArrayList<File>( FileUtils.listFiles( bouncedFolder, new String[] { "xml" }, false ) );
         return bounced;
     }
 
@@ -98,12 +121,15 @@ public class ReceiveImportPageAction implements Action
 
     public List<File> getCompleted()
     {
-        File completedFolder = new File( System.getenv( "DHIS2_HOME" ), "mi/completed" );
-        completed = (List<File>) FileUtils.listFiles( completedFolder, new String[]
-            {
-                "xml"
-            }, false );
+        File completedFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator
+            + "completed" );
+        completed = new ArrayList<File>( FileUtils.listFiles( completedFolder, new String[] { "xml" }, false ) );
         return completed;
+    }
+
+    public void startImportingMessages()
+    {
+        mobileImportService.importAllFiles();
     }
 
     @Override

@@ -35,9 +35,7 @@ import java.io.OutputStream;
  * @version $Id$
  */
 public interface ConfigurationManager<T>
-{
-    String ID = ConfigurationManager.class.getName();
-    
+{    
     /**
      * Writes a configuration object to an XML file. The outputstream will
      * be closed after use.

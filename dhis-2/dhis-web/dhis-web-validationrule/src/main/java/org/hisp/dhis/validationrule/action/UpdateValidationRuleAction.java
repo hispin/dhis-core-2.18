@@ -28,6 +28,8 @@ package org.hisp.dhis.validationrule.action;
  */
 
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -36,7 +38,8 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Margrethe Store
  * @author Lars Helge Overland
- * @version $Id: UpdateValidationRuleAction.java 3868 2007-11-08 15:11:12Z larshelg $
+ * @version $Id: UpdateValidationRuleAction.java 3868 2007-11-08 15:11:12Z
+ *          larshelg $
  */
 public class UpdateValidationRuleAction
     extends ActionSupport
@@ -51,18 +54,25 @@ public class UpdateValidationRuleAction
     {
         this.validationRuleService = validationRuleService;
     }
-    
+
     private ExpressionService expressionService;
-    
+
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
     }
-    
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
@@ -111,7 +121,7 @@ public class UpdateValidationRuleAction
     {
         this.rightSideExpression = rightSideExpression;
     }
-    
+
     private String rightSideDescription;
 
     public void setRightSideDescription( String rightSideDescription )
@@ -119,10 +129,17 @@ public class UpdateValidationRuleAction
         this.rightSideDescription = rightSideDescription;
     }
 
+    private String periodTypeName;
+
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
         ValidationRule validationRule = validationRuleService.getValidationRule( id );
@@ -130,17 +147,23 @@ public class UpdateValidationRuleAction
         validationRule.setName( name );
         validationRule.setDescription( description );
         validationRule.setOperator( operator );
-        
+
         validationRule.getLeftSide().setExpression( leftSideExpression );
         validationRule.getLeftSide().setDescription( leftSideDescription );
-        validationRule.getLeftSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
-        
+        validationRule.getLeftSide().setDataElementsInExpression(
+            expressionService.getDataElementsInExpression( leftSideExpression ) );
+
         validationRule.getRightSide().setExpression( rightSideExpression );
         validationRule.getRightSide().setDescription( rightSideDescription );
-        validationRule.getRightSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
-        
+
+        validationRule.getRightSide().setDataElementsInExpression(
+            expressionService.getDataElementsInExpression( rightSideExpression ) );
+
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+        validationRule.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
+
         validationRuleService.updateValidationRule( validationRule );
-        
+
         return SUCCESS;
     }
 }

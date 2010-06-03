@@ -42,6 +42,8 @@ public class MapLayer
     private String mapSourceType;
 
     private String mapSource;
+    
+    private String layer;
 
     private String fillColor;
 
@@ -55,13 +57,14 @@ public class MapLayer
     {
     }
 
-    public MapLayer( String name, String type, String mapSourceType, String mapSource, String fillColor,
+    public MapLayer( String name, String type, String mapSourceType, String mapSource, String layer, String fillColor,
         double fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
         this.type = type;
         this.mapSourceType = mapSourceType;
         this.mapSource = mapSource;
+        this.layer = layer;
         this.fillColor = fillColor;
         this.fillOpacity = fillOpacity;
         this.strokeColor = strokeColor;
@@ -153,6 +156,16 @@ public class MapLayer
     public void setMapSource( String mapSource )
     {
         this.mapSource = mapSource;
+    }
+
+    public String getLayer()
+    {
+        return layer;
+    }
+
+    public void setLayer( String layer )
+    {
+        this.layer = layer;
     }
 
     public String getFillColor()

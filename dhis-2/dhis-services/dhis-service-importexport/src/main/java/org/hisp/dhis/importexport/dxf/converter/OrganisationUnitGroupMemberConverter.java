@@ -39,8 +39,9 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -51,7 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
  * @version $Id: OrganisationUnitGroupMemberConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class OrganisationUnitGroupMemberConverter
-    extends AbstractGroupMemberConverter implements XMLConverter
+    extends GroupMemberImporter implements XMLConverter, Importer<GroupMemberAssociation>
 {
     public static final String COLLECTION_NAME = "organisationUnitGroupMembers";
     public static final String ELEMENT_NAME = "organisationUnitGroupMember";
@@ -147,7 +148,13 @@ public class OrganisationUnitGroupMemberConverter
             association.setGroupId( organisationUnitGroupMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATION_UNIT_GROUP ) ) ) );            
             association.setMemberId( organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATION_UNIT ) ) ) );
             
-            read( association, GroupMemberType.ORGANISATIONUNITGROUP, params );
+            importObject( association, params );
         }
+    }
+
+    @Override
+    public void importObject( GroupMemberAssociation object, ImportParams params )
+    {
+        read( object, GroupMemberType.ORGANISATIONUNITGROUP, params );
     }
 }

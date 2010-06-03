@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,14 @@
  */
 package org.hisp.dhis.mobile.app.action;
 
-
 import com.opensymphony.xwork2.Action;
 import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 
-public class GetDataElementsAction implements Action
+public class GetDataElementsAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -49,6 +49,7 @@ public class GetDataElementsAction implements Action
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+    
     private String dataSetName;
 
     public void setDataSetName( String dataSetName )
@@ -56,7 +57,8 @@ public class GetDataElementsAction implements Action
         this.dataSetName = dataSetName;
     }
 
-    public String getDataSetName(){
+    public String getDataSetName()
+    {
         return this.dataSetName;
     }
 

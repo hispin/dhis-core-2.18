@@ -96,7 +96,7 @@ public class SetupTreeAction
         throws Exception
     {
         selectionTreeManager.clearSelectedOrganisationUnits();
-        
+
         if ( dataSetId != 0 )
         {
             dataSet = dataSetService.getDataSet( dataSetId );

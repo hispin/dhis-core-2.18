@@ -35,6 +35,7 @@ import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -43,6 +44,9 @@ import org.junit.Test;
 public class ReportManagerTest
     extends DhisSpringTest
 {
+    @Autowired
+    private LocationManager locationManager;
+    
     private ReportManager reportManager;
 
     // -------------------------------------------------------------------------
@@ -66,7 +70,7 @@ public class ReportManagerTest
     public void testConfiguration()
         throws NoConfigurationFoundException
     {
-        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
+        setExternalTestDir( locationManager );
         
         ReportConfiguration config = new ReportConfiguration( "home", "directory" );
         

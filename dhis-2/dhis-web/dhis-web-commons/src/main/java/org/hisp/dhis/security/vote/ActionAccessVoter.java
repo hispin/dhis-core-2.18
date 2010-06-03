@@ -31,10 +31,9 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.Authentication;
-import org.springframework.security.ConfigAttribute;
-import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.GrantedAuthority;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 
@@ -51,8 +50,8 @@ public class ActionAccessVoter
     // AccessDecisionVoter implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    public boolean supports( Class clazz )
+    @Override
+    public boolean supports( Class<?> clazz )
     {
         boolean result = ActionConfig.class.equals( clazz );
 
@@ -61,8 +60,8 @@ public class ActionAccessVoter
         return result;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public int vote( Authentication authentication, Object object, ConfigAttributeDefinition definition )
+    @Override
+    public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         if ( !supports( object.getClass() ) )
         {
@@ -73,8 +72,6 @@ public class ActionAccessVoter
 
         int supported = 0;
         
-        Collection<ConfigAttribute> attributes =  definition.getConfigAttributes();
-
         for ( ConfigAttribute attribute : attributes )
         {
             if ( supports( attribute ) )

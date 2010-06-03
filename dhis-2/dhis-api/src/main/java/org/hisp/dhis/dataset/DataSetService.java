@@ -99,7 +99,7 @@ public interface DataSetService
      * @return The DataSet with the given code.
      */
     DataSet getDataSetByCode( String code );
-    
+
     /**
      * Returns all DataSets associated with the specified source.
      */
@@ -109,13 +109,13 @@ public interface DataSetService
      * Returns all DataSets associated with the specified sources.
      */
     Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
-    
+
     /**
      * Returns the number of Sources among the specified Sources associated with
      * the specified DataSet.
      */
     int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<? extends Source> sources );
-    
+
     /**
      * Get all DataSets.
      * 
@@ -147,33 +147,35 @@ public interface DataSetService
     List<DataSet> getAvailableDataSets();
 
     /**
-     * Get list of assigned (ie. which had corresponding dataentryform) datasets.
+     * Get list of assigned (ie. which had corresponding dataentryform)
+     * datasets.
      * 
      * @return A List containing assigned DataSets.
      */
     List<DataSet> getAssignedDataSets();
-    
+
     /**
-     * Get list of assigned (ie. which had corresponding dataentryform) datasets for specific period type.
+     * Get list of assigned (ie. which had corresponding dataentryform) datasets
+     * for specific period type.
      * 
      * @return A List containing assigned DataSets for specific period type.
      */
     List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType );
-    
+
     /**
      * Searches through the data sets with the corresponding given identifiers.
-     * If the given data element is a member of one of the data sets, that
-     * data sets period type is returned. This implies that if the data element
-     * is a member of more than one data set, which period type being returned
-     * is undefined. If null is passed as the second argument, all data sets
-     * will be searched. 
+     * If the given data element is a member of one of the data sets, that data
+     * sets period type is returned. This implies that if the data element is a
+     * member of more than one data set, which period type being returned is
+     * undefined. If null is passed as the second argument, all data sets will
+     * be searched.
      * 
      * @param dataElement the data element to find the period type for.
      * @param dataSetIdentifiers the data set identifiers to search through.
      * @return the period type of the given data element.
      */
     PeriodType getPeriodType( DataElement dataElement, Collection<Integer> dataSetIdentifiers );
-    
+
     /**
      * Returns a distinct collection of data elements associated with the data
      * sets with the given corresponding data set identifiers.
@@ -182,7 +184,16 @@ public interface DataSetService
      * @return a distinct collection of data elements.
      */
     Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers );
-    
+
+    /**
+     * Returns a collection of data elements associated with the given
+     * corresponding data set.
+     * 
+     * @param dataSet the data set object.
+     * @return a collection of data elements.
+     */
+    Collection<DataElement> getDataElements( DataSet dataSet );
+
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------
@@ -238,6 +249,6 @@ public interface DataSetService
      * @return A collection of FrequencyOverrideAssociations for the given
      *         Source.
      */
-    Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source );       
-    
+    Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source );
+
 }

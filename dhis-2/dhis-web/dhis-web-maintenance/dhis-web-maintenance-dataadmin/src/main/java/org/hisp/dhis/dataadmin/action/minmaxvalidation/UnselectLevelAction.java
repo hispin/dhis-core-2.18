@@ -40,81 +40,81 @@ import com.opensymphony.xwork2.Action;
  */
 public class UnselectLevelAction
     implements Action
+{
+    private static final int FIRST_LEVEL = 1;
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        private static final int FIRST_LEVEL = 1;
+        this.selectionTreeManager = selectionTreeManager;
+    }
 
-        // -------------------------------------------------------------------------
-        // Dependencies
-        // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-        private SelectionTreeManager selectionTreeManager;
+    private Integer level;
 
-        public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private Integer selectLevel;
+
+    public Integer getSelectLevel()
+    {
+        return selectLevel;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
+
+        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
+
+        for ( OrganisationUnit rootUnit : rootUnits )
         {
-            this.selectionTreeManager = selectionTreeManager;
+            unselectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
         }
 
-        // -------------------------------------------------------------------------
-        // Input
-        // -------------------------------------------------------------------------
+        selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
 
-        private Integer level;
+        selectLevel = level;
 
-        public void setLevel( Integer level )
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void unselectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
+    {
+        if ( currentLevel == level )
         {
-            this.level = level;
+            selectedUnits.remove( orgUnit );
         }
-        
-        // -------------------------------------------------------------------------
-        // Output
-        // -------------------------------------------------------------------------
-
-        private Integer selectLevel;
-
-        public Integer getSelectLevel()
+        else
         {
-            return selectLevel;
-        }
-
-        // -------------------------------------------------------------------------
-        // Action
-        // -------------------------------------------------------------------------
-
-        public String execute()
-            throws Exception
-        {
-            Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
-            
-            Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
-
-            for ( OrganisationUnit rootUnit : rootUnits )
-            {        	
-                unselectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
-            }
-
-            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
-
-            selectLevel = level;
-            
-            return SUCCESS;
-        }
-
-        // -------------------------------------------------------------------------
-        // Supportive methods
-        // -------------------------------------------------------------------------
-
-        private void unselectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
-        {
-            if ( currentLevel == level )
-            {        	
-                selectedUnits.remove( orgUnit );
-            }
-            else
+            for ( OrganisationUnit child : orgUnit.getChildren() )
             {
-                for ( OrganisationUnit child : orgUnit.getChildren() )
-                {            	
-                    unselectLevel( child, currentLevel + 1, selectedUnits );
-                }
+                unselectLevel( child, currentLevel + 1, selectedUnits );
             }
         }
     }
+}

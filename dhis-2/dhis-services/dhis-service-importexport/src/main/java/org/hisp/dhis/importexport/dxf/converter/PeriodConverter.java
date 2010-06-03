@@ -34,12 +34,10 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractPeriodConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.PeriodImporter;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -51,7 +49,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id: PeriodConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class PeriodConverter
-    extends AbstractPeriodConverter implements XMLConverter
+    extends PeriodImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "periods";
     public static final String ELEMENT_NAME = "period";
@@ -141,9 +139,7 @@ public class PeriodConverter
             period.setStartDate( DateUtils.getMediumDate( values.get( FIELD_START_DATE ) ) );
             period.setEndDate( DateUtils.getMediumDate( values.get( FIELD_END_DATE ) ) );
             
-            NameMappingUtil.addPeriodMapping( period.getId(), period );
-            
-            read( period, GroupMemberType.NONE, params );
+            importObject( period, params );
         }
     }
 }

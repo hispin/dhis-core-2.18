@@ -43,11 +43,9 @@
     
     <property name="geoCode"/>
     
-    <property name="polygonCoordinates" type="text"/>
-    
-    <property name="latitude"/>
-      
-    <property name="longitude"/>
+	<property name="featureType"/>
+	
+    <property name="coordinates" type="text"/>
     
     <property name="url"/>
 		

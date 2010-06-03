@@ -34,12 +34,10 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupSetConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.GroupSetImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 
@@ -48,7 +46,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
  * @version $Id: GroupSetConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class GroupSetConverter
-    extends AbstractGroupSetConverter implements XMLConverter
+    extends GroupSetImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "groupSets";
     public static final String ELEMENT_NAME = "groupSet";
@@ -128,9 +126,7 @@ public class GroupSetConverter
             groupSet.setDescription( values.get( FIELD_DESCRIPTION ) );
             groupSet.setCompulsory( Boolean.parseBoolean( values.get( FIELD_COMPULSORY ) ) );
             
-            NameMappingUtil.addGroupSetMapping( groupSet.getId(), groupSet.getName() );
-            
-            read( groupSet, GroupMemberType.NONE, params );
+            importObject( groupSet, params );            
         }
     }
 }

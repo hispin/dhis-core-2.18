@@ -37,6 +37,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -50,19 +51,11 @@ public class HibernateImportDataValueStore
     // Dependencies
     // ----------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-    
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     // ----------------------------------------------------------------------
     // ImportDataValueStore implementation

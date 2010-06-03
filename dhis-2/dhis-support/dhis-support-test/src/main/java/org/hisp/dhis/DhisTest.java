@@ -34,32 +34,37 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.dbms.DbmsManager;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:/META-INF/dhis/beans.xml"})
 public abstract class DhisTest
-    extends DhisConvenienceTest
+    extends DhisConvenienceTest implements ApplicationContextAware
 {
-    private static ApplicationContext context;
-
+    @Autowired
+    protected DbmsManager dbmsManager;
+    
     // -------------------------------------------------------------------------
-    // Fixture
+    // ApplicationContextAware implementation
     // -------------------------------------------------------------------------
 
-    @BeforeClass
-    public static void beforeClass()
+    private ApplicationContext context;
+    
+    public void setApplicationContext( ApplicationContext context )
     {
-        String location = "classpath*:/META-INF/dhis/beans.xml";
-
-        context = new ClassPathXmlApplicationContext( location );
+        this.context = context;
     }
 
     @Before
@@ -83,8 +88,6 @@ public abstract class DhisTest
         
         if ( emptyDatabaseAfterTest() )
         {
-            DbmsManager dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
-                        
             dbmsManager.emptyDatabase();
         }
     }

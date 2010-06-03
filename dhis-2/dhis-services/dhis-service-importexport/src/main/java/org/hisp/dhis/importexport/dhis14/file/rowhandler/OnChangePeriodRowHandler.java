@@ -30,12 +30,10 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractPeriodConverter;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14PeriodUtil;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.PeriodImporter;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -46,7 +44,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: OnChangePeriodRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
  */
 public class OnChangePeriodRowHandler
-    extends AbstractPeriodConverter implements RowHandler
+    extends PeriodImporter implements RowHandler
 {
     private ImportParams params;
     
@@ -85,9 +83,7 @@ public class OnChangePeriodRowHandler
 
             Dhis14PeriodUtil.addPeriod( period ); // For uniqueness
             
-            NameMappingUtil.addPeriodMapping( period.getId(), period ); // For later reference by semi-permanent datavalues
-            
-            read( period, GroupMemberType.NONE, params );
+            importObject( period, params );
         }
     }
 }

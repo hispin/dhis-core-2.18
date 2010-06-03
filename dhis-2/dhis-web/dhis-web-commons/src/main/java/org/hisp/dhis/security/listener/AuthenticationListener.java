@@ -30,15 +30,15 @@ package org.hisp.dhis.security.listener;
 import org.hisp.dhis.useraudit.UserAuditService;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.security.event.authentication.AbstractAuthenticationFailureEvent;
-import org.springframework.security.event.authentication.AuthenticationSuccessEvent;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author Lars Helge Overland
  */
 public class AuthenticationListener
-    implements ApplicationListener
+    implements ApplicationListener<ApplicationEvent>
 {
     private UserAuditService userAuditService;
     

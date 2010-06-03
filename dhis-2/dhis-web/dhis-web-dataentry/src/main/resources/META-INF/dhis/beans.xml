@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="org.hisp.dhis.de.action.EmptyAction" class="org.hisp.dhis.de.action.EmptyAction" />
 
@@ -75,6 +75,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="dataElementOrderManager"
 			ref="org.hisp.dhis.order.manager.DataElementOrderManager" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="standardCommentsManager"
@@ -95,6 +96,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />    
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />    
 		<property name="dataEntryScreenManager"
 			ref="org.hisp.dhis.de.screen.DataEntryScreenManager" />
 		<property name="standardCommentsManager"
@@ -111,6 +113,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.de.action.SectionFormAction" class="org.hisp.dhis.de.action.SectionFormAction"
 		scope="prototype">
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="standardCommentsManager"

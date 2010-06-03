@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
 	<!-- ReportExcel -->
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelStore" 
-		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore"/>
+		
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" 
 		class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
 		<property name="reportStore" 
@@ -20,7 +20,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore" 
 		class="org.hisp.dhis.reportexcel.excelitem.hibernate.HibernateExcelItemStore">
-		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -49,7 +48,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- DeletionManager -->
   
   	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+		<property name="targetObject" ref="deletionManager"/>
 		<property name="targetMethod" value="addDeletionHandlers"/>
 		<property name="arguments">
 		  <list>

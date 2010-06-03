@@ -515,7 +515,16 @@
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
 			<param name="page">/dhis-web-maintenance-patient/programEnrollmentSelectForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/patient.js</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js
+				,../dhis-web-commons/calendar/calendar.js
+				,../dhis-web-commons/calendar/calendar-lang.js
+				,../dhis-web-commons/calendar/calendar-setup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,../dhis-web-commons/util/validate/messages_locale.js
+				,javascript/patient.js</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
@@ -694,6 +703,46 @@
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
+		<!-- Program_ValidationCriteria Association -->
+
+		<action name="defineValidationCriteriaAssociationsForm"
+			class="org.hisp.dhis.patient.action.program.ShowValidationCriteriaAssociationsFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/validationCriteriaAssociations.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js
+				,javascript/associations.js
+				,javascript/program.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
+		
+		<action name="defineCriteriaAssociations"
+			class="org.hisp.dhis.patient.action.program.DefineCriteriaAssociationsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
+		
+		<!-- Program_ValidationDE Association -->
+
+		<action name="defineValidationDEAssociationsForm"
+			class="org.hisp.dhis.patient.action.program.ShowValidationDEAssociationsFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/validationDEAssociations.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js
+				,javascript/associations.js
+				,javascript/program.js
+				,javascript/programStageDEValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
+		
+		<action name="defineCriteriaAssociations"
+			class="org.hisp.dhis.patient.action.program.DefineCriteriaAssociationsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
 		<!-- ProgramStage -->
 
 		<action name="programStage"
@@ -1043,6 +1092,122 @@
 		<action name="saveCaseAggMapping"
 			class="org.hisp.dhis.patient.action.caseaggregation.SaveCaseAggregationMappingAction">
 			<result name="success" type="redirect">index.action</result>
+		</action>
+		
+		<!-- Validation - PatientValidationCriteria -->
+		
+		<action name="validationCriteria"
+			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/validationCriteria.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/validationcriteria.js</param>
+		</action>
+		
+		<action name="showAddValidationCriteriaForm"
+			class="org.hisp.dhis.patient.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addValidationCriteria.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">
+				javascript/validationcriteria.js
+				,../dhis-web-commons/calendar/calendar.js
+				,../dhis-web-commons/calendar/calendar-lang.js
+				,../dhis-web-commons/calendar/calendar-setup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
+		</action>
+		
+		<action name="addValidationCriteria"
+			class="org.hisp.dhis.patient.action.validation.AddValidationCriteriaAction">
+			<result name="success" type="redirect">validationCriteria.action</result>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
+		</action>
+		
+		<action name="showUpdateValidationCriteriaForm"
+			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/updateValidationCriteria.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">
+				javascript/validationcriteria.js
+				,../dhis-web-commons/calendar/calendar.js
+				,../dhis-web-commons/calendar/calendar-lang.js
+				,../dhis-web-commons/calendar/calendar-setup.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_UPDATE</param>
+		</action>
+		
+		<action name="getValidationCriteria"
+			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseValidationCriteria.vm</result>
+		</action>
+		
+		<action name="updateValidationCriteria"
+			class="org.hisp.dhis.patient.action.validation.UpdateValidationCriteriaAction">
+			<result name="success" type="redirect">validationCriteria.action</result>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_UPDATE</param>
+		</action>
+		
+		<action name="removeValidationCriteria"
+			class="org.hisp.dhis.patient.action.validation.RemoveValidationCriteriaAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_DELETE</param>
+		</action>
+		
+		<action name="validateValidationCriteria"
+			class="org.hisp.dhis.patient.action.validation.ValidateValidationCriteriaAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseInput.vm</result>
+		</action>
+		
+		<action name="showProgramsForValidationCriteriaForm"
+			class="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/programsForValidationCriteriaAssociations.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js
+				,javascript/associations.js
+				,javascript/program.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
+		
+		<action name="defineProgramsForValidationCriteria"
+			class="org.hisp.dhis.patient.action.validation.DefineProgramListForValidationCriteriaAction">
+			<result name="success" type="redirect">
+				validationCriteria.action</result>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
+		
+		<!-- Validation - ProgramStageDataElementValidation -->
+		
+		<action name="programStageDEValidation"
+			class="org.hisp.dhis.patient.action.validation.GetProgramStageDEValidationListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/programStageDataElementValidation.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/programStageDEValidation.js</param>
+		</action>
+		
+		<action name="addProgramStageDEValidation"
+			class="org.hisp.dhis.patient.action.validation.AddProgramStageDEValidationAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+		</action>
+		
+		<action name="removeProgramStageDEValidation"
+			class="org.hisp.dhis.patient.action.validation.RemoveProgramStageDEValidationAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 		
 	</package>

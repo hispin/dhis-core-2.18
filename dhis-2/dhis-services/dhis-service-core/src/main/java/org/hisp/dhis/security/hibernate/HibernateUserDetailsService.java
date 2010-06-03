@@ -27,21 +27,24 @@ package org.hisp.dhis.security.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import  org.springframework.security.GrantedAuthority;
-import  org.springframework.security.GrantedAuthorityImpl;
-import  org.springframework.security.userdetails.UserDetails;
-import  org.springframework.security.userdetails.UserDetailsService;
-import  org.springframework.security.userdetails.UsernameNotFoundException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -61,12 +64,8 @@ public class HibernateUserDetailsService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
     
     // -------------------------------------------------------------------------
     // UserDetailsService implementation
@@ -78,17 +77,15 @@ public class HibernateUserDetailsService
     {
         UserCredentials credentials = loadUserCredentials( username );
 
-        GrantedAuthority[] authorities = getGrantedAuthorities( credentials );
-
-        return new  org.springframework.security.userdetails.User( credentials.getUsername(), credentials.getPassword(), true,
-            true, true, true, authorities );
+        return new User( credentials.getUsername(), credentials.getPassword(), true,
+            true, true, true, getGrantedAuthorities( credentials ) );
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private GrantedAuthority[] getGrantedAuthorities( UserCredentials credentials )
+    private Collection<GrantedAuthority> getGrantedAuthorities( UserCredentials credentials )
     {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 
@@ -100,7 +97,7 @@ public class HibernateUserDetailsService
             }
         }
 
-        return authorities.toArray( new GrantedAuthority[authorities.size()] );
+        return authorities;
     }
 
     private UserCredentials loadUserCredentials( String username )

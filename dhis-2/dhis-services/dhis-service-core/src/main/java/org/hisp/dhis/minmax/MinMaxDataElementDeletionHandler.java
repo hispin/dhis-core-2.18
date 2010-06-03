@@ -30,7 +30,6 @@ package org.hisp.dhis.minmax;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
 
 /**
  * @author Lars Helge Overland
@@ -50,13 +49,6 @@ public class MinMaxDataElementDeletionHandler
         this.minMaxDataElementService = minMaxDataElementService;
     }
     
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
-    }
-    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -74,8 +66,6 @@ public class MinMaxDataElementDeletionHandler
         {
             if ( element.getDataElement().equals( dataElement ) )
             {
-                deletionManager.execute( element );
-                
                 minMaxDataElementService.deleteMinMaxDataElement( element );
             }
         }
@@ -88,8 +78,6 @@ public class MinMaxDataElementDeletionHandler
         {
             if ( element.getSource().equals( source ) )
             {
-                deletionManager.execute( element );
-                
                 minMaxDataElementService.deleteMinMaxDataElement( element );
             }
         }

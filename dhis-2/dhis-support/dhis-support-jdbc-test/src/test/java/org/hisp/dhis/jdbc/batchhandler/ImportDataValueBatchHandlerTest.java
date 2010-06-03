@@ -38,6 +38,7 @@ import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -46,10 +47,11 @@ import org.junit.Test;
 public class ImportDataValueBatchHandlerTest
     extends DhisTest
 {
-    private ImportDataValueService importDataValueService;
-    
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    private ImportDataValueService importDataValueService;
+
     private BatchHandler<ImportDataValue> batchHandler;
     
     private ImportObjectStatus status;
@@ -67,8 +69,6 @@ public class ImportDataValueBatchHandlerTest
     {
         importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
 
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
 
         batchHandler.init();

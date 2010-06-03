@@ -142,10 +142,6 @@
 		showById( 'organisationUnitGroup' );
 	}
 	
-	
-	
-	
-	
 </script>
 <div id="report" style="position:fixed;display:none;width:450px;z-index:11;background-color: white;border: medium solid silver;height:250px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('report');deleteDivEffect();">[x]</div>
@@ -221,7 +217,6 @@
 	
 </script>
 
-
 <!-- HIEU DONE -->
 <div id="dataelementCategoryReportDiv" style="position:fixed;display:none;width:1170px;z-index:10001;background-color: white;border: medium solid silver;height:590px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataelementCategoryReportDiv');deleteDivEffect();">[x]
@@ -236,7 +231,6 @@
 	<div id="hiddenDiv">
 		<input type="hidden" value="" id="hiddenId"/>
 	</div>
-	
 	
 	<table>
 		<tr>
@@ -321,8 +315,6 @@
 	</form>
 </div>
 
-
-
 <div id='organisationUnitGroup' style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:200px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="javascript:hideById('organisationUnitGroup');deleteDivEffect();">[x]</div>
 	<input type="hidden" value="" id="orgUnitId" name="orgUnitId"/>
@@ -368,6 +360,13 @@
 </div>
 
 <span id="message" style="top:100px;right:5px;position:absolute;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
+
+<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
+	<div style="float:right">
+		<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+	</div>
+	<p><span id="warningField"></span></p>
+</div>
 
 <div id="listExcelTemplate" style="overflow:auto;position:fixed;display:none;width:300px;z-index:10001;background-color: white;border: medium solid silver;height:500px;padding:5px;right:5px;top:5px;">
 	

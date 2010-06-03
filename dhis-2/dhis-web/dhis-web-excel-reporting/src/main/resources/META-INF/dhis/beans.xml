@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="org.hisp.dhis.reportexcel.state.SelectionManager" class="org.hisp.dhis.reportexcel.state.DefaultSelectionManager"
 		scope="singleton">
@@ -12,8 +12,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.DefaultReportLocationManager"
 		init-method="init">
-		<property name="locationManager"
-			ref="org.hisp.dhis.external.location.LocationManager" />
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
@@ -156,24 +154,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.reportexcel.action.BackupReportExcelAction"
-		class="org.hisp.dhis.reportexcel.action.BackupReportExcelAction"
-		scope="prototype">
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="locationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.reportexcel.action.RestoreReportExcelAction"
-		class="org.hisp.dhis.reportexcel.action.RestoreReportExcelAction"
-		scope="prototype">
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!-- REPORT EXCEL ASSOCIATION BEAN -->

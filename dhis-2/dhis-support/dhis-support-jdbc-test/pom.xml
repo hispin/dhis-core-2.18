@@ -11,7 +11,7 @@
   
   <artifactId>dhis-support-jdbc-test</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS JDBC Test Project</name>
+  <name>DHIS JDBC / External Test Project</name>
   
   <dependencies>
     
@@ -44,6 +44,11 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-hibernate</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-external</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

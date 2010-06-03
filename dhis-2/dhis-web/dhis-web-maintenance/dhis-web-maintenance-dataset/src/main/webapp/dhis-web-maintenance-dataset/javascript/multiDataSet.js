@@ -234,5 +234,11 @@ function deleteDataSetEditorCompleted( xmlObject )
 		availableList.remove( availableList.selectedIndex );
 		setMessage( message );
 	}
+	else if ( type == "error" )
+	{
+		setFieldValue( 'warningArea', xmlObject.firstChild.nodeValue );
+
+		showWarning();
+	}
 }
 

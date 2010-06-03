@@ -30,6 +30,7 @@ package org.hisp.dhis.reporting.chart.action;
 import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
@@ -44,8 +45,6 @@ import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.reporttable.RelativePeriods;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Lars Helge Overland

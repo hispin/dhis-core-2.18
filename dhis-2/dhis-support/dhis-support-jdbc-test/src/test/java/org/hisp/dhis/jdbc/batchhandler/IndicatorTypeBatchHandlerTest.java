@@ -40,6 +40,7 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -48,10 +49,11 @@ import org.junit.Test;
 public class IndicatorTypeBatchHandlerTest
     extends DhisTest
 {
-    private IndicatorService indicatorService;
-    
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    private IndicatorService indicatorService;
+
     private BatchHandler<IndicatorType> batchHandler;
     
     private IndicatorType indicatorTypeA;
@@ -66,8 +68,6 @@ public class IndicatorTypeBatchHandlerTest
     public void setUpTest()
     {
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
 

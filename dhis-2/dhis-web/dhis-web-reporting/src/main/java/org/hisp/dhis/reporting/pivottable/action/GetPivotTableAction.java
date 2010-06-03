@@ -27,6 +27,7 @@ package org.hisp.dhis.reporting.pivottable.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collections;
 import java.util.Comparator;
 
 import org.hisp.dhis.i18n.I18nFormat;
@@ -36,8 +37,6 @@ import org.hisp.dhis.pivottable.PivotTable;
 import org.hisp.dhis.pivottable.PivotTableService;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Lars Helge Overland

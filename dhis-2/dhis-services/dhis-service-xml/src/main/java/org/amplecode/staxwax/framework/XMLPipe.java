@@ -47,6 +47,8 @@ import org.codehaus.stax2.XMLEventReader2;
  * 
  * The input of the pipe looks like an XMLEventWriter and can be used as a
  * Result of a transformation.
+ *
+ * Only minimal required methods of XMLReader and XMLWriter are implemented.
  * 
  * @author bobj
  * @version created 08-Dec-2009
@@ -69,15 +71,6 @@ public class XMLPipe
         return output;
     }
 
-    public boolean inputClosed()
-    {
-        return ((PipeReader) input).isClosed();
-    }
-
-    public boolean outputClosed()
-    {
-        return ((PipeWriter) input).isClosed();
-    }
 
     public int getEventCount()
     {
@@ -99,17 +92,6 @@ public class XMLPipe
     private class PipeReader
         implements XMLEventReader2
     {
-        protected boolean closed;
-
-        public boolean isClosed()
-        {
-            return closed;
-        }
-
-        PipeReader()
-        {
-            closed = false;
-        }
 
         // ------------------- XMLEventReader methods ------------------
         @Override
@@ -172,88 +154,60 @@ public class XMLPipe
         public XMLEvent nextTag()
             throws XMLStreamException
         {
-            XMLEvent ev = null;
-            while ( !ev.isEndElement() && !ev.isStartElement() )
-            {
-                ev = nextEvent();
-                if ( ev.getEventType() != XMLEvent.SPACE )
-                {
-                    throw new XMLStreamException( "XMLPipe nextTag() problem" );
-                }
-            }
-            return ev;
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+
         }
 
         @Override
         public Object getProperty( String name )
             throws IllegalArgumentException
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public void close()
             throws XMLStreamException
         {
-            closed = true;
-            // TODO: think about emptying eventq?
-            return;
+            // not a real stream ... no handle to close
+	    return;
         }
 
         @Override
         public Object next()
         {
-            if ( !this.hasNext() )
-            {
-                throw new NoSuchElementException();
-            }
-            else
-            {
-                return this.next();
-            }
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public void remove()
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public boolean hasNextEvent()
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public boolean isPropertySupported( String string )
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public boolean setProperty( String string, Object o )
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
     };
 
     private class PipeWriter
         implements XMLEventWriter
     {
-
-        protected boolean closed;
-
-        public boolean isClosed()
-        {
-            return closed;
-        }
-
-        PipeWriter()
-        {
-            closed = false;
-        }
 
         // ---------------------------------------------------------------------
         // XMLEventWriter methods
@@ -288,42 +242,42 @@ public class XMLPipe
         public String getPrefix( String uri )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public void setPrefix( String prefix, String uri )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public void setDefaultNamespace( String uri )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public void setNamespaceContext( NamespaceContext context )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public NamespaceContext getNamespaceContext()
         {
-            throw new UnsupportedOperationException( "Not supported yet." );
+            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
         }
 
         @Override
         public void close()
             throws XMLStreamException
         {
-            closed = true;
-            return;
+            // not a real stream ... no handle to close
+	    return;
         }
     };
 }

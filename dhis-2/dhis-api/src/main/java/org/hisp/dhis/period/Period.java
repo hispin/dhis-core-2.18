@@ -27,11 +27,11 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
@@ -42,10 +42,8 @@ import org.hisp.dhis.dimension.DimensionType;
  * @version $Id: Period.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class Period
-    implements Serializable, DimensionOption
+    extends IdentifiableObject implements DimensionOption
 {
-    private int id;
-
     /**
      * Required.
      */
@@ -61,11 +59,6 @@ public class Period
      */
     private Date endDate;
     
-    /**
-     * Convenience property.
-     */
-    private transient String name;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -74,13 +67,22 @@ public class Period
     {
     }
 
+    public Period( Period period )
+    {
+        this.id = period.getId();
+        this.periodType = period.getPeriodType();
+        this.startDate = period.getStartDate();
+        this.endDate = period.getEndDate();
+        this.name = period.getName();
+    }
+    
     protected Period( PeriodType periodType, Date startDate, Date endDate )
     {
         this.periodType = periodType;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
+    
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
@@ -205,16 +207,6 @@ public class Period
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
     public void setEndDate( Date endDate )
     {
         this.endDate = endDate;
@@ -243,15 +235,5 @@ public class Period
     public void setStartDate( Date startDate )
     {
         this.startDate = startDate;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 }

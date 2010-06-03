@@ -34,18 +34,16 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
 
 /**
  * @author Lars Helge Overland
  */
 public class DataElementCategoryConverter
-    extends AbstractDataElementCategoryConverter implements XMLConverter
+    extends DataElementCategoryImporter implements XMLConverter
 {
     /**
      * Constructor for read operations.
@@ -73,8 +71,6 @@ public class DataElementCategoryConverter
     {
         DataElementCategory category = categoryService.getDataElementCategoryByName( DEFAULT_NAME );
         
-        NameMappingUtil.addCategoryMapping( category.getId(), category.getName() );
-        
-        read( category, GroupMemberType.NONE, params );
+        importObject( category, params );
     }
 }

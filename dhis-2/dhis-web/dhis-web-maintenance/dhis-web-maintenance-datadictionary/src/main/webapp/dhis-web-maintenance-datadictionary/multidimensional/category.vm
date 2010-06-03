@@ -44,7 +44,7 @@
 				<p><label>$i18n.getString( "number_of_category_options" ):</label><br><span id="categoryOptionsCountField"></span></p>
 			</div>
 
-            <div id="warningArea" style="display:none">
+			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
                 <div style="float:right">
                     <a href="javascript:hideWarning()" title="$i18n.getString( "hide_warning" )"><img src="../images/close.png" alt="$i18n.getString( "hide_warning" )"></a>
                 </div>

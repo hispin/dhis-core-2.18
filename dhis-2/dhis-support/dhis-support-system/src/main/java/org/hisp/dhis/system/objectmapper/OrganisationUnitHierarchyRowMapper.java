@@ -37,9 +37,9 @@ import org.springframework.jdbc.core.RowMapper;
  * @version $Id$
  */
 public class OrganisationUnitHierarchyRowMapper
-    implements RowMapper
+    implements RowMapper<Integer[]>
 {
-    public Object mapRow( ResultSet resultSet, int count )
+    public Integer[] mapRow( ResultSet resultSet, int count )
         throws SQLException
     {
         return new Integer[] { resultSet.getInt( "organisationunitid" ), resultSet.getInt( "parentid" ) }; 

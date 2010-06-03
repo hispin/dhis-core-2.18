@@ -28,7 +28,6 @@ package org.hisp.dhis.indicator;
  */
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
 
 /**
  * @author Lars Helge Overland
@@ -48,13 +47,6 @@ public class IndicatorDeletionHandler
         this.indicatorService = indicatorService;
     }
     
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -86,8 +78,6 @@ public class IndicatorDeletionHandler
         {
             if ( indicator.getIndicatorType().equals( indicatorType ) )
             {
-                deletionManager.execute( indicator );
-                
                 indicatorService.deleteIndicator( indicator );
             }   
         }

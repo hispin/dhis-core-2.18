@@ -113,6 +113,8 @@ public interface DataSetStore
      */
     Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType );
 
+    Collection<DataSet> getDataSetsBySource( Source source );
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

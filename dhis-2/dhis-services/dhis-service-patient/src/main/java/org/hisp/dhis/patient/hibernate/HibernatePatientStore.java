@@ -103,10 +103,11 @@ public class HibernatePatientStore
 
     public int countGetPatientsByNames( String name )
     {
-        return (Integer)getCriteria( 
+        Number rs =  (Number)getCriteria( 
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )

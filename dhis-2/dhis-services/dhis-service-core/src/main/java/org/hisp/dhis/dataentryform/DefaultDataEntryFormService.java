@@ -130,14 +130,13 @@ public class DefaultDataEntryFormService
     {
         if ( programStage != null )
         {
-
             DataEntryFormAssociation dataAssociation = dataEntryFormAssociationService.getDataEntryFormAssociation(
                 DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, programStage.getId() );
+            
             if ( dataAssociation != null )
             {
                 return dataAssociation.getDataEntryForm();
             }
-
         }
 
         return null;

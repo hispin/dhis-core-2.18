@@ -71,6 +71,7 @@ import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.util.LoggingHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -84,12 +85,8 @@ public class DefaultObjectMappingGenerator
     // Dependencies
     // -------------------------------------------------------------------------
     
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
-
-    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
-    {
-        this.batchHandlerFactory = batchHandlerFactory;
-    }
     
     private PeriodStore periodStore;
 

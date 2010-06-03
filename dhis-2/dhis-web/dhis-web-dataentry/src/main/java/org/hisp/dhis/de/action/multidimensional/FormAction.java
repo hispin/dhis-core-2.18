@@ -53,6 +53,7 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
@@ -166,6 +167,13 @@ public class FormAction
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -385,7 +393,7 @@ public class FormAction
             disabled = "disabled";
         }
 
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataSetService.getDataElements( dataSet ) );
 
         if ( dataElements.isEmpty() )
         {
@@ -442,7 +450,7 @@ public class FormAction
                 if ( !cat.getCategoryOptions().isEmpty() )
                 {
                     catColSpan = catColSpan / cat.getCategoryOptions().size();
-                    int total = optionCombos.size() / ( catColSpan * cat.getCategoryOptions().size() );
+                    int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
                     Collection<Integer> cols = new ArrayList<Integer>( total );
 
                     for ( int i = 0; i < total; i++ )
@@ -451,9 +459,9 @@ public class FormAction
                     }
 
                     /*
-                     * TODO Cols are made to be a collection simply to facilitate a
-                     * for loop in the velocity template - there should be a better
-                     * way of "for" doing a loop.
+                     * TODO Cols are made to be a collection simply to
+                     * facilitate a for loop in the velocity template - there
+                     * should be a better way of "for" doing a loop.
                      */
 
                     colRepeat.put( cat.getId(), cols );
@@ -526,7 +534,7 @@ public class FormAction
 
         dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
 
-        cdeFormExists = ( dataEntryForm != null );
+        cdeFormExists = (dataEntryForm != null);
 
         if ( cdeFormExists )
         {

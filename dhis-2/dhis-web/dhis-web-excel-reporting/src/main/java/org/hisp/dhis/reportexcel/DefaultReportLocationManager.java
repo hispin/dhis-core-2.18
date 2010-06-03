@@ -33,6 +33,7 @@ import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Tran Thanh Tri
@@ -50,6 +51,7 @@ public class DefaultReportLocationManager
     // Dependency
     // -------------------------------------------
 
+    @Autowired
     private LocationManager locationManager;
 
     private SystemSettingManager systemSettingManager;
@@ -57,11 +59,6 @@ public class DefaultReportLocationManager
     // -------------------------------------------
     // Setter
     // -------------------------------------------
-
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {

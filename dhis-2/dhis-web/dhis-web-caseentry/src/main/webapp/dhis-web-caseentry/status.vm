@@ -1,3 +1,8 @@
 <status>
-	<code>$statusCode</code>	
+	<code>$statusCode</code>
+	<validations>
+		#foreach($validation in $resultValidation)
+				<validation>$validation.description</validation>
+		#end
+	</validations>
 </status>

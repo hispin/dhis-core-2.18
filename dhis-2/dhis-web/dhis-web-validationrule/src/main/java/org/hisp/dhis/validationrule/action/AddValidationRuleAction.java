@@ -29,6 +29,8 @@ package org.hisp.dhis.validationrule.action;
 
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -60,6 +62,13 @@ public class AddValidationRuleAction
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
     
     // -------------------------------------------------------------------------
@@ -115,6 +124,13 @@ public class AddValidationRuleAction
         this.rightSideDescription = rightSideDescription;
     }
 
+    private String periodTypeName;
+    
+    public void setPeriodTypeName(String periodTypeName) 
+    {
+        this.periodTypeName = periodTypeName;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -141,8 +157,11 @@ public class AddValidationRuleAction
         validationRule.setOperator( operator );
         validationRule.setLeftSide( leftSide );
         validationRule.setRightSide( rightSide );
+
+        PeriodType periodType = periodService.getPeriodTypeByName(periodTypeName);
+        validationRule.setPeriodType(periodType);
         
-        validationRuleService.addValidationRule( validationRule );
+        validationRuleService.saveValidationRule( validationRule );
         
         return SUCCESS;
     }

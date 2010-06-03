@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,10 +60,10 @@ public class SendSMSAction implements Action
     {
         if ( statAction.equalsIgnoreCase( "Start" ) )
         {
-            smsService.startService();
+            this.result = smsService.startService();
         } else
         {
-            smsService.stopService();
+            this.result = smsService.stopService();
         }
     }
 
@@ -88,14 +88,21 @@ public class SendSMSAction implements Action
         this.send = send;
     }
 
+    String result;
+
+    public String getResult()
+    {
+        return result;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
         if ( this.send != null )
         {
-            smsService.sendMessage( recipient, msg );
-        } 
+            this.result = smsService.sendMessage( recipient, msg );
+        }
         return SUCCESS;
     }
 }

@@ -493,7 +493,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				if (str.charAt(str.length-1) == ',') {
 					str = str.substring(0, str.length-1);
 				}
-				//
+				
 				bounds = new Array();
 				bounds = str.split(',');
 				

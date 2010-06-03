@@ -104,14 +104,12 @@
 		<default-interceptor-ref name="exceptionStack" />
 
 		<global-results>
-			<result name="exceptionDefault" type="velocity">/exception.vm
-			</result>
-			<result name="accessDenied" type="velocity">/accessDenied.vm
-			</result>
+			<result name="exceptionDefault" type="velocity">/exception.vm</result>
+			<result name="accessDenied" type="velocity">/accessDenied.vm</result>
+			<result name="jsonAccessDenied" type="velocity">/dhis-web-commons/ajax/jsonAccessDenied.vm</result>
 			<result name="plainTextError" type="plainTextErrorResult">
 				<param name="parse">true</param>
-				<param name="message">${exception.class.name}:
-					${exception.message}</param>
+				<param name="message">${exception.class.name}: ${exception.message}</param>
 			</result>
 		</global-results>
 	</package>

@@ -33,6 +33,7 @@ import java.io.OutputStream;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -48,13 +49,24 @@ public class PdfServiceTest
     extends DhisSpringTest
 {
     private PdfService pdfService;
-    
+
     private DataElementService dataElementService;
-    
+
     private IndicatorService indicatorService;
-    
+
     private OrganisationUnitService organisationUnitService;
-    
+
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -63,27 +75,27 @@ public class PdfServiceTest
     public void setUpTest()
     {
         pdfService = (PdfService) getBean( PdfService.ID );
-        
+
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
+
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
+
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
+
         dataElementService.addDataElement( createDataElement( 'A' ) );
         dataElementService.addDataElement( createDataElement( 'B' ) );
         dataElementService.addDataElement( createDataElement( 'C' ) );
-        
+
         IndicatorType indicatorType = createIndicatorType( 'A' );
         indicatorService.addIndicatorType( indicatorType );
-        
+
         indicatorService.addIndicator( createIndicator( 'A', indicatorType ) );
         indicatorService.addIndicator( createIndicator( 'B', indicatorType ) );
         indicatorService.addIndicator( createIndicator( 'C', indicatorType ) );
-        
+
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'A' ) );
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'B' ) );
-        organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'C' ) );        
+        organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'C' ) );
     }
 
     // -------------------------------------------------------------------------
@@ -94,11 +106,11 @@ public class PdfServiceTest
     @Ignore
     public void testWriteAllDataElements()
         throws Exception
-    {        
+    {
         OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.pdf" ) );
-            
-        pdfService.writeAllDataElements( outputStream );
-        
+
+        pdfService.writeAllDataElements( outputStream, i18n );
+
         StreamUtils.closeOutputStream( outputStream );
     }
 
@@ -108,9 +120,9 @@ public class PdfServiceTest
         throws Exception
     {
         OutputStream outputStreamB = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.pdf" ) );
-            
-        pdfService.writeAllIndicators( outputStreamB );
-        
+
+        pdfService.writeAllIndicators( outputStreamB, i18n );
+
         StreamUtils.closeOutputStream( outputStreamB );
     }
 
@@ -120,9 +132,9 @@ public class PdfServiceTest
         throws Exception
     {
         OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.pdf" ) );
-            
-        pdfService.writeAllOrganisationUnits( outputStream );
-        
+
+        pdfService.writeAllOrganisationUnits( outputStream, i18n );
+
         StreamUtils.closeOutputStream( outputStream );
     }
 }

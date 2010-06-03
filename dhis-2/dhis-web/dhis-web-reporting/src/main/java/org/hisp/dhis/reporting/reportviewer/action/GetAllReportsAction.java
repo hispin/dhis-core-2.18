@@ -104,7 +104,7 @@ public class GetAllReportsAction
         {
             for ( Report report : reportService.getAllReports() )
             {
-                report.setUrl( "renderReport.action?template=" + report.getDesign() );
+                report.setUrl( "renderReport.action?id=" + report.getId() );
                 
                 reports.add( report );
             }

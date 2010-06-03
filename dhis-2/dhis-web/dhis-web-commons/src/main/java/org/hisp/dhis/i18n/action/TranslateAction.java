@@ -38,7 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.i18n.util.LocaleUtils;
+import org.hisp.dhis.system.util.LocaleUtils;
 
 import com.opensymphony.xwork2.Action;
 

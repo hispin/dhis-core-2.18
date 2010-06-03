@@ -38,12 +38,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.customvalue.CustomValue;
-import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
@@ -80,13 +77,7 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    private CustomValueService customValueService;
-
-    public void setCustomValueService( CustomValueService customValueService )
-    {
-        this.customValueService = customValueService;
-    }
-
+    
     private PatientDataValueService patientDataValueService;
 
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
@@ -99,13 +90,6 @@ public class DefaultDataEntryScreenManager
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -1101,7 +1085,7 @@ public class DefaultDataEntryScreenManager
         final String jsCodeForDate = " name=\"entryfield\" $DISABLED onchange=\"saveDateCustom( this )\" data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\"";
         // final String historyCode =
         // " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
-        final String calDataElementCode = " class=\"calculated\" disabled ";
+        //final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -1328,25 +1312,6 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Tests whether the given Collection of CustomValues contains a CustomValue
-     * with the given data element identifier and category option combo id.
-     */
-    private boolean customValuesExists( Collection<CustomValue> customValues, int dataElementId,
-        int categoryOptionComboId )
-    {
-        for ( CustomValue customValue : customValues )
-        {
-            if ( dataElementId == customValue.getDataElement().getId()
-                && categoryOptionComboId == customValue.getOptionCombo().getId() )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Returns the value of the PatientDataValue in the Collection of DataValues

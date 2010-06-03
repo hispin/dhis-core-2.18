@@ -32,12 +32,10 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
-import org.hisp.dhis.importexport.converter.AbstractDataSetConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataSetImporter;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -46,7 +44,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: DataSetRowHandler.java 6298 2008-11-17 17:31:14Z larshelg $
  */
 public class DataSetRowHandler
-    extends AbstractDataSetConverter implements RowHandler
+    extends DataSetImporter implements RowHandler
 {
     private ImportParams params;
 
@@ -81,8 +79,6 @@ public class DataSetRowHandler
         
         dataSet.getPeriodType().setId( periodTypeMapping.get( dataSet.getPeriodType().getName() ) );
         
-        NameMappingUtil.addDataSetMapping( dataSet.getId(), dataSet.getName() );
-        
-        read( dataSet, GroupMemberType.NONE, params );
+        importObject( dataSet, params );
     }
 }

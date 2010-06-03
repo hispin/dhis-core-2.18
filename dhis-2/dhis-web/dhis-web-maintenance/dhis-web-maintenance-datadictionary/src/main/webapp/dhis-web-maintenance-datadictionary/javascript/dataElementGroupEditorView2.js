@@ -178,6 +178,7 @@ function filterAvailableGroups()
     }
 }
 
+/*
 function deleteDataElementGroup()
 {
     var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
@@ -204,10 +205,57 @@ function deleteDataElementGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
 
-    if ( type=='success' )
+    if ( type == 'success' )
     {
         var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
         dataElementGroupsSelect.remove( dataElementGroupsSelect.selectedIndex );                
+    }
+	else if ( type == 'error' )
+	{
+		setFieldValue( 'warningArea', xmlObject.firstChild.nodeValue );
+
+		showWarning();
+	}
+}
+*/
+
+function deleteDataElementGroup()
+{
+    var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
+
+    try
+    {
+        var id = dataElementGroupsSelect.options[ dataElementGroupsSelect.selectedIndex ].value;
+        var name =  dataElementGroupsSelect.options[ dataElementGroupsSelect.selectedIndex ].text;
+		
+        if ( window.confirm( i18n_confirm_delete + '\n\n' + name ) )
+        {
+		    $.getJSON
+			(
+				'deleteDataElemenGroupEditor.action',
+				{
+					"id": id
+				},
+				function( json )
+				{
+					if ( json.response == "success" )
+					{
+						var dataElementGroupsSelect = document.getElementById( 'availableGroups' );
+						dataElementGroupsSelect.remove( dataElementGroupsSelect.selectedIndex );                
+					}
+					else if ( json.response == "error" )
+					{
+						setFieldValue( 'warningArea', json.message );
+			
+						showWarning();
+					}
+				}
+			);
+        }
+    }
+    catch(e)
+    {
+        alert( i18n_select_dataelement_group );
     }
 }
 

@@ -30,6 +30,7 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
  * @author Abyot Asalefew
@@ -52,4 +53,6 @@ public interface ProgramService
     Collection<Program> getAllPrograms();
 
     Collection<Program> getPrograms( OrganisationUnit organisationUnit );
+    
+    Collection<Program> getPrograms( ValidationCriteria validationCriteria );
 }

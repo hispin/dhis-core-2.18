@@ -20,6 +20,16 @@
             <param name="menu">/dhis-web-mobile/menu.vm</param>
             <param name="stylesheets">css/receiveImportPage.css</param>
         </action>
+        <action name="sendSMS" class="org.hisp.dhis.mobile.action.SendSMSAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-mobile/sendSMSPage.vm</param>
+            <param name="menu">/dhis-web-mobile/menu.vm</param>
+        </action>
+        <action name="mobileSettings" class="org.hisp.dhis.mobile.action.MobileSettingsAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-mobile/mobileSettingsPage.vm</param>
+            <param name="menu">/dhis-web-mobile/menu.vm</param>
+        </action>
 
         <!-- Create Mobile Application -->
         <action name="createMobileApp" class="org.hisp.dhis.mobile.app.action.CreateMobileAppAction">
@@ -45,20 +55,7 @@
             <result name="success" type="chain">createMobileApp</result>
         </action>
 
-        <!-- Send SMS -->
-        <action name="sendSMSPage" class="org.hisp.dhis.mobile.action.SendSMSAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-mobile/sendSMSPage.vm</param>
-            <param name="menu">/dhis-web-mobile/menu.vm</param>
-        </action>
+        
 
-        <!-- Mobile Importing -->
-        <action name="processMobileImport"
-                class="org.hisp.dhis.mobileimport.action.MobileImportProcessAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-mobile/mobileImportingResult.vm</param>
-            <param name="menu">/dhis-web-mobile/menu.vm</param>
-            <param name="stylesheets">css/StylesForTags.css</param>
-        </action>
     </package>
 </struts>

@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   
   <!-- StatementManager -->
     
@@ -24,9 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <!-- JdbcConfiguration -->
     
-  <bean id="jdbcConfiguration" class="org.hisp.dhis.jdbc.configuration.JdbcConfigurationFactoryBean" init-method="init">
-    <property name="configurationProvider" ref="org.hisp.dhis.hibernate.HibernateConfigurationProvider"/>   
-  </bean>
+  <bean id="jdbcConfiguration" class="org.hisp.dhis.jdbc.configuration.JdbcConfigurationFactoryBean" init-method="init"/>
     
   <!-- StatementBuilder -->
     

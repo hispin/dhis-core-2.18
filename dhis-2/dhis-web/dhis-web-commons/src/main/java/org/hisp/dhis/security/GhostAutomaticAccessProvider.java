@@ -27,10 +27,10 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * This access provider will put an Authentication object with all GrantedAuthorities
@@ -54,7 +54,7 @@ public class GhostAutomaticAccessProvider
         String username = "ghost_admin";
         String password = "";
 
-        UserDetails user = new org.springframework.security.userdetails.User( username, password, true, true, true, true,
+        UserDetails user = new org.springframework.security.core.userdetails.User( username, password, true, true, true, true,
             getGrantedAuthorities() );
 
         authentication = new UsernamePasswordAuthenticationToken( user, user.getPassword(), user.getAuthorities() );

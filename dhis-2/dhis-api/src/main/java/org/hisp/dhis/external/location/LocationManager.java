@@ -37,8 +37,6 @@ import java.io.OutputStream;
  */
 public interface LocationManager
 {
-    String ID = LocationManager.class.getName();
-    
     /**
      * Gets an inputstream from a file relative to the external configuration directory 
      * location, which is set through an environment variable. A LocationManagerException 

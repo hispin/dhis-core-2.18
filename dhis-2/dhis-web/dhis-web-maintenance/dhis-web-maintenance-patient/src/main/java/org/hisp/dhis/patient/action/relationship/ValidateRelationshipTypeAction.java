@@ -59,16 +59,16 @@ public class ValidateRelationshipTypeAction
 
     private String aIsToB;
 
-    public void setaIsToB( String aIsToB )
+    public void setAIsToB( String isToB )
     {
-        this.aIsToB = aIsToB;
+        aIsToB = isToB;
     }
 
     private String bIsToA;
 
-    public void setbIsToA( String bIsToA )
+    public void setBIsToA( String isToA )
     {
-        this.bIsToA = bIsToA;
+        bIsToA = isToA;
     }
 
     private String description;
@@ -99,7 +99,7 @@ public class ValidateRelationshipTypeAction
     public String execute()
         throws Exception
     {
-
+        
         if ( aIsToB == null )
         {
             message = i18n.getString( "please_specify_the_a_side_of_the_relationship_type" );

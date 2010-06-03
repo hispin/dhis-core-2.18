@@ -28,6 +28,7 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.indicator.Indicator;
@@ -37,7 +38,6 @@ import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Tran Thanh Tri

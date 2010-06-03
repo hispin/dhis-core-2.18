@@ -94,7 +94,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.hisp.dhis.importexport.ImportParams.*;
 
 /**
  * @author Lars Helge Overland
@@ -105,18 +109,17 @@ public class DefaultDXFExportService
 {
     private static final String ZIP_ENTRY_NAME = "Export.xml";
     private static final String ROOT_NAME = "dxf";
-    
+        
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-    
+    @Autowired
+    private StatementManager statementManager;
+
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -208,13 +211,6 @@ public class DefaultDXFExportService
         this.dataMartService = dataMartService;
     }
 
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -242,12 +238,15 @@ public class DefaultDXFExportService
             // Writes to one end of the pipe 
             // -----------------------------------------------------------------
             
+            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_11, ATTRIBUTE_EXPORTED, DateUtils.getMediumDateString() };
+            
             ExportPipeThread thread = new ExportPipeThread( sessionFactory );
             
             thread.setZipOutputStream( zipOut );
             thread.setParams( params );
             thread.setWriter( writer );
             thread.setRootName( ROOT_NAME );
+            thread.setRootProperties( rootProperties );
             
             thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryConverter( categoryService ) );

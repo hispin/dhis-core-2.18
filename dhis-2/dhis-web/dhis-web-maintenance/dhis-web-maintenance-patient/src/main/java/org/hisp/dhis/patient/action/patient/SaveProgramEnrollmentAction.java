@@ -30,17 +30,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -75,7 +76,7 @@ public class SaveProgramEnrollmentAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }    
+    }
 
     private ProgramStageInstanceService programStageInstanceService;
 
@@ -164,7 +165,7 @@ public class SaveProgramEnrollmentAction
     public void setDateOfIncident( String dateOfIncident )
     {
         this.dateOfIncident = dateOfIncident;
-    }  
+    }
 
     private Collection<Program> programs = new ArrayList<Program>();
 
@@ -180,6 +181,20 @@ public class SaveProgramEnrollmentAction
         return programStageInstances;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -192,7 +207,7 @@ public class SaveProgramEnrollmentAction
 
         Program program = selectedStateManager.getSelectedProgram();
 
-        programId = program.getId();       
+        programId = program.getId();
 
         programs = programService.getAllPrograms();
 
@@ -217,20 +232,21 @@ public class SaveProgramEnrollmentAction
 
             patient.getPrograms().add( program );
             patientService.updatePatient( patient );
-            
-            for( ProgramStage programStage : program.getProgramStages() )
+
+            for ( ProgramStage programStage : program.getProgramStages() )
             {
                 ProgramStageInstance programStageInstance = new ProgramStageInstance();
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
                 programStageInstance.setStageInProgram( programStage.getStageInProgram() );
-                
-                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStage.getMinDaysFromStart() ) ;
-                    
+
+                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStage
+                    .getMinDaysFromStart() );
+
                 programStageInstance.setDueDate( dueDate );
-                
+
                 programStageInstanceService.addProgramStageInstance( programStageInstance );
-                
+
                 programStageInstances.add( programStageInstance );
             }
         }
@@ -238,19 +254,20 @@ public class SaveProgramEnrollmentAction
         else
         {
             programInstance.setEnrollmentDate( format.parseDate( enrollmentDate ) );
-            programInstance.setDateOfIncident( format.parseDate( dateOfIncident ) );           
+            programInstance.setDateOfIncident( format.parseDate( dateOfIncident ) );
 
             programInstanceService.updateProgramInstance( programInstance );
-            
-            for( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
+
+            for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
-                
-                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStageInstance.getProgramStage().getMinDaysFromStart() ) ;
-                
+
+                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStageInstance
+                    .getProgramStage().getMinDaysFromStart() );
+
                 programStageInstance.setDueDate( dueDate );
-                
+
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
-                
+
                 programStageInstances.add( programStageInstance );
             }
         }

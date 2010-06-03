@@ -26,6 +26,9 @@
  */
 package org.hisp.dhis.reportexcel.excelitemgroup.action;
 
+import java.util.Collection;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
@@ -37,55 +40,61 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class UpdateExcelItemGroupAssociationsAction implements Action {
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class UpdateExcelItemGroupAssociationsAction
+    implements Action
+{
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	private SelectionTreeManager selectionTreeManager;
+    private SelectionTreeManager selectionTreeManager;
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private Integer excelItemGroupId;
+    private Integer excelItemGroupId;
 
-	// -------------------------------------------
-	// Getters & Setters
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getters & Setters
+    // -------------------------------------------
 
-	public void setSelectionTreeManager(
-			SelectionTreeManager selectionTreeManager) {
-		this.selectionTreeManager = selectionTreeManager;
-	}
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+    public void setExcelItemGroupId( Integer excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-	// -------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId);
+        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-		excelItemGroup.getOrganisationAssocitions().clear();
+        excelItemGroup.getOrganisationAssocitions().clear();
 
-		excelItemGroup.getOrganisationAssocitions().addAll(
-				selectionTreeManager.getSelectedOrganisationUnits());
+        Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-		excelItemService.updateExcelItemGroup(excelItemGroup);
+        excelItemGroup.getOrganisationAssocitions().addAll( orgUnits );
 
-		return SUCCESS;
-	}
+        excelItemService.updateExcelItemGroup( excelItemGroup );
+
+        return SUCCESS;
+    }
 
 }

@@ -28,10 +28,13 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
@@ -44,6 +47,8 @@ import org.hisp.dhis.source.Source;
 public class OrganisationUnit
     extends Source implements DimensionOptionElement
 {
+    private static final Pattern COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
+    
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
     private OrganisationUnit parent;
@@ -57,12 +62,10 @@ public class OrganisationUnit
     private String comment;
     
     private String geoCode;
+
+    private String featureType;
     
-    private String polygonCoordinates;
-    
-    private String latitude;
-    
-    private String longitude;
+    private String coordinates;
     
     private String url;
 
@@ -144,12 +147,52 @@ public class OrganisationUnit
 
     public boolean hasCoordinates()
     {
-        return latitude != null && latitude.trim().length() > 0 && longitude != null && longitude.trim().length() > 0;
+        return coordinates != null && coordinates.trim().length() > 0;
     }
     
-    public boolean hasPolygonCoordinates()
+    public Collection<String> getCoordinatesAsCollection()
     {
-        return polygonCoordinates != null && polygonCoordinates.trim().length() > 0;
+        Collection<String> collection = new ArrayList<String>();
+        
+        if ( coordinates != null && !coordinates.trim().isEmpty() )
+        {
+            Matcher matcher = COORDINATE_PATTERN.matcher( coordinates );
+            
+            while ( matcher.find() )
+            {
+                collection.add( matcher.group().replaceAll( "\\]\\,", "] " ).replaceAll( "[\\[\\]]", "" ) );
+            }
+        }
+        
+        return collection;
+    }
+    
+    public void setCoordinatesFromCollection( Collection<String> collection )
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        if ( collection != null && collection.size() > 0 )
+        {
+            builder.append( "[" );
+            
+            for ( String c : collection )
+            {
+                builder.append( "[[" );
+                            
+                for ( String coordinate : c.split( "\\s" ) )
+                {
+                    builder.append( "[" + coordinate + "]," );
+                }
+                
+                builder.deleteCharAt( builder.lastIndexOf( "," ) );            
+                builder.append( "]]," );
+            }
+            
+            builder.deleteCharAt( builder.lastIndexOf( "," ) );
+            builder.append( "]" );
+        }
+        
+        this.coordinates = builder.toString();
     }
     
     // -------------------------------------------------------------------------
@@ -295,34 +338,24 @@ public class OrganisationUnit
         this.geoCode = geoCode;
     }
 
-    public String getPolygonCoordinates()
+    public String getFeatureType()
     {
-        return polygonCoordinates;
+        return featureType;
     }
 
-    public void setPolygonCoordinates( String polygonCoordinates )
+    public void setFeatureType( String featureType )
     {
-        this.polygonCoordinates = polygonCoordinates;
+        this.featureType = featureType;
     }
 
-    public String getLatitude()
+    public String getCoordinates()
     {
-        return latitude;
+        return coordinates;
     }
 
-    public void setLatitude( String latitude )
+    public void setCoordinates( String coordinates )
     {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude()
-    {
-        return longitude;
-    }
-
-    public void setLongitude( String longitude )
-    {
-        this.longitude = longitude;
+        this.coordinates = coordinates;
     }
 
     public String getUrl()

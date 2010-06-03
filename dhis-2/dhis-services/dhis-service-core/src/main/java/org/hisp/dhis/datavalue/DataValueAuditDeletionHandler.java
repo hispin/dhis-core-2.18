@@ -59,9 +59,9 @@ public class DataValueAuditDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteDataValue( DataValue dataValue )
+    public void deleteDataValue( DataValue dataValue )
     {
-        return dataValueAuditService.getDataValueAuditByDataValue( dataValue ).size() == 0;
+        dataValueAuditService.deleteDataValueAuditByDataValue( dataValue );
     }
 
 }

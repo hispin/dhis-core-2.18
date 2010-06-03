@@ -27,20 +27,21 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Kristian Nordal
  * @version $Id: ValidationRule.java 5434 2008-06-18 18:57:59Z larshelg $
  */
 public class ValidationRule
-    implements Serializable
+    extends IdentifiableObject
 {
     public static final String TYPE_STATISTICAL = "statistical";
     public static final String TYPE_ABSOLUTE = "absolute";
@@ -54,10 +55,6 @@ public class ValidationRule
     
     private static Map<String, String> operatorMap = new HashMap<String, String>();
     
-    private int id;
-    
-    private String name;
-    
     private String description;
     
     private String type;
@@ -69,6 +66,8 @@ public class ValidationRule
     private Expression rightSide;
     
     private Set<ValidationRuleGroup> groups = new HashSet<ValidationRuleGroup>();
+    
+    private PeriodType periodType; 
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -134,26 +133,6 @@ public class ValidationRule
     // Set and get methods
     // -------------------------------------------------------------------------  
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
     public String getDescription()
     {
         return description;
@@ -167,6 +146,16 @@ public class ValidationRule
     public String getOperator()
     {
         return operator;
+    }
+
+    public PeriodType getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( PeriodType periodType )
+    {
+        this.periodType = periodType;
     }
 
     public void setOperator( String operator )

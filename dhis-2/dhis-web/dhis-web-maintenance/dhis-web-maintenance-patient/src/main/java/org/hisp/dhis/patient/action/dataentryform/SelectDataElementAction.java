@@ -137,7 +137,6 @@ public class SelectDataElementAction
     public String execute()
         throws Exception
     {
-        System.out.println("AssociationId = "+associationId);
         association = programStageService.getProgramStage( associationId );
         if ( association != null )
         {

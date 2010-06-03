@@ -38,71 +38,82 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorConverter.java 4646 2008-02-26 14:54:29Z larshelg $
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-19
  */
 public class IndicatorConverter
-    extends PDFUtils implements PDFConverter 
+    extends PDFUtils
+    implements PDFConverter
 {
     private IndicatorService indicatorService;
-    
+
     public IndicatorConverter( IndicatorService indicatorService )
-    {   
+    {
         this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
     // PDFConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( Document document, ExportParams params )
     {
         PDFPrintUtil.printIndicatorFrontPage( document, params );
-        
+
         I18n i18n = params.getI18n();
-        
+
         Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
-        
+
+        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+
+        Font TEXT = new Font( bf, 9, Font.NORMAL );
+        Font ITALIC = new Font( bf, 9, Font.ITALIC );
+        Font HEADER3 = new Font( bf, 12, Font.BOLD );
+
         for ( Indicator indicator : indicators )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-    
-            table.addCell( getHeader3Cell( indicator.getName(), 2 ) );
+
+            table.addCell( getHeader3Cell( indicator.getName(), 2, HEADER3 ) );
 
             table.addCell( getCell( 2, 15 ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1 ) );
-            table.addCell( getTextCell( indicator.getShortName() ) );
 
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1 ) );
-            table.addCell( getTextCell( indicator.getAlternativeName() ) );
+            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getShortName(), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1 ) );
+            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
             table.addCell( getTextCell( indicator.getCode() ) );
 
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1 ) );
-            table.addCell( getTextCell( indicator.getDescription() ) );
+            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1 ) );
-            table.addCell( getTextCell( indicator.getIndicatorType().getName() ) );
+            table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getIndicatorType().getName(), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "numerator_description" ), 1 ) );
-            table.addCell( getTextCell( indicator.getNumeratorDescription() ) );
+            table.addCell( getItalicCell( i18n.getString( "numerator_description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getNumeratorDescription(), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1 ) );
+            table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1, ITALIC ) );
             table.addCell( getTextCell( i18n.getString( indicator.getNumeratorAggregationOperator() ) ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1 ) );
-            table.addCell( getTextCell( indicator.getDenominatorDescription() ) );
 
-            table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1 ) );
+            table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getDenominatorDescription(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1, ITALIC ) );
             table.addCell( getTextCell( i18n.getString( indicator.getDenominatorAggregationOperator() ) ) );
 
             table.addCell( getCell( 2, 30 ) );
-            
+
             addTableToDocument( document, table );
         }
     }

@@ -37,6 +37,7 @@ import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -73,13 +74,9 @@ public class OpenHealthDataSourceWriter
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private DatabaseInfoProvider databaseInfoProvider;
-        
-    public void setDatabaseInfoProvider( DatabaseInfoProvider databaseInfoProvider )
-    {
-        this.databaseInfoProvider = databaseInfoProvider;
-    }
-
+    
     // -------------------------------------------------------------------------
     // AbstractStartupRoutine implementation
     // -------------------------------------------------------------------------

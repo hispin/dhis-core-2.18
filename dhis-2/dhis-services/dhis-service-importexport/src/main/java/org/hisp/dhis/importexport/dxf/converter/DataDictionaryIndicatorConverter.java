@@ -41,8 +41,9 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 import org.hisp.dhis.indicator.Indicator;
 
 /**
@@ -50,7 +51,7 @@ import org.hisp.dhis.indicator.Indicator;
  * @version $Id$
  */
 public class DataDictionaryIndicatorConverter
-    extends AbstractGroupMemberConverter implements XMLConverter
+    extends GroupMemberImporter implements XMLConverter, Importer<GroupMemberAssociation>
 {
     public static final String COLLECTION_NAME = "dataDictionaryIndicators";
     public static final String ELEMENT_NAME = "dataDictionaryIndicator";
@@ -137,7 +138,13 @@ public class DataDictionaryIndicatorConverter
             association.setGroupId( dataDictionaryMapping.get( Integer.parseInt( values.get( FIELD_DATADICTIONARY ) ) ) );
             association.setMemberId( indicatorMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR ) ) ) );
             
-            read( association, GroupMemberType.DATADICTIONARY_INDICATOR, params );
+            importObject( association, params );
         }
+    }
+
+    @Override
+    public void importObject( GroupMemberAssociation object, ImportParams params )
+    {
+        read( object, GroupMemberType.DATADICTIONARY_INDICATOR, params );
     }       
 }

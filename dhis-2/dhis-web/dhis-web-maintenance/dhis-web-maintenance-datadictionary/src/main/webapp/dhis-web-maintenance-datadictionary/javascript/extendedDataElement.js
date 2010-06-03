@@ -7,7 +7,7 @@ function validateAddExtendedDataElement()
 {
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );
+    request.setCallbackSuccess( addExtendedDataElementValidationCompleted );
     
     var params = 'name=' + getFieldValue( 'name' ) +
         '&shortName=' + getFieldValue( 'shortName' ) +
@@ -31,7 +31,7 @@ function validateAddExtendedDataElement()
     return false;
 }
 
-function addValidationCompleted( messageElement )
+function addExtendedDataElementValidationCompleted( messageElement )
 {
 	var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
@@ -59,8 +59,8 @@ function addValidationCompleted( messageElement )
 function validateUpdateExtendedDataElement()
 {
 	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationCompleted );
+    request.setResponseTypeXML( 'messageElement' );
+    request.setCallbackSuccess( updateExtendedDataElementValidationCompleted );
     
     var params = 'id=' + getFieldValue( 'id' ) + 
     	'&name=' + getFieldValue( 'name' ) +
@@ -78,18 +78,19 @@ function validateUpdateExtendedDataElement()
         '&location=' + getFieldValue( 'location' ) +
         '&reportingMethods=' + getFieldValue( 'reportingMethods' ) +
         '&versionStatus=' + getFieldValue( 'versionStatus' );
-    
+
     request.sendAsPost( params );
     request.send( 'validateExtendedDataElement.action' );
     
     return false;
 }
 
-function updateValidationCompleted( messageElement )
-{
+function updateExtendedDataElementValidationCompleted( messageElement )
+{ 
+
 	var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
-    
+   
     if ( type == 'success' )
     {
         var form = document.getElementById( 'updateExtendedDataElementForm' );

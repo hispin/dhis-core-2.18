@@ -13,6 +13,7 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -53,12 +54,8 @@ public class HibernateExcelItemStore
     // Dependencies
     // ----------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     private PeriodStore periodStore;
 

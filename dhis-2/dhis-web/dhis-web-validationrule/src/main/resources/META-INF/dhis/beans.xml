@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
  
   <bean id="org.hisp.dhis.validationrule.action.NoAction"
     class="org.hisp.dhis.validationrule.action.NoAction">
@@ -18,7 +18,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="expressionService">
       <ref bean="org.hisp.dhis.expression.ExpressionService"/>
-    </property>   
+    </property>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>     
   </bean>
   
   <bean id="org.hisp.dhis.validationrule.action.GetValidationRuleAction" 
@@ -57,6 +60,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="expressionService">
       <ref bean="org.hisp.dhis.expression.ExpressionService"/>
     </property>  
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>    
   </bean>
   
   <bean id="org.hisp.dhis.validationrule.action.ValidateValidationRuleAction"
@@ -82,6 +88,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionManager">
       <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
     </property>    
+  </bean>
+  
+   <bean id="org.hisp.dhis.validationrule.action.GetPeriodTypesAction"
+    class="org.hisp.dhis.validationrule.action.GetPeriodTypesAction" 
+    scope="prototype">
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>   
   </bean>
   
   <!-- ValidationRuleGroup CRUD operations -->  
@@ -155,20 +169,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.validationrule.action.GetFilteredDataElementsAction"
     class="org.hisp.dhis.validationrule.action.GetFilteredDataElementsAction" 
     scope="prototype">
-	<property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-    </property>
 	<property name="categoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.validationrule.action.GetExpressionAction"
     class="org.hisp.dhis.validationrule.action.GetExpressionAction" 
     scope="prototype">
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-    </property>    
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
   </bean>
   
   <bean id="org.hisp.dhis.validationrule.action.ValidateExpressionAction"

@@ -39,189 +39,203 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ExtendedDataElementConverter.java 4646 2008-02-26 14:54:29Z larshelg $
+ * @version $Id: ExtendedDataElementConverter.java 4646 2008-02-26 14:54:29Z
+ *          larshelg $
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-19
  */
 public class ExtendedDataElementConverter
-    extends PDFUtils implements PDFConverter
+    extends PDFUtils
+    implements PDFConverter
 {
     private DataElementService dataElementService;
-    
+
     public ExtendedDataElementConverter( DataElementService dataElementService )
-    {   
+    {
         this.dataElementService = dataElementService;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // PDFConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( Document document, ExportParams params )
     {
         PDFPrintUtil.printDataElementFrontPage( document, params );
-        
+
         I18n i18n = params.getI18n();
 
         Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
-           
+
+        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+
+        Font TEXT = new Font( bf, 9, Font.NORMAL );
+        Font ITALIC = new Font( bf, 9, Font.ITALIC );
+        Font HEADER3 = new Font( bf, 12, Font.BOLD );
+        Font HEADER4 = new Font( bf, 9, Font.BOLD );
+
         for ( DataElement element : elements )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-            
-            table.addCell( getHeader3Cell( element.getName(), 2 ) );
-            
+
+            table.addCell( getHeader3Cell( element.getName(), 2, HEADER3 ) );
+
             table.addCell( getCell( 2, 15 ) );
-    
+
             // -------------------------------------------------------------------------
             // Identifying and definitional attributes
             // -------------------------------------------------------------------------
-            
-            table.addCell( getHeader4Cell( i18n.getString( "identifying_and_definitional_attributes" ), 2 ) );
-    
+
+            table.addCell( getHeader4Cell( i18n.getString( "identifying_and_definitional_attributes" ), 2, HEADER4 ) );
+
             table.addCell( getCell( 2, 8 ) );
-    
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1 ) );
-            table.addCell( getTextCell( element.getShortName() ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1 ) );
-            table.addCell( getTextCell( element.getAlternativeName() ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1 ) );
-            table.addCell( getTextCell( element.getCode() ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1 ) );
-            table.addCell( getTextCell( element.getDescription() ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "active" ), 1 ) );
-            table.addCell( getTextCell( i18n.getString( String.valueOf( element.isActive() ) ) ) );
-            
-            table.addCell( getItalicCell( i18n.getString( "type" ), 1 ) );
-            table.addCell( getTextCell( i18n.getString( element.getType() ) ) );            
-            
-            table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1 ) );
+
+            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getShortName(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getCode(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getDescription(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
+            table.addCell( getTextCell( i18n.getString( String.valueOf( element.isActive() ) ), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
+            table.addCell( getTextCell( i18n.getString( element.getType() ), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1, ITALIC ) );
             table.addCell( getTextCell( i18n.getString( element.getAggregationOperator() ) ) );
-    
+
             if ( element.getExtended() != null )
             {
-                table.addCell( getItalicCell( i18n.getString( "mnemonic" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getMnemonic() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "version" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getVersion() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "context" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getContext() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "synonyms" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getSynonyms() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "hononyms" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getHononyms() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "keywords" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getKeywords() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "status" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getStatus() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "status_date" ), 1 ) );
+                table.addCell( getItalicCell( i18n.getString( "mnemonic" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getMnemonic(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "version" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getVersion(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "context" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getContext(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "synonyms" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getSynonyms(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "hononyms" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getHononyms(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "keywords" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getKeywords(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "status" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getStatus(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "status_date" ), 1, ITALIC ) );
                 table.addCell( getTextCell( DateUtils.getMediumDateString( element.getExtended().getStatusDate() ) ) );
-                
+
                 table.addCell( getCell( 2, 15 ) );
-        
+
                 // -------------------------------------------------------------------------
                 // Relational and representational attributes
                 // -------------------------------------------------------------------------
-                
-                table.addCell( getHeader4Cell( i18n.getString( "relational_and_representational_attributes" ), 2 ) );
-        
+
+                table.addCell( getHeader4Cell( i18n.getString( "relational_and_representational_attributes" ), 2,
+                    HEADER4 ) );
+
                 table.addCell( getCell( 2, 8 ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "data_type" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getDataType() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "representational_form" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getRepresentationalForm() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "representational_layout" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getRepresentationalLayout() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "minimum_size" ), 1 ) );
+
+                table.addCell( getItalicCell( i18n.getString( "data_type" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getDataType(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "representational_form" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getRepresentationalForm(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "representational_layout" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getRepresentationalLayout(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "minimum_size" ), 1, ITALIC ) );
                 table.addCell( getTextCell( String.valueOf( element.getExtended().getMinimumSize() ) ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "maximum_size" ), 1 ) );
+
+                table.addCell( getItalicCell( i18n.getString( "maximum_size" ), 1, ITALIC ) );
                 table.addCell( getTextCell( String.valueOf( element.getExtended().getMaximumSize() ) ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "data_domain" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getDataDomain() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "validation_rules" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getValidationRules() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "related_data_references" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getRelatedDataReferences() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "guide_for_use" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getGuideForUse() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "collection_methods" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getCollectionMethods() ) );
-        
+
+                table.addCell( getItalicCell( i18n.getString( "data_domain" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getDataDomain(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "validation_rules" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getValidationRules(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "related_data_references" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getRelatedDataReferences(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "guide_for_use" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getGuideForUse(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "collection_methods" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getCollectionMethods(), TEXT ) );
+
                 table.addCell( getCell( 2, 15 ) );
-        
+
                 // -------------------------------------------------------------------------
-                // Administrative attributes 
+                // Administrative attributes
                 // -------------------------------------------------------------------------
-        
-                table.addCell( getHeader4Cell( i18n.getString( "administrative_attributes" ), 2 ) );
-        
+
+                table.addCell( getHeader4Cell( i18n.getString( "administrative_attributes" ), 2, HEADER4 ) );
+
                 table.addCell( getCell( 2, 8 ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "responsible_authority" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getResponsibleAuthority() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "update_rules" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getUpdateRules() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "access_authority" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getAccessAuthority() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "update_frequency" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getUpdateFrequency() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "location" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getLocation() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "reporting_methods" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getReportingMethods() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "version_status" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getVersionStatus() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "previous_version_references" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getPreviousVersionReferences() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "source_document" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getSourceDocument() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "source_organisation" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getSourceOrganisation() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "comment" ), 1 ) );
-                table.addCell( getTextCell( element.getExtended().getComment() ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "saved" ), 1 ) );
+
+                table.addCell( getItalicCell( i18n.getString( "responsible_authority" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getResponsibleAuthority(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "update_rules" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getUpdateRules(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "access_authority" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getAccessAuthority(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "update_frequency" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getUpdateFrequency(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "location" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getLocation(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "reporting_methods" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getReportingMethods(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "version_status" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getVersionStatus(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "previous_version_references" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getPreviousVersionReferences(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "source_document" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getSourceDocument(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "source_organisation" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getSourceOrganisation(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
+                table.addCell( getTextCell( element.getExtended().getComment(), TEXT ) );
+
+                table.addCell( getItalicCell( i18n.getString( "saved" ), 1, ITALIC ) );
                 table.addCell( getTextCell( DateUtils.getMediumDateString( element.getExtended().getSaved() ) ) );
-        
-                table.addCell( getItalicCell( i18n.getString( "last_updated" ), 1 ) );
+
+                table.addCell( getItalicCell( i18n.getString( "last_updated" ), 1, ITALIC ) );
                 table.addCell( getTextCell( DateUtils.getMediumDateString( element.getExtended().getLastUpdated() ) ) );
             }
-            
+
             table.addCell( getCell( 2, 30 ) );
-            
+
             addTableToDocument( document, table );
         }
     }

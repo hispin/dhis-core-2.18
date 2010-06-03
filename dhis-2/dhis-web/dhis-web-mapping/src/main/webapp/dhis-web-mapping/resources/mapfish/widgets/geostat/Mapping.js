@@ -185,7 +185,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             {
                 xtype: 'combo',
                 id: 'maps_cb',
-                fieldLabel: 'Map',
+                fieldLabel: i18n_map,
                 typeAhead: true,
                 editable: false,
                 valueField: 'mapLayerPath',
@@ -220,7 +220,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 			{
 				xtype: 'textfield',
 				id: 'filter_tf',
-				fieldLabel: 'Filter',
+				fieldLabel: i18n_filter,
 				labelSeparator: labelseparator,
 				isFormField: true,
 				width: combo_width,
@@ -240,7 +240,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 xtype: 'grid',
                 id: 'grid_gp',
                 store: gridStore,
-                columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true, width: gridpanel_width } ],
+                columns: [ { header: i18n_organisation_units, id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true, width: gridpanel_width } ],
 				autoExpandColumn: 'organisationUnitId',
 				enableHdMenu: true,
                 width: gridpanel_width,
@@ -255,28 +255,28 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         {
                             xtype: 'button',
                             id: 'autoassign_be',
-                            text: 'Assign all',
+                            text: i18n_assign_all,
 							cls: 'aa_med',
                             isVisible: false,
                             handler: function()
                             {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg('Auto-assign', 'Please select a map.');
+                                    Ext.messageRed.msg( i18n_auto_assign , i18n_please_select_map );
                                     return;
                                 }
-                                loadMapData('auto-assignment', true);
+                                loadMapData( i18n_auto_assignment , true);
                             },
                             scope: this
                         },
                         {
                             xtype: 'button',
                             id: 'removeallrelations_b',
-                            text: 'Remove all',
+                            text: i18n_remove_all,
 							cls: 'aa_med',
                             isVisible: false,
                             handler: function() {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg('Remove all relations', 'Please select a map.');
+                                    Ext.messageRed.msg( i18n_remove_all_relations, i18n_please_select_map );
                                     return;
                                 }
                                 
@@ -291,12 +291,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
                                         
-                                        Ext.messageBlack.msg('Remove all relations', 'All relations for the map <span class="x-msg-hl">' + Ext.getCmp('maps_cb').getRawValue() + '</span> removed.');
+                                        Ext.messageBlack.msg( i18n_remove_all_relations , i18n_all_relations_for_the_map + '<span class="x-msg-hl">' + Ext.getCmp('maps_cb').getRawValue() + '</span> ' + i18n_removed);
                                         
                                         mapping.classify(true, true);
                                     },
                                     failure: function() {
-                                        alert('Error while deleting MapOrganisationUnitRelation');
+                                        alert( i18n_error_while_deleting_relation_map_and_oranisation_unit );
                                     } 
                                 });
                             },
@@ -305,13 +305,13 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         {
                             xtype: 'button',
                             id: 'removerelation_b',
-                            text: 'Remove selected',
+                            text: i18n_remove_selected,
 							cls: 'aa_med',
                             isVisible: false,
                             handler: function()
                             {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg('Remove relation', 'Please select a map.');
+                                    Ext.messageRed.msg( i18n_remove_relation , i18n_please_select_map );
                                     return;
                                 }
                                 
@@ -320,7 +320,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								var msg;
 								
                                 if (selection == '') {
-                                    Ext.messageRed.msg('Remove relation', 'Please select at least one organisation unit in the list.');
+                                    Ext.messageRed.msg( i18n_remove_relation , i18n_please_select_least_one_organisation_unit_in_the_list );
                                     return;
                                 }
 								
@@ -330,10 +330,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 									for (var i = 1; i < selection.length; i++) {
 										params += '&organisationUnitIds=' + selection[i].data['organisationUnitId'];
 									}
-									msg = 'Selected relations removed.';
+									msg = i18n_selected_relations_removed;
 								}
 								else {
-									msg = '<span class="x-msg-hl">' + selection[0].data['organisationUnit'] + '</span> relation removed.'
+									msg = '<span class="x-msg-hl">' + selection[0].data['organisationUnit'] + '</span>' + i18n_remove_selected;
 								}
 								
 								params += '&mapLayerPath=' + mlp;
@@ -345,12 +345,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 										Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
 										Ext.getCmp('grid_gp').getStore().reload();
 										
-										Ext.messageBlack.msg('Remove relations', msg);
+										Ext.messageBlack.msg( i18n_remove_relation , msg);
 										
 										mapping.classify(true, true);
 									},
 									failure: function() {
-										alert('Error while deleting MapOrganisationUnitRelation');
+										alert( i18n_error_while_deleting_relation_map_and_oranisation_unit );
 									} 
 								});
                             },
@@ -378,7 +378,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 												method: 'POST',
 												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation },
 												success: function( responseObject ) {
-													Ext.messageBlack.msg('Assign organisation units', '<span class="x-msg-hl">' + mapping.relation + '</span> (map) assigned to <span class="x-msg-hl">' + name + '</span> (database).');
+													Ext.messageBlack.msg( i18n_assign + ' ' + i18n_organisation_units , '<span class="x-msg-hl">' + mapping.relation + '</span> (' + i18n_map + ') ' + i18n_assigned_to + ' <span class="x-msg-hl">' + name + '</span> (' + i18n_database + ').');
 													Ext.getCmp('grid_gp').getStore().reload();
 													popup.hide();
 													mapping.relation = false;
@@ -391,7 +391,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 											});
 										}
 										else {
-											Ext.messageRed.msg('Assign organisation units', '<span class="x-msg-hl">' + name + '</span> is already assigned.');
+											Ext.messageRed.msg( i18n_assign + ' ' + i18n_organisation_units , '<span class="x-msg-hl">' + name + '</span> ' + i18n_is_already_assigned );
 										}
 									}
 								});
@@ -430,7 +430,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      *      Called on Ajax request failure.
      */
     requestFailure: function(request) {
-        OpenLayers.Console.error('Ajax request failed');
+        OpenLayers.Console.error( i18n_ajax_request_failed );
     },
 
     /**
@@ -458,7 +458,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     classify: function(exception, position) {
         if (!this.ready) {
-            Ext.MessageBox.alert('Error', 'Component init not complete');
+            Ext.MessageBox.alert( i18n_error , i18n_component_init_not_complete );
             return;
         }
         
@@ -475,12 +475,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         
         if (!Ext.getCmp('maps_cb').getValue()) {
                 if (exception) {
-                    Ext.messageRed.msg('Assign organisation units', 'Please select a map.');
+                    Ext.messageRed.msg( i18n_assign + ' ' + i18n_organisation_units, i18n_please_select_map );
                 }
                 return;
         }
         
-		MASK.msg = 'Loading data...';
+		MASK.msg = i18n_loading ;
         MASK.show();
         
 		if (!this.newUrl) {

@@ -37,7 +37,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
+import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -48,8 +48,10 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -60,12 +62,40 @@ import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectManager;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.ImportObjectStore;
+import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.importexport.ImportType;
+import org.hisp.dhis.importexport.Importer;
+import org.hisp.dhis.importexport.importer.CalculatedDataElementImporter;
+import org.hisp.dhis.importexport.importer.CompleteDataSetRegistrationImporter;
+import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
+import org.hisp.dhis.importexport.importer.DataElementCategoryComboImporter;
+import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
+import org.hisp.dhis.importexport.importer.DataElementCategoryOptionImporter;
+import org.hisp.dhis.importexport.importer.DataElementGroupImporter;
+import org.hisp.dhis.importexport.importer.DataElementGroupSetImporter;
+import org.hisp.dhis.importexport.importer.DataElementImporter;
+import org.hisp.dhis.importexport.importer.DataSetImporter;
+import org.hisp.dhis.importexport.importer.DataValueImporter;
+import org.hisp.dhis.importexport.importer.GroupSetImporter;
+import org.hisp.dhis.importexport.importer.IndicatorGroupImporter;
+import org.hisp.dhis.importexport.importer.IndicatorGroupSetImporter;
+import org.hisp.dhis.importexport.importer.IndicatorImporter;
+import org.hisp.dhis.importexport.importer.IndicatorTypeImporter;
+import org.hisp.dhis.importexport.importer.OlapUrlImporter;
+import org.hisp.dhis.importexport.importer.OrganisationUnitGroupImporter;
+import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
+import org.hisp.dhis.importexport.importer.OrganisationUnitLevelImporter;
+import org.hisp.dhis.importexport.importer.PeriodImporter;
+import org.hisp.dhis.importexport.importer.ReportTableImporter;
+import org.hisp.dhis.importexport.importer.ValidationRuleImporter;
 import org.hisp.dhis.importexport.mapping.GroupMemberAssociationVerifier;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
@@ -85,7 +115,6 @@ import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ExtendedDataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GroupSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
@@ -104,14 +133,18 @@ import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -123,16 +156,14 @@ public class DefaultImportObjectManager
 {
     private static final Log log = LogFactory.getLog( DefaultImportObjectManager.class );
 
+    private final ImportParams params = new ImportParams( ImportType.IMPORT, ImportStrategy.NEW_AND_UPDATES, true );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
-
-    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
-    {
-        this.batchHandlerFactory = batchHandlerFactory;
-    }
     
     private ObjectMappingGenerator objectMappingGenerator;
 
@@ -161,12 +192,40 @@ public class DefaultImportObjectManager
     {
         this.dataElementService = dataElementService;
     }
+    
+    private DataDictionaryService dataDictionaryService;
+    
+    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
+    {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private ValidationRuleService validationRuleService;
@@ -196,6 +255,27 @@ public class DefaultImportObjectManager
     {
         this.importDataValueService = importDataValueService;
     }
+    
+    private ReportTableService reportTableService;
+
+    public void setReportTableService( ReportTableService reportTableService )
+    {
+        this.reportTableService = reportTableService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
+    private DataMartService dataMartService;
+
+    public void setDataMartService( DataMartService dataMartService )
+    {
+        this.dataMartService = dataMartService;
+    }
 
     // -------------------------------------------------------------------------
     // ImportObjectManager implementation
@@ -210,22 +290,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategoryOption.class );
         
+        Importer<DataElementCategoryOption> importer = new DataElementCategoryOptionImporter( batchHandler, categoryService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataElementCategoryOption object = (DataElementCategoryOption) importObject.getObject();
-            
-            NameMappingUtil.addCategoryOptionMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataElementCategoryOption compareObject = (DataElementCategoryOption) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (DataElementCategoryOption) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -244,22 +313,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategory.class );
 
+        Importer<DataElementCategory> importer = new DataElementCategoryImporter( batchHandler, categoryService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataElementCategory object = (DataElementCategory) importObject.getObject();
-            
-            NameMappingUtil.addCategoryMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataElementCategory compareObject = (DataElementCategory) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }            
-
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (DataElementCategory) importObject.getObject(), params );
         }
 
         batchHandler.flush();
@@ -278,22 +336,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategoryCombo.class );
 
+        Importer<DataElementCategoryCombo> importer = new DataElementCategoryComboImporter( batchHandler, categoryService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataElementCategoryCombo object = (DataElementCategoryCombo) importObject.getObject();
-            
-            NameMappingUtil.addCategoryComboMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataElementCategoryCombo compareObject = (DataElementCategoryCombo) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (DataElementCategoryCombo) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -384,64 +431,23 @@ public class DefaultImportObjectManager
     public void importDataElements()
     {
         BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = 
-            batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
+
+        batchHandler.init();
         
         Map<Object, Integer> categoryComboMapping = objectMappingGenerator.getCategoryComboMapping( false );
         
-        batchHandler.init();
-        extendedDataElementBatchHandler.init();
-        
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElement.class );
+        
+        Importer<DataElement> importer = new DataElementImporter( batchHandler, dataElementService );
         
         for ( ImportObject importObject : importObjects )
         {
             DataElement object = (DataElement) importObject.getObject();
-
-            NameMappingUtil.addDataElementMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                ExtendedDataElement extendedObject = object.getExtended();
-                
-                if ( extendedObject != null )
-                {
-                    int id = extendedDataElementBatchHandler.insertObject( extendedObject, true );
-                    
-                    extendedObject.setId( id );
-                    
-                    object.setExtended( extendedObject );
-                }
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.UPDATE )//TODO
-            {
-                ExtendedDataElement extendedObject = object.getExtended();
-                
-                if ( extendedObject != null )
-                {
-                    ExtendedDataElement extendedCompareObject = ((DataElement)importObject.getCompareObject()).getExtended();
-                    
-                    extendedObject.setId( extendedCompareObject.getId() );
-                    
-                    extendedDataElementBatchHandler.updateObject( extendedObject );
-                    
-                    object.setExtended( extendedObject );
-                }
-                
-                DataElement compareObject = (DataElement) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
             object.getCategoryCombo().setId( categoryComboMapping.get( object.getCategoryCombo().getId() ) );
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( object, params );
         }
         
         batchHandler.flush();
-        extendedDataElementBatchHandler.flush();
         
         importObjectStore.deleteImportObjects( DataElement.class );
         
@@ -457,33 +463,15 @@ public class DefaultImportObjectManager
 
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( CalculatedDataElement.class );
 
+        Importer<CalculatedDataElement> importer = new CalculatedDataElementImporter( dataElementService );
+        
         for ( ImportObject importObject : importObjects )
         {
             CalculatedDataElement object = (CalculatedDataElement) importObject.getObject();
-
-            NameMappingUtil.addDataElementMapping( object.getId(), object.getName() );
-
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataElement compareObject = (DataElement) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-
             object.getCategoryCombo().setId( categoryComboMapping.get( object.getCategoryCombo().getId() ) );
             object.getExpression().setExpression( expressionService.convertExpression( 
                 object.getExpression().getExpression(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            importObject.setObject( object );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                dataElementService.addDataElement( object );
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                dataElementService.updateDataElement( object );
-            }
+            importer.importObject( object, params );            
         }
         
         importObjectStore.deleteImportObjects( CalculatedDataElement.class );
@@ -500,22 +488,11 @@ public class DefaultImportObjectManager
             
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementGroup.class );
 
+        Importer<DataElementGroup> importer = new DataElementGroupImporter( batchHandler, dataElementService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataElementGroup object = (DataElementGroup) importObject.getObject();
-
-            NameMappingUtil.addDataElementGroupMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataElementGroup compareObject = (DataElementGroup) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (DataElementGroup) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -546,22 +523,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementGroupSet.class );
         
+        Importer<DataElementGroupSet> importer = new DataElementGroupSetImporter( batchHandler, dataElementService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataElementGroupSet object = (DataElementGroupSet) importObject.getObject();
-            
-            NameMappingUtil.addDataElementGroupSetMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataElementGroupSet compareObject = (DataElementGroupSet) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (DataElementGroupSet) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -592,22 +558,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorType.class );
 
+        Importer<IndicatorType> importer = new IndicatorTypeImporter( batchHandler, indicatorService );
+        
         for ( ImportObject importObject : importObjects )
         {   
-            IndicatorType object = (IndicatorType) importObject.getObject();
-
-            NameMappingUtil.addIndicatorTypeMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                IndicatorType compareObject = (IndicatorType) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (IndicatorType) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -621,68 +576,27 @@ public class DefaultImportObjectManager
     public void importIndicators()
     {
         BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
-        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = 
-            batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
         
         Map<Object, Integer> indicatorTypeMapping = objectMappingGenerator.getIndicatorTypeMapping( false );
         Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
         Map<Object, Integer> categoryOptionComboMapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
         
         batchHandler.init();
-        extendedDataElementBatchHandler.init();
                 
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Indicator.class );
 
+        Importer<Indicator> importer = new IndicatorImporter( batchHandler, indicatorService );
+        
         for ( ImportObject importObject : importObjects )
         {
             Indicator object = (Indicator) importObject.getObject();
-
-            NameMappingUtil.addIndicatorMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                ExtendedDataElement extendedIndicator = object.getExtended();
-                
-                if ( extendedIndicator != null )
-                {
-                    int id = extendedDataElementBatchHandler.insertObject( extendedIndicator, true );
-                    
-                    extendedIndicator.setId( id );
-                    
-                    object.setExtended( extendedIndicator );
-                }
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                ExtendedDataElement extendedObject = object.getExtended();
-                
-                if ( extendedObject != null )
-                {
-                    ExtendedDataElement extendedCompareObject = ((Indicator)importObject.getCompareObject()).getExtended();
-                    
-                    extendedObject.setId( extendedCompareObject.getId() );
-                    
-                    extendedDataElementBatchHandler.updateObject( extendedObject );
-                    
-                    object.setExtended( extendedObject );
-                }
-                
-                Indicator compareObject = (Indicator) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
             object.getIndicatorType().setId( indicatorTypeMapping.get( object.getIndicatorType().getId() ) );
             object.setNumerator( expressionService.convertExpression( object.getNumerator(), dataElementMapping, categoryOptionComboMapping ) );
-            object.setDenominator( expressionService.convertExpression( object.getDenominator(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            object.setDenominator( expressionService.convertExpression( object.getDenominator(), dataElementMapping, categoryOptionComboMapping ) );            
+            importer.importObject( object, params );
         }
         
         batchHandler.flush();
-        extendedDataElementBatchHandler.flush();
         
         importObjectStore.deleteImportObjects( Indicator.class );
         
@@ -698,22 +612,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorGroup.class );
 
+        Importer<IndicatorGroup> importer = new IndicatorGroupImporter( batchHandler, indicatorService );
+        
         for ( ImportObject importObject : importObjects )
         {   
-            IndicatorGroup object = (IndicatorGroup) importObject.getObject();
-
-            NameMappingUtil.addIndicatorGroupMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                IndicatorGroup compareObject = (IndicatorGroup) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );          
+            importer.importObject( (IndicatorGroup) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -744,22 +647,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorGroupSet.class );
         
+        Importer<IndicatorGroupSet> importer = new IndicatorGroupSetImporter( batchHandler, indicatorService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            IndicatorGroupSet object = (IndicatorGroupSet) importObject.getObject();
-            
-            NameMappingUtil.addIndicatorGroupSetMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                IndicatorGroupSet compareObject = (IndicatorGroupSet) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (IndicatorGroupSet) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -790,22 +682,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataDictionary.class );
         
+        Importer<DataDictionary> importer = new DataDictionaryImporter( batchHandler, dataDictionaryService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataDictionary object = (DataDictionary) importObject.getObject();
-            
-            NameMappingUtil.addDataDictionaryMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataDictionary compareObject = (DataDictionary) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (DataDictionary) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -824,22 +705,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataSet.class );
         
+        Importer<DataSet> importer = new DataSetImporter( batchHandler, dataSetService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            DataSet object = (DataSet) importObject.getObject();
-
-            NameMappingUtil.addDataSetMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                DataSet compareObject = (DataSet) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );         
+            importer.importObject( (DataSet) importObject.getObject(), params );    
         }
         
         batchHandler.flush();
@@ -896,28 +766,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnit.class );
         
+        Importer<OrganisationUnit> importer = new OrganisationUnitImporter( organisationUnitBatchHandler, sourceBatchHandler, organisationUnitService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            OrganisationUnit object = (OrganisationUnit) importObject.getObject();
-
-            NameMappingUtil.addOrganisationUnitMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                int id = sourceBatchHandler.insertObject( object, true );
-                
-                object.setId( id );
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                OrganisationUnit compareObject = (OrganisationUnit) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( organisationUnitBatchHandler, importObject );
+            importer.importObject( (OrganisationUnit) importObject.getObject(), params );
         }
         
         sourceBatchHandler.flush();
@@ -943,10 +796,8 @@ public class DefaultImportObjectManager
         {
             GroupMemberAssociation object = (GroupMemberAssociation) importObject.getObject();
             
-            OrganisationUnit child = organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( object.getMemberId() ) );
-            
-            OrganisationUnit parent = organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( object.getGroupId() ) );
-            
+            OrganisationUnit child = organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( object.getMemberId() ) );            
+            OrganisationUnit parent = organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( object.getGroupId() ) );            
             child.setParent( parent );
             
             batchHandler.updateObject( child );
@@ -968,22 +819,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnitGroup.class );
         
+        Importer<OrganisationUnitGroup> importer = new OrganisationUnitGroupImporter( batchHandler, organisationUnitGroupService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            OrganisationUnitGroup object = (OrganisationUnitGroup) importObject.getObject();
-
-            NameMappingUtil.addOrganisationUnitGroupMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                OrganisationUnitGroup compareObject = (OrganisationUnitGroup) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (OrganisationUnitGroup) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -1014,22 +854,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnitGroupSet.class );
         
+        Importer<OrganisationUnitGroupSet> importer = new GroupSetImporter( batchHandler, organisationUnitGroupService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            OrganisationUnitGroupSet object = (OrganisationUnitGroupSet) importObject.getObject();
-
-            NameMappingUtil.addGroupSetMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                OrganisationUnitGroupSet compareObject = (OrganisationUnitGroupSet) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );            
+            importer.importObject( (OrganisationUnitGroupSet) importObject.getObject(), params );         
         }
         
         batchHandler.flush();
@@ -1056,22 +885,11 @@ public class DefaultImportObjectManager
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnitLevel.class );
         
+        Importer<OrganisationUnitLevel> importer = new OrganisationUnitLevelImporter( organisationUnitService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            OrganisationUnitLevel object = (OrganisationUnitLevel) importObject.getObject();
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                OrganisationUnitLevel compare = (OrganisationUnitLevel) importObject.getCompareObject();
-                
-                object = updateOrganisationUnitLevel( compare, object );
-                
-                organisationUnitService.updateOrganisationUnitLevel( object );                
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                organisationUnitService.addOrganisationUnitLevel( object );
-            }
+            importer.importObject( (OrganisationUnitLevel) importObject.getObject(), params );
         }
         
         importObjectStore.deleteImportObjects( OrganisationUnitLevel.class );
@@ -1096,30 +914,11 @@ public class DefaultImportObjectManager
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( ValidationRule.class );
         
+        Importer<ValidationRule> importer = new ValidationRuleImporter( validationRuleService, expressionService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            ValidationRule object = (ValidationRule) importObject.getObject();
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                ValidationRule compare = (ValidationRule) importObject.getCompareObject();
-                
-                validationRuleService.updateValidationRule( compare ); // Reload because of Expression
-                
-                object = updateValidationRule( compare, object );
-                
-                expressionService.updateExpression( object.getLeftSide() );
-                expressionService.updateExpression( object.getRightSide() );
-                                
-                validationRuleService.updateValidationRule( object );
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                expressionService.addExpression( object.getLeftSide() );
-                expressionService.addExpression( object.getRightSide() );
-                                
-                validationRuleService.addValidationRule( object );
-            }
+            importer.importObject( (ValidationRule) importObject.getObject(), params );
         }
         
         importObjectStore.deleteImportObjects( ValidationRule.class );
@@ -1136,13 +935,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Period.class );
         
+        Importer<Period> importer = new PeriodImporter( batchHandler, periodService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            Period period = (Period) importObject.getObject();
-            
-            NameMappingUtil.addPeriodMapping( period.getId(), period );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (Period) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -1161,22 +958,11 @@ public class DefaultImportObjectManager
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( ReportTable.class );
         
+        Importer<ReportTable> importer = new ReportTableImporter( reportTableService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            ReportTable object = (ReportTable) importObject.getObject();
-            
-            NameMappingUtil.addReportTableMapping( object.getId(), object.getName() );
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                ReportTable compareObject = (ReportTable) importObject.getCompareObject();
-                
-                object.setId( compareObject.getId() );
-            }
-            
-            importObject.setObject( object );
-            
-            addOrUpdateObject( batchHandler, importObject );
+            importer.importObject( (ReportTable) importObject.getObject(), params );
         }
         
         batchHandler.flush();
@@ -1191,22 +977,11 @@ public class DefaultImportObjectManager
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OlapURL.class );
         
+        Importer<OlapURL> importer = new OlapUrlImporter( olapURLService );
+        
         for ( ImportObject importObject : importObjects )
         {
-            OlapURL object = (OlapURL) importObject.getObject();
-            
-            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-            {
-                OlapURL compare = (OlapURL) importObject.getObject();
-                
-                object = updateOlapURL( compare, object );
-                
-                olapURLService.updateOlapURL( object );
-            }
-            else if ( importObject.getStatus() == ImportObjectStatus.NEW )
-            {
-                olapURLService.saveOlapURL( object );
-            }            
+            importer.importObject( (OlapURL) importObject.getObject(), params );   
         }
         
         importObjectStore.deleteImportObjects( OlapURL.class );
@@ -1227,6 +1002,8 @@ public class DefaultImportObjectManager
         Map<Object, Integer> periodMapping = objectMappingGenerator.getPeriodMapping( false );
         Map<Object, Integer> sourceMapping = objectMappingGenerator.getOrganisationUnitMapping( false );
         
+        Importer<CompleteDataSetRegistration> importer = new CompleteDataSetRegistrationImporter( batchHandler, params );
+        
         for ( ImportObject importObject : importObjects )
         {
             CompleteDataSetRegistration registration = (CompleteDataSetRegistration) importObject.getObject();
@@ -1235,15 +1012,7 @@ public class DefaultImportObjectManager
             registration.getPeriod().setId( periodMapping.get( registration.getPeriod().getId() ) );
             registration.getSource().setId( sourceMapping.get( registration.getSource().getId() ) );
             
-            // -----------------------------------------------------------------
-            // Must check for existing registrations since this cannot be done
-            // during preview
-            // -----------------------------------------------------------------
-            
-            if ( !batchHandler.objectExists( registration ) )
-            {
-                batchHandler.addObject( registration );
-            }
+            importer.importObject( registration, params );
         }
         
         batchHandler.flush();
@@ -1267,6 +1036,8 @@ public class DefaultImportObjectManager
         
         Collection<ImportDataValue> importValues = importDataValueService.getImportDataValues( ImportObjectStatus.NEW );
         
+        Importer<DataValue> importer = new DataValueImporter( batchHandler, dataMartService, params );
+        
         for ( ImportDataValue importValue : importValues )
         {
             DataValue value = importValue.getDataValue();
@@ -1276,15 +1047,7 @@ public class DefaultImportObjectManager
             value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
             value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
             
-            // -------------------------------------------------------------
-            // Must check for existing datavalues since this cannot be done
-            // during preview
-            // -------------------------------------------------------------
-            
-            if ( !batchHandler.objectExists( value ) )
-            {
-                batchHandler.addObject( value );
-            }
+            importer.importObject( value, params );
         }
         
         batchHandler.flush();
@@ -1297,23 +1060,6 @@ public class DefaultImportObjectManager
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    @SuppressWarnings( "unchecked" )
-    private void addOrUpdateObject( BatchHandler batchHandler, ImportObject importObject )
-    {
-        if ( importObject.getStatus() == ImportObjectStatus.NEW )
-        {
-            batchHandler.addObject( importObject.getObject() );
-        }
-        else if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
-        {
-            batchHandler.updateObject( importObject.getObject() );
-        }
-
-        // ---------------------------------------------------------------------
-        // Ignoring ImportObjects of type MATCH
-        // ---------------------------------------------------------------------
-    }
 
     @SuppressWarnings( "unchecked" )
     private void importGroupMemberAssociation( BatchHandler batchHandler, GroupMemberType type,
@@ -1341,37 +1087,5 @@ public class DefaultImportObjectManager
         batchHandler.flush();
         
         importObjectStore.deleteImportObjects( type );
-    }
-
-    private OrganisationUnitLevel updateOrganisationUnitLevel( OrganisationUnitLevel original, OrganisationUnitLevel update )
-    {
-        original.setLevel( update.getLevel() );
-        original.setName( update.getName() );
-        
-        return original;
-    }
-    
-    private ValidationRule updateValidationRule( ValidationRule original, ValidationRule update )
-    {
-        original.setName( update.getName() );
-        original.setDescription( update.getDescription() );
-        original.setType( update.getType() );
-        original.setOperator( update.getOperator() );
-        original.getLeftSide().setExpression( update.getLeftSide().getExpression() );
-        original.getLeftSide().setDescription( update.getLeftSide().getDescription()  );
-        original.getLeftSide().setDataElementsInExpression( update.getLeftSide().getDataElementsInExpression() );
-        original.getRightSide().setExpression( update.getRightSide().getExpression() );
-        original.getRightSide().setDescription( update.getRightSide().getDescription() );
-        original.getRightSide().setDataElementsInExpression( update.getRightSide().getDataElementsInExpression() );
-        
-        return original;
-    }
-
-    private OlapURL updateOlapURL( OlapURL original, OlapURL update )
-    {
-        original.setName( update.getName() );
-        original.setUrl( update.getUrl() );
-        
-        return original;
     }
 }

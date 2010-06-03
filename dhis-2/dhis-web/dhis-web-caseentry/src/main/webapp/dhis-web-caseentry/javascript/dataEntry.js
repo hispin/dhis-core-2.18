@@ -214,6 +214,19 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
 		{
 			markValue( resultColor );                   
 		}
+		else if(code == 1)
+		{
+			var validationElement = rootElement.getElementsByTagName( 'validations' )[0];
+			var dataelementList = rootElement.getElementsByTagName( 'validation' );
+			var message = '';
+			for ( var i = 0; i < dataelementList.length; i++ )
+			{
+				message += "\n - " + dataelementList[i].firstChild.nodeValue;
+			}
+
+			markValue( ERROR );
+			window.alert( i18n_violate_validation + message);
+		}
 		else
 		{
 			markValue( ERROR );

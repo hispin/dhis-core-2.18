@@ -11,6 +11,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.databrowser.DataBrowserStore;
 import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.system.util.TimeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
@@ -25,12 +26,8 @@ public class StatementManagerDataBrowserStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
 
     // -------------------------------------------------------------------------
     // DataBrowserStore implementation

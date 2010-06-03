@@ -27,17 +27,17 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.security.AccessDecisionManager;
-import org.springframework.security.AccessDeniedException;
-import org.springframework.security.Authentication;
-import org.springframework.security.ConfigAttribute;
-import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.InsufficientAuthenticationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
 
 /**
  * AccessDecisionManager which delegates to other AccessDecisionManagers in a
@@ -65,7 +65,8 @@ public class LogicalOrAccessDecisionManager
     // Interface implementation
     // -------------------------------------------------------------------------
 
-    public void decide( Authentication authentication, Object object, ConfigAttributeDefinition definition )
+    @Override
+    public void decide( Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes )
         throws AccessDeniedException, InsufficientAuthenticationException
     {
         AccessDeniedException ade = null;
@@ -75,7 +76,7 @@ public class LogicalOrAccessDecisionManager
         {
             try
             {
-                accessDecisionManager.decide( authentication, object, definition );
+                accessDecisionManager.decide( authentication, object, configAttributes );
 
                 LOG.debug( "ACCESS GRANTED [" + object.toString() + "]" );
 
@@ -117,8 +118,8 @@ public class LogicalOrAccessDecisionManager
         return false;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public boolean supports( Class clazz )
+    @Override
+    public boolean supports( Class<?> clazz )
     {
         for ( AccessDecisionManager accessDecisionManager : accessDecisionManagers )
         {

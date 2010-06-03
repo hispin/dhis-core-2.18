@@ -218,21 +218,6 @@ public interface DataValueStore
         Collection<Period> periods, Collection<? extends Source> sources );
     
     /**
-     * Returns all DataValues for a given collection of DataElements, collection of Periods, and
-     * collection of Sources, limited by a given start indexs and number of elements to return.
-     * 
-     * @param dataElements the DataElements of the DataValue.
-     * @param periods the Periods of the DataValue.
-     * @param sources the Sources of the DataValues.
-     * @param firstResult the zero-based index of the first DataValue in the collection to return.
-     * @param maxResults the maximum number of DataValues to return. 0 means no restrictions.
-     * @return a collection of all DataValues which match the given collection of DataElements,
-     *         Periods, and Sources, limited by the firstResult and maxResults property.
-     */
-    Collection<DataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods, 
-        Collection<? extends Source> sources, int firstResult, int maxResults );
-    
-    /**
      * Returns all DataValues for a given collection of DataElementCategoryOptionCombos.
      * 
      * @param optionCombos the DataElementCategoryOptionCombos of the DataValue.

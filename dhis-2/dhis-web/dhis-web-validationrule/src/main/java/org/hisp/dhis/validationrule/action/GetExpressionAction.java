@@ -29,14 +29,15 @@ package org.hisp.dhis.validationrule.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetSortOrderComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -58,27 +59,23 @@ public class GetExpressionAction
     {
         return ALL;
     }
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
-    // -------------------------------------------------------------------------  
-    
-    private DataElementService dataElementService;
-    
-    public void setDataElementService( DataElementService dataElementService )
+    // -------------------------------------------------------------------------
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
     {
-        this.dataElementService = dataElementService;
+        this.periodService = periodService;
     }
-    
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
 
-    private Comparator<DataElement> dataElementComparator;
+    private DataSetService dataSetService;
 
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataElementComparator = dataElementComparator;
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,11 +88,11 @@ public class GetExpressionAction
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-    
+
     private String side;
 
     public String getSide()
@@ -107,7 +104,7 @@ public class GetExpressionAction
     {
         this.side = side;
     }
-    
+
     private String description;
 
     public String getDescription()
@@ -119,7 +116,7 @@ public class GetExpressionAction
     {
         this.description = description;
     }
-    
+
     private String expression;
 
     public String getExpression()
@@ -131,7 +128,7 @@ public class GetExpressionAction
     {
         this.expression = expression;
     }
-    
+
     private String textualExpression;
 
     public String getTextualExpression()
@@ -144,36 +141,55 @@ public class GetExpressionAction
         this.textualExpression = textualExpression;
     }
 
+    private String periodTypeName;
+
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
+
+    public String getPeriodTypeName()
+    {
+        return periodTypeName;
+    }
+
     private List<DataElement> dataElements;
-    
+
     public List<DataElement> getDataElements()
     {
         return dataElements;
     }
 
-    private List<DataElementGroup> dataElementGroups;
-    
-    public List<DataElementGroup> getDataElementGroups()
+    private List<DataSet> dataSets;
+
+    public List<DataSet> getDataSets()
     {
-        return dataElementGroups;
+        return dataSets;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------------------------------------  
-    
-    public String execute() throws Exception
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
     {
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        
-        Collections.sort( dataElements, dataElementComparator );
+        // ---------------------------------------------------------------------
+        // Get validationRule's periodType
+        // ---------------------------------------------------------------------
 
-        displayPropertyHandler.handle( dataElements );
-        
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+       
+        // ---------------------------------------------------------------------
+        // Get datasets with the same periodType
+        // ---------------------------------------------------------------------
 
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( periodType ) );
         
+        Collections.sort( dataSets, new DataSetSortOrderComparator() );
+
+        displayPropertyHandler.handle( dataSets );
+
         return SUCCESS;
     }
 }

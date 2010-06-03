@@ -3,14 +3,13 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
   
   <!-- DataLoking -->
   
   <bean id="org.hisp.dhis.datalock.DataSetLockStore"
     class="org.hisp.dhis.datalock.hibernate.HibernateDataSetLockStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
 	<property name="periodService" 
       ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
@@ -24,10 +23,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- ResourceTable -->
     
   <bean id="org.hisp.dhis.resourcetable.ResourceTableStore"
-    class="org.hisp.dhis.resourcetable.hibernate.HibernateResourceTableStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-  </bean>
+    class="org.hisp.dhis.resourcetable.hibernate.HibernateResourceTableStore"/>
     
   <bean id="org.hisp.dhis.resourcetable.ResourceTableService"
     class="org.hisp.dhis.resourcetable.DefaultResourceTableService">
@@ -69,10 +65,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- Maintenance -->
   
   <bean id="org.hisp.dhis.maintenance.MaintenanceStore"
-    class="org.hisp.dhis.maintenance.jdbc.JdbcMaintenanceStore">
-    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="statementBuilder" ref="statementBuilder"/>
-  </bean>
+    class="org.hisp.dhis.maintenance.jdbc.JdbcMaintenanceStore"/>
   
   <bean id="org.hisp.dhis.maintenance.MaintenanceService"
     class="org.hisp.dhis.maintenance.DefaultMaintenanceService">
@@ -83,16 +76,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- Statistics -->
   
   <bean id="org.hisp.dhis.statistics.StatisticsProvider"
-    class="org.hisp.dhis.statistics.jdbc.JdbcStatisticsProvider">
-    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-  </bean>
+    class="org.hisp.dhis.statistics.jdbc.JdbcStatisticsProvider"/>
   
   <!-- Databrowser -->
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserStore"
-    class="org.hisp.dhis.databrowser.jdbc.StatementManagerDataBrowserStore">
-    <property name="statementManager" ref="statementManager"/>
-  </bean>
+    class="org.hisp.dhis.databrowser.jdbc.StatementManagerDataBrowserStore"/>
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserService"
     class="org.hisp.dhis.databrowser.DefaultDataBrowserService">
@@ -105,10 +94,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- Data merge -->
   
   <bean id="org.hisp.dhis.datamerge.DataMergeStore"
-    class="org.hisp.dhis.datamerge.jdbc.JdbcDataMergeStore">
-    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-	<property name="statementBuilder" ref="statementBuilder"/>
-  </bean>
+    class="org.hisp.dhis.datamerge.jdbc.JdbcDataMergeStore"/>
   
   <bean id="org.hisp.dhis.datamerge.DataMergeService"
     class="org.hisp.dhis.datamerge.DefaultDataMergeService">
@@ -133,9 +119,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- Data archive -->
   
   <bean id="org.hisp.dhis.dataarchive.DataArchiveStore"
-	class="org.hisp.dhis.dataarchive.jdbc.JdbcDataArchiveStore">
-	<property name="jdbcTemplate" ref="jdbcTemplate"/>
-  </bean>
+	class="org.hisp.dhis.dataarchive.jdbc.JdbcDataArchiveStore"/>
   
   <bean id="org.hisp.dhis.dataarchive.DataArchiveService"
     class="org.hisp.dhis.dataarchive.DefaultDataArchiveService">
@@ -152,16 +136,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
 	
   <bean id="org.hisp.dhis.useraudit.UserAuditStore"
-    class="org.hisp.dhis.useraudit.hibernate.HibernateUserAuditStore">
-	<property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
+    class="org.hisp.dhis.useraudit.hibernate.HibernateUserAuditStore"/>
   
   <!--DeletionHandler -->
   
   <bean id="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler"
-	class="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler">
-	<property name="jdbcTemplate" ref="jdbcTemplate"/>
-  </bean>
+	class="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler"/>
   
   <bean id="org.hisp.dhis.datalock.DataSetLockDeletionHandler"
 	class="org.hisp.dhis.datalock.DataSetLockDeletionHandler">
@@ -171,7 +151,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+    <property name="targetObject" ref="deletionManager"/>
     <property name="targetMethod" value="addDeletionHandlers"/>
     <property name="arguments">
       <list>

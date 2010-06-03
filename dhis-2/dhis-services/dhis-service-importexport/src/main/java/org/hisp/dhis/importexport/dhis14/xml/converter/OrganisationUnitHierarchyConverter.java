@@ -39,7 +39,7 @@ import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitRelationshipConverter;
+import org.hisp.dhis.importexport.importer.OrganisationUnitRelationshipImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.MimicingHashMap;
@@ -49,7 +49,7 @@ import org.hisp.dhis.system.util.MimicingHashMap;
  * @version $Id: OrganisationUnitHierarchyConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class OrganisationUnitHierarchyConverter
-    extends AbstractOrganisationUnitRelationshipConverter implements XMLConverter
+    extends OrganisationUnitRelationshipImporter implements XMLConverter
 {
     public static final String ELEMENT_NAME = "OrgHierarchy";
     

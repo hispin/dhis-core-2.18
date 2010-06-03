@@ -291,4 +291,6 @@ public interface OrganisationUnitService
     OrganisationUnitLevel getOrganisationUnitLevelByName( String name );
     
     List<OrganisationUnitLevel> getFilledOrganisationUnitLevels();
+    
+    int getNumberOfOrganisationUnits();
 }

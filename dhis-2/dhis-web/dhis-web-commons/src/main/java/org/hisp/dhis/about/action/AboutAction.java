@@ -41,6 +41,7 @@ import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.Action;
@@ -48,6 +49,8 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Hans S. Toemmerholt
  * @version $Id: AboutAction.java 3255 2007-04-23 09:58:06Z andegje $
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-04
  */
 public class AboutAction
     implements Action
@@ -56,19 +59,11 @@ public class AboutAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private LocationManager locationManager;
 
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-
-    private DatabaseInfoProvider provider;
-
-    public void setProvider( DatabaseInfoProvider provider )
-    {
-        this.provider = provider;
-    }
+    @Autowired
+    private DatabaseInfoProvider databaseInfoProvider;
     
     private I18n i18n;
 
@@ -136,6 +131,18 @@ public class AboutAction
     {
         return javaOpts;
     }
+    
+    private String backUrl;
+
+    public String getBackUrl()
+    {
+        return backUrl;
+    }
+
+    public void setBackUrl( String backUrl )
+    {
+        this.backUrl = backUrl;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -200,7 +207,7 @@ public class AboutAction
         // Database
         // ---------------------------------------------------------------------
 
-        info = provider.getDatabaseInfo();
+        info = databaseInfoProvider.getDatabaseInfo();
         
         try
         {

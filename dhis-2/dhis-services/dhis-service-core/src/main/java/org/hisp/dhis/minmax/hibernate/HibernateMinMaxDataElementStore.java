@@ -30,7 +30,7 @@ package org.hisp.dhis.minmax.hibernate;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -52,17 +52,17 @@ public class HibernateMinMaxDataElementStore
     public MinMaxDataElement get( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
         return (MinMaxDataElement) getCriteria(
-            Expression.eq( "source", source ),
-            Expression.eq( "dataElement", dataElement ),
-            Expression.eq( "optionCombo", optionCombo ) ).uniqueResult();
+            Restrictions.eq( "source", source ),
+            Restrictions.eq( "dataElement", dataElement ),
+            Restrictions.eq( "optionCombo", optionCombo ) ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> get( Source source, DataElement dataElement )
     {
         return getCriteria(
-            Expression.eq( "source", source ),
-            Expression.eq( "dataElement", dataElement ) ).list();
+        	Restrictions.eq( "source", source ),
+        	Restrictions.eq( "dataElement", dataElement ) ).list();
     }    
 
     @SuppressWarnings( "unchecked" )
@@ -74,7 +74,7 @@ public class HibernateMinMaxDataElementStore
         }
 
         return getCriteria(
-            Expression.eq( "source", source ), 
-            Expression.in( "dataElement", dataElements ) ).list();
+        	Restrictions.eq( "source", source ), 
+        	Restrictions.in( "dataElement", dataElements ) ).list();
     }
 }

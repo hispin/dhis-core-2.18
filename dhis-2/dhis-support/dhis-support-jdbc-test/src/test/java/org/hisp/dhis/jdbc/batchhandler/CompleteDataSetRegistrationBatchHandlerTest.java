@@ -48,6 +48,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -56,6 +57,7 @@ import org.junit.Test;
 public class CompleteDataSetRegistrationBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
 
     private BatchHandler<CompleteDataSetRegistration> batchHandler;
@@ -88,7 +90,7 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
+        //batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
         

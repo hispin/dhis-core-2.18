@@ -27,14 +27,15 @@
 
 package org.hisp.dhis.patient;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Abyot Asalefew Gizaw

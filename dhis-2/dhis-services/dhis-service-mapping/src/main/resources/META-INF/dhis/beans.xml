@@ -3,8 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">  
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">  
 
   <!-- Service definitions -->
 
@@ -27,9 +27,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- Store definitions -->
 
   <bean id="org.hisp.dhis.mapping.MappingStore"
-    class="org.hisp.dhis.mapping.hibernate.HibernateMappingStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
+    class="org.hisp.dhis.mapping.hibernate.HibernateMappingStore"/>
 
   <!-- DeletionHandlers -->
     
@@ -60,7 +58,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+    <property name="targetObject" ref="deletionManager"/>
     <property name="targetMethod" value="addDeletionHandlers"/>
     <property name="arguments">
       <list>

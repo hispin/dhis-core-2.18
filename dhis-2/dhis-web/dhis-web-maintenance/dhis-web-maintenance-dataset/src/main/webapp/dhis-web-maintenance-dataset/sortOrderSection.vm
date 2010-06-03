@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "add_section" )</h3>
 
-<form id="sortOrderForm" name="sortOrderForm" action="sortOrderSection.action" method="post" onsubmit="submitForm();">
+<form id="sortOrderForm" name="sortOrderForm" action="sortOrderSection.action" method="post" onsubmit="selectAllById( 'selectedList' );">
   <table id="detailsList">
     <col> ## Labels
     <col> ## Input
@@ -34,19 +34,19 @@
     <tbody>
       <tr>
         <td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'selectedList' ) )">
             #foreach ( $section in $sections )
               <option value="$section.id">$encoder.htmlEncode( $section.name )</option>
             #end
           </select>
         </td>
         <td valign="top">
-          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="move( 'availableList' )">
+          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelected( document.getElementById( 'availableList' ), document.getElementById( 'selectedList' ) )">
           <br>
-          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="move ( 'selectedList' )">
+          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelected( document.getElementById( 'selectedList' ), document.getElementById( 'availableList' ) )">
         </td>
         <td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'availableList' ) )">
           </select>
         </td>
       </tr>

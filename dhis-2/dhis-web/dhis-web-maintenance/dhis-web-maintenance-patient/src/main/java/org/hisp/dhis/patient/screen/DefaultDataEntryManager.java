@@ -485,7 +485,6 @@ public class DefaultDataEntryManager implements DataEntryManager
                             DataElementCategoryOption categoryOption = categoryOptionsIterator.next();
                             
                             optionComboName = categoryOption.getName() + " ";
-                            System.out.println("ComboName: "+optionComboName);
                         }
                     }
                     

@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,8 @@ package org.hisp.dhis.mobile.action;
 import com.opensymphony.xwork2.Action;
 import java.io.File;
 
-public class MobileHomePageAction implements Action
+public class MobileHomePageAction
+    implements Action
 {
 
     @Override
@@ -38,25 +39,26 @@ public class MobileHomePageAction implements Action
         throws Exception
     {
         File miFolder = new File( System.getenv( "DHIS2_HOME" ), "mi" );
-        if ( !( miFolder.exists() && miFolder.isDirectory() ) )
+        if ( !(miFolder.exists() && miFolder.isDirectory()) )
         {
             miFolder.mkdir();
         }
         File pendingFolder = new File( miFolder, "pending" );
-        if ( !( pendingFolder.exists() && pendingFolder.isDirectory() ) )
+        if ( !(pendingFolder.exists() && pendingFolder.isDirectory()) )
         {
             pendingFolder.mkdir();
         }
         File bouncedFolder = new File( miFolder, "bounced" );
-        if ( !( bouncedFolder.exists() && bouncedFolder.isDirectory() ) )
+        if ( !(bouncedFolder.exists() && bouncedFolder.isDirectory()) )
         {
             bouncedFolder.mkdir();
         }
         File completedFolder = new File( miFolder, "completed" );
-        if ( !( completedFolder.exists() && completedFolder.isDirectory() ) )
+        if ( !(completedFolder.exists() && completedFolder.isDirectory()) )
         {
             completedFolder.mkdir();
         }
+
         return SUCCESS;
     }
 }

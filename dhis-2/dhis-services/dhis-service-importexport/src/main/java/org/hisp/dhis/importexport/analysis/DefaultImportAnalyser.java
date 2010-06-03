@@ -41,6 +41,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -58,14 +59,13 @@ public class DefaultImportAnalyser
     private static final String PROP_ALT_NAME = "alternativename";
     private static final String PROP_SHORT_NAME = "shortname";
     private static final String PROP_CODE = "code";
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    private static final String PROP_PRIMARY_KEY = "primaryKey";
+    
+    private static final String SEPARARATOR = "-";
 
     private ExpressionService expressionService;
 
-    public void setExpressionService( ExpressionService expressionService )
+    public DefaultImportAnalyser( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
     }
@@ -86,7 +86,17 @@ public class DefaultImportAnalyser
 
     public void addObject( Object object )
     {
-        if ( object instanceof DataElement )
+        if ( object instanceof DataValue )
+        {
+            final DataValue value = (DataValue) object;
+            
+            values.add( new EntityPropertyValue( DataValue.class, PROP_PRIMARY_KEY, 
+                value.getDataElement().getId() + SEPARARATOR +
+                value.getOptionCombo().getId() + SEPARARATOR +
+                value.getPeriod().getId() + SEPARARATOR +
+                value.getSource().getId() ) );
+        }
+        else if ( object instanceof DataElement )
         {
             values.add( new EntityPropertyValue( DataElement.class, PROP_NAME, ((DataElement)object).getName() ) );
             values.add( new EntityPropertyValue( DataElement.class, PROP_ALT_NAME, ((DataElement)object).getAlternativeName() ) );
@@ -170,7 +180,7 @@ public class DefaultImportAnalyser
     
     /**
      * Sorts out duplicate entries from the given list. Returns only one instance 
-     * of a duplicate indenpendent of how many times it occurred. Null-values are 
+     * of a duplicate independent of how many times it occurred. Null-values are 
      * not recognized as duplicates.
      */
     private List<EntityPropertyValue> getDuplicates()    

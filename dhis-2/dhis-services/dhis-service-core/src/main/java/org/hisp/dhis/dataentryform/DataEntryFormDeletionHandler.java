@@ -27,13 +27,8 @@ package org.hisp.dhis.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
 
 /**
  * @author Lars Helge Overland
@@ -51,13 +46,6 @@ public class DataEntryFormDeletionHandler
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-    }
-
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
     }
 
     private DataEntryFormAssociationService dataEntryFormAssociationService;
@@ -88,9 +76,7 @@ public class DataEntryFormDeletionHandler
             DataEntryForm dataEntryForm = dataEntryFormAssociation.getDataEntryForm();
 
             if ( dataEntryForm != null )
-            {                
-                deletionManager.execute( dataEntryForm );
-
+            {
                 dataEntryFormService.deleteDataEntryForm( dataEntryForm );
             }
         }

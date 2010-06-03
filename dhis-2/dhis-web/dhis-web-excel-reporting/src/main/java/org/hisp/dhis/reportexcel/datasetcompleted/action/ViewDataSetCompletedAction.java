@@ -27,6 +27,7 @@
 package org.hisp.dhis.reportexcel.datasetcompleted.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,8 +44,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Tran Thanh Tri

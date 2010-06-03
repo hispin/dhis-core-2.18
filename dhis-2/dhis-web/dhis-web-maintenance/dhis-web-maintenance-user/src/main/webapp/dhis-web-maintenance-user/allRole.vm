@@ -1,5 +1,4 @@
 <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
-<div id='warningArea' style='display:none;' onclick="hideById(this.id)"></div>
 
 <h3>$i18n.getString( "user_role_management" )</h3>
 
@@ -51,6 +50,13 @@
                 <p><label>$i18n.getString( "members" ):</label><br><span id="membersField"></span></p>
                 <p><label>$i18n.getString( "data_sets" ):</label><br><span id="dataSetsField"></span></p>
             </div>
+			
+			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
+				<div style="float:right">
+					<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+				</div>
+				<p><span id="warningField"></span></p>
+			</div>
 
         </td>
 	</tr>

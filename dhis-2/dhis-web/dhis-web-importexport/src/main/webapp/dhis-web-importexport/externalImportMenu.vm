@@ -4,5 +4,4 @@
 <ul class="introList">
     #introListItem( "setImportFormat.action?importFormat=DHIS14XML" "DHIS14_xml_import" )
     #introListItem( "setImportFormat.action?importFormat=DHIS14FILE" "DHIS14_file_import" )
-    #introListItem( "setImportFormat.action?importFormat=IXF" "IXF_import" )
 </ul>

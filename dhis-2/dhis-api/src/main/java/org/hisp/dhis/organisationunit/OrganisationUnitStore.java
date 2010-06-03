@@ -188,4 +188,6 @@ public interface OrganisationUnitStore
      * @return the OrganisationUnitLevel with the given name.
      */
     OrganisationUnitLevel getOrganisationUnitLevelByName( String name );
+    
+    int getNumberOfOrganisationUnits();
 }

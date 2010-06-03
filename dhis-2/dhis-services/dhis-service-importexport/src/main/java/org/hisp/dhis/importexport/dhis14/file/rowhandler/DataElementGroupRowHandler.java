@@ -30,11 +30,9 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractDataElementGroupConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataElementGroupImporter;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
@@ -44,7 +42,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: DataElementGroupRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
  */
 public class DataElementGroupRowHandler
-    extends AbstractDataElementGroupConverter implements RowHandler
+    extends DataElementGroupImporter implements RowHandler
 {
     private ImportParams params;
     
@@ -71,10 +69,8 @@ public class DataElementGroupRowHandler
     {        
         final DataElementGroup dataElementGroup = (DataElementGroup) object;
         
-        NameMappingUtil.addDataElementGroupMapping( dataElementGroup.getId(), dataElementGroup.getName() );
-        
         dataElementGroup.setUuid( UUIdUtils.getUUId() );
             
-        read( dataElementGroup, GroupMemberType.NONE, params );
+        importObject( dataElementGroup, params );
     }
 }

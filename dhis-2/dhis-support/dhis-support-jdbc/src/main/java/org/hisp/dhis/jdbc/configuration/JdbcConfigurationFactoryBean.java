@@ -32,13 +32,14 @@ import org.amplecode.quick.StatementDialect;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultJDBCConfigurationProvider.java 5714 2008-09-17 13:05:36Z larshelg $
  */
 public class JdbcConfigurationFactoryBean
-    implements FactoryBean
+    implements FactoryBean<JdbcConfiguration>
 {
     private static final String KEY_DIALECT = "hibernate.dialect";
     private static final String KEY_DRIVER = "hibernate.connection.driver_class";
@@ -57,14 +58,10 @@ public class JdbcConfigurationFactoryBean
     // Dependencies
     // -------------------------------------------------------------------------
     
+    @Autowired
     private HibernateConfigurationProvider configurationProvider;
     
-    public void setConfigurationProvider( HibernateConfigurationProvider configurationProvider )
-    {
-        this.configurationProvider = configurationProvider;
-    }
-    
-    private JdbcConfiguration jdbcConfiguration;
+    private JdbcConfiguration jdbcConfig;
 
     // -------------------------------------------------------------------------
     // Initialisation
@@ -104,20 +101,20 @@ public class JdbcConfigurationFactoryBean
         config.setUsername( hibernateConfiguration.getProperty( KEY_USERNAME ) );
         config.setPassword( hibernateConfiguration.getProperty( KEY_PASSWORD ) );
         
-        this.jdbcConfiguration = config;
+        this.jdbcConfig = config;
     }
 
     // -------------------------------------------------------------------------
     // FactoryBean implementation
     // -------------------------------------------------------------------------
     
-    public Object getObject()
+    public JdbcConfiguration getObject()
         throws Exception
     {
-        return jdbcConfiguration;
+        return jdbcConfig;
     }
 
-    public Class<?> getObjectType()
+    public Class<JdbcConfiguration> getObjectType()
     {
         return JdbcConfiguration.class;
     }

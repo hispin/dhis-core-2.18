@@ -117,6 +117,19 @@ public interface DataMartStore
     int deleteAggregatedDataValues();
 
     // ----------------------------------------------------------------------
+    // AggregatedDataMapValue
+    // ----------------------------------------------------------------------
+    
+    /**
+     * Retrieves the AggregatedDataMapValues for the given arguments.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param periodId the Period identifier.
+     * @param level the OrganisationUnit level.
+     */
+    Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level );
+
+    // ----------------------------------------------------------------------
     // AggregatedIndicatorValue
     // ----------------------------------------------------------------------
 
@@ -170,17 +183,36 @@ public interface DataMartStore
     int deleteAggregatedIndicatorValues();
 
     // ----------------------------------------------------------------------
-    // AggregatedMapValue
+    // AggregatedIndicatorMapValue
     // ----------------------------------------------------------------------
     
     /**
-     * Retrieves the AggregatedMapValues for the given arguments.
+     * Retrieves the AggregatedIndicatorMapValues for the given arguments.
      * 
      * @param indicatorId the Indicator identifier.
      * @param periodId the Period identifier.
      * @param level the OrganisationUnit level.
      */
-    Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level );
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level );
+    
+    /**
+     * Retrieves the AggregatedIndicatorMapValues for the given arguments.
+     * 
+     * @param indicatorId the Indicator identifier.
+     * @param periodId the Period identifier.
+     * @param level the OrganisationUnit level.
+     * @param OrganisationUnitId the id of the organisationUnit.
+     */
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level, int organisationUnitId );
+    
+    /**
+     * Retrieves the AggregatedIndicatorMapValues for the given arguments.
+     * 
+     * @param indicatorId the Indicator identifier.
+     * @param periodId the Period identifier.
+     * @param level the OrganisationUnit level.
+     */
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, Collection<Integer> periodIds, int level, int organisationUnitId );
     
     // ----------------------------------------------------------------------
     // DataValue

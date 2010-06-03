@@ -42,11 +42,15 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+
+import org.hisp.dhis.period.PeriodType;
+
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg $
+ * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg
+ *          $
  */
 @SuppressWarnings( "unchecked" )
 public class ValidationRuleStoreTest
@@ -55,17 +59,23 @@ public class ValidationRuleStoreTest
     private GenericIdentifiableObjectStore<ValidationRule> validationRuleStore;
 
     private ExpressionService expressionService;
-    
+
     private DataElement dataElementA;
+
     private DataElement dataElementB;
+
     private DataElement dataElementC;
+
     private DataElement dataElementD;
 
     private Set<DataElement> dataElements;
 
     private Expression expressionA;
+
     private Expression expressionB;
-    
+
+    private PeriodType periodType;
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -73,22 +83,22 @@ public class ValidationRuleStoreTest
     @Override
     public void setUpTest()
         throws Exception
-    {       
+    {
         validationRuleStore = (GenericIdentifiableObjectStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        expressionService = (ExpressionService) getBean ( ExpressionService.ID );
-        
+
+        expressionService = (ExpressionService) getBean( ExpressionService.ID );
+
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
         dataElementC = createDataElement( 'C' );
         dataElementD = createDataElement( 'D' );
-        
+
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
-        dataElementService.addDataElement( dataElementD );        
+        dataElementService.addDataElement( dataElementD );
 
         dataElements = new HashSet<DataElement>();
 
@@ -96,12 +106,14 @@ public class ValidationRuleStoreTest
         dataElements.add( dataElementB );
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
-                
+
         expressionA = new Expression( "expressionA", "descriptionA", dataElements );
         expressionB = new Expression( "expressionB", "descriptionB", dataElements );
-        
+
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionA );
+
+        periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
     }
 
     @Override
@@ -115,45 +127,48 @@ public class ValidationRuleStoreTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testAddGetValidationRule()
+    public void testSaveValidationRule()
     {
-        ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
-        
+        ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
+
         int id = validationRuleStore.save( validationRule );
-        
+
         validationRule = validationRuleStore.get( id );
-        
+
         assertEquals( validationRule.getName(), "ValidationRuleA" );
         assertEquals( validationRule.getDescription(), "DescriptionA" );
         assertEquals( validationRule.getType(), ValidationRule.TYPE_ABSOLUTE );
         assertEquals( validationRule.getOperator(), ValidationRule.OPERATOR_EQUAL );
         assertNotNull( validationRule.getLeftSide().getExpression() );
         assertNotNull( validationRule.getRightSide().getExpression() );
+        assertEquals( validationRule.getPeriodType(), periodType );
     }
 
     @Test
-    public void testUpdateValidationRule()
+    public void testSaveOrUpdateValidationRule()
     {
-        ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
-        
+        ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
+
         int id = validationRuleStore.save( validationRule );
-        
+
         validationRule = validationRuleStore.get( id );
-        
+
         assertEquals( validationRule.getName(), "ValidationRuleA" );
         assertEquals( validationRule.getDescription(), "DescriptionA" );
         assertEquals( validationRule.getType(), ValidationRule.TYPE_ABSOLUTE );
         assertEquals( validationRule.getOperator(), ValidationRule.OPERATOR_EQUAL );
-        
+
         validationRule.setName( "ValidationRuleB" );
         validationRule.setDescription( "DescriptionB" );
         validationRule.setType( ValidationRule.TYPE_STATISTICAL );
         validationRule.setOperator( ValidationRule.OPERATOR_GREATER );
-        
+
         validationRuleStore.update( validationRule );
 
         validationRule = validationRuleStore.get( id );
-        
+
         assertEquals( validationRule.getName(), "ValidationRuleB" );
         assertEquals( validationRule.getDescription(), "DescriptionB" );
         assertEquals( validationRule.getType(), ValidationRule.TYPE_STATISTICAL );
@@ -163,26 +178,28 @@ public class ValidationRuleStoreTest
     @Test
     public void testDeleteValidationRule()
     {
-        ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
-        ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
+        ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
+        ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
 
         int idA = validationRuleStore.save( validationRuleA );
         int idB = validationRuleStore.save( validationRuleB );
-        
+
         assertNotNull( validationRuleStore.get( idA ) );
         assertNotNull( validationRuleStore.get( idB ) );
-        
+
         validationRuleA.clearExpressions();
-        
+
         validationRuleStore.delete( validationRuleA );
 
         assertNull( validationRuleStore.get( idA ) );
         assertNotNull( validationRuleStore.get( idB ) );
 
         validationRuleB.clearExpressions();
-        
+
         validationRuleStore.delete( validationRuleB );
-        
+
         assertNull( validationRuleStore.get( idA ) );
         assertNull( validationRuleStore.get( idB ) );
     }
@@ -190,31 +207,35 @@ public class ValidationRuleStoreTest
     @Test
     public void testGetAllValidationRules()
     {
-        ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
-        ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
+        ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
+        ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
 
         validationRuleStore.save( validationRuleA );
         validationRuleStore.save( validationRuleB );
-        
+
         Collection<ValidationRule> rules = validationRuleStore.getAll();
-        
+
         assertTrue( rules.size() == 2 );
         assertTrue( rules.contains( validationRuleA ) );
-        assertTrue( rules.contains( validationRuleB ) );        
+        assertTrue( rules.contains( validationRuleB ) );
     }
 
     @Test
     public void testGetValidationRuleByName()
     {
-        ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
-        ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
+        ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
+        ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA,
+            expressionB, periodType );
 
         int id = validationRuleStore.save( validationRuleA );
         validationRuleStore.save( validationRuleB );
-        
+
         ValidationRule rule = validationRuleStore.getByName( "ValidationRuleA" );
-        
+
         assertEquals( rule.getId(), id );
-        assertEquals( rule.getName(), "ValidationRuleA" ); 
+        assertEquals( rule.getName(), "ValidationRuleA" );
     }
 }

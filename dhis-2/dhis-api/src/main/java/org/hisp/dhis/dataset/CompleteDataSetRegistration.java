@@ -30,6 +30,7 @@ package org.hisp.dhis.dataset;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
@@ -38,7 +39,7 @@ import org.hisp.dhis.source.Source;
  * @version $Id$
  */
 public class CompleteDataSetRegistration
-    implements Serializable
+    implements ImportableObject, Serializable
 {
     private DataSet dataSet;
 
@@ -147,6 +148,11 @@ public class CompleteDataSetRegistration
         String toString = "[" + dataSet + ", " + period + ", " + source + ", " + date + "]";
         
         return toString;
+    }
+    
+    public String getName()
+    {
+        throw new UnsupportedOperationException();
     }
         
     // -------------------------------------------------------------------------

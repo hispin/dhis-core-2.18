@@ -48,7 +48,7 @@ public class ExportPipeThread
 {
     protected static final Log log = LogFactory.getLog( ExportPipeThread.class );
     
-    private static final String VERSION = "1.0";
+    private static final String XML_VERSION = "1.0";
     
     private List<XMLConverter> xsdConverters = new ArrayList<XMLConverter>();
     private List<XMLConverter> xmlConverters = new ArrayList<XMLConverter>();
@@ -223,7 +223,7 @@ public class ExportPipeThread
     
     private void openDocument( XMLWriter writer )
     {
-        writer.openDocument( encoding, VERSION );
+        writer.openDocument( encoding, XML_VERSION );
         
         writer.openElement( rootName, rootProperties );
     }

@@ -27,9 +27,12 @@ package org.amplecode.staxwax.transformer;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.xml.stream.XMLEventWriter;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -39,10 +42,16 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
+import javax.xml.transform.stax.StAXResult;
+import javax.xml.transform.stream.StreamSource;
 import org.amplecode.staxwax.framework.InputPort;
 import org.amplecode.staxwax.framework.OutputPort;
+import org.amplecode.staxwax.framework.XMLPipe;
+import org.amplecode.staxwax.reader.DefaultXMLEventReader;
+import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.stax2.XMLEventReader2;
 
 /**
  *
@@ -56,17 +65,17 @@ public class TransformerTask
     /**
      * The source xml stream
      */
-    protected InputPort source;
+    protected InputPort sourcePort;
 
     /**
      * The xslt stylesheet
      */
-    protected InputPort stylesheet;
+    protected InputPort stylesheetPort;
 
     /**
      * The transformation result
      */
-    protected OutputPort result;
+    protected OutputPort resultPort;
 
     /**
      * The stylesheet parameters
@@ -85,20 +94,21 @@ public class TransformerTask
      */
     public TransformerTask( Source stylesheet, Map<String, String> params )
     {
-        this.stylesheet = new InputPort( "Stylesheet", stylesheet );
+        this.stylesheetPort = new InputPort( "Stylesheet", stylesheet );
         this.params = params;
         this.templates = null;
     }
 
     /**
-     * pre-compile styleshhet to Templates
+     * Pre-compile stylesheet to Templates
      * @throws TransformerConfigurationException
      */
     public void compile() throws TransformerConfigurationException
     {
         TransformerFactory factory = TransformerFactory.newInstance();
-        templates = factory.newTemplates( stylesheet.getSource() );
+        templates = factory.newTemplates( stylesheetPort.getSource() );
     }
+
 
     public void transform( Source source, Result result, URIResolver resolver ) throws TransformerConfigurationException, TransformerException
     {
@@ -109,8 +119,8 @@ public class TransformerTask
             compile();
         }
 
-        this.source = new InputPort( "Source", source );
-        this.result = new OutputPort( "Result", result );
+        this.sourcePort = new InputPort( "Source", source );
+        this.resultPort = new OutputPort( "Result", result );
 
         Transformer t = templates.newTransformer();
 
@@ -133,6 +143,41 @@ public class TransformerTask
             }
         }
 
-        t.transform( this.source.getSource(), this.result.getResult() );
+        t.transform( this.sourcePort.getSource(), this.resultPort.getResult() );
     }
+
+
+    /**
+     * Transforms xml datastream to Pipe 
+     *
+     * @param dataStream - the xml data
+     * @param sheetStream - the stylsheet to perform the translation
+     * @param xsltParams - paramaters to pass to the stylesheet
+     * @return a StaxWax XMLEventReader for the readable end of the pipe
+     *
+     * @throws Exception
+     *
+     * TODO: implement XMLPipe as a Result type
+     *
+     */
+    public XMLReader transformToPipe(BufferedInputStream dataStream)
+        throws Exception
+    {
+
+            Source dataSource = new StreamSource( dataStream );
+
+            // make a pipe to capture output of transform
+            XMLPipe pipe = new XMLPipe();
+            XMLEventWriter pipeinput = pipe.getInput();
+            XMLEventReader2 pipeoutput = pipe.getOutput();
+
+            // set result of transform to input of pipe
+            StAXResult result = new StAXResult( pipeinput );
+            transform( dataSource, result, null );
+            log.info( "transform successful - importing dxf" );
+
+            // set reader to output of pipe
+            return new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
+        }
+
 }

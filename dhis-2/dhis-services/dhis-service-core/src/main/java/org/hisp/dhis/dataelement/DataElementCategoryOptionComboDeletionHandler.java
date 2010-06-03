@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -45,6 +46,13 @@ public class DataElementCategoryOptionComboDeletionHandler
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -73,10 +81,22 @@ public class DataElementCategoryOptionComboDeletionHandler
     }
     
     @Override
+    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    {
+        for(DataElementCategoryOptionCombo eachOptionCombo : categoryCombo.getOptionCombos())
+        {
+            String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + eachOptionCombo.getId();
+            
+            if( jdbcTemplate.queryForInt( sql ) > 0) return false;
+        }
+        
+        return true;
+    }
+    
+    @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        for ( DataElementCategoryOptionCombo categoryOptionCombo : 
-            categoryService.getAllDataElementCategoryOptionCombos() )
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryService.getAllDataElementCategoryOptionCombos() )
         {
             if ( categoryOptionCombo.getCategoryCombo().equals( categoryCombo ) )
             {

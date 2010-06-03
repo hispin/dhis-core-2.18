@@ -27,8 +27,10 @@ package org.hisp.dhis.dd.action.categorycombo;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,6 +51,13 @@ public class RemoveDataElementCategoryComboAction
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
+    
+    private I18n i18n;
+    
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -62,19 +71,42 @@ public class RemoveDataElementCategoryComboAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+    
+    public String getMessage()
+    {
+        return message;
+    }
+    
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-    	DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( id );
-    	
-    	DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-    	
-    	if ( !categoryCombo.equals( defaultCategoryCombo ) ) 
-    	{
-    	    dataElementCategoryService.deleteDataElementCategoryCombo( categoryCombo );
-    	}
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( id );
+
+        DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
+        if ( !categoryCombo.equals( defaultCategoryCombo ) )
+        {
+            try
+            {
+                dataElementCategoryService.deleteDataElementCategoryCombo( categoryCombo );
+            }
+            catch ( DeleteNotAllowedException ex )
+            {
+                if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+                {
+                    message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                    return ERROR;
+                }
+            }
+
+        }
 
         return SUCCESS;
     }

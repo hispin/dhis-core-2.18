@@ -35,8 +35,8 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14GroupMemberAssociation;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -45,7 +45,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: DataElementGroupMemberRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
  */
 public class DataElementGroupMemberRowHandler
-    extends AbstractGroupMemberConverter implements RowHandler
+    extends GroupMemberImporter implements RowHandler
 {
     private Map<Object, Integer> dataElementMapping;
     

@@ -27,9 +27,14 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.util.SessionUtils.*;
+import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_STATUS;
+import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_TYPE;
+import static org.hisp.dhis.util.SessionUtils.getSessionVar;
+import static org.hisp.dhis.util.SessionUtils.setSessionVar;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
@@ -39,9 +44,11 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.importexport.ImportDataValueService;
+import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.action.util.ClassMapUtil;
+import org.hisp.dhis.importexport.comparator.ImportObjectComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -379,16 +386,9 @@ public class GetPreviewOptionsAction
         return updateDataValues;
     }
     
-    private Collection<? extends Object> objects;
+    public List<ImportObject> importObjects;
 
-    public Collection<? extends Object> getObjects()
-    {
-        return objects;
-    }
-    
-    public Collection<? extends Object> importObjects;
-
-    public Collection<? extends Object> getImportObjects()
+    public List<ImportObject> getImportObjects()
     {
         return importObjects;
     }
@@ -468,7 +468,9 @@ public class GetPreviewOptionsAction
 
         if ( type != null && status != null )
         {
-            importObjects = importObjectService.getImportObjects( ImportObjectStatus.valueOf( status ), ClassMapUtil.getClass( type ) );
+            importObjects = new ArrayList<ImportObject>( importObjectService.getImportObjects( ImportObjectStatus.valueOf( status ), ClassMapUtil.getClass( type ) ) );
+            
+            Collections.sort( importObjects, new ImportObjectComparator() );
         }
                        
         return SUCCESS;
