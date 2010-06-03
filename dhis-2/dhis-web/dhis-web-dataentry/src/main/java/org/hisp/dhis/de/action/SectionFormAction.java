@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
@@ -125,6 +126,13 @@ public class SectionFormAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -230,7 +238,7 @@ public class SectionFormAction
 
         Period period = selectedStateManager.getSelectedPeriod();
 
-        Collection<DataElement> dataElements = dataSet.getDataElements();
+        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSetService.getDataElements( dataSet ) );
 
         if ( dataElements.size() == 0 )
         {

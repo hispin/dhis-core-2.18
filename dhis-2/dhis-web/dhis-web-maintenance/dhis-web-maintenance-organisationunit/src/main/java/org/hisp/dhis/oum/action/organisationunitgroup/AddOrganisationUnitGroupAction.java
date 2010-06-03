@@ -27,6 +27,7 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -83,8 +84,9 @@ public class AddOrganisationUnitGroupAction
     {
         OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( name );
 
-        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectionTreeManager
-            .getSelectedOrganisationUnits() ) );
+        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
+        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
 
         organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
 

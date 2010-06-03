@@ -16,6 +16,8 @@
 
     <property name="design"/>
 
+	<property name="designContent" type="text"/>
+
     <property name="type"/>
         
     <set name="reportTables" table="reportreporttables">

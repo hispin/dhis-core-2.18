@@ -56,14 +56,14 @@ public class AddRelationshipTypeAction
 
     private String aIsToB;
 
-    public void setaIsToB( String aIsToB )
+    public void setAIsToB( String aIsToB )
     {
         this.aIsToB = aIsToB;
     }
 
     private String bIsToA;
 
-    public void setbIsToA( String bIsToA )
+    public void setBIsToA( String bIsToA )
     {
         this.bIsToA = bIsToA;
     }

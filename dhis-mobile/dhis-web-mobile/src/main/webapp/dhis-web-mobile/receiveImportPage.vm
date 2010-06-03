@@ -6,26 +6,25 @@
         $("#bouncedItems").toggle();
     }
 </script>
+#if ($result)<script>setHeaderMessage("$result");</script>#end
 
 #if ($smsServiceStatus)
-<div class="header" style="background-color: olive">Receive SMS -
+<div class="header" style="background-color: olive">
     <form method="post">SMS Service: Started
         <input type="submit" name="statAction" value="Stop" />
     </form>
 </div>
 #else
-<div class="header">Receive SMS -
+<div class="header">
     <form method="post">SMS Service: Not Started
         <input type="submit" name="statAction" value="Start" />
     </form>
 </div>
 #end
-<div class="box">
-
-</div>
+<h1>Receive SMS</h1>
 <br>
 <br>
-<div class="header">Import SMS</div>
+<div class="header">Import SMS <form style="float: right;" method="post"><input type="submit" name="importAction" value="Import All Pending" /></form></div>
 <div class="box">
     <table class="mainTable">
         <tbody>

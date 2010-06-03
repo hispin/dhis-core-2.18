@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.hisp.dhis.mobile.api;
+
 
 import java.io.Serializable;
 import java.util.Map;
@@ -40,21 +40,20 @@ public class MobileImportParameters implements Serializable
 
     private String smsTime;
 
+    private String periodType;
+
     private Map<String, Integer> dataValues;
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
-
     public MobileImportParameters()
     {
-
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
     public String getMobileNumber()
     {
         return mobileNumber;
@@ -83,6 +82,16 @@ public class MobileImportParameters implements Serializable
     public void setSmsTime( String smsTime )
     {
         this.smsTime = smsTime;
+    }
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    public String getPeriodType()
+    {
+        return periodType;
     }
 
     public Map<String, Integer> getDataValues()

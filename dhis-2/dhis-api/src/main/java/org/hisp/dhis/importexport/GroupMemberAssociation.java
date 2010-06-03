@@ -29,13 +29,15 @@ package org.hisp.dhis.importexport;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.common.ImportableObject;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GroupMemberAssociation
-    implements Serializable
-{
+    implements ImportableObject, Serializable
+{    
     private int groupId;
     
     private int memberId;
@@ -106,7 +108,12 @@ public class GroupMemberAssociation
         return groupId == other.getGroupId() && 
             memberId == other.getMemberId() && sortOrder == other.getSortOrder();
     }
-    
+
+    public String getName()
+    {
+        throw new UnsupportedOperationException();
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

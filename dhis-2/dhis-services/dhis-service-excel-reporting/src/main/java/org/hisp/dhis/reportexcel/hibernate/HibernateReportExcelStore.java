@@ -46,6 +46,7 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelStore;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -59,12 +60,8 @@ public class HibernateReportExcelStore
     // Dependency
     // -------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     // --------------------------------------
     // Service of Report

@@ -31,13 +31,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Component("dbmsManager")
 public class HibernateDbmsManager
     implements DbmsManager
 {
@@ -47,26 +50,14 @@ public class HibernateDbmsManager
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-    
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-    
+    @Autowired
     private HibernateCacheManager cacheManager;
-
-    public void setCacheManager( HibernateCacheManager cacheManager )
-    {
-        this.cacheManager = cacheManager;
-    }
 
     // -------------------------------------------------------------------------
     // DbmsManager implementation
@@ -74,6 +65,7 @@ public class HibernateDbmsManager
 
     public void emptyDatabase()
     {   
+        emptyTable( "translation" );
         emptyTable( "importdatavalue" );
         
         emptyTable( "datavalueaudit" );
@@ -152,7 +144,7 @@ public class HibernateDbmsManager
                
         cacheManager.clearCache();
         
-        log.debug( "Cleared Hiberate cache" );
+        log.debug( "Cleared Hibernate cache" );
     }
     
     public void clearSession()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.hisp.dhis.mobile.api;
+
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,19 +37,33 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 
 import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -59,16 +74,14 @@ import org.xml.sax.SAXParseException;
 public class DefaultMobileImportService
     implements MobileImportService
 {
+
+    private static final Log LOG = LogFactory.getLog( DefaultMobileImportService.class );
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private LocationManager locationManager;
-
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
 
     private UserStore userStore;
 
@@ -84,10 +97,50 @@ public class DefaultMobileImportService
         this.periodService = periodService;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService(
+        DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    private String importStatus;
+
+    public String getImportStatus()
+    {
+        return importStatus;
+    }
+
+    private String statusMessage;
+
+    public String getStatusMessage()
+    {
+        return statusMessage;
+    }
+
+    private String storedBy;
+
     // -------------------------------------------------------------------------
     // Services
     // -------------------------------------------------------------------------
-
     @Override
     public User getUserInfo( String mobileNumber )
     {
@@ -99,30 +152,36 @@ public class DefaultMobileImportService
         for ( User user : allUsers )
         {
             if ( user.getPhoneNumber() != null && user.getPhoneNumber().equalsIgnoreCase( mobileNumber ) )
+            {
                 selectedUser = user;
+            }
         }
 
         return selectedUser;
     }
 
     @Override
-    public Period getPeriodInfo( String startDate )
+    public Period getPeriodInfo( String startDate, String periodType )
         throws Exception
     {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
-        //String convertedDate = dateFormat.format( startDate );
-
-        List<Period> monthlyPeriods = new ArrayList<Period>( periodService
-            .getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        List<Period> monthlyPeriods = null;
+        if ( periodType.equals( "3" ) )
+        {
+            monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        } else
+        {
+            if ( periodType.equals( "1" ) )
+            {
+                monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new DailyPeriodType() ) );
+            }
+        }
 
         for ( Period period : monthlyPeriods )
         {
             String tempDate = dateFormat.format( period.getStartDate() );
-
-            System.out.println(tempDate + " **** " + startDate );
-
             if ( tempDate.equalsIgnoreCase( startDate ) )
             {
                 return period;
@@ -142,6 +201,7 @@ public class DefaultMobileImportService
         String mobileNumber;
         String smsTime;
         String startDate;
+        String periodType;
 
         String tempDeid;
         String tempDataValue;
@@ -157,7 +217,6 @@ public class DefaultMobileImportService
             Document doc = docBuilder.parse( importFile );
             if ( doc == null )
             {
-                System.out.println( "XML File Not Found at user home" );
                 return null;
             }
 
@@ -183,9 +242,16 @@ public class DefaultMobileImportService
             NodeList texttimeStampInfoNameList = timeStampInfoElement.getChildNodes();
             smsTime = texttimeStampInfoNameList.item( 0 ).getNodeValue().trim();
 
-            System.out.println("In getParametersFromXML : "+ mobileNumber+" : "+startDate+" : "+smsTime);
-
             mobileImportParameters.setSmsTime( smsTime );
+
+            // To get PeriodType
+            NodeList periodTypeInfo = doc.getElementsByTagName( "periodType" );
+            Element periodTypeInfoElement = (Element) periodTypeInfo.item( 0 );
+            NodeList textPeriodTypeInfoNameList = periodTypeInfoElement.getChildNodes();
+            periodType = textPeriodTypeInfoNameList.item( 0 ).getNodeValue().trim();
+
+            mobileImportParameters.setPeriodType( periodType );
+
 
             NodeList listOfDataValues = doc.getElementsByTagName( "dataValue" );
             int totalDataValues = listOfDataValues.getLength();
@@ -206,10 +272,8 @@ public class DefaultMobileImportService
                     NodeList textValueElementList = valueElement.getChildNodes();
                     tempDataValue = textValueElementList.item( 0 ).getNodeValue();
 
-                    String tempDeID = tempDeid ;
+                    String tempDeID = tempDeid;
                     Integer tempDV = Integer.parseInt( tempDataValue );
-
-                    System.out.println("In getParametersFromXML : "+ tempDeID + " : "+ tempDV );
 
                     dataValues.put( tempDeID, tempDV );
                 }
@@ -222,13 +286,11 @@ public class DefaultMobileImportService
         {
             System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
             System.out.println( " " + err.getMessage() );
-        }
-        catch ( SAXException e )
+        } catch ( SAXException e )
         {
             Exception x = e.getException();
-            ((x == null) ? e : x).printStackTrace();
-        }
-        catch ( Throwable t )
+            ( ( x == null ) ? e : x ).printStackTrace();
+        } catch ( Throwable t )
         {
             t.printStackTrace();
         }
@@ -237,6 +299,7 @@ public class DefaultMobileImportService
 
     }// getParametersFromXML end
 
+    @Override
     public List<String> getImportFiles()
     {
         List<String> fileNames = new ArrayList<String>();
@@ -249,24 +312,16 @@ public class DefaultMobileImportService
             String newpath = System.getenv( "DHIS2_HOME" );
             if ( newpath != null )
             {
-                importFolderPath = newpath + File.separator  + "mi" + File.separator
+                importFolderPath = newpath + File.separator + "mi" + File.separator
                     + "pending";
             }
 
             File dir = new File( importFolderPath );
 
-            System.out.println(dir.getAbsolutePath());
-
-            System.out.println(dir.listFiles());
-
             String[] files = dir.list();
 
-            System.out.println("In getImportFiles Method: "+ files.length);
-
             fileNames = Arrays.asList( files );
-            System.out.println("In getImportFiles Method: "+ fileNames.size());
-        }
-        catch ( Exception e )
+        } catch ( Exception e )
         {
             System.out.println( e.getMessage() );
         }
@@ -298,18 +353,14 @@ public class DefaultMobileImportService
 
             int len;
 
-            while ( (len = in.read( buf )) > 0 )
+            while ( ( len = in.read( buf ) ) > 0 )
             {
                 out.write( buf, 0, len );
             }
-        }
-
-        catch( Exception e )
+        } catch ( Exception e )
         {
             return -1;
-        }
-
-        finally
+        } finally
         {
             in.close();
 
@@ -320,6 +371,7 @@ public class DefaultMobileImportService
 
     }
 
+    @Override
     public void moveImportedFile( String fileName )
     {
         try
@@ -336,13 +388,8 @@ public class DefaultMobileImportService
                 sourceFilePath = newpath + File.separator + "mi" + File.separator + "pending" + File.separator
                     + fileName;
 
-                System.out.println(sourceFilePath);
-
                 destFilePath = newpath + File.separator + "mi" + File.separator + "completed" + File.separator
                     + fileName;
-
-                System.out.println(destFilePath);
-
             }
 
             File sourceFile = new File( sourceFilePath );
@@ -351,17 +398,19 @@ public class DefaultMobileImportService
 
             int status = moveFile( sourceFile, destFile );
 
-            if( status == 1 )
+            if ( status == 1 )
+            {
                 sourceFile.delete();
+            }
 
-        }
-        catch ( Exception e )
+        } catch ( Exception e )
         {
             System.out.println( e.getMessage() );
         }
 
     }
 
+    @Override
     public void moveFailedFile( String fileName )
     {
         try
@@ -388,13 +437,154 @@ public class DefaultMobileImportService
 
             int status = moveFile( sourceFile, destFile );
 
-            if( status == 1 )
+            if ( status == 1 )
+            {
                 sourceFile.delete();
+            }
 
-        }
-        catch ( Exception e )
+        } catch ( Exception e )
         {
             System.out.println( e.getMessage() );
+        }
+    }
+
+    @Override
+    public void importAllFiles()
+    {
+        try
+        {
+            importStatus = "";
+
+            List<String> fileNames = new ArrayList<String>( getImportFiles() );
+
+            for ( String importFile : fileNames )
+            {
+                MobileImportParameters mobImportParameters = getParametersFromXML( importFile );
+
+                if ( mobImportParameters == null )
+                {
+                    LOG.error( importFile + " Import File is not Propely Formated First" );
+                    importStatus += "<br>" + new Date() + ": " + importFile + " Import File is not Propely Formated.";
+                    moveFailedFile( importFile );
+                    continue;
+                }
+
+                User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
+
+                UserCredentials userCredentials = userStore.getUserCredentials( curUser );
+
+                if ( ( userCredentials != null ) && ( mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() ) ) )
+                {
+                    storedBy = userCredentials.getUsername();
+                } else
+                {
+                    LOG.error( " Import File Contains Unrecognised Phone Numbers : " + mobImportParameters.getMobileNumber() );
+                    importStatus += "<br><font color=red><b>Import File Contains Unrecognised Phone Numbers :" + mobImportParameters.getMobileNumber() + ".</b></font>";
+                    moveFailedFile( importFile );
+                    continue;
+                }
+
+                List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
+
+                if ( sources == null || sources.size() <= 0 )
+                {
+                    importStatus += "<br><font color=red><b>No User Exist Who Registered Phone No. Is :" + mobImportParameters.getMobileNumber() + ".</b></font>";
+                    moveFailedFile( importFile );
+                    continue;
+                }
+                Source source = sources.get( 0 );
+
+                System.out.println( "getStartDate = " + mobImportParameters.getStartDate() + " getPeriodType = " + mobImportParameters.getPeriodType() );
+
+                Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters.getPeriodType() );
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
+                Date timeStamp = dateFormat.parse( mobImportParameters.getSmsTime() );
+
+                Map<String, Integer> dataValueMap = new HashMap<String, Integer>( mobImportParameters.getDataValues() );
+
+                if ( dataValueMap == null || dataValueMap.size() <= 0 )
+                {
+                    LOG.error( "dataValue map is null" );
+                } else
+                {
+                    if ( source == null )
+                    {
+                        LOG.error( "source is null" );
+                    } else
+                    {
+                        if ( period == null )
+                        {
+                            LOG.error( "period is null" );
+                        } else
+                        {
+                            if ( timeStamp == null )
+                            {
+                                LOG.error( "timeStamp is null" );
+                            }
+                        }
+                    }
+                }
+
+                if ( source == null || period == null || timeStamp == null || dataValueMap == null
+                    || dataValueMap.size() <= 0 )
+                {
+
+                    LOG.error( importFile + " Import File is not Propely Formated" );
+                    importStatus += "<br>" + new Date() + ": " + importFile + " Import File is not Propely Formated.<br>";
+                    moveFailedFile( importFile );
+                    continue;
+                }
+
+                Set<String> keys = dataValueMap.keySet();
+
+                for ( String key : keys )
+                {
+                    String parts[] = key.split( "\\." );
+
+                    String deStr = parts[0];
+
+                    String optStr = parts[1];
+
+                    String value = String.valueOf( dataValueMap.get( key ) );
+
+                    DataElement dataElement = dataElementService.getDataElement( Integer.valueOf( deStr ) );
+
+                    DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
+
+                    optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.valueOf( optStr ) );
+
+                    DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
+
+                    if ( dataValue == null )
+                    {
+                        if ( value != null )
+                        {
+                            dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp, null, optionCombo );
+
+                            dataValueService.addDataValue( dataValue );
+                        }
+                    } else
+                    {
+                        dataValue.setValue( value );
+
+                        dataValue.setTimestamp( timeStamp );
+
+                        dataValue.setStoredBy( storedBy );
+
+                        dataValueService.updateDataValue( dataValue );
+                    }
+                }
+
+                importStatus += "<br>" + new Date() + ": " + importFile + " is Imported Successfully.";
+
+                moveImportedFile( importFile );
+            }
+        } catch ( Exception e )
+        {
+            e.printStackTrace();
+            LOG.error( e.getMessage() );
         }
     }
 }

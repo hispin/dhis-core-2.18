@@ -20,7 +20,6 @@
     <module>dhis-support-external</module>
     <module>dhis-support-jdbc</module>
     <module>dhis-support-jdbc-test</module>
-    <module>dhis-support-i18n</module>
   </modules>
   <properties>
     <rootDir>../</rootDir>

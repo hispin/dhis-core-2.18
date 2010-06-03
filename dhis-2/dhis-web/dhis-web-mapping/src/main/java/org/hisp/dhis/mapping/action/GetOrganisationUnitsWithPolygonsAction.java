@@ -108,7 +108,7 @@ public class GetOrganisationUnitsWithPolygonsAction
             {
                 public boolean evaluate( Object object )
                 {
-                    return ((OrganisationUnit) object).hasPolygonCoordinates();
+                    return ((OrganisationUnit) object).hasCoordinates();
                 }
             } );
 

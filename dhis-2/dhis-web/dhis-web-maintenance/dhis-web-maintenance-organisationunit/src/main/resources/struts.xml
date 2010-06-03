@@ -178,6 +178,9 @@
 			class="org.hisp.dhis.oum.action.organisationunitgroup.RemoveOrganisationUnitGroupAction">
 			<result name="success" type="velocity-json">
                 /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUP_DELETE</param>
 		</action>
 
@@ -275,6 +278,9 @@
 			class="org.hisp.dhis.oum.action.organisationunitgroupset.RemoveGroupSetAction">
 			<result name="success" type="velocity-json">
                 /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUPSET_DELETE</param>
 		</action>
 

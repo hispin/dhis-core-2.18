@@ -32,6 +32,7 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataarchive.DataArchiveStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.hisp.dhis.system.util.DateUtils.*;
@@ -48,13 +49,9 @@ public class JdbcDataArchiveStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

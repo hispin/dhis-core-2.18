@@ -37,6 +37,7 @@ import java.util.List;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -49,8 +50,10 @@ import org.junit.Test;
 public class ImportAnalyserTest
     extends DhisTest
 {
+    private ExpressionService expressionService;
+    
     private ImportAnalyser analyser;
-
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -58,7 +61,9 @@ public class ImportAnalyserTest
     @Override
     public void setUpTest()
     {
-        analyser = (ImportAnalyser) getBean( ImportAnalyser.ID );
+        expressionService = (ExpressionService) getBean( ExpressionService.ID );
+        
+        analyser = new DefaultImportAnalyser( expressionService );
     }
 
     // -------------------------------------------------------------------------

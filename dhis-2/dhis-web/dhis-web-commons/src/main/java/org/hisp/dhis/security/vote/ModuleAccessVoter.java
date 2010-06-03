@@ -27,14 +27,15 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import org.springframework.security.Authentication;
-import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.GrantedAuthority;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 
@@ -75,8 +76,8 @@ public class ModuleAccessVoter
      * <code>com.opensymphony.xwork.config.entities.ActionConfig</code>.
      * False otherwise.
      */
-    @SuppressWarnings( "unchecked" )
-    public boolean supports( Class clazz )
+    @Override
+    public boolean supports( Class<?> clazz )
     {
         boolean result = ActionConfig.class.equals( clazz );
 
@@ -91,7 +92,7 @@ public class ModuleAccessVoter
      * prefix + module name, or the module name is in the always accessible set.
      * Otherwise votes ACCESS_DENIED.
      */
-    public int vote( Authentication authentication, Object object, ConfigAttributeDefinition definition )
+    public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         if ( !supports( object.getClass() ) )
         {

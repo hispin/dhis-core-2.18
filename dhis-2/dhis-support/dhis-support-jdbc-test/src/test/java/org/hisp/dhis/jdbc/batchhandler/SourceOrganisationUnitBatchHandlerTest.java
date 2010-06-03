@@ -41,6 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +50,7 @@ import org.junit.Test;
 public class SourceOrganisationUnitBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler<Source> sourceBatchHandler;
@@ -68,8 +70,6 @@ public class SourceOrganisationUnitBatchHandlerTest
     {
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
-        
         sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
         
         organisationUnitbatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );

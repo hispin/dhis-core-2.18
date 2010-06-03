@@ -50,6 +50,7 @@ import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -63,19 +64,11 @@ public class HibernateDataElementStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
+    @Autowired
     private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
 
     // -------------------------------------------------------------------------
     // DataElement

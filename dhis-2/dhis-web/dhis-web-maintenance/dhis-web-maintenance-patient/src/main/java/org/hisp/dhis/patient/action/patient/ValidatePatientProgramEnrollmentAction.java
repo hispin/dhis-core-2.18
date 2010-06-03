@@ -31,6 +31,10 @@ import java.util.Date;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.validation.ValidationCriteria;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,6 +48,13 @@ public class ValidatePatientProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
 
     private I18nFormat format;
 
@@ -91,6 +102,18 @@ public class ValidatePatientProgramEnrollmentAction
     public String execute()
         throws Exception
     {
+        Patient patient = selectedStateManager.getSelectedPatient();
+
+        Program program = selectedStateManager.getSelectedProgram();
+
+        ValidationCriteria criteria = program.isValid( patient );
+
+        // Check validation criteria
+        if ( criteria != null )
+        {
+            message = i18n.getString( "program_is_invalid" ) + " " + criteria.getName();
+            return INPUT;
+        }
 
         if ( enrollmentDate == null )
         {
@@ -148,6 +171,15 @@ public class ValidatePatientProgramEnrollmentAction
                 if ( DateOfIncident == null )
                 {
                     message = i18n.getString( "please_specify_a_valid_date_of_incident" );
+
+                    return INPUT;
+                }
+                
+                Date DateOfEnrollment = format.parseDate( enrollmentDate );
+
+                if ( DateOfEnrollment.before( DateOfIncident))
+                {
+                    message = i18n.getString( "date_of_incident_invalid" );
 
                     return INPUT;
                 }

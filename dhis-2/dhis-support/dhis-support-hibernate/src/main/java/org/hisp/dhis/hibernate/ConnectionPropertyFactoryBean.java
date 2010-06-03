@@ -28,24 +28,21 @@ package org.hisp.dhis.hibernate;
  */
 
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ConnectionPropertyFactoryBean
-    implements FactoryBean
+    implements FactoryBean<String>
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private HibernateConfigurationProvider hibernateConfigurationProvider;
-
-    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
-    {
-        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
-    }
     
     private String hibernateProperty;
 
@@ -58,13 +55,13 @@ public class ConnectionPropertyFactoryBean
     // FactoryBean implementation
     // -------------------------------------------------------------------------
 
-    public Object getObject()
+    public String getObject()
         throws Exception
     {
         return hibernateConfigurationProvider.getConfiguration().getProperty( hibernateProperty );
     }
 
-    public Class<?> getObjectType()
+    public Class<String> getObjectType()
     {
         return String.class;
     }

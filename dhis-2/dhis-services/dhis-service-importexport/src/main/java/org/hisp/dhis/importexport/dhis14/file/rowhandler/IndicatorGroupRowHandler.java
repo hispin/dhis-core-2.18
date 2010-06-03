@@ -28,11 +28,9 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractIndicatorGroupConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.IndicatorGroupImporter;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -44,7 +42,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: IndicatorGroupRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
  */
 public class IndicatorGroupRowHandler
-    extends AbstractIndicatorGroupConverter implements RowHandler
+    extends IndicatorGroupImporter implements RowHandler
 {
     private ImportParams params;
     
@@ -71,10 +69,8 @@ public class IndicatorGroupRowHandler
     {        
         final IndicatorGroup indicatorGroup = (IndicatorGroup) object;
         
-        NameMappingUtil.addIndicatorGroupMapping( indicatorGroup.getId(), indicatorGroup.getName() );
-        
         indicatorGroup.setUuid( UUIdUtils.getUUId() );
             
-        read( indicatorGroup, GroupMemberType.INDICATORGROUP, params );
+        importObject( indicatorGroup, params );
     }
 }

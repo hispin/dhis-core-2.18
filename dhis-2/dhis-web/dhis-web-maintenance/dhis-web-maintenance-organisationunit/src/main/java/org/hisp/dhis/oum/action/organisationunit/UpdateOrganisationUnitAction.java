@@ -122,25 +122,11 @@ public class UpdateOrganisationUnitAction
         this.comment = comment;
     }
 
-    private String polygonCoordinates;
+    private String coordinates;
 
     public void setPolygonCoordinates( String polygonCoordinates )
     {
-        this.polygonCoordinates = polygonCoordinates;
-    }
-
-    private String latitude;
-
-    public void setLatitude( String latitude )
-    {
-        this.latitude = latitude;
-    }
-    
-    private String longitude;
-
-    public void setLongitude( String longitude )
-    {
-        this.longitude = longitude;
+        this.coordinates = polygonCoordinates;
     }
 
     private String url;
@@ -159,9 +145,7 @@ public class UpdateOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
-        polygonCoordinates = nullIfEmpty( polygonCoordinates );
-        latitude = nullIfEmpty( latitude );
-        longitude = nullIfEmpty( longitude );
+        coordinates = nullIfEmpty( coordinates );
         url = nullIfEmpty( url );
 
         Date oDate = format.parseDate( openingDate );
@@ -186,9 +170,7 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setComment( comment );
-        organisationUnit.setPolygonCoordinates( polygonCoordinates );
-        organisationUnit.setLatitude( latitude );
-        organisationUnit.setLongitude( longitude );
+        organisationUnit.setCoordinates( coordinates );
         organisationUnit.setUrl( url );
 
         organisationUnitService.updateOrganisationUnit( organisationUnit );

@@ -39,8 +39,9 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -50,7 +51,7 @@ import org.hisp.dhis.indicator.IndicatorService;
  * @version $Id: IndicatorGroupMemberConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class IndicatorGroupMemberConverter
-    extends AbstractGroupMemberConverter implements XMLConverter
+    extends GroupMemberImporter implements XMLConverter, Importer<GroupMemberAssociation>
 {
     public static final String COLLECTION_NAME = "indicatorGroupMembers";
     public static final String ELEMENT_NAME = "indicatorGroupMember";
@@ -139,7 +140,14 @@ public class IndicatorGroupMemberConverter
             association.setGroupId( indicatorGroupMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_GROUP ) ) ) );
             association.setMemberId( indicatorMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR ) ) ) );
             
-            read( association, GroupMemberType.INDICATORGROUP, params );
+            importObject( association, params );
+            
         }
+    }
+
+    @Override
+    public void importObject( GroupMemberAssociation object, ImportParams params )
+    {
+        read( object, GroupMemberType.INDICATORGROUP, params );
     }
 }

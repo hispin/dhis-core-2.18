@@ -38,6 +38,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.dataentryform.DataEntryFormAssociationStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Viet
@@ -49,12 +50,8 @@ public class HibernateDataEntryFormAssociationStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     // -------------------------------------------------------------------------
     // DataEntryFormAssociationStore implementation

@@ -29,7 +29,7 @@ package org.hisp.dhis.security.spring;
 
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.UsernameSaltSource;
-import org.springframework.security.providers.encoding.PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 /**
  * @author Torgeir Lorange Ostby

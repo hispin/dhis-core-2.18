@@ -106,9 +106,9 @@ public class GetMatchOptionsAction
         return importObject;
     }    
     
-    private Collection<? extends Object> objects;
+    private Collection<?> objects;
 
-    public Collection<? extends Object> getObjects()
+    public Collection<?> getObjects()
     {
         return objects;
     }

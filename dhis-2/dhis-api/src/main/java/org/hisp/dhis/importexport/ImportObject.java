@@ -2,6 +2,8 @@ package org.hisp.dhis.importexport;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.common.ImportableObject;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -44,9 +46,9 @@ public class ImportObject
     
     private GroupMemberType groupMemberType;
     
-    private Object object;
+    private ImportableObject object;
     
-    private Object compareObject;
+    private ImportableObject compareObject;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -56,7 +58,7 @@ public class ImportObject
     {
     }
     
-    public ImportObject( ImportObjectStatus status, String className, Object object )
+    public ImportObject( ImportObjectStatus status, String className, ImportableObject object )
     {
         this.status = status;
         this.className = className;
@@ -65,7 +67,7 @@ public class ImportObject
         this.compareObject = null;
     }
 
-    public ImportObject( ImportObjectStatus status, String className, GroupMemberType groupMemberType, Object object )
+    public ImportObject( ImportObjectStatus status, String className, GroupMemberType groupMemberType, ImportableObject object )
     {
         this.status = status;
         this.className = className;
@@ -74,7 +76,7 @@ public class ImportObject
         this.compareObject = null;
     }
     
-    public ImportObject( ImportObjectStatus status, String className, Object object, Object compareObject )
+    public ImportObject( ImportObjectStatus status, String className, ImportableObject object, ImportableObject compareObject )
     {
         this.status = status;
         this.className = className;
@@ -83,7 +85,7 @@ public class ImportObject
         this.compareObject = compareObject;
     }
 
-    public ImportObject( ImportObjectStatus status, String className, GroupMemberType groupMemberType, Object object, Object compareObject )
+    public ImportObject( ImportObjectStatus status, String className, GroupMemberType groupMemberType, ImportableObject object, ImportableObject compareObject )
     {
         this.status = status;
         this.className = className;
@@ -187,22 +189,22 @@ public class ImportObject
         this.groupMemberType = groupMemberType;
     }
 
-    public Object getObject()
+    public ImportableObject getObject()
     {
         return object;
     }
 
-    public void setObject( Object object )
+    public void setObject( ImportableObject object )
     {
         this.object = object;
     }
 
-    public Object getCompareObject()
+    public ImportableObject getCompareObject()
     {
         return compareObject;
     }
 
-    public void setCompareObject( Object compareObject )
+    public void setCompareObject( ImportableObject compareObject )
     {
         this.compareObject = compareObject;
     }

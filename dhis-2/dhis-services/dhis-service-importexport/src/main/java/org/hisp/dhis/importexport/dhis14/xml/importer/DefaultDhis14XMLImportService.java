@@ -44,13 +44,14 @@ import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.CSVConverter;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.XMLConverter;
+import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryComboConverter;
@@ -74,6 +75,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.AppendingHashMap;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -126,13 +128,6 @@ public class DefaultDhis14XMLImportService
         this.organisationUnitService = organisationUnitService;
     }
     
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
     private ImportObjectService importObjectService;
 
     public void setImportObjectService( ImportObjectService importObjectService )
@@ -154,26 +149,24 @@ public class DefaultDhis14XMLImportService
         this.objectMappingGenerator = objectMappingGenerator;
     }
     
-    private ImportAnalyser importAnalyser;
-
-    public void setImportAnalyser( ImportAnalyser importAnalyser )
-    {
-        this.importAnalyser = importAnalyser;
-    }
-
-    private HibernateCacheManager cacheManager;
-
-    public void setCacheManager( HibernateCacheManager cacheManager )
-    {
-        this.cacheManager = cacheManager;
-    }
-
     private ConverterInvoker converterInvoker;
 
     public void setConverterInvoker( ConverterInvoker converterInvoker )
     {
         this.converterInvoker = converterInvoker;
     }
+
+    private ExpressionService expressionService;
+        
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
+    @Autowired
+    private HibernateCacheManager cacheManager;
+
+    private ImportAnalyser importAnalyser;
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -196,6 +189,8 @@ public class DefaultDhis14XMLImportService
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
     {        
         NameMappingUtil.clearMapping();
+        
+        importAnalyser = new DefaultImportAnalyser( expressionService );
         
         if ( !( params.isPreview() || params.isAnalysis() ) )
         {
@@ -299,9 +294,9 @@ public class DefaultDhis14XMLImportService
                 importDataValueBatchHandler.init();
                 
                 CSVConverter dataValueConverter = new DataValueConverter( importDataValueBatchHandler,
-                    dataValueService,
                     categoryService,
                     importObjectService,
+                    importAnalyser,
                     params );
                 
                 dataValueConverter.read( streamReader, params );

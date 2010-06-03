@@ -50,6 +50,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -58,6 +59,7 @@ import org.junit.Test;
 public class DataValueBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler<DataValue> batchHandler;
@@ -95,8 +97,6 @@ public class DataValueBatchHandlerTest
         periodService = (PeriodService) getBean( PeriodService.ID );
         
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
         

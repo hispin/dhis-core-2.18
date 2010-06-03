@@ -144,7 +144,7 @@
 
 <script type="text/javascript">
 
-	selectionTree.clearSelectedOrganisationUnits();
+	//selectionTree.clearSelectedOrganisationUnits();
 	selectionTree.buildSelectionTree();
 
 	var surnameField = document.getElementById( 'surname' );

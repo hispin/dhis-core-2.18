@@ -29,6 +29,8 @@ package org.hisp.dhis.importexport;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.ImportableObject;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: ImportObjectService.java 5793 2008-10-02 14:14:00Z larshelg $
@@ -48,7 +50,7 @@ public interface ImportObjectService
      * @param groupMemberType the GroupMemberType of the object.
      * @param object the belonging Object.
      */
-    int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, Object object );
+    int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, ImportableObject object );
     
     /**
      * Adds an ImportObject.
@@ -57,7 +59,7 @@ public interface ImportObjectService
      * @param object the belonging Object.
      * @param compareObject the matching Object of the belonging Object.
      */
-    int addImportObject( ImportObjectStatus status, Object object, Object compareObject );
+    int addImportObject( ImportObjectStatus status, ImportableObject object, ImportableObject compareObject );
     
     /**
      * Adds an ImportObject.
@@ -67,7 +69,7 @@ public interface ImportObjectService
      * @param object the belonging Object.
      * @param compareObject the matching Object of the belonging Object.
      */
-    int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, Object object, Object compareObject );
+    int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, ImportableObject object, ImportableObject compareObject );
     /**
      * Gets the ImportObject with the given identifier.
      * 

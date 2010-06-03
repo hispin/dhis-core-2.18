@@ -12,4 +12,4 @@
   <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.0.1" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
 </dl>
 <br/>
-<div><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='help.action'" style="width:140px"/></div>
+<div><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='$!backUrl'" style="width:140px"/></div>

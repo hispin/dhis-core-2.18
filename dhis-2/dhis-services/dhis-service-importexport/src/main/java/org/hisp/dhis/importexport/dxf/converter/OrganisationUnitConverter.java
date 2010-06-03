@@ -27,19 +27,19 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.importexport.ImportParams.MINOR_VERSION_11;
+
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
@@ -50,7 +50,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id: OrganisationUnitConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class OrganisationUnitConverter
-    extends AbstractOrganisationUnitConverter implements XMLConverter
+    extends OrganisationUnitImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "organisationUnits";
     public static final String ELEMENT_NAME = "organisationUnit";
@@ -65,7 +65,10 @@ public class OrganisationUnitConverter
     private static final String FIELD_ACTIVE = "active";
     private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_GEO_CODE = "geoCode";
+    private static final String FIELD_COORDINATES = "coordinates";
+    private static final String FIELD_FEATURE = "feature";
     private static final String FIELD_LAST_UPDATED = "lastUpdated";
+    private static final String ATTRIBUTE_TYPE = "type";
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -123,6 +126,14 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_ACTIVE, String.valueOf( unit.isActive() ) );
                 writer.writeElement( FIELD_COMMENT, unit.getComment() );
                 writer.writeElement( FIELD_GEO_CODE, unit.getGeoCode() );
+                
+                writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );                
+                for ( String coordinate : unit.getCoordinatesAsCollection() )
+                {
+                    writer.writeElement( FIELD_COORDINATES, coordinate );
+                }
+                writer.closeElement();
+                
                 writer.writeElement( FIELD_LAST_UPDATED, DateUtils.getMediumDateString( unit.getLastUpdated(), EMPTY ) );
                 
                 writer.closeElement();
@@ -136,25 +147,55 @@ public class OrganisationUnitConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
-            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
-            
             final OrganisationUnit unit = new OrganisationUnit();
 
-            unit.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-            unit.setUuid( values.get( FIELD_UUID ) );
-            unit.setName( values.get( FIELD_NAME ) );
-            unit.setShortName( values.get( FIELD_SHORT_NAME ) );
-            unit.setCode( values.get( FIELD_CODE ) );
-            unit.setOpeningDate( DateUtils.getMediumDate( values.get( FIELD_OPENING_DATE ) ) );
-            unit.setClosedDate( DateUtils.getMediumDate( values.get( FIELD_CLOSED_DATE ) ) );
-            unit.setActive( Boolean.parseBoolean( values.get( FIELD_ACTIVE ) ) );
-            unit.setComment( values.get( FIELD_COMMENT ) );
-            unit.setGeoCode( values.get( FIELD_GEO_CODE ) );
-            unit.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
+            reader.moveToStartElement( FIELD_ID );
+            unit.setId( Integer.parseInt( reader.getElementValue() ) );
+
+            reader.moveToStartElement( FIELD_UUID );
+            unit.setUuid( reader.getElementValue() );
             
-            NameMappingUtil.addOrganisationUnitMapping( unit.getId(), unit.getName() );
+            reader.moveToStartElement( FIELD_NAME );
+            unit.setName(reader.getElementValue() );
             
-            read( unit, GroupMemberType.NONE, params );
+            reader.moveToStartElement( FIELD_SHORT_NAME );
+            unit.setShortName( reader.getElementValue() );
+            
+            reader.moveToStartElement( FIELD_CODE );
+            unit.setCode( reader.getElementValue() );
+            
+            reader.moveToStartElement( FIELD_OPENING_DATE );
+            unit.setOpeningDate( DateUtils.getMediumDate( reader.getElementValue() ) );
+
+            reader.moveToStartElement( FIELD_CLOSED_DATE );
+            unit.setOpeningDate( DateUtils.getMediumDate( reader.getElementValue() ) );
+            
+            reader.moveToStartElement( FIELD_ACTIVE );
+            unit.setActive( Boolean.parseBoolean( reader.getElementValue() ) );
+            
+            reader.moveToStartElement( FIELD_COMMENT );
+            unit.setComment( reader.getElementValue() );
+            
+            if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_11 ) )
+            {
+                reader.moveToStartElement( FIELD_GEO_CODE );
+                unit.setGeoCode( reader.getElementValue() );
+                
+                reader.moveToStartElement( FIELD_FEATURE );
+                unit.setFeatureType( reader.getAttributeValue( ATTRIBUTE_TYPE ) );
+                
+                Collection<String> coordinates = new ArrayList<String>();
+                while ( reader.moveToStartElement( FIELD_COORDINATES, FIELD_FEATURE ) )
+                {
+                    coordinates.add( reader.getElementValue() );
+                }
+                unit.setCoordinatesFromCollection( coordinates );
+                
+                reader.moveToStartElement( FIELD_LAST_UPDATED );
+                unit.setLastUpdated( DateUtils.getMediumDate( reader.getElementValue() ) );
+            }
+            
+            importObject( unit, params );
         }
     }
 }

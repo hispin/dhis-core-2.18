@@ -35,7 +35,7 @@ function validateForm()
 <table>
 <tr>
 <td><input type="button" value="$i18n.getString( 'send' )" onclick="validateForm()" style="width:140px"/></td>
-<td><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='help.action'" style="width:140px"/></td>
+<td><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='$!backUrl'" style="width:140px"/></td>
 </tr>
 </table>
 </p>

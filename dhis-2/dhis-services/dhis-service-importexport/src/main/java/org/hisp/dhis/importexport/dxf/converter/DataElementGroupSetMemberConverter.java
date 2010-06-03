@@ -42,15 +42,16 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementGroupSetMemberConverter
-    extends AbstractGroupMemberConverter implements XMLConverter
+    extends GroupMemberImporter implements XMLConverter, Importer<GroupMemberAssociation>
 {
     public static final String COLLECTION_NAME = "dataElementGroupSetMembers";
     public static final String ELEMENT_NAME = "dataElementGroupSetMember";
@@ -144,7 +145,13 @@ public class DataElementGroupSetMemberConverter
             association.setMemberId( dataElementGroupMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT_GROUP ) ) ) );
             association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
-            read( association, GroupMemberType.DATAELEMENTGROUPSET, params );
+            importObject( association, params );
         }
+    }
+
+    @Override
+    public void importObject( GroupMemberAssociation object, ImportParams params )
+    {
+        read( object, GroupMemberType.DATAELEMENTGROUPSET, params );
     }
 }

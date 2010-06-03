@@ -70,10 +70,7 @@ public class PatientIdentifierGenerator
         for ( int i = 0; i < idWithoutCheckdigit.length(); i++ )
         {
             char ch = idWithoutCheckdigit.charAt( idWithoutCheckdigit.length() - i - 1 );
-            if ( validChars.indexOf( ch ) == -1 )
-            {
-                System.out.println( "\"" + ch + "\" is an invalid character" );
-            }
+            
             int digit = (int) ch - 48;
             int weight;
             if ( i % 2 == 0 )

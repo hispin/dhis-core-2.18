@@ -30,7 +30,8 @@ package org.hisp.dhis.validationrule.action;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -93,7 +94,7 @@ public class GenerateValidationResultWorkbookAction
     public String execute()
         throws Exception
     {
-        Collection<ValidationResult> results = (Collection<ValidationResult>) SessionUtils.
+        Map<String, List<ValidationResult>> results = (Map<String, List<ValidationResult>>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();

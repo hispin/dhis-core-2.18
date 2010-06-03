@@ -64,22 +64,13 @@ public class UpdateSectionAction
 
     private Integer sectionId;
 
-    private Integer dataSetId;
-
     private String sectionLabel;
 
     private List<String> selectedList;
 
-    private List<String> availableList;
-
     public void setSectionId( Integer sectionId )
     {
         this.sectionId = sectionId;
-    }
-
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
     }
 
     public void setSectionLabel( String sectionLabel )
@@ -90,11 +81,6 @@ public class UpdateSectionAction
     public void setSelectedList( List<String> selectedList )
     {
         this.selectedList = selectedList;
-    }
-
-    public void setAvailableList( List<String> availableList )
-    {
-        this.availableList = availableList;
     }
 
     // -------------------------------------------------------------------------

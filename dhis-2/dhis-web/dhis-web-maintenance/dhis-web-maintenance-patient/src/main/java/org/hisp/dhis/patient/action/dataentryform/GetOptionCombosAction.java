@@ -104,7 +104,6 @@ public class GetOptionCombosAction
             dataElementCategoryCombo.getOptionCombos() );
 
         String dataElementType = dataElement.getType();
-        System.out.println( "Type = " + dataElementType );
 
         /*
          * if (dataElementType.equals("string")) {
@@ -140,7 +139,6 @@ public class GetOptionCombosAction
                 }
             }
 
-            System.out.println( "optionComboId = " + optionComboId );
             optionComboNames.add( optionComboName );
 
             optionComboIds.add( optionComboId );

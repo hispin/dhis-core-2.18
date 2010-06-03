@@ -29,6 +29,8 @@ package org.hisp.dhis.pdf;
 
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataset.DataSet;
@@ -44,14 +46,16 @@ import org.hisp.dhis.validation.ValidationResult;
 public interface PdfService
 {
     String ID = PdfService.class.getName();
-    
-    void writeAllDataElements( OutputStream outputStream );
-    
-    void writeAllIndicators( OutputStream outputStream );
-    
-    void writeAllOrganisationUnits( OutputStream outputStream );
-    
-    void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet );
-    
-    void writeValidationResult( Collection<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format );
+
+    void writeAllDataElements( OutputStream outputStream, I18n i18n );
+
+    void writeAllIndicators( OutputStream outputStream, I18n i18n );
+
+    void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n );
+
+    void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n,
+        OrganisationUnit unit, DataSet dataSet );
+
+    void writeValidationResult( Map<String, List<ValidationResult>> results, OutputStream out, I18n i18n,
+        I18nFormat format );
 }

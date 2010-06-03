@@ -28,6 +28,7 @@
 package org.hisp.dhis.patient.action.patientattributegroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
@@ -37,8 +38,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Chau Thu Tran

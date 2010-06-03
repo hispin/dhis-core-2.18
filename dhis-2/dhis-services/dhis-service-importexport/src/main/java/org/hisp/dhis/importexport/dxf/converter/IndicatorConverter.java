@@ -35,12 +35,10 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractIndicatorConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.IndicatorImporter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -51,7 +49,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id: IndicatorConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class IndicatorConverter
-    extends AbstractIndicatorConverter implements XMLConverter
+    extends IndicatorImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "indicators";
     public static final String ELEMENT_NAME = "indicator";
@@ -193,9 +191,7 @@ public class IndicatorConverter
             indicator.setDenominatorAggregationOperator( values.get( FIELD_DENOMINATOR_AGGREGATION_OPERATOR ) );
             indicator.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
             
-            NameMappingUtil.addIndicatorMapping( indicator.getId(), indicator.getName() );
-            
-            read( indicator, GroupMemberType.NONE, params );
+            importObject( indicator, params );
         }
     }
 }

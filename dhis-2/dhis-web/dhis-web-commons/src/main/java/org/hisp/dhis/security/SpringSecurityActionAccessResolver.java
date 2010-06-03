@@ -31,13 +31,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.dispatcher.Dispatcher;
 import org.hisp.dhis.security.authority.RequiredAuthoritiesProvider;
-import org.springframework.security.AccessDecisionManager;
-import org.springframework.security.AccessDeniedException;
-import org.springframework.security.Authentication;
-import org.springframework.security.InsufficientAuthenticationException;
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.intercept.ObjectDefinitionSource;
+
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.SecurityMetadataSource;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.entities.ActionConfig;
@@ -96,8 +97,8 @@ public class SpringSecurityActionAccessResolver
             throw new IllegalArgumentException( "Module " + module + " doesn't have an action named: '" + name + "'" );
         }
 
-        ObjectDefinitionSource objectDefinitionSource = requiredAuthoritiesProvider
-            .createObjectDefinitionSource( actionConfig );
+        SecurityMetadataSource securityMetadataSource = requiredAuthoritiesProvider
+            .createSecurityMetadataSource( actionConfig );
 
         // ---------------------------------------------------------------------
         // Test access
@@ -109,14 +110,14 @@ public class SpringSecurityActionAccessResolver
 
         try
         {
-            if ( objectDefinitionSource.getAttributes( actionConfig ) != null )
+            if ( securityMetadataSource.getAttributes( actionConfig ) != null )
             {
                 if ( authentication == null || !authentication.isAuthenticated() )
                 {
                     return false;
                 }
 
-                accessDecisionManager.decide( authentication, actionConfig, objectDefinitionSource
+                accessDecisionManager.decide( authentication, actionConfig, securityMetadataSource
                     .getAttributes( actionConfig ) );
             }
 

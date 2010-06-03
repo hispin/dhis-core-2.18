@@ -23,19 +23,15 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class OlapURL
-    implements Serializable
+    extends IdentifiableObject
 {
-    private int id;
-
-    private String name;
-
     private String url;
 
     // -------------------------------------------------------------------------
@@ -118,26 +114,6 @@ public class OlapURL
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public String getUrl()
     {

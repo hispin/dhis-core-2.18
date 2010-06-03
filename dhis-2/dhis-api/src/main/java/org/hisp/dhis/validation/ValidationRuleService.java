@@ -92,12 +92,20 @@ public interface ValidationRuleService
     // -------------------------------------------------------------------------
 
     /**
-     * Adds a ValidationRule to the database.
+     * Save a ValidationRule to the database.
      * 
-     * @param validationRule the ValidationRule to add.
+     * @param validationRule the ValidationRule to save.
      * @return the generated unique identifier for the ValidationRule.
      */
-    int addValidationRule( ValidationRule validationRule );
+    int saveValidationRule( ValidationRule validationRule );
+   
+    /**
+     * Update a ValidationRule to the database.
+     * 
+     * @param validationRule the ValidationRule to update.
+     * @return the generated unique identifier for the ValidationRule.
+     */
+    void updateValidationRule( ValidationRule validationRule );
 
     /**
      * Delete a validation rule with the given identifiers from the database.
@@ -105,14 +113,7 @@ public interface ValidationRuleService
      * @param validationRule the ValidationRule to delete.
      */
     void deleteValidationRule( ValidationRule validationRule );
-
-    /**
-     * Update a validation rule with the given identifiers.
-     * 
-     * @param validationRule the ValidationRule to update.
-     */
-    void updateValidationRule( ValidationRule validationRule );
-
+    
     /**
      * Get ValidationRule with the given identifier.
      * 

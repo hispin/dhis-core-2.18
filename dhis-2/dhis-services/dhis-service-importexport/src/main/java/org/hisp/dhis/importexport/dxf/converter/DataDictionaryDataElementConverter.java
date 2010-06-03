@@ -42,15 +42,16 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataDictionaryDataElementConverter
-    extends AbstractGroupMemberConverter implements XMLConverter
+    extends GroupMemberImporter implements XMLConverter, Importer<GroupMemberAssociation>
 {
     public static final String COLLECTION_NAME = "dataDictionaryDataElements";
     public static final String ELEMENT_NAME = "dataDictionaryDataElement";
@@ -137,7 +138,12 @@ public class DataDictionaryDataElementConverter
             association.setGroupId( dataDictionaryMapping.get( Integer.parseInt( values.get( FIELD_DATADICTIONARY ) ) ) );
             association.setMemberId( dataElementMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT ) ) ) );
             
-            read( association, GroupMemberType.DATADICTIONARY_DATAELEMENT, params );
+            importObject( association, params );
         }
+    }
+
+    public void importObject( GroupMemberAssociation object, ImportParams params )
+    {
+        read( object, GroupMemberType.DATADICTIONARY_DATAELEMENT, params );        
     }       
 }

@@ -38,20 +38,26 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: OrganisationUnitHierarchyConverter.java 5316 2008-06-02 19:06:28Z larshelg $
+ * @version $Id: OrganisationUnitHierarchyConverter.java 5316 2008-06-02
+ *          19:06:28Z larshelg $
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-19
  */
 public class OrganisationUnitHierarchyConverter
-    extends PDFUtils implements PDFConverter 
+    extends PDFUtils
+    implements PDFConverter
 {
     private static final int SPACES_PER_INDENTATION = 6;
-    
+
     private OrganisationUnitService organisationUnitService;
-    
-    public OrganisationUnitHierarchyConverter( OrganisationUnitService organisationUnitService )    
+
+    public OrganisationUnitHierarchyConverter( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
@@ -59,26 +65,28 @@ public class OrganisationUnitHierarchyConverter
     // -------------------------------------------------------------------------
     // PDFConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( Document document, ExportParams params )
     {
         PDFPrintUtil.printOrganisationUnitHierarchyFrontPage( document, params );
-        
+
         if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().size() > 0 )
         {
+            Font TEXT = new Font( getTrueTypeFontByDimension( BaseFont.IDENTITY_H ), 9, Font.NORMAL );
+
             Collection<OrganisationUnit> hierarchy = getHierarchy();
-            
+
             PdfPTable table = getPdfPTable( false, 0.100f );
-            
+
             for ( OrganisationUnit unit : hierarchy )
             {
                 String indent = getIndent( unit.getLevel() );
-                
-                table.addCell( getTextCell( indent + unit.getName() ) );
+
+                table.addCell( getTextCell( indent + unit.getName(), TEXT ) );
             }
-            
+
             addTableToDocument( document, table );
-            
+
             moveToNewPage( document );
         }
     }
@@ -86,32 +94,32 @@ public class OrganisationUnitHierarchyConverter
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private String getIndent( int step )
     {
         StringBuffer buffer = new StringBuffer();
-        
+
         int indent = step * SPACES_PER_INDENTATION;
-        
-        for ( int i = 0; i < indent; i++ )            
+
+        for ( int i = 0; i < indent; i++ )
         {
             buffer.append( " " );
         }
-        
+
         return buffer.toString();
     }
-    
+
     private Collection<OrganisationUnit> getHierarchy()
     {
         Collection<OrganisationUnit> hierarchy = new ArrayList<OrganisationUnit>();
-        
+
         Collection<OrganisationUnit> roots = organisationUnitService.getRootOrganisationUnits();
-        
+
         for ( OrganisationUnit root : roots )
         {
             hierarchy.addAll( organisationUnitService.getOrganisationUnitWithChildren( root.getId() ) );
-        }            
-        
+        }
+
         return hierarchy;
     }
 }

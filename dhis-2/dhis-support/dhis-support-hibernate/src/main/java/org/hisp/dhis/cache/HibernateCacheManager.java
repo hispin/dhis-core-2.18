@@ -35,8 +35,6 @@ import org.hibernate.stat.Statistics;
  */
 public interface HibernateCacheManager
 {
-    String ID = HibernateCacheManager.class.getName();
-    
     void clearObjectCache();
     
     void clearQueryCache();

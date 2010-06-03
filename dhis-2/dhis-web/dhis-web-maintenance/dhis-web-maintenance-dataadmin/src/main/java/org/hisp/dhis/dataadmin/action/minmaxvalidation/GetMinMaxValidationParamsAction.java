@@ -45,86 +45,95 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  * 
  */
-public class GetMinMaxValidationParamsAction implements Action {
+public class GetMinMaxValidationParamsAction
+    implements Action
+{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private DataSetService dataSetService;
+    private DataSetService dataSetService;
 
-	public void setDataSetService(DataSetService dataSetService) {
-		this.dataSetService = dataSetService;
-	}
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
-	private OrganisationUnitService organisationUnitService;
+    private OrganisationUnitService organisationUnitService;
 
-	public void setOrganisationUnitService(
-			OrganisationUnitService organisationUnitService) {
-		this.organisationUnitService = organisationUnitService;
-	}
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
-	private SelectionTreeManager selectionTreeManager;
+    private SelectionTreeManager selectionTreeManager;
 
-	public void setSelectionTreeManager(
-			SelectionTreeManager selectionTreeManager) {
-		this.selectionTreeManager = selectionTreeManager;
-	}
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
 
-	private OrganisationUnitGroupService organisationUnitGroupService;
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
-	public void setOrganisationUnitGroupService(
-			OrganisationUnitGroupService organisationUnitGroupService) {
-		this.organisationUnitGroupService = organisationUnitGroupService;
-	}
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-	private Collection<DataSet> dataSets;
+    private Collection<DataSet> dataSets;
 
-	public Collection<DataSet> getDataSets() {
-		return dataSets;
-	}
+    public Collection<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
 
-	private List<OrganisationUnitLevel> levels;
+    private List<OrganisationUnitLevel> levels;
 
-	public List<OrganisationUnitLevel> getLevels() {
-		return levels;
-	}
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
 
-	private String message;
+    private String message;
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
-	private Collection<OrganisationUnitGroup> orgunitGroups;
+    private Collection<OrganisationUnitGroup> orgunitGroups;
 
-	public Collection<OrganisationUnitGroup> getOrgunitGroups() {
-		return orgunitGroups;
-	}
+    public Collection<OrganisationUnitGroup> getOrgunitGroups()
+    {
+        return orgunitGroups;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		selectionTreeManager.clearSelectedOrganisationUnits();
+        selectionTreeManager.clearSelectedOrganisationUnits();
 
-		levels = organisationUnitService.getOrganisationUnitLevels();
+        levels = organisationUnitService.getOrganisationUnitLevels();
 
-		dataSets = dataSetService.getAllDataSets();
+        dataSets = dataSetService.getAllDataSets();
 
-		orgunitGroups = organisationUnitGroupService
-				.getAllOrganisationUnitGroups();
+        orgunitGroups = organisationUnitGroupService.getAllOrganisationUnitGroups();
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

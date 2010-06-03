@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.tallysheet.TallySheet;
 import org.hisp.dhis.tallysheet.TallySheetPdfService;
 import org.hisp.dhis.tallysheet.TallySheetTuple;
@@ -44,12 +45,14 @@ import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 /**
- * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
+ * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben
+ *         Wangberg
  * @version $Id$
  */
 public class DefaultTallySheetPdfService
@@ -99,12 +102,12 @@ public class DefaultTallySheetPdfService
     {
         document.addTitle( title );
         document.addAuthor( "DHIS 2" );
-        
+
         if ( i18n != null )
         {
             document.addSubject( i18n.getString( "tally_sheet_report" ) );
         }
-        
+
         document.addKeywords( "tallysheet, health, data, tally sheet" );
         document.addCreator( "DHIS 2" );
     }
@@ -112,15 +115,18 @@ public class DefaultTallySheetPdfService
     private void writeHeader( Document document, String header, String facilityName, I18n i18n )
         throws DocumentException
     {
-        document.add( new Paragraph( header, new Font( Font.HELVETICA, 20 ) ) );
-        
+        BaseFont bf = PDFUtils.getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+        Font font = new Font( bf, 12, Font.HELVETICA );
+
+        document.add( new Paragraph( header, font ) );
+
         if ( i18n != null )
         {
-            document.add( new Paragraph( i18n.getString( "facility" ) + ": " + facilityName ) );
-            document.add( new Paragraph( i18n.getString( "month" ) + ": " ) );
-            document.add( new Paragraph( i18n.getString( "year" ) + ": " ) );
+            document.add( new Paragraph( i18n.getString( "facility" ) + ": " + facilityName, font ) );
+            document.add( new Paragraph( i18n.getString( "month" ) + ": ", font ) );
+            document.add( new Paragraph( i18n.getString( "year" ) + ": ", font ) );
 
-            Paragraph totalParagraph = new Paragraph( i18n.getString( "total" ) + ": " );
+            Paragraph totalParagraph = new Paragraph( i18n.getString( "total" ) + ": ", font );
             totalParagraph.setAlignment( "right" );
             totalParagraph.setIndentationRight( 10 );
             totalParagraph.setSpacingAfter( 2 );
@@ -131,21 +137,24 @@ public class DefaultTallySheetPdfService
     private void writeLines( Document document, List<TallySheetTuple> tallySheetTuples, boolean a3Format, int rowWidth )
         throws DocumentException
     {
-        Font tableFont = new Font( Font.HELVETICA, 8 );
-        double a4Multiplier = ( PageSize.A3.getWidth() / PageSize.A4.getWidth() ) * 1.1;
-
+        BaseFont bf = PDFUtils.getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+        Font tableFont = new Font( bf, 8, Font.HELVETICA );
+        
+        double a4Multiplier = (PageSize.A3.getWidth() / PageSize.A4.getWidth()) * 1.1;
         float[] widths = { 0.2f, 0.55f, 0.05f };
+        
         if ( !a3Format )
         {
             widths[0] = (float) (widths[0] * a4Multiplier);
             widths[2] = (float) (widths[2] * a4Multiplier);
             widths[1] = 1f - widths[0] - widths[2];
         }
-        
+
         PdfPTable table = new PdfPTable( widths );
         table.setWidthPercentage( 100 );
 
         DataElement dataElement;
+        
         for ( TallySheetTuple tallySheetTuple : tallySheetTuples )
         {
             dataElement = tallySheetTuple.getDataElement();
@@ -179,19 +188,19 @@ public class DefaultTallySheetPdfService
             {
                 cellRows.append( "\n" );
             }
-            
+
             for ( int j = 0; j < rowWidth; j++ )
             {
                 if ( j % 5 == 0 )
                 {
                     cellRows.append( " " );
                 }
-                
+
                 if ( j != 0 && j % 25 == 0 )
                 {
                     cellRows.append( "    " );
                 }
-                
+
                 cellRows.append( "0" );
             }
         }

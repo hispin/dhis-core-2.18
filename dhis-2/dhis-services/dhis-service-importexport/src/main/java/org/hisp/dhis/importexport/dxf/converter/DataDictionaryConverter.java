@@ -36,19 +36,17 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataDictionaryConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataDictionaryConverter
-    extends AbstractDataDictionaryConverter implements XMLConverter
+    extends DataDictionaryImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "dataDictionaries";
     public static final String ELEMENT_NAME = "dataDictionary";
@@ -127,9 +125,7 @@ public class DataDictionaryConverter
             dictionary.setDescription( values.get( FIELD_DESCRIPTION ) );
             dictionary.setRegion( values.get( FIELD_REGION ) );
             
-            NameMappingUtil.addDataDictionaryMapping( dictionary.getId(), dictionary.getName() );
-            
-            read( dictionary, GroupMemberType.NONE, params );
+            importObject( dictionary, params );
         }
-    }   
+    }
 }

@@ -131,14 +131,14 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
     initComponent : function() {
         this.items = [{
             xtype: 'numberfield',
-            fieldLabel:'Min Size',
+            fieldLabel: i18n_min_size,
             name: 'minSize',
             width: 30,
             value: 2,
             maxValue: 20
         },{
             xtype: 'numberfield',
-            fieldLabel:'Max Size',
+            fieldLabel: i18n_max_size,
             name: 'maxSize',
             width: 30,
             value: 20,
@@ -174,7 +174,7 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
      *      Called on Ajax request failure.
      */
     requestFailure: function(request) {
-        OpenLayers.Console.error('Ajax request failed');
+        OpenLayers.Console.error( i18n_ajax_request_failed );
     },
         
     /**
@@ -187,7 +187,7 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
     classify: function() {
         if (!this.ready) {
             if (exception) {
-                Ext.MessageBox.alert('Error', 'Component init not complete');
+                Ext.MessageBox.alert( i18n_error , i18n_component_init_not_complete );
             }
             return;
         }

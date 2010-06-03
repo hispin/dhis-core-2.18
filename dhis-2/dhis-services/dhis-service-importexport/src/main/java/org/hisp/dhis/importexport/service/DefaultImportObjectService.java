@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
@@ -76,6 +77,7 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -180,12 +182,8 @@ public class DefaultImportObjectService<T>
         this.dataValueService = dataValueService;
     }
     
+    @Autowired
     private HibernateCacheManager cacheManager;
-
-    public void setCacheManager( HibernateCacheManager cacheManager )
-    {
-        this.cacheManager = cacheManager;
-    }
     
     // -------------------------------------------------------------------------
     // ImportObjectService implementation
@@ -196,7 +194,7 @@ public class DefaultImportObjectService<T>
     // -------------------------------------------------------------------------
 
     @Transactional
-    public int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, Object object )
+    public int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, ImportableObject object )
     {
         ImportObject importObject = new ImportObject( status, object.getClass().getName(), groupMemberType, object );
         
@@ -204,7 +202,7 @@ public class DefaultImportObjectService<T>
     }
 
     @Transactional
-    public int addImportObject( ImportObjectStatus status, Object object, Object compareObject )
+    public int addImportObject( ImportObjectStatus status, ImportableObject object, ImportableObject compareObject )
     {
         ImportObject importObject = new ImportObject( status, object.getClass().getName(), object, compareObject );
         
@@ -212,7 +210,7 @@ public class DefaultImportObjectService<T>
     }
 
     @Transactional
-    public int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, Object object, Object compareObject )
+    public int addImportObject( ImportObjectStatus status, GroupMemberType groupMemberType, ImportableObject object, ImportableObject compareObject )
     {
         ImportObject importObject = new ImportObject( status, object.getClass().getName(), groupMemberType, object, compareObject );
         

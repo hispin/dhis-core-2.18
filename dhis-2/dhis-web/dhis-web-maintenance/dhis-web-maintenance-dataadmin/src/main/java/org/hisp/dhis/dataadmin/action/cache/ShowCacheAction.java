@@ -29,6 +29,7 @@ package org.hisp.dhis.dataadmin.action.cache;
 
 import org.hibernate.stat.Statistics;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,12 +46,8 @@ public class ShowCacheAction
     // Dependencies
     // -------------------------------------------------------------------------
     
+    @Autowired
     private HibernateCacheManager cacheManager;
-
-    public void setCacheManager( HibernateCacheManager cacheManager )
-    {
-        this.cacheManager = cacheManager;
-    }
 
     // -------------------------------------------------------------------------
     // Output

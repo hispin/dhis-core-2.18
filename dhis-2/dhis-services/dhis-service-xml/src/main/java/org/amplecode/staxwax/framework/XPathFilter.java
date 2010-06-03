@@ -1,28 +1,21 @@
 package org.amplecode.staxwax.framework;
 
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /*
  * Copyright (c) 2004-2005, University of Oslo
@@ -70,7 +63,6 @@ public class XPathFilter
      */
     public static Node findNode( InputStream in, String xpathExpr )
     {
-
         Node result = null;
 
         try
@@ -134,33 +126,6 @@ public class XPathFilter
             Document doc = parseDocument(in);
 
             result = (String) expr.evaluate( doc, XPathConstants.STRING );
-
-        } catch ( Exception ex )
-        {
-            log.info( ex );
-        }
-        return result;
-    }
-
-    /**
-     * Find numeric data in stream
-     *
-     * @param in
-     * @param xpathExpr
-     * @return
-     */
-    public static Integer findNumber( InputStream in, String xpathExpr )
-    {
-
-        Integer result = null;
-
-        try
-        {
-            XPathExpression expr = compileXPath(xpathExpr);
-
-            Document doc = parseDocument(in);
-
-            result = (Integer) expr.evaluate( doc, XPathConstants.NUMBER );
 
         } catch ( Exception ex )
         {

@@ -46,6 +46,7 @@ import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitHierarchyConverter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -58,13 +59,9 @@ public class ITextPDFExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -78,7 +75,7 @@ public class ITextPDFExportService
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -95,31 +92,33 @@ public class ITextPDFExportService
         try
         {
             // -------------------------------------------------------------------------
-            // Pipes are input/output pairs. Data written on the output stream shows 
-            // up on the input stream at the other end of the pipe. 
+            // Pipes are input/output pairs. Data written on the output stream
+            // shows
+            // up on the input stream at the other end of the pipe.
             // -------------------------------------------------------------------------
-            
+
             PipedOutputStream out = new PipedOutputStream();
-            
+
             PipedInputStream in = new PipedInputStream( out );
 
             ZipOutputStream zipOut = new ZipOutputStream( out );
-            
+
             zipOut.putNextEntry( new ZipEntry( "Export.pdf" ) );
 
             PDFPipeThread thread = new PDFPipeThread( sessionFactory );
-            
+
             thread.setOutputStream( zipOut );
             thread.setExportParams( params );
-            
-            thread.setDataElementConverter( new DataElementConverter( dataElementService ) );            
+
+            thread.setDataElementConverter( new DataElementConverter( dataElementService ) );
             thread.setIndicatorConverter( new IndicatorConverter( indicatorService ) );
             thread.setExtendedDataElementConverter( new ExtendedDataElementConverter( dataElementService ) );
-            thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter( organisationUnitService ) );
+            thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
+                organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
-            
+
             thread.start();
-            
+
             return new BufferedInputStream( in );
         }
         catch ( IOException ex )

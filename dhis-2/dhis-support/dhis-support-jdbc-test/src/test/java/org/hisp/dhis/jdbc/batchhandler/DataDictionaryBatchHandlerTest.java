@@ -40,6 +40,7 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +49,7 @@ import org.junit.Test;
 public class DataDictionaryBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler<DataDictionary> batchHandler;
@@ -64,8 +66,6 @@ public class DataDictionaryBatchHandlerTest
     public void setUpTest()
     {
         dataDictionaryService = (DataDictionaryService) getBean( DataDictionaryService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
 

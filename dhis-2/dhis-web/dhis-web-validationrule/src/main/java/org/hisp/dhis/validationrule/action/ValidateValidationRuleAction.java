@@ -107,6 +107,12 @@ public class ValidateValidationRuleAction
         this.rightSideExpression = rightFormula;
     }
 
+    private String periodTypeName;
+    
+    public void setPeriodTypeName(String periodTypeName) 
+    {
+        this.periodTypeName = periodTypeName;
+    }
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -150,7 +156,14 @@ public class ValidateValidationRuleAction
                 return INPUT;
             }
         }
-
+        
+        if ( periodTypeName == null || periodTypeName.equals( NONE ) )
+        {
+            message = i18n.getString( "specify_period_type" );
+            
+            return INPUT;
+        }
+        
         if ( operator == null || operator.equals( NONE ) )
         {
             message = i18n.getString( "specify_operator" );

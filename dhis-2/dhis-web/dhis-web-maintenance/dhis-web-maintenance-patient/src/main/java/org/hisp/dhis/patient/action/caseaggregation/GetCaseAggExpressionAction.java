@@ -59,9 +59,7 @@ public class GetCaseAggExpressionAction implements Action
     // -------------------------------------------------------------------------
 
     public String execute()
-    {    
-        System.out.println("Inside GetCaseAggExpression Action");
-        
+    {   
         DataElement dataElement = dataElementService.getDataElement(  Integer.parseInt( aggdeId.split( ":" )[0] ) );
         
         DataElementCategoryOptionCombo deCoc = categoryService.getDataElementCategoryOptionCombo( Integer.parseInt( aggdeId.split( ":" )[1] ) );

@@ -9,7 +9,6 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.junit.Test;
-import org.springframework.test.annotation.NotTransactional;
 
 /**
  * @author Lars Helge Overland
@@ -19,7 +18,6 @@ public class AggregatableDataElementFilterTest
     extends DhisTest
 {
     @Test
-    @NotTransactional
     public void filter()
     {
         DataElement elementA = createDataElement( 'A' );

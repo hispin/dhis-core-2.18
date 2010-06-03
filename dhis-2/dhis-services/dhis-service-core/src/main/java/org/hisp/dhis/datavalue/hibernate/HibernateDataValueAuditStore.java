@@ -39,6 +39,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueAuditStore;
 import org.hisp.dhis.source.Source;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Quang Nguyen
@@ -51,12 +52,12 @@ public class HibernateDataValueAuditStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
+    // -------------------------------------------------------------------------
+    // DataValueAuditStore implementation
+    // -------------------------------------------------------------------------
 
     public void addDataValueAudit( DataValueAudit dataValueAudit )
     {

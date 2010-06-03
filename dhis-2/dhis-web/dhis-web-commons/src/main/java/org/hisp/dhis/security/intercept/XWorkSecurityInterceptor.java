@@ -30,11 +30,11 @@ package org.hisp.dhis.security.intercept;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.intercept.AbstractSecurityInterceptor;
-import org.springframework.security.intercept.InterceptorStatusToken;
-import org.springframework.security.intercept.ObjectDefinitionSource;
 import org.hisp.dhis.security.ActionAccessResolver;
 import org.hisp.dhis.security.authority.RequiredAuthoritiesProvider;
+import org.springframework.security.access.SecurityMetadataSource;
+import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
+import org.springframework.security.access.intercept.InterceptorStatusToken;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.config.entities.ActionConfig;
@@ -50,7 +50,7 @@ public class XWorkSecurityInterceptor
 {
     private static final String KEY_ACTION_ACCESS_RESOLVER = "auth";
 
-    private ThreadLocal<ObjectDefinitionSource> definitionSourceTag = new ThreadLocal<ObjectDefinitionSource>();
+    private ThreadLocal<SecurityMetadataSource> definitionSourceTag = new ThreadLocal<SecurityMetadataSource>();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -85,14 +85,14 @@ public class XWorkSecurityInterceptor
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        Object result = null;
         ActionConfig actionConfig = invocation.getProxy().getConfig();
-        definitionSourceTag.set( requiredAuthoritiesProvider.createObjectDefinitionSource( actionConfig ) );
+        definitionSourceTag.set( requiredAuthoritiesProvider.createSecurityMetadataSource( actionConfig ) );
 
         InterceptorStatusToken token = beforeInvocation( actionConfig );
 
         addActionAccessResolver( invocation );
 
+        Object result = null;
         try
         {
             result = invocation.invoke();
@@ -123,9 +123,9 @@ public class XWorkSecurityInterceptor
     }
 
     @Override
-    public ObjectDefinitionSource obtainObjectDefinitionSource()
+    public SecurityMetadataSource obtainSecurityMetadataSource()
     {
-        ObjectDefinitionSource definitionSource = definitionSourceTag.get();
+        SecurityMetadataSource definitionSource = definitionSourceTag.get();
 
         if ( definitionSource != null )
         {
@@ -137,7 +137,7 @@ public class XWorkSecurityInterceptor
         // invocation. Returning an empty dummy.
         // ---------------------------------------------------------------------
 
-        return new SingleObjectDefinitionSource( new ActionConfig.Builder( "", "", "" ).build() );
+        return new SingleSecurityMetadataSource( new ActionConfig.Builder( "", "", "" ).build() );
     }
 
     // -------------------------------------------------------------------------

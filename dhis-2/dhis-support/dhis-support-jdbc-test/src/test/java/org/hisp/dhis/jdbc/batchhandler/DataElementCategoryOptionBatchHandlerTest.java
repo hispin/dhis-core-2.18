@@ -40,6 +40,7 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +49,7 @@ import org.junit.Test;
 public class DataElementCategoryOptionBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler<DataElementCategoryOption> batchHandler;
@@ -66,8 +68,6 @@ public class DataElementCategoryOptionBatchHandlerTest
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
 

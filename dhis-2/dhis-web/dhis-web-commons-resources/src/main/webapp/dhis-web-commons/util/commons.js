@@ -742,11 +742,49 @@ function removeItem( itemId, itemName, confirmation, action )
         
                     showWarning();
     	    	}
-				else if ( json.response == "nonSufficientAuthority" )
-				{
-					window.location.href = "../dhis-web-commons-about/showSufficientFeedbackForm.action";
-				}
     	    }
     	);
     }
+}
+
+function setSelectionRange( input, selectionStart, selectionEnd ) 
+{
+	if ( input.setSelectionRange ) 
+	{
+		input.focus();
+	    input.setSelectionRange( selectionStart, selectionEnd );
+	}
+	else if ( input.createTextRange ) 
+	{
+	    var range = input.createTextRange();
+	    range.collapse( true );
+	    range.moveEnd( 'character', selectionEnd );
+	    range.moveStart( 'character', selectionStart );
+	    range.select();
+	}
+}
+
+function setCaretToPos ( input, pos ) 
+{
+	setSelectionRange( input, pos, pos );
+}
+
+function getFilteredDataElementsReceived( xmlObject )
+{
+	var operandList = document.getElementById( "dataElementId" );
+			
+	operandList.options.length = 0;
+	
+	var operands = xmlObject.getElementsByTagName( "operand" );
+	
+	for ( var i = 0; i < operands.length; i++)
+	{
+		var id = operands[ i ].getElementsByTagName( "operandId" )[0].firstChild.nodeValue;
+		var elementName = operands[ i ].getElementsByTagName( "operandName" )[0].firstChild.nodeValue;
+		
+		var option = document.createElement( "option" );
+		option.value = "[" + id + "]";
+		option.text = elementName;
+		operandList.add( option, null );	
+	}
 }

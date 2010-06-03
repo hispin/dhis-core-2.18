@@ -30,6 +30,7 @@ package org.hisp.dhis.dataset.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -39,6 +40,7 @@ import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kristian Nordal
@@ -51,12 +53,8 @@ public class HibernateDataSetStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
     
     private PeriodStore periodStore;
 
@@ -154,6 +152,17 @@ public class HibernateDataSetStore
         criteria.add( Restrictions.eq( "periodType", periodType ) );
         
         return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSet> getDataSetsBySource( Source source )
+    {
+        String hql = "from DataSet d where :source in elements(d.sources)";
+        
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        query.setEntity( "source", source );
+        
+        return query.list();
     }
     
     // -------------------------------------------------------------------------

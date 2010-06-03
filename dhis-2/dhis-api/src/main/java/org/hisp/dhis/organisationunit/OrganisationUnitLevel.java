@@ -27,21 +27,17 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class OrganisationUnitLevel
-    implements Serializable
+    extends IdentifiableObject
 {
-    private int id;
-    
     private int level;
     
-    private String name;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -100,16 +96,6 @@ public class OrganisationUnitLevel
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
     public int getLevel()
     {
         return level;
@@ -118,15 +104,5 @@ public class OrganisationUnitLevel
     public void setLevel( int level )
     {
         this.level = level;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 }

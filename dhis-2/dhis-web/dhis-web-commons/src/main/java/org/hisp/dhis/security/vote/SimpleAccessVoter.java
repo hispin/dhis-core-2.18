@@ -27,13 +27,15 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.security.Authentication;
-import org.springframework.security.ConfigAttribute;
-import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.vote.AccessDecisionVoter;
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Simple AccessDecisionVoter which grants access if a specified required
@@ -64,13 +66,13 @@ public class SimpleAccessVoter
             && configAttribute.getAttribute().equals( requiredAuthority );
     }
 
-    @SuppressWarnings( "unchecked" )
-    public boolean supports( Class clazz )
+    @Override
+    public boolean supports( Class<?> clazz )
     {
         return true;
     }
 
-    public int vote( Authentication authentication, Object object, ConfigAttributeDefinition definition )
+    public int vote( Authentication authentication, Object object, Collection<ConfigAttribute> attributes )
     {
         for ( GrantedAuthority authority : authentication.getAuthorities() )
         {

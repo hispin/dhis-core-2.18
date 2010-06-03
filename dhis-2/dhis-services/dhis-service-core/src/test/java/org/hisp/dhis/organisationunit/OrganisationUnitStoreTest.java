@@ -35,7 +35,6 @@ import static junit.framework.Assert.assertTrue;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dbms.DbmsManager;
 import org.junit.Test;
 
 /**
@@ -47,14 +46,10 @@ public class OrganisationUnitStoreTest
 {
     private OrganisationUnitStore organisationUnitStore;
     
-    private DbmsManager dbmsManager;
-    
     @Override
     public void setUpTest()
     {
         organisationUnitStore = (OrganisationUnitStore) getBean( OrganisationUnitStore.ID );
-        
-        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
     }
     
     // -------------------------------------------------------------------------
@@ -112,25 +107,5 @@ public class OrganisationUnitStoreTest
 
         assertNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
         assertNull( organisationUnitStore.getOrganisationUnitLevel( idB ) );        
-    }
-
-    @Test
-    public void testRemoveOrganisationUnitLevels()
-    {
-        OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
-        OrganisationUnitLevel levelB = new OrganisationUnitLevel( 2, "District" );
-        
-        int idA = organisationUnitStore.addOrganisationUnitLevel( levelA );
-        int idB = organisationUnitStore.addOrganisationUnitLevel( levelB );
-
-        assertNotNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
-        assertNotNull( organisationUnitStore.getOrganisationUnitLevel( idB ) );
-        
-        organisationUnitStore.deleteOrganisationUnitLevels();
-        
-        dbmsManager.clearSession();
-
-        assertNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
-        assertNull( organisationUnitStore.getOrganisationUnitLevel( idB ) ); 
     }
 }

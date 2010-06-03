@@ -38,15 +38,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
+import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -58,7 +56,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id: DataValueConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class DataValueConverter
-    extends AbstractDataValueConverter implements XMLConverter
+    extends DataValueImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "dataValues";
     public static final String ELEMENT_NAME = "dataValue";
@@ -106,7 +104,6 @@ public class DataValueConverter
      */
     public DataValueConverter( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        DataValueService dataValueService,
         DataMartService dataMartService,
         ImportObjectService importObjectService,
         ImportParams params,
@@ -117,7 +114,6 @@ public class DataValueConverter
     {
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
-        this.dataValueService = dataValueService;
         this.dataMartService = dataMartService;
         this.importObjectService = importObjectService;
         this.params = params;
@@ -202,7 +198,7 @@ public class DataValueConverter
             value.setComment( values.get( FIELD_COMMENT ) );
             value.getOptionCombo().setId( categoryOptionComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_OPTION_COMBO ) ) ) );
             
-            read( value, GroupMemberType.NONE, params );
+            importObject( value, params );
         }
     }
 }

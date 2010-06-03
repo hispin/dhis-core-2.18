@@ -27,13 +27,15 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+import static org.hisp.dhis.system.util.ConversionUtils.getSet;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
@@ -43,8 +45,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -80,13 +80,6 @@ public class AddReportAction
         this.reportTableService = reportTableService;
     }
     
-    private LocationManager locationManager;
-
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-
     // -----------------------------------------------------------------------
     // I18n
     // -----------------------------------------------------------------------
@@ -203,6 +196,18 @@ public class AddReportAction
             return ERROR;
         }
 
+        // ---------------------------------------------------------------------
+        // Create report
+        // ---------------------------------------------------------------------
+
+        Report report = ( id == null ) ? new Report() : reportService.getReport( id );
+        
+        report.setName( name );
+        report.setDesign( fileName );
+        report.setType( type );
+        report.setReportTables( selectedReportTables != null ? getSet( 
+            reportTableService.getReportTables( getIntegerCollection( selectedReportTables ) ) ) : null );
+                
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
             
         if ( ( type != null && type.equals( Report.TYPE_JASPER ) ) && file != null )
@@ -211,7 +216,7 @@ public class AddReportAction
             // Design file upload
             // -----------------------------------------------------------------
     
-            StreamUtils.write( file, locationManager.getFileForWriting( fileName, Report.TEMPLATE_DIR ) );
+            report.setDesignContent( StreamUtils.getContent( file ) );
         }
         else // BIRT
         {
@@ -240,18 +245,6 @@ public class AddReportAction
                 StreamUtils.writeContent( design, in );
             }
         }
-        
-        // ---------------------------------------------------------------------
-        // Create and save report
-        // ---------------------------------------------------------------------
-
-        Report report = ( id == null ) ? new Report() : reportService.getReport( id );
-        
-        report.setName( name );
-        report.setDesign( fileName );
-        report.setType( type );
-        report.setReportTables( selectedReportTables != null ? getSet( 
-            reportTableService.getReportTables( getIntegerCollection( selectedReportTables ) ) ) : null );
         
         reportService.saveReport( report );
         

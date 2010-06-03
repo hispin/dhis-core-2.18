@@ -31,7 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.i18n.util.LocaleUtils;
+import org.hisp.dhis.system.util.LocaleUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 

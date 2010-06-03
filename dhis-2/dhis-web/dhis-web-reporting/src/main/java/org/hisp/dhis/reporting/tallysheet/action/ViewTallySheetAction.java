@@ -45,7 +45,8 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
 /**
- * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
+ * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben
+ *         Wangberg
  * @version $Id$
  */
 public class ViewTallySheetAction
@@ -112,7 +113,7 @@ public class ViewTallySheetAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private TallySheet tallySheet;
 
     public TallySheet getTallySheet()
@@ -130,7 +131,7 @@ public class ViewTallySheetAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private TallySheetService tallySheetService;
 
     public void setTallySheetService( TallySheetService tallySheetService )
@@ -155,7 +156,7 @@ public class ViewTallySheetAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     private ArrayList<DataElement> dataElements;
 
     private OrganisationUnit organisationUnit;
@@ -164,15 +165,15 @@ public class ViewTallySheetAction
 
     public String execute()
         throws Exception
-    {   
+    {
         if ( recalculate )
         {
             tallySheet = (TallySheet) ActionContext.getContext().getSession().get( TallySheet.KEY_TALLY_SHEET );
-            
+
             if ( tallySheet != null )
             {
                 tallySheetTuples = tallySheet.getTallySheetTuples();
-    
+
                 for ( int i = 0; i < checked.length; i++ )
                 {
                     TallySheetTuple tallySheetTuple = tallySheetTuples.get( i );
@@ -186,16 +187,16 @@ public class ViewTallySheetAction
 
         organisationUnit = selectionTreeManager.getSelectedOrganisationUnit();
         selectedDataSet = dataSetService.getDataSet( selectedDataSetId );
-        dataElements = new ArrayList<DataElement>( selectedDataSet.getDataElements() );
+        dataElements = new ArrayList<DataElement>( dataSetService.getDataElements( selectedDataSet ) );
         Collections.sort( dataElements, new DataElementNameComparator() );
 
-        tallySheet = tallySheetService.createTallySheet( organisationUnit, dataElements, 
-            largeFormat, displayFacilityName, selectedDataSet, tallySheetName );
-        
+        tallySheet = tallySheetService.createTallySheet( organisationUnit, dataElements, largeFormat,
+            displayFacilityName, selectedDataSet, tallySheetName );
+
         tallySheetTuples = tallySheet.getTallySheetTuples();
 
         ActionContext.getContext().getSession().put( TallySheet.KEY_TALLY_SHEET, tallySheet );
-        
+
         return SUCCESS;
     }
 }

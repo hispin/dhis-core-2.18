@@ -29,7 +29,7 @@ package org.hisp.dhis.encoding.velocity;
 
 import org.apache.velocity.VelocityContext;
 
-import com.opensymphony.xwork2.util.TextUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -69,65 +69,25 @@ public class EncoderVelocityContext
 
     public static class Encoder
     {
-        private static final String ESCAPE_JS = "\\\\";
-
-        private static final String QUOTE_JS = "'";
-
-        // ---------------------------------------------------------------------
-        // Public encode methods
-        // ---------------------------------------------------------------------
-
-        public String htmlEncode( Object object )
+        public String htmlEncode( String object )
         {
-            return xmlEncode( object );
+            return StringEscapeUtils.escapeHtml( object );
         }
 
-        public String xmlEncode( Object object )
+        public String xmlEncode( String object )
         {
-            if ( object == null )
-            {
-                return null;
-            }
-
-            return defaultEncode( object.toString() );
+            return StringEscapeUtils.escapeXml( object );
         }
 
-        public String jsEncode( Object object )
+        public String jsEncode( String object )
         {
-            if ( object == null )
-            {
-                return null;
-            }
-
-            String tmp = defaultEncode( object.toString() );
-            tmp = jsEscape( tmp, QUOTE_JS );
-
-            return tmp;
+            return StringEscapeUtils.escapeJavaScript( object );
         }
-
-        public String jsEscape( Object object, String quoteChar )
+        
+        @Deprecated
+        public String jsEscape( String object, String quoteChar )
         {
-            if ( object == null )
-            {
-                return null;
-            }
-
-            String tmp = object.toString();
-
-            tmp = tmp.replaceAll( "%", "%25" );
-            tmp = tmp.replaceAll( ESCAPE_JS, ESCAPE_JS + ESCAPE_JS );
-            tmp = tmp.replaceAll( quoteChar, ESCAPE_JS + quoteChar );            
-
-            return tmp;
-        }
-
-        // ---------------------------------------------------------------------
-        // Default encode method
-        // ---------------------------------------------------------------------
-
-        private String defaultEncode( String string )
-        {
-            return TextUtils.htmlEncode( string );
+            return jsEncode( object );            
         }
     }
 }

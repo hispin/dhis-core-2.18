@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertNotNull;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
-import org.springframework.test.annotation.NotTransactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -40,27 +40,17 @@ import org.springframework.test.annotation.NotTransactional;
 public class DatabaseInfoProviderTest
     extends DhisSpringTest
 {
-    private DatabaseInfoProvider provider;
-
-    // -------------------------------------------------------------------------
-    // Fixture
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        provider = (DatabaseInfoProvider) getBean( DatabaseInfoProvider.ID );
-    }
+    @Autowired
+    private DatabaseInfoProvider databaseInfoProvider;
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
     @Test
-    @NotTransactional
     public void testGetDatabaseInfo()
     {
-        DatabaseInfo info = provider.getDatabaseInfo();
+        DatabaseInfo info = databaseInfoProvider.getDatabaseInfo();
         
         assertNotNull( info );
         assertNotNull( info.getType() );

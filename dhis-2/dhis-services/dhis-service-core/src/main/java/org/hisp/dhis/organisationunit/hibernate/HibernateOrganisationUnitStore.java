@@ -48,6 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitHierarchyRowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -61,26 +62,14 @@ public class HibernateOrganisationUnitStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
+    @Autowired
     private StatementManager statementManager;
 
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     // -------------------------------------------------------------------------
     // OrganisationUnit
@@ -158,7 +147,6 @@ public class HibernateOrganisationUnitStore
      * @param date The date to assign to the organisation unit hierarchy
      * @return Id of the organisation unit hierarchy
      */
-    @SuppressWarnings( "unchecked" )
     public int addOrganisationUnitHierarchy( Date date )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -356,5 +344,13 @@ public class HibernateOrganisationUnitStore
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
         
         return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "name", name ) ).uniqueResult();
+    }
+
+    @Override
+    public int getNumberOfOrganisationUnits()
+    {
+        final String sql = "SELECT count(*) FROM organisationunit";
+
+        return jdbcTemplate.queryForInt( sql );
     }
 }

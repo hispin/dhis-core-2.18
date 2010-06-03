@@ -134,8 +134,6 @@ public class ViewDataEntryFormAction
         
         ProgramStage programStage = programStageService.getProgramStage( associationId );
         
-        System.out.println("programStage: "+programStage);
-        
         if( programStage == null )
         {
             return SUCCESS;
@@ -151,9 +149,8 @@ public class ViewDataEntryFormAction
             int programStageId = itr.next().getId();
             listAssociationIds.add( programStageId );
         }
-        System.out.println("listIds: "+listAssociationIds);
         listDataEntryForm = dataEntryFormAssociationService.listDisctinctDataEntryFormByAssociationIds( DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, listAssociationIds );
-        System.out.println("listDataEntryForm: "+listDataEntryForm);
+
         if ( dataEntryForm == null )
         {
             status = "ADD";

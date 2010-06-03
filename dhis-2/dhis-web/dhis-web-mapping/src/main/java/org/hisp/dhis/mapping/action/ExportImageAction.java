@@ -39,6 +39,7 @@ import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
@@ -50,6 +51,8 @@ public class ExportImageAction
     extends StreamActionSupport
 {
     private static final Log log = LogFactory.getLog( ExportImageAction.class );
+
+    private static final String SVGDOCUMENT = "SVGDOCUMENT";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -143,19 +146,23 @@ public class ExportImageAction
         this.imageFormat = imageFormat;
     }
 
+    private SVGDocument svgDocument;
+
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        log.info( "Exporting image, width: " + width + ", height: " + height + ", format: " + this.imageFormat );
 
-        if ( imageFormat.equalsIgnoreCase( "image/png" ) )
+        log.info( "Exporting image, width: " + svgDocument.getWidth() + ", height: " + svgDocument.getHeight()
+            + ", format: " + svgDocument.getImageFormat() );
+
+        if ( svgDocument.getImageFormat().equalsIgnoreCase( "image/png" ) )
         {
-            SVGUtils.convertToPNG( getSvg(), out, width, height );
+            SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, width, height );
         }
         else
         {
-            SVGUtils.convertToJPEG( getSvg(), out, width, height );
+            SVGUtils.convertToJPEG( svgDocument.getSVGForImage(), out, width, height );
         }
 
         return SUCCESS;
@@ -164,34 +171,58 @@ public class ExportImageAction
     @Override
     protected String getContentType()
     {
-        return this.imageFormat;
+        this.createSVGDocument();
+
+        return svgDocument.getImageFormat();
     }
 
     @Override
     protected String getFilename()
     {
-        if ( imageFormat.equalsIgnoreCase( "image/png" ) )
+        this.createSVGDocument();
+
+        if ( svgDocument.getImageFormat().equalsIgnoreCase( "image/png" ) )
             return "dhis2-gis-image.png";
         return "dhis2-gis-image.jpg";
     }
 
-    private StringBuffer getSvg()
+    private void createSVGDocument()
     {
-        Period p = periodService.getPeriod( period );
+        if ( svg == null || title == null || imageFormat == null || indicator == null || period == null
+            || width == null || height == null )
+        {
+            log.info( "Export map form session" );
 
-        p.setName( format.formatPeriod( p ) );
+            svgDocument = (SVGDocument) SessionUtils.getSessionVar( SVGDOCUMENT );
 
-        Indicator i = indicatorService.getIndicator( indicator );
+        }
+        else
+        {
 
-        SVGDocument svgDocument = new SVGDocument();
+            log.info( "Export map form request" );
 
-        svgDocument.setTitle( this.title );
-        svgDocument.setSvg( this.svg );
-        svgDocument.setIndicator( i );
-        svgDocument.setPeriod( p );
-        svgDocument.setLegends( legends );
-        svgDocument.setIncludeLegends( includeLegends );
+            Period p = periodService.getPeriod( period );
 
-        return svgDocument.getSVGForImage();
+            p.setName( format.formatPeriod( p ) );
+
+            Indicator i = indicatorService.getIndicator( indicator );
+
+            svgDocument = new SVGDocument();
+
+            svgDocument.setTitle( this.title );
+            svgDocument.setSvg( this.svg );
+            svgDocument.setIndicator( i );
+            svgDocument.setPeriod( p );
+            svgDocument.setLegends( legends );
+            svgDocument.setIncludeLegends( includeLegends );
+            svgDocument.setWidth( width );
+            svgDocument.setHeight( height );
+            svgDocument.setImageFormat( imageFormat );
+
+            SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
+
+        }
+
     }
+
 }

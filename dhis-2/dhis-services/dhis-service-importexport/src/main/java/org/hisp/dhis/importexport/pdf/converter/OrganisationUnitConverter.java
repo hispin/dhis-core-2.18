@@ -39,64 +39,77 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: OrganisationUnitConverter.java 6251 2008-11-10 14:37:05Z larshelg $
+ * @version $Id: OrganisationUnitConverter.java 6251 2008-11-10 14:37:05Z
+ *          larshelg $
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-19
  */
 public class OrganisationUnitConverter
-    extends PDFUtils implements PDFConverter 
+    extends PDFUtils
+    implements PDFConverter
 {
     private OrganisationUnitService organisationUnitService;
-    
+
     public OrganisationUnitConverter( OrganisationUnitService organisationUnitService )
-    {   
+    {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // PDFConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( Document document, ExportParams params )
     {
         PDFPrintUtil.printOrganisationUnitFrontPage( document, params );
-        
+
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
-        
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
-        
+
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params
+            .getOrganisationUnits() );
+
+        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+
+        Font ITALIC = new Font( bf, 9, Font.ITALIC );
+        Font TEXT = new Font( bf, 9, Font.NORMAL );
+        Font HEADER3 = new Font( bf, 12, Font.BOLD );
+
         for ( OrganisationUnit unit : units )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-            
-            table.addCell( getHeader3Cell( unit.getName(), 2 ) );
-            
-            table.addCell( getCell( 2, 15 ) );            
 
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1 ) );
-            table.addCell( getTextCell( unit.getShortName() ) );
+            table.addCell( getHeader3Cell( unit.getName(), 2, HEADER3 ) );
 
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1 ) );
+            table.addCell( getCell( 2, 15 ) );
+
+            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( unit.getShortName(), TEXT ) );
+
+            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
             table.addCell( getTextCell( unit.getCode() ) );
 
-            table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1 ) );
-            table.addCell( getTextCell( format.formatDate( unit.getOpeningDate() ) ) );
+            table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
+            table.addCell( getTextCell( format.formatDate( unit.getOpeningDate() ), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1 ) );
-            table.addCell( getTextCell( format.formatDate( unit.getClosedDate() ) ) );
+            table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
+            table.addCell( getTextCell( format.formatDate( unit.getClosedDate() ), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "active" ), 1 ) );
-            table.addCell( getTextCell( i18n.getString( String.valueOf( unit.isActive() ) ) ) );
+            table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
+            table.addCell( getTextCell( i18n.getString( String.valueOf( unit.isActive() ) ), TEXT ) );
 
-            table.addCell( getItalicCell( i18n.getString( "comment" ), 1 ) );
-            table.addCell( getTextCell( unit.getComment() ) );
+            table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
+            table.addCell( getTextCell( unit.getComment(), TEXT ) );
 
             table.addCell( getCell( 2, 30 ) );
-            
-            addTableToDocument( document, table );     
+
+            addTableToDocument( document, table );
         }
     }
 }

@@ -67,6 +67,7 @@ import org.hisp.dhis.util.StreamActionSupport;
  * @version $Id$
  */
 
+@SuppressWarnings( "serial" )
 public class ExportExcelAction
     extends StreamActionSupport
 {

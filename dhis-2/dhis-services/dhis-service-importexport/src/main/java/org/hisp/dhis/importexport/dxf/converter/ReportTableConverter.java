@@ -41,11 +41,10 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractReportTableConverter;
+import org.hisp.dhis.importexport.importer.ReportTableImporter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -62,7 +61,7 @@ import org.hisp.dhis.reporttable.ReportTableService;
  * @version $Id$
  */
 public class ReportTableConverter
-    extends AbstractReportTableConverter implements XMLConverter
+    extends ReportTableImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "reportTables";
     public static final String ELEMENT_NAME = "reportTable";
@@ -409,9 +408,7 @@ public class ReportTableConverter
             reader.moveToStartElement( FIELD_PARAM_ORG_UNIT );
             reportTable.getReportParams().setParamOrganisationUnit( Boolean.parseBoolean( reader.getElementValue() ) );
             
-            //NameMappingUtil.addReportTableMapping( reportTable.getId(), reportTable.getName() );
-            
-            read( reportTable, GroupMemberType.NONE, params );
+            importObject( reportTable, params );
         }        
     }
 }

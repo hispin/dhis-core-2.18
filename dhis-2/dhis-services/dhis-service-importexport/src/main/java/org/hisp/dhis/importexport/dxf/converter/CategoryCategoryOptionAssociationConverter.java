@@ -42,8 +42,9 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 import org.hisp.dhis.system.util.Counter;
 
 /**
@@ -51,7 +52,7 @@ import org.hisp.dhis.system.util.Counter;
  * @version $Id$
  */
 public class CategoryCategoryOptionAssociationConverter
-    extends AbstractGroupMemberConverter implements XMLConverter
+    extends GroupMemberImporter implements XMLConverter, Importer<GroupMemberAssociation>
 {
     public static final String COLLECTION_NAME = "categoryCategoryOptionAssociations";
     public static final String ELEMENT_NAME = "categoryCategoryOptionAssociation";
@@ -155,7 +156,12 @@ public class CategoryCategoryOptionAssociationConverter
             association.setSortOrder( values.containsKey( FIELD_SORT_ORDER ) ? 
                 Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) : counter.count( association.getGroupId() ) );
             
-            read( association, GroupMemberType.CATEGORY_CATEGORYOPTION, params );
+            importObject( association, params );
         }
+    }
+
+    public void importObject( GroupMemberAssociation object, ImportParams params )
+    {
+        read( object, GroupMemberType.CATEGORY_CATEGORYOPTION, params );        
     }
 }

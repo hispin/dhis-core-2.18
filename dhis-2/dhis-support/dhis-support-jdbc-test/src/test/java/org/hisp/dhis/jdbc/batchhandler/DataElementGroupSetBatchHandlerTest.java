@@ -40,6 +40,7 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +49,7 @@ import org.junit.Test;
 public class DataElementGroupSetBatchHandlerTest
     extends DhisTest
 {
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private DataElementService dataElementService;
@@ -66,8 +68,6 @@ public class DataElementGroupSetBatchHandlerTest
     public void setUpTest()
     {
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetBatchHandler.class );
 

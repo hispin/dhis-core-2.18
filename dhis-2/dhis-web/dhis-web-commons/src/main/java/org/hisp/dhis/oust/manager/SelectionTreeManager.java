@@ -141,4 +141,6 @@ public interface SelectionTreeManager
      *             if the argument is null
      */
     void setSelectedOrganisationUnit( OrganisationUnit unit );
+    
+    Collection<OrganisationUnit> getReloadedSelectedOrganisationUnits();
 }

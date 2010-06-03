@@ -36,38 +36,38 @@ import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: PDFPrintUtil.java 4646 2008-02-26 14:54:29Z larshelg $
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-19
  */
 public class PDFPrintUtil
     extends PDFUtils
 {
-    private static final Font TEXT = new Font( Font.HELVETICA, 9, Font.NORMAL );
-    private static final Font HEADER2 = new Font( Font.HELVETICA, 16, Font.BOLD );
-    
     public static void printDataElementFrontPage( Document document, ExportParams exportParams )
     {
         if ( exportParams.getDataElements() == null || exportParams.getDataElements().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
-            
+
             String title = i18n.getString( "data_elements" );
-            
+
             printFrontPage( document, exportParams, title );
         }
     }
-    
+
     public static void printIndicatorFrontPage( Document document, ExportParams exportParams )
     {
         if ( exportParams.getIndicators() == null || exportParams.getIndicators().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
-            
+
             String title = i18n.getString( "indicators" );
-            
+
             printFrontPage( document, exportParams, title );
         }
     }
@@ -77,9 +77,9 @@ public class PDFPrintUtil
         if ( exportParams.getIndicators() == null || exportParams.getIndicators().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
-            
+
             String title = i18n.getString( "data_element_concepts" );
-            
+
             printFrontPage( document, exportParams, title );
         }
     }
@@ -89,55 +89,60 @@ public class PDFPrintUtil
         if ( exportParams.getOrganisationUnits() == null || exportParams.getOrganisationUnits().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
-            
+
             String title = i18n.getString( "organisation_unit_hierarchy" );
-            
+
             printFrontPage( document, exportParams, title );
         }
     }
-    
+
     public static void printOrganisationUnitFrontPage( Document document, ExportParams exportParams )
     {
         if ( exportParams.getOrganisationUnits() == null || exportParams.getOrganisationUnits().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
-            
+
             String title = i18n.getString( "organisation_units" );
-            
+
             printFrontPage( document, exportParams, title );
         }
     }
-    
+
     public static void printDocumentFrontPage( Document document, ExportParams exportParams )
     {
         I18n i18n = exportParams.getI18n();
-        
+
         String title = i18n.getString( "data_dictionary" );
-        
+
         printFrontPage( document, exportParams, title );
     }
-    
+
     private static void printFrontPage( Document document, ExportParams exportParams, String title )
     {
         I18n i18n = exportParams.getI18n();
         I18nFormat format = exportParams.getFormat();
-        
+
+        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+
+        Font TEXT = new Font( bf, 9, Font.NORMAL );
+        Font HEADER2 = new Font( bf, 16, Font.BOLD );
+
         PdfPTable table = getPdfPTable( true, 1.00f );
-        
+
         table.addCell( getCell( i18n.getString( "district_health_information_software_2" ), 1, TEXT, ALIGN_CENTER ) );
-        
+
         table.addCell( getCell( 1, 40 ) );
 
         table.addCell( getCell( title, 1, HEADER2, ALIGN_CENTER ) );
 
         table.addCell( getCell( 1, 40 ) );
-        
+
         String date = format.formatDate( Calendar.getInstance().getTime() );
-        
+
         table.addCell( getCell( date, 1, TEXT, ALIGN_CENTER ) );
-        
+
         addTableToDocument( document, table );
-        
+
         moveToNewPage( document );
     }
 }

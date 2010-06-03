@@ -34,12 +34,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14RoutineDataValue;
+import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
@@ -51,7 +49,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: RoutineDataValueRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
  */
 public class RoutineDataValueRowHandler
-    extends AbstractDataValueConverter implements RowHandler
+    extends DataValueImporter implements RowHandler
 {
     private Map<Object, Integer> dataElementMapping;
     
@@ -75,7 +73,6 @@ public class RoutineDataValueRowHandler
 
     public RoutineDataValueRowHandler( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        DataValueService dataValueService,
         DataMartService dataMartService,
         Map<Object, Integer> dataElementMapping,
         Map<Object, Integer> periodMapping, 
@@ -85,7 +82,6 @@ public class RoutineDataValueRowHandler
     {
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
-        this.dataValueService = dataValueService;
         this.dataMartService = dataMartService;
         this.dataElementMapping = dataElementMapping;
         this.periodMapping = periodMapping;
@@ -120,7 +116,7 @@ public class RoutineDataValueRowHandler
         
         if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
         {
-            read( value, GroupMemberType.NONE, params );
+            importObject( value, params );
         }
     }
 }

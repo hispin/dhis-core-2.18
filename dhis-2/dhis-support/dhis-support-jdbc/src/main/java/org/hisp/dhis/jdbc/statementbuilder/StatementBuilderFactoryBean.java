@@ -37,7 +37,7 @@ import org.springframework.beans.factory.FactoryBean;
  * @version $Id$
  */
 public class StatementBuilderFactoryBean
-    implements FactoryBean
+    implements FactoryBean<StatementBuilder>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -86,13 +86,13 @@ public class StatementBuilderFactoryBean
     // FactoryBean implementation
     // -------------------------------------------------------------------------
     
-    public Object getObject()
+    public StatementBuilder getObject()
         throws Exception
     {
         return statementBuilder;
     }
 
-    public Class<?> getObjectType()
+    public Class<StatementBuilder> getObjectType()
     {
         return StatementBuilder.class;
     }

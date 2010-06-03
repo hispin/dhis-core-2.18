@@ -32,6 +32,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.validation.ValidationCriteria;
+
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * @author Abyot Asalefew
@@ -45,25 +50,27 @@ public class Program
     private String name;
 
     private String description;
-    
+
     /**
-     * Description of Date of Enrollment
-     * This description is differ from each program
+     * Description of Date of Enrollment This description is differ from each
+     * program
      */
     private String dateOfEnrollmentDescription;
-    
+
     /**
-     * Description of Date of Incident
-     * This description is differ from each program
+     * Description of Date of Incident This description is differ from each
+     * program
      */
-    private String dateOfIncidentDescription; 
+    private String dateOfIncidentDescription;
 
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
 
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
-    
+
+    private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -174,7 +181,7 @@ public class Program
     {
         return programStages;
     }
-    
+
     public String getDateOfEnrollmentDescription()
     {
         return dateOfEnrollmentDescription;
@@ -195,13 +202,22 @@ public class Program
         this.dateOfIncidentDescription = dateOfIncidentDescription;
     }
 
+    public Set<ValidationCriteria> getPatientValidationCriteria()
+    {
+        return patientValidationCriteria;
+    }
+
+    public void setPatientValidationCriteria( Set<ValidationCriteria> patientValidationCriteria )
+    {
+        this.patientValidationCriteria = patientValidationCriteria;
+    }
 
     // -------------------------------------------------------------------------
-    // Convenience method
+    // Logic methods
     // -------------------------------------------------------------------------
+
     public ProgramStage getProgramStageByStage( int stage )
     {
-
         int count = 1;
 
         for ( ProgramStage programStage : programStages )
@@ -218,7 +234,41 @@ public class Program
         }
 
         return null;
-
     }
 
+    @SuppressWarnings( "unchecked" )
+    public ValidationCriteria isValid( Patient patient )
+    {
+        try
+        {
+            for ( ValidationCriteria criteria : patientValidationCriteria )
+            {
+                Object propertyValue = getValueFromPatient(StringUtils.capitalize(criteria.getProperty()), patient);
+               
+                // Compare property value with compare value
+
+                int i = ((Comparable) propertyValue).compareTo( (Comparable) criteria.getValue() );
+
+                // Return validation criteria if criteria is not met
+
+                if ( i != criteria.getOperator() )
+                {
+                    return criteria;
+                }
+            }
+
+            // Return null if all criteria are met
+
+            return null;
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }
+    
+    
+    private Object getValueFromPatient( String property, Patient patient ) throws Exception {
+    	return Patient.class.getMethod( "get" + property ).invoke( patient ); 
+    }
 }

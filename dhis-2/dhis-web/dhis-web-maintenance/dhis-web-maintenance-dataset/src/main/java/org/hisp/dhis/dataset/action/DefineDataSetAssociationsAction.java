@@ -83,26 +83,26 @@ public class DefineDataSetAssociationsAction
         throws Exception
     {
     	
-        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits(); 
-        
-        Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();        
-        
-        getUnitsInTheTree( rootUnits, unitsInTheTree );          
-	
-    	DataSet dataSet = dataSetService.getDataSet( dataSetId );    	
-    	
-    	Set<Source> assignedSources = dataSet.getSources();
-    	
-    	assignedSources.removeAll( convert( unitsInTheTree ) );        
+        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
 
-    	Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
-    	
-    	assignedSources.addAll( convert( selectedOrganisationUnits ) );  	
-    	
-    	dataSet.setSources( assignedSources );
-    	
+        Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();
+
+        getUnitsInTheTree( rootUnits, unitsInTheTree );
+
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+        Set<Source> assignedSources = dataSet.getSources();
+
+        assignedSources.removeAll( convert( unitsInTheTree ) );
+
+        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
+        assignedSources.addAll( convert( selectedOrganisationUnits ) );
+
+        dataSet.setSources( assignedSources );
+
         dataSetService.updateDataSet( dataSet );
-        
+
         return SUCCESS;
     }
 

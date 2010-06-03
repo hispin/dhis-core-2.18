@@ -80,6 +80,13 @@
 				<p><label>$i18n.getString( "number_of_data_elements" ):</label><br><span id="dataElementCountField"></span></p>
 				<p><label>$i18n.getString( "dataentryform" ):</label><br><span id="dataEntryFormField"></span></p>
 			</div>
+			
+            <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
+                <div style="float:right">
+                    <a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+                </div>
+                <p><span id="warningField"></span></p>
+            </div>
 
 		</td>
   </tr>

@@ -27,16 +27,16 @@ package org.hisp.dhis.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
 import org.hibernate.SessionFactory;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.stat.Statistics;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: CrossTabDataValue.java 5514 2008-08-04 10:48:07Z larshelg $
  */
+@Component("cacheManager")
 public class DefaultHibernateCacheManager
     implements HibernateCacheManager
 {
@@ -44,44 +44,28 @@ public class DefaultHibernateCacheManager
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     // -------------------------------------------------------------------------
     // HibernateCacheManager implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public void clearObjectCache()
     {
-        Map<String, ClassMetadata> classMetaData = sessionFactory.getAllClassMetadata();
-        
-        for ( String entityName : classMetaData.keySet() )
-        {
-            sessionFactory.evictEntity( entityName );
-        }
-
-        Map<String, ClassMetadata> collectionMetaData = sessionFactory.getAllCollectionMetadata();
-        
-        for ( String roleName : collectionMetaData.keySet() )
-        {
-            sessionFactory.evictCollection( roleName );
-        }
-    }
+        sessionFactory.getCache().evictEntityRegions();
+        sessionFactory.getCache().evictCollectionRegions();
+     }
     
     public void clearQueryCache()
     {
-        sessionFactory.evictQueries();
+        sessionFactory.getCache().evictDefaultQueryRegion();
+        sessionFactory.getCache().evictQueryRegions();
     }
     
     public void clearCache()
     {
-        clearObjectCache();
-        
+        clearObjectCache();        
         clearQueryCache();
     }
     

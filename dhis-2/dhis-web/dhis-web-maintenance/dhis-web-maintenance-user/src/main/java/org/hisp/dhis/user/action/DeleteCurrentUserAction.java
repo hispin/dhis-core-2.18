@@ -51,14 +51,6 @@ public class DeleteCurrentUserAction implements Action
         this.userService = userService;
     }
 
-    
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
     private I18n i18n;
 
     public void setI18n( I18n i18n )

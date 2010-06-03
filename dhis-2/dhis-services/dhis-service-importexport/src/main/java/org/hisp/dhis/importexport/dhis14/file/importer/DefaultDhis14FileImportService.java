@@ -52,13 +52,13 @@ import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
+import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.file.query.QueryManager;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.CalculatedDataElementRowHandler;
@@ -119,6 +119,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.AppendingHashMap;
 import org.hisp.dhis.system.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -218,14 +219,7 @@ public class DefaultDhis14FileImportService
     {
         this.indicatorService = indicatorService;
     }
-    
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-    
+        
     private DataMartService dataMartService;
     
     public void setDataMartService( DataMartService dataMartService )
@@ -233,20 +227,11 @@ public class DefaultDhis14FileImportService
         this.dataMartService = dataMartService;
     }
 
-    private ImportAnalyser importAnalyser;
-
-    public void setImportAnalyser( ImportAnalyser importAnalyser )
-    {
-        this.importAnalyser = importAnalyser;
-    }    
-
+    @Autowired
     private HibernateCacheManager cacheManager;
 
-    public void setCacheManager( HibernateCacheManager cacheManager )
-    {
-        this.cacheManager = cacheManager;
-    }
-
+    private ImportAnalyser importAnalyser;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -267,6 +252,8 @@ public class DefaultDhis14FileImportService
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
     {
         NameMappingUtil.clearMapping();
+        
+        importAnalyser = new DefaultImportAnalyser( expressionService );
         
         if ( !verifyImportFile( params, state ) )
         {
@@ -759,7 +746,6 @@ public class DefaultDhis14FileImportService
                 
         RowHandler rowHandler = new RoutineDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
-            dataValueService,
             dataMartService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
@@ -828,7 +814,6 @@ public class DefaultDhis14FileImportService
         
         RowHandler rowHandler = new SemiPermanentDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
-            dataValueService,
             dataMartService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodObjectMapping( params.skipMapping() ),

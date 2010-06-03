@@ -28,6 +28,7 @@ package org.hisp.dhis.validationrule.action;
  */
 
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -97,6 +98,12 @@ public class GetValidationRuleAction
     {
     	return validationOperator;
     }
+    private PeriodType periodType;
+
+    public PeriodType getPeriodType()
+    {
+        return periodType;
+    }
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------    
@@ -109,6 +116,8 @@ public class GetValidationRuleAction
         rightSideTextualExpression = expressionService.getExpressionDescription( validationRule.getRightSide().getExpression() );
         
         validationOperator = validationRule.getOperator();       
+        
+        periodType = validationRule.getPeriodType();
         
         return SUCCESS;
     }

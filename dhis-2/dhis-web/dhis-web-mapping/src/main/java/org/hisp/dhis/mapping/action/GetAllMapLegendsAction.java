@@ -27,7 +27,9 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.mapping.MapLegend;
@@ -35,8 +37,6 @@ import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapLegendComparator;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Jan Henrik Overland

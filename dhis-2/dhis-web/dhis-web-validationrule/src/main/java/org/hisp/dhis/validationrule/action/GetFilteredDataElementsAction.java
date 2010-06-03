@@ -31,20 +31,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetSortOrderComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: GetFilteredDataElementsAction.java 6256 2008-11-10 17:10:30Z larshelg $
+ * @version $Id: GetFilteredDataElementsAction.java 6256 2008-11-10 17:10:30Z
+ *          larshelg $
  */
 public class GetFilteredDataElementsAction
     extends ActionSupport
@@ -55,18 +62,25 @@ public class GetFilteredDataElementsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -95,13 +109,25 @@ public class GetFilteredDataElementsAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private int dataElementGroupId;
+    private Integer dataSetId;
 
-    public void setDataElementGroupId( int dataElementGroupId )
+    public void setDataSetId( Integer dataSetId )
     {
-        this.dataElementGroupId = dataElementGroupId;
+        this.dataSetId = dataSetId;
     }
 
+    private String periodTypeName;
+
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
+
+    public String getPeriodTypeName()
+    {
+        return periodTypeName;
+    }
+    
     private String filter;
 
     public void setFilter( String filter )
@@ -130,20 +156,47 @@ public class GetFilteredDataElementsAction
     public String execute()
         throws Exception
     {
+
+        // ---------------------------------------------------------------------
+        // Get periodType
+        // ---------------------------------------------------------------------
+
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+
         // ---------------------------------------------------------------------
         // DataElementGroup filter
         // ---------------------------------------------------------------------
 
-        if ( dataElementGroupId == ALL )
+        if ( dataSetId == ALL )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByType( DataElement.VALUE_TYPE_INT ) );
+            // -----------------------------------------------------------------
+            // Get datasets with the periodType
+            // -----------------------------------------------------------------
+
+            List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( periodType ) );
+
+            Collections.sort( dataSets, new DataSetSortOrderComparator() );
+
+            displayPropertyHandler.handle( dataSets );
+
+            // -----------------------------------------------------------------
+            // Get available dataelements into the dataSets
+            // -----------------------------------------------------------------
+
+            Set<DataElement> members = new HashSet<DataElement>();
+
+            for ( DataSet dataSet : dataSets )
+            {
+                 members.addAll( dataSet.getDataElements() );
+            }
+
+            dataElements = new ArrayList<DataElement>(getIntegerDataElements( members ));
         }
         else
         {
-            Collection<DataElement> groupElements = dataElementService.getDataElementGroup( dataElementGroupId )
-                .getMembers();
+            Collection<DataElement> members = dataSetService.getDataSet( dataSetId ).getDataElements();
 
-            dataElements = new ArrayList<DataElement>( getIntegerDataElements( groupElements ) );
+            dataElements = new ArrayList<DataElement>( getIntegerDataElements( members ) );
         }
 
         Collections.sort( dataElements, dataElementComparator );
@@ -155,17 +208,17 @@ public class GetFilteredDataElementsAction
         // ---------------------------------------------------------------------
 
         operands = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
-        
+
         // ---------------------------------------------------------------------
         // String filter
         // ---------------------------------------------------------------------
 
         Iterator<DataElementOperand> iterator = operands.iterator();
-        
+
         while ( iterator.hasNext() )
         {
             DataElementOperand operand = iterator.next();
-            
+
             if ( !operand.getOperandName().toLowerCase().contains( filter.toLowerCase() ) )
             {
                 iterator.remove();
@@ -175,12 +228,14 @@ public class GetFilteredDataElementsAction
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
     // TODO use predicate / commons instead
-    
+    // -------------------------------------------------------------------------
+
     private Collection<DataElement> getIntegerDataElements( Collection<DataElement> dataElements )
     {
         Iterator<DataElement> iterator = dataElements.iterator();
-        
+
         while ( iterator.hasNext() )
         {
             if ( !iterator.next().getType().equals( DataElement.VALUE_TYPE_INT ) )
@@ -188,7 +243,7 @@ public class GetFilteredDataElementsAction
                 iterator.remove();
             }
         }
-        
+
         return dataElements;
     }
 }

@@ -27,12 +27,12 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
@@ -43,7 +43,7 @@ import org.hisp.dhis.dimension.DimensionType;
  * @version $Id$
  */
 public class DataElementCategoryCombo
-    implements Serializable, DimensionSet
+    extends IdentifiableObject implements DimensionSet
 {
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
 

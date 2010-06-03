@@ -31,7 +31,6 @@ import java.lang.reflect.Method;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,7 +55,6 @@ public abstract class DhisSpringTest
     private ApplicationContext context;
 
     public void setApplicationContext( ApplicationContext context )
-        throws BeansException
     {
         this.context = context;
     }

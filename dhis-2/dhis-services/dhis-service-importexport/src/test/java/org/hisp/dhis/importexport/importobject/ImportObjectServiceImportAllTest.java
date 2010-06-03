@@ -47,7 +47,6 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
@@ -74,8 +73,6 @@ public class ImportObjectServiceImportAllTest
     
     private BatchHandlerFactory batchHandlerFactory;
     
-    private DbmsManager dbmsManager;
-
     // -------------------------------------------------------------------------
     // CategoryOption
     // -------------------------------------------------------------------------
@@ -247,8 +244,6 @@ public class ImportObjectServiceImportAllTest
         importObjectService = (ImportObjectService) getBean( ImportObjectService.ID );
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
-        
-        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         

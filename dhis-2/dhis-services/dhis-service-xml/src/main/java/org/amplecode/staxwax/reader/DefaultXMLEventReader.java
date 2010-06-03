@@ -3,15 +3,13 @@ package org.amplecode.staxwax.reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLStreamReader2;
 
@@ -42,205 +40,280 @@ import org.codehaus.stax2.XMLStreamReader2;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- *
+ * 
  * @author bobj
  * @version created 28-Dec-2009
  */
-public class DefaultXMLEventReader implements XMLReader {
+public class DefaultXMLEventReader
+    implements XMLReader
+{
+    private XMLEventReader2 reader;
 
-  private static final Log log = LogFactory.getLog(DefaultXMLEventReader.class);
-  private XMLEventReader2 reader;
-  private XMLEvent currentEvent;
+    private XMLEvent currentEvent;
 
-  // -------------------------------------------------------------------------
-  // Constructor
-  // -------------------------------------------------------------------------
-  public DefaultXMLEventReader(XMLEventReader2 reader) {
-    this.reader = reader;
-  }
-
-  @Override
-  public String getElementName() {
-
-    String localName = null;
-
-    if (currentEvent.isStartElement()) {
-      localName = currentEvent.asStartElement().getName().getLocalPart();
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+    
+    public DefaultXMLEventReader( XMLEventReader2 reader )
+    {
+        this.reader = reader;
     }
 
-    if (currentEvent.isEndElement()) {
-      localName = currentEvent.asEndElement().getName().getLocalPart();
-    }
+    @Override
+    public String getElementName()
+    {
+        String localName = null;
 
-    return localName;
-  }
-
-  @Override
-  public String getElementValue() {
-    try {
-      if (reader.peek().isCharacters()) {
-        currentEvent = reader.nextEvent();
-        return currentEvent.asCharacters().getData();
-      } else {
-        return null;
-      }
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to get element value", ex);
-    }
-  }
-
-  @Override
-  public void moveToStartElement(String name) {
-    try {
-      while (reader.hasNext()) {
-        currentEvent = reader.nextEvent();
-        if (currentEvent.isStartElement() && currentEvent.asStartElement().getName().getLocalPart().equals(name)) {
-          break;
+        if ( currentEvent.isStartElement() )
+        {
+            localName = currentEvent.asStartElement().getName().getLocalPart();
         }
-      }
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to move to start element", ex);
-    }
-  }
 
-  @Override
-  public boolean moveToStartElement(String startElementName, String endElementName) {
-    try {
-      while (reader.hasNext()) {
-        currentEvent = reader.nextEvent();
-        if (currentEvent.isStartElement() && currentEvent.asStartElement().getName().getLocalPart().equals(startElementName)) {
-          return true;
+        if ( currentEvent.isEndElement() )
+        {
+            localName = currentEvent.asEndElement().getName().getLocalPart();
         }
-        if (currentEvent.isEndElement() && currentEvent.asEndElement().getName().getLocalPart().equals(endElementName)) {
-          return false;
+
+        return localName;
+    }
+
+    @Override
+    public String getElementValue()
+    {
+        try
+        {
+            if ( reader.peek().isCharacters() )
+            {
+                currentEvent = reader.nextEvent();
+                return currentEvent.asCharacters().getData();
+            }
+            else
+            {
+                return null;
+            }
         }
-      }
-      return false;
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to move to start element", ex);
-    }
-  }
-
-  @Override
-  public boolean isStartElement(String name) {
-    try {
-      return currentEvent.asStartElement().getName().getLocalPart().equals(name);
-    } catch (ClassCastException ex) {
-      // asStartElement() will throw ClassCastException if not a StartElement
-      return false;
-    }
-  }
-
-  @Override
-  public boolean isEndElement(String name) {
-    try {
-      return currentEvent.asEndElement().getName().getLocalPart().equals(name);
-    } catch (ClassCastException ex) {
-      return false;
-    }
-  }
-
-  @Override
-  public boolean next() {
-    try {
-      currentEvent = reader.nextEvent();
-      return !currentEvent.isEndDocument();
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to move to next element", ex);
-    }
-  }
-
-  @Override
-  public boolean next(String endElementName) {
-    try {
-      currentEvent = reader.nextEvent();
-      return !(currentEvent.isEndElement()
-              && currentEvent.asEndElement().getName().getLocalPart().equals(endElementName));
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to move to next element", ex);
-    }
-  }
-
-  @Override
-  public String getAttributeValue(String attributeName) {
-    try {
-      QName attributeQName = new QName(null, attributeName);
-      Attribute attribute = currentEvent.asStartElement().getAttributeByName(attributeQName);
-      return attribute != null ? attribute.getValue() : null;
-    } catch (ClassCastException ex) {
-      return null;
-    }
-  }
-
-  @Override
-  public int getAttributeCount() {
-    try {
-      Iterator attributeIter = currentEvent.asStartElement().getAttributes();
-      int count = 0;
-      while (attributeIter.hasNext()) {
-        ++count;
-        attributeIter.next();
-      }
-      return count;
-    } catch (ClassCastException ex) {
-      return 0;
-    }
-  }
-
-  @Override
-  public Map<String, String> readElements(String elementName) {
-    try {
-      final Map<String, String> elements = new HashMap<String, String>();
-      StartElement startEvent = currentEvent.asStartElement();
-      Iterator attributeIter = startEvent.getAttributes();
-      if (attributeIter.hasNext()) {
-        while (attributeIter.hasNext()) {
-          Attribute a = (Attribute) attributeIter.next();
-          elements.put(a.getName().getLocalPart(), a.getValue());
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to get element value", ex );
         }
-        return elements;
-      } else {
-        while (reader.hasNext()) {
-          currentEvent = reader.nextEvent();
-          if (currentEvent.isEndElement() && currentEvent.asEndElement().getName().getLocalPart().equals(elementName)) {
-            break;
-          }
-          if (currentEvent.isStartElement()) {
-            String name = currentEvent.asStartElement().getName().getLocalPart();
-            String value = this.getElementValue();
-            elements.put(name, value);
-          }
+    }
+
+    @Override
+    public void moveToStartElement( String name )
+    {
+        try
+        {
+            while ( reader.hasNext() )
+            {
+                currentEvent = reader.nextEvent();
+                if ( currentEvent.isStartElement()
+                    && currentEvent.asStartElement().getName().getLocalPart().equals( name ) )
+                {
+                    break;
+                }
+            }
         }
-        return elements;
-      }
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to read elements", ex);
-    } catch (ClassCastException ex) {
-      throw new RuntimeException("Failed to read elements", ex);
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to move to start element", ex );
+        }
     }
-  }
 
-  @Override
-  public XMLStreamReader2 getXmlStreamReader() {
-    throw new UnsupportedOperationException("Can't get the stream reader back from event reader");
-  }
-
-  @Override
-  public XMLEventReader2 getXmlEventReader() {
-    return reader;
-  }
-
-  @Override
-  public void dryRun() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public void closeReader() {
-    try {
-      reader.close();
-    } catch (XMLStreamException ex) {
-      throw new RuntimeException("Failed to close reader", ex);
+    @Override
+    public boolean moveToStartElement( String startElementName, String endElementName )
+    {
+        try
+        {
+            while ( reader.hasNext() )
+            {
+                currentEvent = reader.nextEvent();
+                if ( currentEvent.isStartElement()
+                    && currentEvent.asStartElement().getName().getLocalPart().equals( startElementName ) )
+                {
+                    return true;
+                }
+                if ( currentEvent.isEndElement()
+                    && currentEvent.asEndElement().getName().getLocalPart().equals( endElementName ) )
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to move to start element", ex );
+        }
     }
-  }
+
+    @Override
+    public boolean isStartElement( String name )
+    {
+        try
+        {
+            return currentEvent.asStartElement().getName().getLocalPart().equals( name );
+        }
+        catch ( ClassCastException ex )
+        {
+            // asStartElement() will throw ClassCastException if not a
+            // StartElement
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isEndElement( String name )
+    {
+        try
+        {
+            return currentEvent.asEndElement().getName().getLocalPart().equals( name );
+        }
+        catch ( ClassCastException ex )
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean next()
+    {
+        try
+        {
+            currentEvent = reader.nextEvent();
+            return !currentEvent.isEndDocument();
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to move to next element", ex );
+        }
+    }
+
+    @Override
+    public boolean next( String endElementName )
+    {
+        try
+        {
+            currentEvent = reader.nextEvent();
+            return !(currentEvent.isEndElement() && currentEvent.asEndElement().getName().getLocalPart().equals(
+                endElementName ));
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to move to next element", ex );
+        }
+    }
+
+    @Override
+    public String getAttributeValue( String attributeName )
+    {
+        try
+        {
+            QName attributeQName = new QName( null, attributeName );
+            Attribute attribute = currentEvent.asStartElement().getAttributeByName( attributeQName );
+            return attribute != null ? attribute.getValue() : null;
+        }
+        catch ( ClassCastException ex )
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public int getAttributeCount()
+    {
+        try
+        {
+            Iterator<?> attributeIter = currentEvent.asStartElement().getAttributes();
+            int count = 0;
+            while ( attributeIter.hasNext() )
+            {
+                ++count;
+                attributeIter.next();
+            }
+            return count;
+        }
+        catch ( ClassCastException ex )
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public Map<String, String> readElements( String elementName )
+    {
+        try
+        {
+            final Map<String, String> elements = new HashMap<String, String>();
+            StartElement startEvent = currentEvent.asStartElement();
+            Iterator<?> attributeIter = startEvent.getAttributes();
+            if ( attributeIter.hasNext() )
+            {
+                while ( attributeIter.hasNext() )
+                {
+                    Attribute a = (Attribute) attributeIter.next();
+                    elements.put( a.getName().getLocalPart(), a.getValue() );
+                }
+                return elements;
+            }
+            else
+            {
+                while ( reader.hasNext() )
+                {
+                    currentEvent = reader.nextEvent();
+                    if ( currentEvent.isEndElement()
+                        && currentEvent.asEndElement().getName().getLocalPart().equals( elementName ) )
+                    {
+                        break;
+                    }
+                    if ( currentEvent.isStartElement() )
+                    {
+                        String name = currentEvent.asStartElement().getName().getLocalPart();
+                        String value = this.getElementValue();
+                        elements.put( name, value );
+                    }
+                }
+                return elements;
+            }
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to read elements", ex );
+        }
+        catch ( ClassCastException ex )
+        {
+            throw new RuntimeException( "Failed to read elements", ex );
+        }
+    }
+
+    @Override
+    public XMLStreamReader2 getXmlStreamReader()
+    {
+        throw new UnsupportedOperationException( "Can't get the stream reader back from event reader" );
+    }
+
+    @Override
+    public XMLEventReader2 getXmlEventReader()
+    {
+        return reader;
+    }
+
+    @Override
+    public void dryRun()
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
+
+    @Override
+    public void closeReader()
+    {
+        try
+        {
+            reader.close();
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to close reader", ex );
+        }
+    }
 }

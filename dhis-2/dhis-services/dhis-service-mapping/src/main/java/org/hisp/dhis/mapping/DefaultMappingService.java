@@ -117,36 +117,73 @@ public class DefaultMappingService
     // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
-    // MapValues
+    // DataMapValues
+    // -------------------------------------------------------------------------
+    
+    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, String mapLayerPath )
+    {
+        int level = getMapByMapLayerPath( mapLayerPath ).getOrganisationUnitLevel().getLevel();
+
+        return getAggregatedDataMapValues( dataElementId, periodId, level );
+    }
+    
+    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level )
+    {
+        return dataMartStore.getAggregatedDataMapValues( dataElementId, periodId, level );
+    }
+
+    // -------------------------------------------------------------------------
+    // IndicatorMapValues
     // -------------------------------------------------------------------------
 
-    public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath )
+    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, Collection<Integer> periodIds,
+        String mapLayerPath, String featureId )
     {
-        Map map = getMapByMapLayerPath( mapLayerPath );
+        int level = getMapByMapLayerPath( mapLayerPath ).getOrganisationUnitLevel().getLevel();
 
-        int level = map.getOrganisationUnitLevel().getLevel();
+        int organisationUnitId = getMapOrganisationUnitRelationByFeatureId( featureId, mapLayerPath ).getOrganisationUnit().getId();
 
-        Collection<AggregatedMapValue> mapValues = dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
+        Collection<AggregatedMapValue> mapValues;
 
-        java.util.Map<Integer, String> relations = getOrganisationUnitFeatureMap( getMapOrganisationUnitRelationsByMap( map ) );
-
-        for ( AggregatedMapValue value : mapValues )
+        if ( periodIds.size() < 2 )
         {
-            value.setFeatureId( relations.get( value.getOrganisationUnitId() ) );
+            mapValues = dataMartStore.getAggregatedIndicatorMapValues( indicatorId, periodIds.iterator().next(), level,
+                organisationUnitId );
         }
+        else
+        {
+            mapValues = dataMartStore.getAggregatedIndicatorMapValues( indicatorId, periodIds, level, organisationUnitId );
+        }
+
+        // java.util.Map<Integer, String> relations =
+        // getOrganisationUnitFeatureMap( getMapOrganisationUnitRelationsByMap(
+        // map ) );
+
+        // for ( AggregatedMapValue value : mapValues )
+        // {
+        // value.setFeatureId( relations.get( value.getOrganisationUnitId() ) );
+        // }
 
         return mapValues;
     }
 
-    public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level )
+    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, String mapLayerPath )
     {
-        return dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
+        int level = getMapByMapLayerPath( mapLayerPath ).getOrganisationUnitLevel().getLevel();
+
+        return getAggregatedIndicatorMapValues( indicatorId, periodId, level );
+    }
+
+    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level )
+    {
+        return dataMartStore.getAggregatedIndicatorMapValues( indicatorId, periodId, level );
     }
 
     /**
      * Returns a map for the given MapOrganisationUnitRelations where the key is
      * the OrganisationUnit identifier and the value is the feature identifier.
      */
+    /*
     private java.util.Map<Integer, String> getOrganisationUnitFeatureMap(
         Collection<MapOrganisationUnitRelation> relations )
     {
@@ -158,7 +195,7 @@ public class DefaultMappingService
         }
 
         return map;
-    }
+    }*/
 
     // -------------------------------------------------------------------------
     // Map
@@ -664,7 +701,7 @@ public class DefaultMappingService
         Period period = periodService.getPeriod( periodId );
 
         MapLegendSet mapLegendSet = getMapLegendSet( mapLegendSetId );
-        
+
         mapView.setName( name );
         mapView.setIndicatorGroup( indicatorGroup );
         mapView.setIndicator( indicator );
@@ -691,8 +728,8 @@ public class DefaultMappingService
     }
 
     public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName,
-        int periodId, String mapSource, String mapLegendType, int method, int classes, String colorLow, String colorHigh,
-        int mapLegendSetId, String longitude, String latitude, int zoom )
+        int periodId, String mapSource, String mapLegendType, int method, int classes, String colorLow,
+        String colorHigh, int mapLegendSetId, String longitude, String latitude, int zoom )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
@@ -704,7 +741,7 @@ public class DefaultMappingService
         Period period = periodService.getPeriod( periodId );
 
         MapLegendSet mapLegendSet = getMapLegendSet( mapLegendSetId );
-        
+
         String mapSourceType = (String) userSettingService
             .getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
 
@@ -798,7 +835,7 @@ public class DefaultMappingService
         mappingStore.updateMapLayer( mapLayer );
     }
 
-    public void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity,
+    public void addOrUpdateMapLayer( String name, String type, String mapSource, String layer, String fillColor, double fillOpacity,
         String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
@@ -812,6 +849,7 @@ public class DefaultMappingService
             mapLayer.setType( type );
             mapLayer.setMapSourceType( mapSourceType );
             mapLayer.setMapSource( mapSource );
+            mapLayer.setLayer( layer );
             mapLayer.setFillColor( fillColor );
             mapLayer.setFillOpacity( fillOpacity );
             mapLayer.setStrokeColor( strokeColor );
@@ -821,7 +859,7 @@ public class DefaultMappingService
         }
         else
         {
-            addMapLayer( new MapLayer( name, type, mapSourceType, mapSource, fillColor, fillOpacity, strokeColor,
+            addMapLayer( new MapLayer( name, type, mapSourceType, mapSource, layer, fillColor, fillOpacity, strokeColor,
                 strokeWidth ) );
         }
     }
@@ -839,6 +877,11 @@ public class DefaultMappingService
     public MapLayer getMapLayerByName( String name )
     {
         return mappingStore.getMapLayerByName( name );
+    }
+    
+    public Collection<MapLayer> getMapLayersByType( String type )
+    {
+        return mappingStore.getMapLayersByType( type );
     }
 
     public Collection<MapLayer> getMapLayersByMapSourceType()

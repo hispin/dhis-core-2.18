@@ -31,19 +31,21 @@ import static org.hisp.dhis.system.util.ListUtils.getDuplicates;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -56,6 +58,7 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -141,13 +144,13 @@ public class DefaultDataIntegrityService
         return dataElementService.getDataElementsWithoutGroups();
     }
 
-    public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
+    public SortedMap<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
     {
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
 
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
 
-        Map<DataElement, Collection<DataSet>> targets = new HashMap<DataElement, Collection<DataSet>>();
+        SortedMap<DataElement, Collection<DataSet>> targets = new TreeMap<DataElement, Collection<DataSet>>( new DataElementNameComparator() );
 
         for ( DataElement element : dataElements )
         {
@@ -236,9 +239,9 @@ public class DefaultDataIntegrityService
         return indicatorService.getIndicatorsWithoutGroups();
     }
 
-    public Map<Indicator, String> getInvalidIndicatorNumerators()
+    public SortedMap<Indicator, String> getInvalidIndicatorNumerators()
     {
-        Map<Indicator, String> invalids = new HashMap<Indicator, String>();
+        SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( new IndicatorNameComparator() );
 
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -253,9 +256,9 @@ public class DefaultDataIntegrityService
         return invalids;
     }
 
-    public Map<Indicator, String> getInvalidIndicatorDenominators()
+    public SortedMap<Indicator, String> getInvalidIndicatorDenominators()
     {
-        Map<Indicator, String> invalids = new HashMap<Indicator, String>();
+        SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( new IndicatorNameComparator() );
 
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -395,9 +398,9 @@ public class DefaultDataIntegrityService
         } );
     }
 
-    public Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
+    public SortedMap<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
     {
-        Map<ValidationRule, String> invalids = new HashMap<ValidationRule, String>();
+        SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>( new ValidationRuleNameComparator() );
 
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
@@ -412,9 +415,9 @@ public class DefaultDataIntegrityService
         return invalids;
     }
 
-    public Map<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
+    public SortedMap<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
     {
-        Map<ValidationRule, String> invalids = new HashMap<ValidationRule, String>();
+        SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>( new ValidationRuleNameComparator() );
 
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {

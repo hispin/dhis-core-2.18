@@ -27,22 +27,15 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorType.java 5296 2008-05-29 16:06:14Z larshelg $
  */
 public class IndicatorType
-    implements Serializable
+    extends IdentifiableObject
 {
-    private int id;
-
-    /**
-     * Required and unique.
-     */
-    private String name;
-
     private int factor;
 
     // -------------------------------------------------------------------------
@@ -101,26 +94,6 @@ public class IndicatorType
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public int getFactor()
     {

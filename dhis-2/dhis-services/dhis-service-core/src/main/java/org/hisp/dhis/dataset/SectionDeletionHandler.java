@@ -29,7 +29,6 @@ package org.hisp.dhis.dataset;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
 
 /**
  * @author Lars Helge Overland
@@ -49,13 +48,6 @@ public class SectionDeletionHandler
         this.sectionService = sectionService;
     }
     
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -85,8 +77,6 @@ public class SectionDeletionHandler
         {
             if ( section.getDataSet().equals( dataSet ) )
             {
-                deletionManager.execute( section );
-                
                 sectionService.deleteSection( section );
             }
         }

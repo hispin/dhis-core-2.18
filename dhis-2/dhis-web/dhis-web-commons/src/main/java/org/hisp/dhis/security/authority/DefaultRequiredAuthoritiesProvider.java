@@ -31,15 +31,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.SecurityConfig;
-import org.springframework.security.intercept.ObjectDefinitionSource;
-import org.hisp.dhis.security.intercept.SingleObjectDefinitionSource;
+import org.hisp.dhis.security.intercept.SingleSecurityMetadataSource;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.access.SecurityMetadataSource;
 
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 
@@ -72,29 +71,27 @@ public class DefaultRequiredAuthoritiesProvider
     // RequiredAuthoritiesProvider implementation
     // -------------------------------------------------------------------------
 
-    public ObjectDefinitionSource createObjectDefinitionSource( ActionConfig actionConfig )
+    public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig )
     {
-        return createObjectDefinitionSource( actionConfig, actionConfig );
+        return createSecurityMetadataSource( actionConfig, actionConfig );
     }
-    public ObjectDefinitionSource createObjectDefinitionSource( ActionConfig actionConfig, Object object )
+    public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig, Object object )
     {
         Collection<String> requiredAuthorities = getRequiredAuthorities( actionConfig );
 
-        List<SecurityConfig> list = new ArrayList<SecurityConfig>();
+        Collection<ConfigAttribute> attributes = new ArrayList<ConfigAttribute>();
         
         for ( String requiredAuthority : requiredAuthorities )
         {
-            list.add( new SecurityConfig( requiredAuthority ) );
+            attributes.add( new SecurityConfig( requiredAuthority ) );
         }
 
         for ( String globalAttribute : globalAttributes )
         {
-            list.add( new SecurityConfig( globalAttribute ) );
+            attributes.add( new SecurityConfig( globalAttribute ) );
         }
 
-        ConfigAttributeDefinition attributes = new ConfigAttributeDefinition(list);
-        
-        return new SingleObjectDefinitionSource( object, attributes );
+        return new SingleSecurityMetadataSource( object, attributes );
     }
     
     public Collection<String> getRequiredAuthorities( ActionConfig actionConfig )

@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   
   <!-- Selection -->
   
@@ -126,8 +126,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="programStageInstanceService"
       ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
     <property name="patientDataValueService"
-      ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>               
-  </bean>
+      ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+    </bean>
   
   <bean id="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction"
     class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction" 
@@ -162,12 +162,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
    <bean id="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"
     class="org.hisp.dhis.caseentry.screen.DefaultDataEntryScreenManager" scope="prototype">    
     <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>    
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="customValueService">
-      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
-    </property>        
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="programStageInstanceService">
       <ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
     </property>     
@@ -209,10 +204,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction" 
-  class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction" scope="prototype">
+   class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction" scope="prototype">
   	  <property name="programStageInstanceService"
       ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
   </bean>
+  
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateValueAction" 
+   class="org.hisp.dhis.caseentry.action.caseentry.ValidateValueAction" scope="prototype">
+  	<property name="selectedStateManager"
+      ref="org.hisp.dhis.caseentry.state.SelectedStateManager"/>    
+    <property name="dataElementService" 
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="programInstanceService"
+      ref="org.hisp.dhis.program.ProgramInstanceService"/>
+    <property name="programStageInstanceService"
+      ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+    <property name="patientDataValueService"
+      ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+    <property name="validationService"
+      ref="org.hisp.dhis.program.ProgramStageDataElementValidationService"/>
+    </bean>
   
   <!-- Visit Plan -->
   

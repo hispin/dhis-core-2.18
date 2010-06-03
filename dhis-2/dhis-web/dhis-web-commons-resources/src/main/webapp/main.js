@@ -60,6 +60,41 @@ $( document ).ready( function()
         $( '#mainPage').css('margin-left','200px' );
         $( 'div#orgUnitTree ul').css('margin-left','10px' );
     }
+    
+    // Set dynamic back URLs for about page links
+        
+	var currentPath = '../dhis-web-commons-about/';
+	var backURL = '?backUrl=' + window.location;
+
+	$( "#menuDropDownHelpCenter" ).click(
+		function()
+		{
+			window.location.href = currentPath + 'help.action' + backURL;
+		});
+		
+	$( "#menuDropDownFeedBack" ).click(
+		function()
+		{
+			window.location.href = currentPath + 'displayFeedbackForm.action' + backURL;
+		});
+		
+	$( "#menuDropDownChangeLog" ).click(
+		function()
+		{
+			window.location.href = currentPath + 'displayChangeLog.action' + backURL;
+		});
+		
+	$( "#menuDropDownUserAccount" ).click(
+		function()
+		{
+			window.location.href = currentPath + 'showUpdateUserAccountForm.action' + backURL;
+		});
+		
+	$( "#menuDropDownAboutDHIS2" ).click(
+		function()
+		{
+			window.location.href = currentPath + 'about.action' + backURL;
+		});
 } );
 
 // -----------------------------------------------------------------------------

@@ -37,19 +37,17 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryOptionComboConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataElementCategoryOptionComboImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionComboConverter
-    extends AbstractDataElementCategoryOptionComboConverter implements XMLConverter
+    extends DataElementCategoryOptionComboImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "categoryOptionCombos";
     public static final String ELEMENT_NAME = "categoryOptionCombo";
@@ -215,9 +213,7 @@ public class DataElementCategoryOptionComboConverter
                 categoryOptionCombo.getCategoryOptions().add( categoryOption );
             }
             
-            NameMappingUtil.addCategoryOptionComboMapping( categoryOptionCombo.getId(), categoryOptionCombo );
-            
-            read( categoryOptionCombo, GroupMemberType.NONE, params );
+            importObject( categoryOptionCombo, params );
         }
     }
 }

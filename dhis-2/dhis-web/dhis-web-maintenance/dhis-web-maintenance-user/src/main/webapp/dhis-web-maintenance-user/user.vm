@@ -53,6 +53,13 @@
 				<p><label>$i18n.getString( "organisation_unit" ):</label><br><span id="organisationNameField"></span></p>
 				<p><label>$i18n.getString( "email" ):</label><br><span id="emailField"></span></p>			
 			</div>
+			
+			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
+				<div style="float:right">
+					<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+				</div>
+				<p><span id="warningField"></span></p>
+			</div>
 
 		</td>
 	</tr>

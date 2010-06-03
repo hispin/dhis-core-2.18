@@ -28,6 +28,7 @@ package org.hisp.dhis.system.deletion;
  */
 
 import org.aspectj.lang.JoinPoint;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -39,12 +40,8 @@ public class DeletionInterceptor
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
-    }
 
     public void intercept( JoinPoint joinPoint )
     {

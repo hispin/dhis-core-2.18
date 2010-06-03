@@ -71,13 +71,20 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 {
 	var field = document.getElementById( 'value[' + programStageInstanceId + '].date' );
 	
+	var dateOfIncident = new Date(byId('dateOfIncident').value);
+	var dueDate = new Date(field.value);
+	if(dueDate < dateOfIncident){
+		field.style.backgroundColor = '#FFCC00';
+		alert(i18n_due_date_invalid);
+		return;
+	}
+	
 	field.style.backgroundColor = '#ffffcc';
 	
 	var dateSaver = new DateSaver( programStageInstanceId, field.value, '#ccffcc' );
 	dateSaver.save();
   
 }
-
 
 //-----------------------------------------------------------------------------
 //Saver objects

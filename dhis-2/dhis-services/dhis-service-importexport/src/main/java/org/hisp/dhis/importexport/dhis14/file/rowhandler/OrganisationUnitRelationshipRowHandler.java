@@ -35,8 +35,8 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitRelationshipConverter;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14GroupMemberAssociation;
+import org.hisp.dhis.importexport.importer.OrganisationUnitRelationshipImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -47,7 +47,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id$
  */
 public class OrganisationUnitRelationshipRowHandler
-    extends AbstractOrganisationUnitRelationshipConverter implements RowHandler
+    extends OrganisationUnitRelationshipImporter implements RowHandler
 {
     private ImportParams params;
 

@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   
   <bean id="org.hisp.dhis.system.startup.StartupRoutineExecutor"
     class="org.hisp.dhis.system.startup.DefaultStartupRoutineExecutor"/>
@@ -11,20 +11,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.amplecode.cave.process.SpringProcessCoordinator"
     destroy-method="close"/>
 
-  <bean id="org.hisp.dhis.system.deletion.DeletionManager"
-    class="org.hisp.dhis.system.deletion.DefaultDeletionManager"/>
-  
   <bean id="deletionInterceptor"
     class="org.hisp.dhis.system.deletion.DeletionInterceptor">
-    <property name="deletionManager"
-      ref="org.hisp.dhis.system.deletion.DeletionManager"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.system.database.DatabaseInfoProvider"
-    class="org.hisp.dhis.system.database.HibernateDatabaseInfoProvider"
-    init-method="init">
-    <property name="configurationProvider"
-      ref="org.hisp.dhis.hibernate.HibernateConfigurationProvider"/>
-  </bean>
-  
+    
 </beans>

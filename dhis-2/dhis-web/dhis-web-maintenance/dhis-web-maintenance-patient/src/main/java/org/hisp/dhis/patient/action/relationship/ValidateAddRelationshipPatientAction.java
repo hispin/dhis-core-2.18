@@ -96,7 +96,6 @@ implements Action
     {
 
         Date dateOfBirth;
-        System.out.println("selectionManager: "+selectionManager);
 
         if ( selectionManager.getSelectedOrganisationUnit() == null )
         {

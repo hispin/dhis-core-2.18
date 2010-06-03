@@ -137,10 +137,10 @@ public class TableCreator
                 "periodid INTEGER NOT NULL, " +
                 "sourceid INTEGER NOT NULL, " +
                 "categoryoptioncomboid INTEGER NOT NULL, " +
-                "\"value\" CHARACTER VARYING(255), " +
-                "storedby CHARACTER VARYING(31), " +
+                "value VARCHAR(255), " +
+                "storedby VARCHAR(31), " +
                 "lastupdated TIMESTAMP, " +
-                "\"comment\" CHARACTER VARYING(360), " +
+                "comment VARCHAR(360), " +
                 "followup BOOLEAN, " +
                 "CONSTRAINT datavaluearchive_pkey PRIMARY KEY (dataelementid, periodid, sourceid, categoryoptioncomboid), " +
                 "CONSTRAINT fk_datavaluearchive_categoryoptioncomboid FOREIGN KEY (categoryoptioncomboid) " +
@@ -151,14 +151,14 @@ public class TableCreator
                     "REFERENCES period (periodid), " +
                 "CONSTRAINT fk_datavaluearchive_sourceid FOREIGN KEY (sourceid) " +
                     "REFERENCES source (sourceid) );";
-                
+            
             jdbcTemplate.execute( sql );
             
-            log.info( "Created table aggregateddatasetcompleteness" );
+            log.info( "Created table datavaluearchive" );
         }
         catch ( Exception ex )
         {
-            log.info( "Table aggregateddatasetcompleteness exists" );
+            log.info( "Table datavaluearchive exists" );
         }
     }
 }

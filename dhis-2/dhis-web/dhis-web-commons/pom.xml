@@ -97,8 +97,8 @@
     <!-- Other -->
 	
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

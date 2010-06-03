@@ -165,7 +165,6 @@ public class UpdateProgramStageAction
             }
             for( ProgramStageDataElement psdeDelete : programStageDataElements )
             {
-                System.out.println("Delete: "+psdeDelete.getDataElement().getName());
                 programStageDataElementService.deleteProgramStageDataElement( psdeDelete );
             }
         }

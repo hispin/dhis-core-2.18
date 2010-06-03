@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- No -->
 
@@ -52,15 +52,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.mapping.action.GetMapValuesByMapAction"
-		class="org.hisp.dhis.mapping.action.GetMapValuesByMapAction" scope="prototype">
+    <bean id="org.hisp.dhis.mapping.action.GetDataMapValuesByMapAction"
+        class="org.hisp.dhis.mapping.action.GetDataMapValuesByMapAction" scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.mapping.action.GetDataMapValuesByLevelAction"
+        class="org.hisp.dhis.mapping.action.GetDataMapValuesByLevelAction" scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    </bean>
+
+	<bean id="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAction"
+		class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAction" scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction"
-		class="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction" scope="prototype">
+	<bean id="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByLevelAction"
+		class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByLevelAction" scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAndFeatureIdAction"
+        class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAndFeatureIdAction" scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    </bean>
 
 	<bean id="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
 		class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
@@ -250,6 +265,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 	</bean>
 
+    <bean id="org.hisp.dhis.mapping.action.GetMapLayersByTypeAction"
+        class="org.hisp.dhis.mapping.action.GetMapLayersByTypeAction" scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    </bean>
+
 	<!-- Indicator -->
 
 	<bean id="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
@@ -304,20 +324,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- GeoJson -->
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonAction" class="org.hisp.dhis.mapping.action.GetGeoJsonAction"
-		scope="prototype">
-		<property name="locationManager"
-			ref="org.hisp.dhis.external.location.LocationManager" />
-	</bean>
+		scope="prototype"/>
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
-		class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction" scope="prototype">
-		<property name="locationManager"
-			ref="org.hisp.dhis.external.location.LocationManager" />
-	</bean>
+		class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction" scope="prototype"/>
 
 	<!-- Export Map -->
 
-	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction">
+	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction"
+		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>

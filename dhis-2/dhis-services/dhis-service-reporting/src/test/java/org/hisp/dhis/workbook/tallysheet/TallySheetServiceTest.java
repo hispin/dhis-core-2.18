@@ -42,21 +42,22 @@ import org.hisp.dhis.tallysheet.TallySheetService;
 import org.junit.Test;
 
 /**
- * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
+ * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben
+ *         Wangberg
  * @version $Id$
  */
 public class TallySheetServiceTest
     extends DhisSpringTest
 {
     private TallySheetService tallySheetService;
-    
+
     private TallySheetPdfService tallySheetPdfService;
-    
+
     @Override
     public void setUpTest()
     {
         tallySheetService = (TallySheetService) getBean( TallySheetService.ID );
-        
+
         tallySheetPdfService = (TallySheetPdfService) getBean( TallySheetPdfService.ID );
     }
 
@@ -64,25 +65,25 @@ public class TallySheetServiceTest
     public void testCreateTallySheet()
     {
         List<DataElement> dataElements = new ArrayList<DataElement>();
-        
-        TallySheet tallySheet = tallySheetService.createTallySheet( 
-            createOrganisationUnit( 'A' ), dataElements, false, true, createDataSet( 'A', new MonthlyPeriodType() ), "DHIS 2" );
-                
+
+        TallySheet tallySheet = tallySheetService.createTallySheet( createOrganisationUnit( 'A' ), dataElements, false,
+            true, createDataSet( 'A', new MonthlyPeriodType() ), "DHIS 2" );
+
         assertNotNull( tallySheet );
     }
-    
+
     @Test
     public void testCreateTallySheetPdf()
     {
         List<DataElement> dataElements = new ArrayList<DataElement>();
-        
-        TallySheet tallySheet = tallySheetService.createTallySheet( 
-            createOrganisationUnit( 'A' ), dataElements, false, true, createDataSet( 'A', new MonthlyPeriodType() ), "DHIS 2" );
+
+        TallySheet tallySheet = tallySheetService.createTallySheet( createOrganisationUnit( 'A' ), dataElements, false,
+            true, createDataSet( 'A', new MonthlyPeriodType() ), "DHIS 2" );
 
         assertNotNull( tallySheet );
-        
+
         InputStream in = tallySheetPdfService.createTallySheetPdf( tallySheet, null );
-        
+
         assertNotNull( in );
     }
 }

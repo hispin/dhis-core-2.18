@@ -36,12 +36,10 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractExtendedIndicatorConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.IndicatorImporter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -52,7 +50,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id: ExtendedIndicatorConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class ExtendedIndicatorConverter
-    extends AbstractExtendedIndicatorConverter implements XMLConverter
+    extends IndicatorImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "extendedIndicators";
     public static final String ELEMENT_NAME = "indicator";
@@ -145,7 +143,6 @@ public class ExtendedIndicatorConverter
      * @param categoryOptionComboMapping the categoryOptionComboMapping to use.
      */
     public ExtendedIndicatorConverter( BatchHandler<Indicator> batchHandler,
-        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler,
         ImportObjectService importObjectService, 
         IndicatorService indicatorService,
         ExpressionService expressionService,
@@ -154,7 +151,6 @@ public class ExtendedIndicatorConverter
         Map<Object, Integer> categoryOptionComboMapping )
     {
         this.batchHandler = batchHandler;
-        this.extendedDataElementBatchHandler = extendedDataElementBatchHandler;
         this.importObjectService = importObjectService;
         this.indicatorService = indicatorService;
         this.expressionService = expressionService;
@@ -328,9 +324,7 @@ public class ExtendedIndicatorConverter
 
             indicator.setExtended( extended.isNull() ? null : extended );
             
-            NameMappingUtil.addIndicatorMapping( indicator.getId(), indicator.getName() );
-            
-            read( indicator, GroupMemberType.NONE, params );
+            importObject( indicator, params );
         }
     }
 }

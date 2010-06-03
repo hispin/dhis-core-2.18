@@ -54,6 +54,7 @@ import org.hisp.dhis.reporting.dataset.utils.FileUtils;
 import org.hisp.dhis.reporting.dataset.utils.JRXmlFilter;
 import org.hisp.dhis.reporting.dataset.utils.XMLUtils;
 import org.hisp.dhis.reporting.dataset.utils.XmlFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -92,13 +93,9 @@ public class XmlReportStore
         this.reportDataAccess = reportDataAccess;
     }
     
+    @Autowired
     private LocationManager locationManager;
 
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-    
     // -------------------------------------------------------------------------
     // Report
     // -------------------------------------------------------------------------

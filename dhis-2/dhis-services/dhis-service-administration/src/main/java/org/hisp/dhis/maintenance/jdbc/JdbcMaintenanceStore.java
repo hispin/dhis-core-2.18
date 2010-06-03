@@ -29,6 +29,7 @@ package org.hisp.dhis.maintenance.jdbc;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.maintenance.MaintenanceStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -42,19 +43,11 @@ public class JdbcMaintenanceStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-    
+    @Autowired
     private StatementBuilder statementBuilder;
-
-    public void setStatementBuilder( StatementBuilder statementBuilder )
-    {
-        this.statementBuilder = statementBuilder;
-    }
     
     // -------------------------------------------------------------------------
     // MaintenanceStore implementation

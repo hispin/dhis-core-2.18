@@ -27,26 +27,24 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
+
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryOptionConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
-
-import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
+import org.hisp.dhis.importexport.importer.DataElementCategoryOptionImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionConverter
-    extends AbstractDataElementCategoryOptionConverter implements XMLConverter
+    extends DataElementCategoryOptionImporter implements XMLConverter
 {
     /**
      * Constructor for read operations.
@@ -74,8 +72,6 @@ public class DataElementCategoryOptionConverter
     {
         DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOptionByName( DEFAULT_CATEGORY_COMBO_NAME );
         
-        NameMappingUtil.addCategoryOptionMapping( categoryOption.getId(), categoryOption.getName() );
-        
-        read( categoryOption, GroupMemberType.NONE, params );
+        importObject( categoryOption, params );
     }   
 }

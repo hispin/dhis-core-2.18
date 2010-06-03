@@ -28,6 +28,7 @@
 package org.hisp.dhis.reportexcel.datasetcompleted.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -44,8 +45,6 @@ import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Tran Thanh Tri

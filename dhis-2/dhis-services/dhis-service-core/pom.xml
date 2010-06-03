@@ -41,10 +41,6 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-jdbc</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-i18n</artifactId>
-    </dependency>
 
     <!-- Spring Security -->
     
@@ -54,7 +50,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-core-tiger</artifactId>
+      <artifactId>spring-security-web</artifactId>
     </dependency>
     
     <!-- Other -->
@@ -72,12 +68,16 @@
       <artifactId>commons-collections</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
     </dependency>
       
   </dependencies>

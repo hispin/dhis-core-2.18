@@ -34,7 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.i18n.util.LocaleUtils;
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
 

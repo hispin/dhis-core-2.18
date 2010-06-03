@@ -29,7 +29,6 @@ package org.hisp.dhis.validation;
 
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
 
 /**
  * @author Lars Helge Overland
@@ -49,13 +48,6 @@ public class ValidationRuleDeletionHandler
         this.validationRuleService = validationRuleService;
     }
     
-    private DeletionManager deletionManager;
-        
-    public void setDeletionManager( DeletionManager deletionManager )
-    {
-        this.deletionManager = deletionManager;
-    }
-    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -73,8 +65,6 @@ public class ValidationRuleDeletionHandler
         {
             if ( rule.getLeftSide().equals( expression ) || rule.getRightSide().equals( expression ) )
             {
-                deletionManager.execute( rule );
-                
                 validationRuleService.deleteValidationRule( rule );
             }
         }

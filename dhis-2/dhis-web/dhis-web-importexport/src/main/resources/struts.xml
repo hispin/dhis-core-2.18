@@ -195,22 +195,7 @@
       <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-        
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- IXF Configuration                                             -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	
-    <action name="displayConfigIXFForm" class="org.hisp.dhis.importexport.action.ixf.GetIXFConfigurationAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-importexport/configIXFForm.vm</param>
-      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="javascripts">javascript/config.js</param>
-    </action>
-		
-    <action name="configIXF" class="org.hisp.dhis.importexport.action.ixf.SetIXFConfigurationAction">
-      <result name="success" type="redirect">displayMetaDataExportForm.action?exportFormat=IXF</result>
-    </action>
-		
+    
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!-- Dhis 1.4 Configuration                                        -->
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

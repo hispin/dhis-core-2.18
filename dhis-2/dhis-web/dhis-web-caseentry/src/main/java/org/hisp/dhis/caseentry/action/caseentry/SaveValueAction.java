@@ -43,11 +43,11 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,7 +77,7 @@ public class SaveValueAction
     {
         this.programInstanceService = programInstanceService;
     }
-    
+
     private ProgramStageInstanceService programStageInstanceService;
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
@@ -101,16 +101,16 @@ public class SaveValueAction
 
     private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryService(
-        DataElementCategoryService dataElementCategoryService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private boolean providedByAnotherFacility;
 
     public void setProvidedByAnotherFacility( boolean providedByAnotherFacility )
@@ -143,26 +143,25 @@ public class SaveValueAction
     {
         return statusCode;
     }
-    
+
     private int optionComboId;
-    
-    public int getOptionComboId() 
+
+    public int getOptionComboId()
     {
-    	return optionComboId;
+        return optionComboId;
     }
-    
-    public void setOptionComboId( int optionComboId ) 
+
+    public void setOptionComboId( int optionComboId )
     {
-    	this.optionComboId = optionComboId;
+        this.optionComboId = optionComboId;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-
     public String execute()
-    throws Exception
+        throws Exception
     {
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -173,12 +172,13 @@ public class SaveValueAction
 
         ProgramStage programStage = selectedStateManager.getSelectedProgramStage();
 
-        Collection<ProgramInstance> progamInstances = programInstanceService
-            .getProgramInstances( patient, program, false );
+        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
+            false );
 
         ProgramInstance programInstance = progamInstances.iterator().next();
-        
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
+
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
+            programInstance, programStage );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
@@ -193,47 +193,46 @@ public class SaveValueAction
         }
 
         DataElementCategoryOptionCombo optionCombo = null;
-        
-        if( optionComboId == 0 )
+
+        if ( optionComboId == 0 )
         {
-            optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next(); 
+            optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next();
         }
-        else 
+        else
         {
             Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
-            if( options != null  && options.size() > 0 )
+            if ( options != null && options.size() > 0 )
             {
                 Iterator<DataElementCategoryOptionCombo> i = options.iterator();
-                while( i.hasNext() )
+                while ( i.hasNext() )
                 {
-                    DataElementCategoryOptionCombo tmpOption  = i.next();
-                    if( tmpOption.getId() == optionComboId )
+                    DataElementCategoryOptionCombo tmpOption = i.next();
+                    if ( tmpOption.getId() == optionComboId )
                     {
                         optionCombo = tmpOption;
                     }
                 }
             }
         }
-        
-        
+
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );
 
-        if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_STRING ) && dataElement.isMultiDimensional() )
+        if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_STRING )
+            && dataElement.isMultiDimensional() )
         {
-            if( value != null )
-            {                
-                optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
-                    .parseInt( value ) );
-            }            
-        }             
+            if ( value != null )
+            {
+                optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( value ) );
+            }
+        }
 
         if ( patientDataValue == null )
         {
             if ( value != null )
             {
                 LOG.debug( "Adding PatientDataValue, value added" );
-                
+
                 if ( programStageInstance.getExecutionDate() == null )
                 {
                     programStageInstance.setExecutionDate( new Date() );
@@ -255,7 +254,7 @@ public class SaveValueAction
                 programStageInstance.setExecutionDate( new Date() );
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
             }
-            
+
             patientDataValue.setValue( value );
             patientDataValue.setOptionCombo( optionCombo );
             patientDataValue.setProvidedByAnotherFacility( providedByAnotherFacility );
@@ -267,4 +266,5 @@ public class SaveValueAction
 
         return SUCCESS;
     }
+
 }

@@ -5,16 +5,19 @@
 
 function validateAddValidationRule()
 {
+	var params = 'name=' + getFieldValue( 'name' );
+		params += '&operator=' + getFieldValue( 'operator' );
+		params += '&leftSideExpression=' + getFieldValue( 'leftSideExpression' );
+		params += '&leftSideDescription=' + getFieldValue( 'leftSideDescription' );
+		params += '&rightSideExpression=' + getFieldValue( 'rightSideExpression' );
+		params += '&rightSideDescription=' + getFieldValue( 'rightSideDescription' );
+		params += '&periodTypeName=' + getFieldValue( 'periodTypeName');
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
-    request.send( 'validateValidationRule.action?name=' + getFieldValue( 'name' )  +
-    '&operator=' + getFieldValue( 'operator' ) +
-    '&leftSideExpression=' + getFieldValue( 'leftSideExpression' ) +
-    '&leftSideDescription=' + getFieldValue( 'leftSideDescription' ) +
-    '&rightSideExpression=' + getFieldValue( 'rightSideExpression' ) +
-    '&rightSideDescription=' + getFieldValue( 'rightSideDescription' ) );
-
+	request.sendAsPost(params);
+    request.send( 'validateValidationRule.action');
+    
     return false;
 }
 
@@ -24,9 +27,10 @@ function addValidationCompleted( messageElement )
     var message = messageElement.firstChild.nodeValue;
     
     if ( type == 'success' )
-    {        
+    {    
+		byId('periodTypeName').disabled = false;
+		
         var form = document.getElementById( 'addValidationRuleForm' );
-        
         form.submit();
     }
     else if ( type == 'error' )
@@ -35,8 +39,7 @@ function addValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setMessage( message );
     }
 }
 
@@ -46,16 +49,20 @@ function addValidationCompleted( messageElement )
 
 function validateUpdateValidationRule()
 {
+	var params = 'name=' + getFieldValue( 'name' );
+		params += 'id=' + getFieldValue( 'id' );
+		params += '&operator=' + getFieldValue( 'operator' );
+		params += '&leftSideExpression=' + getFieldValue( 'leftSideExpression' );
+		params += '&leftSideDescription=' + getFieldValue( 'leftSideDescription' );
+		params += '&rightSideExpression=' + getFieldValue( 'rightSideExpression' );
+		params += '&rightSideDescription=' + getFieldValue( 'rightSideDescription' );
+		params += '&periodTypeName=' + getFieldValue( 'periodTypeName');
+
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
-    request.send( 'validateValidationRule.action?id=' + getFieldValue( 'id' ) +
-    '&name=' + getFieldValue( 'name' )  +
-	'&operator=' + getFieldValue( 'operator' ) +
-    '&leftSideExpression=' + getFieldValue( 'leftSideExpression' ) +
-    '&leftSideDescription=' + getFieldValue( 'leftSideDescription' ) +
-    '&rightSideExpression=' + getFieldValue( 'rightSideExpression' ) +
-    '&rightSideDescription=' + getFieldValue( 'rightSideDescription' ) );
+	request.sendAsPost(params);
+    request.send( 'validateValidationRule.action' );
 
     return false;
 }
@@ -67,8 +74,9 @@ function updateValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {   
-        var form = document.getElementById( 'updateValidationRuleForm' );
+		byId('periodTypeName').disabled = false;
         
+		var form = document.getElementById( 'updateValidationRuleForm' );
         form.submit();
     }
     else if ( type == 'error' )
@@ -77,7 +85,19 @@ function updateValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setMessage( message );
     }
+}
+
+// ---------------------------------------------------------------------
+// disabled PeriodType field
+// ---------------------------------------------------------------------
+function disabledPeriodTypeField(){
+	if(getFieldValue( 'leftSideExpression' ) == '' &&
+	   getFieldValue( 'rightSideExpression' ) == '') {
+		byId('periodTypeName').disabled = false;
+	}
+	else{
+		byId('periodTypeName').disabled = true;
+	}
 }

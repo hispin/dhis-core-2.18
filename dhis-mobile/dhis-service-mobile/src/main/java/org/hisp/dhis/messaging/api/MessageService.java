@@ -36,15 +36,15 @@ public interface MessageService
 
     void setServiceStatus( boolean serviceStatus );
 
-    void startService();
+    String startService();
 
-    void stopService();
+    String stopService();
 
     void processMessage( Object message );
 
     void sendAck(String recipient, Object message, String msg);
 
-    void sendMessage( String recipient, String msg );
+    String sendMessage( String recipient, String msg );
 
     void saveData( String userId, Date msgTime, String data );
 }

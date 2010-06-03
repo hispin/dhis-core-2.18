@@ -57,6 +57,12 @@ public class SVGDocument
 
     private boolean includeLegends;
 
+    private int width;
+
+    private int height;
+
+    private String imageFormat;
+
     public SVGDocument()
     {
     }
@@ -109,11 +115,11 @@ public class SVGDocument
         JSONArray jsonLegends = json.getJSONArray( "legends" );
 
         String result = doctype;
-        
+
         result += "<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' ";
 
         result += "xmlns:attrib='http://www.carto.net/attrib/' viewBox='0 0 1 " + jsonLegends.size() + "'>";
-        
+
         result += "<g id='legend'>";
 
         int x = 0;
@@ -138,7 +144,7 @@ public class SVGDocument
         }
 
         result += "</g>";
-        
+
         result += "</svg>";
 
         return result;
@@ -235,6 +241,36 @@ public class SVGDocument
     public void setIndicator( Indicator indicator )
     {
         this.indicator = indicator;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth( int width )
+    {
+        this.width = width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight( int height )
+    {
+        this.height = height;
+    }
+
+    public String getImageFormat()
+    {
+        return imageFormat;
+    }
+
+    public void setImageFormat( String imageFormat )
+    {
+        this.imageFormat = imageFormat;
     }
 
     @Override

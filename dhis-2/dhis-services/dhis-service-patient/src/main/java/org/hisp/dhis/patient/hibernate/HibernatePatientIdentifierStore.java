@@ -29,6 +29,7 @@ package org.hisp.dhis.patient.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -103,7 +104,7 @@ public class HibernatePatientIdentifierStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit, int min, int max )
     {
-        return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
+    	return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
             .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
@@ -111,25 +112,28 @@ public class HibernatePatientIdentifierStore
     {
         return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "identifierType", idenType ),
             Restrictions.eq( "identifier", value ) ) )
-            .setProjection( Projections.property( "patient" ) ).uniqueResult();
+            .setProjection( Projections.property( "patient.id" ) ).uniqueResult();
     }
 
     public int countListPatientByOrganisationUnit( OrganisationUnit orgUnit )
     {
-        return  (Integer) getCriteria( Restrictions.eq( "organisationUnit", orgUnit ) )
-        .setProjection( Projections.countDistinct(  "patient" ) ).uniqueResult();
+        Query query = getQuery("select count(distinct pdi.patient.id) from PatientIdentifier pdi where pdi.organisationUnit.id=:orgUnitId ");
+        query.setParameter("orgUnitId", orgUnit.getId());
+        Number rs = (Number) query.uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
+        return  (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
         .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).list();
     }
 
     public int countGetPatientsByIdentifier( String identifier )
     {
-        return (Integer)getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+    	 Number rs =   (Number)getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+         return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )

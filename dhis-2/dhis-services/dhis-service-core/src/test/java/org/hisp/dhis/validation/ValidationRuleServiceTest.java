@@ -50,7 +50,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.mock.MockSource;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -65,50 +64,67 @@ import org.junit.Test;
  */
 public class ValidationRuleServiceTest
     extends DhisTest
-{    
+{
     private ValidationRuleService validationRuleService;
 
     private ExpressionService expressionService;
-    
+
     private DataElement dataElementA;
+
     private DataElement dataElementB;
+
     private DataElement dataElementC;
+
     private DataElement dataElementD;
-    
+
     private int dataElementIdA;
+
     private int dataElementIdB;
+
     private int dataElementIdC;
-    private int dataElementIdD;    
+
+    private int dataElementIdD;
 
     private Set<DataElement> dataElementsA = new HashSet<DataElement>();
+
     private Set<DataElement> dataElementsB = new HashSet<DataElement>();
+
     private Set<DataElement> dataElementsC = new HashSet<DataElement>();
 
     private DataElementCategoryCombo categoryCombo;
-    
+
     private DataElementCategoryOptionCombo categoryOptionCombo;
-    
+
     private Expression expressionA;
+
     private Expression expressionB;
+
     private Expression expressionC;
-    
+
     private DataSet dataSet;
-    
+
     private Period periodA;
+
     private Period periodB;
-    
+
     private Source sourceA;
+
     private Source sourceB;
-    
+
     private Set<Source> sourcesA = new HashSet<Source>();
-    
+
     private ValidationRule validationRuleA;
+
     private ValidationRule validationRuleB;
+
     private ValidationRule validationRuleC;
+
     private ValidationRule validationRuleD;
-    
+
     private ValidationRuleGroup group;
-    
+
+    private PeriodType periodType;
+
     // ----------------------------------------------------------------------
     // Fixture
     // ----------------------------------------------------------------------
@@ -116,87 +132,94 @@ public class ValidationRuleServiceTest
     @Override
     public void setUpTest()
         throws Exception
-    {       
+    {
         validationRuleService = (ValidationRuleService) getBean( ValidationRuleService.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        expressionService = (ExpressionService) getBean ( ExpressionService.ID );
-        
+
+        expressionService = (ExpressionService) getBean( ExpressionService.ID );
+
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
-        sourceStore = (SourceStore) getBean( SourceStore.ID ); 
-        
-        dataValueService = (DataValueService) getBean( DataValueService.ID ); 
+        sourceStore = (SourceStore) getBean( SourceStore.ID );
+
+        dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
-        
-        PeriodType periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
-        
+
+        periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
+
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
         dataElementC = createDataElement( 'C' );
         dataElementD = createDataElement( 'D' );
-        
+
         dataElementIdA = dataElementService.addDataElement( dataElementA );
         dataElementIdB = dataElementService.addDataElement( dataElementB );
         dataElementIdC = dataElementService.addDataElement( dataElementC );
-        dataElementIdD = dataElementService.addDataElement( dataElementD );        
+        dataElementIdD = dataElementService.addDataElement( dataElementD );
 
         dataElementsA.add( dataElementA );
         dataElementsA.add( dataElementB );
         dataElementsB.add( dataElementC );
         dataElementsB.add( dataElementD );
         dataElementsC.add( dataElementB );
-        
-        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );             
-        
+
+        categoryCombo = categoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
         categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 
         String suffix = SEPARATOR + categoryOptionCombo.getId();
-        
-        expressionA = new Expression( "[" + dataElementIdA + suffix + "] + [" + dataElementIdB + suffix + "]", "descriptionA", dataElementsA );
-        expressionB = new Expression( "[" + dataElementIdC + suffix + "] - [" + dataElementIdD + suffix + "]", "descriptionB", dataElementsB );
+
+        expressionA = new Expression( "[" + dataElementIdA + suffix + "] + [" + dataElementIdB + suffix + "]",
+            "descriptionA", dataElementsA );
+        expressionB = new Expression( "[" + dataElementIdC + suffix + "] - [" + dataElementIdD + suffix + "]",
+            "descriptionB", dataElementsB );
         expressionC = new Expression( "[" + dataElementIdB + suffix + "] * 2", "descriptionC", dataElementsC );
-        
+
         expressionService.addExpression( expressionA );
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionC );
-        
-        periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
-        periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
+
+        periodA = createPeriod( periodType, getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
+        periodB = createPeriod( periodType, getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
 
         dataSet = createDataSet( 'A', periodType );
-        
+
         sourceA = new MockSource( "SourceA" );
         sourceB = new MockSource( "SourceB" );
-        
+
         sourceA.getDataSets().add( dataSet );
         sourceB.getDataSets().add( dataSet );
-        
+
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
-        
+
         sourcesA.add( sourceA );
         sourcesA.add( sourceB );
-        
+
         dataSet.getDataElements().add( dataElementA );
         dataSet.getDataElements().add( dataElementB );
         dataSet.getDataElements().add( dataElementC );
         dataSet.getDataElements().add( dataElementD );
-        
+
         dataSet.getSources().add( sourceA );
         dataSet.getSources().add( sourceB );
 
         dataSetService.addDataSet( dataSet );
-        
-        validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
-        validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_GREATER, expressionB, expressionC );
-        validationRuleC = createValidationRule( 'C', ValidationRule.OPERATOR_LESSER_EQUAL, expressionB, expressionA );
-        validationRuleD = createValidationRule( 'D', ValidationRule.OPERATOR_LESSER, expressionA, expressionC );
-        
+
+        validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB,
+            periodType );
+        validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_GREATER, expressionB, expressionC,
+            periodType );
+        validationRuleC = createValidationRule( 'C', ValidationRule.OPERATOR_LESSER_EQUAL, expressionB, expressionA,
+            periodType );
+        validationRuleD = createValidationRule( 'D', ValidationRule.OPERATOR_LESSER, expressionA, expressionC,
+            periodType );
+
         group = createValidationRuleGroup( 'A' );
     }
 
@@ -217,31 +240,32 @@ public class ValidationRuleServiceTest
         dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceB, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceB, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceB, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceB, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceB, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceB, "4", categoryOptionCombo ) );
 
-        validationRuleService.addValidationRule( validationRuleA ); // Invalid
-        validationRuleService.addValidationRule( validationRuleB ); // Invalid
-        validationRuleService.addValidationRule( validationRuleC ); // Valid
-        validationRuleService.addValidationRule( validationRuleD ); // Valid
-        
-        Collection<ValidationResult> results = validationRuleService.validate( getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA );
-        
+        validationRuleService.saveValidationRule( validationRuleA ); // Invalid
+        validationRuleService.saveValidationRule( validationRuleB ); // Invalid
+        validationRuleService.saveValidationRule( validationRuleC ); // Valid
+        validationRuleService.saveValidationRule( validationRuleD ); // Valid
+
+        Collection<ValidationResult> results = validationRuleService.validate( getDate( 2000, 2, 1 ), getDate( 2000, 6,
+            1 ), sourcesA );
+
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
-        
+
         reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
         reference.add( new ValidationResult( periodB, sourceA, validationRuleA, 3.0, -1.0 ) );
         reference.add( new ValidationResult( periodA, sourceB, validationRuleA, 3.0, -1.0 ) );
@@ -251,13 +275,13 @@ public class ValidationRuleServiceTest
         reference.add( new ValidationResult( periodB, sourceA, validationRuleB, -1.0, 4.0 ) );
         reference.add( new ValidationResult( periodA, sourceB, validationRuleB, -1.0, 4.0 ) );
         reference.add( new ValidationResult( periodB, sourceB, validationRuleB, -1.0, 4.0 ) );
-        
+
         for ( ValidationResult result : results )
         {
-            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), 
-                result.getValidationRule().getOperator(), result.getRightsideValue() ) );
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
         }
-        
+
         assertEquals( results.size(), 8 );
         assertEquals( reference, results );
     }
@@ -269,47 +293,48 @@ public class ValidationRuleServiceTest
         dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceB, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceB, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceB, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceB, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceB, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceB, "4", categoryOptionCombo ) );
 
-        validationRuleService.addValidationRule( validationRuleA ); // Invalid
-        validationRuleService.addValidationRule( validationRuleB ); // Invalid
-        validationRuleService.addValidationRule( validationRuleC ); // Valid
-        validationRuleService.addValidationRule( validationRuleD ); // Valid
-        
+        validationRuleService.saveValidationRule( validationRuleA ); // Invalid
+        validationRuleService.saveValidationRule( validationRuleB ); // Invalid
+        validationRuleService.saveValidationRule( validationRuleC ); // Valid
+        validationRuleService.saveValidationRule( validationRuleD ); // Valid
+
         group.getMembers().add( validationRuleA );
         group.getMembers().add( validationRuleC );
-        
+
         validationRuleService.addValidationRuleGroup( group );
 
-        Collection<ValidationResult> results = validationRuleService.validate( getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, group );
-        
+        Collection<ValidationResult> results = validationRuleService.validate( getDate( 2000, 2, 1 ), getDate( 2000, 6,
+            1 ), sourcesA, group );
+
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
-        
+
         reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
         reference.add( new ValidationResult( periodB, sourceA, validationRuleA, 3.0, -1.0 ) );
         reference.add( new ValidationResult( periodA, sourceB, validationRuleA, 3.0, -1.0 ) );
         reference.add( new ValidationResult( periodB, sourceB, validationRuleA, 3.0, -1.0 ) );
-        
+
         for ( ValidationResult result : results )
         {
-            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), 
-                result.getValidationRule().getOperator(), result.getRightsideValue() ) );
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
         }
-        
+
         assertEquals( results.size(), 4 );
         assertEquals( reference, results );
     }
@@ -321,18 +346,19 @@ public class ValidationRuleServiceTest
         dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
-        
+
         dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", categoryOptionCombo ) );
 
-        validationRuleService.addValidationRule( validationRuleA );
-        validationRuleService.addValidationRule( validationRuleB );
-        validationRuleService.addValidationRule( validationRuleC );
-        validationRuleService.addValidationRule( validationRuleD );
-        
-        Collection<ValidationResult> results = validationRuleService.validate( getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourceA );
+        validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleService.saveValidationRule( validationRuleB );
+        validationRuleService.saveValidationRule( validationRuleC );
+        validationRuleService.saveValidationRule( validationRuleD );
+
+        Collection<ValidationResult> results = validationRuleService.validate( getDate( 2000, 2, 1 ), getDate( 2000, 6,
+            1 ), sourceA );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
@@ -343,10 +369,10 @@ public class ValidationRuleServiceTest
 
         for ( ValidationResult result : results )
         {
-            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), 
-                result.getValidationRule().getOperator(), result.getRightsideValue() ) );
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
         }
-        
+
         assertEquals( results.size(), 4 );
         assertEquals( reference, results );
     }
@@ -359,11 +385,11 @@ public class ValidationRuleServiceTest
         dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
 
-        validationRuleService.addValidationRule( validationRuleA );
-        validationRuleService.addValidationRule( validationRuleB );
-        validationRuleService.addValidationRule( validationRuleC );
-        validationRuleService.addValidationRule( validationRuleD );
-        
+        validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleService.saveValidationRule( validationRuleB );
+        validationRuleService.saveValidationRule( validationRuleC );
+        validationRuleService.saveValidationRule( validationRuleD );
+
         Collection<ValidationResult> results = validationRuleService.validate( dataSet, periodA, sourceA );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
@@ -373,22 +399,22 @@ public class ValidationRuleServiceTest
 
         for ( ValidationResult result : results )
         {
-            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), 
-                result.getValidationRule().getOperator(), result.getRightsideValue() ) );
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
         }
-        
+
         assertEquals( results.size(), 2 );
         assertEquals( reference, results );
     }
-    
+
     // ----------------------------------------------------------------------
     // CURD functionality tests
     // ----------------------------------------------------------------------
-
+    
     @Test
-    public void testAddGetValidationRule()
+    public void testSaveValidationRule()
     {
-        int id = validationRuleService.addValidationRule( validationRuleA );
+        int id = validationRuleService.saveValidationRule( validationRuleA );
         
         validationRuleA = validationRuleService.getValidationRule( id );
         
@@ -398,29 +424,29 @@ public class ValidationRuleServiceTest
         assertEquals( validationRuleA.getOperator(), ValidationRule.OPERATOR_EQUAL );
         assertNotNull( validationRuleA.getLeftSide().getExpression() );
         assertNotNull( validationRuleA.getRightSide().getExpression() );
+        assertEquals( validationRuleA.getPeriodType(), periodType );
     }
-
+    
     @Test
     public void testUpdateValidationRule()
     {
-        int id = validationRuleService.addValidationRule( validationRuleA );
-        
-        validationRuleA = validationRuleService.getValidationRule( id );
+        int id = validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleA = validationRuleService.getValidationRuleByName( "ValidationRuleA" );
         
         assertEquals( validationRuleA.getName(), "ValidationRuleA" );
         assertEquals( validationRuleA.getDescription(), "DescriptionA" );
         assertEquals( validationRuleA.getType(), ValidationRule.TYPE_ABSOLUTE );
         assertEquals( validationRuleA.getOperator(), ValidationRule.OPERATOR_EQUAL );
-        
+
+        validationRuleA.setId( id );
         validationRuleA.setName( "ValidationRuleB" );
         validationRuleA.setDescription( "DescriptionB" );
         validationRuleA.setType( ValidationRule.TYPE_STATISTICAL );
         validationRuleA.setOperator( ValidationRule.OPERATOR_GREATER );
-        
-        validationRuleService.updateValidationRule( validationRuleA );
 
+        validationRuleService.updateValidationRule( validationRuleA );
         validationRuleA = validationRuleService.getValidationRule( id );
-        
+
         assertEquals( validationRuleA.getName(), "ValidationRuleB" );
         assertEquals( validationRuleA.getDescription(), "DescriptionB" );
         assertEquals( validationRuleA.getType(), ValidationRule.TYPE_STATISTICAL );
@@ -430,8 +456,8 @@ public class ValidationRuleServiceTest
     @Test
     public void testDeleteValidationRule()
     {
-        int idA = validationRuleService.addValidationRule( validationRuleA );
-        int idB = validationRuleService.addValidationRule( validationRuleB );
+        int idA = validationRuleService.saveValidationRule( validationRuleA );
+        int idB = validationRuleService.saveValidationRule( validationRuleB );
         
         assertNotNull( validationRuleService.getValidationRule( idA ) );
         assertNotNull( validationRuleService.getValidationRule( idB ) );
@@ -454,26 +480,26 @@ public class ValidationRuleServiceTest
     @Test
     public void testGetAllValidationRules()
     {
-        validationRuleService.addValidationRule( validationRuleA );
-        validationRuleService.addValidationRule( validationRuleB );
-        
+        validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleService.saveValidationRule( validationRuleB );
+
         Collection<ValidationRule> rules = validationRuleService.getAllValidationRules();
-        
+
         assertTrue( rules.size() == 2 );
         assertTrue( rules.contains( validationRuleA ) );
-        assertTrue( rules.contains( validationRuleB ) );        
+        assertTrue( rules.contains( validationRuleB ) );
     }
 
     @Test
     public void testGetValidationRuleByName()
     {
-        int id = validationRuleService.addValidationRule( validationRuleA );
-        validationRuleService.addValidationRule( validationRuleB );
+        int id = validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleService.saveValidationRule( validationRuleB );
         
         ValidationRule rule = validationRuleService.getValidationRuleByName( "ValidationRuleA" );
         
         assertEquals( rule.getId(), id );
-        assertEquals( rule.getName(), "ValidationRuleA" ); 
+        assertEquals( rule.getName(), "ValidationRuleA" );
     }
 
     // -------------------------------------------------------------------------
@@ -483,26 +509,26 @@ public class ValidationRuleServiceTest
     @Test
     public void testAddValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleService.addValidationRule( ruleA );
-        validationRuleService.addValidationRule( ruleB );
-        
+        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+
+        validationRuleService.saveValidationRule( ruleA );
+        validationRuleService.saveValidationRule( ruleB );
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         int idA = validationRuleService.addValidationRuleGroup( groupA );
         int idB = validationRuleService.addValidationRuleGroup( groupB );
-        
+
         assertEquals( groupA, validationRuleService.getValidationRuleGroup( idA ) );
         assertEquals( groupB, validationRuleService.getValidationRuleGroup( idB ) );
     }
@@ -510,70 +536,70 @@ public class ValidationRuleServiceTest
     @Test
     public void testUpdateValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleService.addValidationRule( ruleA );
-        validationRuleService.addValidationRule( ruleB );
-        
+        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+
+        validationRuleService.saveValidationRule( ruleA );
+        validationRuleService.saveValidationRule( ruleB );
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         int idA = validationRuleService.addValidationRuleGroup( groupA );
         int idB = validationRuleService.addValidationRuleGroup( groupB );
-        
+
         assertEquals( groupA, validationRuleService.getValidationRuleGroup( idA ) );
         assertEquals( groupB, validationRuleService.getValidationRuleGroup( idB ) );
-        
+
         ruleA.setName( "UpdatedValidationRuleA" );
         ruleB.setName( "UpdatedValidationRuleB" );
-        
+
         validationRuleService.updateValidationRuleGroup( groupA );
         validationRuleService.updateValidationRuleGroup( groupB );
 
         assertEquals( groupA, validationRuleService.getValidationRuleGroup( idA ) );
-        assertEquals( groupB, validationRuleService.getValidationRuleGroup( idB ) );        
+        assertEquals( groupB, validationRuleService.getValidationRuleGroup( idB ) );
     }
 
     @Test
     public void testDeleteValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleService.addValidationRule( ruleA );
-        validationRuleService.addValidationRule( ruleB );
-        
+        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+
+        validationRuleService.saveValidationRule( ruleA );
+        validationRuleService.saveValidationRule( ruleB );
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         int idA = validationRuleService.addValidationRuleGroup( groupA );
         int idB = validationRuleService.addValidationRuleGroup( groupB );
-        
+
         assertNotNull( validationRuleService.getValidationRuleGroup( idA ) );
         assertNotNull( validationRuleService.getValidationRuleGroup( idB ) );
-        
+
         validationRuleService.deleteValidationRuleGroup( groupA );
 
         assertNull( validationRuleService.getValidationRuleGroup( idA ) );
         assertNotNull( validationRuleService.getValidationRuleGroup( idB ) );
-        
+
         validationRuleService.deleteValidationRuleGroup( groupB );
 
         assertNull( validationRuleService.getValidationRuleGroup( idA ) );
@@ -583,28 +609,28 @@ public class ValidationRuleServiceTest
     @Test
     public void testGetAllValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleService.addValidationRule( ruleA );
-        validationRuleService.addValidationRule( ruleB );
-        
+        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+
+        validationRuleService.saveValidationRule( ruleA );
+        validationRuleService.saveValidationRule( ruleB );
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         validationRuleService.addValidationRuleGroup( groupA );
         validationRuleService.addValidationRuleGroup( groupB );
-        
+
         Collection<ValidationRuleGroup> groups = validationRuleService.getAllValidationRuleGroups();
-        
+
         assertEquals( 2, groups.size() );
         assertTrue( groups.contains( groupA ) );
         assertTrue( groups.contains( groupB ) );
@@ -613,28 +639,28 @@ public class ValidationRuleServiceTest
     @Test
     public void testGetValidationRuleGroupByName()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleService.addValidationRule( ruleA );
-        validationRuleService.addValidationRule( ruleB );
-        
+        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+
+        validationRuleService.saveValidationRule( ruleA );
+        validationRuleService.saveValidationRule( ruleB );
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         validationRuleService.addValidationRuleGroup( groupA );
         validationRuleService.addValidationRuleGroup( groupB );
-        
+
         ValidationRuleGroup groupByName = validationRuleService.getValidationRuleGroupByName( groupA.getName() );
-        
+
         assertEquals( groupA, groupByName );
     }
 }

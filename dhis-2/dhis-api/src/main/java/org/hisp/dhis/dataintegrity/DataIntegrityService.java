@@ -28,7 +28,7 @@ package org.hisp.dhis.dataintegrity;
  */
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.SortedMap;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -67,7 +67,7 @@ public interface DataIntegrityService
      * Returns all data elements which are members of data sets with different
      * period types.
      */
-    Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
+    SortedMap<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
 
     // -------------------------------------------------------------------------
     // DataSet
@@ -95,12 +95,12 @@ public interface DataIntegrityService
     /**
      * Gets all indicators with invalid indicator numerators.
      */
-    Map<Indicator, String> getInvalidIndicatorNumerators();
+    SortedMap<Indicator, String> getInvalidIndicatorNumerators();
 
     /**
      * Gets all indicators with invalid indicator denominators.
      */
-    Map<Indicator, String> getInvalidIndicatorDenominators();
+    SortedMap<Indicator, String> getInvalidIndicatorDenominators();
     
     // -------------------------------------------------------------------------
     // OrganisationUnit
@@ -154,10 +154,10 @@ public interface DataIntegrityService
     /**
      * Gets all ValidationRules with invalid left side expressions.
      */
-    Map<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions();
+    SortedMap<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions();
     
     /**
      * Gets all ValidationRules with invalid right side expressions.
      */
-    Map<ValidationRule, String> getInvalidValidationRuleRightSideExpressions();
+    SortedMap<ValidationRule, String> getInvalidValidationRuleRightSideExpressions();
 }

@@ -27,10 +27,10 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
@@ -42,17 +42,8 @@ import org.hisp.dhis.dimension.DimensionType;
  */
 
 public class OrganisationUnitGroup
-    implements DimensionOption, Serializable
+    extends IdentifiableObject implements DimensionOption
 {
-    private int id;
-    
-    private String uuid;
-    
-    /**
-     * Required and unique.
-     */
-    private String name;
-
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
     
     private OrganisationUnitGroupSet groupSet;
@@ -131,36 +122,6 @@ public class OrganisationUnitGroup
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public Set<OrganisationUnit> getMembers()
     {

@@ -44,7 +44,6 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -88,13 +87,6 @@ public class DefaultCaseAggregationMappingService
     public void setCaseAggregationMappingStore( CaseAggregationMappingStore caseAggregationMappingStore )
     {
         this.caseAggregationMappingStore = caseAggregationMappingStore;
-    }
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -414,9 +406,7 @@ public class DefaultCaseAggregationMappingService
         
         String tmpFromQuery = "";
         String tmpWhereQuery = " where ";
-        String query = "";
-        
-        
+                
         String curAliasDataValue = null;
         String curAliasProgramStageInstance = null;
         String curAliasPatientAttributeValue = null;
@@ -747,7 +737,7 @@ public class DefaultCaseAggregationMappingService
     public static void main( String[] args )
     {
         String string = "SUM@ COND{ ([DE:8.57.1]) < ([VL:2500]) } AND COND{ ([CP:gender]) = ([VL:'M']) }   ";
-        String input = "COUNT@ COND{([DE:1.3923.1]) > ([VL:100])}";
+        //String input = "COUNT@ COND{([DE:1.3923.1]) > ([VL:100])}";
         DefaultCaseAggregationMappingService test = new DefaultCaseAggregationMappingService();
         CaseAggregationQuery query = test.scan( string );
         System.out.println( test.buildQuery(  null, null, query ) );

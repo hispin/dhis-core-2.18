@@ -98,8 +98,6 @@ public class GetPSDataElementsAction implements Action
                     
                     optionComboType.add( "1:"+de.getType() );
                     
-                    System.out.println( de.getName() );
-                    
                     continue;
                 }
                 
@@ -122,8 +120,6 @@ public class GetPSDataElementsAction implements Action
                         optionComboType.add( "1:"+de.getType() );
                     else
                         optionComboType.add( "0:"+de.getType() );
-                    
-                    //System.out.println( de.getName() +":"+decoc.getName() );
                 }   
             }                        
         }

@@ -36,19 +36,17 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryOptionConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.DataElementCategoryOptionImporter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionConverter
-    extends AbstractDataElementCategoryOptionConverter implements XMLConverter
+    extends DataElementCategoryOptionImporter implements XMLConverter
 {
     public static final String COLLECTION_NAME = "categoryOptions";
     public static final String ELEMENT_NAME = "categoryOption";
@@ -121,9 +119,7 @@ public class DataElementCategoryOptionConverter
             categoryOption.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             categoryOption.setName( values.get( FIELD_NAME ) );
             
-            NameMappingUtil.addCategoryOptionMapping( categoryOption.getId(), categoryOption.getName() );
-            
-            read( categoryOption, GroupMemberType.NONE, params );
+            importObject( categoryOption, params );
         }
     }
 }

@@ -30,8 +30,8 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
 import static org.hisp.dhis.importexport.csv.util.CsvUtil.NEWLINE;
 import static org.hisp.dhis.importexport.csv.util.CsvUtil.SEPARATOR_B;
 import static org.hisp.dhis.importexport.csv.util.CsvUtil.csvEncode;
-import static org.hisp.dhis.importexport.csv.util.CsvUtil.getCsvValue;
 import static org.hisp.dhis.importexport.csv.util.CsvUtil.getCsvEndValue;
+import static org.hisp.dhis.importexport.csv.util.CsvUtil.getCsvValue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,15 +47,14 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.CSVConverter;
 import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
+import org.hisp.dhis.importexport.analysis.ImportAnalyser;
+import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -68,7 +67,7 @@ import org.hisp.dhis.system.util.StreamUtils;
  * @version $Id$
  */
 public class DataValueConverter
-    extends AbstractDataValueConverter implements CSVConverter 
+    extends DataValueImporter implements CSVConverter 
 {
     private static final String SEPARATOR = ",";
     private static final String FILENAME = "RoutineData.txt";
@@ -101,15 +100,15 @@ public class DataValueConverter
      * Constructor for read operations.
      */
     public DataValueConverter( BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        DataValueService dataValueService,
         DataElementCategoryService categoryService,
         ImportObjectService importObjectService,
+        ImportAnalyser importAnalyser,
         ImportParams params )
     {
         this.importDataValueBatchHandler = importDataValueBatchHandler;
-        this.dataValueService = dataValueService;
         this.categoryService = categoryService;
         this.importObjectService = importObjectService;
+        this.importAnalyser = importAnalyser;
         this.params = params;
         this.dataElementMapping = new MimicingHashMap<Object, Integer>();
         this.periodMapping = new MimicingHashMap<Object, Integer>();
@@ -228,7 +227,7 @@ public class DataValueConverter
                 value.setComment( values[13] );
                 value.setOptionCombo( proxyCategoryOptionCombo );
                 
-                read( value, GroupMemberType.NONE, params );
+                importObject( value, params );
             }
         }
         catch ( IOException ex )

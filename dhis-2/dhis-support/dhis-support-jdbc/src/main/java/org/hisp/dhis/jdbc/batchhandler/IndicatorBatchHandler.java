@@ -108,7 +108,7 @@ public class IndicatorBatchHandler
         statementBuilder.setColumn( "denominatoraggregationtype" );
         statementBuilder.setColumn( "extendeddataelementid" );
         statementBuilder.setColumn( "sortorder" );
-        statementBuilder.setColumn( "lastUpdated" );
+        statementBuilder.setColumn( "lastupdated" );
     }
     
     protected void setValues( Indicator indicator )

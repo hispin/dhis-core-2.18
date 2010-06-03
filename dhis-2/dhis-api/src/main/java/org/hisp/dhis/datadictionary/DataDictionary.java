@@ -27,10 +27,10 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 
@@ -39,12 +39,8 @@ import org.hisp.dhis.indicator.Indicator;
  * @version $Id$
  */
 public class DataDictionary
-    implements Serializable
+    extends IdentifiableObject
 {
-    private int id;
-    
-    private String name;
-    
     private String description;
     
     private String region;
@@ -105,26 +101,6 @@ public class DataDictionary
     // Set and get methods
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-    
     public String getDescription()
     {
         return description;

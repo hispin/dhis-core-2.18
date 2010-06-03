@@ -29,6 +29,7 @@ package org.hisp.dhis.dataadmin.action.databrowser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -52,8 +53,6 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author espenjac, joakibj, briane, eivinhb

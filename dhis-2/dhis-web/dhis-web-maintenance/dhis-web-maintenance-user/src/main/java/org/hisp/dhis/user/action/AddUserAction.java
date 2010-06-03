@@ -167,7 +167,7 @@ public class AddUserAction
         // Create userCredentials and user
         // ---------------------------------------------------------------------
 
-        Collection<OrganisationUnit> orgUnits = selectionTreeManager.getSelectedOrganisationUnits();
+        Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
         User user = new User();
         user.setSurname( surname );

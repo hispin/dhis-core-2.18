@@ -31,12 +31,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.springframework.stereotype.Component;
+
 import com.thoughtworks.xstream.XStream;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Component("configurationManager")
 public class DefaultConfigurationManager<T>
     implements ConfigurationManager<T>
 {

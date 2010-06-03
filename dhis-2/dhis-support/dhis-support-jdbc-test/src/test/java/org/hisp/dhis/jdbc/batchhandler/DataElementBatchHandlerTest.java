@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -51,10 +52,12 @@ import org.junit.Test;
 public class DataElementBatchHandlerTest
     extends DhisTest
 {
-    private HibernateCacheManager cacheManager;
-	
+    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    @Autowired
+    private HibernateCacheManager cacheManager;
+	
     private BatchHandler<DataElement> batchHandler;
     
     private DataElementCategoryCombo categoryCombo;
@@ -70,11 +73,7 @@ public class DataElementBatchHandlerTest
     @Override
     public void setUpTest()
     {
-    	cacheManager = (HibernateCacheManager) getBean( HibernateCacheManager.ID );
-    	
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
 

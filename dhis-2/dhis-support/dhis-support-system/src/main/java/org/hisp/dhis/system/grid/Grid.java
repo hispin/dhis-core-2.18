@@ -152,7 +152,7 @@ public class Grid
         
         if ( grid.size() != columnValues.size() )
         {
-            throw new IllegalStateException( "Column values are not equal to number of rows" );
+            throw new IllegalStateException( "Number of column values (" + columnValues.size() + ") is not equal to number of rows (" + grid.size() + ")" );
         }
         
         for ( int i = 0; i < grid.size(); i++ )
@@ -197,6 +197,10 @@ public class Grid
             if ( !Double.isNaN( predicted ) ) // Enough values must exist for regression
             {
                 regressionColumn.add( String.valueOf( getRounded( predicted, 1 ) ) );
+            }
+            else
+            {
+                regressionColumn.add( null );
             }
         }
 

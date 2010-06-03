@@ -51,8 +51,10 @@ public class Report
     
     private String design;
 
-    private String type;
+    private String designContent;
     
+    private String type;
+        
     private Set<ReportTable> reportTables = new HashSet<ReportTable>();
     
     private transient String url;
@@ -158,6 +160,16 @@ public class Report
     public void setDesign( String design )
     {
         this.design = design;
+    }
+
+    public String getDesignContent()
+    {
+        return designContent;
+    }
+
+    public void setDesignContent( String designContent )
+    {
+        this.designContent = designContent;
     }
 
     public String getType()

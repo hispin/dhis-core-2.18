@@ -45,7 +45,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
@@ -70,6 +69,7 @@ import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>dxfA.zip contains 3 objects of each meta-data type.</p>
@@ -135,9 +135,13 @@ public class DXFImportServiceTest
 
     private ImportDataValueService importDataValueService;
 
+    @Autowired
+    private LocationManager locationManager;
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
+    
     @Override
     public void setUpTest() throws LocationManagerException, IOException
     {
@@ -184,9 +188,6 @@ public class DXFImportServiceTest
 
         importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
 
-        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
-
-        locationManager = (LocationManager) getBean( LocationManager.ID );
         setExternalTestDir( locationManager );
 
         // horrible hack to copy some files into external test dir
@@ -247,7 +248,7 @@ public class DXFImportServiceTest
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
 
         importService.importData( importParams, inputStreamH );
-
+        
         assertObjects( dataASize );
     }
 

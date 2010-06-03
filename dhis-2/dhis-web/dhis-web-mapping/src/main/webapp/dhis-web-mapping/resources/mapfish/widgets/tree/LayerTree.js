@@ -26,7 +26,7 @@ this._updateCheckboxAncestors();if(!this.map){return;}
 this._updateCachedObjects();function getVisibilityFromMap(){var layerVisibility={};Ext.each(this.map.layers,function(layer){var name=layer.name;layerVisibility[name]=layer.visibility;if(!(layer instanceof OpenLayers.Layer.WMS)&&!(layer instanceof OpenLayers.Layer.WMS.Untiled)&&!(layer instanceof OpenLayers.Layer.MapServer))
 {return;}
 if(!this.layersWithSublayers[layer.name])
-return;if(layer.isBaseLayer){OpenLayers.Console.error("Using sublayers on a base layer "+"is not supported (base layer is "+
+return;if(layer.isBaseLayer){OpenLayers.Console.error("Using sublayers on a base layer " + "is not supported (base layer is "+
 name+")");}
 if(!layer._origLayers){layer._origLayers=layer.params.LAYERS||layer.params.layers;}
 var sublayers=layer._origLayers;if(sublayers instanceof Array){for(var j=0;j<sublayers.length;j++){var sublayer=sublayers[j];layerVisibility[name+this.separator+sublayer]=layer.visibility;}}},this);return layerVisibility;}

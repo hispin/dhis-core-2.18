@@ -35,6 +35,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -42,25 +43,42 @@ import com.lowagie.text.pdf.PdfWriter;
 /**
  * @author Lars Helge Overland
  * @version $Id$
+ * @modifier Dang Duy Hieu
+ * @since 2010-05-19
  */
 public class PDFUtils
 {
     public static final int ALIGN_CENTER = PdfPCell.ALIGN_CENTER;
+
     public static final int ALIGN_LEFT = PdfPCell.ALIGN_LEFT;
+
     public static final int ALIGN_RIGHT = PdfPCell.ALIGN_RIGHT;
-    
+
     private static final Font TEXT = new Font( Font.HELVETICA, 9, Font.NORMAL );
+
     private static final Font TEXT5 = new Font( Font.HELVETICA, 8, Font.NORMAL );
+
     private static final Font TEXT6 = new Font( Font.HELVETICA, 6, Font.NORMAL );
+
     private static final Font TEXT7 = new Font( Font.HELVETICA, 4, Font.NORMAL );
-    private static final Font ITALIC = new Font( Font.HELVETICA, 9, Font.ITALIC );    
+
+    private static final Font ITALIC = new Font( Font.HELVETICA, 9, Font.ITALIC );
+
     private static final Font HEADER1 = new Font( Font.HELVETICA, 20, Font.BOLD );
+
     private static final Font HEADER2 = new Font( Font.HELVETICA, 16, Font.BOLD );
+
     private static final Font HEADER3 = new Font( Font.HELVETICA, 12, Font.BOLD );
+
     private static final Font HEADER4 = new Font( Font.HELVETICA, 9, Font.BOLD );
+
     private static final Font HEADER5 = new Font( Font.HELVETICA, 8, Font.BOLD );
+
     private static final Font HEADER6 = new Font( Font.HELVETICA, 6, Font.BOLD );
+
     private static final Font HEADER7 = new Font( Font.HELVETICA, 4, Font.BOLD );
+
+    public static final String PDF_ARIAL_FONT = "arial.ttf";
 
     /**
      * Creates a document.
@@ -72,7 +90,7 @@ public class PDFUtils
     {
         return openDocument( outputStream, PageSize.A4 );
     }
-    
+
     /**
      * Creates a document.
      * 
@@ -83,13 +101,13 @@ public class PDFUtils
     public static Document openDocument( OutputStream outputStream, Rectangle pageSize )
     {
         try
-        {        
+        {
             Document document = new Document( pageSize );
-        
+
             PdfWriter.getInstance( document, outputStream );
-            
+
             document.open();
-            
+
             return document;
         }
         catch ( DocumentException ex )
@@ -97,7 +115,7 @@ public class PDFUtils
             throw new RuntimeException( "Failed to open PDF document", ex );
         }
     }
-    
+
     /**
      * Starts a new page in the document.
      * 
@@ -107,28 +125,34 @@ public class PDFUtils
     {
         document.newPage();
     }
-    
+
     /**
-     * <p>Creates a table. Specify the columns and widths by providing one<br>
-     * float per column with a percentage value. For instance</p>
+     * <p>
+     * Creates a table. Specify the columns and widths by providing one<br>
+     * float per column with a percentage value. For instance
+     * </p>
      * 
-     * <p>getPdfPTable( 0.35f, 0.65f )</p>
+     * <p>
+     * getPdfPTable( 0.35f, 0.65f )
+     * </p>
      * 
-     * <p>will give you a table with two columns where the first covers 35 %<br>
-     * of the page while the second covers 65 %.</p>
-     *
-     * @param keepTogether Indicates whether the table could be broken across multiple
-     *        pages or should be kept at one page.
+     * <p>
+     * will give you a table with two columns where the first covers 35 %<br>
+     * of the page while the second covers 65 %.
+     * </p>
+     * 
+     * @param keepTogether Indicates whether the table could be broken across
+     *        multiple pages or should be kept at one page.
      * @param columnWidths The column widths.
      * @return
      */
     public static PdfPTable getPdfPTable( boolean keepTogether, float... columnWidths )
     {
         PdfPTable table = new PdfPTable( columnWidths );
-        
+
         table.setWidthPercentage( 100f );
         table.setKeepTogether( keepTogether );
-        
+
         return table;
     }
 
@@ -149,7 +173,7 @@ public class PDFUtils
             throw new RuntimeException( "Failed to add table to document", ex );
         }
     }
-    
+
     /**
      * Moves the cursor to the next page in the document.
      * 
@@ -172,7 +196,7 @@ public class PDFUtils
             document.close();
         }
     }
-    
+
     /**
      * Creates a cell.
      * 
@@ -185,17 +209,17 @@ public class PDFUtils
     public static PdfPCell getCell( String text, int colspan, Font font, int verticalAlign )
     {
         Paragraph paragraph = new Paragraph( text, font );
-        
+
         PdfPCell cell = new PdfPCell( paragraph );
-        
+
         cell.setColspan( colspan );
         cell.setBorder( 0 );
         cell.setMinimumHeight( 15 );
         cell.setHorizontalAlignment( verticalAlign );
-            
+
         return cell;
     }
-    
+
     /**
      * Creates an empty cell.
      * 
@@ -206,11 +230,11 @@ public class PDFUtils
     public static PdfPCell getCell( int colSpan, int height )
     {
         PdfPCell cell = new PdfPCell();
-        
+
         cell.setColspan( colSpan );
         cell.setBorder( 0 );
         cell.setMinimumHeight( height );
-        
+
         return cell;
     }
 
@@ -225,7 +249,7 @@ public class PDFUtils
     {
         return getCell( text, 1, font, ALIGN_LEFT );
     }
-    
+
     /**
      * Creates a cell with text font.
      * 
@@ -237,14 +261,27 @@ public class PDFUtils
     {
         return getCell( text, colspan, TEXT, ALIGN_LEFT );
     }
-    
+
     /**
      * Creates a cell with text font.
      * 
      * @param text The text to include in the cell.
      * @param colspan The column span of the cell.
-     * @param horizontalAlign The horizontal align, either 
-     *        ALIGN_LEFT, ALIGN_RIGHT, or ALIGN_CENTER.
+     * @param font The font for text in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getTextCell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with text font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param horizontalAlign The horizontal align, either ALIGN_LEFT,
+     *        ALIGN_RIGHT, or ALIGN_CENTER.
      * @return A PdfCell.
      */
     public static PdfPCell getTextCell( String text, int colspan, int horizontalAlign )
@@ -261,6 +298,18 @@ public class PDFUtils
     public static PdfPCell getTextCell( String text )
     {
         return getCell( text, 1, TEXT, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with text font spanning one column.
+     * 
+     * @param text The text to include in the cell.
+     * @param font The font for text in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getTextCell( String text, Font font )
+    {
+        return getCell( text, 1, font, ALIGN_LEFT );
     }
 
     /**
@@ -284,7 +333,7 @@ public class PDFUtils
     {
         return getCell( text, 1, TEXT6, ALIGN_LEFT );
     }
-    
+
     /**
      * Creates a cell with text 7 font.
      * 
@@ -295,7 +344,7 @@ public class PDFUtils
     {
         return getCell( text, 1, TEXT7, ALIGN_LEFT );
     }
-    
+
     /**
      * Creates a cell with italic text font.
      * 
@@ -306,6 +355,19 @@ public class PDFUtils
     public static PdfPCell getItalicCell( String text, int colspan )
     {
         return getCell( text, colspan, ITALIC, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with italic text font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param font The font to embed in text of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getItalicCell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
     }
 
     /**
@@ -337,12 +399,24 @@ public class PDFUtils
      * 
      * @param text The text to include in the cell.
      * @param colspan The column span of the cell.
-     * @param font The font of the cell content.
      * @return A PdfCell.
      */
     public static PdfPCell getHeader3Cell( String text, int colspan )
     {
         return getCell( text, colspan, HEADER3, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with header 3 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param font The font of the cell content.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader3Cell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
     }
 
     /**
@@ -356,7 +430,20 @@ public class PDFUtils
     {
         return getCell( text, colspan, HEADER4, ALIGN_LEFT );
     }
-    
+
+    /**
+     * Creates a cell with header 3 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param font The font of the cell content.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader4Cell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
+    }
+
     /**
      * Creates a cell with header 5 font.
      * 
@@ -391,5 +478,24 @@ public class PDFUtils
     public static PdfPCell getHeader7Cell( String text, int colspan )
     {
         return getCell( text, colspan, HEADER7, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a BaseFont with the given dimension
+     * 
+     * @param dimension whether horizontal or vertical
+     * @return A BaseFont.
+     */
+    public static BaseFont getTrueTypeFontByDimension( String dimension )
+    {
+        try
+        {
+            return BaseFont.createFont( PDF_ARIAL_FONT, dimension, BaseFont.EMBEDDED );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Error ocurred in create a new instance of BaseFont by the given dimension" );
+        }
+
     }
 }

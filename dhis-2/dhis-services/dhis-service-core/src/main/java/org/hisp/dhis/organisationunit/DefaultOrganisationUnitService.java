@@ -608,4 +608,10 @@ public class DefaultOrganisationUnitService
         
         return levelMap;
     }
+
+    @Override
+    public int getNumberOfOrganisationUnits()
+    {
+        return organisationUnitStore.getNumberOfOrganisationUnits();
+    }
 }

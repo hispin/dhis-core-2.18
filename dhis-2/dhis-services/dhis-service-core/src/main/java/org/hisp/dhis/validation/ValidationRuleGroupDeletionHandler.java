@@ -63,7 +63,7 @@ public class ValidationRuleGroupDeletionHandler
         {
             if ( group.getMembers().remove( validationRule ) )
             {
-                validationRuleService.updateValidationRule( validationRule );
+                validationRuleService.saveValidationRule( validationRule );
             }
         }
     }

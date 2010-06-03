@@ -5,5 +5,13 @@
   <description>$encoder.xmlEncode( $programStage.description )</description>
   <stageInProgram>$programStage.stageInProgram</stageInProgram>
   <minDaysFromStart>$programStage.minDaysFromStart</minDaysFromStart>  
-  <dataElementCount>$programStageDataElements.size()</dataElementCount>  
+  <dataElementCount>$programStageDataElements.size()</dataElementCount>
+  <dataElements>
+	#foreach($d in $programStageDataElements)
+		<dataElement>
+			<id>$d.dataElement.id</id>
+			<name>$encoder.xmlEncode( $d.dataElement.name )</name>
+		</dataElement>
+	#end
+  </dataElements>
 </programStage>

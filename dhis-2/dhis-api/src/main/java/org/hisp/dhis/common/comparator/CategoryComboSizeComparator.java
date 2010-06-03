@@ -37,13 +37,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 public class CategoryComboSizeComparator
     implements Comparator<DataElementCategoryCombo>
 {
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
-    @Override
     public int compare( DataElementCategoryCombo o1, DataElementCategoryCombo o2 )
     {
         return (int) (o1.getOptionCombos().size() - o2.getOptionCombos().size());

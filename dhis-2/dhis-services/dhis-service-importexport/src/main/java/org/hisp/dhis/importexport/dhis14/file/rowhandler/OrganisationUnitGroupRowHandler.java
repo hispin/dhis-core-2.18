@@ -28,11 +28,9 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitGroupConverter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.importexport.importer.OrganisationUnitGroupImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -44,7 +42,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: OrganisationUnitGroupRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
  */
 public class OrganisationUnitGroupRowHandler
-    extends AbstractOrganisationUnitGroupConverter implements RowHandler
+    extends OrganisationUnitGroupImporter implements RowHandler
 {
     private ImportParams params;
         
@@ -71,10 +69,8 @@ public class OrganisationUnitGroupRowHandler
     {
         final OrganisationUnitGroup group = (OrganisationUnitGroup) object;
         
-        NameMappingUtil.addOrganisationUnitGroupMapping( group.getId(), group.getName() );
-        
         group.setUuid( UUIdUtils.getUUId() );
             
-        read( group, GroupMemberType.NONE, params );
+        importObject( group, params );
     }
 }

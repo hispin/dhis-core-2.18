@@ -200,12 +200,6 @@ public class DefaultDataValueService
         return dataValueStore.getDataValues( dataElement, optionCombo, periods, sources );
     }
 
-    public Collection<DataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods,
-        Collection<? extends Source> sources, int firstResult, int maxResults )
-    {
-        return dataValueStore.getDataValues( dataElements, periods, sources, firstResult, maxResults );
-    }
-
     public Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> optionCombos )
     {
         return dataValueStore.getDataValues( optionCombos );
