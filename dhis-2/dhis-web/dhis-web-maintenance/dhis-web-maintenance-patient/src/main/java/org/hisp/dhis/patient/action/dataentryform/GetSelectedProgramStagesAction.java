@@ -51,68 +51,66 @@ public class GetSelectedProgramStagesAction
 
     private ProgramStageService programStageService;
 
-    public void setProgramStageService(ProgramStageService programStageService) {
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
         this.programStageService = programStageService;
     }
-    
 
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
 
     private int programStageId;
-    
 
-    public void setProgramStageId(int programStageId) {
-		this.programStageId = programStageId;
-	}
-    
+    public void setProgramStageId( int programStageId )
+    {
+        this.programStageId = programStageId;
+    }
 
-	public int getProgramStageId() {
-		return programStageId;
-	}
+    public int getProgramStageId()
+    {
+        return programStageId;
+    }
 
-
-	private List<ProgramStage> listProgramStage;
+    private List<ProgramStage> listProgramStage = new ArrayList<ProgramStage>();
 
     public List<ProgramStage> getListProgramStage()
     {
         return listProgramStage;
     }
 
-
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-    	
+
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        if( programStage != null ){
-        	
-        	Program program = programStage.getProgram();
-        	
-        	if( program != null ){
-        		
-        		listProgramStage = new ArrayList(program.getProgramStages());
-        		for( ProgramStage ps : listProgramStage )
-            	{
-            		if( ps.equals( programStage ) )
-            		{
-            			listProgramStage.remove(ps);
-            			break;
-            		}
-            	}
-        		
-        		Collections.sort( listProgramStage , new ProgramStageNameComparator());
+        if ( programStage != null )
+        {
 
-        	}
-        	
+            Program program = programStage.getProgram();
+
+            if ( program != null )
+            {
+
+                listProgramStage.addAll( program.getProgramStages() );
+
+                for ( ProgramStage ps : listProgramStage )
+                {
+                    if ( ps.equals( programStage ) )
+                    {
+                        listProgramStage.remove( ps );
+                        break;
+                    }
+                }
+
+                Collections.sort( listProgramStage, new ProgramStageNameComparator() );
+            }
         }
-           
 
         return SUCCESS;
     }

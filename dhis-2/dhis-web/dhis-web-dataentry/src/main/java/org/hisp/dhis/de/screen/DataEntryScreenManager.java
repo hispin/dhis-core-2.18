@@ -33,6 +33,7 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
@@ -50,6 +51,8 @@ public interface DataEntryScreenManager
     boolean hasMixOfDimensions( DataSet dataset );
     
     boolean hasMultiDimensionalDataElement( DataSet dataSet );
+    
+    boolean hasMultiDimensionalDataElement( Section section );
     
     boolean hasSection( DataSet dataSet );
     

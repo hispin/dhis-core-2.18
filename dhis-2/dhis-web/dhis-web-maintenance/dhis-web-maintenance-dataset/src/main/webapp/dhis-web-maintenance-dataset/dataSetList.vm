@@ -10,7 +10,6 @@
           <col width="20">
           <col width="20">
           <col width="20">
-          <col width="20">
 		  <col width="20">
 		  <col width="20">
           <col width="20">
@@ -19,7 +18,7 @@
           <thead>
 		  <tr>
 			<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
-			<td colspan="9" style="text-align:right">
+			<td colspan="8" style="text-align:right">
 				<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"></a>
 				<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"></a>
 			</td>
@@ -48,10 +47,7 @@
                 </td>
                 <td style="text-align:center">
                   <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
-                </td>  
-				<td style="text-align:center">
-                  <a href="javascript:showsection( $dataSet.id )" title="$i18n.getString( "view_section_management" )"><img src="../images/edit_sections.png" alt="$i18n.getString( "view_section_management" )"></a>
-                </td>  
+                </td>				  
                 <td style="text-align:center">
                   <a href="javascript:window.location.href='displayCompulsoryDataElementsForm.action?id=${dataSet.id}'" title="$i18n.getString( "edit_compulsory_data_elements" )"><img src="../images/edit_compulsory_data_elements.png" alt="$i18n.getString( "edit_compulsory_data_elements" )"></a>
                 </td>  

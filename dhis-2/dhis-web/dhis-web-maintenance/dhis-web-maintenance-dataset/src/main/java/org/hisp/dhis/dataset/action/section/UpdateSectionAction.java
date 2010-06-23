@@ -64,7 +64,7 @@ public class UpdateSectionAction
 
     private Integer sectionId;
 
-    private String sectionLabel;
+    private String sectionTitle;
 
     private List<String> selectedList;
 
@@ -73,9 +73,9 @@ public class UpdateSectionAction
         this.sectionId = sectionId;
     }
 
-    public void setSectionLabel( String sectionLabel )
+    public void setSectionTitle( String sectionTitle )
     {
-        this.sectionLabel = sectionLabel;
+        this.sectionTitle = sectionTitle;
     }
 
     public void setSelectedList( List<String> selectedList )
@@ -106,7 +106,7 @@ public class UpdateSectionAction
         }
 
         section.setDataElements( dataElements );
-        section.setLabel( sectionLabel );
+        section.setTitle( sectionTitle );
 
         sectionService.updateSection( section );
 

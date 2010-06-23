@@ -81,6 +81,9 @@ public class DataSet
      */
     @Deprecated
     private Set<Period> lockedPeriods = new HashSet<Period>();
+    
+    
+    private Set<Section> sections = new HashSet<Section>();
 
     /**
      * Indicating position in the custom sort order.
@@ -232,5 +235,21 @@ public class DataSet
     public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
+    }
+
+    /**
+     * @param sections the sections to set
+     */
+    public void setSections( Set<Section> sections )
+    {
+        this.sections = sections;
+    }
+
+    /**
+     * @return the sections
+     */
+    public Set<Section> getSections()
+    {
+        return sections;
     }
 }

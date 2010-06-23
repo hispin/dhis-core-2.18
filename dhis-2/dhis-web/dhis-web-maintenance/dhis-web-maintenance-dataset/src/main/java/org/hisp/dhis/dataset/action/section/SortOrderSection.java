@@ -28,7 +28,6 @@ package org.hisp.dhis.dataset.action.section;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,7 +68,7 @@ public class SortOrderSection
 
     private List<String> selectedList = new ArrayList<String>();;
 
-    private DataSet dataset;
+    private DataSet dataSet;
 
     private Set<Section> sections = new HashSet<Section>();
 
@@ -78,9 +77,9 @@ public class SortOrderSection
         return sections;
     }
 
-    public DataSet getDataset()
+    public DataSet getDataSet()
     {
-        return dataset;
+        return dataSet;
     }
 
     public Integer getDataSetId()
@@ -104,21 +103,13 @@ public class SortOrderSection
 
     public String execute()
         throws Exception
-    {
-        Collection<Section> temps = sectionService.getAllSections();
+    {        
 
         if ( dataSetId != null )
         {
-            dataset = dataSetService.getDataSet( dataSetId.intValue() );
-
-            for ( Section section : temps )
-            {
-                if ( section.getDataSet().getId() == dataset.getId() )
-                {
-
-                    sections.add( section );
-                }
-            }
+            dataSet = dataSetService.getDataSet( dataSetId.intValue() );
+            
+            sections = dataSet.getSections();
 
             return INPUT;
         }

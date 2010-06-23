@@ -78,10 +78,5 @@ public class DefaultSectionService
     public void updateSection( Section section )
     {
         sectionStore.updateSection( section );
-    }
-
-    public Collection<Section> getSectionByDataSet( DataSet dataSet )
-    {
-        return this.sectionStore.getSectionByDataSet( dataSet );
-    }
+    }    
 }

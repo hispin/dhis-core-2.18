@@ -36,7 +36,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 /**
  * @author Bharath Kumar
@@ -54,14 +53,7 @@ public class GetOptionCombosAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
+    }    
 
     // -------------------------------------------------------------------------
     // Getters & Setters
@@ -101,25 +93,7 @@ public class GetOptionCombosAction
         DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
 
         List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            dataElementCategoryCombo.getOptionCombos() );
-
-        String dataElementType = dataElement.getType();
-
-        /*
-         * if (dataElementType.equals("string")) {
-         * 
-         * DataElementCategoryOptionCombo optionCombo =
-         * dataElementCategoryService
-         * .getDefaultDataElementCategoryOptionCombo();
-         * optionComboNames.add(DataElementCategoryCombo
-         * .DEFAULT_CATEGORY_COMBO_NAME);
-         * 
-         * optionComboIds.add(String.valueOf(optionCombo.getId()));
-         * 
-         * return SUCCESS;
-         * 
-         * }
-         */
+            dataElementCategoryCombo.getOptionCombos() );      
 
         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
 

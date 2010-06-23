@@ -37,6 +37,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="dataElementService">
 	  <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
 	</property>	 	  
+	<property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    </property>  
    </bean> 
    
   <bean id="org.hisp.dhis.dataset.action.section.ValidateSectionAction"
@@ -63,10 +66,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
-    </property>
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-    </property>     
+    </property>         
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.section.UpdateSectionAction"
@@ -97,7 +97,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
      <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
    	 </property>
+  </bean>
+	
+  <bean id="org.hisp.dhis.dataset.action.section.SectionLayoutAction"
+    class="org.hisp.dhis.dataset.action.section.SectionLayoutAction" 
+    scope="prototype">
+    <property name="sectionService">
+      <ref bean="org.hisp.dhis.dataset.SectionService"/>
+     </property>     
   </bean> 
+	<bean id="org.hisp.dhis.dataset.action.section.GreySectionAction"
+		class="org.hisp.dhis.dataset.action.section.GreySectionAction"
+		scope="prototype">
+		<property name="sectionService">
+			<ref bean="org.hisp.dhis.dataset.SectionService"/>
+		</property>
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	</bean>
+	
   
   <!-- DataSet -->
   

@@ -65,11 +65,11 @@ public class ValidateSectionAction
         this.name = name;
     }
 
-    private String label;
+    private String title;
 
-    public void setLabel( String label )
+    public void setTitle( String title )
     {
-        this.label = label;
+        this.title = title;
     }
 
     private String message;
@@ -121,7 +121,7 @@ public class ValidateSectionAction
         // Label
         // ---------------------------------------------------------------------
 
-        if ( label == null )
+        if ( title == null )
         {
             message = i18n.getString( "specify_label" );
 
@@ -129,9 +129,9 @@ public class ValidateSectionAction
         }
         else
         {
-            label = label.trim();
+            title = title.trim();
 
-            if ( label.length() == 0 )
+            if ( title.length() == 0 )
             {
                 message = i18n.getString( "specify_label" );
 

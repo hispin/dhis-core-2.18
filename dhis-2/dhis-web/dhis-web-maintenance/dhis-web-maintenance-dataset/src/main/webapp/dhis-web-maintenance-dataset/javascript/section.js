@@ -13,9 +13,14 @@ function sortOrderSubmit()
     }    
 }
 
-function getSectionByDataSet(dataSetId)
+function getSectionByDataSet( dataSetId )
 {
     window.location = "section.action?dataSetId=" + dataSetId;
+}
+
+function getDataElementByCategoryCombo( categoryComboId, dataSetId  )
+{
+    window.location = "addSectionAction.action?categoryComboId=" + categoryComboId + "&dataSetId=" + dataSetId;
 }
 
 function removeSection( sectionId, sectionName )
@@ -25,15 +30,16 @@ function removeSection( sectionId, sectionName )
 
 function addSectionSubmit()
 {
-    var dataset = document.getElementById('dataSetId').value;
+    var dataSetId = document.getElementById('dataSetId').value;
+    var categoryComboId = document.getElementById('categoryComboId').value;   
     
-    if( dataset=="null" )
+    if( dataSetId == "null" || dataSetId == "" || categoryComboId == "null" || categoryComboId == "" )
     {
-        window.alert( "Please select dataset" );
-    }
+    	window.alert( "Please select a dataset/categorycombo" );
+    }       
     else
     {
-        window.location.href="addSectionAction.action?dataSetId=" + document.getElementById('dataSetId').value;
+        window.location.href="addSectionAction.action?dataSetId=" + dataSetId + "&categoryComboId=" + categoryComboId;
     }
 }
 
@@ -68,16 +74,13 @@ function addSectionValidationCompleted( messageElement )
   var message = messageElement.firstChild.nodeValue;
 
   if ( type == 'success' )
-  {
-      // Both edit and add form has id='dataSetForm'      
+  {	  
       document.forms['addSectionForm'].submit();
   }
   /**
-  else if ( type == 'error' )
-  {
-      window.alert( 'Adding the organisation unit failed with the following message:\n' + message );
-  }
-  */
+	 * else if ( type == 'error' ) { window.alert( 'Adding the organisation unit
+	 * failed with the following message:\n' + message ); }
+	 */
   else if ( type == 'input' )
   {
     document.getElementById( 'message' ).innerHTML = message;
@@ -92,9 +95,36 @@ function validateAddSection()
   request.setCallbackSuccess( addSectionValidationCompleted );
 
   var requestString = 'validateSection.action?name=' + 
-    getFieldValue( 'sectionName' ) + '&label=' + getFieldValue( 'sectionLabel' );
+  getFieldValue( 'sectionName' ) + '&title=' + getFieldValue( 'sectionTitle' );
   
   request.send( requestString );
 
   return false;
+  
+}
+
+function toggle( dataElementId, optionComboId )
+{
+	var elementId = '[' + dataElementId;
+	
+	if( optionComboId != '' )
+	{			
+		elementId = elementId + ']_[' +  optionComboId;
+	}
+	
+	elementId = elementId + ']';
+	
+	
+	
+	
+	if ( document.getElementById( elementId + '.text').disabled == true )
+	{		
+		document.getElementById( elementId + '.text').disabled = false;
+		document.getElementById( elementId + '.button').value = i18n_disable;		
+	}
+	else
+	{
+		document.getElementById( elementId + '.text').disabled = true;
+		document.getElementById( elementId + '.button').value = i18n_enable;
+	}
 }

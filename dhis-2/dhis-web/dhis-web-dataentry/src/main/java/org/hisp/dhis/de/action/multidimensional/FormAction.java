@@ -447,10 +447,10 @@ public class FormAction
 
             for ( DataElementCategory cat : categoryCombo.getCategories() )
             {
-                if ( !cat.getCategoryOptions().isEmpty() )
+                if ( cat.getCategoryOptions().size() > 0 ) 
                 {
                     catColSpan = catColSpan / cat.getCategoryOptions().size();
-                    int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
+                    int total = optionCombos.size() / ( catColSpan * cat.getCategoryOptions().size() );
                     Collection<Integer> cols = new ArrayList<Integer>( total );
 
                     for ( int i = 0; i < total; i++ )

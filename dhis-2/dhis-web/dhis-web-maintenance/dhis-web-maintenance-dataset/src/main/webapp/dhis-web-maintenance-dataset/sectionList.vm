@@ -8,18 +8,28 @@
           <col>
           <col>
           <col width="20">
+          <col width="20">
+          <col width="20">
           <col width="20">   
           <thead>    	
 		  <tr>
-			<td colspan="2"><label>$i18n.getString( "select_dataset" )</label><br>
+			<td><label>$i18n.getString( "select_dataset" )</label><br>
 			  <select id="dataSetId" name="dataSetId" style="min-width:20em" onchange="javascript:getSectionByDataSet(this.options[this.selectedIndex].value)">
-				<option value=null selected="selected" >[ $i18n.getString( "all" ) ]</option>
+				<option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>
 				#foreach ( $dataset in $datasets )
 				  <option value="$dataset.id" #if($dataSetId==$dataset.id) selected="selected" #end>$dataset.name</option>
 				#end
-			  </select>
+			  </select>			  	
+           	</td>			
+			<td><br>				
+				<select id="categoryComboId" name="categoryComboId" style="min-width:20em" #if( $categoryCombos.size() == 0 ) disabled="disabled" #end>				
+                <option value="" selected="selected">[$i18n.getString( "select_categorycombo" )]</option>
+                #foreach ( $categoryCombo in $categoryCombos )
+                    <option value="$categoryCombo.id" #if($categoryComboId == $categoryCombo.id) selected="selected" #end>$encoder.htmlEncode( $categoryCombo.name )</option>                            
+                #end
+              </select>				
 			</td>
-		  	<td colspan="2" style="text-align:right">
+		  	<td colspan="4" style="text-align:right">
 		  		<input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addSectionSubmit()" style="width:80px"><br>
                 <input type="button" value="$i18n.getString( "sort_section" )" onclick="javascript:sortOrderSubmit()" style="width:80px"><br>
                 <input type="button" value="$i18n.getString( "cancel" )" onclick="javascript:window.location.href='dataSet.action'" style="width:80px">
@@ -27,17 +37,20 @@
   		  </tr>
           <tr>
             <th>$i18n.getString( "name" )</th>
-			<th>$i18n.getString( "label" )</th>
-            <th colspan="2">$i18n.getString( "operations" )</th>
+			<th>$i18n.getString( "title" )</th>
+            <th colspan="4">$i18n.getString( "operations" )</th>
           </tr>
           </thead>
           <tbody id="list">
             #foreach( $section in $sections )
               <tr id="tr${section.id}">
                 <td>$encoder.htmlEncode( $section.name )</td> 
-				<td>$encoder.htmlEncode( $section.label )</td>              
+				<td>$encoder.htmlEncode( $section.title )</td>              
                 <td style="text-align:center"><a href="editSectionAction.action?sectionId=$section.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>               
-                <td style="text-align:center"><a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>               
+                <td style="text-align:center"><a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>                
+                <td style="text-align:center"><a href="greySection.action?sectionId=$section.id" title="$i18n.getString( "manage_greyed_fields" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
+                <td style="text-align:center"><a href="javascript:showSectionDetails( '$section.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+                </td>               
               </tr>
             #end
           </tbody>
