@@ -30,8 +30,12 @@ package org.hisp.dhis.dataset.action.section;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -70,6 +74,8 @@ public class SectionListAction
 
     private List<DataSet> datasets = new ArrayList<DataSet>();
 
+    private Set<DataElementCategoryCombo> categoryCombos = new HashSet<DataElementCategoryCombo>();
+
     private Integer dataSetId;
 
     public Collection<Section> getSections()
@@ -107,6 +113,16 @@ public class SectionListAction
         this.dataSetId = dataSetId;
     }
 
+    public Set<DataElementCategoryCombo> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+
+    public void setCategoryCombos( Set<DataElementCategoryCombo> categoryCombos )
+    {
+        this.categoryCombos = categoryCombos;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -115,7 +131,7 @@ public class SectionListAction
         throws Exception
     {
         datasets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        
+
         Collections.sort( datasets, new DataSetNameComparator() );
 
         Collection<Section> temp = sectionService.getAllSections();
@@ -127,21 +143,19 @@ public class SectionListAction
         else
         {
             sections = new ArrayList<Section>();
-            
-            for ( Section section : temp )
-            {
-                if ( section.getDataSet().getId() == dataSetId.intValue() )
-                {
-                    sections.add( section );
-                }
-            }
-            
-            Collections.sort( sections, new SectionOrderComparator() );
-        }
 
-        if ( sections == null )
-        {
-            sections = new ArrayList<Section>();
+            DataSet dataSet = dataSetService.getDataSet( dataSetId );
+            Set<Section> dataSetSections = dataSet.getSections();
+            sections = new ArrayList<Section>( dataSetSections );
+
+            dataSet = dataSetService.getDataSet( dataSetId.intValue() );
+
+            for ( DataElement de : dataSet.getDataElements() )
+            {
+                categoryCombos.add( de.getCategoryCombo() );
+            }
+
+            Collections.sort( sections, new SectionOrderComparator() );
         }
 
         return SUCCESS;

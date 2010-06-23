@@ -31,11 +31,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
@@ -51,16 +52,9 @@ public class EditSectionAction
 
     private SectionService sectionService;
 
-    private DataSetService dataSetService;
-
     public void setSectionService( SectionService sectionService )
     {
         this.sectionService = sectionService;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -93,9 +87,9 @@ public class EditSectionAction
 
     private Section section;
 
-    private List<DataElement> dataElementsOfSection = new ArrayList<DataElement>();
-
     private DataSet dataSet;
+
+    private DataElementCategoryCombo categoryCombo;
 
     private List<DataElement> dataElementOfDataSet = new ArrayList<DataElement>();
 
@@ -119,16 +113,6 @@ public class EditSectionAction
         this.section = section;
     }
 
-    public List<DataElement> getDataElementsOfSection()
-    {
-        return dataElementsOfSection;
-    }
-
-    public void setDataElementsOfSection( List<DataElement> dataElementsOfSection )
-    {
-        this.dataElementsOfSection = dataElementsOfSection;
-    }
-
     public List<DataElement> getDataElementOfDataSet()
     {
         return dataElementOfDataSet;
@@ -148,7 +132,17 @@ public class EditSectionAction
     {
         this.dataSet = dataSet;
     }
-    
+
+    public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
+    {
+        this.categoryCombo = categoryCombo;
+    }
+
+    public DataElementCategoryCombo getCategoryCombo()
+    {
+        return categoryCombo;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -158,25 +152,36 @@ public class EditSectionAction
     {
         section = sectionService.getSection( sectionId.intValue() );
 
-        dataElementsOfSection = section.getDataElements();
-
-        dataSet = dataSetService.getDataSet( section.getDataSet().getId() );
+        dataSet = section.getDataSet();
+        
+        categoryCombo = section.getDataElements().iterator().next().getCategoryCombo();
 
         dataElementOfDataSet = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collection<Section> sections = sectionService.getSectionByDataSet( dataSet );
+        Collection<Section> sections = dataSet.getSections();
 
         for ( Section s : sections )
         {
             dataElementOfDataSet.removeAll( s.getDataElements() );
         }
+        
+        Iterator<DataElement> dataElementIterator = dataElementOfDataSet.iterator();
 
-        Collections.sort( dataElementsOfSection, dataElementComparator );
+        while ( dataElementIterator.hasNext() )
+        {
+            DataElement de = dataElementIterator.next();
+
+            if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
+            {
+                dataElementIterator.remove();
+            }
+        }       
+
         Collections.sort( dataElementOfDataSet, dataElementComparator );
-        
-        displayPropertyHandler.handle( dataElementsOfSection );
+
         displayPropertyHandler.handle( dataElementOfDataSet );
-        
+
         return SUCCESS;
     }
+
 }

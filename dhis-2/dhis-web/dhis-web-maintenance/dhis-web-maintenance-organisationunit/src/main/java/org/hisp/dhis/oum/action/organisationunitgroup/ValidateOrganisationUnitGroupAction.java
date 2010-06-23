@@ -27,20 +27,16 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: ValidateOrganisationUnitGroupAction.java 1898 2006-09-22
+ *          12:06:56Z torgeilo $
  */
 public class ValidateOrganisationUnitGroupAction
     extends ActionSupport
@@ -54,13 +50,6 @@ public class ValidateOrganisationUnitGroupAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-    
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -88,13 +77,6 @@ public class ValidateOrganisationUnitGroupAction
         this.name = name;
     }
 
-    private Collection<String> groupMembers = new ArrayList<String>();
-
-    public void setGroupMembers( Collection<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -111,7 +93,7 @@ public class ValidateOrganisationUnitGroupAction
     // -------------------------------------------------------------------------
 
     public String execute()
-    {        
+    {
         // ---------------------------------------------------------------------
         // Validate values
         // ---------------------------------------------------------------------
@@ -144,7 +126,7 @@ public class ValidateOrganisationUnitGroupAction
         }
 
         // TODO validate exclusivity
-        
+
         message = "OK";
 
         return SUCCESS;

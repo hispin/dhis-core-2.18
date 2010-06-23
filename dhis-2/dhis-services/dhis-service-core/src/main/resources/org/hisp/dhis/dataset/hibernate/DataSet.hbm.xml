@@ -41,6 +41,11 @@
       <many-to-many column="periodid" 
         class="org.hisp.dhis.period.Period"/>
     </set>
+	  
+	<set name="sections" order-by="sortorder" inverse="true" cascade="all">
+      <key column="datasetid"/>      
+      <one-to-many class="org.hisp.dhis.dataset.Section"/>
+    </set>
 	
 	<property name="locked"/>
 	

@@ -39,8 +39,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageService;
 
 /**
  * @author Latifov Murodillo Abdusamadovich
@@ -53,12 +51,6 @@ public class GetCustomValuesAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService(ProgramStageService programStageService) {
-        this.programStageService = programStageService;
-    }
 
     private DataElementService dataElementService;
 
@@ -106,11 +98,13 @@ public class GetCustomValuesAction
 
     private int associationId;
 
-    public int getAssociationId() {
+    public int getAssociationId()
+    {
         return associationId;
     }
 
-    public void setAssociationId(int associationId) {
+    public void setAssociationId( int associationId )
+    {
         this.associationId = associationId;
     }
 
@@ -174,13 +168,12 @@ public class GetCustomValuesAction
         customValueIds = new ArrayList<String>();
         customValueNames = new ArrayList<String>();
 
-        ProgramStage programStage = programStageService.getProgramStage( associationId );
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         DataElementCategoryOptionCombo dataElementCategoryOptionCombo = dataElementCategoryService
             .getDataElementCategoryOptionCombo( categoryOptionComboId );
 
         CustomValue customValue = new CustomValue();
-        //customValue.setDataSet( programStage );
+        // customValue.setDataSet( programStage );
         customValue.setDataElement( dataElement );
         customValue.setOptionCombo( dataElementCategoryOptionCombo );
 
@@ -205,7 +198,9 @@ public class GetCustomValuesAction
         }
         else
         {
-            //customValues = new ArrayList<CustomValue>( customValueService.getCustomValues( dataSet, dataElement,dataElementCategoryOptionCombo ) );
+            // customValues = new ArrayList<CustomValue>(
+            // customValueService.getCustomValues( dataSet,
+            // dataElement,dataElementCategoryOptionCombo ) );
         }
 
         Iterator<CustomValue> customValueIterator = customValues.iterator();
@@ -215,7 +210,7 @@ public class GetCustomValuesAction
             while ( customValueIterator.hasNext() )
             {
                 CustomValue customVal = customValueIterator.next();
-                
+
                 if ( !customValueNames.contains( customVal.getCustomValue() ) )
                 {
                     customValueIds.add( String.valueOf( customVal.getId() ) );

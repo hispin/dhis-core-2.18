@@ -76,13 +76,5 @@ public interface SectionStore
      * 
      * @return a Collection of Sections.
      */
-    Collection<Section> getAllSections();
-
-    /**
-     * Retrieves all Sections for the given DataSet.
-     * 
-     * @param dataSet the DataSet.
-     * @return a Collection of Sections.
-     */
-    Collection<Section> getSectionByDataSet(DataSet dataSet);
+    Collection<Section> getAllSections();   
 }

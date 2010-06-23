@@ -46,7 +46,7 @@
       <result name="input" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <result name="success" type="chain">section</result>
+      <result name="success" type="redirect">section.action</result>
       <param name="javascripts">javascript/section.js
       ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
       ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
@@ -85,6 +85,16 @@
     <action name="removeSection" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
+	  
+	<action name="greySection" 
+      class="org.hisp.dhis.dataset.action.section.GreySectionAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/greySection.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+      <param name="javascripts">javascript/dataSet.js,javascript/section.js
+      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+    </action>  
 	
     <!-- Get details -->
     

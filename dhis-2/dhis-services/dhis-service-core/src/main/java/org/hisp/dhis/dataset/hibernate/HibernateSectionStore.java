@@ -29,7 +29,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,13 +88,5 @@ public class HibernateSectionStore
     {
         Session session = sessionFactory.getCurrentSession();
         session.update( section );
-    }
-
-    @SuppressWarnings("unchecked")
-    public Collection<Section> getSectionByDataSet( DataSet dataSet )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        return session.createQuery( "from Section as sec where sec.dataSet = ?" ).setEntity( 0, dataSet ).list();
-    }
+    }   
 }

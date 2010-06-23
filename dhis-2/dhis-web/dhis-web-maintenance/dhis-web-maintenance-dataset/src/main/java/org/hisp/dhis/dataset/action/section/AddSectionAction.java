@@ -32,6 +32,8 @@ import com.opensymphony.xwork2.Action;
 import java.util.*;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
@@ -42,49 +44,72 @@ import org.hisp.dhis.dataset.SectionService;
 public class AddSectionAction
     implements Action
 {
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
 
     private DataElementService dataElementService;
 
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private SectionService sectionService;
 
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+
     // -------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer categoryComboId;
 
     private Integer dataSetId;
 
     private String sectionName;
 
-    private String sectionLabel;
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private String sectionTitle;
 
     private List<String> selectedList = new ArrayList<String>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    private DataSet dataset;
+    private DataElementCategoryCombo categoryCombo;
 
-    // -------------------------------------------------------------------------
-    // Getters & setters
-    // -------------------------------------------------------------------------
+    private DataSet dataSet;
 
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
     public void setSectionName( String sectionName )
     {
         this.sectionName = sectionName;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     public List<String> getSelectedList()
@@ -97,24 +122,19 @@ public class AddSectionAction
         this.selectedList = selectedList;
     }
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setSectionTitle( String sectionTitle )
     {
-        this.dataElementService = dataElementService;
+        this.sectionTitle = sectionTitle;
     }
 
-    public void setSectionService( SectionService sectionService )
+    public Integer getCategoryComboId()
     {
-        this.sectionService = sectionService;
+        return categoryComboId;
     }
 
-    public void setSectionLabel( String sectionLabel )
+    public void setCategoryComboId( Integer categoryComboId )
     {
-        this.sectionLabel = sectionLabel;
-    }
-
-    public Integer getDataSetId()
-    {
-        return dataSetId;
+        this.categoryComboId = categoryComboId;
     }
 
     public List<DataElement> getDataElements()
@@ -127,16 +147,26 @@ public class AddSectionAction
         this.dataElements = dataElements;
     }
 
-    public DataSet getDataset()
+    public DataSet getDataSet()
     {
-        return dataset;
+        return dataSet;
     }
 
-    public void setDataset( DataSet dataset )
+    public void setDataSet( DataSet dataSet )
     {
-        this.dataset = dataset;
+        this.dataSet = dataSet;
     }
-    
+
+    public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
+    {
+        this.categoryCombo = categoryCombo;
+    }
+
+    public DataElementCategoryCombo getCategoryCombo()
+    {
+        return categoryCombo;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -147,72 +177,96 @@ public class AddSectionAction
         if ( dataSetId == null )
         {
             return INPUT;
-
         }
         else
         {
-            dataset = dataSetService.getDataSet( dataSetId.intValue() );
+            dataSet = dataSetService.getDataSet( dataSetId.intValue() );
+        }
 
-            dataElements = new ArrayList<DataElement>( dataset.getDataElements() );
+        if ( categoryComboId == null )
+        {
+            return INPUT;
+        }
+        else
+        {
+            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-            Collection<Section> sections = sectionService.getSectionByDataSet( dataset );
-
-            for ( Section section : sections )
+            for ( Section section : dataSet.getSections() )
             {
                 dataElements.removeAll( section.getDataElements() );
             }
 
+            categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( categoryComboId.intValue() );
+
+            Iterator<DataElement> dataElementIterator = dataElements.iterator();
+
+            while ( dataElementIterator.hasNext() )
+            {
+                DataElement de = dataElementIterator.next();
+
+                if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
+                {
+                    dataElementIterator.remove();
+                }
+            }
+
             Collections.sort( dataElements, new DataElementNameComparator() );
+
         }
 
         if ( sectionName == null )
-        {
+        {            
             return INPUT;
         }
+
         else
         {
             sectionName = sectionName.trim();
-            
+
             if ( sectionName.length() == 0 )
-            {
+            {                
                 return INPUT;
             }
         }
 
-        if ( sectionLabel == null )
-        {
+        if ( sectionTitle == null )
+        {            
             return INPUT;
         }
         else
         {
-            sectionLabel = sectionLabel.trim();
-            
-            if ( sectionLabel.length() == 0 )
-            {
+            sectionTitle = sectionTitle.trim();
+
+            if ( sectionTitle.length() == 0 )
+            {                
                 return INPUT;
             }
         }
-        
+
         if ( selectedList.size() == 0 )
         {
             return INPUT;
-        }
+        }       
 
         Section section = new Section();
 
+        section.setDataSet( dataSet );
         section.setName( sectionName );
-        section.setLabel( sectionLabel );
+        section.setTitle( sectionTitle );
         section.setSortOrder( 0 );
-        section.setDataSet( dataSetService.getDataSet( dataSetId ) );
+
+        List<DataElement> selectedDataElements = new ArrayList<DataElement>();
 
         for ( String id : selectedList )
         {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-            section.addDataElement( dataElement );
+            DataElement d = dataElementService.getDataElement( Integer.parseInt( id ) );
+            selectedDataElements.add( d );
         }
 
+        section.setDataElements( selectedDataElements );
         sectionService.addSection( section );
 
         return SUCCESS;
     }
+
 }
