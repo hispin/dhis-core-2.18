@@ -7,6 +7,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
   
   <!-- Store definitions -->
+	
+  <bean id="org.hisp.dhis.dataelement.DataElementOperandStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.DataElementOperand"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>	
   
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormAssociationStore"
     class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormAssociationStore"/>
@@ -172,6 +178,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
    
   <!-- Service definitions -->
 
+  <bean id="org.hisp.dhis.dataelement.DataElementOperandService"
+    class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
+    <property name="dataElementOperandStore"
+      ref="org.hisp.dhis.dataelement.DataElementOperandStore"/>    
+  </bean>
+	
   <bean id="org.hisp.dhis.customvalue.CustomValueService"
     class="org.hisp.dhis.customvalue.DefaultCustomValueService">
     <property name="customValueStore"

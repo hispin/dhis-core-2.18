@@ -210,8 +210,11 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_, selec
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
         
-        request.send( 'saveMultiDimensionalValue.action?inputId=' +
-                inputId + '&value=' + value );
+        request.send( 'saveMultiDimensionalValue.action?dataElementId=' +
+                dataElementId + '&optionComboId=' + optionComboId + '&value=' + value );
+        
+        /*request.send( 'saveMultiDimensionalValue.action?inputId=' +
+                inputId + '&value=' + value );*/
     };
     
     function handleResponse( rootElement )

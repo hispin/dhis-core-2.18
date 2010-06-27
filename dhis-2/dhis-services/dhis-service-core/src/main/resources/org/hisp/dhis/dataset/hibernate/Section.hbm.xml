@@ -20,12 +20,13 @@
 		<list-index column="sort_order" base="1"/>
 		<many-to-many class="org.hisp.dhis.dataelement.DataElement" 
           column="dataelementid" foreign-key="fk_section_dataelementid" unique="true"/>
-	</list> 
+	</list> 	
 	  
-	<set name="greyedFields">
+	<set name="greyedFields" table="sectiongreyedfields">
       <key column="sectionid"/>
-      <one-to-many class="org.hisp.dhis.dataelement.DataElementOperand"/>		  
-    </set>   	   
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand" 
+        column="dataelementoperandid" foreign-key="fk_section_dataelementoperandid"/>
+    </set>     
      
    <property name="sortOrder" column="sortorder"/>
 

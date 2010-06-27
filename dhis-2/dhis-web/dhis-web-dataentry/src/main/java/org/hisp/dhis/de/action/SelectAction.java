@@ -395,7 +395,7 @@ public class SelectAction
             registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period, organisationUnit );
 
             registrationDate = registration != null ? registration.getDate() : new Date();
-        }
+        }        
 
         if ( useSectionForm != null )
         {

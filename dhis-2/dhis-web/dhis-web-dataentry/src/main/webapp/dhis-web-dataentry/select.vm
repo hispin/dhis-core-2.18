@@ -28,7 +28,7 @@
 		onchange="document.getElementById( 'selectForm' ).submit();">	
 	<label>$i18n.getString( "use_default_form" )</label><br>
 
-	<input type="checkbox" id="useSectionForm" name="useSectionForm" #if( $useSectionForm ) checked="checked" #end  #if(!$haveSection) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
+	<input type="checkbox" id="useSectionForm" name="useSectionForm" #if( $useSectionForm ) checked="checked" #end  #if( !$haveSection ) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
 	<label>$i18n.getString( "use_section_form" )</label><br>
 
 	<input type="checkbox" id="useShortName" name="useShortName" #if( $useShortName ) checked="checked" #end  #if( $customDataEntryFormExists && !$useDefaultForm ) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">

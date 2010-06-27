@@ -146,7 +146,7 @@ public class SaveValueAction
     public String getStoredBy()
     {
         return storedBy;
-    }
+    }    
     
     private String inputId;
 
@@ -170,8 +170,8 @@ public class SaveValueAction
 
         Period period = selectedStateManager.getSelectedPeriod();
                 
-        dataElementId = Integer.parseInt( inputId.substring( 0, inputId.indexOf( ":" ) ) );
-        optionComboId = Integer.parseInt( inputId.substring( inputId.indexOf( ":" )+1, inputId.length() ) );
+        /*dataElementId = Integer.parseInt( inputId.substring( 0, inputId.indexOf( ":" ) ) );
+        optionComboId = Integer.parseInt( inputId.substring( inputId.indexOf( ":" )+1, inputId.length() ) );*/
                 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );        
 
