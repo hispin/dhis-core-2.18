@@ -125,6 +125,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="customValueService">
 			<ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
 		</property>
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+		</property> 
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		<property name="dataEntryScreenManager"

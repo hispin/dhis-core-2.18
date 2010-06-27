@@ -27,6 +27,8 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +45,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
@@ -55,6 +58,7 @@ import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -124,12 +128,19 @@ public class SectionFormAction
     {
         this.categoryService = categoryService;
     }
-    
+
     private DataEntryScreenManager dataEntryScreenManager;
 
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
     {
         this.dataEntryScreenManager = dataEntryScreenManager;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     private I18n i18n;
@@ -140,7 +151,7 @@ public class SectionFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input/output
     // -------------------------------------------------------------------------
 
     private List<CustomValue> customValues = new ArrayList<CustomValue>();
@@ -157,9 +168,9 @@ public class SectionFormAction
         return sections;
     }
 
-    private Map<Integer, DataValue> dataValueMap;
+    private Map<String, DataValue> dataValueMap;
 
-    public Map<Integer, DataValue> getDataValueMap()
+    public Map<String, DataValue> getDataValueMap()
     {
         return dataValueMap;
     }
@@ -185,9 +196,9 @@ public class SectionFormAction
         return dataElementValueTypeMap;
     }
 
-    private Map<Integer, MinMaxDataElement> minMaxMap;
+    private Map<String, MinMaxDataElement> minMaxMap;
 
-    public Map<Integer, MinMaxDataElement> getMinMaxMap()
+    public Map<String, MinMaxDataElement> getMinMaxMap()
     {
         return minMaxMap;
     }
@@ -198,10 +209,6 @@ public class SectionFormAction
     {
         return integer;
     }
-
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
 
     private Integer selectedDataSetId;
 
@@ -282,12 +289,26 @@ public class SectionFormAction
     {
         return sectionIsMultiDimensional;
     }
-    
+
     private Map<Integer, Integer> sectionCombos = new HashMap<Integer, Integer>();
 
     public Map<Integer, Integer> getSectionCombos()
     {
         return sectionCombos;
+    }
+
+    private Map<String, Boolean> greyedFields = new HashMap<String, Boolean>();
+
+    public Map<String, Boolean> getGreyedFields()
+    {
+        return greyedFields;
+    }
+
+    private Boolean zeroValueSaveMode;
+
+    public Boolean getZeroValueSaveMode()
+    {
+        return zeroValueSaveMode;
     }
 
     // -------------------------------------------------------------------------
@@ -297,6 +318,8 @@ public class SectionFormAction
     public String execute()
         throws Exception
     {
+
+        zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
@@ -322,11 +345,12 @@ public class SectionFormAction
         Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
             organisationUnit, dataElements );
 
-        minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
+        minMaxMap = new HashMap<String, MinMaxDataElement>( minMaxDataElements.size() );
 
         for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
         {
-            minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
+            minMaxMap.put( minMaxDataElement.getDataElement().getId() + ":"
+                + minMaxDataElement.getOptionCombo().getId(), minMaxDataElement );
         }
 
         // ---------------------------------------------------------------------
@@ -346,13 +370,20 @@ public class SectionFormAction
             if ( section.getDataElements().size() > 0 )
             {
                 orderedCategoryCombos.add( section.getDataElements().iterator().next().getCategoryCombo() );
-                
-                sectionCombos.put( section.getId(), section.getDataElements().iterator().next().getCategoryCombo().getId() );
+
+                sectionCombos.put( section.getId(), section.getDataElements().iterator().next().getCategoryCombo()
+                    .getId() );
             }
-            
-            if( dataEntryScreenManager.hasMultiDimensionalDataElement( section ) )
+
+            if ( dataEntryScreenManager.hasMultiDimensionalDataElement( section ) )
             {
                 sectionIsMultiDimensional.put( section.getId(), true );
+            }
+
+            for ( DataElementOperand operand : section.getGreyedFields() )
+            {
+                greyedFields.put( operand.getDataElement().getId() + ":" + operand.getCategoryOptionCombo().getId(),
+                    true );
             }
         }
 
@@ -427,13 +458,17 @@ public class SectionFormAction
         // Get the DataValues and create a map
         // ---------------------------------------------------------------------
 
-        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements );
+        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements,
+            allOptionCombos );
 
-        dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
+        dataValueMap = new HashMap<String, DataValue>( dataValues.size() );
 
         for ( DataValue dataValue : dataValues )
         {
-            dataValueMap.put( dataValue.getDataElement().getId(), dataValue );
+            Integer deId = dataValue.getDataElement().getId();
+            Integer ocId = dataValue.getOptionCombo().getId();
+
+            dataValueMap.put( deId.toString() + ':' + ocId.toString(), dataValue );
         }
 
         // ---------------------------------------------------------------------
