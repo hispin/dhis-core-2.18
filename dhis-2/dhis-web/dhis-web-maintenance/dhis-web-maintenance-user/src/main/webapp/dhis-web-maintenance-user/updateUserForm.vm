@@ -20,7 +20,7 @@
 										validateUpdateUser();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 				jQuery("#rawPassword").focus();
 			}
 	);
