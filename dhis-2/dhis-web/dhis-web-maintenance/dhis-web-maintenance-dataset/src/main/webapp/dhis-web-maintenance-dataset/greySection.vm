@@ -1,0 +1,48 @@
+  <h3>$i18n.getString( "section_grey_field_managment" )</h3>
+  
+  <table id="detailsList">
+    <col> ## Labels
+    <col> ## Input
+    <thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "section_details" )</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name" disabled="disabled"></td>        
+      </tr>
+      <tr>
+        <td><label>$i18n.getString( "title" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="sectionTitle" name="sectionTitle" style="width:20em" value="$section.title" disabled="disabled"></td>
+      </tr>
+      <tr>
+        <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" style="width:20em" value="$section.dataSet.name" disabled="disabled"></td>
+      </tr>
+      <tr>
+        <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"></td>
+      </tr>
+    </tbody>    
+  </table>
+<br>
+<hr style="clear:both">
+<br> 
+
+#if( $sectionIsMultiDimensional == "true" )    
+    #parse( "/dhis-web-maintenance-dataset/sectionMultiDimensionalDataElement.vm" )
+#else
+    #parse( "/dhis-web-maintenance-dataset/sectionDataElement.vm" )
+#end
+
+<p>
+	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( "back" )">
+</p>
+	
+<script type="text/javascript">
+    var i18n_enable = '$encoder.jsEscape( $i18n.getString( "enable" ) , "'" )';
+    var i18n_disable = '$encoder.jsEscape( $i18n.getString( "disable" ) , "'" )';
+</script>	
+	
