@@ -30,6 +30,8 @@ package org.hisp.dhis.datavalue;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -88,5 +90,14 @@ public class DefaultDataValueAuditService
     {
         dataValueAuditStore.deleteDataValueAuditByDataElement( dataElement );
         
+    }
+    public void deleteByDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    {
+    	dataValueAuditStore.deleteByDataElementCategoryOptionCombo( optionCombo );
+    }
+    
+    public void deleteByPeriod( Period period )
+    {
+    	dataValueAuditStore.deleteByPeriod( period );
     }
 }

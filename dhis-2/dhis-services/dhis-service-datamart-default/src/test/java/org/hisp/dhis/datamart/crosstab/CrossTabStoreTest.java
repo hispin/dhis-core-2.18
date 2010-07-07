@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
@@ -17,6 +18,8 @@ public class CrossTabStoreTest
     private CrossTabStore crossTabStore;
     
     private List<DataElementOperand> operands;
+    
+    private String key = RandomStringUtils.randomAlphanumeric( 8 );
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -47,9 +50,9 @@ public class CrossTabStoreTest
     @Test
     public void testCreateGetCrossTabTable()
     {
-        crossTabStore.createCrossTabTable( operands );
+        crossTabStore.createCrossTabTable( operands, key );
         
-        Map<String, Integer> columnNames = crossTabStore.getCrossTabTableColumns();
+        Map<String, Integer> columnNames = crossTabStore.getCrossTabTableColumns( key );
         
         assertEquals( 6, columnNames.size() );
         assertEquals( new Integer( 1 ), columnNames.get( "periodid" ) );
@@ -63,8 +66,8 @@ public class CrossTabStoreTest
     @Test
     public void testDropCrossTabTable()
     {
-        crossTabStore.createCrossTabTable( operands );
+        crossTabStore.createCrossTabTable( operands, key );
         
-        crossTabStore.dropCrossTabTable();
+        crossTabStore.dropCrossTabTable( key );
     }
 }

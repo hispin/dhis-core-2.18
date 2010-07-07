@@ -225,6 +225,15 @@ jQuery.validator.addMethod("required_group", function(value, element) {
 jQuery.validator.addMethod("date", function(value, element, param) {
 	return this.optional(element) || getDateFromFormat(value,param);
 });
+
+jQuery.validator.addMethod("custome_regex", function(value, element, params) {
+	
+	params[0] = (params[0] == '') ? new RegExp(params[0]) : params[0];
+	
+	return this.optional(element) || params[0].test(value);
+
+});
+
 // Support method for date
 //Parse a string and convert it to a Date object.
 //If string cannot be parsed, return null.
@@ -419,4 +428,9 @@ function getInt(str,i,minlength,maxlength) {
 		if (_isInteger(token)) { return token; }
 		}
 	return null;
+}
+
+function validatorFormat( text )
+{
+	return $.validator.format( text );
 }

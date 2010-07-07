@@ -107,6 +107,7 @@ jQuery(document).ready(function(){
 		</td>
 	</tr>
 	#if($patient.underAge)
+		#set( $representative = $patient.representative ) 
 		<tr>
 			<td>$i18n.getString("representative")</td>
 			<td>$patient.representative.getFullName() <a title="$i18n.getString('patient_info')" href="#" id="btnRepresentativeInfo" rel="#representativeInfo"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
@@ -256,25 +257,25 @@ div#hiddenModalContent td {padding: 2px 5px}
 <table>
 	<tr>
 		<td><strong>$i18n.getString("full_name")</strong></td>
-		<td>$patient.getFullName()</td>
+		<td>$representative.getFullName()</td>
 	</tr>
 	<tr>
 		<td><strong>$i18n.getString("gender")</strong></td>
-		<td> $patient.gender</td>
+		<td> $representative.gender</td>
 	</tr>
 	<tr>
 		<td><strong>$i18n.getString("birth_date")</strong></td>
-		<td>$format.formatDate( $patient.birthDate )</td>
+		<td>$format.formatDate( $representative.birthDate )</td>
 	</tr>
 	<tr>
 		<td><strong>$i18n.getString("age")</strong></td>
-		<td> $patient.getAge() </td>
+		<td> $representative.getAge() </td>
 	</tr>
 	<tr>
 		<td><strong>$i18n.getString("blood_group")</strong></td>
-		<td>$patient.getBloodGroup()</td>
+		<td>$representative.getBloodGroup()</td>
 	</tr>
-	#foreach( $patientIdentifier in $patient.identifiers )
+	#foreach( $patientIdentifier in $representative.identifiers )
 	  <tr>  
 	  	<td><strong>#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name #else $i18n.getString("system_identifier") #end</strong></td>      
 	      <td> $patientIdentifier.identifier </td>
@@ -283,7 +284,7 @@ div#hiddenModalContent td {padding: 2px 5px}
 	<tr>
 		<td><strong>$i18n.getString("programs")</strong></td>
 		<td>  
-			 #foreach( $program in $patient.programs )
+			 #foreach( $program in $representative.programs )
 			 	#if( $velocityCount == 1 )
 	      			 $program.name
 	      		#else ,  $program.name 

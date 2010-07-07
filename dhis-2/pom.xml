@@ -72,6 +72,21 @@
       <subscribe>https://launchpad.net/~dhis2-devs</subscribe>
     </mailingList>
   </mailingLists>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <formats>
+            <format>html</format>
+            <format>xml</format>
+          </formats>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <build>
     <plugins>
@@ -262,7 +277,7 @@
       <dependency>
         <groupId>org.amplecode</groupId>
         <artifactId>quick</artifactId>
-        <version>1.1.7</version>
+        <version>1.1.8</version>
       </dependency>
       <dependency>
         <groupId>com.lowagie</groupId>

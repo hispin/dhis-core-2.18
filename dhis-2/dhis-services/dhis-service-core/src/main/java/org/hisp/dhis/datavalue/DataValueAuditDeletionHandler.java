@@ -27,6 +27,10 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -59,9 +63,32 @@ public class DataValueAuditDeletionHandler
     }
 
     @Override
+    public void deleteSource( Source source )
+    {
+    	dataValueAuditService.deleteDataValueAuditBySource( source );
+    }
+
+    @Override
+    public void deleteDataElement( DataElement dataElement )
+    {
+    	dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
+    }
+
+    @Override
+    public void deletePeriod( Period period )
+    {
+    	dataValueAuditService.deleteByPeriod( period );
+    }
+    
+    @Override
+    public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo)
+    {
+    	dataValueAuditService.deleteByDataElementCategoryOptionCombo( categoryOptionCombo );
+    }
+
+    @Override
     public void deleteDataValue( DataValue dataValue )
     {
         dataValueAuditService.deleteDataValueAuditByDataValue( dataValue );
     }
-
 }

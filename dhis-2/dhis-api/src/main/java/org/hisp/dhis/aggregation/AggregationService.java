@@ -97,4 +97,6 @@ public interface AggregationService
      */
     double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
+    
+    void clearCache();
 }

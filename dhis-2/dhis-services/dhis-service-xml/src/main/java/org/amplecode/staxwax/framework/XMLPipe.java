@@ -111,8 +111,7 @@ public class XMLPipe
             }
             catch ( InterruptedException ex )
             {
-                log.warn( "XMLpipe read interrupted : " + ex );
-                throw new XMLStreamException( ex.toString() );
+                throw new XMLStreamException( "XMLpipe read interrupted", ex );
             }
         }
 
@@ -133,8 +132,6 @@ public class XMLPipe
         public String getElementText()
             throws XMLStreamException
         {
-            try
-            {
                 // get the text
                 String result = nextEvent().asCharacters().getData();
                 // pop (and test caste) the end element
@@ -142,12 +139,6 @@ public class XMLPipe
 
                 return result;
 
-            }
-            catch ( Exception ex )
-            {
-                log.warn( "XMLpipe getElementText problem : " + ex );
-                throw new XMLStreamException( ex.toString() );
-            }
         }
 
         @Override
@@ -170,7 +161,7 @@ public class XMLPipe
             throws XMLStreamException
         {
             // not a real stream ... no handle to close
-	    return;
+    	    return;
         }
 
         @Override

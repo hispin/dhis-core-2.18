@@ -32,14 +32,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: MemoryAggregationCache.java 4646 2008-02-26 14:54:29Z larshelg $
  */
 public class MemoryAggregationCache
     implements AggregationCache
@@ -50,13 +49,7 @@ public class MemoryAggregationCache
     // Cache
     // -------------------------------------------------------------------------
 
-    private final ThreadLocal<OrganisationUnitHierarchy> latestHierarchyCache = new ThreadLocal<OrganisationUnitHierarchy>();
-    
-    private final ThreadLocal<Map<String, Collection<OrganisationUnitHierarchy>>> hierarchyCache = new ThreadLocal<Map<String,Collection<OrganisationUnitHierarchy>>>();
-    
-    private final ThreadLocal<Map<String, Collection<Integer>>> childrenCache = new ThreadLocal<Map<String,Collection<Integer>>>();
-    
-    private final ThreadLocal<Map<String, Collection<Period>>> intersectingPeriodCache = new ThreadLocal<Map<String,Collection<Period>>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> intersectingPeriodCache = new ThreadLocal<Map<String,Collection<Integer>>>();
 
     private final ThreadLocal<Map<String, Period>> periodCache = new ThreadLocal<Map<String,Period>>();
 
@@ -84,86 +77,22 @@ public class MemoryAggregationCache
     // AggregationCache implementation
     // -------------------------------------------------------------------------
 
-    public OrganisationUnitHierarchy getLatestOrganisationUnitHierarchy()
-    {
-        OrganisationUnitHierarchy hierarchy = latestHierarchyCache.get();
-        
-        if ( hierarchy != null )
-        {
-            return hierarchy;
-        }
-        
-        hierarchy = organisationUnitService.getLatestOrganisationUnitHierarchy();
-        
-        latestHierarchyCache.set( hierarchy );
-        
-        return hierarchy;
-    }
-    
-    public Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( final Date startDate, final Date endDate )
+    public Collection<Integer> getIntersectingPeriods( final Date startDate, final Date endDate )
     {
         final String key = startDate.toString() + SEPARATOR + endDate.toString();
         
-        Map<String, Collection<OrganisationUnitHierarchy>> cache = hierarchyCache.get();
+        Map<String, Collection<Integer>> cache = intersectingPeriodCache.get();
         
-        Collection<OrganisationUnitHierarchy> hierarchies = null;
-        
-        if ( cache != null && ( hierarchies = cache.get( key ) ) != null )
-        {
-            return hierarchies;
-        }
-        
-        hierarchies = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate );
-        
-        cache = ( cache == null ) ? new HashMap<String, Collection<OrganisationUnitHierarchy>>() : cache;
-        
-        cache.put( key, hierarchies );
-        
-        hierarchyCache.set( cache );
-        
-        return hierarchies;
-    }
-    
-    public Collection<Integer> getChildren( final OrganisationUnitHierarchy hierarchy, final int parentId )
-    {
-        final String key = hierarchy.getId() + SEPARATOR + parentId;
-        
-        Map<String, Collection<Integer>> cache = childrenCache.get();
-        
-        Collection<Integer> children = null;
-        
-        if ( cache != null && ( children = cache.get( key ) ) != null )
-        {
-            return children;
-        }
-        
-        children = organisationUnitService.getChildren( hierarchy.getId(), parentId );
-        
-        cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
-        
-        cache.put( key, children );
-        
-        childrenCache.set( cache );
-        
-        return children;
-    }
-    
-    public Collection<Period> getIntersectingPeriods( final Date startDate, final Date endDate )
-    {
-        final String key = startDate.toString() + SEPARATOR + endDate.toString();
-        
-        Map<String, Collection<Period>> cache = intersectingPeriodCache.get();
-        
-        Collection<Period> periods = null;
+        Collection<Integer> periods = null;
         
         if ( cache != null && ( periods = cache.get( key ) ) != null )
         {
             return periods;
         }
         
-        periods = periodService.getIntersectingPeriods( startDate, endDate );
+        periods = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectingPeriods( startDate, endDate ) );
         
-        cache = ( cache == null ) ? new HashMap<String, Collection<Period>>() : cache;
+        cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
         
         cache.put( key, periods );
         
@@ -171,7 +100,7 @@ public class MemoryAggregationCache
         
         return periods;
     }
-    
+        
     public Period getPeriod( final int id )
     {
         final String key = String.valueOf( id );
@@ -222,10 +151,8 @@ public class MemoryAggregationCache
     
     public void clearCache()
     {
-        latestHierarchyCache.remove();
-        hierarchyCache.remove();
-        childrenCache.remove();
         intersectingPeriodCache.remove();
         periodCache.remove();
+        organisationUnitLevelCache.remove();
     }
 }

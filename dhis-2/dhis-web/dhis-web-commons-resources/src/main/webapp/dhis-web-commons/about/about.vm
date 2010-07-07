@@ -11,7 +11,14 @@
   <dt>$i18n.getString( "database_type" ):</dt><dd>$!info.type</dd>
   <dt>$i18n.getString( "database_name" ):</dt><dd>$!info.name</dd>
   <dt>$i18n.getString( "database_user" ):</dt><dd>$!info.user</dd>
+  #if ( $currentUserIsSuper )
   <dt>$i18n.getString( "java_opts" ):</dt><dd>$!javaOpts</dd>
+  <dt>$i18n.getString( "java_version" ):</dt><dd>$systemProperties.get( "java.version" )</dd>
+  <dt>$i18n.getString( "java_vendor" ):</dt><dd>$systemProperties.get( "java.vendor" )</dd>
+  <dt>$i18n.getString( "os_name" ):</dt><dd>$systemProperties.get( "os.name" )</dd>
+  <dt>$i18n.getString( "os_architecture" ):</dt><dd>$systemProperties.get( "os.arch" )</dd>
+  <dt>$i18n.getString( "os_version" ):</dt><dd>$systemProperties.get( "os.version" )</dd>
+  #end
 </dl>
 <br/>
 <div><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='$!backUrl'" style="width:140px"/></div>

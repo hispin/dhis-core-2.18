@@ -277,7 +277,7 @@
 		class="org.springframework.security.web.context.HttpSessionContextIntegrationFilter" />
 
 	<bean id="authenticationProcessingFilter"
-		class="org.springframework.security.web.authentication.AuthenticationProcessingFilter">
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
         <property name="authenticationFailureHandler" ref="failureHandler" />
         <property name="authenticationSuccessHandler" ref="successHandler" />
@@ -496,7 +496,8 @@
 
 	<!-- i18n -->
 
-	<bean id="org.hisp.dhis.i18n.action.I18nAction" class="org.hisp.dhis.i18n.action.I18nAction">
+	<bean id="org.hisp.dhis.i18n.action.I18nAction" class="org.hisp.dhis.i18n.action.I18nAction"
+		scope="prototype">
 		<property name="i18nService">
 			<ref bean="org.hisp.dhis.i18n.I18nService" />
 		</property>
@@ -516,11 +517,9 @@
 		<property name="i18nService">
 			<ref bean="org.hisp.dhis.i18n.I18nService" />
 		</property>
-		<!--
 		<property name="translationService">
 			<ref bean="org.hisp.dhis.translation.TranslationService" />
 		</property>
-		-->
 	</bean>
 	
 	<bean id="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction" 
@@ -558,7 +557,9 @@
 
 	<!-- About -->
 
-	<bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype"/>
+	<bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype">
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+	</bean>
 
 	<bean id="org.hisp.dhis.about.action.HelpAction" class="org.hisp.dhis.about.action.HelpAction"
 		scope="prototype">

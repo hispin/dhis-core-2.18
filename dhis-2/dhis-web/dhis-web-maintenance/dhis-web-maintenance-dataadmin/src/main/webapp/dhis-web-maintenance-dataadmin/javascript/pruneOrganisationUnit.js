@@ -21,8 +21,8 @@ function treeSelected( unitIds )
 	}
 }
 
-function pruneOrganisationUnit() {
-	// itemId, itemName, confirmation, action 
+function pruneOrganisationUnit() 
+{
 	var result = window.confirm(i18n_confirmation);
 
 	if (result) {

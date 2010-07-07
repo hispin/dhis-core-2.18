@@ -289,9 +289,7 @@ public class DefaultDhis14XMLImportService
     
                 BufferedReader streamReader = new BufferedReader( new InputStreamReader( zipIn ) );
                 
-                BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
-                
-                importDataValueBatchHandler.init();
+                BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class ).init();
                 
                 CSVConverter dataValueConverter = new DataValueConverter( importDataValueBatchHandler,
                     categoryService,

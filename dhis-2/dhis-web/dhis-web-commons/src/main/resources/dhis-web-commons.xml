@@ -251,11 +251,15 @@
 		<action name="i18n" class="org.hisp.dhis.i18n.action.I18nAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-commons/i18n/translate.vm</param>
-			<param name="javascripts">../dhis-web-commons/i18n/i18n.js,../dhis-web-commons/lists/lists.js</param>
+			<param name="javascripts">../dhis-web-commons/i18n/i18n.js,../dhis-web-commons/lists/lists.js
+				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
+			</param>
 		</action>
 
 		<action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">
 			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm</result>
+			<result name="input" type="chain">i18n</result>
 		</action>
 		
 		<action name="validateAddDuplicatedTranslation" class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
@@ -269,6 +273,15 @@
 				/dhis-web-commons/i18n/responseTranslations.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="i18nJavaScriptSupport" class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="velocity">/dhis-web-commons/i18n/i18n.vm</result>			
+		</action>
+		
+		<action name="validationMessages" class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="velocity">/dhis-web-commons/util/validate/message.vm</result>			
+		</action>
+
 
 	</package>
 

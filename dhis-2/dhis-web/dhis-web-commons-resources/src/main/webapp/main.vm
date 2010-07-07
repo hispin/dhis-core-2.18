@@ -4,6 +4,9 @@
     <title>DHIS 2</title>
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/util/css/redmond/jquery-ui.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/util/css/redmond/ui.datepicker.css">	
+	
     <link type="image/png" rel="icon" href="../images/favicon.png">    
     
     #parse( "settings.vm" )
@@ -13,11 +16,16 @@
     #end
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
+	
+    <script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>    
     <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/lists.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/ui.datepicker.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.metadata.js"></script>
+	
     <script type="text/javascript" src="../main.js"></script>
     <script type="text/javascript">
       var i18n_show_menu = '$encoder.jsEscape( $i18n.getString( "show_menu" ) , "'")';

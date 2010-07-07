@@ -18,9 +18,16 @@ function runValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
-        var form = document.getElementById( 'runValidationForm' );
-        
-        form.submit();
+    	setWaitMessage( "Analysing data, please wait..." );
+    	
+        var url = 'runValidationAction.action?startDate=' + getFieldValue( 'startDate' ) +
+        	'&endDate=' + getFieldValue( 'endDate' ) + '&validationRuleGroupId=' + $( "#validationRuleGroupId" ).val();
+        	        
+		$.get( url, function( data ) {
+			$( "div#analysisInput" ).hide();
+			$( "div#analysisResult" ).show();
+			$( "div#analysisResult" ).html( data );
+		} );
     }
     else if ( type == 'error' )
     {

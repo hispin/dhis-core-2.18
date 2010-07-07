@@ -138,7 +138,9 @@ public class PeriodConverter
             period.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
             period.setStartDate( DateUtils.getMediumDate( values.get( FIELD_START_DATE ) ) );
             period.setEndDate( DateUtils.getMediumDate( values.get( FIELD_END_DATE ) ) );
-            
+
+            log.info( "Period: " + period.getId() + ' ' + ' ' + period.getPeriodType()
+                + ' ' + period.getStartDate() + ' ' + period.getEndDate());
             importObject( period, params );
         }
     }

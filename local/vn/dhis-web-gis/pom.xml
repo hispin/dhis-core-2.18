@@ -38,10 +38,6 @@
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-datamart-default</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.hisp.dhis</groupId>
-            <artifactId>dhis-service-jdbc</artifactId>
-        </dependency>
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-aggregationengine-default</artifactId>

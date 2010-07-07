@@ -38,5 +38,5 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 public interface IndicatorDataMart
 {
     int exportIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, 
-        Collection<Integer> organisationUnitIds, Collection<DataElementOperand> operands );
+        Collection<Integer> organisationUnitIds, Collection<DataElementOperand> operands, String key );
 }

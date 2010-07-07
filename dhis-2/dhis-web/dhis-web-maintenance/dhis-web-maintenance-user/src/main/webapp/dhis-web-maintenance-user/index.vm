@@ -2,7 +2,7 @@
 <h3>$i18n.getString( "dhis-web-maintenance-user" )</h3>
 
 <ul class="introList">
-    #introListItem( "alluser.action" "user" )
-    #introListItem( "user.action" "user_by_orgunit" )
-    #introListItem( "allRole.action" "user_role" )
+    #introListImgItem( "alluser.action" "user" "user" )
+    #introListImgItem( "user.action" "user_by_orgunit" "user" )
+    #introListImgItem( "allRole.action" "user_role" "user" )
 </ul>

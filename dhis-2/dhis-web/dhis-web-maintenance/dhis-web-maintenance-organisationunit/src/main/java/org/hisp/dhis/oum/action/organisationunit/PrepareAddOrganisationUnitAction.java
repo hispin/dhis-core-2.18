@@ -35,6 +35,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @author Nguyen Dang Quang
  * @version $Id: PrepareAddOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
+@SuppressWarnings("serial")
 public class PrepareAddOrganisationUnitAction
     extends ActionSupport
 {
@@ -52,9 +53,9 @@ public class PrepareAddOrganisationUnitAction
     public String execute()
     {
         Calendar cal = Calendar.getInstance();
-        cal.set( Calendar.YEAR, 1990 );
-        cal.set( Calendar.MONTH, 0 );
-        cal.set( Calendar.DATE, 1 );
+        //cal.set( Calendar.YEAR, 1990 );
+        //cal.set( Calendar.MONTH, 0 );
+        //cal.set( Calendar.DATE, 1 );
         this.defaultDate = cal.getTime();
         
         return SUCCESS;

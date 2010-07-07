@@ -26,8 +26,7 @@
  */
 package org.hisp.dhis.dataadmin.action.lock;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.Collection; //import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,7 +41,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class LockSelectedOrganisationUnitAction
-implements Action
+    implements Action
 {
     private static final Log LOG = LogFactory.getLog( LockSelectedOrganisationUnitAction.class );
 
@@ -92,8 +91,8 @@ implements Action
         try
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-            
-            Set<OrganisationUnit> lockedUnits = (Set<OrganisationUnit>) selectionTreeManager.getLockOnSelectedOrganisationUnits();
+
+            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();
             lockedUnits.add( unit );
             selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
         }

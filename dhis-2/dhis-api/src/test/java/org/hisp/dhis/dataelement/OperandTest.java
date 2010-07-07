@@ -27,7 +27,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,11 +46,11 @@ public class OperandTest
     @Test
     public void getRelevantAggregationLevel()
     {
-        DataElementOperand operand = new DataElementOperand( 1, 1, "Operand", new ArrayList<Integer>() );
+        DataElementOperand operand = new DataElementOperand( 1, 1, "Operand", null, null, new ArrayList<Integer>(), 0 );
         
         assertNull( operand.getRelevantAggregationLevel( 1 ) );
         
-        operand = new DataElementOperand( 1, 1, "Operand", Arrays.asList( 3, 5 ) );
+        operand = new DataElementOperand( 1, 1, "Operand", null, null, Arrays.asList( 3, 5 ), 0 );
         
         assertEquals( new Integer( 3 ), operand.getRelevantAggregationLevel( 1 ) );
         assertEquals( new Integer( 3 ), operand.getRelevantAggregationLevel( 2 ) );
@@ -60,12 +63,12 @@ public class OperandTest
     @Test
     public void aggregationLevelIsValid()
     {
-        DataElementOperand operand = new DataElementOperand( 1, 1, "Operand", new ArrayList<Integer>() );
+        DataElementOperand operand = new DataElementOperand( 1, 1, "Operand", null, null, new ArrayList<Integer>(), 0 );
         
         assertTrue( operand.aggregationLevelIsValid( 1, 3 ) );
         assertTrue( operand.aggregationLevelIsValid( 4, 3 ) );
         
-        operand = new DataElementOperand( 1, 1, "Operand", Arrays.asList( 3, 5 ) );
+        operand = new DataElementOperand( 1, 1, "Operand", null, null, Arrays.asList( 3, 5 ), 0 );
 
         assertTrue( operand.aggregationLevelIsValid( 2, 2 ) );
         assertTrue( operand.aggregationLevelIsValid( 2, 3 ) );

@@ -2,7 +2,7 @@
 { "dataElements": [
 #foreach( $dataElement in $dataElements )
   {
-    "id": $!encoder.jsEncode( ${dataElement.id} ),
+    "id":  ${dataElement.id} ,
     "name": "$!encoder.jsEncode( ${dataElement.name} )",
     "alternativeName": "$!encoder.jsEncode( ${dataElement.alternativeNamee} )",
     "shortName": "$!encoder.jsEncode( ${dataElement.shortName} )",

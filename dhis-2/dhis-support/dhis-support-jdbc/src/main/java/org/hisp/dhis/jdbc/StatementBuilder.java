@@ -84,12 +84,6 @@ public interface StatementBuilder
     String getCreateDataValueIndex();
     
     /**
-     * Creates a delete periods of type relative statement.
-     * @return a delete periods of type relative statement.
-     */
-    String getDeleteRelativePeriods();
-    
-    /**
      * Creates a delete datavalue statement.
      * @return a delete datavalue statement.
      */

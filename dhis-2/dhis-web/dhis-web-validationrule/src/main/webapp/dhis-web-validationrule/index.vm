@@ -2,11 +2,11 @@
 <h3>$i18n.getString( "dhis-web-validationrule" )</h3>
 
 <ul class="introList">
-    #introListItem( "showValidationRuleForm.action" "validation_rule" )
-    #introListItem( "showValidationRuleGroupForm.action" "validation_rule_group" )
-    #introListItem( "showRunValidationForm.action" "validation_rule_analysis" )
-    #introListItem( "viewAnalysisForm.action?key=stddevoutlier" "stddevoutlier_analysis" )
-    #introListItem( "viewAnalysisForm.action?key=minmaxoutlier" "minmaxoutlier_analysis" )
-    #introListItem( "viewAnalysisForm.action?key=gap" "gap_analysis" )
-    #introListItem( "getAnalysis.action?key=followup" "followup_analysis" )
+    #introListImgItem( "showValidationRuleForm.action" "validation_rule" "validationrule" )
+    #introListImgItem( "showValidationRuleGroupForm.action" "validation_rule_group" "validationrule" )
+    #introListImgItem( "showRunValidationForm.action" "validation_rule_analysis" "validationanalysis" )
+    #introListImgItem( "viewAnalysisForm.action?key=stddevoutlier" "stddevoutlier_analysis" "validationanalysis" )
+    #introListImgItem( "viewAnalysisForm.action?key=minmaxoutlier" "minmaxoutlier_analysis" "validationanalysis" )
+    #introListImgItem( "viewAnalysisForm.action?key=gap" "gap_analysis" "validationanalysis" )
+    #introListImgItem( "viewFollowUpAnalysisForm.action" "followup_analysis" "validationanalysis" )
 </ul>

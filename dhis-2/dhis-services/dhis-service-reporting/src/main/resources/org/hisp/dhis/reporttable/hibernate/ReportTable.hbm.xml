@@ -81,10 +81,8 @@
       <property name="reportingMonth"/>
       <property name="last3Months"/>
       <property name="last6Months"/>
-      <property name="last9Months"/>
       <property name="last12Months"/>
       <property name="soFarThisYear"/>
-      <property name="soFarThisFinancialYear"/>
       <property name="last3To6Months"/>
       <property name="last6To9Months"/>
       <property name="last9To12Months"/>

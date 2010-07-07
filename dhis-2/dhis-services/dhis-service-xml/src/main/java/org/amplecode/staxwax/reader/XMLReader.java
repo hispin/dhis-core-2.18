@@ -29,6 +29,7 @@ package org.amplecode.staxwax.reader;
  */
 
 import java.util.Map;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -43,11 +44,18 @@ public interface XMLReader
 {
     /**
      * Reads the name of the current XML element.
-     * 
+     *
      * @return The name of the current XML element.
      */
     String getElementName();
-    
+
+    /**
+     * Reads the QName of the current XML element.
+     *
+     * @return The QName of the current XML element.
+     */
+    QName getElementQName();
+
     /**
      * Reads the value of the current XML element.
      * 

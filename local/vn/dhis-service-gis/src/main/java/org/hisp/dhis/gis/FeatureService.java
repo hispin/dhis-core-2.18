@@ -60,4 +60,8 @@ public interface FeatureService
     public Collection<MapFile> getAllMapFile();
 
     public MapFile getMapFile( OrganisationUnit organisationUnit );
+    
+    public void deleteFeatureByOrganisationUnit( int arg0 );
+
+    public void deleteMapFileByOrganisationUnit( int arg0 );
 }

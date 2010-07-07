@@ -46,6 +46,7 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelStore;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,13 @@ public class HibernateReportExcelStore
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // --------------------------------------
     // Service of Report
@@ -134,8 +142,23 @@ public class HibernateReportExcelStore
     @SuppressWarnings( "unchecked" )
     public Collection<String> getReportExcelGroups()
     {
+        String sql;
+
+        if ( currentUserService.currentUserIsSuper() )
+        {
+            sql = "SELECT DISTINCT(reportgroup) FROM reportexcels ";
+        }
+        else
+        {
+            sql = "SELECT DISTINCT(reportgroup) FROM reportexcel_userroles, reportexcels "
+                + " WHERE reportexcels.reportexcelid=reportexcel_userroles.reportexcelid "
+                + " AND reportexcel_userroles.userroleid IN ( "
+                + " SELECT userrole.userroleid FROM userrole, userrolemembers " + " WHERE userrolemembers.userid="
+                + currentUserService.getCurrentUser().getId() + " AND userrole.userroleid=userrolemembers.userroleid)";
+        }
+
         Session session = sessionFactory.getCurrentSession();
-        SQLQuery sqlQuery = session.createSQLQuery( "select DISTINCT(reportgroup) from reportexcels" );
+        SQLQuery sqlQuery = session.createSQLQuery( sql );
 
         return sqlQuery.list();
     }
@@ -162,7 +185,6 @@ public class HibernateReportExcelStore
         return sqlQuery.list();
     }
 
-    
     // --------------------------------------
     // Service of Report Item
     // --------------------------------------

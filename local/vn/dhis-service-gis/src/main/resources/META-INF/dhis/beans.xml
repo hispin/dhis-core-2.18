@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
   
   <bean id="org.hisp.dhis.gis.FeatureStore"
     class="org.hisp.dhis.gis.hibernate.HibernateFeatureStore">
@@ -44,4 +46,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
     
+  <bean id="org.hisp.dhis.gis.FeatureDeleteHandler"
+    class="org.hisp.dhis.gis.FeatureDeleteHandler">
+    <property name="featureService" ref="org.hisp.dhis.gis.FeatureService"/>
+  </bean>
+  
+   <bean id="org.hisp.dhis.gis.LegendDeleteHandler"
+    class="org.hisp.dhis.gis.LegendDeleteHandler">
+    <property name="legendService" ref="org.hisp.dhis.gis.LegendService"/>
+  </bean>
+  
+   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"  ref="deletionManager"/>
+    <property name="targetMethod" value="addDeletionHandlers"/>
+    <property name="arguments">
+	  <list>
+        <list>
+          <ref local="org.hisp.dhis.gis.FeatureDeleteHandler"/>
+          <ref local="org.hisp.dhis.gis.LegendDeleteHandler"/>
+        </list>
+      </list>
+    </property>
+  </bean>
+  
+   <aop:config>
+    <aop:aspect ref="deletionInterceptor">      
+      <aop:before pointcut="execution( * org.hisp.dhis.gis.LegendService.delete*(..) )" method="intercept"/>
+    </aop:aspect>
+  </aop:config>
 </beans>

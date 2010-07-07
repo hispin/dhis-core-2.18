@@ -47,6 +47,8 @@ public class DailyPeriodType
      */
     public static final String NAME = "Daily";
 
+    public static final int FREQUENCY_ORDER = 1;
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
@@ -72,7 +74,13 @@ public class DailyPeriodType
 
         return new Period( this, fixedDate, fixedDate );
     }
-
+    
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
+    }
+    
     // -------------------------------------------------------------------------
     // CalendarPeriodType functionality
     // -------------------------------------------------------------------------

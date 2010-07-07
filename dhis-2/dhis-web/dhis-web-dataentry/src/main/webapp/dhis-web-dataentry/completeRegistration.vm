@@ -1,4 +1,5 @@
 <script>
+	/*
 	jQuery(document).ready(function(){
 		jQuery("#completeForm").validate({
 		meta:"validate"
@@ -8,8 +9,9 @@
 			//validateCompleteDataSet();
 		}
 		});
-	jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-});
+		jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+	});
+	*/
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
@@ -24,17 +26,15 @@
 	    <td><input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration || $periods.size() == 0 ) disabled="disabled"#end></td>
 	    <td><input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}"></td>
 	    <td><div id="dateDiv" name="dateDiv" #if( $registration || $periods.size() == 0 ) style="display:none"#else style="display:inline"#end>
-	       <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateField" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''"></div></td>
+	       </div></td>
 	</tr>
 </table>
 <span id="message"></span>
 </form>
 <script type="text/javascript">
-    Calendar.setup({
-        inputField     :    "dateField",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getDateField"   // trigger for the calendar (button ID)
-    });
+   jQuery(document).ready(function(){
+		datePicker( 'dateField' );
+   });
 </script>
 
 <script type="text/javascript">

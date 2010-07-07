@@ -153,6 +153,7 @@ public class DefaultCaseAggregationMappingService
     {
         input = StringUtils.deleteWhitespace( input );
         CaseAggregationQuery query = new CaseAggregationQuery();
+        
         String[] arr = input.split( CaseAggregationCondition.FUNCTION_IDENTIFIER );
         query.setFunction( arr[0] );
         char[] arrChar = arr[1].toCharArray();
@@ -336,23 +337,21 @@ public class DefaultCaseAggregationMappingService
         if(  input.getFunction().equals( "COUNT" ) )
         {
             function = "COUNT(*)";
-        }else if( input.getFunction().equals( "SUM" ))
+        }
+        else if( input.getFunction().equals( "SUM" ))
         {
             function = "SUM(" + ALIAS_DATAVALUE + ".value)";
-        }else {
+        }
+        else 
+        {
             // TODO: throw error : Invalid function
             return null;
         }
         
         String queryFrom = "Select " +  function + " from ";
         
-//        String queryFrom = "Select pdv from ";
         String queryWhere = " where ";
-        System.out.println("------------buildQuery");
-        System.out.println("ORGUNITL : "+organisationUnit);
-        
 
-        System.out.println( "listConditions: " + input.getConditions() );
         Map<String, String> map =   new HashMap<String, String>();
         map.put( MAP_CONSTANT_QUERYWHERE , queryWhere );
         map.put( MAP_CONSTANT_QUERYFROM , queryFrom );
@@ -378,9 +377,9 @@ public class DefaultCaseAggregationMappingService
             
         }
         
-//        queryWhere = queryWhere.replace( "$ENDDATE$",   "" + period.getEndDate()  );
-//        queryWhere = queryWhere.replace( "$STARTDATE$", "" + period.getStartDate() );
-//        queryWhere = queryWhere.replace( "$ORGUNITID$", "" + organisationUnit.getId() );
+        queryWhere = queryWhere.replace( "$ENDDATE$",   "" + period.getEndDate()  );
+        queryWhere = queryWhere.replace( "$STARTDATE$", "" + period.getStartDate() );
+        queryWhere = queryWhere.replace( "$ORGUNITID$", "" + organisationUnit.getId() );
         
         System.out.println("queryyyyyyyyyyyy:\n "+queryFrom + queryWhere );
         System.out.println("=================================================");
@@ -737,6 +736,7 @@ public class DefaultCaseAggregationMappingService
     public static void main( String[] args )
     {
         String string = "SUM@ COND{ ([DE:8.57.1]) < ([VL:2500]) } AND COND{ ([CP:gender]) = ([VL:'M']) }   ";
+        
         //String input = "COUNT@ COND{([DE:1.3923.1]) > ([VL:100])}";
         DefaultCaseAggregationMappingService test = new DefaultCaseAggregationMappingService();
         CaseAggregationQuery query = test.scan( string );

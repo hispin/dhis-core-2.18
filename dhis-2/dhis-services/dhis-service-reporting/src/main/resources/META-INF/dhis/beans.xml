@@ -92,8 +92,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.chart.ChartService"
     class="org.hisp.dhis.chart.impl.DefaultChartService">
-    <property name="dataMartService"
-      ref="org.hisp.dhis.datamart.DataMartService"/>
+	<property name="aggregationService"
+	  ref="org.hisp.dhis.aggregation.AggregationService"/>
     <property name="chartStore"
       ref="org.hisp.dhis.chart.ChartStore"/>
 	<property name="periodService"
@@ -237,6 +237,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.startup.OpenHealthDataSourceWriter">
     <property name="environmentVariable" value="OPENHEALTH_HOME"/>
     <property name="dataSourceFile" value="datasources.xml"/>
+	<property name="name" value="OpenHealthDataSourceWriter"/>
+    <property name="runlevel" value="6"/>
     <property name="skipInTests" value="true"/>
   </bean>
     

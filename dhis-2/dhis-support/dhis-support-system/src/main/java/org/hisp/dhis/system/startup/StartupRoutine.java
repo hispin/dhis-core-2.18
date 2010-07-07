@@ -47,6 +47,13 @@ public interface StartupRoutine
         throws Exception;
 
     /**
+     * Returns the name of the startup routine.
+     * 
+     * @return the name.
+     */
+    String getName();
+    
+    /**
      * StartupRoutines with lower runlevels will be executed before
      * StartupRoutines with higher runlevel.
      * 

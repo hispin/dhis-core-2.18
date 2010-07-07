@@ -27,7 +27,6 @@
 package org.hisp.dhis.mobile.api;
 
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -59,10 +58,12 @@ import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -82,6 +83,11 @@ public class DefaultMobileImportService
 
     @Autowired
     private LocationManager locationManager;
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
 
     private UserStore userStore;
 
@@ -147,13 +153,14 @@ public class DefaultMobileImportService
 
         List<User> allUsers = new ArrayList<User>( userStore.getAllUsers() );
 
-        User selectedUser = new User();
+        User selectedUser = null;
 
         for ( User user : allUsers )
         {
             if ( user.getPhoneNumber() != null && user.getPhoneNumber().equalsIgnoreCase( mobileNumber ) )
             {
                 selectedUser = user;
+                break;
             }
         }
 
@@ -168,14 +175,18 @@ public class DefaultMobileImportService
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
         List<Period> monthlyPeriods = null;
+        PeriodType pt = null;
         if ( periodType.equals( "3" ) )
         {
-            monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+            pt = new MonthlyPeriodType();
+            monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
+
         } else
         {
             if ( periodType.equals( "1" ) )
             {
-                monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new DailyPeriodType() ) );
+                pt = new DailyPeriodType();
+                monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
             }
         }
 
@@ -188,8 +199,30 @@ public class DefaultMobileImportService
             }
         }
 
-        return null;
+        Period period = pt.createPeriod( dateFormat.parse( startDate ) );
+        period = reloadPeriodForceAdd( period );
+        periodService.addPeriod( period );
 
+        return period;
+    }
+
+    private final Period reloadPeriod( Period period )
+    {
+        return periodService.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
+    }
+
+    private final Period reloadPeriodForceAdd( Period period )
+    {
+        Period storedPeriod = reloadPeriod( period );
+
+        if ( storedPeriod == null )
+        {
+            periodService.addPeriod( period );
+
+            return period;
+        }
+
+        return storedPeriod;
     }
 
     @Override
@@ -449,6 +482,7 @@ public class DefaultMobileImportService
     }
 
     @Override
+    @Transactional
     public void importAllFiles()
     {
         try

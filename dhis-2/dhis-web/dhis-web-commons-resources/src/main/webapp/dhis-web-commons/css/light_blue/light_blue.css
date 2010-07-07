@@ -5,7 +5,7 @@
 
 * 
 {
-  font-family: tahoma, sans-serif;
+  font-family: arial, sans-serif;
   line-height: 125%;
 }
 
@@ -34,11 +34,11 @@ div#header
 {
   background-image: url('logo_background.png');
   background-repeat: repeat-x;
-  height: 83px;
+  height: 71px;
   position: absolute;
   top: 0px;
-  left: 10px;
-  right: 10px;
+  left: 0px;
+  right: 0px;
 }
 
 img#header1
@@ -49,8 +49,8 @@ img#header1
 img#header2
 {
   position: absolute;
-  top: 9px;
-  left: 25px;
+  top: 7px;
+  left: 35px;
 }
 
 img#header3
@@ -62,46 +62,46 @@ img#menuSeparator1
 {
   position: absolute;
   top: 0px;
-  left: 570px;
+  left: 580px;
 }
 
 img#menuSeparator2
 {
   position: absolute;
   top: 0px;
-  left: 670px;
+  left: 680px;
 }
 
 img#menuSeparator3
 {
   position: absolute;
   top: 0px;
-  left: 770px;
+  left: 780px;
 }
 
 img#menuSeparator4
 {
   position: absolute;
   top: 0px;
-  left: 870px;
+  left: 880px;
 }
 
 img#menuSeparator5
 {
   position: absolute;
   top: 0px;
-  left: 970px;
+  left: 980px;
 }
 
 .menuLink
 {
-  height: 68px;
+  height: 64px;
   width: 98px;
   font-size: 12px;
   color: #ffffff;
   font-weight: bold;
   text-align: center;
-  line-height: 59px;
+  line-height: 53px;
   cursor: pointer;
 }
 
@@ -109,37 +109,38 @@ div#menuLink1
 {
   position: absolute;
   top: 7px;
-  left: 572px;
+  left: 582px;
 }
 
 div#menuLink2
 {
   position: absolute;
   top: 7px;
-  left: 672px;
+  left: 682px;
 }
 
 div#menuLink3
 {
   position: absolute;
   top: 7px;
-  left: 772px;
+  left: 782px;
 }
 
 div#menuLink4
 {
   position: absolute;
   top: 7px;
-  left: 872px;
+  left: 882px;
 }
 
 span#headerText
 {
   position: absolute;
-  top: 26px;
-  left: 218px;
+  top: 23px;
+  left: 228px;
+  font-weight: lighter;
   color: white;
-  font-size: 17px;
+  font-size: 13pt;
 }
 
 div#popupHeader 
@@ -166,33 +167,35 @@ span#popupHeaderText
 div#menuDropDown1
 {
   position: absolute;
-  top: 76px;
-  left: 570px;
+  top: 71px;
+  left: 580px;
 }
 
 div#menuDropDown2
 {
   position: absolute;
-  top: 76px;
-  left: 670px;
+  top: 71px;
+  left: 680px;
 }
 
 div#menuDropDown3
 {
   position: absolute;
-  top: 76px;
-  left: 770px;
+  top: 71px;
+  left: 780px;
 }
 
 .menuDropDownArea
 {
   font-size: 12px;
   color: #ffffff;
-  border: 1px solid #282c35;
+  border-right: 1px solid #282c35;
+  border-bottom: 1px solid #282c35;
+  border-left: 1px solid #282c35;
   padding-left: 5px;
   padding-right: 5px;
-  width: 191px;
-  background-color: #265687;
+  width: 189px;
+  background-color: #2a5a8a;
   display: none;
   z-index: 10;
   filter: alpha(opacity=90);
@@ -221,16 +224,16 @@ div#menuDropDown3
 
 #leftBar
 {
-  background-color: #33669b;
-  height: 472px;
-  width: 250px;
+  background-color: #35699f;
+  height: 535px;
+  width: 235px;
   float: left;
   position: absolute;
-  top: 85px;
-  left: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #10375f;
+  top: 71px;
+  left: 0px;
+  padding-top: 6px;
+  border-right: 1px solid #10375f;
+  border-bottom: 1px solid #10375f;
   filter: alpha(opacity=90);
   opacity: 0.90;
 }
@@ -245,8 +248,8 @@ div#menuDropDown3
 {
   font-size: 14px;
   margin-top: 16px;
-  margin-right: 17px;
-  margin-left: 17px;
+  margin-right: 15px;
+  margin-left: 15px;
   background-color: #265687;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -260,8 +263,8 @@ div#menuDropDown3
 
 #leftBarContents ul
 {
-  margin-left: 40px;
-  list-style-type: square;
+  margin-left: 26px;
+  list-style-type: none;
   color: white;
 }
 
@@ -292,37 +295,43 @@ div#menuDropDown3
 
 .page h1 
 {
-  font-size: 14pt;
+  font-size: 16pt;
+  font-weight: lighter;
   color: #606060;
 }
 
 .page h2 
 {
-  font-size: 13pt;
+  font-size: 15pt;
+  font-weight: lighter;
   color: #606060;
 }
 
 .page h3 
 {
-  font-size: 12pt;
+  font-size: 14pt;
+  font-weight: lighter;
   color: #606060;
 }
 
 .page h4 
 {
-  font-size: 11pt;
+  font-size: 13pt;
+  font-weight: lighter;
   color: #606060;
 }
 
 .page h5 
 {
-  font-size: 10pt;
+  font-size: 12pt;
+  font-weight: lighter;
   color: #606060;
 }
 
 .page h6 
 {
-  font-size: 9pt;
+  font-size: 11pt;
+  font-weight: lighter;
   color: #606060;
 }
 
@@ -331,7 +340,7 @@ div#menuDropDown3
   font-size: 9pt;
 }
 
-.page th 
+.page th, thead tr
 {
   background-image: url('head.png');
   background-repeat: repeat-x;
@@ -346,7 +355,7 @@ div#menuDropDown3
 
 #mainPage 
 {
-  margin: 102px 10px 10px 300px;
+  margin: 96px 10px 10px 270px;
 }
 
 #popupPage 

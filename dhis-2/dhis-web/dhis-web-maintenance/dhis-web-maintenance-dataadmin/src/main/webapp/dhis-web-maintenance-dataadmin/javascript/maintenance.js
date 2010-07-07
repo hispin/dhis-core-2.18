@@ -1,19 +1,17 @@
 
 function performMaintenance()
 {
-    var hierarchyHistory = document.getElementById( "hierarchyHistory" ).checked;
     var aggregatedDataValues = document.getElementById( "aggregatedDataValues" ).checked;
     var aggregatedIndicatorValues = document.getElementById( "aggregatedIndicatorValues" ).checked;
     var zeroValues = document.getElementById( "zeroValues" ).checked;
     var dataSetCompleteness = document.getElementById( "dataSetCompleteness" ).checked;
     var prunePeriods = document.getElementById( "prunePeriods" ).checked;
     
-    if ( hierarchyHistory || aggregatedDataValues || aggregatedIndicatorValues || zeroValues ||dataSetCompleteness || prunePeriods )
+    if ( aggregatedDataValues || aggregatedIndicatorValues || zeroValues ||dataSetCompleteness || prunePeriods )
     {
         setWaitMessage( i18n_performing_maintenance );
         
-        var params = "hierarchyHistory=" + hierarchyHistory +
-            "&aggregatedDataValues=" + aggregatedDataValues + 
+        var params = "aggregatedDataValues=" + aggregatedDataValues + 
             "&aggregatedIndicatorValues=" + aggregatedIndicatorValues +
             "&zeroValues=" + zeroValues +
             "&dataSetCompleteness=" + dataSetCompleteness +

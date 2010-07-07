@@ -166,6 +166,7 @@ public class DataElementCategoryOptionComboConverter
             reader.moveToStartElement( FIELD_NAME );
             String categoryComboName = reader.getElementValue();
 
+            log.debug( categoryComboName + ": " + categoryComboId + "-" + categoryOptionCombo.getId());
             // -----------------------------------------------------------------
             // Setting the persisted CategoryCombo on the CategoryOptionCombo
             // if not in preview

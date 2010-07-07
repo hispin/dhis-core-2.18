@@ -284,9 +284,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategoryOptions()
     {
-        BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategoryOption.class );
         
@@ -307,9 +305,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategories()
     {
-        BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategory.class );
 
@@ -330,9 +326,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategoryCombos()
     {
-        BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategoryCombo.class );
 
@@ -351,7 +345,7 @@ public class DefaultImportObjectManager
     }
 
     @Transactional
-    public void importCategoryOptionCombos()
+    public void importCategoryOptionCombos() //TODO reuse importer
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementCategoryOptionCombo.class );
 
@@ -430,9 +424,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataElements()
     {
-        BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class ).init();
         
         Map<Object, Integer> categoryComboMapping = objectMappingGenerator.getCategoryComboMapping( false );
         
@@ -482,9 +474,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataElementGroups()
     {
-        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class ).init();
             
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementGroup.class );
 
@@ -517,9 +507,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataElementGroupSets()
     {
-        BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementGroupSet.class );
         
@@ -552,9 +540,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicatorTypes()
     {
-        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorType.class );
 
@@ -575,14 +561,12 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicators()
     {
-        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
+        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class ).init();
         
         Map<Object, Integer> indicatorTypeMapping = objectMappingGenerator.getIndicatorTypeMapping( false );
         Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
         Map<Object, Integer> categoryOptionComboMapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
         
-        batchHandler.init();
-                
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Indicator.class );
 
         Importer<Indicator> importer = new IndicatorImporter( batchHandler, indicatorService );
@@ -606,9 +590,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicatorGroups()
     {
-        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorGroup.class );
 
@@ -641,9 +623,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicatorGroupSets()
     {
-        BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupSetBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupSetBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorGroupSet.class );
         
@@ -676,9 +656,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataDictionaries()
     {
-        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataDictionary.class );
         
@@ -699,9 +677,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataSets()
     {
-        BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataSet.class );
         
@@ -758,11 +734,8 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnits()
     {
-        BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
-        BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
-
-        sourceBatchHandler.init();
-        organisationUnitBatchHandler.init();
+        BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class ).init();
+        BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnit.class );
         
@@ -786,9 +759,7 @@ public class DefaultImportObjectManager
     {
         Map<Object, Integer> organisationUnitMapping = objectMappingGenerator.getOrganisationUnitMapping( false );
         
-        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( GroupMemberType.ORGANISATIONUNITRELATIONSHIP );
         
@@ -813,9 +784,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnitGroups()
     {
-        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnitGroup.class );
         
@@ -848,9 +817,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnitGroupSets()
     {
-        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnitGroupSet.class );
         
@@ -929,9 +896,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importPeriods()
     {
-        BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Period.class );
         
@@ -952,9 +917,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTables()
     {
-        BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( ReportTable.class );
         
@@ -992,9 +955,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCompleteDataSetRegistrations()
     {
-        BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
-
-        batchHandler.init();
+        BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class ).init();
         
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( CompleteDataSetRegistration.class );
 
@@ -1025,9 +986,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataValues()
     {
-        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
-        
-        batchHandler.init();
+        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
         
         Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
         Map<Object, Integer> periodMapping = objectMappingGenerator.getPeriodMapping( false );

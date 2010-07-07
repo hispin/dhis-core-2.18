@@ -24,6 +24,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- Section -->
+	<bean id="org.hisp.dhis.dataset.action.section.GetSectionAction"
+        class="org.hisp.dhis.dataset.action.section.GetSectionAction"
+        scope="prototype">
+        <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>        
+    </bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.section.AddSectionAction"
 		class="org.hisp.dhis.dataset.action.section.AddSectionAction"

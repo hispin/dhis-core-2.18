@@ -2,16 +2,16 @@
 <h3>$i18n.getString( "dhis-web-maintenance-datadictionary" )</h3>
 
 <ul class="introList">
-	#introListItem( "dataElement.action" "data_element" )
-	#introListItem( "dataElementGroup.action" "data_element_group" )
-    #introListItem( "dataElementGroupEditor.action" "data_element_group_editor" )
-    #introListItem( "dataElementGroupSet.action" "data_element_group_set" )
-    #introListItem( "category.action" "data_element_category" )
-    #introListItem( "categoryCombo.action" "data_element_category_combo" )
-    #introListItem( "indicator.action" "indicator" )
-    #introListItem( "indicatorType.action" "indicator_type" )
-    #introListItem( "indicatorGroup.action" "indicator_group" )
-    #introListItem( "indicatorGroupEditor.action" "indicator_group_editor" )
-    #introListItem( "indicatorGroupSet.action" "indicator_group_set" )
-    #introListItem( "dataDictionary.action" "data_dictionary" )
+	#introListImgItem( "dataElement.action" "data_element" "dataelement" )
+	#introListImgItem( "dataElementGroup.action" "data_element_group" "dataelement" )
+    #introListImgItem( "dataElementGroupEditor.action" "data_element_group_editor" "dataelement" )
+    #introListImgItem( "dataElementGroupSet.action" "data_element_group_set" "dataelement" )
+    #introListImgItem( "category.action" "data_element_category" "dataelement" )
+    #introListImgItem( "categoryCombo.action" "data_element_category_combo" "dataelement" )
+    #introListImgItem( "indicator.action" "indicator" "indicator" )
+    #introListImgItem( "indicatorType.action" "indicator_type" "indicator" )
+    #introListImgItem( "indicatorGroup.action" "indicator_group" "indicator" )
+    #introListImgItem( "indicatorGroupEditor.action" "indicator_group_editor" "indicator" )
+    #introListImgItem( "indicatorGroupSet.action" "indicator_group_set" "indicator" )
+    #introListImgItem( "dataDictionary.action" "data_dictionary" "datadictionary" )
 </ul>

@@ -29,8 +29,6 @@ package org.hisp.dhis.aggregation.impl.dataelement;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import org.hisp.dhis.aggregation.AggregationStore;
 import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
@@ -38,7 +36,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 
 /**
  * @author Lars Helge Overland
@@ -51,8 +48,6 @@ public abstract class AbstractDataElementAggregation
     // -------------------------------------------------------------------------
 
     protected final String TRUE = "true";
-
-    protected final String FALSE = "false";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -100,7 +95,7 @@ public abstract class AbstractDataElementAggregation
      * @return collection a datavalues
      */
     protected abstract Collection<DataValue> getDataValues( int dataElementId, int optionComboId, int organisationUnitId,
-        OrganisationUnitHierarchy hierarchy, Date startDate, Date endDate );    
+        Date startDate, Date endDate );    
     
     protected abstract double[] getAggregateOfValues( Collection<DataValue> values, Date startDate, Date endDate,
         Date aggregationStartDate, Date aggregationEndDate );
@@ -120,83 +115,12 @@ public abstract class AbstractDataElementAggregation
      *         of relevant days at position 1
      */
     protected double[] getSumAndRelevantDays( int dataElementId, int optionComboId, Date aggregationStartDate,
-        Date aggregationEndDate, Collection<OrganisationUnitHierarchy> hierarchies, int organisationUnitId )
+        Date aggregationEndDate, int organisationUnitId )
     {
-        try
-        {
-            Iterator<OrganisationUnitHierarchy> hierarchyIter = hierarchies.iterator();
+        Collection<DataValue> dataValues = getDataValues( dataElementId, optionComboId, organisationUnitId,
+            aggregationStartDate, aggregationEndDate );
 
-            OrganisationUnitHierarchy hierarchy = hierarchyIter.next();            
-
-            double totalSum = 0;
-            double totalRelevantDays = 0;
-
-            if ( hierarchy != null )
-            {
-                if ( !hierarchyIter.hasNext() )
-                {                	
-                    // ---------------------------------------------------------
-                    // There is only one relevant hierarchy
-                    // ---------------------------------------------------------
-
-                    Collection<DataValue> dataValues = getDataValues( dataElementId, optionComboId, organisationUnitId, hierarchy,
-                        aggregationStartDate, aggregationEndDate );
-
-                    double[] fraction = getAggregateOfValues( dataValues, aggregationStartDate, aggregationEndDate,
-                        aggregationStartDate, aggregationEndDate );
-
-                    totalSum = fraction[0];
-                    totalRelevantDays = fraction[1];
-                }
-                else
-                {
-                    // ---------------------------------------------------------
-                    // There is more than one relevant hierarchy
-                    // ---------------------------------------------------------
-
-                    OrganisationUnitHierarchy currentHierarchy = hierarchy;
-                    Date currentStartDate = aggregationStartDate;
-                    Date currentEndDate = null;                    
-
-                    while ( hierarchyIter.hasNext() )
-                    {
-
-                    	hierarchy = hierarchyIter.next();
-                        currentEndDate = hierarchy.getDate();
-
-                        Collection<DataValue> dataValues = getDataValues( dataElementId, optionComboId, organisationUnitId,
-                            currentHierarchy, currentStartDate, currentEndDate );
-
-                        double[] fraction = getAggregateOfValues( dataValues, currentStartDate, currentEndDate,
-                            aggregationStartDate, aggregationEndDate );
-
-                        totalSum += fraction[0];
-                        totalRelevantDays += fraction[1];
-
-                        currentHierarchy = hierarchy;
-                        currentStartDate = currentEndDate;
-                    }                 
-
-                    Collection<DataValue> dataValues = getDataValues( dataElementId, optionComboId, organisationUnitId, 
-                        currentHierarchy, currentStartDate, aggregationEndDate );
-
-                    double[] fraction = getAggregateOfValues( dataValues, currentStartDate, aggregationEndDate,
-                        aggregationStartDate, aggregationEndDate );
-
-                    totalSum += fraction[0];
-                    totalRelevantDays += fraction[1];
-                }
-            }
-
-            double sums[] = { totalSum, totalRelevantDays };
-
-            return sums;
-        }
-        catch ( NoSuchElementException ex )
-        {
-            throw new RuntimeException( "No OrganisationUnitHierarchies were found", ex );
-        }
-    }
-    
-    
+        return getAggregateOfValues( dataValues, aggregationStartDate, aggregationEndDate,
+            aggregationStartDate, aggregationEndDate );
+    }    
 }

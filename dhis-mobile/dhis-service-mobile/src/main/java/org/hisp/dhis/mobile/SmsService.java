@@ -147,7 +147,7 @@ public class SmsService implements MessageService
             {
                 serv.stopService();
                 setServiceStatus( false );
-                return "";
+                return "SERVICE STOPPED";
             } catch ( Exception ex )
             {
                 ex.printStackTrace();
@@ -198,6 +198,7 @@ public class SmsService implements MessageService
     {
         try
         {
+            getService().getLogger().logInfo( "Starting processing message", null, null );
             InboundBinaryMessage binaryMsg = (InboundBinaryMessage) message;
             byte[] compressedData = binaryMsg.getDataBytes();
             String unCompressedText = new String( Compressor.decompress( compressedData ), "UTF-8" );
@@ -205,6 +206,7 @@ public class SmsService implements MessageService
             String sender = binaryMsg.getOriginator();
             Date sendTime = binaryMsg.getDate();
             saveData( sender, sendTime, unCompressedText );
+            getService().getLogger().logInfo( "Saved Report. Sending Acknowledgement to " + sender, null, null );
             sendAck( sender, "REPORT", unCompressedText );
 
         } catch ( UnsupportedEncodingException uneex )
@@ -213,9 +215,11 @@ public class SmsService implements MessageService
             return;
         } catch ( ClassCastException ccex )
         {
+            getService().getLogger().logError( "Error performing ClassCast: ", ccex, null );
             return;
         } catch ( ArithmeticException aex )
         {
+            getService().getLogger().logError( "Error performing arithmatic operation: ", aex, null );
             return;
         }
     }
@@ -265,13 +269,12 @@ public class SmsService implements MessageService
     @Override
     public void saveData( String mobileNumber, Date sendTime, String data )
     {
-        //TODO: remaining save
         xmlCreatorService.setPhoneNumber( mobileNumber );
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd-HH-mm-ss" );
         String timeStamp = dateFormat.format( sendTime );
         xmlCreatorService.setSendTime( timeStamp );
         xmlCreatorService.setInfo( data );
-        xmlCreatorService.run();
+        xmlCreatorService.run(); //should be made thread-safe
         mobileImportService.importAllFiles();
     }
 
@@ -390,7 +393,6 @@ public class SmsService implements MessageService
                         gateway.setSimPin( pin );
                     }
 
-                    gateway.setProtocol( Protocols.PDU );
                     if ( inbound.equalsIgnoreCase( "yes" ) )
                     {
                         gateway.setInbound( true );
@@ -414,13 +416,13 @@ public class SmsService implements MessageService
                     getService().getLogger().logInfo( "SMSServer: added gateway " + i + " / ", null, null );
                 } catch ( Exception e )
                 {
-                    getService().getLogger().logError( "SMSServer: Unknown Gateway in configuration file!", null, null );
+                    getService().getLogger().logError( "SMSServer: Unknown Gateway in configuration file!, " + e.getMessage(), null, null );
                     e.printStackTrace();
                 }
             }
             gatewayLoaded = true;
             //</editor-fold>
-            return "";
+            return "SUCCESSFULLY STARTED SERVICE";
         } else
         {
             return "ERROR LOADING CONFIGURATION FILE";
@@ -459,6 +461,7 @@ public class SmsService implements MessageService
                 try
                 {
                     getService().deleteMessage( msg );
+                    getService().getLogger().logInfo( "Deleted message", null, null );
                 } catch ( Exception e )
                 {
                     getService().getLogger().logError( "Error deleting received message!", e, null );

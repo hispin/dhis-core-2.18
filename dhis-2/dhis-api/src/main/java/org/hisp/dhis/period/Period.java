@@ -154,6 +154,17 @@ public class Period
     {
         return DIMENSION;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public Period copyTransientProperties( Period other )
+    {
+        this.name = other.getName();
+        
+        return this;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

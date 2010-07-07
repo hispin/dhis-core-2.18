@@ -204,17 +204,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
-	
+
 	<!-- REPORT EXCEL USER ROLE BEAN -->
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction"
+
+	<bean id="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction"
 		class="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction"
 		class="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction"
@@ -398,7 +397,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
+	<bean
+		id="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
 		class="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
 		scope="prototype">
 		<property name="expressionService">
@@ -661,7 +661,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- PREVIEW REPORT BEANS -->
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager"
 		class="org.hisp.dhis.reportexcel.preview.manager.DefaultInitializePOIStylesManager" />
@@ -949,7 +949,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-	
+
 	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	<!--  DATA ELEMENT GROUP ORDER FOR EXCEL ITEM 						 -->
 	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
@@ -1320,5 +1320,154 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GetDataElementGroupsAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetDataElementGroupsAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.chart.action.GetIndicatorGroupsAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetIndicatorGroupsAction"
+		scope="prototype">
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+
+
+	<bean id="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GetOrganisationUnitAndParentAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetOrganisationUnitAndParentAction"
+		scope="prototype">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+
+
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GenerateDataElementChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GenerateDataElementChartAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GenerateIndicatorChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GenerateIndicatorChartAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GeneratePeriodsDEChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GeneratePeriodsDEChartAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GeneratePeriodsInChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GeneratePeriodsInChartAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GetChildrenOrganisationUnitAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetChildrenOrganisationUnitAction"
+		scope="prototype">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />	
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationInChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationInChartAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />	
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />		
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationDEChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationDEChartAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />		
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.BookmarkChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.BookmarkChartAction"
+		scope="prototype">
+		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GetAllBookmarkChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetAllBookmarkChartAction"
+		scope="prototype">
+		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.DeleleBookmarkChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.DeleleBookmarkChartAction"
+		scope="prototype">
+		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.chart.action.GetBookmartChartAction"
+		class="org.hisp.dhis.reportexcel.chart.action.GetBookmartChartAction"
+		scope="prototype">
+		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+	</bean>
+
+
+
 
 </beans>

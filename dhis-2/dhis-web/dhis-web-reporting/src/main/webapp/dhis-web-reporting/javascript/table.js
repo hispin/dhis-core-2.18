@@ -1,4 +1,17 @@
 
+var paramParentOrganisationUnit = null;
+var paramOrganisationUnit = null;
+
+function paramParentOrganisationUnitSet( id )
+{
+	paramParentOrganisationUnit = id;
+}
+
+function paramOrganisationUnitSet( id )
+{
+	paramOrganisationUnit = id;
+}
+
 // -----------------------------------------------------------------------------
 // Create ReportTable
 // -----------------------------------------------------------------------------
@@ -12,14 +25,14 @@ function createTable( tableId )
         url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
     }
     
-    if ( document.getElementById( "parentOrganisationUnitId" ) != null )
+    if ( paramParentOrganisationUnit != null )
     {
-        url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+        url += "&parentOrganisationUnitId=" + paramParentOrganisationUnit;
     }
     
-    if ( document.getElementById( "organisationUnitId" ) != null )
+    if ( paramOrganisationUnit != null )
     {
-        url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+        url += "&organisationUnitId=" + paramOrganisationUnit;
     }
     
     var request = new Request();
@@ -57,7 +70,7 @@ function tableStatusReceived( xmlObject )
     }
     else
     {
-        setWaitMessage( i18n_please_wait + ". " + statusMessage + "..."  );
+        setWaitMessage( i18n_please_wait + " - " + statusMessage );
     }
     
     waitAndGetTableStatus( 2000 );
@@ -182,13 +195,20 @@ function validateCollections()
         return false;
     }
     
+    if ( bothOrganisationUnitReportParamsChecked() )
+    {
+    	setMessage( i18n_cannot_select_orgunit_and_parent_orgunit_param );
+    	
+    	return false;
+    }
+    
     if ( !hasElements( "selectedPeriods" ) && !relativePeriodsChecked() )
     {
         setMessage( i18n_must_select_at_least_one_period );
         
         return false;
     }
-    
+        
     return true;
 }
 
@@ -204,14 +224,12 @@ function relativePeriodsChecked()
     if ( isChecked( "reportingMonth" ) == true ||
          isChecked( "last3Months" ) == true ||
          isChecked( "last6Months" ) == true ||
-         isChecked( "last9Months" ) == true ||
          isChecked( "last12Months" ) == true ||
          isChecked( "last3To6Months" ) == true ||
          isChecked( "last6To9Months" ) == true ||
          isChecked( "last9To12Months" ) == true ||
          isChecked( "last12IndividualMonths" ) == true ||
          isChecked( "soFarThisYear" ) == true ||
-         isChecked( "soFarThisFinancialYear" ) == true ||
          isChecked( "individualMonthsThisYear" ) == true ||
          isChecked( "individualQuartersThisYear" ) == true )
     {
@@ -224,6 +242,17 @@ function relativePeriodsChecked()
 function organisationUnitReportParamsChecked()
 {
     if ( isChecked( "paramParentOrganisationUnit" ) == true ||
+         isChecked( "paramOrganisationUnit" ) == true )
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+function bothOrganisationUnitReportParamsChecked()
+{
+	if ( isChecked( "paramParentOrganisationUnit" ) == true &&
          isChecked( "paramOrganisationUnit" ) == true )
     {
         return true;

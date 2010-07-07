@@ -20,7 +20,7 @@
                 #set( $mark = false )                 
                 #foreach( $programInstance in $programInstances )
                     <tr #alternate( $mark )>                
-                        <td>$encoder.htmlEncode( $programInstance.patient.getFullName() )</td>                    
+                        <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title="$i18n.getString( "show_details" )">$encoder.htmlEncode( $programInstance.patient.getFullName() )</a></td>                    
                         #foreach( $programStageInstance in $programInstance.programStageInstances )
                             #if( $programStageInstance.executionDate )
                                 <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
@@ -44,3 +44,12 @@
         </td>
     </tr>
 </table>
+
+<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px" ondblclick="javascript:hideDetails()">
+    <div style="float:right;" onclick="javascript:hideDetails()">
+        <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+    </div>              
+    <p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>                    
+    <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
+    <p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
+</div>

@@ -123,6 +123,8 @@ public interface PeriodStore
      */
     Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate );
 
+    Collection<Period> getPeriodsBetweenOrSpanningDates( Date startDate, Date endDate );
+    
     /**
      * Returns all intersecting Periods between the startDate and endDate based on PeriodType
      * For example if the startDate is 2007-05-01 and endDate is 2007-08-01 and periodType is Quartely
@@ -164,6 +166,25 @@ public interface PeriodStore
      *         the given collection of DataElements and Sources.
      */
     Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<? extends Source> sources );
+    
+    /**
+     * Checks if the given period is associated with the current session and loads
+     * it if not. Null is returned if the period does not exist.
+     * 
+     * @param period the Period.
+     * @return the Period.
+     */
+    Period reloadPeriod( Period period );
+
+    /**
+     * Checks if the given period is associated with the current session and loads
+     * it if not. The period is persisted if it does not exist. The persisted Period
+     * is returned.
+     * 
+     * @param period the Period.
+     * @return the persisted Period.
+     */
+    Period reloadForceAddPeriod( Period period );
     
     // -------------------------------------------------------------------------
     // PeriodType

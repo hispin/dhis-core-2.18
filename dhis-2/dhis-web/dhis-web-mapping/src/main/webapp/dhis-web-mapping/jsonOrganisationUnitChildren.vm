@@ -1,0 +1,22 @@
+[
+#set( $size = $units.size() )
+#foreach( $unit in $units )
+{ 
+  "id": ${unit.id}, 
+  "text": "$encoder.jsEncode( ${unit.name} )",
+  #if( $unit.hasChild() )
+  "children": [
+  #set( $innerSize = $unit.children.size() )
+  #foreach( $child in $unit.children )
+  {
+    "id": ${child.id},
+    "text": "$encoder.jsEncode( ${child.name} )"
+  }#if( $velocityCount < $innerSize ),#end
+  #end
+  ]
+  #else
+  "leaf": "true"
+  #end
+}#if( $velocityCount < $size ),#end
+#end
+]

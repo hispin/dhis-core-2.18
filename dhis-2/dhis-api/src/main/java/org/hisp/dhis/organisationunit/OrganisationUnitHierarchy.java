@@ -27,8 +27,13 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The purpose of the OrganisationUnitHierarchy object is to store the parent-child relationship of the
@@ -41,57 +46,69 @@ import java.util.Map;
  */
 public class OrganisationUnitHierarchy
 {
-    private int id;
+    private Map<Integer, Collection<Integer>> preparedRelationships = new HashMap<Integer, Collection<Integer>>();
     
-    private Date date;
+    private Collection<OrganisationUnitRelationship> relationships;
     
-    private Map<Integer, Integer> structure;
-    
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-    
-    public OrganisationUnitHierarchy()
+    public OrganisationUnitHierarchy( Collection<OrganisationUnitRelationship> relationships )
     {
+        this.relationships = relationships;
     }
     
-    public OrganisationUnitHierarchy( Date date, Map<Integer, Integer> structure )
+    public OrganisationUnitHierarchy prepareChildren( Collection<Integer> parentIds )
     {
-        this.date = date;
-        this.structure = structure;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Getters and Setters
-    // -------------------------------------------------------------------------
+        for ( Integer id : parentIds )
+        {
+            prepareChildren( id );
+        }
         
-    public int getId()
-    {
-        return id;
+        return this;
     }
     
-    public void setId( int id )
+    public OrganisationUnitHierarchy prepareChildren( int parentId )
     {
-        this.id = id;
+        preparedRelationships.put( parentId, getChildren( parentId ) );
+        
+        return this;
     }
-
-    public Map<Integer, Integer> getStructure()
+    
+    public Collection<Integer> getChildren( int parentId )
     {
-        return structure;
+        if ( preparedRelationships.containsKey( parentId ) )
+        {
+            return preparedRelationships.get( parentId );
+        }
+        
+        List<Integer> children = new ArrayList<Integer>();
+        
+        children.add( 0, parentId );
+
+        int childCounter = 1;
+        
+        for ( int i = 0; i < childCounter; i++ )
+        {
+            for ( OrganisationUnitRelationship entry : relationships )
+            {
+                if ( entry.getParentId() == children.get( i ) )
+                {
+                    children.add( childCounter++, entry.getChildId() );
+                }
+            }
+        }
+        
+        return children;
     }
-
-    public void setStructure( Map<Integer, Integer> structure )
+    
+    public Collection<Integer> getChildren( Collection<Integer> parentIds )
     {
-        this.structure = structure;
-    }
-
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public void setDate(Date date)
-    {
-        this.date = date;
+        Set<Integer> children = new HashSet<Integer>();
+        
+        for ( Integer id : parentIds )
+        {
+            children.addAll( getChildren( id ) );
+        }
+        
+        return children;
     }
 }
+

@@ -32,6 +32,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -208,7 +210,7 @@ public class MappingServiceTest
     {
         mappingService.addMap( mapA );
 
-        MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period,
+        MapView mapView = new MapView( "MapViewA", "indicator", indicatorGroup, indicator, new DataElementGroup(), new DataElement(), periodType, period,
             MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A",
             "B", mapLegendSet, "1", "1", 1 );
 

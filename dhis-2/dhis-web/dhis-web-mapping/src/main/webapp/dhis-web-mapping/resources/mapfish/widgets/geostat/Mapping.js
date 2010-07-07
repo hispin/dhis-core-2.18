@@ -264,7 +264,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                     Ext.messageRed.msg( i18n_auto_assign , i18n_please_select_map );
                                     return;
                                 }
-                                loadMapData( i18n_auto_assignment , true);
+                                loadMapData('auto-assignment', true);
                             },
                             scope: this
                         },

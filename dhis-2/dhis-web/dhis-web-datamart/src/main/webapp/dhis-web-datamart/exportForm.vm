@@ -1,13 +1,9 @@
 
-<script type="text/javascript">
-	getExportStatus();
-</script>
-
 <h3>$i18n.getString( "generate_data_mart" )</h3>
 
-<form id="exportForm" name="exportForm" method="post" action="export.action">
+<form id="exportForm" name="exportForm" method="post" action="saveDataMartExport.action">
 
-<input type="hidden" id="exportId" name="exportId" value="$!id">
+<input type="hidden" id="id" name="id" value="$!id">
 
 <table width="730">
 	
@@ -17,6 +13,20 @@
  		<col style="width:325px">
   	</colgroup>
 
+    <!-- Name -->
+    
+    <tr>
+        <th>$i18n.getString( "name" )</th>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+    	<td><input type="text" id="name" name="name" style="min-width:325px" value="$!export.name"></td>
+    	<td colspan="2"></td>
+    </tr>
+	<tr>
+		<td colspan="3" height="5px"></td>
+	</tr>
+    
 	<!-- DataElements -->
 	
 	<tr>
@@ -171,27 +181,63 @@
 		</td>
 	</tr>
     <tr>
-        <td colspan="3" height="5px"></td>
+        <td colspan="3" style="height:5px"></td>
     </tr>
     
-    <!-- Name -->
+    <!-- Relative periods -->
     
-    <tr>
-        <th>$i18n.getString( "name" )</th>
-        <td colspan="2"></td>
+	<tr>
+		<th colspan="3">$i18n.getString( "relative_periods" )</th>
+	</tr>
+	<tr>
+		<td colspan="3">
+		    <label for="reportingMonth">$i18n.getString( "reporting_month" )</label>
+			<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $export.relatives.isReportingMonth() ) checked#end>&nbsp;
+			<label for="last3Months">$i18n.getString( "last_3_months" )</label>
+			<input type="checkbox" id="last3Months" name="last3Months" value="true""#if( $export.relatives.isLast3Months() ) checked#end>&nbsp;
+			<label for="last6Months">$i18n.getString( "last_6_months" )</label>
+			<input type="checkbox" id="last6Months" name="last6Months" value="true"#if( $export.relatives.isLast6Months() ) checked#end>&nbsp;
+			<label for="last12Months">$i18n.getString( "last_12_months" )</label>
+			<input type="checkbox" id="last12Months" name="last12Months" value="true"#if( $export.relatives.isLast12Months() ) checked#end>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="height:5px"></td>
+	</tr>
+	<tr>
+        <td colspan="3">
+        	<label for="last3To6Months">$i18n.getString( "last_3_to_6_months" )</label>
+            <input type="checkbox" id="last3To6Months" name="last3To6Months" value="true"#if( $export.relatives.isLast3To6Months() ) checked#end>&nbsp;
+            <label for="last6To9Months">$i18n.getString( "last_6_to_9_months" )</label>
+            <input type="checkbox" id="last6To9Months" name="last6To9Months" value="true""#if( $export.relatives.isLast6To9Months() ) checked#end>&nbsp;
+            <label for="last9To12Months">$i18n.getString( "last_9_to_12_months" )</label>
+            <input type="checkbox" id="last9To12Months" name="last9To12Months" value="true"#if( $export.relatives.isLast9To12Months() ) checked#end>&nbsp;
+            <label for="last12IndividualMonths">$i18n.getString( "last_12_individual_months" )</label>
+            <input type="checkbox" id="last12IndividualMonths" name="last12IndividualMonths" value="true"#if( $export.relatives.isLast12IndividualMonths() ) checked#end>           
+        </td>
     </tr>
     <tr>
-    	<td><input type="text" id="exportName" name="exportName" style="min-width:325px" value="$!name"></td>
-    	<td colspan="2"></td>
+        <td colspan="3" style="height:5px"></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <label for="soFarThisYear">$i18n.getString( "so_far_this_year" )</label>
+            <input type="checkbox" id="soFarThisYear" name="soFarThisYear" value="true"#if( $export.relatives.isSoFarThisYear() ) checked#end>&nbsp;
+            <label for="individualMonthsThisYear">$i18n.getString( "individual_months_this_year" )</label>
+            <input type="checkbox" id="individualMonthsThisYear" name="individualMonthsThisYear" value="true"#if( $export.relatives.isIndividualMonthsThisYear() ) checked#end>&nbsp;
+            <label for="individualQuartersThisYear">$i18n.getString( "individual_quarters_this_year" )</label>
+            <input type="checkbox" id="individualQuartersThisYear" name="individualQuartersThisYear" value="true"#if( $export.relatives.isIndividualQuartersThisYear() ) checked#end>           
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" style="height:5px"></td>
     </tr>
     
     <!-- Submit -->
     
 	<tr>		
-		<td><input type="button" value='$i18n.getString( "export" )' onclick="exportValues()" style="width:25%"><input
-		           type="button" value='$i18n.getString( "cancel" )' onclick="cancelExport()" style="width:25%"><input
-                   type="button" value='$i18n.getString( "save" )' onclick="saveExport()" style="width:25%"><input
-                   type="button" value='$i18n.getString( "back" )' onclick="javascript:window.location.href='getDataMartExports.action'" style="width:25%"></ttd>
+		<td><input type="button" value='$i18n.getString( "save" )' onclick="saveExport()" style="width:120px"><input
+                   type="button" value='$i18n.getString( "back" )' onclick="javascript:window.location.href='getDataMartExports.action'" style="width:120px"></ttd>
 		<td></td>
 		<td></td>
 	</tr>
@@ -203,10 +249,6 @@
 <span id="message"></span>
 
 <script type="text/javascript">
-    var i18n_hours = '$encoder.jsEscape( $i18n.getString( "hours" ), "'" )';
-    var i18n_minutes = '$encoder.jsEscape( $i18n.getString( "minutes" ), "'" )';
-    var i18n_seconds = '$encoder.jsEscape( $i18n.getString( "seconds" ), "'" )';
-    var i18n_estimated_time = '$encoder.jsEscape( $i18n.getString( "estimated_time" ), "'" )';
     var i18n_select_min_datatype = '$encoder.jsEscape( $i18n.getString( "select_min_datatype" ), "'" )';
     var i18n_select_min_level = '$encoder.jsEscape( $i18n.getString( "select_min_level" ), "'" )';
     var i18n_select_min_period = '$encoder.jsEscape( $i18n.getString( "select_min_period" ), "'" )';

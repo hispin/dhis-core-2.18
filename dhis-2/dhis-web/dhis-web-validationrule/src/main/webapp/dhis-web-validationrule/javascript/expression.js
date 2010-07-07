@@ -27,27 +27,15 @@ function showExpressionForm( side, description, expression, textualExpression, p
 		"&textualExpression=" + textualExpression +
 		"&periodTypeName=" + periodTypeName ;
 		
-    var dialog = window.open( url, "_blank", "directories=no, \
-    	height=560, width=790, location=no, menubar=no, status=no, \
-    	toolbar=no, resizable=no");
+    var dialog = window.open( url, "_blank", 
+    	"directories=no, height=600, width=790, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
 }
 
 function insertText( inputAreaName, inputText )
 {
-	var inputArea = document.getElementById( inputAreaName );
-	
-	var startPos = inputArea.selectionStart;
-	var endPos = inputArea.selectionEnd;
-	
-	var existingText = inputArea.value;
-	var textBefore = existingText.substring( 0, startPos );
-	var textAfter = existingText.substring( endPos, existingText.length );
-	
-	inputArea.value = textBefore + inputText + textAfter;
+	insertTextCommon( inputAreaName, inputText );	
 	
 	updateTextualExpression( inputAreaName );
-	
-	setCaretToPos( inputArea, inputArea.value.length);
 }
 
 function filterDataElements( dataSetName, filterName )
@@ -57,14 +45,29 @@ function filterDataElements( dataSetName, filterName )
 	var filter = htmlEncode( byId( filterName ).value );
 	var periodTypeName = getFieldValue( 'periodTypeName');
 	
-	var url = "getFilteredDataElements.action?dataSetId=" + dataSetId;
-		url += "&filter=" + filter;
-		url += "&periodTypeName=" + periodTypeName;
+    var url = "getFilteredDataElements.action";
+    
+    $.getJSON(
+        url,
+        {
+            "dataSetId": dataSetId,
+            "periodTypeName": periodTypeName,
+            "filter": filter
+        },
+        function( json )
+        {
+        	var operandList = document.getElementById( "dataElementId" );
+        	clearList( operandList );
+        	
+        	var objects = json.operands;
+        	
+        	for ( var i=0; i<objects.length; i++ )
+	        {
+        		addOptionToList( operandList, "[" + objects[i].operandId  + "]", objects[i].operandName );
+	        }
 
-    var request = new Request();
-	request.setResponseTypeXML( 'operand' );
-    request.setCallbackSuccess( getFilteredDataElementsReceived );
-    request.send( url );
+        }
+    );
 }
 
 function updateTextualExpression( expressionFieldName )

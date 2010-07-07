@@ -41,7 +41,6 @@ import org.hisp.dhis.period.Period;
 import static org.hisp.dhis.system.util.MathUtils.getFloor;
 import static org.hisp.dhis.system.util.DateUtils.getDays;
 
-
 /**
  * @author Lars Helge Overland
  * @version $Id: SumBoolDataElementAggregation.java 4753 2008-03-14 12:48:50Z larshelg $
@@ -52,11 +51,8 @@ public class SumBoolDataElementAggregation
     public double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date aggregationStartDate, Date aggregationEndDate,
         OrganisationUnit organisationUnit )
     {
-        Collection<OrganisationUnitHierarchy> hierarchies = aggregationCache.getOrganisationUnitHierarchies(
-            aggregationStartDate, aggregationEndDate );
-
         double[] sums = getSumAndRelevantDays( dataElement.getId(), optionCombo.getId(), aggregationStartDate, aggregationEndDate, 
-            hierarchies, organisationUnit.getId() );
+            organisationUnit.getId() );
 
         if ( sums[1] > 0 )
         {
@@ -69,14 +65,14 @@ public class SumBoolDataElementAggregation
     }
 
     protected Collection<DataValue> getDataValues( int dataElementId, int optionComboId, int organisationUnitId,
-        OrganisationUnitHierarchy hierarchy, Date startDate, Date endDate )
+        Date startDate, Date endDate )
     {
-        Collection<Integer> children = aggregationCache.getChildren( hierarchy, organisationUnitId );
+        OrganisationUnitHierarchy hierarchy = aggregationCache.getOrganisationUnitHierarchy();
         
-        Collection<Integer> periods = aggregationCache.getPeriodIds( startDate, endDate );
+        Collection<Integer> periods = aggregationCache.getIntersectingPeriodIds( startDate, endDate );
 
-        Collection<DataValue> values = aggregationStore.getDataValues( children, dataElementId, optionComboId, periods );
-
+        Collection<DataValue> values = aggregationStore.getDataValues( hierarchy.getChildren( organisationUnitId ), dataElementId, optionComboId, periods );
+        
         return values;
     }
 

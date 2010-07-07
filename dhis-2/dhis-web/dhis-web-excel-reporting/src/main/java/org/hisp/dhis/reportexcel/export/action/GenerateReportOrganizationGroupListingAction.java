@@ -117,7 +117,11 @@ public class GenerateReportOrganizationGroupListingAction
             int iRow = 0;
             int iCol = 0;
             int chapperNo = 0;
-            int rowBegin = reportItem.getRow();
+            int firstRow = reportItem.getRow();
+            int rowBegin = firstRow + 1;
+            
+            String totalFormula = "SUM(";
+            
 
             for ( OrganisationUnitGroup organisationUnitGroup : reportExcel.getOrganisationUnitGroups() )
             {
@@ -161,8 +165,9 @@ public class GenerateReportOrganizationGroupListingAction
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo], ExcelUtils.TEXT,
                         sheet, this.csText12BoldCenter );
-                }
-                chapperNo++;
+                    chapperNo++;
+                }               
+                
                 rowBegin++;
                 int serial = 1;
 
@@ -207,10 +212,20 @@ public class GenerateReportOrganizationGroupListingAction
                     && (!organisationUnits.isEmpty()) )
                 {
                     String columnName = ExcelUtils.convertColNumberToColName( reportItem.getColumn() );
-                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
+                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";                    
                     ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
+                    
+                    totalFormula += columnName + beginChapter + ",";                    
                 }
 
+            }
+            
+            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ))
+            {
+                totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
+                
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );             
+                
             }
 
         }

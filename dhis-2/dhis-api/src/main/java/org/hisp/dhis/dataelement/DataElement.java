@@ -42,6 +42,7 @@ import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.TwoYearlyPeriodType;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -256,15 +257,6 @@ public class DataElement
     }
 
     // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public boolean isZeroIsSignificant()
-    {
-        return zeroIsSignificant != null && zeroIsSignificant;
-    }
-    
-    // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
 
@@ -308,12 +300,31 @@ public class DataElement
     // -------------------------------------------------------------------------
 
     /**
+     * Null-safe check.
+     */
+    public boolean isZeroIsSignificant()
+    {
+        return zeroIsSignificant != null && zeroIsSignificant;
+    }
+    
+    /**
      * Returns the PeriodType of the DataElement, based on the PeriodType of the
      * DataSet which the DataElement is registered for.
      */
     public PeriodType getPeriodType()
     {
         return dataSets != null && dataSets.size() > 0 ? dataSets.iterator().next().getPeriodType() : null;
+    }
+    
+    /**
+     * Returns the frequency order for the PeriodType of this DataElement. If no
+     * PeriodType exists, 0 is returned.
+     */
+    public int getFrequencyOrder()
+    {
+        PeriodType periodType = getPeriodType();
+        
+        return periodType != null ? periodType.getFrequencyOrder() : TwoYearlyPeriodType.FREQUENCY_ORDER;
     }
 
     /**

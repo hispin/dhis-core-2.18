@@ -474,10 +474,10 @@
 			<param name="stylesheets">style/previewStyle.css,
 				style/ui.all.css</param>
 			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
 				javascript/commons.js,
-				javascript/preview.js,
-				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/preview.js,				
 				../dhis-web-commons/util/jquery-ui.js,
 				../dhis-web-commons/util/jquery.jqprint.0.3.js
 			</param>
@@ -1226,8 +1226,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/periodcolumns.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/periodcolumn.js,javascript/ui/ui.datepicker.js</param>
-			<param name="stylesheets">style/ui.datepicker.css,style/jquery-ui.css</param>
+			<param name="javascripts">javascript/commons.js,javascript/periodcolumn.js</param>
 		</action>
 
 		<action name="savePeriodColumn"
@@ -1320,6 +1319,151 @@
 			<result name="input" type="velocity-xml">
 				/dhis-web-excel-reporting/responseInput.vm</result>
 		</action>
+
+		<!-- Ext Chart -->
+
+		<action name="chart"
+			class="org.hisp.dhis.reportexcel.chart.action.GetOrganisationUnitAndParentAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/chart.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,				
+				ext/adapter/ext/ext-base.js,
+				ext/ext-all.js,
+				ext/ux/MultiSelect.js,
+				ext/ux/ItemSelector.js,
+				ext/dataElementChart.js,
+				ext/periodChart.js,
+				ext/organisationChart.js,
+				ext/index.js				
+			</param>
+			<param name="stylesheets">
+				ext/resources/css/ext-all.css,
+				ext/ux/css/MultiSelect.css,
+				ext/resources/css/chart.css
+			</param>
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<param name="menuTreeHeight">400</param>
+		</action>
+
+		<action name="getDataElementGroups"
+			class="org.hisp.dhis.reportexcel.chart.action.GetDataElementGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonDataElementGroups.vm
+			</result>
+		</action>
+
+		<action name="getIndicatorGroups"
+			class="org.hisp.dhis.reportexcel.chart.action.GetIndicatorGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonIndicatorGroups.vm
+			</result>
+		</action>
+
+		<action name="getPeriodTypes"
+			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonPeriodTypes.vm
+			</result>
+		</action>
+		
+		<action name="getOrganisationUnitGroup"
+			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonPeriodTypes.vm
+			</result>
+		</action>
+
+		<action name="getOrganisationUnitAndParent"
+			class="org.hisp.dhis.reportexcel.chart.action.GetOrganisationUnitAndParentAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonOrganisationUnitAndParentAction.vm
+			</result>
+		</action>
+		
+		<action name="getChildrenOrganisationUnit"
+			class="org.hisp.dhis.reportexcel.chart.action.GetChildrenOrganisationUnitAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonOrganisationUnits.vm
+			</result>
+		</action>
+
+		<action name="generateDataElementChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GenerateDataElementChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonChartValues.vm
+			</result>
+		</action>
+
+		<action name="generateIndicatorChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GenerateIndicatorChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonChartValues.vm
+			</result>
+		</action>
+
+		<action name="generatePeriodsDEChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GeneratePeriodsDEChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonChartValues.vm
+			</result>
+		</action>
+
+		<action name="generatePeriodsInChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GeneratePeriodsInChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonChartValues.vm
+			</result>
+		</action>
+		
+		<action name="generateOrganisationDEChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationDEChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonChartValues.vm
+			</result>
+		</action>
+		
+		<action name="generateOrganisationInChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationInChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonChartValues.vm
+			</result>
+		</action>
+		
+		<action name="bookmarkChart"
+			class="org.hisp.dhis.reportexcel.chart.action.BookmarkChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonExtBookmarkChart.vm
+			</result>
+		</action>
+		
+		<action name="deleteBookmarkChart"
+			class="org.hisp.dhis.reportexcel.chart.action.DeleleBookmarkChartAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+		</action>
+		
+		<action name="getBookmarkChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GetBookmartChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonExtBookmarkChart.vm
+			</result>
+		</action>
+		
+		<action name="getAllBookmarkChart"
+			class="org.hisp.dhis.reportexcel.chart.action.GetAllBookmarkChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonExtBookmarkCharts.vm
+			</result>
+		</action>
+
+
+
+
+
+
 
 	</package>
 </struts>

@@ -40,6 +40,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -48,9 +50,11 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Test;
 
 /**
@@ -79,6 +83,8 @@ public class DataMartServiceTest
     private DataElement dataElementA;
     private DataElement dataElementB;
     
+    private DataSet dataSet;
+    
     private Period periodA;
     private Period periodB;
     private Period periodC;
@@ -106,6 +112,8 @@ public class DataMartServiceTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
+
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
 
@@ -137,13 +145,27 @@ public class DataMartServiceTest
 
         dataElementIds.add( dataElementService.addDataElement( dataElementA ) );
         dataElementIds.add( dataElementService.addDataElement( dataElementB ) );
+
+        // ---------------------------------------------------------------------
+        // Setup DataSets (to get correct PeriodType for DataElements)
+        // ---------------------------------------------------------------------
+
+        dataSet = createDataSet( 'A', new MonthlyPeriodType() );
+        dataSet.getDataElements().add( dataElementA );
+        dataSet.getDataElements().add( dataElementB );
+        dataSetService.addDataSet( dataSet );
+        dataElementA.getDataSets().add( dataSet );
+        dataElementB.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElementA );
+        dataElementService.updateDataElement( dataElementB );
         
         // ---------------------------------------------------------------------
         // Setup Periods
         // ---------------------------------------------------------------------
-
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-
+        
+        PeriodType monthly = new MonthlyPeriodType();
+        PeriodType quarterly = new QuarterlyPeriodType();
+        
         Date mar01 = getDate( 2005, 3, 1 );
         Date mar31 = getDate( 2005, 3, 31 );
         Date apr01 = getDate( 2005, 4, 1 );
@@ -151,10 +173,10 @@ public class DataMartServiceTest
         Date may01 = getDate( 2005, 5, 1 );
         Date may31 = getDate( 2005, 5, 31 );
         
-        periodA = createPeriod( periodType, mar01, mar31 );
-        periodB = createPeriod( periodType, apr01, apr30 );
-        periodC = createPeriod( periodType, may01, may31 );
-        periodD = createPeriod( periodType, mar01, may31 );
+        periodA = createPeriod( monthly, mar01, mar31 );
+        periodB = createPeriod( monthly, apr01, apr30 );
+        periodC = createPeriod( monthly, may01, may31 );
+        periodD = createPeriod( quarterly, mar01, may31 );
         
         periodIds.add( periodService.addPeriod( periodA ) );
         periodIds.add( periodService.addPeriod( periodB ) );
@@ -185,8 +207,6 @@ public class DataMartServiceTest
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitH ) );
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitI ) );
         
-        organisationUnitService.addOrganisationUnitHierarchy( new Date() ); //TODO
-
         // ---------------------------------------------------------------------
         // Setup DataValues
         // ---------------------------------------------------------------------
@@ -276,7 +296,7 @@ public class DataMartServiceTest
         dataElementService.updateDataElement( dataElementA );
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
-
+        
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA ), 240.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB ), 150.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitC ), 90.0 );
@@ -368,6 +388,20 @@ public class DataMartServiceTest
         int idD = dataElementService.addDataElement( dataElementD );
         int idE = dataElementService.addDataElement( dataElementE );
         int idF = dataElementService.addDataElement( dataElementF );
+
+        dataSet.getDataElements().add( dataElementC );
+        dataSet.getDataElements().add( dataElementD );
+        dataSet.getDataElements().add( dataElementE );
+        dataSet.getDataElements().add( dataElementF );
+        dataSetService.updateDataSet( dataSet );
+        dataElementC.getDataSets().add( dataSet );
+        dataElementD.getDataSets().add( dataSet );
+        dataElementE.getDataSets().add( dataSet );
+        dataElementF.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElementC );
+        dataElementService.updateDataElement( dataElementD );
+        dataElementService.updateDataElement( dataElementE );
+        dataElementService.updateDataElement( dataElementF );
 
         // ---------------------------------------------------------------------
         // Setup DataValues
@@ -465,6 +499,20 @@ public class DataMartServiceTest
         int idE = dataElementService.addDataElement( dataElementE );
         int idF = dataElementService.addDataElement( dataElementF );
 
+        dataSet.getDataElements().add( dataElementC );
+        dataSet.getDataElements().add( dataElementD );
+        dataSet.getDataElements().add( dataElementE );
+        dataSet.getDataElements().add( dataElementF );
+        dataSetService.updateDataSet( dataSet );
+        dataElementC.getDataSets().add( dataSet );
+        dataElementD.getDataSets().add( dataSet );
+        dataElementE.getDataSets().add( dataSet );
+        dataElementF.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElementC );
+        dataElementService.updateDataElement( dataElementD );
+        dataElementService.updateDataElement( dataElementE );
+        dataElementService.updateDataElement( dataElementF );
+
         // ---------------------------------------------------------------------
         // Setup DataValues
         // ---------------------------------------------------------------------
@@ -530,6 +578,14 @@ public class DataMartServiceTest
         
         int idC = dataElementService.addDataElement( dataElementC );
         int idD = dataElementService.addDataElement( dataElementD );
+        
+        dataSet.getDataElements().add( dataElementC );
+        dataSet.getDataElements().add( dataElementD );
+        dataSetService.updateDataSet( dataSet );
+        dataElementC.getDataSets().add( dataSet );
+        dataElementD.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElementC );
+        dataElementService.updateDataElement( dataElementD );
 
         // ---------------------------------------------------------------------
         // Setup DataValues

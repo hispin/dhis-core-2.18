@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "prune_organisation_unit" ) #openHelp( "pruneOrganisationUnit" )</h3>
+<h3>$i18n.getString( "organisation_unit_pruning" )</h3>
 
 <div id="selectionTree" style="width:500px; height:200px"></div>
                     
@@ -17,7 +17,7 @@
     <col>
     <tr>
         <td rowspan="3" style="text-align:center;background-color:#ccffcc"></td>
-        <th>$i18n.getString( "select_the_org_unit_to_be_kept" )</th>
+        <th>$i18n.getString( "select_the_org_unit_to_keep" )</th>
     </tr>
     <tr>
         <td><span id="keepNameField">[$i18n.getString( "not_selected" )]</span></td>

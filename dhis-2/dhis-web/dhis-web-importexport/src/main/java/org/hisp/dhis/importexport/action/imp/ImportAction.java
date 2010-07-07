@@ -72,6 +72,7 @@ public class ImportAction
         "application/zip", 
         "application/x-gzip", 
         "application/octet-stream", 
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "text/xml" );
     
     // -------------------------------------------------------------------------

@@ -38,6 +38,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -79,6 +81,8 @@ public class DataMartServiceTimeDimensionTest
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
+        
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
@@ -111,6 +115,12 @@ public class DataMartServiceTimeDimensionTest
         
         dataElementIds.add( dataElementService.addDataElement( dataElement ) );
 
+        DataSet dataSet = createDataSet( 'A', new YearlyPeriodType() );
+        dataSet.getDataElements().add( dataElement );
+        dataSetService.addDataSet( dataSet );
+        dataElement.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElement );
+        
         Period dataPeriod = createPeriod( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) );
         
         OrganisationUnit unit = createOrganisationUnit( 'A' );
@@ -144,6 +154,12 @@ public class DataMartServiceTimeDimensionTest
         
         dataElementIds.add( dataElementService.addDataElement( dataElement ) );        
 
+        DataSet dataSet = createDataSet( 'A', new MonthlyPeriodType() );
+        dataSet.getDataElements().add( dataElement );
+        dataSetService.addDataSet( dataSet );
+        dataElement.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElement );
+        
         Period dataPeriodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
         Period dataPeriodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
         Period dataPeriodC = createPeriod( new MonthlyPeriodType(), getDate( 2000, 5, 1 ), getDate( 2000, 5, 31 ) );

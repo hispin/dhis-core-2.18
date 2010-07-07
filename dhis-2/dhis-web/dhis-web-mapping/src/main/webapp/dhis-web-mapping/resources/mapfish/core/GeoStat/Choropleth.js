@@ -113,15 +113,15 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 		
 		if (mapLegendType == map_legend_type_automatic) {
 			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
-			for (var i = 0; i < choropleth.imageLegend.length; i++) {
-				choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
-			}
+            for (var i = 0; i < choropleth.imageLegend.length && i < this.colorInterpolation.length; i++) {
+                choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+            }
 		}
 		else if (mapLegendType == map_legend_type_predefined) {
 			this.colorInterpolation = choropleth.colorInterpolation;
-			for (var i = 0; i < choropleth.colorInterpolation.length; i++) {
-				choropleth.imageLegend[i].color = choropleth.colorInterpolation[i].toHexString();
-			}
+            for (var i = 0; i < choropleth.colorInterpolation.length && i < choropleth.colorInterpolation.length; i++) {
+                choropleth.imageLegend[i].color = choropleth.colorInterpolation[i].toHexString();
+            }
 		}
     },
 	
@@ -131,9 +131,9 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
      */
     setClassification: function() {
         var values = [];
-        var features = this.layer.features;
-        for (var i = 0; i < features.length; i++) {
-            values.push(features[i].attributes[this.indicator]);
+        // var features = this.layer.features;
+        for (var i = 0; i < FEATURE[thematicMap].length; i++) {
+            values.push(FEATURE[thematicMap][i].attributes[this.indicator]);
         }
 
         var distOptions = {
@@ -158,8 +158,8 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
     applyClassification: function(options) {
         this.updateOptions(options);
         var boundsArray = this.classification.getBoundsArray();
-        var rules = new Array(boundsArray.length - 1);
-        for (var i = 0; i < boundsArray.length -1; i++) {
+        var rules = new Array(boundsArray.length-1);
+        for (var i = 0; i < boundsArray.length-1; i++) {
             var rule = new OpenLayers.Rule({
                 symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
                 filter: new OpenLayers.Filter.Comparison({

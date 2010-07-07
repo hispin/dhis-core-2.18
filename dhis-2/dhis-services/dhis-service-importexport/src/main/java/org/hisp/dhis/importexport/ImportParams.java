@@ -36,11 +36,6 @@ import java.util.Date;
 public class ImportParams
 {
     public static final String ATTRIBUTE_NAMESPACE = "xmlns";
-    public static final String ATTRIBUTE_MINOR_VERSION = "minorVersion";
-    public static final String ATTRIBUTE_EXPORTED = "exported";
-    public static final String NAMESPACE_10 = "http://dhis2.org/schema/dxf/1.0";
-    public static final String MINOR_VERSION_10 = "1.0";
-    public static final String MINOR_VERSION_11 = "1.1";
     
     private ImportType type;
     
@@ -173,6 +168,12 @@ public class ImportParams
     {
         this.lastUpdated = lastUpdated;
     }
+
+    //----------------------------------------------------------------
+    //
+    // DXF parameters
+    //
+    //----------------------------------------------------------------
 
     public String getNamespace()
     {

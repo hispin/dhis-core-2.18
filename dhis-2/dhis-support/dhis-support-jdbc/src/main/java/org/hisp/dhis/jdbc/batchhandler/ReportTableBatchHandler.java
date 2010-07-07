@@ -98,10 +98,8 @@ public class ReportTableBatchHandler
         statementBuilder.setColumn( "reportingmonth" );
         statementBuilder.setColumn( "last3months" );
         statementBuilder.setColumn( "last6months" );
-        statementBuilder.setColumn( "last9months" );
         statementBuilder.setColumn( "last12months" );
         statementBuilder.setColumn( "sofarthisyear" );
-        statementBuilder.setColumn( "sofarthisfinancialyear" );
         statementBuilder.setColumn( "last3to6months" );
         statementBuilder.setColumn( "last6to9months" );
         statementBuilder.setColumn( "last9to12months" );
@@ -128,10 +126,8 @@ public class ReportTableBatchHandler
         statementBuilder.setValue( reportTable.getRelatives().isReportingMonth() );
         statementBuilder.setValue( reportTable.getRelatives().isLast3Months() );
         statementBuilder.setValue( reportTable.getRelatives().isLast6Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast9Months() );
         statementBuilder.setValue( reportTable.getRelatives().isLast12Months() );
         statementBuilder.setValue( reportTable.getRelatives().isSoFarThisYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isSoFarThisFinancialYear() );
         statementBuilder.setValue( reportTable.getRelatives().isLast3To6Months() );
         statementBuilder.setValue( reportTable.getRelatives().isLast6To9Months() );
         statementBuilder.setValue( reportTable.getRelatives().isLast9To12Months() );

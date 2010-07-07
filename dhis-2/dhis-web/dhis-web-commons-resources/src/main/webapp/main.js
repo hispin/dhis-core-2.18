@@ -3,7 +3,9 @@
 // Page init
 // -----------------------------------------------------------------------------
 
-$( document ).ready( function()
+$( document ).ready( function() { pageInit(); } );
+
+function pageInit()
 {
 	// Zebra stripes in lists
 	
@@ -95,7 +97,7 @@ $( document ).ready( function()
 		{
 			window.location.href = currentPath + 'about.action' + backURL;
 		});
-} );
+}
 
 // -----------------------------------------------------------------------------
 // Menu functions
@@ -157,7 +159,7 @@ function LeftBar()
     this.showAnimated = function()
     {
         setMenuVisible();        
-        setMainPageLeftMargin( '300px' );
+        setMainPageNormal( '270px' ); // Delegated to dom.js for each style
         $( 'div#leftBar' ).show( 'fast' );
         $( 'span#showLeftBar' ).hide( 'fast' );
     };
@@ -165,7 +167,7 @@ function LeftBar()
     this.hideAnimated = function()
     {
         setMenuHidden();
-        setMainPageLeftMargin( '20px' );
+        setMainPageFullscreen( '20px' );
         $( 'div#leftBar' ).hide( 'fast' );
         $( 'span#showLeftBar' ).show( 'fast' );
     };
@@ -173,16 +175,16 @@ function LeftBar()
     this.hide = function()
     {
         setMenuHidden();
-        setMainPageLeftMargin( '20px' );
+        setMainPageFullscreen( '20px' );
         document.getElementById( 'leftBar' ).style.display = 'none';
         document.getElementById( 'showLeftBar' ).style.display = 'block';
     } 
 
-    function setMainPageLeftMargin( width )
-    {
-        document.getElementById( 'mainPage' ).style.marginLeft = width;
-    }
-        
+	function setMainPageFullscreen()
+	{
+		document.getElementById( 'mainPage' ).style.marginLeft = '20px';
+	}
+
     function setMenuVisible()
     {
         var request = new Request();

@@ -95,7 +95,7 @@ public interface PatientService
 
     int countnGetPatientsByNames( String name );
 
-    void createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+    int createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
         Integer relationshipTypeId, List<PatientAttributeValue> patientAttributeValues );
 
     public void updatePatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,

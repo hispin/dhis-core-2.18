@@ -11,14 +11,14 @@
 		</td>
 	</tr>
 </table>
-<table width="100%" class="listTable">
+<table width="100%" class="listTable" id="listTable">
 	<thead>
 		<tr>
 			<th>$i18n.getString('name')</th>
 			<th>$i18n.getString('report_type')</th>
 			<th>$i18n.getString('excel_template')</th>		
-			<th width="150px">$i18n.getString('basic')</th>
-			<th width="100px">$i18n.getString('advanced')</th>			
+			<th width="150px" class="{sorter: false}">$i18n.getString('basic')</th>
+			<th width="100px" class="{sorter: false}">$i18n.getString('advanced')</th>			
 		</tr>
 	</thead>	
 	<tbody id="list">	
@@ -199,7 +199,7 @@
 </div>
 
 <script>
-	$(document).ready(function(){
+	jQuery(document).ready(function(){	
         $("#group").autocomplete("getReportExcelGroups.action", {
             width: 260,
             formatItem:function (row){
@@ -210,10 +210,9 @@
             },
             selectFirst: true
 		});
+		
+		tableSorter( 'listTable' );	
     });
-	
-	
-	
 	
 </script>
 

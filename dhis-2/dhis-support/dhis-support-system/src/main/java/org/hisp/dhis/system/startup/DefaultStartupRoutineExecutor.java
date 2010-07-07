@@ -96,7 +96,7 @@ public class DefaultStartupRoutineExecutor
             if ( !( testing && routine.skipInTests() ) )
             {
                 LOG.info( "Executing startup routine [" + index + " of " + total + ", runlevel " + routine.getRunlevel()
-                    + "]: " + routine.getClass().getSimpleName() );
+                    + "]: " + routine.getName() );
 
                 routine.execute();
                 

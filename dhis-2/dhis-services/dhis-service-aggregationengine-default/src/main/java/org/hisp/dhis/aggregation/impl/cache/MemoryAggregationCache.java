@@ -49,12 +49,8 @@ import org.hisp.dhis.period.PeriodService;
 public class MemoryAggregationCache
     implements AggregationCache
 {
-    private Map<String, Collection<Integer>> childrenCache = new HashMap<String, Collection<Integer>>();
-
-    private Map<String, Collection<OrganisationUnitHierarchy>> hierarchyCache = new HashMap<String, Collection<OrganisationUnitHierarchy>>();
-    
-    private Map<String, Period> periodCache = new HashMap<String, Period>();
-    
+    private OrganisationUnitHierarchy hierarchyCache = null;    
+    private Map<String, Period> periodCache = new HashMap<String, Period>();    
     private Map<String, Collection<Integer>> periodIdCache = new HashMap<String, Collection<Integer>>();
     
     private static final String SEPARATOR = "-";
@@ -88,40 +84,16 @@ public class MemoryAggregationCache
     // AggregationCache implementation
     // -------------------------------------------------------------------------
 
-    public Collection<Integer> getChildren( OrganisationUnitHierarchy hierarchy, int parentId )
+    public OrganisationUnitHierarchy getOrganisationUnitHierarchy()
     {
-        String key = hierarchy.getId() + SEPARATOR + parentId;
-
-        Collection<Integer> children = childrenCache.get( key );
-
-        if ( children != null )
+        if ( hierarchyCache != null )
         {
-            return children;
+            return hierarchyCache;
         }
-
-        children = organisationUnitService.getChildren( hierarchy.getId(), parentId );
         
-        childrenCache.put( key, children );
+        hierarchyCache = organisationUnitService.getOrganisationUnitHierarchy();
         
-        return children;
-    }
-
-    public Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( Date startDate, Date endDate )
-    {
-        String key = startDate.toString() + SEPARATOR + endDate.toString();
-
-        Collection<OrganisationUnitHierarchy> hierarchies = hierarchyCache.get( key );
-
-        if ( hierarchies != null )
-        {
-            return hierarchies;
-        }
-
-        hierarchies = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate );
-        
-        hierarchyCache.put( key, hierarchies );
-        
-        return hierarchies;
+        return hierarchyCache;
     }
     
     public Period getPeriod( int periodId )
@@ -142,7 +114,7 @@ public class MemoryAggregationCache
         return period;
     }
     
-    public Collection<Integer> getPeriodIds( Date startDate, Date endDate )
+    public Collection<Integer> getIntersectingPeriodIds( Date startDate, Date endDate )
     {
         String key = startDate.toString() + SEPARATOR + endDate.toString();
         
@@ -169,22 +141,13 @@ public class MemoryAggregationCache
     
     public double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit )
     {
-        //String key = dataElement.getId() + SEPARATOR + optionCombo.getId() + "-" + startDate.toString() + "-" + endDate.toString() + "-" + organisationUnit.getId();
-        
-        /*Double value = aggregatedValueCache.get( key );
-        
-        if ( value != null )
-        {
-            return value.doubleValue();
-        }*/
-        
-        Double value = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
-        
-        /*if ( value != AggregationService.NO_VALUES_REGISTERED )
-        {
-            aggregatedValueCache.put( key, value );
-        }*/
-        
-        return value.doubleValue();
+        return aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
+    }
+
+    public void clearCache()
+    {
+        hierarchyCache = null;
+        periodCache.clear();
+        periodIdCache.clear();
     }
 }

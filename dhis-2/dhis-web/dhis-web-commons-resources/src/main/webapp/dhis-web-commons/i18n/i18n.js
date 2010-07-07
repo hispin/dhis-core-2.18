@@ -9,7 +9,7 @@ regexShortName = /^[\w][\w\d]+$/;
 
 function updateTranslation()
 {
-    var id = document.getElementById("id").value;
+    var id = document.getElementById("objectId").value;
 
     var className = document.getElementById("className").value;
 
@@ -57,7 +57,7 @@ function updateTranslationReceived( xmlObject )
 
 function updateReference()
 {
-    var id = document.getElementById("id").value;
+    var id = document.getElementById("objectId").value;
 
     var className = document.getElementById("className").value;
 
@@ -138,89 +138,4 @@ function addLocale()
     loc.add(option, null);
 
     setMessage( locale_added + " " + toAdd );
-}
-
-function setMessage( message )
-{
-	document.getElementById('message').innerHTML = message;
-	document.getElementById('message').style.display = 'block';
-}
-
-
-function applyingPatternForShortName( shortNameValue )
-{
-	return shortNameValue.match( regexShortName );
-}
-
-function checkingShortNameTranslation()
-{
-	var shortNameField = byId( 'shortName' );
-	var shortNameVal = shortNameField.value;
-	
-	if ( shortNameVal.length > 0 )
-	{
-		if ( applyingPatternForShortName( shortNameVal ) == null )
-		{
-			setMessage( shortname_invalidated );
-			shortNameField.select();
-			return false;
-		}
-		else if ( shortNameVal.length > 25 )
-		{
-			setMessage( shortname_length );
-			shortNameField.select();
-			return false;
-		}
-	}
-}
-
-function validateAddTranslation()
-{
-	if ( checkingShortNameTranslation() == false )
-	{
-		return false;
-	}
-	else
-	{
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( validateAddDuplicatedTranslationCompleted );
-
-		var name = getFieldValue( 'name' );
-		var shortName = getFieldValue( 'shortName' );
-		
-		var params	=	'className=' + getFieldValue( 'className' );
-			params	+=	'&id=' + getFieldValue( 'id' );
-			params	+=	'&loc=' + getFieldValue( 'loc' );
-		
-		if ( name.length > 0 )
-		{
-			params	+=	'&name=' + name;
-		}
-		if ( shortName.length > 0 )
-		{
-			params	+=	'&shortName=' + shortName;
-		}
-
-		request.sendAsPost( params );
-		request.send( 'validateAddDuplicatedTranslation.action' );
-	}
-	
-	return false;
-}
-
-function validateAddDuplicatedTranslationCompleted( xmlObject )
-{
-	var type = xmlObject.getAttribute( 'type' );
-	
-	setMessage( xmlObject.firstChild.nodeValue );
-	
-	if ( type == 'input' )
-	{
-		byId("name").select();
-	}
-	else if ( type == 'success' )
-	{
-		byId( "translateForm" ).submit();
-	}
 }

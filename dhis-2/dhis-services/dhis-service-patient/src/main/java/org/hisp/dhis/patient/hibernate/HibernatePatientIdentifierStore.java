@@ -112,7 +112,7 @@ public class HibernatePatientIdentifierStore
     {
         return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "identifierType", idenType ),
             Restrictions.eq( "identifier", value ) ) )
-            .setProjection( Projections.property( "patient.id" ) ).uniqueResult();
+            .setProjection( Projections.property( "patient" ) ).uniqueResult();
     }
 
     public int countListPatientByOrganisationUnit( OrganisationUnit orgUnit )

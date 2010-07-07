@@ -46,7 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
 	</bean>
 
-	<bean
+<!--<bean
 		id="org.hisp.dhis.gis.action.management.SelectOrganisationUnitAction"
 		class="org.hisp.dhis.gis.action.management.SelectOrganisationUnitAction"
 		scope="prototype">
@@ -55,7 +55,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="featureService" ref="org.hisp.dhis.gis.FeatureService" />
 		<property name="selectionManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
 	</bean>
-
+-->
 	<bean id="org.hisp.dhis.gis.action.management.SelectMapAndUnitAction"
 		class="org.hisp.dhis.gis.action.management.SelectMapAndUnitAction"
 		scope="prototype">

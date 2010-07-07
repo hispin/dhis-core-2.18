@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "data_browser" ) #openHelp( "dataBrowser" )</h3> 
 
-<form method="get" action="searchResult.action" onsubmit="return validate()">
+<form method="get" action="searchResult.action" onsubmit="return validateForDrillDown()">
 
 <table>
 	<tr>
@@ -27,12 +27,10 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="fromDate" name="fromDate" title="Earliest date will be used if no date is selected">
-			<img src="../images/calendar_icon.gif" alt="" width="16" height="16" id="getDateFieldFrom" style="cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+			<input type="text" id="fromDate" name="fromDate" title="Earliest date will be used if no date is selected">			
 		</td>
 		<td>
-			<input type="text" id="toDate" name="toDate" title="Latest date will be used if no date is selected">
-			<img src="../images/calendar_icon.gif" alt="" width="16" height="16" id="getDateFieldTo" style="cursor:pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">			
+			<input type="text" id="toDate" name="toDate" title="Latest date will be used if no date is selected">			
 		</td>
 	</tr>  
     <tr>
@@ -48,7 +46,7 @@
 				<option value ="null">[ $i18n.getString( "select_mode" ) ]</option>
 				<option value ="DataSet">$i18n.getString( "data_sets" )</option>
 				<option value ="DataElementGroup">$i18n.getString( "data_element_groups" )</option>
-				<option value ="OrganisationUnitGroup">$i18n.getString( "Organisation unit groups" )</option>
+				<option value ="OrganisationUnitGroup">$i18n.getString( "organisation_unit_groups" )</option>
 				<option value ="OrganisationUnit">$i18n.getString( "organisation_units" )</option>
 			</select>
 		</td>
@@ -73,26 +71,35 @@
 	</table>
 </div>
 
-<div>
-	<input type="submit" value="$i18n.getString( 'browse' )" style="width:120px">		
+<div id="drillDownCheckBoxDiv" style="display:none">
+	<input type="checkbox" id="drillDownCheckBox" name="drillDownCheckBox" /> $i18n.getString( "browse_data_at_this_level" )
 </div>
 
-<script type="text/javascript">
-	window.onload = modeHandler;
+<br/>
 
-    Calendar.setup({
-        inputField     :    "fromDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getDateFieldFrom"   // trigger for the calendar (button ID)
-    });
-</script>
-<script type="text/javascript">
-    Calendar.setup({
-        inputField     :    "toDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getDateFieldTo"   // trigger for the calendar (button ID)
-    });
-</script>
+<div>
+	<input type="submit" value="$i18n.getString( 'browse' )" />
+</div>
+
 </form>
 
 <span id="message"></span>
+
+<script type="text/javascript">
+
+	var flag;
+	window.onload = modeHandler;
+	
+	var i18n_drilldown_choose_period_type = '$encoder.jsEscape( $i18n.getString("drilldown_choose_period_type"), "'" )';
+	var i18n_drilldown_fromdate_invalid = '$encoder.jsEscape( $i18n.getString("drilldown_fromdate_invalid"), "'" )';
+	var i18n_drilldown_enddate_invalid = '$encoder.jsEscape( $i18n.getString("drilldown_enddate_invalid"), "'" )';
+	var i18n_drilldown_fromdate_is_later_than_todate = '$encoder.jsEscape( $i18n.getString("drilldown_fromdate_is_later_than_todate"), "'" )';
+	var i18n_drilldown_select_browse_mode = '$encoder.jsEscape( $i18n.getString("drilldown_select_browse_mode"), "'" )';
+	
+	$(document).ready(function() {
+	
+		datePickerInRange( 'fromDate' , 'toDate' );
+	
+	});
+	
+</script>

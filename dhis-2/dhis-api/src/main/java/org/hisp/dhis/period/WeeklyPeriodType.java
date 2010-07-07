@@ -48,6 +48,8 @@ public class WeeklyPeriodType
      */
     public static final String NAME = "Weekly";
 
+    public static final int FREQUENCY_ORDER = 7;
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
@@ -79,6 +81,12 @@ public class WeeklyPeriodType
         cal.add( Calendar.DAY_OF_YEAR, 6 );
 
         return new Period( this, startDate, cal.getTime() );
+    }
+
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
     }
 
     // -------------------------------------------------------------------------

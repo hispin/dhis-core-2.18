@@ -53,6 +53,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class IndicatorAggregation
 {
     private static final String NULL_REPLACEMENT = "0";
+
+    private static final Pattern OPERAND_PATTERN = Pattern.compile( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])" );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -123,10 +125,6 @@ public class IndicatorAggregation
     }
 
     // -------------------------------------------------------------------------
-    // Supportive methods for Indicator aggregation
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
@@ -159,17 +157,14 @@ public class IndicatorAggregation
     {    	
         try
         {        	
-        	Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+            Matcher matcher = OPERAND_PATTERN.matcher( formula );
             
-            Matcher matcher = pattern.matcher( formula );
             StringBuffer buffer = new StringBuffer();            
             
             while ( matcher.find() )
             {
-                String replaceString = matcher.group();
+                String replaceString = matcher.group().replaceAll( "[\\[\\]]", "" );
                 
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-
                 String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );                
                 String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
                 

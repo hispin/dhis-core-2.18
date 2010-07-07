@@ -34,6 +34,8 @@ import java.util.Collection;
 
 /**
  * @author Oyvind Brucker
+ * @modifier Dang Duy Hieu
+ * @since 2010-04-15
  */
 public interface I18nService
 {
@@ -71,7 +73,13 @@ public interface I18nService
 
     public List<String> getPropertyNames( String className );
 
+    public List<String> getUniquePropertyNames( String className );
+
     public Map<String, String> getPropertyNamesLabel( String className );
+
+    public Map<String, String> getUniquePropertyNamesLabel( String className );
+    
+    public Map<String, Map<String, String>> getRulePropertyNames( String className );
 
     // -------------------------------------------------------------------------
     // Locale

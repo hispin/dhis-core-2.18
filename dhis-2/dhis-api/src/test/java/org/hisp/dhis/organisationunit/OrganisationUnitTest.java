@@ -27,6 +27,9 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,23 +37,35 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
-
 /**
  * @author Lars Helge Overland
  */
 public class OrganisationUnitTest
 {
-    private List<String> coordinatesCollection = new ArrayList<String>();
+    private List<String> dirtyCoordinatesCollection = new ArrayList<String>();
+    private List<String> cleanCoordinatesCollection = new ArrayList<String>();
     
     private String coordinates = "[[[[11.11,22.22],[33.33,44.44],[55.55,66.66]]],[[[77.77,88.88],[99.99,11.11],[22.22,33.33]]],[[[44.44,55.55],[66.66,77.77],[88.88,99.99]]]]";
     
     @Before
     public void before()
     {
-        coordinatesCollection.add( "11.11,22.22 33.33,44.44 55.55,66.66" );
-        coordinatesCollection.add( "77.77,88.88 99.99,11.11 22.22,33.33" );
-        coordinatesCollection.add( "44.44,55.55 66.66,77.77 88.88,99.99" );
+        dirtyCoordinatesCollection.add( "11.11,22.22  33.33,44.44    55.55,66.66" ); // Extra space between coords
+        dirtyCoordinatesCollection.add( "77.77,88.88 99.99,11.11\n22.22,33.33" );  // Newline between coords
+        dirtyCoordinatesCollection.add( "  44.44,55.55 66.66,77.77 88.88,99.99 " );  // Leading and trailing space
+        
+        cleanCoordinatesCollection.add( "11.11,22.22 33.33,44.44 55.55,66.66" ); // Testing on string since we control the output format
+        cleanCoordinatesCollection.add( "77.77,88.88 99.99,11.11 22.22,33.33" );
+        cleanCoordinatesCollection.add( "44.44,55.55 66.66,77.77 88.88,99.99" );
+    }
+
+    @Test
+    public void testSetCoordinatesFromCollection()
+    {
+        OrganisationUnit unit = new OrganisationUnit();
+        unit.setCoordinatesFromCollection( dirtyCoordinatesCollection );
+        
+        assertEquals( coordinates, unit.getCoordinates() );
     }
     
     @Test
@@ -62,17 +77,8 @@ public class OrganisationUnitTest
         Collection<String> actual = unit.getCoordinatesAsCollection();
         
         assertEquals( 3, actual.size() );
-        assertTrue( actual.contains( coordinatesCollection.get( 0 ) ) );
-        assertTrue( actual.contains( coordinatesCollection.get( 1 ) ) );
-        assertTrue( actual.contains( coordinatesCollection.get( 2 ) ) );
-    }
-    
-    @Test
-    public void testSetCoordinatesFromCollection()
-    {
-        OrganisationUnit unit = new OrganisationUnit();
-        unit.setCoordinatesFromCollection( coordinatesCollection );
-        
-        assertEquals( coordinates, unit.getCoordinates() );
-    }
+        assertTrue( actual.contains( cleanCoordinatesCollection.get( 0 ) ) );
+        assertTrue( actual.contains( cleanCoordinatesCollection.get( 1 ) ) );
+        assertTrue( actual.contains( cleanCoordinatesCollection.get( 2 ) ) );
+    }    
 }

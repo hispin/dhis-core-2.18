@@ -27,6 +27,8 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -68,5 +70,25 @@ public class UserDeletionHandler
                 userStore.updateUser( user );
             }
         }
+    }
+    
+    @Override
+    public boolean allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
+    {
+        Collection<UserCredentials> userCredentials = userStore.getAllUserCredentials();
+        for( UserCredentials uc : userCredentials )
+        {
+            if( uc != null && uc.getUserAuthorityGroups() != null )
+            {
+                for( UserAuthorityGroup role : uc.getUserAuthorityGroups())
+                {
+                    if( role.getId() == authorityGroup.getId())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

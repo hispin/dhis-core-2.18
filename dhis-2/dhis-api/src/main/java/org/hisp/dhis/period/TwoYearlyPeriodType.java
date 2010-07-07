@@ -48,6 +48,8 @@ public class TwoYearlyPeriodType
      */
     public static final String NAME = "TwoYearly";
 
+    public static final int FREQUENCY_ORDER = 730;
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
@@ -81,6 +83,12 @@ public class TwoYearlyPeriodType
         cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
 
         return new Period( this, startDate, cal.getTime() );
+    }
+
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
     }
 
     // -------------------------------------------------------------------------

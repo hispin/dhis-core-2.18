@@ -28,27 +28,28 @@ package org.hisp.dhis.aggregation;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
-import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -58,46 +59,186 @@ import org.junit.Test;
 public class AggregationServiceTest
     extends DhisTest
 {
+    private final String T = "true";
+    private final String F = "false";
+    
     private AggregationService aggregationService;
-
-    private StatementManager statementManager;
-
+    
     private DataElementCategoryCombo categoryCombo;
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
+
+    private Collection<Integer> dataElementIds;
+    private Collection<Integer> periodIds;
+    private Collection<Integer> organisationUnitIds;
+    
+    private DataElement dataElementA;
+    private DataElement dataElementB;
+    
+    private DataSet dataSet;
+    
+    private Period periodA;
+    private Period periodB;
+    private Period periodC;
+    
+    private OrganisationUnit unitA;
+    private OrganisationUnit unitB;
+    private OrganisationUnit unitC;
+    private OrganisationUnit unitD;
+    private OrganisationUnit unitE;
+    private OrganisationUnit unitF;
+    private OrganisationUnit unitG;
+    private OrganisationUnit unitH;
+    private OrganisationUnit unitI;    
+
+    private Date mar01 = getDate( 2005, 3, 1 );
+    private Date mar31 = getDate( 2005, 3, 31 );
+    private Date apr01 = getDate( 2005, 4, 1 );
+    private Date apr30 = getDate( 2005, 4, 30 );
+    private Date may01 = getDate( 2005, 5, 1 );
+    private Date may31 = getDate( 2005, 5, 31 );
     
     @Override
     public void setUpTest()
-        throws Exception
     {
         aggregationService = (AggregationService) getBean( AggregationService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
+        
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );             
-        
-        categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
 
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
+        
+        periodService = (PeriodService) getBean( PeriodService.ID );
+
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
-        statementManager = (StatementManager) getBean( "statementManager" );
+        dataValueService = (DataValueService) getBean( DataValueService.ID );
+
+        expressionService = (ExpressionService) getBean( ExpressionService.ID );
         
-        statementManager.initialise();
-    }
-    
-    @Override
-    public void tearDownTest() 
-        throws Exception
-    {
-        statementManager.destroy();
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
+        // ---------------------------------------------------------------------
+        // Setup identifier Collections
+        // ---------------------------------------------------------------------
+
+        dataElementIds = new HashSet<Integer>();
+        periodIds = new HashSet<Integer>();
+        organisationUnitIds = new HashSet<Integer>();
+        
+        // ---------------------------------------------------------------------
+        // Setup DataElements
+        // ---------------------------------------------------------------------
+
+        dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+
+        dataElementIds.add( dataElementService.addDataElement( dataElementA ) );
+        dataElementIds.add( dataElementService.addDataElement( dataElementB ) );
+
+        // ---------------------------------------------------------------------
+        // Setup DataSets (to get correct PeriodType for DataElements)
+        // ---------------------------------------------------------------------
+
+        dataSet = createDataSet( 'A', new MonthlyPeriodType() );
+        dataSet.getDataElements().add( dataElementA );
+        dataSet.getDataElements().add( dataElementB );
+        dataSetService.addDataSet( dataSet );
+        dataElementA.getDataSets().add( dataSet );
+        dataElementB.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElementA );
+        dataElementService.updateDataElement( dataElementB );
+        
+        // ---------------------------------------------------------------------
+        // Setup Periods
+        // ---------------------------------------------------------------------
+        
+        PeriodType monthly = new MonthlyPeriodType();
+        
+        periodA = createPeriod( monthly, mar01, mar31 );
+        periodB = createPeriod( monthly, apr01, apr30 );
+        periodC = createPeriod( monthly, may01, may31 );
+        
+        periodIds.add( periodService.addPeriod( periodA ) );
+        periodIds.add( periodService.addPeriod( periodB ) );
+        periodIds.add( periodService.addPeriod( periodC ) );
+        
+        // ---------------------------------------------------------------------
+        // Setup OrganisationUnits
+        // ---------------------------------------------------------------------
+
+        unitA = createOrganisationUnit( 'A' );
+        unitB = createOrganisationUnit( 'B', unitA );
+        unitC = createOrganisationUnit( 'C', unitA );
+        unitD = createOrganisationUnit( 'D', unitB );
+        unitE = createOrganisationUnit( 'E', unitB );
+        unitF = createOrganisationUnit( 'F', unitB );
+        unitG = createOrganisationUnit( 'G', unitF);
+        unitH = createOrganisationUnit( 'H', unitF );
+        unitI = createOrganisationUnit( 'I' );
+
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitA ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitB ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitC ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitD ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitE ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitF ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitG ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitH ) );
+        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitI ) );
+        
+        // ---------------------------------------------------------------------
+        // Setup DataValues
+        // ---------------------------------------------------------------------
+
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitC, "90", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitD, "10", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitE, "35", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitF, "25", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitG, "20", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitH, "60", categoryOptionCombo ) );
+        
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitC, "70", categoryOptionCombo ) );        
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitD, "40", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitE, "65", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitF, "55", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitG, "20", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitH, "15", categoryOptionCombo ) );
+        
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitC, "95", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitD, "40", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitE, "45", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitF, "30", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitG, "50", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitH, "70", categoryOptionCombo ) );
+        
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitC, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitD, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitE, F, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitF, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitG, F, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitH, T, categoryOptionCombo ) );
+        
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitC, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitD, F, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitE, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitF, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitG, F, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitH, T, categoryOptionCombo ) );
+        
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitC, F, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitD, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitE, F, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitF, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitG, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitH, T, categoryOptionCombo ) );
+        
+        aggregationService.clearCache();
     }
 
     @Override
@@ -106,570 +247,57 @@ public class AggregationServiceTest
         return true;
     }
 
-    // -------------------------------------------------------------------------
-    // DataElement
-    // -------------------------------------------------------------------------
-
     @Test
-    public void testSumIntDataElementAggregatedValue()
-        throws Exception
+    public void sumIntDataElement()
     {
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
+        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitC ) );
+        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitF ) );
+        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitB ) );
 
-        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-
-        // ---------------------------------------------------------------------
-        // Setup Periods
-        // ---------------------------------------------------------------------
-
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-
-        Date feb01 = getDate( 2005, 2, 1 );
-        Date feb10 = getDate( 2005, 2, 10 );
-        Date feb15 = getDate( 2005, 2, 15 );
-        Date feb20 = getDate( 2005, 2, 20 );
-        Date mar01 = getDate( 2005, 3, 1 );
-        Date mar17 = getDate( 2005, 3, 17 );
-        Date apr01 = getDate( 2005, 4, 1 );
-        Date apr16 = getDate( 2005, 4, 16 );
-        Date may01 = getDate( 2005, 5, 1 );
-        Date may16 = getDate( 2005, 5, 16 );
-        Date jun01 = getDate( 2005, 6, 1 );
-        Date jun10 = getDate( 2005, 6, 10 );
-        Date jun15 = getDate( 2005, 6, 15 );
-        Date jun20 = getDate( 2005, 6, 20 );
-
-        Period periodA = createPeriod( periodType, mar01, apr01 );
-        Period periodB = createPeriod( periodType, apr01, may01 );
-        Period periodC = createPeriod( periodType, may01, jun01 );
-        Period periodD = createPeriod( periodType, feb10, feb20 );
-        Period periodE = createPeriod( periodType, jun10, jun20 );
-        Period periodF = createPeriod( periodType, mar17, may16 );
-        Period periodG = createPeriod( periodType, apr16, may16 );
-
-        periodService.addPeriod( periodA );
-        periodService.addPeriod( periodB );
-        periodService.addPeriod( periodC );
-        periodService.addPeriod( periodD );
-        periodService.addPeriod( periodE );
-        periodService.addPeriod( periodF );
-        periodService.addPeriod( periodG );
-
-        // ---------------------------------------------------------------------
-        // Setup OrganisationUnits
-        // ---------------------------------------------------------------------
-
-        OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B', unitA );
-        OrganisationUnit unitC = createOrganisationUnit( 'C', unitA );
-        OrganisationUnit unitD = createOrganisationUnit( 'D', unitB );
-        OrganisationUnit unitE = createOrganisationUnit( 'E', unitB );
-        OrganisationUnit unitF = createOrganisationUnit( 'F', unitB );
-        OrganisationUnit unitG = createOrganisationUnit( 'G' );
-        OrganisationUnit unitH = createOrganisationUnit( 'H', unitF );
-        OrganisationUnit unitI = createOrganisationUnit( 'I', unitF );
-
-        organisationUnitService.addOrganisationUnit( unitA );
-        organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
-        organisationUnitService.addOrganisationUnit( unitD );
-        organisationUnitService.addOrganisationUnit( unitE );
-        organisationUnitService.addOrganisationUnit( unitF );
-        organisationUnitService.addOrganisationUnit( unitG );
-
-        organisationUnitService.addOrganisationUnitHierarchy( feb01 );
-
-        organisationUnitService.addOrganisationUnit( unitH );
-
-        organisationUnitService.addOrganisationUnitHierarchy( apr01 );
-
-        organisationUnitService.addOrganisationUnit( unitI );
-
-        organisationUnitService.addOrganisationUnitHierarchy( may01 );
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitB, "5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitB, "7", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitC, "8", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, unitC, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodE, unitF, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodG, unitF, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodE, unitG, "8", categoryOptionCombo ) ); // won't count
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitH, "5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, unitH, "20", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitI, "15", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitI, "12", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitI, "17", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodF, unitC, "40", categoryOptionCombo ) );
-
-        double aggregatedValue1 = aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, feb15, jun15, unitA );
-
-        assertEquals( aggregatedValue1, 100.0 );
-        
-        double aggregatedValue2 = aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, feb15, jun15, unitB );
-
-        assertEquals( aggregatedValue2, 47.0 );
-        
-        double aggregatedValue3 = aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, feb01, mar01, unitA );
-
-        assertEquals( aggregatedValue3, AggregationService.NO_VALUES_REGISTERED );
+        assertEquals( 255.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitC ) );
+        assertEquals( 345.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitF ) );
+        assertEquals( 580.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitB ) );
     }
-
+    
     @Test
-    @Ignore
-    public void testAverageIntDataElementAggregatedValue()
-        throws Exception
+    public void sumBoolDataElement()
     {
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
+        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitC ) );
+        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitF ) );
+        assertEquals( 3.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitB ) );
 
-        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE );        
-
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-
-        // ---------------------------------------------------------------------
-        // Setup Periods
-        // ---------------------------------------------------------------------
-
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-
-        Date feb01 = getDate( 2005, 2, 1 );
-        Date mar01 = getDate( 2005, 3, 1 );
-        Date mar17 = getDate( 2005, 3, 17 );
-        Date apr01 = getDate( 2005, 4, 1 );
-        Date apr16 = getDate( 2005, 4, 16 );
-        Date may01 = getDate( 2005, 5, 1 );
-        Date may16 = getDate( 2005, 5, 16 );
-        Date may31 = getDate( 2005, 5, 31 );
-        Date jun01 = getDate( 2005, 6, 1 );
-        Date jun15 = getDate( 2005, 6, 15 );
-        Date jul01 = getDate( 2005, 7, 1 );
-
-        Period periodA = createPeriod( periodType, mar01, apr01 );
-        Period periodB = createPeriod( periodType, apr01, may01 );
-        Period periodC = createPeriod( periodType, may01, may31 );
-        Period periodD = createPeriod( periodType, jun01, jul01 );
-        Period periodE = createPeriod( periodType, apr01, apr16 );
-        Period periodF = createPeriod( periodType, may01, may16 );
-
-        periodService.addPeriod( periodA );
-        periodService.addPeriod( periodB );
-        periodService.addPeriod( periodC );
-        periodService.addPeriod( periodD );
-        periodService.addPeriod( periodE );
-        periodService.addPeriod( periodF );
-
-        // ---------------------------------------------------------------------
-        // Setup OrganisationUnits
-        // ---------------------------------------------------------------------
-
-        OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B', unitA );
-        OrganisationUnit unitC = createOrganisationUnit( 'C', unitA );
-        OrganisationUnit unitD = createOrganisationUnit( 'D', unitB );
-        OrganisationUnit unitE = createOrganisationUnit( 'E', unitB );
-        OrganisationUnit unitF = createOrganisationUnit( 'F', unitB );
-        OrganisationUnit unitG = createOrganisationUnit( 'G' );
-        OrganisationUnit unitH = createOrganisationUnit( 'H', unitF );
-        OrganisationUnit unitI = createOrganisationUnit( 'I', unitF );
-        
-        organisationUnitService.addOrganisationUnit( unitA );
-        organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
-        organisationUnitService.addOrganisationUnit( unitD );
-        organisationUnitService.addOrganisationUnit( unitE );
-        organisationUnitService.addOrganisationUnit( unitF );
-        organisationUnitService.addOrganisationUnit( unitG );
-
-        organisationUnitService.addOrganisationUnitHierarchy( feb01 );
-
-        organisationUnitService.addOrganisationUnit( unitH );
-
-        organisationUnitService.addOrganisationUnitHierarchy( apr01 );
-
-        organisationUnitService.addOrganisationUnit( unitI );
-
-        organisationUnitService.addOrganisationUnitHierarchy( may01 );
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitB, "140", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitE, "80", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitE, "120", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, unitI, "20", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodE, unitB, "140", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodF, unitB, "20", categoryOptionCombo ) );
-
-        double aggregatedValue1 = aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar17, jun15, unitA );
-
-        assertEquals( 220.0, aggregatedValue1 );
-        
-        double aggregatedValue2 = aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, apr01, may01, unitA );
-
-        assertEquals( aggregatedValue2, AggregationService.NO_VALUES_REGISTERED );
+        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitC ) );
+        assertEquals( 7.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitF ) );
+        assertEquals( 10.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitB ) );
     }
-
-    @Ignore
+    
     @Test
-    public void testSumBoolDataElementAggregatedValue()
-        throws Exception
+    public void averageIntDataElement()
     {
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
-
-        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM );
-
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-
-        // ---------------------------------------------------------------------
-        // Setup Periods
-        // ---------------------------------------------------------------------
-
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-
-        Date feb01 = getDate( 2005, 2, 1 );
-        Date feb10 = getDate( 2005, 2, 10 );
-        Date feb15 = getDate( 2005, 2, 15 );
-        Date feb20 = getDate( 2005, 2, 20 );
-        Date mar01 = getDate( 2005, 3, 1 );
-        Date mar17 = getDate( 2005, 3, 17 );
-        Date apr01 = getDate( 2005, 4, 1 );
-        Date apr16 = getDate( 2005, 4, 16 );
-        Date may01 = getDate( 2005, 5, 1 );
-        Date may16 = getDate( 2005, 5, 16 );
-        Date jun01 = getDate( 2005, 6, 1 );
-        Date jun10 = getDate( 2005, 6, 10 );
-        Date jun15 = getDate( 2005, 6, 15 );
-        Date jun20 = getDate( 2005, 6, 20 );
-
-        Period periodA = createPeriod( periodType, mar01, apr01 );
-        Period periodB = createPeriod( periodType, apr01, may01 );
-        Period periodC = createPeriod( periodType, may01, jun01 );
-        Period periodD = createPeriod( periodType, feb10, feb20 );
-        Period periodE = createPeriod( periodType, jun10, jun20 );
-        Period periodF = createPeriod( periodType, mar17, may16 );
-        Period periodG = createPeriod( periodType, apr16, may16 );
-
-        periodService.addPeriod( periodA );
-        periodService.addPeriod( periodB );
-        periodService.addPeriod( periodC );
-        periodService.addPeriod( periodD );
-        periodService.addPeriod( periodE );
-        periodService.addPeriod( periodF );
-        periodService.addPeriod( periodG );
-
-        // ---------------------------------------------------------------------
-        // Setup OrganisationUnits
-        // ---------------------------------------------------------------------
-
-        OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B', unitA );
-        OrganisationUnit unitC = createOrganisationUnit( 'C', unitA );
-        OrganisationUnit unitD = createOrganisationUnit( 'D', unitB );
-        OrganisationUnit unitE = createOrganisationUnit( 'E', unitB );
-        OrganisationUnit unitF = createOrganisationUnit( 'F', unitB );
-        OrganisationUnit unitG = createOrganisationUnit( 'G' );
-        OrganisationUnit unitH = createOrganisationUnit( 'H', unitF );
-        OrganisationUnit unitI = createOrganisationUnit( 'I', unitF );
-
-        organisationUnitService.addOrganisationUnit( unitA );
-        organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
-        organisationUnitService.addOrganisationUnit( unitD );
-        organisationUnitService.addOrganisationUnit( unitE );
-        organisationUnitService.addOrganisationUnit( unitF );
-        organisationUnitService.addOrganisationUnit( unitG );
-
-        organisationUnitService.addOrganisationUnitHierarchy( feb01 );
-
-        organisationUnitService.addOrganisationUnit( unitH );
-
-        organisationUnitService.addOrganisationUnitHierarchy( apr01 );
-
-        organisationUnitService.addOrganisationUnit( unitI );
-
-        organisationUnitService.addOrganisationUnitHierarchy( may01 );
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        final String TRUE = "true";
-        final String FALSE = "false";
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitB, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitB, FALSE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitC, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, unitC, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodE, unitF, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodF, unitC, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodG, unitF, TRUE, categoryOptionCombo ) );
-
-        double aggregatedValue1 = aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, feb15, jun15, unitA );
-
-        assertEquals( aggregatedValue1, 5.0 );
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElementService.updateDataElement( dataElementA );
         
-        double aggregatedValue3 = aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, feb01, mar01, unitA );
+        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitC ) );
+        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitF ) );
+        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitB ) );
 
-        assertEquals( aggregatedValue3, AggregationService.NO_VALUES_REGISTERED );
+        assertEquals( 85.2, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitC ), 0.1 );
+        assertEquals( 115.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitF ), 0.1 );
+        assertEquals( 193.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitB ), 0.1 );
     }
-
-    @Ignore
+    
     @Test
-    public void testAverageBoolDataElementAggregatedValue()
-        throws Exception
+    public void averageBoolDataElement()
     {
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
-
-        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-
-        // ---------------------------------------------------------------------
-        // Setup Periods
-        // ---------------------------------------------------------------------
-
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-
-        Date feb01 = getDate( 2005, 2, 1 );
-        Date mar01 = getDate( 2005, 3, 1 );
-        Date mar17 = getDate( 2005, 3, 17 );
-        Date apr01 = getDate( 2005, 4, 1 );
-        Date apr16 = getDate( 2005, 4, 16 );
-        Date may01 = getDate( 2005, 5, 1 );
-        Date may16 = getDate( 2005, 5, 16 );
-        Date jun01 = getDate( 2005, 6, 1 );
-        Date jun15 = getDate( 2005, 6, 15 );
-        Date jul01 = getDate( 2005, 7, 1 );
-
-        Period periodA = createPeriod( periodType, mar01, apr01 );
-        Period periodB = createPeriod( periodType, apr01, may01 );
-        Period periodC = createPeriod( periodType, may01, jun01 );
-        Period periodD = createPeriod( periodType, jun01, jul01 );
-        Period periodE = createPeriod( periodType, apr01, apr16 );
-        Period periodF = createPeriod( periodType, may01, may16 );
-
-        periodService.addPeriod( periodA );
-        periodService.addPeriod( periodB );
-        periodService.addPeriod( periodC );
-        periodService.addPeriod( periodD );
-        periodService.addPeriod( periodE );
-        periodService.addPeriod( periodF );
-
-        // ---------------------------------------------------------------------
-        // Setup OrganisationUnits
-        // ---------------------------------------------------------------------
-
-        OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B', unitA );
-        OrganisationUnit unitC = createOrganisationUnit( 'C', unitA );
-        OrganisationUnit unitD = createOrganisationUnit( 'D', unitB );
-        OrganisationUnit unitE = createOrganisationUnit( 'E', unitB );
-        OrganisationUnit unitF = createOrganisationUnit( 'F', unitB );
-        OrganisationUnit unitG = createOrganisationUnit( 'G' );
-        OrganisationUnit unitH = createOrganisationUnit( 'H', unitF );
-        OrganisationUnit unitI = createOrganisationUnit( 'I', unitF );
-
-        organisationUnitService.addOrganisationUnit( unitA );
-        organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
-        organisationUnitService.addOrganisationUnit( unitD );
-        organisationUnitService.addOrganisationUnit( unitE );
-        organisationUnitService.addOrganisationUnit( unitF );
-        organisationUnitService.addOrganisationUnit( unitG );
-
-        organisationUnitService.addOrganisationUnitHierarchy( feb01 );
-
-        organisationUnitService.addOrganisationUnit( unitH );
-
-        organisationUnitService.addOrganisationUnitHierarchy( apr01 );
-
-        organisationUnitService.addOrganisationUnit( unitI );
-
-        organisationUnitService.addOrganisationUnitHierarchy( may01 );
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        final String TRUE = "true";
-        final String FALSE = "false";
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitB, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitE, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitE, FALSE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, unitF, FALSE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodE, unitB, TRUE, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodF, unitB, FALSE, categoryOptionCombo ) );
-
-        double aggregatedValue1 = aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar17, jun15, unitA );
-
-        assertEquals( aggregatedValue1, 0.5 );
+        dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElementService.updateDataElement( dataElementB );
         
-        double aggregatedValue2 = aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, apr01, may01, unitA );
-
-        assertEquals( aggregatedValue2, AggregationService.NO_VALUES_REGISTERED );
-    }
-
-    // -------------------------------------------------------------------------
-    // Indicator
-    // -------------------------------------------------------------------------
-
-    @Test
-    @Ignore
-    public void testIndicatorAggregatedValue()
-        throws Exception
-    {
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
-
-        DataElement elementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement elementB = createDataElement( 'B', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement elementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement elementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitC ) );
+        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitF ), 0.01 );
+        assertEquals( 0.6, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitB ) );
         
-        int dataElementIdA = dataElementService.addDataElement( elementA );
-        int dataElementIdB = dataElementService.addDataElement( elementB );
-        int dataElementIdC = dataElementService.addDataElement( elementC );
-        int dataElementIdD = dataElementService.addDataElement( elementD );
-
-        // ---------------------------------------------------------------------
-        // Setup Periods
-        // ---------------------------------------------------------------------
-
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-
-        Date feb01 = getDate( 2005, 2, 1 );
-        Date mar01 = getDate( 2005, 3, 1 );
-        Date apr01 = getDate( 2005, 4, 1 );
-        Date may01 = getDate( 2005, 5, 1 );
-        Date jun01 = getDate( 2005, 6, 1 );
-
-        Period periodA = createPeriod( periodType, feb01, mar01 );
-        Period periodB = createPeriod( periodType, apr01, may01 );
-        
-        // ---------------------------------------------------------------------
-        // Setup OrganisationUnits
-        // ---------------------------------------------------------------------
-
-        OrganisationUnit unit1 = createOrganisationUnit( 'A' );
-        
-        organisationUnitService.addOrganisationUnit( unit1 );
-
-        organisationUnitService.addOrganisationUnitHierarchy( feb01 );
-
-        String suffix = SEPARATOR + categoryOptionCombo.getId();
-        
-        // ---------------------------------------------------------------------
-        // Setup IndicatorType
-        // ---------------------------------------------------------------------
-
-        int factor = 100;
-        
-        IndicatorType indicatorType = new IndicatorType( "indicatorTypeName", factor );
-        
-        indicatorService.addIndicatorType( indicatorType );
-
-        // ---------------------------------------------------------------------
-        // Setup Indicators
-        // ---------------------------------------------------------------------
-
-        // ---------------------------------------------------------------------
-        // Numerator: ( ( [1] + [2] - 2 ) / ( [3] * [4] ) )
-        // ---------------------------------------------------------------------
-
-        String numerator = "( ( ["
-            + dataElementIdA + suffix + "] + [" 
-            + dataElementIdB + suffix + "] - 2 ) / ( [" 
-            + dataElementIdC + suffix + "] * ["
-            + dataElementIdD + suffix + "] ) )";
-
-        // ---------------------------------------------------------------------
-        // Denominator: [1] - 8 + [2] + 2
-        // ---------------------------------------------------------------------
-
-        String denominator = "[" 
-            + dataElementIdA + suffix + "] - 8 + ["
-            + dataElementIdB + suffix + "] + 2";
-
-        Indicator indicator = createIndicator( 'A', indicatorType );
-        
-        indicator.setNumerator( numerator );
-        indicator.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        indicator.setDenominator( denominator );
-        indicator.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        
-        indicatorService.addIndicator( indicator );
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        dataValueService.addDataValue( createDataValue( elementA, periodA, unit1, "12", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( elementB, periodA, unit1, "14", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( elementC, periodA, unit1, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( elementD, periodA, unit1, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( elementC, periodB, unit1, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( elementD, periodB, unit1, "5", categoryOptionCombo ) );
-
-        // ---------------------------------------------------------------------
-        // No data registered for element 2, will be replaced by 0
-        // ---------------------------------------------------------------------
-
-        double aggregatedValue1 = aggregationService.getAggregatedIndicatorValue( indicator, feb01, mar01, unit1 );
-
-        // ---------------------------------------------------------------------
-        // ((12+14-2)/(2*3)) / (12-8+14+2) = 4 / 20 = 0.2
-        // ---------------------------------------------------------------------
-
-        assertEquals( aggregatedValue1, 20.0 );
-
-        double aggregatedNumeratorValue = aggregationService.getAggregatedNumeratorValue( 
-            indicator, feb01, mar01, unit1 );
-
-        assertEquals( aggregatedNumeratorValue, 4.0 );
-
-        double aggregatedDenominatorValue = aggregationService.getAggregatedDenominatorValue( 
-            indicator, feb01, mar01, unit1 );
-
-        assertEquals( aggregatedDenominatorValue, 20.0 );
-
-        double aggregatedValue2 = aggregationService.getAggregatedIndicatorValue( indicator, apr01, may01, unit1 );
-
-        // ---------------------------------------------------------------------
-        // ((0+0-2)/(2*5)) / (0-8+0+2)
-        // ---------------------------------------------------------------------
-
-        assertEquals( aggregatedValue2, 3.333, 0.1 );
-        
-        double aggregatedValue3 = aggregationService.getAggregatedIndicatorValue( indicator, may01, jun01, unit1 );
-
-        // ---------------------------------------------------------------------
-        // ((0+0-2)/(0*0)) / (0-8+0+2)
-        // ---------------------------------------------------------------------
-
-        assertEquals( aggregatedValue3, AggregationService.NO_VALUES_REGISTERED );
+        assertEquals( 0.66, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitC ), 0.01 );
+        assertEquals( 0.78, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitF ), 0.01 );
+        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitB ), 0.01 );
     }
 }

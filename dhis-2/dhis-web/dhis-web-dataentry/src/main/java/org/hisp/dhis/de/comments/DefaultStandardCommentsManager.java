@@ -34,6 +34,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -43,6 +46,8 @@ import com.thoughtworks.xstream.XStream;
 public class DefaultStandardCommentsManager
     implements StandardCommentsManager
 {
+    private static final Log log = LogFactory.getLog( DefaultStandardCommentsManager.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -54,38 +59,38 @@ public class DefaultStandardCommentsManager
         this.standardCommentsFile = standardCommentsFile;
     }
 
+    private List<String> standardComments;
+
+    @SuppressWarnings("unchecked")
+    public void init()
+    {
+        Reader reader = null;
+        try 
+        {
+            reader = new BufferedReader( new InputStreamReader( getClass().getClassLoader().getResourceAsStream( standardCommentsFile ), "UTF-8" ) );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            log.warn( "Unsupported encoding", e );
+        }
+        
+        if ( reader != null )
+        {
+            XStream xStream = new XStream();
+            standardComments = (List<String>) xStream.fromXML( reader );
+        }
+        else
+        {
+            standardComments = new ArrayList<String>();
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // StandardCommentsManager implementation
     // -------------------------------------------------------------------------
 
-    private List<String> standardComments;
-
-    @SuppressWarnings("unchecked")
-    public List<String> getStandardComments() throws StandardCommentsManagerException
+    public List<String> getStandardComments()
     {
-        if ( standardComments == null )
-        {
-            Reader reader = null;
-            try 
-            {
-                reader = new BufferedReader( new InputStreamReader( getClass().getClassLoader().getResourceAsStream( standardCommentsFile ), "UTF-8" ) );
-            }
-            catch ( UnsupportedEncodingException e )
-            {
-                throw new StandardCommentsManagerException( "Unsupported encoding", e );
-            }
-            
-            if ( reader != null )
-            {
-                XStream xStream = new XStream();
-                standardComments = (List<String>) xStream.fromXML( reader );
-            }
-            else
-            {
-                standardComments = new ArrayList<String>();
-            }
-        }
-
         return standardComments;
     }
 }

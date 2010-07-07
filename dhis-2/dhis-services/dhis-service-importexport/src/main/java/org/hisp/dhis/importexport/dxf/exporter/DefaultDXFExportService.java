@@ -99,6 +99,8 @@ import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hisp.dhis.importexport.ImportParams.*;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.*;
+
 
 /**
  * @author Lars Helge Overland
@@ -108,7 +110,6 @@ public class DefaultDXFExportService
     implements ExportService
 {
     private static final String ZIP_ENTRY_NAME = "Export.xml";
-    private static final String ROOT_NAME = "dxf";
         
     // -------------------------------------------------------------------------
     // Dependencies
@@ -245,7 +246,7 @@ public class DefaultDXFExportService
             thread.setZipOutputStream( zipOut );
             thread.setParams( params );
             thread.setWriter( writer );
-            thread.setRootName( ROOT_NAME );
+            thread.setRootName( DXFROOT );
             thread.setRootProperties( rootProperties );
             
             thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryService ) );

@@ -195,8 +195,9 @@
 		</action>
 
 		<action name="deleteLegend"	class="org.hisp.dhis.gis.action.legend.DeleteLegendAction">
-			<result name="success" type="redirect">	listLegends.action </result>
-			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
+		 	<result name="success" type="velocity-xml">/dhis-web-gis/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-gis/responseError.vm</result>	
+			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
 		<action name="updateLegend"

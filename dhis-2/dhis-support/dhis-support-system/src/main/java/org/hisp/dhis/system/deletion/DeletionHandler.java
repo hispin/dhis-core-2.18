@@ -46,6 +46,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -488,6 +489,11 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeletePatient( Patient patient )
+    {
+        return true;
+    }
+    
+    public boolean allowDeleteLegend( Legend legend )
     {
         return true;
     }

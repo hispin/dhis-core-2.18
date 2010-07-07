@@ -31,7 +31,6 @@ import static org.hisp.dhis.datamart.util.ParserUtil.generateExpression;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +49,7 @@ import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -97,6 +97,13 @@ public class DefaultCalculatedDataElementDataMart
         this.averageIntAggregator = averageIntDataElementAggregator;
     }
 
+    private DataElementAggregator averageIntSingleValueAggregator;
+
+    public void setAverageIntSingleValueAggregator( DataElementAggregator averageIntSingleValueAggregator )
+    {
+        this.averageIntSingleValueAggregator = averageIntSingleValueAggregator;
+    }
+
     private CrossTabService crossTabService;
 
     public void setCrossTabService( CrossTabService crossTabService )
@@ -133,13 +140,9 @@ public class DefaultCalculatedDataElementDataMart
     // -------------------------------------------------------------------------
 
     public int exportCalculatedDataElements( final Collection<Integer> calculatedDataElementIds, final Collection<Integer> periodIds,
-        final Collection<Integer> organisationUnitIds, final Collection<DataElementOperand> operands )
+        final Collection<Integer> organisationUnitIds, final Collection<DataElementOperand> operands, String key )
     {
-        final Collection<DataElementOperand> sumOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_SUM );
-        final Collection<DataElementOperand> averageOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        
-        final Map<DataElementOperand, Integer> sumOperandIndexMap = crossTabService.getOperandIndexMap( sumOperands );
-        final Map<DataElementOperand, Integer> averageOperandIndexMap = crossTabService.getOperandIndexMap( averageOperands );
+        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
         
         final Collection<DataElement> calculatedDataElements = dataElementService.getDataElements( calculatedDataElementIds );       
         final Collection<Period> periods = periodService.getPeriods( periodIds );
@@ -147,53 +150,43 @@ public class DefaultCalculatedDataElementDataMart
         
         final DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
-        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
-        
-        batchHandler.init();
+        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
 
+        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnitIds );
+        
         int count = 0;
-        int level = 0;
 
-        Map<DataElementOperand, Double> sumIntValueMap = null;
-        Map<DataElementOperand, Double> averageIntValueMap = null;
-        
-        Map<String, Map<DataElementOperand, Double>> valueMapMap = null;
-        
-        Map<DataElementOperand, Double> valueMap = null;
-        
         CalculatedDataElement calculatedDataElement = null;
 
-        PeriodType periodType = null;
-        
         double aggregatedValue = 0.0;
         
         final AggregatedDataValue dataValue = new AggregatedDataValue();
 
-        for ( final OrganisationUnit unit : organisationUnits )
+        for ( final Period period : periods )
         {
-            level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
-            
-            for ( final Period period : periods )
-            {
-                sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level );                
-                averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level );
-                                
-                valueMapMap = new HashMap<String, Map<DataElementOperand, Double>>( 2 );
-                
-                valueMapMap.put( DataElement.AGGREGATION_OPERATOR_SUM, sumIntValueMap );
-                valueMapMap.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, averageIntValueMap );
+            final PeriodType periodType = period.getPeriodType();
 
-                periodType = period.getPeriodType();
+            final Map<DataElementOperand, Integer> sumOperandIndexMap = sumIntAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
+            final Map<DataElementOperand, Integer> averageOperandIndexMap = averageIntAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
+            final Map<DataElementOperand, Integer> averageSingleValueOperandIndexMap = averageIntSingleValueAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
+
+            for ( final OrganisationUnit unit : organisationUnits )
+            {
+                final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
+                
+                final Map<DataElementOperand, Double> sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level, hierarchy, key );                
+                final Map<DataElementOperand, Double> averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level, hierarchy, key );
+                final Map<DataElementOperand, Double> averageIntSingleValueMap = averageIntSingleValueAggregator.getAggregatedValues( averageSingleValueOperandIndexMap, period, unit, level, hierarchy, key );
+                
+                final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( sumIntValueMap );
+                valueMap.putAll( averageIntValueMap );
+                valueMap.putAll( averageIntSingleValueMap );
                 
                 for ( final DataElement element : calculatedDataElements )
                 {
                     calculatedDataElement = (CalculatedDataElement) element;
                     
-                    valueMap = valueMapMap.get( calculatedDataElement.getAggregationOperator() );
-                    
                     aggregatedValue = calculateExpression( generateExpression( calculatedDataElement.getExpression().getExpression(), valueMap ) );
-                    
-                    //TODO improve logic for performance
                     
                     dataValue.clear();
                     
@@ -215,26 +208,5 @@ public class DefaultCalculatedDataElementDataMart
         batchHandler.flush();
         
         return count;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final String aggregationOperator )
-    {
-        final Collection<DataElementOperand> filteredOperands = new ArrayList<DataElementOperand>();
-        
-        for ( final DataElementOperand operand : operands )
-        {
-            final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-            
-            if ( aggregationOperator.equals( dataElement.getAggregationOperator() ) )
-            {
-                filteredOperands.add( operand );
-            }
-        }
-        
-        return filteredOperands;
     }
 }

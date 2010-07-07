@@ -92,7 +92,14 @@ public class ReportTableInternalProcess
     {
         this.organisationUnitId = organisationUnitId;
     }
+    
+    private boolean doDataMart;
         
+    public void setDoDataMart( boolean doDataMart )
+    {
+        this.doDataMart = doDataMart;
+    }
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -116,6 +123,6 @@ public class ReportTableInternalProcess
     @Override
     public void executeStatements()
     {
-        reportTableService.createReportTables( id, mode, reportingPeriod, parentOrganisationUnitId, organisationUnitId, format );
+        reportTableService.createReportTables( id, mode, reportingPeriod, parentOrganisationUnitId, organisationUnitId, doDataMart, format );
     }
 }

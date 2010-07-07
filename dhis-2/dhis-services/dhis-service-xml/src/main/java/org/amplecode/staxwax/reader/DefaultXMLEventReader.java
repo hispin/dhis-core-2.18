@@ -79,6 +79,24 @@ public class DefaultXMLEventReader
     }
 
     @Override
+    public QName getElementQName()
+    {
+        QName qName = null;
+
+        if ( currentEvent.isStartElement() )
+        {
+            qName = currentEvent.asStartElement().getName();
+        }
+
+        if ( currentEvent.isEndElement() )
+        {
+            qName = currentEvent.asEndElement().getName();
+        }
+
+        return qName;
+    }
+
+    @Override
     public String getElementValue()
     {
         try

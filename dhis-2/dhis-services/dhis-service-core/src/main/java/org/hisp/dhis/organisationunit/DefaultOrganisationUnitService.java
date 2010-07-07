@@ -28,7 +28,6 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -37,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -103,8 +101,6 @@ public class DefaultOrganisationUnitService
         
         int id = sourceStore.addSource( organisationUnit );
 
-        addOrganisationUnitHierarchy( organisationUnit.getOpeningDate() );
-        
         logger.log( AuditLogLevel.AUDIT_TRAIL, 
             AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_ADD , 
@@ -130,11 +126,6 @@ public class DefaultOrganisationUnitService
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
     {
         updateOrganisationUnit( organisationUnit );
-        
-        if ( updateHierarchy )
-        {
-            addOrganisationUnitHierarchy( new Date() );
-        }
     }
 
     public void deleteOrganisationUnit( OrganisationUnit organisationUnit )
@@ -155,8 +146,6 @@ public class DefaultOrganisationUnitService
         }
         
         sourceStore.deleteSource( organisationUnit );
-        
-        addOrganisationUnitHierarchy( organisationUnit.getClosedDate() != null ? organisationUnit.getClosedDate() : new Date() );
         
         logger.log( AuditLogLevel.AUDIT_TRAIL, 
             AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
@@ -412,11 +401,6 @@ public class DefaultOrganisationUnitService
         return maxDepth;
     }
 
-    public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
-    {
-        organisationUnitStore.updateOrganisationUnitParent( organisationUnitId, parentId );
-    }
-    
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
         return organisationUnitStore.getOrganisationUnitsWithoutGroups();
@@ -426,72 +410,16 @@ public class DefaultOrganisationUnitService
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
 
-    public int addOrganisationUnitHierarchy( Date date )
+    public OrganisationUnitHierarchy getOrganisationUnitHierarchy()
     {
-        return organisationUnitStore.addOrganisationUnitHierarchy( date );
-    }
-
-    public OrganisationUnitHierarchy getOrganisationUnitHierarchy( int id )
-    {
-        return organisationUnitStore.getOrganisationUnitHierarchy( id );
-    }
-
-    public OrganisationUnitHierarchy getLatestOrganisationUnitHierarchy()
-    {
-        return organisationUnitStore.getLatestOrganisationUnitHierarchy();
-    }
-
-    public void removeOrganisationUnitHierarchies( Date date )
-    {
-        organisationUnitStore.removeOrganisationUnitHierarchies( date );
+        return organisationUnitStore.getOrganisationUnitHierarchy();
     }
     
-    public Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( Date startDate, Date endDate )
+    public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
     {
-        return organisationUnitStore.getOrganisationUnitHierarchies( startDate, endDate );
+        organisationUnitStore.updateOrganisationUnitParent( organisationUnitId, parentId );
     }
-
-    public void clearOrganisationUnitHierarchyHistory()
-    {
-        Calendar calendar = Calendar.getInstance();
-        
-        calendar.clear();
-        calendar.set( 1970, Calendar.JANUARY, 1 );
-        
-        organisationUnitStore.deleteOrganisationUnitHierarchies();
-        organisationUnitStore.addOrganisationUnitHierarchy( calendar.getTime() );
-    }
-
-    public Collection<Integer> getChildren( int organisationUnitHierarchyId, int parentId )
-    {
-        OrganisationUnitHierarchy hierarchy = getOrganisationUnitHierarchy( organisationUnitHierarchyId );
-        
-        Set<Entry<Integer, Integer>> structureEntries = hierarchy.getStructure().entrySet();
-
-        List<Integer> children = new ArrayList<Integer>();
-        children.add( 0, parentId );
-
-        int childCounter = 1;
-
-        // ---------------------------------------------------------------------
-        // Sorts out the children of parent organisation unit from structure
-        // and adds them to children
-        // ---------------------------------------------------------------------
-
-        for ( int i = 0; i < childCounter; i++ )
-        {
-            for ( Entry<Integer, Integer> entry : structureEntries )
-            {
-                if ( entry.getValue().intValue() == children.get( i ).intValue() )
-                {
-                    children.add( childCounter++, entry.getKey() );
-                }
-            }
-        }
-        
-        return children;
-    }
-
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------

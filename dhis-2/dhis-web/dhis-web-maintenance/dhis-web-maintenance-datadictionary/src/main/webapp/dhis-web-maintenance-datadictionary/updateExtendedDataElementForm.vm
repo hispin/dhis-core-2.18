@@ -13,7 +13,7 @@
 										validateUpdateExtendedDataElement();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 			}
 	);
 

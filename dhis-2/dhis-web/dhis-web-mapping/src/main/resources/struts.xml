@@ -38,6 +38,12 @@
 				/dhis-web-mapping/jsonminOrganisationUnits.vm</result>
 		</action>
 
+		<action name="getOrganisationUnitChildren"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitChildrenAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonOrganisationUnitChildren.vm</result>
+		</action>
+
 		<!-- Map -->
 
 		<action name="addOrUpdateMap"
@@ -322,6 +328,26 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-mapping/jsonminIndicators.vm</result>
 		</action>
+
+        <!-- DataElement -->
+
+        <action name="getAllDataElementGroups"
+            class="org.hisp.dhis.mapping.action.GetAllDataElementGroupsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonDataElementGroups.vm</result>
+        </action>
+
+        <action name="getDataElementsByDataElementGroup"
+            class="org.hisp.dhis.mapping.action.GetDataElementsByDataElementGroupAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonminDataElements.vm</result>
+        </action>
+
+        <action name="getAllDataElements"
+            class="org.hisp.dhis.mapping.action.GetAllDataElementsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonminDataElements.vm</result>
+        </action>
 
 		<!-- Period -->
 

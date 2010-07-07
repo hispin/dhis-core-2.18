@@ -41,6 +41,7 @@ import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.apache.struts2.ServletActionContext;
@@ -65,6 +66,13 @@ public class AboutAction
     @Autowired
     private DatabaseInfoProvider databaseInfoProvider;
     
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -143,6 +151,20 @@ public class AboutAction
     {
         this.backUrl = backUrl;
     }
+    
+    private Properties systemProperties;
+    
+    public Properties getSystemProperties()
+    {
+        return systemProperties;
+    }
+
+    private boolean currentUserIsSuper;
+
+    public boolean getCurrentUserIsSuper()
+    {
+        return currentUserIsSuper;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -218,6 +240,10 @@ public class AboutAction
             javaOpts = i18n.getString( "unknown" );
         }
         
+        systemProperties = System.getProperties();
+        
+        currentUserIsSuper = currentUserService.currentUserIsSuper();
+
         return SUCCESS;
     }
 }

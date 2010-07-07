@@ -26,6 +26,15 @@
                 selectionTreeSelection.setMultipleSelectionAllowed( true );
 				selectionTree.clearSelectedOrganisationUnits();
                 selectionTree.buildSelectionTree();
+				
+				var selectedOrganisationUnitIds = null;
+
+				function setSelectedOrganisationUnitIds( ids )
+				{
+					selectedOrganisationUnitIds = ids;
+				}
+
+				selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
             </script>
 			
 		</td>
@@ -81,28 +90,18 @@
 		<th>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</th>
 	</tr>	
     <tr>
-  		<td><input type="text" id="startDate" name="startDate" value="$!startDate" style="width:230px">	
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''"></td>
+  		<td><input type="text" id="startDate" name="startDate" value="$!startDate" style="width:230px"></td>
 		<td></td>
-  		<td><input type="text" id="endDate" name="endDate" value="$!endDate" style="width:230px">
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''"></td>
+  		<td><input type="text" id="endDate" name="endDate" value="$!endDate" style="width:230px"></td>
   	</tr>
   	<tr>
 		<td colspan="3" height="15"></td>
 	</tr>
   
 	<script type="text/javascript">
-    	Calendar.setup({
-        	inputField     :    "startDate",      // id of the input field
-        	ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        	button         :    "getStartDate"   // trigger for the calendar (button ID)
-    	});
-	
-		Calendar.setup({
-        	inputField     :    "endDate",      // id of the input field
-        	ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        	button         :    "getEndDate"   // trigger for the calendar (button ID)
-    	});
+    	$(document).ready(function(){	
+			datePickerInRange( 'startDate' , 'endDate' );	
+		});
 	</script>
 	  
 	<!-- DataSets -->

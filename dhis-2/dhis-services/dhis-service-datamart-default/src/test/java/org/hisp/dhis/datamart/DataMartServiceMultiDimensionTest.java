@@ -42,6 +42,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.indicator.Indicator;
@@ -49,9 +51,11 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -113,6 +117,8 @@ public class DataMartServiceMultiDimensionTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
+
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
         
@@ -169,19 +175,33 @@ public class DataMartServiceMultiDimensionTest
         dataElementIds.add( dataElementService.addDataElement( dataElementB ) );
 
         // ---------------------------------------------------------------------
+        // Setup DataSets (to get correct PeriodType for DataElements)
+        // ---------------------------------------------------------------------
+
+        DataSet dataSet = createDataSet( 'A', new MonthlyPeriodType() );
+        dataSet.getDataElements().add( dataElementA );
+        dataSet.getDataElements().add( dataElementB );
+        dataSetService.addDataSet( dataSet );
+        dataElementA.getDataSets().add( dataSet );
+        dataElementB.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElementA );
+        dataElementService.updateDataElement( dataElementB );
+        
+        // ---------------------------------------------------------------------
         // Setup Periods
         // ---------------------------------------------------------------------
 
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
+        PeriodType monthly = new MonthlyPeriodType();
+        PeriodType quarterly = new QuarterlyPeriodType();
         
         Date jul01 = getDate( 2005, 7, 1 );
         Date jul31 = getDate( 2005, 7, 31 );
         Date aug01 = getDate( 2005, 8, 1 );
         Date aug31 = getDate( 2005, 8, 31 );
         
-        periodA = createPeriod( periodType, jul01, jul31 );
-        periodB = createPeriod( periodType, aug01, aug31 );
-        periodC = createPeriod( periodType, jul01, aug31 );
+        periodA = createPeriod( monthly, jul01, jul31 );
+        periodB = createPeriod( monthly, aug01, aug31 );
+        periodC = createPeriod( quarterly, jul01, aug31 ); //TODO fix
         
         periodIds.add( periodService.addPeriod( periodA ) );
         periodIds.add( periodService.addPeriod( periodB ) );
@@ -198,8 +218,6 @@ public class DataMartServiceMultiDimensionTest
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitA ) );
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitB ) );
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitC ) );
-
-        organisationUnitService.addOrganisationUnitHierarchy( new Date() ); //TODO
     }
 
     @Override
@@ -208,7 +226,7 @@ public class DataMartServiceMultiDimensionTest
         return true;
     }
 
-    @Ignore
+    @Ignore //TODO fix
     @Test
     public void testSumIntDataElementDataMart()
     {
@@ -238,7 +256,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
         
         assertEquals( 90.0, dataMartStore.getAggregatedValue( dataElementA, categoryOptionComboA, periodA, unitB ) );
         assertEquals( 70.0, dataMartStore.getAggregatedValue( dataElementA, categoryOptionComboA, periodB, unitB ) );
@@ -292,7 +310,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
 
         assertEquals( 90.0, dataMartStore.getAggregatedValue( dataElementA, categoryOptionComboA, periodA, unitB ) );
         assertEquals( 70.0, dataMartStore.getAggregatedValue( dataElementA, categoryOptionComboA, periodB, unitB ) );

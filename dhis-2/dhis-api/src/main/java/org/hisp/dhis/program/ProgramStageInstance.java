@@ -40,7 +40,9 @@ public class ProgramStageInstance
 
     public static final String COLOR_YELLOW = "#ffff00";
     
-    public static final String COLOR_GREEN = "#00ff00";    
+    public static final String COLOR_GREEN = "#00ff00";
+    
+    public static final String COLOR_LIGHTRED = "#ff00ff";
 
     private int id;
 

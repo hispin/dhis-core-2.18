@@ -106,13 +106,13 @@ public class SortOrderSection
     {        
 
         if ( dataSetId != null )
-        {
-            dataSet = dataSetService.getDataSet( dataSetId.intValue() );
-            
+        {            
+            dataSet = dataSetService.getDataSet( dataSetId.intValue() );           
             sections = dataSet.getSections();
 
             return INPUT;
-        }
+        }     
+        
 
         if ( selectedList.size() == 0 )
         {

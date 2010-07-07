@@ -55,7 +55,7 @@
 		<version>1.5.0.0</version>
 		<executions>
 		  <execution>
-		    <id>launch4j</id>
+		    <id>default</id>
 		    <phase>package</phase>
 		    <goals>
 		      <goal>launch4j</goal>
@@ -88,6 +88,42 @@
 		      </splash>
 		    </configuration>
 		  </execution>
+		<execution>
+                    <id>emedded</id>
+                    <phase>package</phase>
+                    <goals>
+                      <goal>launch4j</goal>
+                    </goals>
+                    <configuration>
+                      <dontWrapJar>true</dontWrapJar>
+                      <headerType>gui</headerType>
+                      <outfile>${project.build.directory}/dhis2-live-embedded.exe</outfile>
+                      <jar>dhis2-live.jar</jar>
+                      <errTitle>dhis2</errTitle>
+                      <priority>normal</priority>
+                      <downloadUrl>http://java.com/download</downloadUrl>
+                      <supportUrl>http://dhis2.org</supportUrl>
+                      <customProcName>false</customProcName>
+                      <stayAlive>false</stayAlive>
+                      <manifest></manifest>
+                      <icon>${basedir}/util/launch4j/favicon.ico</icon>
+                      <singleInstance>
+                        <mutexName>dhis-live.mutex</mutexName>
+                        <windowTitle></windowTitle>
+                      </singleInstance>
+              <jre>
+                        <path>jre6</path>
+                        <minVersion>1.6.0_14</minVersion>
+                      </jre>
+                      <splash>
+                        <file>${basedir}/util/launch4j/dhis2-splash.bmp</file>
+                        <waitForWindow>false</waitForWindow>
+                        <timeout>12</timeout>
+                        <timeoutErr>false</timeoutErr>
+                      </splash>
+                    </configuration>
+                  </execution>
+
 		</executions>
 	  </plugin>
     </plugins>

@@ -106,6 +106,13 @@ public class UpdatePatientAttributeAction
         this.mandatory = mandatory;
     }
     
+    private boolean inheritable;
+    
+    public void setInheritable( boolean inheritable )
+    {
+        this.inheritable = inheritable;
+    }
+    
     private List<String> attrOptions;
     
     public void setAttrOptions( List<String> attrOptions )
@@ -126,6 +133,7 @@ public class UpdatePatientAttributeAction
          patientAttribute.setDescription( description );
          patientAttribute.setValueType( valueType );
          patientAttribute.setMandatory( mandatory );
+         patientAttribute.setInheritable( inheritable );
 
          HttpServletRequest request = ServletActionContext.getRequest();
          

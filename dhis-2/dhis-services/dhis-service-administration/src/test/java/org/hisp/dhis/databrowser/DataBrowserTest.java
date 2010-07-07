@@ -261,8 +261,6 @@ public abstract class DataBrowserTest
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitH ) );
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitI ) );
 
-        organisationUnitService.addOrganisationUnitHierarchy( new Date() );
-
         // ---------------------------------------------------------------------
         // Setup OrganisationUnitGroups
         // ---------------------------------------------------------------------

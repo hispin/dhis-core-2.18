@@ -39,6 +39,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.period.TwoYearlyPeriodType;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -395,12 +396,14 @@ public class DefaultDataElementCategoryService
             Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo()
                 .getOptionCombos();
 
+            int frequencyOrder = dataElement.getPeriodType() != null ? dataElement.getPeriodType().getFrequencyOrder() : TwoYearlyPeriodType.FREQUENCY_ORDER; // Assume lowest frequency if no PeriodType
+            
             if ( categoryOptionCombos.size() > 1 && !(dataElement instanceof CalculatedDataElement) )
             {
                 for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
                 {
                     DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + optionCombo.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
+                        + optionCombo.getName(), dataElement.getType(), dataElement.getAggregationOperator(), new ArrayList<Integer>( dataElement.getAggregationLevels() ), frequencyOrder );
 
                     operands.add( operand );
                 }
@@ -408,7 +411,7 @@ public class DefaultDataElementCategoryService
             else
             {
                 DataElementOperand operand = new DataElementOperand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
-                    dataElement.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
+                    dataElement.getName(), dataElement.getType(), dataElement.getAggregationOperator(), new ArrayList<Integer>( dataElement.getAggregationLevels() ), frequencyOrder );
 
                 operands.add( operand );
             }

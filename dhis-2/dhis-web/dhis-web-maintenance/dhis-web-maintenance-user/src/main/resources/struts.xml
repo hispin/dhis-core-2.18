@@ -21,6 +21,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/user.vm</param>  
       <param name="menu">/dhis-web-maintenance-user/orgunitMenu.vm</param>
+	  <param name="menuTreeHeight">404</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/user.js,javascript/filterTable.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>
@@ -51,7 +52,7 @@
       <param name="page">/dhis-web-maintenance-user/addUserForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/user.js,javascript/dataElementsList.js
        ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
       <param name="requiredAuthorities">F_USER_ADD</param>
     </action>
@@ -67,7 +68,7 @@
       <param name="page">/dhis-web-maintenance-user/updateUserForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/user.js,javascript/dataElementsList.js
        ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
       <param name="requiredAuthorities">F_USER_UPDATE</param>
     </action>
@@ -122,7 +123,7 @@
       <param name="page">/dhis-web-maintenance-user/addRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js
        ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
       <param name="requiredAuthorities">F_USERROLE_ADD</param>
     </action>
     
@@ -137,7 +138,7 @@
       <param name="page">/dhis-web-maintenance-user/updateRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js
        ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
       <param name="requiredAuthorities">F_USERROLE_UPDATE</param>
     </action>
     
@@ -163,7 +164,8 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="logout" type="redirect">/dhis-web-commons-security/logout.action</result>
       <param name="javascripts">../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/messages_locale.js,../dhis-web-commons/util/validate/additional-methods.js</param>
+      ,../dhis-web-commons/util/validate/additional-methods.js
+      ,../dhis-web-commons/validationMessages.action</param>
     </action>
     
   </package>

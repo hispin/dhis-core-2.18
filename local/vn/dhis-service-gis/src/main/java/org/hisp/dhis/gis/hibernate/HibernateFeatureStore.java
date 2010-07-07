@@ -175,4 +175,17 @@ public class HibernateFeatureStore
 
         session.update( arg0 );
     }
+    
+    public void deleteFeatureByOrganisationUnit( int arg0 )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.createQuery( "delete Feature as f where f.organisationUnit.id = ?" ).setInteger( 0, arg0 ).executeUpdate();
+        
+    }
+
+    public void deleteMapFileByOrganisationUnit( int arg0 )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.createQuery( "delete MapFile as m where m.organisationUnit.id = ?" ).setInteger( 0, arg0 ).executeUpdate();
+    }
 }

@@ -15,7 +15,7 @@
         <version>1.1</version>
         <executions>
           <execution>
-	     <id>DHIS2 Windows Lite</id>
+	     <id>DHIS2 Windows Live</id>
              <phase>package</phase>
                <configuration>
                 <executable>${env.BITROCK_HOME}/bin/builder</executable>
@@ -30,13 +30,13 @@
             </goals>
           </execution>
           <execution>
-             <id>DHIS2 Windows Demo</id>
+             <id>DHIS2 Windows Embedded JRE</id>
              <phase>package</phase>
                <configuration>
                 <executable>${env.BITROCK_HOME}/bin/builder</executable>
                 <arguments>
                 <argument>build</argument>
-                <argument>${basedir}/src/bitrock/DHIS2_demo_birt.xml</argument>
+                <argument>${basedir}/src/bitrock/DHIS2_live_embedded.xml</argument>
                 <argument>windows</argument>
                 </arguments>
                </configuration>

@@ -29,6 +29,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	  ref="org.hisp.dhis.datamart.DataMartStore"/>
     <property name="dataMartExportStore"
       ref="org.hisp.dhis.datamart.DataMartExportStore"/>
+	<property name="periodService"
+	  ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
   <!-- DataMartEngine -->
@@ -51,6 +53,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
     <property name="averageIntAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
+	<property name="averageIntSingleValueAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
     <property name="sumBoolAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator"/>
     <property name="averageBoolAggregator"
@@ -65,14 +69,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="expressionService"
       ref="org.hisp.dhis.expression.ExpressionService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
   <bean id="internal-process-DataMart"
     class="org.hisp.dhis.datamart.DataMartInternalProcess"
     scope="prototype">
     <property name="statementManager" ref="statementManager"/>
-    <property name="dataMartEngine"
-      ref="org.hisp.dhis.datamart.engine.DataMartEngine"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <!-- Crosstab -->
@@ -102,32 +108,40 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"
     class="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator">
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="crossTabService"
+      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator"
     class="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator">
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="crossTabService"
+      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"
     class="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator">
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="crossTabService"
+      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
+    <property name="aggregationCache"
+      ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"
+    class="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator">
+    <property name="crossTabService"
+      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
   </bean>
 
   <bean id="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator"
     class="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator">
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="crossTabService"
+      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
   </bean>
@@ -161,10 +175,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
     <property name="averageIntAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
+	<property name="averageIntSingleValueAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
     <property name="crossTabService"
       ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
     <property name="systemSettingManager"
@@ -183,6 +197,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
     <property name="averageIntAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
+	<property name="averageIntSingleValueAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
     <property name="crossTabService"
       ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="dataElementService"

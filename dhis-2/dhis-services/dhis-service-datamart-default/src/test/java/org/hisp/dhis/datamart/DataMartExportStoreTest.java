@@ -48,6 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.RelativePeriods;
 import org.junit.Test;
 
 /**
@@ -63,6 +64,8 @@ public class DataMartExportStoreTest
     private DataMartExport exportA;
     private DataMartExport exportB;
     private DataMartExport exportC;
+    
+    private RelativePeriods relatives;
     
     private Set<DataElement> dataElements;
     private Set<Indicator> indicators;
@@ -131,9 +134,11 @@ public class DataMartExportStoreTest
         periods.add( periodA );
         periods.add( periodB );
         
-        exportA = new DataMartExport( "ExportA", dataElements, indicators, organisationUnits, periods );
-        exportB = new DataMartExport( "ExportB", dataElements, indicators, organisationUnits, periods );
-        exportC = new DataMartExport( "ExportC", dataElements, indicators, organisationUnits, periods );        
+        relatives = new RelativePeriods( true, true, true, true, false, false, false, false, false, false, false );
+        
+        exportA = new DataMartExport( "ExportA", dataElements, indicators, organisationUnits, periods, relatives );
+        exportB = new DataMartExport( "ExportB", dataElements, indicators, organisationUnits, periods, relatives );
+        exportC = new DataMartExport( "ExportC", dataElements, indicators, organisationUnits, periods, relatives );        
     }
 
     // -------------------------------------------------------------------------
@@ -157,6 +162,7 @@ public class DataMartExportStoreTest
         assertEquals( indicators, export.getIndicators() );
         assertEquals( organisationUnits, export.getOrganisationUnits() );
         assertEquals( periods, export.getPeriods() );
+        assertEquals( relatives, export.getRelatives() );
     }
 
     @Test

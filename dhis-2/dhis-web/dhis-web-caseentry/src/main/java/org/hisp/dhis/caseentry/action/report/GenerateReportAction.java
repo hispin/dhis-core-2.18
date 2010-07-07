@@ -35,6 +35,8 @@ import java.util.Map;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -64,6 +66,13 @@ public class GenerateReportAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     private ProgramService programService;
@@ -179,16 +188,28 @@ public class GenerateReportAction
 
         programs = programService.getPrograms( organisationUnit );
 
+        // Getting the list of Patients that are related to selected OrganisationUnit
+        
+        Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
+        patientListByOrgUnit.addAll( patientService.getPatientsByOrgUnit( organisationUnit ) );
+        
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
-
+        
         Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program );
 
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
         for ( ProgramInstance programInstance : selectedProgramInstances )
         {
+        	Patient patient = programInstance.getPatient();
+            //taking patient present in selected orgunit
+            if ( !patientListByOrgUnit.contains( patient ) )
+            {
+                continue;
+            }
+            
             if ( !programInstance.isCompleted() )
             {
                 programInstances.add( programInstance );

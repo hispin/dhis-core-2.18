@@ -62,7 +62,7 @@ public class OrganisationUnitGroupSetDeletionHandler
     {
         for ( OrganisationUnitGroupSet groupSet : organisationUnitGroupService.getAllOrganisationUnitGroupSets() )
         {
-            if ( groupSet.getOrganisationUnitGroups().remove( groupSet ) )
+            if ( groupSet.getOrganisationUnitGroups().remove( group ) )
             {
                 organisationUnitGroupService.updateOrganisationUnitGroupSet( groupSet );
             }

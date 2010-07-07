@@ -324,6 +324,17 @@ public class PDFUtils
     }
 
     /**
+     * Creates a cell with text 5 font.
+     * 
+     * @param text The text to include in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getText5Cell( String text, Font font )
+    {
+        return getCell( text, 1, font, ALIGN_LEFT );
+    }
+
+    /**
      * Creates a cell with text 6 font.
      * 
      * @param text The text to include in the cell.
@@ -335,6 +346,17 @@ public class PDFUtils
     }
 
     /**
+     * Creates a cell with text 5 font.
+     * 
+     * @param text The text to include in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getText6Cell( String text, Font font )
+    {
+        return getCell( text, 1, font, ALIGN_LEFT );
+    }
+
+    /**
      * Creates a cell with text 7 font.
      * 
      * @param text The text to include in the cell.
@@ -343,6 +365,18 @@ public class PDFUtils
     public static PdfPCell getText7Cell( String text )
     {
         return getCell( text, 1, TEXT7, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with text 5 font.
+     * 
+     * @param text The text to include in the cell.
+     * @return A PdfCell.
+     */
+
+    public static PdfPCell getText7Cell( String text, Font font )
+    {
+        return getCell( text, 1, font, ALIGN_LEFT );
     }
 
     /**
@@ -457,6 +491,19 @@ public class PDFUtils
     }
 
     /**
+     * Creates a cell with header 5 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param font The customize font of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader5Cell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
+    }
+
+    /**
      * Creates a cell with header 6 font.
      * 
      * @param text The text to include in the cell.
@@ -469,6 +516,19 @@ public class PDFUtils
     }
 
     /**
+     * Creates a cell with header 6 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param font The customize font of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader6Cell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
+    }
+
+    /**
      * Creates a cell with header 7 font.
      * 
      * @param text The text to include in the cell.
@@ -478,6 +538,19 @@ public class PDFUtils
     public static PdfPCell getHeader7Cell( String text, int colspan )
     {
         return getCell( text, colspan, HEADER7, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with header 7 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @param font The customize font of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader7Cell( String text, int colspan, Font font )
+    {
+        return getCell( text, colspan, font, ALIGN_LEFT );
     }
 
     /**

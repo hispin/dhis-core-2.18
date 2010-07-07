@@ -1,0 +1,10 @@
+#set( $size = $keys.size() )
+{ "data": [
+#foreach( $value in $keys )
+  {    	
+    "name": "$!encoder.jsEncode( $value )",
+	"value":  $values.get( $value ).get(0),
+	"total":  $values.get( $value ).get(1)
+  }#if( $velocityCount < $size ),#end
+#end
+] }

@@ -27,7 +27,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.ImportParams.MINOR_VERSION_11;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +39,7 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
+import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -92,12 +93,14 @@ public class OrganisationUnitConverter
     public OrganisationUnitConverter( BatchHandler<OrganisationUnit> batchHandler, 
         BatchHandler<Source> sourceBatchHandler, 
         ImportObjectService importObjectService, 
-        OrganisationUnitService organisationUnitService )
+        OrganisationUnitService organisationUnitService,
+        ImportAnalyser importAnalyser )
     {
         this.batchHandler = batchHandler;
         this.sourceBatchHandler = sourceBatchHandler;
         this.importObjectService = importObjectService;
         this.organisationUnitService = organisationUnitService;
+        this.importAnalyser = importAnalyser;
     }
     
     // -------------------------------------------------------------------------

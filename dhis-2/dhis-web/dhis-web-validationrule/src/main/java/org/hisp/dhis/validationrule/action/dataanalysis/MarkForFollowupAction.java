@@ -145,15 +145,18 @@ public class MarkForFollowupAction
         
         DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo ); 
 
-        boolean isMarked = dataValue.isFollowup();
-        
-        dataValue.setFollowup( !isMarked );
-        
-        dataValueService.updateDataValue( dataValue );
-        
-        message = !isMarked ? "marked" : "unmarked";
-        
-        log.info( !isMarked ? "Data value marked for follow-up" : "Data value unmarked for follow-up" );
+        if ( dataValue != null )
+        {
+            boolean isMarked = dataValue.isFollowup();
+            
+            dataValue.setFollowup( !isMarked );
+            
+            dataValueService.updateDataValue( dataValue );
+            
+            message = !isMarked ? "marked" : "unmarked";
+            
+            log.info( !isMarked ? "Data value marked for follow-up" : "Data value unmarked for follow-up" );
+        }
         
         return SUCCESS;
     }

@@ -130,13 +130,6 @@ public class RunValidationAction
         this.validationRuleGroupId = validationRuleGroupId;
     }
 
-    private Boolean includeChildren;
-
-    public void setIncludeChildren( Boolean includeChildren )
-    {
-        this.includeChildren = includeChildren;
-    }
-
     private Map<String, List<ValidationResult>> mapValidationResults;
 
     public Map<String, List<ValidationResult>> getMapValidationResults()
@@ -152,17 +145,14 @@ public class RunValidationAction
     {
         Collection<? extends Source> sources = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-        if ( includeChildren )
+        Collection<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+
+        for ( Source source : sources )
         {
-            Collection<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-
-            for ( Source source : sources )
-            {
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( source.getId() ) );
-            }
-
-            sources = organisationUnits;
+            organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( source.getId() ) );
         }
+
+        sources = organisationUnits;
 
         List<ValidationResult> validationResults = null;
 
@@ -189,7 +179,6 @@ public class RunValidationAction
 
         for ( ValidationResult validationResult : validationResults )
         {
-
             PeriodType periodType = validationResult.getPeriod().getPeriodType();
 
             if ( periodType != null )

@@ -1,0 +1,47 @@
+
+<h1>Linelisting Data Auto AggregationForm</h1>
+
+
+<form id="llAggForm" name="autoLLAggForm" action="autoLLAgg.action" method="post">
+
+<table>
+
+    <tr>
+        <td class="NormalB">
+            From:<br>
+            <select id="sDateLB" name="sDateLB">
+                #foreach ( $monthlyPeriod in $monthlyPeriods )
+                    <option value='$monthlyPeriod.id'>$simpleDateFormat.format( $monthlyPeriod.startDate )</option>
+                #end
+            </select>
+        </td>
+        <td>&nbsp;</td>
+        <td class="NormalB">
+            To:<br>
+            <select id="eDateLB" name="eDateLB">
+                #foreach ( $monthlyPeriod in $monthlyPeriods )
+                    <option value='$monthlyPeriod.id'>$simpleDateFormat.format( $monthlyPeriod.startDate )</option>
+                #end            
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    
+    <tr>
+        
+        <td class="NormalB">
+            <input type="submit" value="Aggregate" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" />           
+        </td>
+        <td>&nbsp;</td>
+        <td class="NormalB">
+            OrgUnit: <input type="text" id="selOrgUnitName" name="selOrgUnitName" disabled >
+            <input type="hidden" id="selOrgUnitId" name="selOrgUnitId">
+        </td>
+    </tr>
+    
+</table>

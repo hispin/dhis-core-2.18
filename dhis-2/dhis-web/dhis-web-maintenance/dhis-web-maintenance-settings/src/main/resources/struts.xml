@@ -47,6 +47,10 @@
     </action>
     
     <action name="getAvailableDataDictionaryModes" class="org.hisp.dhis.settings.action.user.GetAvailableDataDictionaryModesAction">
+      <result name="success" type="chain">getAvailableAutoSaveDataEntryForm</result>
+    </action>
+    
+    <action name="getAvailableAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction">
       <result name="success" type="chain">getAvailableStyles</result>
     </action>
     
@@ -78,7 +82,11 @@
     
     <action name="setCurrentStyle" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction">
       <result name="success" type="redirect">userSettings.action</result>
-    </action>    
+    </action>
+    
+    <action name="setAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction">
+      <result name="success" type="redirect">userSettings.action</result>
+    </action>        
     
   </package>
 </struts>

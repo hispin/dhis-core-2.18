@@ -255,7 +255,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
@@ -267,7 +267,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action
 				,javascript/jquery/cluetip/jquery.cluetip.min.js</param>
 			<param name="stylesheets">javascript/jquery/cluetip/jquery.cluetip.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
@@ -405,7 +405,7 @@
 
 		<action name="addPatient"
 			class="org.hisp.dhis.patient.action.patient.AddPatientAction">
-			<result name="success" type="redirect">patientform.action</result>
+			<result name="success" type="chain">showProgramEnrollmentForm</result>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -423,7 +423,7 @@
 				,../dhis-web-commons/calendar/calendar-lang.js
 				,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js
-				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/validationMessages.action
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
 				,javascript/jquery/thickbox/thickbox-compressed.js
@@ -447,7 +447,7 @@
 				,../dhis-web-commons/calendar/calendar-lang.js
 				,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js
-				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/validationMessages.action
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
 				,javascript/jquery/thickbox/thickbox-compressed.js
@@ -488,7 +488,7 @@
 				,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js
 				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/validationMessages.action
 				,javascript/underage.js
 			</param>
 			<param name="stylesheets">../dhis-web-commons/util/css/redmond/jquery-ui.css</param>
@@ -523,7 +523,7 @@
 				,../dhis-web-commons/util/validate/jquery.validate.js
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/validationMessages.action
 				,javascript/patient.js</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
@@ -611,7 +611,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/program.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-			,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
 		</action>
 
@@ -622,7 +622,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/program.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -648,8 +648,7 @@
 
 		<action name="defineProgramAssociationsForm"
 			class="org.hisp.dhis.patient.action.program.SetupAssociationsTreeAction">
-			<result name="success" type="chain">getProgramAssociationOptions
-			</result>
+			<result name="success" type="chain">getProgramAssociationOptions</result>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -948,7 +947,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttributeGroup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js
-				,../dhis-web-commons/util/validate/messages_locale.js
+				,../dhis-web-commons/validationMessages.action
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
 			</param>
@@ -991,7 +990,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
 		</action>
 		
@@ -1014,7 +1013,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
 		</action>
 	
@@ -1117,7 +1116,7 @@
 				,../dhis-web-commons/util/validate/jquery.validate.js
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
 		
@@ -1140,7 +1139,8 @@
 				,../dhis-web-commons/util/validate/jquery.validate.js
 				,../dhis-web-commons/util/jquery.metadata.js
 				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/validationMessages.action
+			</param>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_UPDATE</param>
 		</action>
 		

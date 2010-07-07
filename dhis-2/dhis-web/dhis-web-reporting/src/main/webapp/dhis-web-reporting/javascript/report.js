@@ -1,23 +1,36 @@
 
+var paramParentOrganisationUnit = null;
+var paramOrganisationUnit = null;
+
+function paramParentOrganisationUnitSet( id )
+{
+	paramParentOrganisationUnit = id;
+}
+
+function paramOrganisationUnitSet( id )
+{
+	paramOrganisationUnit = id;
+}
+
 var tempUrl = null;
 
 function runAndViewReport( reportId, reportUrl )
 {
-    var url = "createTable.action?id=" + reportId + "&mode=report";
+    var url = "createTable.action?id=" + reportId + "&doDataMart=" + getListValue( "doDataMart" ) + "&mode=report";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
         url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
     }
     
-    if ( document.getElementById( "parentOrganisationUnitId" ) != null )
+    if ( paramParentOrganisationUnit != null )
     {
-        url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+        url += "&parentOrganisationUnitId=" + paramParentOrganisationUnit;
     }
     
-    if ( document.getElementById( "organisationUnitId" ) != null )
+    if ( paramOrganisationUnit != null )
     {
-        url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+        url += "&organisationUnitId=" + paramOrganisationUnit;
     }
     
 	tempUrl = reportUrl;
@@ -61,7 +74,7 @@ function reportStatusReceived( xmlObject )
     }
     else
     {
-        setWaitMessage( i18n_please_wait + ". " + statusMessage + "..."  );
+        setWaitMessage( i18n_please_wait + " - " + statusMessage );
         
         waitAndGetReportStatus( 2000 );
     }

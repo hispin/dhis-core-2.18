@@ -6,15 +6,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
   <!-- DataMart -->
   
-  <bean id="org.hisp.dhis.datamart.action.ExportAction"
-    class="org.hisp.dhis.datamart.action.ExportAction"
-    scope="prototype">
-    <property name="processCoordinator"
-      ref="processCoordinator"/>
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-  </bean>
-  
   <bean id="org.hisp.dhis.datamart.action.ExportDataMartExportAction"
     class="org.hisp.dhis.datamart.action.ExportDataMartExportAction"
     scope="prototype">
@@ -22,8 +13,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="processCoordinator"/>
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dataMartService"
-      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.action.GetExportStatusAction"
