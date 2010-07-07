@@ -54,8 +54,19 @@
 		<td width="20em"><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="mandatory" name="mandatory" style="min-width:20em">
-				<option value="yes" #if( $patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
-				<option value="no" #if( !$patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
+				<option value="true" #if( $patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
+				<option value="false" #if( !$patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
+			</select>
+		</td>		
+		<td></td>				
+	</tr>
+	
+	<tr>
+		<td width="20em"><label for="inheritable">$i18n.getString( "inheritable" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td>
+			<select id="inheritable" name="inheritable" style="min-width:20em">
+				<option value="true" #if( $patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "yes" )</option>
+				<option value="false" #if( !$patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "no" )</option>
 			</select>
 		</td>		
 		<td></td>				

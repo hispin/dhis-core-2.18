@@ -44,7 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reporttable.RelativePeriods;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -227,32 +227,11 @@ public class SaveTableAction
         this.last6Months = last6Months;
     }
     
-    private boolean last9Months;
-
-    public void setLast9Months( boolean last9Months )
-    {
-        this.last9Months = last9Months;
-    }
-    
     private boolean last12Months;
 
     public void setLast12Months( boolean last12Months )
     {
         this.last12Months = last12Months;
-    }
-    
-    private boolean soFarThisYear;
-
-    public void setSoFarThisYear( boolean soFarThisYear )
-    {
-        this.soFarThisYear = soFarThisYear;
-    }
-
-    private boolean soFarThisFinancialYear;
-
-    public void setSoFarThisFinancialYear( boolean soFarThisFinancialYear )
-    {
-        this.soFarThisFinancialYear = soFarThisFinancialYear;
     }
     
     private boolean last3To6Months;
@@ -282,7 +261,14 @@ public class SaveTableAction
     {
         this.last12IndividualMonths = last12IndividualMonths;
     }
-    
+
+    private boolean soFarThisYear;
+
+    public void setSoFarThisYear( boolean soFarThisYear )
+    {
+        this.soFarThisYear = soFarThisYear;
+    }
+
     private boolean individualMonthsThisYear;
 
     public void setIndividualMonthsThisYear( boolean individualMonthsThisYear )
@@ -352,10 +338,8 @@ public class SaveTableAction
         relatives.setReportingMonth( reportingMonth );
         relatives.setLast3Months( last3Months );
         relatives.setLast6Months( last6Months );
-        relatives.setLast9Months( last9Months );
         relatives.setLast12Months( last12Months );
         relatives.setSoFarThisYear( soFarThisYear );
-        relatives.setSoFarThisFinancialYear( soFarThisFinancialYear );
         relatives.setLast3To6Months( last3To6Months );
         relatives.setLast6To9Months( last6To9Months );
         relatives.setLast9To12Months( last9To12Months );

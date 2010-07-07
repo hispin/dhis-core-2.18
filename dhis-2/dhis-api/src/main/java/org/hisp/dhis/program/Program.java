@@ -31,11 +31,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.validation.ValidationCriteria;
-
-import org.apache.commons.lang.StringUtils;
 
 
 /**

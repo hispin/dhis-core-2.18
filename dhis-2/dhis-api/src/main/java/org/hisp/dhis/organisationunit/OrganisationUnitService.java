@@ -28,7 +28,6 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -211,14 +210,6 @@ public interface OrganisationUnitService
     int getNumberOfOrganisationalLevels();
 
     /**
-     * Set parent of OrganisationUnit.
-     * 
-     * @param organisationUnitId the identifier of the child OrganisationUnit.
-     * @param parentId the identifier of the parent OrganisationUnit.
-     */
-    void updateOrganisationUnitParent( int organisationUnitId, int parentId );
-
-    /**
      * Returns all OrganisationUnits which are not a member of any OrganisationUnitGroups.
      * 
      * @return all OrganisationUnits which are not a member of any OrganisationUnitGroups.
@@ -230,40 +221,20 @@ public interface OrganisationUnitService
     // -------------------------------------------------------------------------
 
     /**
-     * This method is not intended to be used by other modules!
+     * Get the OrganisationUnit hierarchy. 
+     * 
+     * @return a Collection with OrganisationUnitRelationship entries.
      */
-    int addOrganisationUnitHierarchy( Date date );
+    OrganisationUnitHierarchy getOrganisationUnitHierarchy();
 
     /**
-     * This method is not intended to be used by other modules!
+     * Updates the parent id of the organisation unit with the given id.
+     * 
+     * @param organisationUnitId the child organisation unit identifier.
+     * @param parentId the parent organisation unit identifier.
      */
-    OrganisationUnitHierarchy getOrganisationUnitHierarchy( int id );
+    void updateOrganisationUnitParent( int organisationUnitId, int parentId );
     
-    /**
-     * This method is not intended to be used by other modules!
-     */
-    OrganisationUnitHierarchy getLatestOrganisationUnitHierarchy();
-
-    /**
-     * This method is not intended to be used by other modules!
-     */
-    void removeOrganisationUnitHierarchies( Date date );
-    
-    /**
-     * This method is not intended to be used by other modules!
-     */
-    Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( Date startDate, Date endDate );
-
-    /**
-     * This method is not intended to be used by other modules!
-     */
-    void clearOrganisationUnitHierarchyHistory();
-    
-    /**
-     * This method is not intended to be used by other modules!
-     */
-    Collection<Integer> getChildren( int organisationUnitHierarchyId, int parentId );
-
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------

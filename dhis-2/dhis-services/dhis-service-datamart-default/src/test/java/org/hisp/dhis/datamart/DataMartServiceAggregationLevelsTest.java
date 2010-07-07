@@ -32,7 +32,6 @@ import static junit.framework.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
@@ -41,6 +40,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -101,6 +102,8 @@ public class DataMartServiceAggregationLevelsTest
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
+        
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
@@ -126,6 +129,16 @@ public class DataMartServiceAggregationLevelsTest
         dataElement = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         
         dataElementIds.add( dataElementService.addDataElement( dataElement ) );
+
+        // ---------------------------------------------------------------------
+        // Setup DataSets (to get correct PeriodType for DataElements)
+        // ---------------------------------------------------------------------
+
+        DataSet dataSet = createDataSet( 'A', new MonthlyPeriodType() );
+        dataSet.getDataElements().add( dataElement );
+        dataSetService.addDataSet( dataSet );
+        dataElement.getDataSets().add( dataSet );
+        dataElementService.updateDataElement( dataElement );
         
         // ---------------------------------------------------------------------
         // Setup Periods
@@ -166,8 +179,6 @@ public class DataMartServiceAggregationLevelsTest
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitK ) );
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitL ) );
         organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitM ) );
-        
-        organisationUnitService.addOrganisationUnitHierarchy( new Date() ); //TODO
 
         // ---------------------------------------------------------------------
         // Setup DataValues

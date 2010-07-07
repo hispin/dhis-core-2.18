@@ -1,63 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- ReportExcel -->
-	<bean id="org.hisp.dhis.reportexcel.ReportExcelStore" 
-		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore"/>
-		
-	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" 
-		class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
-		<property name="reportStore" 
-			ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
+	<bean id="org.hisp.dhis.reportexcel.ReportExcelStore"
+		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore">
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
+		<property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- EXCELITEM STORE                                               -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore" 
+	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore"
 		class="org.hisp.dhis.reportexcel.excelitem.hibernate.HibernateExcelItemStore">
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- EXCELITEM SERVICE                                             -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" 
+	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemService"
 		class="org.hisp.dhis.reportexcel.excelitem.DefaultExcelItemService">
-		<property name="excelItemStore" 
+		<property name="excelItemStore"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
-	
-	
+
+
 	<!-- DeletionHandlers -->
-	
-	<bean id="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler" 
+
+	<bean id="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler"
 		class="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler">
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService"/>
+		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler" 
+	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler"
 		class="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler">
-		<property name="excelItemService" ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService"/>
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
-	
+
 	<!-- DeletionManager -->
-  
-  	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="deletionManager"/>
-		<property name="targetMethod" value="addDeletionHandlers"/>
+
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="deletionManager" />
+		<property name="targetMethod" value="addDeletionHandlers" />
 		<property name="arguments">
-		  <list>
 			<list>
-			  <ref local="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler"/>
-			  <ref local="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler"/>
+				<list>
+					<ref local="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler" />
+					<ref local="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler" />
+				</list>
 			</list>
-		  </list>
 		</property>
 	</bean>
-  
+
+	<bean id="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartStore" 
+		class="org.hisp.dhis.reportexcel.chart.hibernate.HibernateExtBookmarkStore">			
+		<property name="clazz" value="org.hisp.dhis.reportexcel.chart.ExtBookmarkChart" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" 
+		class="org.hisp.dhis.reportexcel.chart.DefaultExtBookmarkChartService">
+		<property name="extBookmarkChartStore" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartStore" />	
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />	
+	</bean>
+
+
+
 </beans>

@@ -233,7 +233,7 @@ function saveExport()
     if ( validateCollections() )
     {
         var url = "validateDataMartExport.action?id=" + 
-            getFieldValue( "exportId" ) + "&name=" + getFieldValue( "exportName" );
+            getFieldValue( "id" ) + "&name=" + getFieldValue( "name" );
         
         var request = new Request();
         request.setResponseTypeXML( 'message' );
@@ -253,45 +253,18 @@ function saveExportReceived( messageElement )
     }
     else if ( type == "success" )
     {
-        var params = getExportParams();
-
-        var url = "saveDataMartExport.action";
-            
-        var request = new Request();
-        request.sendAsPost( params );
-        request.setCallbackSuccess( saveReceived );    
-        request.send( url );
+    	selectAllById( "selectedDataElements" );
+    	selectAllById( "selectedIndicators" );
+    	selectAllById( "selectedOrganisationUnits" );
+    	selectAllById( "selectedPeriods" );
+    	
+    	document.getElementById( "exportForm" ).submit();
     }
-}
-
-function saveReceived( messageElement )
-{
-    setMessage( i18n_export_saved );
 }
 
 // -----------------------------------------------------------------------------
 // Export
 // -----------------------------------------------------------------------------
-
-function exportValues()
-{
-    if ( validateCollections() )
-    {
-        var params = getExportParams();
-        
-        var url = "export.action";
-		
-    	var request = new Request();
-    	request.sendAsPost( params );
-        request.setCallbackSuccess( exportReceived );    
-        request.send( url );
-    }
-}
-
-function exportReceived( messageElement )
-{
-	waitAndGetExportStatus( 500 );
-}
 
 function getExportStatus()
 {
@@ -356,40 +329,6 @@ function getQueryStringFromList( listId, paramName )
 	return params;
 }
 
-function getExportParams()
-{
-    var exportId = document.getElementById( "exportId" ).value;
-    var exportName = document.getElementById( "exportName" ).value;
-    var dataElements = document.getElementById( "selectedDataElements" );
-    var indicators = document.getElementById( "selectedIndicators" );
-    var organisationUnits = document.getElementById( "selectedOrganisationUnits" );
-    var periods = document.getElementById( "selectedPeriods" );
-    
-    var params = "id=" + exportId + "&name=" + exportName;
-    
-    for ( var i = 0; i < dataElements.options.length; i++ )
-    {
-        params += "&selectedDataElements=" + dataElements.options[i].value;
-    }
-    
-    for ( var i = 0; i < indicators.options.length; i++ )
-    {
-        params += "&selectedIndicators=" + indicators.options[i].value;
-    }
-        
-    for ( var i = 0; i < organisationUnits.options.length; i++ )
-    {
-        params += "&selectedOrganisationUnits=" + organisationUnits.options[i].value;
-    }
-    
-    for ( var i = 0; i < periods.options.length; i++ )
-    {
-        params += "&selectedPeriods=" + periods.options[i].value;
-    }
-    
-    return params;
-}
-
 // -----------------------------------------------------------------------------
 // Validation
 // -----------------------------------------------------------------------------
@@ -410,7 +349,7 @@ function validateCollections()
         return false;
     }
     
-    if ( !hasElements( "selectedPeriods" ) )
+    if ( !hasElements( "selectedPeriods" ) && relativePeriodsChecked() == false )
     {
         setMessage( i18n_must_select_at_least_one_period );
         
@@ -418,6 +357,26 @@ function validateCollections()
     }
     
     return true;
+}
+
+function relativePeriodsChecked()
+{
+    if ( isChecked( "reportingMonth" ) == true ||
+         isChecked( "last3Months" ) == true ||
+         isChecked( "last6Months" ) == true ||
+         isChecked( "last12Months" ) == true ||
+         isChecked( "last3To6Months" ) == true ||
+         isChecked( "last6To9Months" ) == true ||
+         isChecked( "last9To12Months" ) == true ||
+         isChecked( "last12IndividualMonths" ) == true ||
+         isChecked( "soFarThisYear" ) == true ||
+         isChecked( "individualMonthsThisYear" ) == true ||
+         isChecked( "individualQuartersThisYear" ) == true )
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 // -----------------------------------------------------------------------------

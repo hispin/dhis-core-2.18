@@ -38,6 +38,7 @@ import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.RelativePeriods;
 
 import com.opensymphony.xwork2.Action;
 
@@ -132,7 +133,84 @@ public class SaveDataMartExportAction
     {
         this.selectedOrganisationUnits = selectedOrganisationUnits;
     }
-        
+
+    private boolean reportingMonth;
+
+    public void setReportingMonth( boolean reportingMonth )
+    {
+        this.reportingMonth = reportingMonth;
+    }
+
+    private boolean last3Months;
+
+    public void setLast3Months( boolean last3Months )
+    {
+        this.last3Months = last3Months;
+    }
+
+    private boolean last6Months;
+
+    public void setLast6Months( boolean last6Months )
+    {
+        this.last6Months = last6Months;
+    }
+    
+    private boolean last12Months;
+
+    public void setLast12Months( boolean last12Months )
+    {
+        this.last12Months = last12Months;
+    }
+    
+    private boolean last3To6Months;
+
+    public void setLast3To6Months( boolean last3To6Months )
+    {
+        this.last3To6Months = last3To6Months;
+    }
+
+    private boolean last6To9Months;
+
+    public void setLast6To9Months( boolean last6To9Months )
+    {
+        this.last6To9Months = last6To9Months;
+    }
+
+    private boolean last9To12Months;
+
+    public void setLast9To12Months( boolean last9To12Months )
+    {
+        this.last9To12Months = last9To12Months;
+    }
+    
+    private boolean last12IndividualMonths;
+
+    public void setLast12IndividualMonths( boolean last12IndividualMonths )
+    {
+        this.last12IndividualMonths = last12IndividualMonths;
+    }
+
+    private boolean soFarThisYear;
+
+    public void setSoFarThisYear( boolean soFarThisYear )
+    {
+        this.soFarThisYear = soFarThisYear;
+    }
+
+    private boolean individualMonthsThisYear;
+
+    public void setIndividualMonthsThisYear( boolean individualMonthsThisYear )
+    {
+        this.individualMonthsThisYear = individualMonthsThisYear;
+    }
+
+    private boolean individualQuartersThisYear;
+
+    public void setIndividualQuartersThisYear( boolean individualQuartersThisYear )
+    {
+        this.individualQuartersThisYear = individualQuartersThisYear;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -141,12 +219,26 @@ public class SaveDataMartExportAction
     {
         DataMartExport export = id == null ? new DataMartExport() : dataMartService.getDataMartExport( id );
         
-        export.setName( name );
+        RelativePeriods relatives = new RelativePeriods();
         
+        relatives.setReportingMonth( reportingMonth );
+        relatives.setLast3Months( last3Months );
+        relatives.setLast6Months( last6Months );
+        relatives.setLast12Months( last12Months );
+        relatives.setSoFarThisYear( soFarThisYear );
+        relatives.setLast3To6Months( last3To6Months );
+        relatives.setLast6To9Months( last6To9Months );
+        relatives.setLast9To12Months( last9To12Months );
+        relatives.setLast12IndividualMonths( last12IndividualMonths );
+        relatives.setIndividualMonthsThisYear( individualMonthsThisYear );
+        relatives.setIndividualQuartersThisYear( individualQuartersThisYear );
+                    
+        export.setName( name );            
         export.setDataElements( getSet( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );
         export.setIndicators( getSet( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) ) );
-        export.setPeriods( getSet( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
         export.setOrganisationUnits( getSet( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) ) );
+        export.setPeriods( getSet( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
+        export.setRelatives( relatives );
         
         dataMartService.saveDataMartExport( export );
         

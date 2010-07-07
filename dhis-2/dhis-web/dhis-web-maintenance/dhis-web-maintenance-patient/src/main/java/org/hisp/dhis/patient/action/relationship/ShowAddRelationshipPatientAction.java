@@ -39,7 +39,10 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 
@@ -57,36 +60,20 @@ public class ShowAddRelationshipPatientAction implements Action
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private PatientService patientService;
 
     private SelectedStateManager selectedStateManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-    
     private PatientAttributeService patientAttributeService;
-    
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
     
     private PatientAttributeGroupService patientAttributeGroupService;
     
-    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
-    {
-        this.patientAttributeGroupService = patientAttributeGroupService;
-    }
-    
     private PatientIdentifierTypeService patientIdentifierTypeService;
     
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-    
     private RelationshipTypeService relationshipTypeService;
+    
+    private PatientAttributeValueService patientAttributeValueService;
     
     // -------------------------------------------------------------------------
     // Input/Output
@@ -104,6 +91,10 @@ public class ShowAddRelationshipPatientAction implements Action
     
     private Map<Integer, String> identiferMap;
     
+    private Map<Integer, String> attributeMap;
+    
+    private Integer id;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -115,11 +106,23 @@ public class ShowAddRelationshipPatientAction implements Action
        
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
         
-        attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
+        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
         
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
         
-        patient = selectedStateManager.getSelectedPatient();
+        if( id == null )
+        {
+            patient = selectedStateManager.getSelectedPatient();
+        }
+        else 
+        {
+            patient = patientService.getPatient( id.intValue() );
+        }
+        
+        if( patient == null )
+        {
+            return ERROR;
+        }
         
         identiferMap = new HashMap<Integer, String>();
 
@@ -128,13 +131,35 @@ public class ShowAddRelationshipPatientAction implements Action
             if ( identifier.getIdentifierType() != null )
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
         }
-
+        
+        attributeMap = new HashMap<Integer , String>();
+        
+        Collection<PatientAttributeValue> attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        
+        if( attributeValues != null && attributeValues.size() > 0 )
+        {
+            for( PatientAttributeValue attributeValue : attributeValues )
+            {
+                attributeMap.put( attributeValue.getPatientAttribute().getId(), attributeValue.getValue() );
+            }
+        }
+        
         return SUCCESS;
     }
     
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
+    
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
     
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
@@ -169,5 +194,39 @@ public class ShowAddRelationshipPatientAction implements Action
     {
         return identiferMap;
     }
+    
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+    
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+    
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
 
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
+    public Map<Integer, String> getAttributeMap()
+    {
+        return attributeMap;
+    }
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
 }

@@ -2,8 +2,11 @@
   [{
     "id": "$!{object.id}",
     "name": "$!encoder.jsEncode( ${object.name} )",
+    "mapValueType": "$!encoder.jsEncode( ${object.mapValueType} )",
     "indicatorGroupId": "$!{object.indicatorGroup.id}",
     "indicatorId": "$!{object.indicator.id}",
+    "dataElementGroupId": "$!{object.dataElementGroup.id}",
+    "dataElementId": "$!{object.dataElement.id}",
     "periodTypeId": "$!encoder.jsEncode( ${object.periodType.name} )",
     "periodId": "$!{object.period.id}",
     "mapSourceType": "$!encoder.jsEncode( ${object.mapSourceType} )",

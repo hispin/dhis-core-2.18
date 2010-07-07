@@ -42,13 +42,13 @@ import org.hisp.dhis.period.Period;
  */
 public interface AggregationCache
 {
-    Collection<Integer> getChildren( OrganisationUnitHierarchy hierarchy, int parentId );
-
-    Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( Date startDate, Date endDate );
+    OrganisationUnitHierarchy getOrganisationUnitHierarchy();
     
     Period getPeriod( int periodId );
     
-    Collection<Integer> getPeriodIds( Date startDate, Date endDate );
+    Collection<Integer> getIntersectingPeriodIds( Date startDate, Date endDate );
     
-    double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit );    
+    double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    
+    void clearCache();
 }

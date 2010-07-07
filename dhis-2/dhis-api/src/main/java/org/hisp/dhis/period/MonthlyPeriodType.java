@@ -48,6 +48,8 @@ public class MonthlyPeriodType
      */
     public static final String NAME = "Monthly";
 
+    public static final int FREQUENCY_ORDER = 31;
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
@@ -79,6 +81,12 @@ public class MonthlyPeriodType
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
 
         return new Period( this, startDate, cal.getTime() );
+    }
+
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
     }
 
     // -------------------------------------------------------------------------

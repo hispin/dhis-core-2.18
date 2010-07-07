@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-jdbc</artifactId>
+      <artifactId>dhis-support-jdbc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>

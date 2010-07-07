@@ -7,7 +7,10 @@ var BASECOORDINATE;
 /* Geojson, shapefile or database */
 var MAPSOURCE;
 /* A map object */
-var MAPDATA;
+var MAPDATA = new Object();
+MAPDATA[thematicMap] = new Object();
+MAPDATA[thematicMap2] = new Object();
+MAPDATA[organisationUnitAssignment] = new Object();
 /* Filename or level */
 var URL;
 /* Active mapview object  */
@@ -19,20 +22,31 @@ var ACTIVEPANEL;
 /* Mask */
 var MASK;
 /* Boolean */
-var LABELS;
+var LABELS = new Object();
+LABELS[thematicMap] = false;
+LABELS[thematicMap2] = false;
+LABELS[organisationUnitAssignment] = false;
 /* Legend colors for export */
 var COLORINTERPOLATION;
 /* Export values */
 var EXPORTVALUES;
 /* Currently selected vector feature */
-var FEATURE;
+var FEATURE = new Object();
+FEATURE[thematicMap] = new Object();
+FEATURE[thematicMap2] = new Object();
 /* Global chart for show/hide */
 var CHART;
 /* Current legend type and method */
 var LEGEND = new Object();
-LEGEND.type = map_legend_type_automatic;
-LEGEND.method = 1;
-LEGEND.classes = 5;
+LEGEND[thematicMap] = new Object();
+LEGEND[thematicMap2] = new Object();
+LEGEND[thematicMap].type = LEGEND[thematicMap2].type = map_legend_type_automatic;
+LEGEND[thematicMap].method = LEGEND[thematicMap2].method = 1;
+LEGEND[thematicMap].classes = LEGEND[thematicMap2].classes = 5;
+/* Current map value types */
+VALUETYPE = new Object();
+VALUETYPE.polygon = map_value_type_indicator;
+VALUETYPE.point = map_value_type_indicator;
 
 /* Detect mapview parameter in URL */
 function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
@@ -41,7 +55,94 @@ function validateInput(name){return (name.length<=25);}
 /* Decide multiselect height based on screen resolution */
 function getMultiSelectHeight(){var h=screen.height;if(h<=800){return 220;}else if(h<=1050){return 310;}else if(h<=1200){return 470;}else{return 900;}}
 /* Toggle feature labels */
-function toggleFeatureLabels(classify){var layer=MAP.getLayersByName('Thematic map')[0];function activateLabels(){layer.styleMap=new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${'+MAPDATA.nameColumn+'}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});layer.refresh();LABELS=true;}function deactivateLabels(){layer.styleMap=new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});layer.refresh();LABELS=false;}if(classify){if(LABELS){deactivateLabels();}else{activateLabels();}if(ACTIVEPANEL==thematicMap){choropleth.classify(false,true);}else if(ACTIVEPANEL==organisationUnitAssignment){mapping.classify(false,true);}}else{if(LABELS){activateLabels();}}}
+function getActivatedOpenLayersStyleMap(nameColumn) {
+    return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${' + nameColumn + '}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])), 'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
+}
+function getDeactivatedOpenLayersStyleMap() {
+    return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
+}
+function toggleFeatureLabelsPolygons(classify, layer) {
+    function activateLabels() {
+        layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[thematicMap].nameColumn);
+        layer.refresh();
+        LABELS[thematicMap] = true;
+    }
+    function deactivateLabels() {
+        layer.styleMap = getDeactivatedOpenLayersStyleMap();
+        layer.refresh();
+        LABELS[thematicMap] = false;
+    }
+    
+    if (classify) {
+        if (LABELS[thematicMap]) {
+            deactivateLabels();
+        }
+        else {
+            activateLabels();
+        }
+        choropleth.classify(false,true);
+    }
+    else {
+        if (LABELS[thematicMap]) {
+            activateLabels();
+        }
+    }
+}
+function toggleFeatureLabelsPoints(classify, layer) {
+    function activateLabels() {
+        layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[thematicMap2].nameColumn);
+        layer.refresh();
+        LABELS[thematicMap2] = true;
+    }
+    function deactivateLabels() {
+        layer.styleMap = getDeactivatedOpenLayersStyleMap();
+        layer.refresh();
+        LABELS[thematicMap2] = false;
+    }
+    
+    if (classify) {
+        if (LABELS[thematicMap2]) {
+            deactivateLabels();
+        }
+        else {
+            activateLabels();
+        }
+        proportionalSymbol.classify(false,true);
+    }
+    else {
+        if (LABELS[thematicMap2]) {
+            activateLabels();
+        }
+    }
+}
+function toggleFeatureLabelsAssignment(classify, layer) {
+    function activateLabels() {
+        layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[organisationUnitAssignment].nameColumn);
+        layer.refresh();
+        LABELS[organisationUnitAssignment] = true;
+    }
+    function deactivateLabels() {
+        layer.styleMap = getDeactivatedOpenLayersStyleMap();
+        layer.refresh();
+        LABELS[organisationUnitAssignment] = false;
+    }
+    
+    if (classify) {
+        if (LABELS[organisationUnitAssignment]) {
+            deactivateLabels();
+        }
+        else {
+            activateLabels();
+        }
+        mapping.classify(false,true);
+    }
+    else {
+        if (LABELS[organisationUnitAssignment]) {
+            activateLabels();
+        }
+    }
+}    
+    
 /* Sort method */
 function sortByValue(a,b){return b.value-a.value;}
 /* Create JSON for map export */
@@ -58,18 +159,27 @@ Ext.onReady( function() {
 	/* Activate tooltip */
 	Ext.QuickTips.init();
 
-    MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
 	MASK = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
     
-    /* Base layers */
-    function addBaseLayersToMap() {
-        Ext.Ajax.request({
-            url: path + 'getMapLayersByType' + type,
-            params: { type: map_layer_type_baselayer },
-            method: 'POST',
-            success: function(r) {
-                var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
-				
+	/* Base layers */
+	function addBaseLayersToMap() {
+		Ext.Ajax.request({
+			url: path + 'getMapLayersByType' + type,
+			params: { type: map_layer_type_baselayer },
+			method: 'POST',
+			success: function(r) {
+                var baseLayer = new OpenLayers.Layer.WMS(
+                    'World',
+                    'http://iridl.ldeo.columbia.edu/cgi-bin/wms_dev/wms.pl',
+                    {layers: 'Health Regional Africa Meningitis Meningitis Observed'}
+                );
+            
+                MAP.addLayers([baseLayer]);
+                MAP.layers[0].setVisibility(false);
+                
+				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
+					
 				if (mapLayers.length > 0) {
 					for (var i = 0; i < mapLayers.length; i++) {
 						MAP.addLayers([
@@ -82,18 +192,7 @@ Ext.onReady( function() {
 						MAP.layers[MAP.layers.length-1].setVisibility(false);
 					}
 				}
-				else {
-					MAP.addLayers([
-						new OpenLayers.Layer.WMS(
-							'World',
-							'http://labs.metacarta.com/wms/vmap0',
-							{layers: 'basic'}
-						)
-					]);
-					
-					MAP.getLayersByName('World')[0].setVisibility(false);
-				}
-            }
+			}
         });
     }
     
@@ -153,8 +252,11 @@ Ext.onReady( function() {
 				text: i18n_save ,
 				handler: function() {
 					var vn = Ext.getCmp('viewname_tf').getValue();
-					var ig = Ext.getCmp('indicatorgroup_cb').getValue();
-					var ii = Ext.getCmp('indicator_cb').getValue();
+                    var mvt = Ext.getCmp('mapvaluetype_cb').getValue();
+					var ig = mvt == map_value_type_indicator ? Ext.getCmp('indicatorgroup_cb').getValue() : 0;
+					var ii = mvt == map_value_type_indicator ? Ext.getCmp('indicator_cb').getValue() : 0;
+                    var deg = mvt == map_value_type_dataelement ? Ext.getCmp('dataelementgroup_cb').getValue() : 0;
+					var de = mvt == map_value_type_dataelement ? Ext.getCmp('dataelement_cb').getValue() : 0;
 					var pt = Ext.getCmp('periodtype_cb').getValue();
 					var p = Ext.getCmp('period_cb').getValue();
 					var ms = Ext.getCmp('map_cb').getValue();
@@ -171,8 +273,13 @@ Ext.onReady( function() {
 						Ext.messageRed.msg( i18n_new_map_view , i18n_map_view_form_is_not_complete );
 						return;
 					}
+                    
+                    if (!ii && !de) {
+                        Ext.messageRed.msg( i18n_new_map_view, i18n_thematic_map_form_is_not_complete );
+						return;
+					}
 					
-					if (!ig || !ii || !pt || !p || !ms || !c ) {
+					if (!pt || !p || !ms || !c) {
 						Ext.messageRed.msg( i18n_new_map_view, i18n_thematic_map_form_is_not_complete );
 						return;
 					}
@@ -198,8 +305,7 @@ Ext.onReady( function() {
 							Ext.Ajax.request({
 								url: path + 'addOrUpdateMapView' + type,
 								method: 'POST',
-								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSource: ms, mapLegendType: mlt, method: 2, classes: c, colorLow: ca, colorHigh: cb, mapLegendSetId: mlsid, longitude: lon, latitude: lat, zoom: zoom },
-
+								params: { name: vn, mapValueType: mvt, indicatorGroupId: ig, indicatorId: ii, dataElementGroupId: deg, dataElementId: de, periodTypeId: pt, periodId: p, mapSource: ms, mapLegendType: mlt, method: 2, classes: c, colorLow: ca, colorHigh: cb, mapLegendSetId: mlsid, longitude: lon, latitude: lat, zoom: zoom },
 								success: function(r) {
 									Ext.messageBlack.msg( i18n_new_map_view, 'The view <span class="x-msg-hl">' + vn + '</span> ' + i18n_was_registered);
 									Ext.getCmp('view_cb').getStore().reload();
@@ -246,13 +352,15 @@ Ext.onReady( function() {
 					Ext.Ajax.request({
 						url: path + 'deleteMapView' + type,
 						method: 'POST',
-						params: { id: v },
-
+						params: {id: v},
 						success: function(r) {
 							Ext.messageBlack.msg( i18n_delete_map_view , 'The map view <span class="x-msg-hl">' + name + '</span> '+ i18n_was_deleted );
 							Ext.getCmp('view_cb').getStore().reload();
-							Ext.getCmp('view_cb').reset();
+							Ext.getCmp('view_cb').clearValue();
 							Ext.getCmp('mapview_cb').getStore().reload();
+                            if (v == Ext.getCmp('mapview_cb').getValue()) {
+                                Ext.getCmp('mapview_cb').clearValue();
+                            }
 						},
 						failure: function() {
 							alert( i18n_status , i18n_error_while_saving_data );
@@ -292,7 +400,7 @@ Ext.onReady( function() {
 						params: { id: v2 },
 
 						success: function(r) {
-							Ext.messageBlack.msg( i18n_dashboard_map_view, the_view + ' <span class="x-msg-hl">' + nv + '</span> ' + i18n_was_added_to_dashboard );
+							Ext.messageBlack.msg( i18n_dashboard_map_view, i18n_the_view + ' <span class="x-msg-hl">' + nv + '</span> ' + i18n_was_added_to_dashboard );
 							
 							Ext.getCmp('view_cb').getStore().reload();
 							Ext.getCmp('view_cb').reset();
@@ -441,25 +549,27 @@ Ext.onReady( function() {
 				cls: 'window-button',
 				text: i18n_export_image,
 				handler: function() {
-					if (ACTIVEPANEL == thematicMap
-						&& Ext.getCmp('period_cb').getValue()!='' 
-						&& Ext.getCmp('indicator_cb').getValue()!=''
-						&& Ext.getCmp('map_cb').getValue()!='') {
-						
+                    var cb = Ext.getCmp('mapvaluetype_cb').getValue() == map_value_type_indicator ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
+
+                    if (ACTIVEPANEL == thematicMap
+                        && cb
+						&& Ext.getCmp('period_cb').getValue() 
+						&& Ext.getCmp('map_cb').getValue()) {
+
 						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;
 						var objectSVGDocument = document.getElementById('OpenLayers.Layer.Vector_17').childNodes[0];
 						var viewBox = objectSVGDocument.getAttribute('viewBox');
 						var title = Ext.getCmp('exportimagetitle_tf').getValue();
 						
-						if(title==''){
+						if (!title) {
 							Ext.messageRed.msg( i18n_export_map_as_image , i18n_please_enter_map_title );
-						}else{						
+						}
+                        else {						
 							var q = Ext.getCmp('exportimagequality_cb').getValue();
 							var w = objectSVGDocument.getAttribute('width') * q;
 							var h = objectSVGDocument.getAttribute('height') * q;
 							var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
 							var period = Ext.getCmp('period_cb').getValue();
-							var indicator = Ext.getCmp('indicator_cb').getValue();
 							var imageFormat = Ext.getCmp('exportimageformat_cb').getValue();
 							
 							Ext.getCmp('exportimagetitle_tf').reset();
@@ -475,7 +585,7 @@ Ext.onReady( function() {
 							document.getElementById('heightField').value = h;  
 							document.getElementById('includeLegendsField').value = includeLegend;  
 							document.getElementById('periodField').value = period;  
-							document.getElementById('indicatorField').value = indicator;   
+							document.getElementById('indicatorField').value = cb;   
 							document.getElementById('legendsField').value = getLegendsJSON();
 							document.getElementById('imageFormat').value = imageFormat;
 
@@ -2546,13 +2656,13 @@ Ext.onReady( function() {
 										Ext.messageRed.msg( i18n_map_source , '<span class="x-msg-hl">' + msrw + '</span> '+i18n_is_already_selected+'.');
 									}
 									else {
+                                        MAPSOURCE = msv;
+                                        
 										Ext.Ajax.request({
 											url: path + 'setMapSourceTypeUserSetting' + type,
 											method: 'POST',
 											params: { mapSourceType: msv },
 											success: function(r) {
-												MAPSOURCE = msv;
-												
 												Ext.getCmp('map_cb').getStore().reload();
 												Ext.getCmp('maps_cb').getStore().reload();
 												Ext.getCmp('mapview_cb').getStore().reload();
@@ -2601,12 +2711,12 @@ Ext.onReady( function() {
 										});
 										
 										if (MAPSOURCE == map_source_type_geojson) {
-											mapLayerMapSourceFileComboBox.showField();
-											mapLayerPathWMSOverlayTextField.hideField();
+											mapLayerMapSourceFileComboBox.show();
+											mapLayerPathWMSOverlayTextField.hide();
 										}
 										else if (MAPSOURCE == map_source_type_shapefile) {
-											mapLayerMapSourceFileComboBox.hideField();
-											mapLayerPathWMSOverlayTextField.showField();
+											mapLayerMapSourceFileComboBox.hide();
+											mapLayerPathWMSOverlayTextField.show();
 										}
 									}
 								}
@@ -2738,7 +2848,7 @@ Ext.onReady( function() {
     });
 	
 	/* Section: layers */
-    var choroplethLayer = new OpenLayers.Layer.Vector('Thematic map', {
+    var choroplethLayer = new OpenLayers.Layer.Vector('Polygon layer', {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -2754,7 +2864,23 @@ Ext.onReady( function() {
         })
     });
     
-    MAP.addLayers([ choroplethLayer ]);
+    var proportionalSymbolLayer = new OpenLayers.Layer.Vector('Point layer', {
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 6 },
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            ),
+            'select': new OpenLayers.Style(
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+            )
+        })
+    });
+    
+    MAP.addLayers([ choroplethLayer, proportionalSymbolLayer ]);
     
 	function addOverlaysToMap() {
 		Ext.Ajax.request({
@@ -2807,6 +2933,198 @@ Ext.onReady( function() {
 	}
 	
 	addOverlaysToMap();
+    
+    function showWMSLayerOptions(layer) {
+        if (Ext.getCmp('baselayeroptions_w')) {
+            Ext.getCmp('baselayeroptions_w').destroy();
+        }
+        
+        var baseLayerOptionsWindow = new Ext.Window({
+            id: 'baselayeroptions_w',
+            title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
+            items: [
+                {
+                    xtype: 'menu',
+                    id: 'baselayeroptions_m',
+                    floating: false,
+                    items: [
+                        {
+                            html: 'Show WMS legend',
+                            iconCls: 'no-icon',
+                            listeners: {
+                                'click': {
+                                    fn: function() {
+                                        baseLayerOptionsWindow.destroy();
+                                        
+                                        var frs = layer.getFullRequestString({
+                                            REQUEST: "GetLegendGraphic",
+                                            WIDTH: null,
+                                            HEIGHT: null,
+                                            EXCEPTIONS: "application/vnd.ogc.se_xml",
+                                            LAYERS: layer.params.LAYERS,
+                                            LAYER: layer.params.LAYERS,
+                                            SRS: null,
+                                            FORMAT: 'image/png'
+                                        });
+
+                                        var wmsLayerLegendWindow = new Ext.Window({
+                                            title: 'WMS Legend: <span style="font-weight:normal;">' + layer.name + '</span>',
+                                            items: [
+                                                {
+                                                    xtype: 'panel',
+                                                    html: '<img src="' + frs + '">'
+                                                }
+                                            ]
+                                        });
+                                        wmsLayerLegendWindow.setPagePosition(Ext.getCmp('east').x - 500, Ext.getCmp('center').y + 50);
+                                        wmsLayerLegendWindow.show();
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            html: 'Opacity',
+                            menu: {
+                                items: [
+                                    {
+                                        html: '0.1',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
+                                    },
+                                    {
+                                        html: '0.2',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
+                                    },
+                                    {
+                                        html: '0.3',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
+                                    },
+                                    {
+                                        html: '0.4',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
+                                    },
+                                    {
+                                        html: '0.5',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
+                                    },
+                                    {
+                                        html: '0.6',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
+                                    },
+                                    {
+                                        html: '0.7',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
+                                    },
+                                    {
+                                        html: '0.8',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
+                                    },
+                                    {
+                                        html: '0.9',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
+                                    },
+                                    {
+                                        html: '1.0',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
+        baseLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 190, Ext.getCmp('center').y + 50);
+        baseLayerOptionsWindow.show();
+    }
+    
+    function showVectorLayerOptions(layer) {
+        if (Ext.getCmp('vectorlayeroptions_w')) {
+            Ext.getCmp('vectorlayeroptions_w').destroy();
+        }
+        
+        var vectorLayerOptionsWindow = new Ext.Window({
+            id: 'vectorlayeroptions_w',
+            title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
+            items: [
+                {
+                    xtype: 'menu',
+                    id: 'vectorlayeroptions_m',
+                    floating: false,
+                    items: [
+                        {
+                            html: 'Opacity',
+                            menu: {
+                                items: [
+                                    {
+                                        html: '0.1',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
+                                    },
+                                    {
+                                        html: '0.2',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
+                                    },
+                                    {
+                                        html: '0.3',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
+                                    },
+                                    {
+                                        html: '0.4',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
+                                    },
+                                    {
+                                        html: '0.5',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
+                                    },
+                                    {
+                                        html: '0.6',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
+                                    },
+                                    {
+                                        html: '0.7',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
+                                    },
+                                    {
+                                        html: '0.8',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
+                                    },
+                                    {
+                                        html: '0.9',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
+                                    },
+                                    {
+                                        html: '1.0',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            html: 'Show/hide labels',
+                            listeners: {
+                                'click': {
+                                    fn: function() {
+                                        if (layer.name == 'Polygon layer') {
+                                            if (ACTIVEPANEL == thematicMap) {
+                                                toggleFeatureLabelsPolygons(true, layer);
+                                            }
+                                            else {
+                                                toggleFeatureLabelsAssignment(true, layer);
+                                            }
+                                        }
+                                        else if (layer.name == 'Point layer') {
+                                            toggleFeatureLabelsPoints(true, layer);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
+        vectorLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 173, Ext.getCmp('center').y + 50);
+        vectorLayerOptionsWindow.show();
+    }
 	
 	var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
@@ -2819,7 +3137,10 @@ Ext.onReady( function() {
         singleClickExpand: true
     }, {
         nodeType: 'gx_layer',
-        layer: 'Thematic map'
+        layer: 'Polygon layer'
+    }, {
+        nodeType: 'gx_layer',
+        layer: 'Point layer'
     }];       
     
     var layerTree = new Ext.tree.TreePanel({
@@ -2829,8 +3150,23 @@ Ext.onReady( function() {
         rootVisible: false,
         root: {
             nodeType: 'async',
-            children: layerTreeConfig            
-        }, 
+            children: layerTreeConfig
+        },
+		listeners: {
+			'click': {
+				fn: function(n) {
+					if (n.isAncestor(this.getNodeById('xnode-253'))) {
+						showWMSLayerOptions(MAP.getLayersByName(n.attributes.layer.name)[0]);
+					}
+                    else if (n.isAncestor(this.getNodeById('xnode-254'))) {
+                        showVectorLayerOptions(MAP.getLayersByName(n.attributes.layer.name)[0]);
+                    }
+					else {
+                        showVectorLayerOptions(MAP.getLayersByName(n.attributes.layer)[0]);
+					}
+				}
+			}
+		},					
         bbar: new Ext.StatusBar({
 			id: 'maplayers_sb',
 			items:
@@ -2868,10 +3204,10 @@ Ext.onReady( function() {
         id: 'choropleth',
         map: MAP,
         layer: choroplethLayer,
-		title: '<span class="panel-title">' + i18n_thematic_map + '</span>',
+		title: '<span class="panel-title">' + i18n_polygon_layer + '</span>',
         url: 'init',
         featureSelection: false,
-        legendDiv: 'choroplethLegend',
+        legendDiv: 'polygonlegend',
         defaults: {width: 130},
         listeners: {
             expand: {
@@ -2879,6 +3215,26 @@ Ext.onReady( function() {
                     choroplethLayer.setVisibility(false);
                     choropleth.classify(false, true);
                     ACTIVEPANEL = thematicMap;
+                }
+            }
+        }
+    });
+    
+    proportionalSymbol = new mapfish.widgets.geostat.Symbol({
+        id: 'proportionalsymbol',
+        map: MAP,
+        layer: proportionalSymbolLayer,
+		title: '<span class="panel-title">' + i18n_point_layer + '</span>',
+        url: 'init',
+        featureSelection: false,
+        legendDiv: 'pointlegend',
+        defaults: {width: 130},
+        listeners: {
+            expand: {
+                fn: function() {
+                    proportionalSymbolLayer.setVisibility(false);
+                    proportionalSymbol.classify(false, true);
+                    ACTIVEPANEL = thematicMap2;
                 }
             }
         }
@@ -2935,14 +3291,6 @@ Ext.onReady( function() {
 			MAP.zoomToMaxExtent();
 		},
 		scope: this
-	});
-		
-	var labelsButton = new Ext.Button({
-		iconCls: 'icon-labels',
-		tooltip: i18n_show_hide_labels,
-		handler: function() {
-			toggleFeatureLabels(true);				
-		}
 	});
 	
 	var favoritesButton = new Ext.Button({
@@ -3086,7 +3434,6 @@ Ext.onReady( function() {
 			zoomInButton,
 			zoomOutButton,
 			zoomMaxExtentButton,
-			labelsButton,
 			'-',
 			exportImageButton,
 			exportExcelButton,
@@ -3158,10 +3505,18 @@ Ext.onReady( function() {
 						]
 					},
                     {
-                        title: '<span class="panel-title">'+ i18n_map_legend +'</span>',
+                        title: '<span class="panel-title">'+ i18n_map_legend_polygon +'</span>',
                         minHeight: 65,
                         autoHeight: true,
-                        contentEl: 'legend',
+                        contentEl: 'polygonlegendpanel',
+                        anchor: '100%',
+						bodyStyle: 'padding-left: 4px;'
+                    },
+                    {
+                        title: '<span class="panel-title">'+ i18n_map_legend_point +'</span>',
+                        minHeight: 65,
+                        autoHeight: true,
+                        contentEl: 'pointlegendpanel',
                         anchor: '100%',
 						bodyStyle: 'padding-left: 4px;'
                     }
@@ -3185,6 +3540,7 @@ Ext.onReady( function() {
                 },
                 items: [
                     choropleth,
+                    proportionalSymbol,
                     shapefilePanel,
                     mapping,
 					adminPanel,
@@ -3240,17 +3596,28 @@ Ext.onReady( function() {
 	ACTIVEPANEL = thematicMap;
     
 	/* Section: map controls */
-	var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
+	var selectFeaturePolygon = new OpenLayers.Control.newSelectFeature(
         choroplethLayer, {
-            onClickSelect: onClickSelectChoropleth,
-            onClickUnselect: onClickUnselectChoropleth,
-            onHoverSelect: onHoverSelectChoropleth,
-            onHoverUnselect: onHoverUnselectChoropleth
+            onClickSelect: onClickSelectPolygon,
+            onClickUnselect: onClickUnselectPolygon,
+            onHoverSelect: onHoverSelectPolygon,
+            onHoverUnselect: onHoverUnselectPolygon
         }
     );
     
-    MAP.addControl(selectFeatureChoropleth);
-    selectFeatureChoropleth.activate();
+    var selectFeaturePoint = new OpenLayers.Control.newSelectFeature(
+        proportionalSymbolLayer, {
+            onClickSelect: onClickSelectPoint,
+            onClickUnselect: onClickUnselectPoint,
+            onHoverSelect: onHoverSelectPoint,
+            onHoverUnselect: onHoverUnselectPoint
+        }
+    );
+    
+    MAP.addControl(selectFeaturePolygon);
+    MAP.addControl(selectFeaturePoint);
+    selectFeaturePolygon.activate();
+    selectFeaturePoint.activate();
 
 	MAP.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
@@ -3288,7 +3655,8 @@ Ext.onReady( function() {
             var activeOverlays = false;
             if (e.property == 'visibility' && isOverlay ) {
                 if (e.layer.visibility) {
-                    selectFeatureChoropleth.deactivate();
+                    selectFeaturePolygon.deactivate();
+                    selectFeaturePoint.deactivate();
                 }
                 else {
                     for (var i = 0; i < mapLayerStore.getTotalCount(); i++) {
@@ -3297,7 +3665,8 @@ Ext.onReady( function() {
                         }
                     }
                     if (!activeOverlays) {
-                        selectFeatureChoropleth.activate();
+                        selectFeaturePolygon.activate();
+                        selectFeaturePoint.activate();
                     }
                 }
             }
@@ -3306,6 +3675,14 @@ Ext.onReady( function() {
 	
 	Ext.getCmp('maplegendset_cb').hideField();
 	Ext.getCmp('bounds').hideField();
+	Ext.getCmp('dataelementgroup_cb').hideField();
+	Ext.getCmp('dataelement_cb').hideField();
+    
+    Ext.getCmp('maplegendset_cb2').hideField();
+	Ext.getCmp('bounds_tf2').hideField();
+	Ext.getCmp('dataelementgroup_cb2').hideField();
+	Ext.getCmp('dataelement_cb2').hideField();
+	
 	
     Ext.get('loading').fadeOut({remove: true});
 	
@@ -3525,23 +3902,24 @@ var chartWindow = new Ext.Window({
     items: CHART
 });
 
-function onHoverSelectChoropleth(feature) {
-    if (MAPDATA != null) {
-        if (ACTIVEPANEL == thematicMap) {
-			Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</div><div style="color:#555">' + feature.attributes.value + '</div>', false);
-        }
-        else if (ACTIVEPANEL == organisationUnitAssignment) {
-			Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + feature.attributes[MAPDATA.nameColumn] + '</span>', false);
-        }
+/* Section: select features */
+function onHoverSelectPolygon(feature) {
+    FEATURE[thematicMap] = feature;
+
+    if (ACTIVEPANEL == organisationUnitAssignment) {
+        Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn] + '</span>', false);
+    }
+    else {
+        Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap].attributes[MAPDATA[thematicMap].nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap].attributes.value + '</div>', false);
     }
 }
 
-function onHoverUnselectChoropleth(feature) {
+function onHoverUnselectPolygon(feature) {
     Ext.getCmp('featureinfo_l').setText('<span style="color:#666">'+ i18n_no_feature_selected +'.</span>', false);
 }
 
-function onClickSelectChoropleth(feature) {
-	FEATURE = feature;
+function onClickSelectPolygon(feature) {
+	FEATURE[thematicMap] = feature;
 
 	var east_panel = Ext.getCmp('east');
 	var x = east_panel.x - 210;
@@ -3558,7 +3936,7 @@ function onClickSelectChoropleth(feature) {
 			height: 65,
 			layout: 'fit',
 			plain: true,
-			html: '<div class="window-orgunit-text">' + feature.attributes[MAPDATA.nameColumn] + '</div>',
+			html: '<div class="window-orgunit-text">' + FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn] + '</div>',
 			x: x,
 			y: y,
 			listeners: {
@@ -3572,7 +3950,7 @@ function onClickSelectChoropleth(feature) {
 		
 		popup = feature_popup;		
 		feature_popup.show();
-		mapping.relation = feature.attributes[MAPDATA.nameColumn];
+		mapping.relation = FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn];
     }
 	else {
         // featureWindow.setPagePosition(Ext.getCmp('east').x - 202, Ext.getCmp('center').y + 41);
@@ -3582,9 +3960,17 @@ function onClickSelectChoropleth(feature) {
 	}
 }
 
-function onClickUnselectChoropleth(feature) {}
+function onClickUnselectPolygon(feature) {}
 
-
+function onClickSelectPoint(feature) {}
+function onClickUnselectPoint(feature) {}
+function onHoverSelectPoint(feature) {
+    FEATURE[thematicMap2] = feature;
+    Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap2].attributes[MAPDATA[thematicMap2].nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap2].attributes.value + '</div>', false);
+}
+function onHoverUnselectPoint(feature) {
+    Ext.getCmp('featureinfo_l').setText('<span style="color:#666">'+ i18n_no_feature_selected +'.</span>', false);
+}
 
 /* Section: map data */
 function loadMapData(redirect, position) {
@@ -3593,29 +3979,29 @@ function loadMapData(redirect, position) {
         method: 'POST',
         params: { mapLayerPath: URL },
         success: function(r) {
-			MAPDATA = Ext.util.JSON.decode(r.responseText).map[0];
+			MAPDATA[ACTIVEPANEL] = Ext.util.JSON.decode(r.responseText).map[0];
             
             if (MAPSOURCE == map_source_type_database) {
-                MAPDATA.name = Ext.getCmp('map_cb').getRawValue();
-                MAPDATA.organisationUnit = 'Country';
-                MAPDATA.organisationUnitLevel = Ext.getCmp('map_cb').getValue();
-                MAPDATA.nameColumn = 'name';
-                MAPDATA.longitude = BASECOORDINATE.longitude;
-                MAPDATA.latitude = BASECOORDINATE.latitude;
-                MAPDATA.zoom = 7;
+                MAPDATA[ACTIVEPANEL].name = ACTIVEPANEL == thematicMap ? Ext.getCmp('map_cb').getRawValue() : Ext.getCmp('map_cb2').getRawValue();
+                MAPDATA[ACTIVEPANEL].organisationUnit = 'Country';
+                MAPDATA[ACTIVEPANEL].organisationUnitLevel = ACTIVEPANEL == thematicMap ? Ext.getCmp('map_cb').getValue() : Ext.getCmp('map_cb2').getValue();
+                MAPDATA[ACTIVEPANEL].nameColumn = 'name';
+                MAPDATA[ACTIVEPANEL].longitude = BASECOORDINATE.longitude;
+                MAPDATA[ACTIVEPANEL].latitude = BASECOORDINATE.latitude;
+                MAPDATA[ACTIVEPANEL].zoom = 7;
             }
             else if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
-                MAPDATA.organisationUnitLevel = parseFloat(MAPDATA.organisationUnitLevel);
-                MAPDATA.longitude = parseFloat(MAPDATA.longitude);
-                MAPDATA.latitude = parseFloat(MAPDATA.latitude);
-                MAPDATA.zoom = parseFloat(MAPDATA.zoom);
+                MAPDATA[ACTIVEPANEL].organisationUnitLevel = parseFloat(MAPDATA[ACTIVEPANEL].organisationUnitLevel);
+                MAPDATA[ACTIVEPANEL].longitude = parseFloat(MAPDATA[ACTIVEPANEL].longitude);
+                MAPDATA[ACTIVEPANEL].latitude = parseFloat(MAPDATA[ACTIVEPANEL].latitude);
+                MAPDATA[ACTIVEPANEL].zoom = parseFloat(MAPDATA[ACTIVEPANEL].zoom);
             }
 			
 			if (!position) {
-				if (MAPDATA.zoom != MAP.getZoom()) {
-					MAP.zoomTo(MAPDATA.zoom);
+				if (MAPDATA[ACTIVEPANEL].zoom != MAP.getZoom()) {
+					MAP.zoomTo(MAPDATA[ACTIVEPANEL].zoom);
 				}
-				MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
+				MAP.setCenter(new OpenLayers.LonLat(MAPDATA[ACTIVEPANEL].longitude, MAPDATA[ACTIVEPANEL].latitude));
 			}
 			
 			if (MAPVIEW) {
@@ -3623,19 +4009,15 @@ function loadMapData(redirect, position) {
 					MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
 				}
 				else {
-					MAP.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
+					MAP.setCenter(new OpenLayers.LonLat(MAPDATA[ACTIVEPANEL].longitude, MAPDATA[ACTIVEPANEL].latitude), MAPDATA[ACTIVEPANEL].zoom);
 				}
 				MAPVIEW = false;
 			}
 			
-			toggleFeatureLabels(false);
-
-            if (redirect == thematicMap) {
-                getChoroplethData(); }
-            else if (redirect == organisationUnitAssignment) {
-                getAssignOrganisationUnitData(); }
-            else if (redirect == 'auto-assignment') {
-                getAutoAssignOrganisationUnitData(position); }
+            if (redirect == thematicMap) { getChoroplethData(); }
+            else if (redirect == thematicMap2) { getSymbolData(); }
+            else if (redirect == organisationUnitAssignment) { getAssignOrganisationUnitData(); }
+            else if (redirect == 'auto-assignment') { getAutoAssignOrganisationUnitData(position); }
         },
         failure: function() {
             alert( i18n_error_while_retrieving_data + ': loadMapData' );
@@ -3646,63 +4028,229 @@ function loadMapData(redirect, position) {
 
 /* Section: choropleth */
 function getChoroplethData() {
-	MASK.msg = i18n_creating_choropleth ;
+	MASK.msg = i18n_creating_choropleth;
 	MASK.show();
+    
+    var l = MAP.getLayersByName('Polygon layer')[0];
+    if (LABELS[thematicMap]) {
+        toggleFeatureLabelsPolygons(false, l);
+    }
+    FEATURE[thematicMap] = l.features;    
 	
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
+	var dataElementId = Ext.getCmp('dataelement_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var mapLayerPath = MAPDATA.mapLayerPath;
-	var url = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? 'getIndicatorMapValuesByMap' : 'getIndicatorMapValuesByLevel';
-	var params = MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile ? { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath } : { indicatorId: indicatorId, periodId: periodId, level: mapLayerPath };
+    var mapLayerPath = MAPDATA[thematicMap].mapLayerPath;
+	var url;
+	var params = new Object();
+	params.periodId = periodId;
+	
+	if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
+		params.mapLayerPath = mapLayerPath;
+		if (VALUETYPE.polygon == map_value_type_indicator) {
+			url = 'getIndicatorMapValuesByMap';
+			params.indicatorId = indicatorId;
+		}
+		else if (VALUETYPE.polygon == map_value_type_dataelement) {
+			url = 'getDataMapValuesByMap';
+			params.dataElementId = dataElementId;
+		}
+	}
+	else {
+		params.level = mapLayerPath;
+		if (VALUETYPE.polygon == map_value_type_indicator) {
+			url = 'getIndicatorMapValuesByLevel';
+			params.indicatorId = indicatorId;
+		}
+		else if (VALUETYPE.polygon == map_value_type_dataelement) {
+			url = 'getDataMapValuesByLevel';
+			params.dataElementId = dataElementId;
+		}
+	}
 
     Ext.Ajax.request({
         url: path + url + type,
         method: 'POST',
         params: params,
         success: function(r) {
-			var features = MAP.getLayersByName('Thematic map')[0].features;
 			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
-			EXPORTVALUES = getExportDataValueJSON( mapvalues );
+			EXPORTVALUES = getExportDataValueJSON(mapvalues);
 			var mv = new Array();
-			var nameColumn = MAPDATA.nameColumn;
+            var mour = new Array();
+			var nameColumn = MAPDATA[thematicMap].nameColumn;
 			var options = {};
 			
 			if (mapvalues.length == 0) {
-				Ext.messageRed.msg( i18n_thematic_map ,  i18n_selected_period_level_no_data );
+				Ext.messageRed.msg( i18n_thematic_map, i18n_current_selection_no_data );
 				MASK.hide();
 				return;
 			}
-
-			for (var i = 0; i < mapvalues.length; i++) {
+            
+            for (var i = 0; i < mapvalues.length; i++) {
 				mv[mapvalues[i].orgUnitName] = mapvalues[i].orgUnitName ? mapvalues[i].value : '';
 			}
 
 			if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
-				for (var j = 0; j < features.length; j++) {
-					features[j].attributes.value = mv[features[j].attributes[nameColumn]] ? mv[features[j].attributes[nameColumn]] : 0;
-				}
+                Ext.Ajax.request({
+                    url: path + 'getAvailableMapOrganisationUnitRelations' + type,
+                    method: 'POST',
+                    params: { mapLayerPath: mapLayerPath },
+                    success: function(r) {
+                        var relations = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelations;
+                       
+                        for (var i = 0; i < relations.length; i++) {
+                            mour[relations[i].featureId] = relations[i].organisationUnit;
+                        }
+
+                        for (var j = 0; j < FEATURE[thematicMap].length; j++) {
+                            FEATURE[thematicMap][j].attributes.value = mv[mour[FEATURE[thematicMap][j].attributes[nameColumn]]] || 0;
+                        }
+                        
+                        applyValues();
+                    }
+                });           
 			}
 			else if (MAPSOURCE == map_source_type_database) {
 				for (var i = 0; i < mapvalues.length; i++) {
-					for (var j = 0; j < features.length; j++) {
-						if (mapvalues[i].orgUnitName == features[j].attributes.name) {
-							features[j].attributes.value = parseFloat(mapvalues[i].value);
+					for (var j = 0; j < FEATURE[thematicMap].length; j++) {
+						if (mapvalues[i].orgUnitName == FEATURE[thematicMap][j].attributes.name) {
+							FEATURE[thematicMap][j].attributes.value = parseFloat(mapvalues[i].value);
 							break;
 						}
 					}
 				}
+                
+                applyValues();
+			}
+            
+            function applyValues() {
+                choropleth.indicator = options.indicator = 'value';
+                options.method = Ext.getCmp('method').getValue();
+                options.numClasses = Ext.getCmp('numClasses').getValue();
+                options.colors = choropleth.getColors();
+                
+                choropleth.coreComp.updateOptions(options);
+                choropleth.coreComp.applyClassification();
+                choropleth.classificationApplied = true;
+			
+                MASK.hide();
+            }
+        },
+        failure: function() {
+            alert( 'Error: getIndicatorMapValues' );
+        } 
+    });
+}
+
+/* Section: symbol */
+function getSymbolData() {
+	MASK.msg = i18n_creating_choropleth;
+	MASK.show();
+    
+    var l = MAP.getLayersByName('Point layer')[0];
+    if (LABELS[thematicMap2]) {
+        toggleFeatureLabelsPoints(false, l);
+    }
+    FEATURE[thematicMap2] = l.features;
+	
+    var indicatorId = Ext.getCmp('indicator_cb2').getValue();
+	var dataElementId = Ext.getCmp('dataelement_cb2').getValue();
+    var periodId = Ext.getCmp('period_cb2').getValue();
+    var mapLayerPath = MAPDATA[thematicMap2].mapLayerPath;
+	var url;
+	var params = new Object();
+	params.periodId = periodId;
+	
+	if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
+		params.mapLayerPath = mapLayerPath;
+		if (VALUETYPE.point == map_value_type_indicator) {
+			url = 'getIndicatorMapValuesByMap';
+			params.indicatorId = indicatorId;
+		}
+		else if (VALUETYPE.point == map_value_type_dataelement) {
+			url = 'getDataMapValuesByMap';
+			params.dataElementId = dataElementId;
+		}
+	}
+	else {
+		params.level = mapLayerPath;
+		if (VALUETYPE.point == map_value_type_indicator) {
+			url = 'getIndicatorMapValuesByLevel';
+			params.indicatorId = indicatorId;
+		}
+		else if (VALUETYPE.point == map_value_type_dataelement) {
+			url = 'getDataMapValuesByLevel';
+			params.dataElementId = dataElementId;
+		}
+	}
+
+    Ext.Ajax.request({
+        url: path + url + type,
+        method: 'POST',
+        params: params,
+        success: function(r) {
+			var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+			EXPORTVALUES = getExportDataValueJSON(mapvalues);
+			var mv = new Array();
+            var mour = new Array();
+			var nameColumn = MAPDATA[thematicMap2].nameColumn;
+			var options = {};
+			
+			if (mapvalues.length == 0) {
+				Ext.messageRed.msg( i18n_thematic_map, i18n_current_selection_no_data );
+				MASK.hide();
+				return;
+			}
+            
+            for (var i = 0; i < mapvalues.length; i++) {
+				mv[mapvalues[i].orgUnitName] = mapvalues[i].orgUnitName ? mapvalues[i].value : '';
 			}
 
-			choropleth.indicator = options.indicator = 'value';
-			options.method = Ext.getCmp('method').getValue();
-			options.numClasses = Ext.getCmp('numClasses').getValue();
-			options.colors = choropleth.getColors();
+			if (MAPSOURCE == map_source_type_geojson || MAPSOURCE == map_source_type_shapefile) {
+                Ext.Ajax.request({
+                    url: path + 'getAvailableMapOrganisationUnitRelations' + type,
+                    method: 'POST',
+                    params: { mapLayerPath: mapLayerPath },
+                    success: function(r) {
+                        var relations = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelations;
+                       
+                        for (var i = 0; i < relations.length; i++) {
+                            mour[relations[i].featureId] = relations[i].organisationUnit;
+                        }
+
+                        for (var j = 0; j < FEATURE[thematicMap2].length; j++) {
+                            FEATURE[thematicMap2][j].attributes.value = mv[mour[FEATURE[thematicMap2][j].attributes[nameColumn]]] || 0;
+                        }
+                        
+                        applyValues();
+                    }
+                });           
+			}
+			else if (MAPSOURCE == map_source_type_database) {
+				for (var i = 0; i < mapvalues.length; i++) {
+					for (var j = 0; j < FEATURE[thematicMap2].length; j++) {
+						if (mapvalues[i].orgUnitName == FEATURE[thematicMap2][j].attributes.name) {
+							FEATURE[thematicMap2][j].attributes.value = parseFloat(mapvalues[i].value);
+							break;
+						}
+					}
+				}
+                
+                applyValues();
+			}
+            
+            function applyValues() {
+                proportionalSymbol.indicator = options.indicator = 'value';
+                options.method = Ext.getCmp('method_cb2').getValue();
+                options.numClasses = Ext.getCmp('numClasses_cb2').getValue();
+                options.colors = proportionalSymbol.getColors();
+                
+                proportionalSymbol.coreComp.updateOptions(options);
+                proportionalSymbol.coreComp.applyClassification();
+                proportionalSymbol.classificationApplied = true;
 			
-			choropleth.coreComp.updateOptions(options);
-			choropleth.coreComp.applyClassification();
-			choropleth.classificationApplied = true;
-			
-			MASK.hide();		
+                MASK.hide();
+            }
         },
         failure: function() {
             alert( 'Error: getIndicatorMapValues' );
@@ -3714,21 +4262,26 @@ function getChoroplethData() {
 function getAssignOrganisationUnitData() {
 	MASK.msg = i18n_creating_map;
 	MASK.show();
+    
+    var l = MAP.getLayersByName('Polygon layer')[0];
+    if (LABELS[organisationUnitAssignment]) {
+        toggleFeatureLabelsAssignment(false, l);
+    }
+    FEATURE[thematicMap] = l.features;
 	
-    var mlp = MAPDATA.mapLayerPath;
+    var mlp = MAPDATA[organisationUnitAssignment].mapLayerPath;
 	var relations =	 Ext.getCmp('grid_gp').getStore();
-	var features = MAP.getLayersByName('Thematic map')[0].features;
-	var nameColumn = MAPDATA.nameColumn;
+	var nameColumn = MAPDATA[organisationUnitAssignment].nameColumn;
 	var noCls = 1;
 	var noAssigned = 0;
 	var options = {};
 	
-	for (var i = 0; i < features.length; i++) {
-		features[i].attributes['value'] = 0;
+	for (var i = 0; i < FEATURE[thematicMap].length; i++) {
+		FEATURE[thematicMap][i].attributes['value'] = 0;
 	
 		for (var j = 0; j < relations.getTotalCount(); j++) {
-			if (relations.getAt(j).data.featureId == features[i].attributes[nameColumn]) {
-				features[i].attributes['value'] = 1;
+			if (relations.getAt(j).data.featureId == FEATURE[thematicMap][i].attributes[nameColumn]) {
+				FEATURE[thematicMap][i].attributes['value'] = 1;
 				noAssigned++;
 				noCls = noCls < 2 ? 2 : noCls;
 				break;
@@ -3736,8 +4289,8 @@ function getAssignOrganisationUnitData() {
 		}
 	}
 
-	var color = noCls > 1 && noAssigned == features.length ? assigned_row_color : unassigned_row_color;
-	noCls = noCls > 1 && noAssigned == features.length ? 1 : noCls;
+	var color = noCls > 1 && noAssigned == FEATURE[thematicMap].length ? assigned_row_color : unassigned_row_color;
+	noCls = noCls > 1 && noAssigned == FEATURE[thematicMap].length ? 1 : noCls;
 	
 	mapping.indicator = options.indicator = 'value';
 	options.method = 1;
@@ -3761,23 +4314,22 @@ function getAutoAssignOrganisationUnitData(position) {
 	MASK.msg = i18n_loading ;
 	MASK.show();
 
-    var level = MAPDATA.organisationUnitLevel;
+    var level = MAPDATA[organisationUnitAssignment].organisationUnitLevel;
 
     Ext.Ajax.request({
         url: path + 'getOrganisationUnitsAtLevel' + type,
         method: 'POST',
         params: { level: level },
         success: function(r) {
-		    var layers = MAP.getLayersByName('Thematic map');
-			var features = layers[0]['features'];
+			FEATURE[thematicMap] = MAP.getLayersByName('Polygon layer')[0].features;
 			var organisationUnits = Ext.util.JSON.decode(r.responseText).organisationUnits;
-			var nameColumn = MAPDATA.nameColumn;
-			var mlp = MAPDATA.mapLayerPath;
+			var nameColumn = MAPDATA[organisationUnitAssignment].nameColumn;
+			var mlp = MAPDATA[organisationUnitAssignment].mapLayerPath;
 			var count_match = 0;
 			var relations = '';
 			
-			for ( var i = 0; i < features.length; i++ ) {
-				features[i].attributes.compareName = features[i].attributes[nameColumn].split(' ').join('').toLowerCase();
+			for ( var i = 0; i < FEATURE[thematicMap].length; i++ ) {
+				FEATURE[thematicMap][i].attributes.compareName = FEATURE[thematicMap][i].attributes[nameColumn].split(' ').join('').toLowerCase();
 			}
 	
 			for ( var i = 0; i < organisationUnits.length; i++ ) {
@@ -3785,10 +4337,10 @@ function getAutoAssignOrganisationUnitData(position) {
 			}
 			
 			for ( var i = 0; i < organisationUnits.length; i++ ) {
-				for ( var j = 0; j < features.length; j++ ) {
-					if (features[j].attributes.compareName == organisationUnits[i].compareName) {
+				for ( var j = 0; j < FEATURE[thematicMap].length; j++ ) {
+					if (FEATURE[thematicMap][j].attributes.compareName == organisationUnits[i].compareName) {
 						count_match++;
-						relations += organisationUnits[i].id + '::' + features[j].attributes[nameColumn] + ';;';
+						relations += organisationUnits[i].id + '::' + FEATURE[thematicMap][j].attributes[nameColumn] + ';;';
 						break;
 					}
 				}
@@ -3806,7 +4358,7 @@ function getAutoAssignOrganisationUnitData(position) {
 					MASK.msg = i18n_applying_organisation_units_relations ;
 					MASK.show();
 					
-					Ext.messageBlack.msg( i18n_assign + ' ' + i18n_organisation_units, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned +'.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + features.length + '</span>');
+					Ext.messageBlack.msg( i18n_assign + ' ' + i18n_organisation_units, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned +'.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>');
 					
 					Ext.getCmp('grid_gp').getStore().reload();
 					loadMapData(organisationUnitAssignment, position);

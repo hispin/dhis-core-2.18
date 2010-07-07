@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
@@ -40,14 +41,66 @@ public interface CrossTabService
 {
     String ID = CrossTabService.class.getName();
     
+    /**
+     * Creates and populates the crosstab table.
+     * 
+     * @param operands the collection of DataElementOperands.
+     * @param periodIds the collection of Period identifiers.
+     * @param organisationUnitIds the collection of OrganisationUnit identifiers.
+     * @return the DataElementOperands where data exists.
+     */
     Collection<DataElementOperand> populateCrossTabTable( Collection<DataElementOperand> operands, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
 
-    void dropCrossTabTable();
+    /**
+     * Drops the crosstab table.
+     */
+    void dropCrossTabTable( String key );
     
-    void trimCrossTabTable( Collection<DataElementOperand> emptyOperands );
+    /**
+     * Trims the crosstab table.
+     * 
+     * @param emptyOperands the DataElementOperands without data.
+     */
+    void trimCrossTabTable( Collection<DataElementOperand> emptyOperands, String key );
 
-    Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands );
+    /**
+     * Provides a Map with information about the crosstab table where the key is
+     * the DataElementOperand and the value is the column index.
+     * 
+     * @param operands the collection of DataElementOperands.
+     * @return a Map with information about the crosstab table.
+     */
+    Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, String key );
     
+    /**
+     * Validates whether the number of columns in the crosstab table will be valid
+     * for the current DBMS.
+     * 
+     * @param operands the DataElementOperands.
+     * @return 0 if OK, the number of excess columns if not.
+     */
     int validateCrossTabTable( Collection<DataElementOperand> operands );
+
+    /**
+     * Gets all CrossTabDataValues for the given collection of period ids and source ids.
+     * 
+     * @param dataElementIds the dataelement identifiers.
+     * @param periodIds the period identifiers.
+     * @param sourceIds the source identifiers.
+     * @return collection of CrossTabDataValues.
+     */
+    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+        Collection<Integer> sourceIds, String key );
+
+    /**
+     * Gets all CrossTabDataValues for the given collection of period ids and the source id.
+     * 
+     * @param dataElementIds the dataelement identifiers.
+     * @param periodIds the period identifiers.
+     * @param sourceId the source identifier.
+     * @return collection of CrossTabDataValues.
+     */
+    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+        int sourceId, String key );
 }

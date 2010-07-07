@@ -420,6 +420,10 @@
             <active>true</active>
             <comment>CommentA</comment>
             <geoCode>GeoCode</geoCode>
+            <feature type="Polygon">
+              <coordinates>11.11,22.22 33.33,44.44 55.55,66.66</coordinates>
+            </feature>
+            <lastUpdated>2010-01-01</lastUpdated>
         </organisationUnit>
         <organisationUnit>
             <id>66</id>
@@ -432,6 +436,10 @@
             <active>true</active>
             <comment>CommentB</comment>
             <geoCode>GeoCode</geoCode>
+            <feature type="Polygon">
+              <coordinates>11.11,22.22 33.33,44.44 55.55,66.66</coordinates>
+            </feature>
+            <lastUpdated>2010-01-01</lastUpdated>
         </organisationUnit>
         <organisationUnit>
             <id>67</id>
@@ -444,6 +452,10 @@
             <active>true</active>
             <comment>CommentC</comment>
             <geoCode>GeoCode</geoCode>
+            <feature type="Polygon">
+              <coordinates>11.11,22.22 33.33,44.44 55.55,66.66</coordinates>
+            </feature>
+            <lastUpdated>2010-01-01</lastUpdated>
         </organisationUnit>
     </organisationUnits>
     <organisationUnitRelationships>

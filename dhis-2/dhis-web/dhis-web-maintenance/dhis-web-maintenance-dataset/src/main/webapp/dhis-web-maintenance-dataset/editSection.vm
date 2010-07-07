@@ -16,7 +16,7 @@
                                         document.forms['editDataSetForm'].submit();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 				jQuery("#sectionName").focus();
 			}
 	);

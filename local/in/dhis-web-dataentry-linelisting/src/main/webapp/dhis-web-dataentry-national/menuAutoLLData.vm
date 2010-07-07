@@ -1,0 +1,39 @@
+
+<h2>Linelisting</h2>
+
+<ul>
+    <li><a href="index.action">Data Entry</a></li>
+    <br>
+    <li><a href="autoLLdataAggForm.action">Auto Linelisting Data Aggregation</a></li>
+    <!--
+    <li>Data Import</li>    
+    <ul>
+        <li><a href="lldataImport.action?llImportFlag=1">Overwrite Existing Data</a></li>    
+        <li><a href="lldataImport.action?llImportFlag=2">Append to Existing Data</a></li>
+    </ul>
+    -->    
+</ul>
+
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+
+<script type="text/javascript">
+
+    function orgUnitHasBeenSelected( orgUnitIds )
+    {    
+        document.getElementById("selOrgUnitId").value = orgUnitIds;
+        
+        if(orgUnitIds == null || orgUnitIds == "" )
+        {
+            return;
+        }
+        
+        if(orgUnitIds != null)
+        {
+             getOUDetails( orgUnitIds );
+        }
+    }
+
+    selection.setListenerFunction( orgUnitHasBeenSelected );
+
+</script>

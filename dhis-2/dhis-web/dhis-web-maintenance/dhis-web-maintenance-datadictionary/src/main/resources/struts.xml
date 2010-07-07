@@ -75,7 +75,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
@@ -93,7 +93,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
@@ -229,7 +229,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupForm.vm</param>
 			<param name="javascripts">javascript/dataElementGroup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 
@@ -253,7 +253,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupForm.vm</param>
 			<param name="javascripts">javascript/dataElementGroup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 
@@ -291,7 +291,7 @@
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/dataElementGroupSet.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_ADD</param>
 		</action>
 
@@ -309,7 +309,7 @@
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/dataElementGroupSet.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
 		</action>
 
@@ -462,7 +462,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
 			<param name="javascripts">javascript/indicatorGroup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 
@@ -486,7 +486,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
 			<param name="javascripts">javascript/indicatorGroup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
 		</action>
 
@@ -525,7 +525,7 @@
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/indicatorGroupSet.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 
@@ -543,7 +543,7 @@
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/indicatorGroupSet.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 		</action>
 
 		<action name="updateIndicatorGroupSet"
@@ -612,7 +612,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorTypeForm.vm</param>
 			<param name="javascripts">javascript/indicatorType.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
 		</action>
 
@@ -629,7 +629,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorTypeForm.vm</param>
 			<param name="javascripts">javascript/indicatorType.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
 		</action>
 
@@ -696,7 +696,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
 		</action>
 
@@ -720,7 +720,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
 		</action>
 
@@ -754,8 +754,8 @@
 
 		<action name="getFilteredDataElements"
 			class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlOperands.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -815,7 +815,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataDictionaryForm.vm</param>
 			<param name="javascripts">javascript/dataDictionary.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
 		</action>
 
@@ -832,7 +832,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataDictionaryForm.vm</param>
 			<param name="javascripts">javascript/dataDictionary.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
 		</action>
 
@@ -863,7 +863,7 @@
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
 
@@ -887,7 +887,7 @@
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 
@@ -919,7 +919,7 @@
 			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js,javascript/extendedIndicator.js
 				,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
 		</action>
 
@@ -945,7 +945,7 @@
 				,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js
 				,../dhis-web-commons/calendar/calendar-setup.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
 		</action>
 
@@ -975,7 +975,7 @@
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="javascripts">javascript/category.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
 
@@ -1026,7 +1026,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryForm.vm</param>
 			<param name="javascripts">javascript/category.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 
@@ -1055,7 +1055,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryComboForm.vm</param>
 			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
@@ -1107,7 +1107,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryComboForm.vm</param>
 			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js
 				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 

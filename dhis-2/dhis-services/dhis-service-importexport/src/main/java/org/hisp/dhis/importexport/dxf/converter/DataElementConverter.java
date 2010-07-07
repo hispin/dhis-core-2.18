@@ -40,6 +40,7 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
+import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.DataElementImporter;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -95,12 +96,14 @@ public class DataElementConverter
     public DataElementConverter( BatchHandler<DataElement> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> categoryComboMapping,
-        DataElementService dataElementService )
+        DataElementService dataElementService,
+        ImportAnalyser importAnalyser )
     {        
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.categoryComboMapping = categoryComboMapping;
         this.dataElementService = dataElementService;
+        this.importAnalyser = importAnalyser;
     }
 
     // -------------------------------------------------------------------------

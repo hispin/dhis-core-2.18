@@ -33,7 +33,6 @@ import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +40,7 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
@@ -52,6 +49,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -67,7 +65,7 @@ public class DefaultIndicatorDataMart
     implements IndicatorDataMart
 {
     private static final int DECIMALS = 1;
-    
+
     private static final String TRUE = "true";
     private static final String FALSE = "false";
     
@@ -109,6 +107,13 @@ public class DefaultIndicatorDataMart
     {
         this.averageIntAggregator = averageIntDataElementAggregator;
     }
+    
+    private DataElementAggregator averageIntSingleValueAggregator;
+
+    public void setAverageIntSingleValueAggregator( DataElementAggregator averageIntSingleValueAggregator )
+    {
+        this.averageIntSingleValueAggregator = averageIntSingleValueAggregator;
+    }
 
     private CrossTabService crossTabService;
 
@@ -116,13 +121,6 @@ public class DefaultIndicatorDataMart
     {
         this.crossTabService = crossTabService;
     }    
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
     
     private AggregationCache aggregationCache;
 
@@ -146,37 +144,19 @@ public class DefaultIndicatorDataMart
     // -------------------------------------------------------------------------
     
     public int exportIndicatorValues( final Collection<Integer> indicatorIds, final Collection<Integer> periodIds, 
-        final Collection<Integer> organisationUnitIds, final Collection<DataElementOperand> operands )
+        final Collection<Integer> organisationUnitIds, final Collection<DataElementOperand> operands, String key )
     {
-        final Collection<DataElementOperand> sumOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_SUM );
-        final Collection<DataElementOperand> averageOperands = filterOperands( operands, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        
-        final Map<DataElementOperand, Integer> sumOperandIndexMap = crossTabService.getOperandIndexMap( sumOperands );
-        final Map<DataElementOperand, Integer> averageOperandIndexMap = crossTabService.getOperandIndexMap( averageOperands );
+        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
         
         final Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );        
         final Collection<Period> periods = periodService.getPeriods( periodIds );
         final Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
 
-        final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
+        final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
 
-        batchHandler.init();
+        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnitIds );
         
         int count = 0;
-        int level = 0;
-        
-        Map<DataElementOperand, Double> sumIntValueMap = null;
-        Map<DataElementOperand, Double> averageIntValueMap = null;
-        
-        Map<String, Map<DataElementOperand, Double>> valueMapMap = null;
-        
-        Map<DataElementOperand, Double> numeratorValueMap = null;
-        Map<DataElementOperand, Double> denominatorValueMap = null;
-        
-        PeriodType periodType = null;
-        
-        double numeratorValue = 0.0;
-        double denominatorValue = 0.0;
         
         double annualizationFactor = 0.0;
         double factor = 0.0;
@@ -187,39 +167,30 @@ public class DefaultIndicatorDataMart
         
         final AggregatedIndicatorValue indicatorValue = new AggregatedIndicatorValue();
         
-        for ( final OrganisationUnit unit : organisationUnits )
+        for ( final Period period : periods )
         {
-            level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
+            final PeriodType periodType = period.getPeriodType();
             
-            for ( final Period period : periods )
-            {
-                sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level );                
-                averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level );
-                
-                valueMapMap = new HashMap<String, Map<DataElementOperand, Double>>( 2 );
-                
-                valueMapMap.put( DataElement.AGGREGATION_OPERATOR_SUM, sumIntValueMap );
-                valueMapMap.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, averageIntValueMap );
+            final Map<DataElementOperand, Integer> sumOperandIndexMap = sumIntAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
+            final Map<DataElementOperand, Integer> averageOperandIndexMap = averageIntAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
+            final Map<DataElementOperand, Integer> averageSingleValueOperandIndexMap = averageIntSingleValueAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
 
-                periodType = period.getPeriodType();
+            for ( final OrganisationUnit unit : organisationUnits )
+            {
+                final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
+                
+                final Map<DataElementOperand, Double> sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level, hierarchy, key );                
+                final Map<DataElementOperand, Double> averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level, hierarchy, key );
+                final Map<DataElementOperand, Double> averageIntSingleValueMap = averageIntSingleValueAggregator.getAggregatedValues( averageSingleValueOperandIndexMap, period, unit, level, hierarchy, key );
+                
+                final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( sumIntValueMap );
+                valueMap.putAll( averageIntValueMap );
+                valueMap.putAll( averageIntSingleValueMap );
                 
                 for ( final Indicator indicator : indicators )
                 {
-                    // ---------------------------------------------------------
-                    // Numerator
-                    // ---------------------------------------------------------
-
-                    numeratorValueMap = valueMapMap.get( indicator.getNumeratorAggregationOperator() );
-                    
-                    numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), numeratorValueMap ) );
-                    
-                    // ---------------------------------------------------------
-                    // Denominator
-                    // ---------------------------------------------------------
-
-                    denominatorValueMap = valueMapMap.get( indicator.getDenominatorAggregationOperator() );
-                    
-                    denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(), denominatorValueMap ) );
+                    final double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), valueMap ) );                    
+                    final double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(), valueMap ) );
 
                     // ---------------------------------------------------------
                     // AggregatedIndicatorValue
@@ -260,29 +231,12 @@ public class DefaultIndicatorDataMart
         
         return count;
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final String aggregationOperator )
-    {
-        final Collection<DataElementOperand> filteredOperands = new ArrayList<DataElementOperand>();
-        
-        for ( final DataElementOperand operand : operands )
-        {
-            final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-            
-            if ( aggregationOperator.equals( dataElement.getAggregationOperator() ) )
-            {
-                filteredOperands.add( operand );
-            }
-        }
-        
-        return filteredOperands;
-    }
     
-    private double getAnnualizationFactor( final Indicator indicator, final Period period )
+    public static double getAnnualizationFactor( final Indicator indicator, final Period period )
     {
         double factor = 1.0;
         
@@ -296,7 +250,7 @@ public class DefaultIndicatorDataMart
         return factor;
     }
     
-    private String getAnnualizationString( final Boolean annualized )
+    public static String getAnnualizationString( final Boolean annualized )
     {
         return ( annualized == null || !annualized ) ? FALSE : TRUE;
     }

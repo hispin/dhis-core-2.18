@@ -184,6 +184,12 @@
       <result name="success" type="velocity">/popup.vm</result>      
       <param name="page">/dhis-web-caseentry/records.vm</param>                  
     </action>
+	
+	<action name="getPatientDetails"
+            class="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction">
+            <result name="success" type="velocity-xml">/dhis-web-caseentry/responsePatientDetails.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
     
 	 <!-- Case Aggregation -->
 

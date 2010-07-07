@@ -181,7 +181,16 @@ public class UpdatePatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
+                if(identifierType.getFormat().equals("State Format"))
+                {
+                    value = request.getParameter( "orgunitcode" )+request.getParameter( "progcode" )+request.getParameter( "yearcode" )+request.getParameter( "benicode" );
+                    //System.out.println( "value = "+value );
+                }
+                else
+                {
+                    value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
+                }
+                //value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
 
                 if ( StringUtils.isNotBlank( value ) )
                 {

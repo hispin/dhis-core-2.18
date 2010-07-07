@@ -47,6 +47,8 @@ public class YearlyPeriodType
      */
     public static final String NAME = "Yearly";
 
+    public static final int FREQUENCY_ORDER = 365;
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
@@ -78,6 +80,12 @@ public class YearlyPeriodType
         cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
 
         return new Period( this, startDate, cal.getTime() );
+    }
+
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
     }
 
     // -------------------------------------------------------------------------

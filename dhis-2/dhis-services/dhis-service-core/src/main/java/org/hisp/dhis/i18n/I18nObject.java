@@ -28,16 +28,22 @@ package org.hisp.dhis.i18n;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Oyvind Brucker
+ * @modifier Dang Duy Hieu
+ * @since 2010-04-15
  */
 public class I18nObject
 {
     private String className;
 
     private List<String> propertyNames = new ArrayList<String>();
+
+    private Map<String, Map<String, String>> rulePropertyNames = new HashMap<String, Map<String, String>>();
 
     public String getClassName()
     {
@@ -49,6 +55,10 @@ public class I18nObject
         this.className = className;
     }
 
+    // -------------------------------------------------------------------------
+    // PropertyNames
+    // -------------------------------------------------------------------------
+
     public List<String> getPropertyNames()
     {
         return propertyNames;
@@ -59,13 +69,28 @@ public class I18nObject
         this.propertyNames = propertyNames;
     }
 
+    // -------------------------------------------------------------------------
+    // RulePropertyNames
+    // -------------------------------------------------------------------------
+
+    public Map<String, Map<String, String>> getRulePropertyNames()
+    {
+        return rulePropertyNames;
+    }
+
+    public void setRulePropertyNames( Map<String, Map<String, String>> rulePropertyNames )
+    {
+        this.rulePropertyNames = rulePropertyNames;
+    }
+
     public boolean match( Object object )
     {
         if ( object == null )
         {
             return false;
         }
-        
+
         return className.equalsIgnoreCase( object.getClass().getSimpleName() );
     }
+
 }

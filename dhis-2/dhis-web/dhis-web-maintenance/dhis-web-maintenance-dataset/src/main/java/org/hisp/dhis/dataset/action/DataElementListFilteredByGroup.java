@@ -44,7 +44,8 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Kristian
- * @version $Id: DataElementListFilteredByGroup.java 6256 2008-11-10 17:10:30Z larshelg $
+ * @version $Id: DataElementListFilteredByGroup.java 6256 2008-11-10 17:10:30Z
+ *          larshelg $
  */
 public class DataElementListFilteredByGroup
     implements Action

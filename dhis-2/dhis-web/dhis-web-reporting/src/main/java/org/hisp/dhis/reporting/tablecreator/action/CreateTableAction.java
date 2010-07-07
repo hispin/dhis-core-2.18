@@ -110,6 +110,13 @@ public class CreateTableAction
         this.organisationUnitId = organisationUnitId;
     }
     
+    private boolean doDataMart;
+
+    public void setDoDataMart( boolean doDataMart )
+    {
+        this.doDataMart = doDataMart;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -128,6 +135,7 @@ public class CreateTableAction
         process.setReportingPeriod( reportingPeriod );
         process.setParentOrganisationUnitId( parentOrganisationUnitId );
         process.setOrganisationUnitId( organisationUnitId );
+        process.setDoDataMart( doDataMart );
         process.setFormat( format );
 
         processCoordinator.requestProcessExecution( executor );

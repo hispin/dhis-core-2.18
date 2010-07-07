@@ -24,12 +24,12 @@
 	</table>
 </form>
 
-<table width="100%" class="listTable">
+<table width="100%" class="listTable" id="listTable">
 	<thead>
 		<tr>
 			<th>$i18n.getString('name')</th>
 			<th>$i18n.getString('template_status')</th>
-			<th width="110px">$i18n.getString('operations')</th>
+			<th width="110px" class="{sorter: false}">$i18n.getString('operations')</th>
 		</tr>
 	</thead>
 	<tbody id="list">	
@@ -95,6 +95,10 @@
 			});
 		#end
 	#end
+	
+	jQuery(document).ready(function(){		
+		tableSorter( 'listTable' );	
+	});
 
 </script>
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>

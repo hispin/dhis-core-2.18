@@ -129,9 +129,9 @@ public class DataMartExportServiceTest
         periods.add( periodA );
         periods.add( periodB );
         
-        exportA = new DataMartExport( "ExportA", dataElements, indicators, organisationUnits, periods );
-        exportB = new DataMartExport( "ExportB", dataElements, indicators, organisationUnits, periods );
-        exportC = new DataMartExport( "ExportC", dataElements, indicators, organisationUnits, periods );        
+        exportA = new DataMartExport( "ExportA", dataElements, indicators, organisationUnits, periods, null );
+        exportB = new DataMartExport( "ExportB", dataElements, indicators, organisationUnits, periods, null );
+        exportC = new DataMartExport( "ExportC", dataElements, indicators, organisationUnits, periods, null );        
     }
     
     // -------------------------------------------------------------------------

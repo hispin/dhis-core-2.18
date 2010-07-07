@@ -40,7 +40,7 @@
           selectionTreeSelection.setMultipleSelectionAllowed( true );
           selectionTreeSelection.setOnSelectFunction( treeClicked );
           selectionTreeSelection.setListenerFunction( selectCompleted );
-		  selectionTree.clearSelectedOrganisationUnits();
+		  //selectionTree.clearSelectedOrganisationUnits();
           selectionTree.buildSelectionTree();
 
         </script>

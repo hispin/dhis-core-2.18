@@ -103,6 +103,10 @@ public class DefaultProgramStageInstanceService
             {
                 colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_GREEN );
             }
+            else if( programStageInstance.getExecutionDate() != null )
+            {
+            	colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_LIGHTRED );
+            }
             else
             {
                 // -------------------------------------------------------------

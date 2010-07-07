@@ -33,7 +33,6 @@ import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.maintenance.MaintenanceService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -51,13 +50,6 @@ public class PerformMaintenanceAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
     
     private MaintenanceService maintenanceService;
 
@@ -91,13 +83,6 @@ public class PerformMaintenanceAction
     // Input
     // -------------------------------------------------------------------------
     
-    private boolean hierarchyHistory;
-
-    public void setHierarchyHistory( boolean hierarchyHistory )
-    {
-        this.hierarchyHistory = hierarchyHistory;
-    }
-
     private boolean aggregatedDataValues;
 
     public void setAggregatedDataValues( boolean aggregatedDataValues )
@@ -140,11 +125,6 @@ public class PerformMaintenanceAction
     public String execute() 
         throws Exception
     {
-        if ( hierarchyHistory )
-        {
-            organisationUnitService.clearOrganisationUnitHierarchyHistory();
-        }
-        
         if ( aggregatedDataValues )
         {
             dataMartStore.deleteAggregatedDataValues();

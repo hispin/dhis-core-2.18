@@ -173,8 +173,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
 		class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
 		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="maintenanceService" ref="org.hisp.dhis.maintenance.MaintenanceService" />
 		<property name="completenessStore"
 			ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />

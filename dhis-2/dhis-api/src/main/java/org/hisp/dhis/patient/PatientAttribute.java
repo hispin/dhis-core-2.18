@@ -57,6 +57,8 @@ public class PatientAttribute
     
     private boolean mandatory;
     
+    private boolean inheritable;
+    
     private PatientAttributeGroup patientAttributeGroup;
     
     private Set<PatientAttributeOption> attributeOptions;
@@ -188,5 +190,13 @@ public class PatientAttribute
     {
         this.patientAttributeGroup = patientAttributeGroup;
     }
+
+	public boolean isInheritable() {
+		return inheritable;
+	}
+
+	public void setInheritable(boolean inheritable) {
+		this.inheritable = inheritable;
+	}
 
 }

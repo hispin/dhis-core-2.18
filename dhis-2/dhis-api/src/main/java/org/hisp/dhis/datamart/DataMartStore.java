@@ -246,39 +246,4 @@ public interface DataMartStore
      * @return map of data values.
      */
     Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId );
-
-    // ----------------------------------------------------------------------
-    // CrossTabDataValue
-    // ----------------------------------------------------------------------
-    
-    /**
-     * Gets all CrossTabDataValues for the given collection of period ids and source ids.
-     * 
-     * @param dataElementIds the dataelement identifiers.
-     * @param periodIds the period identifiers.
-     * @param sourceIds the source identifiers.
-     * @return collection of CrossTabDataValues.
-     */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, Collection<Integer> sourceIds );
-
-    /**
-     * Gets all CrossTabDataValues for the given collection of period ids and the source id.
-     * 
-     * @param dataElementIds the dataelement identifiers.
-     * @param periodIds the period identifiers.
-     * @param sourceId the source identifier.
-     * @return collection of CrossTabDataValues.
-     */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId );
-
-    // ----------------------------------------------------------------------
-    // Period
-    // ----------------------------------------------------------------------
-    
-    /**
-     * Delets periods of type relative.
-     * 
-     * @return the number of affected rows.
-     */
-    int deleteRelativePeriods();
 }

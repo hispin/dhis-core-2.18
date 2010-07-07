@@ -14,8 +14,9 @@
 										validateUpdateOrganisationUnit();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 				jQuery("#name").focus();
+				datePickerInRange( 'openingDate', 'closedDate' );
 			}
 	);
 
@@ -48,15 +49,8 @@
 	<tr>
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="openingDate" name="openingDate" value="$format.formatDate( $organisationUnit.openingDate )" style="width:20em" class="{validate:{required:true}}"></td>
-		<td><img src="../images/calendar_icon.gif" width="16" height="16" id="getOpeningDate" cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''"></td>
-	</tr>
-	<script type="text/javascript">
-        Calendar.setup({
-            inputField     :    "openingDate",      // id of the input field
-            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-            button         :    "getOpeningDate"   // trigger for the calendar (button ID)
-        });
-  	</script>
+		<td></td>
+	</tr>	
 
 	<tr #if( $numberOfChildren != 0 ) style="display:none" #end>
 		<td><label for="closedDate">$i18n.getString( "closed_date" ) ($i18n.getString( "format.date.label" ))</label></td>

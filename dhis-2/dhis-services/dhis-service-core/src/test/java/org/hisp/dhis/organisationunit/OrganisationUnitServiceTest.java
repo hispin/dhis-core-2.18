@@ -32,10 +32,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,8 +58,6 @@ public class OrganisationUnitServiceTest
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
         organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
-        
-        organisationUnitService.removeOrganisationUnitHierarchies( OrganisationUnitHierarchyVerifier.START_OF_TIME );
     }
 
     // -------------------------------------------------------------------------
@@ -510,25 +506,10 @@ public class OrganisationUnitServiceTest
         int id5 = organisationUnitService.addOrganisationUnit( unit5 );
         int id6 = organisationUnitService.addOrganisationUnit( unit6 );
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set( 2005, Calendar.JULY, 1 );
-        Date date1 = calendar.getTime();
-        calendar.set( 2005, Calendar.AUGUST, 1 );
-        Date date2 = calendar.getTime();
-        calendar.set( 2005, Calendar.SEPTEMBER, 1 );
-        Date date3 = calendar.getTime();
-
-        // creates a hierarchy-version
-        organisationUnitService.addOrganisationUnitHierarchy( date2 );
-
-        // asserts hierarchy-version is created and returns id
-        Collection<OrganisationUnitHierarchy> hierarchies = organisationUnitService.getOrganisationUnitHierarchies(
-            date1, date3 );
-
-        OrganisationUnitHierarchy hierarchy = hierarchies.iterator().next();
+        OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
 
         // retrieves children from hierarchyVersion ver_id and parentId id2
-        Collection<Integer> children1 = organisationUnitService.getChildren( hierarchy.getId(), unit2.getId() );
+        Collection<Integer> children1 = hierarchy.getChildren( unit2.getId() );
         
         // assert 4, 5, 6 are children of 2
         assertEquals( 4, children1.size() );
@@ -538,217 +519,18 @@ public class OrganisationUnitServiceTest
         assertTrue( children1.contains( id6 ) );
                 
         // retrieves children from hierarchyVersion ver_id and parentId id1
-        Collection<Integer> children2 = organisationUnitService.getChildren( hierarchy.getId(), unit1.getId() );
+        Collection<Integer> children2 = hierarchy.getChildren( unit1.getId() );
 
         // assert the number of children
         assertTrue( children2.size() == 6 );
 
         // retrieves children from hierarchyVersion ver_id and parentId id5
-        Collection<Integer> children3 = organisationUnitService.getChildren( hierarchy.getId(), unit5.getId() );
+        Collection<Integer> children3 = hierarchy.getChildren( unit5.getId() );
         
         // assert 6 is children of 5
         assertEquals( 2, children3.size() );
         assertTrue( children3.contains( id5 ) );
         assertTrue( children3.contains( id6 ) );        
-    }
-
-    @Test
-    public void testGetLatestOrganisationUnitHierarchy()
-    {
-        Calendar cal = Calendar.getInstance();
-        
-        cal.set( 1990, Calendar.JANUARY, 1 );
-        
-        organisationUnitService.addOrganisationUnitHierarchy( cal.getTime() );
-        
-        cal.set( 1995, Calendar.JANUARY, 1 );
-        
-        int idB = organisationUnitService.addOrganisationUnitHierarchy( cal.getTime() );
-        
-        cal.set( 1985, Calendar.JANUARY, 1 );
-        
-        organisationUnitService.addOrganisationUnitHierarchy( cal.getTime() );
-        
-        OrganisationUnitHierarchy hierarchy = organisationUnitService.getLatestOrganisationUnitHierarchy();
-        
-        assertEquals( hierarchy.getId(), idB );
-    }
-
-    @Test
-    public void testAddOrganisationUnitHierarchiesOnSameDate()
-        throws Exception
-    {
-        OrganisationUnit unit1 = new OrganisationUnit( "orgUnitName1", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
-        OrganisationUnit unit2 = new OrganisationUnit( "orgUnitName2", unit1, "shortName2", "organisationUnitCode2",
-            new Date(), new Date(), true, "comment" );
-        organisationUnitService.addOrganisationUnit( unit1 );
-        organisationUnitService.addOrganisationUnit( unit2 );
-
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.set( 2005, Calendar.JULY, 1 );
-        Date startDate = calendar.getTime();
-        calendar.set( 2005, Calendar.SEPTEMBER, 1 );
-        Date endDate = calendar.getTime();
-        calendar.set( 2005, Calendar.AUGUST, 1 );
-        Date date = calendar.getTime();
-
-        int id1 = organisationUnitService.addOrganisationUnitHierarchy( date );
-
-        Collection<OrganisationUnitHierarchy> c1 = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate );
-        Iterator<OrganisationUnitHierarchy> i1 = c1.iterator();
-        OrganisationUnitHierarchy h1 = i1.next();
-
-        assertTrue( c1.size() == 1 );
-        assertTrue( h1.getId() == id1 );
-
-        OrganisationUnit unit3 = new OrganisationUnit( "orgUnitName3", "shortName3", "organisationUnitCode3",
-            new Date(), new Date(), true, "comment" );
-        organisationUnitService.addOrganisationUnit( unit3 );
-
-        organisationUnitService.addOrganisationUnitHierarchy( date );
-
-        OrganisationUnit unit4 = new OrganisationUnit( "orgUnitName4", "shortName4", "organisationUnitCode4",
-            new Date(), new Date(), true, "comment" );
-        organisationUnitService.addOrganisationUnit( unit4 );
-
-        int id3 = organisationUnitService.addOrganisationUnitHierarchy( date );
-
-        Collection<OrganisationUnitHierarchy> c2 = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate );
-        Iterator<OrganisationUnitHierarchy> i2 = c2.iterator();
-        OrganisationUnitHierarchy h2 = i2.next();
-
-        assertTrue( c2.size() == 1 );
-        assertTrue( h2.getId() == id3 );
-
-    }
-
-    @Test
-    public void testGetOrganisationUnitHierarchies()
-        throws Exception
-    {
-        // creates a tree
-        OrganisationUnit unit1 = new OrganisationUnit( "orgUnitName1", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
-        OrganisationUnit unit2 = new OrganisationUnit( "orgUnitName2", unit1, "shortName2", "organisationUnitCode2",
-            new Date(), new Date(), true, "comment" );
-        organisationUnitService.addOrganisationUnit( unit1 );
-        organisationUnitService.addOrganisationUnit( unit2 );
-
-        // creates a start and end-date for a period
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.set( 2005, Calendar.JULY, 1 );
-        Date startDate = calendar.getTime();
-        calendar.set( 2005, Calendar.SEPTEMBER, 1 );
-        Date endDate = calendar.getTime();
-
-        // creates a HierarchyVersion
-        calendar.set( 2005, Calendar.MAY, 15 );
-        organisationUnitService.addOrganisationUnitHierarchy( calendar.getTime() );
-
-        // creates a HierarchyVersion
-        calendar.set( 2005, Calendar.JUNE, 15 );
-        Date jun15 = calendar.getTime();
-        int ver_id2 = organisationUnitService.addOrganisationUnitHierarchy( jun15 );
-
-        // asserts getOrganisationUnitHierarchies
-        Iterator<OrganisationUnitHierarchy> iterator1 = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate ).iterator();
-        OrganisationUnitHierarchy hierVerA1 = iterator1.next();
-        assertTrue( hierVerA1.getId() == ver_id2 );
-        assertTrue( iterator1.hasNext() == false );
-
-        // creates a HierarchyVersiony
-        calendar.set( 2005, Calendar.JULY, 15 );
-        Date jul15 = calendar.getTime();
-        int ver_id3 = organisationUnitService.addOrganisationUnitHierarchy( jul15 );
-
-        // asserts getOrganisationUnitHierarchies
-        Iterator<OrganisationUnitHierarchy> iterator2 = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate ).iterator();
-        OrganisationUnitHierarchy hierVerB1 = iterator2.next();
-        OrganisationUnitHierarchy hierVerB2 = iterator2.next();
-        assertTrue( hierVerB1.getId() == ver_id2 );
-        assertTrue( hierVerB2.getId() == ver_id3 );
-        assertTrue( iterator2.hasNext() == false );
-
-        // creates a HierarchyVersion
-        calendar.set( 2005, Calendar.AUGUST, 15 );
-        int ver_id4 = organisationUnitService.addOrganisationUnitHierarchy( calendar.getTime() );
-
-        // creates a HierarchyVersion
-        calendar.set( 2005, Calendar.SEPTEMBER, 15 );
-        organisationUnitService.addOrganisationUnitHierarchy( calendar.getTime() );
-
-        // asserts right number of HierarchyVersions are retrieved
-        assertTrue( organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate ).size() == 3 );
-
-        // asserts getOrganisationUnitHierarchies
-        Iterator<OrganisationUnitHierarchy> iterator3 = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate ).iterator();
-        OrganisationUnitHierarchy hierVerC1 = iterator3.next();
-        OrganisationUnitHierarchy hierVerC2 = iterator3.next();
-        OrganisationUnitHierarchy hierVerC3 = iterator3.next();
-        assertTrue( hierVerC1.getId() == ver_id2 );
-        assertTrue( hierVerC2.getId() == ver_id3 );
-        assertTrue( hierVerC3.getId() == ver_id4 );
-        assertTrue( iterator3.hasNext() == false );
-        
-        // asserts getOrganisationUnitHierarchy 
-        OrganisationUnitHierarchy hierarchy2 = organisationUnitService.getOrganisationUnitHierarchy( ver_id2 );
-        assertTrue( hierarchy2.getDate().equals( jun15 ) );
-        
-        OrganisationUnitHierarchy hierarchy3 = organisationUnitService.getOrganisationUnitHierarchy( ver_id3 );
-        assertTrue( hierarchy3.getDate().equals( jul15 ) );
-    }
-
-    @Test
-    public void testClearOrganisationUnitHierarchyHistory()
-        throws Exception
-    {
-        OrganisationUnit unit1 = new OrganisationUnit( "orgUnitName1", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
-        OrganisationUnit unit2 = new OrganisationUnit( "orgUnitName2", unit1, "shortName2", "organisationUnitCode2",
-            new Date(), new Date(), true, "comment" );
-        
-        organisationUnitService.addOrganisationUnit( unit1 );
-        organisationUnitService.addOrganisationUnit( unit2 );
-
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.clear();
-        calendar.set( 2005, Calendar.JULY, 1 );
-        organisationUnitService.addOrganisationUnitHierarchy( calendar.getTime() );
-
-        calendar.clear();
-        calendar.set( 2005, Calendar.SEPTEMBER, 1 );
-        organisationUnitService.addOrganisationUnitHierarchy( calendar.getTime() );
-
-        calendar.clear();
-        calendar.set( 2005, Calendar.AUGUST, 1 );
-        organisationUnitService.addOrganisationUnitHierarchy( calendar.getTime() );
-
-        calendar.set( 2005, Calendar.JUNE, 1 );
-        Date startDate = calendar.getTime();
-
-        calendar.set( 2005, Calendar.OCTOBER, 1 );
-        Date endDate = calendar.getTime();
-
-        Collection<OrganisationUnitHierarchy> hierarchies = organisationUnitService.getOrganisationUnitHierarchies(
-            startDate, endDate );
-
-        assertTrue( hierarchies.size() == 3 );
-
-        organisationUnitService.clearOrganisationUnitHierarchyHistory();
-
-        Collection<OrganisationUnitHierarchy> clearedHierarchies = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate );
-
-        Iterator<OrganisationUnitHierarchy> iterator = clearedHierarchies.iterator();
-        
-        calendar.set( 1970, Calendar.JANUARY, 1 );
-        Date epoch = calendar.getTime();
-        
-        OrganisationUnitHierarchy clearedHierarchy = iterator.next();
-        
-        assertTrue( clearedHierarchies.size() == 1 );
-        assertTrue( clearedHierarchy.getDate().equals( epoch ) );
     }
 
     // -------------------------------------------------------------------------

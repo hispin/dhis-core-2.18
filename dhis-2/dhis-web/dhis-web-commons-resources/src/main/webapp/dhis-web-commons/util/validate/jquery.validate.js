@@ -1077,24 +1077,12 @@ $.extend($.validator, {
 	},
 	
 	//-------------------------------------------------
-	// Load messages and methods base on locale code
-	// Format of locale code : languageCode_countryCode
-	// Ex :  en_GB
+	// Set Array contain message for validation 	
 	//--------------------------------------------------
-	loadLocaled : function(code)
+	
+	setMessages : function ( messages )
 	{
-		try {
-			this.messages = eval(code);
-		}catch(e)
-		{
-			this.messages = eval("en_GB");
-		}
-		try {
-			eval("methods_"+code)();
-		}catch(e)
-		{
-			eval("methods_en_GB")();
-		}
+		this.messages = validationMessage;
 	}
 	
 });

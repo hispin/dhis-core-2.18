@@ -96,10 +96,8 @@ public class ReportTableImporter
         match.getRelatives().setReportingMonth( object.getRelatives().isReportingMonth() );
         match.getRelatives().setLast3Months( object.getRelatives().isLast3Months() );
         match.getRelatives().setLast6Months( object.getRelatives().isLast6Months() );
-        match.getRelatives().setLast9Months( object.getRelatives().isLast9Months() );
         match.getRelatives().setLast12Months( object.getRelatives().isLast12Months() );
         match.getRelatives().setSoFarThisYear( object.getRelatives().isSoFarThisYear() );
-        match.getRelatives().setSoFarThisFinancialYear( object.getRelatives().isSoFarThisFinancialYear() );
         match.getRelatives().setLast3To6Months( object.getRelatives().isLast3To6Months() );
         match.getRelatives().setLast6To9Months( object.getRelatives().isLast6To9Months() );
         match.getRelatives().setLast9To12Months( object.getRelatives().isLast9To12Months() );
@@ -165,19 +163,11 @@ public class ReportTableImporter
         {
             return false;
         }
-        if ( object.getRelatives().isLast9Months() != existing.getRelatives().isLast9Months() )
-        {
-            return false;
-        }
         if ( object.getRelatives().isLast12Months() != existing.getRelatives().isLast12Months() )
         {
             return false;
         }
         if ( object.getRelatives().isSoFarThisYear() != existing.getRelatives().isSoFarThisYear() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isSoFarThisFinancialYear() != existing.getRelatives().isSoFarThisFinancialYear() )
         {
             return false;
         }

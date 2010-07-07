@@ -9,8 +9,8 @@ $( document ).ready( function()
   
   $( "li.menuDropDownItem" ).mouseout( function() // Out dropdown item
   {
-    $( this ).css( "background-color", "#265687" );
-    $( this ).css( "border", "1px solid #265687" );
+    $( this ).css( "background-color", "#2a5a8a" );
+    $( this ).css( "border", "1px solid #2a5a8a" );
   });
   
   $( "li.introItem" ).mouseover( function() // Over intro item
@@ -25,3 +25,9 @@ $( document ).ready( function()
     $( this ).css( "border", "1px solid #d5efd5" );
   });
 });
+
+// Called from main/Leftbar
+function setMainPageNormal()
+{
+	document.getElementById( 'mainPage' ).style.marginLeft = '270px';
+}

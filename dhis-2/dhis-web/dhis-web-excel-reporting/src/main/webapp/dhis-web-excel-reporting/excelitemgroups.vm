@@ -11,13 +11,13 @@
 	</tr>
 </table>
 
-<table width="100%" class="listTable">
+<table width="100%" class="listTable" id="listTable">
 	<thead>
 		<tr>
 			<th>$i18n.getString('name')</th>
 			<th>$i18n.getString('type')</th>
 			<th>$i18n.getString('period_type')</th>		
-			<th width="140px">$i18n.getString('operations')</th>		
+			<th width="140px" class="{sorter: false}">$i18n.getString('operations')</th>		
 		</tr>
 	</thead>
 	<tbody id="list">	
@@ -83,6 +83,9 @@
 </div>
 <script language="javascript">
 	var mode = 'add';	
+	jQuery(document).ready(function(){		
+		tableSorter( 'listTable' );	
+	});
 </script>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>

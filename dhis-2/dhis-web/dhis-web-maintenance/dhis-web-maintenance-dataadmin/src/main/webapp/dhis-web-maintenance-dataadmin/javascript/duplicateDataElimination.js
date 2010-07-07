@@ -14,7 +14,7 @@ function initLists()
         	for ( var i = 0; i < operands.length; i++ )
         	{
         	   $( "#operandList" ).append( "<option value='" + 
-        	       operands[i].id + "'>" + operands[i].operandName + "</option>" );
+        	       operands[i].operandId + "'>" + operands[i].operandName + "</option>" );
         	}
         }
     );

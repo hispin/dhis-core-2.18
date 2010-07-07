@@ -146,7 +146,7 @@ public class ValidationRuleStoreTest
     }
 
     @Test
-    public void testSaveOrUpdateValidationRule()
+    public void testUpdateValidationRule()
     {
         ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA,
             expressionB, periodType );

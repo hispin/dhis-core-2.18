@@ -27,6 +27,8 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.period.Period;
@@ -44,13 +46,23 @@ public class MapView
 
     public static final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
 
+    public static final String MAP_VALUE_TYPE_INDICATOR = "indicator";
+
+    public static final String MAP_VALUE_TYPE_DATAELEMENT = "dataelement";
+
     private int id;
 
     private String name;
 
+    private String mapValueType;
+
     private IndicatorGroup indicatorGroup;
 
     private Indicator indicator;
+
+    private DataElementGroup dataElementGroup;
+
+    private DataElement dataElement;
 
     private PeriodType periodType;
 
@@ -82,13 +94,17 @@ public class MapView
     {
     }
 
-    public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType,
-        Period period, String mapSourceType, String mapSource, String mapLegendType, int method, int classes,
-        String colorLow, String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
+    public MapView( String name, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
+        DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType, Period period,
+        String mapSourceType, String mapSource, String mapLegendType, int method, int classes, String colorLow,
+        String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
     {
         this.name = name;
+        this.mapValueType = mapValueType;
         this.indicatorGroup = indicatorGroup;
         this.indicator = indicator;
+        this.dataElementGroup = dataElementGroup;
+        this.dataElement = dataElement;
         this.periodType = periodType;
         this.period = period;
         this.mapSourceType = mapSourceType;
@@ -162,6 +178,16 @@ public class MapView
         this.name = name;
     }
 
+    public String getMapValueType()
+    {
+        return mapValueType;
+    }
+
+    public void setMapValueType( String mapValueType )
+    {
+        this.mapValueType = mapValueType;
+    }
+
     public IndicatorGroup getIndicatorGroup()
     {
         return indicatorGroup;
@@ -180,6 +206,26 @@ public class MapView
     public void setIndicator( Indicator indicator )
     {
         this.indicator = indicator;
+    }
+
+    public DataElementGroup getDataElementGroup()
+    {
+        return dataElementGroup;
+    }
+
+    public void setDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        this.dataElementGroup = dataElementGroup;
+    }
+
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
+
+    public void setDataElement( DataElement dataElement )
+    {
+        this.dataElement = dataElement;
     }
 
     public PeriodType getPeriodType()

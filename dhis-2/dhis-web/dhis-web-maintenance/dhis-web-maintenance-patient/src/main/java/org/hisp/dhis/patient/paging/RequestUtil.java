@@ -60,7 +60,10 @@ public class RequestUtil
 
     public static String getCurrentLink( HttpServletRequest request )
     {
-        return request.getServletPath();
+        //return request.getServletPath();
+    	
+    	return request.getRequestURI();
+        
     }
 
     public static String getPathInfo( HttpServletRequest request )

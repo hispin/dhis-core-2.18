@@ -4,7 +4,16 @@
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
-      <table class="listTable">
+		<table width="100%">
+			<tr>
+				<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
+				<td colspan="9" style="text-align:right">
+					<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"></a>
+					<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"></a>
+				</td>
+			</tr>
+		</table>
+      <table class="listTable" id="listTable">
           <col>          
           <col width="20">
           <col width="20">
@@ -14,19 +23,11 @@
 		  <col width="20">
           <col width="20">
           <col width="20">
-          
+          	
           <thead>
-		  <tr>
-			<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
-			<td colspan="8" style="text-align:right">
-				<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"></a>
-				<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"></a>
-			</td>
-		  </tr>
-
           <tr>
             <th>$i18n.getString( "name" )</th>
-            <th style="text-align:center" colspan="9">$i18n.getString( "operations" )</th>
+            <th style="text-align:center" colspan="9" class="{sorter: false}">$i18n.getString( "operations" )</th>
           </tr>
           </thead>
           <tbody id="list">
@@ -95,4 +96,9 @@ function showsection(dataSetId)
 }
 
 var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
+
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+	});
+
 </script>

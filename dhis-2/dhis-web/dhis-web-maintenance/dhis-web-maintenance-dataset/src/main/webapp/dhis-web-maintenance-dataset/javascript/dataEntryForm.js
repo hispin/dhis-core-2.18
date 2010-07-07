@@ -8,7 +8,7 @@ function removeDataEntryForm( dataEntryFormId, dataEntryFormName )
   var request = new Request();
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( removeDataEntryFormCompleted );
-
+ 
   var requestString = 'delDataEntryForm.action?dataEntryFormId=' + dataEntryFormId;
   var result = window.confirm( i18n_confirm_delete + '\n\n' + dataEntryFormName );
 
@@ -45,8 +45,13 @@ function validateDataEntryForm()
 {
   var request = new Request();
   request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( dataEntryFormValidationCompleted );
-
+  if(autoSave == false){
+	request.setCallbackSuccess( dataEntryFormValidationCompleted );
+  }
+  else{
+	request.setCallbackSuccess( autoSaveDataEntryFormValidationCompleted );
+  }
+  
   var requestString = 'validateDataEntryForm.action';
   
   var params = 'name=' + document.getElementById( 'nameField' ).value;
@@ -144,3 +149,54 @@ function onloadFunction()
   htmlCode = FCK.GetXHTML( FCKConfig.FormatSource );
   findDataElementCount();
 } 
+// -----------------------------------------------------------------------------
+// Auto-save DataEntryForm
+// -----------------------------------------------------------------------------
+
+function autoSaveDataEntryFormValidationCompleted( messageElement )
+{
+  var type = messageElement.getAttribute( 'type' );
+  var message = messageElement.firstChild.nodeValue;
+
+  if ( type == 'success' )
+  {  
+     autoSaveDataEntryForm();
+  }
+  else if ( type == 'input' )
+  {
+	 setMessage( message );
+  }
+  else if ( type == 'mismatch' )
+  {
+    var result = window.confirm( message );
+
+    if ( result )
+    {
+      autoSaveDataEntryForm();
+    }
+  }
+}
+
+var url;
+function autoSaveDataEntryForm(){
+	
+	var field = FCKeditorAPI.GetInstance('designTextarea');
+    
+	var designTextarea = htmlEncode(field.GetHTML(true));
+
+	var request = new Request();
+	request.setResponseTypeXML( 'dataSet' );
+	request.setCallbackSuccess( function (xmlObject){setMessage(i18n_save_success);} );
+	  
+	var params = 'nameField=' + getFieldValue('nameField');
+		params += '&designTextarea=' + designTextarea;
+		params += '&dataSetIdField=' + getFieldValue('dataSetIdField');
+		
+	if(byId('dataEntryFormId') != null){
+		params += '&dataEntryFormId=' + getFieldValue('dataEntryFormId');
+	}
+	
+	request.sendAsPost(params);
+	request.send('autoSaveDataEntryForm.action');
+	
+}

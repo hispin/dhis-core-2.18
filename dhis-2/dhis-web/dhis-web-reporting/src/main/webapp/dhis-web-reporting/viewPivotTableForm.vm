@@ -83,13 +83,11 @@ div#pivotMenu
 <p>
 <label>$i18n.getString( "start_date" ) ($i18n.getString( "format.date.label" ))</label><br>
 <input type="text" id="startDate" style="width:180px">
-<img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
 </p>
 
 <p>
 <label>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</label><br>
 <input type="text" id="endDate" style="width:180px">
-<img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
 </p>
 
 <p>
@@ -184,15 +182,7 @@ div#pivotMenu
 <!-- Calendar setup -->
 
 <script type="text/javascript">
-    Calendar.setup({
-        inputField     :    "startDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getStartDate"   // trigger for the calendar (button ID)
-    });
-
-    Calendar.setup({
-        inputField     :    "endDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getEndDate"   // trigger for the calendar (button ID)
-    });
+   jQuery(document).ready(function(){
+		datePickerInRange( 'startDate' , 'endDate' );	
+	});
 </script>

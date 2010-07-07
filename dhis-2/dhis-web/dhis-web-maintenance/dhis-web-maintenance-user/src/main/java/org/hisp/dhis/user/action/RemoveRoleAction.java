@@ -27,11 +27,11 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.user.UserService;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
@@ -110,7 +110,7 @@ public class RemoveRoleAction
                     userStore.deleteUserAuthorityGroup( authorityGroup );
                 }
             }
-            catch ( DataIntegrityViolationException e )
+            catch ( DeleteNotAllowedException e )
             {
                 message = i18n.getString( "user_use_group" );
 

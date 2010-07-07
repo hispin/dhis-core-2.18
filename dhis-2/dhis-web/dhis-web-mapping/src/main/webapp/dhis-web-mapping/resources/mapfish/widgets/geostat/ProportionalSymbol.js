@@ -191,10 +191,10 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             }
             return;
         }
-        this.indicator = 'MARK1';
+        this.indicator = 'Easting';
         var minSize = parseInt(this.form.findField('minSize').getValue());
         var maxSize = parseInt(this.form.findField('maxSize').getValue());
-alert(minSize + '\n' + maxSize);
+
         this.coreComp.updateOptions({
             'indicator': this.indicator,
             'minSize': minSize,

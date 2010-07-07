@@ -1,70 +1,50 @@
 
 <h3>$i18n.getString( "${key}_analysis" ) #openHelp( "${key}Analysis" )</h3>
 
-<form id="analysisForm" method="post" action="getAnalysis.action">
+<div id="analysisInput">
 
 <input type="hidden" id="key" name="key" value="$!key">
 
 <table>
-	## Date
 	<tr>
 		<th>$i18n.getString( "from_date" )</th>
 		<th>$i18n.getString( "to_date" )</th>
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="fromDate" name="fromDate" />
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldFrom" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+			<input type="text" id="fromDate" name="fromDate" />			
 		</td>
 		<td>
-			<input type="text" id="toDate" name="toDate" />	
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldTo" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">			
+			<input type="text" id="toDate" name="toDate" />				
 		</td>
 	</tr>  
     <tr>
         <td colspan="2" style="height:10px"></td>
     </tr>
-    
-	## DATA SET CHOOSER
-	<tr>
-		<th colspan="2" style="min-width:325px;">$i18n.getString( "select_data_set" )</th>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<select name="dataset" id="dataset" style="min-width:325px" onChange="fetchDataElements()">
-				<option value="-1">[ $i18n.getString( "select_data_set" ) ]</option>
-				#foreach ( $dataSet in $dataSets )
-				<option value="$dataSet.id">$dataSet.name</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-        <td colspan="2" style="height:10px">
-        </td>
-    </tr>
  </table>
  
- <table>    
-	## DATA ELEMENTS CHOOSER
+ <table>
 	<tr>
-		<th style="min-width:325px;">$i18n.getString( "available_data_elements" )</th>
+		<th style="min-width:325px;">$i18n.getString( "available_data_sets" )</th>
 		<td></td>
-		<th style="min-width:325px;">$i18n.getString( "selected_data_elements" )</th>
+		<th style="min-width:325px;">$i18n.getString( "selected_data_sets" )</th>
 	</tr>
 	<tr>
 		<td>
-			<select id="unselectedDataElements" name="unselectedDataElements" multiple="multiple" style="min-width:325px;height:20em" ondblclick="moveSelectedById( 'unselectedDataElements', 'dataElementsById' )" disabled="true">
+			<select id="availableDataSets" name="availableDataSets" multiple="multiple" style="min-width:325px" size="8" ondblclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
+			#foreach ( $dataSet in $dataSets )
+				<option value="$dataSet.id">$encoder.htmlEncode( "$dataSet.name" )</option>
+			#end
 			</select>
 		</td>
 		<td align="center">
-			<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'unselectedDataElements', 'dataElementsById' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString( 'move_all' )" style="width:40px" onclick="moveSelectedById( 'dataElementsById', 'unselectedDataElements' )"><br>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveAllById( 'unselectedDataElements', 'dataElementsById' )"><br>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:40px" onclick="moveAllById( 'dataElementsById', 'unselectedDataElements' )">
+			<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'availableDataSets', 'dataSets' )"><br>
+			<input type="button" value="&lt;" title="$i18n.getString( 'move_all' )" style="width:40px" onclick="moveSelectedById( 'dataSets', 'availableDataSets' )"><br>		
+			<input type="button" value="&gt;&gt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveAllById( 'availableDataSets', 'dataSets' )"><br>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:40px" onclick="moveAllById( 'dataSets', 'availableDataSets' )">
 		</td>
 		<td>
-			<select id="dataElementsById" name="dataElementsById" multiple="multiple" style="min-width:325px;height:20em" ondblclick="moveSelectedById( 'dataElementsById', 'unselectedDataElements' )" disabled="true">
+			<select id="dataSets" name="dataSets" multiple="multiple" style="min-width:325px" size="8" ondblclick="moveSelectedById( 'dataSets', 'availableDataSets' )">
 			</select>
 		</td>
 	</tr>
@@ -75,18 +55,16 @@
 </table>
 
 <table>
-	## ORG. UNIT CHOOSER
 	<tr>
 		<th colspan="2" style="min-width:325px">$i18n.getString( "select_parent_organisation_unit" )</th>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<div id="selectionTree" style="width:40em;height:20em;overflow:auto;/*border:1px solid #cccccc*/"></div>
+			<div id="selectionTree" style="width:400px;height:350px;overflow:auto;"></div>
 			<script type="text/javascript">
 
           		selectionTreeSelection.setMultipleSelectionAllowed( false );
-          		// selectionTreeSelection.setOnSelectFunction( treeClicked );
-          		// selectionTreeSelection.setListenerFunction( selectCompleted );
+          		selectionTreeSelection.setListenerFunction( organisationUnitSelected );
 				selectionTree.clearSelectedOrganisationUnits();
           		selectionTree.buildSelectionTree();
 
@@ -97,8 +75,7 @@
 
 #if( $key == "stddevoutlier" )
 <div id="stddevform">
-<table>
-	## STANDARD DEVIATION INPUT FIELD	
+<table>	
     <tr>
         <td colspan="2" style="height:20px"></td>
     </tr>
@@ -130,7 +107,7 @@
     </tr>
 	<tr>
 		<td>
-			<input type="button" onclick="validateAndSubmit()" value="$i18n.getString( 'start' )" style="width:120px" />
+			<input type="button" onclick="analyseData()" value="$i18n.getString( 'start' )" style="width:120px" />
 		</td>
 	</tr>
 </table>
@@ -138,18 +115,13 @@
 <span id="message"></span>
 
 <script type="text/javascript">
-    Calendar.setup({
-        inputField     :    "fromDate",          // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getDateFieldFrom"   // trigger for the calendar (button ID)
-    });
-</script>
-<script type="text/javascript">
-    Calendar.setup({
-        inputField     :    "toDate",          // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getDateFieldTo"   // trigger for the calendar (button ID)
-    });
+  var i18n_analysing_please_wait = '$encoder.jsEscape( $i18n.getString( "analysing_please_wait" ) , "'")';
+  
+  jQuery(document).ready(function(){
+		datePickerInRange( 'fromDate' , 'toDate' );	
+	});
 </script>
 
-</form>
+</div>
+
+<div id="analysisResult"></div>

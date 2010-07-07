@@ -11,7 +11,9 @@
           <col width="20">
           <col width="20">     
           <col width="20">
-          <col width="20">     		  
+          <col width="20">
+		  <col width="20">
+		  <col width="20">	     		  
 		  <tr>
 		  	<td></td>
 			<td colspan="7" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramForm.action'" style="width:70px"></td>
@@ -28,31 +30,31 @@
               
                 <td#alternate( $mark )>$encoder.htmlEncode( $program.name )</td>                
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center" #alternate( $mark )>
                   <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
                 </td>
 				
-				<td style="text-align:center"#alternate( $mark )>
-                  <a href="defineValidationCriteriaAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="images/criteria.gif" alt="$i18n.getString( "assign_criteria" )"></a>
+				<td style="text-align:center" #alternate( $mark )>
+                  <a href="defineValidationCriteriaAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_criteria_associations" )"><img src="images/criteria.gif" alt="$i18n.getString( "assign_criteria" )"></a>
                 </td>
                 
-				<td style="text-align:center"#alternate( $mark )>
-                  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="images/devalidation.jpeg" alt="$i18n.getString( "assign_criteria" )"></a>
+				<td style="text-align:center" #alternate( $mark )>
+                  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_associations" )"><img src="images/devalidation.jpeg" alt="$i18n.getString( "assign_criteria" )"></a>
                 </td>
 				
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center" #alternate( $mark )>
                   <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
                 </td>
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center" #alternate( $mark )>
                   <a href="programStage.action?id=$program.id" title="$i18n.getString( "view_stage_management" )"><img src="../images/add_section.png" alt="$i18n.getString( "view_stage_management" )"></a>
                 </td>                
  
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center" #alternate( $mark )>
                   <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center" #alternate( $mark )>
                   <a href="javascript:showProgramDetails( $program.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
                 </td>
                 

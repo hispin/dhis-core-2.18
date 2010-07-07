@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -47,7 +48,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.CrossTabDataValue;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -65,14 +65,14 @@ public class CrossTabServiceTest
 {
     private CrossTabService crossTabService;
     
-    private DataMartStore dataMartStore;
-    
     private Iterator<Period> generatedPeriods;
 
     private Collection<DataElementOperand> operands;
     private Collection<Integer> periodIds;
     private Collection<Integer> organisationUnitIds;
-    
+
+    private String key = RandomStringUtils.randomAlphanumeric( 8 );
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -81,8 +81,6 @@ public class CrossTabServiceTest
     public void setUpTest()
     {
         crossTabService = (CrossTabService) getBean( CrossTabService.ID );
-        
-        dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
@@ -184,11 +182,11 @@ public class CrossTabServiceTest
     @Test
     public void testPopulateCrossTabValue()
     {
-        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
 
-        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
+        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
 
-        Collection<CrossTabDataValue> values = dataMartStore.getCrossTabDataValues( operandIndexMap, periodIds, organisationUnitIds );
+        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operandIndexMap, periodIds, organisationUnitIds, key );
         
         assertNotNull( values );
         
@@ -213,17 +211,17 @@ public class CrossTabServiceTest
     @Test
     public void testTrimCrossTabTable()
     {
-        Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
         
-        crossTabService.trimCrossTabTable( operandsWithData );
+        crossTabService.trimCrossTabTable( operandsWithData, key );
     }
     
     @Test
     public void testGetOperandIndexMap()
     {
-        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
 
-        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
+        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
         
         assertEquals( operands.size(), operandIndexMap.size() );
         

@@ -57,6 +57,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
 import org.junit.Test;
 

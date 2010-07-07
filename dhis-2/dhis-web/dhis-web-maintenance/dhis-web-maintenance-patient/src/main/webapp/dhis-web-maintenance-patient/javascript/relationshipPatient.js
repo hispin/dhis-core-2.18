@@ -150,6 +150,15 @@ function toggleUnderage( this_ )
 			if( data.related )
 			{
 				jQuery(this).val("");
+				jQuery(this).attr({"disabled":""});
+			}
+		});
+		jQuery(".attrField").each(function(){
+			var data = jQuery(this).metadata({type:"attr",name:"data"});
+			if( data.inheritable )
+			{
+				jQuery(this).val("");
+//				jQuery(this).attr({"disabled":""});
 			}
 		});
 	}else {
@@ -159,6 +168,14 @@ function toggleUnderage( this_ )
 			{
 				jQuery(this).val(data.id);
 				jQuery(this).attr({"disabled":"disabled"});
+			}
+		});
+		jQuery(".attrField").each(function(){
+			var data = jQuery(this).metadata({type:"attr",name:"data"});
+			if( data.inheritable )
+			{
+				jQuery(this).val(data.value);
+//				jQuery(this).attr({"disabled":"disabled"});
 			}
 		});
 	}

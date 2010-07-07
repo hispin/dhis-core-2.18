@@ -3,55 +3,6 @@
 // View chart
 // -----------------------------------------------------------------------------
 
-var tempChartId;
-
-function runAndViewChart( chartId )
-{
-	setHeaderWaitMessage( i18n_please_wait );
-	
-    tempChartId = chartId;
-    
-    var request = new Request();
-    request.setCallbackSuccess( runAndViewChartReceived );    
-    request.send( "createChart.action?id=" + chartId );
-}
-
-function runAndViewChartReceived( messageElement )
-{
-    getChartStatus();
-}
-
-function getChartStatus()
-{
-    var url = "getStatus.action";
-    
-    var request = new Request();
-    request.setResponseTypeXML( "status" );
-    request.setCallbackSuccess( chartStatusReceived );    
-    request.send( url );
-}
-
-function chartStatusReceived( xmlObject )
-{
-    var statusMessage = getElementValue( xmlObject, "statusMessage" );
-    var finished = getElementValue( xmlObject, "finished" );
-    
-    updateHeaderWaitMessage( statusMessage );
-    
-    if ( finished == "true" )
-    {
-    	hideHeaderMessage();
-    	
-        var url = "viewChart.action?id=" + tempChartId;
-        
-        viewChart( url );
-    }
-    else
-    {
-        setTimeout( "getChartStatus();", 2000 );
-    }
-}
-
 function viewChart( url )
 {
     window.open( url, "_blank", "directories=no, height=560, width=760, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
@@ -151,7 +102,7 @@ function validateCollections()
         return false;
     }
     
-    if ( !hasElements( "selectedPeriods" ) ) //&& !relativePeriodsChecked() )
+    if ( !hasElements( "selectedPeriods" ) && !relativePeriodsChecked() )
     {
         setMessage( i18n_must_select_at_least_one_period );
         
@@ -166,14 +117,12 @@ function relativePeriodsChecked()
     if ( isChecked( "reportingMonth" ) == true ||
          isChecked( "last3Months" ) == true ||
          isChecked( "last6Months" ) == true ||
-         isChecked( "last9Months" ) == true ||
          isChecked( "last12Months" ) == true ||
          isChecked( "last3To6Months" ) == true ||
          isChecked( "last6To9Months" ) == true ||
          isChecked( "last9To12Months" ) == true ||
          isChecked( "last12IndividualMonths" ) == true ||
          isChecked( "soFarThisYear" ) == true ||
-         isChecked( "soFarThisFinancialYear" ) == true ||
          isChecked( "individualMonthsThisYear" ) == true ||
          isChecked( "individualQuartersThisYear" ) == true )
     {

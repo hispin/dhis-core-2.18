@@ -84,6 +84,7 @@ public class XmlCreatorService extends Thread
     @Override
     public void run()
     {
+        System.out.println( "Info to convert to XML: " + info );
         String dhis2Home = System.getenv( "DHIS2_HOME" );
         String[] text = info.split( "#" );
         String msgVersion = text[0];

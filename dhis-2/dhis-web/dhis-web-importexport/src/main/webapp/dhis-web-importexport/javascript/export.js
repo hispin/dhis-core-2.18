@@ -223,12 +223,5 @@ function validateDataValueExportForm()
     return true;
 }
 
-var selectedOrganisationUnitIds = null;
 
-function setSelectedOrganisationUnitIds( ids )
-{
-    selectedOrganisationUnitIds = ids;
-}
-
-selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
 

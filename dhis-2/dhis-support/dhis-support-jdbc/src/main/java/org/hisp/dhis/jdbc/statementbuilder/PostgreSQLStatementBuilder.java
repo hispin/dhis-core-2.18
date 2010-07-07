@@ -31,7 +31,6 @@ import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.RelativePeriodType;
 
 /**
  * @author Lars Helge Overland
@@ -114,15 +113,6 @@ public class PostgreSQLStatementBuilder
         return
             "CREATE INDEX crosstab " +
             "ON datavalue ( periodid, sourceid );";
-    }
-    
-    public String getDeleteRelativePeriods()
-    {
-        return
-            "DELETE FROM period " +
-            "USING periodtype " +
-            "WHERE period.periodtypeid = periodtype.periodtypeid " +
-            "AND periodtype.name = '" + RelativePeriodType.NAME + "';";
     }
     
     public String getDeleteZeroDataValues()

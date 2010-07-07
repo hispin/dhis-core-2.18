@@ -1,0 +1,165 @@
+package org.hisp.dhis.period;
+
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+
+import org.junit.Test;
+
+/**
+ * @author Lars Helge Overland
+ */
+public class RelativePeriodTest
+{
+    private static Date getDate( int year, int month, int day )
+    {
+        final Calendar calendar = Calendar.getInstance();
+
+        calendar.clear();
+        calendar.set( year, month - 1, day );
+
+        return calendar.getTime();
+    }
+    
+    @Test
+    public void getRelativePeriodsA()
+    {        
+        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true, true, true );
+        
+        Collection<Period> relatives = periods.getRelativePeriods( 1, getDate( 2001, 1, 1 ), null, false );
+        
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 12, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 10, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new SixMonthlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 29 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 5, 1 ), getDate( 2000, 5, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 6, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 7, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 8, 1 ), getDate( 2000, 8, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 9, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 10, 1 ), getDate( 2000, 10, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 11, 1 ), getDate( 2000, 11, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 12, 1 ), getDate( 2000, 12, 31 ) ) ) );        
+
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 10, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        
+        assertEquals( 36, relatives.size() );
+    }
+    
+    @Test
+    public void getRelativePeriodsB()
+    {        
+        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true, true, true );
+        
+        Collection<Period> relatives = periods.getRelativePeriods( 2, getDate( 2001, 1, 1 ), null, false );
+
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 11, 1 ), getDate( 2000, 11, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new SixMonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 1999, 1, 1 ), getDate( 1999, 12, 31 ) ) ) );
+
+        assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 1999, 10, 1 ), getDate( 1999, 12, 31 ) ) ) );
+
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 1999, 12, 1 ), getDate( 1999, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 29 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 5, 1 ), getDate( 2000, 5, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 6, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 7, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 8, 1 ), getDate( 2000, 8, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 9, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 10, 1 ), getDate( 2000, 10, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 11, 1 ), getDate( 2000, 11, 30 ) ) ) );      
+
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 9, 30 ) ) ) );
+        
+        assertEquals( 34, relatives.size() );
+    }
+
+    @Test
+    public void getRelativePeriodsC()
+    {        
+        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true, true, true );
+        
+        Collection<Period> relatives = periods.getRelativePeriods( 5, getDate( 2001, 1, 1 ), null, false );
+
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 8, 1 ), getDate( 2000, 8, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new SixMonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 1999, 1, 1 ), getDate( 1999, 12, 31 ) ) ) );
+
+        assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 1999, 10, 1 ), getDate( 1999, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 1999, 7, 1 ), getDate( 1999, 9, 30 ) ) ) );
+
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 1999, 9, 1 ), getDate( 1999, 9, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 1999, 10, 1 ), getDate( 1999, 10, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 1999, 11, 1 ), getDate( 1999, 11, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 1999, 12, 1 ), getDate( 1999, 12, 31 ) ) ) );        
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 29 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 5, 1 ), getDate( 2000, 5, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 6, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 7, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 8, 1 ), getDate( 2000, 8, 31 ) ) ) );  
+
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        
+        assertEquals( 30, relatives.size() );
+    }
+}

@@ -22,8 +22,11 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnit.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/organisationUnit.js</param>
+			<param name="menuTreeHeight">384</param>
+			<param name="javascripts">
+					../dhis-web-commons/ouwt/ouwt.js,
+					javascript/organisationUnit.js
+			</param>
 			<interceptor-ref name="organisationUnitTreeStack" />
 		</action>
 
@@ -50,9 +53,15 @@
 			class="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/shortName.js,javascript/organisationUnit.js
-			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="javascripts">
+					javascript/shortName.js,
+					javascript/organisationUnit.js,
+					../dhis-web-commons/ouwt/ouwt.js,					
+					../dhis-web-commons/util/validate/jquery.validate.js,
+					../dhis-web-commons/util/jquery.metadata.js,
+					../dhis-web-commons/util/validate/additional-methods.js,
+					../dhis-web-commons/validationMessages.action
+			</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
 		</action>
 
@@ -81,9 +90,15 @@
 			class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/shortName.js,javascript/organisationUnit.js
-			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="javascripts">
+					javascript/shortName.js,
+					javascript/organisationUnit.js,
+					../dhis-web-commons/ouwt/ouwt.js,					
+					../dhis-web-commons/util/validate/jquery.validate.js,
+					../dhis-web-commons/util/jquery.metadata.js,
+					../dhis-web-commons/util/validate/additional-methods.js,
+					../dhis-web-commons/validationMessages.action
+			</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
 		</action>
 
@@ -111,7 +126,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnitGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
-			<param name="menuTreeHeight">321</param>
+			<param name="menuTreeHeight">384</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/organisationUnitGroup.js</param>
 			<interceptor-ref name="organisationUnitTreeStack" />
 		</action>
@@ -141,7 +156,7 @@
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupForm.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-     		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+     		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
 		</action>		
 
@@ -164,7 +179,7 @@
 			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupForm.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>			
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>			
 		</action>
 
 		<action name="updateOrganisationUnitGroup"
@@ -224,7 +239,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnitGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
-			<param name="menuTreeHeight">321</param>
+			<param name="menuTreeHeight">384</param>
 			<param name="javascripts">javascript/organisationUnitGroupSet.js</param>
 		</action>
 
@@ -260,7 +275,7 @@
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
 			<param name="javascripts">javascript/organisationUnitGroupSet.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
 		</action>
 
@@ -270,7 +285,7 @@
 			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
 			<param name="javascripts">javascript/organisationUnitGroupSet.js
 			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
 		</action>
 
@@ -298,7 +313,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/hierarchyOperations.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
+			<param name="menuTreeHeight">384</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/hierarchyOperations.js</param>
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
@@ -343,7 +358,7 @@
 			<param name="page">/dhis-web-maintenance-organisationunit/saveOrganisationUnitLevelForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
+      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action
       		</param>
 		</action>
 

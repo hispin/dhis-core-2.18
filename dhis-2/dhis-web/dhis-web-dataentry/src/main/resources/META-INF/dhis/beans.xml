@@ -7,7 +7,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.de.action.EmptyAction" class="org.hisp.dhis.de.action.EmptyAction" />
 
 	<bean id="org.hisp.dhis.de.comments.StandardCommentsManager"
-		class="org.hisp.dhis.de.comments.DefaultStandardCommentsManager">
+		class="org.hisp.dhis.de.comments.DefaultStandardCommentsManager" init-method="init">
 		<property name="standardCommentsFile">
 			<value>standard_comments.xml</value>
 		</property>
@@ -74,7 +74,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="dataElementOrderManager"
 			ref="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="standardCommentsManager"
@@ -94,8 +93,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.de.action.multidimensional.FormAction" scope="prototype">
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />    
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />    
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataEntryScreenManager"
 			ref="org.hisp.dhis.de.screen.DataEntryScreenManager" />
 		<property name="standardCommentsManager"

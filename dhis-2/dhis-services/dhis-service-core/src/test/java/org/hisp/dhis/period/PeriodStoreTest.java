@@ -322,6 +322,54 @@ public class PeriodStoreTest
     }
 
     @Test
+    public void testGetPeriodsBetweenOrSpanningDates()
+        throws Exception
+    {
+        Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
+        Iterator<PeriodType> it = periodTypes.iterator();
+        PeriodType periodTypeA = it.next();
+        PeriodType periodTypeB = it.next();
+
+        Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
+        Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
+        Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
+        Period periodD = new Period( periodTypeB, getDay( 3 ), getDay( 4 ) );
+        Period periodE = new Period( periodTypeB, getDay( 0 ), getDay( 4 ) );
+        periodStore.addPeriod( periodA );
+        periodStore.addPeriod( periodB );
+        periodStore.addPeriod( periodC );
+        periodStore.addPeriod( periodD );
+        periodStore.addPeriod( periodE );
+
+        Collection<Period> periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 0 ), getDay( 0 ) );
+        assertNotNull( periods );
+        assertEquals( 2, periods.size() );
+        assertTrue( periods.contains( periodA ) );
+        assertTrue( periods.contains( periodE ) );
+
+        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 0 ), getDay( 1 ) );
+        assertNotNull( periods );
+        assertEquals( 2, periods.size() );
+        assertTrue( periods.contains( periodA ) );
+        assertTrue( periods.contains( periodE ) );
+
+        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 1 ), getDay( 3 ) );
+        assertNotNull( periods );
+        assertEquals( 3, periods.size() );
+        assertTrue( periods.contains( periodB ) );
+        assertTrue( periods.contains( periodC ) );
+        assertTrue( periods.contains( periodE ) );
+
+        periods = periodStore.getPeriodsBetweenOrSpanningDates( getDay( 1 ), getDay( 4 ) );
+        assertNotNull( periods );
+        assertEquals( 4, periods.size() );
+        assertTrue( periods.contains( periodB ) );
+        assertTrue( periods.contains( periodC ) );
+        assertTrue( periods.contains( periodD ) );
+        assertTrue( periods.contains( periodE ) );
+    }
+
+    @Test
     public void testGetIntersectingPeriodsByPeriodType()
         throws Exception
     {

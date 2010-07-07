@@ -77,7 +77,6 @@ public abstract class AbstractStatementInternalProcess
      * Delegates process execution to {@link #executeStatements()}.
      */
     public final void execute( OutputHolderState state )
-        throws Exception
     {
         this.state = state;
 
@@ -100,7 +99,7 @@ public abstract class AbstractStatementInternalProcess
             getState().setMessage( PROCESS_FAILED );
             
             log.error( "Internal process failed", ex );
-            log.error( DebugUtils.getStackTrace( ex ) );
+            log.debug( DebugUtils.getStackTrace( ex ) );
             
             ex.printStackTrace();
         }

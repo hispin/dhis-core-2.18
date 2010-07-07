@@ -28,24 +28,21 @@ package org.hisp.dhis.validationrule.action.dataanalysis;
  */
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -72,18 +69,11 @@ public class GetAnalysisAction
         this.serviceProvider = serviceProvider;
     }
 
-    private DataElementService dataElementService;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.dataElementService = dataElementService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
+        this.organisationUnitService = organisationUnitService;
     }
 
     private PeriodService periodService;
@@ -123,32 +113,32 @@ public class GetAnalysisAction
         this.key = key;
     }
 
-    private String toDateString;
+    private String toDate;
 
     public void setToDate( String toDate )
     {
-        this.toDateString = toDate.trim();
+        this.toDate = toDate.trim();
     }
 
-    private String fromDateString;
+    private String fromDate;
 
     public void setFromDate( String fromDate )
     {
-        this.fromDateString = fromDate.trim();
+        this.fromDate = fromDate.trim();
     }
 
-    private String dataSetId;
-
-    public void setDataset( String dataSet )
+    private Collection<String> dataSets;
+    
+    public void setDataSets( Collection<String> dataSets )
     {
-        this.dataSetId = dataSet;
+        this.dataSets = dataSets;
     }
 
-    private List<String> dataElementsById;
-
-    public void setDataElementsById( List<String> dataElementsById )
+    private Integer organisationUnit;
+    
+    public void setOrganisationUnit( Integer organisationUnit )
     {
-        this.dataElementsById = dataElementsById;
+        this.organisationUnit = organisationUnit;
     }
 
     private Double standardDeviation;
@@ -175,52 +165,30 @@ public class GetAnalysisAction
 
     public String execute()
     {
-        Collection<DataElement> dataElements = null;
+        Set<DataElement> dataElements = new HashSet<DataElement>();
         Collection<Period> periods = null;
-
-        OrganisationUnit organisationUnit = selectionTreeManager.getSelectedOrganisationUnit();
+        OrganisationUnit unit = null;
         
-        if ( dataElementsById != null && dataSetId != null && organisationUnit != null )
+        if ( fromDate != null && toDate != null && dataSets != null && organisationUnit != null )
         {
-            dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) ); 
+            periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) ); //TODO improve
+
+            for ( String id : dataSets )
+            {
+                dataElements.addAll( dataSetService.getDataSet( Integer.parseInt( id ) ).getDataElements() );
+            }
         
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-        
-            Date fromDate = null;
-            Date toDate = null;
-    
-            if ( fromDateString == null || fromDateString.trim().length() == 0 )
-            {
-                Date epoch = new Date( 0 );
-                fromDate = epoch;
-            }
-            else
-            {
-                fromDate = format.parseDate( fromDateString );
-            }
-    
-            if ( toDateString == null || toDateString.trim().length() == 0 )
-            {
-                toDate = new Date();
-            }
-            else
-            {
-                toDate = format.parseDate( toDateString );
-            }
-    
-            periods = periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), fromDate, toDate );
+            unit = organisationUnitService.getOrganisationUnit( organisationUnit );
             
-            log.info( "DataSet: " + dataSet + " Organisation unit: " + organisationUnit );
+            log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit + ", Std dev: " + standardDeviation + ", Key: " + key );
             log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
         }
         
         DataAnalysisService service = serviceProvider.provide( key );
         
-        if ( service != null )
-        {
-            log.info( "Data analysis type: " + key );
-            
-            dataValues = service.analyse( organisationUnit, dataElements, periods, standardDeviation );
+        if ( service != null ) // Follow-up analysis has no input params
+        {      
+            dataValues = service.analyse( unit, dataElements, periods, standardDeviation );
         }
         
         return SUCCESS;

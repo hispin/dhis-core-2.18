@@ -37,5 +37,5 @@ public interface StandardCommentsManager
 {
     String ID = StandardCommentsManager.class.getName();
 
-    List<String> getStandardComments() throws StandardCommentsManagerException;
+    List<String> getStandardComments();
 }

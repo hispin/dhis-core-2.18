@@ -183,7 +183,7 @@ public class ExportDataMartAction
         // Get OrganisationUnit
         // ---------------------------------------------------------------------
         
-        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
+        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
         
         if ( selectedUnits != null )
         {
@@ -203,7 +203,7 @@ public class ExportDataMartAction
         
         DataMartInternalProcess process = (DataMartInternalProcess) executor.getProcess();
         
-        process.setProperties( export );
+        process.setExport( export );
         
         processCoordinator.requestProcessExecution( executor );
         

@@ -30,9 +30,7 @@ package org.hisp.dhis.reporttable.impl;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,14 +52,9 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.QuarterlyPeriodType;
-import org.hisp.dhis.period.RelativePeriodType;
 import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -150,7 +143,7 @@ public class DefaultReportTableService
 
     @Transactional
     public void createReportTables( int id, String mode, Integer reportingPeriod, 
-        Integer parentOrganisationUnitId, Integer organisationUnitId, I18nFormat format )
+        Integer parentOrganisationUnitId, Integer organisationUnitId, boolean doDataMart, I18nFormat format )
     {
         for ( ReportTable reportTable : getReportTables( id, mode ) )
         {
@@ -158,28 +151,20 @@ public class DefaultReportTableService
             // Reporting period report parameter / current reporting period
             // -----------------------------------------------------------------
 
-            Date date = null;
-
             if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
-            {
-                reportTable.setRelativePeriods( getRelativePeriods( reportTable, reportingPeriod, format ) );
+            {             
+                reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( reportingPeriod, format, !reportTable.isDoPeriods() ) ) );                                
+                reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( reportingPeriod, format ) );
                 
-                date = getDateFromPreviousMonth( reportingPeriod );
-                
-                log.info( "Reporting period date from report param: " + date );
+                log.info( "Reporting period date from report param: " + reportTable.getReportingMonthName() );
             }
             else
             {
-                reportTable.setRelativePeriods( getRelativePeriods( reportTable, 1, format ) );
+                reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( 1, format, !reportTable.isDoPeriods() ) ) );                
+                reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( 1, format ) );
                 
-                date = getDateFromPreviousMonth( 1 );
-                
-                log.info( "Reporting period date default: " + date );
+                log.info( "Reporting period date default: " + reportTable.getReportingMonthName() );
             }
-
-            String reportingMonthName = format.formatPeriod( new MonthlyPeriodType().createPeriod( date ) );
-            
-            reportTable.setReportingMonthName( reportingMonthName );
 
             // -----------------------------------------------------------------
             // Parent organisation unit report parameter
@@ -188,7 +173,6 @@ public class DefaultReportTableService
             if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
             {
                 OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
-
                 reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
                 
                 log.info( "Parent organisation unit: " + organisationUnit.getName() );
@@ -220,16 +204,14 @@ public class DefaultReportTableService
             // Create report table
             // -----------------------------------------------------------------
 
-            createReportTable( reportTable, true );
+            createReportTable( reportTable, doDataMart );
         }
-                
-        dataMartService.deleteRelativePeriods();
     }
 
     @Transactional
     public void createReportTable( ReportTable reportTable, boolean doDataMart )
     {
-        log.info( "Process started for report table: '" + reportTable.getName() + "'" );
+        log.info( "Process started for report table: " + reportTable.getName() );
         
         // ---------------------------------------------------------------------
         // Exporting relevant data to data mart
@@ -269,14 +251,14 @@ public class DefaultReportTableService
         
         updateReportTable( reportTable );
         
-        log.info( "Created report table" );
+        log.info( "Created report table: " + reportTable.getName() );
 
         // ---------------------------------------------------------------------
         // Creating grid
         // ---------------------------------------------------------------------
 
         Grid grid = getGrid( reportTable );
-        
+
         if ( reportTable.isRegression() )
         {
             // -----------------------------------------------------------------
@@ -287,18 +269,19 @@ public class DefaultReportTableService
 
             int numberOfColumns = reportTable.getCrossTabIdentifiers().size();
             int startColumnIndex = grid.getWidth() - numberOfColumns;
-            
+        
             addRegressionToGrid( grid, startColumnIndex, numberOfColumns );
+            
+            log.info( "Added regression to report table: " + reportTable.getName() );
         }
 
         // ---------------------------------------------------------------------
         // Populating report table from grid
         // ---------------------------------------------------------------------
-
+        
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
 
-        batchHandler.setTableName( reportTable.getTableName() );
-        
+        batchHandler.setTableName( reportTable.getTableName() );        
         batchHandler.init();
         
         for ( List<String> row : grid.getRows() )
@@ -308,7 +291,7 @@ public class DefaultReportTableService
         
         batchHandler.flush();       
 
-        log.info( "Populated report table: '" + reportTable.getTableName() + "'" );
+        log.info( "Populated report table: " + reportTable.getTableName() );
     }
 
     public void removeReportTable( ReportTable reportTable )
@@ -316,154 +299,6 @@ public class DefaultReportTableService
         reportTableManager.removeReportTable( reportTable );
     }
     
-    @Transactional
-    public List<Period> getRelativePeriods( ReportTable reportTable, int months, I18nFormat format )
-    {
-        RelativePeriods relatives = reportTable.getRelatives();
-        
-        boolean dynamicNames = !reportTable.isDoPeriods();
-            
-        List<Period> relativePeriods = new ArrayList<Period>();
-        
-        Date date = getDateFromPreviousMonth( months );
-        
-        if ( relatives != null )
-        {
-            if ( relatives.isReportingMonth() )
-            {
-                Period period = periodService.getRelativePeriod( date, -1 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.REPORTING_MONTH );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast3Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -3 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_3_MONTHS );
-                relativePeriods.add( period );            
-            }
-            if ( relatives.isLast6Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -6 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_6_MONTHS );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast9Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -9 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_9_MONTHS );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast12Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -12 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_12_MONTHS );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isSoFarThisYear() )
-            {
-                MonthlyPeriodType periodType = new MonthlyPeriodType();            
-                Period period = new Period();
-                
-                period.setPeriodType( new RelativePeriodType() );
-                period.setStartDate( getStartDateOfYear( date ) );            
-                period.setEndDate( periodType.createPeriod( date ).getEndDate() );
-                
-                period = savePeriod( period );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.SO_FAR_THIS_YEAR );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isSoFarThisFinancialYear() )
-            {
-                MonthlyPeriodType periodType = new MonthlyPeriodType();            
-                Period period = new Period();
-                
-                period.setPeriodType( new RelativePeriodType() );
-                period.setStartDate( getStartDateOfFinancialYear( date ) );            
-                period.setEndDate( periodType.createPeriod( date ).getEndDate() );
-                
-                period = savePeriod( period );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.SO_FAR_THIS_FINANCIAL_YEAR );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast3To6Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -6, -3 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_3_TO_6_MONTHS );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast6To9Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -9, -6 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_6_TO_9_MONTHS );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast9To12Months() )
-            {
-                Period period = periodService.getRelativePeriod( date, -12, -9 );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.LAST_9_TO_12_MONTHS );
-                relativePeriods.add( period );
-            }
-            if ( relatives.isLast12IndividualMonths() )
-            {
-                for ( int i = 0; i < 12; i++ )
-                {
-                    int periodNumber = i - 12;
-                    
-                    Period period = periodService.getRelativePeriod( date, periodNumber, periodNumber + 1 );
-                    period.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.PREVIOUS_MONTH_NAMES[i] );
-                    relativePeriods.add( period );
-                }
-            }
-            if ( relatives.isIndividualMonthsThisYear() )
-            {
-                MonthlyPeriodType periodType = new MonthlyPeriodType();
-                
-                Period period = new Period();
-                period.setStartDate( date );
-                
-                List<Period> periods = periodType.generatePeriods( period );
-                
-                for ( int i = 0; i < 12; i++ )
-                {
-                    Period month = periods.get( i );
-                    month.setPeriodType( new RelativePeriodType() );
-                    month = savePeriod( month );
-                    month.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.MONTHS_THIS_YEAR[i] );                
-                    relativePeriods.add( month );
-                }            
-            }
-            if ( relatives.isIndividualQuartersThisYear() )
-            {
-                QuarterlyPeriodType periodType = new QuarterlyPeriodType();
-                
-                Period period = new Period();
-                period.setStartDate( date );
-                
-                List<Period> periods = periodType.generatePeriods( period );
-                
-                for ( int i = 0; i < 4; i++ )
-                {
-                    Period quarter = periods.get( i );
-                    quarter.setPeriodType( new RelativePeriodType() );
-                    quarter = savePeriod( quarter );
-                    quarter.setName( dynamicNames ? format.formatPeriod( period ) : RelativePeriods.QUARTERS_THIS_YEAR[i] );
-                    relativePeriods.add( quarter );
-                }
-            }
-        }
-        
-        return relativePeriods;
-    }
-
-    public Date getDateFromPreviousMonth( int months )
-    {
-        Calendar cal = PeriodType.createCalendarInstance();
-        
-        cal.add( Calendar.MONTH, months * -1 );
-        
-        return cal.getTime();
-    }
-
     // -------------------------------------------------------------------------
     // Persistence
     // -------------------------------------------------------------------------
@@ -567,7 +402,7 @@ public class DefaultReportTableService
                         // -----------------------------------------------------
                         // Identifier
                         // -----------------------------------------------------
-
+                        
                         if ( reportTable.getIndexColumns().contains( ReportTable.INDICATOR_ID ) )
                         {
                             grid.addValue( String.valueOf( metaObject.getId() ) );
@@ -597,7 +432,7 @@ public class DefaultReportTableService
                         {
                             grid.addValue( String.valueOf( unit.getId() ) );
                         }
-
+                        
                         // -----------------------------------------------------
                         // Name
                         // -----------------------------------------------------
@@ -624,20 +459,20 @@ public class DefaultReportTableService
                         
                         if ( reportTable.getIndexNameColumns().contains( ReportTable.PERIOD_NAME ) )
                         {
-                            grid.addValue( getPeriodName( reportTable, period ) );
+                            grid.addValue( period.getName() );
                         }
                         
                         if ( reportTable.getIndexNameColumns().contains( ReportTable.ORGANISATIONUNIT_NAME ) )
                         {
                             grid.addValue( unit.getShortName() );
                         }
-
+                        
                         // -----------------------------------------------------
                         // Reporting month name
                         // -----------------------------------------------------
 
                         grid.addValue( reportTable.getReportingMonthName() );
-    
+                        
                         // -----------------------------------------------------
                         // Values
                         // -----------------------------------------------------
@@ -649,9 +484,9 @@ public class DefaultReportTableService
                         {
                             grid.addValue( parseAndReplaceNull( map.get( identifier ) ) );
                         }
-
+                        
                         // -----------------------------------------------------
-                        // Values
+                        // Total values
                         // -----------------------------------------------------
                         
                         if ( reportTable.doTotal() )
@@ -672,23 +507,17 @@ public class DefaultReportTableService
         return grid;
     }
     
+    /**
+     * Converts the given Double to String or replaces with default value if null.
+     * 
+     * @param value the Double.
+     * @return the String.
+     */
     private String parseAndReplaceNull( Double value )
     {
         return value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
     }
     
-    private String getPeriodName( ReportTable reportTable, Period period )
-    {
-        if ( period.getPeriodType().getName().equals( RelativePeriodType.NAME ) )
-        {
-            return period.getName();
-        }
-        else
-        {
-            return reportTable.getI18nFormat().formatPeriod( period );
-        }
-    }
-
     /**
      * If report table mode, this method will return the report table with the
      * given identifier. If report mode, this method will return the report
@@ -711,46 +540,5 @@ public class DefaultReportTableService
         }
 
         return reportTables;
-    }
-    
-    private Date getStartDateOfFinancialYear( Date date )
-    {
-        Calendar cal = PeriodType.createCalendarInstance( date );
-
-        cal.set( Calendar.MONTH, 3 );
-        cal.set( Calendar.DAY_OF_MONTH, 1 );
-
-        if ( date.before( cal.getTime() ) )
-        {
-            cal.add( Calendar.YEAR, -1 );
-        }
-        
-        return cal.getTime();
-    }
-    
-    private Date getStartDateOfYear( Date date )
-    {
-        Calendar cal = PeriodType.createCalendarInstance( date );
-        
-        cal.set( Calendar.MONTH, 0 );
-        cal.set( Calendar.DAY_OF_MONTH, 1 );
-        
-        return cal.getTime();
-    }
-    
-    private Period savePeriod( Period period )
-    {
-        Period persistedPeriod = periodService.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
-        
-        if ( persistedPeriod == null )
-        {
-            periodService.addPeriod( period );
-        }
-        else
-        {
-            period = persistedPeriod;
-        }
-        
-        return new Period( period );
     }
 }

@@ -36,6 +36,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -53,18 +54,21 @@ import org.codehaus.stax2.XMLStreamReader2;
 public class DefaultXMLStreamReader
     implements XMLReader
 {
+
     private static final Log log = LogFactory.getLog( DefaultXMLStreamReader.class );
 
-    private static final String[] EVENTS = { "None", "Start Element", "End Element", "Processing Instruction",
+    private static final String[] EVENTS =
+    {
+        "None", "Start Element", "End Element", "Processing Instruction",
         "Characters", "Comment", "Space", "Start Document", "End Document", "Entity Reference", "Attribute", "DTD",
-        "CData", "Namespace", "Notation Declaration", "Entity Declaration" };
+        "CData", "Namespace", "Notation Declaration", "Entity Declaration"
+    };
 
     private XMLStreamReader2 reader;
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-
     public DefaultXMLStreamReader( XMLStreamReader2 reader )
     {
         this.reader = reader;
@@ -73,13 +77,20 @@ public class DefaultXMLStreamReader
     // -------------------------------------------------------------------------
     // XMLReader implementation
     // -------------------------------------------------------------------------
-
     @Override
     public String getElementName()
     {
         final int eventType = reader.getEventType();
 
         return eventType == START_ELEMENT || eventType == END_ELEMENT ? reader.getLocalName() : null;
+    }
+
+    @Override
+    public QName getElementQName()
+    {
+        final int eventType = reader.getEventType();
+
+        return eventType == START_ELEMENT || eventType == END_ELEMENT ? reader.getName() : null;
     }
 
     @Override
@@ -90,8 +101,7 @@ public class DefaultXMLStreamReader
             reader.next();
 
             return reader.getEventType() == CHARACTERS ? reader.getText() : null;
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to get element value", ex );
         }
@@ -104,13 +114,14 @@ public class DefaultXMLStreamReader
         {
             while ( reader.next() != END_DOCUMENT )
             {
+                log.debug( "XML Event: " + reader.getEventType() );
+
                 if ( reader.getEventType() == START_ELEMENT && reader.getLocalName().equals( name ) )
                 {
                     break;
                 }
             }
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move to start element", ex );
         }
@@ -123,6 +134,8 @@ public class DefaultXMLStreamReader
         {
             while ( reader.next() != END_DOCUMENT ) // TODO && hasNext ?
             {
+                log.debug( "XML Event: " + reader.getEventType() );
+
                 if ( reader.getEventType() == START_ELEMENT && reader.getLocalName().equals( startElementName ) )
                 {
                     return true;
@@ -135,8 +148,7 @@ public class DefaultXMLStreamReader
             }
 
             return false;
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move to start element", ex );
         }
@@ -160,8 +172,7 @@ public class DefaultXMLStreamReader
         try
         {
             return reader.next() != END_DOCUMENT;
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move cursor to next element", ex );
         }
@@ -172,9 +183,8 @@ public class DefaultXMLStreamReader
     {
         try
         {
-            return !(reader.next() == END_ELEMENT && reader.getLocalName().equals( endElementName ));
-        }
-        catch ( XMLStreamException ex )
+            return !( reader.next() == END_ELEMENT && reader.getLocalName().equals( endElementName ) );
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move cursor to next element", ex );
         }
@@ -224,16 +234,14 @@ public class DefaultXMLStreamReader
                     // Read text if any
 
                     elements.put( currentElementName, reader.getEventType() == CHARACTERS ? reader.getText() : null );
-                }
-                else
+                } else
                 {
                     reader.next();
                 }
             }
 
             return elements;
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to read elements", ex );
         }
@@ -254,7 +262,7 @@ public class DefaultXMLStreamReader
 
             StringBuffer text = new StringBuffer( "\n" );
 
-            while ( (e = reader.next()) != END_DOCUMENT )
+            while ( ( e = reader.next() ) != END_DOCUMENT )
             {
                 text.append( "EVENT: " + EVENTS[e] + " " );
 
@@ -281,8 +289,7 @@ public class DefaultXMLStreamReader
             }
 
             log.info( text );
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to read elements", ex );
         }
@@ -294,8 +301,7 @@ public class DefaultXMLStreamReader
         try
         {
             reader.close();
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to close reader", ex );
         }
@@ -305,13 +311,12 @@ public class DefaultXMLStreamReader
     public XMLEventReader2 getXmlEventReader()
     {
         XMLInputFactory2 fac = (XMLInputFactory2) XMLInputFactory.newInstance();
-        
+
         try
         {
             XMLEventReader2 eventReader = (XMLEventReader2) fac.createXMLEventReader( reader );
             return eventReader;
-        }
-        catch ( XMLStreamException ex )
+        } catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to create XML Event reader", ex );
         }

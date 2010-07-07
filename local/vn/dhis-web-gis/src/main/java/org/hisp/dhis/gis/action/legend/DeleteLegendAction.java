@@ -27,8 +27,10 @@ package org.hisp.dhis.gis.action.legend;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.LegendService;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,13 +56,39 @@ public class DeleteLegendAction
     {
         this.legendId = legendId;
     }
+    
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     public String execute()
         throws Exception
     {
         Legend legend = legendService.getLegend( legendId.intValue() );
 
-        legendService.deleteLegend( legend );
+        try {
+            
+            legendService.deleteLegend( legend );
+            
+        }catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                
+                return ERROR;
+            }
+        }  
 
         return SUCCESS;
     }

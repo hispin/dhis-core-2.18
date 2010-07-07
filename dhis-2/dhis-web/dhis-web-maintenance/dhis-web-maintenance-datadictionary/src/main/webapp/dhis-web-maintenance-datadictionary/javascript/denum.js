@@ -1,4 +1,3 @@
-
 function filterDataElements( aggregationOperatorRadioGroupName, dataElementGroupSelectName, filterName )
 {
 	var aggregationOperator = getSelectedRadioValue( aggregationOperatorRadioGroupName );
@@ -6,13 +5,29 @@ function filterDataElements( aggregationOperatorRadioGroupName, dataElementGroup
 	var dataElementGroupId = dataElementGroup.options[ dataElementGroup.selectedIndex ].value;
 	var filter = htmlEncode( document.getElementById( filterName ).value );
 	
-	var url = "getFilteredDataElements.action?aggregationOperator=" + aggregationOperator +
-		"&dataElementGroupId=" + dataElementGroupId + "&filter=" + filter;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'operand' );
-    request.setCallbackSuccess( getFilteredDataElementsReceived );
-    request.send( url );
+    var url = "getFilteredDataElements.action";
+    
+    $.getJSON(
+        url,
+        {
+            "aggregationOperator": aggregationOperator,
+            "dataElementGroupId": dataElementGroupId,
+            "filter": filter
+        },
+        function( json )
+        {
+        	var operandList = document.getElementById( "dataElementId" );
+        	clearList( operandList );
+        	
+        	var objects = json.operands;
+        	
+        	for ( var i=0; i<objects.length; i++ )
+	        {
+        		addOptionToList( operandList, "[" + objects[i].operandId  + "]", objects[i].operandName );
+	        }
+
+        }
+    );
 }
 
 function getSelectedRadioValue( radioGroupName )
@@ -156,27 +171,17 @@ function openDenum( type, formula, description, aggregationOperator )
 	var url = "editDenum.action?type=" + type + "&formula=" + formula + 
         "&description=" + description + "&aggregationOperator=" + aggregationOperator;
     						
-    var dialog = window.open( url, "_blank", "directories=no, height=560, width=790, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
+    var dialog = window.open( url, "_blank", 
+    	"directories=no, height=600, width=790, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
 }
 
 function insertText( inputAreaName, inputText, radioGroupName )
 {
-	var inputArea = document.getElementById( inputAreaName );
-	
-	var startPos = inputArea.selectionStart;
-	var endPos = inputArea.selectionEnd;
-	
-	var existingText = inputArea.value;
-	var textBefore = existingText.substring( 0, startPos );
-	var textAfter = existingText.substring( endPos, existingText.length );
-	
-	inputArea.value = textBefore + inputText + textAfter;
-	
+	insertTextCommon( inputAreaName, inputText );	
+
 	disableRadioGroup( radioGroupName );
 	
 	updateFormulaText( inputAreaName );
-	
-	setCaretToPos( inputArea, inputArea.value.length);
 }
 
 function updateFormulaText( formulaFieldName )

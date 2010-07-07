@@ -35,6 +35,7 @@ import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -84,25 +85,26 @@ public class DefaultI18nService
     // -------------------------------------------------------------------------
 
     public void internationalise( Object object )
-    { 
+    {
         if ( isCollection( object ) )
         {
-            internationaliseCollection( (Collection<?>)object );
+            internationaliseCollection( (Collection<?>) object );
         }
-        
+
         internationalise( object, localeManager.getCurrentLocale() );
     }
-    
+
     private void internationalise( Object object, Locale locale )
     {
         I18nObject i18nObject = isI18nObject( object );
-        
+
         if ( i18nObject != null && locale != null )
         {
-            Collection<Translation> translations = translationService.getTranslations( getClassName( object ), getId( object ), locale );
+            Collection<Translation> translations = translationService.getTranslations( getClassName( object ),
+                getId( object ), locale );
 
             Map<String, String> translationsCurrentLocale = convertTranslations( translations );
-            
+
             Collection<Translation> translationsFallback = null; // Not initialized unless needed
             Map<String, String> translationsFallbackLocale = null; // Not initialized unless needed
 
@@ -143,26 +145,27 @@ public class DefaultI18nService
         {
             return;
         }
-       
+
         I18nObject i18nObject = isI18nObject( intObjects.iterator().next() );
-                
+
         Locale locale = localeManager.getCurrentLocale();
 
         if ( i18nObject != null && locale != null )
-        {    
-            Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(), locale );
-            
+        {
+            Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(),
+                locale );
+
             Collection<Translation> fallbackTranslations = null; // Not initialized unless needed
             Map<String, String> fallbackTranslationsMap = null; // Not initialized unless needed
 
             for ( Object object : intObjects )
             {
                 Map<String, String> translations = getTranslationsForObject( allTranslations, getId( object ) );
-                for ( Map.Entry<String,String> translation : translations.entrySet() )
+                for ( Map.Entry<String, String> translation : translations.entrySet() )
                 {
                     String property = translation.getKey();
                     String value = translation.getValue();
-                    
+
                     if ( value != null && !value.isEmpty() )
                     {
                         setProperty( object, property, value );
@@ -171,7 +174,8 @@ public class DefaultI18nService
                     {
                         if ( fallbackTranslations == null )
                         {
-                            fallbackTranslations = translationService.getTranslations( i18nObject.getClassName(), locale );
+                            fallbackTranslations = translationService.getTranslations( i18nObject.getClassName(),
+                                locale );
 
                             fallbackTranslationsMap = getTranslationsForObject( fallbackTranslations, getId( object ) );
                         }
@@ -195,7 +199,7 @@ public class DefaultI18nService
     public void addObject( Object object )
     {
         I18nObject i18nObject = isI18nObject( object );
-        
+
         Locale locale = localeManager.getCurrentLocale();
 
         if ( i18nObject != null && locale != null )
@@ -258,7 +262,7 @@ public class DefaultI18nService
 
     public void updateTranslation( String className, int id, Locale locale, Map<String, String> translations )
     {
-        for ( Map.Entry<String,String> translationEntry : translations.entrySet() )
+        for ( Map.Entry<String, String> translationEntry : translations.entrySet() )
         {
             String key = translationEntry.getKey();
             String value = translationEntry.getValue();
@@ -266,7 +270,7 @@ public class DefaultI18nService
             if ( value != null && !value.trim().isEmpty() )
             {
                 Translation translation = translationService.getTranslation( className, id, locale, key );
-                
+
                 if ( translation != null )
                 {
                     translation.setValue( value );
@@ -317,6 +321,63 @@ public class DefaultI18nService
                 }
 
                 return propertyNamesLabel;
+            }
+        }
+
+        return null;
+    }
+
+    public Map<String, Map<String, String>> getRulePropertyNames( String className )
+    {
+        for ( I18nObject i18nObject : objects )
+        {
+            if ( i18nObject.getClassName().equals( className ) )
+            {
+                return i18nObject.getRulePropertyNames();
+            }
+        }
+
+        return null;
+    }
+
+    public List<String> getUniquePropertyNames( String className )
+    {
+        for ( I18nObject i18nObject : objects )
+        {
+            if ( i18nObject.getClassName().equals( className ) )
+            {
+                List<String> uniqueProperyNames = new ArrayList<String>();
+                Map<String, Map<String, String>> rules = i18nObject.getRulePropertyNames();
+
+                for ( String property : getPropertyNames( className ) )
+                {
+                    if ( rules.get( property ).get( "unique" ).equals( "true" ) )
+                    {
+                        uniqueProperyNames.add( property );
+                    }
+                }
+
+                return uniqueProperyNames;
+            }
+        }
+
+        return null;
+    }
+
+    public Map<String, String> getUniquePropertyNamesLabel( String className )
+    {
+        for ( I18nObject i18Object : objects )
+        {
+            if ( i18Object.getClassName().equals( className ) )
+            {
+                Map<String, String> uniquePropertyNamesLabel = new HashMap<String, String>();
+
+                for ( String uniqueProperty : getUniquePropertyNames( className ) )
+                {
+                    uniquePropertyNamesLabel.put( uniqueProperty, convertPropertyToKey( uniqueProperty ) );
+                }
+
+                return uniquePropertyNamesLabel;
             }
         }
 
@@ -443,7 +504,7 @@ public class DefaultI18nService
                 }
             }
         }
-        
+
         return null;
     }
 }

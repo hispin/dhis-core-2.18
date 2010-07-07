@@ -32,7 +32,6 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,14 +45,12 @@ import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataMapValueRowMapper;
@@ -78,9 +75,6 @@ public class JdbcDataMartStore
     @Autowired
     private StatementManager statementManager;
 
-    @Autowired
-    private StatementBuilder statementBuilder;
-    
     // -------------------------------------------------------------------------
     // AggregatedDataValue
     // -------------------------------------------------------------------------
@@ -492,105 +486,5 @@ public class JdbcDataMartStore
         {
             holder.close();
         }
-    }
-
-    // -------------------------------------------------------------------------
-    // CrossTabDataValue
-    // -------------------------------------------------------------------------
-
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, 
-        Collection<Integer> periodIds, Collection<Integer> sourceIds )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql =
-                "SELECT * " +
-                "FROM datavaluecrosstab " +
-                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return getCrossTabDataValues( resultSet, operandIndexMap );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get CrossTabDataValues", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-    
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = 
-                "SELECT * " +
-                "FROM datavaluecrosstab " +
-                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND sourceid = " + sourceId;
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return getCrossTabDataValues( resultSet, operandIndexMap );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get CrossTabDataValues", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Period
-    // -------------------------------------------------------------------------
-
-    public int deleteRelativePeriods()
-    {
-        return statementManager.getHolder().executeUpdate( statementBuilder.getDeleteRelativePeriods() );
-    }
-    
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Map<DataElementOperand, Integer> operandIndexMap )
-        throws SQLException
-    {
-        final Collection<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
-        
-        String columnValue = null;
-        
-        while ( resultSet.next() )
-        {
-            final CrossTabDataValue value = new CrossTabDataValue();
-            
-            value.setPeriodId( resultSet.getInt( 1 ) );
-            value.setSourceId( resultSet.getInt( 2 ) );
-            
-            for ( Map.Entry<DataElementOperand, Integer> entry : operandIndexMap.entrySet() )
-            {
-                columnValue = resultSet.getString( entry.getValue() );
-                
-                if ( columnValue != null )
-                {
-                    value.getValueMap().put( entry.getKey(), columnValue );
-                }
-            }
-            
-            values.add( value );
-        }
-        
-        return values;
     }
 }

@@ -326,8 +326,6 @@
 			<input type="checkbox" id="last3Months" name="last3Months" value="true""#if( $reportTable.relatives.isLast3Months() ) checked#end>&nbsp;
 			<label for="last6Months">$i18n.getString( "last_6_months" )</label>
 			<input type="checkbox" id="last6Months" name="last6Months" value="true"#if( $reportTable.relatives.isLast6Months() ) checked#end>&nbsp;
-			<label for="last9Months">$i18n.getString( "last_9_months" )</label>
-			<input type="checkbox" id="last9Months" name="last9Months" value="true"#if( $reportTable.relatives.isLast9Months() ) checked#end>&nbsp;
 			<label for="last12Months">$i18n.getString( "last_12_months" )</label>
 			<input type="checkbox" id="last12Months" name="last12Months" value="true"#if( $reportTable.relatives.isLast12Months() ) checked#end>
 		</td>
@@ -354,8 +352,6 @@
         <td>
             <label for="soFarThisYear">$i18n.getString( "so_far_this_year" )</label>
             <input type="checkbox" id="soFarThisYear" name="soFarThisYear" value="true"#if( $reportTable.relatives.isSoFarThisYear() ) checked#end>&nbsp;
-            <label for="soFarThisFinancialYear">$i18n.getString( "so_far_this_financial_year" )</label>
-            <input type="checkbox" id="soFarThisFinancialYear" name="soFarThisFinancialYear" value="true""#if( $reportTable.relatives.isSoFarThisFinancialYear() ) checked#end>&nbsp;
             <label for="individualMonthsThisYear">$i18n.getString( "individual_months_this_year" )</label>
             <input type="checkbox" id="individualMonthsThisYear" name="individualMonthsThisYear" value="true"#if( $reportTable.relatives.isIndividualMonthsThisYear() ) checked#end>&nbsp;
             <label for="individualQuartersThisYear">$i18n.getString( "individual_quarters_this_year" )</label>
@@ -413,10 +409,12 @@
     var i18n_must_select_at_least_one_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indicator" ), "'")';
     var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
     var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
+    var i18n_cannot_select_orgunit_and_parent_orgunit_param = '$encoder.jsEscape( $i18n.getString( "cannot_select_orgunit_and_parent_orgunit_param" ), "'")';
 </script>
 
 #if ( $dimension )
 <script type="text/javascript">
+	document.getElementById( "doIndicators" ).checked = true;
 	document.getElementById( "doIndicators" ).disabled = true;
     document.getElementById( "doOrganisationUnits" ).disabled = true;
     document.getElementById( "doPeriods" ).disabled = true;

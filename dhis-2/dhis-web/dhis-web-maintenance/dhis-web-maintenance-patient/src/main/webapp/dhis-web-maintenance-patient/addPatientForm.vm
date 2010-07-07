@@ -12,6 +12,10 @@ td.error {padding-left:1em}
   	{validate:{required:true}}
   #end
 #end
+
+#if($showMsg == "true" )
+	<table><tr><td>$i18n.getString( "oucode_must_be_valid" )</td></tr><table>
+#else
 <script>
 	  //-----------------------------------------------------------------------
 	  //init jQuery validation for addPatientForm
@@ -28,7 +32,7 @@ td.error {padding-left:1em}
 			jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 			jQuery("#firstName").focus();
 			var dateFormat = '$encoder.jsEscape( $i18n.getString( "format.date.label" ) , "'")'; 
-			jQuery("#birthDate").rules("add",{required:true,date:dateFormat,datelessthanequaltoday:true});
+			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
 		});
 </script>
 <h3>$i18n.getString( "add_new_patient" )</h3>
@@ -37,8 +41,11 @@ td.error {padding-left:1em}
 <form id="addPatientForm" action="addPatient.action" method="post">
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
-<table>	
-	<tr><td>&nbsp;</td></tr>
+<table>
+
+        <tr><td>&nbsp;</td></tr>
+
+
 	<tr>
 		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
@@ -79,8 +86,8 @@ td.error {padding-left:1em}
 			<input type="text" id="age" name="age" style="width:4em"  onchange="ageOnchange()" class="{validate:{number:true}}">
 			&nbsp;&nbsp;&nbsp;
 			<label for="estimated">$i18n.getString( "estimated" )</label>
-            <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true"> 
-	   </td>
+                        <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true">
+                </td>
 	   <td></td>
 	</tr>
  	<tr>
@@ -118,7 +125,26 @@ td.error {padding-left:1em}
 	#foreach ($identifierType in $identifierTypes)
 	<tr>
 		<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-		<td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related}"  class='idfield  #validate( "default"  $identifierType.mandatory ) '/></td>	
+
+        #if($identifierType.format == "State Format")
+            <td style="padding-left:1.1em"><input type="hidden" id="iden$identifierType.id" name="iden$identifierType.id"/>
+            #if($organisationUnit.code == "null")
+                #set($organisationUnit.code = "" );
+            #end
+				<table>
+					<tr align="center" valign="top">
+						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$organisationUnit.code" maxlength="9" size="10"/> <br/> <font color="red">OrgUnit<br>Code</font></td>
+						<td> - <input type="text" id="progcode" name="progcode" maxlength="1" size="1" class='idfield  #validate( "default"  $identifierType.mandatory ) '/> <br/> <font color="red">Prg<br>Code</font></td>
+						<td> - <input type="text" id="yearcode" name="yearcode" maxlength="2" size="2" value="$year" class="{validate:{required:true,minlength:2}}"/> <br/> <font color="red">Year</font></td>
+						<td> - <input type="text" id="benicode" name="benicode" maxlength="4" size="4" class="{validate:{required:true,minlength:4}}"/> <br/> <font color="red">Benificiary<br>Code</font></td>
+						
+					</tr>
+				</table>
+            </td>
+        #else
+            <td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related}"  class='idfield  #validate( "default"  $identifierType.mandatory ) '/></td>
+        #end
+
 	</tr>
 	#end
 	
@@ -133,13 +159,14 @@ td.error {padding-left:1em}
 				<td class="input-column">
 					#if( $attribute.valueType == "YES/NO" )
 		                <select id="attr$attribute.id"  name="attr$attribute.id" style="width:100%"  > 
-		                	<option value="">[$i18n.getString( "please_select" )]</option>             
+                                    <option value="">[$i18n.getString( "please_select" )]</option>
 		                    <option value="true">$i18n.getString( "yes" )</option>
 		                    <option value="false" selected="selected">$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
 	                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
 	                	<input type="text" id="attr$attribute.id"  name="attr$attribute.id"  class=' #validate( "default"  $attribute.mandatory )'>
+
 	                    <script type="text/javascript">
 	                        Calendar.setup({
 	                            inputField     :    "attr$attribute.id",      // id of the input field
@@ -173,7 +200,7 @@ td.error {padding-left:1em}
 				<td class="input-column">
 					#if( $attribute.valueType == "YES/NO" )
 		                <select id="attr$attribute.id"  name="attr$attribute.id"  style="width:100%" > 
-		                	 <option value="" >[$i18n.getString( "please_select" )]</option>             
+		                	<option value="" >[$i18n.getString( "please_select" )]</option>             
 		                    <option value="true">$i18n.getString( "yes" )</option>
 		                    <option value="false" >$i18n.getString( "no" )</option>
 		                </select>                
@@ -207,7 +234,8 @@ td.error {padding-left:1em}
 	<input type="submit" value="$i18n.getString( "add" )" style="width:10em">
 	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patient.action'" style="width:10em">
 </p>
-</form> 	
+</form>
+#end
 
 <span id="message"></span>
 
@@ -247,4 +275,5 @@ div#hiddenModalContent td {padding: 2px 5px}
 	var i18n_patient_system_id = '$encoder.jsEscape( $i18n.getString( "patient_system_id" ) , "'")';
 	var i18n_child_representative = '$encoder.jsEscape( $i18n.getString( "child_representative" ) , "'")';
 	var checkedDuplicate = false;
+        var i18n_oucode_must_have_9_digits = '$encoder.jsEscape( $i18n.getString( "oucode_must_be_valid" ) , "'")';
 </script>

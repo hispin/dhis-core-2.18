@@ -39,5 +39,5 @@ import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 public interface DataElementDataMart
 {
     int exportDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        Collection<Integer> organisationUnitIds, DataElementAggregator dataElementAggregator );
+        Collection<Integer> organisationUnitIds, DataElementAggregator dataElementAggregator, String key );
 }

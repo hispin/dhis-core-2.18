@@ -69,4 +69,10 @@ public class SurveyPeriodType
 
         return new Period( this, fixedDate, fixedDate );
     }
+    
+    @Override
+    public int getFrequencyOrder()
+    {
+        return 0;
+    }
 }

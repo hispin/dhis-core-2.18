@@ -64,7 +64,6 @@ public abstract class PeriodType
         periodTypes.add( new YearlyPeriodType() );
         periodTypes.add( new TwoYearlyPeriodType() );
         periodTypes.add( new OnChangePeriodType() );
-        periodTypes.add( new RelativePeriodType() );
         //periodTypes.add( new SurveyPeriodType() );
 
         periodTypeMap = new HashMap<String, PeriodType>();
@@ -140,6 +139,14 @@ public abstract class PeriodType
      * @return the valid Period based on the given date
      */
     public abstract Period createPeriod( Date date );
+    
+    /**
+     * Returns a comparable value for the frequency length of this PeriodType.
+     * Shortest is 0.
+     * 
+     * @return the frequency order.
+     */
+    public abstract int getFrequencyOrder();
 
     // -------------------------------------------------------------------------
     // Calendar support

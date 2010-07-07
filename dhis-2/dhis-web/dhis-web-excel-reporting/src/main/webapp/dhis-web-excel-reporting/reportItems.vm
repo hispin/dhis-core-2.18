@@ -22,18 +22,18 @@
 	</tr>
 </table>
 
-<table width="100%" class="listTable">
+<table width="100%" class="listTable" id="listTable">
 	<thead>
 		<tr>
-			<th><input type="checkbox" onclick="selectALL(this.checked)"/></th>
+			<th class="{sorter: false}"><input type="checkbox" onclick="selectALL(this.checked)"/></th>
 			<th>$i18n.getString('name')</th>
 			<th>$i18n.getString('item_type')</th>
 			<th>$i18n.getString('period_type')</th>
 			<th>$i18n.getString('row')</th>		
 			<th>$i18n.getString('column')</th>		
-			<th>$i18n.getString('expression')</th>		
+			<th class="{sorter: false}">$i18n.getString('expression')</th>		
 			<th>$i18n.getString('sheet_no')</th>	
-			<th width="80px">$i18n.getString('operations')</th>		
+			<th width="80px" class="{sorter: false}">$i18n.getString('operations')</th>		
 		</tr>
 	</thead>
 	<tbody id="list">	
@@ -43,10 +43,10 @@
 			<td>$encoder.htmlEncode( $reportItem.name )</td>
 			<td>$i18n.getString( $reportItem.itemType )</td>
 			<td>$i18n.getString( $reportItem.periodType )</td>
-			<td>$encoder.htmlEncode( $reportItem.row )</td>
-			<td>$encoder.htmlEncode( $reportItem.column )</td>
-			<td>$encoder.htmlEncode( $reportItem.expression )</td>
-			<td>$encoder.htmlEncode( $reportItem.sheetNo )</td>
+			<td>$reportItem.row</td>
+			<td>$reportItem.column</td>
+			<td>$reportItem.expression</td>
+			<td>$reportItem.sheetNo </td>
 			<td align="center">				
 				<a href="javascript:mode='update'; openUpdateReportItem( '$reportItem.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 				<a href="javascript:translate( 'ReportExcelItem', '$reportItem.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
@@ -370,4 +370,7 @@
 	var i18n_input_sheet_no = '$encoder.jsEscape( $i18n.getString( "input_sheet_no" ) , "'")';
 	var i18n_choose_report = '$encoder.jsEscape( $i18n.getString( "choose_report" ) , "'")';
 	var i18n_choose_excel_group = '$encoder.jsEscape( $i18n.getString( "choose_excel_group" ) , "'")';
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+	});
 </script>

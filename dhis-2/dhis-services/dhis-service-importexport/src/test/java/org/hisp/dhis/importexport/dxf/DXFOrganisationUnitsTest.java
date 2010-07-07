@@ -73,7 +73,7 @@ public class DXFOrganisationUnitsTest
     @Test
     public void testImportOrganisationUnits() throws Exception
     {
-        importService = (ImportService) getBean( "org.hisp.dhis.importexport.XMLImportService" );        
+        importService = (ImportService) getBean( "org.hisp.dhis.importexport.ImportService" );        
 
         ImportParams params = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
         

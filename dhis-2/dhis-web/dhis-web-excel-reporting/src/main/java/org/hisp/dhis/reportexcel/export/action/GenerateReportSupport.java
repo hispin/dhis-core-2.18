@@ -61,6 +61,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -148,6 +149,8 @@ public abstract class GenerateReportSupport
 
     protected DataValueService dataValueService;
 
+    protected I18n i18n;
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
@@ -163,6 +166,14 @@ public abstract class GenerateReportSupport
     public String getOutputXLS()
     {
         return outputXLS;
+    }
+
+    /**
+     * @param i18n the i18n to set
+     */
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     public InputStream getInputStream()
@@ -638,8 +649,9 @@ public abstract class GenerateReportSupport
 
                 if ( !(dataElement instanceof CalculatedDataElement) )
                 {
+
                     replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate ) + "";
-                 
+
                     matcher.appendReplacement( buffer, replaceString );
 
                     matcher.appendTail( buffer );
@@ -657,7 +669,7 @@ public abstract class GenerateReportSupport
                     Map<String, Integer> factorMap = dataElementService.getOperandFactors( calculatedDataElement );
 
                     Collection<String> operandIds = dataElementService.getOperandIds( calculatedDataElement );
-                    
+
                     for ( String operandId : operandIds )
                     {
                         factor = factorMap.get( operandId );
@@ -671,7 +683,7 @@ public abstract class GenerateReportSupport
                         optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
                             .parseInt( optionComboIdString ) );
 
-                        double dataValue = getValue( element, optionCombo, organisationUnit,startDate, endDate );
+                        double dataValue = getValue( element, optionCombo, organisationUnit, startDate, endDate );
 
                         value += dataValue * factor;
 
@@ -692,12 +704,12 @@ public abstract class GenerateReportSupport
     }
 
     private double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
-        OrganisationUnit organisationUnit,Date startDate, Date endDate )
+        OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
         double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
             endDate, organisationUnit );
 
-        if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+        if ( dataElement.isZeroIsSignificant() && aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
         {
             aggregatedValue = 0;
         }

@@ -57,6 +57,16 @@ There are several options you will need to pass to the build script.
 ./build.sh docs Build only the documentation.
 ./build.sh installer Build only the installer.
 ./build.sh dhis2 Build only DHIS2. 
+./build.sh live Build only the DHIS2 Live wrapper.
+
+There are a number of different installers that will be generated for different purposes. 
+
+1)DHIS2 Windows Live
+This version of the installer is appropriate for Microsoft Windows with a preexisting JRE. 
+2) DHIS2 Windows Embedded JRE
+This version of the installer will include a prepacked JRE (Java Runtime Edition) with the installer. 
+This version therefore will not require a user to have Java preinstalled on their machine, but will 
+incease the size of the installer by about 30 MB. Place a copy of the JRE in the /resources/jre/jre6 folder.
 
 
 You will now enter into a rather lengthy

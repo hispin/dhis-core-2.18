@@ -78,6 +78,12 @@ public class OnChangePeriodType
         return new Period( this, startDate, cal.getTime() );
     }
 
+    @Override
+    public int getFrequencyOrder()
+    {
+        return 0;
+    }
+
     // -------------------------------------------------------------------------
     // OnChange functionality
     // -------------------------------------------------------------------------

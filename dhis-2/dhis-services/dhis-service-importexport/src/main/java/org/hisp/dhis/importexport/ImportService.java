@@ -38,8 +38,8 @@ import org.hisp.dhis.common.ProcessState;
 public interface ImportService
 {
     void importData( ImportParams params, InputStream inputStream )
-        throws Exception;
+        throws ImportException;
     
     void importData( ImportParams params, InputStream inputStream, ProcessState state )
-        throws Exception;
+        throws ImportException;
 }

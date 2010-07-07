@@ -28,6 +28,7 @@ package org.hisp.dhis.i18n.action;
  */
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -53,11 +54,15 @@ public class I18nAction
 
     private String returnUrl;
 
+    private String message;
+
     private Map<String, String> translations = new Hashtable<String, String>();
 
     private Map<String, String> referenceTranslations = new Hashtable<String, String>();
 
     private Map<String, String> propertyLabels = new Hashtable<String, String>();
+
+    private Map<String, Map<String, String>> rulePropertyNames = new HashMap<String, Map<String, String>>();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -96,6 +101,11 @@ public class I18nAction
         this.returnUrl = returnUrl;
     }
 
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -130,6 +140,11 @@ public class I18nAction
     {
         return propertyLabels;
     }
+    
+    public Map<String, Map<String, String>> getRulePropertyNames()
+    {
+        return rulePropertyNames;
+    }
 
     public Map<String, String> getReferenceTranslations()
     {
@@ -151,6 +166,11 @@ public class I18nAction
         return localeManager.getFallbackLocale();
     }
 
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -158,6 +178,8 @@ public class I18nAction
     public String execute()
         throws Exception
     {
+        rulePropertyNames = i18nService.getRulePropertyNames( className );
+        
         propertyLabels = i18nService.getPropertyNamesLabel( className );
 
         translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );

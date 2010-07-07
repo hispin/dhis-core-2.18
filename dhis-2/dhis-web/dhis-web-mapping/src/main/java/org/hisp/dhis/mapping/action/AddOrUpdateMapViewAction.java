@@ -60,6 +60,13 @@ public class AddOrUpdateMapViewAction
         this.name = name;
     }
 
+    private String mapValueType;
+
+    public void setMapValueType( String mapValueType )
+    {
+        this.mapValueType = mapValueType;
+    }
+
     private int indicatorGroupId;
 
     public void setIndicatorGroupId( int indicatorGroupId )
@@ -72,6 +79,20 @@ public class AddOrUpdateMapViewAction
     public void setIndicatorId( int indicatorId )
     {
         this.indicatorId = indicatorId;
+    }
+
+    private int dataElementGroupId;
+
+    public void setDataElementGroupId( int dataElementGroupId )
+    {
+        this.dataElementGroupId = dataElementGroupId;
+    }
+
+    private int dataElementId;
+
+    public void setDataElementId( int dataElementId )
+    {
+        this.dataElementId = dataElementId;
     }
 
     private String periodTypeId;
@@ -94,9 +115,9 @@ public class AddOrUpdateMapViewAction
     {
         this.mapSource = mapSource;
     }
-    
+
     private String mapLegendType;
-    
+
     public void setMapLegendType( String mapLegendType )
     {
         this.mapLegendType = mapLegendType;
@@ -129,9 +150,9 @@ public class AddOrUpdateMapViewAction
     {
         this.colorHigh = colorHigh;
     }
-    
+
     private int mapLegendSetId;
-    
+
     public void setMapLegendSetId( int mapLegendSetId )
     {
         this.mapLegendSetId = mapLegendSetId;
@@ -165,8 +186,9 @@ public class AddOrUpdateMapViewAction
     public String execute()
         throws Exception
     {
-        mappingService.addOrUpdateMapView( name, indicatorGroupId, indicatorId, periodTypeId, periodId, mapSource,
-            mapLegendType, method, classes, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
+        mappingService.addOrUpdateMapView( name, mapValueType, indicatorGroupId, indicatorId, dataElementGroupId,
+            dataElementId, periodTypeId, periodId, mapSource, mapLegendType, method, classes, colorLow, colorHigh,
+            mapLegendSetId, longitude, latitude, zoom );
 
         return SUCCESS;
     }

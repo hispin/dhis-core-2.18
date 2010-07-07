@@ -32,6 +32,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -69,7 +71,7 @@ public class MappingStoreTest
     private Period period;
 
     private MapLegendSet mapLegendSet;
-    
+
     private Map mapA;
 
     private Map mapB;
@@ -110,8 +112,8 @@ public class MappingStoreTest
         periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
         period = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
         periodService.addPeriod( period );
-        
-        mapLegendSet = createMapLegendSet( 'A', indicator );        
+
+        mapLegendSet = createMapLegendSet( 'A', indicator );
         mappingStore.addMapLegendSet( mapLegendSet );
     }
 
@@ -158,9 +160,9 @@ public class MappingStoreTest
     {
         mappingStore.addMap( mapA );
 
-        MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period,
-            MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A",
-            "B", mapLegendSet, "1", "1", 1 );
+        MapView mapView = new MapView( "MapViewA", MapView.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
+            new DataElementGroup(), new DataElement(), periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE,
+            "sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B", mapLegendSet, "1", "1", 1 );
 
         int idA = mappingStore.addMapView( mapView );
 

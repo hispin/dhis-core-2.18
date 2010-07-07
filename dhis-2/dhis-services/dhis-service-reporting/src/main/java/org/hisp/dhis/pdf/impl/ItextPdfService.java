@@ -302,7 +302,7 @@ public class ItextPdfService
         table.addCell( getCell( 7, 8 ) );
 
         table.addCell( getTextCell( i18n.getString( "district_health_information_software" ) + " - "
-            + format.parseDate( DateUtils.getMediumDateString() ), 7 ) );
+            + format.parseDate( DateUtils.getMediumDateString() ), 7, TEXT ) );
 
         table.addCell( getCell( 7, 15 ) );
 

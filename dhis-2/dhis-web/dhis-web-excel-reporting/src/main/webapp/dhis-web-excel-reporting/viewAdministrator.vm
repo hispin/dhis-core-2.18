@@ -1,13 +1,12 @@
 ﻿<h3>$i18n.getString( "administration" )</h3>
 
 <ul class="introList">
-    #introListItem( "getConfiguration.action" "configuration" )
-    #introListItem( "listReportExcel.action" "reports" )
-    #introListItem( "listDataEntryStatus.action" "data_status" )
-	#introListItem( "listAllExcelItemGroup.action" "excel_item" )
-    #introListItem( "listAllExcelTemplates.action" "excel_template_management" )
-	#introListItem( "javascript: cleanUp();" "clean_up" )
-
+    #introListImgItem( "getConfiguration.action" "configuration" "systemsettings")
+    #introListImgItem( "listReportExcel.action" "reports" "pivottable")
+    #introListImgItem( "listDataEntryStatus.action" "data_status" "validationcriteria")
+	#introListImgItem( "listAllExcelItemGroup.action" "excel_item" "program" )
+    #introListImgItem( "listAllExcelTemplates.action" "excel_template_management" , "excel")
+	#introListImgItem( "javascript: cleanUp();" "clean_up" "clean-up")
 </ul>
 <script>
 	function go(action){
@@ -21,7 +20,6 @@
 	}
 	
 	function cleanUpCompleted( xmlObject ){	
-		setMessage(xmlObject.firstChild.nodeValue);
+		setHeaderDelayMessage(xmlObject.firstChild.nodeValue);
 	}
 </script>
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>

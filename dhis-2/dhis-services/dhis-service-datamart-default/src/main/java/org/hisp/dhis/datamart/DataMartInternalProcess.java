@@ -33,16 +33,17 @@ import java.util.Collection;
 
 import org.amplecode.cave.process.SerialToGroup;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datamart.engine.DataMartEngine;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
 
 /**
- * @author Lars Helge Overland
+ * Either the identifier or the DataMartExport object must be set. The
+ * identifier is given priority.
  * 
- * @version $Id: DataMartInternalProcess.java 6222 2008-11-07 12:20:46Z larshelg $
+ * @author Lars Helge Overland
  */
 public class DataMartInternalProcess
     extends AbstractStatementInternalProcess implements SerialToGroup
@@ -56,51 +57,33 @@ public class DataMartInternalProcess
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private DataMartEngine dataMartEngine;
+    private DataMartService dataMartService;
 
-    public void setDataMartEngine( DataMartEngine dataMartEngine )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartEngine = dataMartEngine;
+        this.dataMartService = dataMartService;
     }
 
-    // -------------------------------------------------------------------------
-    // Properties
-    // -------------------------------------------------------------------------
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private Collection<Integer> dataElementIds;
-
-    public void setDataElementIds( Collection<Integer> dataElementIds )
-    {
-        this.dataElementIds = dataElementIds;
-    }
-
     private Collection<Integer> indicatorIds;
-
-    public void setIndicatorIds( Collection<Integer> indicatorIds )
-    {
-        this.indicatorIds = indicatorIds;
-    }
-
     private Collection<Integer> periodIds;
-
-    public void setPeriodIds( Collection<Integer> periodIds )
-    {
-        this.periodIds = periodIds;
-    }
-    
     private Collection<Integer> organisationUnitIds;
-
-    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
-    {
-        this.organisationUnitIds = organisationUnitIds;
-    }
-
-    public void setProperties( DataMartExport export )
+    private RelativePeriods relatives;
+    
+    public void setExport( DataMartExport export )
     {
         this.dataElementIds = getIdentifiers( DataElement.class, export.getDataElements() );
         this.indicatorIds = getIdentifiers( Indicator.class, export.getIndicators() );
         this.periodIds = getIdentifiers( Period.class, export.getPeriods() );
         this.organisationUnitIds = getIdentifiers( OrganisationUnit.class, export.getOrganisationUnits() );
+        this.relatives = export.getRelatives();
     }
 
     // -------------------------------------------------------------------------
@@ -120,6 +103,13 @@ public class DataMartInternalProcess
     protected void executeStatements()
         throws Exception
     {
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, getState() );
+        if ( id != null )
+        {
+            dataMartService.export( id );
+        }
+        else
+        {
+            dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, relatives );
+        }
     }
 }

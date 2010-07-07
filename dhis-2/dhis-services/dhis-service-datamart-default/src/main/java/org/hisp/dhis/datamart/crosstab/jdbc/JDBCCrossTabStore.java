@@ -27,8 +27,12 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
+import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +41,7 @@ import java.util.Map;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,21 +66,20 @@ public class JDBCCrossTabStore
     // CrossTabStore implementation
     // -------------------------------------------------------------------------
 
-    public void createCrossTabTable( final List<DataElementOperand> operands )
+    public void createCrossTabTable( final List<DataElementOperand> operands, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final StringBuffer sql = new StringBuffer( "CREATE TABLE datavaluecrosstab ( " );
+            final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_NAME + key + " ( " );
             
             sql.append( "periodid INTEGER NOT NULL, " );
             sql.append( "sourceid INTEGER NOT NULL, " );
             
             for ( DataElementOperand operand : operands )
             {
-                sql.append( COLUMN_PREFIX ).append( operand.getDataElementId() ).append(
-                    SEPARATOR ).append( operand.getOptionComboId() ).append( " VARCHAR(30), " );
+                sql.append( operand.getSimpleName() ).append( " VARCHAR(30), " );
             }
             
             sql.append( "PRIMARY KEY ( periodid, sourceid ) );" );
@@ -92,13 +96,13 @@ public class JDBCCrossTabStore
         }
     }
 
-    public Map<String, Integer> getCrossTabTableColumns()
+    public Map<String, Integer> getCrossTabTableColumns( String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final String sql = "SELECT * FROM datavaluecrosstab LIMIT 0";
+            final String sql = "SELECT * FROM " + TABLE_NAME + key + " LIMIT 0";
             
             final ResultSetMetaData metaData = holder.getStatement().executeQuery( sql ).getMetaData();
             
@@ -125,13 +129,13 @@ public class JDBCCrossTabStore
         }
     }
     
-    public void dropCrossTabTable()
+    public void dropCrossTabTable( String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final String sql = "DROP TABLE IF EXISTS datavaluecrosstab";
+            final String sql = "DROP TABLE IF EXISTS " + TABLE_NAME + key;
             
             holder.getStatement().executeUpdate( sql );
         }
@@ -145,13 +149,13 @@ public class JDBCCrossTabStore
         }
     }
 
-    public void dropTrimmedCrossTabTable()
+    public void dropTrimmedCrossTabTable( String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final String sql = "DROP TABLE IF EXISTS datavaluecrosstabtrimmed";
+            final String sql = "DROP TABLE IF EXISTS " + TABLE_NAME_TRIMMED + key;
             
             holder.getStatement().executeUpdate( sql );
         }
@@ -165,13 +169,13 @@ public class JDBCCrossTabStore
         }
     }
 
-    public void renameTrimmedCrossTabTable()
+    public void renameTrimmedCrossTabTable( String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final String sql = "ALTER TABLE datavaluecrosstabtrimmed RENAME TO datavaluecrosstab";
+            final String sql = "ALTER TABLE " + TABLE_NAME_TRIMMED + key + " RENAME TO " + TABLE_NAME + key;
             
             holder.getStatement().executeUpdate( sql );
         }
@@ -185,17 +189,17 @@ public class JDBCCrossTabStore
         }
     }
     
-    public void createTrimmedCrossTabTable( Collection<DataElementOperand> operands )
+    public void createTrimmedCrossTabTable( Collection<DataElementOperand> operands, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {            
-            final StringBuffer buffer = new StringBuffer( "CREATE TABLE datavaluecrosstabtrimmed AS SELECT periodid, sourceid, " );
+            final StringBuffer buffer = new StringBuffer( "CREATE TABLE " + TABLE_NAME_TRIMMED + key + " AS SELECT periodid, sourceid, " );
             
             for ( final DataElementOperand operand : operands )
             {
-                buffer.append( COLUMN_PREFIX ).append( operand.getDataElementId() ).append( SEPARATOR ).append( operand.getOptionComboId() ).append( ", " );
+                buffer.append( operand.getSimpleName() ).append( ", " );
             }
             
             if ( buffer.length() > 1 )
@@ -204,7 +208,7 @@ public class JDBCCrossTabStore
                 buffer.deleteCharAt( buffer.length() - 1 );
             }
             
-            buffer.append( " FROM datavaluecrosstab" );
+            buffer.append( " FROM " + TABLE_NAME + key );
             
             holder.getStatement().executeUpdate( buffer.toString() );
         }
@@ -223,5 +227,94 @@ public class JDBCCrossTabStore
         int maxColumns = statementBuilder.getMaximumNumberOfColumns();
         
         return ( operands != null && operands.size() > maxColumns ) ? operands.size() - maxColumns : 0;
+    }
+    
+    // -------------------------------------------------------------------------
+    // CrossTabDataValue
+    // -------------------------------------------------------------------------
+
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, 
+        Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            final String sql =
+                "SELECT * " +
+                "FROM " + TABLE_NAME + key + " " +
+                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+                "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return getCrossTabDataValues( resultSet, operandIndexMap );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get CrossTabDataValues", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId, String key )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            final String sql = 
+                "SELECT * " +
+                "FROM " + TABLE_NAME + key + " " +
+                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+                "AND sourceid = " + sourceId;
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return getCrossTabDataValues( resultSet, operandIndexMap );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get CrossTabDataValues", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Map<DataElementOperand, Integer> operandIndexMap )
+        throws SQLException
+    {
+        final Collection<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
+        
+        while ( resultSet.next() )
+        {
+            final CrossTabDataValue value = new CrossTabDataValue();
+            
+            value.setPeriodId( resultSet.getInt( 1 ) );
+            value.setSourceId( resultSet.getInt( 2 ) );
+            
+            for ( Map.Entry<DataElementOperand, Integer> entry : operandIndexMap.entrySet() )
+            {
+                String columnValue = resultSet.getString( entry.getValue() );
+                
+                if ( columnValue != null )
+                {
+                    value.getValueMap().put( entry.getKey(), columnValue );
+                }
+            }
+            
+            values.add( value );
+        }
+        
+        return values;
     }
 }

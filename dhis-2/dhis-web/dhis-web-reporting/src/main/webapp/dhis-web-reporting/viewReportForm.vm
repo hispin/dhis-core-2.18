@@ -6,29 +6,32 @@
 	<col width="280">
     <tr>
         <td style="vertical-align:top">
-            
-            <table class="listTable">
+            <table width="100%">
+				 <tr>
+                	<td colspan="6" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddReportForm.action'"></td>
+                </tr>
+			</table>
+            <table class="listTable" id="listTable">
                 <col>
                 <col width="20">
                 <col width="20">
                 <col width="20">
                 <col width="20">
-                <col width="20">
-                <thead>
-                <tr>
-                	<td colspan="6" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddReportForm.action'"></td>
-                </tr>
+                <thead>               
                 <tr>
                     <th>$i18n.getString( "name" )</th>
-                    <th colspan="5">$i18n.getString( "operations" )</th>
+                    <th colspan="4" class="{sorter: false}">$i18n.getString( "operations" )</th>
                 </tr>
                 </thead>
                 <tbody id="list">
                 #foreach ( $report in $reports )
                 <tr id="tr${report.id}">
                     <td>$encoder.htmlEncode( $report.name )</td>
-                    <td style="text-align:center">#if ( $report.hasReportTable )<a href="getReportParams.action?id=$report.id&url=$report.url&mode=report" title="$i18n.getString( 'generate_datasource_and_view_report' )"><img src="../images/open.png" alt="$i18n.getString( 'generate_datasource_and_view_report' )"></a>#end</td>
-                    <td style="text-align:center"><a href="javascript:viewReport( '$encoder.htmlEncode( $report.url )' )" title="$i18n.getString( 'view_report_based_on_existing_datasource' )"><img src="../images/view_report.png" alt="$i18n.getString( 'view_report_based_on_existing_datasource' )"></a></td>
+                    <td style="text-align:center">
+                    	#if ( $report.hasReportTable ) <a href="getReportParams.action?id=$report.id&url=$report.url&mode=report" title="$i18n.getString( 'create' )">
+                    	#else <a href="javascript:viewReport( '$encoder.htmlEncode( $report.url )' )" title="$i18n.getString( 'create' )">#end
+                    	<img src="../images/start_process.png" alt="$i18n.getString( 'create' )"></a>
+                    </td>
                     <td style="text-align:center"><a href="displayAddReportForm.action?id=$report.id" title="$i18n.getString( 'edit_report' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit_report' )"></a></td>
                     <td style="text-align:center"><a href="javascript:addToDashboard( '$report.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a></td>
                     <td style="text-align:center"><a href="javascript:removeReport( $report.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a></td>
@@ -56,4 +59,7 @@
 <script type="text/javascript">
     var i18n_confirm_remove_report = '$encoder.jsEscape( $i18n.getString( "confirm_remove_report" ) , "'")';
     var i18n_confirm_add_to_dashboard = '$encoder.jsEscape( $i18n.getString( "confirm_add_to_dashboard" ) , "'")';
+	jQuery(document).ready(function(){		
+		tableSorter( 'listTable' );	
+	});
 </script>

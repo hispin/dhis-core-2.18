@@ -24,7 +24,7 @@
 
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
-<h3>$i18n.getString( "min_max_validation" )</h3>
+<h3>$i18n.getString( "min_max_value_generation" )</h3>
 <form id="minMaxGeneratingForm" action="getMinMaxValidationParams.action" method="POST">
 <table>
   <tr>
@@ -41,14 +41,14 @@
     
     </select></td>
     <td style="width:10px ">&nbsp;</td>
-    <td><input type="button" value="$i18n.getString( "select_all_at_level_min_max" )" onclick="selectAllAtLevel()" style="width:12em">
+    <td><input type="button" value="$i18n.getString( "select_all_at_level" )" onclick="selectAllAtLevel()" style="width:12em">
 		<select id="levelList" name="levelList" style="width:12em">
 			#foreach( $lev in $levels )
 				<option value="$lev.level" #if ( $level == $lev.level )selected="selected"#end>$encoder.htmlEncode( $lev.name )</option>
 			#end
 		</select>
-		<input type="button" value="$i18n.getString( "unselect_all_at_level_min_max" )" onclick="unselectAllAtLevel()" style="width:12em">
-		<input type="button" value="$i18n.getString( "unselect_all_min_max" )" onclick="unselectAll()" style="width:12em">        
+		<input type="button" value="$i18n.getString( "unselect_all_at_level" )" onclick="unselectAllAtLevel()" style="width:12em">
+		<input type="button" value="$i18n.getString( "unselect_all" )" onclick="unselectAll()" style="width:12em">        
 	  </td>
   </tr>
   <tr>

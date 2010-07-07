@@ -27,7 +27,6 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.User;
 
 /**
  * This interface defined methods for getting access to the currently logged in

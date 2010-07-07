@@ -28,7 +28,6 @@ package org.hisp.dhis.period;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -112,10 +111,15 @@ public class DefaultPeriodService
     {
         return periodStore.getPeriodsBetweenDates( startDate, endDate );
     }
-
+    
     public Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate )
     {
         return periodStore.getPeriodsBetweenDates( periodType, startDate, endDate );
+    }
+
+    public Collection<Period> getPeriodsBetweenOrSpanningDates( Date startDate, Date endDate )
+    {
+        return periodStore.getPeriodsBetweenOrSpanningDates( startDate, endDate );
     }
 
     public Collection<Period> getIntersectingPeriodsByPeriodType( PeriodType periodType, Date startDate, Date endDate )
@@ -173,127 +177,17 @@ public class DefaultPeriodService
     {
         return periodStore.getPeriods( period, dataElements, sources );
     }
-
-    public Period getRelativePeriod( Date date, int startMonths, int endMonths )
+    
+    public List<Period> reloadPeriods( List<Period> periods )
     {
-        if ( startMonths >= endMonths )
+        List<Period> reloaded = new ArrayList<Period>();
+        
+        for ( Period period : periods )
         {
-            throw new IllegalArgumentException( "End months must be greater than start months" );
+            reloaded.add( periodStore.reloadForceAddPeriod( period ) );
         }
-
-        PeriodType periodType = periodStore.getPeriodType( RelativePeriodType.class );
-
-        // ---------------------------------------------------------------------
-        // Reload PeriodType
-        // ---------------------------------------------------------------------
-
-        if ( periodType == null )
-        {
-            periodType = new RelativePeriodType();
-
-            periodStore.addPeriodType( periodType );
-        }
-
-        Calendar cal = PeriodType.createCalendarInstance( date );
-
-        cal.add( Calendar.MONTH, startMonths );
-        cal.set( Calendar.DAY_OF_MONTH, cal.getActualMinimum( Calendar.DAY_OF_MONTH ) );
-
-        Date startDate = cal.getTime();
-
-        cal = PeriodType.createCalendarInstance( date );
-
-        cal.add( Calendar.MONTH, endMonths - 1 );
-        cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-
-        Date endDate = cal.getTime();
-
-        Period period = new Period( periodType, startDate, endDate );
-
-        // ---------------------------------------------------------------------
-        // Persist period if it does not exist
-        // ---------------------------------------------------------------------
-
-        Period persistedPeriod = getPeriod( startDate, endDate, periodType );
-
-        if ( persistedPeriod == null )
-        {
-            addPeriod( period );
-        }
-        else
-        {
-            period = persistedPeriod;
-        }
-
-        return period;
-    }
-
-    public Period getRelativePeriod( Date date, int months )
-    {
-        if ( months == 0 )
-        {
-            throw new IllegalArgumentException( "Months cannot be zero" );
-        }
-
-        PeriodType periodType = periodStore.getPeriodType( RelativePeriodType.class );
-
-        // ---------------------------------------------------------------------
-        // Reload PeriodType
-        // ---------------------------------------------------------------------
-
-        if ( periodType == null )
-        {
-            periodType = new RelativePeriodType();
-
-            periodStore.addPeriodType( periodType );
-        }
-
-        Calendar cal = PeriodType.createCalendarInstance( date );
-
-        Date startDate = null;
-        Date endDate = null;
-
-        if ( months > 0 )
-        {
-            cal.set( Calendar.DAY_OF_MONTH, cal.getActualMinimum( Calendar.DAY_OF_MONTH ) );
-
-            startDate = cal.getTime();
-
-            cal.add( Calendar.MONTH, months - 1 );
-            cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-
-            endDate = cal.getTime();
-        }
-        else
-        {
-            cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-
-            endDate = cal.getTime();
-
-            cal.add( Calendar.MONTH, months + 1 );
-            cal.set( Calendar.DAY_OF_MONTH, cal.getActualMinimum( Calendar.DAY_OF_MONTH ) );
-
-            startDate = cal.getTime();
-        }
-
-        Period period = new Period( periodType, startDate, endDate );
-
-        // ---------------------------------------------------------------------
-        // Persist period if it does not exist
-        // ---------------------------------------------------------------------
-
-        Period persistedPeriod = getPeriod( startDate, endDate, periodType );
-
-        if ( persistedPeriod == null )
-        {
-            addPeriod( period );
-        }
-        else
-        {
-            period = persistedPeriod;
-        }
-
-        return period;
+        
+        return reloaded;
     }
     
     public List<Period> getPeriods( Period lastPeriod, int historyLength )

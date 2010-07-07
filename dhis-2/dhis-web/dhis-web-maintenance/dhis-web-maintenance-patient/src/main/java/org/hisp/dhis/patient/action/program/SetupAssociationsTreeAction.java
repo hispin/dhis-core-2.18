@@ -97,7 +97,7 @@ public class SetupAssociationsTreeAction
         program = programService.getProgram( id );
         
         selectionTreeManager.setSelectedOrganisationUnits( convert( program.getOrganisationUnits() ) );
-
+        
         return SUCCESS;
     }
 

@@ -1,5 +1,5 @@
+ <script type="text/javascript" src="javascript/FCK/editor/js/fckeditorcode_gecko.js"></script>
 
-<script type="text/javascript" src="javascript/FCK/fckeditor.js"></script>
 <script type="text/javascript">
     var stat = '$status';
     var dataEntryFormId = -1;
@@ -11,15 +11,19 @@
     
     var FCKConfig;
     var FCK;
-    window.onload = function()
+	
+	window.onload = function()
     {
-        var oFCKeditor = new FCKeditor( 'designTextarea' ) ;
-        oFCKeditor.BasePath = "javascript/FCK/";
+		var oFCKeditor = new FCKeditor( 'designTextarea' );
+		oFCKeditor.BasePath = "javascript/FCK/";
         oFCKeditor.ReplaceTextarea();
     }
+	
 //-----------------------------------------------------------------------
 //init jQuery validation for saveDataEntryForm
 //-----------------------------------------------------------------------
+	var autoSave = '$!autoSave';
+	
 	jQuery(document).ready(
 			function()
 			{
@@ -28,6 +32,7 @@
 					,errorElement:"td"
 					,submitHandler: function(form)
 									{
+										autoSave = false;
 										validateDataEntryForm();
 									}
 				});
@@ -40,7 +45,7 @@
 
 <h3>$i18n.getString( "dataentryform_management" )</h3>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post" >
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post">
   <table id="detailsList">
     <col> ## Labels
     <col> ## Input
@@ -72,19 +77,20 @@
       <tr>
         <td><textarea id="designTextarea" name="designTextarea" >#if($status == "EDIT") $dataEntryForm.htmlCode #end</textarea></td>
       </tr>
-      <tr><td><span id="message"></span></td></tr>
       <tr>
       <td>
       <table id="cde_buttontable">
       <tr>
         <td>
-          <input type="submit" name="save" value="$i18n.getString( "save" )">
+			<input type="button" name="save" value="$i18n.getString( "save" )" onclick="autoSave = true; validateDataEntryForm(); autoSave = '$!autoSave';">
+          <input type="submit" name="saveClose" value="$i18n.getString( "save_close" )">
           <input type="button" name="cancel" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataSet.action'">
         </td>
         <td id="cde_deletebuttoncell">
           <input type="button" name="delete" value="$i18n.getString( "delete" )" onclick="removeDataEntryForm( $dataEntryForm.id, '$dataEntryForm.name' )" #if($status == "ADD") disabled #end>
         </td>
         </tr>
+		<tr><td><span id="message"></span></td></tr>
         </table>
         </td>
       </tr>
@@ -92,3 +98,26 @@
   </table>
   <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id" />
 </form>
+
+<script>
+	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
+	
+	var t;
+	var timer_is_on=0;
+	
+	if('$autoSave' == 'true'){
+		if (!timer_is_on)
+		  {
+			  timer_is_on=1;
+			  timedCount();
+		  }
+	}
+	
+	function timedCount()
+	{
+		validateDataEntryForm();
+		t=setTimeout("timedCount()", 20000);//1000 -> 1s
+		byId( 'message' ).style.display = 'none';
+	}
+	
+</script>

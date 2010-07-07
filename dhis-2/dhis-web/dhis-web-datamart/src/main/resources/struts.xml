@@ -23,11 +23,6 @@
 		
 	<!-- Ajax requests -->
 		
-	<action name="export" class="org.hisp.dhis.datamart.action.ExportAction">
-	  <result name="success" type="velocity-xml">/dhis-web-datamart/responseExport.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-	</action>
-    
     <action name="exportDataMartExport" class="org.hisp.dhis.datamart.action.ExportDataMartExportAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-datamart/exportStatus.vm</param>
@@ -62,14 +57,14 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
+    <action name="saveDataMartExport" class="org.hisp.dhis.datamart.action.SaveDataMartExportAction">
+      <result name="success" type="redirect">getDataMartExports.action</result>
+    </action>
+    
     <!-- Ajax requests -->
     
     <action name="getDataMartExport" class="org.hisp.dhis.datamart.action.GetDataMartExportAction">
       <result name="success" type="velocity-xml">/dhis-web-datamart/responseDataMartExport.vm</result>
-    </action>
-    
-    <action name="saveDataMartExport" class="org.hisp.dhis.datamart.action.SaveDataMartExportAction">
-      <result name="success" type="velocity-xml">/dhis-web-datamart/responseSuccess.vm</result>
     </action>
     
     <action name="validateDataMartExport" class="org.hisp.dhis.datamart.action.ValidateDataMartExportAction">

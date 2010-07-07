@@ -46,7 +46,6 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
@@ -161,13 +160,6 @@ public class FormAction
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -325,7 +317,7 @@ public class FormAction
             disabled = "disabled";
         }
 
-        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSetService.getDataElements( dataSet ) );
+        Collection<DataElement> dataElements = dataSet.getDataElements();
 
         if ( dataElements.size() == 0 )
         {

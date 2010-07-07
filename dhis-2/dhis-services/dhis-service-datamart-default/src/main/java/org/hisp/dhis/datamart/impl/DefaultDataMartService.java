@@ -27,7 +27,10 @@ package org.hisp.dhis.datamart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -44,6 +47,8 @@ import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,14 +82,54 @@ public class DefaultDataMartService
     {
         this.dataMartExportStore = dataMartExportStore;
     }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
     // -------------------------------------------------------------------------
     // Export
     // -------------------------------------------------------------------------
-    
+
+    @Transactional
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
+        return export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
+    }
+    
+    @Transactional
+    public int export( int id )
+    {
+        DataMartExport dataMartExport = getDataMartExport( id );
+        
+        Collection<Period> allPeriods = new HashSet<Period>( dataMartExport.getPeriods() );
+        
+        if ( dataMartExport.getRelatives() != null )
+        {
+            allPeriods.addAll( periodService.reloadPeriods( dataMartExport.getRelatives().getRelativePeriods( 1, null, false ) ) );
+        }
+        
+        return dataMartEngine.export( 
+            getIdentifiers( DataElement.class, dataMartExport.getDataElements() ), 
+            getIdentifiers( Indicator.class, dataMartExport.getIndicators() ), 
+            getIdentifiers( Period.class, allPeriods ),
+            getIdentifiers( OrganisationUnit.class, dataMartExport.getOrganisationUnits() ), 
+            new OutputHolderState() );
+    }
+    
+    @Transactional
+    public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives )
+    {
+        if ( relatives != null )
+        {
+            periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) ) );
+        }
+        
         return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, new OutputHolderState() );
     }
 
@@ -154,15 +199,6 @@ public class DefaultDataMartService
     public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
     {
         return dataMartStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
-    }
-    
-    // ----------------------------------------------------------------------
-    // Period
-    // ----------------------------------------------------------------------
-    
-    public int deleteRelativePeriods()
-    {
-        return dataMartStore.deleteRelativePeriods();
     }
     
     // -------------------------------------------------------------------------

@@ -68,19 +68,22 @@ public class TableAlteror
     @Transactional
     public void execute()
     {
+        executeSql( "drop table orgunithierarchystructure" );
+        executeSql( "drop table orgunithierarchy" );
         executeSql( "drop table datavalueaudit" );
         executeSql( "drop table columnorder" );
         executeSql( "drop table roworder" );
         executeSql( "alter table dataelementcategoryoption drop column categoryid" );
-        executeSql( "alter table reporttable drop column dimensiontype" ); // New
-        // is
-        // dimension_type
+        // new is dimension_type
+        executeSql( "alter table reporttable drop column dimensiontype" ); 
 
+        // remove relative period type
+        executeSql( "delete from period where periodtypeid=(select periodtypeid from periodtype where name='Relative')" );
+        executeSql( "delete from periodtype where name='Relative'" );
+        
         // categories_categoryoptions
-        int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" ); // set
-        // to
-        // 0
-        // temporarily
+        // set to 0 temporarily
+        int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" ); 
         if ( c1 > 0 )
         {
             updateSortOrder( "categories_categoryoptions", "categoryid", "categoryoptionid" );
@@ -89,10 +92,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE categories_categoryoptions ADD CONSTRAINT categories_categoryoptions_pkey PRIMARY KEY (categoryid, sort_order)" );
 
         // categorycombos_categories
-        int c2 = executeSql( "update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0" ); // set
-        // to
-        // 0
-        // temporarily
+        // set to 0 temporarily
+        int c2 = executeSql( "update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0" ); 
         if ( c2 > 0 )
         {
             updateSortOrder( "categorycombos_categories", "categorycomboid", "categoryid" );
@@ -109,10 +110,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
 
         // categoryoptioncombos_categoryoptions
-        int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" ); // set
-        // to
-        // 0
-        // temporarily
+        // set to 0 temporarily
+        int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" ); 
         if ( c3 > 0 )
         {
             updateSortOrder( "categoryoptioncombos_categoryoptions", "categoryoptioncomboid", "categoryoptionid" );
@@ -123,9 +122,7 @@ public class TableAlteror
         // dataelementcategoryoption
         executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
-        // executeSql(
-        // "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_name_key"
-        // ); will be maintained in transition period
+        // executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_name_key" ); will be maintained in transition period
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
 
         // minmaxdataelement query index

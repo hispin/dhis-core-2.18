@@ -41,9 +41,10 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
-import org.hisp.dhis.jdbc.batchhandler.DataValueCrossTabBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -83,7 +84,7 @@ public class DefaultCrossTabService
     // -------------------------------------------------------------------------
 
     public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands, 
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
+        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
     {
         final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>( operands );
 
@@ -93,16 +94,16 @@ public class DefaultCrossTabService
             
             Collections.sort( operandList );
 
-            crossTabStore.dropCrossTabTable();
+            crossTabStore.dropCrossTabTable( key );
             
             log.info( "Dropped crosstab table" );
             
-            crossTabStore.createCrossTabTable( operandList );
+            crossTabStore.createCrossTabTable( operandList, key );
             
             log.info( "Created crosstab table" );
             
-            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( DataValueCrossTabBatchHandler.class );
-            
+            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+            batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
             batchHandler.init();
             
             Map<DataElementOperand, String> map = null;
@@ -165,35 +166,35 @@ public class DefaultCrossTabService
         return operandsWithData;
     }
     
-    public void dropCrossTabTable()
+    public void dropCrossTabTable( String key )
     {
-        crossTabStore.dropCrossTabTable();
+        crossTabStore.dropCrossTabTable( key );
     }
     
-    public void trimCrossTabTable( Collection<DataElementOperand> operands )
+    public void trimCrossTabTable( Collection<DataElementOperand> operands, String key )
     {
         // TODO use H2 in-memory table for datavaluecrosstab table ?
         
-        crossTabStore.createTrimmedCrossTabTable( operands );
+        crossTabStore.createTrimmedCrossTabTable( operands, key );
         
-        crossTabStore.dropCrossTabTable();
+        crossTabStore.dropCrossTabTable( key );
         
-        crossTabStore.renameTrimmedCrossTabTable();
+        crossTabStore.renameTrimmedCrossTabTable( key );
     }
     
-    public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands )
+    public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, String key )
     {
-        final Map<String, Integer> columnNameIndexMap = crossTabStore.getCrossTabTableColumns();
+        final Map<String, Integer> columnNameIndexMap = crossTabStore.getCrossTabTableColumns( key );
 
         final Map<DataElementOperand, Integer> operandMap = new HashMap<DataElementOperand, Integer>();
         
         for ( DataElementOperand operand : operands )
         {
-            final String key = CrossTabStore.COLUMN_PREFIX + operand.getDataElementId() + CrossTabStore.SEPARATOR + operand.getOptionComboId();
+            final String col = operand.getSimpleName();
             
-            if ( columnNameIndexMap.containsKey( key ) )
+            if ( columnNameIndexMap.containsKey( col ) )
             {
-                operandMap.put( operand, columnNameIndexMap.get( key ) );
+                operandMap.put( operand, columnNameIndexMap.get( col ) );
             }
         }
         
@@ -203,6 +204,16 @@ public class DefaultCrossTabService
     public int validateCrossTabTable( Collection<DataElementOperand> operands )
     {
         return crossTabStore.validateCrossTabTable( operands );
+    }
+    
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
+    {
+        return crossTabStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceIds, key );
+    }
+    
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId, String key )
+    {
+        return crossTabStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceId, key );
     }
     
     // -------------------------------------------------------------------------

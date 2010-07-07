@@ -100,6 +100,14 @@ public class GetPatientAction
     
     private String systemIdentifier;
 
+    private String benicode;
+
+    private String yearcode;
+
+    private String progcode;
+
+    private String orgunitcode;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -126,6 +134,7 @@ public class GetPatientAction
                if( representativeIdentifier.getIdentifierType() != null && representativeIdentifier.getIdentifierType().isRelated() ) 
                 {
                     identiferMap.put( representativeIdentifier.getIdentifierType().getId(), representativeIdentifier.getIdentifier() );
+                    //System.out.println( "if patient uderage "+representativeIdentifier.getIdentifierType().getId()+ representativeIdentifier.getIdentifier() );
                 }
             }
         }
@@ -136,6 +145,15 @@ public class GetPatientAction
             if ( idType != null )
             {
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+                //System.out.println( "if type is not null "+identifier.getIdentifierType().getId()+ identifier.getIdentifier()  );
+                if(idType.getFormat().equals("State Format"))
+                {
+                     String iden = identifier.getIdentifier();
+                     benicode = iden.substring( 12,16 );//abcdefghi1121111
+                     yearcode = iden.substring( 10, 12 );
+                     progcode = iden.substring( 9, 10 );
+                     orgunitcode = iden.substring( 0, 9);
+                }
             }
             else 
                 systemIdentifier = identifier.getIdentifier();
@@ -269,4 +287,24 @@ public class GetPatientAction
     {
         return systemIdentifier;
     }
+
+    public String getBenicode() {
+        return benicode;
+    }
+
+    public String getOrgunitcode()
+    {
+        return orgunitcode;
+    }
+
+    public String getProgcode()
+    {
+        return progcode;
+    }
+
+    public String getYearcode()
+    {
+        return yearcode;
+    }
+    
 }

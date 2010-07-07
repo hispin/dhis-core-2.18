@@ -1,0 +1,6 @@
+{
+	"organisationUnit": {id: "$!{organisationUnit.id}", name: "$!encoder.jsEncode( ${organisationUnit.name} )"},
+	"parent": {id: "$!{parent.id}", name: "$!encoder.jsEncode( ${parent.name} )"},
+	"isRoot": ${root},
+	"hasChild": $!{organisationUnit.hasChild()}
+}

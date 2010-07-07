@@ -48,6 +48,8 @@ public class QuarterlyPeriodType
      */
     public static final String NAME = "Quarterly";
 
+    public static final int FREQUENCY_ORDER = 92;
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
@@ -81,6 +83,12 @@ public class QuarterlyPeriodType
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
 
         return new Period( this, startDate, cal.getTime() );
+    }
+
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
     }
 
     // -------------------------------------------------------------------------

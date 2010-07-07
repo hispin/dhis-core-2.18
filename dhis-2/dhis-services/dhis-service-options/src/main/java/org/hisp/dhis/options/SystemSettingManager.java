@@ -47,20 +47,20 @@ public interface SystemSettingManager
     final String KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART = "omitIndicatorsZeroNumeratorDataMart";
     final String KEY_REPORT_TEMPLATE_DIRECTORY = "reportTemplateDirectory";
     final String KEY_REPORT_FRAMEWORK = "reportFramework";
-
     final String KEY_MAX_NUMBER_OF_ATTEMPTS = "maxAttempts";
     final String KEY_TIMEFRAME_MINUTES = "lockoutTimeframe";
-    
+    final String KEY_GIS_LONGITUDE = "longitude";
+    final String KEY_GIS_LATITUDE = "latitude";
+    final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
+    final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
+
     final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
     final String KEY_CHR_NUMBER_OF_RECORDS = "chrNumberOfRecords";
     
-    final String KEY_GIS_LONGITUDE = "longitude";
-    final String KEY_GIS_LATITUDE = "latitude";
+    final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
+    final int DEFAULT_TIMEFRAME_MINUTES = 1;
+    final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
     
-    final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
-    
-    final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
-
     void saveSystemSetting( String name, Serializable value );   
 
     Serializable getSystemSetting( String name );   

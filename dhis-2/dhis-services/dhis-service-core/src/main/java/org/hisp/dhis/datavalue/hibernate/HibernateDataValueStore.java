@@ -75,42 +75,12 @@ public class HibernateDataValueStore
     }
 
     // -------------------------------------------------------------------------
-    // Support methods for reloading periods
-    // -------------------------------------------------------------------------
-
-    private final Period reloadPeriod( Period period )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        if ( session.contains( period ) )
-        {
-            return period; // Already in session, no reload needed
-        }
-
-        return periodStore.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
-    }
-
-    private final Period reloadPeriodForceAdd( Period period )
-    {
-        Period storedPeriod = reloadPeriod( period );
-
-        if ( storedPeriod == null )
-        {
-            periodStore.addPeriod( period );
-
-            return period;
-        }
-
-        return storedPeriod;
-    }
-
-    // -------------------------------------------------------------------------
     // Basic DataValue
     // -------------------------------------------------------------------------
 
     public void addDataValue( DataValue dataValue )
     {
-        dataValue.setPeriod( reloadPeriodForceAdd( dataValue.getPeriod() ) );
+        dataValue.setPeriod( periodStore.reloadForceAddPeriod( dataValue.getPeriod() ) );
 
         Session session = sessionFactory.getCurrentSession();
 
@@ -119,7 +89,7 @@ public class HibernateDataValueStore
 
     public void updateDataValue( DataValue dataValue )
     {
-        dataValue.setPeriod( reloadPeriodForceAdd( dataValue.getPeriod() ) );
+        dataValue.setPeriod( periodStore.reloadForceAddPeriod( dataValue.getPeriod() ) );
 
         Session session = sessionFactory.getCurrentSession();
 
@@ -158,7 +128,7 @@ public class HibernateDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Period storedPeriod = reloadPeriod( period );
+        Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -200,7 +170,7 @@ public class HibernateDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Source source, Period period )
     {
-        Period storedPeriod = reloadPeriod( period );
+        Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -243,7 +213,7 @@ public class HibernateDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements )
     {
-        Period storedPeriod = reloadPeriod( period );
+        Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -264,7 +234,7 @@ public class HibernateDataValueStore
     public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements,
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {
-        Period storedPeriod = reloadPeriod( period );
+        Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -286,7 +256,7 @@ public class HibernateDataValueStore
     public Collection<DataValue> getDataValues( DataElement dataElement, Period period,
         Collection<? extends Source> sources )
     {
-        Period storedPeriod = reloadPeriod( period );
+        Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -311,7 +281,7 @@ public class HibernateDataValueStore
 
         for ( Period period : periods )
         {
-            Period storedPeriod = reloadPeriod( period );
+            Period storedPeriod = periodStore.reloadPeriod( period );
 
             if ( storedPeriod != null )
             {
@@ -337,7 +307,7 @@ public class HibernateDataValueStore
 
         for ( Period period : periods )
         {
-            Period storedPeriod = reloadPeriod( period );
+            Period storedPeriod = periodStore.reloadPeriod( period );
 
             if ( storedPeriod != null )
             {

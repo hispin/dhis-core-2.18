@@ -1,16 +1,20 @@
 <h3>$encoder.htmlEncode($reportExcel.name)</h3>
-<hr>
 
-<table width=100%>
-	<thead>
-		<tr>
-			<td colspan=2>
-				$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
-			</td>
-		</tr>	
+<table width="100%">
+	<tr>
+		<td>
+			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
+		</td>
+		<td align="right">
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='listReportExcel.action'">
+		</td>	
+	</tr>
+</table>	
+<table width=100% class="listTable" id="listTable">
+	<thead>		
 		<tr>
 			<th>$i18n.getString( "name" )</th>
-			<th width="200px;">$i18n.getString( "levels" )</th>
+			<th width="200px;" class="{sorter: false}">$i18n.getString( "levels" )</th>
 		</tr>
 	</thead>
 	<tbody id="list">
@@ -51,7 +55,9 @@
 		});		
 		request.send( "updateOrganisationUnitGroupAtLevel.action?reportId=" + reportId + "&orgUnitGroupId=" + orgUnitGroupId + "&levelId=" + select.value);		
 	}
-	
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+	});
 	
 	
 </script>

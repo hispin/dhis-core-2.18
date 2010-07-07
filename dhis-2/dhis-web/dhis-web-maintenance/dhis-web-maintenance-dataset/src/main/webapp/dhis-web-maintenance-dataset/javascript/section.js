@@ -1,8 +1,32 @@
+// -----------------------------------------------------------------------------
+// Section details form
+// -----------------------------------------------------------------------------
+
+function showSectionDetails( sectionId )
+{
+  var request = new Request();
+  request.setResponseTypeXML( 'section' );
+  request.setCallbackSuccess( sectionReceived );
+  request.send( 'getSection.action?sectionId=' + sectionId );
+}
+
+function sectionReceived( sectionElement )
+{
+  setFieldValue( 'idField', getElementValue( sectionElement, 'id' ) );
+  setFieldValue( 'nameField', getElementValue( sectionElement, 'name' ) );
+  setFieldValue( 'titleField', getElementValue( sectionElement, 'title' ) );
+  setFieldValue( 'dataSetField', getElementValue( sectionElement, 'dataSet' ) );
+  setFieldValue( 'categoryComboField', getElementValue( sectionElement, 'categoryCombo' ) );
+  setFieldValue( 'dataElementCountField', getElementValue( sectionElement, 'dataElementCount' ) );  
+
+  showDetails();
+}
+
 function sortOrderSubmit() {
 	var datasetId = document.getElementById('dataSetId').value;
 
-	if (datasetId == "null") {
-		window.alert("Please select dataset");
+	if( datasetId == "null" ) {
+		window.alert( i18n_please_select_dataset );
 	} else {
 		window.location = "sortOrderSection.action?dataSetId=" + datasetId;
 	}

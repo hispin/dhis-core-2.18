@@ -2,12 +2,12 @@
 <h3>$i18n.getString( "dhis-web-reporting" )</h3>
 
 <ul class="introList">
-    #introListItem( "displayViewReportFormVerifyConfiguration.action" "standard_report" )
-    #introListItem( "dataSetReport.action" "dataset_report" )
-    #introListItem( "displayViewDataCompletenessForm.action" "data_completeness" )
-    #introListItem( "displayViewDocumentForm.action" "static_report" )
-    #introListItem( "tallySheetGenerator.action" "tally_sheet_generator" )
-    #introListItem( "displayManageTableForm.action" "report_table" )
-    #introListItem( "displayViewChartForm.action" "chart" )
-    #introListItem( "displayPivotTableForm.action" "pivot_table" )
+    #introListImgItem( "displayViewReportFormVerifyConfiguration.action" "standard_report" "standardreport" )
+    #introListImgItem( "dataSetReport.action" "dataset_report" "datasetreport" )
+    #introListImgItem( "displayViewDataCompletenessForm.action" "data_completeness" "datacompletenessreport" )
+    #introListImgItem( "displayViewDocumentForm.action" "static_report" "staticreport" )
+    #introListImgItem( "tallySheetGenerator.action" "tally_sheet_generator" "tallysheetgenerator" )
+    #introListImgItem( "displayManageTableForm.action" "report_table" "reporttable" )
+    #introListImgItem( "displayViewChartForm.action" "chart" "chart" )
+    #introListImgItem( "displayPivotTableForm.action" "pivot_table" "pivottable" )
 </ul>

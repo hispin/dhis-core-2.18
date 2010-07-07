@@ -123,4 +123,14 @@ public class DefaultFeatureService
         this.featureStore.updateMapFile( arg0 );
 
     }
+    
+    public void deleteFeatureByOrganisationUnit( int arg0 )
+    {
+        featureStore.deleteFeatureByOrganisationUnit( arg0 );
+    }
+
+    public void deleteMapFileByOrganisationUnit( int arg0 )
+    {
+        featureStore.deleteMapFileByOrganisationUnit( arg0 );
+    }
 }

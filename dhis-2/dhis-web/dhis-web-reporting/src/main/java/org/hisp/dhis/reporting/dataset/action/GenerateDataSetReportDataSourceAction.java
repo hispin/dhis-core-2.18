@@ -28,17 +28,20 @@ package org.hisp.dhis.reporting.dataset.action;
  */
 
 import static org.hisp.dhis.datamart.DataMartInternalProcess.PROCESS_TYPE;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_REPORT;
 import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartInternalProcess;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporting.dataset.state.SelectedStateManager;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -90,17 +93,18 @@ public class GenerateDataSetReportDataSourceAction
 
         DataMartInternalProcess process = (DataMartInternalProcess) executor.getProcess();
         
-        List<Integer> periods = new ArrayList<Integer>();
-        periods.add( selectedStateManager.getSelectedPeriod().getId() );
+        Collection<DataElement> dataElements = selectedStateManager.getSelectedDataSet().getDataElements();
         
-        List<Integer> organisationUnits = new ArrayList<Integer>();
-        organisationUnits.add( selectedStateManager.getSelectedOrganisationUnit().getId() );
+        Collection<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( selectedStateManager.getSelectedOrganisationUnit() );
         
-        process.setDataElementIds( getIdentifiers( DataElement.class, selectedStateManager.getSelectedDataSet().getDataElements() ) );
-        process.setIndicatorIds( new ArrayList<Integer>() );
-        process.setPeriodIds( periods  );
-        process.setOrganisationUnitIds( organisationUnits );
-
+        Collection<Period> periods = new HashSet<Period>();
+        periods.add( selectedStateManager.getSelectedPeriod() );
+        
+        DataMartExport export = new DataMartExport( null, dataElements, new HashSet<Indicator>(), units, periods, null );
+        
+        process.setExport( export );
+        
         processCoordinator.requestProcessExecution( executor );
 
         setCurrentRunningProcess( PROCESS_KEY_REPORT, executor.getId() );

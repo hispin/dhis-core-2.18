@@ -44,7 +44,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.RelativePeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.junit.Test;
 
@@ -62,7 +62,7 @@ public class DataSetCompletenessServiceExportTest
     private CompleteDataSetRegistrationService registrationService;
     
     private PeriodType monthly;
-    private PeriodType relative;
+    private PeriodType quarterly;
     
     private Period periodA;
     private Period periodB;
@@ -100,11 +100,11 @@ public class DataSetCompletenessServiceExportTest
         units = new ArrayList<OrganisationUnit>();
         
         monthly = new MonthlyPeriodType();
-        relative = new RelativePeriodType();
+        quarterly = new QuarterlyPeriodType(); //TODO fix
         
         periodA = createPeriod( monthly, getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( monthly, getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
-        periodC = createPeriod( relative, getDate( 2000, 1, 1 ), getDate( 2000, 2, 28 ) );
+        periodC = createPeriod( quarterly, getDate( 2000, 1, 1 ), getDate( 2000, 2, 28 ) );
         
         periodService.addPeriod( periodA );
         periodService.addPeriod( periodB );

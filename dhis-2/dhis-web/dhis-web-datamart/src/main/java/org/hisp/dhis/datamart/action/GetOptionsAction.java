@@ -240,13 +240,13 @@ public class GetOptionsAction
         return selectedPeriods;
     }
     
-    private String name;
+    private DataMartExport export;
 
-    public String getName()
+    public DataMartExport getExport()
     {
-        return name;
+        return export;
     }
-    
+
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -365,7 +365,7 @@ public class GetOptionsAction
         
         if ( id != null )
         {
-            DataMartExport export = dataMartService.getDataMartExport( id );
+            export = dataMartService.getDataMartExport( id );
             
             // -----------------------------------------------------------------
             // Data element
@@ -406,12 +406,6 @@ public class GetOptionsAction
             {
                 period.setName( format.formatPeriod( period ) );
             }
-            
-            // ---------------------------------------------------------------------
-            // Name
-            // ---------------------------------------------------------------------
-
-            name = export.getName();
         }
         
         return SUCCESS;

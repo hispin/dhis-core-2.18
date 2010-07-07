@@ -27,3 +27,9 @@ $( document ).ready( function()
     $( this ).css( "border", "1px solid #d5efd5" );
   });
 });
+
+// Called from main/Leftbar
+function setMainPageNormal()
+{
+	document.getElementById( 'mainPage' ).style.marginLeft = '300px';
+}

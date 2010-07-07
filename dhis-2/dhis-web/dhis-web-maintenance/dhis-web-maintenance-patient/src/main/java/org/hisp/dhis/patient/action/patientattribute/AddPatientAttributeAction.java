@@ -93,6 +93,13 @@ public class AddPatientAttributeAction
         this.mandatory = mandatory;
     }
     
+    private boolean inheritable;
+    
+    public void setInheritable( boolean inheritable )
+    {
+        this.inheritable = inheritable;
+    }
+    
     private List<String> attrOptions;
     
     public void setAttrOptions( List<String> attrOptions )
@@ -113,6 +120,7 @@ public class AddPatientAttributeAction
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
         patientAttribute.setMandatory( mandatory );
+        patientAttribute.setInheritable( inheritable );
         
         patientAttributeService.savePatientAttribute( patientAttribute );
         

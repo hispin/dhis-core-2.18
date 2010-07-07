@@ -215,10 +215,10 @@
 	<bean id="internal-process-DXFImportService" class="org.hisp.dhis.importexport.ImportInternalProcess"
 		scope="prototype">
 		<property name="statementManager" ref="statementManager" />
-		<property name="importService" ref="org.hisp.dhis.importexport.XMLImportService" />
+		<property name="importService" ref="org.hisp.dhis.importexport.ImportService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.importexport.DXFConverter"
+	<bean id="dxfv1-Converter"
          class="org.hisp.dhis.importexport.dxf.converter.DXFConverter" >
         <property name="importObjectService"
                   ref="org.hisp.dhis.importexport.ImportObjectService" />
@@ -247,11 +247,13 @@
                   ref="org.hisp.dhis.importexport.invoker.ConverterInvoker" />
     </bean>
 
-    <bean id="org.hisp.dhis.importexport.XMLImportService"
-          class="org.hisp.dhis.importexport.xml.importer.DefaultXMLImportService">
-        <property name="converter"
-                  ref="org.hisp.dhis.importexport.DXFConverter" />
+    <bean id="org.hisp.dhis.importexport.ImportService"
+          class="org.hisp.dhis.importexport.DefaultImportService">
     </bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- XSLT based import                                                    -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
     <bean id="org.hisp.dhis.importexport.invoker.ConverterInvoker"
           class="org.hisp.dhis.importexport.invoker.DefaultConverterInvoker" />

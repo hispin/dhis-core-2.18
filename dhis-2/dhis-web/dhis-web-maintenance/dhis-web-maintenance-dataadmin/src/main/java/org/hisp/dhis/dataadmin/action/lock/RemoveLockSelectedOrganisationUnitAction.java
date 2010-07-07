@@ -26,8 +26,7 @@
  */
 package org.hisp.dhis.dataadmin.action.lock;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.Collection; //import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,7 +41,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class RemoveLockSelectedOrganisationUnitAction
-implements Action
+    implements Action
 {
     private static final Log LOG = LogFactory.getLog( RemoveLockSelectedOrganisationUnitAction.class );
 
@@ -98,8 +97,8 @@ implements Action
                 throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
             }
 
-            Set<OrganisationUnit> lockedUnits = (Set<OrganisationUnit>) selectionTreeManager.getLockOnSelectedOrganisationUnits();           
-            lockedUnits.remove( unit );           
+            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();
+            lockedUnits.remove( unit );
             selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
         }
         catch ( Exception e )

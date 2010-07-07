@@ -30,8 +30,6 @@ package org.hisp.dhis.user;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.hisp.dhis.user.UserSetting;
-
 /**
  * The main interface for working with user settings. Implementation need to get
  * the current user from {@link CurrentUserService}.
@@ -43,6 +41,8 @@ public interface UserSettingService
 {
     String ID = UserSettingService.class.getName();
 
+    final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
+    
     /**
      * Saves the name/value pair as a user setting connected to the currently
      * logged in user.

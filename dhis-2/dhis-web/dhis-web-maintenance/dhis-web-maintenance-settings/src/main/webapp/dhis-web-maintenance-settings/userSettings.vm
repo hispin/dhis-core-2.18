@@ -45,8 +45,13 @@ function styleChanged( list )
 	window.location.href = "setCurrentStyle.action?currentStyle=" + style;
 }
 
-</script>
+function autoSaveDataEntryForm( value )
+{
+	window.location.href = "setAutoSaveDataEntryForm.action?autoSave=" + value;
+}
 
+</script>
+<form>
 <h3>$i18n.getString("user_settings")</h3>
 
 <h4>$i18n.getString( "language" )</h4>
@@ -97,4 +102,7 @@ function styleChanged( list )
 #end
 </select>
 
+<h4>$i18n.getString( "auto_save_data_entry_form" )</h4>
+<input type="checkbox" #if($autoSave == 'true') checked #end onchange="autoSaveDataEntryForm(this.checked);">
+</form>
 #end

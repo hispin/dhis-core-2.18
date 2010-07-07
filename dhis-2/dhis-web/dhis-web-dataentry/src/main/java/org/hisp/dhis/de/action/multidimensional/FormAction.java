@@ -53,7 +53,6 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
@@ -75,7 +74,8 @@ import com.opensymphony.xwork2.Action;
  */
 public class FormAction
     implements Action
-{
+{   
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -167,13 +167,6 @@ public class FormAction
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -393,7 +386,7 @@ public class FormAction
             disabled = "disabled";
         }
 
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataSetService.getDataElements( dataSet ) );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         if ( dataElements.isEmpty() )
         {
@@ -447,10 +440,10 @@ public class FormAction
 
             for ( DataElementCategory cat : categoryCombo.getCategories() )
             {
-                if ( cat.getCategoryOptions().size() > 0 ) 
+                if ( cat.getCategoryOptions().size() > 0 )
                 {
                     catColSpan = catColSpan / cat.getCategoryOptions().size();
-                    int total = optionCombos.size() / ( catColSpan * cat.getCategoryOptions().size() );
+                    int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
                     Collection<Integer> cols = new ArrayList<Integer>( total );
 
                     for ( int i = 0; i < total; i++ )

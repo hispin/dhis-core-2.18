@@ -76,18 +76,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>    
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.CreateChartAction"
-    class="org.hisp.dhis.reporting.chart.action.CreateChartAction"
-    scope="prototype">
-    <property name="processCoordinator"
-      ref="processCoordinator"/>
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-  </bean>    
-  
+    
   <bean id="org.hisp.dhis.reporting.chart.action.ViewChartAction"
     class="org.hisp.dhis.reporting.chart.action.ViewChartAction"
     scope="prototype">

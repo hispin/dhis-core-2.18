@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
@@ -39,21 +40,78 @@ import org.hisp.dhis.dataelement.DataElementOperand;
  */
 public interface CrossTabStore
 {
-    String ID = CrossTabStore.class.getName();
-    String COLUMN_PREFIX = "de";
-    String SEPARATOR = "_";
+    final String ID = CrossTabStore.class.getName();
+    final String TABLE_NAME = "datavaluecrosstab_";
+    final String TABLE_NAME_TRIMMED = "datavaluecrosstabtrimmed_";
     
-    void createCrossTabTable( List<DataElementOperand> operands );
+    /**
+     * Creates a crosstab table where the first column is the period identifier,
+     * the second column is the source identifer, and each subsequent column
+     * corresponds to an operand.
+     * 
+     * @param operands the DataElementOperands.
+     */
+    void createCrossTabTable( List<DataElementOperand> operands, String key );
 
-    Map<String, Integer> getCrossTabTableColumns();
+    /**
+     * Retrieves a Map with information about the column names in the crosstab
+     * table where they key is the column name and the value is the column index.
+     * 
+     * @return a Map with information about the columns in the crosstab table.
+     */
+    Map<String, Integer> getCrossTabTableColumns( String key );
     
-    void dropCrossTabTable();
+    /**
+     * Drops the crosstab table.
+     */
+    void dropCrossTabTable( String key );
     
-    void dropTrimmedCrossTabTable();
+    /**
+     * Drops the trimmed crosstab table.
+     */
+    void dropTrimmedCrossTabTable( String key );
     
-    void renameTrimmedCrossTabTable();
+    /**
+     * Renames the trimmed crosstab table to the regular crosstab table.
+     */
+    void renameTrimmedCrossTabTable( String key );
     
-    void createTrimmedCrossTabTable( Collection<DataElementOperand> operands );
+    /**
+     * Creates a trimmed crosstab table based on the regular crosstab table.
+     * Trimming implies removing columns without data.
+     * 
+     * @param operands the DataElementOperands.
+     */
+    void createTrimmedCrossTabTable( Collection<DataElementOperand> operands, String key );
     
+    /**
+     * Validates whether the number of columns in the crosstab table will be valid
+     * for the current DBMS.
+     * 
+     * @param operands the DataElementOperands.
+     * @return 0 if OK, the number of excess columns if not.
+     */
     int validateCrossTabTable( Collection<DataElementOperand> operands );
+    
+    /**
+     * Gets all CrossTabDataValues for the given collection of period ids and source ids.
+     * 
+     * @param dataElementIds the dataelement identifiers.
+     * @param periodIds the period identifiers.
+     * @param sourceIds the source identifiers.
+     * @return collection of CrossTabDataValues.
+     */
+    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+        Collection<Integer> sourceIds, String key );
+
+    /**
+     * Gets all CrossTabDataValues for the given collection of period ids and the source id.
+     * 
+     * @param dataElementIds the dataelement identifiers.
+     * @param periodIds the period identifiers.
+     * @param sourceId the source identifier.
+     * @return collection of CrossTabDataValues.
+     */
+    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+        int sourceId, String key );
 }

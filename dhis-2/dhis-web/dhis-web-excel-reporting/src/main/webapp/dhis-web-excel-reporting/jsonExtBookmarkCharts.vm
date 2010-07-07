@@ -1,0 +1,12 @@
+#set( $size = $extBookmarkCharts.size() )
+{ "bookmarks": [
+#foreach( $extBookmarkChart in $extBookmarkCharts )
+	{
+		"id": "$extBookmarkChart.id" ,
+		"name": "$!encoder.jsEncode( $extBookmarkChart.name )",
+		"descriptions": "$!encoder.jsEncode( $extBookmarkChart.description )",
+		"title": "$!encoder.jsEncode( $extBookmarkChart.title )",
+		"xtitle": "$!encoder.jsEncode( $extBookmarkChart.xtitle )"	
+	}#if( $velocityCount < $size  ),#end
+#end
+] }

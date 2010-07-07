@@ -2,3 +2,10 @@
 #parse( "/dhis-web-maintenance-organisationunit/menu.vm" )
 
 #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+<script>
+	
+
+selection.setListenerFunction( organisationUnitSelected );
+
+</script>

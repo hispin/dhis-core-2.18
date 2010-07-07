@@ -44,6 +44,7 @@ import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -102,52 +103,52 @@ public class DefaultDataElementDataMart
     // -------------------------------------------------------------------------
     
     public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Integer> periodIds, 
-        final Collection<Integer> organisationUnitIds, final DataElementAggregator dataElementAggregator )
+        final Collection<Integer> organisationUnitIds, final DataElementAggregator dataElementAggregator, String key )
     {
-        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands );
+        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
         
         final Collection<Period> periods = getPeriods( periodIds );
 
         final Collection<OrganisationUnit> organisationUnits = getOrganisationUnits( organisationUnitIds );
 
-        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
-
-        batchHandler.init();
+        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
+        
+        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnitIds );
         
         int count = 0;
-        int level = 0;
-        
-        Map<DataElementOperand, Double> valueMap = null;
-        
-        PeriodType periodType = null;
         
         final AggregatedDataValue value = new AggregatedDataValue();
         
-        for ( final OrganisationUnit unit : organisationUnits )
+        for ( final Period period : periods )
         {
-            level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
+            final Map<DataElementOperand, Integer> currentOperandIndexMap = dataElementAggregator.getOperandIndexMap( operands, period.getPeriodType(), operandIndexMap );
             
-            for ( final Period period : periods )
+            if ( currentOperandIndexMap != null && currentOperandIndexMap.size() > 0 )
             {
-                valueMap = dataElementAggregator.getAggregatedValues( operandIndexMap, period, unit, level );
-                
-                periodType = period.getPeriodType();
-                
-                for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
+                for ( final OrganisationUnit unit : organisationUnits )
                 {
-                    value.clear();
+                    final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                     
-                    value.setDataElementId( entry.getKey().getDataElementId() );
-                    value.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
-                    value.setPeriodId( period.getId() );
-                    value.setPeriodTypeId( periodType.getId() );
-                    value.setOrganisationUnitId( unit.getId() );
-                    value.setLevel( level );
-                    value.setValue( getRounded( entry.getValue(), DECIMALS ) );
+                    final Map<DataElementOperand, Double> valueMap = dataElementAggregator.getAggregatedValues( currentOperandIndexMap, period, unit, level, hierarchy, key );
                     
-                    batchHandler.addObject( value );
+                    final PeriodType periodType = period.getPeriodType();
                     
-                    count++;
+                    for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
+                    {
+                        value.clear();
+                        
+                        value.setDataElementId( entry.getKey().getDataElementId() );
+                        value.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
+                        value.setPeriodId( period.getId() );
+                        value.setPeriodTypeId( periodType.getId() );
+                        value.setOrganisationUnitId( unit.getId() );
+                        value.setLevel( level );
+                        value.setValue( getRounded( entry.getValue(), DECIMALS ) );
+                        
+                        batchHandler.addObject( value );
+                        
+                        count++;
+                    }
                 }
             }
         }

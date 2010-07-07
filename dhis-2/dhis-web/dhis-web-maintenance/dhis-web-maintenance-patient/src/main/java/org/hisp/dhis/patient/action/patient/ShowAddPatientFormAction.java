@@ -39,6 +39,10 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 
 import com.opensymphony.xwork2.Action;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -95,6 +99,12 @@ public class ShowAddPatientFormAction
     private Collection<PatientAttributeGroup> attributeGroups;
     
     private Collection<PatientIdentifierType> identifierTypes;
+
+    private OrganisationUnit organisationUnit;
+
+    private String year;
+
+    private boolean showMsg;
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -102,13 +112,29 @@ public class ShowAddPatientFormAction
 
     public String execute()
     {
-        
+
+        showMsg = false;
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes(); 
        
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
         
         attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
 
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+
+        for(PatientIdentifierType identifierType :identifierTypes)
+        {
+            if(identifierType.getFormat().equals("State Format") && identifierType.isMandatory()==true )
+            {
+                if(organisationUnit.getCode()==null || organisationUnit.getCode().length() < 9)
+                    showMsg = true;
+            }
+        }
+        //System.out.println( "ou = "+organisationUnit.getCode() + organisationUnit.getName());
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dataFormat = new SimpleDateFormat("y");
+        year = dataFormat.format(new Date());
         return SUCCESS;
     }
 
@@ -129,4 +155,17 @@ public class ShowAddPatientFormAction
     {
         return noGroupAttributes;
     }
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public boolean isShowMsg() {
+        return showMsg;
+    }
+    
 }

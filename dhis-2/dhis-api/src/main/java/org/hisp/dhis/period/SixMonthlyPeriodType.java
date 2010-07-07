@@ -47,6 +47,8 @@ public class SixMonthlyPeriodType
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".
      */
     public static final String NAME = "SixMonthly";
+    
+    public static final int FREQUENCY_ORDER = 182;
 
     // -------------------------------------------------------------------------
     // PeriodType functionality
@@ -81,6 +83,12 @@ public class SixMonthlyPeriodType
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
 
         return new Period( this, startDate, cal.getTime() );
+    }
+
+    @Override
+    public int getFrequencyOrder()
+    {
+        return FREQUENCY_ORDER;
     }
 
     // -------------------------------------------------------------------------

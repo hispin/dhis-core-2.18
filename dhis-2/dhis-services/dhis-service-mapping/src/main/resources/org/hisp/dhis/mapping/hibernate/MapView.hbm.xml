@@ -13,11 +13,19 @@
 	
 		<property name="name" unique="true"/>
 		
+		<property name="mapValueType"/>
+		
 		<many-to-one name="indicatorGroup" class="org.hisp.dhis.indicator.IndicatorGroup" 
 			column="indicatorgroupid" foreign-key="fk_mapview_indicatorgroupid"/>
 		
 		<many-to-one name="indicator" class="org.hisp.dhis.indicator.Indicator" 
 			column="indicatorid" foreign-key="fk_mapview_indicatorid"/>
+        
+        <many-to-one name="dataElementGroup" class="org.hisp.dhis.dataelement.DataElementGroup" 
+            column="dataelementgroupid" foreign-key="fk_mapview_dataelementgroupid"/>
+        
+        <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" 
+            column="dataelementid" foreign-key="fk_mapview_dataelementid"/>
 		
 		<many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" 
 			column="periodtypeid" foreign-key="fk_mapview_periodtypeid"/>

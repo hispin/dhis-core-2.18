@@ -48,6 +48,8 @@ public class XMLPipeTest extends TestCase
 {
 
     private InputStream inputStreamB;
+    private InputStream inputStreamDXF;
+    private InputStream inputStreamDXFcopy;
 
     @Override
     protected void setUp() throws Exception
@@ -55,6 +57,17 @@ public class XMLPipeTest extends TestCase
         super.setUp();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         inputStreamB = classLoader.getResourceAsStream( "dataB.xml" );
+        inputStreamDXF = classLoader.getResourceAsStream( "Export.xml" );
+        inputStreamDXFcopy = classLoader.getResourceAsStream( "Export.xml" );
+    }
+
+    @Override
+    public void tearDown()
+        throws Exception
+    {
+        inputStreamB.close();
+        inputStreamDXF.close();
+        inputStreamDXFcopy.close();
     }
 
     public synchronized void testReadWrite() throws XMLStreamException
@@ -88,6 +101,36 @@ public class XMLPipeTest extends TestCase
 
         assertEquals( "Number of events in and out of pipe", events1, events2 );
         System.out.println( "Number of events : " + events1 );
+
+    }
+
+    public void testReadWriteContents() throws XMLStreamException
+    {
+        XMLPipe pipe = new XMLPipe();
+        XMLEventWriter pipeinput = pipe.getInput();
+        XMLEventReader2 pipeoutput = pipe.getOutput();
+
+        XMLEventReader reader = XMLFactory.getXMLEventReader( inputStreamDXF ).getXmlEventReader();
+
+        while ( reader.hasNext() )
+        {
+            XMLEvent ev = reader.nextEvent();
+            pipeinput.add( ev );
+        }
+
+        XMLEventReader dxfCopy = XMLFactory.getXMLEventReader( inputStreamDXFcopy ).getXmlEventReader();
+
+        // read the other end of the pipe and compare contents with original
+        while ( pipeoutput.hasNext() )
+        {
+            XMLEvent ev = pipeoutput.nextEvent();
+            XMLEvent evCopy = dxfCopy.nextEvent();
+            assertEquals(ev.getEventType(), evCopy.getEventType());
+            if (ev.isCharacters()) {
+                assertEquals(ev.asCharacters().getData(), evCopy.asCharacters().getData());
+            }
+            
+        }
 
     }
 

@@ -38,6 +38,7 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
+import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.IndicatorImporter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -112,7 +113,8 @@ public class IndicatorConverter
         ExpressionService expressionService,
         Map<Object, Integer> indicatorTypeMapping, 
         Map<Object, Integer> dataElementMapping,
-        Map<Object, Integer> categoryOptionComboMapping )
+        Map<Object, Integer> categoryOptionComboMapping,
+        ImportAnalyser importAnalyser )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
@@ -121,6 +123,7 @@ public class IndicatorConverter
         this.indicatorTypeMapping = indicatorTypeMapping;
         this.dataElementMapping = dataElementMapping;
         this.categoryOptionComboMapping = categoryOptionComboMapping;
+        this.importAnalyser = importAnalyser;
     }    
 
     // -------------------------------------------------------------------------

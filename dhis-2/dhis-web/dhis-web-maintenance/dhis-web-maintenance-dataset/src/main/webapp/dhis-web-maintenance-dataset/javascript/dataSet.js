@@ -48,17 +48,17 @@ function viewDataEntryForm( dataSetId )
 }
 
 // ----------------------------------------------------------------------
-// Filter by DataElementGroup
+// Filter by DataElementGroup and PeriodType
 // ----------------------------------------------------------------------
 
 function filterByDataElementGroup( selectedDataElementGroup )
 {
   var request = new Request();
-
+  
   var requestString = 'filterAvailableDataElementsByDataElementGroup.action';
   
   var params = 'dataElementGroupId=' + selectedDataElementGroup;
-
+	
   var selectedList = document.getElementById( 'selectedList' );
 
   for ( var i = 0; i < selectedList.options.length; ++i)
@@ -120,8 +120,9 @@ function addDataSetValidationCompleted( messageElement )
 
   if ( type == 'success' )
   {
-      // Both edit and add form has id='dataSetForm'      
+      // Both edit and add form has id='dataSetForm'
 	  selectAllById('selectedList');
+	  
       document.forms['addDataSetForm'].submit();
   }
   /**
@@ -162,6 +163,7 @@ function editDataSetValidationCompleted( messageElement )
   {
       // Both edit and add form has id='dataSetForm'
 	  selectAllById('selectedList');
+
       document.forms['editDataSetForm'].submit();
   }
   /**

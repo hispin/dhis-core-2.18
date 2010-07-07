@@ -27,12 +27,12 @@ package org.hisp.dhis.dataprune;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,12 +54,8 @@ public class DefaultDataPruneService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
+    @Autowired
+    private DataPruneStore dataPruneStore;
 
     // -------------------------------------------------------------------------
     // DataPruneService implementation
@@ -74,16 +70,27 @@ public class DefaultDataPruneService
             organisationUnitService.updateOrganisationUnit( organisationUnit );
         }
 
+        List<OrganisationUnit> deletedOrgUnits = pruneOrganisationUnitLocal( organisationUnit );
+        
+        dataPruneStore.deleteMultiOrganisationUnit( deletedOrgUnits );
+    }
+
+    private List<OrganisationUnit> pruneOrganisationUnitLocal( OrganisationUnit organisationUnit )
+    {
+        List<OrganisationUnit> deleteOrgUnits = new ArrayList<OrganisationUnit>();
+
         for ( OrganisationUnit eachRoot : organisationUnitService.getRootOrganisationUnits() )
         {
             if ( !eachRoot.equals( organisationUnit ) )
             {
-                deleteBranch( eachRoot );
+                deleteBranch( eachRoot, deleteOrgUnits );
             }
         }
+
+        return deleteOrgUnits;
     }
 
-    private void deleteBranch( OrganisationUnit organisationUnit )
+    private void deleteBranch( OrganisationUnit organisationUnit, List<OrganisationUnit> deletedOrgUnits )
     {
         if ( !organisationUnit.getChildren().isEmpty() )
         {
@@ -92,19 +99,10 @@ public class DefaultDataPruneService
 
             for ( Object eachChild : childrenAsArray )
             {
-                deleteBranch( (OrganisationUnit) eachChild );
+                deleteBranch( (OrganisationUnit) eachChild, deletedOrgUnits );
             }
         }
 
-        dataValueService.deleteDataValuesBySource( organisationUnit );
-
-        try
-        {
-            organisationUnitService.deleteOrganisationUnit( organisationUnit );
-        }
-        catch ( HierarchyViolationException e )
-        {
-            e.printStackTrace();
-        }
+        deletedOrgUnits.add( organisationUnit );
     }
 }

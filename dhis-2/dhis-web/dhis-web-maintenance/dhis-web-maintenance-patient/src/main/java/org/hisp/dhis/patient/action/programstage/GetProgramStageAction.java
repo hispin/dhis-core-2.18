@@ -110,6 +110,7 @@ public class GetProgramStageAction
 
         programStage = programStageService.getProgramStage( id );
         
+        
         programStageDataElements = programStage.getProgramStageDataElements();
         
         dataElements = dataElementService.getAllDataElements();

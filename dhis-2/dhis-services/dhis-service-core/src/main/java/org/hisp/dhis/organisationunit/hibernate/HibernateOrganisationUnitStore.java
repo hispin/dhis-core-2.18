@@ -28,12 +28,6 @@ package org.hisp.dhis.organisationunit.hibernate;
  */
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -41,13 +35,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
-import org.hisp.dhis.system.objectmapper.OrganisationUnitHierarchyRowMapper;
+import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -138,151 +131,13 @@ public class HibernateOrganisationUnitStore
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
 
-    /**
-     * Adds a organisation unit hierarchy with the given date. A hierarchy
-     * object stores the parent-child relationship of every organisation unit in
-     * a Map, where the key column holds the organisation unit id and the value
-     * column the id of the parent organisation unit.
-     * 
-     * @param date The date to assign to the organisation unit hierarchy
-     * @return Id of the organisation unit hierarchy
-     */
-    public int addOrganisationUnitHierarchy( Date date )
+    public OrganisationUnitHierarchy getOrganisationUnitHierarchy()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        // ---------------------------------------------------------------------
-        // Removes any hierarchies registered on the same date
-        // ---------------------------------------------------------------------
-
-        removeOrganisationUnitHierarchies( date );
-
         final String sql = "SELECT organisationunitid, parentid FROM organisationunit";
-
-        List<Integer[]> units = jdbcTemplate.query( sql, new OrganisationUnitHierarchyRowMapper() );
         
-        Map<Integer, Integer> structure = new HashMap<Integer, Integer>( units.size() );
-
-        // ---------------------------------------------------------------------
-        // Fills the array with id / parentId pairs for all organisation units
-        // ---------------------------------------------------------------------
-
-        for ( Integer[] unit : units )
-        {
-            structure.put( unit[0], unit[1] );
-        }
-        
-        OrganisationUnitHierarchy organisationUnitHierarchy = new OrganisationUnitHierarchy( date, structure );
-
-        return (Integer) session.save( organisationUnitHierarchy );
+        return new OrganisationUnitHierarchy( jdbcTemplate.query( sql, new OrganisationUnitRelationshipRowMapper() ) );
     }
-
-    public OrganisationUnitHierarchy getOrganisationUnitHierarchy( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
         
-        return (OrganisationUnitHierarchy) session.get( OrganisationUnitHierarchy.class, id );
-    }
-
-    public OrganisationUnitHierarchy getLatestOrganisationUnitHierarchy()
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( OrganisationUnitHierarchy.class );
-        
-        criteria.addOrder( Order.desc( "date" ) );
-        criteria.setMaxResults( 1 );
-        
-        return (OrganisationUnitHierarchy) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public void removeOrganisationUnitHierarchies( Date date )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from OrganisationUnitHierarchy o where o.date = :date" );
-        query.setDate( "date", date );
-
-        Iterator<OrganisationUnitHierarchy> hierarchies = query.list().iterator();
-
-        while ( hierarchies.hasNext() )
-        {
-            OrganisationUnitHierarchy hierarchy = hierarchies.next();
-            session.delete( hierarchy );
-        }
-    }
-
-    /**
-     * Retrieves the organisation unit hierarchies between start and end date.
-     * The latest hierarchy added before startdate is included.
-     * 
-     * @param startDate The start date
-     * @param endDate The end date
-     * @return Collection of organisation unit hierarchies
-     */
-    @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( Date startDate, Date endDate )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        // -----------------------------------------------------------------
-        // Counts number of hierarchies between start and end date
-        // -----------------------------------------------------------------
-
-        Query countQuery = session
-            .createQuery( "select count(*) from OrganisationUnitHierarchy h where h.date > :startDate and h.date < :endDate" );
-        countQuery.setDate( "startDate", startDate );
-        countQuery.setDate( "endDate", endDate );
-
-        Object count = countQuery.uniqueResult();
-
-        int number;
-
-        if ( count instanceof Long )
-        {
-            number = ((Long) count).intValue();
-        }
-        else
-        {
-            number = (Integer) count;
-        }
-
-        // -----------------------------------------------------------------
-        // Retrieves ordered collection of hierarchies added before end date
-        // where the number is limited to the previous count plus 1
-        // -----------------------------------------------------------------
-
-        Query query = session
-            .createQuery( "from OrganisationUnitHierarchy h left join fetch h.structure where h.date < :endDate order by date desc" );
-        query.setDate( "endDate", endDate );
-        query.setMaxResults( number + 1 );
-        List<OrganisationUnitHierarchy> list = query.list();
-
-        // -----------------------------------------------------------------
-        // Reversing list
-        // -----------------------------------------------------------------
-
-        Collections.reverse( list );
-
-        return list;
-    }
-
-    @SuppressWarnings( "unchecked" )    
-    public void deleteOrganisationUnitHierarchies()
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( OrganisationUnitHierarchy.class );
-                
-        Collection<OrganisationUnitHierarchy> hierarchies = criteria.list();
-        
-        for ( OrganisationUnitHierarchy hierarchy : hierarchies )
-        {
-            session.delete( hierarchy );
-        }
-    }
-    
     public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
     {
         StatementHolder holder = statementManager.getHolder();

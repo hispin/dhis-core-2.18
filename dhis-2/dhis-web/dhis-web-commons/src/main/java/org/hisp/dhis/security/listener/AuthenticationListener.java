@@ -28,11 +28,13 @@ package org.hisp.dhis.security.listener;
  */
 
 import org.hisp.dhis.useraudit.UserAuditService;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
 
 /**
  * @author Lars Helge Overland
@@ -42,6 +44,7 @@ public class AuthenticationListener
 {
     private UserAuditService userAuditService;
     
+    @Required
     public void setUserAuditService( UserAuditService userAuditService )
     {
         this.userAuditService = userAuditService;
@@ -49,13 +52,15 @@ public class AuthenticationListener
 
     public void onApplicationEvent( ApplicationEvent applicationEvent )
     {        
-        if ( applicationEvent != null && applicationEvent instanceof AuthenticationSuccessEvent )
+        Assert.notNull( applicationEvent );
+        
+        if ( applicationEvent instanceof AuthenticationSuccessEvent )
         {
             AuthenticationSuccessEvent event = (AuthenticationSuccessEvent) applicationEvent;
             
             userAuditService.registerLoginSuccess( ((UserDetails) event.getAuthentication().getPrincipal()).getUsername() );
         }
-        else if ( applicationEvent != null && applicationEvent instanceof AbstractAuthenticationFailureEvent )
+        else if ( applicationEvent instanceof AbstractAuthenticationFailureEvent )
         {
             AbstractAuthenticationFailureEvent event = (AbstractAuthenticationFailureEvent) applicationEvent;
             

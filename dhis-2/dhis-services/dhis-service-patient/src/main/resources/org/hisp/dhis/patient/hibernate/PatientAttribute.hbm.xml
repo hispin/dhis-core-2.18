@@ -16,6 +16,8 @@
     <property name="valueType" column="valuetype" not-null="true"/>  
     
 	<property name="mandatory" column="mandatory" not-null="true" />
+	
+	<property name="inheritable" column="inheritable" not-null="true" />
     
     <many-to-one name="patientAttributeGroup" column="patientattributegroupid"
 			class="org.hisp.dhis.patient.PatientAttributeGroup"

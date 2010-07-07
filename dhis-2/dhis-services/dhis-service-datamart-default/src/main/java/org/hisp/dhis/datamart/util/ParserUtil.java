@@ -43,7 +43,9 @@ import org.hisp.dhis.dataelement.DataElementOperand;
  */
 public class ParserUtil
 {
-    private static final String NULL_REPLACEMENT = "0";    
+    private static final String NULL_REPLACEMENT = "0";
+    
+    private static final Pattern OPERAND_PATTERN = Pattern.compile( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])" );
     
     /**
      * Returns the data element identifiers in the given expression. Returns null
@@ -60,19 +62,15 @@ public class ParserUtil
         {
             dataElementIdsInExpression = new HashSet<Integer>();
 
-            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression );
 
             while ( matcher.find() )
             {
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String replaceString = matcher.group().replaceAll( "[\\[\\]]", "" );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
 
-                final int dataElementId = Integer.parseInt( replaceString );
-
-                dataElementIdsInExpression.add( dataElementId );
+                dataElementIdsInExpression.add( Integer.parseInt( replaceString ) );
             }
         }
 
@@ -91,27 +89,21 @@ public class ParserUtil
     public static String generateExpression( final String formula, final Map<DataElementOperand, Double> valueMap )
     {       
         try
-        {           
-            final Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-            
-            final Matcher matcher = pattern.matcher( formula );
+        {
+            final Matcher matcher = OPERAND_PATTERN.matcher( formula );
             
             final StringBuffer buffer = new StringBuffer();            
             
-            Double aggregatedValue = null;
-            
             while ( matcher.find() )
             {
-                String replaceString = matcher.group();
-                
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String replaceString = matcher.group().replaceAll( "[\\[\\]]", "" );
                 
                 int dataElementId = Integer.parseInt( replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) ) );
                 int categoryOptionComboId = Integer.parseInt( replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1 ) );
                 
                 final DataElementOperand operand = new DataElementOperand( dataElementId, categoryOptionComboId );
                 
-                aggregatedValue = valueMap.get( operand );
+                Double aggregatedValue = valueMap.get( operand );
                 
                 replaceString = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
                 
@@ -124,20 +116,7 @@ public class ParserUtil
         }
         catch ( NumberFormatException ex )
         {
-            throw new RuntimeException( "Illegal data element id", ex );
+            throw new RuntimeException( "Illegal data element or category combo id", ex );
         }
     }
-
-    /**
-     * Returns a matcher object compiled with the given regex and matched with the given expression.
-     * 
-     * @param regex The regular expression.
-     * @param formula The formula.
-     */
-    public static Matcher getMatcher( final String regex, final String formula )
-    {
-        final Pattern pattern = Pattern.compile( regex );
-        
-        return pattern.matcher( formula );
-    }    
 }

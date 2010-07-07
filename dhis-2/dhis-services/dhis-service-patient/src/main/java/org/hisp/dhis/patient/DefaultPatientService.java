@@ -330,11 +330,11 @@ public class DefaultPatientService
         return patientStore.getPatientsByNames( name, min, max );
     }
    
-    public void createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+    public int createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
         Integer relationshipTypeId,  List<PatientAttributeValue> patientAttributeValues ) 
     {
         
-        savePatient( patient );
+        int patientid = savePatient( patient );
 
         for( PatientAttributeValue pav : patientAttributeValues )
         {
@@ -369,6 +369,8 @@ public class DefaultPatientService
                 }
             }
         }
+        
+        return patientid;
         
     }
     

@@ -29,6 +29,8 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Collection;
 
+import org.hisp.dhis.hierarchy.HierarchyViolationException;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$

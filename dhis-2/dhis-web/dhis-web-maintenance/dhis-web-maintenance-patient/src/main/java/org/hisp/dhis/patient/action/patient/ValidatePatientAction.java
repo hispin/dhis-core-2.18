@@ -279,6 +279,19 @@ public class ValidatePatientAction
             for ( PatientIdentifierType idType : identifiers )
             {
                 // If underAge is TRUE : Only check duplicate on PatientIdentifierType which related is FALSE
+                /*if(idType.getFormat().equals("State Format"))
+                {
+                     String orgUnitCodeValue = request.getParameter( "orgunitcode" );
+                     if(orgUnitCodeValue!=null)
+                     {
+                     System.out.println("orgUnitCodeValue = "+orgUnitCodeValue );
+                     if(orgUnitCodeValue.length()<9)
+                     {
+                         message = i18n.getString( "oucode_must_be_valid" );
+                         return INPUT;
+                     }
+                    }
+                }*/
                 if(  !underAge ||  ( underAge && !idType.isRelated() )   )
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );

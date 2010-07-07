@@ -281,7 +281,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="programInstanceService"
       ref="org.hisp.dhis.program.ProgramInstanceService"/>   
     <property name="programStageInstanceService"
-      ref="org.hisp.dhis.program.ProgramStageInstanceService"/>              
+      ref="org.hisp.dhis.program.ProgramStageInstanceService"/>      
+    <property name="patientService"
+      ref="org.hisp.dhis.patient.PatientService"/>      
   </bean>
   
   <bean id="org.hisp.dhis.caseentry.action.report.ViewRecordsAction"
@@ -294,6 +296,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>                 
   </bean>
+  
+  <bean id="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction"
+        class="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction" scope="prototype">
+        <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+        <property name="patientIdentifierService"
+            ref="org.hisp.dhis.patient.PatientIdentifierService" />
+        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+        <property name="patientAttributeValueService"
+            ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+        <property name="patientAttributeService">
+            <ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+        </property>
+        <property name="patientAttributeGroupService"
+            ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+        <property name="patientIdentifierTypeService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+        </property>
+    </bean>
   
   <!-- Case Aggregation -->
   <bean id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"

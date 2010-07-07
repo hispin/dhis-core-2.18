@@ -262,7 +262,14 @@ function searchValidationCompleted( messageElement )
 	}
 }
 
+// -----------------------------------------------------------------------------
+// Disable form
+// -----------------------------------------------------------------------------
 
+function disableForm()
+{
+    $('#firstName').attr("disabled", true);
+}
 // -----------------------------------------------------------------------------
 // Add Patient
 // -----------------------------------------------------------------------------
@@ -271,7 +278,7 @@ function validateAddPatient()
 {
 	
 	var age = document.getElementById( 'age' );
-		
+	var orgunitcode = document.getElementById('orgunitcode');
 	if( age.value != '' )
 	{
 		if( !isInt( age.value ) )
@@ -282,7 +289,7 @@ function validateAddPatient()
 			
 			return false;
 		}
-	}	
+	}
 	
 	var params = '&checkedDuplicate='+checkedDuplicate 
 				+'&firstName=' + getFieldValue( 'firstName' ) 
@@ -418,7 +425,7 @@ function move( listId ) {
 	
 	var fromList = document.getElementById(listId);
 	
-	if ( fromList.selectedIndex == -1 ) { return; }
+	if ( fromList.selectedIndex == -1 ) {return;}
 	
 	if ( ! availableList ) 
 	{
@@ -570,7 +577,7 @@ function showListPatientDuplicate(rootElement, validate)
 		}
 		jQuery("#thickboxContainer","#hiddenModalContent").html("").append(sPatient);
 		if( !validate ) jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();});
-		else jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();window.parent.checkedDuplicate = true; window.parent.validatePatient();});
+		else jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();window.parent.checkedDuplicate = true;window.parent.validatePatient();});
 		tb_show( message, "#TB_inline?height=500&width=500&inlineId=hiddenModalContent", null);
 	}
 }
@@ -616,4 +623,73 @@ function jumpToPage( baseLink )
 	var pageSize = jQuery("#sizeOfPage").val();
 	var currentPage = jQuery("#jumpToPage").val();
 	window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
+}
+
+function toggleRelationshipRow(this_)
+{
+	if( jQuery(this_).attr("checked") ) 
+	{
+		jQuery("tr.relationship-row").each(function(){jQuery(this).show()});
+	}else {
+		jQuery("tr.relationship-row").each(function(){jQuery(this).hide()});
+	}
+}
+
+/**
+ * Overwrite showDetails() of common.js
+ * This method will show details div on a pop up instead of show the div in the main table's column.
+ * So we will have more place for the main column of the table.
+ * @return
+ */
+
+function showDetails()
+{
+	var detailArea = $("#detailsArea");
+	var top = (f_clientHeight() / 2) - 200;	
+	if ( top < 0 ) top = 0; 
+    var left = screen.width - detailArea.width() - 100;
+    detailArea.css({"left":left+"px","top":top+"px"});
+    detailArea.show('fast');
+    
+}
+
+/**
+ *  Get document width, hieght, scroll positions
+ *  Work with all browsers
+ * @return
+ */
+
+function f_clientWidth() {
+	return f_filterResults (
+		window.innerWidth ? window.innerWidth : 0,
+		document.documentElement ? document.documentElement.clientWidth : 0,
+		document.body ? document.body.clientWidth : 0
+	);
+}
+function f_clientHeight() {
+	return f_filterResults (
+		window.innerHeight ? window.innerHeight : 0,
+		document.documentElement ? document.documentElement.clientHeight : 0,
+		document.body ? document.body.clientHeight : 0
+	);
+}
+function f_scrollLeft() {
+	return f_filterResults (
+		window.pageXOffset ? window.pageXOffset : 0,
+		document.documentElement ? document.documentElement.scrollLeft : 0,
+		document.body ? document.body.scrollLeft : 0
+	);
+}
+function f_scrollTop() {
+	return f_filterResults (
+		window.pageYOffset ? window.pageYOffset : 0,
+		document.documentElement ? document.documentElement.scrollTop : 0,
+		document.body ? document.body.scrollTop : 0
+	);
+}
+function f_filterResults(n_win, n_docel, n_body) {
+	var n_result = n_win ? n_win : 0;
+	if (n_docel && (!n_result || (n_result > n_docel)))
+		n_result = n_docel;
+	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
 }

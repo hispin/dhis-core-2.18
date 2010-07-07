@@ -63,12 +63,7 @@
     </action>
     
     <!-- Chart -->
-    
-    <action name="createChart" class="org.hisp.dhis.reporting.chart.action.CreateChartAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
+        
     <action name="saveChart" class="org.hisp.dhis.reporting.chart.action.SaveChartAction">
       <result name="success" type="redirect">displayViewChartForm.action</result>
       <param name="requiredAuthorities">F_CHART_ADD</param>     
@@ -210,7 +205,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/inputReportParamsForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/report.js,javascript/table.js,javascript/reportParams.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/report.js,javascript/table.js</param>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
     
@@ -294,7 +289,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewPivotTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/pivot.js,javascript/criteria.js</param>
+      <param name="javascripts">javascript/pivot.js,javascript/criteria.js</param>
     </action>
     
     <action name="getPivotTable" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction">

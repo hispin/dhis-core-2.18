@@ -78,12 +78,12 @@ public class ViewAnalysisFormAction
     // -------------------------------------------------------------------------
     
     private List<DataSet> dataSets;
-        
+    
     public List<DataSet> getDataSets()
     {
         return dataSets;
     }
-    
+
     private String key;
 
     public String getKey()

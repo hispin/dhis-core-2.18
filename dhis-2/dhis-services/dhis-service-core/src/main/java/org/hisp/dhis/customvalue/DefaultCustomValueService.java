@@ -61,9 +61,7 @@ public class DefaultCustomValueService
 
     public int addCustomValue( CustomValue customValue )
     {
-        int id = customValueStore.save( customValue );
-
-        return id;
+        return customValueStore.save( customValue );
     }
 
     public void deleteCustomValue( CustomValue customValue )

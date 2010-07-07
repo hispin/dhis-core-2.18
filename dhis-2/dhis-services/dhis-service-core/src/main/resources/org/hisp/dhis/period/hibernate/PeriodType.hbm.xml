@@ -29,7 +29,5 @@
       discriminator-value="OnChange"/>
     <subclass name="org.hisp.dhis.period.SurveyPeriodType"
       discriminator-value="Survey"/>
-    <subclass name="org.hisp.dhis.period.RelativePeriodType"
-      discriminator-value="Relative"/>
   </class>
 </hibernate-mapping>
