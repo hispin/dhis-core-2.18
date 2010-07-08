@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transforms>
+   <transform tag="{http://ogr.maptools.org/}FeatureCollection">
+       <xslt>gml2dxf.xsl</xslt>
+       <description>GML to DXF orgunits</description>
+   </transform>
+</transforms>

@@ -1,17 +1,5 @@
 package org.hisp.dhis.importexport.xml;
 
-
-import java.io.InputStream;
-import org.amplecode.staxwax.framework.XPathFilter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.importexport.ImportException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.w3c.dom.Node;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -38,19 +26,33 @@ import org.w3c.dom.Node;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.IOException;
+import java.io.InputStream;
+import org.amplecode.staxwax.framework.XPathFilter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.external.location.LocationManagerException;
+import org.hisp.dhis.importexport.ImportException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.w3c.dom.Node;
+
 /**
  * An XSLT locator based on the dhis LocationManager
- *
- * It depends on a simple XML transformers configration file
- * which maps tags to stylesheets.
- *
+ * 
+ * It depends on a simple XML transformers configration file which maps tags to
+ * stylesheets.
+ * 
  * @author bobj
  * @version created 30-Apr-2010
  */
-@Component("location-manager-xslt-locator")
-public class LocManagerXSLTLocator implements XSLTLocator
+@Component( "location-manager-xslt-locator" )
+public class LocManagerXSLTLocator
+    implements XSLTLocator
 {
-
     private static final Log log = LogFactory.getLog( LocManagerXSLTLocator.class );
 
     private static final String TRANSFORMER_MAP = "transform/transforms.xml";
@@ -59,29 +61,56 @@ public class LocManagerXSLTLocator implements XSLTLocator
     private LocationManager locationManager;
 
     @Override
-    public InputStream getTransformerByTag( String identifier ) throws ImportException
+    public InputStream getTransformerByTag( String identifier )
+        throws ImportException
     {
-        InputStream result = null;
+        Node transformerNode = null;
+        
+        String xpath = "/transforms/transform[@tag='" + identifier + "']/xslt";
+        log.debug( "xpath search: " + xpath );
+        
+        // ---------------------------------------------------------------------
+        // Search file system
+        // ---------------------------------------------------------------------
+
         try
         {
-            String xpath = "/transforms/transform[@tag='" + identifier + "']/xslt";
-            log.debug( "xpath search: " + xpath );
-            Node transformerNode = XPathFilter.findNode( locationManager.getInputStream( TRANSFORMER_MAP ),
-                xpath );
-            if ( transformerNode != null )
-            {
-                log.debug( "Node found: " + transformerNode.getTextContent() );
-                log.debug( "Loading: " + transformerNode.getTextContent() );
-                result = locationManager.getInputStream( "transform/" + transformerNode.getTextContent() );
-            } else
-            {
-                throw new ImportException( "No transformer configured for this format" );
-            }
-
-        } catch ( LocationManagerException ex )
-        {
-            throw new ImportException( "Missing transformer for this format", ex );
+            transformerNode = XPathFilter.findNode( locationManager.getInputStream( TRANSFORMER_MAP ), xpath );
         }
-        return result;
+        catch ( LocationManagerException ex )
+        {
+            // Not found, proceed to search in classpath
+        }
+        
+        if ( transformerNode != null )
+        {
+            log.info( "Loading transformer from file system: " + transformerNode.getTextContent() );
+            
+            try
+            {
+                return locationManager.getInputStream( "transform/" + transformerNode.getTextContent() );
+            }
+            catch ( LocationManagerException ex )
+            {
+                throw new ImportException( "Transformer mapped for format but could not be found on file system: " + transformerNode.getTextContent() );
+            }
+        }
+        
+        // ---------------------------------------------------------------------
+        // Search classpath
+        // ---------------------------------------------------------------------
+
+        try
+        {
+            transformerNode = XPathFilter.findNode( new ClassPathResource( TRANSFORMER_MAP ).getInputStream(), xpath );
+            
+            log.info( "Loading transformer from classpath: " + transformerNode.getTextContent() );
+            
+            return new ClassPathResource( "transform/" + transformerNode.getTextContent() ).getInputStream();
+        }
+        catch ( IOException ex )
+        {
+            throw new ImportException( "No transformer configured for this format: " + identifier );
+        }
     }
 }
