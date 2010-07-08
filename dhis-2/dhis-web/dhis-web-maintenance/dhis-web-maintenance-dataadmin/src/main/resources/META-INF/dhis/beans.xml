@@ -33,7 +33,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.period.PeriodService" />
 		</property>
 		<property name="dataSetLockService">
-			<ref bean="org.hisp.dhis.datalock.DataSetLockService" />
+			<ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
 		</property>
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService" />
@@ -45,19 +45,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
 		scope="prototype">
 		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 		</property>
 		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
 		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService" />
+			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
 		<property name="dataSetLockService">
-			<ref bean="org.hisp.dhis.datalock.DataSetLockService" />
+			<ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
 		</property>
 		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService" />
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 	</bean>
 

@@ -26,14 +26,18 @@
  */
 package org.hisp.dhis.dataadmin.action.lock;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -88,10 +92,16 @@ public class DefineLockOnDataSetOrgunitAndPeriod
         this.currentUserService = currentUserService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-
     private Integer selectedLockedDataSetId;
 
     public void setSelectedLockedDataSetId( Integer selectedLockedDataSetId )
@@ -134,46 +144,70 @@ public class DefineLockOnDataSetOrgunitAndPeriod
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception{
-    	
-          Period period = new Period();
-		
-		  if( periodId != null ){
-			
-			 period = periodService.getPeriod( periodId.intValue() );
-		  }
-		
-		  else{
-			  return SUCCESS;
-		  }
-		
-          period = periodService.getPeriod( periodId.intValue() );
-          storedBy = currentUserService.getCurrentUsername();
+    public String execute()
+        throws Exception
+    {
 
-          // ----------------------------------------------------------------------------------------
-          // Data sets lock for specific selected period, and selected
-          // organization unit ( or units )
-          // ----------------------------------------------------------------------------------------
+        Period period = new Period();
 
-          DataSet dataSet = dataSetService.getDataSet(  selectedLockedDataSetId.intValue() );
-          Set<Source> organisationUnitsSelectedForLocking = new HashSet<Source>( selectionTreeManager
-                .getLockOnSelectedOrganisationUnits() );
-          DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-
-          if ( organisationUnitsSelectedForLocking.size() < 1 ){
-             dataSet.setLocked( false );
-             dataSetService.updateDataSet( dataSet );
-             dataSetLock.getSources().removeAll( dataSetLock.getSources() );
-             dataSetLockService.deleteDataSetLock( dataSetLock );
-             return SUCCESS;
+        if ( periodId != null )
+        {
+            period = periodService.getPeriod( periodId.intValue() );
+        }
+        else
+        {
+            return SUCCESS;
         }
 
-        dataSetLock.getSources().removeAll( dataSetLock.getSources() );
-        dataSetLock.getSources().addAll( organisationUnitsSelectedForLocking );
-        dataSetLock.setTimestamp( new Date() );
-        dataSetLock.setStoredBy( storedBy );
-        dataSetLockService.updateDataSetLock( dataSetLock );
+        period = periodService.getPeriod( periodId.intValue() );
+        storedBy = currentUserService.getCurrentUsername();
 
+        //----------------------------------------------------------------------
+        // Data sets lock for specific selected period, and selected
+        // organization unit ( or units )
+        //----------------------------------------------------------------------
+
+        DataSet dataSet = dataSetService.getDataSet( selectedLockedDataSetId.intValue() );
+        Set<Source> organisationUnitsSelectedForLocking = new HashSet<Source>( selectionTreeManager
+            .getLockOnSelectedOrganisationUnits() );
+
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser()
+            .getOrganisationUnits() );
+
+        List<OrganisationUnit> curUserOrgUnitTree = new ArrayList<OrganisationUnit>();
+
+        if( dataSetLock != null )
+        {
+            if( organisationUnits != null && organisationUnits.size() != 0 )
+            {
+                for( OrganisationUnit organisationUnitElement : organisationUnits )
+                {
+                    curUserOrgUnitTree.addAll( organisationUnitService
+                        .getOrganisationUnitWithChildren( organisationUnitElement.getId() ) );
+                }
+
+                dataSetLock.getSources().removeAll( convert( curUserOrgUnitTree ) );
+                dataSetLock.getSources().addAll( organisationUnitsSelectedForLocking );
+                dataSetLock.setTimestamp( new Date() );
+                dataSetLock.setStoredBy( storedBy );
+                dataSetLockService.updateDataSetLock( dataSetLock );
+            }
+        }
+        
         return SUCCESS;
+    }
+
+    private Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
+    {
+        Set<Source> sources = new HashSet<Source>();
+
+        for( OrganisationUnit organisationUnit : organisationUnits )
+        {
+            sources.add( (Source) organisationUnit );
+        }
+
+        return sources;
     }
 }
