@@ -79,5 +79,19 @@ public class GML2DXFTest
         
         assertNotNull( organisationUnitService.getAllOrganisationUnits() );
         assertEquals( 13, organisationUnitService.getAllOrganisationUnits().size() );
+        
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Bo" ).getCoordinatesAsCollection().size() );
+        assertEquals( 18, organisationUnitService.getOrganisationUnitByName( "Bonthe" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Moyamba" ).getCoordinatesAsCollection().size() );
+        assertEquals( 3, organisationUnitService.getOrganisationUnitByName( "Pujehun" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Kailahun" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Kenema" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Kono" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Bombali" ).getCoordinatesAsCollection().size() );
+        assertEquals( 3, organisationUnitService.getOrganisationUnitByName( "Kambia" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Koinadugu" ).getCoordinatesAsCollection().size() );
+        assertEquals( 8, organisationUnitService.getOrganisationUnitByName( "Port Loko" ).getCoordinatesAsCollection().size() );
+        assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Tonkolili" ).getCoordinatesAsCollection().size() );
+        assertEquals( 2, organisationUnitService.getOrganisationUnitByName( "Western Area" ).getCoordinatesAsCollection().size() );
     }
 }
