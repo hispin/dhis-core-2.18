@@ -24,53 +24,93 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.reportexcel.datasetcompleted.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
+ * @version $Id SelectParamsAction.java Jul 7, 2010 10:57:32 PM chauthutran$
  */
 public class SelectParamsAction
-    implements Action
+    extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private PeriodService periodService;
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-    
-    
+    private DataSetService dataSetService;
 
-    // -------------------------------------------
+    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String periodType;
+
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private OrganisationUnit organisationUnit;
 
     private List<PeriodType> periodTypes;
 
+    private List<Period> periods;
+    
     private List<DataSet> dataSets;
 
-    // -------------------------------------------
+    private boolean disabled;
+
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
+
+    public List<Period> getPeriods()
+    {
+        return periods;
+    }
 
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
+    }
+
+    public String getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
     }
 
     public List<DataSet> getDataSets()
@@ -83,9 +123,9 @@ public class SelectParamsAction
         return periodTypes;
     }
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    public boolean isDisabled()
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        return disabled;
     }
 
     public void setPeriodService( PeriodService periodService )
@@ -93,14 +133,54 @@ public class SelectParamsAction
         this.periodService = periodService;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
+        disabled = false;
+
         organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+        if ( organisationUnit == null )
+        {
+            message = i18n.getString( "choose_orgunit" );
 
+            disabled = true;
+
+            return SUCCESS;
+        }
+
+        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( organisationUnitSelectionManager
+            .getSelectedOrganisationUnit().getChildren() );
+
+        if ( children.size() == 0 )
+        {
+            message = i18n.getString( "choose_orgunit_has_children" );
+
+            disabled = true;
+
+            return SUCCESS;
+        }
+        
+        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+        
+        if ( periodType != null && periodType.length() > 0 )
+        {
+            PeriodType type = periodService.getPeriodTypeByName( periodType );
+
+            // Get dataSets by periodType and orgunits
+            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( type ) );
+            dataSets.retainAll( dataSetService.getDataSetsBySources( children ) );
+            Collections.sort( dataSets, new DataSetNameComparator() );
+            
+            // Get periods by periodType
+            periods = new ArrayList<Period>(periodService.getPeriodsByPeriodType( type ));
+            Collections.sort( periods, new PeriodComparator());
+        }
+        
         return SUCCESS;
     }
-
 }

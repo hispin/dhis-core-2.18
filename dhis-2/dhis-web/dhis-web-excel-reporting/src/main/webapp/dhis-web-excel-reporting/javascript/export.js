@@ -90,6 +90,12 @@ function responseListPeriodReceived( xmlObject ) {
 
 function generateReportExcel() {
 	
+	var report = getFieldValue('report');
+	if(report.length == 0){
+		setMessage(i18n_specify_report);
+		return;
+	}
+	
 	$("#processing").showAtCenter( true );
 	
 	var request = new Request();

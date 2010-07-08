@@ -48,13 +48,13 @@
 	
 </div>
 
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
 <br/>
 <hr/>
 <p>
 <input type="button" value='$i18n.getString( "preview_report" )' onclick="previewReport();" id="previewButton"/>
 <input name="generate_report" id="generate_report"  type="button" onClick="generateReportExcel();" value='$i18n.getString( "generate_report" )' />
 </p>
+<span id="message"></span>
 
 <div id="previewDiv">
 
@@ -70,10 +70,10 @@
 </span>
 
 <span id="processing" style="display:none;position:fixed;"><img src="../images/ajax-loader-preview.gif" /></span>
-
 <script>
 
 	var i18n_value_rounded = '$encoder.jsEscape( $i18n.getString("value_rounded"), "'" )';
+	var i18n_specify_report = '$encoder.jsEscape( $i18n.getString("specify_report"), "'" )';
 
 	#if ( $organisationUnit )
 		

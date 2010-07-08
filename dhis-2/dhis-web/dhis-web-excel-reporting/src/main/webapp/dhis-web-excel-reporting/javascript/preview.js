@@ -20,6 +20,12 @@ function previewAdvandReport() {
 
 function previewReport() {
 	
+	var report = getFieldValue('report');
+	if(report.length == 0){
+		setMessage(i18n_specify_report);
+		return;
+	}
+	
 	aKey	= null;
 	aMerged = null;
 	

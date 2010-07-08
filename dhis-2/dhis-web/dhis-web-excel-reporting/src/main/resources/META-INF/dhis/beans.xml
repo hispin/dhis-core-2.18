@@ -623,16 +623,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.datasetcompleted.action.GetDataSetAndPeriodByPeriodTypeAction"
-		class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetDataSetAndPeriodByPeriodTypeAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
 
 	<bean
