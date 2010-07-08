@@ -18,39 +18,6 @@ function changeViewBy() {
 	}
 }
 
-function getDataSetAndPeriod() {
-
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getDataSetAndPeriodCompleted );
-    request.send( 'getDataSetAndPeriodByPeriodType.action?periodTypeName=' + getFieldValue('periodType'));
-}
-
-function getDataSetAndPeriodCompleted( xmlObject ) {
-
-	var listPeriod = byId( 'period' );
-	listPeriod.options.length = 0;
-	var periods = xmlObject.getElementsByTagName( "period" );
-	
-	for ( var i = 0 ; i < periods.length ; i++ ) {
-	
-		var id = periods.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-		var name = periods.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-		listPeriod.add(new Option(name, id), null);
-	}
-	
-	var listDataSet = byId( 'dataSet' );
-	listDataSet.options.length = 0;
-	var dataSets = xmlObject.getElementsByTagName( "dataSet" );
-	
-	for ( var i = 0 ; i < dataSets.length ; i++ ) {
-	
-		var id = dataSets.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-		var name = dataSets.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-		listDataSet.add(new Option(name, id), null);
-	}
-}
-
 function viewData (dataSetId, periodId, organisationUnitId) {
 
 	var url = "viewCustomDataSetReport.action?dataSetId=" + dataSetId + "&periodId=" + periodId + "&organisationUnitId=" + organisationUnitId;
@@ -58,3 +25,27 @@ function viewData (dataSetId, periodId, organisationUnitId) {
 	window.open(  url , '_blank', 'width='+document.documentElement.clientWidth+',height='+document.documentElement.clientHeight+',scrollbars=yes' );
 }
 
+// ---------------------------------------------------------------------------
+// View dataset completed reportS
+// ---------------------------------------------------------------------------
+
+function viewDataSetCompleted(){	
+	
+	var params = "viewBy=" + byId('viewby').value;
+		
+	var selectedDataSets = document.getElementById( 'selectedDataSets' );
+	for ( var i = 0; i < selectedDataSets.options.length; ++i)
+	{
+		params += '&selectedDataSets=' + selectedDataSets.options[i].value;
+	} 
+		
+	var selectedPeriods = document.getElementById( 'selectedPeriods' );
+	for ( var i = 0; i < selectedPeriods.options.length; ++i)
+	{
+		params += '&selectedPeriods=' + selectedPeriods.options[i].value;
+	} 	
+	
+	var url = "viewDataSetCompleted.action?" + params;
+	window.open(  url , '_blank', 'width=' + document.documentElement.clientWidth+',height='+document.documentElement.clientHeight+',scrollbars=yes' );
+		
+}

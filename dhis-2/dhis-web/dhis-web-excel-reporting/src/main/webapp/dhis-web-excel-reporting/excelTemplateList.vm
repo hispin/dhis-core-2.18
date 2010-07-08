@@ -1,12 +1,35 @@
+<script>
+//-----------------------------------------------------------------------
+//init jQuery validation for uploadfile
+//-----------------------------------------------------------------------
+	jQuery(document).ready(
+			function()
+			{
+				jQuery("#uploadForm").validate({
+					 meta:"validate"
+					,errorElement:"td"
+					,submitHandler: function(form)
+									{
+									    validateUploadExcelTemplate();
+									}
+				});
+				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			}
+
+	);
+
+</script>
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString('excel_template_management') #openHelp( "excelReportingExcelTemplateManagement" )</h3>
 
-<form name="uploadForm" id="uploadForm" action="uploadExcelTemplate.action" method="post" enctype="multipart/form-data">
+<form id="uploadForm" action="uploadExcelTemplate.action" method="post" enctype="multipart/form-data">
 	<table width="100%">
 		<tr>
 			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' ):</td>
 			<td width="82%">
 				<input type="file" id="upload" name="upload" onChange="enable('uploadButton');" />				
-				<input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelTemplate()" />    
+				<input name="uploadButton" id="uploadButton" type="submit" value="$i18n.getString( 'upload_file' )" />    
 			</td>  
 			<td></td>			
 		</tr>

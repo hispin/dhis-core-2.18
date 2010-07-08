@@ -38,69 +38,77 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class AddExcelItemGroupAction implements Action {
+public class AddExcelItemGroupAction
+    implements Action
+{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	private PeriodService periodService;
+    private PeriodService periodService;
 
-	// -------------------------------------------------------------------------
-	// Inputs
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Inputs
+    // -------------------------------------------------------------------------
 
-	private String name;
+    private String name;
 
-	private String type;
+    private String type;
 
-	private String periodTypeName;
+    private String periodTypeName;
 
-	// -------------------------------------------------------------------------
-	// Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Setters
+    // -------------------------------------------------------------------------
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setPeriodTypeName(String periodTypeName) {
-		this.periodTypeName = periodTypeName;
-	}
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
+        ExcelItemGroup excelItemGroup = new ExcelItemGroup();
 
-		ExcelItemGroup excelItemGroup = new ExcelItemGroup();
+        excelItemGroup.setName( name );
 
-		excelItemGroup.setName(name);
+        excelItemGroup.setType( type );
 
-		excelItemGroup.setType(type);
-		
-		PeriodType periodType = periodService.getPeriodTypeByName(periodTypeName);
-		
-		excelItemGroup.setPeriodType(periodType);
-		
-		excelItemService.addExcelItemGroup(excelItemGroup);
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
 
-		return SUCCESS;
-	}
+        excelItemGroup.setPeriodType( periodType );
+
+        excelItemService.addExcelItemGroup( excelItemGroup );
+
+        return SUCCESS;
+    }
 
 }

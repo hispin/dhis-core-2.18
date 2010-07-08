@@ -39,6 +39,12 @@
 			<param name="page">/dhis-web-excel-reporting/configuration.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="javascripts">
+       			../dhis-web-commons/util/validate/jquery.validate.js,
+       			../dhis-web-commons/util/jquery.metadata.js,
+      			../dhis-web-commons/util/validate/additional-methods.js,
+      			../dhis-web-commons/util/validate/messages_locale.js
+      		</param>
 		</action>
 
 		<action name="setConfiguration"
@@ -613,14 +619,7 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataSetCompleted.js</param>
 		</action>
-
-		<action name="getDataSetAndPeriodByPeriodType"
-			class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetDataSetAndPeriodByPeriodTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseDataSetAndPeriodByPeriodType.vm
-			</result>
-		</action>
-
+		
 		<action name="viewDataSetCompleted"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction">
 			<result name="success" type="velocity">/popup.vm</result>
@@ -1261,8 +1260,15 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/exceltemplate.js,
-				javascript/ajaxfileupload.js</param>
+			<param name="javascripts">
+				javascript/commons.js,
+				javascript/exceltemplate.js,
+				javascript/ajaxfileupload.js,
+				../dhis-web-commons/util/validate/jquery.validate.js,
+				../dhis-web-commons/util/jquery.metadata.js,
+				../dhis-web-commons/util/validate/additional-methods.js,
+				../dhis-web-commons/util/validate/messages_locale.js
+			</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 

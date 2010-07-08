@@ -51,9 +51,10 @@ import org.hisp.dhis.reportexcel.action.ActionSupport;
  */
 public class ViewDataSetCompletedAction
     extends ActionSupport{
-    // -------------------------------------------
+    
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private PeriodService periodService;
 
@@ -63,9 +64,9 @@ public class ViewDataSetCompletedAction
 
     private CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String viewBy;
 
@@ -77,9 +78,9 @@ public class ViewDataSetCompletedAction
     
     private String htmlEmbed;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     
     
 
@@ -133,7 +134,11 @@ public class ViewDataSetCompletedAction
         throws Exception
     {
         
-        
+        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( organisationUnitSelectionManager
+            .getSelectedOrganisationUnit().getChildren() );
+
+        Collections.sort( children, new OrganisationUnitNameComparator() );       
+       
         List<Period> listPeriod = new ArrayList<Period>();
 
         for ( String id : this.selectedPeriods )
@@ -150,12 +155,6 @@ public class ViewDataSetCompletedAction
         }
 
         Collections.sort( listDataSet, new DataSetNameComparator() );
-
-        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( organisationUnitSelectionManager
-            .getSelectedOrganisationUnit().getChildren() );
-
-        Collections.sort( children, new OrganisationUnitNameComparator() );       
-       
         
         if ( viewBy.equalsIgnoreCase( "period" ) )
         {

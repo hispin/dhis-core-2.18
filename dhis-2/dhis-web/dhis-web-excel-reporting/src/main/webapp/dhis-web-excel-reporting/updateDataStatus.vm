@@ -26,7 +26,6 @@
 <script language="javascript">
 	function updateDataStatus(){
 		var url = "updateDataEntryStatus.action?dataStatusId=" + $dataStatus.id + "&dataSetId=" + getFieldValue('dataSetId') + "&makeDefault=" + document.getElementById('makeDefault').checked;
-		alert(url);
 		window.location = url;
 	}
 
