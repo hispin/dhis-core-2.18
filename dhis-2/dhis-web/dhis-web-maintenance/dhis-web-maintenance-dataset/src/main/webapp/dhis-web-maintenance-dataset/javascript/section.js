@@ -35,12 +35,6 @@ function sortOrderSubmit() {
 function getSectionByDataSet(dataSetId) {
 	window.location = "section.action?dataSetId=" + dataSetId;
 }
-
-function getDataElementByCategoryCombo(categoryComboId, dataSetId) {
-	window.location = "addSectionAction.action?categoryComboId="
-			+ categoryComboId + "&dataSetId=" + dataSetId;
-}
-
 function removeSection(sectionId, sectionName) {
 	removeItem(sectionId, sectionName, i18n_confirm_delete,
 			"removeSection.action");
