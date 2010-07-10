@@ -50,7 +50,7 @@ public interface AggregationService
      * @param startDate the start date of the aggregation period.
      * @param endDate the end date of the aggregation period.
      * @param organisationUnit the OrganisationUnit to aggregate over.
-     * @return the aggregated value.
+     * @return the aggregated value or null if no values are found.
      * @throws AggregationStoreException
      */
     Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
@@ -63,7 +63,7 @@ public interface AggregationService
      * @param startDate the start date of the aggregation period.
      * @param endDate the end date of the aggregation period.
      * @param organisationUnit the OrganisationUnit to aggregate over.
-     * @return the aggregated value.
+     * @return the aggregated value or null if no values are found.
      * @throws AggregationStoreException
      */
     Double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
@@ -76,7 +76,7 @@ public interface AggregationService
      * @param startDate the start date of the aggregation period.
      * @param endDate the end date of the aggregation period.
      * @param organisationUnit the OrganisationUnit to aggregate over.
-     * @return the aggregated value.
+     * @return the aggregated value or null if no values are found.
      * @throws AggregationStoreException
      */
     Double getAggregatedNumeratorValue( Indicator indicator, Date startDate, Date endDate,
@@ -90,7 +90,7 @@ public interface AggregationService
      * @param startDate the start date of the aggregation period.
      * @param endDate the end date of the aggregation period.
      * @param organisationUnit the OrganisationUnit to aggregate over.
-     * @return the aggregated value.
+     * @return the aggregated value or null if no values are found.
      * @throws AggregationStoreException
      */
     Double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,

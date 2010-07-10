@@ -34,6 +34,7 @@ import static junit.framework.Assert.assertNull;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -66,6 +67,8 @@ public class MappingServiceTest
 
     private Indicator indicator;
 
+    private DataElement dataElement;
+    
     private PeriodType periodType;
 
     private Period period;
@@ -93,6 +96,8 @@ public class MappingServiceTest
 
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
 
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         organisationUnit = createOrganisationUnit( 'A' );
@@ -116,6 +121,9 @@ public class MappingServiceTest
         indicator = createIndicator( 'A', indicatorType );
         indicatorService.addIndicator( indicator );
 
+        dataElement = createDataElement( 'A' );
+        dataElementService.addDataElement( dataElement );
+        
         periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
         period = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
         periodService.addPeriod( period );        
@@ -222,4 +230,16 @@ public class MappingServiceTest
         assertEquals( periodType, mappingService.getMapView( idA ).getPeriodType() );
         assertEquals( period, mappingService.getMapView( idA ).getPeriod() );
     }
+    
+    // -------------------------------------------------------------------------
+    // MapValue tests
+    // -------------------------------------------------------------------------
+
+    @Test
+    public void testMapValues()
+    {
+        mappingService.getDataElementMapValues( dataElement.getId(), period.getId(), organisationUnit.getId() );
+        mappingService.getIndicatorMapValues( indicator.getId(), period.getId(), organisationUnit.getId() );
+    }
+    
 }

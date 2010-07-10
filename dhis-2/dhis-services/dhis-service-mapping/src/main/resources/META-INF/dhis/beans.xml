@@ -24,6 +24,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.user.UserSettingService"/>
     <property name="dataMartStore"
       ref="org.hisp.dhis.datamart.DataMartStore"/>
+	<property name="aggregationService"
+	  ref="org.hisp.dhis.aggregation.AggregationService"/>
   </bean>
 		
   <!-- Store definitions -->
@@ -84,6 +86,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegendSet(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapOrganisationUnitRelation(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapView(..) )" method="intercept"/>
+    </aop:aspect>
+      
+    <aop:aspect ref="statementInterceptor">
+      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getDataElementMapValues(..) )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getIndicatorMapValues(..) )" method="intercept"/>
     </aop:aspect>
       
   </aop:config>
