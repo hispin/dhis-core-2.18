@@ -15,7 +15,7 @@
 
     <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid"/>
 
-	<list name="dataElements" table="sectionmembers">
+	<list name="dataElements" table="sectiondataelements">
 		<key column="sectionid"/>
 		<list-index column="sort_order" base="1"/>
 		<many-to-many class="org.hisp.dhis.dataelement.DataElement" 

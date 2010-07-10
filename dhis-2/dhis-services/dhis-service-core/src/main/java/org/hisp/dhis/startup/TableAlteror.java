@@ -147,6 +147,7 @@ public class TableAlteror
         
         // drop unused label column from section table
         executeSql( "ALTER TABLE section DROP COLUMN label" );
+        executeSql( "DROP TABLE sectionmembers" );
         
         log.info( "Tables updated" );
     }
