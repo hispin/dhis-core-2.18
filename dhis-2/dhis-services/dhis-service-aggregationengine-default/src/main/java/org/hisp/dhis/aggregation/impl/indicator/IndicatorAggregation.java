@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -85,7 +84,7 @@ public class IndicatorAggregation
     // Indicator aggregation
     // -------------------------------------------------------------------------
     
-    public double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
+    public Double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), startDate,
@@ -96,7 +95,7 @@ public class IndicatorAggregation
         
         if ( numeratorValue == INVALID || denominatorValue == INVALID || denominatorValue == 0.0 )
         {
-            return AggregationService.NO_VALUES_REGISTERED;
+            return null;
         }
         else
         {
@@ -175,9 +174,9 @@ public class IndicatorAggregation
                 
                 DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
-                double aggregatedValue = aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );                
+                Double aggregatedValue = aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );                
                 
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( aggregatedValue == null )
                 {
                     replaceString = NULL_REPLACEMENT;
                 }

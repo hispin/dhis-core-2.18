@@ -105,7 +105,7 @@ public class DefaultAggregationService
     // DataElement
     // -------------------------------------------------------------------------
 
-    public double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
+    public Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         AbstractDataElementAggregation dataElementAggregation = 
@@ -118,19 +118,19 @@ public class DefaultAggregationService
     // Indicator
     // -------------------------------------------------------------------------
 
-    public double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
+    public Double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         return indicatorAggregation.getAggregatedIndicatorValue( indicator, startDate, endDate, organisationUnit );
     }
 
-    public double getAggregatedNumeratorValue( Indicator indicator, Date startDate, Date endDate,
+    public Double getAggregatedNumeratorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         return indicatorAggregation.getAggregatedNumeratorValue( indicator, startDate, endDate, organisationUnit );
     }
 
-    public double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,
+    public Double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         return indicatorAggregation.getAggregatedDenominatorValue( indicator, startDate, endDate, organisationUnit );

@@ -80,7 +80,7 @@ public abstract class AbstractDataElementAggregation
      * @param aggregationEndDate End date
      * @param organisationUnit The organisationUnit
      */
-    public abstract double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
+    public abstract Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
     
     /**

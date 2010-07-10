@@ -86,20 +86,20 @@ public class GenerateDataElementChartAction
 
             keys.add( dataElement.getName() );
 
-            double value = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
+            Double value = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
                 period.getEndDate(), organisationUnit );
             
-            double total = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
+            Double total = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
                 period.getEndDate(), organisationUnit.getParent() );
 
-            if ( value == AggregationService.NO_VALUES_REGISTERED )
+            if ( value == null )
             {
-                value = 0;
+                value = 0.0;
             }
             
-            if ( total == AggregationService.NO_VALUES_REGISTERED )
+            if ( total == null )
             {
-                total = 0;
+                total = 0.0;
             }
             
             

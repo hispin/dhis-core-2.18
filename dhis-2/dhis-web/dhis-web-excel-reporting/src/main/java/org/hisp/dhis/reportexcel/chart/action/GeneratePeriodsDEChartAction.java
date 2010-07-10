@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -96,20 +95,20 @@ public class GeneratePeriodsDEChartAction
 
             keys.add( name );
 
-            double value = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
+            Double value = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
                 period.getEndDate(), organisationUnit );
 
-            double total = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
+            Double total = aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(),
                 period.getEndDate(), organisationUnit.getParent() );
 
-            if ( value == AggregationService.NO_VALUES_REGISTERED )
+            if ( value == null )
             {
-                value = 0;
+                value = 0.0;
             }
 
-            if ( total == AggregationService.NO_VALUES_REGISTERED )
+            if ( total == null )
             {
-                total = 0;
+                total = 0.0;
             }
 
             List<Double> values_ = new ArrayList<Double>();

@@ -42,8 +42,6 @@ public interface AggregationService
 {
     String ID = AggregationService.class.getName();
 
-    static final double NO_VALUES_REGISTERED = -1.0;
-
     /**
      * Calculates the aggregated value based on the aggregation operator defined
      * in the given dataelement.
@@ -55,7 +53,7 @@ public interface AggregationService
      * @return the aggregated value.
      * @throws AggregationStoreException
      */
-    double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
+    Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
 
     /**
@@ -68,7 +66,7 @@ public interface AggregationService
      * @return the aggregated value.
      * @throws AggregationStoreException
      */
-    double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
+    Double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
 
     /**
@@ -81,7 +79,7 @@ public interface AggregationService
      * @return the aggregated value.
      * @throws AggregationStoreException
      */
-    double getAggregatedNumeratorValue( Indicator indicator, Date startDate, Date endDate,
+    Double getAggregatedNumeratorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
 
     /**
@@ -95,7 +93,7 @@ public interface AggregationService
      * @return the aggregated value.
      * @throws AggregationStoreException
      */
-    double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,
+    Double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
     
     void clearCache();

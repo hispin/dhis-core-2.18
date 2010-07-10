@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -89,20 +88,20 @@ public class GeneratePeriodsInChartAction
             System.out.println("Period:" + period);
             System.out.println("Organisation Unit:" + organisationUnit.getName());
 
-            double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period
+            Double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period
                 .getEndDate(), organisationUnit );
             
-            double total = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period
+            Double total = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period
                 .getEndDate(), organisationUnit.getParent() );
 
-            if ( value == AggregationService.NO_VALUES_REGISTERED )
+            if ( value == null )
             {
-                value = 0;
+                value = 0.0;
             }
 
-            if ( total == AggregationService.NO_VALUES_REGISTERED )
+            if ( total == null )
             {
-                total = 0;
+                total = 0.0;
             }
 
             List<Double> values_ = new ArrayList<Double>();

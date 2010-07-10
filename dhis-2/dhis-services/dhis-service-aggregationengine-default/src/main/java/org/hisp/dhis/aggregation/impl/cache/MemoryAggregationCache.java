@@ -139,7 +139,7 @@ public class MemoryAggregationCache
         return periodIds;
     }    
     
-    public double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+    public Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit )
     {
         return aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
     }

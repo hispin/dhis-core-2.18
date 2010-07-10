@@ -32,7 +32,6 @@ import static org.hisp.dhis.system.util.DateUtils.getDays;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
@@ -47,7 +46,7 @@ import org.hisp.dhis.period.Period;
 public class AverageIntDataElementAggregation
     extends AbstractDataElementAggregation
 {
-    public double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date aggregationStartDate, Date aggregationEndDate,
+    public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date aggregationStartDate, Date aggregationEndDate,
         OrganisationUnit organisationUnit )
     {
         double totalSum = 0;
@@ -72,14 +71,7 @@ public class AverageIntDataElementAggregation
             }
         }
 
-        if ( valuesRegistered )
-        {
-            return totalSum;
-        }
-        else
-        {
-            return AggregationService.NO_VALUES_REGISTERED;
-        }
+        return valuesRegistered ? totalSum : null;
     }
 
     /**
