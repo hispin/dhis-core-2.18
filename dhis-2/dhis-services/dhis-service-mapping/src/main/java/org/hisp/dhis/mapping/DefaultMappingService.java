@@ -226,6 +226,7 @@ public class DefaultMappingService
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
         Indicator indicator = indicatorService.getIndicator( indicatorId );
         Period period = periodService.getPeriod( periodId );
+        int factor = indicator.getIndicatorType().getFactor();
         
         for ( OrganisationUnit organisationUnit : parent.getChildren() )
         {
@@ -234,6 +235,7 @@ public class DefaultMappingService
             if ( value != null )
             {
                 AggregatedMapValue mapValue = new AggregatedMapValue();
+                mapValue.setFactor( factor );
                 mapValue.setOrganisationUnitId( organisationUnit.getId() );
                 mapValue.setOrganisationUnitName( organisationUnit.getName() );
                 mapValue.setPeriodId( period.getId() );
