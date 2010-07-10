@@ -94,14 +94,14 @@ public class GenerateOrganisationInChartAction
             
             keys.add( organisationUnit.getName() );
 
-            double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(),
+            Double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(),
                 period.getEndDate(), organisationUnit);
 
-            double total = AggregationService.NO_VALUES_REGISTERED;
+            Double total = null; //TODO review...
 
-            if ( value == AggregationService.NO_VALUES_REGISTERED )
+            if ( value == null )
             {
-                value = 0;
+                value = 0.0;
             }
 
             List<Double> values_ = new ArrayList<Double>();

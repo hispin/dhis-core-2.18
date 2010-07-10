@@ -40,7 +40,6 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
-import org.hisp.dhis.aggregation.AggregationService;
 
 /**
  * @author Tran Thanh Tri
@@ -57,8 +56,6 @@ public class ExcelUtils
 
     public static final String ZERO = "0.0";
     
-    private static final String  NO_VALUES_REGISTERED = String.valueOf( AggregationService.NO_VALUES_REGISTERED );
-
     public static final String TEXT = "TEXT";
 
     public static final String NUMBER = "NUMBER";
@@ -242,7 +239,7 @@ public class ExcelUtils
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                if ( value.equals( NO_VALUES_REGISTERED  ) )
+                if ( value == null )
                 {
                     cellPOI.setCellType( POI_CELLSTYLE_BLANK );
                 }
@@ -285,7 +282,7 @@ public class ExcelUtils
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                if ( value.equals( NO_VALUES_REGISTERED  ) )
+                if ( value == null  )
                 {
                     cellPOI.setCellType( POI_CELLSTYLE_BLANK );
                 }

@@ -27,19 +27,18 @@ package org.hisp.dhis.aggregation.impl.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.DateUtils.getDays;
+import static org.hisp.dhis.system.util.MathUtils.getFloor;
+
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
-
-import static org.hisp.dhis.system.util.MathUtils.getFloor;
-import static org.hisp.dhis.system.util.DateUtils.getDays;
 
 /**
  * @author Lars Helge Overland
@@ -48,20 +47,13 @@ import static org.hisp.dhis.system.util.DateUtils.getDays;
 public class SumBoolDataElementAggregation
     extends AbstractDataElementAggregation
 {
-    public double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date aggregationStartDate, Date aggregationEndDate,
+    public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date aggregationStartDate, Date aggregationEndDate,
         OrganisationUnit organisationUnit )
     {
         double[] sums = getSumAndRelevantDays( dataElement.getId(), optionCombo.getId(), aggregationStartDate, aggregationEndDate, 
             organisationUnit.getId() );
 
-        if ( sums[1] > 0 )
-        {
-            return getFloor( sums[0] );
-        }
-        else
-        {
-            return AggregationService.NO_VALUES_REGISTERED;
-        }
+        return sums[1] > 0 ? getFloor( sums[0] ) : null;
     }
 
     protected Collection<DataValue> getDataValues( int dataElementId, int optionComboId, int organisationUnitId,

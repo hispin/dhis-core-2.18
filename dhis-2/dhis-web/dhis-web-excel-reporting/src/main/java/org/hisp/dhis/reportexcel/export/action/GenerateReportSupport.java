@@ -539,10 +539,10 @@ public abstract class GenerateReportSupport
 
                 Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-                double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( aggregatedValue == null )
                 {
                     replaceString = NULL_REPLACEMENT;
                 }
@@ -706,12 +706,12 @@ public abstract class GenerateReportSupport
     private double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
+        Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
             endDate, organisationUnit );
 
-        if ( dataElement.isZeroIsSignificant() && aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+        if ( dataElement.isZeroIsSignificant() && aggregatedValue == null )
         {
-            aggregatedValue = 0;
+            aggregatedValue = 0.0;
         }
 
         return aggregatedValue;
