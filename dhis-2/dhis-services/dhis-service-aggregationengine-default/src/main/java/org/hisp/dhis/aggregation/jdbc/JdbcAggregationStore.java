@@ -61,19 +61,21 @@ public class JdbcAggregationStore
     // DataValue
     // ----------------------------------------------------------------------
     
-    public Collection<DataValue> getDataValues( Collection<Integer> sourceIds, int dataElementId, int optionComboId, Collection<Integer> periodIds )
+    public Collection<DataValue> getDataValues( Collection<Integer> sourceIds, Integer dataElementId, Integer optionComboId, Collection<Integer> periodIds )
     {
         if ( sourceIds != null && sourceIds.size() > 0 && periodIds != null && periodIds.size() > 0 )
         {
             StatementHolder holder = statementManager.getHolder();
-        	
+            
+            String categoryOptionComboCriteria = optionComboId != null ? "AND categoryoptioncomboid = " + optionComboId + " " : "";
+            
             try
             {
                 String sql = 
                     "SELECT periodid, value " +
                     "FROM datavalue " +
                     "WHERE dataelementid = " + dataElementId + " " +
-                    "AND categoryoptioncomboid = " + optionComboId + " " +
+                    categoryOptionComboCriteria +
                     "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                     "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";                 
                 
@@ -94,11 +96,13 @@ public class JdbcAggregationStore
         return new ArrayList<DataValue>();
     }
     
-    public Collection<DataValue> getDataValues( int sourceId, int dataElementId, int optionComboId, Collection<Integer> periodIds )
+    public Collection<DataValue> getDataValues( Integer sourceId, Integer dataElementId, Integer optionComboId, Collection<Integer> periodIds )
     {
         if ( periodIds != null && periodIds.size() > 0 )
         {
             StatementHolder holder = statementManager.getHolder();
+
+            String categoryOptionComboCriteria = optionComboId != null ? "AND categoryoptioncomboid = " + optionComboId + " " : "";
             
             try
             {
@@ -106,7 +110,7 @@ public class JdbcAggregationStore
                     "SELECT periodid, value " +
                     "FROM datavalue " +
                     "WHERE dataelementid = " + dataElementId + " " +
-                    "AND categoryoptioncomboid = " + optionComboId + " " +
+                    categoryOptionComboCriteria +
                     "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                     "AND sourceid = " + sourceId;
 
@@ -146,7 +150,11 @@ public class JdbcAggregationStore
         
         return identifiers;
     }
-    
+
+    // ----------------------------------------------------------------------
+    // Supportive methods
+    // ----------------------------------------------------------------------
+
     private Collection<String> getDataValueIdentifiers( int min, int limit )
     {
         StatementHolder holder = statementManager.getHolder();
@@ -180,10 +188,6 @@ public class JdbcAggregationStore
         }
     }
     
-    // ----------------------------------------------------------------------
-    // Supportive methods
-    // ----------------------------------------------------------------------
-
     private Collection<DataValue> getDataValues( ResultSet resultSet )
     {
         try

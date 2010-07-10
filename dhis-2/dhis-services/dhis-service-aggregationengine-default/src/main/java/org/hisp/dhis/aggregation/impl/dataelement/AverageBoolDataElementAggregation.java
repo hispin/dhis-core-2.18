@@ -49,8 +49,7 @@ public class AverageBoolDataElementAggregation
     public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date aggregationStartDate, Date aggregationEndDate,
         OrganisationUnit organisationUnit )
     {
-        double[] sums = getSumAndRelevantDays( dataElement.getId(), optionCombo.getId(), aggregationStartDate, aggregationEndDate, 
-            organisationUnit.getId() );
+        double[] sums = getSumAndRelevantDays( dataElement, optionCombo, aggregationStartDate, aggregationEndDate, organisationUnit.getId() );
 
         if ( sums[1] > 0 )
         {
@@ -64,7 +63,7 @@ public class AverageBoolDataElementAggregation
         }
     }
 
-    protected Collection<DataValue> getDataValues( int dataElementId, int optionComboId, int organisationUnitId,
+    protected Collection<DataValue> getDataValues( Integer dataElementId, Integer optionComboId, Integer organisationUnitId,
         Date startDate, Date endDate )
     {
         OrganisationUnitHierarchy hierarchy = aggregationCache.getOrganisationUnitHierarchy();
