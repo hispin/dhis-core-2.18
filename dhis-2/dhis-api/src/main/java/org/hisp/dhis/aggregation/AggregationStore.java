@@ -54,7 +54,7 @@ public interface AggregationStore
      * @param periodIds a collection of period ids.
      * @return collection of DataValues for the given parameters.
      */
-    Collection<DataValue> getDataValues( Collection<Integer> sourceIds, int dataElementId, int optionComboId, Collection<Integer> periodIds );
+    Collection<DataValue> getDataValues( Collection<Integer> sourceIds, Integer dataElementId, Integer optionComboId, Collection<Integer> periodIds );
     
     /**
      * Gets all DataValues for the given parameters. This method can be used in conjunction with the
@@ -67,7 +67,7 @@ public interface AggregationStore
      * @param periodIds a collection of period ids.
      * @return collection of DataValues for the given parameters.
      */
-    Collection<DataValue> getDataValues( int sourceId, int dataElementId, int optionComboId, Collection<Integer> periodIds );
+    Collection<DataValue> getDataValues( Integer sourceId, Integer dataElementId, Integer optionComboId, Collection<Integer> periodIds );
     
     /**
      * Generates a collection of strings on the form <data element id>-<period id>-<source id>

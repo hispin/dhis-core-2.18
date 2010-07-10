@@ -59,7 +59,7 @@ public class AverageIntDataElementAggregation
         
         for ( Integer id : organisationUnitIds )
         {
-            double[] sums = getSumAndRelevantDays( dataElement.getId(), optionCombo.getId(), aggregationStartDate, aggregationEndDate, id );
+            double[] sums = getSumAndRelevantDays( dataElement, optionCombo, aggregationStartDate, aggregationEndDate, id );
     
             if ( sums[1] > 0 )
             {
@@ -85,7 +85,7 @@ public class AverageIntDataElementAggregation
      *         and hierarchy.
      * @throws AggregationStoreException
      */
-    protected Collection<DataValue> getDataValues( int dataElementId, int optionComboId, int organisationUnitId,
+    protected Collection<DataValue> getDataValues( Integer dataElementId, Integer optionComboId, Integer organisationUnitId,
         Date startDate, Date endDate )
     {   
         Collection<Integer> periods = aggregationCache.getIntersectingPeriodIds( startDate, endDate );
