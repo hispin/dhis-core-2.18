@@ -52,6 +52,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
@@ -117,6 +118,8 @@ public abstract class DhisConvenienceTest
     protected IndicatorService indicatorService;
 
     protected DataSetService dataSetService;
+    
+    protected SectionService sectionService;
 
     protected CompleteDataSetRegistrationService completeDataSetRegistrationService;
 

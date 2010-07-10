@@ -902,8 +902,6 @@ public class DefaultDataEntryScreenManager
 
         for ( DataElement element : dataSet.getDataElements() )
         {
-        	log.info( "Data Element in data set: " + element.getId() );
-        	
             map.put( element.getId(), element );
         }
 

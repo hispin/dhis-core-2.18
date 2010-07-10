@@ -56,16 +56,13 @@ public class Section
     {
     }
 
-    public Section( DataSet dataSet, List<DataElement> dataElements )
-    {
-        this.dataSet = dataSet;
-        this.dataElements = dataElements;
-    }
-
-    public Section( String name, DataSet dataSet )
+    public Section( String name, String title, DataSet dataSet, List<DataElement> dataElements, Set<DataElementOperand> greyedFields )
     {
         this.name = name;
+        this.title = title;
         this.dataSet = dataSet;
+        this.dataElements = dataElements;
+        this.greyedFields = greyedFields;
     }
 
     // -------------------------------------------------------------------------
