@@ -62,6 +62,8 @@ public interface MappingService
 
     Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level );
 
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, int parentOrganisationUnitId );
+    
     // -------------------------------------------------------------------------
     // IndicatorMapValue
     // -------------------------------------------------------------------------
@@ -73,6 +75,8 @@ public interface MappingService
 
     Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level );
 
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId );
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
