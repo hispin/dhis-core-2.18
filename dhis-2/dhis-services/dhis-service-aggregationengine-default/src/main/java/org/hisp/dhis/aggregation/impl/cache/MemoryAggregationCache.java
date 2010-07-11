@@ -27,7 +27,6 @@ package org.hisp.dhis.aggregation.impl.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -51,7 +51,7 @@ public class MemoryAggregationCache
 {
     private OrganisationUnitHierarchy hierarchyCache = null;    
     private Map<String, Period> periodCache = new HashMap<String, Period>();    
-    private Map<String, Collection<Integer>> periodIdCache = new HashMap<String, Collection<Integer>>();
+    private Map<String, Collection<Integer>> intersectingPeriodsCache = new HashMap<String, Collection<Integer>>();
     
     private static final String SEPARATOR = "-";
 
@@ -118,23 +118,16 @@ public class MemoryAggregationCache
     {
         String key = startDate.toString() + SEPARATOR + endDate.toString();
         
-        Collection<Integer> periodIds = periodIdCache.get( key );
+        Collection<Integer> periodIds = intersectingPeriodsCache.get( key );
         
         if ( periodIds != null )
         {
             return periodIds;
         }
         
-        Collection<Period> periods = periodService.getIntersectingPeriods( startDate, endDate );
-        
-        periodIds = new ArrayList<Integer>();
-        
-        for ( Period period : periods )
-        {
-            periodIds.add( period.getId() );
-        }
-        
-        periodIdCache.put( key, periodIds );
+        periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectingPeriods( startDate, endDate ) );
+                
+        intersectingPeriodsCache.put( key, periodIds );
         
         return periodIds;
     }    
@@ -148,6 +141,6 @@ public class MemoryAggregationCache
     {
         hierarchyCache = null;
         periodCache.clear();
-        periodIdCache.clear();
+        intersectingPeriodsCache.clear();
     }
 }
