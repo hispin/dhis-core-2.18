@@ -53,6 +53,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -164,12 +165,12 @@ public class DefaultMappingService
             Double value = aggregationService.getAggregatedDataValue( dataElement, null, period.getStartDate(), period.getEndDate(), organisationUnit );
             
             if ( value != null )
-            {
+            { 
                 AggregatedMapValue mapValue = new AggregatedMapValue();
                 mapValue.setOrganisationUnitId( organisationUnit.getId() );
                 mapValue.setOrganisationUnitName( organisationUnit.getName() );
                 mapValue.setPeriodId( period.getId() );
-                mapValue.setValue( value );
+                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
                 
                 values.add( mapValue );
             }
@@ -226,7 +227,6 @@ public class DefaultMappingService
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
         Indicator indicator = indicatorService.getIndicator( indicatorId );
         Period period = periodService.getPeriod( periodId );
-        int factor = indicator.getIndicatorType().getFactor();
         
         for ( OrganisationUnit organisationUnit : parent.getChildren() )
         {
@@ -235,11 +235,10 @@ public class DefaultMappingService
             if ( value != null )
             {
                 AggregatedMapValue mapValue = new AggregatedMapValue();
-                mapValue.setFactor( factor );
                 mapValue.setOrganisationUnitId( organisationUnit.getId() );
                 mapValue.setOrganisationUnitName( organisationUnit.getName() );
                 mapValue.setPeriodId( period.getId() );
-                mapValue.setValue( value );
+                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
                 
                 values.add( mapValue );
             }
