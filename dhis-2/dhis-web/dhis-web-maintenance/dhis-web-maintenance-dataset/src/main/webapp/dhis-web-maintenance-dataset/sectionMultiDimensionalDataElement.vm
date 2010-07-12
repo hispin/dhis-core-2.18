@@ -1,4 +1,3 @@
-<div style="border:1px solid #808080;width:98%">
 <table class="mainPageTable" cellpadding="0">    
     #set( $tabIndex = 1 )
     #set( $colCount = $optionCombos.size()  ) 
@@ -57,4 +56,3 @@
         <tr></tr>                                                
     #end    
 </table>
-<div>

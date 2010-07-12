@@ -1,15 +1,16 @@
 function openCloseSection( sectionId )
 {
-	var divSection = document.getElementById( sectionId );	
+	var divSection = document.getElementById( sectionId );
+	var sectionLabel = document.getElementById( sectionId + ":title" );	
 	
 	if( divSection.style.display == 'none' )
-	{		
-		//window.location = "sectionform.action?selectedSectionId=" + sectionId;
+	{			
 		divSection.style.display = ('block');
+		sectionLabel.style.textAlign = 'center';
 	}
 	else
-	{		
-		//window.location = "sectionform.action?selectedSectionId=" + '';
+	{			
 		divSection.style.display = ('none');
+		sectionLabel.style.textAlign = 'left';
 	}
 }

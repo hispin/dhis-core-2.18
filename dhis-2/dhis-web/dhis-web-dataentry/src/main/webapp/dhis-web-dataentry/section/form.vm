@@ -1,29 +1,45 @@
 
 #parse( "/dhis-web-dataentry/select.vm" )
 
-<table class="mainPageTable">
+#set( $marker = 0 )
 
-#set($i=1)
-
-#foreach( $section in $sections)	   
-    <tr>
-        <td><a href="javascript:openCloseSection($section.id);" style="text-decoration:none">$i - $encoder.htmlEncode($section.title)</a></td>  
-    </tr>
-    <tr>
-        <td>        	
-            <div id="$section.id" style="border:thin solid; margin:0;display:none">
-                #set( $isMultiDimensional = $sectionIsMultiDimensional.get( $section.id ) )
-                #if($isMultiDimensional == true )
-                    #parse( "/dhis-web-dataentry/section/multiDimensionalDataElement.vm" )
-                #else
-                    #parse( "/dhis-web-dataentry/section/dataElement.vm" )
-                #end
-            </div>
-        </td>
-    </tr>
-    #set($i=$i+1)
+#foreach( $section in $sections)	
+	
+	#if( $marker == 1 )
+		#set( $marker = 0 )
+		
+	#else
+		#set( $marker = 1 )
+	#end
+		
+	<div style="border:thin solid; #if( $marker == 0 ) background-color:#ebf0f6 #end">            
+    	<table class="mainPageTable">    		
+   			<tr>		   
+       			<td onclick="openCloseSection( $section.id )" onmouseover="style.backgroundColor='#baffbc';" onmouseout="#if( $marker == 0 ) style.backgroundColor='#ebf0f6' #else style.backgroundColor='#FFFFFF' #end">
+       				<div id="$section.id:title" style="text-align:center"><h3>$encoder.htmlEncode( $section.title )</h3></div>
+       			</td>       				   			        		  
+    		</tr>    	
+    		<tr>
+       			<td>        	
+           			<div id="$section.id" style="display:block">        				
+              				
+            			#set( $isMultiDimensional = $sectionIsMultiDimensional.get( $section.id ) )
+               				
+            			#if($isMultiDimensional == true )
+               				#parse( "/dhis-web-dataentry/section/multiDimensionalDataElement.vm" )
+           				#else
+                			#parse( "/dhis-web-dataentry/section/dataElement.vm" )
+               			#end
+               				               				
+           			</div>
+       			</td>
+    		</tr>    		    		    	    	
+		</table>
+	</div>
+	
+	<br>		
+	
 #end
-</table>
 
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )
 
