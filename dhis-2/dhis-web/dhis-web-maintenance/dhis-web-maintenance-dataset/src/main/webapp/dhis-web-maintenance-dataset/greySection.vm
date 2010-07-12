@@ -11,19 +11,19 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name" disabled="disabled"></td>        
+        <td><b>$section.name</b></td>        
       </tr>
       <tr>
         <td><label>$i18n.getString( "title" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionTitle" name="sectionTitle" style="width:20em" value="$section.title" disabled="disabled"></td>
+        <td><b>$section.title</b></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" style="width:20em" value="$section.dataSet.name" disabled="disabled"></td>
+        <td><b>$section.dataSet.name</b></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"></td>
+        <td><b>$categoryCombo.name</b></td>
       </tr>
     </tbody>    
   </table>
@@ -31,12 +31,18 @@
 <hr style="clear:both">
 <br> 
 
-#if( $sectionIsMultiDimensional == "true" )    
-    #parse( "/dhis-web-maintenance-dataset/sectionMultiDimensionalDataElement.vm" )
-#else
-    #parse( "/dhis-web-maintenance-dataset/sectionDataElement.vm" )
-#end
+<div style="border:1px solid #808080;width:98%">
+	#if( $sectionIsMultiDimensional == "true" )    
+    	#parse( "/dhis-web-maintenance-dataset/sectionMultiDimensionalDataElement.vm" )
+	#else
+    	#parse( "/dhis-web-maintenance-dataset/sectionDataElement.vm" )
+	#end	
+</div>
 
+<br>
+<hr style="clear:both">
+<br>
+	
 <p>
 	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( "back" )">
 </p>
