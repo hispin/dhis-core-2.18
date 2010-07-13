@@ -173,6 +173,23 @@ public class OrganisationUnit
         
         return collection;
     }
+
+    public Collection<String> getAllCoordinates()
+    {
+        Collection<String> collection = new ArrayList<String>();
+        
+        if ( coordinates != null && !coordinates.trim().isEmpty() )
+        {
+            Matcher matcher = GML_COORDINATE_PATTERN.matcher( coordinates );
+            
+            while ( matcher.find() )
+            {
+                collection.add( matcher.group() );
+            }
+        }
+        
+        return collection;
+    }
     
     public void setCoordinatesFromCollection( Collection<String> collection )
     {
