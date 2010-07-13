@@ -38,6 +38,15 @@
             <path>${installdir}/webapps</path>
         </createDirectory>
     </readyToInstallActionList>
+    <postInstallationActionList>
+        <addEnvironmentVariable>
+            <abortOnError>0</abortOnError>
+            <customErrorMessage>The enviornmenr varaible could not be set.</customErrorMessage>
+            <name>DHIS2_BROWSER</name>
+            <scope>user</scope>
+            <value>${installdir}\FirefoxPortable\FirefoxPortable.exe</value>
+        </addEnvironmentVariable>
+    </postInstallationActionList>
     <allowComponentSelection>1</allowComponentSelection>
     <compressionAlgorithm>lzma</compressionAlgorithm>
     <enableRollback>1</enableRollback>
@@ -204,10 +213,30 @@
                     <description>jre</description>
                     <destination>${installdir}/</destination>
                     <name>jre</name>
-                    <platforms>all</platforms>
+                    <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionDirectory>
                             <origin>../../resources/jre/jre6</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+        </component>
+        <component>
+            <name>FirefoxPortable</name>
+            <description>FirefoxPortable</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>0</show>
+            <folderList>
+                <folder>
+                    <description>FirefoxPortable</description>
+                    <destination>${installdir}/</destination>
+                    <name>FirefoxPortable</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>../../resources/browser/FirefoxPortable</origin>
                         </distributionDirectory>
                     </distributionFileList>
                 </folder>

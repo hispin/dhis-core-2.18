@@ -33,13 +33,8 @@
 
 package org.hisp.dhis;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 
+import java.io.File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mortbay.component.LifeCycle;
@@ -69,6 +64,7 @@ public class WebAppServer
     protected Server server;
 
     protected Connector connector;
+    private SimpleConfigReader configReader;
 
     public WebAppServer()
     {
@@ -81,7 +77,7 @@ public class WebAppServer
     {
         try
         {
-            int portFromConfig = this.getPortFromConfig( installDir + JETTY_PORT_CONF );
+            int portFromConfig = this.getPortFromConfig();
             connector.setPort( portFromConfig );
             log.info( "Loading DHIS 2 on port: " + portFromConfig );
         }
@@ -132,14 +128,20 @@ public class WebAppServer
         return connector.getPort();
     }
 
-    private int getPortFromConfig( String conf )
-        throws FileNotFoundException, IOException
+    private int getPortFromConfig()
     {
-        Reader r = new BufferedReader( new FileReader( conf ) );
-        char[] cbuf = new char[10];
-        r.read( cbuf );
-        String numstr = String.copyValueOf( cbuf );
-        Integer port = Integer.valueOf( numstr.trim() );
-        return port.intValue();
+        configReader = new SimpleConfigReader();
+        int preferredJettyPort = DEFAULT_JETTY_PORT;
+        try
+        {
+        int portFromConfig = configReader.preferredJettyPort();
+        preferredJettyPort = portFromConfig;
+        }
+        catch (Exception e)
+            {
+            log.error ("There was a problem reading the preferred jetty port. Using default.");
+            preferredJettyPort = DEFAULT_JETTY_PORT;
+            }
+        return preferredJettyPort;
     }
 }
