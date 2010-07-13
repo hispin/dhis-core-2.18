@@ -1015,9 +1015,9 @@ public class GenerateSelChildGradingReportAction extends ActionSupport
                 		endDate = tempDate.getTime();                		
                 	}
                 	
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );                
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );                
                     System.out.println(aggregatedValue+" ---- "+dataElement.getName());                
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -1155,9 +1155,9 @@ public class GenerateSelChildGradingReportAction extends ActionSupport
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -1305,10 +1305,10 @@ public class GenerateSelChildGradingReportAction extends ActionSupport
 
                     }
 
-                    double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                    Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                         organisationUnit );
 
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }

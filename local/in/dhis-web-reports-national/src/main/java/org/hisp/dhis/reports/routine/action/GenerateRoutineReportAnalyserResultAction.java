@@ -2234,8 +2234,8 @@ public class GenerateRoutineReportAnalyserResultAction
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -2614,9 +2614,9 @@ public class GenerateRoutineReportAnalyserResultAction
                 }
                 else
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -2704,10 +2704,10 @@ public class GenerateRoutineReportAnalyserResultAction
 
                 }
 
-                double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( aggregatedValue == null )
                 {
                     replaceString = NULL_REPLACEMENT;
                 }

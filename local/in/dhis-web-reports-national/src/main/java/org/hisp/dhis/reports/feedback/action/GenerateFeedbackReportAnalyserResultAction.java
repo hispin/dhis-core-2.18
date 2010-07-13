@@ -1892,9 +1892,9 @@ public class GenerateFeedbackReportAnalyserResultAction
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null)
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -2274,9 +2274,9 @@ public class GenerateFeedbackReportAnalyserResultAction
                 }
                 else
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null)
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -2364,10 +2364,10 @@ public class GenerateFeedbackReportAnalyserResultAction
 
                 }
 
-                double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( aggregatedValue == null)
                 {
                     replaceString = NULL_REPLACEMENT;
                 }
@@ -2606,7 +2606,7 @@ public class GenerateFeedbackReportAnalyserResultAction
                     
                     System.out.println(survey.getName() + " : " + indicator.getName() + " : " + surveyValue );
                 
-                    if ( surveyValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( surveyValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }

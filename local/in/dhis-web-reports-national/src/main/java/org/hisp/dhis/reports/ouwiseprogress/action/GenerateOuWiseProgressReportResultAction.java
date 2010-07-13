@@ -795,9 +795,9 @@ public class GenerateOuWiseProgressReportResultAction extends ActionSupport{
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
                     
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null)
                     {
                         replaceString = NULL_REPLACEMENT;
                         deFlag2 = 1;
