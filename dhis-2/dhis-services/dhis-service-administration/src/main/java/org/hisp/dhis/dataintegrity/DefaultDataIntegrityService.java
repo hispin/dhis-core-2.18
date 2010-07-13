@@ -38,12 +38,14 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -150,7 +152,8 @@ public class DefaultDataIntegrityService
 
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
 
-        SortedMap<DataElement, Collection<DataSet>> targets = new TreeMap<DataElement, Collection<DataSet>>( new DataElementNameComparator() );
+        SortedMap<DataElement, Collection<DataSet>> targets = new TreeMap<DataElement, Collection<DataSet>>(
+            new DataElementNameComparator() );
 
         for ( DataElement element : dataElements )
         {
@@ -170,6 +173,47 @@ public class DefaultDataIntegrityService
             {
                 targets.put( element, targetDataSets );
             }
+        }
+
+        return targets;
+    }
+
+    @Override
+    public Collection<DataElement> getDataElementsViolatingCompulsoryGroupSets()
+    {
+
+        Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
+
+        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
+
+        Set<DataElement> targets = new HashSet<DataElement>();
+
+        for ( DataElement de : dataElements )
+        {
+            for ( DataElementGroupSet groupSet : groupSets )
+            {
+                if ( !CollectionUtils.containsAny( groupSet.getMembers(), de.getGroups() ) )
+                {
+                    targets.add( de );
+                }
+            }
+        }
+
+        return targets;
+
+    }
+
+    @Override
+    public Collection<DataElement> getDataElementsViolatingExclusiveGroupSets()
+    {
+        Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
+
+        Set<DataElement> targets = new HashSet<DataElement>();
+
+        for ( DataElementGroupSet groupSet : groupSets )
+        {
+            targets.addAll( getDuplicates( new ArrayList<DataElement>( groupSet.getDataElements() ),
+                new DataElementNameComparator() ) );
         }
 
         return targets;
@@ -199,11 +243,11 @@ public class DefaultDataIntegrityService
     public Collection<Collection<Indicator>> getIndicatorsWithIdenticalFormulas()
     {
         Hashtable<String, Indicator> formulas = new Hashtable<String, Indicator>();
-        
-        Hashtable<String,Collection<Indicator>> targets = new Hashtable<String,Collection<Indicator>>();
-        
+
+        Hashtable<String, Collection<Indicator>> targets = new Hashtable<String, Collection<Indicator>>();
+
         Collection<Indicator> indicators = indicatorService.getAllIndicators();
-        
+
         for ( Indicator indicator : indicators )
         {
             final String formula = indicator.getNumerator() + FORMULA_SEPARATOR + indicator.getDenominator();
@@ -230,7 +274,7 @@ public class DefaultDataIntegrityService
                 formulas.put( formula, indicator );
             }
         }
-        
+
         return targets.values();
     }
 
@@ -273,6 +317,45 @@ public class DefaultDataIntegrityService
         return invalids;
     }
 
+    @Override
+    public Collection<Indicator> getIndicatorsViolatingCompulsoryGroupSets()
+    {
+        Collection<IndicatorGroupSet> groupSets = indicatorService.getAllIndicatorGroupSets();
+
+        Collection<Indicator> indicators = indicatorService.getAllIndicators();
+
+        Set<Indicator> targets = new HashSet<Indicator>();
+
+        for ( Indicator in :  indicators)
+        {
+            for ( IndicatorGroupSet groupSet : groupSets )
+            {
+                if ( !CollectionUtils.containsAny( groupSet.getMembers(), in.getGroups() ) )
+                {
+                    targets.add( in );
+                }
+            }
+        }
+
+        return targets;
+    }
+
+    @Override
+    public Collection<Indicator> getIndicatorsViolatingExclusiveGroupSets()
+    {
+        Collection<IndicatorGroupSet> groupSets = indicatorService.getAllIndicatorGroupSets();
+
+        Set<Indicator> targets = new HashSet<Indicator>();
+
+        for ( IndicatorGroupSet groupSet : groupSets )
+        {
+            targets.addAll( getDuplicates( new ArrayList<Indicator>( groupSet.getIndicators() ),
+                new IndicatorNameComparator() ) );
+        }
+
+        return targets;
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -300,8 +383,8 @@ public class DefaultDataIntegrityService
                     break;
                 }
                 else if ( visited.contains( parent ) ) // Ends in cyclic
-                                                       // reference but not part
-                                                       // of it
+                // reference but not part
+                // of it
                 {
                     break;
                 }
@@ -400,7 +483,8 @@ public class DefaultDataIntegrityService
 
     public SortedMap<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
     {
-        SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>( new ValidationRuleNameComparator() );
+        SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>(
+            new ValidationRuleNameComparator() );
 
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
@@ -417,7 +501,8 @@ public class DefaultDataIntegrityService
 
     public SortedMap<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
     {
-        SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>( new ValidationRuleNameComparator() );
+        SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>(
+            new ValidationRuleNameComparator() );
 
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
@@ -431,6 +516,5 @@ public class DefaultDataIntegrityService
 
         return invalids;
     }
+
 }
-
-

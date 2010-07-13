@@ -609,29 +609,63 @@
 		</action>
 
 		<!-- DATA SET COMPLETED REPORT ACTION -->
-
+		
 		<action name="selectDataSetCompletedReport"
-			class="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction">
+			class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeCompleteReportAction">
+			<result name="success" type="chain">selectDataSetCompletedReportChain</result>
+		</action>
+
+		<action name="selectDataSetCompletedReportChain"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/dataSetCompleteReportSelect.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="menuTreeHeight">400</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				../dhis-web-commons/util/jquery.jqprint.0.3.js,
+				ext/adapter/ext/ext-base.js,
+				ext/ext-all.js,
+				ext/ux/MultiSelect.js,
+				ext/ux/ItemSelector.js,					
+				javascript/dataSetCompleted.js				
+			</param>
+			<param name="stylesheets">
+				ext/resources/css/ext-all.css,
+				ext/ux/css/MultiSelect.css,				
+				style/dataSetCompleted.css
+			</param>
+		</action>
+
+		<action name="viewCompleteReportByPeriod"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByPeriodsAction">
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseCompletedReportByPeriod.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="viewCompleteReportByDataSet"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByDataSetAction">
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseCompletedReportByDataSet.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataSetCompleted.js</param>
 		</action>
 		
-		<action name="viewDataSetCompleted"
-			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-excel-reporting/viewDataSetCompleted.vm</param>
-			<param name="stylesheets">style/listTable.css</param>
-			<param name="javascripts">javascript/dataSetCompleted.js</param>
-		</action>
-
 		<action name="viewCustomDataSetReport"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-excel-reporting/viewCustomDataSetReport.vm</param>
+			<result name="success" type="velocity">/dhis-web-excel-reporting/responseCustomDataSetReport.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>			
+		</action>
+		
+		<action name="getSelectedOrganisationUnit"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonOrganisationUnit.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>			
 		</action>
 
 		<!-- PREVIEW REPORT EXCEL ACTION -->
@@ -1327,8 +1361,13 @@
 		</action>
 
 		<!-- Ext Chart -->
-
+		
 		<action name="chart"
+			class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction">
+			<result name="success" type="chain">chartChain</result>
+		</action>
+
+		<action name="chartChain"
 			class="org.hisp.dhis.reportexcel.chart.action.GetOrganisationUnitAndParentAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/chart.vm</param>
@@ -1437,39 +1476,42 @@
 			</result>
 		</action>
 		
-		<action name="bookmarkChart"
-			class="org.hisp.dhis.reportexcel.chart.action.BookmarkChartAction">
+		<action name="viewBookmarkChart"
+			class="org.hisp.dhis.reportexcel.action.GetBookmarkAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-excel-reporting/jsonExtBookmarkChart.vm
+				/dhis-web-excel-reporting/jsonBookmarkChart.vm
 			</result>
 		</action>
 		
-		<action name="deleteBookmarkChart"
-			class="org.hisp.dhis.reportexcel.chart.action.DeleleBookmarkChartAction">
+		<!-- Bookmark  -->
+		
+		<action name="saveBookmark"
+			class="org.hisp.dhis.reportexcel.action.SaveBookmarkAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 		
-		<action name="getBookmarkChart"
-			class="org.hisp.dhis.reportexcel.chart.action.GetBookmartChartAction">
+		<action name="deleteBookmark"
+			class="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-excel-reporting/jsonExtBookmarkChart.vm
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 		
-		<action name="getAllBookmarkChart"
-			class="org.hisp.dhis.reportexcel.chart.action.GetAllBookmarkChartAction">
+		<action name="getBookmark"
+			class="org.hisp.dhis.reportexcel.action.GetBookmarkAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-excel-reporting/jsonExtBookmarkCharts.vm
+				/dhis-web-excel-reporting/jsonBookmark.vm
 			</result>
 		</action>
-
-
-
-
-
-
+		
+		<action name="getAllBookmark"
+			class="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonBookmarks.vm
+			</result>
+		</action>
 
 	</package>
 </struts>

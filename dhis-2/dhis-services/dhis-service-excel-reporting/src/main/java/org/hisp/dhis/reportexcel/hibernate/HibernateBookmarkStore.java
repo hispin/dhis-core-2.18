@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.hibernate;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,32 +26,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.state;
+import java.util.Collection;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.reportexcel.Bookmark;
+import org.hisp.dhis.reportexcel.BookmarkStore;
+
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
-public interface SelectionManager
+
+public class HibernateBookmarkStore
+    extends HibernateGenericStore<Bookmark>
+    implements BookmarkStore
 {
-    public String getDownloadFilePath();
 
-    public void setDownloadFilePath( String path );
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<Bookmark> getAllBookmark( String type, String username )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-    public String getUploadFilePath();
+        Criteria criteria = session.createCriteria( Bookmark.class );
 
-    public void setUploadFilePath( String path );
-    
-    public void setSelectedReportId( Integer id );
-    
-    public Integer getSelectedReportId();
-    
-    public String getRenameFilePath();
+        criteria.add( Restrictions.eq( "username", username ) );
+        criteria.add( Restrictions.eq( "type", type ) );
 
-    public void setRenameFilePath( String path );
-    
-    public void setBookmarkType( String type );
-    
-    public String getBookmarkType();
+        return criteria.list();
+    }
 
 }

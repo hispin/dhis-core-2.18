@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.chart;
+package org.hisp.dhis.reportexcel.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,18 +27,59 @@ package org.hisp.dhis.reportexcel.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.reportexcel.Bookmark;
+import org.hisp.dhis.reportexcel.BookmarkService;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @version $Id$
  */
 
-public interface ExtBookmarkChartStore
-    extends GenericIdentifiableObjectStore<ExtBookmarkChart>
+public class GetBookmarkAction
+    implements Action
 {
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-    Collection<ExtBookmarkChart> getALLExtBookmarkChart( String username );
+    private BookmarkService bookmarkService;
+
+    public void setBookmarkService( BookmarkService bookmarkService )
+    {
+        this.bookmarkService = bookmarkService;
+    }
+
+    // -------------------------------------------
+    // Input
+    // -------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    // -------------------------------------------
+    // Output
+    // -------------------------------------------
+
+    private Bookmark bookmark;
+
+    public Bookmark getBookmark()
+    {
+        return bookmark;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        bookmark = bookmarkService.getBookmark( id );
+
+        return SUCCESS;
+    }
 
 }

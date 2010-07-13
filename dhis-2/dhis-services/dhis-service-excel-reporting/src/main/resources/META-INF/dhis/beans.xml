@@ -62,15 +62,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartStore" 
-		class="org.hisp.dhis.reportexcel.chart.hibernate.HibernateExtBookmarkStore">			
-		<property name="clazz" value="org.hisp.dhis.reportexcel.chart.ExtBookmarkChart" />
+	<bean id="org.hisp.dhis.reportexcel.BookmarkStore" 
+		class="org.hisp.dhis.reportexcel.hibernate.HibernateBookmarkStore">			
+		<property name="clazz" value="org.hisp.dhis.reportexcel.Bookmark" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" 
-		class="org.hisp.dhis.reportexcel.chart.DefaultExtBookmarkChartService">
-		<property name="extBookmarkChartStore" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartStore" />	
+	<bean id="org.hisp.dhis.reportexcel.BookmarkService" 
+		class="org.hisp.dhis.reportexcel.DefaultBookmarkService">
+		<property name="bookmarkStore" ref="org.hisp.dhis.reportexcel.BookmarkStore" />	
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />	
 	</bean>
 

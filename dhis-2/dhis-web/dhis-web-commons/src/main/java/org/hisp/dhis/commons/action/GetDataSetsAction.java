@@ -29,11 +29,17 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,18 +55,57 @@ public class GetDataSetsAction
     // -------------------------------------------------------------------------
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private UserStore userStore;
+
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
     private List<DataSet> dataSets;
-        
+
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -70,12 +115,39 @@ public class GetDataSetsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        
+        if ( id == null && name == null )
+        {
+            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        }
+        else if ( id != null )
+        {
+            dataSets = new ArrayList<DataSet>( dataSetService
+                .getDataSetsByPeriodType( periodService.getPeriodType( id ) ) );
+        }
+        else if ( name != null )
+        {
+            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( periodService
+                .getPeriodTypeByName( name ) ) );
+        }
+
+        if ( !currentUserService.currentUserIsSuper() )
+        {
+            Set<DataSet> ds = new HashSet<DataSet>();
+
+            for ( UserAuthorityGroup u : userStore.getUserCredentials( currentUserService.getCurrentUser() )
+                .getUserAuthorityGroups() )
+            {
+                ds.addAll( u.getDataSets() );
+            }
+
+            dataSets.retainAll( ds );
+        }
+
         Collections.sort( dataSets, new DataSetNameComparator() );
-        
+
         return SUCCESS;
     }
 }

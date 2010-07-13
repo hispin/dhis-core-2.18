@@ -617,26 +617,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- DATA SET COMPLETED BEAN -->
 
 	<bean
-		id="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction"
-		class="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		id="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction"
+		scope="prototype">		
 		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />			
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction"
-		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction"
+		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByPeriodsAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByPeriodsAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitSelectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByDataSetAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByDataSetAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitSelectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="completeDataSetRegistrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+	</bean>	
 
 	<bean
 		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction"
@@ -1431,34 +1441,51 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean
-		id="org.hisp.dhis.reportexcel.chart.action.BookmarkChartAction"
-		class="org.hisp.dhis.reportexcel.chart.action.BookmarkChartAction"
+		id="org.hisp.dhis.reportexcel.action.SaveBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.SaveBookmarkAction"
 		scope="prototype">
-		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />		
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />	
 	</bean>
 	
 	<bean
-		id="org.hisp.dhis.reportexcel.chart.action.GetAllBookmarkChartAction"
-		class="org.hisp.dhis.reportexcel.chart.action.GetAllBookmarkChartAction"
+		id="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction"
 		scope="prototype">
-		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />	
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />		
 	</bean>
 	
 	<bean
-		id="org.hisp.dhis.reportexcel.chart.action.DeleleBookmarkChartAction"
-		class="org.hisp.dhis.reportexcel.chart.action.DeleleBookmarkChartAction"
+		id="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction"
 		scope="prototype">
-		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />		
 	</bean>
 	
 	<bean
-		id="org.hisp.dhis.reportexcel.chart.action.GetBookmartChartAction"
-		class="org.hisp.dhis.reportexcel.chart.action.GetBookmartChartAction"
+		id="org.hisp.dhis.reportexcel.action.GetBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.GetBookmarkAction"
 		scope="prototype">
-		<property name="extBookmarkChartService" ref="org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService" />		
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />		
 	</bean>
-
-
-
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.action.SetBookmarkTypeCompleteReportAction"
+		class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeCompleteReportAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />		
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction"
+		class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />		
+	</bean>
 
 </beans>

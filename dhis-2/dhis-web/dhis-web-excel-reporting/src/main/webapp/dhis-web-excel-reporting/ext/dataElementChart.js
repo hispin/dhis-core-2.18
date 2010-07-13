@@ -8,7 +8,7 @@ Ext.onReady(function(){
 		displayField: 'name',
 		valueField: 'id',
 		typeAhead: true,
-		mode: 'remote',
+		mode: 'local',
 		triggerAction: 'all',
 		emptyText: i18n_period,
 		selectOnFocus:true,
@@ -20,7 +20,7 @@ Ext.onReady(function(){
 		autoWidth :true,
 		typeAhead: true,
 		displayField: 'name',
-		valueField: 'name',
+		valueField: 'id',
 		typeAhead: true,
 		mode: 'remote',
 		triggerAction: 'all',
@@ -109,7 +109,7 @@ Ext.onReady(function(){
 		listWidth:400,
 		width:400,
 		resizable: true,
-		mode: 'remote',
+		mode: 'local',
 		triggerAction: 'all',
 		emptyText: i18n_indicator_groups,
 		selectOnFocus:true,
@@ -185,12 +185,14 @@ Ext.onReady(function(){
 						alert("Please select indicator !");	
 					}					
 				}else{
+					
+					xaxis = xaxis.split(',');	
 				
 					var chartType = columnChartRadio.getGroupValue();
 
 					var store = new Ext.data.JsonStore({
 						url: url,
-						baseParams: { format: 'json', xaxis: xaxis, yaxis: yaxis},	
+						baseParams: { format: 'json', xaxis: xaxis, yaxis: period},	
 						root: 'data',		
 						fields: ['name', 'value', 'total'],				
 						autoLoad: true	

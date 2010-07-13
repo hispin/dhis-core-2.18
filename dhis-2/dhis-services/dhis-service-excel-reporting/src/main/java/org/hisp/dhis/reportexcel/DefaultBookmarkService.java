@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.chart;
+package org.hisp.dhis.reportexcel;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,96 +27,65 @@ package org.hisp.dhis.reportexcel.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import java.util.Collection;
+
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
  */
-@SuppressWarnings( "serial" )
-public class ExtBookmarkChart
-    extends IdentifiableObject
+@Transactional
+public class DefaultBookmarkService
+    implements BookmarkService
 {
-    private String title;
 
-    public String getTitle()
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private BookmarkStore bookmarkStore;
+
+    public void setBookmarkStore( BookmarkStore bookmarkStore )
     {
-        return title;
+        this.bookmarkStore = bookmarkStore;
     }
 
-    public void setTitle( String title )
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
     {
-        this.title = title;
-    }
-
-    private String xtitle;
-
-    public String getXtitle()
-    {
-        return xtitle;
-    }
-
-    public void setXtitle( String xtitle )
-    {
-        this.xtitle = xtitle;
-    }
-
-    private String username;
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername( String username )
-    {
-        this.username = username;
-    }
-
-    private String jsonValueStore;
-
-    public String getJsonValueStore()
-    {
-        return jsonValueStore;
-    }
-
-    public void setJsonValueStore( String jsonValueStore )
-    {
-        this.jsonValueStore = jsonValueStore;
-
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
+    // Implemented
     // -------------------------------------------------------------------------
 
     @Override
-    public int hashCode()
+    public void deleteBookmark( int id )
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
+        bookmarkStore.delete( bookmarkStore.get( id ) );
     }
 
     @Override
-    public boolean equals( Object obj )
+    public Collection<Bookmark> getAllBookmark( String type )
     {
-        if ( this == obj )
-            return true;
-        if ( obj == null )
-            return false;
-        if ( getClass() != obj.getClass() )
-            return false;
-        ExtBookmarkChart other = (ExtBookmarkChart) obj;
-        if ( id != other.getId() )
-            return false;
-        return true;
+        return bookmarkStore.getAllBookmark( type, currentUserService.getCurrentUsername() );
     }
 
     @Override
-    public String toString()
+    public Bookmark getBookmark( int id )
     {
-        return "[" + name + "]";
+        return bookmarkStore.get( id );
+    }
+
+    @Override
+    public int saveBookmark( Bookmark bookmark )
+    {
+        bookmark.setUsername( currentUserService.getCurrentUsername() );
+
+        return bookmarkStore.save( bookmark );
     }
 
 }

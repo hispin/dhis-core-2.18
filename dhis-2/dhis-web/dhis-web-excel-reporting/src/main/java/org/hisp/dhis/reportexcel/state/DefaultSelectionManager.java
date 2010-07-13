@@ -1,3 +1,4 @@
+package org.hisp.dhis.reportexcel.state;
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -25,8 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportexcel.state;
-
 import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -45,6 +44,8 @@ public class DefaultSelectionManager
     private static final String SESSION_KEY_FILE_RENAME = "SESSION_KEY_FILE_RENAME";
 
     private static final String SESSION_KEY_SELECTED_REPORT_ID = "SESSION_KEY_SELECTED_REPORT_ID";
+    
+    private static final String SESSION_KEY_BOOKMARK_TYPE = "SESSION_KEY_BOOKMARK_TYPE";
 
     @Override
     public String getDownloadFilePath()
@@ -102,6 +103,19 @@ public class DefaultSelectionManager
     public void setRenameFilePath( String path )
     {
         getSession().put( SESSION_KEY_FILE_RENAME, path );
+    }
+
+    @Override
+    public String getBookmarkType()
+    {        
+        return (String) getSession().get( SESSION_KEY_BOOKMARK_TYPE );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public void setBookmarkType( String type )
+    {
+        getSession().put( SESSION_KEY_BOOKMARK_TYPE, type );
     }
 
 }

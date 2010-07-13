@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.chart.action;
+package org.hisp.dhis.reportexcel.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,50 +27,58 @@ package org.hisp.dhis.reportexcel.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.reportexcel.chart.ExtBookmarkChart;
-import org.hisp.dhis.reportexcel.chart.ExtBookmarkChartService;
+import org.hisp.dhis.reportexcel.Bookmark;
+import org.hisp.dhis.reportexcel.BookmarkService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * 
- *         GetAllBookmarkChartAction.java Jun 23, 2010 2:40:44 PM
+ * @version $Id$
  */
-public class GetAllBookmarkChartAction
+
+public class GetAllBookmarkAction
     implements Action
 {
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    private ExtBookmarkChartService extBookmarkChartService;
+    private BookmarkService bookmarkService;
 
-    public void setExtBookmarkChartService( ExtBookmarkChartService extBookmarkChartService )
+    public void setBookmarkService( BookmarkService bookmarkService )
     {
-        this.extBookmarkChartService = extBookmarkChartService;
+        this.bookmarkService = bookmarkService;
+    }
+
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------
     // Output
     // -------------------------------------------
 
-    private Collection<ExtBookmarkChart> extBookmarkCharts;
+    private List<Bookmark> bookmarks;
 
-    public Collection<ExtBookmarkChart> getExtBookmarkCharts()
+    public List<Bookmark> getBookmarks()
     {
-        return extBookmarkCharts;
+        return bookmarks;
     }
 
     @Override
     public String execute()
         throws Exception
     {
-        extBookmarkCharts = new HashSet<ExtBookmarkChart>( extBookmarkChartService.getALLExtBookmarkChart() );
-        
+        bookmarks = new ArrayList<Bookmark>( bookmarkService.getAllBookmark( selectionManager.getBookmarkType() ) );
+
         return SUCCESS;
     }
 

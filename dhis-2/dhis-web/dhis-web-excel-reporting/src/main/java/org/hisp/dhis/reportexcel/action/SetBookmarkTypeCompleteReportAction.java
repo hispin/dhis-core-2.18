@@ -1,6 +1,4 @@
-package org.hisp.dhis.reportexcel.chart;
-
-import java.util.Collection;
+package org.hisp.dhis.reportexcel.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -28,21 +26,36 @@ import java.util.Collection;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.hisp.dhis.reportexcel.Bookmark;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @version $Id$
  */
-
-public interface ExtBookmarkChartService
+public class SetBookmarkTypeCompleteReportAction
+    implements Action
 {
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-    int saveExtBookmarkChart( ExtBookmarkChart extBookmarkChart );
-    
-    void deleteExtBookmarkChart ( int id );    
-   
-    Collection<ExtBookmarkChart> getALLExtBookmarkChart();    
-    
-    ExtBookmarkChart getExtBookmarkChart( int id );
-    
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        selectionManager.setBookmarkType( Bookmark.COMPLETED_REPORT );
+        
+        return SUCCESS;
+    }
 
 }

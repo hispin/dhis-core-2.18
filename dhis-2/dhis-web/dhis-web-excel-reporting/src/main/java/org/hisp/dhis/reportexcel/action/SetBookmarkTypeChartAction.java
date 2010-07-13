@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.chart.hibernate;
+package org.hisp.dhis.reportexcel.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -26,37 +26,36 @@ package org.hisp.dhis.reportexcel.chart.hibernate;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.hisp.dhis.reportexcel.Bookmark;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
-import java.util.Collection;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.reportexcel.chart.ExtBookmarkChart;
-import org.hisp.dhis.reportexcel.chart.ExtBookmarkChartStore;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @version $Id$
  */
+public class SetBookmarkTypeChartAction
+    implements Action
+{
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-public class HibernateExtBookmarkStore
-    extends HibernateGenericStore<ExtBookmarkChart>
-    implements ExtBookmarkChartStore
-{      
-  
+    private SelectionManager selectionManager;
 
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<ExtBookmarkChart> getALLExtBookmarkChart( String username )
+    public void setSelectionManager( SelectionManager selectionManager )
     {
-        Session session = sessionFactory.getCurrentSession();
+        this.selectionManager = selectionManager;
+    }
 
-        Criteria criteria = session.createCriteria( ExtBookmarkChart.class );
-
-        criteria.add( Restrictions.eq( "username", username ) );
-
-        return criteria.list();
+    @Override
+    public String execute()
+        throws Exception
+    {
+        selectionManager.setBookmarkType( Bookmark.CHART );
+        
+        return SUCCESS;
     }
 
 }
