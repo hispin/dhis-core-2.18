@@ -35,11 +35,11 @@
                 </td>
 				
 				<td style="text-align:center" #alternate( $mark )>
-                  <a href="defineValidationCriteriaAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_criteria_associations" )"><img src="images/criteria.gif" alt="$i18n.getString( "assign_criteria" )"></a>
+                  <a href="defineValidationCriteriaAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_criteria_associations" )"><img src="../images/assign_a.png" alt="$i18n.getString( "assign_criteria" )"></a>
                 </td>
                 
 				<td style="text-align:center" #alternate( $mark )>
-                  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_associations" )"><img src="images/devalidation.jpeg" alt="$i18n.getString( "assign_criteria" )"></a>
+                  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_associations" )"><img src="../images/assign_b.png" alt="$i18n.getString( "assign_criteria" )"></a>
                 </td>
 				
                 <td style="text-align:center" #alternate( $mark )>
