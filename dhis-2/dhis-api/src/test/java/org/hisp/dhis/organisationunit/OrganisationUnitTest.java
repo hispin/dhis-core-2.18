@@ -80,5 +80,16 @@ public class OrganisationUnitTest
         assertTrue( actual.contains( cleanCoordinatesCollection.get( 0 ) ) );
         assertTrue( actual.contains( cleanCoordinatesCollection.get( 1 ) ) );
         assertTrue( actual.contains( cleanCoordinatesCollection.get( 2 ) ) );
-    }    
+    }
+    
+    @Test
+    public void testGetCoordinatesAsMap()
+    {
+        OrganisationUnit unit = new OrganisationUnit();
+        unit.setCoordinates( coordinates );
+        
+        Collection<String> actual = unit.getAllCoordinates();
+        
+        assertEquals( 9, actual.size() );        
+    }
 }
