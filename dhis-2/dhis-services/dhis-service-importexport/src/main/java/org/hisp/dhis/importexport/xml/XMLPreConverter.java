@@ -28,34 +28,28 @@ package org.hisp.dhis.importexport.xml;
  */
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
-import javax.xml.transform.stax.StAXResult;
-import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
-import org.amplecode.staxwax.factory.XMLFactory;
-import org.amplecode.staxwax.framework.XMLPipe;
-import org.amplecode.staxwax.reader.DefaultXMLEventReader;
-import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.transformer.TransformerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
-import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.importexport.ImportException;
-import org.hisp.dhis.importexport.ImportParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.*;
 
 /**
  * GenericXMLConvertor transforms imported foreign XML to dxf.
@@ -73,6 +67,20 @@ public class XMLPreConverter
     public static final String TRANSFORMERS_CONFIG = "transform/transforms.xml";
 
     // -------------------------------------------------------------------------
+    // Named XSLT parameters available to xslt stylesheets
+    // -------------------------------------------------------------------------
+    // Current timestamp
+    public static final String TIMESTAMP = "timestamp";
+    // url base where dxf metadata snapshots are found
+    public static final String METADATA_URL_BASE = "metadata_url_base";
+    // current dhis2 user
+    public static final String DHIS_USER = "username";
+    // url of zip file containing stream (may be null)
+    public static final String ZIP_URL = "zip_url";
+
+    public static final String defaultMetadataBase = "metadata/";
+
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
     @Autowired
@@ -81,124 +89,78 @@ public class XMLPreConverter
     @Autowired
     protected URIResolver resolver;
 
-    /**
-     * This method is called for an anonymous xml stream ie. we don't yet know
-     * if or how to processStream it
-     * 
-     * @param xmlDataStream
-     * @param params
-     * @param state
-     * @return
-     * @throws ImportException
-     */
-    public XMLReader processStream( InputStream xmlDataStream, ImportParams params, ProcessState state )
-        throws ImportException
+
+    public QName getDocumentRoot(BufferedInputStream xmlDataStream) throws ImportException
     {
-        XMLReader dxfReader = null;
-
-        String xsltIdentifierTag = null;
-
-        Map<String, String> xsltParams = null;
-
         QName rootName = null;
 
-        BufferedInputStream bufin = new BufferedInputStream( xmlDataStream );
         Map<QName, String> attributes = new HashMap<QName, String>();
 
         try
         {
             // buffer enough space to read root elemen
-            bufin.mark( BUFFER_SIZE );
+            xmlDataStream.mark( BUFFER_SIZE );
 
             XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
-            XMLStreamReader2 streamReader = (XMLStreamReader2) factory.createXMLStreamReader( bufin );
+            XMLStreamReader2 streamReader = (XMLStreamReader2) factory.createXMLStreamReader( xmlDataStream );
 
             // move to document root
             streamReader.nextTag();
             rootName = streamReader.getName();
-            int attributeCount = streamReader.getAttributeCount();
-            for ( int i = 0; i < attributeCount; ++i )
-            {
-                QName attribute = streamReader.getAttributeName( i );
-                String value = streamReader.getAttributeValue( i );
-                attributes.put( attribute, value );
-            }
 
-            bufin.reset();
-
-            // recreate stream reader to reclaim root element
-            streamReader = (XMLStreamReader2) factory.createXMLStreamReader( bufin );
-
-
-            log.info( "Importing " + rootName.toString() );
-
-            // first test if its a dxf stream
-            if ( rootName.getLocalPart().equals( DXFROOT ) )
-            {
-                // Native DXF stream - no transform required
-
-                log.info( "Importing dxf native stream" );
-
-                // no processStream required
-                dxfReader = XMLFactory.getXMLReader( streamReader );
-            } else
-            {
-                // use the stringified form of the qname as an id
-                xsltIdentifierTag = rootName.toString();
-                log.debug( "Tag for transformer: " + xsltIdentifierTag );
-
-                dxfReader = this.transform( streamReader, params, state, xsltParams, xsltIdentifierTag );
-            }
-        } catch ( Exception ex )
-        {
-            throw new ImportException( "Failed to transform xml stream", ex );
+            xmlDataStream.reset();
+        } catch (Exception ex) {
+            throw new ImportException("Couldn't locate document root element", ex);
         }
 
-        return dxfReader;
+        return rootName;
+
     }
 
     /**
-     * 
-     * @param streamReader
-     * @param params
-     * @param state
-     * @param xsltParams
-     * @param xsltTag
-     * @return
+     * Performs transform on stream
+     *
+     * @param source the input
+     * @param result the result
+     * @param xsltTag identifier used to look up xslt stylesheet
+     * @param zipFile optional zipfile when importing from zip
+     * @param userName the dhis username
      * @throws ImportException
      */
-    public DefaultXMLEventReader transform( XMLStreamReader2 streamReader, ImportParams params, ProcessState state,
-        Map<String, String> xsltParams, String xsltTag ) throws ImportException
+    public void transform( Source source, Result result, String xsltTag, File zipFile, String userName )
+        throws ImportException
     {
-        DefaultXMLEventReader dxfReader;
         InputStream sheetStream = xsltLocator.getTransformerByTag( xsltTag );
         Source sheet = new StreamSource( sheetStream );
+
+        log.debug("Populating xslt parameters");
+        Map<String, String> xsltParams = new HashMap<String, String>();
+        if (userName != null) {
+            xsltParams.put( DHIS_USER, userName);
+        }
+        if (zipFile != null) {
+            xsltParams.put( ZIP_URL, zipFile.getAbsolutePath());
+        }
+        xsltParams.put( METADATA_URL_BASE, defaultMetadataBase);
+        Date now = new Date();
+        DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd'T'hh-mm"); //iso8601 timestamp
+        xsltParams.put( TIMESTAMP, dfm.format( now ));
+
+        log.debug("Applying stylesheet");
 
         try
         {
             TransformerTask tt = new TransformerTask( sheet, xsltParams );
 
-
-            Source source = new StAXSource( streamReader );
-
-            XMLPipe pipe = new XMLPipe(); // Make a pipe to capture output of processStream
-            XMLEventWriter pipeinput = pipe.getInput();
-            XMLEventReader2 pipeoutput = pipe.getOutput();
-
-            StAXResult result = new StAXResult( pipeinput ); // Set result of processStream to input of pipe
-            // tt.processStream( source, result, resolver );
+            // tt.transform( source, result, resolver );
             tt.transform( source, result, null );
-            log.info( "Transform successful" );
+            log.debug( "Transform successful" );
 
-            // Set dxfReader to output of pipe
-            dxfReader = new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
-
-            streamReader.close();
         } catch ( Exception ex )
         {
             throw new ImportException( "Failed to transform stream", ex );
         }
 
-        return dxfReader;
     }
+
 }

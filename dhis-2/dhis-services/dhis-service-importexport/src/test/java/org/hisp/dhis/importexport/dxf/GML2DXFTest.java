@@ -90,7 +90,7 @@ public class GML2DXFTest
         assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Bombali" ).getCoordinatesAsCollection().size() );
         assertEquals( 3, organisationUnitService.getOrganisationUnitByName( "Kambia" ).getCoordinatesAsCollection().size() );
         assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Koinadugu" ).getCoordinatesAsCollection().size() );
-        assertEquals( 8, organisationUnitService.getOrganisationUnitByName( "Port Loko" ).getCoordinatesAsCollection().size() );
+        assertEquals( 9, organisationUnitService.getOrganisationUnitByName( "Port Loko" ).getCoordinatesAsCollection().size() );
         assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Tonkolili" ).getCoordinatesAsCollection().size() );
         assertEquals( 2, organisationUnitService.getOrganisationUnitByName( "Western Area" ).getCoordinatesAsCollection().size() );
     }
