@@ -120,7 +120,7 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
                 </td>        
                 
                 <td style="text-align:center"#alternate( $mark )>                  
-                  <a href="showAddRelationshipPatient.action?id=$patient.id" title="$i18n.getString( "add_dependent" )"><img src="images/addRelationship.png" alt="$i18n.getString( "add_dependent" )"></a>
+                  <a href="showAddRelationshipPatient.action?id=$patient.id" title="$i18n.getString( "add_dependent" )"><img src="../images/add.png" alt="$i18n.getString( "add_dependent" )"></a>
                 </td>                        
  
                 <td style="text-align:center"#alternate( $mark )>
@@ -187,7 +187,7 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 	                </td>        
 	                
 	                <td style="text-align:center">                  
-	                  <a href="showAddRelationshipPatient.action?id=$patient.id" title="$i18n.getString( "add_dependent" )"><img src="images/addRelationship.png" alt="$i18n.getString( "add_dependent" )"></a>
+	                  <a href="showAddRelationshipPatient.action?id=$patient.id" title="$i18n.getString( "add_dependent" )"><img src="../images/add.png" alt="$i18n.getString( "add_dependent" )"></a>
 	                </td>                        
 	 
 	                <td style="text-align:center">
