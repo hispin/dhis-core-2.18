@@ -51,7 +51,7 @@ public class ZipAnalyzer
     /**
      * This is a list of common data streams found in zip packages
      */
-    public static Collection<String> knownDataStreams = new ArrayList<String>();
+    public static final Collection<String> knownDataStreams = new ArrayList<String>();
 
     static
     {

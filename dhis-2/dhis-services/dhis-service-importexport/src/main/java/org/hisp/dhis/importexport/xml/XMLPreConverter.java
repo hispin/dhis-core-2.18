@@ -94,8 +94,6 @@ public class XMLPreConverter
     {
         QName rootName = null;
 
-        Map<QName, String> attributes = new HashMap<QName, String>();
-
         try
         {
             // buffer enough space to read root elemen
