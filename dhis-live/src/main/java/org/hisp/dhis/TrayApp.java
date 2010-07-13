@@ -24,7 +24,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.hisp.dhis;
 
 import java.awt.*;
@@ -32,6 +31,8 @@ import java.awt.event.*;
 import java.net.URI;
 import java.net.URL;
 import javax.swing.*;
+import java.io.*;
+
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,68 +42,95 @@ import org.mortbay.component.LifeCycle;
  * @author Bob Jolliffe
  */
 public class TrayApp
-    implements LifeCycle.Listener
-{
-    private static final Log log = LogFactory.getLog( TrayApp.class );
+        implements LifeCycle.Listener {
+
+    private static final Log log = LogFactory.getLog(TrayApp.class);
 
     private static final String CONFIG_DIR = "/conf";
+
     private static final String STOPPED_ICON = "/icons/stopped.png";
+
     private static final String STARTING_ICON = "/icons/starting.png";
+
     private static final String FAILED_ICON = "/icons/failed.png";
+
     private static final String RUNNING_ICON = "/icons/running.png";
+
     private static final String CMD_OPEN = "Open DHIS 2 Live";
+
     private static final String CMD_EXIT = "Exit";
-        
+
+    private static final String CONFIG_FILE = "conf/dhis2live.cfg";
+
     private WebAppServer appServer;
 
     private TrayIcon trayIcon;
 
     private String installDir;
 
+    private SimpleConfigReader configReader;
+
     // -------------------------------------------------------------------------
     // Main method
     // -------------------------------------------------------------------------
-
     public static void main( String[] args )
-        throws Exception
-    {
+             {
         log.info( "Environment variable DHIS2_HOME: " + System.getenv( "DHIS2_HOME" ) );
         if ( !SystemTray.isSupported() )
         {
-            String message = "SystemTray not supported on this platform";
-            JOptionPane.showMessageDialog( (JFrame) null, message );
+            JOptionPane.showMessageDialog((JFrame) null, "SystemTray not supported on this platform");
+            System.exit(0);
+        }
+        else
+        {
+                try
+        {
+            new TrayApp();
+        } catch ( Exception ex )
+        {
+            log.fatal( "TrayApp Initialization failure", ex );
+            JOptionPane.showMessageDialog( (JFrame) null, "DHIS2-live failed to initialize\nSee log for details" );
             System.exit( 0 );
         }
-
-        new TrayApp();
+     }
     }
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-
-    public TrayApp()
-        throws Exception
+    public TrayApp() throws AWTException, InterruptedException
     {
-        log.info( "Initialising DHIS 2 Live..." );
-        
+        log.info("Initialising DHIS 2 Live...");
+
         installDir = getInstallDir();
 
-        if ( installDir == null )
+        if (installDir == null )
         {
-            log.info( "jar not installed, setting installdir to DHIS2_HOME: " + System.getenv( "DHIS2_HOME" ) );
             installDir = System.getenv( "DHIS2_HOME" );
+            if ( installDir == null )
+                {
+                   log.fatal( "Neither DHIS Live Jar nor DHIS2_HOME could be found." );
+                   JOptionPane.showMessageDialog( (JFrame) null, "DHIS2-live failed to initialize\nSee log for details" );
+                   System.exit( 0 );
+                }
+            else
+                {
+
+            log.info("jar not installed, setting installdir to DHIS2_HOME: " + System.getenv( "DHIS2_HOME" ) );
+            installDir = System.getenv( "DHIS2_HOME" );
+                }
         }
 
-        System.setProperty( "dhis2.home", installDir + CONFIG_DIR );
-        System.setProperty( "jetty.home", installDir );
+        System.setProperty( "dhis2.home", installDir + CONFIG_DIR);
+        System.setProperty( "jetty.home", installDir);
 
-        System.setProperty( "birt.home", installDir + WebAppServer.BIRT_DIR );
-        System.setProperty( "birt.context.path", WebAppServer.BIRT_CONTEXT_PATH );
+        System.setProperty( "birt.home", installDir + WebAppServer.BIRT_DIR);
+        System.setProperty( "birt.context.path", WebAppServer.BIRT_CONTEXT_PATH);
+
 
         SystemTray tray = SystemTray.getSystemTray();
 
-        Image image = createImage( STOPPED_ICON, "tray icon" );
+        Image image = createImage( STOPPED_ICON, "tray icon");
 
         PopupMenu popup = new PopupMenu();
         MenuItem openItem = new MenuItem( CMD_OPEN );
@@ -113,95 +141,111 @@ public class TrayApp
         trayIcon = new TrayIcon( image, "DHIS 2 Live", popup );
         trayIcon.setImageAutoSize( true );
 
-        ActionListener listener = new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
+        ActionListener listener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
                 String cmd = e.getActionCommand();
 
-                if ( cmd.equals( CMD_OPEN ) )
-                {
+                if (cmd.equals( CMD_OPEN )) {
                     launchBrowser();
-                }
-                else if ( cmd.equals( CMD_EXIT ) )
-                {
+
+                } else if (cmd.equals( CMD_EXIT )) {
                     shutdown();
                 }
-            };
+            }
+
+            ;
         };
 
         openItem.addActionListener( listener );
         exitItem.addActionListener( listener );
-
-        try
-        {
-            tray.add( trayIcon );
-        }
-        catch ( AWTException ex )
-        {
-            log.warn( "Oops: " + ex.toString() );
-        }
+        tray.add( trayIcon );
 
         appServer = new WebAppServer();
-        appServer.init( installDir, this );
-        
         try
         {
-            appServer.start();
+        appServer.init( installDir, this );
         }
-        catch ( Exception ex )
+        catch (Exception e)
+            {
+            log.fatal( "Application server could not be initialized" );
+        }     
+        try
         {
-            String message = "Web server failed to start: \n" + ex.toString();
-            JOptionPane.showMessageDialog( (JFrame) null, message );
+        appServer.start();
+        }
+        catch (Exception e)
+        {
+            log.fatal ( "Application server could not be started" );
         }
     }
 
     // -------------------------------------------------------------------------
     // Listener implementation
     // -------------------------------------------------------------------------
-
     public void lifeCycleFailure( LifeCycle arg0, Throwable arg1 )
     {
         log.warn( "Lifecycle: server failed" );
-        trayIcon.setImage( createImage( FAILED_ICON, "Running icon" ) );
+        trayIcon.setImage(createImage( FAILED_ICON, "Running icon" ) );
         String message = "Web server failed to start - see logs for details";
         JOptionPane.showMessageDialog( (JFrame) null, message );
         shutdown();
     }
 
-    public void lifeCycleStarted( LifeCycle arg0 )
+    public void lifeCycleStarted(LifeCycle arg0)
     {
-        log.info( "Lifecycle: server started" );
+        log.info("Lifecycle: server started");
         trayIcon.displayMessage( "Started", "DHIS 2 is running. Your browser will\n be pointed to " + getUrl() + ".",
-            TrayIcon.MessageType.INFO );
+                TrayIcon.MessageType.INFO );
         trayIcon.setToolTip( "DHIS 2 Server running" );
-        trayIcon.setImage( createImage( RUNNING_ICON, "Running icon" ) );        
+        trayIcon.setImage(createImage( RUNNING_ICON, "Running icon" ) );
         launchBrowser();
+
     }
 
-    public void lifeCycleStarting( LifeCycle arg0 )
-    {
-        log.info( "Lifecycle: server starting" );
-        trayIcon.displayMessage( "Starting", "DHIS 2 is starting.\nPlease be patient.", TrayIcon.MessageType.INFO );
-        trayIcon.setImage( createImage( STARTING_ICON, "Starting icon" ) );
+    public void lifeCycleStarting(LifeCycle arg0) {
+        log.info("Lifecycle: server starting");
+        trayIcon.displayMessage("Starting", "DHIS 2 is starting.\nPlease be patient.", TrayIcon.MessageType.INFO);
+        trayIcon.setImage(createImage(STARTING_ICON, "Starting icon"));
     }
 
-    public void lifeCycleStopped( LifeCycle arg0 )
-    {
-        log.info( "Lifecycle: server stopped" );
-        trayIcon.displayMessage( "Stopped", "DHIS 2 has stopped.", TrayIcon.MessageType.INFO );
-        trayIcon.setImage( createImage( STOPPED_ICON, "Running icon" ) );
+    public void lifeCycleStopped(LifeCycle arg0) {
+        log.info("Lifecycle: server stopped");
+        trayIcon.displayMessage("Stopped", "DHIS 2 has stopped.", TrayIcon.MessageType.INFO);
+        trayIcon.setImage(createImage(STOPPED_ICON, "Running icon"));
     }
 
-    public void lifeCycleStopping( LifeCycle arg0 )
-    {
-        log.info( "Lifecycle: server stopping" );
+    public void lifeCycleStopping(LifeCycle arg0) {
+        log.info("Lifecycle: server stopping");
     }
+
+    private String defaultPreferredBrowserPath() {
+        //initialize a return variable.false denotes failure.  true success
+        configReader = new SimpleConfigReader();
+        String preferredBrowserPath = null;
+        try
+        {
+            preferredBrowserPath = configReader.preferredBrowserPath();
+            log.info( "Config reports browser path to be" + preferredBrowserPath );
+            boolean browserIsValid = new File( preferredBrowserPath ).exists();
+            if ( !browserIsValid )
+            {
+                preferredBrowserPath = null;
+                log.warn( "Browser does not appear to be valid.Please check that the browser exists." );
+            }
+
+        } catch (Exception e) {
+            log.warn("There was a problem reading the preferred browser from the config file.");
+        }
+        log.info( "Preferred browser path reported to be " + preferredBrowserPath);
+        return preferredBrowserPath;
+    }
+
+
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
     /**
      * Returns the URL where the application can be accessed.
      * 
@@ -211,38 +255,88 @@ public class TrayApp
     {
         return "http://localhost:" + appServer.getConnectorPort();
     }
-    
+
     /**
      * Launches the application in the default browser.
      */
-    private void launchBrowser()
-    {
-        try
-        {
-            Desktop.getDesktop().browse( URI.create( getUrl() ) );
+    private void launchBrowser() {
+
+
+            String preferredBrowserPath = defaultPreferredBrowserPath();
+            
+            if (preferredBrowserPath != null)
+            {
+                try {   //if the preferred browser has not been defined and appears to be valid
+                    launchPreferredBrowser();
+                } 
+                catch (Exception ex)
+                {
+                    log.warn ("Couldn't open preferred browser.Will attempt to revert to default. " + ex);
+                }
+            }
+            else {
+            try {
+                launchDefaultBrowser();
+            } catch (Exception e) {
+                log.error("Could not open any browser" + e);
+            }
         }
-        catch ( Exception ex )
-        {
-            log.warn( "Couldn't open default desktop browser: " + ex );
+
+    }
+
+    /**
+     * Launches the application in the custom embedded browser.
+     */
+    private void launchPreferredBrowser()  {   //initialize a return variable.false denotes failure.  true success
+        try {
+            String preferredBrowserPath = defaultPreferredBrowserPath();
+            String thisurl = getUrl();
+            log.info("About to open " + thisurl + " with " + preferredBrowserPath);
+            String openPrefBrowser = (preferredBrowserPath + " " + thisurl);
+
+            if (preferredBrowserPath != null && thisurl != null ) {
+
+                //try and launch the prefered browser
+                try
+                {
+                    Runtime rt = Runtime.getRuntime();
+                    rt.exec(openPrefBrowser);
+                } catch (IOException e) {
+                    log.error("There was a problem opening the preferred browser. " + e);
+                    //Try and fall back to the default browser
+                    launchDefaultBrowser();
+                }
+            }
+        } catch (Exception ex) {
+            log.error("An error occurred while attempting to open the preferred browser " + ex);
+            //Try and fall back to the default browser
+            launchDefaultBrowser();
         }
     }
-    
+
+    private void launchDefaultBrowser() {
+        try {
+            Desktop.getDesktop().browse( URI.create( getUrl() ) );
+        } catch (IOException e) {
+            log.error( "The default browser could not be launched" );
+        }
+    }
+
     /**
      * Shuts down the web application server.
      */
     private void shutdown()
     {
-        log.info( "Graceful shutdown..." );
+        log.info("Graceful shutdown...");
         try
         {
             appServer.stop();
         }
-        catch ( Exception ex )
-        {
-            log.warn( "Oops: " + ex.toString() );
+        catch (Exception ex) {
+            log.warn ("Oops: " + ex.toString() );
         }
-        log.info( "Exiting..." );
-        System.exit( 0 );
+        log.info("Exiting...");
+        System.exit(0);
     }
 
     /**
@@ -252,18 +346,16 @@ public class TrayApp
      * @param description the image description.
      * @return an Image.
      */
-    private static Image createImage( String path, String description )
+    private static Image createImage(String path, String description)
     {
-        URL imageURL = TrayApp.class.getResource( path );
-
-        if ( imageURL == null )
-        {
+        URL imageURL = TrayApp.class.getResource(path);
+        if (imageURL == null) {
             log.warn( "Resource not found: " + path );
             return null;
-        }
+        } 
         else
         {
-            return (new ImageIcon( imageURL, description )).getImage();
+            return ( new ImageIcon(imageURL, description) ).getImage();
         }
     }
 
@@ -278,17 +370,17 @@ public class TrayApp
     private static String getInstallDir()
     {
         // find a resource
-        String resourceString = TrayApp.class.getResource( "/icons/" ).toString();
+        String resourceString = TrayApp.class.getResource("/icons/").toString();
         // we expect to see something of the form:
         // "jar:file:<install_dir>/dhis_xxx.jar!/icons"
-        if ( !resourceString.startsWith( "jar:file:" ) )
+        if (!resourceString.startsWith("jar:file:"))
         {
             // we're in trouble - its not in a jar file
             return null;
         }
         // find the last "/" just before the "!"
-        int endIndex = resourceString.lastIndexOf( "/", resourceString.lastIndexOf( "!" ) );
-        String result = resourceString.substring( 9, endIndex );
+        int endIndex = resourceString.lastIndexOf("/", resourceString.lastIndexOf("!"));
+        String result = resourceString.substring(9, endIndex);
         // replace encoded spaces
         result = result.replaceAll( "%20", " " );
         return result;
