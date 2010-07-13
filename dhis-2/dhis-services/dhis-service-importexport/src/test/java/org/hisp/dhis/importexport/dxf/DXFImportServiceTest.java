@@ -275,6 +275,7 @@ public class DXFImportServiceTest
         assertObjects( dataASize );
     }
 
+    @Ignore
     @Test
     public void testExcelXImportWithTransform() throws Exception
     {

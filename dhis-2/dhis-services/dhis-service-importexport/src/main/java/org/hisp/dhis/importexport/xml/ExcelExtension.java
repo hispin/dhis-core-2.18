@@ -1,11 +1,7 @@
-package org.hisp.dhis.importexport.zip;
+package org.hisp.dhis.importexport.xml;
 
-import java.io.InputStream;
-import java.util.Map;
-import java.util.zip.ZipFile;
-import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
-import org.hisp.dhis.importexport.xml.XMLPreConverter;
-import org.springframework.stereotype.Component;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /*
  * Copyright (c) 2004-2005, University of Oslo
@@ -35,39 +31,28 @@ import org.springframework.stereotype.Component;
  */
 
 /**
- *
+ * 
  * @author bobj
  */
-@Component("odfImporter")
-public class OdfImporter extends TransformablePackage {
-
-    @Override
-    protected String getTransformerTag(ZipFile zipFile) throws Exception
+public class ExcelExtension
+{
+    public static String date( String xltimestr )
     {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
+        try
+        {
+            // the number of days since 1/1/1900
+            Integer xldays = new Integer( xltimestr );
 
-    @Override
-    protected Map<String, String> getXsltParams() throws Exception
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    protected InputStream getXMLDataStream(ZipFile zipFile) throws Exception
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    protected XMLPreConverter getXMLPreConverter()
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    protected DXFConverter getDXFConverter()
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
+            // the beginning of excel time is 1/1/1900
+            Calendar cal = new GregorianCalendar();
+            cal.set( 1900, 0, 1 );
+            // cal.add( Calendar.DAY_OF_MONTH, 20 );
+            cal.add( Calendar.DAY_OF_MONTH, xldays.intValue() - 2 );
+            return cal.getTime().toString();
+        }
+        catch ( Exception ex )
+        {
+            return "";
+        }
     }
 }
