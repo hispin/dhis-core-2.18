@@ -28,9 +28,8 @@
 	</div>	
 	<br/>
     <div id="tabs">
-		<div id="bookmark" class="tab-item">
-			<div id="bookmark-content">
-			</div>
+		<div id="bookmark">
+			
 		</div>
 		<div id='data-element-chart' class="tab-item">				
 			<fieldset class="fieldset">

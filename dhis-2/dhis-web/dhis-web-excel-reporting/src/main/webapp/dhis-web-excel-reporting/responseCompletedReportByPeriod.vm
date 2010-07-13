@@ -1,0 +1,49 @@
+<table id="completed-table" cellspacing="0">	
+	<thead>
+		<tr>
+			<th></th>
+		#foreach( $p in $periods )
+			<th>$format.formatPeriod($p)</th>
+		#end
+		</tr>
+	</thead>
+	<tbody>
+	#foreach( $o in $organisationUnits )
+		<tr>
+			<td>$o.name</td>
+		#foreach( $p in $periods )
+			<td >
+			#if($!completedValues.get( "$o.id:$p.id" ))
+				#if($completedValues.get( "$o.id:$p.id" )!="")
+					<a href='javascript:viewDataSetReport($dataSet.id,$p.id,$o.id, "$dataSet.name")'>
+						<img src="../images/view_report.png" title="View Data" align="absmiddle">
+					</a>
+					<img src="../images/check.png" alt="$i18n.getString( 'yes' )" align="absmiddle">				
+					[$completedValues.get( "$o.id:$p.id" )]
+				#end
+			#else
+				<a href='javascript:viewDataSetReport($dataSet.id,$p.id,$o.id, "$dataSet.name")'>
+						<img src="../images/view_report.png" title="View Data" align="absmiddle">
+				</a>
+				<img src="../images/warning.png" alt="$i18n.getString( 'no' )" align="absmiddle">
+			#end
+			
+			</td>
+		#end
+		</tr>
+	#end
+	</tbody>
+	<tfoot>
+		<tr align="right">
+			<th></th>
+			<th colspan="$periods.size()-1">
+				<img src="../images/warning.png" alt="$i18n.getString( 'no' )" align="absmiddle">  Un-completed
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<img src="../images/check.png" alt="$i18n.getString( 'yes' )" align="absmiddle">  Completed
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<img src="../images/view_report.png" title="View Data" align="absmiddle">  View Data
+				
+			</th>				
+		</tr>		
+	</tfoot>
+</table>

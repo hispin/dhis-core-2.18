@@ -10,6 +10,7 @@
     "comment": "$!encoder.jsEncode( ${organisationUnit.comment} )",
     "geoCode": "$!{organisationUnit.geoCode}",
     "latitude": "$!{organisationUnit.latitude}",
-    "longitude": "$!{organisationUnit.longitude}"
+    "longitude": "$!{organisationUnit.longitude}",
+	"hasChild": $!{organisationUnit.hasChild()}
   }
 }

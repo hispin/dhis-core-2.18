@@ -1,107 +1,119 @@
-<span id='message'></span>
 <h3>$i18n.getString( "dataset_completed_report" ) #openHelp( "excelReportingIndividualReport" )</h3>
-<form id="dataSetCompletedReportForm" method="post" action="selectDataSetCompletedReport.action">
+<br>
+<div id="container" style="width:100%;">
+	<div id="bookmark-tab">
+	</div>
+	<div id="period-tab">
+		<table width="100%" style="padding:10px;">
+			<col width="150px"/>
+			<tr>
+				<td>$i18n.getString( 'period_type' )</td>	
+				<td><input id="period-types-p"/></td>	
+			</tr>
+			<tr>					
+				<td>$i18n.getString( 'period' )</td>				
+				<td><div id="periods-p"></div></td>				
+			</tr>
+			<tr>
+				<td>$i18n.getString( 'dataset' )</td>
+				<td><input id='dataset-p'/></td>					
+			</tr>			
+		</table>
+		<div id="view-by-period" align="right" style="padding:2px;"/>
+	</div>	
+	<div id="dataset-tab">
+		<table width="100%" style="padding:10px;">
+			<col width="150px"/>
+			<tr>
+				<td>$i18n.getString( 'period_type' )</td>	
+				<td><input id="period-types-d"/></td>	
+			</tr>
+			<tr>					
+				<td>$i18n.getString( 'period' )</td>	
+				<td><input id='periods-d'/></td>
+			</tr>
+			<tr>
+				<td>$i18n.getString( 'dataset' )</td>				
+				<td><div id="dataset-d"></div></td>					
+			</tr>			
+		</table>
+		<div id="view-by-dataset" align="right" style="padding:2px;"/>
+	</div>
+</div>
 
-<table>
-	<tr>
-		<td><label>$i18n.getString('organisation')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td width="25em"><input type="text" id="organisation" value="$!organisationUnit.name" disabled style="width:20em"></td>	
-		<td>
-			<label>$i18n.getString('view_by')</label>
-			<select type="text" id="viewby" name="viewBy" style="min-width:20em" onchange="changeViewBy()" #if($disabled) disabled #end>
-				<option value="period">$i18n.getString('period')</period>
-				<option value="dataset">$i18n.getString('dataset')</period>
-			</select>
-		</td>			
-	</tr>
-	<tr>
-		<td><label>$i18n.getString('period_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td>
-			<select type="text" id="periodType" name="periodType" style="min-width:20em" onchange="javascript: byId('dataSetCompletedReportForm').submit();" #if($disabled) disabled #end>
-				<option value="">$i18n.getString('select_period_type')</option>
-				#foreach($type in $periodTypes)
-					<option value='$type.name' #if($type.name.equals($periodType)) selected #end>$i18n.getString( $type.name )</option>				
-				#end
-			</select>
-		</td>
-		
-	</tr>
-</table>
-<hr>
-<table>	
-	<tr>
-		<th>$i18n.getString('dataset')</th>
-		<th></th>
-		<th>$i18n.getString('selected_dataset')</th>
-	</tr>	
-	
-	<tr>		
-		<td>
-			<select type="text" size=10 id="dataSet" #if($disabled) disabled #end name="dataSets" style="min-width:20em" ondblclick="moveSelectedById('dataSet','selectedDataSets')">
-				#foreach($dataSet in $dataSets)
-					<option value='$dataSet.id'>$i18n.getString( $dataSet.name )</option>				
-				#end
-			</select>
-		</td>
-		<td>
-			<input type="button" value=" > " onclick="moveSelectedById('dataSet','selectedDataSets');" #if($disabled) disabled #end/><br>
-			<input type="button" value=" < " onclick="moveSelectedById('selectedDataSets','dataSet');" #if($disabled) disabled #end/>
-		</td>
-		<td>
-			<select type="text" size=10 id="selectedDataSets" #if($disabled) disabled #end name="selectedDataSets" style="min-width:20em" ondblclick="moveSelectedById('selectedDataSets','dataSet')">
-			
-			</select>
-		</td>	
-	</tr>
-	
-	<tr>
-		<th>$i18n.getString('period')</th>
-		<th></th>
-		<th>$i18n.getString('selected_period')</th>
-	</tr>	
-	
-	<tr>
-		
-		<td>
-			<select type="text" id="period" #if($disabled) disabled #end name="periods" style="min-width:20em" size=10 ondblclick="moveSelectedById('period','selectedPeriods');">
-				#foreach($period in $periods)
-					<option value='$period.id'>$format.formatPeriod( $period )</option>				
-				#end
-			</select>
-		</td>
-		<td>
-			<input type="button" value=" > " onclick="moveSelectedById('period','selectedPeriods');" #if($disabled) disabled #end/><br>
-			<input type="button" value=" < " onclick="moveSelectedById('selectedPeriods','period');" #if($disabled) disabled #end/>
-		</td>
-		<td>
-			<select type="text" id="selectedPeriods" name="selectedPeriods" style="min-width:20em" #if($disabled) disabled #end size=10 ondblclick="moveSelectedById('selectedPeriods','period');">
-			
-			</select>
-		</td>
-	</tr>
-</table>
-
-<hr>
-<p><input id="viewButton" type="button" value="$i18n.getString('view')" onclick="viewDataSetCompleted();" #if($disabled) disabled #end/><p>
-</form>
 <script>
+
+var i18n_period_type = "$encoder.jsEscape($i18n.getString( 'period_type' ) , "'")";	
+
+var i18n_period = "$encoder.jsEscape($i18n.getString( 'period' ) , "'")";
+
+var i18n_dataset = "$encoder.jsEscape($i18n.getString( 'dataset' ) , "'")";
+
+var i18n_bookmark = "$encoder.jsEscape($i18n.getString( 'bookmark' ) , "'")";
+
+var i18n_bookmark_success = "$encoder.jsEscape($i18n.getString( 'bookmark_success' ) , "'")";
+
+var i18n_loading = "$encoder.jsEscape($i18n.getString( 'please_wait' ) , "'")";
+
+var i18n_period_is_null = "$encoder.jsEscape($i18n.getString( 'period_is_null' ) , "'")";
+
+var i18n_dataset_is_null = "$encoder.jsEscape($i18n.getString( 'dataset_is_null' ) , "'")";
+
+var i18n_description = "$encoder.jsEscape($i18n.getString( 'description' ) , "'")";
+
+var i18n_confirm_delete = "$encoder.jsEscape($i18n.getString( 'confirm_delete' ) , "'")";
+
+
+
+
+
+
+Ext.onReady(function()
+{
+	var tabs = new Ext.TabPanel({
+        renderTo: 'container',
+        width:'100%',
+        activeTab: 2,
+        frame:true,
+        defaults:{autoHeight: true},
+        items:[
+			{contentEl:'bookmark-tab', title: '$i18n.getString('bookmark')'},
+            {contentEl:'period-tab', title: '$i18n.getString('view_by') $i18n.getString('period')'},
+            {contentEl:'dataset-tab', title: '$i18n.getString('view_by') $i18n.getString('dataset')'}
+        ]
+    });
+	tabs.activate(1);
+	tabs.activate(0);
+	
+	#if(!$!organisationUnit || !$organisationUnit.hasChild())			
+		tabs.disable();
+	#end
 	
 	function organisationUnitSelected( orgUnits )
-	{	
-		byId('dataSetCompletedReportForm').submit();
+{		
+	if( orgUnits!='' ){
+		Ext.Ajax.request({
+			url: path + 'getSelectedOrganisationUnit' + type,
+			method: 'POST',
+			params: { id: orgUnits },
+			success: function(r) {				
+				
+				var hasChild = Ext.util.JSON.decode(r.responseText).organisationUnit.hasChild;
+				if( hasChild ) tabs.enable();
+				else tabs.disable();
+				
+			}
+		});		
+		
+	}else{
+		tabs.disable();
 	}
-	
-	function organisationUnitSelectedCompleted(xmlObject){
-		if(xmlObject.getAttribute('null')=='true'){	
-			disable('viewButton');
-		}else{
-			enable('viewButton');
-			setFieldValue('organisation',getElementValue(xmlObject, 'name'));
-		}
-			
-	}
+}
 
-	selection.setListenerFunction( organisationUnitSelected );
-	
-	changeViewBy();
+selection.setListenerFunction( organisationUnitSelected );
+
+getALLBookmarkCompletedReport();
+});
+
 </script>
+

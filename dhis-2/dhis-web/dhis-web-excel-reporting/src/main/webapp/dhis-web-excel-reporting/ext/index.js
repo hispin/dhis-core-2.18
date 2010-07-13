@@ -94,30 +94,21 @@ function viewFullChart( xTitle, title, colTitle, lineTitle, store, hasBookmark )
 			items:[	
 					{
 						xtype: 'label',						
-						fieldLabel: 'Name'														
-					},{
-						xtype: 'textfield',
-						id: 'fullchart-bookmark-name-' + random,
-						fieldLabel: 'Name',						
-						hideLabel:true,
-						width:190
-					},{
-						xtype: 'label',						
 						fieldLabel: 'Descriptions',												
 					},{
 						xtype: 'textarea',
 						id: 'fullchart-bookmark-descriptions-' + random,
 						fieldLabel: 'Descriptions',						
 						hideLabel:true,
-						width:190	
+						width:190,
+						allowBlank: false
 					}
 			],
 			buttons: [{
 				text: 'Save',
-				handler: function() {
-					name = Ext.getCmp('fullchart-bookmark-name-' + random).getValue();
+				handler: function() {					
 					descriptions = Ext.getCmp('fullchart-bookmark-descriptions-' + random).getValue();
-					bookmarkChart( xTitle, title, store, name, descriptions );
+					bookmarkChart( xTitle, title, store, descriptions );
 				}
 			}]
         });
@@ -188,30 +179,21 @@ function viewPieChart( xTitle, title, store, hasBookmark )
 			items:[	
 					{
 						xtype: 'label',						
-						fieldLabel: 'Name'														
-					},{
-						xtype: 'textfield',
-						id: 'piechart-bookmark-name-' + random,
-						fieldLabel: 'Name',						
-						hideLabel:true,
-						width:190
-					},{
-						xtype: 'label',						
 						fieldLabel: 'Descriptions',												
 					},{
 						xtype: 'textarea',
 						id: 'piechart-bookmark-descriptions-' + random,
 						fieldLabel: 'Descriptions',						
 						hideLabel:true,
-						width:190	
+						width:190,
+						allowBlank: false
 					}
 			],
 			buttons: [{
 				text: 'Save',
-				handler: function() {
-					name = Ext.getCmp('piechart-bookmark-name-' + random).getValue();
+				handler: function() {					
 					descriptions = Ext.getCmp('piechart-bookmark-descriptions-' + random).getValue();
-					bookmarkChart( xTitle, title, store, name, descriptions );
+					bookmarkChart( xTitle, title, store, descriptions );
 				}
 			}]
         });
@@ -276,30 +258,21 @@ function viewLineChart( xTitle, title, store, hasBookmark )
 			items:[	
 					{
 						xtype: 'label',						
-						fieldLabel: 'Name'														
-					},{
-						xtype: 'textfield',
-						id: 'linechart-bookmark-name-' + random,
-						fieldLabel: 'Name',						
-						hideLabel:true,
-						width:190
-					},{
-						xtype: 'label',						
 						fieldLabel: 'Descriptions',												
 					},{
 						xtype: 'textarea',
 						id: 'linechart-bookmark-descriptions-' + random,
 						fieldLabel: 'Descriptions',						
 						hideLabel:true,
-						width:190	
+						width:190,
+						allowBlank: false
 					}
 			],
 			buttons: [{
 				text: 'Save',
-				handler: function() {
-					name = Ext.getCmp('linechart-bookmark-name-' + random).getValue();
+				handler: function() {					
 					descriptions = Ext.getCmp('linechart-bookmark-descriptions-' + random).getValue();
-					bookmarkChart( xTitle, title, store, name, descriptions );
+					bookmarkChart( xTitle, title, store, descriptions );
 				}
 			}]
         });
@@ -362,30 +335,21 @@ function viewColumnChart( xTitle, title, store , hasBookmark )
 			items:[	
 					{
 						xtype: 'label',						
-						fieldLabel: 'Name'														
-					},{
-						xtype: 'textfield',
-						id: 'columnchart-bookmark-name-' + random,
-						fieldLabel: 'Name',						
-						hideLabel:true,
-						width:190
-					},{
-						xtype: 'label',						
 						fieldLabel: 'Descriptions',												
 					},{
 						xtype: 'textarea',
 						id: 'columnchart-bookmark-descriptions-' + random,
 						fieldLabel: 'Descriptions',						
 						hideLabel:true,
-						width:190	
+						width:190,
+						allowBlank: false
 					}
 			],
 			buttons: [{
 				text: 'Save',
-				handler: function() {
-					name = Ext.getCmp('columnchart-bookmark-name-' + random).getValue();
+				handler: function() {					
 					descriptions = Ext.getCmp('columnchart-bookmark-descriptions-' + random).getValue();
-					bookmarkChart( xTitle, title, store, name, descriptions );
+					bookmarkChart( xTitle, title, store, descriptions );
 				}
 			}]
         });
@@ -414,36 +378,33 @@ function viewColumnChart( xTitle, title, store , hasBookmark )
 		
 }
 
-function bookmarkChart( xTitle, title, store, name, descriptions)
+function bookmarkChart( xTitle, title, store, description)
 {
-	if( name=='' ){
-		alert('Please enter name!');
+	if( description=='' ){
+		alert('Please enter description!');
 	}else{
 		size = store.getTotalCount();
 		
-		var json = '{"data":['
+		var contain = '{"data":['
 		store.each(function( item, i ){
-			json += '{"name":"' + item.get('name') + '","value":' + item.get('value') + ', "total":' + item.get('total') + '}';
-			if( i < size -1 ){json += ','}
+			contain += '{"name":"' + item.get('name') + '","value":' + item.get('value') + ', "total":' + item.get('total') + '}';
+			if( i < size -1 ){contain += ','}
 		});
-		json += ']}';	
+		contain += ']}';	
 		
-		
+		var extraContain = '{"xtitle":"' + xTitle + '"';
+		extraContain += ', "title":"' + title + '"';
+		extraContain += '}';
 		
 		Ext.Ajax.request({
-			url: path + 'bookmarkChart' + type,
+			url: path + 'saveBookmark' + type,
 			method: 'POST',
-			params: { 
-				xtitle: xTitle,
-				title: title,
-				json:  json,
-				name: name,
-				descriptions: descriptions
-			},
+			params: { format:'json', description: description, contain: contain, extraContain: extraContain },
 			success: function( json ) {
 				getAllBookmartChart();
 			}
-		});
+		});	
+		
 	}
 	
 }
@@ -666,12 +627,11 @@ function switchAxisxDeIn( a, b)
 	}
 	
 }
-
 function deleteBookmark( id )
 {
 	if(window.confirm(' Do you want delete ?')){
 		Ext.Ajax.request({
-			url: path + 'deleteBookmarkChart' + type,
+			url: path + 'deleteBookmark' + type,
 			method: 'POST',
 			params: {format:'json', id: id},
 			success: function( json ) {
@@ -681,31 +641,41 @@ function deleteBookmark( id )
 	}
 }
 
+
 function getAllBookmartChart()
 {
 	Ext.Ajax.request({
-		url: path + 'getAllBookmarkChart' + type,
+		url: path + 'getAllBookmark' + type,
 		method: 'POST',
-		params: {format:'json'},
+		params: { format:'json' },
 		success: function( json ) {
 			var bookmarks =  Ext.util.JSON.decode(json.responseText).bookmarks;
 			
 			var html = '<table class="listTable" width="100%">';
 			html += '<thead>';
 			html += '<tr>';
-			html += '<th> Name </th>';
-			html += '<th>Descriptions</th>';
-			html += '<th></th>';
+			html += '<th>Description</th>';
+			html += '<th class="{sorter: false}"></th>'
 			html += '</tr>';
 			html += '</thead>';
+			
 			html += '<tbody id="list">';
+			var r = true;
 			for (var i = 0; i < bookmarks.length; i++) 
 			{
+				xtitle = bookmarks[i].extraContain.xtitle;
+				title = bookmarks[i].extraContain.title;
 				
-				html += '<tr class="listRow">';
-				html += '<td>' + bookmarks[i].name + '</td>';
-				html += '<td><div style="width:100%;height:30px;overflow:auto;">' + bookmarks[i].descriptions + '</div>';
-				html += '<td width="100px"><a href="javascript:viewBookmarkChart(' + bookmarks[i].id + ');">';
+				if( r ){
+					html += '<tr class="listRow">';
+					r = false;
+				}else{
+					html += '<tr class="listAlternateRow">';
+					r=true;
+				}
+				html += '<td>' + bookmarks[i].description + '</td>';
+				html += '<td width="50px">';
+				html += '<a href="javascript:viewBookmarkChart(' + bookmarks[i].id + ', \'' + xtitle + '\', \'' + title + '\');">';
 				html += '<img src="images/chart-icon.png"/>';
 				html += '</a>';
 				html += '<a href="javascript:deleteBookmark(' + bookmarks[i].id + ');">';
@@ -714,18 +684,19 @@ function getAllBookmartChart()
 				html += '</td>';
 				html += '</tr>';
 			}			
-			html += '</tbody>';	   		   
+			html += '</tbody>';
 			html += '</table>';
 			
-			jQuery('#bookmark-content').html( html );
+			jQuery('#bookmark').html( html );
 		}
 	});
+
 }
 
 function viewBookmarkChart( id, xTitle, title )
 {
 	var store = new Ext.data.JsonStore({
-		url: path + 'getBookmarkChart' + type,
+		url: path + 'viewBookmarkChart' + type,
 		baseParams: { format: 'json', id: id },	
 		root: 'data',		
 		fields: ['name', 'value', 'total'],				

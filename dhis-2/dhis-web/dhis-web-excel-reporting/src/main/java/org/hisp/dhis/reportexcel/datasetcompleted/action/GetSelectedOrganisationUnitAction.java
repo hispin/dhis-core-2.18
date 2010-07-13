@@ -24,32 +24,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.state;
+package org.hisp.dhis.reportexcel.datasetcompleted.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public interface SelectionManager
+public class GetSelectedOrganisationUnitAction
+    implements Action
 {
-    public String getDownloadFilePath();
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-    public void setDownloadFilePath( String path );
+    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    public String getUploadFilePath();
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
 
-    public void setUploadFilePath( String path );
-    
-    public void setSelectedReportId( Integer id );
-    
-    public Integer getSelectedReportId();
-    
-    public String getRenameFilePath();
+    // -------------------------------------------
+    // Output
+    // -------------------------------------------
 
-    public void setRenameFilePath( String path );
-    
-    public void setBookmarkType( String type );
-    
-    public String getBookmarkType();
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+   
+
+    public String execute()
+        throws Exception
+    {
+        organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();  
+
+        return SUCCESS;
+    }
 
 }

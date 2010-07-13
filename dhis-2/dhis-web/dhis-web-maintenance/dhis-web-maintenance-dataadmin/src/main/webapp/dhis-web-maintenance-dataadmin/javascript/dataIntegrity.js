@@ -12,12 +12,16 @@ function populateIntegrityItems( json )
 	
     displayViolationList( json.dataElementsWithoutDataSet, "dataElementsWithoutDataSet" );
     displayViolationList( json.dataElementsWithoutGroups, "dataElementsWithoutGroups" );
+	displayViolationList( json.dataElementsViolatingCompulsoryGroupSets, "dataElementsViolatingCompulsoryGroupSets" );
+	displayViolationList( json.dataElementsViolatingExclusiveGroupSets, "dataElementsViolatingExclusiveGroupSets" );
     displayViolationList( json.dataElementsAssignedToDataSetsWithDifferentPeriodTypes, "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" );
     displayViolationList( json.dataSetsNotAssignedToOrganisationUnits, "dataSetsNotAssignedToOrganisationUnits" );
     displayViolationList( json.indicatorsWithIdenticalFormulas, "indicatorsWithIdenticalFormulas" );
     displayViolationList( json.indicatorsWithoutGroups, "indicatorsWithoutGroups" );
     displayViolationList( json.invalidIndicatorNumerators, "invalidIndicatorNumerators" );
     displayViolationList( json.invalidIndicatorDenominators, "invalidIndicatorDenominators" );
+	displayViolationList( json.indicatorsViolatingCompulsoryGroupSets, "indicatorsViolatingCompulsoryGroupSets" );
+	displayViolationList( json.indicatorsViolatingExclusiveGroupSets, "indicatorsViolatingExclusiveGroupSets" );
     displayViolationList( json.organisationUnitsWithCyclicReferences, "organisationUnitsWithCyclicReferences" );
     displayViolationList( json.orphanedOrganisationUnits, "orphanedOrganisationUnits" );
     displayViolationList( json.organisationUnitsWithoutGroups, "organisationUnitsWithoutGroups" );

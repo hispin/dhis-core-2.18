@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.chart;
+package org.hisp.dhis.reportexcel.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -26,66 +26,77 @@ package org.hisp.dhis.reportexcel.chart;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.hisp.dhis.reportexcel.Bookmark;
+import org.hisp.dhis.reportexcel.BookmarkService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
-import java.util.Collection;
-
-import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.transaction.annotation.Transactional;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @version $Id$
  */
-@Transactional
-public class DefaultExtBookmarkChartService
-    implements ExtBookmarkChartService
+
+public class SaveBookmarkAction
+    implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-    private ExtBookmarkChartStore extBookmarkChartStore;
+    private BookmarkService bookmarkService;
 
-    public void setExtBookmarkChartStore( ExtBookmarkChartStore extBookmarkChartStore )
+    public void setBookmarkService( BookmarkService bookmarkService )
     {
-        this.extBookmarkChartStore = extBookmarkChartStore;
+        this.bookmarkService = bookmarkService;
     }
 
-    private CurrentUserService currentUserService;
+    private SelectionManager selectionManager;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setSelectionManager( SelectionManager selectionManager )
     {
-        this.currentUserService = currentUserService;
+        this.selectionManager = selectionManager;
     }
 
-    // -------------------------------------------------------------------------
-    // Implemented
-    // -------------------------------------------------------------------------
+    // -------------------------------------------
+    // Input
+    // -------------------------------------------
+
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    private String extraContain;
+
+    public void setExtraContain( String extraContain )
+    {
+        this.extraContain = extraContain;
+    }
+
+    private String contain;
+
+    public void setContain( String contain )
+    {
+        this.contain = contain;
+    }
 
     @Override
-    public void deleteExtBookmarkChart( int id )
+    public String execute()
+        throws Exception
     {
-        extBookmarkChartStore.delete( extBookmarkChartStore.get( id ) );
-    }
+        Bookmark bookmark = new Bookmark();
 
-    @Override
-    public Collection<ExtBookmarkChart> getALLExtBookmarkChart()
-    {
-        return extBookmarkChartStore.getALLExtBookmarkChart( currentUserService.getCurrentUsername() );
-    }
+        bookmark.setDescription( description );
+        bookmark.setExtraContain( extraContain );
+        bookmark.setContain( contain );
+        bookmark.setType( selectionManager.getBookmarkType() );
 
-    @Override
-    public ExtBookmarkChart getExtBookmarkChart( int id )
-    {
-        return extBookmarkChartStore.get( id );
-    }
+        bookmarkService.saveBookmark( bookmark );
 
-    @Override
-    public int saveExtBookmarkChart( ExtBookmarkChart extBookmarkChart )
-    {
-        extBookmarkChart.setUsername( currentUserService.getCurrentUsername() );        
-
-        return extBookmarkChartStore.save( extBookmarkChart );
+        return SUCCESS;
     }
-   
 
 }

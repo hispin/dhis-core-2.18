@@ -69,13 +69,14 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
+	
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-patient</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    
+   
     <!-- Web service modules -->
  
     <dependency>
@@ -134,7 +135,6 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    
     
     <!-- India modules -->
     
