@@ -1022,12 +1022,12 @@ public class GenerateAdvancedReportResultAction
 
                     //System.out.println("CURRENT DATA ELEMENT IS : " + dataElement.getName() + " and ID is : " + dataElementId);
                     
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
                     
                     //System.out.println(dataElementId + " : " + organisationUnit.getId() + " : "+ startDate + " : "+ aggregatedValue);
                     
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -1120,10 +1120,10 @@ public class GenerateAdvancedReportResultAction
 
                 }
 
-                double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( aggregatedValue == null )
                 {
                     replaceString = NULL_REPLACEMENT;
                 }

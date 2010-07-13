@@ -341,8 +341,10 @@ public class SelectAction
         // Prepare for multidimensional dataentry
         // ---------------------------------------------------------------------
 
-        List<Section> sections = (List<Section>) sectionService.getSectionByDataSet( selectedDataSet );
+        //List<Section> sections = (List<Section>) sectionService.getSectionByDataSet( selectedDataSet );
 
+        List<Section> sections = new ArrayList<Section>();
+        
         haveSection = sections.size() != 0;
         
         int numberOfTotalColumns = 1;

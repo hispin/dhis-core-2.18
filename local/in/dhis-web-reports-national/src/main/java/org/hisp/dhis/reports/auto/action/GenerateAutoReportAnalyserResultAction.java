@@ -1946,9 +1946,9 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -2329,9 +2329,9 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
                 }
                 else
                 {
-                    double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                     }
@@ -2419,10 +2419,10 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
 
                 }
 
-                double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
-                if ( aggregatedValue == AggregationService.NO_VALUES_REGISTERED )
+                if ( aggregatedValue == null )
                 {
                     replaceString = NULL_REPLACEMENT;
                 }

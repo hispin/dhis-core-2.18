@@ -27,6 +27,7 @@ package org.hisp.dhis.den.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -232,8 +233,9 @@ public class SectionFormAction
         // Order the DataElements
         // ---------------------------------------------------------------------
 
-        sections = (List<Section>) sectionService.getSectionByDataSet( dataSet );
-
+        //sections = (List<Section>) sectionService.getSectionByDataSet( dataSet );
+        sections = new ArrayList<Section>();
+        
         Collections.sort( sections, new SectionOrderComparator() );
 
         // ---------------------------------------------------------------------
