@@ -20,7 +20,7 @@ jQuery(document).ready(function(){
 								validateUpdatePatient();
 							}
 		});
-		jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+		jQuery.validator.setMessages( validationMessage );
 		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
 		jQuery("#firstName").focus();
 		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});

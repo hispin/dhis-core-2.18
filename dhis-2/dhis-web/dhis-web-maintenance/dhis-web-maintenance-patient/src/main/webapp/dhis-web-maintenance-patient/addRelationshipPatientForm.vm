@@ -24,13 +24,13 @@ td.input-column input, td.input-column select { width: 28em; float:right ;}
 									validateAddRelationshipPatient();
 								}
 			});
-			jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			jQuery.validator.setMessages( validationMessage );
 			jQuery("#firstName").focus();
 			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
 		});
 </script>
 <h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>	
+
 																			
 <form  id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="post">
 <input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 

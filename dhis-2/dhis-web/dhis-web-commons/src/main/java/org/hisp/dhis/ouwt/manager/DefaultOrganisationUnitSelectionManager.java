@@ -40,7 +40,8 @@ import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultOrganisationUnitSelectionManager.java 5652 2008-09-06 13:24:34Z larshelg $
+ * @version $Id: DefaultOrganisationUnitSelectionManager.java 5652 2008-09-06
+ *          13:24:34Z larshelg $
  */
 public class DefaultOrganisationUnitSelectionManager
     implements OrganisationUnitSelectionManager
@@ -117,7 +118,7 @@ public class DefaultOrganisationUnitSelectionManager
         OrganisationUnit randomRootUnit = rootUnits.iterator().next();
 
         OrganisationUnit reloadedRootUnit = reloadOrganisationUnit( randomRootUnit );
-
+       
         return reloadedRootUnit.getParent();
     }
 
@@ -252,30 +253,31 @@ public class DefaultOrganisationUnitSelectionManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<OrganisationUnit> getUnitsInTree( Collection<OrganisationUnit> rootUnits, Collection<OrganisationUnit> selectedUnits )
+    private Collection<OrganisationUnit> getUnitsInTree( Collection<OrganisationUnit> rootUnits,
+        Collection<OrganisationUnit> selectedUnits )
     {
         Collection<OrganisationUnit> unitsInTree = new ArrayList<OrganisationUnit>();
-        
+
         for ( OrganisationUnit selectedUnit : selectedUnits )
         {
-            if  ( rootUnits.contains( selectedUnit ) )
+            if ( rootUnits.contains( selectedUnit ) )
             {
                 unitsInTree.add( selectedUnit );
             }
-                        
+
             OrganisationUnit parent = selectedUnit.getParent();
-            
+
             while ( parent != null )
             {
                 if ( rootUnits.contains( parent ) )
                 {
                     unitsInTree.add( selectedUnit );
                 }
-                
+
                 parent = parent.getParent();
             }
         }
-        
+
         return unitsInTree;
     }
 }

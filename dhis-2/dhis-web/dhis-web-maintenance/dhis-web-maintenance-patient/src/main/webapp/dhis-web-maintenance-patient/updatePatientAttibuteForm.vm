@@ -14,7 +14,7 @@
 					 					    validateUpdatePatientAttribute();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 				jQuery("#nameField").focus();
 				
 				#if( $patientAttribute.attributeOptions.size() == 0 ) 
