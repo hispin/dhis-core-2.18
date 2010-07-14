@@ -10,7 +10,7 @@
       "geometry":
         {
           "type":"Point",
-          "coordinates":[$!{unit.longitude},$!{unit.latitude}]
+          "coordinates":$!encoder.jsEncode( $!{unit.coordinates} ),
         },
       "properties":
         {

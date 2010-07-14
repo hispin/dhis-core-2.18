@@ -56,11 +56,11 @@ public class GetIndicatorMapValuesByMapAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int indicatorId;
+    private int id;
 
-    public void setIndicatorId( int indicatorId )
+    public void setId( int id )
     {
-        this.indicatorId = indicatorId;
+        this.id = id;
     }
 
     private int periodId;
@@ -95,7 +95,7 @@ public class GetIndicatorMapValuesByMapAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getAggregatedIndicatorMapValues( indicatorId, periodId, mapLayerPath );
+        object = mappingService.getAggregatedIndicatorMapValues( id, periodId, mapLayerPath );
 
         return SUCCESS;
     }
