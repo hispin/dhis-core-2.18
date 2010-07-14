@@ -33,26 +33,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipFile;
+
 import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.reader.XMLReader;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
 import org.hisp.dhis.common.ProcessState;
+import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
 import org.hisp.dhis.importexport.xml.XMLPreConverter;
 import org.hisp.dhis.importexport.zip.ZipAnalyzer;
-import org.hisp.dhis.security.spring.AbstractSpringSecurityCurrentUserService;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,17 +66,12 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     @Autowired
     private XMLPreConverter preConverter;
 
     @Autowired
     private DXFConverter converter;
-
-    @Autowired
-    private ZipAnalyzer zipAnalyzer;
-
-    @Autowired
-    private AbstractSpringSecurityCurrentUserService currentUserService;
 
     // -------------------------------------------------------------------------
     // ImportService implementation
