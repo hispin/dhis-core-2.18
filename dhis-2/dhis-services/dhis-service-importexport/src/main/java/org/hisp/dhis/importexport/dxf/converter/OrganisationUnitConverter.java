@@ -31,6 +31,7 @@ import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -41,6 +42,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
+import org.hisp.dhis.organisationunit.CoordinatesTuple;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
@@ -66,7 +68,8 @@ public class OrganisationUnitConverter
     private static final String FIELD_ACTIVE = "active";
     private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_GEO_CODE = "geoCode";
-    private static final String FIELD_COORDINATES = "coordinates";
+    private static final String FIELD_COORDINATES_TUPLE = "coordinatesTuple";
+    private static final String FIELD_COORDINATES = "coord";
     private static final String FIELD_FEATURE = "feature";
     private static final String FIELD_LAST_UPDATED = "lastUpdated";
     private static final String ATTRIBUTE_TYPE = "type";
@@ -131,9 +134,14 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_GEO_CODE, unit.getGeoCode() );
                 
                 writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );                
-                for ( String coordinate : unit.getCoordinatesAsCollection() )
+                for ( CoordinatesTuple tuple : unit.getCoordinatesAsList() )
                 {
-                    writer.writeElement( FIELD_COORDINATES, coordinate );
+                    writer.openElement( FIELD_COORDINATES_TUPLE );                    
+                    for ( String coordinates : tuple.getCoordinatesTuple() )
+                    {
+                        writer.writeElement( FIELD_COORDINATES, coordinates );
+                    }                    
+                    writer.closeElement();
                 }
                 writer.closeElement();
                 
@@ -187,12 +195,17 @@ public class OrganisationUnitConverter
                 reader.moveToStartElement( FIELD_FEATURE );
                 unit.setFeatureType( reader.getAttributeValue( ATTRIBUTE_TYPE ) );
                 
-                Collection<String> coordinates = new ArrayList<String>();
-                while ( reader.moveToStartElement( FIELD_COORDINATES, FIELD_FEATURE ) )
+                List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
+                while ( reader.moveToStartElement( FIELD_COORDINATES_TUPLE, FIELD_FEATURE ) )
                 {
-                    coordinates.add( reader.getElementValue() );
+                    CoordinatesTuple tuple = new CoordinatesTuple();
+                    while ( reader.moveToStartElement( FIELD_COORDINATES, FIELD_COORDINATES_TUPLE ) )
+                    {
+                        tuple.addCoordinates( reader.getElementValue() );
+                    }
+                    list.add( tuple );
                 }
-                unit.setCoordinatesFromCollection( coordinates );
+                unit.setCoordinatesFromList( list );
                 
                 reader.moveToStartElement( FIELD_LAST_UPDATED );
                 unit.setLastUpdated( DateUtils.getMediumDate( reader.getElementValue() ) );

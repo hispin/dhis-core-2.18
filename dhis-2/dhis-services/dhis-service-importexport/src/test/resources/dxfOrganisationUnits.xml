@@ -12,9 +12,9 @@
 <comment>Comment</comment>
 <geoCode>GeoCode</geoCode>
 <feature type="MultiPolygon">
-<coordinates>11.11,22.22 33.33,44.44 55.55,66.66</coordinates>
-<coordinates>77.77,88.88 99.99,11.11 22.22,33.33</coordinates>
-<coordinates>44.44,55.55 66.66,77.77 88.88,99.99</coordinates>
+<coordinatesTuple><coord>11.11,22.22</coord><coord>33.33,44.44</coord><coord>55.55,66.66</coord></coordinatesTuple>
+<coordinatesTuple><coord>77.77,88.88</coord><coord>99.99,11.11</coord><coord>22.22,33.33</coord></coordinatesTuple>
+<coordinatesTuple><coord>44.44,55.55</coord><coord>66.66,77.77</coord><coord>88.88,99.99</coord></coordinatesTuple>
 </feature>
 <lastUpdated>2010-01-01</lastUpdated>
 </organisationUnit>
@@ -30,9 +30,9 @@
 <comment>Comment</comment>
 <geoCode>GeoCode</geoCode>
 <feature type="MultiPolygon">
-<coordinates>11.11,22.22 33.33,44.44 55.55,66.66</coordinates>
-<coordinates>77.77,88.88 99.99,11.11 22.22,33.33</coordinates>
-<coordinates>44.44,55.55 66.66,77.77 88.88,99.99</coordinates>
+<coordinatesTuple><coord>11.11,22.22</coord><coord>33.33,44.44</coord><coord>55.55,66.66</coord></coordinatesTuple>
+<coordinatesTuple><coord>77.77,88.88</coord><coord>99.99,11.11</coord><coord>22.22,33.33</coord></coordinatesTuple>
+<coordinatesTuple><coord>44.44,55.55</coord><coord>66.66,77.77</coord><coord>88.88,99.99</coord></coordinatesTuple>
 </feature>
 <lastUpdated>2010-01-01</lastUpdated>
 </organisationUnit>
@@ -48,9 +48,9 @@
 <comment>Comment</comment>
 <geoCode>GeoCode</geoCode>
 <feature type="MultiPolygon">
-<coordinates>11.11,22.22 33.33,44.44 55.55,66.66</coordinates>
-<coordinates>77.77,88.88 99.99,11.11 22.22,33.33</coordinates>
-<coordinates>44.44,55.55 66.66,77.77 88.88,99.99</coordinates>
+<coordinatesTuple><coord>11.11,22.22</coord><coord>33.33,44.44</coord><coord>55.55,66.66</coord></coordinatesTuple>
+<coordinatesTuple><coord>77.77,88.88</coord><coord>99.99,11.11</coord><coord>22.22,33.33</coord></coordinatesTuple>
+<coordinatesTuple><coord>44.44,55.55</coord><coord>66.66,77.77</coord><coord>88.88,99.99</coord></coordinatesTuple>
 </feature>
 <lastUpdated>2010-01-01</lastUpdated>
 </organisationUnit>

@@ -2,7 +2,24 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gml="http://www.opengis.net/gml">
 
 <xsl:template match="gml:coordinates">
-  <coordinates><xsl:value-of select="."/></coordinates>
+  <coordinatesTuple>
+  <xsl:call-template name="coordinates-delimiter">
+    <xsl:with-param name="coordinates"><xsl:value-of select="."/></xsl:with-param>
+  </xsl:call-template>
+</coordinatesTuple>
+</xsl:template>
+
+<xsl:template name="coordinates-delimiter">
+  <xsl:param name="coordinates"/>
+  <xsl:variable name="newlist" select="concat(normalize-space($coordinates), ' ')"/>
+  <xsl:variable name="first" select="substring-before($newlist, ' ')"/>
+  <xsl:variable name="remaining" select="substring-after($newlist, ' ')"/>
+  <coord><xsl:value-of select="$first"/></coord>
+  <xsl:if test="$remaining">
+    <xsl:call-template name="coordinates-delimiter">
+      <xsl:with-param name="coordinates" select="$remaining"/>
+    </xsl:call-template>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="gml:Polygon">

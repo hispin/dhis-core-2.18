@@ -28,10 +28,8 @@ package org.hisp.dhis.organisationunit;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;
@@ -42,28 +40,42 @@ import org.junit.Test;
  */
 public class OrganisationUnitTest
 {
-    private List<String> dirtyCoordinatesCollection = new ArrayList<String>();
-    private List<String> cleanCoordinatesCollection = new ArrayList<String>();
+    private List<CoordinatesTuple> coordinatesList = new ArrayList<CoordinatesTuple>();
     
     private String coordinates = "[[[[11.11,22.22],[33.33,44.44],[55.55,66.66]]],[[[77.77,88.88],[99.99,11.11],[22.22,33.33]]],[[[44.44,55.55],[66.66,77.77],[88.88,99.99]]]]";
+    
+    private CoordinatesTuple tupleA;
+    private CoordinatesTuple tupleB;
+    private CoordinatesTuple tupleC;
     
     @Before
     public void before()
     {
-        dirtyCoordinatesCollection.add( "11.11,22.22  33.33,44.44    55.55,66.66" ); // Extra space between coords
-        dirtyCoordinatesCollection.add( "77.77,88.88 99.99,11.11\n22.22,33.33" );  // Newline between coords
-        dirtyCoordinatesCollection.add( "  44.44,55.55 66.66,77.77 88.88,99.99 " );  // Leading and trailing space
+        tupleA = new CoordinatesTuple();
+        tupleA.addCoordinates( "11.11,22.22" );
+        tupleA.addCoordinates( "33.33,44.44" );
+        tupleA.addCoordinates( "55.55,66.66" );
         
-        cleanCoordinatesCollection.add( "11.11,22.22 33.33,44.44 55.55,66.66" ); // Testing on string since we control the output format
-        cleanCoordinatesCollection.add( "77.77,88.88 99.99,11.11 22.22,33.33" );
-        cleanCoordinatesCollection.add( "44.44,55.55 66.66,77.77 88.88,99.99" );
+        tupleB = new CoordinatesTuple();
+        tupleB.addCoordinates( "77.77,88.88" );
+        tupleB.addCoordinates( "99.99,11.11" );
+        tupleB.addCoordinates( "22.22,33.33" );
+
+        tupleC = new CoordinatesTuple();
+        tupleC.addCoordinates( "44.44,55.55" );
+        tupleC.addCoordinates( "66.66,77.77" );
+        tupleC.addCoordinates( "88.88,99.99" );
+        
+        coordinatesList.add( tupleA );
+        coordinatesList.add( tupleB );
+        coordinatesList.add( tupleC );
     }
 
     @Test
     public void testSetCoordinatesFromCollection()
     {
         OrganisationUnit unit = new OrganisationUnit();
-        unit.setCoordinatesFromCollection( dirtyCoordinatesCollection );
+        unit.setCoordinatesFromList( coordinatesList );
         
         assertEquals( coordinates, unit.getCoordinates() );
     }
@@ -74,22 +86,10 @@ public class OrganisationUnitTest
         OrganisationUnit unit = new OrganisationUnit();
         unit.setCoordinates( coordinates );
         
-        Collection<String> actual = unit.getCoordinatesAsCollection();
+        assertEquals( 3, unit.getCoordinatesAsList().size() );
         
-        assertEquals( 3, actual.size() );
-        assertTrue( actual.contains( cleanCoordinatesCollection.get( 0 ) ) );
-        assertTrue( actual.contains( cleanCoordinatesCollection.get( 1 ) ) );
-        assertTrue( actual.contains( cleanCoordinatesCollection.get( 2 ) ) );
-    }
-    
-    @Test
-    public void testGetCoordinatesAsMap()
-    {
-        OrganisationUnit unit = new OrganisationUnit();
-        unit.setCoordinates( coordinates );
-        
-        Collection<String> actual = unit.getAllCoordinates();
-        
-        assertEquals( 9, actual.size() );        
+        assertEquals( tupleA, unit.getCoordinatesAsList().get( 0 ) );
+        assertEquals( tupleB, unit.getCoordinatesAsList().get( 1 ) );
+        assertEquals( tupleC, unit.getCoordinatesAsList().get( 2 ) );
     }
 }
