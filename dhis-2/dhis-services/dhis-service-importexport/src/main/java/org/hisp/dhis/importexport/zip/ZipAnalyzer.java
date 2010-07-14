@@ -35,8 +35,6 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,9 +43,6 @@ import org.springframework.stereotype.Component;
 @Component("zipAnalyzer")
 public class ZipAnalyzer
 {
-
-    private final static Log log = LogFactory.getLog( ZipAnalyzer.class );
-
     /**
      * This is a list of common data streams found in zip packages
      */
