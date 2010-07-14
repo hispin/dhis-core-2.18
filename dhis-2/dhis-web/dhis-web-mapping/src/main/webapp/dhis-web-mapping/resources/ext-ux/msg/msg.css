@@ -23,9 +23,9 @@ h2 {
     margin:10px 0;
 }
 h3 {
-    font:16px;
+    font:17px;
     color:#111111;
-    letter-spacing:1px;
+    letter-spacing:0px;
 }
 h4 {
     font-size:16px;
@@ -53,15 +53,15 @@ pre.code{
 	line-height:14px !important;
 }
 .msg .x-box-mc {
-    font-size:14px;
-    color:#222;
-    letter-spacing:1px;
+    font-size:12px;
+    color:#111;
+    padding:8px 12px;
 }
 #msg-div {
     position:absolute;
     left:35%;
     top:10px;
-    width:300px;
+    width:360px;
     z-index:20000;
 }
 .x-grid3-row-body p {

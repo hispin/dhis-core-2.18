@@ -14,6 +14,9 @@
 .x-form-field {
 	font:10px lucida sans unicode,arial,tahoma,helvetica,sans-serif;
 }
+.x-form-item label.x-form-item-label {
+    padding:3px 3px 3px 4px;
+}
 .x-combo-list {
 	font:10px lucida sans unicode,arial,tahoma,helvetica,sans-serif;
 }
@@ -48,7 +51,7 @@
 	padding:1px;
 }
 .x-box-mc {
-	font-family:myriad pro,myriad web,arial,tahoma,helvetica;
+	font-family:arial,tahoma,helvetica;
 	font-weight:normal;
 }
 .loading-indicator {
@@ -257,7 +260,7 @@ div.olMapViewport {
 /* Msg */
 .x-msg-hl {
 	font-weight:bold;
-	color:#555;
+	color:#444;
 }
 
 /* DHIS Help */

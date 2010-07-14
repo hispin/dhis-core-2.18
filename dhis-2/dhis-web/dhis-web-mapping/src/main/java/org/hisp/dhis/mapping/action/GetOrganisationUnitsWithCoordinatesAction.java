@@ -77,11 +77,11 @@ public class GetOrganisationUnitsWithCoordinatesAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer level;
+    private Integer id;
 
-    public void setLevel( Integer level )
+    public void setId( Integer id )
     {
-        this.level = level;
+        this.id = id;
     }    
     
     // -------------------------------------------------------------------------
@@ -102,7 +102,7 @@ public class GetOrganisationUnitsWithCoordinatesAction
     public String execute()
         throws Exception
     {
-        object = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+        object = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnit( id ).getChildren() );
         
         CollectionUtils.filter( object, new Predicate()
             {

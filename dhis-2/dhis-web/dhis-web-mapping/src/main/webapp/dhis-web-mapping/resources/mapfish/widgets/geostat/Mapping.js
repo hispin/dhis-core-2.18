@@ -149,7 +149,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({
-            url: path + 'getAllMaps' + type,
+            url: path_mapping + 'getAllMaps' + type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
@@ -157,7 +157,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         });
             
         gridStore = new Ext.data.JsonStore({
-            url: path + 'getAvailableMapOrganisationUnitRelations' + type,
+            url: path_mapping + 'getAvailableMapOrganisationUnitRelations' + type,
             root: 'mapOrganisationUnitRelations',
             fields: ['id', 'organisationUnit', 'organisationUnitId', 'featureId'],
             sortInfo: { field: 'organisationUnit', direction: 'ASC' },
@@ -203,14 +203,16 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     'select': {
                         fn: function() {
                             var mlp = Ext.getCmp('maps_cb').getValue();
-                            this.newUrl = mlp;
+                            // mapping.newUrl = mlp;
 							
                             Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp };
                             Ext.getCmp('grid_gp').getStore().reload();
 							
 							Ext.getCmp('filter_tf').enable();
 							
-							mapping.classify(false);
+							// mapping.classify(false);
+                            
+                            mapping.loadByUrl(mlp);
                         },
                         scope: this
                     }
@@ -261,10 +263,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             handler: function()
                             {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg( i18n_auto_assign , i18n_please_select_map );
+                                    Ext.message.msg(false, i18n_please_select_map );
                                     return;
                                 }
-                                loadMapData('auto-assignment', true);
+                                mapping.autoAssign(true);
                             },
                             scope: this
                         },
@@ -276,14 +278,14 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             isVisible: false,
                             handler: function() {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg( i18n_remove_all_relations, i18n_please_select_map );
+                                    Ext.message.msg(false, i18n_please_select_map );
                                     return;
                                 }
                                 
                                 var mlp = Ext.getCmp('maps_cb').getValue();
                                 
                                 Ext.Ajax.request({
-                                    url: path + 'deleteMapOrganisationUnitRelationsByMap' + type,
+                                    url: path_mapping + 'deleteMapOrganisationUnitRelationsByMap' + type,
                                     method: 'GET',
                                     params: { mapLayerPath: mlp },
                                     success: function( responseObject ) {
@@ -291,7 +293,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
                                         
-                                        Ext.messageBlack.msg( i18n_remove_all_relations , i18n_all_relations_for_the_map + '<span class="x-msg-hl">' + Ext.getCmp('maps_cb').getRawValue() + '</span> ' + i18n_removed);
+                                        Ext.message.msg(true, i18n_all_relations_for_the_map + '<span class="x-msg-hl"> ' + Ext.getCmp('maps_cb').getRawValue() + '</span> ' + i18n_removed);
                                         
                                         mapping.classify(true, true);
                                     },
@@ -311,7 +313,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             handler: function()
                             {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.messageRed.msg( i18n_remove_relation , i18n_please_select_map );
+                                    Ext.message.msg(false, i18n_please_select_map );
                                     return;
                                 }
                                 
@@ -320,7 +322,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								var msg;
 								
                                 if (selection == '') {
-                                    Ext.messageRed.msg( i18n_remove_relation , i18n_please_select_least_one_organisation_unit_in_the_list );
+                                    Ext.message.msg(false, i18n_please_select_least_one_organisation_unit_in_the_list );
                                     return;
                                 }
 								
@@ -333,19 +335,19 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 									msg = i18n_selected_relations_removed;
 								}
 								else {
-									msg = '<span class="x-msg-hl">' + selection[0].data['organisationUnit'] + '</span>' + i18n_remove_selected;
+									msg = '<span class="x-msg-hl">' + selection[0].data['organisationUnit'] + '</span> ' + i18n_removed;
 								}
 								
 								params += '&mapLayerPath=' + mlp;
 								
 								Ext.Ajax.request({
-									url: path + 'deleteMapOrganisationUnitRelations' + type + params,
+									url: path_mapping + 'deleteMapOrganisationUnitRelations' + type + params,
 									method: 'GET',
-									success: function( responseObject ) {
+									success: function(r) {
 										Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
 										Ext.getCmp('grid_gp').getStore().reload();
 										
-										Ext.messageBlack.msg( i18n_remove_relation , msg);
+										Ext.message.msg(true, msg);
 										
 										mapping.classify(true, true);
 									},
@@ -367,23 +369,23 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								var mlp = Ext.getCmp('maps_cb').getValue();
 								
 								Ext.Ajax.request({
-									url: path + 'getMapOrganisationUnitRelationByFeatureId' + type,
+									url: path_mapping + 'getMapOrganisationUnitRelationByFeatureId' + type,
 									method: 'POST',
 									params: {featureId:mapping.relation, mapLayerPath:mlp},
 									success: function( responseObject ) {
 										var mour = Ext.util.JSON.decode( responseObject.responseText ).mapOrganisationUnitRelation[0];
 										if (mour.featureId == '') {
 											Ext.Ajax.request({
-												url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
+												url: path_mapping + 'addOrUpdateMapOrganisationUnitRelation' + type,
 												method: 'POST',
 												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation },
 												success: function( responseObject ) {
-													Ext.messageBlack.msg( i18n_assign + ' ' + i18n_organisation_units , '<span class="x-msg-hl">' + mapping.relation + '</span> (' + i18n_map + ') ' + i18n_assigned_to + ' <span class="x-msg-hl">' + name + '</span> (' + i18n_database + ').');
+													Ext.message.msg(true, '<span class="x-msg-hl">' + mapping.relation + '</span> (' + i18n_in_the_map + ') ' + i18n_assigned_to + ' <span class="x-msg-hl">' + name + '</span> (' + i18n_database + ').');
 													Ext.getCmp('grid_gp').getStore().reload();
 													popup.hide();
 													mapping.relation = false;
 													Ext.getCmp('filter_tf').setValue('');
-													loadMapData(organisationUnitAssignment, true);
+													mapping.classify(true);
 												},
 												failure: function() {
 													alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
@@ -391,7 +393,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 											});
 										}
 										else {
-											Ext.messageRed.msg( i18n_assign + ' ' + i18n_organisation_units , '<span class="x-msg-hl">' + name + '</span> ' + i18n_is_already_assigned );
+											Ext.message.msg(false, '<span class="x-msg-hl">' + name + '</span> ' + i18n_is_already_assigned );
 										}
 									}
 								});
@@ -447,51 +449,184 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         colorB.setFromHex(Ext.getCmp('colorB_cf').getValue());
         return [colorA, colorB];
     },
-
-    /**
-     * Method: classify
-     *
-     * Parameters:
-     * exception - {Boolean} If true show a message box to user if either
-     *      the widget isn't ready, or no indicator is specified, or no
-     *      method is specified.
-     */
-    classify: function(exception, position) {
-        if (!this.ready) {
-            Ext.MessageBox.alert( i18n_error , i18n_component_init_not_complete );
-            return;
-        }
-        
-        if (this.newUrl) {
-            URL = this.newUrl;
-			
-			if (MAPSOURCE == map_source_type_geojson) {
-				this.setUrl(path + 'getGeoJson.action?name=' + URL);
-			}
-			else if (MAPSOURCE == map_source_type_shapefile) {
-				this.setUrl(path_geoserver + wfs + URL + output);
-			}
-        }
-        
+    
+    validateForm: function(exception) {
         if (!Ext.getCmp('maps_cb').getValue()) {
                 if (exception) {
-                    Ext.messageRed.msg( i18n_assign + ' ' + i18n_organisation_units, i18n_please_select_map );
+                    Ext.message.msg(false, i18n_please_select_map );
                 }
-                return;
+                return false;
         }
+        return true;
+    },
+    
+    loadByUrl: function(url) {
+        if (url != mapping.newUrl) {
+            mapping.newUrl = url;
+            
+            if (MAPSOURCE == map_source_type_geojson) {
+                mapping.setUrl(path_mapping + 'getGeoJson.action?name=' + url);
+            }
+			else if (MAPSOURCE == map_source_type_shapefile) {
+				mapping.setUrl(path_geoserver + wfs + url + output);
+			}
+        }
+    },
+    
+    applyValues: function(color, noCls) {
+        var options = {};
         
-		MASK.msg = i18n_loading ;
+        mapping.indicator = options.indicator = 'value';
+        options.method = 1;
+        options.numClasses = noCls;
+        
+        var colorA = new mapfish.ColorRgb();
+        colorA.setFromHex(color);
+        var colorB = new mapfish.ColorRgb();
+        colorB.setFromHex(assigned_row_color);
+        options.colors = [colorA, colorB];
+        
+        mapping.coreComp.updateOptions(options);
+        mapping.coreComp.applyClassification();
+        mapping.classificationApplied = true;
+        
+        MASK.hide();
+    },
+    
+    autoAssign: function(position) {
+        MASK.msg = i18n_loading ;
         MASK.show();
+
+        var level = MAPDATA[organisationUnitAssignment].organisationUnitLevel;
+
+        Ext.Ajax.request({
+            url: path_mapping + 'getOrganisationUnitsAtLevel' + type,
+            method: 'POST',
+            params: { level: level },
+            success: function(r) {
+                FEATURE[thematicMap] = MAP.getLayersByName('Polygon layer')[0].features;
+                var organisationUnits = Ext.util.JSON.decode(r.responseText).organisationUnits;
+                var nameColumn = MAPDATA[organisationUnitAssignment].nameColumn;
+                var mlp = MAPDATA[organisationUnitAssignment].mapLayerPath;
+                var count_match = 0;
+                var relations = '';
+                
+                for ( var i = 0; i < FEATURE[thematicMap].length; i++ ) {
+                    FEATURE[thematicMap][i].attributes.compareName = FEATURE[thematicMap][i].attributes[nameColumn].split(' ').join('').toLowerCase();
+                }
         
-		if (!this.newUrl) {
-			loadMapData(organisationUnitAssignment, position);
-		}
+                for ( var i = 0; i < organisationUnits.length; i++ ) {
+                    organisationUnits[i].compareName = organisationUnits[i].name.split(' ').join('').toLowerCase();
+                }
+                
+                for ( var i = 0; i < organisationUnits.length; i++ ) {
+                    for ( var j = 0; j < FEATURE[thematicMap].length; j++ ) {
+                        if (FEATURE[thematicMap][j].attributes.compareName == organisationUnits[i].compareName) {
+                            count_match++;
+                            relations += organisationUnits[i].id + '::' + FEATURE[thematicMap][j].attributes[nameColumn] + ';;';
+                            break;
+                        }
+                    }
+                }
+                
+                MASK.msg = count_match == 0 ? i18n_no + ' ' + i18n_organisation_units + ' ' +  i18n_assigned + '...' : + i18n_assigning +' ' + count_match + ' '+ i18n_organisation_units + '...';
+                MASK.show();
+
+                Ext.Ajax.request({
+                    url: path_mapping + 'addOrUpdateMapOrganisationUnitRelations' + type,
+                    method: 'POST',
+                    params: {mapLayerPath:mlp, relations:relations},
+                    success: function(r) {
+                        MASK.msg = i18n_applying_organisation_units_relations ;
+                        MASK.show();
+                        
+                        Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + ' (map <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>, db <span class="x-msg-hl">' + organisationUnits.length + '</span>).');
+                        // Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + '.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>');                        
+                        
+                        Ext.getCmp('grid_gp').getStore().reload();
+                        mapping.classify(false, position);
+                    },
+                    failure: function() {
+                        alert( 'Error: addOrUpdateMapOrganisationUnitRelations' );
+                    } 
+                });
+            },
+            failure: function() {
+                alert( i18n_status , i18n_error_while_retrieving_data );
+            } 
+        });
+    },        
+
+    classify: function(exception, position) {
+        if (mapping.validateForm(exception)) {
+        
+            MASK.msg = i18n_creating_map;
+            MASK.show();
+            
+            Ext.Ajax.request({
+                url: path_mapping + 'getMapByMapLayerPath' + type,
+                method: 'POST',
+                params: { mapLayerPath: mapping.newUrl },
+                success: function(r) {
+                    MAPDATA[ACTIVEPANEL] = Ext.util.JSON.decode(r.responseText).map[0];
+                    
+                    MAPDATA[ACTIVEPANEL].organisationUnitLevel = parseFloat(MAPDATA[ACTIVEPANEL].organisationUnitLevel);
+                    MAPDATA[ACTIVEPANEL].longitude = parseFloat(MAPDATA[ACTIVEPANEL].longitude);
+                    MAPDATA[ACTIVEPANEL].latitude = parseFloat(MAPDATA[ACTIVEPANEL].latitude);
+                    MAPDATA[ACTIVEPANEL].zoom = parseFloat(MAPDATA[ACTIVEPANEL].zoom);
+                    
+                    if (!position) {
+                        if (MAPDATA[ACTIVEPANEL].zoom != MAP.getZoom()) {
+                            MAP.zoomTo(MAPDATA[ACTIVEPANEL].zoom);
+                        }
+                        MAP.setCenter(new OpenLayers.LonLat(MAPDATA[ACTIVEPANEL].longitude, MAPDATA[ACTIVEPANEL].latitude));
+                    }
+                    
+                    if (MAPVIEW) {
+                        if (MAPVIEW.longitude && MAPVIEW.latitude && MAPVIEW.zoom) {
+                            MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
+                        }
+                        else {
+                            MAP.setCenter(new OpenLayers.LonLat(MAPDATA[ACTIVEPANEL].longitude, MAPDATA[ACTIVEPANEL].latitude), MAPDATA[ACTIVEPANEL].zoom);
+                        }
+                        MAPVIEW = false;
+                    }
+            
+                    var polygonLayer = MAP.getLayersByName('Polygon layer')[0];
+                    FEATURE[thematicMap] = polygonLayer.features;
+                    
+                    if (LABELS[thematicMap]) {
+                        toggleFeatureLabelsPolygons(false, polygonLayer);
+                    }
+        
+                    var mlp = MAPDATA[organisationUnitAssignment].mapLayerPath;
+                    var relations =	Ext.getCmp('grid_gp').getStore();
+                    var nameColumn = MAPDATA[organisationUnitAssignment].nameColumn;
+                    var noCls = 1;
+                    var noAssigned = 0;
+        
+                    for (var i = 0; i < FEATURE[thematicMap].length; i++) {
+                        FEATURE[thematicMap][i].attributes['value'] = 0;
+
+                        for (var j = 0; j < relations.getTotalCount(); j++) {
+                            if (relations.getAt(j).data.featureId == FEATURE[thematicMap][i].attributes[nameColumn]) {
+                                FEATURE[thematicMap][i].attributes['value'] = 1;
+                                noAssigned++;
+                                noCls = noCls < 2 ? 2 : noCls;
+                                break;
+                            }
+                        }
+                    }
+
+                    var color = noCls > 1 && noAssigned == FEATURE[thematicMap].length ? assigned_row_color : unassigned_row_color;
+                    noCls = noCls > 1 && noAssigned == FEATURE[thematicMap].length ? 1 : noCls;
+                    
+                    mapping.applyValues(color, noCls);
+                }
+            });
+        }
     },
 
-    /**
-     * Method: onRender
-     * Called by EXT when the component is rendered.
-     */
     onRender: function(ct, position) {
         mapfish.widgets.geostat.Choropleth.superclass.onRender.apply(this, arguments);
         if(this.loadMask){

@@ -170,13 +170,11 @@ mapfish.GeoStat = OpenLayers.Class({
             selectFeature.activate();
         }
 */        
-        
         this.setUrl(this.url);
         this.legendDiv = Ext.get(options.legendDiv);
     },
  
     setUrl: function(url) {
-    
         // get features from web service if a url is specified
         this.url = url;
         if (this.url) {
@@ -201,10 +199,20 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.removeFeatures(this.layer.features);
         this.layer.addFeatures(format.read(doc));
         this.requestSuccess(request);
+        
+        if (ACTIVEPANEL == thematicMap) {
+            choropleth.classify(false);
+        }
+        else if (ACTIVEPANEL == thematicMap2) {
+            proportionalSymbol.classify(false);
+        }
+        else if (ACTIVEPANEL == organisationUnitAssignment) {
+            mapping.classify(false);
+        }
 
-		if (URL) {
-			loadMapData(ACTIVEPANEL, false);
-		}
+		// if (URL) {
+			// loadMapData(ACTIVEPANEL, false);
+		// }
     },
 
     /**
@@ -535,7 +543,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 					
 					if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
 					{
-						Ext.messageRed.msg('Fixed breaks', 'Class breaks must be higher than <span class="x-msg-hl">' + this.minVal + '</span> and lower than <span class="x-msg-hl">' + this.maxVal + '</span>.');
+						Ext.message.msg(false, 'Class breaks must be higher than <span class="x-msg-hl">' + this.minVal + '</span> and lower than <span class="x-msg-hl">' + this.maxVal + '</span>.');
 					}
 				}
 				

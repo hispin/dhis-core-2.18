@@ -11,9 +11,7 @@
         {
           "type":"MultiPolygon",
           "coordinates":
-          [[[
-            $!{unit.polygonCoordinates}
-          ]]]
+            $!encoder.jsEncode( $!{unit.coordinates} )
         },
       "properties":
         {
