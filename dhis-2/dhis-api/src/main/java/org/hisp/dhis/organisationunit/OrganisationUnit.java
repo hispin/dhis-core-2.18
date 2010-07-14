@@ -28,7 +28,6 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +48,7 @@ public class OrganisationUnit
 {
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
 
-    private static final Pattern GML_COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
+    private static final Pattern COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
     
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
@@ -157,57 +156,47 @@ public class OrganisationUnit
         return coordinates != null && coordinates.trim().length() > 0;
     }
     
-    public Collection<String> getCoordinatesAsCollection()
+    public List<CoordinatesTuple> getCoordinatesAsList()
     {
-        Collection<String> collection = new ArrayList<String>();
+        List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
         
         if ( coordinates != null && !coordinates.trim().isEmpty() )
         {
-            Matcher matcher = JSON_COORDINATE_PATTERN.matcher( coordinates );
-            
-            while ( matcher.find() )
-            {
-                collection.add( matcher.group().replaceAll( "\\]\\,", "] " ).replaceAll( "[\\[\\]]", "" ) );
-            }
-        }
-        
-        return collection;
-    }
+            Matcher jsonMatcher = JSON_COORDINATE_PATTERN.matcher( coordinates );
 
-    public Collection<String> getAllCoordinates()
-    {
-        Collection<String> collection = new ArrayList<String>();
-        
-        if ( coordinates != null && !coordinates.trim().isEmpty() )
-        {
-            Matcher matcher = GML_COORDINATE_PATTERN.matcher( coordinates );
-            
-            while ( matcher.find() )
+            while ( jsonMatcher.find() )
             {
-                collection.add( matcher.group() );
-            }
-        }
-        
-        return collection;
-    }
-    
-    public void setCoordinatesFromCollection( Collection<String> collection )
-    {
-        StringBuilder builder = new StringBuilder();
-        
-        if ( collection != null && collection.size() > 0 )
-        {
-            builder.append( "[" );
-            
-            for ( String c : collection )
-            {
-                builder.append( "[[" );
-
-                Matcher matcher = GML_COORDINATE_PATTERN.matcher( c );
+                CoordinatesTuple tuple = new CoordinatesTuple();
+                
+                Matcher matcher = COORDINATE_PATTERN.matcher( jsonMatcher.group() );
                 
                 while ( matcher.find() )
                 {
-                    builder.append( "[" + matcher.group() + "]," );
+                    tuple.addCoordinates( matcher.group() );
+                }
+                
+                list.add( tuple );
+            }
+        }
+        
+        return list;
+    }
+    
+    public void setCoordinatesFromList( List<CoordinatesTuple> list )
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        if ( list != null && list.size() > 0 )
+        {
+            builder.append( "[" );
+            
+            for ( CoordinatesTuple tuple : list )
+            {
+                builder.append( "[[" );
+
+                for ( String coordinates : tuple.getCoordinatesTuple() )
+                {
+                    builder.append( "[" + coordinates + "]," );
                 }
                 
                 builder.deleteCharAt( builder.lastIndexOf( "," ) );            
