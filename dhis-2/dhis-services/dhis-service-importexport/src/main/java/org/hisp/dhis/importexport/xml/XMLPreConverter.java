@@ -35,12 +35,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
+
 import org.amplecode.staxwax.transformer.TransformerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,7 +51,6 @@ import org.hisp.dhis.importexport.ImportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 /**
  * GenericXMLConvertor transforms imported foreign XML to dxf.
  * 
@@ -59,7 +59,6 @@ import org.springframework.stereotype.Component;
 @Component("preConverter")
 public class XMLPreConverter
 {
-
     private final Log log = LogFactory.getLog( XMLPreConverter.class );
 
     public static final int BUFFER_SIZE = 2000;
@@ -69,6 +68,7 @@ public class XMLPreConverter
     // -------------------------------------------------------------------------
     // Named XSLT parameters available to xslt stylesheets
     // -------------------------------------------------------------------------
+    
     // Current timestamp
     public static final String TIMESTAMP = "timestamp";
     // url base where dxf metadata snapshots are found
@@ -83,12 +83,9 @@ public class XMLPreConverter
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    @Autowired
-    protected XSLTLocator xsltLocator;
 
     @Autowired
-    protected URIResolver resolver;
-
+    private XSLTLocator xsltLocator;
 
     public QName getDocumentRoot(BufferedInputStream xmlDataStream) throws ImportException
     {
@@ -158,7 +155,5 @@ public class XMLPreConverter
         {
             throw new ImportException( "Failed to transform stream", ex );
         }
-
     }
-
 }
