@@ -13,7 +13,7 @@
 										validateCriteria();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 				jQuery("#name").focus();
 			}
 	);
@@ -72,11 +72,7 @@
 			<input type="text" id="birthDateValue" name="birthDateValue" onChange="fillValue(this.value);"style="width: 6em">
 			<img src="../images/calendar_icon.gif" width="16" height="16" id="birthDateValueButton" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
 			<script type="text/javascript">
-				  Calendar.setup({
-				  inputField     :    "birthDateValue",      // id of the input field
-				  ifFormat       :    "$i18n.getString('format.date.label')",       // format of the input field
-				  button         :    "birthDateValueButton"   // trigger for the calendar (button ID)
-				 });
+				datePickerValid( 'birthDateValue' );
 			</script> 
 		</div>
 		

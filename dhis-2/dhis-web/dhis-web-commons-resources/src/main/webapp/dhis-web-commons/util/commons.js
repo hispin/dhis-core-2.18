@@ -765,9 +765,30 @@ function datePicker( id )
 		dayNamesMin: dayNamesMin,
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true
+		buttonImageOnly: true		
 	});
 }
+
+/**
+ * Create jQuery datepicker for input text with id * * 
+ * @param id the id of input filed which you want enter date *
+ */
+function datePickerValid( id )
+{
+	$("#" + id).datepicker(
+	{
+		dateFormat:dateFormat,
+		changeMonth: true,
+		changeYear: true,			
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showOn: 'both',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true,
+		maxDate: '+0d +0w'
+	});
+}
+
 
 /**
  * Create jQuery datepicker for start date and end ate text with id * * 

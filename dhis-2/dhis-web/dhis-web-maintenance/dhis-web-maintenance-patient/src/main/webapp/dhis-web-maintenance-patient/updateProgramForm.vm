@@ -13,7 +13,7 @@
 											validateUpdateProgram();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+				jQuery.validator.setMessages( validationMessage );
 				jQuery("#nameField").focus();
 			}
 	);

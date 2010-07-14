@@ -29,14 +29,13 @@ td.error {padding-left:1em}
 									validateAddPatient();
 								}
 			});
-			jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+			jQuery.validator.setMessages( validationMessage );
 			jQuery("#firstName").focus();
-			var dateFormat = '$encoder.jsEscape( $i18n.getString( "format.date.label" ) , "'")'; 
-			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
+			
+			datePickerValid( 'birthDate' );
 		});
 </script>
-<h3>$i18n.getString( "add_new_patient" )</h3>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>	
+<h3>$i18n.getString( "add_new_patient" )</h3>	
 																			
 <form id="addPatientForm" action="addPatient.action" method="post">
 <input type="hidden" id="representativeId" name="representativeId"/> 
@@ -78,8 +77,7 @@ td.error {padding-left:1em}
 	</tr>
 	<tr>
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getBirthDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_birth" )">
+		<td>			
 			<input type="text" id="birthDate" name="birthDate" style="width:10em"  onchange="bdOnchange()" >
 			&nbsp;
 			<label for="age">$i18n.getString( "or" )  $i18n.getString( "age" ) </label>
@@ -239,16 +237,7 @@ td.error {padding-left:1em}
 
 <span id="message"></span>
 
-<script type="text/javascript">
-    Calendar.setup({
-        inputField     :    "birthDate"      // id of the input field
-        ,ifFormat      :    "$i18n.getString("format.date.label")"       // format of the input field
-        ,button        :    "getBirthDate"   // trigger for the calendar (button ID)
-        ,onUpdate 	   :  function(){jQuery("#birthDate").focus();}
-    });
 
-</script>	
-	
 <div id="hiddenModalContent" style="display:none">
 <style> 
 div#hiddenModalContent label { font-weight: bold;}  
