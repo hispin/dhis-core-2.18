@@ -205,7 +205,7 @@ public class GenerateReportAction
         {
         	Patient patient = programInstance.getPatient();
             //taking patient present in selected orgunit
-            if ( !patientListByOrgUnit.contains( patient ) )
+            if ( !patientListByOrgUnit.contains( patient ) || programInstance.getEndDate() != null )
             {
                 continue;
             }
