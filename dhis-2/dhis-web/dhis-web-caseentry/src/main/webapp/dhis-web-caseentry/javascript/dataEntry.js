@@ -1025,6 +1025,13 @@ function toggleContentForReportDate(show)
 	}
 }
 
+function openChildRegistrationForm()
+{
+	var patientId = document.getElementById( "id" ).value;
+	
+	window.location.href = "../dhis-web-maintenance-patient/showAddRelationshipPatient.action?id="+patientId;
+}
+
 function doComplete()
 {
 	var flag = false;

@@ -333,6 +333,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--  09/07/2010 -->
 	
 	<!-- DataSet Lock Reports -->
+	<!--
 	<bean
 		id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
@@ -341,17 +342,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
-		<!--
-		<property name="organisationUnitService">
-		<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
 		
-		<property name="reportService">
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		-->
-	</bean>
-	
+	</bean>	
 	<bean
 		id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction"
 		class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction"
@@ -396,7 +388,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 	</bean>
-	
+	-->
 	<!-- -->
 	
 	<!-- Linelisting Reports -->
