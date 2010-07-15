@@ -66,7 +66,6 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
     @Autowired
     private XMLPreConverter preConverter;
 
@@ -145,34 +144,45 @@ public class DefaultImportService
 
         XMLReader dxfReader = null;
         File transformOutput = null;
+        FileInputStream dxfInStream = null;
 
         try
         {
             if ( documentRootName.getLocalPart().equals( DXFConverter.DXFROOT ) )
             {
                 // Native DXF stream - no transform required
-                log.info( "Importing dxf native stream" );
+                log.debug( "Importing dxf native stream" );
                 dxfReader = XMLFactory.getXMLReader( xmlDataStream );
             } else
             {
                 log.debug( "Transforming stream" );
+                state.setMessage( "Transforming stream" );
                 transformOutput = File.createTempFile( "TRANSFORM_", ".xml" );
                 Source source = new StreamSource( xmlDataStream );
-                StreamResult result = new StreamResult( transformOutput );
+                FileOutputStream transformOutStream = new FileOutputStream( transformOutput );
+                StreamResult result = new StreamResult( transformOutStream );
                 String xsltIdentifierTag = documentRootName.toString();
                 log.debug( "Tag for transformer: " + xsltIdentifierTag );
-                // String currentUserName = currentUserService.getCurrentUsername();
+
+                //String currentUserName = currentUserService.getCurrentUsername();
                 preConverter.transform( source, result, xsltIdentifierTag, tempZipFile, null );
+                transformOutStream.flush();
+                transformOutStream.close();
+
                 log.debug( "Transform successful" );
-                dxfReader = XMLFactory.getXMLReader( new FileInputStream( transformOutput ) );
+                dxfInStream = new FileInputStream( transformOutput );
+                dxfReader = XMLFactory.getXMLReader( dxfInStream );
             }
 
+            log.debug( "sending dxf to converter" );
             converter.read( dxfReader, params, state );
+
         } catch ( Exception ex )
         {
             throw new ImportException( "Failed to import stream", ex );
         } finally
         {
+            // clean up whatever streams might be open
             if ( dxfReader != null )
             {
                 dxfReader.closeReader();
@@ -181,20 +191,25 @@ public class DefaultImportService
             {
                 transformOutput.delete();
             }
-            if ( zipFile != null )
-            {
-                try
-                {
-                    zipFile.close();
-                } catch ( IOException ex )
-                {
-                    // this really shouldn't happen
-                    log.warn("Failed to close zipfile");
-                }
-            }
             if ( tempZipFile != null )
             {
                 tempZipFile.delete();
+            }
+
+            try
+            {
+                if ( dxfInStream != null )
+                {
+                    dxfInStream.close();
+                }
+                if ( zipFile != null )
+                {
+                    zipFile.close();
+                }
+            } catch ( IOException ex )
+            {
+                // this really shouldn't happen
+                log.warn( "Failed to close zipfile" );
             }
         }
     }
