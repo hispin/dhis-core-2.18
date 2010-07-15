@@ -93,10 +93,11 @@ public class GML2DXFTest
         assertEquals( 9, organisationUnitService.getOrganisationUnitByName( "Port Loko" ).getCoordinatesAsList().size() );
         assertEquals( 1, organisationUnitService.getOrganisationUnitByName( "Tonkolili" ).getCoordinatesAsList().size() );
         assertEquals( 2, organisationUnitService.getOrganisationUnitByName( "Western Area" ).getCoordinatesAsList().size() );
-        
+
         assertEquals( 76, organisationUnitService.getOrganisationUnitByName( "Bo" ).getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
         assertEquals( 7, organisationUnitService.getOrganisationUnitByName( "Pujehun" ).getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
         assertEquals( 7, organisationUnitService.getOrganisationUnitByName( "Pujehun" ).getCoordinatesAsList().get( 1 ).getNumberOfCoordinates() );
         assertEquals( 159, organisationUnitService.getOrganisationUnitByName( "Pujehun" ).getCoordinatesAsList().get( 2 ).getNumberOfCoordinates() );
+        assertEquals( 189, organisationUnitService.getOrganisationUnitByName( "Bonthe" ).getCoordinatesAsList().get( 1 ).getNumberOfCoordinates() );
     }
 }
