@@ -103,8 +103,7 @@ public class DefaultXMLEventReader
         {
             if ( reader.peek().isCharacters() )
             {
-                currentEvent = reader.nextEvent();
-                return currentEvent.asCharacters().getData();
+                return this.getText();
             }
             else
             {
@@ -127,6 +126,26 @@ public class DefaultXMLEventReader
                 currentEvent = reader.nextEvent();
                 if ( currentEvent.isStartElement()
                     && currentEvent.asStartElement().getName().getLocalPart().equals( name ) )
+                {
+                    break;
+                }
+            }
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to move to start element", ex );
+        }
+    }
+
+    @Override
+    public void moveToStartElement( )
+    {
+        try
+        {
+            while ( reader.hasNext() )
+            {
+                currentEvent = reader.nextEvent();
+                if ( currentEvent.isStartElement())
                 {
                     break;
                 }
@@ -332,6 +351,22 @@ public class DefaultXMLEventReader
         catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to close reader", ex );
+        }
+    }
+    
+    protected String getText() throws XMLStreamException
+    {
+        StringBuffer sb = new StringBuffer();
+        while (reader.peek().isCharacters()) {
+            sb.append( reader.nextEvent().asCharacters().getData());
+        }
+        if (sb.length() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return sb.toString();
         }
     }
 }

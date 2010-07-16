@@ -69,7 +69,7 @@ public class XMLReaderTest {
   private String[] specialChars = {"&", "<", ">", "\"", "'"};
 
 
-  private static int BIGTEXTSIZE = 1987; // fails when set to 1988
+  private static int BIGTEXTSIZE = 5000; 
   // -------------------------------------------------------------------------
   // Fixture
   // -------------------------------------------------------------------------
@@ -119,6 +119,22 @@ public class XMLReaderTest {
 
       i++;
     }
+  }
+
+  @Test
+  public void testMoveToStartElement() {
+    XMLReader reader = XMLFactory.getXMLReader(inputStreamA);
+    reader.moveToStartElement();
+    assertEquals(COLLECTION_NAME,reader.getElementName());
+    reader.closeReader();
+  }
+
+  @Test
+  public void testEventMoveToStartElement() {
+    XMLReader evReader = XMLFactory.getXMLEventReader( inputStreamA );
+    evReader.moveToStartElement();
+    assertEquals(COLLECTION_NAME,evReader.getElementName());
+    evReader.closeReader();
   }
 
   @Test

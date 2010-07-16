@@ -41,12 +41,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+import org.amplecode.staxwax.factory.XMLFactory;
+import org.amplecode.staxwax.reader.XMLReader;
 
 import org.amplecode.staxwax.transformer.TransformerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.stax2.XMLInputFactory2;
-import org.codehaus.stax2.XMLStreamReader2;
 import org.hisp.dhis.importexport.ImportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -96,12 +96,10 @@ public class XMLPreConverter
             // buffer enough space to read root elemen
             xmlDataStream.mark( BUFFER_SIZE );
 
-            XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
-            XMLStreamReader2 streamReader = (XMLStreamReader2) factory.createXMLStreamReader( xmlDataStream );
+            XMLReader reader = XMLFactory.getXMLReader( xmlDataStream );
 
-            // move to document root
-            streamReader.nextTag();
-            rootName = streamReader.getName();
+            reader.moveToStartElement();
+            rootName = reader.getElementQName();
 
             xmlDataStream.reset();
         } catch (Exception ex) {
