@@ -27,15 +27,14 @@ package org.amplecode.staxwax.framework;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.NoSuchElementException;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.codehaus.stax2.XMLEventReader2;
 
 /**
@@ -47,7 +46,7 @@ import org.codehaus.stax2.XMLEventReader2;
  * 
  * The input of the pipe looks like an XMLEventWriter and can be used as a
  * Result of a transformation.
- *
+ * 
  * Only minimal required methods of XMLReader and XMLWriter are implemented.
  * 
  * @author bobj
@@ -55,8 +54,6 @@ import org.codehaus.stax2.XMLEventReader2;
  */
 public class XMLPipe
 {
-    private final Log log = LogFactory.getLog( XMLPipe.class );
-
     protected XMLEventReader2 output;
 
     protected XMLEventWriter input;
@@ -70,7 +67,6 @@ public class XMLPipe
     {
         return output;
     }
-
 
     public int getEventCount()
     {
@@ -92,8 +88,10 @@ public class XMLPipe
     private class PipeReader
         implements XMLEventReader2
     {
+        // ---------------------------------------------------------------------
+        // XMLEventReader methods
+        // ---------------------------------------------------------------------
 
-        // ------------------- XMLEventReader methods ------------------
         @Override
         public XMLEvent nextEvent()
             throws XMLStreamException
@@ -103,7 +101,6 @@ public class XMLPipe
             {
                 // non-blocking poll()
                 // return eventQ.poll();
-
                 // do beware - this will block if q is empty
                 result = eventQ.take();
                 return result;
@@ -132,28 +129,26 @@ public class XMLPipe
         public String getElementText()
             throws XMLStreamException
         {
-                // get the text
-                String result = nextEvent().asCharacters().getData();
-                // pop (and test caste) the end element
-                nextEvent().asEndElement();
+            // get the text
+            String result = nextEvent().asCharacters().getData();
+            // pop (and test caste) the end element
+            nextEvent().asEndElement();
 
-                return result;
-
+            return result;
         }
 
         @Override
         public XMLEvent nextTag()
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
-
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public Object getProperty( String name )
             throws IllegalArgumentException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
@@ -161,49 +156,48 @@ public class XMLPipe
             throws XMLStreamException
         {
             // not a real stream ... no handle to close
-    	    return;
+            return;
         }
 
         @Override
         public Object next()
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public void remove()
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public boolean hasNextEvent()
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public boolean isPropertySupported( String string )
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public boolean setProperty( String string, Object o )
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
     };
 
     private class PipeWriter
         implements XMLEventWriter
     {
-
         // ---------------------------------------------------------------------
         // XMLEventWriter methods
         // ---------------------------------------------------------------------
-        
+
         @Override
         public void flush()
             throws XMLStreamException
@@ -233,34 +227,34 @@ public class XMLPipe
         public String getPrefix( String uri )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public void setPrefix( String prefix, String uri )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public void setDefaultNamespace( String uri )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public void setNamespaceContext( NamespaceContext context )
             throws XMLStreamException
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
         public NamespaceContext getNamespaceContext()
         {
-            throw new UnsupportedOperationException("Unused functionality.  Not implemented" );
+            throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
 
         @Override
@@ -268,7 +262,7 @@ public class XMLPipe
             throws XMLStreamException
         {
             // not a real stream ... no handle to close
-	    return;
+            return;
         }
     };
 }

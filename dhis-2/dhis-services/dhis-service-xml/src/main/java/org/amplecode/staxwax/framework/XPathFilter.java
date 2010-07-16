@@ -1,22 +1,5 @@
 package org.amplecode.staxwax.framework;
 
-
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -43,20 +26,36 @@ import org.w3c.dom.NodeList;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 /**
  * A simple utility class for evaluating xpath expressions on xml streams
- *
+ * 
  * @author bobj
  * @version created 16-Feb-2010
  */
 public class XPathFilter
 {
-
     private static final Log log = LogFactory.getLog( XPathFilter.class );
 
     /**
      * Find at most one Node from stream
-     *
+     * 
      * @param in
      * @param xpathExpr
      * @return
@@ -67,13 +66,14 @@ public class XPathFilter
 
         try
         {
-            XPathExpression expr = compileXPath(xpathExpr);
+            XPathExpression expr = compileXPath( xpathExpr );
 
-            Document doc = parseDocument(in);
-            
+            Document doc = parseDocument( in );
+
             result = (Node) expr.evaluate( doc, XPathConstants.NODE );
 
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             log.info( ex );
         }
@@ -82,59 +82,59 @@ public class XPathFilter
 
     /**
      * Find set of nodes in stream
-     *
+     * 
      * @param in
      * @param xpathExpr
      * @return
      */
     public static NodeList findNodes( InputStream in, String xpathExpr )
     {
-
         NodeList result = null;
 
         try
         {
-            XPathExpression expr = compileXPath(xpathExpr);
+            XPathExpression expr = compileXPath( xpathExpr );
 
-            Document doc = parseDocument(in);
+            Document doc = parseDocument( in );
 
             result = (NodeList) expr.evaluate( doc, XPathConstants.NODESET );
 
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             log.info( ex );
         }
+
         return result;
     }
 
     /**
      * Find text data in stream
-     *
+     * 
      * @param in
      * @param xpathExpr
      * @return
      */
     public static String findText( InputStream in, String xpathExpr )
     {
-
         String result = null;
 
         try
         {
-            XPathExpression expr = compileXPath(xpathExpr);
+            XPathExpression expr = compileXPath( xpathExpr );
 
-            Document doc = parseDocument(in);
+            Document doc = parseDocument( in );
 
             result = (String) expr.evaluate( doc, XPathConstants.STRING );
-
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             log.info( ex );
         }
         return result;
     }
 
-    private static synchronized XPathExpression compileXPath(String xpathString)
+    private static synchronized XPathExpression compileXPath( String xpathString )
     {
         XPathFactory factory = XPathFactory.newInstance();
         XPath xpath = factory.newXPath();
@@ -143,34 +143,34 @@ public class XPathFilter
         try
         {
             expr = xpath.compile( xpathString );
-        } catch ( XPathExpressionException ex )
+        }
+        catch ( XPathExpressionException ex )
         {
-            log.info( "Failed to compile xpath: " + xpathString + " : " + ex.getCause());
+            log.info( "Failed to compile xpath: " + xpathString + " : " + ex.getCause() );
         }
 
         return expr;
-
     }
 
-    private static synchronized Document parseDocument(InputStream in)
+    private static synchronized Document parseDocument( InputStream in )
     {
         Document doc = null;
 
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 
         // keep life simple using xpath 1.0
-        docBuilderFactory.setNamespaceAware( false);
+        docBuilderFactory.setNamespaceAware( false );
 
-        try {
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            doc = docBuilder.parse(in);
-        }
-        catch (Exception ex)
+        try
         {
-            log.info( "XPath: Failed to parse input stream" + ex.getCause());
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            doc = docBuilder.parse( in );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "XPath: Failed to parse input stream" + ex.getCause() );
         }
 
         return doc;
-
     }
 }

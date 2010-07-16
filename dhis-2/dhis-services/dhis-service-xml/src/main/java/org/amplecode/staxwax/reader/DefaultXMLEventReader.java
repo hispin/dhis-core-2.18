@@ -193,8 +193,7 @@ public class DefaultXMLEventReader
         }
         catch ( ClassCastException ex )
         {
-            // asStartElement() will throw ClassCastException if not a
-            // StartElement
+            // asStartElement() will throw ClassCastException if not a StartElement
             return false;
         }
     }
@@ -353,20 +352,15 @@ public class DefaultXMLEventReader
             throw new RuntimeException( "Failed to close reader", ex );
         }
     }
-    
-    protected String getText() throws XMLStreamException
+
+    protected String getText()
+        throws XMLStreamException
     {
         StringBuffer sb = new StringBuffer();
-        while (reader.peek().isCharacters()) {
-            sb.append( reader.nextEvent().asCharacters().getData());
-        }
-        if (sb.length() == 0)
+        while ( reader.peek().isCharacters() )
         {
-            return null;
+            sb.append( reader.nextEvent().asCharacters().getData() );
         }
-        else
-        {
-            return sb.toString();
-        }
+        return sb.length() == 0 ? null : sb.toString();
     }
 }

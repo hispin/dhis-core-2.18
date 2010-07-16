@@ -28,7 +28,6 @@ package org.amplecode.staxwax.transformer;
  */
 
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -146,7 +145,6 @@ public class TransformerTask
         t.transform( this.sourcePort.getSource(), this.resultPort.getResult() );
     }
 
-
     /**
      * Transforms xml datastream to Pipe 
      *
@@ -158,26 +156,23 @@ public class TransformerTask
      * @throws Exception
      *
      * TODO: implement XMLPipe as a Result type
-     *
      */
     public XMLReader transformToPipe(BufferedInputStream dataStream)
         throws Exception
     {
+        Source dataSource = new StreamSource( dataStream );
 
-            Source dataSource = new StreamSource( dataStream );
+        // make a pipe to capture output of transform
+        XMLPipe pipe = new XMLPipe();
+        XMLEventWriter pipeinput = pipe.getInput();
+        XMLEventReader2 pipeoutput = pipe.getOutput();
 
-            // make a pipe to capture output of transform
-            XMLPipe pipe = new XMLPipe();
-            XMLEventWriter pipeinput = pipe.getInput();
-            XMLEventReader2 pipeoutput = pipe.getOutput();
+        // set result of transform to input of pipe
+        StAXResult result = new StAXResult( pipeinput );
+        transform( dataSource, result, null );
+        log.info( "transform successful - importing dxf" );
 
-            // set result of transform to input of pipe
-            StAXResult result = new StAXResult( pipeinput );
-            transform( dataSource, result, null );
-            log.info( "transform successful - importing dxf" );
-
-            // set reader to output of pipe
-            return new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
-        }
-
+        // set reader to output of pipe
+        return new DefaultXMLEventReader( (XMLEventReader2) pipeoutput );
+    }
 }
