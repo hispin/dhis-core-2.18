@@ -24,6 +24,8 @@ jQuery(document).ready(function(){
 		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
 		jQuery("#firstName").focus();
 		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});
+		
+		datePickerValid( 'birthDate' );
 });
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
@@ -72,7 +74,7 @@ jQuery(document).ready(function(){
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
 		<td>
 		    <input type="text" id="birthDate" name="birthDate" value="$format.formatDate( $patient.birthDate )" style="width:10em">
-		    <img src="../images/calendar_icon.gif" width="16" height="16" id="getBirthDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_birth" )">		    
+		    <!--<img src="../images/calendar_icon.gif" width="16" height="16" id="getBirthDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_birth" )">-->		    
             &nbsp;&nbsp;&nbsp;
             <label for="estimated">$i18n.getString( "estimated" )</label>
             <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true" #if( $patient.birthDateEstimated ) checked="checked" #end>
@@ -146,14 +148,9 @@ jQuery(document).ready(function(){
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
 		                <input type="text" id="attr$attribute.id"  name="attr$attribute.id"  value="$!attributeValue" #validate( "date"  $attribute.mandatory ) style="width:30em" >
-		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
-		                    <script type="text/javascript">
-		                        Calendar.setup({
-		                            inputField     :    "attr$attribute.id",      // id of the input field
-		                            ifFormat       :    "$i18n.getString('format.date.label')",       // format of the input field
-		                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
-		                        });
-		                    </script>                    
+		                <script type="text/javascript">
+                            datePickerValid( 'attr$attribute.id' );
+                        </script>                 
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id" #validate( "default"  $attribute.mandatory ) style="width:30em"  >
 							 <option value="">[$i18n.getString( "please_select" )]</option>
@@ -188,14 +185,9 @@ jQuery(document).ready(function(){
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
 		                <input type="text" id="attr$attribute.id"    style="width:30em" name="attr$attribute.id"  value="$!attributeValue" #validate( ""  $attribute.mandatory )>
-		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
-		                    <script type="text/javascript">
-		                        Calendar.setup({
-		                            inputField     :    "attr$attribute.id",      // id of the input field
-		                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-		                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
-		                        });
-		                    </script>                    
+		                <script type="text/javascript">
+                            datePickerValid( 'attr$attribute.id' );
+                        </script>                    
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" #validate( "default"  $attribute.mandatory ) >
 							 <option value="">[$i18n.getString( "please_select" )]</option>
@@ -233,11 +225,7 @@ div#hiddenModalContent td {padding: 2px 5px}
 <div id="thickboxContainer"></div>
 </div>
 <script type="text/javascript">
-        Calendar.setup({
-            inputField     :    "birthDate",      // id of the input field
-            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-            button         :    "getBirthDate"   // trigger for the calendar (button ID)
-        });
+        
         var i18n_patient_identifiers = '$encoder.jsEscape( $i18n.getString( "patient_identifiers" ) , "'")';
        	var i18n_patient_attributes = '$encoder.jsEscape( $i18n.getString( "patient_attributes" ) , "'")';
        	var i18n_patient_fullName = '$encoder.jsEscape( $i18n.getString( "full_name" ) , "'")';
