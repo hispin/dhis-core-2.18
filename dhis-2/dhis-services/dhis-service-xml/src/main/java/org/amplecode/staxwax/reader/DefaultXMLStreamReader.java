@@ -54,7 +54,6 @@ import org.codehaus.stax2.XMLStreamReader2;
 public class DefaultXMLStreamReader
     implements XMLReader
 {
-
     private static final Log log = LogFactory.getLog( DefaultXMLStreamReader.class );
 
     private static final String[] EVENTS =
@@ -69,6 +68,7 @@ public class DefaultXMLStreamReader
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
+    
     public DefaultXMLStreamReader( XMLStreamReader2 reader )
     {
         this.reader = reader;
@@ -77,6 +77,7 @@ public class DefaultXMLStreamReader
     // -------------------------------------------------------------------------
     // XMLReader implementation
     // -------------------------------------------------------------------------
+    
     @Override
     public String getElementName()
     {
@@ -343,20 +344,15 @@ public class DefaultXMLStreamReader
         }
     }
 
-    protected String getText() throws XMLStreamException
+    protected String getText()
+        throws XMLStreamException
     {
         StringBuffer sb = new StringBuffer();
-        while (reader.isCharacters()) {
-            sb.append( reader.getText());
+        while ( reader.isCharacters() )
+        {
+            sb.append( reader.getText() );
             reader.next();
         }
-        if (sb.length() == 0)
-        {
-            return null;
-        }
-        else
-        {
-            return sb.toString();
-        }
+        return sb.length() == 0 ? null : sb.toString();
     }
 }

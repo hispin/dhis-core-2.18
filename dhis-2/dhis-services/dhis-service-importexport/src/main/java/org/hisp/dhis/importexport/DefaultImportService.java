@@ -66,6 +66,7 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     @Autowired
     private XMLPreConverter preConverter;
 
@@ -75,6 +76,7 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // ImportService implementation
     // -------------------------------------------------------------------------
+    
     @Override
     public void importData( ImportParams params, InputStream inputStream )
         throws ImportException
