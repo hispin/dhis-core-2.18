@@ -64,6 +64,12 @@ public interface XMLReader
     String getElementValue();
 
     /**
+     * Moves the cursor to the next XML start element in the document.
+     *
+     */
+    void moveToStartElement( );
+
+    /**
      * Moves the cursor to the first XML start element with the given name in the document.
      * 
      * @param name The name of the XML element to move to.
@@ -78,7 +84,7 @@ public interface XMLReader
      * @param endElementName The name of the XML end element to stop moving forward at.
      */
     boolean moveToStartElement( String startElementName, String endElementName );
-    
+
     /**
      * Checks whether the current XML element is a start element with the given name.
      * 
@@ -96,7 +102,7 @@ public interface XMLReader
     boolean isEndElement( String name );
     
     /**
-     * Moves the cursor to the next XML element in the document. Returns true until the cursor points
+     * Moves the cursor to the next XML event in the document. Returns true until the cursor points
      * at the XML document end.
      * 
      * @return False if the cursor points at the XML document end, true otherwise.
@@ -104,7 +110,7 @@ public interface XMLReader
     boolean next();
     
     /**
-     * Moves the cursor to the next XML element in the document. Returns true until the cursor points
+     * Moves the cursor to the next XML event in the document. Returns true until the cursor points
      * at an XML end element with the given name.
      * 
      * @param endElementName The name of the end element.
