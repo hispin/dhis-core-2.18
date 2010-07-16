@@ -69,7 +69,7 @@ function programEnrollmentValidationCompleted( messageElement )
 
 function saveDueDate( programStageInstanceId, programStageInstanceName )
 {
-	var field = document.getElementById( 'value[' + programStageInstanceId + '].date' );
+	var field = document.getElementById( 'value_' + programStageInstanceId + '_date' );
 	
 	var dateOfIncident = new Date(byId('dateOfIncident').value);
 	var dueDate = new Date(field.value);
@@ -133,7 +133,7 @@ function DateSaver( programStageInstanceId_, dueDate_, resultColor_ )
 	function markValue( color )
 	{       
    
-		var element = document.getElementById( 'value[' + programStageInstanceId + '].date' );	
+		var element = document.getElementById( 'value_' + programStageInstanceId + '_date' );	
            
 		element.style.backgroundColor = color;
 	}

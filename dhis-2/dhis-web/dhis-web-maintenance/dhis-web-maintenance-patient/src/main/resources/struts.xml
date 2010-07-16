@@ -508,18 +508,12 @@
 		<action name="showProgramEnrollmentForm"
 			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="enrollmentform" type="chain">enrollmentform
-			</result>
+			<result name="enrollmentform" type="chain">enrollmentform</result>
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
-			<param name="page">/dhis-web-maintenance-patient/programEnrollmentSelectForm.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js			
-				,../dhis-web-commons/util/validate/jquery.validate.js				
-				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/validationMessages.action
-				,javascript/patient.js</param>
+			<param name="page">/dhis-web-maintenance-patient/programEnrollmentSelectForm.vm</param>			
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/date.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/validate/additional-methods.js,javascript/patient.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
@@ -530,10 +524,12 @@
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
 			<param name="page">/dhis-web-maintenance-patient/programEnrollmentForm.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/date.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/validate/additional-methods.js,javascript/patient.js,../dhis-web-commons/validationMessages.action</param>
+			<!--<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				../dhis-web-commons/util/date.js,
 				javascript/patient.js
-			</param>
+			</param>-->
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
@@ -555,7 +551,8 @@
 			<param name="menu">/dhis-web-maintenance-patient/menuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
 			<param name="page">/dhis-web-maintenance-patient/programEnrollmentForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<!--<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>-->
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/date.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/validate/additional-methods.js,javascript/patient.js,../dhis-web-commons/validationMessages.action</param>
 		</action>
 
 		<action name="removeEnrollment"

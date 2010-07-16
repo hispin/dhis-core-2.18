@@ -1,6 +1,8 @@
+
 <style>
-td.input-column { width : 30em;}
-td.input-column input, td.input-column select { width: 28.5em; float:right ;}
+.heading-column { width : 30.5em;}
+td.input-column { width : 30.5em;}
+td.input-column input, td.input-column select { width: 28.5em;}
 td.error {padding-left:1em}
 </style>
 
@@ -46,11 +48,11 @@ td.error {padding-left:1em}
 
 
 	<tr>
-		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
+		<th colspan="2" class="heading-column">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
+		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30"  class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
@@ -62,7 +64,7 @@ td.error {padding-left:1em}
 	</tr>	
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2">$i18n.getString( "demographics" )</th>
+		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 	</tr>
 		
 	<tr>
@@ -85,7 +87,7 @@ td.error {padding-left:1em}
 			&nbsp;&nbsp;&nbsp;
 			<label for="estimated">$i18n.getString( "estimated" )</label>
                         <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true">
-                </td>
+        </td>
 	   <td></td>
 	</tr>
  	<tr>
@@ -119,7 +121,7 @@ td.error {padding-left:1em}
 	<!--IDENTIFIERS -->
 	
 	<tr><td colspan="2">&nbsp;</td></tr>	
-	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
 	<tr>
 		<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
@@ -150,7 +152,7 @@ td.error {padding-left:1em}
 	
 	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>
-		<tr><th colspan="2">$attributeGroup.name</th></tr>
+		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes )
 			<tr>
 				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
@@ -162,19 +164,13 @@ td.error {padding-left:1em}
 		                    <option value="false" selected="selected">$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
-	                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
 	                	<input type="text" id="attr$attribute.id"  name="attr$attribute.id"  class=' #validate( "default"  $attribute.mandatory )'>
-
 	                    <script type="text/javascript">
-	                        Calendar.setup({
-	                            inputField     :    "attr$attribute.id",      // id of the input field
-	                            ifFormat       :    "$i18n.getString('format.date.label')",       // format of the input field
-	                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
-	                        });
+							datePickerValid( 'attr$attribute.id' );
 	                    </script>                    
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id"  class=' #validate( "default"  $attribute.mandatory )' >
-							 <option value="">[$i18n.getString( "please_select" )]</option>
+							<option value="">[$i18n.getString( "please_select" )]</option>
 							#foreach ($option in $attribute.attributeOptions )
 								<option value="$option.id" >$option.name</option>
 							#end
@@ -191,7 +187,7 @@ td.error {padding-left:1em}
 	
 	<tr><td>&nbsp;</td></tr>
 	#if ( $noGroupAttributes.size() > 0) 	
-		<tr><th colspan="2">$i18n.getString( "other_details" )</th></tr>
+		<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )
 			<tr>
 				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
@@ -203,14 +199,9 @@ td.error {padding-left:1em}
 		                    <option value="false" >$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
-		                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$attribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
 		                	<input type="text" id="attr$attribute.id"   name="attr$attribute.id"  class=' #validate( "default"  $attribute.mandatory )' >
 		                    <script type="text/javascript">
-		                        Calendar.setup({
-		                            inputField     :    "attr$attribute.id",      // id of the input field
-		                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-		                            button         :    "getDateValue$attribute.id"   // trigger for the calendar (button ID)
-		                        });
+		                       datePickerValid( 'attr$attribute.id' );
 		                    </script>                    
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id"   class=' #validate( "default"  $attribute.mandatory )'>
@@ -264,5 +255,5 @@ div#hiddenModalContent td {padding: 2px 5px}
 	var i18n_patient_system_id = '$encoder.jsEscape( $i18n.getString( "patient_system_id" ) , "'")';
 	var i18n_child_representative = '$encoder.jsEscape( $i18n.getString( "child_representative" ) , "'")';
 	var checkedDuplicate = false;
-        var i18n_oucode_must_have_9_digits = '$encoder.jsEscape( $i18n.getString( "oucode_must_be_valid" ) , "'")';
+    var i18n_oucode_must_have_9_digits = '$encoder.jsEscape( $i18n.getString( "oucode_must_be_valid" ) , "'")';
 </script>
