@@ -2,48 +2,63 @@
 <h3>$i18n.getString( "resource_table" ) #openHelp( "resourceTables" )</h3>
 
 <p>
-    <input type="checkbox" id="organisationUnit">
+    <input type="checkbox" name="resourceTableCheckBox" onclick="selectALL(this.checked)"/>
+    <label for="organisationUnit">$i18n.getString( "select_all" )/$i18n.getString( "unselect_all" )</label>
+</p>
+
+<p>
+    <input type="checkbox" name="resourceTableCheckBox" id="organisationUnit">
     <label for="organisationUnit">$i18n.getString( "organisation_unit_structure" ) <span style="color:#606060">(orgunitstructure)</span></label>
 </p>
 
 <p>
-    <input type="checkbox" id="groupSet">
+    <input type="checkbox" name="resourceTableCheckBox" id="groupSet">
     <label for="groupSet">$i18n.getString( "group_set_structure" ) <span style="color:#606060">(orgunitgroupsetstructure)</span></label>
 </p>
 
 <p>
-	<input type="checkbox" id="dataElementGroupSetStructure">
+	<input type="checkbox" name="resourceTableCheckBox" id="dataElementGroupSetStructure">
 	<label for="dataElementGroupSetStructure">$i18n.getString( "data_element_group_set_structure" ) <span style="color:#606060">(_dataelementgroupsetstructure)</span></label>
 </p>
 
 <p>
-    <input type="checkbox" id="indicatorGroupSetStructure">
+    <input type="checkbox" name="resourceTableCheckBox" id="indicatorGroupSetStructure">
     <label for="indicatorGroupSetStructure">$i18n.getString( "indicator_group_set_structure" ) <span style="color:#606060">(_indicatorgroupsetstructure)</span></label>
 </p>
 
 <p>
-    <input type="checkbox" id="organisationUnitGroupSetStructure">
+    <input type="checkbox" name="resourceTableCheckBox" id="organisationUnitGroupSetStructure">
     <label for="organisationUnitGroupSetStructure">$i18n.getString( "organisation_unit_group_set_structure" ) <span style="color:#606060">(_organisationunitgroupsetstructure)</span></label>
 </p>
 
 <p>
-	<input type="checkbox" id="categoryStructure">
+	<input type="checkbox" name="resourceTableCheckBox" id="categoryStructure">
 	<label for="categoryStructure">$i18n.getString( "category_structure" ) <span style="color:#606060">(_categorystructure)</span></label>
 </p>
 
 <p>
-    <input type="checkbox" id="categoryOptionComboName">
+    <input type="checkbox" name="resourceTableCheckBox" id="categoryOptionComboName">
     <label for="categoryOptionComboName">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(categoryoptioncomboname)</span></label>
 </p>
 
 <p>
     <input type="button" value='$i18n.getString( "generate_resource_tables" )' onclick="generateResourceTable()" style="width:170px">
+    <input type="button" value='$i18n.getString( "regenerate_resource_tables_views" )' onclick="regenerateResourceTableAndViewTables()" style="width:250px">
 </p>
-    
+
 <span id="message"></span>
+
+<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
+	<div style="float:right">
+		<a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"></a>
+	</div>
+	<p><span id="warningField"></span></p>
+</div>
     
 <script type="text/javascript">
     var i18n_generating_resource_tables = '$encoder.jsEscape( $i18n.getString( "generating_resource_tables" ), "'" )';
     var i18n_resource_tables_generated = '$encoder.jsEscape( $i18n.getString( "resource_tables_generated" ), "'" )';
+    var i18n_regenerating_resource_tables_and_views = '$encoder.jsEscape( $i18n.getString( "regenerating_resource_tables_and_views" ), "'" )';
+    var i18n_regenerating_failed = '$encoder.jsEscape( $i18n.getString( "regenerating_failed" ), "'" )';
     var i18n_select_options = '$encoder.jsEscape( $i18n.getString( "select_options" ), "'" )';
 </script>
