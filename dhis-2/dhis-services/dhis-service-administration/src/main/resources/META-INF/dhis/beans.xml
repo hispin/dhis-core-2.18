@@ -163,7 +163,27 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	  </list>
 	</property>
   </bean>
+  
+  <!-- Sql View -->
 
+  <bean id="org.hisp.dhis.sqlview.SqlViewStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.sqlview.SqlView"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.sqlview.SqlViewExpandStore"
+    class="org.hisp.dhis.sqlview.hibernate.HibernateSqlViewExpandStore">
+  </bean>
+  
+  <bean id="org.hisp.dhis.sqlview.SqlViewService"
+	class="org.hisp.dhis.sqlview.DefaultSqlViewService">
+	<property name="sqlViewStore"
+	  ref="org.hisp.dhis.sqlview.SqlViewStore" />
+	<property name="sqlViewExpandStore"
+	  ref="org.hisp.dhis.sqlview.SqlViewExpandStore" />
+  </bean>
+  
   <!-- AOP definitions -->
   
   <aop:config>

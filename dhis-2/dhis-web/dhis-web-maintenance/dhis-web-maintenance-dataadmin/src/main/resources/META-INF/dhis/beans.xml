@@ -442,12 +442,80 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectOrganisationUnitGroupAction"
-              class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectOrganisationUnitGroupAction"
-              scope="prototype">
-          <property name="selectionTreeManager"
-                    ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-          <property name="organisationUnitGroupService" 
-                    ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectOrganisationUnitGroupAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitGroupService" 
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 
+	<!-- Sql View -->
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewListAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewListAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.ValidateAddUpdateSqlViewAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.ValidateAddUpdateSqlViewAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.AddSqlViewAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.AddSqlViewAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.UpdateSqlViewAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.UpdateSqlViewAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.RemoveSqlViewAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.RemoveSqlViewAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.ExecuteSqlViewQueryAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.ExecuteSqlViewQueryAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.DropAllSqlViewTablesAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.DropAllSqlViewTablesAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.RegenerateAllSqlViewTablesAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.RegenerateAllSqlViewTablesAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+		
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.CheckViewTableExistenceAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.CheckViewTableExistenceAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
 </beans>
