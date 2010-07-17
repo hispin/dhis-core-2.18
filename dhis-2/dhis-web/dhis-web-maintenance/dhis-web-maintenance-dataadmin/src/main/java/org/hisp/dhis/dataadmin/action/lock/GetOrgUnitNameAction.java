@@ -1,5 +1,10 @@
 package org.hisp.dhis.dataadmin.action.lock;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+
+import com.opensymphony.xwork2.Action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -27,56 +32,40 @@ package org.hisp.dhis.dataadmin.action.lock;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import com.opensymphony.xwork2.Action;
-
-//import com.opensymphony.xwork2.ActionSupport;
-
-/**
- * @author Brajesh Murari
- * @version $Id$
- */
-public class GetNumberOfLevelsAction
-    implements Action
+public class GetOrgUnitNameAction
+implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+        
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-
-    
-    
-    
     
     // -------------------------------------------------------------------------
-    // Output
+    // Input/Output
     // -------------------------------------------------------------------------
-
-    private List<OrganisationUnitLevel> levels;
-
-    public List<OrganisationUnitLevel> getLevels()
+    private Integer selectedOrgUnitId;
+    
+    public void setSelectedOrgUnitId(Integer selectedOrgUnitId)
     {
-        return levels;
+        this.selectedOrgUnitId = selectedOrgUnitId;
     }
+    
+    private OrganisationUnit organisationUnit;
 
-    // -------------------------------------------------------------------------
-    // ActionSupport implementation
-    // -------------------------------------------------------------------------
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
     public String execute()
     {
-        levels = organisationUnitService.getOrganisationUnitLevels();
-
+        organisationUnit = organisationUnitService.getOrganisationUnit( selectedOrgUnitId.intValue() );
         return SUCCESS;
     }
 }

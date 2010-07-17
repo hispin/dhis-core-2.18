@@ -34,7 +34,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetSelectedOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: GetSelectedOrganisationUnitAction.java 1898 2006-09-22
+ *          12:06:56Z torgeilo $
  */
 public class GetSelectedOrganisationUnitAction
     extends ActionSupport
@@ -65,7 +66,8 @@ public class GetSelectedOrganisationUnitAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
 

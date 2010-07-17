@@ -14,10 +14,40 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction"
+        class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction"
+        scope="prototype">
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+		<!-- -->
+	
+	<bean id="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
+        class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction"
+        class="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction"
+        scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+	
 	<bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
 		class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
 		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		
+		<property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
