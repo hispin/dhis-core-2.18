@@ -27,7 +27,12 @@
 package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.Collection;
+import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -50,26 +55,59 @@ public class GetPeriodTypesAction
     {
         this.periodService = periodService;
     }
-    
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-    
+
     private Collection<PeriodType> periodTypes;
 
     public Collection<PeriodType> getPeriodTypes()
     {
         return periodTypes;
     }
-    
+
+    private List<OrganisationUnitLevel> orgUnitLevels;
+
+    public List<OrganisationUnitLevel> getOrgUnitLevels()
+    {
+        return orgUnitLevels;
+    }
+
+    private Collection<OrganisationUnitGroup> orgUnitGroups;
+
+    public Collection<OrganisationUnitGroup> getOrgUnitGroups()
+    {
+        return orgUnitGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
         periodTypes = periodService.getAllPeriodTypes();
-        
+
+        orgUnitLevels = organisationUnitService.getFilledOrganisationUnitLevels();
+
+        orgUnitGroups = organisationUnitGroupService.getAllOrganisationUnitGroups();
+
         return SUCCESS;
     }
 }

@@ -58,7 +58,12 @@ function getDataSets() {
         });
     }
 }
-    
+ function getOrganisationUnitName(){
+var url = getSelectedOrganisationUnit.action
+
+
+
+
 function cancilSelection() {    
      window.location.href = "displayLockingForm.action";   
 }

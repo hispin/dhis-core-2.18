@@ -27,56 +27,69 @@ package org.hisp.dhis.dataadmin.action.lock;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
 
-//import com.opensymphony.xwork2.ActionSupport;
-
 /**
- * @author Brajesh Murari
+ * @author
  * @version $Id$
  */
-public class GetNumberOfLevelsAction
+public class GetDataSetsForPeriodTypeAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private DataSetService dataSetService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.dataSetService = dataSetService;
     }
 
-    
-    
-    
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private PeriodService periodService;
 
-    private List<OrganisationUnitLevel> levels;
-
-    public List<OrganisationUnitLevel> getLevels()
+    public void setPeriodService( PeriodService periodService )
     {
-        return levels;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
-    // ActionSupport implementation
+    // Input/output
+    // -------------------------------------------------------------------------
+
+    private String periodType;
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    private Collection<DataSet> dataSets = new ArrayList<DataSet>();
+
+    public Collection<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        levels = organisationUnitService.getOrganisationUnitLevels();
 
+        if ( periodType != null )
+        {
+                dataSets = dataSetService.getAssignedDataSetsByPeriodType( periodService.getPeriodTypeByName( periodType ) );
+        }
         return SUCCESS;
     }
 }
