@@ -27,6 +27,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,5 +76,20 @@ public abstract class CalendarPeriodType
      *        for.
      * @return a list of Periods for a defined time span.
      */
-    public abstract List<Period> generatePeriods( Period period );
+    public List<Period> generatePeriods( Period period )
+    {
+        return generatePeriods( period.getStartDate() );
+    }    
+    
+    /**
+     * Generates a list of Periods for a defined time span containing the given
+     * date. E.g. if the given date is March 2007, and a monthly PeriodType
+     * generates for a year, all months in 2007 should be generated and returned
+     * in order.
+     * 
+     * @param date the date which touches the time span to generate Periods
+     *        for.
+     * @return a list of Periods for a defined time span.
+     */
+    public abstract List<Period> generatePeriods( Date date );
 }

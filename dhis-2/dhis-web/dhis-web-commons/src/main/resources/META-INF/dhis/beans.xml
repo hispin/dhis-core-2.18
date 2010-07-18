@@ -673,6 +673,11 @@
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>		
 	</bean>
 
+	<bean id="org.hisp.dhis.commons.action.GetAvailablePeriodsAction"
+		class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction"
+		scope="prototype">
+	</bean>
+
 	<bean id="org.hisp.dhis.commons.action.NoAction" 
 		class="org.hisp.dhis.commons.action.NoAction" />
 

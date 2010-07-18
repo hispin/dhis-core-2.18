@@ -106,26 +106,26 @@ public class DailyPeriodType
 
         return new Period( this, date, date );
     }
-
+    
     /**
-     * Generates daily Periods for the whole month in which the given Period's
+     * Generates daily Periods for the whole year in which the given Period's
      * startDate exists.
      */
     @Override
-    public List<Period> generatePeriods( Period period )
+    public List<Period> generatePeriods( Date date )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_MONTH, 1 );
+        Calendar cal = createCalendarInstance( date );
+        cal.set( Calendar.DAY_OF_YEAR, 1 );
 
-        int month = cal.get( Calendar.MONTH );
+        int year = cal.get( Calendar.YEAR );
 
         ArrayList<Period> days = new ArrayList<Period>();
 
-        while ( cal.get( Calendar.MONTH ) == month )
+        while ( cal.get( Calendar.YEAR ) == year )
         {
-            Date date = cal.getTime();
+            Date startDate = cal.getTime();
 
-            days.add( new Period( this, date, date ) );
+            days.add( new Period( this, startDate, startDate ) );
             cal.add( Calendar.DAY_OF_YEAR, 1 );
         }
 
