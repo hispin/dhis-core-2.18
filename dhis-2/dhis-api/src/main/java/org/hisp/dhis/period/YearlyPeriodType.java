@@ -121,20 +121,18 @@ public class YearlyPeriodType
     }
 
     /**
-     * Generates YearlyPeriods for the rounded-off decade in which the given
-     * Period's startDate exists. For example: Specify 2007, get 2000 to 2009
-     * inclusively.
+     * Generates YearlyPeriods for the last 5, current and next 5 years.
      */
     @Override
-    public List<Period> generatePeriods( Period period )
+    public List<Period> generatePeriods( Date date )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, -(cal.get( Calendar.YEAR ) % 10) );
+        Calendar cal = createCalendarInstance( date );
+        cal.add( Calendar.YEAR, -5 );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
         ArrayList<Period> years = new ArrayList<Period>();
 
-        for ( int i = 0; i < 10; ++i )
+        for ( int i = 0; i < 11; ++i )
         {
             Date startDate = cal.getTime();
             cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );

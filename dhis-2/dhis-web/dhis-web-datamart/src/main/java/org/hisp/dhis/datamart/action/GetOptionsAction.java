@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -39,7 +40,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -54,6 +54,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -102,13 +103,6 @@ public class GetOptionsAction
     public void setDataMartService( DataMartService dataMartService )
     {
         this.dataMartService = dataMartService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
     
     // -------------------------------------------------------------------------
@@ -354,14 +348,10 @@ public class GetOptionsAction
         // Period
         // ---------------------------------------------------------------------
 
-        periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
-        
-        Collections.sort( periods, new PeriodComparator() );
+        periods = new MonthlyPeriodType().generatePeriods( new Date() );
 
-        for ( Period period : periods )
-        {
-            period.setName( format.formatPeriod( period ) );
-        }
+        Collections.reverse( periods );
+        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         
         if ( id != null )
         {
@@ -401,11 +391,6 @@ public class GetOptionsAction
             selectedPeriods = new ArrayList<Period>( export.getPeriods() );
             Collections.sort( selectedPeriods, new PeriodComparator() );
             periods.removeAll( selectedPeriods );
-            
-            for ( Period period : periods )
-            {
-                period.setName( format.formatPeriod( period ) );
-            }
         }
         
         return SUCCESS;

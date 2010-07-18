@@ -126,19 +126,18 @@ public class TwoYearlyPeriodType
     }
 
     /**
-     * Generates two-yearly Periods for the rounded-off decade in which the
-     * given Period's startDate exists.
+     * Generates two-yearly Periods for the last 10, current and next 10 years.
      */
     @Override
-    public List<Period> generatePeriods( Period period )
+    public List<Period> generatePeriods( Date date )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, -(cal.get( Calendar.YEAR ) % 20) );
+        Calendar cal = createCalendarInstance( date );
+        cal.add( Calendar.YEAR, cal.get( Calendar.YEAR ) % 2 == 0 ? -10 : -9 );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
         ArrayList<Period> twoYears = new ArrayList<Period>();
 
-        for ( int i = 0; i < 10; ++i )
+        for ( int i = 0; i < 11; ++i )
         {
             Date startDate = cal.getTime();
             cal.add( Calendar.YEAR, 1 );

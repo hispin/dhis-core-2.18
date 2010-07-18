@@ -120,7 +120,13 @@ public class WeeklyPeriodType
 
         return new Period( this, startDate, cal.getTime() );
     }
-
+    
+    @Override
+    public List<Period> generatePeriods( Date date )
+    {
+        return generatePeriods( createCalendarInstance( date ) );
+    }
+    
     /**
      * Generates weekly Periods for the whole year in which the given Period's
      * startDate exists.
@@ -131,7 +137,7 @@ public class WeeklyPeriodType
         Calendar cal = createCalendarInstance( period.getStartDate() );
 
         // ---------------------------------------------------------------------
-        // If the suplied period is the first week of a year where the start
+        // If the supplied period is the first week of a year where the start
         // date is in the year before, we want to generate weeks for the year
         // of the end date
         // ---------------------------------------------------------------------
@@ -150,14 +156,26 @@ public class WeeklyPeriodType
             }
         }
 
+        return generatePeriods( cal );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private List<Period> generatePeriods( Calendar cal )
+    {
         // ---------------------------------------------------------------------
         // Generate weeks
         // ---------------------------------------------------------------------
 
+        // ---------------------------------------------------------------------
         // Enforce ISO8601 week to match createPeriod, getNextPeriod etc
-        // [Note: perhaps there is need for another weekly type based on locale]
+        // Note: perhaps there is need for another weekly type based on locale
         // 1st day of week is Monday
         // 1st week of the year is the first week with a Thursday
+        // ---------------------------------------------------------------------
+        
         cal.setMinimalDaysInFirstWeek(4);
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         

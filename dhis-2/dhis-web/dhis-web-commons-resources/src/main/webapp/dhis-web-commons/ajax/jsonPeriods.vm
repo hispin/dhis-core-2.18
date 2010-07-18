@@ -5,7 +5,8 @@
     "id": $!{period.id},
     "startDate": "$!format.formatDate( ${period.startDate} )",
     "endDate": "$!format.formatDate( ${period.endDate} )",
-    "name": "$!format.formatPeriod( ${period} )"
+    "name": "$!format.formatPeriod( ${period} )",
+    "externalId": "$!{period.externalId}"
   }#if( $velocityCount < $size ),#end    
 #end
 ] }

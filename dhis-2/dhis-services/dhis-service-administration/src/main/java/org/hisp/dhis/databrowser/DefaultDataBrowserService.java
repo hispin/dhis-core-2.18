@@ -263,7 +263,7 @@ public class DefaultDataBrowserService
             return dateString;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat( DateUtils.DEFAULT_DATE_FORMAT );
+        SimpleDateFormat dateFormat = new SimpleDateFormat( Period.DEFAULT_DATE_FORMAT );
 
         try
         {
@@ -317,7 +317,7 @@ public class DefaultDataBrowserService
     private List<Integer> getAllPeriodIdsBetweenDatesOnPeriodType( String startDate, String endDate,
         PeriodType periodType )
     {
-        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
+        String formatString = Period.DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
         Date date1 = new Date();
         Date date2 = new Date();
@@ -360,7 +360,7 @@ public class DefaultDataBrowserService
      */
     private List<Period> getPeriodsList( PeriodType periodType, String fromDate, String toDate )
     {
-        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
+        String formatString = Period.DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
 
         Date date1 = new Date();

@@ -471,6 +471,12 @@
 				/dhis-web-commons/ajax/jsonOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="getAvailablePeriods" class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 	</package>
 

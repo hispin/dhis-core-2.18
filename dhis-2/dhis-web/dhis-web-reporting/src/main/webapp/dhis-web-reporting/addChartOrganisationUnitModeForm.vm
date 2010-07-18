@@ -58,14 +58,16 @@
     <th colspan="2">$i18n.getString( "filter_available_periods" )</th>
 </tr>
 <tr>
-    <td colspan="2">
-        <select id="periodTypeId" name="periodTypeId" style="min-width:600px" onchange="getPeriodsToSelected()">
-            <option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
-            #foreach ( $type in $periodTypes )
-                <option value="$type.name">$type.name</option>
-            #end
-        </select>
-    </td>
+	<td>
+		<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'selectedPeriods', 'selectedPeriods', '-1' )"><input
+			   type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'selectedPeriods', 'selectedPeriods', '1' )">
+		<select id="periodType" name="periodType" style="min-width:478px" onchange="getAvailablePeriods( 'periodType', 'selectedPeriods', 'selectedPeriods', '0' )">
+			<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
+			#foreach ( $type in $periodTypes )
+				<option value="$type.name">$type.name</option>
+			#end
+		</select>
+	</td>
 </tr>
 <tr>
     <td colspan="2">

@@ -67,22 +67,6 @@ function getOrganisationUnitChildren()
 	}
 }
 
-function getPeriods()
-{
-	var periodTypeList = document.getElementById( "periodTypeId" );
-	var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-	
-	if ( periodTypeId != null )
-	{		
-		var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
-		
-		var request = new Request();
-	    request.setResponseTypeXML( 'period' );
-	    request.setCallbackSuccess( getPeriodsReceived );
-	    request.send( url );
-	}
-}
-
 function getDataElementsReceived( xmlObject )
 {	
 	var availableDataElements = document.getElementById( "availableDataElements" );
@@ -174,30 +158,6 @@ function getOrganisationUnitChildrenReceived( xmlObject )
 			option.text = organisationUnitName;
 			selectedOrganisationUnits.add( option, null );
 		}
-	}
-}
-
-function getPeriodsReceived( xmlObject )
-{	
-	var availablePeriods = document.getElementById( "availablePeriods" );
-	var selectedPeriods = document.getElementById( "selectedPeriods" );
-	
-	clearList( availablePeriods );
-	
-	var periods = xmlObject.getElementsByTagName( "period" );
-	
-	for ( var i = 0; i < periods.length; i++ )
-	{
-		var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var periodName = periods[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		
-		if ( listContains( selectedPeriods, id ) == false )
-		{						
-			var option = document.createElement( "option" );
-			option.value = id;
-			option.text = periodName;
-			availablePeriods.add( option, null );
-		}			
 	}
 }
 

@@ -237,7 +237,7 @@ public class SaveDataMartExportAction
         export.setDataElements( getSet( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );
         export.setIndicators( getSet( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) ) );
         export.setOrganisationUnits( getSet( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) ) );
-        export.setPeriods( getSet( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
+        export.setPeriods( getSet( periodService.getPeriodsByExternalIds( selectedPeriods ) ) );
         export.setRelatives( relatives );
         
         dataMartService.saveDataMartExport( export );

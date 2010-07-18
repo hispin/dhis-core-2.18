@@ -126,19 +126,20 @@ public class SixMonthlyPeriodType
     }
 
     /**
-     * Generates six-monthly Periods for a rounded-off 5 years span in which the
-     * given Period's startDate exists.
+     * Generates six-monthly Periods for the whole year in which the given Period's
+     * startDate exists.
      */
     @Override
-    public List<Period> generatePeriods( Period period )
+    public List<Period> generatePeriods( Date date )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, -(cal.get( Calendar.YEAR ) % 5) );
+        Calendar cal = createCalendarInstance( date );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
+
+        int year = cal.get( Calendar.YEAR );
 
         ArrayList<Period> sixMonths = new ArrayList<Period>();
 
-        for ( int i = 0; i < 10; ++i )
+        while ( cal.get( Calendar.YEAR ) == year )
         {
             Date startDate = cal.getTime();
             cal.add( Calendar.MONTH, 5 );

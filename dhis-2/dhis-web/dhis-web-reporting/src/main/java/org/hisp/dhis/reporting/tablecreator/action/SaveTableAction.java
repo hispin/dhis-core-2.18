@@ -328,7 +328,7 @@ public class SaveTableAction
         List<DataElement> dataElements = getList( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );        
         List<Indicator> indicators = getList( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );        
         List<DataSet> dataSets = getList( dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );        
-        List<Period> periods = getList( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
+        List<Period> periods = getList( periodService.getPeriodsByExternalIds( selectedPeriods ) );        
         List<OrganisationUnit> units = getList( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
         DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );

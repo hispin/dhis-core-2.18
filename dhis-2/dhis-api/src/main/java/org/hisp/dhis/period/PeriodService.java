@@ -105,6 +105,15 @@ public interface PeriodService
     Collection<Period> getPeriods( Collection<Integer> identifiers );
     
     /**
+     * Generates all Periods with the corresponding external identifiers in the
+     * given Collection. The Periods which don't exist are created and persisted.
+     * 
+     * @param externalIds the external identifiers.
+     * @return a Collection of Periods.
+     */
+    Collection<Period> getPeriodsByExternalIds( Collection<String> externalIds );
+    
+    /**
      * Returns all Periods with start date after or equal the specified start
      * date and end date before or equal the specified end date.
      * 

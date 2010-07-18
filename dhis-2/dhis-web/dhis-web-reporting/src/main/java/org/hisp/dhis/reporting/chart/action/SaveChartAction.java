@@ -260,7 +260,7 @@ public class SaveChartAction
 
         List<Indicator> indicators = new ArrayList<Indicator>();
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-        List<Period> periods = new ArrayList<Period>( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
+        List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByExternalIds( selectedPeriods ) );
         
         for ( Integer id : getIntegerCollection( selectedIndicators ) )
         {

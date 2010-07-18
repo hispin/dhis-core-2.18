@@ -154,15 +154,17 @@
 	</tr>	
 	<tr>
 		<td>
-			<select id="periodTypeId" name="periodTypeId" style="min-width:325px" onchange="getPeriods()">
-				<option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
+			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )"><input
+				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )">
+			<select id="periodType" name="periodType" style="min-width:224px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
+				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
 				#foreach ( $type in $periodTypes )
 					<option value="$type.name">$type.name</option>
 				#end
 			</select><br>
 			<select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:325px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">
 				#foreach ( $period in $periods )
-					<option value="$period.id">$period.name</option>
+					<option value="$period.externalId">$format.formatPeriod( $period )</option>
 				#end
 			</select>
 		</td>
@@ -175,7 +177,7 @@
 		<td>
 			<select multiple id="selectedPeriods" name="selectedPeriods" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )">				
 			    #foreach ( $period in $selectedPeriods )
-                    <option value="$period.id">$period.name</option>
+                    <option value="$period.externalId">$format.formatPeriod( $period )</option>
                 #end
 			</select>
 		</td>

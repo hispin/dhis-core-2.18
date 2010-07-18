@@ -102,6 +102,18 @@ public class DefaultPeriodService
             } );
     }
 
+    public Collection<Period> getPeriodsByExternalIds( Collection<String> externalIds )
+    {
+        Collection<Period> periods = new ArrayList<Period>();
+        
+        for ( String id : externalIds )
+        {
+            periods.add( periodStore.reloadForceAddPeriod( new Period( id ) ) );
+        }
+        
+        return periods;
+    }
+    
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
         return periodStore.getPeriodsByPeriodType( periodType );
@@ -213,7 +225,7 @@ public class DefaultPeriodService
 
         return periods;
     }
-
+    
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------

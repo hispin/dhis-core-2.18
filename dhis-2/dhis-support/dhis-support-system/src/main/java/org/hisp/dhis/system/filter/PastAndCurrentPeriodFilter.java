@@ -1,4 +1,4 @@
-package org.hisp.dhis.util;
+package org.hisp.dhis.system.filter;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,43 +27,20 @@ package org.hisp.dhis.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionContext;
+import java.util.Date;
+
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.util.Filter;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class SessionUtils
+public class PastAndCurrentPeriodFilter
+    implements Filter<Period>
 {
-    public static final String KEY_PREVIEW_TYPE = "previewType";
-    public static final String KEY_PREVIEW_STATUS = "previewStatus";
-    
-    public static final String KEY_CURRENT_YEAR = "currentYear";
-    
-    public static Object getSessionVar( String name )
+    @Override
+    public boolean retain( Period period )
     {
-        return ActionContext.getContext().getSession().get( name );
-    }
-
-    public static Object getSessionVar( String name, Object defaultValue )
-    {
-        Object object = ActionContext.getContext().getSession().get( name );
-        
-        return object != null ? object : defaultValue; 
-    }
-
-    public static void setSessionVar( String name, Object value )
-    {
-        ActionContext.getContext().getSession().put( name, value );
-    }
-
-    public static boolean containsSessionVar( String name )
-    {
-        return ActionContext.getContext().getSession().containsKey( name );
-    }
-
-    public static void removeSessionVar( String name )
-    {
-        ActionContext.getContext().getSession().remove( name );
+        return period != null && period.getStartDate() != null && period.getStartDate().compareTo( new Date() ) <= 0;
     }
 }

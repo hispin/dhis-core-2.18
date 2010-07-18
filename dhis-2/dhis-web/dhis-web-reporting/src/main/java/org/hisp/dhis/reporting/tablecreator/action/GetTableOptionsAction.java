@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -58,10 +59,10 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -370,9 +371,10 @@ public class GetTableOptionsAction
         
         periodTypes = periodService.getAllPeriodTypes();
         
-        periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( MonthlyPeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) ) );
+        periods = new MonthlyPeriodType().generatePeriods( new Date() );
 
-        Collections.sort( periods, new PeriodComparator() );
+        Collections.reverse( periods );
+        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         
         levels = organisationUnitService.getOrganisationUnitLevels();
         

@@ -36,6 +36,8 @@ import org.apache.commons.validator.DateValidator;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -45,8 +47,6 @@ public class DateUtils
     public static final double DAYS_IN_YEAR = 365.0;
 
     private static final long MS_PER_DAY = 86400000;
-
-    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     /**
      * Formats a Date to the Access date format.
@@ -140,7 +140,6 @@ public class DateUtils
             format.applyPattern( DEFAULT_DATE_FORMAT );
 
             return dateString != null && dateIsValid( dateString ) ? format.parse( dateString ) : null;
-
         }
         catch ( ParseException ex )
         {
@@ -376,7 +375,7 @@ public class DateUtils
      */
     public static boolean checkDates( String fromDate, String toDate )
     {
-        String formatString = DateUtils.DEFAULT_DATE_FORMAT;
+        String formatString = DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
 
         Date date1 = new Date();

@@ -27,6 +27,8 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +46,10 @@ import org.hisp.dhis.dimension.DimensionType;
 public class Period
     extends IdentifiableObject implements DimensionOption
 {
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+
+    private static final String SEPARATOR = "_";
+    
     /**
      * Required.
      */
@@ -81,6 +87,15 @@ public class Period
         this.periodType = periodType;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+    
+    public Period( String externalId )
+    {
+        final String[] id = externalId.split( SEPARATOR );
+        
+        this.periodType = PeriodType.getPeriodTypeByName( id[0] );
+        this.startDate = getMediumDate( id[1] );
+        this.endDate = getMediumDate( id[2] );
     }
     
     // -------------------------------------------------------------------------
@@ -159,13 +174,68 @@ public class Period
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Copies the transient properties (name) from the argument Period
+     * to this Period.
+     * 
+     * @param the Period to copy from.
+     * @return this Period. 
+     */
     public Period copyTransientProperties( Period other )
     {
         this.name = other.getName();
         
         return this;
     }
+
+    /**
+     * Generates an String which uniquely identifies this Period based on its
+     * core properties.
+     * 
+     * @return an identifier String.
+     */
+    public String getExternalId()
+    {
+        return periodType.getName() + SEPARATOR + getMediumDateString( startDate ) + SEPARATOR + getMediumDateString( endDate );
+    }
     
+    /**
+     * Formats a Date to the format YYYY-MM-DD.
+     * 
+     * @param date the Date to parse.
+     * @return A formatted date string. Null if argument is null.
+     */
+    private String getMediumDateString( Date date )
+    {
+        final SimpleDateFormat format = new SimpleDateFormat();
+
+        format.applyPattern( DEFAULT_DATE_FORMAT );
+
+        return date != null ? format.format( date ) : null;
+    }
+
+    /**
+     * Parses a date from a String on the format YYYY-MM-DD.
+     * 
+     * @param dateString the String to parse.
+     * @return a Date based on the given String.
+     */
+    private Date getMediumDate( String dateString )
+    {
+        try
+        {
+            final SimpleDateFormat format = new SimpleDateFormat();
+    
+            format.applyPattern( DEFAULT_DATE_FORMAT );
+    
+            return dateString != null ? format.parse( dateString ) : null;
+        }
+        catch ( ParseException ex )
+        {
+            throw new RuntimeException( "Failed to parse medium date", ex );
+        }
+    }
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

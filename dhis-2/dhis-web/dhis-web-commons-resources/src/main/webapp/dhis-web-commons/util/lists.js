@@ -397,3 +397,26 @@ function sortList( id, type ) {
         obj.options[i] = new Option(o[i].text, o[i].value);
     }
 }
+
+/**
+ * Shows available periods in output forms.
+ */
+function getAvailablePeriods( periodTypeId, availablePeriodsId, selectedPeriodsId, year )
+{
+	$.getJSON( "../dhis-web-commons-ajax-json/getAvailablePeriods.action", {
+		"periodType": $( "#" + periodTypeId ).val(),
+		"year": year },
+		function( json ) {
+			var availableList = document.getElementById( availablePeriodsId );
+			var selectedList = document.getElementById( selectedPeriodsId );
+			clearList( availableList );
+			
+			for ( var i = 0; i < json.periods.length; i++ )
+			{
+				if ( listContains( selectedList, json.periods[i].externalId ) == false )
+				{
+					addValue( availableList, json.periods[i].name, json.periods[i].externalId );
+				}
+			}			
+		} );
+}

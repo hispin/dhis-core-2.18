@@ -30,6 +30,7 @@ package org.hisp.dhis.reporting.chart.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
@@ -47,7 +48,8 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -220,17 +222,19 @@ public class GetChartOptionsAction
         
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
         
-        availablePeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
-        
+        availablePeriods = new MonthlyPeriodType().generatePeriods( new Date() );
+
         levels = organisationUnitService.getOrganisationUnitLevels();
         
         availableOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
         
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
         Collections.sort( availableIndicators, indicatorComparator );
-        Collections.sort( availablePeriods, new PeriodComparator() );
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
         Collections.sort( availableOrganisationUnits, organisationUnitComparator );   
+
+        Collections.reverse( availablePeriods );
+        FilterUtils.filter( availablePeriods, new PastAndCurrentPeriodFilter() );
         
         displayPropertyHandler.handle( availableIndicators );
         displayPropertyHandler.handle( availableOrganisationUnits );
