@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
- * @version $Id$
- * @modifier Dang Duy Hieu
- * @since 2010-04-06
+ * @version $Id StatementManagerDataBrowserStore.java 2010-04-06 Jason Pickering, Dang Duy Hieu$
  */
 public class StatementManagerDataBrowserStore
     implements DataBrowserStore

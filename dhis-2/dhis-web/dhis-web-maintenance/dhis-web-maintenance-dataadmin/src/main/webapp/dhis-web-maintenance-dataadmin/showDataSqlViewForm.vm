@@ -15,7 +15,7 @@
 	<thead>
 		<tr>
 		#foreach ( $columnName in $sqlViewTable.getHeaders() )
-			<th title="$columnName" class="formatLabel">$i18n.getString( $columnName )</th>
+			<th title="$columnName" class="formatLabel">$columnName</th>
 		#end
 		</tr>
 	</thead>

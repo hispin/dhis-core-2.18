@@ -202,7 +202,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-dataadmin/resourceTableForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="javascripts">javascript/resourceTable.js,javascript/resourceViewer.js</param>
+			<param name="javascripts">javascript/sqlView.js</param>
 		</action>
 
 		<action name="generateResourceTable"

@@ -44,7 +44,7 @@ public class DefaultSqlViewService
 
     private static final Pattern p = Pattern.compile( "\\W" );
 
-    private static final String PREFIX_VIEWNAME = "__sqlview";
+    private static final String PREFIX_VIEWNAME = "_view";
 
     // -------------------------------------------------------------------------
     // Dependencies
