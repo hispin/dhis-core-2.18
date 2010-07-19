@@ -5,12 +5,12 @@
 
 function criteriaChanged()
 {
-	var dataElementGroupId = getListValue( "dataElementGroupList" );
-	var dataDictionaryId = getListValue( "dataDictionaryList" );
+    var dataElementGroupId = getListValue( "dataElementGroupList" );
+    var dataDictionaryId = getListValue( "dataDictionaryList" );
 	
-	var url = "dataElement.action?&dataDictionaryId=" + dataDictionaryId + "&dataElementGroupId=" + dataElementGroupId;
+    var url = "dataElement.action?&dataDictionaryId=" + dataDictionaryId + "&dataElementGroupId=" + dataElementGroupId;
 	
-	window.location.href = url;
+    window.location.href = url;
 }
 
 // -----------------------------------------------------------------------------
@@ -39,11 +39,18 @@ function dataElementReceived( dataElementElement )
     var active = getElementValue( dataElementElement, 'active' );
     setFieldValue( 'activeField', active == 'true' ? i18n_yes : i18n_no );
     
-    var typeMap = { 'int':i18n_number, 'bool':i18n_yes_no, 'string':i18n_text };
-    var type = getElementValue( dataElementElement, 'type' );
+    var typeMap = { 
+        'int':i18n_number,
+        'bool':i18n_yes_no,
+        'string':i18n_text
+    };
+    var type = getElementValue( dataElementElement, 'valueType' );
     setFieldValue( 'typeField', typeMap[type] );
     
-    var domainTypeMap = { 'aggregate':i18n_aggregate, 'patient':i18n_patient };
+    var domainTypeMap = {
+        'aggregate':i18n_aggregate,
+        'patient':i18n_patient
+    };
     var domainType = getElementValue( dataElementElement, 'domainType' );
     setFieldValue( 'domainTypeField', domainTypeMap[domainType] );
     
@@ -64,8 +71,8 @@ function dataElementReceived( dataElementElement )
     var url = getElementValue( dataElementElement, 'url' );
     setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
 	
-	var lastUpdated = getElementValue( dataElementElement, 'lastUpdated' );
-	setFieldValue( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
+    var lastUpdated = getElementValue( dataElementElement, 'lastUpdated' );
+    setFieldValue( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
 	
     showDetails();
 }
@@ -76,23 +83,23 @@ function getDataElements( dataElementGroupId, type, filterCalculated )
 
     if ( dataElementGroupId == '[select]' )
     {
-    	return;
+        return;
     }
 
-	if ( dataElementGroupId != null )
-	{
-		url += "dataElementGroupId=" + dataElementGroupId;				
-	}
+    if ( dataElementGroupId != null )
+    {
+        url += "dataElementGroupId=" + dataElementGroupId;
+    }
 	
-	if ( type != null )
-	{
-		url += "&type=" + type
-	}
+    if ( type != null )
+    {
+        url += "&type=" + type
+    }
 
-	if ( filterCalculated )
-	{
-		url += "&filterCalculated=on";
-	}
+    if ( filterCalculated )
+    {
+        url += "&filterCalculated=on";
+    }
 
     var request = new Request();
     request.setResponseTypeXML( 'operand' );
@@ -102,32 +109,118 @@ function getDataElements( dataElementGroupId, type, filterCalculated )
 
 function getDataElementsReceived( xmlObject )
 {	
-	var availableDataElements = document.getElementById( "availableDataElements" );
+    var availableDataElements = document.getElementById( "availableDataElements" );
 		
-	clearList( availableDataElements );
+    clearList( availableDataElements );
 	
-	var operands = xmlObject.getElementsByTagName( "operand" );
+    var operands = xmlObject.getElementsByTagName( "operand" );
 	
-	for ( var i = 0; i < operands.length; i++ )
-	{
-		var id = operands[ i ].getElementsByTagName( "operandId" )[0].firstChild.nodeValue;
-		var dataElementName = operands[ i ].getElementsByTagName( "operandName" )[0].firstChild.nodeValue;
+    for ( var i = 0; i < operands.length; i++ )
+    {
+        var id = operands[ i ].getElementsByTagName( "operandId" )[0].firstChild.nodeValue;
+        var dataElementName = operands[ i ].getElementsByTagName( "operandName" )[0].firstChild.nodeValue;
 		
-		var option = document.createElement( "option" );
-		option.value = id;
-		option.text = dataElementName;
-		option.title = dataElementName;
-		availableDataElements.add( option, null );		
-	}
-}	
+        var option = document.createElement( "option" );
+        option.value = id;
+        option.text = dataElementName;
+        option.title = dataElementName;
+        availableDataElements.add( option, null );
+    }
+}
 
+// -----------------------------------------------------------------------------
+// Remove calculated and agrregationoperator option
+// -----------------------------------------------------------------------------
+function showorhideoperator()
+{
+    var type = document.getElementById( 'valueType' ).value;
+    if(type != "int" && type != "bool")
+    {
+        jQuery("#lblOperator").hide();
+        jQuery("#aggregationOperator").hide();
+    }
+    else
+    {
+        jQuery("#lblOperator").show();
+        jQuery("#aggregationOperator").show();
+
+    }
+    if(type != "int")
+    {
+        jQuery("#lblCalculated").hide();
+        jQuery("#calculated").hide();
+    }
+    else
+    {
+        jQuery("#lblCalculated").show();
+        jQuery("#calculated").show();
+    }
+}
+
+function showorhideeditoperator()
+{
+    var type = document.getElementById( 'valueType' ).value;
+    if(type != "int" && type != "bool")
+    {
+        jQuery("#lblOperator").hide();
+        jQuery("#aggregationOperator").hide();
+    }
+    else
+    {
+        jQuery("#lblOperator").show();
+        jQuery("#aggregationOperator").show();
+    }
+}
 // -----------------------------------------------------------------------------
 // Remove data element
 // -----------------------------------------------------------------------------
 
 function removeDataElement( dataElementId, dataElementName )
 {
-	removeItem( dataElementId, dataElementName, i18n_confirm_delete, 'removeDataElement.action' );
+    removeItem( dataElementId, dataElementName, i18n_confirm_delete, 'removeDataElement.action' );
+}
+
+// -----------------------------------------------------------------------------
+// Checks for zero factors in calculated window
+// -----------------------------------------------------------------------------
+function checkZeroFactors()
+{
+    if( jQuery("#calculated").attr("checked") )
+    {
+        var factors = jQuery("input[name='factors']");
+        var isInvalid = false;
+        for( var i =0; i< factors.length; i++ )
+        {
+            if( checkValueInvalid(jQuery(factors[i]).val() ) ){
+                isInvalid = true;
+                jQuery(factors[i]).focus();
+                jQuery(factors[i]).css({
+                    "background-color":"#FFCFCF"
+                });
+
+            }else{
+                jQuery(factors[i]).css({
+                    "background-color":"white"
+                });
+            }
+        }
+        if( isInvalid ){
+            alert(i18n_error_zero_value);
+            return false;
+        }
+        return true;
+    }else{
+        var factors = jQuery("input[name='factors']");
+        var value = null;
+        for( var i =0; i< factors.length; i++ )
+        {
+            value = jQuery(factors[i]).val();
+            if( checkValueInvalid( value ) ){
+                jQuery(factors[i]).val("1");
+            }
+        }
+        return true;
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -140,15 +233,17 @@ function validateAddDataElement()
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
     
-    request.send( 'validateDataElement.action?name=' + getFieldValue( 'name' ) +
-        '&shortName=' + getFieldValue( 'shortName' ) +
-        '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-        '&valueType=' + getSelectValue( 'valueType' ) +
-        '&calculated=' + getCheckboxValue( 'calculated' ) +
-        '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
-        makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds'))
-    );
+    var params = 'name=' + getFieldValue( 'name' ) +
+    '&shortName=' + getFieldValue( 'shortName' ) +
+    '&alternativeName=' + getFieldValue( 'alternativeName' ) +
+    '&code=' + getFieldValue( 'code' ) +
+    '&valueType=' + getSelectValue( 'valueType' ) +
+    '&calculated=' + getCheckboxValue( 'calculated' ) +
+    '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
+    makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds'));
 
+    request.sendAsPost( params );
+    request.send( "validateDataElement.action" );
     return false;
 }
 
@@ -161,28 +256,28 @@ function validateAddDataElement()
  */
 function makeValueString( fieldName, values )
 {
-	var valueStr = "";
+    var valueStr = "";
 	
-	for ( var i = 0, value; value = values[i]; i++ )
-	{
-		valueStr += "&" + fieldName + "=" + value;
-	}
+    for ( var i = 0, value; value = values[i]; i++ )
+    {
+        valueStr += "&" + fieldName + "=" + value;
+    }
 	
-	return valueStr;
+    return valueStr;
 }
 
 function addValidationCompleted( messageElement )
-{
+{        
     var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
     
     if ( type == 'success' )
     {
+        document.getElementById( 'selectedCategoryComboId' ).disabled = false;
+        document.getElementById( 'valueType' ).disabled = false;
         selectAllById( "aggregationLevels" );
         selectAllById( "dataElementGroupSets" );
-    
-        var form = document.getElementById( 'addDataElementForm' );
-        form.submit();
+        document.getElementById( "addDataElementForm" ).submit();
     }
     else if ( type == 'error' )
     {
@@ -204,17 +299,17 @@ function addValidationCompleted( messageElement )
  */
 function getSelectValue( selectId )
 {
-	var select = document.getElementById( selectId );
-	var option = select.options[select.selectedIndex];
+    var select = document.getElementById( selectId );
+    var option = select.options[select.selectedIndex];
 	
-	if ( option )
-	{
-		return option.value;
-	}
-	else
-	{
-		return null;
-	}
+    if ( option )
+    {
+        return option.value;
+    }
+    else
+    {
+        return null;
+    }
 }
 
 /**
@@ -226,17 +321,17 @@ function getSelectValue( selectId )
  */
 function getSelectValues( selectId )
 {
-	var select = document.getElementById( selectId );
-	var values = [];
-	for ( var i = 0, option; option = select.options[i]; i++ )
-	{
-		if ( option.selected )
-		{
-			values.push(option.value);
-		}
-	}
+    var select = document.getElementById( selectId );
+    var values = [];
+    for ( var i = 0, option; option = select.options[i]; i++ )
+    {
+        if ( option.selected )
+        {
+            values.push(option.value);
+        }
+    }
 	
-	return values;
+    return values;
 }
 
 /**
@@ -248,9 +343,9 @@ function getSelectValues( selectId )
  */
 function getCheckboxValue( checkboxId )
 {
-	var checkbox = document.getElementById( checkboxId );
+    var checkbox = document.getElementById( checkboxId );
 	
-	return ( checkbox != null && checkbox.checked ? checkbox.value : null );
+    return ( checkbox != null && checkbox.checked ? checkbox.value : null );
 }
 
 /**
@@ -264,25 +359,25 @@ function getCheckboxValue( checkboxId )
  */
 function getInputValuesByParentId( parentId, fieldName )
 {
-	var node = document.getElementById(parentId);
+    var node = document.getElementById(parentId);
 	
-	if ( ! node )
-	{
-		return [];
-	}
+    if ( ! node )
+    {
+        return [];
+    }
 	
-	var inputs = node.getElementsByTagName("input");
-	values = [];
+    var inputs = node.getElementsByTagName("input");
+    values = [];
 	
-	for ( var i = 0, input; input = inputs[i]; i++ )
-	{
-		if ( input.name == fieldName )
-		{
-			values.push(input.value);
-		}
-	}
+    for ( var i = 0, input; input = inputs[i]; i++ )
+    {
+        if ( input.name == fieldName )
+        {
+            values.push(input.value);
+        }
+    }
 	
-	return values;
+    return values;
 	
 }
 
@@ -296,16 +391,17 @@ function validateUpdateDataElement()
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );   
     
-    request.send( 'validateDataElement.action?id=' + getFieldValue( 'id' ) +
-        '&name=' + getFieldValue( 'name' ) +
-        '&shortName=' + getFieldValue( 'shortName' ) +
-        '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-        '&code=' + getFieldValue( 'code' ) +
-        '&calculated=' + getCheckboxValue( 'calculated' ) +
-        '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
-        makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds') ) 
-    );
+    var params = 'id=' + getFieldValue( 'id' ) +
+    '&name=' + getFieldValue( 'name' ) +
+    '&shortName=' + getFieldValue( 'shortName' ) +
+    '&alternativeName=' + getFieldValue( 'alternativeName' ) +
+    '&code=' + getFieldValue( 'code' ) +
+    '&calculated=' + getCheckboxValue( 'calculated' ) +
+    '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
+    makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds') ) ;
 
+    request.sendAsPost( params );
+    request.send( "validateDataElement.action" );
     return false;
 }
 
@@ -318,9 +414,8 @@ function updateValidationCompleted( messageElement )
     {
         selectAllById( "aggregationLevels" );
         selectAllById( "dataElementGroupSets" );
-        
-        var form = document.getElementById( 'updateDataElementForm' );
-        form.submit();
+        document.getElementById( "updateDataElementForm" ).submit();
+
     }
     else if ( type == 'error' )
     {
@@ -351,7 +446,7 @@ function addCDEDataElements()
 
     for ( var i = available.options.length - 1; i >= 0; i-- )
     {
-    	option = available.options[i];
+        option = available.options[i];
 
         if ( option.selected )
         {
@@ -445,15 +540,15 @@ function removeCDE( tr )
  */
 function removeTablePlaceholder()
 {
-	var table = byId('selectedDataElements').getElementsByTagName('tbody')[0];
-	var trs = table.getElementsByTagName('tr');
+    var table = byId('selectedDataElements').getElementsByTagName('tbody')[0];
+    var trs = table.getElementsByTagName('tr');
 	
-	for ( var i = 0, tr; tr = trs[i]; i++ )
-	{
-    	if ( tr.getAttribute('class') == 'placeholder' )
-    	{
-        	table.removeChild(tr);
-      	}
+    for ( var i = 0, tr; tr = trs[i]; i++ )
+    {
+        if ( tr.getAttribute('class') == 'placeholder' )
+        {
+            table.removeChild(tr);
+        }
     }
 }
 
@@ -464,23 +559,45 @@ function removeTablePlaceholder()
  */
 function toggleByIdAndFlagIfDefaultCombo( id, display, defaultId )
 {
-	var node = byId(id);
-	var comboId = getSelectValue( 'selectedCategoryComboId' );
+    var node = byId(id);
+    var comboId = getSelectValue( 'selectedCategoryComboId' );
+
+    if( display )
+    {
+    //		jQuery("input[name='factors']").each(function(){
+    //			jQuery(this).rules("add","required");
+    //		});
+    }
+    else
+    {
+        document.getElementById( 'selectedCategoryComboId' ).disabled = false;
+        document.getElementById( 'type' ).disabled = false;
+        node.style.display = (display ? 'block' : 'none');
+        return;
+    }
+    
+    if ( !comboId )
+    {
+        return;
+    }
 	
-	if ( !comboId )
-	{
-		return;
-	}
+    if ( !node )
+    {
+        return;
+    }
 	
-	if ( !node )
-	{
-		return;
-	}	
-	
-	if ( comboId == defaultId )
-	{
-		node.style.display = (display ? 'block' : 'none');		
-	}
+    if ( comboId == defaultId )
+    {
+        node.style.display = (display ? 'block' : 'none');
+    }
+    else//if(comboId != defaultId )
+    {
+        alert("Calculated Dataelement can be created for default category combination only");
+
+        document.getElementById( 'calculated' ).checked = false;
+
+        return;
+    }
 	
     return;
 }

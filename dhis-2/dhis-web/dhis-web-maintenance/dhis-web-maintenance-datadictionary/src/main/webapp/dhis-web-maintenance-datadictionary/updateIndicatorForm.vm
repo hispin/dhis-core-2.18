@@ -39,23 +39,23 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" maxlength="150" style="width:20em" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )" style="width:20em" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="20" value="$encoder.htmlEncode( $indicator.shortName )" style="width:20em" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em" maxlength="160" class="{validate:{minlength:2,maxlength:160}}"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" maxlength="150" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em" class="{validate:{rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em" maxlength="25" class="{validate:{maxlength:25}}"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em" class="{validate:{rangelength:[3,25],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em">$!encoder.htmlEncode( $indicator.description )</textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{rangelength:[3,250],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}">$!encoder.htmlEncode( $indicator.description )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="annualized">$i18n.getString( "annualized" )</label></td>
@@ -79,7 +79,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $indicator.url )" style="width:20em" maxlength="255" class="{validate:{url:true,maxlength:255}}"></td>
+        <td><input type="text" id="url" name="url" maxlength="255" value="$!encoder.htmlEncode( $indicator.url )" style="width:20em" class="{validate:{url:true,maxlength:255}}"></td>
     </tr>
 	<tr>
 		<td></td>

@@ -25,7 +25,7 @@ function indicatorTypeReceived( indicatorTypeElement )
 
 function removeIndicatorType( indicatorTypeId, indicatorTypeName )
 {
-	removeItem( indicatorTypeId, indicatorTypeName, i18n_confirm_delete, 'removeIndicatorType.action' );
+    removeItem( indicatorTypeId, indicatorTypeName, i18n_confirm_delete, 'removeIndicatorType.action' );
 }
 
 // -----------------------------------------------------------------------------
@@ -37,9 +37,10 @@ function validateAddIndicatorType()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
-    request.send( 'validateIndicatorType.action?name=' + getFieldValue( 'name' ) +
-        '&factor=' + getFieldValue( 'factor' ) );
+    var params = 'name=' + getFieldValue( 'name' ) + '&factor=' + getFieldValue( 'factor' );
 
+    request.sendAsPost( params );
+    request.send( "validateIndicatorType.action" );
     return false;
 }
 
@@ -73,10 +74,13 @@ function validateUpdateIndicatorType()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
-    request.send( 'validateIndicatorType.action?id=' + getFieldValue( 'id' ) +
-        '&name=' + getFieldValue( 'name' ) +
-        '&factor=' + getFieldValue( 'factor' ) );
 
+    var params = 'id=' + getFieldValue( 'id' ) +
+    '&name=' + getFieldValue( 'name' ) +
+    '&factor=' + getFieldValue( 'factor' );
+
+    request.sendAsPost( params );
+    request.send( "validateIndicatorType.action" );
     return false;
 }
 
