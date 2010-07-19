@@ -42,11 +42,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class GetSqlViewListAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -80,5 +75,4 @@ public class GetSqlViewListAction
 
         return SUCCESS;
     }
-
 }

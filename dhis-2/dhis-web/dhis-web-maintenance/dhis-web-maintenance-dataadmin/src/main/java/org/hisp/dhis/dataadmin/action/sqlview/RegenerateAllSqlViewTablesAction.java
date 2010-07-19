@@ -49,11 +49,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class RegenerateAllSqlViewTablesAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -92,13 +87,11 @@ public class RegenerateAllSqlViewTablesAction
 
     public String execute()
     {
-        message = "";
-        String viewName = "";
         final StatementHolder holder = statementManager.getHolder();
 
         for ( SqlView sqlView : sqlViewService.getAllSqlViews() )
         {
-            viewName = sqlViewService.setUpViewTableName( sqlView.getName() );
+            String viewName = sqlViewService.setUpViewTableName( sqlView.getName() );
 
             try
             {
@@ -111,7 +104,7 @@ public class RegenerateAllSqlViewTablesAction
                 return ERROR;
             }
 
-            message += i18n.getString( "sql_view_table_name" ) + " <strong>[ " + viewName + " ]</strong> "
+            message += i18n.getString( "sql_view_table_name" ) + " [ " + viewName + " ] "
                 + i18n.getString( "is_created" ) + "<br/>";
         }
 

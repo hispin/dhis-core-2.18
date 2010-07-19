@@ -41,11 +41,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ShowUpSqlViewTableAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -94,5 +89,4 @@ public class ShowUpSqlViewTableAction
 
         return SUCCESS;
     }
-
 }
