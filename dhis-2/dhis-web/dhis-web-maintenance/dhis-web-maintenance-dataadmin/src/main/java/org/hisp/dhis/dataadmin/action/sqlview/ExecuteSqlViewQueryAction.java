@@ -48,11 +48,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ExecuteSqlViewQueryAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,8 +116,7 @@ public class ExecuteSqlViewQueryAction
         }
         catch ( SQLException e )
         {
-            message = i18n.getString( "failed_to_create_view_table_for" ) + ": <strong>" + sqlViewInstance.getName()
-                + "</strong>";
+            message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + sqlViewInstance.getName();
             return ERROR;
         }
         finally
@@ -130,8 +124,7 @@ public class ExecuteSqlViewQueryAction
             holder.close();
         }
 
-        message = i18n.getString( "sql_view_table_name" ) + " <strong>[ " + viewName + " ]</strong> "
-            + i18n.getString( "is_created" );
+        message = i18n.getString( "sql_view_table_name" ) + " [ " + viewName + " ] " + i18n.getString( "is_created" );
 
         return SUCCESS;
     }

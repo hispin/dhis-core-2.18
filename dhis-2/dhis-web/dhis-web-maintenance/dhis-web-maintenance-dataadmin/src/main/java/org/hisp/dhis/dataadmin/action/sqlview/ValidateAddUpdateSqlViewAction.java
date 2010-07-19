@@ -38,11 +38,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ValidateAddUpdateSqlViewAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     private static final String ADD = "add";
 
     private static final String REGEX_SELECT_QUERY = "^(?i)\\s*(select\\s{1,}).+$";

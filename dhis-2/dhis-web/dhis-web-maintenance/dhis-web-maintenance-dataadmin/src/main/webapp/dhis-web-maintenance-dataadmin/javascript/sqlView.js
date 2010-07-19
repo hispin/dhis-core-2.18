@@ -75,13 +75,10 @@ function runSqlViewQuery( viewId )
 			if ( json.response == "success" )
 			{
 				setHeaderDelayMessage( json.message );
-				hideWarning();
 			}
 			else if ( json.response == "error" )
 			{
-				setFieldValue( 'warningArea', json.message );
-	
-				showWarning();
+				setHeaderDelayMessage( json.message );
 			}
 		}
 	);
@@ -124,7 +121,6 @@ function regenerateResourceTableAndViewTables()
     if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
         organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
     {
-		hideWarning();
         setWaitMessage( i18n_regenerating_resource_tables_and_views );
 		
         var url = "dropAllSqlViewTables.action";
@@ -144,7 +140,6 @@ function regenerateResourceTableAndViewTablesReceived( xmlObject )
 {
 	if ( xmlObject.getAttribute( 'type' ) == 'success' )
 	{
-		// Regenerating Resource tables
 		generateResourceTableForViews();
 	}
 	else
@@ -208,10 +203,9 @@ function generateAllSqlViewTables()
 			}
 			else if ( json.response == "error" )
 			{
-				setFieldValue( 'warningArea', json.message );
-	
+				setHeaderDelayMessage( json.message );
+				
 				hideMessage();
-				showWarning();
 			}
 		}
 	);

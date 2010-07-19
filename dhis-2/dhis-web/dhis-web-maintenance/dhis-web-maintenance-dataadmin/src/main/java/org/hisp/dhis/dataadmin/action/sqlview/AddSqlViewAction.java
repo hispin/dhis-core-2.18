@@ -38,11 +38,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class AddSqlViewAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     private static final String REGEX = "\\s+";
 
     // -------------------------------------------------------------------------
@@ -115,5 +110,4 @@ public class AddSqlViewAction
     {
         return input.replaceAll( REGEX, " " ).trim();
     }
-
 }

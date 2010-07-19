@@ -41,11 +41,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class UpdateSqlViewAction
     extends ActionSupport
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -88,7 +83,6 @@ public class UpdateSqlViewAction
 
     public String execute()
     {
-
         if ( id == null || (id.intValue() == -1) )
         {
             return ERROR;
