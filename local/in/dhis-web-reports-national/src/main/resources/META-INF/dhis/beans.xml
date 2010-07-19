@@ -330,10 +330,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		
 	</bean>
-	<!--  09/07/2010 -->
 	
 	<!-- DataSet Lock Reports -->
-	<!--
 	<bean
 		id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
@@ -388,8 +386,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 	</bean>
-	-->
-	<!-- -->
 	
 	<!-- Linelisting Reports -->
 	<bean

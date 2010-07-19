@@ -231,7 +231,7 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		<!-- 09/07/2010 -->
+		
 		<!-- DataSet Lock Reports -->
 		<action name="dataSetLockReportAnalyser"
 			class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction">
@@ -246,24 +246,21 @@
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
 		
-		
 		<action name="generateDataSetLockReportResult"
-            class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction">
-                <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
+			class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
 		
 		<action name="getOrgUnitName"
-            class="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction">
-            <result name="success" type="velocity-xml">/dhis-web-reports/ougUnitName.vm</result>
-            
-        </action>
-		
-		
+			class="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-reports/ougUnitName.vm</result>
+		</action>
 		<action name="getPeriodsForLock"
 			class="org.hisp.dhis.reports.datasetlock.action.GetPeriodsForLockAction">
 			<result name="success" type="velocity">
@@ -271,13 +268,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-		<action name="GetDataSetsForLockAction"
+		<action name="getDataSetsForLockAction"
 			class="org.hisp.dhis.reports.datasetlock.action.GetDataSetsForLockAction">
 			<result name="success" type="velocity">
 				/dhis-web-reports/responseDataSetLock.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		<!-- -->
 		
 		<!-- Linelisting Reports -->
 		<action name="linelistingReportAnalyser"

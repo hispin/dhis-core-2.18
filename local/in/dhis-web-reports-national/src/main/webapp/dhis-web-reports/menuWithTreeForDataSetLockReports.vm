@@ -1,0 +1,56 @@
+<h2>Report Analyser</h2>
+<ul>
+    <li>Report Analysis</li>
+    <ul>
+    	<li>
+            DataSet Lock Reports
+        </li>
+    </ul>
+</ul>
+<div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-15px; ">
+        <a href="index.action">
+          <img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
+</div>
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+<!-- The script that registeres selctions in the orgunit tree -->
+<script type="text/javascript">
+
+function orgUnitHasBeenSelected( orgUnitIds )
+{    
+    document.reportForm.ouIDTB.value = orgUnitIds;
+	
+	//reportListFileName = document.reportForm.reportListFileNameTB.value;
+	
+	// call orgUnit selection function
+	getSelectedOrgUnit( orgUnitIds );
+
+	/*if(orgUnitIds != null && orgUnitIds != "" )
+	{
+		getReports(orgUnitIds, reportListFileName)		
+	}*/
+ }
+	// function for displaying OrgUnit
+	
+   function getSelectedOrgUnit( orgUnitIds )
+    {
+        if( orgUnitIds != "" )
+        {
+            var requestString = 'getOrgUnitName.action?selectedOrgUnitId='+orgUnitIds;
+            var request = new Request();
+            request.setResponseTypeXML('dataelement');
+            request.setCallbackSuccess( responseGetSelectedOrgUnitName );
+            request.send(requestString);
+        }
+    }
+	function responseGetSelectedOrgUnitName( dataelement )
+    {
+        var element = dataelement.getElementsByTagName("dataelement");
+        document.reportForm.ouNameTB.value=element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
+    }
+
+	
+selection.setListenerFunction( orgUnitHasBeenSelected );
+
+</script>
+
