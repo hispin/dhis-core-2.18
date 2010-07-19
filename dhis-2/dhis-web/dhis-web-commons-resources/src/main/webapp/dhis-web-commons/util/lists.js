@@ -3,6 +3,7 @@ var NS4 = (navigator.appName == "Netscape" && parseInt(navigator.appVersion) < 5
 function addValue( theSel, theText, theValue ) {
     var newOpt = new Option( theText, theValue );
     var selLength = theSel.length;
+    jQuery(newOpt).attr('selected', 'selected');
     theSel.options[ selLength ] = newOpt;
 }
 

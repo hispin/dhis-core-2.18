@@ -37,8 +37,11 @@ function validateAddDataElementGroup()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
-    request.send( 'validateDataElementGroup.action?name=' + getFieldValue( 'name' ) );
+    
+    var params = 'name=' + getFieldValue( 'name' );
 
+    request.sendAsPost( params );
+    request.send( "validateDataElementGroup.action" );
     return false;
 }
 
@@ -75,9 +78,12 @@ function validateUpdateDataElementGroup()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
-    request.send( 'validateDataElementGroup.action?id=' + getFieldValue( 'id' ) +
-        '&name=' + getFieldValue( 'name' ) );
+    
+    var params = 'id=' + getFieldValue( 'id' ) +
+        '&name=' + getFieldValue( 'name' );
 
+    request.sendAsPost( params );
+    request.send( "validateDataElementGroup.action" );
     return false;
 }
 

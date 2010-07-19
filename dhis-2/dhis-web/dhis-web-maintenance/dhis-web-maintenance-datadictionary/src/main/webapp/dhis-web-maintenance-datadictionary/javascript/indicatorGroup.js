@@ -37,8 +37,11 @@ function validateAddIndicatorGroup()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
-    request.send( 'validateIndicatorGroup.action?name=' + getFieldValue( 'name' ) );
+    
+    var params = 'name=' + getFieldValue( 'name' );
 
+    request.sendAsPost( params );
+    request.send( "validateIndicatorGroup.action" );
     return false;
 }
 
@@ -81,9 +84,11 @@ function validateUpdateIndicatorGroup()
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
-    request.send( 'validateIndicatorGroup.action?id=' + getFieldValue( 'id' ) +
-        '&name=' + getFieldValue( 'name' ) );
+    var params = 'id=' + getFieldValue( 'id' ) +
+        '&name=' + getFieldValue( 'name' );
 
+    request.sendAsPost( params );
+    request.send( "validateIndicatorGroup.action" );
     return false;
 }
 
