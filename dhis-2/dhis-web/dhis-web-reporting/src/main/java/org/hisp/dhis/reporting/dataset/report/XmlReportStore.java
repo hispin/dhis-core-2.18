@@ -46,10 +46,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.reporting.dataset.dataaccess.ReportDataAccess;
-import org.hisp.dhis.reporting.dataset.dataaccess.ReportDataAccessException;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reporting.dataset.utils.FileUtils;
 import org.hisp.dhis.reporting.dataset.utils.JRXmlFilter;
 import org.hisp.dhis.reporting.dataset.utils.XMLUtils;
@@ -86,11 +89,25 @@ public class XmlReportStore
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private ReportDataAccess reportDataAccess;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setReportDataAccess( ReportDataAccess reportDataAccess )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.reportDataAccess = reportDataAccess;
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
     
     @Autowired
@@ -282,104 +299,98 @@ public class XmlReportStore
     public void addReportElement( String reportName, String type, int elementId )
         throws ReportStoreException, LocationManagerException
     {
-        try
+        reportName = XMLUtils.encode( reportName );
+        
+        Report report = getReport( reportName );
+        
+        List<Element> reportElements = report.getReportElements();
+        
+        String elementName = "";
+        
+        if ( type.equals( ReportStore.DATAELEMENT ) )
         {
-            reportName = XMLUtils.encode( reportName );
+            DataElement dataElement = dataElementService.getDataElement( elementId );
             
-            Report report = getReport( reportName );
-            
-            List<Element> reportElements = report.getReportElements();
-            
-            String elementName = "";
-            
-            if ( type.equals( ReportStore.DATAELEMENT ) )
+            if ( reportDisplayProperty.equals( NAME ) )
             {
-                if ( reportDisplayProperty.equals( NAME ) )
-                {
-                    elementName = reportDataAccess.getDataElementName( elementId );
-                }
-                else if ( reportDisplayProperty.equals( SHORT_NAME ) )
-                {
-                    elementName = reportDataAccess.getDataElementShortName( elementId );
-                }
+                elementName = dataElement.getName();
             }
-            else if ( type.equals( ReportStore.INDICATOR ) )
+            else if ( reportDisplayProperty.equals( SHORT_NAME ) )
             {
-                if ( reportDisplayProperty.equals( NAME ) )
-                {
-                    elementName = reportDataAccess.getIndicatorName( elementId );
-                }
-                else if ( reportDisplayProperty.equals( SHORT_NAME ) )
-                {
-                    elementName = reportDataAccess.getIndicatorShortName( elementId );
-                }
+                elementName = dataElement.getShortName();
             }
-            
-            elementName = XMLUtils.encode( elementName );
-            
-            Element element = new Element( type, elementId, elementName );
-            
-            reportElements.add( element );
-            
-            updateReport( reportName, report );
         }
-        catch ( ReportDataAccessException ex )
+        else if ( type.equals( ReportStore.INDICATOR ) )
         {
-            throw new ReportStoreException( "Failed to retrieve data", ex );
+            Indicator indicator = indicatorService.getIndicator( elementId );
+            
+            if ( reportDisplayProperty.equals( NAME ) )
+            {
+                elementName = indicator.getName();
+            }
+            else if ( reportDisplayProperty.equals( SHORT_NAME ) )
+            {
+                elementName = indicator.getShortName();
+            }
         }
+        
+        elementName = XMLUtils.encode( elementName );
+        
+        Element element = new Element( type, elementId, elementName );
+        
+        reportElements.add( element );
+        
+        updateReport( reportName, report );
     }
     
     public void addReportElement( String reportName, String type, int elementId, int organisationUnitId )
         throws ReportStoreException, LocationManagerException
     {
-        try
+        Report report = getReport( reportName );
+        
+        List<Element> reportElements = report.getReportElements();
+        
+        String elementName = "";
+        
+        if ( type.equals( ReportStore.DATAELEMENT ) )
         {
-            Report report = getReport( reportName );
+            DataElement dataElement = dataElementService.getDataElement( elementId );
             
-            List<Element> reportElements = report.getReportElements();
-            
-            String elementName = "";
-            
-            if ( type.equals( ReportStore.DATAELEMENT ) )
+            if ( reportDisplayProperty.equals( NAME ) )
             {
-                if ( reportDisplayProperty.equals( NAME ) )
-                {
-                    elementName = reportDataAccess.getDataElementName( elementId );
-                }
-                else if ( reportDisplayProperty.equals( SHORT_NAME ) )
-                {
-                    elementName = reportDataAccess.getDataElementShortName( elementId );
-                }
+                elementName = dataElement.getName();
             }
-            else if ( type.equals( ReportStore.INDICATOR ) )
+            else if ( reportDisplayProperty.equals( SHORT_NAME ) )
             {
-                if ( reportDisplayProperty.equals( NAME ) )
-                {
-                    elementName = reportDataAccess.getIndicatorName( elementId );
-                }
-                else if ( reportDisplayProperty.equals( SHORT_NAME ) )
-                {
-                    elementName = reportDataAccess.getIndicatorShortName( elementId );
-                }
+                elementName = dataElement.getShortName();
             }
-                        
-            String organisationUnitName = reportDataAccess.getOrganisationUnitShortName( organisationUnitId );
+        }
+        else if ( type.equals( ReportStore.INDICATOR ) )
+        {
+            Indicator indicator = indicatorService.getIndicator( elementId );
+            
+            if ( reportDisplayProperty.equals( NAME ) )
+            {
+                elementName = indicator.getName();
+            }
+            else if ( reportDisplayProperty.equals( SHORT_NAME ) )
+            {
+                elementName = indicator.getShortName();
+            }
+        }
+                    
+        String organisationUnitName = organisationUnitService.getOrganisationUnit( organisationUnitId ).getShortName();
 
-            elementName = XMLUtils.encode( elementName );
-            
-            organisationUnitName = XMLUtils.encode( organisationUnitName );
-            
-            OrgUnitSpecificElement element = new OrgUnitSpecificElement( type, elementId, elementName, 
-                organisationUnitId, organisationUnitName );
-            
-            reportElements.add( element );
-            
-            updateReport( reportName, report );
-        }
-        catch ( ReportDataAccessException ex )
-        {
-            throw new ReportStoreException( "Failed to retrieve data", ex );
-        }
+        elementName = XMLUtils.encode( elementName );
+        
+        organisationUnitName = XMLUtils.encode( organisationUnitName );
+        
+        OrgUnitSpecificElement element = new OrgUnitSpecificElement( type, elementId, elementName, 
+            organisationUnitId, organisationUnitName );
+        
+        reportElements.add( element );
+        
+        updateReport( reportName, report );
     }
     
     public void removeReportElement( String reportName, String id )
@@ -485,58 +496,53 @@ public class XmlReportStore
     public void addChartElement( String reportName, String type, int elementId )
         throws ReportStoreException, LocationManagerException
     {
-        try
+        reportName = XMLUtils.encode( reportName );
+        
+        Report report = getReport( reportName );
+        
+        List<Element> chartElements = report.getChartElements();
+        
+        String elementName = "";
+        
+        if ( type.equals( ReportStore.DATAELEMENT ) )
         {
-            reportName = XMLUtils.encode( reportName );
+            DataElement dataElement = dataElementService.getDataElement( elementId );
             
-            Report report = getReport( reportName );
-            
-            List<Element> chartElements = report.getChartElements();
-            
-            String elementName = "";
-            
-            if ( type.equals( ReportStore.DATAELEMENT ) )
+            if ( reportDisplayProperty.equals( NAME ) )
             {
-                if ( reportDisplayProperty.equals( NAME ) )
-                {
-                    elementName = reportDataAccess.getDataElementName( elementId );
-                }
-                else if ( reportDisplayProperty.equals( SHORT_NAME ) )
-                {
-                    elementName = reportDataAccess.getDataElementShortName( elementId );
-                }
+                elementName = dataElement.getName();
             }
-            else if ( type.equals( ReportStore.INDICATOR ) )
+            else if ( reportDisplayProperty.equals( SHORT_NAME ) )
             {
-                if ( reportDisplayProperty.equals( NAME ) )
-                {
-                    elementName = reportDataAccess.getIndicatorName( elementId );
-                }
-                else if ( reportDisplayProperty.equals( SHORT_NAME ) )
-                {
-                    elementName = reportDataAccess.getIndicatorShortName( elementId );
-                }
+                elementName = dataElement.getShortName();
             }
-            
-            elementName = XMLUtils.encode( elementName );
-            
-            Element element = new Element( type, elementId, elementName );
-                        
-            chartElements.add( element );
-            
-            updateReport( reportName, report );
         }
-        catch ( ReportDataAccessException ex )
+        else if ( type.equals( ReportStore.INDICATOR ) )
         {
-            throw new ReportStoreException( "Failed to retrieve data", ex );
+            Indicator indicator = indicatorService.getIndicator( elementId );
+            
+            if ( reportDisplayProperty.equals( NAME ) )
+            {
+                elementName = indicator.getName();
+            }
+            else if ( reportDisplayProperty.equals( SHORT_NAME ) )
+            {
+                elementName = indicator.getShortName();
+            }
         }
+        
+        elementName = XMLUtils.encode( elementName );
+        
+        Element element = new Element( type, elementId, elementName );
+                    
+        chartElements.add( element );
+        
+        updateReport( reportName, report );
     }
     
     public void addChartElement( String reportName, String type, int elementId, int organisationUnitId )
         throws ReportStoreException, LocationManagerException
     {
-        try
-        {
             reportName = XMLUtils.encode( reportName );
             
             Report report = getReport( reportName );
@@ -547,29 +553,33 @@ public class XmlReportStore
             
             if ( type.equals( ReportStore.DATAELEMENT ) )
             {
+                DataElement dataElement = dataElementService.getDataElement( elementId );
+                
                 if ( reportDisplayProperty.equals( NAME ) )
                 {
-                    elementName = reportDataAccess.getDataElementName( elementId );
+                    elementName = dataElement.getName();
                 }
                 else if ( reportDisplayProperty.equals( SHORT_NAME ) )
                 {
-                    elementName = reportDataAccess.getDataElementShortName( elementId );
+                    elementName = dataElement.getShortName();
                 }
             }
             else if ( type.equals( ReportStore.INDICATOR ) )
             {
+                Indicator indicator = indicatorService.getIndicator( elementId );
+                
                 if ( reportDisplayProperty.equals( NAME ) )
                 {
-                    elementName = reportDataAccess.getIndicatorName( elementId );
+                    elementName = indicator.getName();
                 }
                 else if ( reportDisplayProperty.equals( SHORT_NAME ) )
                 {
-                    elementName = reportDataAccess.getIndicatorShortName( elementId );
+                    elementName = indicator.getShortName();
                 }
             }
-            
-            String organisationUnitName = reportDataAccess.getOrganisationUnitShortName( organisationUnitId );
-            
+
+            String organisationUnitName = organisationUnitService.getOrganisationUnit( organisationUnitId ).getShortName();
+
             elementName = XMLUtils.encode( elementName );
             
             organisationUnitName = XMLUtils.encode( organisationUnitName );
@@ -580,11 +590,6 @@ public class XmlReportStore
             chartElements.add( element );
             
             updateReport( reportName, report );
-        }
-        catch ( ReportDataAccessException ex )
-        {
-            throw new ReportStoreException( "Failed to retrieve data", ex );
-        }
     }
     
     public void removeChartElement( String reportName, String id )
@@ -745,5 +750,3 @@ public class XmlReportStore
         return report.getChartTemplate();
     }
 }
-
-

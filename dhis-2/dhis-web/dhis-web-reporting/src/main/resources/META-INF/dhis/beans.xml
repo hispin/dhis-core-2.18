@@ -408,19 +408,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <!-- Custom DataSet Report -->
 	
-  <!-- DataAccess -->
-	
-  <bean id="org.hisp.dhis.reporting.dataset.dataaccess.ReportDataAccess" 
-    class="org.hisp.dhis.reporting.dataset.dataaccess.Dhis20ReportDataAccess" 
-    scope="prototype">
-    <property name="organisationUnitService"
-      ref ="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>		 
-  </bean>
-	
   <!-- Selection State -->
 	
   <bean id="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"
@@ -438,8 +425,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.dataset.report.ReportStore" 
     class="org.hisp.dhis.reporting.dataset.report.XmlReportStore" 
     scope="prototype">
-    <property name="reportDataAccess"
-      ref="org.hisp.dhis.reporting.dataset.dataaccess.ReportDataAccess"/>
+    <property name="organisationUnitService"
+      ref ="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="reportDisplayProperty" value="name"/>
   </bean>
   

@@ -35,7 +35,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.reporting.dataset.dataaccess.ReportDataAccess;
 import org.hisp.dhis.reporting.dataset.report.ReportStore;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -61,13 +60,6 @@ public abstract class AbstractAction
         this.reportStore = reportStore;
     }
     
-    protected ReportDataAccess reportDataAccess;
-
-    public void setReportDataAccess( ReportDataAccess reportDataAccess )
-    {
-        this.reportDataAccess = reportDataAccess;
-    }
-
     protected OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -330,9 +322,6 @@ public abstract class AbstractAction
     protected int getSelectedOrganisationUnitId()
     {
         int organisationUnitId = 0;
-
-        // OrganisationUnit selectedUnit =
-        // selectionManager.getSelectedOrganisationUnit();
 
         OrganisationUnit selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
 
