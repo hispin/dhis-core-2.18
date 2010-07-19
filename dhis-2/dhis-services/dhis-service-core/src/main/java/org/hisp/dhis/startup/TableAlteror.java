@@ -149,6 +149,14 @@ public class TableAlteror
         executeSql( "ALTER TABLE section DROP COLUMN label" );
         executeSql( "DROP TABLE sectionmembers" );
         
+        // set varchar to text
+        executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
+        executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
+        executeSql( "ALTER TABLE datadictionary ALTER description TYPE text" );
+        executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
+        executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
+        executeSql( "ALTER TABLE translation ALTER value TYPE text" );
+        
         log.info( "Tables updated" );
     }
 
