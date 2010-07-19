@@ -158,7 +158,7 @@
 		#foreach ( $col in $allCounts )
 			#set ($i = ($i + 1))
 			#set ( $rowMeta = $rowIt.next() )
-			<tr #if ($i%2 == 1) class="odd" #else class="par" #end >
+			<tr>
 			#if ( $searchOption=="OrganisationUnit" && !$parent && $rowMeta.id)
 			#set ( $urlLink = "searchResult.action?searchOption=OrganisationUnit&amp;selectedUnitChanger=" + $rowMeta.id + "&amp;periodType=" + $periodTypeId + "&amp;toDate=" + $toDate + "&amp;fromDate=" + $fromDate )
 				<td style="min-width:200px;cursor:pointer" onclick="javascript:viewDrillDownMenu( '$urlLink', '$rowMeta.id' );" title="$i18n.getString('click_on_this_orgunit')">$rowMeta.name</td>

@@ -93,8 +93,6 @@ public class GetSqlViewObjectAction
         }
 
         sqlViewObject = sqlViewService.getSqlView( id );
-        
-        System.out.println( "\n\n sqlViewObjectList : " + sqlViewObject.toString() + "\n" );
 
         return SUCCESS;
     }

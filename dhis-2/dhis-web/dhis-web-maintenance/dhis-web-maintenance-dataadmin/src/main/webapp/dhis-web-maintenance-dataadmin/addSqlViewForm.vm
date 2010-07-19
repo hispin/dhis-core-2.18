@@ -21,7 +21,7 @@
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
-<h3>$encoder.htmlEncode( $i18n.getString( "create_new_resource_viewer" ) )</h3>
+<h3>$encoder.htmlEncode( $i18n.getString( "add_new_sql_view" ) )</h3>
 
 <form id="addSqlViewForm" action="addSqlView.action" method="post" >
 

@@ -12,17 +12,13 @@
 			<table width="100%" class="listTable">
 				<thead>		
 					<tr>
-						<th style="width:20em;">$i18n.getString( "name" )</th>
-						<th style="width:20em;">$i18n.getString( "description" )</th>
-						<th style="width:30em;">$i18n.getString( "sql_statement" )</th>
+						<th style="width:70em;">$i18n.getString( "sql_statement" )</th>
 						<th style="width:145px;">$i18n.getString( "operations" )</th>
 					</tr>
 				</thead>
 				<tbody id="list">
 					#foreach( $sqlViewObject in $sqlViewObjectList )
 					<tr id="tr${sqlViewObject.id}">
-						<td onclick="showSqlViewDetails( $sqlViewObject.id )">$!encoder.htmlEncode( $sqlViewObject.name )</td>
-						<td onclick="showSqlViewDetails( $sqlViewObject.id )">$!encoder.htmlEncode( $sqlViewObject.description )</td>
 						<td onclick="showSqlViewDetails( $sqlViewObject.id )">$!encoder.htmlEncode( $sqlViewObject.sqlQuery )</td>
 						<td><a href="javascript:runSqlViewQuery( $sqlViewObject.id )" title="$i18n.getString( 'run' )"><img src="../images/start_process.png" alt="$i18n.getString( 'run' )"></a>
 						<a href="javascript:showDataSqlViewForm( $sqlViewObject.id )" title="$i18n.getString( 'view' )"><img src="../images/view_sections.png" alt="$i18n.getString( 'view' )"></a>
@@ -56,8 +52,6 @@
 		</td>
 	</tr>
 </table>
-
-<span id="message"></span>
 
 <script type="text/javascript">
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';

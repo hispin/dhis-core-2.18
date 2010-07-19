@@ -107,7 +107,8 @@ public class RegenerateAllSqlViewTablesAction
             catch ( SQLException e )
             {
                 holder.close();
-                throw new RuntimeException( "Failed to create view: " + viewName, e );
+                message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + viewName;
+                return ERROR;
             }
 
             message += i18n.getString( "sql_view_table_name" ) + " <strong>[ " + viewName + " ]</strong> "

@@ -74,7 +74,8 @@ function runSqlViewQuery( viewId )
 		{
 			if ( json.response == "success" )
 			{
-				setMessage( json.message );
+				setHeaderDelayMessage( json.message );
+				hideWarning();
 			}
 			else if ( json.response == "error" )
 			{
@@ -94,6 +95,20 @@ function selectALL( checkingStatus )
 	
 		listRadio.item(i).checked = checkingStatus;
 	}
+	
+	var button1 = document.getElementById("selectAllButton");
+    var button2 = document.getElementById("unselectAllButton");
+	
+	if (checkingStatus == true)
+	{
+		button2.style.display = "block";
+		button1.style.display = "none";
+	}
+	else
+	{
+		button1.style.display = "block";
+		button2.style.display = "none";
+	}
 }
 
 function regenerateResourceTableAndViewTables()
@@ -109,6 +124,7 @@ function regenerateResourceTableAndViewTables()
     if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
         organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
     {
+		hideWarning();
         setWaitMessage( i18n_regenerating_resource_tables_and_views );
 		
         var url = "dropAllSqlViewTables.action";
@@ -194,6 +210,7 @@ function generateAllSqlViewTables()
 			{
 				setFieldValue( 'warningArea', json.message );
 	
+				hideMessage();
 				showWarning();
 			}
 		}
@@ -220,5 +237,4 @@ function showDataSqlViewForm( viewId )
 			}
 		}
 	);
-
 }

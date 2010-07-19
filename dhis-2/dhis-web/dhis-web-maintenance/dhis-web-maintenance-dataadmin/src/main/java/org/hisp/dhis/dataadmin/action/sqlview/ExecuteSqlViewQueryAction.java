@@ -117,12 +117,13 @@ public class ExecuteSqlViewQueryAction
         {
             dropView( viewName, holder );
 
-            holder.getStatement().executeUpdate(
-                "CREATE VIEW " + viewName + " AS " + sqlViewInstance.getSqlQuery() );
+            holder.getStatement().executeUpdate( "CREATE VIEW " + viewName + " AS " + sqlViewInstance.getSqlQuery() );
         }
         catch ( SQLException e )
         {
-            throw new RuntimeException( "Failed to create view: " + viewName, e );
+            message = i18n.getString( "failed_to_create_view_table_for" ) + ": <strong>" + sqlViewInstance.getName()
+                + "</strong>";
+            return ERROR;
         }
         finally
         {

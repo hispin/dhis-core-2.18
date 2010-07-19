@@ -52,7 +52,7 @@ public class HibernateSqlViewExpandStore
 {
     private static final String PREFIX_SELECT_QUERY = "SELECT * FROM ";
 
-    private static final String PREFIX_VIEWNAME = "__sqlview";
+    private static final String PREFIX_VIEWNAME = "_view";
 
     private static final String[] types = { "VIEW" };
 
