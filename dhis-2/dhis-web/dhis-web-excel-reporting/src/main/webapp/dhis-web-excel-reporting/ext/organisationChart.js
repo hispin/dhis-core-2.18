@@ -76,7 +76,8 @@ Ext.onReady(function(){
 				'select': {
 					fn: function() {						
 						dataElementComboOc.reset();
-						dataElementsStoreOc.baseParams = { id: dataElementGroupComboOc.getValue() };											
+						dataElementsStoreOc.baseParams = { id: dataElementGroupComboOc.getValue() };		
+						dataElementsStoreOc.reload();					
 					},
 					scope: this
 				}
@@ -120,7 +121,8 @@ Ext.onReady(function(){
 				'select': {
 					fn: function() {						
 						indicatorsComboOc.reset();
-						indicatorsStoreOc.baseParams = { id: indicatorGroupComboOc.getValue() };													
+						indicatorsStoreOc.baseParams = { id: indicatorGroupComboOc.getValue() };	
+						indicatorsStoreOc.reload();	
 					},
 					scope: this
 				}

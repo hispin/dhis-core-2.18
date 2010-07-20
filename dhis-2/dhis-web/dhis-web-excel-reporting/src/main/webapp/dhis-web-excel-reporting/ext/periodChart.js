@@ -86,7 +86,8 @@ Ext.onReady(function(){
 				'select': {
 					fn: function() {						
 						dataElementComboPc.reset();
-						dataElementsStorePc.baseParams = { id: dataElementGroupComboPc.getValue() };											
+						dataElementsStorePc.baseParams = { id: dataElementGroupComboPc.getValue() };	
+						dataElementsStorePc.reload();	
 					},
 					scope: this
 				}
@@ -130,7 +131,8 @@ Ext.onReady(function(){
 				'select': {
 					fn: function() {						
 						indicatorsComboPc.reset();
-						indicatorsStorePc.baseParams = { id: indicatorGroupComboPc.getValue() };													
+						indicatorsStorePc.baseParams = { id: indicatorGroupComboPc.getValue() };		
+						indicatorsStorePc.reload();	
 					},
 					scope: this
 				}
