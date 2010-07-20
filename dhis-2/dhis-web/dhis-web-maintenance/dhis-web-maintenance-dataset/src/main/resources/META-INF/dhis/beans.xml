@@ -347,6 +347,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
+		<property name="userSettingService">
+			<ref bean="org.hisp.dhis.user.UserSettingService"/>
+		</property>
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction"
