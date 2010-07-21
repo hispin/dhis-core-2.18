@@ -24,7 +24,7 @@
 
 #else
     
-    #if ( $customDataEntryFormExists && !$useDefaultForm )
+    #if ( $customDataEntryFormExists && $displayMode=="customform" )
     
         #foreach( $optionCombo in $allOptionCombos )
             

@@ -61,7 +61,11 @@ import com.opensymphony.xwork2.ActionSupport;
 public class SelectAction
     extends ActionSupport
 {
+    private static final String CUSTOM_FORM = "customform";
+
     private static final String SECTION_FORM = "sectionform";
+
+    private static final String DEFAULT_FORM = "defaultform";
 
     private static final Log log = LogFactory.getLog( SelectAction.class );
 
@@ -161,18 +165,6 @@ public class SelectAction
         return haveSection;
     }
 
-    private String useSectionForm;
-
-    public String getUseSectionForm()
-    {
-        return useSectionForm;
-    }
-
-    public void setUseSectionForm( String useSectionForm )
-    {
-        this.useSectionForm = useSectionForm;
-    }
-
     private Boolean customDataEntryFormExists;
 
     public Boolean getCustomDataEntryFormExists()
@@ -180,16 +172,16 @@ public class SelectAction
         return this.customDataEntryFormExists;
     }
 
-    private String useDefaultForm;
+    private String displayMode;
 
-    public String getUseDefaultForm()
+    public String getDisplayMode()
     {
-        return useDefaultForm;
+        return displayMode;
     }
 
-    public void setUseDefaultForm( String useDefaultForm )
+    public void setDisplayMode( String displayMode )
     {
-        this.useDefaultForm = useDefaultForm;
+        this.displayMode = displayMode;
     }
 
     private Integer selectedDataSetId;
@@ -214,18 +206,6 @@ public class SelectAction
     public Integer getSelectedPeriodIndex()
     {
         return selectedPeriodIndex;
-    }
-
-    private String useShortName;
-
-    public void setUseShortName( String useShortName )
-    {
-        this.useShortName = useShortName;
-    }
-
-    public String getUseShortName()
-    {
-        return useShortName;
     }
 
     private Collection<Integer> calculatedDataElementIds;
@@ -347,7 +327,7 @@ public class SelectAction
                 period = selectedStateManager.getSelectedPeriod();
 
                 DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period );
-                
+
                 if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
                 {
                     locked = true;
@@ -366,17 +346,17 @@ public class SelectAction
         period = selectedStateManager.getSelectedPeriod();
 
         // ---------------------------------------------------------------------
-        // Get Section Information
-        // ---------------------------------------------------------------------
-
-        haveSection = dataEntryScreenManager.hasSection( selectedDataSet );
-
-        // ---------------------------------------------------------------------
         // Get CalculatedDataElementInformation
         // ---------------------------------------------------------------------
 
         calculatedDataElementIds = dataEntryScreenManager.getAllCalculatedDataElements( selectedDataSet );
         calculatedDataElementMap = dataEntryScreenManager.getNonSavedCalculatedDataElements( selectedDataSet );
+
+        // ---------------------------------------------------------------------
+        // Get Section Information
+        // ---------------------------------------------------------------------
+
+        haveSection = dataEntryScreenManager.hasSection( selectedDataSet );
 
         // ---------------------------------------------------------------------
         // Get the custom data entry form if any
@@ -392,12 +372,30 @@ public class SelectAction
 
         if ( selectedDataSetId != null && selectedPeriodIndex != null && organisationUnit != null )
         {
-            registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period, organisationUnit );
+            registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period,
+                organisationUnit );
 
             registrationDate = registration != null ? registration.getDate() : new Date();
-        }        
+        }
 
-        if ( useSectionForm != null )
+        if ( displayMode == null )
+        {
+            if ( customDataEntryFormExists )
+            {
+                displayMode = CUSTOM_FORM;
+            }
+            else if ( haveSection )
+            {
+                displayMode = SECTION_FORM;
+            }            
+        }
+        
+        if( !customDataEntryFormExists && !haveSection )
+        {
+            displayMode = DEFAULT_FORM;
+        }
+
+        if ( displayMode.equals( SECTION_FORM ) && haveSection )
         {
             return SECTION_FORM;
         }

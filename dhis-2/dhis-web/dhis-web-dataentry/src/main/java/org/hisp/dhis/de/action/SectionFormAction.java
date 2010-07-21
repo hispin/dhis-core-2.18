@@ -311,6 +311,18 @@ public class SectionFormAction
         return zeroValueSaveMode;
     }
 
+    private String displayMode;
+
+    public String getDisplayMode()
+    {
+        return displayMode;
+    }
+
+    public void setDisplayMode( String displayMode )
+    {
+        this.displayMode = displayMode;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -367,6 +379,7 @@ public class SectionFormAction
 
         for ( Section section : sections )
         {
+
             if ( section.getDataElements().size() > 0 )
             {
                 orderedCategoryCombos.add( section.getDataElements().iterator().next().getCategoryCombo() );
