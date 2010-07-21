@@ -709,7 +709,7 @@ public abstract class GenerateReportSupport
         Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
             endDate, organisationUnit );
 
-        if ( dataElement.isZeroIsSignificant() && aggregatedValue == null )
+        if ( aggregatedValue == null )
         {
             aggregatedValue = 0.0;
         }

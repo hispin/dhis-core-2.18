@@ -135,9 +135,9 @@ Ext.onReady(function()
 			var id = dataSetComboP.getValue();
 			
 			if(periods==''){			
-				setHeaderDelayMessage( '<span style="color:#FF0000;font-size:12pt">' + i18n_period_is_null + '</span>' );
+				showWarningMessage( i18n_period_is_null );
 			}else if(id==''){
-				setHeaderDelayMessage( '<span style="color:#FF0000;font-size:12pt">' + i18n_dataset_is_null + '</span>' );
+				showWarningMessage( i18n_dataset_is_null );
 			}else{			
 				var columns = periods.split(',');	
 				
@@ -224,9 +224,9 @@ Ext.onReady(function()
 			var id = periodComboD.getValue();
 			
 			if(id==''){
-				setHeaderDelayMessage( '<span style="color:#FF0000;font-size:12pt">' + i18n_period_is_null + '</span>' );
+				showWarningMessage( i18n_period_is_null  );
 			}else if(datasets==''){
-				setHeaderDelayMessage( '<span style="color:#FF0000;font-size:12pt">' + i18n_dataset_is_null + '</span>' );
+				showWarningMessage( i18n_dataset_is_null  );
 			}else{			
 				var columns = datasets.split(',');				
 				
@@ -376,7 +376,7 @@ function saveBookmarkCompleted( description, contain, extraContain )
 		method: 'POST',
 		params: { format:'json', description: description, contain: contain, extraContain: extraContain },
 		success: function( json ) {
-			setHeaderDelayMessage( i18n_bookmark_success );
+			showWarningMessage( i18n_bookmark_success );
 			getALLBookmarkCompletedReport();
 		}
 	});
