@@ -49,7 +49,7 @@
     <code/>
     <openingDate/>
     <closedDate/>
-    <active/>
+    <active>true</active>
     <comment/>
     <geoCode/>
     <xsl:apply-templates select="./child::node()/child::node()/gml:Polygon|./child::node()/child::node()/gml:MultiPolygon|./child::node()/child::node()/gml:Point"/>
