@@ -171,7 +171,7 @@ Ext.onReady(function(){
 			
 				if($("#axis-x-de-oc").css("display")=="block"){				
 					yaxis = dataElementComboOc.getValue();				
-					url = path + 'generateOrganisationUnitDEChart' + type;	
+					url = path + 'generateOrganisationDEChart' + type;	
 					xTitle =  "[" + i18n_dataelements + ":" + $("#data-elements-oc").val();
 					xTitle += "-";					
 					xTitle += i18n_period + ":" + $("#periods-oc").val() + "]";

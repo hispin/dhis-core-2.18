@@ -96,7 +96,7 @@ function generateReportExcel() {
 		return;
 	}
 	
-	$("#processing").showAtCenter( true );
+	lockScreen();
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -115,9 +115,8 @@ function generateReportExcelReceived( xmlObject ) {
 	
 	if( type == "success" ) {
 	
-		window.location = "downloadFile.action";
-		deleteDivEffect();
-		$("#processing").hide();
+		window.location = "downloadFile.action";		
+		unLockScreen();
 	}
 }
 
@@ -146,7 +145,7 @@ function getALLReportExcelByGroupReceived( xmlObject ) {
 
 function generateAdvancedReportExcel() {	
 
-	$("#processing").showAtCenter( true );	
+	lockScreen();	
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );

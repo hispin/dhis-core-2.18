@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="../dhis-web-commons/util/ui.datepicker.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/util/jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.blockUI.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/util/jquery.metadata.js"></script>
 	
     <script type="text/javascript" src="../main.js"></script>
