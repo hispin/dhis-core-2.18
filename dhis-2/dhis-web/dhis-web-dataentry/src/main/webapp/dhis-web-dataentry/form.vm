@@ -9,7 +9,7 @@
 
 <div id="entryform">
 
-#if ( $customDataEntryFormExists && !$useDefaultForm )
+#if ( $customDataEntryFormExists && $displayMode=="customform" )
 			
 		#foreach( $optionCombo in $orderdCategoryOptionCombos )
 			

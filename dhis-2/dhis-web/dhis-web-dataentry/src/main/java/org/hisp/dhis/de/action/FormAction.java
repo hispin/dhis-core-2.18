@@ -292,6 +292,18 @@ public class FormAction
     {
         return optionComboId;
     }
+    
+    private String displayMode;
+
+    public String getDisplayMode()
+    {
+        return displayMode;
+    }
+
+    public void setDisplayMode( String displayMode )
+    {
+        this.displayMode = displayMode;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation

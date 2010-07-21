@@ -74,7 +74,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class FormAction
     implements Action
-{   
+{
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -360,6 +360,18 @@ public class FormAction
     }
 
     private String disabled = " ";
+
+    private String displayMode;
+
+    public String getDisplayMode()
+    {
+        return displayMode;
+    }
+
+    public void setDisplayMode( String displayMode )
+    {
+        this.displayMode = displayMode;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation

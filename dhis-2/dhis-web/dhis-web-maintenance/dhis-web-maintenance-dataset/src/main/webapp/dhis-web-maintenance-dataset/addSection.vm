@@ -101,8 +101,8 @@
 
       <tr>
         <td colspan="3">
-          <input type="submit" value="$i18n.getString( "save" )"><input type="button" 
-            onclick="window.location.href='section.action'" value="$i18n.getString( "cancel" )">
+          <input type="submit" value="$i18n.getString( "save" )">
+          <input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( "cancel" )">
         </td>
       </tr>
     </tbody>
