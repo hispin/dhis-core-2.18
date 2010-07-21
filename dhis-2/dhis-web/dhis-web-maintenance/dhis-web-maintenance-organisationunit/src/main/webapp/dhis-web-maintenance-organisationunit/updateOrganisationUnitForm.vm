@@ -48,7 +48,7 @@
 	</tr>
 	<tr>
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="openingDate" name="openingDate" value="$format.formatDate( $organisationUnit.openingDate )" style="width:20em" class="{validate:{required:true}}"></td>
+		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em" class="{validate:{required:true}}"></td>
 		<td></td>
 	</tr>	
 
