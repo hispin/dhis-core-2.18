@@ -41,29 +41,39 @@ function Selection()
 
     this.select = function( unitId )
     {
-        var request = new Request();
-        request.setCallbackSuccess( responseReceived );
-        request.setResponseTypeXML( 'selected' );
-        
         var unitTag = document.getElementById( getTagId( unitId ));
         var linkTags = unitTag.getElementsByTagName( 'a' );
 
         if ( linkTags[0].className == 'selected' )
         {
-            request.send( organisationUnitTreePath + 'removeorgunit.action?id=' + unitId );
+			$.post(organisationUnitTreePath + "removeorgunit.action",{
+				id:unitId
+			}, function (data){
+				responseReceived(data.firstChild);
+			},'xml');
+			
             linkTags[0].className = '';
         }
         else
         {
             if ( multipleSelectionAllowed )
             {
-                request.send( organisationUnitTreePath + 'addorgunit.action?id=' + unitId );
+				$.post(organisationUnitTreePath + "addorgunit.action",{
+					id:unitId
+				}, function (data){
+					responseReceived(data.firstChild);
+				},'xml');
+				
                 linkTags[0].className = 'selected';
             }
             else
             {
-                request.send( organisationUnitTreePath + 'setorgunit.action?id=' + unitId );
-
+				$.post(organisationUnitTreePath + "setorgunit.action",{
+					id:unitId
+				}, function (data){
+					responseReceived(data.firstChild);
+				},'xml');	
+		
                 // Remove all select marks
                 var treeTag = document.getElementById( 'orgUnitTree' );
                 var linkTags = treeTag.getElementsByTagName( 'a' );

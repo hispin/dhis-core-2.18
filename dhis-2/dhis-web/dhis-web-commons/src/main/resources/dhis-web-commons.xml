@@ -188,21 +188,21 @@
 
 		<action name="setorgunit"
 			class="org.hisp.dhis.ouwt.action.SetSelectedOrganisationUnitAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="addorgunit"
 			class="org.hisp.dhis.ouwt.action.AddSelectedOrganisationUnitAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="removeorgunit"
 			class="org.hisp.dhis.ouwt.action.RemoveSelectedOrganisationUnitAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
