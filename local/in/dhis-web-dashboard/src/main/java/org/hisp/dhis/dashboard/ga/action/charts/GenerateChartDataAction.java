@@ -835,34 +835,32 @@ public class GenerateChartDataAction
 
                     if ( ougSetCB == null )
                     {
-                        serviceValues[countForServiceList][countForPeriodList] = aggregationService
-                            .getAggregatedIndicatorValue( ind, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
-                        numVal = aggregationService.getAggregatedNumeratorValue( ind, p.getStartDate(), p.getEndDate(),
-                            selectedOrgUnit );
-                        denVal = aggregationService.getAggregatedDenominatorValue( ind, p.getStartDate(), p
-                            .getEndDate(), selectedOrgUnit );
+                        Double temp1 = aggregationService.getAggregatedIndicatorValue( ind, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                        if( temp1 == null ) temp1 = 0.0;
+                        serviceValues[countForServiceList][countForPeriodList] = temp1;
+                        Double temp2 = aggregationService.getAggregatedNumeratorValue( ind, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                        if( temp2 == null ) temp2 = 0.0;
+                        numVal = temp2;
+                        Double temp3 = aggregationService.getAggregatedDenominatorValue( ind, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                        if( temp3 == null ) temp3 = 0.0;
+                        denVal = temp3;
                     }
                     else
                     {
                         double aggValue = 0.0;
-                        List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup
-                            .getMembers() );
+                        List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
+                        
                         Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                         while ( orgUnitsIterator.hasNext() )
                         {
                             OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
-                            double tempd = aggregationService.getAggregatedIndicatorValue( ind, p.getStartDate(), p
-                                .getEndDate(), ou );
-                            double tempnum = aggregationService.getAggregatedNumeratorValue( ind, p.getStartDate(), p
-                                .getEndDate(), ou );
-                            double tempden = aggregationService.getAggregatedDenominatorValue( ind, p.getStartDate(), p
-                                .getEndDate(), ou );
-                            if ( tempd == -1 )
-                                tempd = 0.0;
-                            if ( tempnum == -1 )
-                                tempnum = 0.0;
-                            if ( tempden == -1 )
-                                tempden = 0.0;
+                            Double tempd = aggregationService.getAggregatedIndicatorValue( ind, p.getStartDate(), p.getEndDate(), ou );
+                            Double tempnum = aggregationService.getAggregatedNumeratorValue( ind, p.getStartDate(), p.getEndDate(), ou );
+                            Double tempden = aggregationService.getAggregatedDenominatorValue( ind, p.getStartDate(), p.getEndDate(), ou );
+                            
+                            if( tempd == null )  tempd = 0.0;
+                            if( tempnum == null )  tempnum = 0.0;
+                            if( tempden == null ) tempden = 0.0;
 
                             aggValue += tempd;
                             numVal += tempnum;
@@ -883,11 +881,11 @@ public class GenerateChartDataAction
                     String values = selectedOrgUnit.getId() + ":"+ dElement.getId() + ":"+ decoc.getId() + ":" + p.getId();
                     selectedValues.add(values);
                     
-                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    if( deSelection.equalsIgnoreCase( "optioncombo" ) )
                     {
-                        if ( ougSetCB == null )
+                        if( ougSetCB == null )
                         {
-                            if ( aggDataCB == null )
+                            if( aggDataCB == null )
                             {
                                 DataValue dv1 = dataValueService.getDataValue( selectedOrgUnit, dElement, p, decoc );
                                 if ( dv1 != null )
@@ -898,9 +896,9 @@ public class GenerateChartDataAction
                             }
                             else
                             {
-                                serviceValues[countForServiceList][countForPeriodList] = aggregationService
-                                    .getAggregatedDataValue( dElement, decoc, p.getStartDate(), p.getEndDate(),
-                                        selectedOrgUnit );
+                                Double temp = aggregationService.getAggregatedDataValue( dElement, decoc, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                                if(temp == null ) temp = 0.0;
+                                serviceValues[countForServiceList][countForPeriodList] = temp;
                             }
                         }
                         else
@@ -908,8 +906,8 @@ public class GenerateChartDataAction
                             if ( aggDataCB == null )
                             {
                                 double aggValue = 0.0;
-                                List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup
-                                    .getMembers() );
+                                List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
+                                
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
@@ -928,16 +926,14 @@ public class GenerateChartDataAction
                             else
                             {
                                 double aggValue = 0.0;
-                                List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup
-                                    .getMembers() );
+                                List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
+                                
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
                                     OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
-                                    double tempd = aggregationService.getAggregatedDataValue( dElement, decoc, p
-                                        .getStartDate(), p.getEndDate(), ou );
-                                    if ( tempd == -1 )
-                                        tempd = 0.0;
+                                    Double tempd = aggregationService.getAggregatedDataValue( dElement, decoc, p.getStartDate(), p.getEndDate(), ou );
+                                    if ( tempd == null ) tempd = 0.0;
                                     aggValue += tempd;
                                 }
                                 serviceValues[countForServiceList][countForPeriodList] = aggValue;
@@ -956,15 +952,13 @@ public class GenerateChartDataAction
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                         while ( optionComboIterator.hasNext() )
                         {
-                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                                .next();
+                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
 
                             if ( ougSetCB == null )
                             {
                                 if ( aggDataCB == null )
                                 {
-                                    DataValue dv1 = dataValueService
-                                        .getDataValue( selectedOrgUnit, dElement, p, decoc1 );
+                                    DataValue dv1 = dataValueService.getDataValue( selectedOrgUnit, dElement, p, decoc1 );
                                     if ( dv1 != null )
                                         aggDataValue = Double.parseDouble( dv1.getValue() );
                                     else
@@ -972,21 +966,20 @@ public class GenerateChartDataAction
                                 }
                                 else
                                 {
-                                    aggDataValue = aggregationService.getAggregatedDataValue( dElement, decoc1, p
-                                        .getStartDate(), p.getEndDate(), selectedOrgUnit );
-                                    // System.out.println("AggValue for DE : "+dElement.getName()+" Period: "+p.getStartDate()+" -- "+p.getEndDate()+" and OrgUnit : "+selectedOrgUnit.getName()+" is : "+aggDataValue);
+                                    Double temp = aggregationService.getAggregatedDataValue( dElement, decoc1, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                                    if( temp == null ) temp = 0.0;
+                                    aggDataValue = temp;
                                 }
-
                             }
                             else
                             {
-                                List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup
-                                    .getMembers() );
+                                List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
+                                
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
                                     OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
-                                    double tempd = 0.0;
+                                    Double tempd = 0.0;
                                     if ( aggDataCB == null )
                                     {
                                         DataValue dv1 = dataValueService.getDataValue( ou, dElement, p, decoc1 );
@@ -998,13 +991,13 @@ public class GenerateChartDataAction
                                         tempd = aggregationService.getAggregatedDataValue( dElement, decoc1, p
                                             .getStartDate(), p.getEndDate(), ou );
                                     }
-                                    if ( tempd == -1 )
+                                    if ( tempd == null )
                                         tempd = 0.0;
                                     aggDataValue += tempd;
                                 }
                             }
-                            if ( aggDataValue == -1 )
-                                aggDataValue = 0.0;
+                            //if ( aggDataValue == null )
+                            //    aggDataValue = 0.0;
                             serviceValues[countForServiceList][countForPeriodList] += aggDataValue;
                         }
                     }
@@ -1325,18 +1318,15 @@ public class GenerateChartDataAction
                         while ( orgUnitsIterator.hasNext() )
                         {
                             OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
-                            double tempd = aggregationService.getAggregatedIndicatorValue( ind, startPeriod
-                                .getStartDate(), endPeriod.getEndDate(), ou );
-                            double tempnum = aggregationService.getAggregatedNumeratorValue( ind, startPeriod
-                                .getStartDate(), endPeriod.getEndDate(), ou );
-                            double tempden = aggregationService.getAggregatedDenominatorValue( ind, startPeriod
-                                .getStartDate(), endPeriod.getEndDate(), ou );
-                            if ( tempd == -1 )
-                                tempd = 0.0;
-                            if ( tempnum == -1 )
-                                tempnum = 0.0;
-                            if ( tempden == -1 )
-                                tempden = 0.0;
+                            
+                            Double tempd = aggregationService.getAggregatedIndicatorValue( ind, startPeriod.getStartDate(), endPeriod.getEndDate(), ou );
+                            Double tempnum = aggregationService.getAggregatedNumeratorValue( ind, startPeriod.getStartDate(), endPeriod.getEndDate(), ou );
+                            Double tempden = aggregationService.getAggregatedDenominatorValue( ind, startPeriod.getStartDate(), endPeriod.getEndDate(), ou );
+                            
+                            if ( tempd == null ) tempd = 0.0;
+                            if ( tempnum == null ) tempnum = 0.0;
+                            if ( tempden == null ) tempden = 0.0;
+                            
                             aggValue += tempd;
                             numVal += numVal;
                             denVal += denVal;
@@ -1352,8 +1342,7 @@ public class GenerateChartDataAction
                 else
                 {
 
-                    DataElementGroup deg = dataElementService
-                        .getDataElementGroupByName( "Annual State Baseline data (%)" );
+                    DataElementGroup deg = dataElementService.getDataElementGroupByName( "Annual State Baseline data (%)" );
                     if ( deg != null && deg.getMembers().contains( dElement ) )
                     {
                         if ( facilityLB.equals( "children" ) )
@@ -1393,16 +1382,16 @@ public class GenerateChartDataAction
                             }
                             else
                             {
-                                serviceValues[countForServiceList][countForChildOrgUnitList] = aggregationService
-                                    .getAggregatedDataValue( dElement, decoc, startPeriod.getStartDate(), endPeriod
-                                        .getEndDate(), childOrgUnit );
+                                Double temp = aggregationService.getAggregatedDataValue( dElement, decoc, startPeriod.getStartDate(), endPeriod.getEndDate(), childOrgUnit );
+                                if( temp == null ) temp = 0.0;
+                                serviceValues[countForServiceList][countForChildOrgUnitList] = temp;
                             }
                         }
                         else
                         {
                             double aggValue = 0.0;
-                            List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( childOrgUnitGroup
-                                .getMembers() );
+                            List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( childOrgUnitGroup.getMembers() );
+                            
                             Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                             while ( orgUnitsIterator.hasNext() )
                             {
@@ -1423,12 +1412,13 @@ public class GenerateChartDataAction
                                 }
                                 else
                                 {
-                                    tempd = aggregationService.getAggregatedDataValue( dElement, decoc, startPeriod
-                                        .getStartDate(), endPeriod.getEndDate(), ou );
+                                    Double temp = aggregationService.getAggregatedDataValue( dElement, decoc, startPeriod.getStartDate(), endPeriod.getEndDate(), ou );
+                                    if( temp == null ) temp = 0.0;
+                                    tempd = temp;
                                 }
 
-                                if ( tempd == -1 )
-                                    tempd = 0.0;
+                                //if ( tempd == -1 )
+                                //    tempd = 0.0;
                                 aggValue += tempd;
                             }
                             serviceValues[countForServiceList][countForChildOrgUnitList] = aggValue;
@@ -1467,8 +1457,9 @@ public class GenerateChartDataAction
                                 }
                                 else
                                 {
-                                    aggDataValue = aggregationService.getAggregatedDataValue( dElement, decoc1,
-                                        startPeriod.getStartDate(), endPeriod.getEndDate(), childOrgUnit );
+                                    Double temp = aggregationService.getAggregatedDataValue( dElement, decoc1, startPeriod.getStartDate(), endPeriod.getEndDate(), childOrgUnit );
+                                    if( temp == null ) temp = 0.0;
+                                    aggDataValue = temp;
                                 }
                             }
                             else
@@ -1496,17 +1487,18 @@ public class GenerateChartDataAction
                                     }
                                     else
                                     {
-                                        tempd = aggregationService.getAggregatedDataValue( dElement, decoc1,
-                                            startPeriod.getStartDate(), endPeriod.getEndDate(), ou );
+                                        Double temp = aggregationService.getAggregatedDataValue( dElement, decoc1, startPeriod.getStartDate(), endPeriod.getEndDate(), ou );
+                                        if( temp == null ) temp = 0.0;
+                                        tempd = temp;
                                     }
 
-                                    if ( tempd == -1 )
-                                        tempd = 0.0;
+                                    //if ( tempd == -1 )
+                                    //    tempd = 0.0;
                                     aggDataValue += tempd;
                                 }
                             }
-                            if ( aggDataValue == -1 )
-                                aggDataValue = 0.0;
+                            //if ( aggDataValue == -1 )
+                            //    aggDataValue = 0.0;
                             serviceValues[countForServiceList][countForChildOrgUnitList] += aggDataValue;
                         }
                     }

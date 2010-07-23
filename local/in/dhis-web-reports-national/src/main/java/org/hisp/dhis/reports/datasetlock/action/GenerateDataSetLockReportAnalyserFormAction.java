@@ -22,18 +22,6 @@ public class GenerateDataSetLockReportAnalyserFormAction
         this.periodService = periodService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
-
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -47,19 +35,6 @@ public class GenerateDataSetLockReportAnalyserFormAction
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-    private Collection<OrganisationUnit> organisationUnits;
-
-    public Collection<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    private Collection<Period> periods = new ArrayList<Period>();
-
-    public Collection<Period> getPeriods()
-    {
-        return periods;
-    }
 
     private Collection<PeriodType> periodTypes;
 
