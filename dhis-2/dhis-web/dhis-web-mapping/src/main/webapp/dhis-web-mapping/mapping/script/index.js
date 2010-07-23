@@ -3213,9 +3213,9 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
+                    ACTIVEPANEL = thematicMap;
                     choroplethLayer.setVisibility(false);
                     choropleth.classify(false, true);
-                    ACTIVEPANEL = thematicMap;
                 }
             }
         }
@@ -3233,9 +3233,9 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
+                    ACTIVEPANEL = thematicMap2;
                     proportionalSymbolLayer.setVisibility(false);
                     proportionalSymbol.classify(false, true);
-                    ACTIVEPANEL = thematicMap2;
                 }
             }
         }
@@ -3253,10 +3253,10 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
+                    ACTIVEPANEL = organisationUnitAssignment;
                     choroplethLayer.setVisibility(false);
                     proportionalSymbolLayer.setVisibility(false);
                     mapping.classify(false, true);
-                    ACTIVEPANEL = organisationUnitAssignment;
                 }
             }
         }
