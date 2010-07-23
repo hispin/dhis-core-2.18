@@ -73,8 +73,7 @@
 		
 		<!-- birthDate -->
 		<div id="birthDateDiv" style="display:none ">
-			<input type="text" id="birthDateValue" name="birthDateValue" onChange="fillValue(this.value);"style="width: 6em">
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="birthDateValueButton" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+			<input type="text" id="birthDateValue" name="birthDateValue" onChange="fillValue(this.value);"style="width: 6em">			
 			<script type="text/javascript">
 				datePickerValid( 'birthDateValue' );
 			</script> 
@@ -107,7 +106,7 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td colspan="2"><input type="submit" value="$i18n.getString('save')" style="width:10em">	  <input name="button" type="button" style="width:10em" onClick="validationCriteria.action" value="$i18n.getString('cancel')"></td>
+      <td colspan="2"><input type="submit" value="$i18n.getString('save')" style="width:10em">	  <input name="button" type="button" style="width:10em" onClick="javascript:window.location.href = 'validationCriteria.action'" value="$i18n.getString('cancel')"></td>
     </tr>
   </table>
 
