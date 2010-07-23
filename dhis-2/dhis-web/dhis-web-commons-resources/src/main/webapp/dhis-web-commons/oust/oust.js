@@ -319,6 +319,8 @@ function SelectionTree()
 	{
 		var imgTag = getToggleImage();
 		imgTag.src = '../images/transparent.gif';
+		imgTag.width = '9';
+        imgTag.height = '9';
 		imgTag.alt = '';
 		return imgTag;
 	}

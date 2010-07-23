@@ -41,6 +41,7 @@ function Selection()
 
     this.select = function( unitId )
     {
+
         var unitTag = document.getElementById( getTagId( unitId ));
         var linkTags = unitTag.getElementsByTagName( 'a' );
 
@@ -73,7 +74,7 @@ function Selection()
 				}, function (data){
 					responseReceived(data.firstChild);
 				},'xml');	
-		
+				
                 // Remove all select marks
                 var treeTag = document.getElementById( 'orgUnitTree' );
                 var linkTags = treeTag.getElementsByTagName( 'a' );
@@ -318,6 +319,8 @@ function Subtree()
     {
         var imgTag = getToggleImage();
         imgTag.src = '../images/expand.png';
+		imgTag.width = '9';
+        imgTag.height = '9';
         imgTag.alt = '[-]';
         return imgTag;
     }
@@ -326,6 +329,8 @@ function Subtree()
 	{
 		var imgTag = getToggleImage();
 		imgTag.src = '../images/transparent.gif';
+		imgTag.width = '9';
+        imgTag.height = '9';
 		imgTag.alt = '';
 		return imgTag;
 	}
