@@ -24,6 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- Section -->
+	
 	<bean id="org.hisp.dhis.dataset.action.section.GetSectionAction"
         class="org.hisp.dhis.dataset.action.section.GetSectionAction"
         scope="prototype">
@@ -331,6 +332,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- DataEntryForm -->
+	
+	<bean id="org.hisp.dhis.dataset.action.dataentryform.AutoSaveDataEntryFormAction"
+		class="org.hisp.dhis.dataset.action.dataentryform.AutoSaveDataEntryFormAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+		</property>
+	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction"
 		class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction"
