@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 // DataSet details form
 // -----------------------------------------------------------------------------
@@ -44,7 +43,7 @@ function removeDataSet( dataSetId, dataSetName )
 
 function viewDataEntryForm( dataSetId )
 {
-  window.location.href = 'viewDataEntryForm.action?dataSetId=' + dataSetId;
+	window.location.href = 'viewDataEntryForm.action?dataSetId=' + dataSetId;
 }
 
 // ----------------------------------------------------------------------
@@ -104,12 +103,11 @@ function validateAddDataSet()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( addDataSetValidationCompleted ); 
   
-  var requestString = 'validateDataSet.action?name=' + getFieldValue( 'name' ) +
-                      '&shortName=' + getFieldValue( 'shortName' ) +
-                      '&code=' + getFieldValue( 'code' );
-
-  request.send( requestString );
-
+  var params = 'name=' + getFieldValue( 'name' ) +
+               '&shortName=' + getFieldValue( 'shortName' ) +
+               '&code=' + getFieldValue( 'code' );
+  request.sendAsPost( params );
+  request.send( 'validateDataSet.action' );
   return false;
 }
 
@@ -144,13 +142,12 @@ function validateEditDataSet()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( editDataSetValidationCompleted );
 
-  var requestString = 'validateDataSet.action?name=' + getFieldValue( 'name' ) +
-                      '&shortName=' + getFieldValue( 'shortName' ) +
-                      '&code=' + getFieldValue( 'code' ) +
-  		              '&dataSetId=' + getFieldValue( 'dataSetId' );
-
-  request.send( requestString );
-
+  var params = 'name=' + getFieldValue( 'name' ) +
+               '&shortName=' + getFieldValue( 'shortName' ) +
+               '&code=' + getFieldValue( 'code' ) +
+  		       '&dataSetId=' + getFieldValue( 'dataSetId' );
+  request.sendAsPost( params );
+  request.send( 'validateDataSet.action' );
   return false;
 }
 

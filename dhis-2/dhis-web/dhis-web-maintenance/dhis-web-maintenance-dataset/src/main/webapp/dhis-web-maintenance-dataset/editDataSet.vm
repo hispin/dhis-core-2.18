@@ -19,7 +19,7 @@
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_dataset" )</h3>
 
 <form id="editDataSetForm" name="editDataSetForm" action="updateDataSet.action" method="post" >
@@ -38,15 +38,15 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )" maxlength="150" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
       </tr>      
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" maxlength="25" class="{validate:{required:true,minlength:2,maxlength:25}}"> </td>
+        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" maxlength="20" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"> </td>
       </tr>     
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )" maxlength="100" class="{validate:{maxlength:100}}"></td>
+        <td><input type="text" id="code" name="code" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )" class="{validate:{rangelength:[4,40],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
