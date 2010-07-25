@@ -3,7 +3,7 @@
 
 <ul class="introList">
     #introListImgItem( "displayViewReportFormVerifyConfiguration.action" "standard_report" "standardreport" )
-    #introListImgItem( "dataSetReport.action" "dataset_report" "datasetreport" )
+    #introListImgItem( "showDataSetReportForm.action" "dataset_report" "datasetreport" )
     #introListImgItem( "displayViewDataCompletenessForm.action" "data_completeness" "datacompletenessreport" )
     #introListImgItem( "displayViewDocumentForm.action" "static_report" "staticreport" )
     #introListImgItem( "tallySheetGenerator.action" "tally_sheet_generator" "tallysheetgenerator" )

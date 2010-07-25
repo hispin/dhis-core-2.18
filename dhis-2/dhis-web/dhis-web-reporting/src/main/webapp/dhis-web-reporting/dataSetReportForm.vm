@@ -1,41 +1,43 @@
 
 <h3>$i18n.getString( "dataset_report" )</h3>
 
-<form id="reportForm" name="reportForm" action="showDataSetReportForm.action" method="post">	
+<form id="reportForm" name="reportForm" action="generateCustomDataSetReport.action" method="post">	
 
 <table>
-  <tr>
-  	<th colspan="2">$i18n.getString( "criteria" )</th>
-  </tr>
-  <tr>
-	  <td><label for="selectedDataSetId">$i18n.getString( "dataset" )</label></td>
-	  <td>
-	      <select id="selectedDataSetId" name="selectedDataSetId" style="min-width:350px" onchange="document.getElementById( 'reportForm' ).submit();" #if( $dataSets.size() == 0 ) disabled="disabled" #end>
-			  <option value="null">[ $i18n.getString( "select" ) ]</option>
-		      #foreach( $dataSet in $dataSets )
-			  <option value="$dataSet.id" #if( $selectedDataSetId && $dataSet.id == $selectedDataSetId ) selected="selected" #end>$encoder.htmlEncode( $dataSet.name )</option>
-		      #end
-		  </select>
-	</td>
-  </tr>
+	<tr>
+	  	<th colspan="2">$i18n.getString( "criteria" )</th>
+	</tr>
+	<tr>
+		<td><label for="dataSetId">$i18n.getString( "dataset" )</label></td>
+		<td>
+			<select id="dataSetId" name="dataSetId" style="width:325px">
+			<option value="">[ $i18n.getString( "select" ) ]</option>
+				#foreach( $dataSet in $dataSets )
+				<option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
+				#end
+			</select>
+		</td>
+	</tr>
 	
-  <tr>
-	  <td><label for="selectedPeriodIndex">$i18n.getString( "reporting_period" )</label></td>
-	  <td>
-          <input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="window.location.href='previousPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end>
-          <input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="window.location.href='nextPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end><br>
-		  <select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="document.getElementById( 'reportForm' ).submit();" #if( $periods.size() == 0 ) disabled="disabled" #end>
-              <option value="null">[ $i18n.getString( "select" ) ]</option>
-			    #foreach( $period in $periods )
-				#set( $index = $velocityCount - 1 )
-				<option value="$index" #if( $index && $selectedPeriodIndex && $index == $selectedPeriodIndex ) selected="selected" #end>$format.formatPeriod( $period )</option>
-			    #end
-          </select>
-      </td>
+	<tr>
+		<td><label for="selectedPeriodIndex">$i18n.getString( "reporting_period" )</label></td>
+		<td>        
+			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )"><input
+				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )">
+			<select id="periodType" name="periodType" style="min-width:222px" onchange="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '0' )">
+				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
+				#foreach ( $type in $periodTypes )
+					<option value="$type.name">$type.name</option>
+				#end
+			</select><br>
+			
+	        <select id="periodId" name="periodId" style="width:325px" onchange="displayCompleteness()">
+	        </select>
+		</td>
   </tr>
   <tr>  	
       <td><label>$i18n.getString( "use_data_for" )<br>$i18n.getString( "selected_unit_only" )</label></td>
-      <td><input type="checkbox" id="selectedUnitOnly" name="selectedUnitOnly" #if( $selectedUnitOnly ) checked="checked" #end onchange="document.getElementById( 'reportForm' ).submit();" ></td>
+      <td><input type="checkbox" id="selectedUnitOnly" name="selectedUnitOnly" value="true"></td>
   </tr>
   <tr>
   	<td colspan="2" style="height:10px"></td>
@@ -58,8 +60,7 @@
     </td>
   </tr>  
   <tr>  
-	<td><input type="button" value="$i18n.getString( "preview" )" style="width:115px" onclick="runAndViewDataSetReport( true )"><input 
-	           type="button" value="$i18n.getString( "generate" )" style="width:115px" onclick="runAndViewDataSetReport( false )"></td>
+	<td><input type="button" value="$i18n.getString( "generate" )" style="width:115px" onclick="validateDataSetReport()"></td>
 	<td></td>		
   </tr>  
 </table>

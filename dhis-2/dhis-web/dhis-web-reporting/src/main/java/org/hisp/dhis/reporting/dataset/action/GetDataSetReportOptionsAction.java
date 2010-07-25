@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.dataset.generators;
+package org.hisp.dhis.reporting.dataset.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,31 +27,52 @@ package org.hisp.dhis.reporting.dataset.generators;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.period.PeriodType;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public interface TabularDesignGenerator
+public class GetDataSetReportOptionsAction
+    implements Action
 {
-    /**
-     * Generates a tabular report design.
-     * 
-     * @param reportName the name of the report design.
-     * @param headerParameters the header parameters.
-     * @param columnFields the column fields.
-     * @param orderedCategories the ordered categories.
-     * @param numberOfColumns the number of columns.
-     * @param orderedOptionsMap the ordered options map.
-     * @throws GeneratorException
-     */
-    void generateDesign( String reportName, Collection<String> headerParameters, 
-        Collection<String> columnFields, Collection<DataElementCategory> orderedCategories, 
-            Integer numberOfColumns, Map<Integer, Collection<DataElementCategoryOption>> orderedOptionsMap )
-                throws GeneratorException;
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    private List<DataSet> dataSets;
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    private List<PeriodType> periodTypes;
+
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
+    public String execute()
+    {
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        
+        Collections.sort( dataSets, new DataSetNameComparator() );
+        
+        periodTypes = PeriodType.getAvailablePeriodTypes();
+        
+        return SUCCESS;
+    }
 }

@@ -29,11 +29,6 @@ package org.hisp.dhis.dataentryform;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.dataentryform.DataEntryFormStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.program.ProgramStage;
 import org.springframework.transaction.annotation.Transactional;

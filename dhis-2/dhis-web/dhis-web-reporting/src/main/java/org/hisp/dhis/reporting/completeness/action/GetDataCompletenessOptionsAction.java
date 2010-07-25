@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
@@ -55,13 +54,6 @@ public class GetDataCompletenessOptionsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-    
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
     
     // -------------------------------------------------------------------------
@@ -92,7 +84,7 @@ public class GetDataCompletenessOptionsAction
         
         Collections.sort( dataSets, new DataSetNameComparator() );
         
-        periodTypes = periodService.getAllPeriodTypes();
+        periodTypes = PeriodType.getAvailablePeriodTypes();
         
         return SUCCESS;
     }

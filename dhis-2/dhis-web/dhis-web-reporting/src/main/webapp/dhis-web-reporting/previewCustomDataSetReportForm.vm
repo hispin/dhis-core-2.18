@@ -1,23 +1,16 @@
 
-<table>
-	<tr>
-		<td><h3>$i18n.getString('reporting_unit'): </h3></td>			
-		<td><h3>$reportingUnit</h3></td>
-		<td><input type="button" value="$i18n.getString( 'back' )" style="width:100px" 
-				onclick="javascript:window.location.href='showDataSetReportForm.action'"/>
-			<input type="button" value="$i18n.getString( 'print' )" style="width:100px" 
-				onclick="printDateSetReportPreview();"/></td>
-	</tr>
-	<tr>
-		<td><h3>$i18n.getString('reporting_period'): </h3></td>			
-		<td><h3>$reportingPeriod</h3></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td colspan="3" style="height:15px"></td>
-	</tr>
-</table>
+<h3>$i18n.getString('reporting_unit'): $reportingUnit &nbsp; $i18n.getString('reporting_period'): $reportingPeriod</h3>
+<p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/>
+	<input type="button" value="$i18n.getString( 'print' )" style="width:100px"	onclick="printDateSetReportPreview();"/></p>
 
 <div id="printDateSetPreviewDiv">
 	$customDataEntryFormCode
 </div>
+
+<script>	
+function printDateSetReportPreview()
+{
+	var o = $("div#printDateSetPreviewDiv");
+	o.jqprint(); 
+}
+</script>

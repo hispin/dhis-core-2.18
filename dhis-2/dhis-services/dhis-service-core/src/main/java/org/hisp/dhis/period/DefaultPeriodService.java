@@ -102,13 +102,18 @@ public class DefaultPeriodService
             } );
     }
 
+    public Period getPeriodByExternalId( String externalId )
+    {
+        return periodStore.reloadForceAddPeriod( new Period( externalId ) );
+    }
+    
     public Collection<Period> getPeriodsByExternalIds( Collection<String> externalIds )
     {
         Collection<Period> periods = new ArrayList<Period>();
         
         for ( String id : externalIds )
         {
-            periods.add( periodStore.reloadForceAddPeriod( new Period( id ) ) );
+            periods.add( getPeriodByExternalId( id ) );
         }
         
         return periods;

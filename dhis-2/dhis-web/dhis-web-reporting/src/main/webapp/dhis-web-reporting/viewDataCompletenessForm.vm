@@ -2,12 +2,12 @@
 <h3>$i18n.getString( "data_completeness_report" )</h3>
 
 <table>
-    <col width="320">
+    <col width="330">
     <col width="5">
-    <col width="320">    
+    <col width="330">    
     <tr>
 	   <td>
-		    <div id="selectionTree" style="width:310px; height:220px"></div>
+		    <div id="selectionTree" style="width:325px; height:220px"></div>
 		            
 		    <script type="text/javascript">
 		        selectionTreeSelection.setMultipleSelectionAllowed( false );
@@ -29,21 +29,29 @@
             <input type="radio" name="criteria" id="objectiveRadio" value="objective" onclick="displayCompleteness()">
             <label for="objectiveRadio">$i18n.getString( 'based_on_objective' )</label><br><br>
             
-        	<select id="dataSetId" name="dataSetId" style="width:310px" onchange="displayCompleteness()">
+            <!-- DataSet -->
+            
+        	<select id="dataSetId" name="dataSetId" style="width:325px" onchange="displayCompleteness()">
 			<option value="ALL">[ $i18n.getString( "select_dataset_all" ) ]</option>
 			#foreach( $dataSet in $dataSets )
 				<option value="$dataSet.id">$dataSet.name</option>
 			#end
 			</select><br><br>
             
-			<select id="periodTypeId" name="periodTypeId" style="width:310px" onchange="getPeriods()">
-				<option value="ALL">[ $i18n.getString( "select_period_type_all" ) ]</option>
-				#foreach( $type in $periodTypes )
+            <!-- PeriodType -->
+            
+            <input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )"><input
+				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )">
+			<select id="periodType" name="periodType" style="min-width:222px" onchange="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '0' )">
+				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
+				#foreach ( $type in $periodTypes )
 					<option value="$type.name">$type.name</option>
 				#end
 			</select><br><br>
 			
-            <select id="periodId" name="periodId" style="width:310px" disabled="disabled" onchange="displayCompleteness()">
+			<!-- Period -->
+			
+            <select id="periodId" name="periodId" style="width:325px" onchange="displayCompleteness()">
             </select>
         </td>
     </tr>

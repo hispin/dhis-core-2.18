@@ -208,6 +208,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
+  <!-- DataSetReport -->
+  
+  <bean id="org.hisp.dhis.datasetreport.DataSetReportService"
+	class="org.hisp.dhis.datasetreport.impl.DefaultDataSetReportService">
+	<property name="dataValueService"
+	  ref="org.hisp.dhis.datavalue.DataValueService"/>
+	<property name="aggregationService"
+	  ref="org.hisp.dhis.aggregation.AggregationService"/>
+  </bean>
+  
   <!-- Dashboard -->
       	
   <bean id="org.hisp.dhis.dashboard.DashboardContentStore"
@@ -309,6 +319,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       
     <aop:aspect ref="statementInterceptor">
       <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFreeChart(..) )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.datasetreport.DataSetReportService.getAggregatedValueMap(..) )" method="intercept"/>
     </aop:aspect>
       
   </aop:config>

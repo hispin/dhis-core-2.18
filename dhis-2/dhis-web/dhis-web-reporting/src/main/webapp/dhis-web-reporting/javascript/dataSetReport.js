@@ -1,21 +1,5 @@
 
 // -----------------------------------------------------------------------------
-// View report
-// ----------------------------------------------------------------------------
-
-function previewDataSetReport()
-{
-	document.getElementById("reportForm").action = "getDataSetReportTypeForPreview.action";
-	document.getElementById("reportForm").submit();	
-}
-
-function generateDataSetReport()
-{
-	document.getElementById("reportForm").action = "getDataSetReportTypeForPDF.action";
-	document.getElementById("reportForm").submit();
-}
-
-// -----------------------------------------------------------------------------
 // Validation
 // ----------------------------------------------------------------------------
 
@@ -33,12 +17,12 @@ if ( selectionTreeSelection )
 
 function validateDataSetReport()
 {
-    if ( !getListValue( "selectedDataSetId" ) || getListValue( "selectedDataSetId" ) == "null" )
+    if ( !getListValue( "dataSetId" ) )
     {
         setMessage( i18n_select_data_set );
         return false;
     }
-    if ( !getListValue( "selectedPeriodIndex" ) || getListValue( "selectedPeriodIndex" ) == "null" )
+    if ( !getListValue( "periodId" ) )
     {
         setMessage( i18n_select_period );
         return false;
@@ -49,69 +33,5 @@ function validateDataSetReport()
         return false;
     }
     
-    return true;
-}
-
-// -----------------------------------------------------------------------------
-// Generate data source
-// ----------------------------------------------------------------------------
-
-var tempPreviewReport;
-
-function runAndViewDataSetReport( previewReport )
-{
-    if ( validateDataSetReport() )
-    {
-        setWaitMessage( i18n_generating_report + "..." );
-        
-        tempPreviewReport = previewReport;
-        
-        var request = new Request();
-        request.setCallbackSuccess( runAndViewDataSetReportReceived );    
-        request.send( "createDataSetReportDataSource.action" );
-    }
-}
-
-function runAndViewDataSetReportReceived( messageElement )
-{
-    getDataSetReportStatus();
-}
-
-function getDataSetReportStatus()
-{   
-    var url = "getStatus.action";
-    
-    var request = new Request();
-    request.setResponseTypeXML( "status" );
-    request.setCallbackSuccess( dataSetReportStatusReceived );    
-    request.send( url );
-}
-
-function dataSetReportStatusReceived( xmlObject )
-{
-    var finished = getElementValue( xmlObject, "finished" );
-    
-    if ( finished == "true" )
-    {
-        hideMessage();
-        
-        if ( tempPreviewReport )
-        {
-            previewDataSetReport();
-        }
-        else
-        {
-            generateDataSetReport();
-        }
-    }
-    else
-    {
-        setTimeout( "getDataSetReportStatus();", 2000 );
-    }
-}
-
-function printDateSetReportPreview()
-{
-	var o = $("div#printDateSetPreviewDiv");
-	o.jqprint(); 
+    document.getElementById( "reportForm" ).submit();
 }

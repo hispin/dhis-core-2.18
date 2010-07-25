@@ -15,14 +15,10 @@ selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitId );
 
 function displayCompleteness()
 {
-	var criteria = $( "input[name='criteria']:checked" ).val();
-	
-    var dataSetList = document.getElementById( "dataSetId" );
-    
-    var dataSetId = dataSetList.options[ dataSetList.selectedIndex ].value;
-    
+	var criteria = $( "input[name='criteria']:checked" ).val();	
+    var dataSetList = document.getElementById( "dataSetId" );    
+    var dataSetId = dataSetList.options[ dataSetList.selectedIndex ].value;    
     var periodList = document.getElementById( "periodId" );
-
     var periodId = null;
     
     if ( periodList.disabled == false )
@@ -36,10 +32,7 @@ function displayCompleteness()
         
         showLoader();
         
-        //setMessage( i18n_processing + "..." );
-        
-        var request = new Request();
-        
+        var request = new Request();        
         var url = null;
         
         request.setResponseTypeXML( "dataSetCompletenessResult" );
@@ -100,8 +93,6 @@ function displayCompletenessByOrganisationUnitReceived( xmlObject )
 
 function displayCompletenessTable( xmlObject, headerText )
 {
-    //hideMessage();
-    
     hideLoader();
     
     var table = document.getElementById( "resultTable" );
@@ -189,53 +180,6 @@ function displayCompletenessTable( xmlObject, headerText )
         cellF.innerHTML = percentageOnTime;
         cellF.className = mark ? "listAlternateRow" : "listRow" ;
         
-        /*
-        if ( mark )
-        {
-            row.style.backgroundColor = "#e2e2e2";
-        }
-        */
-        
         mark = mark ? false : true;
 	}
-}
-
-function getPeriods()
-{
-	var periodTypeList = document.getElementById( "periodTypeId" );
-    var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-    
-    if ( periodTypeId != null )
-    {       
-        var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
-        
-        var request = new Request();
-        request.setResponseTypeXML( "period" );
-        request.setCallbackSuccess( getPeriodsReceived );
-        request.send( url );
-    }
-}
-
-function getPeriodsReceived( xmlObject )
-{
-    var periodList = document.getElementById( "periodId" );
-    
-    periodList.disabled = false;
-       
-    clearList( periodList );
-    
-    var periods = xmlObject.getElementsByTagName( "period" );
-    
-    for ( var i = 0; i < periods.length; i++)
-    {
-        var id = periods[i].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-        var startDate = periods[i].getElementsByTagName( "startDate" )[0].firstChild.nodeValue;
-        var endDate = periods[i].getElementsByTagName( "endDate" )[0].firstChild.nodeValue;
-        var periodName = periods[i].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-        
-        var option = document.createElement( "option" );
-        option.value = id;
-        option.text = periodName;
-        periodList.add( option, null );
-    }
 }
