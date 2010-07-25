@@ -354,97 +354,25 @@
       <result name="success" type="redirect">displayViewDataCompletenessForm.action</result>
     </action>
     
-    <!-- Custom DataSet Report -->
+    <!-- DataSet Report -->
     
-    <action name="nextPeriods" class="org.hisp.dhis.reporting.dataset.action.NextPeriodsAction">
-      <result name="success" type="redirect">showDataSetReportForm.action</result>
-    </action>
-    
-    <action name="previousPeriods" class="org.hisp.dhis.reporting.dataset.action.PreviousPeriodsAction">
-      <result name="success" type="redirect">showDataSetReportForm.action</result>
-    </action>
-	  
-    <action name="dataSetReport" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="redirect">showDataSetReportForm.action</result>
-    </action>
-    
-    <action name="showDataSetReportForm" class="org.hisp.dhis.reporting.dataset.action.SelectReportAction">      
+    <action name="showDataSetReportForm" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">      
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>	  
       <param name="page">/dhis-web-reporting/dataSetReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>      
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>       
     </action>	   
-    
-    <action name="getDataSetReportTypeForPDF" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportTypeAction">
-      <result name="customreport" type="chain">generateCustomDataSetReport</result>
-      <result name="defaultreport" type="chain">generateDefaultDataSetReport</result>
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>
-    
+        
     <action name="generateCustomDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction">
       <result name="success" type="velocity">/popup.vm</result>
       <result name="error" type="chain">showDataSetReportForm</result>
       <param name="page">/dhis-web-reporting/previewCustomDataSetReportForm.vm</param>
-      <param name="javascripts">javascript/dataSetReport.js,../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
+      <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>   
-  
-    <action name="generateDefaultDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/pdf</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
-        <param name="bufferSize">1024</param>
-      </result>
-      <param name="preview">false</param>  
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>
-    
-    <action name="getDataSetReportTypeForPreview" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportTypeAction">
-      <result name="customreport" type="chain">previewCustomDataSetReport</result>
-      <result name="defaultreport" type="chain">previewDefaultDataSetReport</result>
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>
-   
-    <action name="previewCustomDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>
-      <result name="error" type="chain">showQuickReportForm</result>
-      <param name="page">/dhis-web-reporting/previewCustomDataSetReportForm.vm</param>
-      <param name="javascripts">javascript/dataSetReport.js,../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>  
-    
-    <action name="previewDefaultDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction">
-      <result name="success" type="chain">previewDefaultDataSetHtmlReport</result>
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="preview">true</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>   
-    </action>
-    
-    <action name="previewDefaultDataSetHtmlReport" class="org.hisp.dhis.reporting.dataset.action.PreviewReportAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>
-      <param name="page">/dhis-web-reporting/previewDefaultDataSetReportForm.vm</param>   
-      <param name="javascripts">javascript/dataSetReport.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>
-  
-    <action name="returnToViewDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GetViewFormStateAction">
-      <result name="success" type="chain">showDataSetReportForm</result>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>
-    
-    <action name="createDataSetReportDataSource" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportDataSourceAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
+      
     <!-- Tally Sheet Forms Generator -->
 
     <action name="tallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction">

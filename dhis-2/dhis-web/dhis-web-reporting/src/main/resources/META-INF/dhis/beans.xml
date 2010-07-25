@@ -408,144 +408,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <!-- Custom DataSet Report -->
 	
-  <!-- Selection State -->
-	
-  <bean id="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"
-    class="org.hisp.dhis.reporting.dataset.state.DefaultSelectedStateManager">
-    <property name="dataSetService" 
-      ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
+  <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction"
+	class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">
+	<property name="dataSetService"
+	  ref="org.hisp.dhis.dataset.DataSetService"/>
   </bean>
-  
-  <!-- ReportStore -->
-	
-  <bean id="org.hisp.dhis.reporting.dataset.report.ReportStore" 
-    class="org.hisp.dhis.reporting.dataset.report.XmlReportStore" 
-    scope="prototype">
-    <property name="organisationUnitService"
-      ref ="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="reportDisplayProperty" value="name"/>
-  </bean>
-  
-  <!-- DesignGenerator -->
-  
-  <bean id="org.hisp.dhis.reporting.dataset.generators.DesignGenerator" 
-    class="org.hisp.dhis.reporting.dataset.generators.JasperDesignGenerator">  
-  </bean>  
-  
-  <bean id="org.hisp.dhis.reporting.dataset.generators.TabularDesignGenerator" 
-    class="org.hisp.dhis.reporting.dataset.generators.JasperTabularDesignGenerator">
-  </bean>
-  
-  <!-- ReportGenerator -->
-  
-  <bean id="org.hisp.dhis.reporting.dataset.generators.ReportGenerator" 
-    class="org.hisp.dhis.reporting.dataset.generators.JasperReportGenerator"/>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.generators.TabularReportGenerator" 
-    class="org.hisp.dhis.reporting.dataset.generators.JasperTabularReportGenerator">
-  </bean>
-  
-  <!-- DataSetReport Action -->
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.NextPeriodsAction"
-    class="org.hisp.dhis.reporting.dataset.action.NextPeriodsAction">
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.PreviousPeriodsAction"
-    class="org.hisp.dhis.reporting.dataset.action.PreviousPeriodsAction">
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>
-  </bean>
-		
-  <bean id="org.hisp.dhis.reporting.dataset.action.SelectReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.SelectReportAction" 
-    scope="prototype">
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportTypeAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportTypeAction" 
-    scope="prototype">     
-    <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>
-  </bean>
-  
+    
   <bean id="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction" 
     class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction" 
-    scope="prototype">		
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>		
-    <property name="dataElementOrderManager"
-      ref="org.hisp.dhis.order.manager.DataElementOrderManager"/>
+    scope="prototype">	
     <property name="dataEntryFormService"
       ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
-    <property name="dataValueService"
-      ref="org.hisp.dhis.datavalue.DataValueService"/>		      
+	<property name="dataSetReportService"
+	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
+    <property name="dataSetService"
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+	<property name="periodService"
+	  ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="selectionTreeManager"
+      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>		
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 
-    scope="prototype">
-    <property name="designGenerator"
-      ref="org.hisp.dhis.reporting.dataset.generators.DesignGenerator"/>
-    <property name="tabularDesignGenerator"
-      ref="org.hisp.dhis.reporting.dataset.generators.TabularDesignGenerator"/>
-    <property name="reportGenerator"
-      ref="org.hisp.dhis.reporting.dataset.generators.ReportGenerator"/>
-    <property name="tabularReportGenerator"
-      ref="org.hisp.dhis.reporting.dataset.generators.TabularReportGenerator"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.reporting.dataset.report.ReportStore"/>
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>    		
-    <property name="dataElementOrderManager"
-      ref="org.hisp.dhis.order.manager.DataElementOrderManager"/>   
-    <property name="dataValueService"
-      ref="org.hisp.dhis.datavalue.DataValueService"/>
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>		     
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.GetViewFormStateAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GetViewFormStateAction" 
-    scope="prototype"/>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.PreviewReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.PreviewReportAction" 
-    scope="prototype"/>
     
-  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportDataSourceAction"
-    class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportDataSourceAction"
-    scope="prototype">
-    <property name="processCoordinator"
-      ref="processCoordinator"/>
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>    
-    <property name="selectedStateManager"
-      ref="org.hisp.dhis.reporting.dataset.state.SelectedStateManager"/>
-  </bean>
-  
   <!-- Data completeness -->
   
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
@@ -553,8 +436,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
@@ -564,6 +445,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="dataCompletenessServiceProvider"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
+	<property name="periodService"
+	  ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessPDFAction"

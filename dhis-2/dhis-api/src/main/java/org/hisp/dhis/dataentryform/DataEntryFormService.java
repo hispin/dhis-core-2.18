@@ -101,6 +101,5 @@ public interface DataEntryFormService
      * 
      * @return A collection containing all DataEntryForms.
      */
-    Collection<DataEntryForm> getAllDataEntryForms();
-    
+    Collection<DataEntryForm> getAllDataEntryForms();    
 }

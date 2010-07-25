@@ -27,43 +27,31 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.TreeMap;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datasetreport.DataSetReportService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reporting.dataset.generators.CustomDataSetReportGenerator;
-import org.hisp.dhis.reporting.dataset.state.SelectedStateManager;
-import org.hisp.dhis.reporting.dataset.utils.NumberUtils;
+import org.hisp.dhis.period.PeriodService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public class GenerateCustomDataSetReportAction
-    extends AbstractAction
+    implements Action
 {
-    // -----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
-    // -----------------------------------------------------------------------    
-        
-    private DataElementOrderManager dataElementOrderManager;
-
-    public void setDataElementOrderManager( DataElementOrderManager dataElementOrderManager )
-    {
-        this.dataElementOrderManager = dataElementOrderManager;
-    }   
+    // -------------------------------------------------------------------------
     
     private DataEntryFormService dataEntryFormService;
 
@@ -71,30 +59,69 @@ public class GenerateCustomDataSetReportAction
     {
         this.dataEntryFormService = dataEntryFormService;
     }    
-    
-    private SelectedStateManager selectedStateManager;
+        
+    private DataSetReportService dataSetReportService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setDataSetReportService( DataSetReportService dataSetReportService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.dataSetReportService = dataSetReportService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
     
-    private DataMartStore dataMartStore;
-    
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-    	this.dataMartStore = dataMartStore;
+        this.selectionTreeManager = selectionTreeManager;
     }
-    
-    private DataValueService dataValueService;
-    
-    public void setDataValueService( DataValueService dataValueService)
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
     {
-    	this.dataValueService = dataValueService;
-    }   
+        this.format = format;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------      
+    
+    private Integer dataSetId;
+    
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    private String periodId;
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private boolean selectedUnitOnly;
+    
+    public void setSelectedUnitOnly( boolean selectedUnitOnly )
+    {
+        this.selectedUnitOnly = selectedUnitOnly;
+    }
     
     // -------------------------------------------------------------------------
-    // Parameters
+    // Output
     // -------------------------------------------------------------------------      
     
     private String customDataEntryFormCode;
@@ -118,18 +145,6 @@ public class GenerateCustomDataSetReportAction
     	return this.reportingPeriod;
     }  
    
-    private String selectedUnitOnly;
-    
-    public void setSelectedUnitOnly( String selectedUnitOnly )
-    {
-    	this.selectedUnitOnly = selectedUnitOnly;
-    }
-    
-    public String getSelectedUnitOnly()
-    {
-    	return selectedUnitOnly;
-    }
-    
     // -----------------------------------------------------------------------
     // Action implementation
     // -----------------------------------------------------------------------
@@ -137,72 +152,21 @@ public class GenerateCustomDataSetReportAction
     public String execute()
         throws Exception
     {        
-        OrganisationUnit orgUnit = selectedStateManager.getSelectedOrganisationUnit();    
+        OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
         
-        DataSet dataSet = selectedStateManager.getSelectedDataSet();
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        Period period = selectedStateManager.getSelectedPeriod();       
+        Period period = periodService.getPeriodByExternalId( periodId );
         
-        if ( orgUnit != null && dataSet != null && period != null )
+        if ( unit != null && dataSet != null && period != null )
         {
-            Collection<DataElement> dataElements = dataElementOrderManager.getOrderedDataElements( dataSet );
+            Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly );
             
-            //CollectionUtils.filter( dataElements, new AggregateableDataElementPredicate() );
-            
-            Map<String, String> aggregatedDataValueMap = new TreeMap<String,String>();            
-            
-            for ( DataElement dataElement : dataElements )
-            {
-                DataElementCategoryCombo catCombo = dataElement.getCategoryCombo();                                        
-                
-                for ( DataElementCategoryOptionCombo optionCombo : catCombo.getOptionCombos() )
-                {
-                    String value;  
-                    DataValue dataValue;
-                    
-                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-                    {
-                    	Double aggregatedValue;
-                    	
-                    	if ( selectedUnitOnly != null )
-                    	{                        		
-                    	    dataValue = dataValueService.getDataValue(orgUnit, dataElement, period, optionCombo);                        		
-                    	    value = ( dataValue != null ) ? dataValue.getValue() : "";
-                    	}
-                    	else
-                    	{                        		
-                    	    aggregatedValue = dataMartStore.getAggregatedValue( dataElement, optionCombo, period, orgUnit );                    		
-                    	    value = ( aggregatedValue != null ) ? NumberUtils.formatDataValue( aggregatedValue ) : "";                      		                    		
-                    	}                 
-                                 
-                        aggregatedDataValueMap.put(dataElement.getId() + ":" + optionCombo.getId(), value );
-                    }
-                    else
-                    {                       	
-                    	if ( selectedUnitOnly != null )
-                    	{                        		
-                    	    dataValue = dataValueService.getDataValue(orgUnit, dataElement, period, optionCombo);                        		
-                    	    value = ( dataValue != null ) ? dataValue.getValue() : "";                    	    
-                    	}
-                    	else
-                    	{
-                    		value = " ";
-                    	} 
-                    	
-                    	aggregatedDataValueMap.put(dataElement.getId() + ":" + optionCombo.getId(), value );
-                    }
-                }
-            }           
-            
-            // -----------------------------------------------------------------
-            // Get the custom data entry form if any
-            // -----------------------------------------------------------------
-
             DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
             
-            customDataEntryFormCode = CustomDataSetReportGenerator.prepareReportContent( dataEntryForm.getHtmlCode(), aggregatedDataValueMap );
+            customDataEntryFormCode = dataSetReportService.prepareReportContent( dataEntryForm.getHtmlCode(), aggregatedDataValueMap );
             
-            reportingUnit = orgUnit.getName();
+            reportingUnit = unit.getName();
             
             reportingPeriod = format.formatPeriod( period );
            

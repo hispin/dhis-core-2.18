@@ -1,7 +1,7 @@
-package org.hisp.dhis.reporting.dataset.utils;
+package org.hisp.dhis.datasetreport;
 
 /*
- * Copyright (c) 2004-2010, Lars Helge �verland
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,65 +27,38 @@ package org.hisp.dhis.reporting.dataset.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /**
+ * @author Abyot Asalefew
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class XMLUtils
+public interface DataSetReportService
 {
-    private static final String EMPTY = "";
-    
-    private static Map<String, String> escapeCharacters;
-    
-    static
-    {
-        escapeCharacters = new HashMap<String, String>();
-        
-        escapeCharacters.put( "&", "&amp;" );
-        escapeCharacters.put( "<", "&lt;" );
-        escapeCharacters.put( ">", "&gt;" );
-        escapeCharacters.put( "\"", "&quot;" );
-        escapeCharacters.put( "'", "&apos;" );
-    }
+    /**
+     * Generates a map with aggregated data values or regular data values (depending
+     * on the selectedUnitOnly argument) mapped to a DataElemenet operand identifier.
+     * 
+     * @param dataSet the DataSet containing the DataElement to include in the map.
+     * @param unit the OrganisationUnit.
+     * @param period the Period.
+     * @param selectedUnitOnly whether to include aggregated or regular data in the map.
+     * @return a map.
+     */
+    Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly );
 
     /**
-     * Encodes a string to be appropriate for use in an XML file.
-     *  
-     * @param value the string.
-     * @return the encoded string.
-     */
-    public static String encode( String value )
-    {
-        if ( value == null )
-        {
-            return EMPTY;
-        }
-        
-        for ( Entry<String, String> entry : escapeCharacters.entrySet() )
-        {
-            value = value.replaceAll( entry.getKey(), entry.getValue() );
-        }
-        
-        return value;
-    }
-    
-    /**
-     * Decodes a string used in an XML file.
+     * Puts in aggregated datavalues in the custom dataentry form and returns
+     * whole report text.
      * 
-     * @param value the string.
-     * @return the decoded string.
+     * @param dataEntryFormCode the data entry form HTML code.
+     * @param a map with aggregated data values mapped to data element operands.
+     * @return data entry form HTML code populated with aggregated data in the
+     *         input fields.
      */
-    public static String decode( String value )
-    {
-        for ( Entry<String, String> entry : escapeCharacters.entrySet() )
-        {
-            value = value.replaceAll( entry.getValue(), entry.getKey() );
-        }
-        
-        return value;
-    }
+    String prepareReportContent( String dataEntryFormCode, Map<String, String> dataValues );
 }

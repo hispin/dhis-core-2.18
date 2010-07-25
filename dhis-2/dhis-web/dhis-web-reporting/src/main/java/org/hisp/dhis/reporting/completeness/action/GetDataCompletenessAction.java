@@ -37,6 +37,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.comparator.DataSetCompletenessResultComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -69,13 +70,20 @@ public class GetDataCompletenessAction
         this.dataSetService = dataSetService;
     }
     
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer periodId;
+    private String periodId;
 
-    public void setPeriodId( Integer periodId )
+    public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
     }
@@ -122,6 +130,8 @@ public class GetDataCompletenessAction
         SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS );
         SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS_DATASET );
         
+        Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
+        
         if ( periodId != null && organisationUnitId != null && criteria != null )
         {
             DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
@@ -133,7 +143,7 @@ public class GetDataCompletenessAction
                 // -------------------------------------------------------------
 
                 results = new ArrayList<DataSetCompletenessResult>( completenessService.
-                    getDataSetCompleteness( periodId, organisationUnitId, dataSetId ) );
+                    getDataSetCompleteness( _periodId, organisationUnitId, dataSetId ) );
                 
                 DataSet dataSet = dataSetService.getDataSet( dataSetId );
                 
@@ -146,7 +156,7 @@ public class GetDataCompletenessAction
                 // -------------------------------------------------------------
 
                 results = new ArrayList<DataSetCompletenessResult>( completenessService.
-                    getDataSetCompleteness( periodId, organisationUnitId ) );
+                    getDataSetCompleteness( _periodId, organisationUnitId ) );
             }
             
             Collections.sort( results, new DataSetCompletenessResultComparator() );
