@@ -18,14 +18,13 @@
 										updateUser();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-				jQuery("#rawPassword").focus();
-				//selectionTree.buildSelectionTree();
+				jQuery.validator.setMessages( validationMessage );
+
+				jQuery("#rawPassword").focus();				
 			}
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <h3>$i18n.getString( "update_user" )</h3>
 
