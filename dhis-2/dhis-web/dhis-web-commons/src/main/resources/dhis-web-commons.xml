@@ -530,15 +530,11 @@
 				../dhis-web-commons/util/validate/jquery.validate.js,
 				../dhis-web-commons/util/jquery.metadata.js,
 				../dhis-web-commons/util/validate/additional-methods.js,
-				../dhis-web-commons/util/validate/messages_locale.js</param>
+				../dhis-web-commons/validationMessages.action</param>
 		</action>
 
 		<action name="updateUserAccount"
-			class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
-			<!--
-				<result name="success" type="velocity">/main.vm</result> <param
-				name="page">/dhis-web-commons/useraccount/updateUserSuccess.vm</param>
-			-->
+			class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">		
 			<result name="success" type="velocity">
 				/dhis-web-commons/useraccount/updateUserSuccess.vm</result>
 			<result name="input" type="velocity">
