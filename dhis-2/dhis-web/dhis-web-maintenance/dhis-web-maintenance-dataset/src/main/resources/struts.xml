@@ -280,7 +280,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/viewDataEntryForm.vm</param>
       <param name="javascripts">
-      javascript/FCK/fckeditor.js, javascript/dataEntryForm.js
+      javascript/FCK/fckeditor.js, javascript/FCK/editor/js/fckeditorcode_gecko.js, javascript/dataEntryForm.js
       ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
       ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
       <param name="stylesheets">css/cde.css</param>
