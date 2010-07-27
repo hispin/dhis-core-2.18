@@ -1,5 +1,3 @@
- <script type="text/javascript" src="javascript/FCK/editor/js/fckeditorcode_gecko.js"></script>
-
 <script type="text/javascript">
     var stat = '$status';
     var dataEntryFormId = -1;

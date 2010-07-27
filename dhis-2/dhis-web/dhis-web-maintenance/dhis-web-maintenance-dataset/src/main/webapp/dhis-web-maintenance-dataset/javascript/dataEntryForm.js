@@ -177,7 +177,6 @@ function autoSaveDataEntryFormValidationCompleted( messageElement )
   }
 }
 
-var url;
 function autoSaveDataEntryForm(){
 	
 	var field = FCKeditorAPI.GetInstance('designTextarea');
