@@ -71,4 +71,6 @@ public interface ChartService
     Collection<Chart> getAllCharts();
     
     Chart getChartByTitle( String name );
+    
+    Collection<Chart> getCharts( final Collection<Integer> identifiers );
 }

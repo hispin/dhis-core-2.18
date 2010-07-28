@@ -29,9 +29,11 @@ package org.hisp.dhis.report.impl;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -42,9 +44,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultReportService
     implements ReportService
 {
-    private GenericStore<Report> reportStore;
+    private GenericIdentifiableObjectStore<Report> reportStore;
 
-    public void setReportStore( GenericStore<Report> reportStore )
+    public void setReportStore( GenericIdentifiableObjectStore<Report> reportStore )
     {
         this.reportStore = reportStore;
     }
@@ -67,5 +69,23 @@ public class DefaultReportService
     public Report getReport( int id )
     {
         return reportStore.get( id );
+    }
+    
+    public Report getReportByName( String name )
+    {
+        return reportStore.getByName( name );
+    }
+
+    public Collection<Report> getReports( final Collection<Integer> identifiers )
+    {
+        Collection<Report> reports = getAllReports();
+
+        return identifiers == null ? reports : FilterUtils.filter( reports, new Filter<Report>()
+        {
+            public boolean retain( Report object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 }

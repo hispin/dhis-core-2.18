@@ -58,7 +58,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ReportTableConverter
     extends ReportTableImporter implements XMLConverter

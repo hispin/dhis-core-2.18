@@ -39,6 +39,7 @@ import org.amplecode.quick.StatementManager;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -52,6 +53,7 @@ import org.hisp.dhis.importexport.dxf.converter.AggregatedDataValueConverter;
 import org.hisp.dhis.importexport.dxf.converter.CalculatedDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryCategoryOptionAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociationConverter;
+import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
 import org.hisp.dhis.importexport.dxf.converter.CompleteDataSetRegistrationConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryDataElementConverter;
@@ -86,6 +88,7 @@ import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitGroupMemberConve
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitLevelConverter;
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitRelationshipConverter;
 import org.hisp.dhis.importexport.dxf.converter.PeriodConverter;
+import org.hisp.dhis.importexport.dxf.converter.ReportConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -93,6 +96,7 @@ import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -184,6 +188,13 @@ public class DefaultDXFExportService
         this.validationRuleService = validationRuleService;
     }
     
+    private ReportService reportService;
+    
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -191,6 +202,13 @@ public class DefaultDXFExportService
         this.reportTableService = reportTableService;
     }
     
+    private ChartService chartService;
+    
+    public void setChartService( ChartService chartService )
+    {
+        this.chartService = chartService;
+    }
+
     private OlapURLService olapURLService;
 
     public void setOlapURLService( OlapURLService olapURLService )
@@ -257,8 +275,7 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter( categoryService ) );
             thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryService ) );
             
-            thread.registerXMLConverter( params.isExtendedMode() ? 
-                new ExtendedDataElementConverter( dataElementService ) : new DataElementConverter( dataElementService ) );            
+            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedDataElementConverter( dataElementService ) : new DataElementConverter( dataElementService ) );            
             thread.registerXMLConverter( new CalculatedDataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupMemberConverter( dataElementService ) );
@@ -266,8 +283,7 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new DataElementGroupSetMemberConverter( dataElementService ) );
             
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
-            thread.registerXMLConverter( params.isExtendedMode() ? 
-                new ExtendedIndicatorConverter( indicatorService ) : new IndicatorConverter( indicatorService ) );
+            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedIndicatorConverter( indicatorService ) : new IndicatorConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupMemberConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupSetConverter( indicatorService ) );
@@ -291,15 +307,14 @@ public class DefaultDXFExportService
             
             thread.registerXMLConverter( new DataSetSourceAssociationConverter( dataSetService, organisationUnitService ) );
             
-            thread.registerXMLConverter( new ValidationRuleConverter( validationRuleService ) );
-            
+            thread.registerXMLConverter( new ValidationRuleConverter( validationRuleService ) );            
             thread.registerXMLConverter( new PeriodConverter( periodService ) );
             
+            thread.registerXMLConverter( new ReportConverter( reportService ) );
             thread.registerXMLConverter( new ReportTableConverter( reportTableService ) );
-            
-            thread.registerXMLConverter( new OlapUrlConverter( olapURLService ) );
-            
-            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter( 
+            thread.registerXMLConverter( new ChartConverter( chartService ) );
+            thread.registerXMLConverter( new OlapUrlConverter( olapURLService ) );            
+            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter(
                 completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
             
             thread.registerXMLConverter( params.isAggregatedData() ? 
