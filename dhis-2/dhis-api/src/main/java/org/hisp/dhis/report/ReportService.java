@@ -66,4 +66,20 @@ public interface ReportService
      * @return a Collection of Reports.
      */
     Collection<Report> getAllReports();
+    
+    /**
+     * Retrieves the Report with the given name.
+     * 
+     * @param name the name.
+     * @return the Report.
+     */
+    Report getReportByName( String name );
+    
+    /**
+     * Retrieves all Reports with the given identifiers.
+     * 
+     * @param identifiers the Collection of identifiers.
+     * @return a Collection of Reports.
+     */
+    Collection<Report> getReports( final Collection<Integer> identifiers );
 }

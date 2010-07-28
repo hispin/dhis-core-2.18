@@ -62,6 +62,8 @@ import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -448,7 +450,6 @@ public class DefaultChartService
 
                     for ( Period period : chart.getAllPeriods() )
                     {
-                        //final Double value = dataMartService.getAggregatedValue( indicator, period, selectedOrganisationUnit );
                         final Double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), selectedOrganisationUnit );
 
                         regularDataSet.addValue( value != null ? value : 0, indicator.getShortName(), chart.getFormat().formatPeriod( period ) );
@@ -488,7 +489,6 @@ public class DefaultChartService
 
                     for ( OrganisationUnit unit : chart.getOrganisationUnits() )
                     {
-                        //final Double value = dataMartService.getAggregatedValue( indicator, selectedPeriod, unit );
                         final Double value = aggregationService.getAggregatedIndicatorValue( indicator, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), unit );
                         
                         regularDataSet.addValue( value != null ? value : 0, indicator.getShortName(), unit.getShortName() );
@@ -593,4 +593,18 @@ public class DefaultChartService
     {
         return chartStore.getByTitle( name );
     }
+    
+    public Collection<Chart> getCharts( final Collection<Integer> identifiers )
+    {
+        Collection<Chart> charts = getAllCharts();
+
+        return identifiers == null ? charts : FilterUtils.filter( charts, new Filter<Chart>()
+        {
+            public boolean retain( Chart object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
+    }
+
 }

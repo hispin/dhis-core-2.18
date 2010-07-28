@@ -37,13 +37,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.reader.XMLReader;
-
 import org.amplecode.staxwax.transformer.TransformerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,7 +106,6 @@ public class XMLPreConverter
         }
 
         return rootName;
-
     }
 
     /**

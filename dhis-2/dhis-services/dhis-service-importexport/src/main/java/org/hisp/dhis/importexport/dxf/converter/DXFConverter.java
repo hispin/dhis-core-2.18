@@ -35,6 +35,7 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -109,6 +110,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
@@ -217,11 +219,25 @@ public class DXFConverter
         this.validationRuleService = validationRuleService;
     }
 
+    private ReportService reportService;
+    
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
+    }
+
+    private ChartService chartService;
+    
+    public void setChartService( ChartService chartService )
+    {
+        this.chartService = chartService;
     }
 
     private OlapURLService olapURLService;
@@ -853,6 +869,16 @@ public class DXFConverter
 
                 log.info( "Imported Periods" );
             }
+            else if ( reader.isStartElement( ReportConverter.COLLECTION_NAME ) )
+            {
+                state.setMessage( "importing_reports" );
+                
+                XMLConverter converter = new ReportConverter( reportService, importObjectService );
+                
+                converterInvoker.invokeRead( converter, reader, params );
+                
+                log.info( "Imported Reports" );
+            }
             else if ( reader.isStartElement( ReportTableConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_report_tables" );
@@ -875,6 +901,20 @@ public class DXFConverter
                 batchHandler.flush();
 
                 log.info( "Imported ReportTables" );
+            }
+            else if ( reader.isStartElement( ChartConverter.COLLECTION_NAME ) )
+            {
+                state.setMessage( "importing_charts" );
+                
+                XMLConverter converter = new ChartConverter( chartService, importObjectService, 
+                    indicatorService, periodService, organisationUnitService, 
+                    objectMappingGenerator.getIndicatorMapping( params.skipMapping() ),
+                    objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
+                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
+                
+                converterInvoker.invokeRead( converter, reader, params );
+                
+                log.info( "Imported Charts" );
             }
             else if ( reader.isStartElement( OlapUrlConverter.COLLECTION_NAME ) )
             {

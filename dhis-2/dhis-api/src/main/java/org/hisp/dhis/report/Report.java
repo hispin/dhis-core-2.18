@@ -27,10 +27,10 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -38,16 +38,12 @@ import org.hisp.dhis.reporttable.ReportTable;
  * @version $Id$
  */
 public class Report
-    implements Serializable
+    extends IdentifiableObject
 {
     public static final String TYPE_BIRT = "birt";
     public static final String TYPE_JASPER = "jasper";
     public static final String TYPE_DEFAULT = TYPE_BIRT;
     public static final String TEMPLATE_DIR = "templates";
-    
-    private int id;
-    
-    private String name;
     
     private String design;
 
@@ -131,26 +127,6 @@ public class Report
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public String getDesign()
     {

@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -42,7 +43,7 @@ import org.hisp.dhis.period.RelativePeriods;
  * @version $Id$
  */
 public class Chart
-    implements Serializable
+    implements Serializable, ImportableObject
 {
     public static final String DIMENSION_PERIOD = "period";
     public static final String DIMENSION_ORGANISATIONUNIT = "organisationUnit";
@@ -78,13 +79,13 @@ public class Chart
     
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
     
-    private transient I18nFormat format;
-
     private RelativePeriods relatives;
 
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
+
+    private transient I18nFormat format;
 
     private List<Period> relativePeriods = new ArrayList<Period>();
     
@@ -195,6 +196,11 @@ public class Chart
     public int getHeight()
     {
         return isSize( SIZE_TALL ) ? 800 : 500;
+    }
+    
+    public String getName()
+    {
+        return title;
     }
     
     // -------------------------------------------------------------------------

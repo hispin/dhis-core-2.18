@@ -598,14 +598,23 @@ public class ActivePlanReportsResultAction implements Action
                     //reading one program stage : its dataelements
                     String[] allIds = Ids[i].split( ":" );
                     //spliting with : so getting psid and all datalements ids
-                    String psid = allIds[0];//according to ex 9
-                    Set<DataElement> dataElements = new HashSet<DataElement>();
-                    String deIds = allIds[1];//according to ex 80.81.82
-                    String[] allDeIds = deIds.split( "\\." );//spliting des with .
-                    for ( int j = 0; j < allDeIds.length; j++ )
+                    //System.out.println( "allIds = " + Ids[i] + " size = " + allIds.length );
+                    String psid = "";
+                    if ( allIds.length >= 1 )
                     {
-                        //putting des in list
-                        dataElements.add( dataElementService.getDataElement( Integer.parseInt( allDeIds[j] ) ) );
+                        psid = allIds[0];//according to ex 9
+                    }
+                    Set<DataElement> dataElements = new HashSet<DataElement>();
+                    if ( allIds.length > 1 )
+                    {
+                        String deIds = allIds[1];//according to ex 80.81.82
+
+                        String[] allDeIds = deIds.split( "\\." );//spliting des with .
+                        for ( int j = 0; j < allDeIds.length; j++ )
+                        {
+                            //putting des in list
+                            dataElements.add( dataElementService.getDataElement( Integer.parseInt( allDeIds[j] ) ) );
+                        }
                     }
                     ProgramStage programStage = programStageService.getProgramStage( Integer.parseInt( psid ) );
                     programStagesList.add( programStage );
@@ -658,9 +667,10 @@ public class ActivePlanReportsResultAction implements Action
                             completedProgramStageInstances.add( programStageInstance );
                             continue;
                         }
+                        //System.out.println( "DueDate = " + programStageInstance.getDueDate() + patient.getFullName() );
                         if ( programStageInstance.getDueDate().after( sDate ) && programStageInstance.getDueDate().before( eDate ) )
                         {
-//                            /System.out.println( "DueDate = " + programStageInstance.getDueDate() + " " + programStageInstance.getExecutionDate() );
+                            //System.out.println( "DueDate = " + programStageInstance.getDueDate() + " " + programStageInstance.getExecutionDate()  +  " "+programStageInstance.getId());
                             programStageInstances.add( programStageInstance );
                         }
                     }
@@ -710,7 +720,7 @@ public class ActivePlanReportsResultAction implements Action
                     count1 = 0;
                     for ( String deCodeString : deCodesList )
                     {
-                        
+
                         tempStr = "";
                         String sType = (String) serviceType.get( count1 );
                         if ( sType.equalsIgnoreCase( "dataelement" ) )
@@ -926,30 +936,23 @@ public class ActivePlanReportsResultAction implements Action
                             {
                                 for ( ProgramStageInstance programStageInstanceName : psisList )
                                 {
+                                    //System.out.println( "programStage = "+programStageInstanceName.getProgramStage() + " deCollectedNames " +deCollectedNames );
                                     if ( !deCollectedNames.contains( dename ) )
                                     {
                                         PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e, selectedOrgUnit );
                                         if ( patientDataValue1 != null )
                                         {
                                             valuePresent = true;
-                                            ifaCount = Integer.parseInt( patientDataValue1.getValue() ) + ifaCount;
-                                            deCollectedNames = deCollectedNames + dename;
+                                            tempStr = patientDataValue1.getValue();
+                                        }
+                                        else
+                                        {
+                                            tempStr = "";
                                         }
                                     }
                                 }
                             }
 
-                            if ( deCollectedNames.contains( dename ) )
-                            {
-                                //System.out.println( "ifaCount = " + ifaCount );
-                                if ( ifaCount <= 100 )
-                                {
-                                    tempStr = String.valueOf( 100 - ifaCount );
-                                } else
-                                {
-                                    tempStr = "";
-                                }
-                            }
                         } else if ( sType.equalsIgnoreCase( "immunizationPS" ) )
                         {
                             tempStr = "";

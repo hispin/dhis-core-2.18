@@ -93,7 +93,11 @@ public class ExportParams
     
     private Collection<Integer> validationRules = new ArrayList<Integer>();
     
+    private Collection<Integer> reports = new ArrayList<Integer>();
+    
     private Collection<Integer> reportTables = new ArrayList<Integer>();
+    
+    private Collection<Integer> charts = new ArrayList<Integer>();
     
     private Collection<Integer> olapUrls = new ArrayList<Integer>();
     
@@ -422,6 +426,16 @@ public class ExportParams
         this.validationRules = validationRules;
     }
 
+    public Collection<Integer> getReports()
+    {
+        return reports;
+    }
+
+    public void setReports( Collection<Integer> reports )
+    {
+        this.reports = reports;
+    }
+
     public Collection<Integer> getReportTables()
     {
         return reportTables;
@@ -430,6 +444,16 @@ public class ExportParams
     public void setReportTables( Collection<Integer> reportTables )
     {
         this.reportTables = reportTables;
+    }
+
+    public Collection<Integer> getCharts()
+    {
+        return charts;
+    }
+
+    public void setCharts( Collection<Integer> charts )
+    {
+        this.charts = charts;
     }
 
     public Collection<Integer> getOlapUrls()
