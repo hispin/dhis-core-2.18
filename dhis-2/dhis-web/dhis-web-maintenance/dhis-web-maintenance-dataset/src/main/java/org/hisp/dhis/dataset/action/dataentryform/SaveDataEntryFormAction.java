@@ -101,100 +101,17 @@ public class SaveDataEntryFormAction
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.addDataEntryForm( dataEntryForm, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataset.getId() );
         }
         else
         {
             dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }
 
         return SUCCESS;
     }
-
-    private String prepareDataEntryFormCode( String dataEntryFormCode )
-    {
-        String preparedCode = dataEntryFormCode;
-
-        preparedCode = prepareDataEntryFormInputs( preparedCode );
-        
-        return preparedCode;
-    }
-
-    private String prepareDataEntryFormInputs( String preparedCode )
-    {
-        // ---------------------------------------------------------------------
-        // Buffer to contain the final result.
-        // ---------------------------------------------------------------------
-        
-        StringBuffer sb = new StringBuffer();
-        
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
-        // ---------------------------------------------------------------------
- 
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( preparedCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-        
-        boolean result = matDataElement.find();
-        
-        while ( result )
-        {
-            // -----------------------------------------------------------------
-            // Get input HTML code (HTML input field code).
-            // -----------------------------------------------------------------
-            
-            String dataElementCode = matDataElement.group( 1 );
-            
-            // -----------------------------------------------------------------
-            // Pattern to extract data element name from data element field
-            // -----------------------------------------------------------------
-            
-            Pattern patDataElementName = Pattern.compile( "value=\"\\[ (.*) \\]\"" );
-            Matcher matDataElementName = patDataElementName.matcher( dataElementCode );
-
-            Pattern patTitle = Pattern.compile( "title=\"-- (.*) --\"" );
-            Matcher matTitle = patTitle.matcher( dataElementCode );
-       
-            if ( matDataElementName.find() && matDataElementName.groupCount() > 0 )
-            {
-                String temp = "[ " + matDataElementName.group( 1 ) + " ]";
-                dataElementCode = dataElementCode.replace( temp, "" );
-
-                if ( matTitle.find() && matTitle.groupCount() > 0 )
-                {
-                    temp = "-- " + matTitle.group( 1 ) + " --";
-                    dataElementCode = dataElementCode.replace( temp, "" );
-                }
-
-                // -------------------------------------------------------------
-                // Appends dataElementCode
-                // -------------------------------------------------------------
-       
-                String appendCode = dataElementCode;
-                appendCode += "/>";
-                matDataElement.appendReplacement( sb, appendCode );
-            }
-
-            // -----------------------------------------------------------------
-            // Go to next data entry field
-            // -----------------------------------------------------------------
    
-            result = matDataElement.find();
-        }
-
-        // -----------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code.
-        // -----------------------------------------------------------------
-
-        matDataElement.appendTail( sb );
-        
-        return sb.toString();
-    }    
 }
