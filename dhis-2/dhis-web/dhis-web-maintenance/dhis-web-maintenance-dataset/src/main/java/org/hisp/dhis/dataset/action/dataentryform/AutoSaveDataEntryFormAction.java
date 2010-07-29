@@ -108,86 +108,11 @@ public class AutoSaveDataEntryFormAction
         else
         {
             dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( prepareDataEntryFormInputs(designTextarea ));
+            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode(designTextarea ));
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }
 
         return SUCCESS;
     }
     
-    private String prepareDataEntryFormInputs( String preparedCode )
-    {
-        // ---------------------------------------------------------------------
-        // Buffer to contain the final result.
-        // ---------------------------------------------------------------------
-        
-        StringBuffer sb = new StringBuffer();
-        
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
-        // ---------------------------------------------------------------------
- 
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( preparedCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-        
-        boolean result = matDataElement.find();
-        
-        while ( result )
-        {
-            // -----------------------------------------------------------------
-            // Get input HTML code (HTML input field code).
-            // -----------------------------------------------------------------
-            
-            String dataElementCode = matDataElement.group( 1 );
-            
-            // -----------------------------------------------------------------
-            // Pattern to extract data element name from data element field
-            // -----------------------------------------------------------------
-            
-            Pattern patDataElementName = Pattern.compile( "value=\"\\[ (.*) \\]\"" );
-            Matcher matDataElementName = patDataElementName.matcher( dataElementCode );
-
-            Pattern patTitle = Pattern.compile( "title=\"-- (.*) --\"" );
-            Matcher matTitle = patTitle.matcher( dataElementCode );
-       
-            if ( matDataElementName.find() && matDataElementName.groupCount() > 0 )
-            {
-                String temp = "[ " + matDataElementName.group( 1 ) + " ]";
-                dataElementCode = dataElementCode.replace( temp, "" );
-
-                if ( matTitle.find() && matTitle.groupCount() > 0 )
-                {
-                    temp = "-- " + matTitle.group( 1 ) + " --";
-                    dataElementCode = dataElementCode.replace( temp, "" );
-                }
-
-                // -------------------------------------------------------------
-                // Appends dataElementCode
-                // -------------------------------------------------------------
-       
-                String appendCode = dataElementCode;
-                appendCode += "/>";
-                matDataElement.appendReplacement( sb, appendCode );
-            }
-
-            // -----------------------------------------------------------------
-            // Go to next data entry field
-            // -----------------------------------------------------------------
-   
-            result = matDataElement.find();
-        }
-
-        // -----------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code.
-        // -----------------------------------------------------------------
-
-        matDataElement.appendTail( sb );
-
-        return sb.toString();
-    }    
-
 }
