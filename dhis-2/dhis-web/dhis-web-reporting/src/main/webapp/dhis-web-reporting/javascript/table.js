@@ -18,7 +18,7 @@ function paramOrganisationUnitSet( id )
 
 function createTable( tableId )
 {
-    var url = "createTable.action?id=" + tableId + "&mode=table";
+    var url = "createTable.action?id=" + tableId + "&doDataMart=" + getListValue( "doDataMart" ) + "&mode=table";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
