@@ -209,40 +209,39 @@ public class AddReportAction
             reportTableService.getReportTables( getIntegerCollection( selectedReportTables ) ) ) : null );
                 
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
-            
-        if ( ( type != null && type.equals( Report.TYPE_JASPER ) ) && file != null )
+
+        // ---------------------------------------------------------------------
+        // Design file upload
+        // ---------------------------------------------------------------------
+
+        if ( file != null )
         {
-            // -----------------------------------------------------------------
-            // Design file upload
-            // -----------------------------------------------------------------
-    
-            report.setDesignContent( StreamUtils.getContent( file ) );
-        }
-        else // BIRT
-        {
-            // -----------------------------------------------------------------
-            // Design file upload
-            // -----------------------------------------------------------------
-    
-            ReportConfiguration reportConfig = reportManager.getConfiguration();
-            
-            String birtHome = reportConfig.getHome();
-            
-            File design = new File( birtHome, fileName );
-            
-            log.info( "New file: " + design.getAbsolutePath() );
-    
-            // -----------------------------------------------------------------
-            // Updating database properties in design file
-            // -----------------------------------------------------------------
-    
-            if ( file != null )
+            if ( type != null && type.equals( Report.TYPE_JASPER ) )
             {
-                Map<String[], String> connectionMap = reportManager.getReportConnectionMap();
+                report.setDesignContent( StreamUtils.getContent( file ) );
+            }
+            else // BIRT
+            {
+                ReportConfiguration reportConfig = reportManager.getConfiguration();
                 
-                StringBuffer in = StreamUtils.readContent( file, connectionMap );
-    
-                StreamUtils.writeContent( design, in );
+                String birtHome = reportConfig.getHome();
+                
+                File design = new File( birtHome, fileName );
+                
+                log.info( "New file: " + design.getAbsolutePath() );
+        
+                // -----------------------------------------------------------------
+                // Updating database properties in design file
+                // -----------------------------------------------------------------
+        
+                if ( file != null )
+                {
+                    Map<String[], String> connectionMap = reportManager.getReportConnectionMap();
+                    
+                    StringBuffer in = StreamUtils.readContent( file, connectionMap );
+        
+                    StreamUtils.writeContent( design, in );
+                }
             }
         }
         

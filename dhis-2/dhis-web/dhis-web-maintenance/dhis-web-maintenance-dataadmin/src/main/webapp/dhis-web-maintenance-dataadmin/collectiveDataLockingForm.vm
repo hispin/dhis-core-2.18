@@ -1,274 +1,189 @@
+
+<script type="text/javascript">
+	
+	var i18n_organisation_not_selected = '$encoder.jsEscape( $i18n.getString( "organisation_not_selected" ) , "'")';
+	var i18n_period_not_selected = '$encoder.jsEscape( $i18n.getString( "period_not_selected" ) , "'")';
+	var i18n_dataset_not_selected = '$encoder.jsEscape( $i18n.getString( "dataset_not_selected" ) , "'")';
+	var i18n_lock = '$encoder.jsEscape( $i18n.getString( "lock" ) , "'")';
+	var i18n_unlock = '$encoder.jsEscape( $i18n.getString( "unlock" ) , "'")';
+	var i18n_select_all_at_level = '$encoder.jsEscape( $i18n.getString( "select_all_at_level" ) , "'")';
+	var i18n_unselect_all_at_level = '$encoder.jsEscape( $i18n.getString( "unselect_all_at_level" ) , "'")';
+	var i18n_select_all_at_group = '$encoder.jsEscape( $i18n.getString( "select_all_in_group" ) , "'")';
+    var i18n_unselect_all_at_group = '$encoder.jsEscape( $i18n.getString( "unselect_all_in_group" ) , "'")';
+	var clickedButtonElement;
+
+	function setClickedButtonElementValue( buttonElement )
+	{
+		clickedButtonElement = buttonElement.value;
+		document.getElementById("selectBetweenLockUnlock").value = clickedButtonElement;
+	}
+
+	function validateCollectiveDataLockingForm()
+	{		
+		periodIdOptions = document.getElementById("periodId").options;
+			
+		if( periodIdOptions.length > 0 )
+		{
+			var i;
+			for( i=0; i < periodIdOptions.length ; i++ )
+			{
+				if( periodIdOptions[i].selected == true )
+						break;
+			}
+			if( i == periodIdOptions.length )
+			{
+				alert(i18n_period_not_selected);
+				return false;
+			}
+		}
+		else
+		{
+			alert( i18n_period_not_selected );
+			return false;
+		}
+			
+		dataSetIdsOptions = document.getElementById("dataSetIds").options;
+				
+		if( dataSetIdsOptions.length > 0 )
+		{
+			var i;
+			for( i=0; i < dataSetIdsOptions.length ; i++)
+			{
+				if( dataSetIdsOptions[i].selected == true )
+					break;
+			}
+			if( i==dataSetIdsOptions.length )
+			{
+				alert( i18n_dataset_not_selected );
+				return false;
+			}
+		}
+		else
+		{
+			alert(i18n_dataset_not_selected);
+			return false;
+		}
+				
+        if( clickedButtonElement == i18n_lock || clickedButtonElement == i18n_unlock )
+        {
+			orgUnitSelectValidation();
+			return false;
+        }
+		else if( clickedButtonElement == i18n_select_all_at_level || clickedButtonElement == i18n_unselect_all_at_level )
+		{	
+			levelIdOptions = document.getElementById("levelId").options;
+			if(!levelIdOptions.length>0)
+				return false;
+		}
+	    else if( clickedButtonElement == i18n_select_all_at_group || clickedButtonElement == i18n_unselect_all_at_group )
+	    {
+			ougGroupOptions = document.getElementById("orgGroup").options;
+			if( !ougGroupOptions.length > 0 )
+				return false;
+	    } 
+		
+		return true;
+	}
+	               
+</script>
+
 <h3>$i18n.getString( "data_locking_form" ) #openHelp( "dataLocking" )</h3>
-
-	<script type="text/javascript">
-                var i18n_organisation_not_selected = '$encoder.jsEscape( $i18n.getString( "organisation_not_selected" ) , "'")';
-                var i18n_period_not_selected = '$encoder.jsEscape( $i18n.getString( "period_not_selected" ) , "'")';
-                var i18n_dataset_not_selected = '$encoder.jsEscape( $i18n.getString( "dataset_not_selected" ) , "'")';
-                var i18n_lock = '$encoder.jsEscape( $i18n.getString( "lock" ) , "'")';
-                var i18n_unlock = '$encoder.jsEscape( $i18n.getString( "unlock" ) , "'")';
-                var clickedButtonElement;
-		
-				function setClickedButtonElementValue( buttonElement )
-				{
-					clickedButtonElement = buttonElement.value;
-					document.getElementById("selectBetweenLockUnlock").value = clickedButtonElement;
-				}
-		
-                function validateCollectiveDataLockingForm()
-                {
-					if(clickedButtonElement==i18n_lock || clickedButtonElement==i18n_unlock)
-                    {
-                        organisationUnitIdsOptions = document.getElementById("organisationUnitIds").options;
-                        if(organisationUnitIdsOptions.length > 0)
-                        {
-                            for( i=0; i < organisationUnitIdsOptions.length ; i++)
-                            {
-                                organisationUnitIdsOptions[i].selected=true;
-                            }
-                        }
-                        else
-                        {
-                            alert(i18n_organisation_not_selected); 
-                            return false;
-                        }
-                    }
-                    
-                    periodIdOptions = document.getElementById("periodId").options;
-                    
-                    if(periodIdOptions.length>0)
-                    {
-                        var i;
-                        for( i=0; i < periodIdOptions.length ; i++)
-                        {
-                            if(periodIdOptions[i].selected==true)
-                                break;
-                        }
-                        if(i==periodIdOptions.length)
-                        {
-                            alert(i18n_period_not_selected);
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        alert(i18n_period_not_selected);
-                        return false;
-                    }
-                    
-                    dataSetIdsOptions = document.getElementById("dataSetIds").options;
-                        
-                    if(dataSetIdsOptions.length>0)
-                    {
-                        var i;
-                        for( i=0; i < dataSetIdsOptions.length ; i++)
-                        {
-                            if(dataSetIdsOptions[i].selected==true)
-                                break;
-                        }
-                        if(i==dataSetIdsOptions.length)
-                        {
-                            alert(i18n_dataset_not_selected);
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        alert(i18n_dataset_not_selected);
-                        return false;
-                    }
-						
-					levelIdOptions = document.getElementById("levelId").options;
-					if(!levelIdOptions.length>0)
-						return false;
-		
-					ougGroupOptions = document.getElementById("ougGroup").options;
-                    if(!ougGroupOptions.length>0)
-                        return false;
-		
-					return true;
-                }               
-            </script>
-<span id="message"></span>  
-
+	
 <form id="lockingForm" name="lockingForm" action="collectiveDataLocking.action" method="post" onsubmit="return validateCollectiveDataLockingForm()">
-  
-<table width="730">
-    
-    <colgroup>
-        <col width="325">
-        <col width="80">
-        <col width="325">
-    </colgroup>
-       
-     <!-- Period type -->
-    
-    <tr>
-        <th>$i18n.getString( "period_type" )</th>
-        <td>&nbsp;</td>
-		<td>&nbsp;</td>       
-    </tr>
-    <tr>
-        <td>
-            <select id="periodTypeId" name="periodTypeId" style="min-width:325px" onchange="getPeriods()">
-                <option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
-				#foreach ( $periodType in $periodTypes )
-                  <option value="$periodType.name"#if( $currentPeriodTypeId == $type.name ) selected="selected"#end>$periodType.name</option>
-                #end
-            </select>
-        </td>
-        <td>&nbsp;</td>
-       <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-    </tr>
-    
-    <!-- DataSets -->
-    
-    <tr>
-        <th>$i18n.getString( "available_periods" )</th>
-        <td></td>
-        <th>$i18n.getString( "available_datasets" )</th>
-    </tr>  
-    <tr>        
-        <td>
-            <select id="periodId" name="periodId" multiple="multiple" style="min-width:325px;height:8em" disabled="true">
-            </select>
-        </td>
-        <td align="center">
-           
-        <td>
-            <select id="dataSetIds" name="dataSetIds" multiple="multiple" style="min-width:325px;height:8em" ondblclick="#" disabled="true">
-                
-            </select>
-        </td>
-       </tr>
-	<tr>
-        <td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-    </tr>
-			
-	    <tr>
-        <th>$i18n.getString( "type_of_selection" )</th>
-	    <td>&nbsp;</td>
+	<table>
+		<tr>
+			<td valign="top">
+				<table valign="top">
+					<tr><th>$i18n.getString( "period_type" )</th></tr>
+					<tr>
+						<td>
+							<select id="periodTypeId" name="periodTypeId" style="min-width:325px" onchange="getPeriods()">
+								<option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
+								#foreach ( $periodType in $periodTypes )
+								  <option value="$periodType.name"#if( $currentPeriodTypeId == $type.name ) selected="selected"#end>$periodType.name</option>
+								#end
+							</select>
+						</td>
+					</tr>
+					<tr><td>&nbsp;</td></tr>
+					<tr><th>$i18n.getString( "available_periods" )</th></tr>
+					<tr>	
+						<td>	
+							<select id="periodId" name="periodId" multiple="multiple" style="min-width:325px;height:11.25em" disabled="true">
+							</select>
+						</td>
+					</tr>
+					<tr><td>&nbsp;</td></tr>
+					<tr><th>$i18n.getString( "available_datasets" )</th></tr>
+					<tr>
+						<td>
+							<select id="dataSetIds" name="dataSetIds" multiple="multiple" style="min-width:325px;height:12.5em" ondblclick="#" disabled="true"></select>				
+						</td>
+					</tr>
+				</table>
+			</td>	  
 			<td>&nbsp;</td>
-        </tr>							
-	 <!--Type Of Selection -->
-		<tr>  	
 			<td>
-				 <select id="selectionValue" name="selectionValue"  style="min-width:325px;" onlclick="" enabled="true">
-                    <option value="Selected">Selected</option>
-					<option value="Childtree">Child Tree</option>
-            </select>
-        </td>
-	     <td>&nbsp;</td>
-		 <td>&nbsp;</td>
-		</tr>
-					
-		<tr>	
-        <td>&nbsp;</td>
-		<td>&nbsp;</td>
-			<td>&nbsp;</td>
-        </tr>
-	    <tr><td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        </tr>   		
-	    <tr><th> $i18n.getString( "selected_orgunits" )</th>
-		<td>&nbsp;</td>
-		<th> $i18n.getString( "locking_mode" )</th>
-	    </tr>				
-	    <tr>
-		<td>
-			<select id="organisationUnitIds" name="organisationUnitIds" multiple="multiple" style="min-width:325px;height:8em" disabled="true">
-				
-            </select>
-			<br/><br/>
+				<table>
+					<tr><th>$i18n.getString('organisation_unit')</th></tr>
+					<tr>
+						<td>
+							<input type="submit" value="$i18n.getString( "select_all_at_level" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							<select id="levelId" name="levelId" style="width:12em" >
+                                #foreach ( $orgUnitLevel in $orgUnitLevels )
+                                   <option value="$orgUnitLevel.level" >$orgUnitLevel.name</option>
+                                #end
+                            </select>
+							<input type="submit" value="$i18n.getString( "unselect_all_at_level" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							 <select id="selectionValue" name="selectionValue" onlclick="" enabled="true">
+                                        <option value="selected" selected>Selected</option>
+                                        <option value="Childtree">Child Tree</option>
+                             </select>   							    
+						</td>							
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" value="$i18n.getString( "select_all_in_group" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							<select id="orgGroup" name="orgGroup" style="width:12em" >
+								 #foreach ( $orgUnitGroup in $orgUnitGroups )
+									 <option value="$orgUnitGroup.id">$orgUnitGroup.name</option>
+								 #end
+							</select>
+							<input type="submit" value="$i18n.getString( "unselect_all_in_group" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+						</td>
 		
-			    &nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="submit"   onclick="setClickedButtonElementValue(this)" id="Lock" name ="Lock"  value="$i18n.getString( "lock" )" style="width:6em" disabled="true">
-			
-			    &nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;
-			  
-			<input type="submit" onclick="setClickedButtonElementValue(this)" id="Unlock"  name ="Unlock"    value="$i18n.getString( "unlock" )" style="width:6em" disabled="true">	
-				                   
-	   </td>
-	   <td></td>
-	   <td valign="top">
-		
-		<table width="325">
-			<colgroup>
-					<col width="108">
-					<col width="109">
-					<col width="108">
-				</colgroup>			
-		<tr>
-	    <td>
-		   <input type="submit" onclick="setClickedButtonElementValue(this)" id="Slevel"  name ="Slevel" title = "Selected All In Level" value="$i18n.getString( "select_all_at_level" )" style="width:6em" disabled="true">
-		</td>
-		<td>
-					<select id="levelId" name="levelId" >
-					#foreach ( $orgUnitLevel in $orgUnitLevels )
-					<option value="$orgUnitLevel.level" >$orgUnitLevel.name</option>
-					#end
-                    </select>
-	    </td>
-							
-		<td>
-                    <input type="submit" onclick="setClickedButtonElementValue(this)" id="Unlevel" name ="Unlevel" title= "Unselected All At Level" value="$i18n.getString( "unselect_all_at_level" )" style="width:6em" disabled="true">
-        </td>		
-		</tr>
-		<tr>
-				 <td height="40px"></td>
-                 <td height="40px"></td>
-                 <td height="40px"></td>
-		</tr>
-							
-	   <tr></tr>
-							
-         <td>
-                 <input type="submit" onclick="setClickedButtonElementValue(this)" id="Sgroup" title =" Selected All In Group" name ="Sgroup" value="$i18n.getString( "select_all_in_group" )" style="width:6em" disabled="true">
-         </td>
-							
-          <td>
-				<select id="orgGroup" name="orgGroup" >
-                 #foreach ( $orgUnitGroup in $orgUnitGroups )
-                 <option value="$orgUnitGroup.id">$orgUnitGroup.name</option>
-                  #end
-		</td>
-							
-        <td>
-                <input type="submit" title ="unselected all in group"  onclick="setClickedButtonElementValue(this)" id="Ugroup" name ="Ugroup"  value="$i18n.getString( "unselect_all_in_group" )" style="width:6em" disabled="true">
-        </td>  
-							     
-        </tr>				
-	    </table>
-		</td>
-	    </tr>
-								
-	    <tr>
-	    <td></td>
-		<td>
-			   <input type="hidden" id="selectBetweenLockUnlock" name="selectBetweenLockUnlock">
-		</td>
-				
-	   <td></td>
-				
-	</tr>			
-</table>
+					</tr>
+				<tr>
+					<td>
+					<div id="selectionTree" style="width:45em;height:28em;overflow:auto;border:1px solid #cccccc"></div>	
+					</td>
+				</tr>	
+				<tr>
+					<td>
+						<input type="submit"   onclick="setClickedButtonElementValue(this)" id="Lock" name ="Lock"  value="$i18n.getString( "lock" )" style="width:10em" disabled="true">
+                        <input type="submit" onclick="setClickedButtonElementValue(this)" id="Unlock"  name ="Unlock"    value="$i18n.getString( "unlock" )"  style="width:10em" disabled="true"> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						 <span id="message"></span>
+						 <input type="hidden" id="selectBetweenLockUnlock" name="selectBetweenLockUnlock">
+					</td>
+				</tr>							
+			</table>		
+		</td>			
+	</tr>
+</table>		
 </form>
+							 
+<script type="text/javascript">
+	
+	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
+	var numberOfSelects = 0;
+    selectionTreeSelection.setMultipleSelectionAllowed( true );
+    selectionTreeSelection.setOnSelectFunction( treeClicked );
+    selectionTreeSelection.setListenerFunction( selectCompleted );
+    selectionTree.clearSelectedOrganisationUnits();
+    selectionTree.buildSelectionTree();
+
+</script>

@@ -220,6 +220,13 @@ public class MetaDataExportAction
         this.validationRules = validationRules;
     }
     
+    private boolean reports;
+
+    public void setReports( boolean reports )
+    {
+        this.reports = reports;
+    }
+
     private boolean reportTables;
 
     public void setReportTables( boolean reportTables )
@@ -227,6 +234,13 @@ public class MetaDataExportAction
         this.reportTables = reportTables;
     }
     
+    private boolean charts;
+    
+    public void setCharts( boolean charts )
+    {
+        this.charts = charts;
+    }
+
     private boolean olapUrls;
 
     public void setOlapUrls( boolean olapUrls )
@@ -248,7 +262,7 @@ public class MetaDataExportAction
 
         params.setExtendedMode( dataDictionaryMode != null && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
         
-        if ( dataElements || dataElementGroups || indicators || dataSets || validationRules || reportTables )
+        if ( dataElements || dataElementGroups || indicators || dataSets || validationRules || reportTables || charts )
         {
             params.setCategories( null );
             params.setCategoryCombos( null );
@@ -268,7 +282,7 @@ public class MetaDataExportAction
             params.setDataElementGroupSets( null );
         }
         
-        if ( indicators || indicatorGroups || reportTables )
+        if ( indicators || indicatorGroups || reportTables || charts )
         {
             params.setIndicators( null );
             
@@ -295,7 +309,7 @@ public class MetaDataExportAction
             params.setDataSets( null );            
         }
         
-        if ( organisationUnits || organisationUnitGroups || reportTables )
+        if ( organisationUnits || organisationUnitGroups || reportTables || charts )
         {
             params.setOrganisationUnits( null );
         }
@@ -320,11 +334,21 @@ public class MetaDataExportAction
             params.setValidationRules( null );
         }
         
+        if ( reports )
+        {
+            params.setReports( null );
+        }
+        
         if ( reportTables )
         {            
-            params.setReportTables( null );
-            
+            params.setReportTables( null );            
             params.setPeriods( null ); //TODO Include only relevant periods
+        }
+        
+        if ( charts )
+        {
+            params.setCharts( null );
+            params.setPeriods( null );
         }
         
         if ( olapUrls )

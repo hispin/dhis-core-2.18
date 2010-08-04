@@ -44,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
@@ -62,6 +63,13 @@ public class CollectiveDataLockingAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
 
     private PeriodService periodService;
 
@@ -129,14 +137,14 @@ public class CollectiveDataLockingAction
     {
         this.dataSetIds = DataSetIds;
     }
-
+   /*
     private Collection<Integer> organisationUnitIds = new ArrayList<Integer>();
 
     public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
     {
         this.organisationUnitIds = organisationUnitIds;
     }
-
+ */
     private String selectionValue = new String();
 
     public void setSelectionValue( String selectionValue )
@@ -209,7 +217,7 @@ public class CollectiveDataLockingAction
         {
             message = i18n.getString( "period_not_selected" );
 
-            return INPUT;
+            return SUCCESS;
         }
 
         if ( dataSetIds != null && dataSetIds.size() != 0 )
@@ -223,7 +231,7 @@ public class CollectiveDataLockingAction
         {
             message = i18n.getString( "dataset_not_selected" );
 
-            return INPUT;
+            return SUCCESS;
         }
 
         Collection<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
@@ -240,6 +248,8 @@ public class CollectiveDataLockingAction
             // selectedOrganisationUnitsSource.size());
             applyCollectiveDataLock( selectedOrganisationUnitsSource );
 
+            message = i18n.getString( "select_all_at_level_saved" );
+
             return SUCCESS;
 
         }
@@ -249,6 +259,8 @@ public class CollectiveDataLockingAction
             selectedOrganisationUnitsSource = getCurrentUserOrgnaisationUnits();
             selectedOrganisationUnitsSource.retainAll( convert( organisationUnits ) );
             removeCollectiveDataLock( selectedOrganisationUnitsSource );
+
+            message = i18n.getString( "unselect_all_at_level_saved" );
 
             return SUCCESS;
         }
@@ -261,6 +273,8 @@ public class CollectiveDataLockingAction
             selectedOrganisationUnitsSource.retainAll( convert( organisationUnits ) );
             applyCollectiveDataLock( selectedOrganisationUnitsSource );
 
+            message = i18n.getString( "select_all_in_group_saved" );
+
             return SUCCESS;
         }
         else if ( selectBetweenLockUnlock.equalsIgnoreCase( unselect_all_in_group ) )
@@ -271,21 +285,18 @@ public class CollectiveDataLockingAction
             selectedOrganisationUnitsSource.retainAll( convert( organisationUnits ) );
             removeCollectiveDataLock( selectedOrganisationUnitsSource );
 
+            message = i18n.getString( "unselect_all_in_group_saved" );
+
             return SUCCESS;
         }
 
-        if ( organisationUnitIds != null && organisationUnitIds.size() != 0 )
-        {
-            for ( Integer organisationUnitId : organisationUnitIds )
-            {
-                organisationUnits.add( organisationUnitService.getOrganisationUnit( organisationUnitId.intValue() ) );
-            }
-        }
-        else
+        organisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
+
+        if ( organisationUnits == null || organisationUnits.size() == 0 )
         {
             message = i18n.getString( "organisation_not_selected" );
 
-            return INPUT;
+            return SUCCESS;
         }
 
         if ( selectionValue.equalsIgnoreCase( selected ) )
@@ -295,10 +306,15 @@ public class CollectiveDataLockingAction
             if ( selectBetweenLockUnlock.equalsIgnoreCase( lock ) )
             {
                 applyCollectiveDataLock( selectedOrganisationUnitsSource );
+
+                message = i18n.getString( "information_successfully_locked" );
+
             }
             else if ( selectBetweenLockUnlock.equalsIgnoreCase( unlock ) )
             {
                 removeCollectiveDataLock( selectedOrganisationUnitsSource );
+
+                message = i18n.getString( "information_successfully_unlocked" );
             }
 
         }
@@ -308,16 +324,24 @@ public class CollectiveDataLockingAction
             selectedOrganisationUnitsSource = new HashSet<Source>();
             for ( OrganisationUnit organisationUnitsElement : organisationUnits )
             {
-                selectedOrganisationUnitsSource.addAll( convert( getChildOrgUnitTree( organisationUnitsElement ) ) );
+                selectedOrganisationUnitsSource.addAll( convert( organisationUnitService
+                    .getOrganisationUnitWithChildren( organisationUnitsElement.getId() ) ) );
+
+                // selectedOrganisationUnitsSource.addAll( convert(
+                // getChildOrgUnitTree( organisationUnitsElement ) ) );
             }
 
             if ( selectBetweenLockUnlock.equalsIgnoreCase( lock ) )
             {
                 applyCollectiveDataLock( selectedOrganisationUnitsSource );
+
+                message = i18n.getString( "information_successfully_locked" );
             }
             else if ( selectBetweenLockUnlock.equalsIgnoreCase( unlock ) )
             {
                 removeCollectiveDataLock( selectedOrganisationUnitsSource );
+
+                message = i18n.getString( "information_successfully_unlocked" );
             }
         }
 

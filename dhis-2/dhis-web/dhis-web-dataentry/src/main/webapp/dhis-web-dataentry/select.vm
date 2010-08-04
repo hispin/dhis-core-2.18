@@ -19,7 +19,7 @@
     <input type="button" id="calculateCDEs" value="$i18n.getString( "save_calculated" )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end><br>
 
     <br>
-	<input type="radio" id="displayMode" name="displayMode" value="customform"
+	<input type="radio" id="displayModeCustom" name="displayMode" value="customform"
        #if( $displayMode == "customform" ) 
            checked="checked" 
        #end
@@ -27,9 +27,9 @@
            disabled="disabled" 
        #end         
        onclick="document.getElementById( 'selectForm' ).submit();">    
-    <label>$i18n.getString( "use_custom_form" )</label><br>
+    <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br>
 
-	<input type="radio" id="displayMode" name="displayMode" value="sectionform"
+	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform"
 	   #if( $displayMode == "sectionform" ) 
 	       checked="checked" 
 	   #end  
@@ -37,14 +37,14 @@
 	       disabled="disabled" 
 	   #end 
 	   onclick="document.getElementById( 'selectForm' ).submit();">
-	<label>$i18n.getString( "use_section_form" )</label><br>
+	<label for="displayModeSection">$i18n.getString( "use_section_form" )</label><br>
 
-	<input type="radio" id="displayMode" name="displayMode" value="defaultform"
+	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform"
        #if( $displayMode == "defaultform" ) 
            checked="checked" 
        #end       
        onclick="document.getElementById( 'selectForm' ).submit();">    
-    <label>$i18n.getString( "use_default_form" )</label><br>
+    <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br>
 
 </div>
 

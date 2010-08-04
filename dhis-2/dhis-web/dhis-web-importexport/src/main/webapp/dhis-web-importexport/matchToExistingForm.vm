@@ -1,131 +1,23 @@
 
-#macro ( getExtendedProperties )
-	
-    <!-- Identifying and Definitional attributes -->
-    
-    <tr>
-        <td>$i18n.getString( "mnemonic" )</td>
-        <td>$!importObject.object.extended.mnemonic</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "version" )</td>
-        <td>$!importObject.object.extended.version</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "context" )</td>
-        <td>$!importObject.object.extended.context</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "synonyms" )</td>
-        <td>$!importObject.object.extended.synonyms</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "hononyms" )</td>
-        <td>$!importObject.object.extended.hononyms</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "keywords" )</td>
-        <td>$!importObject.object.extended.keywords</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "status" )</td>
-        <td>$!importObject.object.extended.status</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "data_element_type" )</td>
-        <td>$!importObject.object.extended.dataElementType</td>
-    </tr>
-    
-    <!-- Relational and Representational attributes -->
-    
-    <tr>
-        <td>$i18n.getString( "data_type" )</td>
-        <td>$!importObject.object.extended.dataType</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "representational_form" )</td>
-        <td>$!importObject.object.extended.representationalForm</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "representational_layout" )</td>
-        <td>$!importObject.object.extended.representationalLayout</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "minimum_size" )</td>
-        <td>$!importObject.object.extended.minimumSize</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "maximum_size" )</td>
-        <td>$!importObject.object.extended.maximumSize</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "data_domain" )</td>
-        <td>$!importObject.object.extended.dataDomain</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "validation_rules" )</td>
-        <td>$!importObject.object.extended.validationRules</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "related_data_references" )</td>
-        <td>$!importObject.object.extended.relatedDataReferences</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "guide_for_use" )</td>
-        <td>$!importObject.object.extended.guideForUse</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "collection_methods" )</td>
-        <td>$!importObject.object.extended.collectionMethods</td>
-    </tr>
-    
-    <!-- Administrative attributes -->
-    
-    <tr>
-        <td>$i18n.getString( "responsible_authority" )</td>
-        <td>$!importObject.object.extended.responsibleAuthority</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "update_rules" )</td>
-        <td>$!importObject.object.extended.updateRules</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "access_authority" )</td>
-        <td>$!importObject.object.extended.accessAuthority</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "update_frequency" )</td>
-        <td>$!importObject.object.extended.updateFrequency</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "location" )</td>
-        <td>$!importObject.object.extended.location</td>
-    </tr>   
-    <tr>
-        <td>$i18n.getString( "reporting_methods" )</td>
-        <td>$!importObject.object.extended.reportingMethods</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "version_status" )</td>
-        <td>$!importObject.object.extended.versionStatus</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "previous_version_references" )</td>
-        <td>$!importObject.object.extended.previousVersionReferences</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "source_document" )</td>
-        <td>$!importObject.object.extended.sourceDocument</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "source_organisation" )</td>
-        <td>$!importObject.object.extended.sourceOrganisation</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "comment" )</td>
-        <td>$!importObject.object.extended.comment</td>
-    </tr>
-    
+#macro( displayProperty $key $value )
+<tr>
+	<td>$i18n.getString( "${key}" )</td>
+	<td>$!value</td>
+</tr>	
+#end
+
+#macro( displayBoolProperty $key $value )
+<tr>
+	<td>$i18n.getString( "${key}" )</td>
+	<td>$!{value}</td>
+</tr>	
+#end
+
+#macro( displayAggregationOperatorProperty $key $value )
+<tr>
+	<td>$i18n.getString( "${key}" )</td>
+	<td>#formatBool( $!{value} )</td>
+</tr>	
 #end
 
 <h3>$i18n.getString( 'match_to_existing' )</h3>
@@ -144,50 +36,29 @@
 		<th style="width:65%">$i18n.getString( "details" )</th>
 	</tr>	
 	
-	<tr>
-		<td>$i18n.getString( "name" )</td>
-		<td>$!importObject.object.name</td>
-	</tr>	
+	#displayProperty( "name" $importObject.object.name )
 	
 	#if ( $objectType == "DATAELEMENT" || $objectType == "CALCULATEDDATAELEMENT" )
 			
-	<tr>
-		<td>$i18n.getString( "alternative_name" )</td>
-		<td>$!importObject.object.alternativeName</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "short_name" )</td>
-		<td>$!importObject.object.shortName</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "code" )</td>
-		<td>$!importObject.object.code</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "description" )</td>
-		<td>$!importObject.object.description</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "active" )</td>
-		<td>#formatBool( $!importObject.object.active )</td>
-	</tr>	
+	#displayProperty( "alternative_name" $importObject.object.alternativeName )
+	#displayProperty( "short_name" $importObject.object.shortName )
+	#displayProperty( "code" $importObject.object.code )
+	#displayProperty( "description" $importObject.object.description )
+	#displayBoolProperty( "active" $importObject.object.active )
+		
 	<tr>
 		<td>$i18n.getString( "type" )</td>
 		<td>#formatType( $!importObject.object.type )</td>
 	</tr>
-	<tr>
-		<td>$i18n.getString( "aggregation_operator" )</td>
-		<td>#formatAggregationOperator( $!importObject.object.aggregationOperator )</td>
-	</tr>
+	
+	#displayAggregationOperatorProperty( "aggregation_operator" $importObject.object.aggregationOperator )
 	
 	#end
 	
 	#if ( $objectType == "CALCULATEDDATAELEMENT" )
 	
-	<tr>
-        <td>$i18n.getString( "saved" )</td>
-        <td>#formatBool( $!importObject.object.saved )</td>
-    </tr>
+	#displayBoolProperty( "saved" $importObject.object.saved )
+	
     <tr>
         <td>$i18n.getString( "expression" )</td>
         <td>$!importObject.object.expression.expression</td>
@@ -195,226 +66,116 @@
         
 	#end
 	
-	#if ( $objectType == "DATAELEMENT" && $dataDictionaryMode == "extended" )
-	
-	#getExtendedProperties()
-	
-	#end
-	
 	#if ( $objectType == "INDICATORTYPE" )
 	
-	<tr>
-		<td>$i18n.getString( "factor" )</td>
-		<td>$!importObject.object.factor</td>
-	</tr>	
+	#displayProperty( "factor" $importObject.object.factor )
 	
 	#end
 	
 	#if ( $objectType == "INDICATOR" )
 	
-	<tr>
-		<td>$i18n.getString( "alternative_name" )</td>
-		<td>$!importObject.object.alternativeName</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "short_name" )</td>
-		<td>$!importObject.object.shortName</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "code" )</td>
-		<td>$!importObject.object.code</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "description" )</td>
-		<td>$!importObject.object.description</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "annualized" )</td>
-		<td>#formatBool( $importObject.object.annualized )</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "numerator_description" )</td>
-		<td>$!importObject.object.numeratorDescription</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "numerator_aggregation_operator" )</td>
-		<td>#formatAggregationOperator( $!importObject.object.numeratorAggregationOperator )</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "denominator_description" )</td>
-		<td>$!importObject.object.denominatorDescription</td>
-	</tr>	
-	<tr>
-		<td>$i18n.getString( "denominator_aggregation_operator" )</td>
-		<td>#formatAggregationOperator( $!importObject.object.denominatorAggregationOperator )</td>
-	</tr>
+	#displayProperty( "alternative_name" $importObject.object.alternativeName )
+	#displayProperty( "short_name" $importObject.object.shortName )
+	#displayProperty( "code" $importObject.object.code )
+	#displayProperty( "description" $importObject.object.description )
+	#displayBoolProperty( "annualized" $importObject.object.annualized )
+	#displayProperty( "numerator_description" $importObject.object.numeratorDescription )
+	#displayAggregationOperatorProperty( "numerator_aggregation_operator" $importObject.object.numeratorAggregationOperator )
+	#displayProperty( "denominator_description" $importObject.object.denominatorDescription )
+	#displayAggregationOperatorProperty( "denominator_aggregation_operator" $importObject.object.denominatorAggregationOperator )
 	
 	#end
-	
-    #if ( $objectType == "INDICATOR" && $dataDictionaryMode == "extended" )
-    
-    #getExtendedProperties()
-    
-    #end
-    
+	    
 	#if ( $objectType == "DATADICTIONARY" )
 		
-	<tr>
-		<td>$i18n.getString( "description" )</td>
-		<td>$!importObject.object.description</td>
-	</tr>
-    <tr>
-        <td>$i18n.getString( "region" )</td>
-        <td>$!importObject.object.region</td>
-    </tr>
+	#displayProperty( "description" $importObject.object.description )
+	#displayProperty( "region" $importObject.object.region )
 		
 	#end
 	
 	#if ( $objectType == "ORGANISATIONUNIT" )
 	
-	<tr>
-		<td>$i18n.getString( "short_name" )</td>
-		<td>$!importObject.object.shortName</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "code" )</td>
-		<td>$!importObject.object.organisationUnitCode</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "active" )</td>
-		<td>#formatBool( $!importObject.object.active )</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "comment" )</td>
-		<td>$!importObject.object.comment</td>
-	</tr>
-    <tr>
-        <td>$i18n.getString( "geo_code" )</td>
-        <td>$!importObject.object.geoCode</td>
-    </tr>
+	#displayProperty( "short_name" $importObject.object.shortName )
+	#displayProperty( "code" $importObject.object.code )
+	#displayBoolProperty( "active" $importObject.object.active )
+	#displayProperty( "comment" $importObject.object.comment )
+	#displayProperty( "geoCode" $importObject.object.geo_code )
 	
 	#end
 	
 	#if ( $objectType == "ORGANISATIONUNITLEVEL" )
 	
-	<tr>
-        <td>$i18n.getString( "level" )</td>
-        <td>$!importObject.object.level</td>
-    </tr>
-		
+	#displayProperty( "level" $importObject.object.level )
+	
 	#end
 	
 	#if ( $objectType == "VALIDATIONRULE" )
 		
-	<tr>
-		<td>$i18n.getString( "description" )</td>
-		<td>$!importObject.object.description</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "type" )</td>
-		<td>$!importObject.object.type</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString( "operator" )</td>
-		<td>$i18n.getString( $!importObject.object.operator )</td>
-	</tr>
+	#displayProperty( "description" $importObject.object.description )
+	#displayProperty( "type" $importObject.object.type )
+	#displayProperty( "operator" $importObject.object.operator )
+	
+	#end
+	
+	#if ( $objectType == "REPORT" )
+		
+	#displayProperty( "design" $importObject.object.design )
+	#displayProperty( "type" $importObject.object.type )
 	
 	#end
 		
     #if ( $objectType == "REPORTTABLE" )
         
-    <tr>
-        <td>$i18n.getString( "table_name" )</td>
-        <td>$!importObject.object.tableName</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "mode" )</td>
-        <td>#formatBool( $!importObject.object.mode )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "regression" )</td>
-        <td>#formatBool( $!importObject.object.regression )</td>
-    </tr>
-    
-    <tr>
-        <td>$i18n.getString( "do_indicators" )</td>
-        <td>#formatBool( $!importObject.object.doIndicators )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "do_category_option_combos" )</td>
-        <td>#formatBool( $!importObject.object.doCategoryOptionCombos )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "do_periods" )</td>
-        <td>#formatBool( $!importObject.object.doPeriods )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "do_units" )</td>
-        <td>#formatBool( $!importObject.object.doUnits )</td>
-    </tr>
-    
-    <tr>
-        <td>$i18n.getString( "reporting_month" )</td>
-        <td>#formatBool( $!importObject.object.relatives.reportingMonth )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_3_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last3Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_6_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last6Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_9_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last9Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_12_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last12Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "so_far_this_year" )</td>
-        <td>#formatBool( $!importObject.object.relatives.soFarThisYear )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "so_far_this_financial_year" )</td>
-        <td>#formatBool( $!importObject.object.relatives.soFarThisFinancialYear )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_3_to_6_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last3To6Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_6_to_9_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last6To9Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_9_to_12_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last9To12Months )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "last_12_individual_months" )</td>
-        <td>#formatBool( $!importObject.object.relatives.last12IndividualMonths )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "individual_months_this_year" )</td>
-        <td>#formatBool( $!importObject.object.relatives.individualMonthsThisYear )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "individual_quarters_this_year" )</td>
-        <td>#formatBool( $!importObject.object.relatives.individualQuartersThisYear )</td>
-    </tr>
-    
+	#displayProperty( "table_name" $importObject.object.tableName )
+	#displayProperty( "mode" $importObject.object.mode )
+	#displayBoolProperty( "regression" $importObject.object.regression )
+	#displayBoolProperty( "do_indicators" $importObject.object.doIndicators )
+	#displayBoolProperty( "do_category_option_combos" $importObject.object.doCategoryOptionCombos )
+	#displayBoolProperty( "do_periods" $importObject.object.doPeriods )
+	#displayBoolProperty( "do_units" $importObject.object.doUnits )
+	
+	#displayBoolProperty( "reporting_month" $importObject.object.reportingMonth )
+	#displayBoolProperty( "last_3_months" $importObject.object.last3Months )
+	#displayBoolProperty( "last_6_months" $importObject.object.last6Months )
+	#displayBoolProperty( "last_12_months" $importObject.object.last12Months )
+	#displayBoolProperty( "so_far_this_year" $importObject.object.soFarThisYear )
+	#displayBoolProperty( "last_3_to_6_months" $importObject.object.last3To6Months )
+	#displayBoolProperty( "last_6_to_9_months" $importObject.object.last3To6Months )
+	#displayBoolProperty( "last_9_to_12_months" $importObject.object.last9To12Months )
+	#displayBoolProperty( "last_12_individual_months" $importObject.object.last12IndividualMonths )
+	#displayBoolProperty( "individual_months_this_year" $importObject.object.individualMonthsThisYear )
+	#displayBoolProperty( "individual_quarters_this_year" $importObject.object.individualQuartersThisYear )
+	    
     #end
     
+	#if ( $objectType == "CHART" )
+	
+	#displayProperty( "type" $importObject.object.type )
+	#displayProperty( "size" $importObject.object.size )
+	#displayProperty( "dimension" $importObject.object.dimension )
+	#displayBoolProperty( "hide_legend" $importObject.object.hideLegend )
+	#displayBoolProperty( "vertical_labels" $importObject.object.verticalLabels )
+	#displayBoolProperty( "horizontal_plot_orientation" $importObject.object.horizontalPlotOrientation )
+	#displayBoolProperty( "regression" $importObject.object.regression )
+		
+	#displayBoolProperty( "reporting_month" $importObject.object.reportingMonth )
+	#displayBoolProperty( "last_3_months" $importObject.object.last3Months )
+	#displayBoolProperty( "last_6_months" $importObject.object.last6Months )
+	#displayBoolProperty( "last_12_months" $importObject.object.last12Months )
+	#displayBoolProperty( "so_far_this_year" $importObject.object.soFarThisYear )
+	#displayBoolProperty( "last_3_to_6_months" $importObject.object.last3To6Months )
+	#displayBoolProperty( "last_6_to_9_months" $importObject.object.last3To6Months )
+	#displayBoolProperty( "last_9_to_12_months" $importObject.object.last9To12Months )
+	#displayBoolProperty( "last_12_individual_months" $importObject.object.last12IndividualMonths )
+	#displayBoolProperty( "individual_months_this_year" $importObject.object.individualMonthsThisYear )
+	#displayBoolProperty( "individual_quarters_this_year" $importObject.object.individualQuartersThisYear )
+	    
+	#end
+		
     #if ( $objectType == "OLAPURL" )
     	
-    <tr>
-        <td>$i18n.getString( "url" )</td>
-        <td>$!importObject.object.url</td>
-    </tr>    	
-    	
+	#displayProperty( "url" $importObject.object.url )
+	
     #end
         
 	<tr>
@@ -450,7 +211,6 @@
 				type="button" value="$i18n.getString( 'cancel' )" style="width:25%" onclick="cancelObject()">
 		</td>
 	</tr>
-	
 	
 </table>
 

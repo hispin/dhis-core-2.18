@@ -56,12 +56,10 @@ public class DefaultXMLStreamReader
 {
     private static final Log log = LogFactory.getLog( DefaultXMLStreamReader.class );
 
-    private static final String[] EVENTS =
-    {
+    private static final String[] EVENTS = {
         "None", "Start Element", "End Element", "Processing Instruction",
         "Characters", "Comment", "Space", "Start Document", "End Document", "Entity Reference", "Attribute", "DTD",
-        "CData", "Namespace", "Notation Declaration", "Entity Declaration"
-    };
+        "CData", "Namespace", "Notation Declaration", "Entity Declaration" };
 
     private XMLStreamReader2 reader;
 
@@ -214,7 +212,7 @@ public class DefaultXMLStreamReader
     @Override
     public String getAttributeValue( String attributeName )
     {
-        return reader.getAttributeValue( null, attributeName );
+        return nullIfEmpty( reader.getAttributeValue( null, attributeName ) );
     }
 
     @Override
@@ -245,7 +243,7 @@ public class DefaultXMLStreamReader
 
                     for ( int i = 0; i < reader.getAttributeCount(); i++ )
                     {
-                        elements.put( reader.getAttributeLocalName( i ), reader.getAttributeValue( i ) );
+                        elements.put( reader.getAttributeLocalName( i ), nullIfEmpty( reader.getAttributeValue( i ) ) );
                     }
 
                     currentElementName = reader.getLocalName();
@@ -298,7 +296,7 @@ public class DefaultXMLStreamReader
                     for ( int i = 0; i < reader.getAttributeCount(); i++ )
                     {
                         text.append( "ATTR NAME: '" + reader.getAttributeLocalName( i ) + "' VALUE: '"
-                            + reader.getAttributeValue( i ) + "' " );
+                            + nullIfEmpty( reader.getAttributeValue( i ) ) + "' " );
                     }
                 }
 
@@ -354,5 +352,10 @@ public class DefaultXMLStreamReader
             reader.next();
         }
         return sb.length() == 0 ? null : sb.toString();
+    }
+    
+    private String nullIfEmpty( String value )
+    {
+        return value != null && value.isEmpty() ? null : value;
     }
 }

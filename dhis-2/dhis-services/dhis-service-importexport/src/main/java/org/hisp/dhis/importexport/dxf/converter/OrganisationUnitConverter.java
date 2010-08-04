@@ -179,7 +179,7 @@ public class OrganisationUnitConverter
             unit.setOpeningDate( DateUtils.getMediumDate( reader.getElementValue() ) );
 
             reader.moveToStartElement( FIELD_CLOSED_DATE );
-            unit.setOpeningDate( DateUtils.getMediumDate( reader.getElementValue() ) );
+            unit.setClosedDate( DateUtils.getMediumDate( reader.getElementValue() ) );
             
             reader.moveToStartElement( FIELD_ACTIVE );
             unit.setActive( Boolean.parseBoolean( reader.getElementValue() ) );

@@ -500,7 +500,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             mlt = Ext.getCmp('maplegendtype_cb').getValue();
         }
         else if (ACTIVEPANEL == thematicMap2) {
-            Ext.getCmp('maplegendtype_cb2').getValue();
+            mlt = Ext.getCmp('maplegendtype_cb2').getValue();
         }
         else if (ACTIVEPANEL == organisationUnitAssignment) {
             mlt = map_legend_type_automatic;
@@ -508,7 +508,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 
 		if (mlt == map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-				var str = ACTIVEPANEL == thematicMap ? Ext.getCmp('bounds').getValue() : Ext.getCmp('bounds_cb2').getValue();
+				var str = ACTIVEPANEL == thematicMap ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
 				
 				for (var i = 0; i < str.length; i++) {
 					str = str.replace(' ','');
@@ -531,10 +531,10 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				var newInput = bounds.join(',');
                 
                 if (ACTIVEPANEL == thematicMap) {
-                    Ext.getCmp('bounds').setValue(newInput);
+                    Ext.getCmp('bounds_tf').setValue(newInput);
                 }
                 else {
-                    Ext.getCmp('bounds_cb2').setValue(newInput);
+                    Ext.getCmp('bounds_tf2').setValue(newInput);
                 }
 				
 				for (var i = 0; i < bounds.length; i++)

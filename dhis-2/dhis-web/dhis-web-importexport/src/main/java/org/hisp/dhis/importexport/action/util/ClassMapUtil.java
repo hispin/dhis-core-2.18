@@ -59,8 +59,6 @@ import static org.hisp.dhis.common.Objects.*;
  */
 public class ClassMapUtil
 {
-   
-    
     private static Map<Objects, Class<?>> classMap;
     
     static
@@ -89,9 +87,9 @@ public class ClassMapUtil
     }
     
     public static Class<?> getClass( String type )
-    {
+    {        
         try
-        {
+        {            
             return classMap.get( valueOf( type ) );
         }
         catch ( IllegalArgumentException ex )

@@ -221,7 +221,7 @@ public class DefaultXMLStreamWriter
     
     private String replaceNull( String string )
     {
-        return string != null ? string : new String();
+        return string != null ? string : "";
     }
     
     private String verifyNotNull( String string )

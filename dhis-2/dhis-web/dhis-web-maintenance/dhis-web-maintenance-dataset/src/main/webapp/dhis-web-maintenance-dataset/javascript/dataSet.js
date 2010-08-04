@@ -12,13 +12,9 @@ function showDataSetDetails( dataSetId )
 
 function dataSetRecieved( dataSetElement )
 {
-  setFieldValue( 'idField', getElementValue( dataSetElement, 'id' ) );
   setFieldValue( 'nameField', getElementValue( dataSetElement, 'name' ) );
-
   setFieldValue( 'frequencyField', getElementValue( dataSetElement, 'frequency' ) );
-
   setFieldValue( 'dataElementCountField', getElementValue( dataSetElement, 'dataElementCount' ) );
-
   setFieldValue( 'dataEntryFormField', getElementValue( dataSetElement, 'dataentryform' ) );
 
   showDetails();

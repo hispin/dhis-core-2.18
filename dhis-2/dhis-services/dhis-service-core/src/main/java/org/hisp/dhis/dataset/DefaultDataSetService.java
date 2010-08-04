@@ -32,6 +32,7 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -255,18 +256,19 @@ public class DefaultDataSetService
 
     public List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType )
     {
-        List<DataSet> assignedDataSetListByPeriodType = new ArrayList<DataSet>();
         List<DataSet> dataSetListByPeriodType = new ArrayList<DataSet>( getDataSetsByPeriodType( periodType ) );
 
-        for ( DataSet dataSet : dataSetListByPeriodType )
+        Iterator<DataSet> dataSetIterator = dataSetListByPeriodType.iterator();
+        while( dataSetIterator.hasNext() )
         {
-            if ( dataSet.getSources() != null )
+            DataSet dataSet = dataSetIterator.next();
+            if ( dataSet.getSources() == null || dataSet.getSources().size() == 0 )
             {
-                assignedDataSetListByPeriodType.add( dataSet );
+                dataSetIterator.remove();
             }
         }
 
-        return assignedDataSetListByPeriodType;
+        return dataSetListByPeriodType;
     }
 
     public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )

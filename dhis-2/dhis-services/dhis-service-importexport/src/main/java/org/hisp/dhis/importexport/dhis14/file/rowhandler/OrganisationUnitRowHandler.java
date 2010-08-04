@@ -35,7 +35,6 @@ import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
@@ -78,11 +77,6 @@ public class OrganisationUnitRowHandler
         
         unit.setUuid( UUIdUtils.getUUId() );
         
-        if ( unit.getShortName() != null && unit.getShortName().length() > 30 )
-        {
-            unit.setShortName( unit.getShortName().substring( 30 ) + MathUtils.getRandom() );
-        }
-            
         if ( unit.getCode() != null && unit.getCode().trim().length() == 0 )
         {
             unit.setCode( null );                

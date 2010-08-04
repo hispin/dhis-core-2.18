@@ -34,6 +34,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -73,6 +75,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRule;
@@ -161,6 +165,13 @@ public class DefaultImportObjectService<T>
         this.validationRuleService = validationRuleService;
     }
     
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -168,6 +179,13 @@ public class DefaultImportObjectService<T>
         this.reportTableService = reportTableService;
     }
     
+    private ChartService chartService;
+    
+    public void setChartService( ChartService chartService )
+    {
+        this.chartService = chartService;
+    }
+
     private OlapURLService olapURLService;
 
     public void setOlapURLService( OlapURLService olapURLService )
@@ -281,8 +299,7 @@ public class DefaultImportObjectService<T>
                 
                 deleteMemberAssociations( GroupMemberType.DATAELEMENTGROUP, element.getId() );                
                 deleteMemberAssociations( GroupMemberType.DATASET, element.getId() );                
-                deleteMemberAssociations( GroupMemberType.DATADICTIONARY_DATAELEMENT, element.getId() );                
-                deleteMemberAssociations( GroupMemberType.REPORTTABLE_DATAELEMENT, element.getId() );
+                deleteMemberAssociations( GroupMemberType.DATADICTIONARY_DATAELEMENT, element.getId() );
                 
                 deleteIndicatorsContainingDataElement( element.getId() );
                 
@@ -312,8 +329,7 @@ public class DefaultImportObjectService<T>
                 Indicator indicator = (Indicator) importObject.getObject();
                 
                 deleteMemberAssociations( GroupMemberType.INDICATORGROUP, indicator.getId() );                
-                deleteMemberAssociations( GroupMemberType.DATADICTIONARY_INDICATOR, indicator.getId() );                
-                deleteMemberAssociations( GroupMemberType.REPORTTABLE_INDICATOR, indicator.getId() );
+                deleteMemberAssociations( GroupMemberType.DATADICTIONARY_INDICATOR, indicator.getId() );
             }
             else if ( importObject.getClassName().equals( IndicatorGroup.class.getName() ) )
             {
@@ -341,7 +357,6 @@ public class DefaultImportObjectService<T>
                 
                 deleteGroupAssociations( GroupMemberType.DATASET, dataSet.getId() );
                 deleteMemberAssociations( GroupMemberType.DATASET_SOURCE, dataSet.getId() );
-                deleteMemberAssociations( GroupMemberType.REPORTTABLE_DATASET, dataSet.getId() );
                 
                 deleteCompleteDataSetRegistrationsByDataSet( dataSet.getId() );
             }
@@ -352,8 +367,7 @@ public class DefaultImportObjectService<T>
                 deleteMemberAssociations( GroupMemberType.ORGANISATIONUNITGROUP, unit.getId() );               
                 deleteGroupAssociations( GroupMemberType.ORGANISATIONUNITRELATIONSHIP, unit.getId() );
                 deleteMemberAssociations( GroupMemberType.DATASET_SOURCE, unit.getId() );
-                deleteMemberAssociations( GroupMemberType.ORGANISATIONUNITRELATIONSHIP, unit.getId() );                
-                deleteMemberAssociations( GroupMemberType.REPORTTABLE_ORGANISATIONUNIT, unit.getId() );
+                deleteMemberAssociations( GroupMemberType.ORGANISATIONUNITRELATIONSHIP, unit.getId() );
                 
                 deleteCompleteDataSetRegistrationsBySource( unit.getId() );
                 
@@ -372,16 +386,6 @@ public class DefaultImportObjectService<T>
                 
                 deleteGroupAssociations( GroupMemberType.ORGANISATIONUNITGROUPSET, groupSet.getId() );
             }
-            else if ( importObject.getClassName().equals( ReportTable.class.getName() ) )
-            {
-                ReportTable reportTable = (ReportTable) importObject.getObject();
-                
-                deleteGroupAssociations( GroupMemberType.REPORTTABLE_DATAELEMENT, reportTable.getId() );
-                deleteGroupAssociations( GroupMemberType.REPORTTABLE_INDICATOR, reportTable.getId() );
-                deleteGroupAssociations( GroupMemberType.REPORTTABLE_DATASET, reportTable.getId() );                
-                deleteGroupAssociations( GroupMemberType.REPORTTABLE_PERIOD, reportTable.getId() );
-                deleteGroupAssociations( GroupMemberType.REPORTTABLE_ORGANISATIONUNIT, reportTable.getId() );
-            }
         }
         
         deleteImportObject( importObjectId );
@@ -392,8 +396,7 @@ public class DefaultImportObjectService<T>
     {
         importObjectStore.deleteImportObjects( clazz );
         
-        if ( clazz.equals( DataElement.class ) ||
-             clazz.equals( CalculatedDataElement.class ) )
+        if ( clazz.equals( DataElement.class ) || clazz.equals( CalculatedDataElement.class ) )
         {
             importObjectStore.deleteImportObjects( DataElementCategoryOptionCombo.class );            
             importObjectStore.deleteImportObjects( DataElementCategoryCombo.class );            
@@ -411,11 +414,9 @@ public class DefaultImportObjectService<T>
             
             importObjectStore.deleteImportObjects( Indicator.class );
             importObjectStore.deleteImportObjects( GroupMemberType.INDICATORGROUP );
-            importObjectStore.deleteImportObjects( GroupMemberType.DATADICTIONARY_INDICATOR ); 
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_INDICATOR );
+            importObjectStore.deleteImportObjects( GroupMemberType.DATADICTIONARY_INDICATOR );
             
             importObjectStore.deleteImportObjects( GroupMemberType.DATADICTIONARY_DATAELEMENT );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_DATAELEMENT );
             
             importDataValueService.deleteImportDataValues();
         }
@@ -433,13 +434,11 @@ public class DefaultImportObjectService<T>
             importObjectStore.deleteImportObjects( Indicator.class );
             importObjectStore.deleteImportObjects( GroupMemberType.INDICATORGROUP );
             importObjectStore.deleteImportObjects( GroupMemberType.DATADICTIONARY_INDICATOR );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_INDICATOR );
         }
         else if ( clazz.equals( Indicator.class ) )
         {
             importObjectStore.deleteImportObjects( GroupMemberType.INDICATORGROUP );
-            importObjectStore.deleteImportObjects( GroupMemberType.DATADICTIONARY_INDICATOR );            
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_INDICATOR );            
+            importObjectStore.deleteImportObjects( GroupMemberType.DATADICTIONARY_INDICATOR );      
         }
         else if ( clazz.equals( IndicatorGroup.class ) )
         {
@@ -459,14 +458,12 @@ public class DefaultImportObjectService<T>
         {
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET );
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET_SOURCE );
-            importObjectStore.deleteImportObjects( CompleteDataSetRegistration.class );          
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_DATASET );     
+            importObjectStore.deleteImportObjects( CompleteDataSetRegistration.class ); 
         }
         else if ( clazz.equals( OrganisationUnit.class ) )
         {
             importObjectStore.deleteImportObjects( GroupMemberType.ORGANISATIONUNITGROUP );            
-            importObjectStore.deleteImportObjects( GroupMemberType.ORGANISATIONUNITRELATIONSHIP );            
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_ORGANISATIONUNIT );
+            importObjectStore.deleteImportObjects( GroupMemberType.ORGANISATIONUNITRELATIONSHIP );
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET_SOURCE );
             
             importObjectStore.deleteImportObjects( CompleteDataSetRegistration.class );
@@ -480,14 +477,6 @@ public class DefaultImportObjectService<T>
         else if ( clazz.equals( OrganisationUnitGroupSet.class ) )
         {
             importObjectStore.deleteImportObjects( GroupMemberType.ORGANISATIONUNITGROUPSET );
-        }
-        else if ( clazz.equals( ReportTable.class ) )
-        {
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_DATAELEMENT );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_INDICATOR );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_DATASET );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_PERIOD );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_ORGANISATIONUNIT );
         }
     }
     
@@ -592,11 +581,23 @@ public class DefaultImportObjectService<T>
             
             validationRule.setName( validationRuleService.getValidationRule( existingObjectId ).getName() );
         }
+        else if ( object.getClass().equals( Report.class ) )
+        {
+            Report report = (Report) object;
+            
+            report.setName( reportService.getReport( existingObjectId ).getName() );
+        }
         else if ( object.getClass().equals( ReportTable.class ) )
         {
             ReportTable reportTable = (ReportTable) object;
             
             reportTable.setName( reportTableService.getReportTable( existingObjectId ).getName() );
+        }
+        else if ( object.getClass().equals( Chart.class ) )
+        {
+            Chart chart = (Chart) object;
+            
+            chart.setName( chartService.getChart( existingObjectId ).getName() );
         }
         else if ( object.getClass().equals( OlapURL.class ) )
         {
@@ -662,7 +663,9 @@ public class DefaultImportObjectService<T>
         importObjectManager.importDataSetSourceAssociations();
         importObjectManager.importValidationRules();
         importObjectManager.importPeriods();
+        importObjectManager.importReports();
         importObjectManager.importReportTables();
+        importObjectManager.importCharts();
         importObjectManager.importOlapURLs();
         importObjectManager.importCompleteDataSetRegistrations();        
         importObjectManager.importDataValues();
@@ -671,10 +674,6 @@ public class DefaultImportObjectService<T>
         
         cacheManager.clearCache();
     }
-
-    // -------------------------------------------------------------------------
-    // Import - object supportive methods
-    // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
     // Import - general supportive methods
@@ -772,8 +771,6 @@ public class DefaultImportObjectService<T>
                 deleteMemberAssociations( GroupMemberType.INDICATORGROUP, indicator.getId() );
                 
                 deleteMemberAssociations( GroupMemberType.DATADICTIONARY_INDICATOR, indicator.getId() );
-                
-                deleteMemberAssociations( GroupMemberType.REPORTTABLE_INDICATOR, indicator.getId() );
             }   
         }   
     }
@@ -793,8 +790,6 @@ public class DefaultImportObjectService<T>
                 deleteMemberAssociations( GroupMemberType.INDICATORGROUP, indicator.getId() );
                 
                 deleteMemberAssociations( GroupMemberType.DATADICTIONARY_INDICATOR, indicator.getId() );
-                
-                deleteMemberAssociations( GroupMemberType.REPORTTABLE_INDICATOR, indicator.getId() );
             }
         }
     }

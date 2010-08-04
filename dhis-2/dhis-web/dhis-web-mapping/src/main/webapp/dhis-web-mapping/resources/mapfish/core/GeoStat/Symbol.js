@@ -121,13 +121,13 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
 		
 		if (mapLegendType == map_legend_type_automatic) {
 			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
-			for (var i = 0; i < proportionalSymbol.imageLegend.length; i++) {
-				proportionalSymbol.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+			for (var i = 0; i < proportionalSymbol.imageLegend.length && i < proportionalSymbol.colorInterpolation.length; i++) {
+				proportionalSymbol.imageLegend[i].color = proportionalSymbol.colorInterpolation[i].toHexString();
 			}
 		}
 		else if (mapLegendType == map_legend_type_predefined) {
 			this.colorInterpolation = proportionalSymbol.colorInterpolation;
-			for (var i = 0; i < proportionalSymbol.colorInterpolation.length; i++) {
+			for (var i = 0; i < proportionalSymbol.colorInterpolation.length && i < proportionalSymbol.colorInterpolation.length; i++) {
 				proportionalSymbol.imageLegend[i].color = proportionalSymbol.colorInterpolation[i].toHexString();
 			}
 		}
@@ -184,8 +184,8 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
             // {'pointRadius': '${calculateRadius}'},
             // {'calculateRadius': calculateRadius}
         // );
-		
-        var boundsArray = this.classification.getBoundsArray();
+    
+        var boundsArray = this.classification.getBoundsArray();         
         var rules = new Array(boundsArray.length-1);
         for (var i = 0; i < boundsArray.length-1; i++) {
             var rule = new OpenLayers.Rule({

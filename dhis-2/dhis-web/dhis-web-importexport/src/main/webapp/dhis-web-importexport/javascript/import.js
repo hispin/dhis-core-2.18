@@ -182,6 +182,14 @@ function discardObjectCallback( xmlElement )
 		{
 			handleField( discardedElements, "updateValidationRuleSpan", "updateValidationRuleTd" );
 		}
+		else if ( elementType == "REPORT" && elementStatus == "NEW" )
+		{
+		    handleField( discardedElements, "newReportSpan", "newReportTd" );
+		}
+		else if ( elementType == "REPORT" && elementStatus == "UPDATE" )
+		{
+		    handleField( discardedElements, "updateReportTableSpan", "updateReportTableTd" );
+		}
 		else if ( elementType == "REPORTTABLE" && elementStatus == "NEW" )
 		{
 		    handleField( discardedElements, "newReportTableSpan", "newReportTableTd" );
@@ -189,6 +197,14 @@ function discardObjectCallback( xmlElement )
 		else if ( elementType == "REPORTTABLE" && elementStatus == "UPDATE" )
 		{
 		    handleField( discardedElements, "updateReportTableSpan", "updateReportTableTd" );
+		}
+		else if ( elementType == "CHART" && elementStatus == "NEW" )
+		{
+		    handleField( discardedElements, "newChartSpan", "newChartTd" );
+		}
+		else if ( elementType == "CHART" && elementStatus == "UPDATE" )
+		{
+		    handleField( discardedElements, "updateChartSpan", "updateChartTd" );
 		}
 		else if ( elementType == "OLAPURL" && elementStatus == "NEW" )
 		{
@@ -312,10 +328,20 @@ function discardObjectsOfTypeCallback( xmlElement )
             clearField( "newValidationRuleTd" );
             clearField( "updateValidationRuleTd" );
         }
+		else if ( elementType == "REPORT" )
+		{
+		    clearField( "newReportTd" );
+		    clearFIeld( "updateReportTd" );
+		}
 		else if ( elementType == "REPORTTABLE" )
 		{
 		    clearField( "newReportTableTd" );
 		    clearFIeld( "updateReportTableTd" );
+		}
+		else if ( elementType == "CHART" )
+		{
+		    clearField( "newChartTd" );
+		    clearFIeld( "updateChartTd" );
 		}
 		else if ( elementType == "OLAPURL" )
 		{
@@ -487,4 +513,3 @@ function removeSelectedOptions( list )
 		}
 	}
 }
-

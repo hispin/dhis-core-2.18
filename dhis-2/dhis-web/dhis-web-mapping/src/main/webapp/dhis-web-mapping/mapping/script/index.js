@@ -310,8 +310,8 @@ Ext.onReady( function() {
 								params: { name: vn, mapValueType: mvt, indicatorGroupId: ig, indicatorId: ii, dataElementGroupId: deg, dataElementId: de, periodTypeId: pt, periodId: p, mapSource: ms, mapLegendType: mlt, method: 2, classes: c, colorLow: ca, colorHigh: cb, mapLegendSetId: mlsid, longitude: lon, latitude: lat, zoom: zoom },
 								success: function(r) {
 									Ext.message.msg(true, 'The view <span class="x-msg-hl">' + vn + '</span> ' + i18n_was_registered);
-									Ext.getCmp('view_cb').getStore().reload();
-									Ext.getCmp('mapview_cb').getStore().reload();
+									Ext.getCmp('view_cb').getStore().load();
+									Ext.getCmp('mapview_cb').getStore().load();
 									Ext.getCmp('viewname_tf').reset();
 								},
 								failure: function() {
@@ -357,9 +357,9 @@ Ext.onReady( function() {
 						params: {id:v},
 						success: function(r) {
 							Ext.message.msg(true, 'The map view <span class="x-msg-hl">' + name + '</span> '+ i18n_was_deleted );
-							Ext.getCmp('view_cb').getStore().reload();
+							Ext.getCmp('view_cb').getStore().load();
 							Ext.getCmp('view_cb').clearValue();
-							Ext.getCmp('mapview_cb').getStore().reload();
+							Ext.getCmp('mapview_cb').getStore().load();
                             if (v == Ext.getCmp('mapview_cb').getValue()) {
                                 Ext.getCmp('mapview_cb').clearValue();
                             }
@@ -403,9 +403,9 @@ Ext.onReady( function() {
 						success: function(r) {
 							Ext.message.msg(true, i18n_the_view + ' <span class="x-msg-hl">' + nv + '</span> ' + i18n_was_added_to_dashboard );
 							
-							Ext.getCmp('view_cb').getStore().reload();
-							Ext.getCmp('view_cb').reset();
-							Ext.getCmp('mapview_cb').getStore().reload();
+							Ext.getCmp('view_cb').getStore().load();
+							Ext.getCmp('view_cb').clearValue();
+							Ext.getCmp('mapview_cb').getStore().load();
 						},
 						failure: function() {
 							alert( i18n_status , i18n_error_while_saving_data );
@@ -656,7 +656,7 @@ Ext.onReady( function() {
 						var period = Ext.getCmp('period_cb').getValue();
 						var indicator = Ext.getCmp('indicator_cb').getValue();
 						
-						Ext.getCmp('exportexceltitle_ft').reset();
+						Ext.getCmp('exportexceltitle_ft').clearValue();
 											
                         var exportForm = document.getElementById('exportForm');
                         exportForm.action = '../exportExcel.action';
@@ -800,11 +800,11 @@ Ext.onReady( function() {
                                 params: { name: ln, type: map_legend_type_automatic, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
                                 success: function(r) {
                                     Ext.message.msg(true, i18n_legend_set + ' <span class="x-msg-hl">' + ln + '</span> ' + i18n_was_registered);
-                                    Ext.getCmp('automaticmaplegendset_cb').getStore().reload();
+                                    Ext.getCmp('automaticmaplegendset_cb').getStore().load();
                                     Ext.getCmp('automaticmaplegendsetname_tf').reset();
-                                    Ext.getCmp('automaticmaplegendsetclasses_cb').reset();
-                                    Ext.getCmp('automaticmaplegendsetlowcolor_cp').reset();
-                                    Ext.getCmp('automaticmaplegendsethighcolor_cp').reset();
+                                    Ext.getCmp('automaticmaplegendsetclasses_cb').clearValue();
+                                    Ext.getCmp('automaticmaplegendsetlowcolor_cp').clearValue();
+                                    Ext.getCmp('automaticmaplegendsethighcolor_cp').clearValue();
                                 },
                                 failure: function() {
                                     alert( i18n_status , i18n_error_while_saving_data );
@@ -867,7 +867,7 @@ Ext.onReady( function() {
 
                         success: function(r) {
                             Ext.message.msg(true, i18n_legend_set+'<span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                            Ext.getCmp('automaticmaplegendset_cb').getStore().reload();
+                            Ext.getCmp('automaticmaplegendset_cb').getStore().load();
                         },
                         failure: function() {
                             alert( 'Error: assignIndicatorsToMapLegendSet' );
@@ -905,10 +905,10 @@ Ext.onReady( function() {
                         params: { id: ls },
                         success: function(r) {
                             Ext.message.msg(true, i18n_legend_set + ' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_deleted );
-                            Ext.getCmp('automaticmaplegendset_cb').getStore().reload();
-                            Ext.getCmp('automaticmaplegendset_cb').reset();
-							Ext.getCmp('automaticmaplegendset2_cb').reset();
-                            Ext.getCmp('automaticmaplegendsetindicator_ms').reset();
+                            Ext.getCmp('automaticmaplegendset_cb').getStore().load();
+                            Ext.getCmp('automaticmaplegendset_cb').clearValue();
+							Ext.getCmp('automaticmaplegendset2_cb').clearValue();
+                            Ext.getCmp('automaticmaplegendsetindicator_ms').clearValue();
                         },
                         failure: function() {
                             alert( i18n_status , i18n_error_while_saving_data );
@@ -1047,11 +1047,11 @@ Ext.onReady( function() {
                                 params: { name: mln, startValue: mlsv, endValue: mlev, color: mlc },
                                 success: function(r) {
                                     Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
-                                    Ext.getCmp('predefinedmaplegend_cb').getStore().reload();
+                                    Ext.getCmp('predefinedmaplegend_cb').getStore().load();
                                     Ext.getCmp('predefinedmaplegendname_tf').reset();
                                     Ext.getCmp('predefinedmaplegendstartvalue_tf').reset();
                                     Ext.getCmp('predefinedmaplegendendvalue_tf').reset();
-                                    Ext.getCmp('predefinedmaplegendcolor_cp').reset();
+                                    Ext.getCmp('predefinedmaplegendcolor_cp').clearValue();
                                 },
                                 failure: function() {
                                     alert( 'Error: addOrUpdateMapLegend' );
@@ -1094,8 +1094,8 @@ Ext.onReady( function() {
                         params: { id: mlv },
                         success: function(r) {
                             Ext.message.msg(true, i18n_legend+ ' <span class="x-msg-hl">' + mlrv + '</span> ' + i18n_was_deleted);
-                            Ext.getCmp('predefinedmaplegend_cb').getStore().reload();
-                            Ext.getCmp('predefinedmaplegend_cb').reset();
+                            Ext.getCmp('predefinedmaplegend_cb').getStore().load();
+                            Ext.getCmp('predefinedmaplegend_cb').clearValue();
                         },
                         failure: function() {
                             alert( 'Error: deleteMapLegend' );
@@ -1171,10 +1171,10 @@ Ext.onReady( function() {
                         params: { name: mlsv, type: map_legend_type_predefined },
                         success: function(r) {
                             Ext.message.msg(true, i18n_new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + i18n_was_registered );
-                            Ext.getCmp('predefinedmaplegendset_cb').getStore().reload();
-							Ext.getCmp('maplegendset_cb').getStore().reload();
+                            Ext.getCmp('predefinedmaplegendset_cb').getStore().load();
+							Ext.getCmp('maplegendset_cb').getStore().load();
 							Ext.getCmp('predefinedmaplegendsetname_tf').reset();
-							Ext.getCmp('predefinednewmaplegend_ms').reset();							
+							Ext.getCmp('predefinednewmaplegend_ms').clearValue();							
                         },
                         failure: function() {
                             alert( 'Error: addOrUpdateMapLegendSet' );
@@ -1212,9 +1212,9 @@ Ext.onReady( function() {
                         params: { id: mlsv },
                         success: function(r) {
                             Ext.message.msg(true, i18n_legend_set + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
-                            Ext.getCmp('predefinedmaplegendset_cb').getStore().reload();
-                            Ext.getCmp('predefinedmaplegendset_cb').reset();
-							Ext.getCmp('maplegendset_cb').getStore().reload();
+                            Ext.getCmp('predefinedmaplegendset_cb').getStore().load();
+                            Ext.getCmp('predefinedmaplegendset_cb').clearValue();
+							Ext.getCmp('maplegendset_cb').getStore().load();
                         },
                         failure: function() {
                             alert( 'Error: deleteMapLegendSet' );
@@ -1315,7 +1315,7 @@ Ext.onReady( function() {
         title: '<span id="window-help-title">'+i18n_help+'</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 607,
+		width: 629,
 		height: 430, 
         items:
         [
@@ -1637,7 +1637,7 @@ Ext.onReady( function() {
     
     var newMapButton = new Ext.Button({
         id: 'newmap_b',
-        text: i18n_register_maps,
+        text: i18n_register_map,
 		cls: 'aa_med',
         handler: function()
         {
@@ -1700,7 +1700,7 @@ Ext.onReady( function() {
                             var maps = Ext.util.JSON.decode(r.responseText).maps;
                             for (var i = 0; i < maps.length; i++) {
                                 if (maps[i].name == nn) {
-                                    Ext.message.msg(false, i18n_map + ' <span class="x-msg-hl">' + nn + '</span>' + i18n_already_exists + '.');
+                                    Ext.message.msg(false, i18n_map + ' <span class="x-msg-hl">' + nn + ' </span>' + i18n_already_exists);
                                     return;
                                 }
                                 else if (maps[i].mapLayerPath == mlp) {
@@ -1718,18 +1718,18 @@ Ext.onReady( function() {
                                 success: function(r) {
                                     Ext.message.msg(true, i18n_map+' <span class="x-msg-hl">' + nn + '</span> (<span class="x-msg-hl">' + source + '</span>) ' + i18n_was_registered );
                                     
-                                    Ext.getCmp('map_cb').getStore().reload();
-                                    Ext.getCmp('maps_cb').getStore().reload();
-                                    Ext.getCmp('editmap_cb').getStore().reload();
-                                    Ext.getCmp('deletemap_cb').getStore().reload();
+                                    Ext.getCmp('map_cb').getStore().load();
+                                    Ext.getCmp('maps_cb').getStore().load();
+                                    Ext.getCmp('editmap_cb').getStore().load();
+                                    Ext.getCmp('deletemap_cb').getStore().load();
                                     
-                                    Ext.getCmp('organisationunitlevel_cb').reset();
+                                    Ext.getCmp('organisationunitlevel_cb').clearValue();
                                     Ext.getCmp('newname_tf').reset();
-                                    Ext.getCmp('maplayerpath_cb').reset();
-                                    Ext.getCmp('newnamecolumn_cb').reset();
-                                    Ext.getCmp('newlongitude_cb').reset();
-                                    Ext.getCmp('newlatitude_cb').reset();
-                                    Ext.getCmp('newzoom_cb').reset();                                    
+                                    Ext.getCmp('maplayerpath_cb').clearValue();
+                                    Ext.getCmp('newnamecolumn_cb').clearValue();
+                                    Ext.getCmp('newlongitude_cb').clearValue();
+                                    Ext.getCmp('newlatitude_cb').clearValue();
+                                    Ext.getCmp('newzoom_cb').clearValue();                                    
                                 },
                                 failure: function() {
                                     alert( 'Error: addOrUpdateMap' );
@@ -1778,19 +1778,19 @@ Ext.onReady( function() {
                 success: function(r) {
                     Ext.message.msg(true,  i18n_map + ' <span class="x-msg-hl">' + en + '</span> (<span class="x-msg-hl">' + em + '</span>)' + i18n_was_updated );
                     
-                    Ext.getCmp('map_cb').getStore().reload();
-                    Ext.getCmp('maps_cb').getStore().reload();
-                    Ext.getCmp('editmap_cb').getStore().reload();
-                    Ext.getCmp('editmap_cb').reset();
-                    Ext.getCmp('deletemap_cb').getStore().reload();
-                    Ext.getCmp('deletemap_cb').reset();
+                    Ext.getCmp('map_cb').getStore().load();
+                    Ext.getCmp('maps_cb').getStore().load();
+                    Ext.getCmp('editmap_cb').getStore().load();
+                    Ext.getCmp('editmap_cb').clearValue();
+                    Ext.getCmp('deletemap_cb').getStore().load();
+                    Ext.getCmp('deletemap_cb').clearValue();
                     
-                    Ext.getCmp('editmap_cb').reset();
+                    Ext.getCmp('editmap_cb').clearValue();
                     Ext.getCmp('editname_tf').reset();
-                    Ext.getCmp('editnamecolumn_cb').reset();
-                    Ext.getCmp('editlongitude_cb').reset();
-                    Ext.getCmp('editlatitude_cb').reset();
-                    Ext.getCmp('editzoom_cb').reset();
+                    Ext.getCmp('editnamecolumn_cb').clearValue();
+                    Ext.getCmp('editlongitude_cb').clearValue();
+                    Ext.getCmp('editlatitude_cb').clearValue();
+                    Ext.getCmp('editzoom_cb').clearValue();
                 },
                 failure: function() {
                     alert( i18n_status, i18n_error_while_saving_data );
@@ -1801,7 +1801,7 @@ Ext.onReady( function() {
     
     var deleteMapButton = new Ext.Button({
         id: 'deletemap_b',
-        text: i18n_delete + ' ' + i18n_map,
+        text: i18n_delete_map,
 		cls: 'aa_med',
         handler: function() {
             var mlp = Ext.getCmp('deletemap_cb').getValue();
@@ -1819,19 +1819,19 @@ Ext.onReady( function() {
                 success: function(r) {
                     Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) ' + i18n_was_deleted );
                     
-                    Ext.getCmp('map_cb').getStore().reload();
+                    Ext.getCmp('map_cb').getStore().load();
 					
 					if (Ext.getCmp('map_cb').getValue() == mlp) {
-						Ext.getCmp('map_cb').reset();
+						Ext.getCmp('map_cb').clearValue();
 					}
 					
-                    Ext.getCmp('maps_cb').getStore().reload();
-                    Ext.getCmp('editmap_cb').getStore().reload();
-                    Ext.getCmp('editmap_cb').reset();
-                    Ext.getCmp('deletemap_cb').getStore().reload();
-                    Ext.getCmp('deletemap_cb').reset();
-                    Ext.getCmp('mapview_cb').getStore().reload();
-                    Ext.getCmp('mapview_cb').reset();
+                    Ext.getCmp('maps_cb').getStore().load();
+                    Ext.getCmp('editmap_cb').getStore().load();
+                    Ext.getCmp('editmap_cb').clearValue();
+                    Ext.getCmp('deletemap_cb').getStore().load();
+                    Ext.getCmp('deletemap_cb').clearValue();
+                    Ext.getCmp('mapview_cb').getStore().load();
+                    Ext.getCmp('mapview_cb').clearValue();
                 },
                 failure: function() {
                      alert( i18n_status, i18n_error_while_saving_data );
@@ -2237,8 +2237,8 @@ Ext.onReady( function() {
                 params: {id:ml},
                 success: function(r) {
                     Ext.message.msg(true, i18n_overlay + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
-                    Ext.getCmp('maplayer_cb').getStore().reload();
-                    Ext.getCmp('maplayer_cb').reset();
+                    Ext.getCmp('maplayer_cb').getStore().load();
+                    Ext.getCmp('maplayer_cb').clearValue();
                 },
                 failure: function() {
                     alert( i18n_status , i18n_error_while_saving_data );
@@ -2308,7 +2308,7 @@ Ext.onReady( function() {
 								params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
 								success: function(r) {
 									Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> '+i18n_was_registered);
-									Ext.getCmp('maplayer_cb').getStore().reload();
+									Ext.getCmp('maplayer_cb').getStore().load();
 							
 									var mapurl = MAPSOURCE == map_source_type_geojson ? path_mapping + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
 									
@@ -2332,7 +2332,7 @@ Ext.onReady( function() {
 									);
 									
 									Ext.getCmp('maplayername_tf').reset();
-									Ext.getCmp('maplayermapsourcefile_cb').reset();
+									Ext.getCmp('maplayermapsourcefile_cb').clearValue();
 									Ext.getCmp('maplayerpathwmsoverlay_tf').reset();
 								},
 								failure: function() {}
@@ -2442,8 +2442,8 @@ Ext.onReady( function() {
                 params: { id: ml },
                 success: function(r) {
                     Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
-                    Ext.getCmp('maplayerbaselayers_cb').getStore().reload();
-                    Ext.getCmp('maplayerbaselayers_cb').reset();
+                    Ext.getCmp('maplayerbaselayers_cb').getStore().load();
+                    Ext.getCmp('maplayerbaselayers_cb').clearValue();
                     
                     if (MAP.baseLayer && mln == MAP.baseLayer.name) {                    
                         Ext.Ajax.request({
@@ -2518,7 +2518,7 @@ Ext.onReady( function() {
 								params: { name: mlbn, type: map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0 },
 								success: function(r) {
 									Ext.message.msg(true, 'The base layer <span class="x-msg-hl">' + mlbn + '</span> '+i18n_was_registered);
-									Ext.getCmp('maplayerbaselayers_cb').getStore().reload();
+									Ext.getCmp('maplayerbaselayers_cb').getStore().load();
 									MAP.addLayers([
                                         new OpenLayers.Layer.WMS(
                                             mlbn,
@@ -2646,15 +2646,15 @@ Ext.onReady( function() {
 											method: 'POST',
 											params: { mapSourceType: msv },
 											success: function(r) {
-												Ext.getCmp('map_cb').getStore().reload();
-												Ext.getCmp('maps_cb').getStore().reload();
-												Ext.getCmp('mapview_cb').getStore().reload();
-												Ext.getCmp('view_cb').getStore().reload();
-												Ext.getCmp('editmap_cb').getStore().reload();
-												Ext.getCmp('maplayer_cb').getStore().reload();
+												Ext.getCmp('map_cb').getStore().load();
+												Ext.getCmp('maps_cb').getStore().load();
+												Ext.getCmp('mapview_cb').getStore().load();
+												Ext.getCmp('view_cb').getStore().load();
+												Ext.getCmp('editmap_cb').getStore().load();
+												Ext.getCmp('maplayer_cb').getStore().load();
 
-												Ext.getCmp('map_cb').reset();
-												Ext.getCmp('mapview_cb').reset();
+												Ext.getCmp('map_cb').clearValue();
+												Ext.getCmp('mapview_cb').clearValue();
 												
 												if (MAPSOURCE == map_source_type_geojson) {
 													Ext.getCmp('register_chb').enable();
@@ -2809,10 +2809,10 @@ Ext.onReady( function() {
 								success: function() {
 									BASECOORDINATE = {longitude:blo, latitude:bla};
 									Ext.message.msg(true, i18n_longitude_x + ' <span class="x-msg-hl">' + blo + '</span> '+i18n_and+' '+i18n_latitude_y+' <span class="x-msg-hl">' + bla + '</span> ' + i18n_was_saved_as_base_coordinate);
-									Ext.getCmp('newlongitude_cb').getStore().reload();
+									Ext.getCmp('newlongitude_cb').getStore().load();
 									Ext.getCmp('newlongitude_cb').setValue(blo);
 									Ext.getCmp('newlatitude_cb').setValue(bla);
-									Ext.getCmp('baselongitude_cb').getStore().reload();
+									Ext.getCmp('baselongitude_cb').getStore().load();
 									Ext.getCmp('baselongitude_cb').setValue(blo);
 									Ext.getCmp('baselatitude_cb').setValue(bla);
 								},
@@ -3213,9 +3213,11 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    ACTIVEPANEL = thematicMap;
-                    choroplethLayer.setVisibility(false);
-                    choropleth.classify(false, true);
+                    if (ACTIVEPANEL != thematicMap) {
+                        ACTIVEPANEL = thematicMap;
+                        choroplethLayer.setVisibility(false);
+                        choropleth.classify(false, true);
+                    }
                 }
             }
         }
@@ -3233,9 +3235,11 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    ACTIVEPANEL = thematicMap2;
-                    proportionalSymbolLayer.setVisibility(false);
-                    proportionalSymbol.classify(false, true);
+                    if (ACTIVEPANEL != thematicMap2) {
+                        ACTIVEPANEL = thematicMap2;
+                        proportionalSymbolLayer.setVisibility(false);
+                        proportionalSymbol.classify(false, true);
+                    }
                 }
             }
         }
@@ -3373,7 +3377,7 @@ Ext.onReady( function() {
 
     var automaticMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-automaticlegendset',
-		tooltip: i18n_create_legend_sets_for_legend_type + '"' + i18n_automatic + '"',
+		tooltip: i18n_create_legend_sets_for_legend_type + ' "' + i18n_automatic + '"',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -3390,7 +3394,7 @@ Ext.onReady( function() {
 	
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
-		tooltip: i18n_create_legend_sets_for_legend_type + '"' + i18n_predefined + '"',
+		tooltip: i18n_create_legend_sets_for_legend_type + ' "' + i18n_predefined + '"',
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -3790,7 +3794,7 @@ var periodWindow = new Ext.Window({
                             fn: function() {
                                 var pt = Ext.getCmp('periodtypetimeseries_cb').getValue();
                                 periodTimeseriesStore.baseParams = { name: pt };
-                                periodTimeseriesStore.reload();
+                                periodTimeseriesStore.load();
                             },
                             scope: this
                         }
@@ -3841,7 +3845,7 @@ var periodWindow = new Ext.Window({
                         }
                         
                         setMapValueTimeseriesStore(iid, pidArray, pnameArray, URL);
-                        mapValueTimeseriesStore.reload();
+                        mapValueTimeseriesStore.load();
                     }
                 }
             ]

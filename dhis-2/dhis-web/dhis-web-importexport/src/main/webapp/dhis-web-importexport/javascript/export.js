@@ -162,7 +162,9 @@ function toggle( knob )
     document.getElementById( "organisationUnitGroupSets" ).checked = toggle;
     document.getElementById( "organisationUnitLevels" ).checked = toggle;
     document.getElementById( "validationRules" ).checked = toggle;	
-    document.getElementById( "reportTables" ).checked = toggle; 
+    document.getElementById( "reports" ).checked = toggle;	
+    document.getElementById( "reportTables" ).checked = toggle;
+    document.getElementById( "charts" ).checked = toggle;	
     document.getElementById( "olapUrls" ).checked = toggle;      
 }
 
@@ -185,7 +187,9 @@ function validateMetaDataExportForm()
          !isChecked( "organisationUnitGroupSets" ) &&
          !isChecked( "organisationUnitLevels" ) &&
          !isChecked( "validationRules" ) &&
+         !isChecked( "reports" ) &&
          !isChecked( "reportTables" ) &&
+         !isChecked( "charts" ) &&
          !isChecked( "olapUrls" ) )
      {
          setMessage( i18n_select_one_or_more_object_types );
@@ -222,6 +226,3 @@ function validateDataValueExportForm()
     hideMessage();
     return true;
 }
-
-
-

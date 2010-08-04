@@ -157,6 +157,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
         executeSql( "ALTER TABLE translation ALTER value TYPE text" );
         
+        //orgunit coord
+        executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
+        
         log.info( "Tables updated" );
     }
 

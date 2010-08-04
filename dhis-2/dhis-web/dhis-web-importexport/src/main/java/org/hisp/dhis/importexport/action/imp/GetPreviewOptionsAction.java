@@ -31,11 +31,13 @@ import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_STATUS;
 import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_TYPE;
 import static org.hisp.dhis.util.SessionUtils.getSessionVar;
 import static org.hisp.dhis.util.SessionUtils.setSessionVar;
+import static org.hisp.dhis.importexport.ImportObjectStatus.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
@@ -58,6 +60,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.validation.ValidationRule;
 
@@ -232,6 +235,13 @@ public class GetPreviewOptionsAction
         return newValidationRules;
     }
     
+    private Integer newReports;
+
+    public Integer getNewReports()
+    {
+        return newReports;
+    }
+
     private Integer newReportTables;
 
     public Integer getNewReportTables()
@@ -239,6 +249,13 @@ public class GetPreviewOptionsAction
         return newReportTables;
     }
     
+    private Integer newCharts;
+    
+    public Integer getNewCharts()
+    {
+        return newCharts;
+    }
+
     private Integer newOlapUrls;
 
     public Integer getNewOlapUrls()
@@ -365,6 +382,13 @@ public class GetPreviewOptionsAction
         return updateValidationRules;
     }
     
+    private Integer updateReports;
+
+    public Integer getUpdateReports()
+    {
+        return updateReports;
+    }
+
     private Integer updateReportTables;
 
     public Integer getUpdateReportTables()
@@ -372,6 +396,13 @@ public class GetPreviewOptionsAction
         return updateReportTables;
     }
     
+    private Integer updateCharts;
+    
+    public Integer getUpdateCharts()
+    {
+        return updateCharts;
+    }
+
     private Integer updateOlapUrls;
 
     public Integer getUpdateOlapUrls()
@@ -400,67 +431,59 @@ public class GetPreviewOptionsAction
     public String execute()
         throws Exception
     {
-        newDataElements = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataElement.class ).size();
-        newCalculatedDataElements = importObjectService.getImportObjects( ImportObjectStatus.NEW, CalculatedDataElement.class ).size();
-        newExtendedDataElements = importObjectService.getImportObjects( ImportObjectStatus.NEW, ExtendedDataElement.class  ).size();
-        newDataElementGroups = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataElementGroup.class ).size();
-        newDataElementGroupSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataElementGroupSet.class ).size();
-        newIndicatorTypes = importObjectService.getImportObjects( ImportObjectStatus.NEW, IndicatorType.class ).size();
-        newIndicators = importObjectService.getImportObjects( ImportObjectStatus.NEW, Indicator.class ).size();
-        newIndicatorGroups = importObjectService.getImportObjects( ImportObjectStatus.NEW, IndicatorGroup.class ).size();
-        newIndicatorGroupSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, IndicatorGroupSet.class ).size();
-        newDataDictionaries = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataDictionary.class ).size();
-        newDataSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataSet.class ).size();
-        newOrganisationUnits = importObjectService.getImportObjects( ImportObjectStatus.NEW, OrganisationUnit.class ).size();
-        newOrganisationUnitGroups = importObjectService.getImportObjects( ImportObjectStatus.NEW, OrganisationUnitGroup.class ).size();
-        newOrganisationUnitGroupSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, OrganisationUnitGroupSet.class ).size();
-        newOrganisationUnitLevels = importObjectService.getImportObjects( ImportObjectStatus.NEW, OrganisationUnitLevel.class ).size();
-        newValidationRules = importObjectService.getImportObjects( ImportObjectStatus.NEW, ValidationRule.class ).size();
-        newReportTables = importObjectService.getImportObjects( ImportObjectStatus.NEW, ReportTable.class ).size();
-        newOlapUrls = importObjectService.getImportObjects( ImportObjectStatus.NEW, OlapURL.class ).size();
-        newDataValues = importDataValueService.getNumberOfImportDataValues( ImportObjectStatus.NEW );
+        newDataElements = importObjectService.getImportObjects( NEW, DataElement.class ).size();
+        newCalculatedDataElements = importObjectService.getImportObjects( NEW, CalculatedDataElement.class ).size();
+        newExtendedDataElements = importObjectService.getImportObjects( NEW, ExtendedDataElement.class  ).size();
+        newDataElementGroups = importObjectService.getImportObjects( NEW, DataElementGroup.class ).size();
+        newDataElementGroupSets = importObjectService.getImportObjects( NEW, DataElementGroupSet.class ).size();
+        newIndicatorTypes = importObjectService.getImportObjects( NEW, IndicatorType.class ).size();
+        newIndicators = importObjectService.getImportObjects( NEW, Indicator.class ).size();
+        newIndicatorGroups = importObjectService.getImportObjects( NEW, IndicatorGroup.class ).size();
+        newIndicatorGroupSets = importObjectService.getImportObjects( NEW, IndicatorGroupSet.class ).size();
+        newDataDictionaries = importObjectService.getImportObjects( NEW, DataDictionary.class ).size();
+        newDataSets = importObjectService.getImportObjects( NEW, DataSet.class ).size();
+        newOrganisationUnits = importObjectService.getImportObjects( NEW, OrganisationUnit.class ).size();
+        newOrganisationUnitGroups = importObjectService.getImportObjects( NEW, OrganisationUnitGroup.class ).size();
+        newOrganisationUnitGroupSets = importObjectService.getImportObjects( NEW, OrganisationUnitGroupSet.class ).size();
+        newOrganisationUnitLevels = importObjectService.getImportObjects( NEW, OrganisationUnitLevel.class ).size();
+        newValidationRules = importObjectService.getImportObjects( NEW, ValidationRule.class ).size();
+        newReports = importObjectService.getImportObjects( NEW, Report.class ).size();
+        newReportTables = importObjectService.getImportObjects( NEW, ReportTable.class ).size();
+        newCharts = importObjectService.getImportObjects( NEW, Chart.class ).size();
+        newOlapUrls = importObjectService.getImportObjects( NEW, OlapURL.class ).size();
+        newDataValues = importDataValueService.getNumberOfImportDataValues( NEW );
         
-        updateDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataElement.class ).size();
-        updateCalculatedDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, CalculatedDataElement.class ).size();
-        updateExtendedDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, ExtendedDataElement.class ).size();
-        updateDataElementGroups = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataElementGroup.class ).size();
-        updateDataElementGroupSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataElementGroupSet.class ).size();
-        updateIndicatorTypes = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, IndicatorType.class ).size();
-        updateIndicators = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, Indicator.class ).size();
-        updateIndicatorGroups = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, IndicatorGroup.class ).size();
-        updateIndicatorGroupSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, IndicatorGroupSet.class ).size();
-        updateDataDictionaries = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataDictionary.class ).size();
-        updateDataSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataSet.class ).size();
-        updateOrganisationUnits = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OrganisationUnit.class ).size();
-        updateOrganisationUnitGroups = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OrganisationUnitGroup.class ).size();
-        updateOrganisationUnitGroupSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OrganisationUnitGroupSet.class ).size();
-        updateOrganisationUnitLevels = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OrganisationUnitLevel.class ).size();
-        updateValidationRules = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, ValidationRule.class ).size();
-        updateReportTables = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, ReportTable.class ).size();
-        updateOlapUrls = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OlapURL.class ).size();
-        updateDataValues = importDataValueService.getNumberOfImportDataValues( ImportObjectStatus.UPDATE );
+        updateDataElements = importObjectService.getImportObjects( UPDATE, DataElement.class ).size();
+        updateCalculatedDataElements = importObjectService.getImportObjects( UPDATE, CalculatedDataElement.class ).size();
+        updateExtendedDataElements = importObjectService.getImportObjects( UPDATE, ExtendedDataElement.class ).size();
+        updateDataElementGroups = importObjectService.getImportObjects( UPDATE, DataElementGroup.class ).size();
+        updateDataElementGroupSets = importObjectService.getImportObjects( UPDATE, DataElementGroupSet.class ).size();
+        updateIndicatorTypes = importObjectService.getImportObjects( UPDATE, IndicatorType.class ).size();
+        updateIndicators = importObjectService.getImportObjects( UPDATE, Indicator.class ).size();
+        updateIndicatorGroups = importObjectService.getImportObjects( UPDATE, IndicatorGroup.class ).size();
+        updateIndicatorGroupSets = importObjectService.getImportObjects( UPDATE, IndicatorGroupSet.class ).size();
+        updateDataDictionaries = importObjectService.getImportObjects( UPDATE, DataDictionary.class ).size();
+        updateDataSets = importObjectService.getImportObjects( UPDATE, DataSet.class ).size();
+        updateOrganisationUnits = importObjectService.getImportObjects( UPDATE, OrganisationUnit.class ).size();
+        updateOrganisationUnitGroups = importObjectService.getImportObjects( UPDATE, OrganisationUnitGroup.class ).size();
+        updateOrganisationUnitGroupSets = importObjectService.getImportObjects( UPDATE, OrganisationUnitGroupSet.class ).size();
+        updateOrganisationUnitLevels = importObjectService.getImportObjects( UPDATE, OrganisationUnitLevel.class ).size();
+        updateValidationRules = importObjectService.getImportObjects( UPDATE, ValidationRule.class ).size();
+        updateReports = importObjectService.getImportObjects( UPDATE, Report.class ).size();
+        updateReportTables = importObjectService.getImportObjects( UPDATE, ReportTable.class ).size();
+        updateCharts = importObjectService.getImportObjects( UPDATE, Chart.class ).size();
+        updateOlapUrls = importObjectService.getImportObjects( UPDATE, OlapURL.class ).size();
+        updateDataValues = importDataValueService.getNumberOfImportDataValues( UPDATE );
 
         // -------------------------------------------------------------------------
         // Remember last type and status value
         // -------------------------------------------------------------------------
 
-        if ( type == null )
-        {
-            type = (String) getSessionVar( KEY_PREVIEW_TYPE );
-        }
-        else
-        {
-            setSessionVar( KEY_PREVIEW_TYPE, type );
-        }
+        type = type == null ? (String) getSessionVar( KEY_PREVIEW_TYPE ) : type;
+        status = status == null ? (String) getSessionVar( KEY_PREVIEW_STATUS ) : status;
         
-        if ( status == null )
-        {
-            status = (String) getSessionVar( KEY_PREVIEW_STATUS );
-        }
-        else
-        {
-            setSessionVar( KEY_PREVIEW_STATUS, status );
-        }
+        setSessionVar( KEY_PREVIEW_TYPE, type );
+        setSessionVar( KEY_PREVIEW_STATUS, status );
 
         // -------------------------------------------------------------------------
         // Provide relevant import objects
@@ -468,7 +491,7 @@ public class GetPreviewOptionsAction
 
         if ( type != null && status != null )
         {
-            importObjects = new ArrayList<ImportObject>( importObjectService.getImportObjects( ImportObjectStatus.valueOf( status ), ClassMapUtil.getClass( type ) ) );
+            importObjects = new ArrayList<ImportObject>( importObjectService.getImportObjects( valueOf( status ), ClassMapUtil.getClass( type ) ) );
             
             Collections.sort( importObjects, new ImportObjectComparator() );
         }

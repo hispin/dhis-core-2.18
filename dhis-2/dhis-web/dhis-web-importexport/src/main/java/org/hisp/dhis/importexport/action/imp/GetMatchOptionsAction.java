@@ -42,11 +42,14 @@ import static org.hisp.dhis.common.Objects.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUP;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUPSET;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITLEVEL;
+import static org.hisp.dhis.common.Objects.REPORT;
 import static org.hisp.dhis.common.Objects.REPORTTABLE;
+import static org.hisp.dhis.common.Objects.CHART;
 import static org.hisp.dhis.common.Objects.VALIDATIONRULE;
 
 import java.util.Collection;
 
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
@@ -55,6 +58,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -173,6 +177,13 @@ public class GetMatchOptionsAction
         this.validationRuleService = validationRuleService;
     }
     
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -180,6 +191,13 @@ public class GetMatchOptionsAction
         this.reportTableService = reportTableService;
     }
     
+    private ChartService chartService;
+    
+    public void setChartService( ChartService chartService )
+    {
+        this.chartService = chartService;
+    }
+
     private OlapURLService olapURLService;
 
     public void setOlapURLService( OlapURLService olapURLService )
@@ -256,9 +274,17 @@ public class GetMatchOptionsAction
         {
             objects = validationRuleService.getAllValidationRules();
         }
+        else if ( objectType.equals( REPORT.name() ) )
+        {
+            objects = reportService.getAllReports();
+        }
         else if ( objectType.equals( REPORTTABLE.name() ) )
         {
             objects = reportTableService.getAllReportTables();
+        }
+        else if ( objectType.equals( CHART.name() ) )
+        {
+            objects = chartService.getAllCharts();
         }
         else if ( objectType.equals( OLAPURL.name() ) )
         {

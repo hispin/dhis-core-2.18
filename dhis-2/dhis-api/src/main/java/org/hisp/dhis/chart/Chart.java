@@ -197,10 +197,19 @@ public class Chart
     {
         return isSize( SIZE_TALL ) ? 800 : 500;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Importable object
+    // -------------------------------------------------------------------------
+
     public String getName()
     {
         return title;
+    }
+    
+    public void setName( String name )
+    {
+        this.title = name;
     }
     
     // -------------------------------------------------------------------------

@@ -36,6 +36,8 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
@@ -67,6 +69,7 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.ImportType;
 import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.importer.CalculatedDataElementImporter;
+import org.hisp.dhis.importexport.importer.ChartImporter;
 import org.hisp.dhis.importexport.importer.CompleteDataSetRegistrationImporter;
 import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryComboImporter;
@@ -87,6 +90,7 @@ import org.hisp.dhis.importexport.importer.OrganisationUnitGroupImporter;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.importexport.importer.OrganisationUnitLevelImporter;
 import org.hisp.dhis.importexport.importer.PeriodImporter;
+import org.hisp.dhis.importexport.importer.ReportImporter;
 import org.hisp.dhis.importexport.importer.ReportTableImporter;
 import org.hisp.dhis.importexport.importer.ValidationRuleImporter;
 import org.hisp.dhis.importexport.mapping.GroupMemberAssociationVerifier;
@@ -139,6 +143,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
@@ -256,6 +262,13 @@ public class DefaultImportObjectManager
         this.importDataValueService = importDataValueService;
     }
     
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -263,6 +276,13 @@ public class DefaultImportObjectManager
         this.reportTableService = reportTableService;
     }
     
+    private ChartService chartService;
+    
+    public void setChartService( ChartService chartService )
+    {
+        this.chartService = chartService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -915,6 +935,23 @@ public class DefaultImportObjectManager
     }
 
     @Transactional
+    public void importReports()
+    {
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Report.class );
+        
+        Importer<Report> importer = new ReportImporter( reportService );
+        
+        for ( ImportObject importObject : importObjects )
+        {
+            importer.importObject( (Report) importObject.getObject(), params );
+        }
+        
+        importObjectStore.deleteImportObjects( Report.class );
+        
+        log.info( "Imported Reports" );
+    }
+    
+    @Transactional
     public void importReportTables()
     {
         BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class ).init();
@@ -935,6 +972,23 @@ public class DefaultImportObjectManager
         log.info( "Imported ReportTables" );
     }
 
+    @Transactional
+    public void importCharts()
+    {
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Chart.class );
+        
+        Importer<Chart> importer = new ChartImporter( chartService );
+        
+        for ( ImportObject importObject : importObjects )
+        {
+            importer.importObject( (Chart) importObject.getObject(), params );
+        }
+        
+        importObjectStore.deleteImportObjects( Report.class );
+        
+        log.info( "Imported Reports" );
+    }
+    
     @Transactional
     public void importOlapURLs()
     {

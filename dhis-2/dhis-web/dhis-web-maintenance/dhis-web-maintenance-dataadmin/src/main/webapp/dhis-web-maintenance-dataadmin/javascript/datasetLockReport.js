@@ -1,3 +1,67 @@
+
+//------------------------------------------------------------------------------
+// Organisation Tree
+//------------------------------------------------------------------------------
+function treeClicked() {
+	numberOfSelects++;
+
+	setMessage(i18n_loading);
+
+	document.getElementById("Lock").disabled = true;
+	document.getElementById("Unlock").disabled = true;
+}
+
+function selectCompleted(selectedUnits) {
+	numberOfSelects--;
+
+	if (numberOfSelects <= 0) {
+		hideMessage();
+
+		document.getElementById("Lock").disabled = false;
+		document.getElementById("Unlock").disabled = false;
+	}
+}
+
+function selectReceived() {
+	selectionTree.buildSelectionTree();
+}
+// ------------------------------------------------------------------------------
+// Tree Selection validation Method
+// ------------------------------------------------------------------------------
+function orgUnitSelectValidation()
+{
+	var request = new Request();
+	request.setResponseTypeXML('message');
+	request.setCallbackSuccess(orgUnitSelectValidationCompleted);
+
+	var requestString = 'orgUnitValidate.action';
+
+	request.send(requestString);
+
+	return false;
+}
+
+function orgUnitSelectValidationCompleted(messageElement)
+{
+	var type = messageElement.getAttribute('type');
+	var message = messageElement.firstChild.nodeValue;
+
+	if (type == 'success')
+	{
+		document.forms['lockingForm'].submit();
+	} 
+	else if (type == 'input') 
+	{
+		// setMessage( i18n_loading );
+		document.getElementById('message').innerHTML = message;
+		document.getElementById('message').style.display = 'block';
+	}
+}
+
+// ------------------------------------------------------------------------------
+// Get Periods correspond to Selected Period Type
+// ------------------------------------------------------------------------------
+
 function getPeriods() {
 	var periodTypeList = document.getElementById("periodTypeId");
 	var periodTypeId = periodTypeList.options[periodTypeList.selectedIndex].value;
@@ -72,4 +136,3 @@ function getDataSets() {
 		});
 	}
 }
-
