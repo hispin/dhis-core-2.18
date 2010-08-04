@@ -7,8 +7,6 @@
 	<span id="currentOptionCombo">$i18n.getString( "no_option_selected" )</span>	
 </div>
 
-<br>
-
 <form id="selectForm" name="selectForm" method="post" action="select.action">
 
 <div id="actions" style="width:200px text-align:right">
@@ -44,7 +42,7 @@
            checked="checked" 
        #end       
        onclick="document.getElementById( 'selectForm' ).submit();">    
-    <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br>
+    <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br><br>
 
 </div>
 

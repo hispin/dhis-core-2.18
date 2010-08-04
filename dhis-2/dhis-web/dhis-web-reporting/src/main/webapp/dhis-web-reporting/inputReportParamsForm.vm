@@ -1,7 +1,5 @@
 
-#if ( $!reportParams.isSet() )
-    <h3>$i18n.getString( "report_table_parameters" )</h3>
-#end
+<h3>$i18n.getString( "report_table_parameters" )</h3>
 
 <input type="hidden" id="id" name="id" value="$!id">
 <input type="hidden" id="mode" name="mode" value="$!mode">
@@ -10,19 +8,11 @@
 	<script type="text/javascript">
 	   getTableStatus();
 	</script>
-#end
-
-#if ( $mode == "table" && $!reportParams.isSet() == false ) <!-- Create table, nothing to ask -->
-	<script type="text/javascript">
-		createTable( '$id' );
-	</script>
-#end
+#else <!-- Show input params -->
 
 <table>
 	
 	<!-- Data source -->
-	
-	#if ( $mode == "report" )
 	
     <tr>
         <th>$i18n.getString( "data_source" )</th>
@@ -38,8 +28,6 @@
     <tr>
         <td colspan="4" style="height:10px"></td>
     </tr>
-	
-	#end
 	
     <!-- Reporting month -->
     
@@ -111,7 +99,7 @@
     
     <tr>        
         <td>
-        #if ( $mode == "table" || $mode == "status" )
+        #if ( $mode == "table" )
             <input type="button" value="$i18n.getString( 'ok' )" onclick="createTable( '$id' )" style="width:120px">        
             <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px">
         #end
@@ -123,6 +111,8 @@
     </tr>
     
 </table>
+
+#end
 
 <span id="message"></span>
 

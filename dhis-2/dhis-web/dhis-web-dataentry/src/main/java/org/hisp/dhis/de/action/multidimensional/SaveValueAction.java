@@ -169,10 +169,7 @@ public class SaveValueAction
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         Period period = selectedStateManager.getSelectedPeriod();
-                
-        /*dataElementId = Integer.parseInt( inputId.substring( 0, inputId.indexOf( ":" ) ) );
-        optionComboId = Integer.parseInt( inputId.substring( inputId.indexOf( ":" )+1, inputId.length() ) );*/
-                
+        
         DataElement dataElement = dataElementService.getDataElement( dataElementId );        
 
         storedBy = currentUserService.getCurrentUsername();        
@@ -204,7 +201,7 @@ public class SaveValueAction
         {
             if ( value != null )
             {
-                LOG.debug( "Adding DataValue, value added" );
+                LOG.debug( "Adding DataValue" );
 
                 dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, optionCombo );
                 dataValueService.addDataValue( dataValue );
@@ -212,7 +209,7 @@ public class SaveValueAction
         }
         else
         {
-            LOG.debug( "Updating DataValue, value added/changed" );
+            LOG.debug( "Updating DataValue" );
 
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );

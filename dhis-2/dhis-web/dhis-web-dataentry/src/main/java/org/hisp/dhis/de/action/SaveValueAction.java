@@ -47,14 +47,12 @@ import org.hisp.dhis.user.CurrentUserService;
 import com.opensymphony.xwork2.Action;
 
 /**
- * TODO Replace this with StatefulDataValueSaver
  * @author Torgeir Lorange Ostby
- * @version $Id: SaveValueAction.java 5652 2008-09-06 13:24:34Z larshelg $
  */
 public class SaveValueAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( SaveValueAction.class );    
+    private static final Log log = LogFactory.getLog( SaveValueAction.class );    
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -87,7 +85,6 @@ public class SaveValueAction
     {
         this.dataValueAuditService = dataValueAuditService;
     }
-    
     
     private SelectedStateManager selectedStateManager;
 
@@ -188,7 +185,7 @@ public class SaveValueAction
         {
             if ( value != null )
             {
-                LOG.debug( "Adding DataValue, value added" );
+                log.debug( "Adding DataValue" );
 
                 dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, defaultOptionCombo );
 
@@ -197,7 +194,7 @@ public class SaveValueAction
         }
         else
         {
-            LOG.debug( "Updating DataValue, value added/changed" );
+            log.debug( "Updating DataValue" );
             
             DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), storedBy, new Date(), "");
             
@@ -207,9 +204,9 @@ public class SaveValueAction
 
             dataValueService.updateDataValue( dataValue );
             
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Add DataValueAudit
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             
             if ( value != null )
             {
