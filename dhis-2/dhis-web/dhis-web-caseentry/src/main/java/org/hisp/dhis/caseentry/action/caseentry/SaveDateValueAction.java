@@ -177,6 +177,11 @@ public class SaveDateValueAction
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );
 
+        if ( value != null && value.trim().length() == 0 )
+        {
+            value = null;
+        }
+        
         if ( value != null )
         {
             Date dateValue = format.parseDate( value );
@@ -217,7 +222,7 @@ public class SaveDateValueAction
 
             patientDataValueService.updatePatientDataValue( patientDataValue );
         }
-        
+
         return SUCCESS;
     }
 }
