@@ -128,7 +128,6 @@ import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
  */
 public class DXFConverter 
 {
-
     public static final String DXFROOT = "dxf";
     public static final String ATTRIBUTE_MINOR_VERSION = "minorVersion";
     public static final String ATTRIBUTE_EXPORTED = "exported";

@@ -23,15 +23,33 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<!-- -->
 	
 	<bean id="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
-        class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
+		class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+		<property name="dataSetService"
+			ref="org.hisp.dhis.dataset.DataSetService"/>
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="dataSetLockService"
+			ref="org.hisp.dhis.datalock.DataSetLockService"/>
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService"/>
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+		</property>
+	</bean>
+	
+	<!-- Validation Org Unit Selection-->
+        <bean id="org.hisp.dhis.dataadmin.action.lock.OrgUnitValidateAction"
+        class="org.hisp.dhis.dataadmin.action.lock.OrgUnitValidateAction"
         scope="prototype">
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    </bean>
+       <property name="selectionTreeManager">
+       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+       </property>
+       </bean>
+        <!-- Validation Org Unit Selection end -->
 	
 	<bean id="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction"
         class="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction"
@@ -48,6 +66,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 		<property name="organisationUnitGroupService"
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+		<property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+		
 	</bean>
 
 	<bean id="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"

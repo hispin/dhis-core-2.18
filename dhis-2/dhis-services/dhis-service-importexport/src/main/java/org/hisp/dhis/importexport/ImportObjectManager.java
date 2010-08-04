@@ -99,7 +99,11 @@ public interface ImportObjectManager
     
     void importPeriods();
     
+    void importReports();
+    
     void importReportTables();
+    
+    void importCharts();
     
     void importOlapURLs();
     

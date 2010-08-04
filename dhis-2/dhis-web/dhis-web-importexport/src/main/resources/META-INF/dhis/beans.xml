@@ -110,7 +110,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="validationRuleService"
 			ref="org.hisp.dhis.validation.ValidationRuleService" />
+		<property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
 		<property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+		<property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
 		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 	</bean>
 

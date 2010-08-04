@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.source.Source;
@@ -207,7 +208,7 @@ public class OrganisationUnit
             builder.append( "]" );
         }
         
-        this.coordinates = builder.toString();
+        this.coordinates = StringUtils.trimToNull( builder.toString() );
     }
     
     // -------------------------------------------------------------------------

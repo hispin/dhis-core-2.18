@@ -70,8 +70,16 @@
         <td><label for="validationRules">$i18n.getString( 'validation_rules' )</label></td>	
     </tr>
     <tr>
+        <td><input id="reports" name="reports" type="checkbox" value="true"></td>
+        <td><label for="reports">$i18n.getString( 'reports' )</label></td>
+    </tr>
+    <tr>
         <td><input id="reportTables" name="reportTables" type="checkbox" value="true"></td>
         <td><label for="reportTables">$i18n.getString( 'report_tables' )</label></td>
+    </tr>
+    <tr>
+        <td><input id="charts" name="charts" type="checkbox" value="true"></td>
+        <td><label for="charts">$i18n.getString( 'charts' )</label></td>
     </tr>
     <tr>
     	<td><input id="olapUrls" name="olapUrls" type="checkbox" value="true"></td>

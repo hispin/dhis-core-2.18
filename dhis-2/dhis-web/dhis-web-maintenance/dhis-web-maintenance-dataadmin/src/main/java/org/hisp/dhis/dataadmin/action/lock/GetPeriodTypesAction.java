@@ -33,6 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -70,7 +71,12 @@ public class GetPeriodTypesAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    private SelectionTreeManager selectionTreeManager;
 
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -107,6 +113,8 @@ public class GetPeriodTypesAction
         orgUnitLevels = organisationUnitService.getFilledOrganisationUnitLevels();
 
         orgUnitGroups = organisationUnitGroupService.getAllOrganisationUnitGroups();
+        
+        selectionTreeManager.clearSelectedOrganisationUnits();
 
         return SUCCESS;
     }

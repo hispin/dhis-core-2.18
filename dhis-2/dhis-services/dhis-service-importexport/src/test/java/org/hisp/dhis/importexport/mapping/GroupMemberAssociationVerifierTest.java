@@ -78,7 +78,7 @@ public class GroupMemberAssociationVerifierTest
         GroupMemberAssociation associationE = new GroupMemberAssociation( 1, 2, 2 );
         GroupMemberAssociation associationF = new GroupMemberAssociation( 1, 3, 3 );
         
-        GroupMemberType typeA = GroupMemberType.REPORTTABLE_INDICATOR;
+        GroupMemberType typeA = GroupMemberType.CATEGORY_CATEGORYOPTION;
 
         assertEquals( AssociationType.LIST, associationA.getAssociationType() );
         
@@ -105,7 +105,7 @@ public class GroupMemberAssociationVerifierTest
         GroupMemberAssociation associationG = new GroupMemberAssociation( 1, 3, 3 );
         GroupMemberAssociation associationH = new GroupMemberAssociation( 1, 4, 2 );
 
-        GroupMemberType typeA = GroupMemberType.REPORTTABLE_INDICATOR;        
+        GroupMemberType typeA = GroupMemberType.INDICATORGROUP;        
 
         assertEquals( AssociationType.SET, associationA.getAssociationType() );
         assertEquals( AssociationType.LIST, associationE.getAssociationType() );

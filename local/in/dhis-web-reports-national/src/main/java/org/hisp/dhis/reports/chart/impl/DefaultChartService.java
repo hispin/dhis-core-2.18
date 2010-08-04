@@ -71,7 +71,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DefaultChartService
+public abstract class DefaultChartService
     implements ChartService
 {
     private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 14 );

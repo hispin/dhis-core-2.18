@@ -203,18 +203,14 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     'select': {
                         fn: function() {
                             var mlp = Ext.getCmp('maps_cb').getValue();
-                            // mapping.newUrl = mlp;
 							
-                            Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp };
-                            Ext.getCmp('grid_gp').getStore().reload();
+                            Ext.getCmp('grid_gp').getStore().setBaseParam('mapLayerPath', this.getValue());
+                            Ext.getCmp('grid_gp').getStore().load();
 							
 							Ext.getCmp('filter_tf').enable();
 							
-							// mapping.classify(false);
-                            
                             mapping.loadByUrl(mlp);
-                        },
-                        scope: this
+                        }
                     }
                 }
             },
@@ -290,8 +286,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                     params: { mapLayerPath: mlp },
                                     success: function( responseObject ) {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
-                                        Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
-                                        Ext.getCmp('grid_gp').getStore().reload();
+                                        Ext.getCmp('grid_gp').getStore().setBaseParam('mapLayerPath', mlp);
+                                        Ext.getCmp('grid_gp').getStore().load();
                                         
                                         Ext.message.msg(true, i18n_all_relations_for_the_map + '<span class="x-msg-hl"> ' + Ext.getCmp('maps_cb').getRawValue() + '</span> ' + i18n_removed);
                                         
@@ -344,8 +340,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 									url: path_mapping + 'deleteMapOrganisationUnitRelations' + type + params,
 									method: 'GET',
 									success: function(r) {
-										Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
-										Ext.getCmp('grid_gp').getStore().reload();
+										Ext.getCmp('grid_gp').getStore().setBaseParam('mapLayerPath', mlp);
+										Ext.getCmp('grid_gp').getStore().load();
 										
 										Ext.message.msg(true, msg);
 										
@@ -381,7 +377,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation },
 												success: function( responseObject ) {
 													Ext.message.msg(true, '<span class="x-msg-hl">' + mapping.relation + '</span> (' + i18n_in_the_map + ') ' + i18n_assigned_to + ' <span class="x-msg-hl">' + name + '</span> (' + i18n_database + ').');
-													Ext.getCmp('grid_gp').getStore().reload();
+													Ext.getCmp('grid_gp').getStore().load();
 													popup.hide();
 													mapping.relation = false;
 													Ext.getCmp('filter_tf').setValue('');
@@ -543,7 +539,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + ' (map <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>, db <span class="x-msg-hl">' + organisationUnits.length + '</span>).');
                         // Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + '.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>');                        
                         
-                        Ext.getCmp('grid_gp').getStore().reload();
+                        Ext.getCmp('grid_gp').getStore().load();
                         mapping.classify(false, position);
                     },
                     failure: function() {

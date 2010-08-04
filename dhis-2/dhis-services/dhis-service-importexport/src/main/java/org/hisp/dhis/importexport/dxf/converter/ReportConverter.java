@@ -52,7 +52,7 @@ public class ReportConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESIGN = "design";
-    private static final String FIELD_DESIGN_CONTENT = "design";
+    private static final String FIELD_DESIGN_CONTENT = "designContent";
     private static final String FIELD_TYPE = "type";
     
     /**

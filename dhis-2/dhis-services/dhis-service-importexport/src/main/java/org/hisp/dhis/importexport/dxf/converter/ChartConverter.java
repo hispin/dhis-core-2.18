@@ -66,7 +66,8 @@ public class ChartConverter
      * @param chartService
      */
     public ChartConverter( ChartService chartService )
-    {        
+    {
+        this.chartService = chartService;
     }
 
     /**
