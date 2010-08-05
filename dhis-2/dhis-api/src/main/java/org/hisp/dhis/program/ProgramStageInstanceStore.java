@@ -27,6 +27,7 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.common.GenericStore;
 
@@ -37,10 +38,20 @@ import org.hisp.dhis.common.GenericStore;
 public interface ProgramStageInstanceStore
     extends GenericStore<ProgramStageInstance>
 {
-    String ID = ProgramStageInstanceStore.class.getName();   
+    String ID = ProgramStageInstanceStore.class.getName();
+
+    ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage );
+
+    Collection<ProgramStageInstance> get( ProgramStage programStage );
+
+    Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );
     
-    ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage );   
+    Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
+
+    Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate );
     
-    Collection<ProgramStageInstance> get( ProgramStage programStage );   
-    
+    Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed );
+
+    Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
+
 }
