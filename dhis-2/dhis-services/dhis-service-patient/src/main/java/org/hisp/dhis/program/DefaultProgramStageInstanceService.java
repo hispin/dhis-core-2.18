@@ -103,9 +103,9 @@ public class DefaultProgramStageInstanceService
             {
                 colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_GREEN );
             }
-            else if( programStageInstance.getExecutionDate() != null )
+            else if ( programStageInstance.getExecutionDate() != null )
             {
-            	colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_LIGHTRED );
+                colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_LIGHTRED );
             }
             else
             {
@@ -131,5 +131,32 @@ public class DefaultProgramStageInstanceService
         }
 
         return colorMap;
+    }
+
+    public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances )
+    {
+
+        return programStageInstanceStore.getProgramStageInstances( programInstances );
+
+    }
+
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate )
+    {
+        return programStageInstanceStore.getProgramStageInstances( dueDate );
+    }    
+    
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed )
+    {
+        return programStageInstanceStore.getProgramStageInstances( dueDate, completed );
+    }
+    
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
+    {
+        return programStageInstanceStore.getProgramStageInstances( startDate, endDate );
+    }
+    
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
+    {
+        return programStageInstanceStore.getProgramStageInstances( startDate, endDate, completed );
     }
 }

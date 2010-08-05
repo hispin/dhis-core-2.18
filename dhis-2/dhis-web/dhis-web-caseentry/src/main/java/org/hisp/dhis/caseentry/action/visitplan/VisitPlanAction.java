@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.visitplan;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -41,12 +42,9 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.nextvisit.NextVisitGenerator;
+import org.hisp.dhis.activityplan.Activity;
+import org.hisp.dhis.activityplan.ActivityPlanService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -73,21 +71,7 @@ public class VisitPlanAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }
-
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
+    }    
 
     private PatientAttributeValueService patientAttributeValueService;
 
@@ -102,12 +86,12 @@ public class VisitPlanAction
     {
         this.patientAttributeService = patientAttributeService;
     }
+    
+    private ActivityPlanService activityPlanService;
 
-    private NextVisitGenerator nextVisitGenerator;
-
-    public void setNextVisitGenerator( NextVisitGenerator nextVisitGenerator )
+    public void setActivityPlanService( ActivityPlanService activityPlanService )
     {
-        this.nextVisitGenerator = nextVisitGenerator;
+        this.activityPlanService = activityPlanService;
     }
 
     // -------------------------------------------------------------------------
@@ -168,6 +152,13 @@ public class VisitPlanAction
         return sortedPatients;
     }
 
+    private Collection<Activity> activities = new ArrayList<Activity>();
+
+    public Collection<Activity> getActivities()
+    {
+        return activities;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -188,64 +179,57 @@ public class VisitPlanAction
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        // ---------------------------------------------------------------------
-        // Get all the programs the facility is providing
-        // ---------------------------------------------------------------------
+        activities = activityPlanService.getActivitiesByProvider( organisationUnit );
 
-        Collection<Program> programs = programService.getPrograms( organisationUnit );
-        
-
-        if ( programs.size() > 0 )
+        for ( Activity activity : activities )
         {
-
-            // -----------------------------------------------------------------
-            // For all the programs a facility is servicing get the active
-            // instances completed = false
-            // -----------------------------------------------------------------
-
-            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
-
-            // -----------------------------------------------------------------
-            // For all the active program instances determine the next visits
-            // and group these visits based on the patient to be visited
-            // -----------------------------------------------------------------
-
-            visitsByPatients = nextVisitGenerator.getNextVisits( programInstances );
-
-            if ( !visitsByPatients.keySet().isEmpty() )
+            if ( visitsByPatients.containsKey( activity.getBeneficiary() ) )
             {
-                Collection<Patient> patientsToBeVisted = visitsByPatients.keySet();
+                visitsByPatients.get( activity.getBeneficiary() ).add( activity.getTask() );
+            }
+            else
+            {
+                Set<ProgramStageInstance> programStageInstancess = new HashSet<ProgramStageInstance>();
 
-                // -------------------------------------------------------------
-                // Get all the attributes of the patients to be visited (in case
-                // users want to make sorting based on attributes
-                // -------------------------------------------------------------
+                programStageInstancess.add( activity.getTask() );
 
-                attributeValueMap = patientAttributeValueService
-                    .getPatientAttributeValueMapForPatients( patientsToBeVisted );
+                visitsByPatients.put( activity.getBeneficiary(), programStageInstancess );
+            }
+        }
 
-                // -------------------------------------------------------------
-                // Sort patients to be visited based on the chosen attribute
-                // -------------------------------------------------------------
+        if ( !visitsByPatients.keySet().isEmpty() )
+        {
+            Collection<Patient> patientsToBeVisted = visitsByPatients.keySet();
 
-                if ( attributes.size() > 0 )
-                {
-                    sortingAttribute = attributes.iterator().next();
-                }
+            // -------------------------------------------------------------
+            // Get all the attributes of the patients to be visited (in case
+            // users want to make sorting based on attributes
+            // -------------------------------------------------------------
 
-                if ( sortingAttributeId != null )
-                {
-                    sortingAttribute = patientAttributeService.getPatientAttribute( sortingAttributeId );
-                }
+            attributeValueMap = patientAttributeValueService
+                .getPatientAttributeValueMapForPatients( patientsToBeVisted );
 
-                if ( sortingAttribute != null )
-                {
-                    sortedPatients = patientService.sortPatientsByAttribute( patientsToBeVisted, sortingAttribute );
-                }
-                else
-                {
-                    sortedPatients = patientsToBeVisted;
-                }
+            // -------------------------------------------------------------
+            // Sort patients to be visited based on the chosen attribute
+            // -------------------------------------------------------------
+
+            if ( attributes.size() > 0 )
+            {
+                sortingAttribute = attributes.iterator().next();
+            }
+
+            if ( sortingAttributeId != null )
+            {
+                sortingAttribute = patientAttributeService.getPatientAttribute( sortingAttributeId );
+            }
+
+            if ( sortingAttribute != null )
+            {
+                sortedPatients = patientService.sortPatientsByAttribute( patientsToBeVisted, sortingAttribute );
+            }
+            else
+            {
+                sortedPatients = patientsToBeVisted;
             }
         }
 

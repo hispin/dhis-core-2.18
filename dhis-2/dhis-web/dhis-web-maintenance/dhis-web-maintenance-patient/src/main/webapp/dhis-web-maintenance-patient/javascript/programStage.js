@@ -43,6 +43,11 @@ function showSortProgramStage()
 	}
 }
 
+function submitSortOderForm()
+{
+    selectAllById( 'sortedList' );
+    document.getElementById( 'sortProgramStageForm' ).submit();
+}
 
 //-----------------------------------------------------------------------------
 // Move members

@@ -27,6 +27,7 @@
 package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -43,16 +44,52 @@ import org.hisp.dhis.program.ProgramStage;
 public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
-{    
+{
+
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
         return (ProgramStageInstance) getCriteria( Restrictions.eq( "programInstance", programInstance ),
             Restrictions.eq( "programStage", programStage ) ).uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( ProgramStage programStage )
     {
         return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances )
+    {
+
+        return getCriteria( Restrictions.in( "programInstance", programInstances ) ).list();
+
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate )
+    {
+        return getCriteria( Restrictions.eq( "dueDate", dueDate ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed )
+    {
+        return getCriteria( Restrictions.eq( "dueDate", dueDate ), Restrictions.eq( "completed", completed ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
+    {
+
+        return (getCriteria( Restrictions.ge( "startDate", startDate ), Restrictions.le( "endDate", endDate ) )).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
+    {
+
+        return (getCriteria( Restrictions.ge( "startDate", startDate ), Restrictions.le( "endDate", endDate ),
+            Restrictions.eq( "completed", completed ) )).list();
     }
 }

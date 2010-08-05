@@ -14,7 +14,7 @@
     </tr>        
     <tr>
         <td>
-            <select size="15" id="programStageList" name="programStageList" multiple="multiple" style="min-width:20em;height:20em">
+            <select size="15" id="sortedList" name="sortedList" multiple="multiple" style="min-width:20em;height:20em">
                 #foreach ( $programStage in $programStages )
                     <option value="$programStage.id">$encoder.htmlEncode( $programStage.name )</option>
                 #end                
@@ -22,8 +22,8 @@
         </td>
         
         <td valign="top" align="center">             
-          <a href="#" onclick="moveUp('programStageList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
-          <a href="#" onclick="moveDown('programStageList')"><img src="../images/move_down.png" border="0" alt=""></a>        
+          <a href="#" onclick="moveUp('sortedList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
+          <a href="#" onclick="moveDown('sortedList')"><img src="../images/move_down.png" border="0" alt=""></a>        
         </td>
           
     <tr>
@@ -37,12 +37,3 @@
 </form> 	
 
 <span id="message"></span>
-
-<script type="text/javascript">
-    function submitSortOderForm()
-    {
-        selectAllById( "programStageList" );
-        document.getElementById( "sortProgramStageForm" ).submit();
-    }
-</script>
-

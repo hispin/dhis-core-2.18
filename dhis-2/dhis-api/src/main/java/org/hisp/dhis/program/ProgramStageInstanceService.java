@@ -27,6 +27,7 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -48,6 +49,16 @@ public interface ProgramStageInstanceService
     ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );      
     
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage );
+    
+    Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
+    
+    Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );
+    
+    Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
+    
+    Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate );
+    
+    Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed );
     
     Collection<ProgramStageInstance> getAllProgramStageInstances();     
     

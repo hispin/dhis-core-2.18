@@ -103,6 +103,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Service definitions -->
 	
+	<bean id="org.hisp.dhis.activityplan.ActivityPlanService"
+		class="org.hisp.dhis.activityplan.DefaultActivityPlanService">
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"
     	class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationMappingService">
         <property name="caseAggregationMappingStore"

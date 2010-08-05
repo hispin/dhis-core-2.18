@@ -240,17 +240,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionManager"
       ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
     <property name="patientService"
-      ref="org.hisp.dhis.patient.PatientService"/>
-    <property name="programService"
-      ref="org.hisp.dhis.program.ProgramService"/>      
-    <property name="programInstanceService"
-      ref="org.hisp.dhis.program.ProgramInstanceService"/>     
-    <property name="nextVisitGenerator"
-      ref="org.hisp.dhis.program.nextvisit.NextVisitGenerator"/>
+      ref="org.hisp.dhis.patient.PatientService"/>  
     <property name="patientAttributeValueService"
       ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
     <property name="patientAttributeService"
-      ref="org.hisp.dhis.patient.PatientAttributeService"/>          
+      ref="org.hisp.dhis.patient.PatientAttributeService"/>    
+	<property name="activityPlanService"
+      ref="org.hisp.dhis.activityplan.ActivityPlanService"/>        
   </bean>
   
   <!-- Report --> 
