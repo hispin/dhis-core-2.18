@@ -68,7 +68,6 @@ public class ActivityPlanModelServiceTest
         mappers.add( new BeneficiaryMapper() );
         mappers.add( new TaskMapper() );
         mapper.setMappers( mappers );
-        mapper.init();
 
         service = new ActivityPlanModelService();
         service.setActivityPlanService( mockedActivityPlanService );
@@ -79,7 +78,7 @@ public class ActivityPlanModelServiceTest
     @Test
     public void getActivityPlan()
     {
-        ActivityPlan activityPlan = service.getActivityPlan( 1 );
+        ActivityPlan activityPlan = service.getCurrentActivityPlan( orgUnit );
 
         assertNotNull( activityPlan );
         List<ActivityPlanItem> activities = activityPlan.getActivitiesList();

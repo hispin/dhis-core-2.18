@@ -20,12 +20,10 @@ public class Link
         this.url = url;
     }
 
-    public static Link create( UriInfo uriInfo, Class<?> clazz, int id )
+    public void setUrl( String url )
     {
-        Link l = new Link();
-        l.url = uriInfo.getBaseUriBuilder().path( clazz ).build( id ).toString();
-        
-        return l;
+        this.url = url;
     }
-    
+
+
 }

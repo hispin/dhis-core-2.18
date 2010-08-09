@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.ws.rs.core.UriInfo;
+
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.patient.api.model.ActivityPlan;
 import org.hisp.dhis.patient.api.model.ActivityPlanItem;
@@ -13,7 +15,7 @@ public class ActivityPlanMapper implements BeanMapper<Collection<Activity>, Acti
 {
 
     @Override
-    public ActivityPlan getModel( Collection<Activity> activities, MappingFactory mappingFactory )
+    public ActivityPlan getModel( Collection<Activity> activities, MappingFactory mappingFactory, UriInfo uriInfo )
     {
         ActivityPlan plan = new ActivityPlan();
 
@@ -27,7 +29,7 @@ public class ActivityPlanMapper implements BeanMapper<Collection<Activity>, Acti
 
         for ( Activity activity : activities )
         {
-            items.add(mappingFactory.getBeanMapper( Activity.class, ActivityPlanItem.class ).getModel( activity, mappingFactory ));
+            items.add(mappingFactory.getBeanMapper( Activity.class, ActivityPlanItem.class ).getModel( activity, mappingFactory, uriInfo ));
         }
         
         return plan;

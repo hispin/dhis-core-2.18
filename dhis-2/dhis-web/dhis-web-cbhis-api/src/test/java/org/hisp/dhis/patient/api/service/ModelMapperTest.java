@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.activityplan.Activity;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.api.model.ActivityPlan;
+import org.hisp.dhis.patient.api.model.OrgUnits;
 import org.hisp.dhis.patient.api.service.mapping.ActivityPlanMapper;
 import org.hisp.dhis.patient.api.service.mapping.BeanMapper;
+import org.hisp.dhis.patient.api.service.mapping.OrgUnitsMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,18 +36,22 @@ public class ModelMapperTest
     
     @Test
     public void testInitialization() {
-        MappingFactory manager = new MappingFactory();
+        MappingFactory factory = new MappingFactory();
         
         BeanMapper activityPlanMapper = new ActivityPlanMapper();
 
         Set<BeanMapper<?,?>> mappers = new HashSet<BeanMapper<?,?>>();
         mappers.add( activityPlanMapper );
+        OrgUnitsMapper orgUnitsMapper = new OrgUnitsMapper();
+        mappers.add( orgUnitsMapper );
         
-        manager.setMappers( mappers );
+        factory.setMappers( mappers );
         
-        manager.init();
-        
-        assertEquals( activityPlanMapper, manager.mappingIndex.get( ActivityPlan.class ) );
+        assertEquals( activityPlanMapper, factory.mappingIndex.get( ActivityPlan.class ) );
+        assertEquals( activityPlanMapper, factory.getBeanMapper( new ArrayList<Activity>(), ActivityPlan.class ));
+
+        assertEquals( orgUnitsMapper, factory.getBeanMapper( new ArrayList<OrganisationUnit>(), OrgUnits.class ));
+
     }
     
 }

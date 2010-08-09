@@ -1,5 +1,7 @@
 package org.hisp.dhis.patient.api.service.mapping;
 
+import javax.ws.rs.core.UriInfo;
+
 import org.hisp.dhis.patient.api.model.Task;
 import org.hisp.dhis.patient.api.service.MappingFactory;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -9,7 +11,7 @@ public class TaskMapper
 {
 
     @Override
-    public Task getModel( ProgramStageInstance stageInstance, MappingFactory mappingManager )
+    public Task getModel( ProgramStageInstance stageInstance, MappingFactory mappingFactory, UriInfo uriInfo )
     {
         if (stageInstance == null) {
             return null;

@@ -1,5 +1,6 @@
 package org.hisp.dhis.patient.api.service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,8 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.api.model.OrgUnits;
 import org.hisp.dhis.patient.api.resources.OrgUnitResource;
 import org.hisp.dhis.patient.api.service.mapping.BeanMapper;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -30,12 +33,12 @@ public class MappingFactory
     public void setMappers( Set<BeanMapper<?, ?>> mappers )
     {
         this.mappers = mappers;
+        init();
     }
 
     Map<Class<?>, BeanMapper<?, ?>> mappingIndex = new HashMap<Class<?>, BeanMapper<?, ?>>();
 
-    @PostConstruct
-    public void init()
+    private void init()
     {
         if ( mappers == null || mappers.isEmpty() )
         {
@@ -73,6 +76,12 @@ public class MappingFactory
         BeanMapper<S, T> beanMapper = (BeanMapper<S, T>) this.mappingIndex.get( destination );
         
         return beanMapper;
+    }
+
+
+    public <S, T> BeanMapper<Collection<S>, T> getBeanMapper( Collection<S> entity, Class<T> destination )
+    {
+        return (BeanMapper<Collection<S>, T>) this.mappingIndex.get( destination );
     }
 
     
