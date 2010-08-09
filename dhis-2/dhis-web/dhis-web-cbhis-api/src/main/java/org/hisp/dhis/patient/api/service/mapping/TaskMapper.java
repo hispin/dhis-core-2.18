@@ -1,14 +1,15 @@
-package org.hisp.dhis.patient.api.service;
+package org.hisp.dhis.patient.api.service.mapping;
 
 import org.hisp.dhis.patient.api.model.Task;
+import org.hisp.dhis.patient.api.service.MappingFactory;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 public class TaskMapper
-    extends AbstractEntitiyModelBeanMapper<ProgramStageInstance, Task>
+    implements BeanMapper<ProgramStageInstance, Task>
 {
 
     @Override
-    public Task getModel( ProgramStageInstance stageInstance, MappingManager mappingManager )
+    public Task getModel( ProgramStageInstance stageInstance, MappingFactory mappingManager )
     {
         if (stageInstance == null) {
             return null;

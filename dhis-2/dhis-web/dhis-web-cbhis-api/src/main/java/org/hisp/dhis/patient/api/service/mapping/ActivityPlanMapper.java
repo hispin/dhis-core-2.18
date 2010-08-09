@@ -1,4 +1,4 @@
-package org.hisp.dhis.patient.api.service;
+package org.hisp.dhis.patient.api.service.mapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,16 +7,15 @@ import java.util.List;
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.patient.api.model.ActivityPlan;
 import org.hisp.dhis.patient.api.model.ActivityPlanItem;
+import org.hisp.dhis.patient.api.service.MappingFactory;
 
-public class ActivityPlanMapper extends AbstractEntitiyModelBeanMapper<ActivitiesWrapper, ActivityPlan>
+public class ActivityPlanMapper implements BeanMapper<Collection<Activity>, ActivityPlan>
 {
 
     @Override
-    public ActivityPlan getModel( ActivitiesWrapper entity, MappingManager mappingManager )
+    public ActivityPlan getModel( Collection<Activity> activities, MappingFactory mappingFactory )
     {
         ActivityPlan plan = new ActivityPlan();
-
-        Collection<Activity> activities = entity.getActivities();
 
         if ( activities == null || activities.isEmpty() )
         {
@@ -28,9 +27,7 @@ public class ActivityPlanMapper extends AbstractEntitiyModelBeanMapper<Activitie
 
         for ( Activity activity : activities )
         {
-            Object item = mappingManager.map( activity );
-            
-            items.add( (ActivityPlanItem) item );
+            items.add(mappingFactory.getBeanMapper( Activity.class, ActivityPlanItem.class ).getModel( activity, mappingFactory ));
         }
         
         return plan;

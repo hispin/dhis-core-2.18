@@ -25,8 +25,6 @@ public class ActivityPlanResource
     @Produces( { MediaType.APPLICATION_XML, DhisMediaType.ACTIVITYPLAN_SERIALIZED } )
     public ActivityPlan getOrgUnitActivityPlan( @PathParam( "id" ) int id )
     {
-        System.out.println("*****" + id);
-        LOG.warn( "*****" + id );
         return service.getActivityPlan( id );
     }
 

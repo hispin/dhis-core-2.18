@@ -22,7 +22,7 @@ import com.sun.jersey.spi.resource.Singleton;
 @Provider
 @Singleton
 @Produces(DhisMediaType.ACTIVITYPLAN_SERIALIZED)
-public class ActivityPlanSerializer implements MessageBodyWriter<ActivityPlan>
+public class ActivityPlanSerializingWriter implements MessageBodyWriter<ActivityPlan>
 {
 
     @Autowired

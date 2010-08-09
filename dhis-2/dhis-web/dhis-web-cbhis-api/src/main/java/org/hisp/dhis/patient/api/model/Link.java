@@ -23,7 +23,7 @@ public class Link
     public static Link create( UriInfo uriInfo, Class<?> clazz, int id )
     {
         Link l = new Link();
-        l.url = uriInfo.getAbsolutePathBuilder().path( clazz ).build( id ).toString();
+        l.url = uriInfo.getBaseUriBuilder().path( clazz ).build( id ).toString();
         
         return l;
     }
