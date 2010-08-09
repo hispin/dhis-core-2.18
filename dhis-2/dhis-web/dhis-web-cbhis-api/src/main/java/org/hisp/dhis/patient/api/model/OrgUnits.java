@@ -26,17 +26,4 @@ public class OrgUnits {
         this.orgUnitList = orgUnitList;
     }
 
-    public static OrgUnits create( Collection<OrganisationUnit> units, UriInfo uriInfo )
-    {
-        OrgUnits o = new OrgUnits();
-        
-        o.orgUnitList = new ArrayList<OrgUnit>();
-        for ( OrganisationUnit unit : units )
-        {
-            o.orgUnitList.add( OrgUnit.create( unit, uriInfo ) );
-        }
-        
-        return o;
-    }
-
 }

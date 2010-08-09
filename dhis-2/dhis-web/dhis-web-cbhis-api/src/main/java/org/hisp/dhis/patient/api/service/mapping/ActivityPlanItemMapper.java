@@ -1,5 +1,7 @@
 package org.hisp.dhis.patient.api.service.mapping;
 
+import javax.ws.rs.core.UriInfo;
+
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.api.model.ActivityPlanItem;
@@ -13,7 +15,7 @@ public class ActivityPlanItemMapper
 {
 
     @Override
-    public ActivityPlanItem getModel( Activity activity, MappingFactory mappingFactory )
+    public ActivityPlanItem getModel( Activity activity, MappingFactory mappingFactory, UriInfo uriInfo )
     {
         if ( activity == null )
         {
@@ -22,9 +24,9 @@ public class ActivityPlanItemMapper
 
         ActivityPlanItem item = new ActivityPlanItem();
 
-        item.setBeneficiary( mappingFactory.getBeanMapper( Patient.class, Beneficiary.class ).getModel( activity.getBeneficiary(), mappingFactory ) );
+        item.setBeneficiary( mappingFactory.getBeanMapper( Patient.class, Beneficiary.class ).getModel( activity.getBeneficiary(), mappingFactory, uriInfo ) );
         item.setDueDate( activity.getDueDate() );
-        item.setTask( mappingFactory.getBeanMapper( ProgramStageInstance.class, Task.class ).getModel( activity.getTask(), mappingFactory ) );
+        item.setTask( mappingFactory.getBeanMapper( ProgramStageInstance.class, Task.class ).getModel( activity.getTask(), mappingFactory, uriInfo ) );
         return item;
     }
 
