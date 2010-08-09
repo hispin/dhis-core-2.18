@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ActivityPlanModelService
 {
     @Autowired
-    private MappingManager mapper;
+    private MappingFactory mappingFactory;
 
     @Autowired
     private ActivityPlanService activityPlanService;
@@ -24,10 +24,8 @@ public class ActivityPlanModelService
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitId );
         final Collection<Activity> activities = activityPlanService.getActivitiesByProvider( unit );
-
         
-        return (ActivityPlan) mapper.map(new ActivitiesWrapper(activities));
-
+        return mappingFactory.getBeanMapper(Collection.class, ActivityPlan.class).getModel( activities, mappingFactory );
     }
 
     public void setActivityPlanService( ActivityPlanService activityPlanService )
@@ -40,9 +38,9 @@ public class ActivityPlanModelService
         this.organisationUnitService = organisationUnitService;
     }
 
-    public void setMappingManager( MappingManager mappingManager )
+    public void setMappingManager( MappingFactory mappingFactory )
     {
-        mapper = mappingManager;
+        this.mappingFactory = mappingFactory;
     }
 
     

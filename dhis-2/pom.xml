@@ -140,104 +140,104 @@
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-api</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-i18n</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-core</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-options</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-expressionengine-default</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-datamart-default</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-aggregationengine-default</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-xml</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-importexport</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-mapping</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-reporting</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-patient</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-excel-reporting</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-administration</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-jdbc</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-jdbc-test</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-hibernate</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-test</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-system</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-support-external</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
       <!--Other -->
       <dependency>

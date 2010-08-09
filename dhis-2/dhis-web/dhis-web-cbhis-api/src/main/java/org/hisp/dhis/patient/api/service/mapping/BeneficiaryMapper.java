@@ -1,14 +1,15 @@
-package org.hisp.dhis.patient.api.service;
+package org.hisp.dhis.patient.api.service.mapping;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.api.model.Beneficiary;
+import org.hisp.dhis.patient.api.service.MappingFactory;
 
 public class BeneficiaryMapper
-    extends AbstractEntitiyModelBeanMapper<Patient, Beneficiary>
+    implements BeanMapper<Patient, Beneficiary>
 {
 
     @Override
-    public Beneficiary getModel( Patient patient, MappingManager mappingManager )
+    public Beneficiary getModel( Patient patient, MappingFactory mappingFactory )
     {
         if (patient == null) {
             return null;

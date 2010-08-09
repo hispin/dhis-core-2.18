@@ -21,6 +21,11 @@ import org.hisp.dhis.patient.api.model.ActivityPlan;
 import org.hisp.dhis.patient.api.model.ActivityPlanItem;
 import org.hisp.dhis.patient.api.model.Beneficiary;
 import org.hisp.dhis.patient.api.model.Task;
+import org.hisp.dhis.patient.api.service.mapping.ActivityPlanItemMapper;
+import org.hisp.dhis.patient.api.service.mapping.ActivityPlanMapper;
+import org.hisp.dhis.patient.api.service.mapping.BeanMapper;
+import org.hisp.dhis.patient.api.service.mapping.BeneficiaryMapper;
+import org.hisp.dhis.patient.api.service.mapping.TaskMapper;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.junit.Before;
@@ -28,7 +33,7 @@ import org.junit.Test;
 
 public class ActivityPlanModelServiceTest
 {
-    private MappingManager mapper = new MappingManager();
+    private MappingFactory mapper = new MappingFactory();
 
     private ActivityPlanModelService service;
 
@@ -57,7 +62,7 @@ public class ActivityPlanModelServiceTest
         mockedActivityPlanService = mock( ActivityPlanService.class );
         when( mockedActivityPlanService.getActivitiesByProvider( orgUnit ) ).thenReturn( activities );
 
-        Set<EntityModelBeanMapper<?, ?>> mappers = new HashSet<EntityModelBeanMapper<?, ?>>();
+        Set<BeanMapper<?, ?>> mappers = new HashSet<BeanMapper<?, ?>>();
         mappers.add( new ActivityPlanMapper() );
         mappers.add( new ActivityPlanItemMapper() );
         mappers.add( new BeneficiaryMapper() );
