@@ -43,6 +43,10 @@
     <url-pattern>*.action</url-pattern>
   </filter-mapping>
   <filter-mapping>
+    <filter-name>OpenSessionInViewFilter</filter-name>
+    <url-pattern>/api/nbits/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
     <filter-name>filterChainProxy</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
@@ -67,11 +71,28 @@
       <param-name>config</param-name>
       <param-value>config.yaml</param-value>
     </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>mapfish.print</servlet-name>
     <url-pattern>/pdf/*</url-pattern>
   </servlet-mapping>
+
+<!-- For the dhis-web-nbits-api module -->
+
+  <servlet>
+    <servlet-name>nbits-web-api</servlet-name>
+    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+    <init-param>
+        <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+        <param-value>com.sun.jersey.server.linking.impl.LinkFilter</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>nbits-web-api</servlet-name>
+    <url-pattern>/api/nbits/*</url-pattern>
+  </servlet-mapping>
+
 
   <error-page>
    <exception-type>java.lang.Throwable</exception-type>
