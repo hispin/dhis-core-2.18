@@ -13,7 +13,6 @@ import org.hisp.dhis.patient.api.model.ActivityPlanItem;
 public class ActivityListSerializer
     implements JavaObjectSerializer<List<ActivityPlanItem>>
 {
-
     private Log log = LogFactory.getLog( this.getClass() );
 
     @Override

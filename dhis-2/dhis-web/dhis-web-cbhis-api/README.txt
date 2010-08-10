@@ -4,7 +4,7 @@ This module uses the jsr-311[1] implementation jersey[2] for building
 a experimental example of what a web api for the CBHIS module of DHIS2
 might look like.
 
-Requests to paths under /api/cbhis/ will be attempted mapped to the
+Requests to paths under /api/cbhis/v0.1/ will be attempted mapped to the
 resource classes in the package org.hisp.dhis2.cbhis.api.resources.
 
 The root resource handling /api/cbhis/ will resolve the logged in
@@ -21,15 +21,18 @@ curl -u test_user:Trivandrum1 http://localhost:8080/api/cbhis/v0.1/
 
 should give an xml with links to the orgunits activity plans, while
 
-curl -u test_user:Trivandrum1 http://localhost:8080/api/cbhis/v0.1/orgunits/2262/activityplan
+curl -u test_user:Trivandrum1 http://localhost:8080/api/cbhis/v0.1/orgUnits/2256/activities/plan/current
 
-should result in an xml of the activity plan, and
+should result in an xml of the current activity plan*, and
 
-curl -u test_user:Trivandrum1 http://localhost:8080/api/cbhis/v0.1/orgunits/2262/activityplan -H "Accept: applicat
-ion/vnd.org.dhis2.casebased.v0.1.activityplan+serialized"
+curl -u test_user:Trivandrum1 curl -u test_user:Trivandrum1 http://localhost:8080/api/cbhis/v0.1/orgunits/2262/activityplan -H "Accept: application/vnd.org.dhis2.cbhis.v0.1.activityplan+serialized"
 
-should return a serialized like openxdata uses.
+should return it in serialized form somewhat like openxdata uses.
 
+* Activity plan is tentatively defined as all activities in the
+  current month + earlier uncompleted activities.
+
+curl -u test_user:Trivandrum1 http://localhost:8080/api/cbhis/v0.1/orgUnits/2256/activities/all
 
 [1] https://jsr311.dev.java.net/
 [2] https://jersey.dev.java.net/

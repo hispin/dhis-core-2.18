@@ -82,14 +82,15 @@ public class HibernateProgramStageInstanceStore
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
     {
 
-        return (getCriteria( Restrictions.ge( "startDate", startDate ), Restrictions.le( "endDate", endDate ) )).list();
+        return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ) )).list();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
     {
 
-        return (getCriteria( Restrictions.ge( "startDate", startDate ), Restrictions.le( "endDate", endDate ),
+        return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ),
             Restrictions.eq( "completed", completed ) )).list();
     }
+
 }

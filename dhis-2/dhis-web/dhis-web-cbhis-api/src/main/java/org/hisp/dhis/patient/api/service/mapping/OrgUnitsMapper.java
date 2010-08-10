@@ -38,7 +38,7 @@ public class OrgUnitsMapper
         OrgUnit m = new OrgUnit();
         m.setId(unit.getId());
         m.setName(unit.getShortName());
-        m.setProgramFormsLink( new Link(uriInfo.getBaseUriBuilder().fromResource( ProgramFormsResource.class).build( unit.getId()).toString()));
+        m.setProgramFormsLink( new Link(uriInfo.getBaseUriBuilder().path( ProgramFormsResource.class).build( unit.getId()).toString()));
         m.setActivitiesLink( new Link(uriInfo.getBaseUriBuilder().path( "v0.1/orgUnits/{id}/activities/plan/current" ).build( unit.getId() ).toString()));
         
         return m;

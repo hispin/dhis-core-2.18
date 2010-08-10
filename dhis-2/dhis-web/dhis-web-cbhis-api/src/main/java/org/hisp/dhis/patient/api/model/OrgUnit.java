@@ -9,6 +9,7 @@ public class OrgUnit {
 
     @XmlAttribute
     private int id;
+
     @XmlAttribute
     private String name;
 

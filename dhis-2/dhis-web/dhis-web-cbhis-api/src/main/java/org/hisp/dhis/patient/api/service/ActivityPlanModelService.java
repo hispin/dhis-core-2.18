@@ -15,6 +15,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.api.model.ActivityPlan;
 import org.hisp.dhis.patient.api.model.ActivityPlanItem;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,22 +33,33 @@ public class ActivityPlanModelService
     @Context
     private UriInfo uriInfo;
 
+    /**
+     * Gets the current activity plan for an org unit.
+     * <p>The current activity plan is tentatively defined as all activities within the current month and all uncompleted activities from earlier.
+     */
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit )
     {
         DateTime dt = new DateTime();
-        Date from = dt.withDayOfMonth( 1 ).toDateMidnight().toDate();
-        Date to = dt.plusMonths( 1 ).withDayOfMonth( 1 ).toDate();
-        
-        final Collection<Activity> allActivities = activityPlanService.getActivitiesWithInDate( from, to );
+        DateMidnight from = dt.withDayOfMonth( 1 ).toDateMidnight();
+        DateMidnight to = from.plusMonths( 1 );
+
+        final Collection<Activity> allActivities = activityPlanService.getActivitiesByProvider( unit );
         Collection<Activity> activities = new ArrayList<Activity>();
         for ( Activity activity : allActivities )
         {
-            if (activity.getProvider().getId() == unit.getId()) {
+            long dueTime = activity.getDueDate().getTime();
+            if ( to.isBefore( dueTime ) )
+            {
+                continue;
+            }
+            
+            if (from.isBefore( dueTime ) || !activity.getTask().isCompleted()) {
                 activities.add( activity );
             }
         }
-        
-        ActivityPlan plan = mappingFactory.getBeanMapper(Collection.class, ActivityPlan.class).getModel( activities, mappingFactory, uriInfo );
+
+        ActivityPlan plan = mappingFactory.getBeanMapper( Collection.class, ActivityPlan.class ).getModel( activities,
+            mappingFactory, uriInfo );
 
         return plan;
     }
@@ -55,11 +67,11 @@ public class ActivityPlanModelService
     public ActivityPlan getAllActivities( OrganisationUnit unit )
     {
         final Collection<Activity> activities = activityPlanService.getActivitiesByProvider( unit );
-        
-        return mappingFactory.getBeanMapper(activities, ActivityPlan.class).getModel( activities, mappingFactory, uriInfo );
+
+        return mappingFactory.getBeanMapper( activities, ActivityPlan.class ).getModel( activities, mappingFactory,
+            uriInfo );
     }
 
-    
     public void setActivityPlanService( ActivityPlanService activityPlanService )
     {
         this.activityPlanService = activityPlanService;
@@ -75,7 +87,4 @@ public class ActivityPlanModelService
         this.mappingFactory = mappingFactory;
     }
 
-
-    
-    
 }

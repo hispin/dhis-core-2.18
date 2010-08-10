@@ -44,7 +44,7 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
-    <url-pattern>/api/nbits/*</url-pattern>
+    <url-pattern>/api/cbhis/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>filterChainProxy</filter-name>
@@ -73,24 +73,31 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
+
+<!-- For the dhis-web-cbhis-api module -->
+
+  <servlet>
+    <servlet-name>cbhis-web-api</servlet-name>
+    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+      <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+      <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>mapfish.print</servlet-name>
     <url-pattern>/pdf/*</url-pattern>
   </servlet-mapping>
 
-<!-- For the dhis-web-nbits-api module -->
-
-  <servlet>
-    <servlet-name>nbits-web-api</servlet-name>
-    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
-    <init-param>
-        <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-        <param-value>com.sun.jersey.server.linking.impl.LinkFilter</param-value>
-    </init-param>
-  </servlet>
   <servlet-mapping>
-    <servlet-name>nbits-web-api</servlet-name>
-    <url-pattern>/api/nbits/*</url-pattern>
+    <servlet-name>cbhis-web-api</servlet-name>
+    <url-pattern>/api/cbhis/*</url-pattern>
   </servlet-mapping>
 
 

@@ -47,8 +47,15 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
+  </listener>
+
   <servlet>
-    <servlet-name>case-web-api</servlet-name>
+    <servlet-name>cbhis-web-api</servlet-name>
     <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
     <init-param>
       <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
@@ -58,20 +65,11 @@
       <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
       <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
     </init-param>
-    
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>case-web-api</servlet-name>
+    <servlet-name>cbhis-web-api</servlet-name>
     <url-pattern>/api/cbhis/*</url-pattern>
   </servlet-mapping>
 
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
-  </listener>
-
-  
 </web-app>
