@@ -2,8 +2,7 @@ package org.hisp.dhis.patient.api.service;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,7 +59,7 @@ public class ActivityPlanModelServiceTest
         when( mockedOrgUnitService.getOrganisationUnit( 1 ) ).thenReturn( orgUnit );
 
         mockedActivityPlanService = mock( ActivityPlanService.class );
-        when( mockedActivityPlanService.getActivitiesByProvider( orgUnit ) ).thenReturn( activities );
+        when( mockedActivityPlanService.getActivitiesWithInDate( any(Date.class), any(Date.class) ) ).thenReturn( activities );
 
         Set<BeanMapper<?, ?>> mappers = new HashSet<BeanMapper<?, ?>>();
         mappers.add( new ActivityPlanMapper() );

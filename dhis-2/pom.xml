@@ -51,10 +51,24 @@
       <name>Dhis2 External Dependencies Repository</name>
       <url>http://dhis.uio.no/maven/external</url>
     </repository>
-    <repository>
+   <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+    <!-- repository>
       <id>JBoss</id>
       <url>http://repository.jboss.org/maven2</url>
-    </repository>
+    </repository>-->
   </repositories>
   
   <issueManagement>
@@ -438,12 +452,12 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
-        <version>3.5.1-Final</version>
+        <version>3.5.4-Final</version>
       </dependency>
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-ehcache</artifactId>
-        <version>3.5.1-Final</version>
+        <version>3.5.4-Final</version>
         <exclusions>
           <exclusion>
             <groupId>net.sf.ehcache</groupId>
@@ -454,7 +468,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-entitymanager</artifactId>
-        <version>3.5.1-Final</version>
+        <version>3.5.4-Final</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>

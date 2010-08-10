@@ -138,7 +138,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-case-api</artifactId>
+      <artifactId>dhis-web-cbhis-api</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
@@ -155,7 +155,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reports-national</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 -->
