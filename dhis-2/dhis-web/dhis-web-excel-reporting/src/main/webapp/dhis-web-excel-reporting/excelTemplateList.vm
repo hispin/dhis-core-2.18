@@ -13,7 +13,6 @@
 									    validateUploadExcelTemplate();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 			}
 
 	);
@@ -59,22 +58,22 @@
 	#foreach( $templateFileName in $mapTemplateFiles.keySet() )
 		#set( $value = $mapTemplateFiles.get($templateFileName) )
 		<tr #id="tr${templateFileName}" >
-			<td>$encoder.htmlEncode( $templateFileName )</td>
-			<td axis='$value'>
-				#if( $encoder.htmlEncode( $value ) == 'true' )
-					$i18n.getString( 'template_using' ) 
-				#else
-					$i18n.getString( 'template_pending' ) 
-				#end
-			</td>			
-			<td align="left">
-				#if( $encoder.htmlEncode( $value ) == 'false' )
-				<a href="javascript:deleteExcelTemplate('$templateFileName');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-				#end
-				<a href="javascript:mode = 'edit'; openEditExcelTemplate( '$templateFileName' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-				<a href="downloadExcelTemplate.action?fileName=$templateFileName" title="$i18n.getString( 'download' )"><img src="images/download.png" alt="$i18n.getString( 'download' )"></a>
-			</td>
-		</tr>	
+<td>$encoder.htmlEncode( $templateFileName )</td>
+<td axis='$value'>
+#if( $value )
+$i18n.getString( 'template_using' )
+#else
+$i18n.getString( 'template_pending' )
+#end
+</td>
+<td align="left">
+<a href="javascript:mode = 'edit'; openEditExcelTemplate( '$templateFileName' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+<a href="downloadExcelTemplate.action?fileName=$templateFileName" title="$i18n.getString( 'download' )"><img src="images/download.png" alt="$i18n.getString( 'download' )"></a>
+#if( !$value )
+<a href="javascript:deleteExcelTemplate('$templateFileName');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+#end
+</td>
+</tr>
 	#end
 	</tbody>
 </table>

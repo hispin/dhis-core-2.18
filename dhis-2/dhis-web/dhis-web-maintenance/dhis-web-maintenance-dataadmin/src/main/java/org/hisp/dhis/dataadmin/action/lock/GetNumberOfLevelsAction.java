@@ -34,8 +34,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
-//import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * @author Brajesh Murari
  * @version $Id$
@@ -53,10 +51,6 @@ public class GetNumberOfLevelsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
-    
-    
-    
     
     // -------------------------------------------------------------------------
     // Output

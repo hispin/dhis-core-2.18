@@ -224,6 +224,58 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="validationService"
       ref="org.hisp.dhis.program.ProgramStageDataElementValidationService"/>
     </bean>
+
+  <!-- Multi DataEntry -->
+
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction" 
+    scope="prototype">
+    <property name="selectedStateManager"
+      ref="org.hisp.dhis.caseentry.state.SelectedStateManager"/>
+    <property name="programService"
+      ref="org.hisp.dhis.program.ProgramService"/>
+    <property name="patientAttributeService"
+      ref="org.hisp.dhis.patient.PatientAttributeService"/>      
+  </bean>
+  
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction" 
+    scope="prototype">
+    <property name="selectedStateManager"
+      ref="org.hisp.dhis.caseentry.state.SelectedStateManager"/>
+    <property name="programService"
+      ref="org.hisp.dhis.program.ProgramService"/>
+    <property name="programInstanceService"
+      ref="org.hisp.dhis.program.ProgramInstanceService"/>   
+    <property name="programStageInstanceService"
+      ref="org.hisp.dhis.program.ProgramStageInstanceService"/>      
+    <property name="patientService"
+      ref="org.hisp.dhis.patient.PatientService"/>
+    <property name="patientAttributeService"
+      ref="org.hisp.dhis.patient.PatientAttributeService"/>
+    <property name="patientAttributeValueService"
+      ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>	        
+  </bean>
+
+   <bean id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction" scope="prototype">    
+        <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
+        <property name="dataEntryScreenManager"
+      ref="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"/>
+        <property name="associationService"
+      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"/>
+         <property name="systemSettingManager"
+      ref="org.hisp.dhis.options.SystemSettingManager"/>
+         <property name="selectedStateManager"
+      ref="org.hisp.dhis.caseentry.state.SelectedStateManager"/>
+         <property name="patientDataValueService"
+      ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+         <property name="patientIdentifierService"
+      ref="org.hisp.dhis.patient.PatientIdentifierService"/>
+         <property name="programStageInstanceService"
+      ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+  </bean>
   
   <!-- Visit Plan -->
   

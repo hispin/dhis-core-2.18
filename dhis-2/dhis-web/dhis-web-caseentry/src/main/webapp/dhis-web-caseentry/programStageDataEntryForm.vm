@@ -1,0 +1,209 @@
+
+<form id="selectRecordingForm" name="selectRecordingForm" method="post" action="selectDataRecording.action">
+
+<input type="hidden" id="id" name="id" value="$patient.id">
+    
+<table class="mainPageTable"> 
+    <tr>            
+        <td>
+            <strong>$i18n.getString( "full_name" ):</strong>$encoder.htmlEncode( $patient.getFullName() )<br>
+            <strong>$i18n.getString( "gender" ):</strong>$encoder.htmlEncode( $patient.gender )<br>
+            <strong>$i18n.getString( "date_of_birth" ):</strong>$format.formatDate( $patient.birthDate )<br>
+            <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
+        </td>
+	</tr>
+</table>
+
+<hr style="clear:both">
+
+<table>    
+   <tr>
+        <td><label for="programId">$i18n.getString( "program" )</label></td>
+        <td>
+			<input id="programId" name="programId" type="text" readonly="readonly" value="$encoder.htmlEncode( $program.name )" style="min-width:350px">		
+		</td>
+		#if( $programStageInstance )
+            <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
+            <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled" </td>
+        #end            
+    </tr>
+    
+    <tr>
+        <td><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
+        <td>
+			<input id="programStageId" name="programStageId" type="text" readonly="readonly" value="$encoder.htmlEncode( $programStage.name )" style="min-width:350px">            
+        </td>        
+        #if( $programStageInstance )
+            <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
+            <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
+                <img src="../images/calendar_icon.gif" width="16" height="16" id="getExecutionDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "execution_date" )"></td>
+                <script type="text/javascript">
+                    Calendar.setup({
+                        inputField     :    "executionDate",      // id of the input field
+                        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+                        button         :    "getExecutionDate"   // trigger for the calendar (button ID)
+                    });
+                </script>                
+        #end
+    </tr>   
+    <tr>
+		<td>&nbsp;</td>
+		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()"></td>
+		<td>&nbsp;</td>
+		<td>
+			<div id="actions" style="float:left">
+				
+				<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
+					#if( $useDefaultForm  ) 
+						checked="checked" 
+					#end 
+					onchange="selectDefaultForm();">
+				<label>$i18n.getString( "use_default_form" )</label><br>    
+			</div>			
+		</td>
+    </tr>
+    
+</table>
+
+
+</form>
+
+<hr style="clear:both">
+
+<div id="dragDiv">
+    <table id="listInfo">
+        <tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitName" style="text-align:right"></td></tr>
+        <tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right"></td></tr>
+        <tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
+    </table>
+</div>
+
+<span id="startMsg" style="font-style:italic; color:blue"> $i18n.getString( "report_date_warning" )
+</span>
+
+<div id="entryFormContainer" >
+
+#if ( $customDataEntryFormExists  )
+<div id="customEntryScreenContainer">
+        #if( $customDataEntryFormCode ) 
+           $customDataEntryFormCode
+        #else <span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )
+        #end
+</span>
+</div>
+<script>
+    initCustomCheckboxes();
+    DRAG_DIV.init(); 
+</script>
+#else
+
+<table class="mainPageTable">
+    <col id="noCol">
+    <col id="deCol">    
+    <col id="entryCol">
+    <col id="facilityCol">       
+    <tr>
+        <th>$i18n.getString( "nr" )</th>
+        <th>$i18n.getString( "data_element" )</th>                   
+        <th>$i18n.getString( "entry" )</th>
+        <th>$i18n.getString( "facility_provided_data" )</th>             
+    </tr>
+#set( $dataElementRowCount = 0 )
+#set( $mark = 0 )
+#set( $tabIndex = 1 )
+#foreach( $programStageDataElement in $programStageDataElements )
+    #set( $dataElementRowCount = $dataElementRowCount + 1 )    
+    #if( $mark == 1 )
+        #set( $mark = 0 )
+    #else
+        #set( $mark = 1 )
+    #end    
+    #set( $patientDataValue = false )
+    #set( $patientDataValue = $patientDataValueMap.get( $programStageDataElement.dataElement.id ) )    
+    <tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
+        ##dataElementRowCount
+        <td style="text-align:right">$dataElementRowCount</td>        
+        ##data element name
+        <td>
+            <span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
+                $encoder.htmlEncode( $programStageDataElement.dataElement.name ) 
+                #if ( $programStageDataElement.compulsory )
+                    <em title="$i18n.getString( "required" )" class="required">*</em>
+                #end        
+            </span>
+        </td>        
+        ##type        
+        <td style="display:none"><span id="value[$programStageDataElement.dataElement.id].type" style="display:none">$encoder.htmlEncode( $programStageDataElement.dataElement.type )</span></td>       
+        ##entry        
+        <td>        
+            #if( $programStageDataElement.dataElement.type == "bool" )
+                <select name="entryselect" #if($programStageInstance.completed) disabled="disabled" #end data="{compulsory: $programStageDataElement.compulsory }" id="value[$programStageDataElement.dataElement.id].boolean" onchange="saveChoice( $programStageDataElement.dataElement.id, this )"  tabindex="$tabIndex">              
+                    <option value="">[$i18n.getString( "select_value" )]</option>
+                    <option value="true" #if( $patientDataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
+                    <option value="false" #if( $patientDataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
+                </select>                              
+            #elseif( $programStageDataElement.dataElement.type == "string" && $programStageDataElement.dataElement.isMultiDimensional() )
+                #set( $optionValues = $optionMap.get( $programStageDataElement.dataElement.id ) )
+                <select name="entryselect" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].value" onchange="saveChoice( $programStageDataElement.dataElement.id, this )" tabindex="$tabIndex">              
+                    <option value="">[$i18n.getString( "no_value" )]</option>
+                    #foreach( $optionValue in $optionValues )
+                        <option value="$optionValue.id" #if( $patientDataValue.value == $optionValue.id ) selected="selected" #end>$encoder.htmlEncode( $optionValue.name )</option>
+                    #end
+                </select>
+            #elseif( $programStageDataElement.dataElement.type == "date" )
+                <input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
+                    <img src="../images/calendar_icon.gif" width="16" height="16" id="get$programStageDataElement.dataElement.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "service_date" )">
+                    <script type="text/javascript">
+                        Calendar.setup({
+                            inputField     :    "value[$programStageDataElement.dataElement.id].date",      // id of the input field
+                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+                            button         :    "get$programStageDataElement.dataElement.id"   // trigger for the calendar (button ID)
+                        });
+                    </script>                    
+            #else
+                <input name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].value" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
+            #end
+        </td>   
+        ##providedByAnotherFacility                
+        <td>     
+            #if ( $patientDataValue.value )        
+                #if( !$patientDataValue.providedByAnotherFacility )
+                    $patientDataValue.organisationUnit.name
+                    <input  name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+                #else
+                    $i18n.getString("other_facility")
+                    <input  name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+                #end
+             #else
+                <input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+             #end                         
+        </td>    
+    </tr>
+    #set( $tabIndex = $tabIndex + 1 )
+#end
+</table>
+#end
+
+</div>
+<div id="completeDataEntryFormContainer">
+<form id="completeDataEntryForm" name="completeDataEntry" method="post" action="completeDataEntry.action"> 
+    <input type="hidden" name="id" value="$id"/>
+    <input type="hidden" name="programId" value="$programId"/>
+    <input type="hidden" name="programStageId" value="$programStageId"/>
+    <input type="hidden" name="programStageInstanceId" value="$programStageInstanceId"/>
+</form>
+</div>
+</div>
+
+
+<script type="text/javascript">    
+    var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
+    var i18n_invalid_date = '$encoder.jsEscape( $i18n.getString( "invalid_date" ) , "'")'; 
+    var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
+    var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
+    var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")';
+    var i18n_complete_confirm_message = '$encoder.jsEscape( $i18n.getString( "complete_confirm_message" ) , "'")';
+    var i18n_error_required_field = '$encoder.jsEscape( $i18n.getString( "i18n_error_required_field" ) , "'")';
+    var i18n_violate_validation = '$encoder.jsEscape( $i18n.getString( "violate_validation" ) , "'")';
+</script>
+

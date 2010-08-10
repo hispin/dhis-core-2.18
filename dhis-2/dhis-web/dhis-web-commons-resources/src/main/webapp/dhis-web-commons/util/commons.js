@@ -418,7 +418,7 @@ function hideMessage()
 function setHeaderMessage( message )
 {
     $( 'div#headerMessage' ).html( message );
-    $( 'div#headerMessage' ).slideDown();
+    $( 'div#headerMessage' ).slideDown( 'fast' );
 }
 
 /**
@@ -439,7 +439,7 @@ function updateHeaderMessage( message )
 function setHeaderWaitMessage( message )
 {
 	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../images/ajax-loader-bar-small.gif'>" );
-    $( 'div#headerMessage' ).slideDown();
+    $( 'div#headerMessage' ).slideDown( 'fast' );
 }
 
 /**
@@ -469,7 +469,7 @@ function setHeaderDelayMessage( message )
  */
 function hideHeaderMessage()
 {
-    $( 'div#headerMessage' ).slideUp();
+    $( 'div#headerMessage' ).slideUp( 'fast' );
 }   
 
 /**

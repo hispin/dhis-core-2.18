@@ -140,7 +140,7 @@ public class DefaultSqlViewService
     {
         return sqlViewExpandStore.isViewTableExists( viewTableName );
     }
-	
+        
     @Override
     public SqlViewTable getDataSqlViewTable( String viewTableName )
     {
@@ -149,6 +149,12 @@ public class DefaultSqlViewService
         sqlViewExpandStore.setUpDataSqlViewTable( sqlViewTable, viewTableName );
         
         return sqlViewTable;
+    }
+
+    @Override
+    public Collection<String> getAllResourceProperties( String resourceTableName )
+    {
+        return sqlViewExpandStore.getAllResourceProperties( resourceTableName );
     }
 
 }

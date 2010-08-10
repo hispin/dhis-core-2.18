@@ -108,7 +108,30 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		
+
+                <!-- BenificiaryInfo Reports -->
+		<action name="benificiaryInfoReportsAnalyser"
+			class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/benificiaryInfoReportsForm.vm</param>
+			<param name="menu">
+				/dhis-web-reports/menuWithTreeForBenificiaryInfo.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+
+		<action name="generateBenificiaryInfoReport"
+			class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+
 		<!-- Portal Reports -->
 		<action name="portalReportsAnalyser"
 			class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction">

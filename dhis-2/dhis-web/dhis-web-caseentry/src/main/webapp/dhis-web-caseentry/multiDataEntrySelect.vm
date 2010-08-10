@@ -1,0 +1,69 @@
+<script>
+	
+	function organisationUnitSelected( orgUnits )
+	{
+		window.location.href = 'multipledataEntrySelect.action';
+	}
+
+	selection.setListenerFunction( organisationUnitSelected );
+	
+</script>
+
+<h3>$i18n.getString( "" )</h3>
+
+<form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
+
+    <table> 
+        <tr>
+          <td><label>$i18n.getString( "reporting_unit" )</label></td>
+          <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+          <td>&nbsp;</td>
+		  <td>&nbsp;</td>
+		</tr>
+        
+        <tr>
+            <td><label for="programId">$i18n.getString( "program" )</label></td>
+            <td>
+                <select id="programId" name="programId" style="min-width:350px" onchange="javascript:selectProgram()" #if( $programs.size() == 0 ) disabled="disabled" #end>
+                    <option value="0">[$i18n.getString( "select" )]</option>
+                    #foreach( $program in $programs )
+                        <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+                    #end
+                </select>
+            </td>
+			<td align="right"><label>$i18n.getString( "sort_by" )</label></td>
+			<td>
+				<select id="patientAttributeId" name="patientAttributeId" style="min-width:350px" onchange="javascript:selectPatientAttribute()" #if( $programs.size() == 0 ) disabled="disabled" #end>
+                    <option value="0">[$i18n.getString( "select" )]</option>
+                    #foreach( $patientAttribute in $patientAttributes )
+                        <option value="$patientAttribute.id" #if( $sortPatientAttributeId && $patientAttribute.id == $sortPatientAttributeId ) selected="selected" #end>$encoder.htmlEncode( $patientAttribute.name )</option>
+                    #end
+                </select>
+			</td>
+        </tr>
+    </table>   
+</form>
+
+<hr style="clear:both">
+
+<script>
+	
+	function selectProgram()
+	{
+		var programLB = document.getElementById('programId');
+		var selPrgroamId = programLB.options[programLB.selectedIndex].value;
+		window.location.href='getDataRecords.action?programId='+selPrgroamId;
+	}
+	
+    function selectPatientAttribute()
+    {
+	    var programLB = document.getElementById('programId');
+        var selPrgroamId = programLB.options[programLB.selectedIndex].value;
+	
+        var patientAttributeLB = document.getElementById('patientAttributeId');
+        var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
+    
+	    window.location.href='getDataRecords.action?programId='+selPrgroamId+'&sortPatientAttributeId='+patientAttributeId;
+    }
+	
+</script>

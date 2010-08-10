@@ -1,7 +1,6 @@
 <table class="mainPageTable" cellpadding="0">
 	
-    #set( $categoryComboId = $sectionCombos.get( $section.id ) )    
-    #set( $tabIndex = 1 )
+    #set( $categoryComboId = $sectionCombos.get( $section.id ) )   
 
     #set( $colCount = $numberOfTotalColumns.get( $categoryComboId )  ) 
     #set( $categories = $orderedCategories.get( $categoryComboId )  )

@@ -1,0 +1,67 @@
+
+#parse( "/dhis-web-caseentry/multiDataEntrySelect.vm" )
+
+<table class="mainPageTable">
+    <tr>
+        <td style="vertical-align:top">    
+        <table class="listTable">
+            <col>
+			#if( $sortPatientAttributeId )
+				<col>
+			#end
+            #foreach( $programStage in $program.programStages )
+                <col>
+            #end       
+            <tr>
+				#if( $sortPatientAttributeId )
+					<th style="text-align:center">$encoder.htmlEncode( $sortingAttribute.name )</th>
+				#end
+                <th style="text-align:center">$i18n.getString( "full_name" )</th>
+                #foreach( $programStage in $program.programStages )
+                    <th style="text-align:center">$encoder.htmlEncode( $programStage.name )</th>
+                #end                
+            </tr>
+          
+            <tbody id="list">
+                #set( $mark = false )                 
+                #foreach( $patient in $patientListByOrgUnit )
+					#set( $programInstance = $programInstanceMap.get( $patient ) )
+                    <tr #alternate( $mark )>
+						#if( $sortPatientAttributeId )
+							#set( $patientAttributeValue = $patinetAttributeValueMap.get( $patient ) )
+							<td>$encoder.htmlEncode( $!patientAttributeValue.value )</td>
+						#end
+                        <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title="$i18n.getString( "show_details" )">$encoder.htmlEncode( $programInstance.patient.getFullName() )</a></td>                    
+                        #foreach( $programStageInstance in $programInstance.programStageInstances )
+                            #if( $programStageInstance.executionDate )
+                                <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
+                                    <a href="javascript:viewPrgramStageRecords( $programStageInstance.id )">$format.formatDate( $programStageInstance.executionDate )</a>
+                                </td>
+                            #else
+                                <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
+									<a href="javascript:viewPrgramStageRecords( $programStageInstance.id )">$format.formatDate( $programStageInstance.dueDate )</a>
+								</td>
+                            #end
+                        #end
+                    </tr>
+                    #if( $mark )
+                        #set( $mark = false )
+                    #else
+                        #set( $mark = true )
+                    #end 
+                #end    
+            </tbody>
+    
+        </table>
+        </td>
+    </tr>
+</table>
+
+<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px" ondblclick="javascript:hideDetails()">
+    <div style="float:right;" onclick="javascript:hideDetails()">
+        <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+    </div>              
+    <p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>                    
+    <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
+    <p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
+</div>

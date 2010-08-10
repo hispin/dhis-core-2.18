@@ -1,4 +1,19 @@
 
+
+function viewPrgramStageRecords( programStageInstanceId ) 
+{
+	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
+	
+	var width = 800
+    var height = 500;
+    var left = parseInt( ( screen.availWidth/2 ) - ( width/2 ) );
+    var top = parseInt( ( screen.availHeight/2 ) - ( height/2 ) );
+    var windowFeatures = 'width=' + width + ',height=' + height + ',scrollbars=yes, resizable=yes,left=' + left + ',top=' + top + 'screenX=' + left + ',screenY=' + top;
+    
+    window.open( url, '_blank_', windowFeatures);
+}
+
+
 function organisationUnitSelected( orgUnits )
 {
     window.location.href = 'dataEntrySelect.action';

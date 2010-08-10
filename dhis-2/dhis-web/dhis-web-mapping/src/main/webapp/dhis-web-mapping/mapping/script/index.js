@@ -644,20 +644,32 @@ Ext.onReady( function() {
 				cls: 'window-button',
 				text: i18n_export_excel,
 				handler: function() {
-					if (ACTIVEPANEL == thematicMap
-						&& Ext.getCmp('period_cb').getValue()!='' 
-						&& Ext.getCmp('indicator_cb').getValue()!=''
-						&& Ext.getCmp('map_cb').getValue()!='') {
-												
-						var title = Ext.getCmp('exportexceltitle_ft').getValue();
-						var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
-						var includeLegend = Ext.getCmp('exportexcelincludelegend_chb').getValue();
-						var includeValues = Ext.getCmp('exportexcelincludevalue_chb').getValue();
-						var period = Ext.getCmp('period_cb').getValue();
-						var indicator = Ext.getCmp('indicator_cb').getValue();
-						
-						Ext.getCmp('exportexceltitle_ft').clearValue();
-											
+                    var indicatorOrDataElement, period, mapOrOrganisationUnit;
+					if (ACTIVEPANEL == thematicMap) {
+                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb').getValue() == map_value_type_indicator ?
+                            Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
+                        period = Ext.getCmp('period_cb').getValue();
+                        mapOrOrganisationUnit = MAPSOURCE == map_source_type_database ?
+                            Ext.getCmp('map_tf').getValue() : Ext.getCmp('map_cb').getValue();
+                    }
+                    else if (ACTIVEPANEL == thematicMap2) {
+                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb2').getValue() == map_value_type_indicator ?
+                            Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
+                        period = Ext.getCmp('period_cb2').getValue();
+                        mapOrOrganisationUnit = MAPSOURCE == map_source_type_database ?
+                            Ext.getCmp('map_tf2').getValue() : Ext.getCmp('map_cb2').getValue();
+                    }
+                    
+                    if (indicatorOrDataElement && period && mapOrOrganisationUnit) {
+                        var title = Ext.getCmp('exportexceltitle_ft').getValue();
+                        var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
+                        var includeLegend = Ext.getCmp('exportexcelincludelegend_chb').getValue();
+                        var includeValues = Ext.getCmp('exportexcelincludevalue_chb').getValue();
+                        var period = Ext.getCmp('period_cb').getValue();
+                        var indicator = Ext.getCmp('indicator_cb').getValue();
+                        
+                        Ext.getCmp('exportexceltitle_ft').clearValue();
+                                            
                         var exportForm = document.getElementById('exportForm');
                         exportForm.action = '../exportExcel.action';
                         
@@ -673,10 +685,10 @@ Ext.onReady( function() {
                         document.getElementById('dataValuesField').value = EXPORTVALUES;
 
                         exportForm.submit();
-					}
-					else {
-						Ext.message.msg(false, i18n_please_render_map_fist );
-					}
+                    }
+                    else {
+                        Ext.message.msg(false, i18n_please_render_map_fist );
+                    }
 				}
 			}	
 		]
@@ -1437,7 +1449,7 @@ Ext.onReady( function() {
 					var n = Ext.getCmp('maplayerpath_cb').getValue();
 					
 					Ext.Ajax.request({
-						url: path_mapping + 'getGeoJson' + type,
+						url: path_mapping + 'getGeoJsonFromFile' + type,
 						method: 'POST',
 						params: {name: n},
 						success: function(r) {
@@ -1908,7 +1920,7 @@ Ext.onReady( function() {
 					
 					if (MAPSOURCE == map_source_type_geojson) {
 						Ext.Ajax.request({
-							url: path_mapping + 'getGeoJson' + type,
+							url: path_mapping + 'getGeoJsonFromFile' + type,
 							method: 'POST',
 							params: {name: mlp},
 							success: function(r) {
@@ -2310,7 +2322,7 @@ Ext.onReady( function() {
 									Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> '+i18n_was_registered);
 									Ext.getCmp('maplayer_cb').getStore().load();
 							
-									var mapurl = MAPSOURCE == map_source_type_geojson ? path_mapping + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
+									var mapurl = MAPSOURCE == map_source_type_geojson ? path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
 									
 									MAP.addLayer(
 										new OpenLayers.Layer.Vector(mln, {
@@ -2890,7 +2902,7 @@ Ext.onReady( function() {
 				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
 				
 				for (var i = 0; i < mapLayers.length; i++) {
-					var mapurl = MAPSOURCE == map_source_type_shapefile ? path_geoserver + wfs + mapLayers[i].mapSource + output : path_mapping + 'getGeoJson.action?name=' + mapLayers[i].mapSource;
+					var mapurl = MAPSOURCE == map_source_type_shapefile ? path_geoserver + wfs + mapLayers[i].mapSource + output : path_mapping + 'getGeoJsonFromFile.action?name=' + mapLayers[i].mapSource;
 					var fillColor = mapLayers[i].fillColor;
 					var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
 					var strokeColor = mapLayers[i].strokeColor;
@@ -3440,9 +3452,9 @@ Ext.onReady( function() {
 			zoomInButton,
 			zoomOutButton,
 			zoomMaxExtentButton,
-			'-',
-			exportImageButton,
-			exportExcelButton,
+			// '-',
+			// exportImageButton,
+			// exportExcelButton,
 			'-',
 			favoritesButton,
 			'-',

@@ -1,175 +1,188 @@
 
 <script>
-	var holdFocus;
-	var intType = '$intType';
-	var stringType = '$stringType';
-	var dateType = '$dateType';
-	var boolType = '$boolType';
-	var tableRowCount = 0;
+    var holdFocus;
+    var intType = '$intType';
+    var stringType = '$stringType';
+    var dateType = '$dateType';
+    var boolType = '$boolType';
+    var tableRowCount = 0;
+    var programstageDEisMul;
+    var programstageDEdatatype;
+    //var last_deleted=-100;
+    //noOfRecordsDeleted=0;
+    //noOfSmallerRecordsDeleted;
 </script>
-
 <h3>$i18n.getString( "case_aggregation_mapping" )</h3>
 
 <form id="caseAggFrom" name="caseAggFrom"  method="post" action="saveCaseAggMapping.action">
 
 <table>
-	<tr valign="top">
-		<td>
-			
-			<table>				
-				<tr>
-					<td>				
-						$i18n.getString( "dataelement_group_list" )<br>
-						<select id="degroup" name="degroup" style="width:325px" onchange="getAggDataElements()">
-							<option value="0">$encoder.htmlEncode( "Others" )</option>
-						#foreach( $deGroup in $deGroupList )
-							<option value="$deGroup.id">$encoder.htmlEncode( $deGroup.name )</option>
-						#end
-						</select>
-						<br/><br/>
-						$i18n.getString( "dataelement_list" )<br>
-						<select id="aggde" name="aggde" style="width:325px" onchange="getCaseAggExpression()">
-						#set( $count1 = 0 )
-						#foreach( $ocName in $optionComboNames )					
-							<option value="$optionComboIds.get($count1)">$encoder.htmlEncode( $ocName )</option>
-						#set( $count1 = $count1 + 1 )
-						#end
-						</select>
-					</td>			
-				</tr>
-				<tr>
-					<td>&nbsp;</td>			
-				</tr>
-				<tr>
-					<td>
-						$i18n.getString( "program_list" )<br>
-						<select id="program" name="program" style="width:325px" onchange="getProgramStages()">
-						#foreach( $program in $programList )
-							<option value="$program.id">$encoder.htmlEncode( $program.name )</option>
-						#end
-						</select>
-						<br/><br/>
-						$i18n.getString( "program_stage_list" )<br>
-						<select id="programstage" name="programstage" style="width:325px" onchange="getPrgramStageDataElements()">
-						##foreach( $programStage in $programStageList )
-						<!--	<option value="$programStage.id">$encoder.htmlEncode( $programStage.name )</option> -->
-						##end
-						</select>
-						<br/><br/>
-						$i18n.getString( "program_stage_de_list" )<br>
-						<select id="programstageDE" name="programstageDE" size="5" style="width:325px" ondblclick="displayPSDEInfo()">
-						#foreach( $programStageDE in $programStageDEList )
-							<option value="$programStageDE.id">$encoder.htmlEncode( $programStageDE.name )</option>
-						#end
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>			
-				</tr>					
-				<tr>					
-					<td>	
-						<table>
-							<tr>	
-								<td>
-									$i18n.getString( "case_properties" )<br>
-									<select id="caseProperty" name="caseProperty" size="5" style="width:100px" ondblclick="displayCPInfo()">
-										<option value="[CP:GENDER]">$i18n.getString( "gender" )</option>
-										<option value="[CP:DOB]">$i18n.getString( "dob" )</option>
-									</select>
-								</td>
-								<td>&nbsp;</td>
-								<td>
-									$i18n.getString( "case_attributes" )<br>
-									<select id="caseAttribute" name="caseAttribute" size="5" style="width:205px" ondblclick="displayCAInfo()">
-									#foreach( $patientAttribute in $patientAttributeList )
-										<option value="[CA:$patientAttribute.id]">$encoder.htmlEncode( $patientAttribute.name )</option>
-									#end							
-									</select>
-								</td>
-							</tr>
-						</table>			
-					</td>
-				</tr>
-			</table>			
-		</td>
-		<td>&nbsp;</td>
-		<td>			
-			$i18n.getString( "expression" )<br>
-			<textarea id="expression" name="expression" style="width:415px; height:5em"></textarea>	
-			<br><br>
-			<input type="radio" id="csRadio" name="csRadio" value="countRadio" onclick="" checked> $i18n.getString( "count" )
-			&nbsp;&nbsp;&nbsp;
-			<input type="radio" id="csRadio" name="csRadio" value="sumRadio" onclick="" > $i18n.getString( "sum" )
-			<br>				
-			
-			<div id="expressionTable" ><!--style="overflow: auto; height: 280px; width: 455px;"-->	
-			<table id="tblGrid">
-				<tr>
-					<th width="30%">$i18n.getString( "left_expression" )</th>					
-					<th width="20%">$i18n.getString( "operator" )</th>
-					<th width="30%">$i18n.getString( "right_expression" )</th>
-					<th width="15%">$i18n.getString( "and_or" )</th>
-					<th width="5%">&nbsp;</th>
-				</tr>
-				<tr>
-					<td><input type="text" id="le0" name="le0" data="{pos:'left'}" onfocus="updateFocus(this)"></td>					
-					<td>
-						<select id="operator0" name="operator0" onchange="">
-							<option value="NA">$i18n.getString( "select" )</option>
-							<option value="less_than"><</option>
-							<option value="greater_than">></option>
-							<option value="less_than_equal"><=</option>
-							<option value="greater_than_equal">>=</option>
-							<option value="equal">=</option>
-							<option value="not_equal">!=</option>
-							<option value="in">IN</option>
-							<option value="diff">DIFF</option>
-						</select>
-					</td>
-					<td><input type="text" id="re0" name="re0" data="{pos:'right'}" onfocus="updateFocus(this)"></td>
-					<td>
-						<select id="andor0" name="andor0" onchange="addNewRow()">
-							<option value="NA">$i18n.getString( "select" )</option>
-							<option value="and">$i18n.getString( "AND" )</option>
-							<option value="or">$i18n.getString( "OR" )</option>
-						</select>						
-					</td>
-					<td>
-						<a href="javascript:removeRecord( 0 )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-					</td>					
-				</tr>
-				
-			</table>
-			</div>	
-			
-		</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>	
-	<tr>
-		<td colspan="3">
-			<input type="submit" value="Save">&nbsp;&nbsp;
-			<input type="button" value="Test" onclick="prepareExpression()">&nbsp;&nbsp;
-			<input type="button" value="Cancel">&nbsp;&nbsp;
-			<input type="text" name="delRecTB" id="delRecTB">
-		</td>		
-	</tr>
-			
+    <tr valign="top">
+        <td>
+            
+            <table>             
+                <tr>
+                    <td>                
+                        $i18n.getString( "dataelement_group_list" )<br>
+                        <select id="degroup" name="degroup" style="width:325px" onchange="getAggDataElements()">
+                            <option value="0">$encoder.htmlEncode( "Others" )</option>
+                        #foreach( $deGroup in $deGroupList )
+                            <option value="$deGroup.id">$encoder.htmlEncode( $deGroup.name )</option>
+                        #end
+                        </select>
+                        <br/><br/>
+                        $i18n.getString( "dataelement_list" )<br>
+                        <select id="aggde" name="aggde" style="width:325px" onchange="getCaseAggExpression()">
+                        #set( $count1 = 0 )
+                        #foreach( $ocName in $optionComboNames )                    
+                            <option value="$optionComboIds.get($count1)">$encoder.htmlEncode( $ocName )</option>
+                        #set( $count1 = $count1 + 1 )
+                        #end
+                        </select>
+                    </td>           
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>         
+                </tr>
+                <tr>
+                    <td>
+                        $i18n.getString( "program_list" )<br>
+                        <select id="program" name="program" style="width:325px" onchange="getProgramStages()">
+                        #foreach( $program in $programList )
+                            <option value="$program.id">$encoder.htmlEncode( $program.name )</option>
+                        #end
+                        </select>
+                        <br/><br/>
+                        $i18n.getString( "program_stage_list" )<br>
+                        <select id="programstage" name="programstage" style="width:325px" onchange="getPrgramStageDataElements()">
+                        ##foreach( $programStage in $programStageList )
+                        <!--    <option value="$programStage.id">$encoder.htmlEncode( $programStage.name )</option> -->
+                        ##end
+                        </select>
+                        <br/><br/>
+                        $i18n.getString( "program_stage_de_list" )<br>
+                        <select id="programstageDE" name="programstageDE" size="5" style="width:325px" ondblclick="displayPSDEInfo()">
+                        #foreach( $programStageDE in $programStageDEList )
+                            <option value="$programStageDE.id">$encoder.htmlEncode( $programStageDE.name )</option>
+                        #end
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>         
+                </tr>                   
+                <tr>                    
+                    <td>    
+                        <table>
+                            <tr>    
+                                <td>
+                                    $i18n.getString( "case_properties" )<br>
+                                    <select id="caseProperty" name="caseProperty" size="5" style="width:100px" ondblclick="displayCPInfo()">
+                                        <option value="[CP:GENDER]">$i18n.getString( "gender" )</option>
+                                        <option value="[CP:DOB]">$i18n.getString( "dob" )</option>
+                                    </select>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    $i18n.getString( "case_attributes" )<br>
+                                    <select id="caseAttribute" name="caseAttribute" size="5" style="width:205px" ondblclick="displayCAInfo()">
+                                    #foreach( $patientAttribute in $patientAttributeList )
+                                        <option value="[CA:$patientAttribute.id]">$encoder.htmlEncode( $patientAttribute.name )</option>
+                                    #end                            
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>            
+                    </td>
+                </tr>
+            </table>            
+        </td>
+        <td>&nbsp;</td>
+        <td>            
+            $i18n.getString( "expression" )<br>
+            <textarea id="expression" name="expression" style="width:415px; height:5em"></textarea> 
+            <br><input type="button" onclick="getTableFromQuery()" value="Generate"/><br>
+            <input type="radio" id="csRadio0" name="csRadio" value="countRadio" onclick="" checked> $i18n.getString( "count" )
+            &nbsp;&nbsp;&nbsp;
+            <input type="radio" id="csRadio1" name="csRadio" value="sumRadio" onclick="" > $i18n.getString( "sum" )
+            <br>                
+            
+            <div id="expressionTable" ><!--style="overflow: auto; height: 280px; width: 455px;"-->  
+            <table id="tblGrid">
+                <tr>
+                    <th width="30%">$i18n.getString( "left_expression" )</th>                   
+                    <th width="20%">$i18n.getString( "operator" )</th>
+                    <th width="30%">$i18n.getString( "right_expression" )</th>
+                    <th width="15%">$i18n.getString( "and_or" )</th>
+                    <th width="5%">&nbsp;</th>
+                </tr>
+                <tr>
+                    <td><input type="text" id="le0" name="le0" data="{pos:'left'}" onfocus="updateFocus(this)"></td>                    
+                    <td>
+                        <select id="operator0" name="operator0">
+                            <!--0--><option value="NA">$i18n.getString( "select" )</option>
+                            <!--1--><option value="less_than">&lt;</option>
+                            <!--2--><option value="greater_than">&gt;</option>
+                            <!--3--><option value="less_than_equal">&le;</option>
+                            <!--4--><option value="greater_than_equal">&ge;</option>
+                            <!--5--><option value="equal">=</option>
+                            <!--6--><option value="not_equal">!=</option>
+                            <!--7--><option value="in">IN</option>
+                            <!--8--><option value="diff">DIFF</option>
+                        </select>
+                    </td>
+                    <td><input type="text" id="re0" name="re0" data="{pos:'right'}" onfocus="updateFocus(this)"></td>
+                    <td>
+                        <select id="andor0" name="andor0" onchange="addNewRow()">
+                            <option value="NA">$i18n.getString( "select" )</option>
+                            <option value="and">$i18n.getString( "AND" )</option>
+                            <option value="or">$i18n.getString( "OR" )</option>
+                        </select>                       
+                    </td>
+                    <td>
+                        <a href="#Delete table row" onclick="removeRecord(this,0)" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+                    </td>                   
+                </tr>
+                
+            </table>
+            </div>  
+            
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>   
+    <tr>
+        <td colspan="3">
+            <input type="submit" value="Save">&nbsp;&nbsp;
+            <input type="button" value="Test" onclick="prepareExpression()">&nbsp;&nbsp;
+            <input type="button" value="Cancel">&nbsp;&nbsp;
+            <input type="hidden" name="delRecTB" id="delRecTB">
+        </td>       
+    </tr>
+            
 </table>
 
 </form>
-
+<div id="multiple_option_combo_id" style="display: none;z-index:99;
+                border-top:0; border-left:0; border-right:1px solid #e7e7e7; border-bottom:1px solid #e7e7e7;
+                position: absolute; max-height: 150px ">
+            <select id="multiple_option_combo_id_box" multiple="multiple" style="min-width: 150px; z-index:99;">
+                <option>None</option>
+            </select>
+            <div align="center">
+                <input type="button" value="Select" onclick="select_click()"/>
+            </div>
+</div>
 <script language="javascript">
-	
-	window.onload=function()
-	{	
-		jQuery.metadata.setType( "attr", "data" );
-		getProgramStages();
-	}
-	
+    
+    window.onload=function()
+    {   
+        jQuery.metadata.setType( "attr", "data" );
+        getProgramStages();
+    }
+    
 </script>
 

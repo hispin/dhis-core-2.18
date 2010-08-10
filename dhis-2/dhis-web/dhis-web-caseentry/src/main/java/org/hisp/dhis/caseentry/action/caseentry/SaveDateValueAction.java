@@ -182,7 +182,7 @@ public class SaveDateValueAction
             value = null;
         }
         
-        if ( value != null )
+        if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_DATE ) && value != null )
         {
             Date dateValue = format.parseDate( value );
 

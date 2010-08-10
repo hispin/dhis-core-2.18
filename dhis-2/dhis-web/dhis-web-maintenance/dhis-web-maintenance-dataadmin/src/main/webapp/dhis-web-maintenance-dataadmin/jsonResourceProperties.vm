@@ -1,0 +1,12 @@
+#set( $size = $resourceProperties.size() )
+{
+	"message": #if ( $size > 0 ) "success" #else "" #end,
+	"resourceProperties": [
+	#foreach( $resourceProperty in $resourceProperties )
+	{
+	"name": "$resourceProperty"
+	}
+	#if( $velocityCount < $size ),#end    
+	#end
+	]
+}

@@ -6,16 +6,19 @@
         <!--
         <li><a href = "edReportForm.action">ED Report</a></li>
         <li><a href = "routineReportAnalyser.action">Routine Reports</a></li>
-        <li><a href = "feedbackReportAnalyser.action">Feedback Reports</a></li>
         -->
+        <li><a href = "feedbackReportAnalyser.action">Feedback Reports</a></li>
+
         <li><a href = "cumulativeReportAnalyser.action">Aggregation Reports</a></li>
         <li><a href = "linelistingReportAnalyser.action">Linelisting Reports</a></li>
         <!--
         <li><a href = "dataSetReport.action">Dataset Report</a></li>
         <li><a href = "displayPivotTableForm.action">Pivot Table</a></li>
-        -->
+        
         <li><a href = "progressReportAnalyser.action">Periodwise Progress Reports</a></li>
         <li><a href = "ouWiseProgressReportAnalyser.action">Orgunitwise Progress Reports</a></li>
+        -->
+        <li><a href = "benificiaryInfoReportsAnalyser.action">NBITS Benificiary Info</a></li>
         <li><a href = "activePlanReportsAnalyser.action">NBITS Reports</a></li>
         <li><a href = "portalReportsAnalyser.action">NBITS Portal Reports</a></li>
 		<!-- 09/07/2010 -->

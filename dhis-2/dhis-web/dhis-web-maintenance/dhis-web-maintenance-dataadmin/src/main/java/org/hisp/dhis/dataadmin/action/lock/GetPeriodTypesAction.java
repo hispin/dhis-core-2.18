@@ -71,6 +71,7 @@ public class GetPeriodTypesAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )

@@ -78,7 +78,7 @@
     </dependency>
    
     <!-- Web service modules -->
- 
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-importexport</artifactId>
@@ -97,12 +97,14 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
+	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
@@ -143,7 +145,7 @@
     
     <!-- India modules -->
     
-    <!--
+<!--    
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard</artifactId>
@@ -152,18 +154,19 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-reports-national</artifactId>
+      <version>${version}</version>
+      <type>war</type>
+    </dependency>
+-->
+<!--
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry-national</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency> 
-	
     <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-reports-national</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>-->
-    <!--<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-validationrule-local-in</artifactId>
       <version>${project.version}</version>

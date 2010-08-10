@@ -79,8 +79,6 @@ public interface SelectionTreeManager
      */
     Collection<OrganisationUnit> getRootOrganisationUnits();
     
-    Collection<OrganisationUnit> getLockedRootOrganisationUnits();
-
     /**
      * Resets the selection tree to use the actual root of the OrganisationUnit
      * tree.
@@ -108,16 +106,6 @@ public interface SelectionTreeManager
      */
     Collection<OrganisationUnit> getSelectedOrganisationUnits();
     
-    void setLockOnSelectedOrganisationUnits( Collection<OrganisationUnit> selectedUnits );
-    
-    void setLockOnSelectedOrganisationUnits( OrganisationUnit selectedUnit );
-    
-    OrganisationUnit getLockOnSelectedOrganisationUnit();
-    
-    Collection<OrganisationUnit> getLockOnSelectedOrganisationUnits();
-    
-    void clearLockOnSelectedOrganisationUnits();
-
     /**
      * Clears the selection and makes getSelectedOrganisationUnit() return null.
      */

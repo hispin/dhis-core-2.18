@@ -340,24 +340,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
-	<!-- Shapefile -->
-
-	<bean
-		id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
-		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
-		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
 	<!-- GeoJson -->
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonAction" class="org.hisp.dhis.mapping.action.GetGeoJsonAction"
@@ -365,6 +347,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
 		class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction" scope="prototype"/>
+
+	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
+		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
 
 	<!-- Export Map -->
 
