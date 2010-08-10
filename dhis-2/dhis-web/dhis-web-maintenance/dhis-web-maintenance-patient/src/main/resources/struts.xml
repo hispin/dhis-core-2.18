@@ -1109,6 +1109,11 @@
 			<result name="success" type="redirect">index.action</result>
 		</action>
 		
+		<action name="caseAggregationOptionCapture" 
+			class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationOptionCaptureAction">
+			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseCaseAggOptionCapture.vm</result>
+		</action>
+		
 		<!-- Validation - PatientValidationCriteria -->
 		
 		<action name="validationCriteria"

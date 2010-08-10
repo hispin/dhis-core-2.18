@@ -30,6 +30,7 @@ package org.hisp.dhis.sqlview.hibernate;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
@@ -99,7 +100,6 @@ public class HibernateSqlViewExpandStore
 
     }
 
-
     @Override
     public boolean isViewTableExists( String viewTableName )
     {
@@ -110,7 +110,7 @@ public class HibernateSqlViewExpandStore
         {
             mtdt = holder.getConnection().getMetaData();
             ResultSet rs = mtdt.getTables( null, null, viewTableName.toLowerCase(), types );
-            
+
             return rs.next();
         }
         catch ( Exception e )
@@ -122,7 +122,7 @@ public class HibernateSqlViewExpandStore
             holder.close();
         }
     }
-    
+
     @Override
     public void setUpDataSqlViewTable( SqlViewTable sqlViewTable, String viewTableName )
     {
@@ -142,6 +142,37 @@ public class HibernateSqlViewExpandStore
         sqlViewTable.addRecord( rs );
 
         holder.close();
+    }
+
+    @Override
+    public Collection<String> getAllResourceProperties( String resourceTableName )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        Set<String> propertiesName = new HashSet<String>();
+
+        try
+        {
+            ResultSet rs = holder.getStatement().executeQuery( "SELECT * FROM " + resourceTableName + " LIMIT 1");
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int countCols = rsmd.getColumnCount();
+
+            for ( int i = 1; i <= countCols; i++ )
+            {
+                propertiesName.add( rsmd.getColumnName( i ) );
+            }
+
+        }
+        catch ( SQLException e )
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return propertiesName;
     }
 
     // -------------------------------------------------------------------------

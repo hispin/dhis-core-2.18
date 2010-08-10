@@ -1,5 +1,7 @@
+package org.hisp.dhis.dataadmin.action.sqlview;
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,61 +26,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.dataadmin.action.lock;
 
-import java.util.Collection; //import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * @author Brajesh Murari
- * @version $Id$
+ * @author Dang Duy Hieu
+ * @version $Id GetSqlViewListAction.java July 20, 2010$
  */
-public class RemoveLockSelectedOrganisationUnitAction
-    implements Action
+public class GetResourcePropertiesAction
+    extends ActionSupport
 {
-    private static final Log LOG = LogFactory.getLog( RemoveLockSelectedOrganisationUnitAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private SqlViewService sqlViewService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSqlViewService( SqlViewService sqlViewService )
     {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
+        this.sqlViewService = sqlViewService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String name;
 
-    public void setId( int organisationUnitId )
+    public void setName( String name )
     {
-        this.id = organisationUnitId;
+        this.name = name;
     }
 
-    private Collection<OrganisationUnit> lockedUnits;
+    private List<String> resourceProperties;
 
-    public Collection<OrganisationUnit> getLockedUnits()
+    public List<String> getResourceProperties()
     {
-        return lockedUnits;
+        return resourceProperties;
     }
 
     // -------------------------------------------------------------------------
@@ -88,25 +77,9 @@ public class RemoveLockSelectedOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        try
-        {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+        resourceProperties = new ArrayList<String>( sqlViewService.getAllResourceProperties( name ) );
 
-            if ( unit == null )
-            {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
-            }
-
-            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();
-            lockedUnits.remove( unit );
-            selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
-        }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
-
-            throw e;
-        }
         return SUCCESS;
     }
+
 }

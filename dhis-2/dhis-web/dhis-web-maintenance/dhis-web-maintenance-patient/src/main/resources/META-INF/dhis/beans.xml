@@ -1092,6 +1092,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationOptionCaptureAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationOptionCaptureAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+	</bean>
+	
 	<!-- Validation - PatientValidationCriteria -->
 	
 	<bean

@@ -17,36 +17,10 @@
 		
 		<!-- Locking -->
 		
-		<action name="emptyOrgunitSetupAssociationsTree"
-			class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/noResponseInFrame.vm</result>
-			<param name="javascripts">
-				javascript/oust.js,javascript/associations.js,javascript/locking.js</param>
-		</action>
-		
 		<action name="displayLockingForm"
 			class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction">
 			<result name="success" type="chain">
-				defineDataSetAssociationsFormChain</result>
-			
-		</action>
-		
-		<!--<action name="defineDataSetAssociationsFormChain"
-		class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
-		<interceptor-ref name="organisationUnitTreeStack"/>
-		<result name="success" type="velocity">/main.vm </result>
-		<param name="page">
-		/dhis-web-maintenance-dataadmin/lockingForm.vm</param>
-		<param name="menu">/dhis-web-maintenance-dataadmin/menuWithTreeForDatasetLocks.vm</param>
-		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,
-		javascript/oust.js,javascript/associations.js,javascript/locking.js</param>
-		</action>-->
-		
-		<action name="getOrgUnitName"
-			class="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseGetSelectedOrgUnitName.vm</result>
+				defineDataSetAssociationsFormChain</result>			
 		</action>
 		
 		<action name="defineDataSetAssociationsFormChain"
@@ -55,24 +29,9 @@
 			<result name="success" type="velocity">/main.vm </result>
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/collectiveDataLockingForm.vm</param>
-			
-			<!--<param name="menu">/dhis-web-maintenance-dataadmin/menuWithTreeForDatasetLocks.vm</param>-->
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/util/commons.js,../dhis-web-commons/util/jquery.js,../dhis-web-commons/lists/lists.js,../dhis-web-commons/oust/oust.js,javascript/datasetLockReport.js
-				</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/datasetLockReport.js</param>
 		</action>
-		
-		<!-- Validation Org Unit Selection-->
-		<action name="orgUnitValidate"
-			class="org.hisp.dhis.dataadmin.action.lock.OrgUnitValidateAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseOrgUnitSelectSuccess.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseOrgUnitSelectError.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		<!-- Validation Org Unit Selection end -->
 		
 		<action name="getDataSetsForPeriodType"
 			class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction">
@@ -81,110 +40,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			
 		</action>
-		<!-- advanced Locking-->
+		
 		<action name="collectiveDataLocking"
 			class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction">
 			<result name="success" type="velocity">/main.vm </result>
             <param name="page">/dhis-web-maintenance-dataadmin/collectiveDataLockingStatus.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-		</action>
-		
-		<action name="getDataSetsForOrguntwiseLocking"
-			class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="orgunitWiseSetupAssociationsTree"
-			class="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
-			<param name="javascripts">
-				javascript/oust.js,javascript/associations.js,javascript/locking.js,
-				../dhis-web-commons/util/commons.js,
-				../dhis-web-commons/util/lists.js,
-				../dhis-web-commons/util/jquery.js,
-				../dhis-web-commons/css/${stylesheetDirectory}/dom.js</param>
-		</action>
-		
-		<action name="updateLockedDataSets"
-			class="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-dataadmin/index.vm</param>
-			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-		</action>
-		
-		<action name="defineLockOnDataSetOrgunitAndPeriod"
-			class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod">
-			<result name="success" type="chain">getLockSelectionTree </result>
-		</action>
-		
-		<action name="selectLevel"
-			class="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction">
-			<result name="success" type="chain">getLockSelectionTree </result>
-		</action>
-		
-		<action name="unselectLevel"
-			class="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction">
-			<result name="success" type="chain">getLockSelectionTree </result>
-		</action>
-		
-		<action name="selectAll"
-			class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction">
-			<result name="success" type="chain">getLockSelectionTree </result>
-		</action>
-		
-		<action name="unselectAll"
-			class="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction">
-			<result name="success" type="chain">getLockSelectionTree </result>
-		</action>
-		
-		<action name="getLockSelectionTree"
-			class="org.hisp.dhis.dataadmin.action.NoAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
-			<param name="javascripts">javascript/oust.js,javascript/locking.js,
-				javascript/dataElementsList.js,javascript/associations.js,
-				../dhis-web-commons/util/commons.js,
-				../dhis-web-commons/util/lists.js,
-				../dhis-web-commons/util/jquery.js,
-				../dhis-web-commons/css/${stylesheetDirectory}/dom.js</param>
-		</action>
-		
-		<action name="getExpandedTreeForLock"
-			class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/responseTree.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="lockorgunit"
-			class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/responseSelect.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="removelockorgunit"
-			class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/responseSelect.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="noactionfordatalocking"
-			class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/responseSelect.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="expandSubtree"
-			class="org.hisp.dhis.dataadmin.action.lock.ExpandSubtreeAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-dataadmin/responseExpand.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="getPeriodsForLock"
@@ -501,11 +362,14 @@
 			class="org.hisp.dhis.dataadmin.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="page">
-				/dhis-web-maintenance-dataadmin/addSqlViewForm.vm</param>
-			<param name="javascripts">javascript/sqlView.js
-				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+			<param name="page">/dhis-web-maintenance-dataadmin/addSqlViewForm.vm</param>
+			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="javascripts">
+				javascript/sqlViewData.js,javascript/sqlView.js,javascript/jquery.autocomplete.js
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,../dhis-web-commons/validationMessages.action
+			</param>
 			<param name="requiredAuthorities">F_SQLVIEW_ADD</param>
 		</action>
 		
@@ -532,8 +396,9 @@
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/updateSqlViewForm.vm</param>
 			<param name="javascripts">javascript/sqlView.js
-				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+				,../dhis-web-commons/util/validate/jquery.validate.js
+				,../dhis-web-commons/util/validate/additional-methods.js
+				,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_SQLVIEW_UPDATE</param>
 		</action>
 		
@@ -606,5 +471,10 @@
 				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
 			<param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
 		</action>
+		
+		<action name="getResourceProperties" class="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction">
+		  <result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/jsonResourceProperties.vm</result>
+		</action>
+		
 	</package>
 </struts>

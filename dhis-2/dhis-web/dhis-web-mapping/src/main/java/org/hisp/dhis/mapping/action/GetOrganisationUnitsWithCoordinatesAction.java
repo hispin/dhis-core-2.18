@@ -27,19 +27,12 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Collection;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
-
-import java.util.Collections;
 
 /**
  * @author Jan Henrik Overland
@@ -59,38 +52,24 @@ public class GetOrganisationUnitsWithCoordinatesAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer parentId;
 
-    public void setId( Integer id )
+    public void setParentId( Integer id )
     {
-        this.id = id;
-    }    
+        this.parentId = id;
+    }
     
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> object;
+    private Collection<OrganisationUnit> object;
 
-    public List<OrganisationUnit> getObject()
+    public Collection<OrganisationUnit> getObject()
     {
         return object;
     }
@@ -102,20 +81,10 @@ public class GetOrganisationUnitsWithCoordinatesAction
     public String execute()
         throws Exception
     {
-        object = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnit( id ).getChildren() );
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
         
-        CollectionUtils.filter( object, new Predicate()
-            {
-                public boolean evaluate( Object object )
-                {
-                    return ((OrganisationUnit) object).hasCoordinates();
-                }
-            } );
-
-        Collections.sort( object, organisationUnitComparator );
+        object = parent.getChildren();
         
-        displayPropertyHandler.handle( object );
-        
-        return SUCCESS;
+        return parent.getChildrenFeatureType();
     }
 }

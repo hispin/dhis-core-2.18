@@ -42,7 +42,8 @@ import com.opensymphony.xwork2.Action;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class UpdateLockedDataSets implements Action
+public class UpdateLockedDataSets 
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -101,19 +102,20 @@ public class UpdateLockedDataSets implements Action
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception{
-    	
+    public String execute()
+        throws Exception
+    {
         Period period = new Period();
-		
-		if( periodId != null ){
-			
-			period = periodService.getPeriod( periodId.intValue() );
-		}
-		
-		else{
-			return SUCCESS;
-		}
-		
+
+        if ( periodId != null )
+        {
+            period = periodService.getPeriod( periodId );
+        }
+        else
+        {
+            return SUCCESS;
+        }
+
         period = periodService.getPeriod( periodId.intValue() );
 
         // -------------------------------------------------------------------------------
@@ -121,13 +123,15 @@ public class UpdateLockedDataSets implements Action
         // vice versa according to lock status
         // -------------------------------------------------------------------------------
 
-        for ( String id : unlockedDataSets ){      	
-        	DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
+        for ( String id : unlockedDataSets )
+        {
+            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
             DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-            
-            if ( dataSetLock != null ){                
+
+            if ( dataSetLock != null )
+            {
                 dataSet.setLocked( false );
-                dataSetService.updateDataSet( dataSet );                               
+                dataSetService.updateDataSet( dataSet );
                 dataSetLock.getSources().removeAll( dataSetLock.getSources() );
                 dataSetLockService.deleteDataSetLock( dataSetLock );
             }

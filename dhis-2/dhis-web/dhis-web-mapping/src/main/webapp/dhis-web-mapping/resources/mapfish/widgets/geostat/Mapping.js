@@ -461,7 +461,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             mapping.newUrl = url;
             
             if (MAPSOURCE == map_source_type_geojson) {
-                mapping.setUrl(path_mapping + 'getGeoJson.action?name=' + url);
+                mapping.setUrl(path_mapping + 'getGeoJsonFromFile.action?name=' + url);
             }
 			else if (MAPSOURCE == map_source_type_shapefile) {
 				mapping.setUrl(path_geoserver + wfs + url + output);

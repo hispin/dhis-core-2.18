@@ -21,9 +21,10 @@
 		<!--<th>$i18n.getString( "timestamp" )</th>-->
 		<!--<th>$i18n.getString( "stored_by" )</th>-->
 	</tr>
+
 #set( $count = 0 )
 #set( $mark = 0 )
-#set( $tabIndex = 1 )
+
 #foreach( $dataElement in $section.dataElements )
 	#set( $count = $count + 1 )
 	#if( $mark == 1 )

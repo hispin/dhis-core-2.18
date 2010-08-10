@@ -1181,20 +1181,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     loadById: function(id) {
         if (id != proportionalSymbol.parentId || MAPVIEW) {
             proportionalSymbol.parentId = id;
-            
-            Ext.Ajax.request({
-                url: path_mapping + 'getOrganisationUnitChildren' + type,
-                method: 'POST',
-                params: {node:proportionalSymbol.parentId},
-                success: function(r) {
-                    var childIsLeaf = Ext.util.JSON.decode(r.responseText)[0].leaf;
-                    var url = childIsLeaf ? path_mapping + 'getPointShapefile.action?id=' + id : path_mapping + 'getPolygonShapefile.action?id=' + id;
-                    proportionalSymbol.setUrl(url);
-                },
-                failure: function() {
-                    alert('Error: getOrganisationUnitChildren');
-                }
-            });
+            proportionalSymbol.setUrl(path_mapping + 'getGeoJson.action?parentId=' + proportionalSymbol.parentId);
         }
     },
     
@@ -1203,7 +1190,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             proportionalSymbol.newUrl = url;
 
             if (MAPSOURCE == map_source_type_geojson) {
-                proportionalSymbol.setUrl(path_mapping + 'getGeoJson.action?name=' + url);
+                proportionalSymbol.setUrl(path_mapping + 'getGeoJsonFromFile.action?name=' + url);
             }
 			else if (MAPSOURCE == map_source_type_shapefile) {
 				proportionalSymbol.setUrl(path_geoserver + wfs + url + output);

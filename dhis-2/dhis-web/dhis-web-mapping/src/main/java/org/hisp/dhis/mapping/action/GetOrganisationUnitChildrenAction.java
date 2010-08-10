@@ -107,8 +107,7 @@ public class GetOrganisationUnitChildrenAction
 
             Collections.sort( units, organisationUnitComparator );
             
-            displayPropertyHandler.handle( units );
-            
+            displayPropertyHandler.handle( units );            
         }
         
         return SUCCESS;

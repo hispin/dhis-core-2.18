@@ -47,8 +47,9 @@ import org.hisp.dhis.source.Source;
 public class OrganisationUnit
     extends Source implements DimensionOptionElement
 {
+    public static final String FEATURETYPE_NONE = "None";
+        
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
-
     private static final Pattern COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
     
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
@@ -211,6 +212,19 @@ public class OrganisationUnit
         this.coordinates = StringUtils.trimToNull( builder.toString() );
     }
     
+    public String getChildrenFeatureType()
+    {
+        for ( OrganisationUnit child : children )
+        {
+            if ( child.getFeatureType() != null )
+            {
+                return child.getFeatureType();
+            }
+        }
+        
+        return FEATURETYPE_NONE;
+    }
+        
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

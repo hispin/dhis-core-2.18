@@ -1,92 +1,4 @@
 
-<script type="text/javascript">
-	
-	var i18n_organisation_not_selected = '$encoder.jsEscape( $i18n.getString( "organisation_not_selected" ) , "'")';
-	var i18n_period_not_selected = '$encoder.jsEscape( $i18n.getString( "period_not_selected" ) , "'")';
-	var i18n_dataset_not_selected = '$encoder.jsEscape( $i18n.getString( "dataset_not_selected" ) , "'")';
-	var i18n_lock = '$encoder.jsEscape( $i18n.getString( "lock" ) , "'")';
-	var i18n_unlock = '$encoder.jsEscape( $i18n.getString( "unlock" ) , "'")';
-	var i18n_select_all_at_level = '$encoder.jsEscape( $i18n.getString( "select_all_at_level" ) , "'")';
-	var i18n_unselect_all_at_level = '$encoder.jsEscape( $i18n.getString( "unselect_all_at_level" ) , "'")';
-	var i18n_select_all_at_group = '$encoder.jsEscape( $i18n.getString( "select_all_in_group" ) , "'")';
-    var i18n_unselect_all_at_group = '$encoder.jsEscape( $i18n.getString( "unselect_all_in_group" ) , "'")';
-	var clickedButtonElement;
-
-	function setClickedButtonElementValue( buttonElement )
-	{
-		clickedButtonElement = buttonElement.value;
-		document.getElementById("selectBetweenLockUnlock").value = clickedButtonElement;
-	}
-
-	function validateCollectiveDataLockingForm()
-	{		
-		periodIdOptions = document.getElementById("periodId").options;
-			
-		if( periodIdOptions.length > 0 )
-		{
-			var i;
-			for( i=0; i < periodIdOptions.length ; i++ )
-			{
-				if( periodIdOptions[i].selected == true )
-						break;
-			}
-			if( i == periodIdOptions.length )
-			{
-				alert(i18n_period_not_selected);
-				return false;
-			}
-		}
-		else
-		{
-			alert( i18n_period_not_selected );
-			return false;
-		}
-			
-		dataSetIdsOptions = document.getElementById("dataSetIds").options;
-				
-		if( dataSetIdsOptions.length > 0 )
-		{
-			var i;
-			for( i=0; i < dataSetIdsOptions.length ; i++)
-			{
-				if( dataSetIdsOptions[i].selected == true )
-					break;
-			}
-			if( i==dataSetIdsOptions.length )
-			{
-				alert( i18n_dataset_not_selected );
-				return false;
-			}
-		}
-		else
-		{
-			alert(i18n_dataset_not_selected);
-			return false;
-		}
-				
-        if( clickedButtonElement == i18n_lock || clickedButtonElement == i18n_unlock )
-        {
-			orgUnitSelectValidation();
-			return false;
-        }
-		else if( clickedButtonElement == i18n_select_all_at_level || clickedButtonElement == i18n_unselect_all_at_level )
-		{	
-			levelIdOptions = document.getElementById("levelId").options;
-			if(!levelIdOptions.length>0)
-				return false;
-		}
-	    else if( clickedButtonElement == i18n_select_all_at_group || clickedButtonElement == i18n_unselect_all_at_group )
-	    {
-			ougGroupOptions = document.getElementById("orgGroup").options;
-			if( !ougGroupOptions.length > 0 )
-				return false;
-	    } 
-		
-		return true;
-	}
-	               
-</script>
-
 <h3>$i18n.getString( "data_locking_form" ) #openHelp( "dataLocking" )</h3>
 	
 <form id="lockingForm" name="lockingForm" action="collectiveDataLocking.action" method="post" onsubmit="return validateCollectiveDataLockingForm()">
@@ -177,13 +89,20 @@
 </form>
 							 
 <script type="text/javascript">
-	
-	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
-	var numberOfSelects = 0;
     selectionTreeSelection.setMultipleSelectionAllowed( true );
     selectionTreeSelection.setOnSelectFunction( treeClicked );
     selectionTreeSelection.setListenerFunction( selectCompleted );
     selectionTree.clearSelectedOrganisationUnits();
     selectionTree.buildSelectionTree();
 
+	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
+	var i18n_organisation_unit_not_selected = '$encoder.jsEscape( $i18n.getString( "organisation_unit_not_selected" ) , "'")';
+	var i18n_period_not_selected = '$encoder.jsEscape( $i18n.getString( "period_not_selected" ) , "'")';
+	var i18n_dataset_not_selected = '$encoder.jsEscape( $i18n.getString( "dataset_not_selected" ) , "'")';
+	var i18n_lock = '$encoder.jsEscape( $i18n.getString( "lock" ) , "'")';
+	var i18n_unlock = '$encoder.jsEscape( $i18n.getString( "unlock" ) , "'")';
+	var i18n_select_all_at_level = '$encoder.jsEscape( $i18n.getString( "select_all_at_level" ) , "'")';
+	var i18n_unselect_all_at_level = '$encoder.jsEscape( $i18n.getString( "unselect_all_at_level" ) , "'")';
+	var i18n_select_all_at_group = '$encoder.jsEscape( $i18n.getString( "select_all_in_group" ) , "'")';
+    var i18n_unselect_all_at_group = '$encoder.jsEscape( $i18n.getString( "unselect_all_in_group" ) , "'")';
 </script>

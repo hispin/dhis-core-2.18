@@ -6,21 +6,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Locking -->
 
-	<bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
-		class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction"
-		scope="prototype">
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction"
         class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction"
         scope="prototype">
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
-		<!-- -->
 	
 	<bean id="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
 		class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
@@ -40,178 +31,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 		</property>
 	</bean>
-	
-	<!-- Validation Org Unit Selection-->
-        <bean id="org.hisp.dhis.dataadmin.action.lock.OrgUnitValidateAction"
-        class="org.hisp.dhis.dataadmin.action.lock.OrgUnitValidateAction"
-        scope="prototype">
-       <property name="selectionTreeManager">
-       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-       </property>
-       </bean>
-        <!-- Validation Org Unit Selection end -->
-	
-	<bean id="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction"
-        class="org.hisp.dhis.dataadmin.action.lock.GetOrgUnitNameAction"
-        scope="prototype">
-        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
-	
+			
 	<bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
 		class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
 		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>		
 		<property name="organisationUnitGroupService"
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
 		<property name="selectionTreeManager"
-            ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>		
 	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
-		class="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService" />
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService" />
-		</property>
-		<property name="dataSetLockService">
-			<ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-		</property>
-		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
-		class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="dataSetLockService">
-			<ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-		</property>
-		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
-		class="org.hisp.dhis.dataadmin.action.lock.UpdateLockedDataSets"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService" />
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService" />
-		</property>
-		<property name="dataSetLockService">
-			<ref bean="org.hisp.dhis.datalock.DataSetLockService" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.SelectAllAction"
-		class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction"
-		class="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction"
-		class="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction"
-		class="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
+	
 	<bean id="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction"
 		class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction"
 		scope="prototype">
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
-		class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
-		class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
-		scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		</property>
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
-		class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
-		scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		</property>
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock"
-		class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.lock.ExpandSubtreeAction"
-		class="org.hisp.dhis.ouwt.action.ExpandSubtreeAction" scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		</property>
-		<property name="treeStateManager">
-			<ref bean="org.hisp.dhis.ouwt.manager.TreeStateManager" />
 		</property>
 	</bean>
 
@@ -535,6 +372,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<bean id="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction"
 		class="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction"
+		scope="prototype">
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction"
+		class="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction"
 		scope="prototype">
 		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
 	</bean>

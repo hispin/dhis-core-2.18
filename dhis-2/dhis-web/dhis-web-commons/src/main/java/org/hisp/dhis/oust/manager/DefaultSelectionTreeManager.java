@@ -45,10 +45,7 @@ import com.opensymphony.xwork2.ActionContext;
 public class DefaultSelectionTreeManager
     implements SelectionTreeManager
 {
-    private static final String SESSION_KEY_SELECTED_ORG_UNITS = "dhis-oust-selected-org-units";
-    
-    private static final String SESSION_KEY_LOCKED_ORG_UNITS = "dhis-oust-locked-org-units";
-
+    private static final String SESSION_KEY_SELECTED_ORG_UNITS = "dhis-oust-selected-org-units";    
     private static final String SESSION_KEY_ROOT_ORG_UNITS = "dhis-oust-root-org-units";
     
     private static final double PERCENTAGE_OF_MULTIPLE_RELOADING_ORG_UNITS = 0.2;
@@ -109,18 +106,6 @@ public class DefaultSelectionTreeManager
         return reloadOrganisationUnits( rootUnits );
     }
     
-    public Collection<OrganisationUnit> getLockedRootOrganisationUnits()
-    {
-        Collection<OrganisationUnit> rootUnits = getCollectionFromSession( SESSION_KEY_LOCKED_ORG_UNITS );
-
-        if ( rootUnits == null )
-        {
-            return organisationUnitService.getRootOrganisationUnits();
-        }
-
-        return reloadOrganisationUnits( rootUnits );
-    }
-
     public OrganisationUnit getRootOrganisationUnitsParent()
     {
         Collection<OrganisationUnit> rootUnits = getCollectionFromSession( SESSION_KEY_ROOT_ORG_UNITS );
@@ -163,23 +148,6 @@ public class DefaultSelectionTreeManager
         }
     }
     
-    public void setLockOnSelectedOrganisationUnits( Collection<OrganisationUnit> selectedUnits )
-    {
-        if ( selectedUnits == null )
-        {
-            throw new IllegalArgumentException( "Selected locked OrganisationUnits cannot be null" );
-        }
-      
-        Collection<OrganisationUnit> rootUnits = getRootOrganisationUnits();
-
-        if ( rootUnits != null )
-        {
-            selectedUnits = getUnitsInTree( rootUnits, selectedUnits );
-
-            saveToSession( SESSION_KEY_LOCKED_ORG_UNITS, selectedUnits );                      
-        }
-    }
-    
     public Collection<OrganisationUnit> getSelectedOrganisationUnits()
     {
         Collection<OrganisationUnit> selectedUnits = getCollectionFromSession( SESSION_KEY_SELECTED_ORG_UNITS );
@@ -197,49 +165,9 @@ public class DefaultSelectionTreeManager
         return reloadOrganisationUnits( getSelectedOrganisationUnits() );
     }
 
-    public Collection<OrganisationUnit> getLockOnSelectedOrganisationUnits()
-    {
-        Collection<OrganisationUnit> selectedUnits = getCollectionFromSession( SESSION_KEY_LOCKED_ORG_UNITS );
-
-        if ( selectedUnits == null )
-        {
-            return new HashSet<OrganisationUnit>();
-        }
-        return selectedUnits;
-    }
-
     public void clearSelectedOrganisationUnits()
     {
         removeFromSession( SESSION_KEY_SELECTED_ORG_UNITS );
-    }
-    
-    public void setLockOnSelectedOrganisationUnits( OrganisationUnit selectedUnit )
-    {
-        if ( selectedUnit == null )
-        {
-            throw new IllegalArgumentException( "Selected OrganisationUnit cannot be null" );
-        }
-
-        Set<OrganisationUnit> set = new HashSet<OrganisationUnit>( 1 );
-        set.add( selectedUnit );
-        setLockOnSelectedOrganisationUnits( set );
-    }
-    
-    public OrganisationUnit getLockOnSelectedOrganisationUnit()
-    {
-        Collection<OrganisationUnit> selectedUnits = getLockOnSelectedOrganisationUnits();
-
-        if ( selectedUnits.isEmpty() )
-        {
-            return null;
-        }
-
-        return selectedUnits.iterator().next();
-    }
-    
-    public void clearLockOnSelectedOrganisationUnits()
-    {
-        removeFromSession( SESSION_KEY_LOCKED_ORG_UNITS );
     }
 
     public OrganisationUnit getSelectedOrganisationUnit()

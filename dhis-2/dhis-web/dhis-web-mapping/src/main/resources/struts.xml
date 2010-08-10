@@ -375,23 +375,17 @@
 			</result>
 		</action>
 
-		<!-- Shapefile -->
-
-		<action name="getPointShapefile"
-			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/pointShapefile.vm</result>
-		</action>
-
-		<action name="getPolygonShapefile"
-			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/polygonShapefile.vm</result>
-		</action>
-
 		<!-- GeoJson -->
 
-		<action name="getGeoJson" class="org.hisp.dhis.mapping.action.GetGeoJsonAction">
+		<action name="getGeoJson"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
+			<result name="Point" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
+			<result name="Polygon" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
+			<result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
+		</action>
+
+		<action name="getGeoJsonFromFile"
+            class="org.hisp.dhis.mapping.action.GetGeoJsonAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/json</param>
 				<param name="inputName">inputStream</param>
