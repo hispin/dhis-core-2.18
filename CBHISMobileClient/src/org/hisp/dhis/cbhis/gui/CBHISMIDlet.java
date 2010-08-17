@@ -9,17 +9,13 @@ import java.util.Hashtable;
 import java.util.Vector;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
-import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStoreException;
 import org.hisp.dhis.cbhis.connection.DownloadManager;
-import org.hisp.dhis.cbhis.db.AbstractModelRecordFilter;
-import org.hisp.dhis.cbhis.db.AbstractRecordComparator;
 import org.hisp.dhis.cbhis.db.ModelRecordStore;
 import org.hisp.dhis.cbhis.db.SettingsRectordStore;
 import org.hisp.dhis.cbhis.model.AbstractModel;
 import org.hisp.dhis.cbhis.model.DataElement;
 import org.hisp.dhis.cbhis.model.ProgramStageForm;
-import org.netbeans.microedition.util.SimpleCancellableTask;
 
 /**
  * @author abyotag_adm
@@ -60,7 +56,6 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
     private Command okCommand;
     private Command lgnFrmExtCmd;
     private Command lgnFrmLgnCmd;
-    private SimpleCancellableTask task;
     private Image logo;
     //</editor-fold>//GEN-END:|fields|0|
 
@@ -92,7 +87,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
     public void startMIDlet() {//GEN-END:|3-startMIDlet|0|3-preAction
         // write pre-action user code here
 //GEN-LINE:|3-startMIDlet|1|3-postAction
-        SplashScreen splashScreen = new SplashScreen(getLogo(),getDisplay(), (Displayable)getLoginForm());
+        new SplashScreen(getLogo(),getDisplay(), (Displayable)getLoginForm());
         //Here need to call my splahshscreen
         // write post-action user code here
     }//GEN-BEGIN:|3-startMIDlet|2|
@@ -210,26 +205,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
         // write post-action user code here
     }//GEN-BEGIN:|7-commandAction|26|
     //</editor-fold>//GEN-END:|7-commandAction|26|
-
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: task ">//GEN-BEGIN:|22-getter|0|22-preInit
-    /**
-     * Returns an initiliazed instance of task component.
-     * @return the initialized component instance
-     */
-    public SimpleCancellableTask getTask() {
-        if (task == null) {//GEN-END:|22-getter|0|22-preInit
-            // write pre-init user code here
-            task = new SimpleCancellableTask();//GEN-BEGIN:|22-getter|1|22-execute
-            task.setExecutable(new org.netbeans.microedition.util.Executable() {
-                public void execute() throws Exception {//GEN-END:|22-getter|1|22-execute
-                    // write task-execution user code here
-                }//GEN-BEGIN:|22-getter|2|22-postInit
-            });//GEN-END:|22-getter|2|22-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|22-getter|3|
-        return task;
-    }
-    //</editor-fold>//GEN-END:|22-getter|3|
+    
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand ">//GEN-BEGIN:|28-getter|0|28-preInit
     /**
@@ -360,10 +336,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
     /**
      * Performs an action assigned to the selected list element in the frmDnldList component.
      */
-    public void frmDnldListAction() {//GEN-END:|53-action|0|53-preAction
-        // enter pre-action user code here
-        String __selectedString = getFrmDnldList().getString(getFrmDnldList().getSelectedIndex());//GEN-LINE:|53-action|1|53-postAction
-        // enter post-action user code here
+    public void frmDnldListAction() {//GEN-END:|53-action|0|53-preAction        
 
         AbstractModel programStage = (AbstractModel)programStagesVector.elementAt( ((List)getFrmDnldList()).getSelectedIndex() );
         downloadForm( programStage.getId() );

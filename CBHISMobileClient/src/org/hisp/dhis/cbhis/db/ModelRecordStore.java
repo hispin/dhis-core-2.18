@@ -10,7 +10,6 @@ import javax.microedition.rms.RecordStoreException;
 import java.util.Vector;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
-import javax.microedition.rms.RecordStoreNotOpenException;
 import org.hisp.dhis.cbhis.model.AbstractModel;
 import org.hisp.dhis.cbhis.model.DataElement;
 
