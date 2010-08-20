@@ -1,5 +1,5 @@
 MIDlet-1: CBHISMIDlet,,org.hisp.dhis.cbhis.gui.CBHISMIDlet
-MIDlet-Jar-Size: 42938
+MIDlet-Jar-Size: 51153
 MIDlet-Jar-URL: CBHISMobileClient.jar
 MIDlet-Name: CBHIS Mobile Client
 MIDlet-Vendor: HISP
