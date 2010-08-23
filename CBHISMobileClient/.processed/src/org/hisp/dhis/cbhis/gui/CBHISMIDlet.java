@@ -44,6 +44,9 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	private Form dataEntryForm;
 	private Form form;
 	private Form loginForm;
+	// add one more form to handle downloaded form list
+	private List downloadedFormsList;
+
 	private TextField userName;
 	private TextField password;
 	private Command exitCommand;
@@ -63,7 +66,9 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	private Command lgnFrmExtCmd;
 	private Command lgnFrmLgnCmd;
 	private Command orgUnitBackCmd;
-	
+	// add one more back command for the downloaded forms list
+	private Command downloadedBckCmd;
+
 	private Image logo;
 
 	/**
@@ -135,7 +140,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 			}
 		} else if (displayable == form) {
 			if (command == backCommand) {
-				switchDisplayable(null, getMainMenuList());
+				switchDisplayable(null, getDownloadedFormsList());
 			} else if (command == screenCommand) {
 			}
 		} else if (displayable == frmDnldList) {
@@ -165,20 +170,24 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 				saveSettings();
 				switchDisplayable(null, getMainMenuList());
 			}
-		}else if(displayable == orgUnitList){
-			if(command==orgUnitBackCmd){
+		} else if (displayable == orgUnitList) {
+			if (command == orgUnitBackCmd) {
 				switchDisplayable(null, getMainMenuList());
-			}else if(command == List.SELECT_COMMAND){
+			} else if (command == List.SELECT_COMMAND) {
 				orgUnitListAction();
 			}
-		}else if(displayable == activityList){
-			if(command==actvyPlnListBakCmd){
+		} else if (displayable == activityList) {
+			if (command == actvyPlnListBakCmd) {
 				switchDisplayable(null, orgUnitList);
+			}
+		} else if (displayable == downloadedFormsList) {
+			if (command == List.SELECT_COMMAND) {
+				this.downloadedFormsSelectAction();
+			} else if (command == downloadedBckCmd) {
+				this.switchDisplayable(null, mainMenuList);
 			}
 		}
 	}
-	
-	
 
 	/**
 	 * Returns an initiliazed instance of exitCommand component.
@@ -191,12 +200,70 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return exitCommand;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of mainMenuList component.
 	 * 
 	 * @return the initialized component instance
 	 */
+	// Method to initialize the downloaded forms screen.
+	public List getDownloadedFormsList() {
+		if (downloadedFormsList == null) {
+			downloadedFormsList = new List("Downloaded Forms List",
+					Choice.IMPLICIT);
+			downloadedFormsList.addCommand(this.getDownloadedFormListBckCmd());
+			downloadedFormsList.setCommandListener(this);
+			downloadedFormsList.setSelectedFlags(new boolean[] {});
+		}
+		return downloadedFormsList;
+	}
+
+	// Action when user select a downloaded form
+	private void downloadedFormsSelectAction() {
+		AbstractModel downloadedProgramStage = (AbstractModel) getAllForm()
+				.elementAt(((List) getDownloadedFormsList()).getSelectedIndex());
+		System.out.println("Selected ID: " + downloadedProgramStage.getId());
+		System.out.println("Name: "
+				+ fetchForm(downloadedProgramStage.getId()).getName());
+		this.getForm(fetchForm(downloadedProgramStage.getId()));
+	}
+
+	// the "Back" command of the downloaded forms list
+	private Command getDownloadedFormListBckCmd() {
+		if (downloadedBckCmd == null) {
+			downloadedBckCmd = new Command("Back", Command.BACK, 0);
+		}
+		return downloadedBckCmd;
+	}
+
+	// Get all Form from RMS
+	public Vector getAllForm() {
+		ModelRecordStore modelRecordStore = null;
+		Vector downloadedFormVector = null;
+		try {
+			modelRecordStore = new ModelRecordStore(ModelRecordStore.FORM_DB);
+			downloadedFormVector = modelRecordStore.getAllRecord();
+		} catch (RecordStoreException rse) {
+
+		}
+		return downloadedFormVector;
+	}
+
+	public void displayDownloadedForms(Vector downloadedForms) {
+		if (downloadedForms == null) {
+			getDownloadedFormsList().append("No form available", null);
+		} else {
+			getDownloadedFormsList().deleteAll();
+			for (int i = 0; i < downloadedForms.size(); i++) {
+				AbstractModel programStage = (AbstractModel) downloadedForms
+						.elementAt(i);
+				getDownloadedFormsList()
+						.insert(i, programStage.getName(), null);
+			}
+		}
+		switchDisplayable(null, this.getDownloadedFormsList());
+	}
+
 	public List getMainMenuList() {
 		if (mainMenuList == null) {
 			mainMenuList = new List("Menu", Choice.IMPLICIT);
@@ -207,7 +274,8 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 			mainMenuList.addCommand(getMnuListExtCmd());
 			mainMenuList.setCommandListener(this);
 			mainMenuList.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
-			mainMenuList.setSelectedFlags(new boolean[] { false, false, false, false });
+			mainMenuList.setSelectedFlags(new boolean[] { false, false, false,
+					false });
 		}
 		return mainMenuList;
 	}
@@ -217,7 +285,8 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 * mainMenuList component.
 	 */
 	public void mainMenuListAction() {
-		String __selectedString = getMainMenuList().getString(getMainMenuList().getSelectedIndex());
+		String __selectedString = getMainMenuList().getString(
+				getMainMenuList().getSelectedIndex());
 		if (__selectedString != null) {
 			if (__selectedString.equals("Download Form")) {
 				browseForms();
@@ -229,22 +298,22 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 				Form waitForm = new Form("Making connection");
 				waitForm.append("Please wait........");
 				switchDisplayable(null, waitForm);
-				System.out.println("I will download activity plans from here");				
+				System.out.println("I will download activity plans from here");
 			} else if (__selectedString.equals("Record Data")) {
-				switchDisplayable(null, getForm());
+				this.displayDownloadedForms(this.getAllForm());
 			} else if (__selectedString.equals("Settings")) {
 				loadSettings();
 				switchDisplayable(null, getSettingsForm());
 			}
-		}		
+		}
 	}
-	
 
 	/**
 	 * Returns an initiliazed instance of mnuListExtCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
+
 	public Command getMnuListExtCmd() {
 		if (mnuListExtCmd == null) {
 			mnuListExtCmd = new Command("Exit", Command.EXIT, 0);
@@ -263,6 +332,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return mnuListDnldCmd;
 	}
+
 	/**
 	 * Returns an initiliazed instance of frmDnldList component.
 	 * 
@@ -273,21 +343,25 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 			frmDnldList = new List("Select form to download", Choice.IMPLICIT);
 			frmDnldList.addCommand(getFrmDnldListBakCmd());
 			frmDnldList.setCommandListener(this);
-			frmDnldList.setSelectedFlags(new boolean[] {});			
+			frmDnldList.setSelectedFlags(new boolean[] {});
 		}
 		return frmDnldList;
 	}
 
 	private void orgUnitListAction() {
-		String urlDownloadActivities = ((OrgUnit)orgUnitsVector.elementAt(getOrgUnitList().getSelectedIndex())).getActivitiesLink();
+		String urlDownloadActivities = ((OrgUnit) orgUnitsVector
+				.elementAt(getOrgUnitList().getSelectedIndex()))
+				.getActivitiesLink();
 		downloadActivities(urlDownloadActivities);
 		Form form = new Form("Downloading");
 		form.append("Please wait");
-		switchDisplayable(null,form );
+		switchDisplayable(null, form);
 	}
-	
+
 	private void downloadActivities(String urlDownloadActivities) {
-		downloadManager = new DownloadManager(this, urlDownloadActivities, "admin", getAdminPass().getString(), DownloadManager.DOWNLOAD_ACTIVITYPLAN);
+		downloadManager = new DownloadManager(this, urlDownloadActivities,
+				"admin", getAdminPass().getString(),
+				DownloadManager.DOWNLOAD_ACTIVITYPLAN);
 		downloadManager.start();
 	}
 
@@ -296,10 +370,11 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 * frmDnldList component.
 	 */
 	public void frmDnldListAction() {
-		AbstractModel programStage = (AbstractModel) programStagesVector.elementAt(((List) getFrmDnldList()).getSelectedIndex());
+		AbstractModel programStage = (AbstractModel) programStagesVector
+				.elementAt(((List) getFrmDnldList()).getSelectedIndex());
 		downloadForm(programStage.getId());
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of frmDnldListBakCmd component.
 	 * 
@@ -343,7 +418,8 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public Form getSettingsForm() {
 		if (settingsForm == null) {
-			settingsForm = new Form("Configurable Parameters", new Item[] {	getUrl(), getAdminPass() });
+			settingsForm = new Form("Configurable Parameters", new Item[] {
+					getUrl(), getAdminPass() });
 			settingsForm.addCommand(getSetngsBakCmd());
 			settingsForm.addCommand(getSetngsSaveCmd());
 			settingsForm.setCommandListener(this);
@@ -362,7 +438,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return stngsOkCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of setngsBakCmd component.
 	 * 
@@ -374,7 +450,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return setngsBakCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of setngsSaveCmd component.
 	 * 
@@ -386,7 +462,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return setngsSaveCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of url component.
 	 * 
@@ -396,7 +472,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		if (url == null) {
 			url = new TextField("Server Location", "http://localhost:8080/",
 					64, TextField.URL);
-			}
+		}
 		return url;
 	}
 
@@ -407,7 +483,8 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public TextField getAdminPass() {
 		if (adminPass == null) {
-			adminPass = new TextField("Admin Password", "", 32, TextField.ANY | TextField.PASSWORD);
+			adminPass = new TextField("Admin Password", "", 32, TextField.ANY
+					| TextField.PASSWORD);
 		}
 		return adminPass;
 	}
@@ -438,7 +515,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return deFrmBakCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of deFrmSavCmd component.
 	 * 
@@ -450,7 +527,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return deFrmSavCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of form component.
 	 * 
@@ -462,14 +539,25 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 			form.addCommand(getBackCommand());
 			form.addCommand(getScreenCommand());
 			form.setCommandListener(this);
-			
-			//This is just for test .....
+
+			// This is just for test .....
 			ProgramStageForm frm = fetchForm(1);
 			renderForm(frm, form);
 		}
 		return form;
 	}
-	
+
+	// Real downloaded forms select
+	public Form getForm(ProgramStageForm selectedForm) {
+		form = new Form("From");
+		form.addCommand(getBackCommand());
+		form.addCommand(getScreenCommand());
+		form.setCommandListener(this);
+		renderForm(selectedForm, form);
+
+		return form;
+	}
+
 	/**
 	 * Returns an initiliazed instance of backCommand component.
 	 * 
@@ -481,7 +569,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return backCommand;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of screenCommand component.
 	 * 
@@ -493,7 +581,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return screenCommand;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of loginForm component.
 	 * 
@@ -501,14 +589,15 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public Form getLoginForm() {
 		if (loginForm == null) {
-			loginForm = new Form("Please login", new Item[] { getUserName(), getPassword() });
+			loginForm = new Form("Please login", new Item[] { getUserName(),
+					getPassword() });
 			loginForm.addCommand(getLgnFrmExtCmd());
 			loginForm.addCommand(getLgnFrmLgnCmd());
 			loginForm.setCommandListener(this);
 		}
 		return loginForm;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of userName component.
 	 * 
@@ -516,11 +605,12 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public TextField getUserName() {
 		if (userName == null) {
-			userName = new TextField("Username", "", 32, TextField.ANY | TextField.SENSITIVE);
+			userName = new TextField("Username", "", 32, TextField.ANY
+					| TextField.SENSITIVE);
 		}
 		return userName;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of password component.
 	 * 
@@ -528,11 +618,12 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public TextField getPassword() {
 		if (password == null) {
-			password = new TextField("Password", null, 32, TextField.ANY | TextField.PASSWORD);
+			password = new TextField("Password", null, 32, TextField.ANY
+					| TextField.PASSWORD);
 		}
 		return password;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of lgnFrmExtCmd component.
 	 * 
@@ -544,7 +635,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return lgnFrmExtCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of okCommand component.
 	 * 
@@ -556,7 +647,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return okCommand;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of lgnFrmLgnCmd component.
 	 * 
@@ -568,7 +659,7 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return lgnFrmLgnCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of logo component.
 	 * 
@@ -678,13 +769,14 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		} catch (RecordStoreException rse) {
 		}
 	}
-	
+
 	private void browseActivities() {
-		//the setting url for download activity has not been set, using hard-code
-		
-		downloadManager = new DownloadManager(this, "http://localhost:8080/dhis-web-cbhis-api/",
-				"admin", getAdminPass().getString(),
-				DownloadManager.DOWNLOAD_ORGUNIT);
+		// the setting url for download activity has not been set, using
+		// hard-code
+
+		downloadManager = new DownloadManager(this,
+				"http://localhost:8080/dhis-web-cbhis-api/", "admin",
+				getAdminPass().getString(), DownloadManager.DOWNLOAD_ORGUNIT);
 		downloadManager.start();
 	}
 
@@ -734,26 +826,27 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 
 		return frm;
 	}
-	
+
 	public void saveOrgUnits(Vector orgunitVector) {
 		int i = 0;
 		this.orgUnitsVector = orgunitVector;
 		ModelRecordStore modelRecordStore;
 		Enumeration orgUnits = orgunitVector.elements();
 		OrgUnit orgunit = null;
-		while(orgUnits.hasMoreElements()){
+		while (orgUnits.hasMoreElements()) {
 			try {
-				modelRecordStore = new ModelRecordStore(ModelRecordStore.ORGUNIT_DB);
-				orgunit =  (OrgUnit)orgUnits.nextElement();
+				modelRecordStore = new ModelRecordStore(
+						ModelRecordStore.ORGUNIT_DB);
+				orgunit = (OrgUnit) orgUnits.nextElement();
 				modelRecordStore.AddRecord(OrgUnit.orgUnitToRecord(orgunit));
-				i+=1;				
+				i += 1;
 			} catch (RecordStoreException rse) {
 			}
 		}
 	}
-	
+
 	public void displayOrgUnitToDownloadActivities() {
-		if (orgUnitsVector == null || orgUnitsVector.size()==0) {
+		if (orgUnitsVector == null || orgUnitsVector.size() == 0) {
 			getOrgUnitList().append("No OrganisationUnit Available", null);
 		} else {
 			getOrgUnitList().deleteAll();
@@ -762,60 +855,67 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 				getOrgUnitList().insert(i, orgunit.getName(), null);
 			}
 		}
-		switchDisplayable(null, orgUnitList);		
+		switchDisplayable(null, orgUnitList);
 	}
-	
-	private List getOrgUnitList(){
+
+	private List getOrgUnitList() {
 		if (orgUnitList == null) {
-			orgUnitList = new List("Select orgunit to download correspond activities", Choice.IMPLICIT);
+			orgUnitList = new List(
+					"Select orgunit to download correspond activities",
+					Choice.IMPLICIT);
 			orgUnitList.addCommand(getOrgUnitListBakCmd());
 			orgUnitList.setCommandListener(this);
-			orgUnitList.setSelectedFlags(new boolean[] {});			
+			orgUnitList.setSelectedFlags(new boolean[] {});
 		}
 		return orgUnitList;
 	}
-	
-	private Command getOrgUnitListBakCmd(){
-		if(orgUnitBackCmd == null){
+
+	private Command getOrgUnitListBakCmd() {
+		if (orgUnitBackCmd == null) {
 			orgUnitBackCmd = new Command("Back", Command.EXIT, 0);
 		}
 		return orgUnitBackCmd;
 	}
-	
+
 	public void saveActivities(Vector activitiesVector) {
 		this.activitiesVector = activitiesVector;
-		ModelRecordStore modelRecordStore = new ModelRecordStore(ModelRecordStore.ACTIVITY_DB);
+		ModelRecordStore modelRecordStore = new ModelRecordStore(
+				ModelRecordStore.ACTIVITY_DB);
 		Enumeration activities = activitiesVector.elements();
 		Activity activity = null;
 		int i = 0;
-		while(activities.hasMoreElements()){
+		while (activities.hasMoreElements()) {
 			try {
-				activity =  (Activity)activities.nextElement();
+				activity = (Activity) activities.nextElement();
 				modelRecordStore.AddRecord(Activity.activityToRecord(activity));
-				i+=1;		
+				i += 1;
 			} catch (RecordStoreException rse) {
 			}
 		}
 	}
-	
-	public void displayCurActivities(){
-		if (activitiesVector == null || activitiesVector.size()==0) {
+
+	public void displayCurActivities() {
+		if (activitiesVector == null || activitiesVector.size() == 0) {
 			getActivitiesList().append("No Activity Available");
 		} else {
 			getActivitiesList().deleteAll();
 			for (int i = 0; i < activitiesVector.size(); i++) {
 				Activity activity = (Activity) activitiesVector.elementAt(i);
 				getActivitiesList().append("\n-------\n");
-				getActivitiesList().append("Beneficiary: "+activity.getBeneficiary().getFullName());
-				getActivitiesList().append("Due Date: "+activity.getDueDate().toString());
-				getActivitiesList().append("Form: "+activity.getTask().getProgStageName());
+				getActivitiesList().append(
+						"Beneficiary: "
+								+ activity.getBeneficiary().getFullName());
+				getActivitiesList().append(
+						"Due Date: " + activity.getDueDate().toString());
+				getActivitiesList().append(
+						"Form: " + activity.getTask().getProgStageName());
 				activity = null;
 			}
 		}
 		switchDisplayable(null, activityList);
 	}
-	
-	public Form getActivitiesList(){
+
+	public Form getActivitiesList() {
 		if (activityList == null) {
 			activityList = new Form("Current Activities");
 			activityList.addCommand(getActvyPlnListBakCmd());
@@ -905,9 +1005,4 @@ public class CBHISMIDlet extends MIDlet implements CommandListener {
 		}
 	}
 
-	
-
-	
-
-	
 }

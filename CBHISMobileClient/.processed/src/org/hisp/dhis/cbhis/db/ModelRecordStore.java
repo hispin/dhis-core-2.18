@@ -51,6 +51,27 @@ public class ModelRecordStore {
         }
         return null;
     }
+   //The get all record method
+	public Vector getAllRecord() throws RecordStoreException {
+		RecordStore rs = null;
+		RecordEnumeration re = null;
+		Vector vector = new Vector();
+		byte nextRec[] = null;
+		try {
+			rs = RecordStore.openRecordStore(dbName, true);
+			re = rs.enumerateRecords(null, null, false);
+			while (re.hasNextElement()) {
+				nextRec = re.nextRecord();
+				vector.addElement((AbstractModel.recordToAbstractModel(nextRec)));
+			}
+		} finally {
+			if (re != null)
+				re.destroy();
+			if (rs != null)
+				rs.closeRecordStore();
+		}
+		return vector;
+	}
     
     public void AddRecord(byte[] rec) throws RecordStoreException
     {
