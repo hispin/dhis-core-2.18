@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.hisp.dhis.cbhis.db;
+package org.hisp.dhis.mobile.db;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

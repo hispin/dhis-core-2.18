@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.hisp.dhis.cbhis.model;
+package org.hisp.dhis.mobile.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import javax.microedition.rms.RecordStoreException;
 
-import org.hisp.dhis.cbhis.db.ModelRecordStore;
+import org.hisp.dhis.mobile.db.ModelRecordStore;
 
 /**
  *

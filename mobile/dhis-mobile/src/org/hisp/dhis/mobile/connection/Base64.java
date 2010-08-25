@@ -51,7 +51,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hisp.dhis.cbhis.connection;
+package org.hisp.dhis.mobile.connection;
 
 /**
  * This class provides encode/decode for RFC 2045 Base64 as defined by
@@ -69,7 +69,6 @@ public final class  Base64
     static private final int  TWENTYFOURBITGROUP = 24;
     static private final int  EIGHTBIT           = 8;
     static private final int  SIXTEENBIT         = 16;
-    static private final int  FOURBYTE           = 4;
     static private final int  SIGN               = -128;
     static private final byte PAD                = (byte) '=';
     static private byte [] base64Alphabet       = new byte[BASELENGTH];
@@ -108,34 +107,6 @@ public final class  Base64
 
         lookUpBase64Alphabet[62] = (byte) '+';
         lookUpBase64Alphabet[63] = (byte) '/';
-    }
-
-    public static boolean isBase64( String isValidString )
-    {
-        return isArrayByteBase64(isValidString.getBytes());
-    }
-
-    public static boolean isBase64( byte octect )
-    {
-        //shall we ignore white space? JEFF??
-        return (octect == PAD || base64Alphabet[octect] != -1);
-    }
-
-    public static boolean isArrayByteBase64( byte[] arrayOctect )
-    {
-        int length = arrayOctect.length;
-        if (length == 0)
-        {
-            // shouldn't a 0 length array be valid base64 data?
-            // return false;
-            return true;
-        }
-        for (int i=0; i < length; i++)
-        {
-            if ( !Base64.isBase64(arrayOctect[i]) )
-                return false;
-        }
-        return true;
     }
 
     /**
@@ -226,78 +197,6 @@ public final class  Base64
     }
 
     /**
-     * Decodes Base64 data into octects
-     *
-     * @param binaryData Byte array containing Base64 data
-     * @return Array containing decoded data.
-     */
-    public static byte[] decode( byte[] base64Data )
-    {
-        // handle the edge case, so we don't have to worry about it later
-        if(base64Data.length == 0) { return new byte[0]; }
-
-        int      numberQuadruple    = base64Data.length/FOURBYTE;
-        byte     decodedData[]      = null;
-        byte     b1=0,b2=0,b3=0, b4=0, marker0=0, marker1=0;
-
-        // Throw away anything not in base64Data
-
-        int encodedIndex = 0;
-        int dataIndex    = 0;
-        {
-            // this sizes the output array properly - rlw
-            int lastData = base64Data.length;
-            // ignore the '=' padding
-            while (base64Data[lastData-1] == PAD)
-            {
-                if (--lastData == 0)
-                {
-                    return new byte[0];
-                }
-            }
-            decodedData = new byte[ lastData - numberQuadruple ];
-        }
-
-        for (int i = 0; i < numberQuadruple; i++)
-        {
-            dataIndex = i * 4;
-            marker0   = base64Data[dataIndex + 2];
-            marker1   = base64Data[dataIndex + 3];
-
-            b1 = base64Alphabet[base64Data[dataIndex]];
-            b2 = base64Alphabet[base64Data[dataIndex +1]];
-
-            if (marker0 != PAD && marker1 != PAD)
-            {
-                //No PAD e.g 3cQl
-                b3 = base64Alphabet[ marker0 ];
-                b4 = base64Alphabet[ marker1 ];
-
-                decodedData[encodedIndex]   = (byte)(  b1 <<2 | b2>>4 ) ;
-                decodedData[encodedIndex + 1] =
-                    (byte)(((b2 & 0xf)<<4 ) |( (b3>>2) & 0xf) );
-                decodedData[encodedIndex + 2] = (byte)( b3<<6 | b4 );
-            }
-            else if (marker0 == PAD)
-            {
-                //Two PAD e.g. 3c[Pad][Pad]
-                decodedData[encodedIndex]   = (byte)(  b1 <<2 | b2>>4 ) ;
-            }
-            else if (marker1 == PAD)
-            {
-                //One PAD e.g. 3cQ[Pad]
-                b3 = base64Alphabet[ marker0 ];
-
-                decodedData[encodedIndex]   = (byte)(  b1 <<2 | b2>>4 );
-                decodedData[encodedIndex + 1] =
-                    (byte)(((b2 & 0xf)<<4 ) |( (b3>>2) & 0xf) );
-            }
-            encodedIndex += 3;
-        }
-        return decodedData;
-    }
-     
-    /**
      * Encodes hex octets of a UTF-8 encoded String into Base64
      *
      * @param data the String to encode.
@@ -307,57 +206,4 @@ public final class  Base64
         return encode(data.getBytes());
     }
 
-    /**
-     * Decodes a string containing Base64 data
-     *
-     * @param data the String to decode.
-     * @return Decoded Base64 array
-     */
-    public static byte[] decode(String data) {
-        return decode(data.getBytes());
-    }
-          
-    static final int base64[] = {
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 62, 64, 64, 64, 63,
-        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 64, 64, 64, 64, 64,
-        64, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-        15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 64, 64, 64, 64, 64,
-        64, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-        41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-        64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
-    };
-
-    public static String base64Decode(String orig) {
-        char chars[] = orig.toCharArray();
-        StringBuffer sb = new StringBuffer();
-        int i = 0;
-
-        int shift = 0;   // # of excess bits stored in accum
-        int acc = 0;
-
-        for (i = 0; i < chars.length; i++) {
-            int v = base64[chars[i] & 0xFF];
-
-            if (v >= 64) {
-                // Removed logging at finest level
-            } else {
-                acc = (acc << 6) | v;
-                shift += 6;
-                if (shift >= 8) {
-                    shift -= 8;
-                    sb.append((char) ((acc >> shift) & 0xff));
-                }
-            }
-        }
-        return sb.toString();
-    }
 }

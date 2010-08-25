@@ -21,7 +21,7 @@ public class FormsResource {
 	private IProgramStageService iProgramStageService;
 	
 	@GET	
-	@Produces(MediaType.TEXT_XML)	
+	@Produces(MediaType.APPLICATION_XML)	
 	public List<IProgramStage> getAllFormsXML() {
 
 		List<IProgramStage> forms = new ArrayList<IProgramStage>();
@@ -33,7 +33,7 @@ public class FormsResource {
 		
 	@GET 
 	@Path("{formid}")
-	@Produces(MediaType.TEXT_XML)	
+	@Produces(MediaType.APPLICATION_XML)	
 	public Form getSelectedFormXML(@PathParam("formid")  int formid ) {
 		return iProgramStageService.getForm( formid );
 	}

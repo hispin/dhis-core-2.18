@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.hisp.dhis.cbhis.model;
+package org.hisp.dhis.mobile.model;
 
 /**
  *

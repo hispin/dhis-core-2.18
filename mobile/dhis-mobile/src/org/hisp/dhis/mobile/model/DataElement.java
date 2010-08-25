@@ -1,4 +1,4 @@
-package org.hisp.dhis.cbhis.model;
+package org.hisp.dhis.mobile.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
