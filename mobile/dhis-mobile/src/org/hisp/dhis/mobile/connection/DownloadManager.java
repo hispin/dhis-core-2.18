@@ -9,8 +9,9 @@ import java.util.Vector;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Form;
 
-import org.hisp.dhis.mobile.model.AbstractModel;
 import org.hisp.dhis.mobile.model.Activity;
 import org.hisp.dhis.mobile.model.Beneficiary;
 import org.hisp.dhis.mobile.model.DataElement;
@@ -19,6 +20,7 @@ import org.hisp.dhis.mobile.model.ProgramStageForm;
 import org.hisp.dhis.mobile.model.Task;
 import org.hisp.dhis.mobile.model.User;
 import org.hisp.dhis.mobile.ui.DHISMIDlet;
+import org.hisp.dhis.mobile.util.StringUtil;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,6 +28,8 @@ import org.xmlpull.v1.XmlPullParserException;
 public class DownloadManager
     extends Thread
 {
+
+    public static final String DOWNLOAD_ALL = "ALL";
 
     public static final String DOWNLOAD_FORMS = "forms";
 
@@ -35,7 +39,7 @@ public class DownloadManager
 
     public static final String DOWNLOAD_ORGUNIT = "orgUnits";
 
-    public static final String FORMS_TAG = "iProgramStages";
+    public static final String FORMS_TAG = "forms";
 
     public static final String FORM_TAG = "form";
 
@@ -43,13 +47,13 @@ public class DownloadManager
 
     public static final String ORGUNIT_TAG = "orgUnits";
 
-    public static final String ACTIVITYPLAN_TAG = "activityPlan";
+    public static final String ACTIVITYPLAN_TAG = "activities";
 
     Vector programStagesVector = new Vector();
 
     Vector programStageDataElementsVctr = new Vector();
 
-    Vector orgunitVector = new Vector();
+    OrgUnit orgunit;
 
     Vector activitiesVector = new Vector();
 
@@ -59,23 +63,21 @@ public class DownloadManager
 
     private DHISMIDlet dhisMIDlet;
 
-    private String rootUrl;
+    private String url;
 
     private User user;
 
     private String task;
 
-    private int param;
-
     public DownloadManager()
     {
     }
 
-    public DownloadManager( DHISMIDlet dhisMIDlet, String rootUrl, User user, String task )
+    public DownloadManager( DHISMIDlet dhisMIDlet, String url, User user, String task )
     {
 
         this.dhisMIDlet = dhisMIDlet;
-        this.rootUrl = rootUrl;
+        this.url = url;
         this.user = user;
         this.task = task;
 
@@ -83,37 +85,36 @@ public class DownloadManager
             + System.getProperty( "microedition.configuration" );
     }
 
-    public DownloadManager( DHISMIDlet dhisMIDlet, String rootUrl, User user, String task, int param )
-    {
-        this( dhisMIDlet, rootUrl, user, task );
-        this.param = param;
-    }
-
     public void run()
     {
         if ( task.equals( DOWNLOAD_FORMS ) )
         {
-            download( rootUrl + "forms", FORMS_TAG );
+            download( url, FORMS_TAG );
             dhisMIDlet.displayFormsForDownload( programStagesVector );
         }
         else if ( task.equals( DOWNLOAD_FORM ) )
         {
-            download( rootUrl + "forms/" + param, FORM_TAG );
+            download( url, FORM_TAG );
             dhisMIDlet.saveForm( form );
             dhisMIDlet.renderForm( form, dhisMIDlet.getDataEntryForm() );
         }
         else if ( task.equals( DOWNLOAD_ORGUNIT ) )
         {
-            // download OrgUnits and save to RMS then download Activities
-            download( rootUrl + "v0.1/", ORGUNIT_TAG );
-            dhisMIDlet.saveOrgUnits( orgunitVector );
-            dhisMIDlet.displayOrgUnitToDownloadActivities();
+            download( url, ORGUNIT_TAG );
+            dhisMIDlet.saveOrgUnit( orgunit );
+            dhisMIDlet.downloadActivities();
         }
         else if ( task.equals( DOWNLOAD_ACTIVITYPLAN ) )
         {
-            download( rootUrl, ACTIVITYPLAN_TAG );
+            download( url, ACTIVITYPLAN_TAG );
             dhisMIDlet.saveActivities( activitiesVector );
             dhisMIDlet.displayCurActivities();
+        }
+        else if ( task.equals( DOWNLOAD_ALL ) )
+        {
+            download( url, ORGUNIT_TAG );
+            dhisMIDlet.saveOrgUnit( orgunit );
+            dhisMIDlet.downloadActivities();
         }
     }
 
@@ -153,6 +154,10 @@ public class DownloadManager
 
                     connection = null;
                     break;
+                case HttpConnection.HTTP_CONFLICT:
+                    String error = StringUtil.streamToString( inStream );
+                    dhisMIDlet.error(error);
+                    throw new IOException( error );
                 case HttpConnection.HTTP_UNAUTHORIZED:
                     throw new AuthenticationException();
                 default:
@@ -276,9 +281,9 @@ public class DownloadManager
         throws IOException, XmlPullParserException
     {
 
-        AbstractModel programStage = new AbstractModel();
+        ProgramStageForm programStage = new ProgramStageForm();
 
-        parser.require( XmlPullParser.START_TAG, null, "iProgramStage" );
+        parser.require( XmlPullParser.START_TAG, null, "form" );
 
         while ( parser.nextTag() != XmlPullParser.END_TAG )
         {
@@ -297,7 +302,7 @@ public class DownloadManager
         }
 
         programStagesVector.addElement( programStage );
-        parser.require( XmlPullParser.END_TAG, null, "iProgramStage" );
+        parser.require( XmlPullParser.END_TAG, null, "form" );
     }
 
     private void parseDataElements( KXmlParser parser )
@@ -363,7 +368,7 @@ public class DownloadManager
         {
             orgUnit.setActivitiesLink( parser.getAttributeValue( 0 ) );
         }
-        orgunitVector.addElement( orgUnit );
+        this.orgunit = orgUnit;
         parser.nextTag();
     }
 
