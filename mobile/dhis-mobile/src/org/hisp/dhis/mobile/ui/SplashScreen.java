@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.hisp.dhis.cbhis.gui;
+package org.hisp.dhis.mobile.ui;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -21,8 +21,7 @@ public class IProgramStageService {
 
 		List<IProgramStage> forms = new ArrayList<IProgramStage>();
 
-		List<ProgramStage> programStages = (List<ProgramStage>) programStageService
-				.getAllProgramStages();
+		List<ProgramStage> programStages = (List<ProgramStage>) programStageService.getAllProgramStages();
 
 		for (ProgramStage programStage : programStages) {
 

@@ -3,14 +3,14 @@
  * and open the template in the editor.
  */
 
-package org.hisp.dhis.cbhis.db;
+package org.hisp.dhis.mobile.db;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
 import javax.microedition.rms.RecordFilter;
 
-import org.hisp.dhis.cbhis.model.AbstractModel;
+import org.hisp.dhis.mobile.model.AbstractModel;
 
 public class AbstractModelRecordFilter implements RecordFilter
 {

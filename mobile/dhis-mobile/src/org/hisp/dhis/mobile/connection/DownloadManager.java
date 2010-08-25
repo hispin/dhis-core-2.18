@@ -1,5 +1,4 @@
-package org.hisp.dhis.cbhis.connection;
-
+package org.hisp.dhis.mobile.connection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +10,15 @@ import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 
-import org.hisp.dhis.cbhis.gui.DHISMIDlet;
-import org.hisp.dhis.cbhis.model.AbstractModel;
-import org.hisp.dhis.cbhis.model.Activity;
-import org.hisp.dhis.cbhis.model.Beneficiary;
-import org.hisp.dhis.cbhis.model.DataElement;
-import org.hisp.dhis.cbhis.model.OrgUnit;
-import org.hisp.dhis.cbhis.model.ProgramStageForm;
-import org.hisp.dhis.cbhis.model.Task;
-import org.hisp.dhis.cbhis.model.User;
+import org.hisp.dhis.mobile.model.AbstractModel;
+import org.hisp.dhis.mobile.model.Activity;
+import org.hisp.dhis.mobile.model.Beneficiary;
+import org.hisp.dhis.mobile.model.DataElement;
+import org.hisp.dhis.mobile.model.OrgUnit;
+import org.hisp.dhis.mobile.model.ProgramStageForm;
+import org.hisp.dhis.mobile.model.Task;
+import org.hisp.dhis.mobile.model.User;
+import org.hisp.dhis.mobile.ui.DHISMIDlet;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -84,8 +83,7 @@ public class DownloadManager
             + System.getProperty( "microedition.configuration" );
     }
 
-    public DownloadManager( DHISMIDlet dhisMIDlet, String rootUrl, User user, String task,
-        int param )
+    public DownloadManager( DHISMIDlet dhisMIDlet, String rootUrl, User user, String task, int param )
     {
         this( dhisMIDlet, rootUrl, user, task );
         this.param = param;
@@ -121,80 +119,66 @@ public class DownloadManager
 
     private void download( String url, String xmlTag )
     {
-        HttpConnection hcon = null;
+        HttpConnection connection = null;
         InputStream inStream = null;
 
         try
         {
-            int redirectTimes = 0;
-            boolean redirect;
-            do
+            for ( int redirectTimes = 0; redirectTimes < 5; redirectTimes++ )
+                ;
             {
-                redirect = false;
+                connection = (HttpConnection) Connector.open( url );
+                configureConnection( connection );
+                inStream = connection.openInputStream();
 
-                hcon = (HttpConnection) Connector.open( url );
+                int status = connection.getResponseCode();
 
-                if ( xmlTag.equals( ACTIVITYPLAN_TAG ) || xmlTag.equals( ORGUNIT_TAG ) )
-                {
-                    // dhis-web-cbhis-api return application/xml
-                    hcon.setRequestProperty( "Accept", "application/xml" );
-                    configureConnection( hcon );
-                }
-                else
-                {
-                    // dhis-web-cbhis-webservice return text/xml
-                    hcon.setRequestProperty( "Accept", "text/xml" );
-                    configureConnection( hcon );
-                }
+                System.out.println( "Server Response Code: " + status );
 
-                inStream = hcon.openInputStream();
-                System.out.println( "Server Response Code:" + hcon.getResponseCode() );
-
-                int status = hcon.getResponseCode();
                 switch ( status )
                 {
                 case HttpConnection.HTTP_OK: // Success!
                     readXMLData( inStream, xmlTag );
-                    break;
+                    return;
                 case HttpConnection.HTTP_TEMP_REDIRECT:
                 case HttpConnection.HTTP_MOVED_TEMP:
                 case HttpConnection.HTTP_MOVED_PERM:
                     // Redirect: get the new location
-                    url = hcon.getHeaderField( "location" );
+                    url = connection.getHeaderField( "location" );
 
                     if ( inStream != null )
                         inStream.close();
-                    if ( hcon != null )
-                        hcon.close();
+                    if ( connection != null )
+                        connection.close();
 
-                    hcon = null;
-                    redirectTimes++;
-                    redirect = true;
+                    connection = null;
                     break;
+                case HttpConnection.HTTP_UNAUTHORIZED:
+                    throw new AuthenticationException();
                 default:
                     // Error: throw exception
-                    hcon.close();
-                    throw new IOException( "Response status not OK:" + status );
+                    connection.close();
+                    throw new IOException( "Response status not OK: " + status );
                 }
-
-                // max 5 redirects
             }
-            while ( redirect == true && redirectTimes < 5 );
 
-            if ( redirectTimes == 5 )
-            {
-                throw new IOException( "Too much redirects" );
-            }
+            throw new IOException( "Too much redirects" );
+        }
+        catch ( AuthenticationException e )
+        {
+            // The user on the phone does not match server side user..
         }
         catch ( Exception e )
         {
+            e.printStackTrace();
+            // handle!
         }
         finally
         {
             try
             {
-                if ( hcon != null )
-                    hcon.close();
+                if ( connection != null )
+                    connection.close();
                 if ( inStream != null )
                     inStream.close();
             }
@@ -218,14 +202,14 @@ public class DownloadManager
         conn.setRequestProperty( "Accept-Language", locale );
         conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded" );
 
-        // set HTTP basic authentification
         if ( user != null )
         {
-            // Basic authentication
-            String hash = new String(Base64.encode( user.getUsername() + ":" + user.getPassword() ));
-            conn.setRequestProperty("Authorization", "Basic " + hash);
+            // set HTTP basic authentication
+            String hash = new String( Base64.encode( user.getUsername() + ":" + user.getPassword() ) );
+            conn.setRequestProperty( "Authorization", "Basic " + hash );
         }
 
+        conn.setRequestProperty( "Accept", "application/xml" );
     }
 
     private void readXMLData( InputStream inStream, String tag )

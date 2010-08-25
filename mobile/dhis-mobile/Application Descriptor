@@ -3,5 +3,5 @@ MIDlet-Vendor: HISP
 MIDlet-Jar-URL: dhis-mobile.jar
 MicroEdition-Configuration: CLDC-1.1
 MicroEdition-Profile: MIDP-2.1
-MIDlet-1: DHISMIDlet,/logos/dhis2.png,org.hisp.dhis.cbhis.gui.DHISMIDlet
+MIDlet-1: DHISMIDlet,/logos/dhis2.png,org.hisp.dhis.mobile.ui.DHISMIDlet
 MIDlet-Name: dhis-mobile

@@ -1,8 +1,8 @@
-package org.hisp.dhis.cbhis.db;
+package org.hisp.dhis.mobile.db;
 
 import javax.microedition.rms.RecordComparator;
 
-import org.hisp.dhis.cbhis.model.AbstractModel;
+import org.hisp.dhis.mobile.model.AbstractModel;
 
 public class AbstractRecordComparator implements RecordComparator
 {

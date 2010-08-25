@@ -1,4 +1,4 @@
-package org.hisp.dhis.cbhis.db;
+package org.hisp.dhis.mobile.db;
 
 import java.util.Vector;
 
@@ -6,8 +6,8 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-import org.hisp.dhis.cbhis.model.AbstractModel;
-import org.hisp.dhis.cbhis.model.DataElement;
+import org.hisp.dhis.mobile.model.AbstractModel;
+import org.hisp.dhis.mobile.model.DataElement;
 
 public class ModelRecordStore {
 

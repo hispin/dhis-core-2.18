@@ -1,4 +1,4 @@
-package org.hisp.dhis.cbhis.gui;
+package org.hisp.dhis.mobile.ui;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -19,15 +19,15 @@ import javax.microedition.lcdui.TextField;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.RecordStoreException;
 
-import org.hisp.dhis.cbhis.connection.DownloadManager;
-import org.hisp.dhis.cbhis.db.ModelRecordStore;
-import org.hisp.dhis.cbhis.db.SettingsRectordStore;
-import org.hisp.dhis.cbhis.model.AbstractModel;
-import org.hisp.dhis.cbhis.model.Activity;
-import org.hisp.dhis.cbhis.model.DataElement;
-import org.hisp.dhis.cbhis.model.OrgUnit;
-import org.hisp.dhis.cbhis.model.ProgramStageForm;
-import org.hisp.dhis.cbhis.model.User;
+import org.hisp.dhis.mobile.connection.DownloadManager;
+import org.hisp.dhis.mobile.db.ModelRecordStore;
+import org.hisp.dhis.mobile.db.SettingsRectordStore;
+import org.hisp.dhis.mobile.model.AbstractModel;
+import org.hisp.dhis.mobile.model.Activity;
+import org.hisp.dhis.mobile.model.DataElement;
+import org.hisp.dhis.mobile.model.OrgUnit;
+import org.hisp.dhis.mobile.model.ProgramStageForm;
+import org.hisp.dhis.mobile.model.User;
 
 public class DHISMIDlet
     extends MIDlet
