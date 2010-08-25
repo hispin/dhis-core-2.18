@@ -40,8 +40,6 @@ public class DHISMIDlet
 
     private boolean midletPaused = false;
 
-    private boolean login = false;
-
     private User user;
 
     private DownloadManager downloadManager;
@@ -50,7 +48,7 @@ public class DHISMIDlet
 
     private Vector programStagesVector = new Vector();
 
-    private Vector orgUnitsVector = new Vector();
+    private OrgUnit orgUnit;
 
     private Vector activitiesVector = new Vector();
 
@@ -59,8 +57,6 @@ public class DHISMIDlet
     private List mainMenuList;
 
     private List formDownloadList;
-
-    private List orgUnitList;
 
     private Form activityList;
 
@@ -226,7 +222,19 @@ public class DHISMIDlet
             else if ( command == lgnFrmLgnCmd )
             {
                 login();
-                switchDisplayable( null, getMainMenuList() );
+                if ( user != null )
+                {
+//                    DownloadManager downloadManager = new DownloadManager( this, serverUrl + "user", user, DownloadManager.DOWNLOAD_ALL );
+//                    downloadManager.start();
+//                    Form waitForm = new Form( "Making connection" );
+//                    waitForm.append( "Please wait........" );
+//                    switchDisplayable( null, waitForm );
+                    switchDisplayable( null, getMainMenuList() );
+                }
+                else
+                {
+                    getDisplay().setCurrent( new Alert( "You must login" ), loginForm );
+                }
             }
         }
         else if ( displayable == mainMenuList )
@@ -253,22 +261,11 @@ public class DHISMIDlet
                 switchDisplayable( null, getMainMenuList() );
             }
         }
-        else if ( displayable == orgUnitList )
-        {
-            if ( command == orgUnitBackCmd )
-            {
-                switchDisplayable( null, getMainMenuList() );
-            }
-            else if ( command == List.SELECT_COMMAND )
-            {
-                orgUnitListAction();
-            }
-        }
         else if ( displayable == activityList )
         {
             if ( command == actvyPlnListBakCmd )
             {
-                switchDisplayable( null, orgUnitList );
+                switchDisplayable( null, getMainMenuList() );
             }
         }
         else if ( displayable == downloadedFormsList )
@@ -466,20 +463,16 @@ public class DHISMIDlet
         return formDownloadList;
     }
 
-    private void orgUnitListAction()
+    public void downloadActivities()
     {
-        String urlDownloadActivities = ((OrgUnit) orgUnitsVector.elementAt( getOrgUnitList().getSelectedIndex() ))
-            .getActivitiesLink();
-        downloadActivities( urlDownloadActivities );
+        String urlDownloadActivities = orgUnit.getActivitiesLink();
+
+        downloadManager = new DownloadManager( this, urlDownloadActivities, user, DownloadManager.DOWNLOAD_ACTIVITYPLAN );
+        downloadManager.start();
+
         Form form = new Form( "Downloading" );
         form.append( "Please wait" );
         switchDisplayable( null, form );
-    }
-
-    private void downloadActivities( String urlDownloadActivities )
-    {
-        downloadManager = new DownloadManager( this, urlDownloadActivities, user, DownloadManager.DOWNLOAD_ACTIVITYPLAN );
-        downloadManager.start();
     }
 
     /**
@@ -487,16 +480,11 @@ public class DHISMIDlet
      */
     public void frmDnldListAction()
     {
-        AbstractModel programStage = (AbstractModel) programStagesVector.elementAt( ((List) getFormDownloadList())
-            .getSelectedIndex() );
+        ProgramStageForm programStage = (ProgramStageForm) programStagesVector
+            .elementAt( ((List) getFormDownloadList()).getSelectedIndex() );
         downloadForm( programStage.getId() );
     }
 
-    /**
-     * Returns an initiliazed instance of frmDnldListBakCmd component.
-     * 
-     * @return the initialized component instance
-     */
     public Command getFrmDnldListBakCmd()
     {
         if ( frmDnldListBakCmd == null )
@@ -687,6 +675,11 @@ public class DHISMIDlet
         return form;
     }
 
+    public void afterInit()
+    {
+        switchDisplayable( null, getMainMenuList() );
+    }
+
     // Real downloaded forms select
     public Form getForm( ProgramStageForm selectedForm )
     {
@@ -862,12 +855,11 @@ public class DHISMIDlet
             String password = getPassword().getString().trim();
             if ( username.length() != 0 && password.length() != 0 )
             {
-                login = true;
                 user = new User( username, password );
             }
         }
         // Take action based on login value
-        if ( login )
+        if ( user != null )
         {
             System.out.println( "Login successfull" );
 
@@ -876,7 +868,6 @@ public class DHISMIDlet
         {
             System.out.println( "Login failed..." );
         }
-        login = false;
     }
 
     private void saveSettings()
@@ -914,17 +905,20 @@ public class DHISMIDlet
 
     private void browseActivities()
     {
-        // the setting url for download activity has not been set, using
-        // hard-code
-
-        downloadManager = new DownloadManager( this, serverUrl, user, DownloadManager.DOWNLOAD_ORGUNIT );
-        downloadManager.start();
+        if ( activitiesVector == null || activitiesVector.size() == 0 ) {
+            downloadManager = new DownloadManager( this, serverUrl + "user", user, DownloadManager.DOWNLOAD_ORGUNIT );
+            downloadManager.start();
+        }
+        else {
+            displayCurActivities();
+        }
+    
     }
 
     private void browseForms()
     {
         loadSettings();
-        downloadManager = new DownloadManager( this, serverUrl, user, DownloadManager.DOWNLOAD_FORMS );
+        downloadManager = new DownloadManager( this, serverUrl  + "forms", user, DownloadManager.DOWNLOAD_FORMS );
         downloadManager.start();
     }
 
@@ -952,7 +946,7 @@ public class DHISMIDlet
     private void downloadForm( int formId )
     {
         loadSettings();
-        downloadManager = new DownloadManager( this, serverUrl, user, DownloadManager.DOWNLOAD_FORM, formId );
+        downloadManager = new DownloadManager( this, serverUrl + "forms/" + formId , user, DownloadManager.DOWNLOAD_FORM );
         downloadManager.start();
     }
 
@@ -973,45 +967,6 @@ public class DHISMIDlet
         }
 
         return frm;
-    }
-
-    public void displayOrgUnitToDownloadActivities()
-    {
-        if ( orgUnitsVector == null || orgUnitsVector.size() == 0 )
-        {
-            getOrgUnitList().append( "No OrganisationUnit Available", null );
-        }
-        else
-        {
-            getOrgUnitList().deleteAll();
-            for ( int i = 0; i < orgUnitsVector.size(); i++ )
-            {
-                OrgUnit orgunit = (OrgUnit) orgUnitsVector.elementAt( i );
-                getOrgUnitList().insert( i, orgunit.getName(), null );
-            }
-        }
-        switchDisplayable( null, orgUnitList );
-    }
-
-    private List getOrgUnitList()
-    {
-        if ( orgUnitList == null )
-        {
-            orgUnitList = new List( "Select orgunit to download correspond activities", Choice.IMPLICIT );
-            orgUnitList.addCommand( getOrgUnitListBakCmd() );
-            orgUnitList.setCommandListener( this );
-            orgUnitList.setSelectedFlags( new boolean[] {} );
-        }
-        return orgUnitList;
-    }
-
-    private Command getOrgUnitListBakCmd()
-    {
-        if ( orgUnitBackCmd == null )
-        {
-            orgUnitBackCmd = new Command( "Back", Command.EXIT, 0 );
-        }
-        return orgUnitBackCmd;
     }
 
     public void saveActivities( Vector activitiesVector )
@@ -1134,25 +1089,17 @@ public class DHISMIDlet
         switchDisplayable( null, form );
     }
 
-    public void saveOrgUnits( Vector orgunitVector )
+    public void saveOrgUnit( OrgUnit orgunit )
     {
-        int i = 0;
-        this.orgUnitsVector = orgunitVector;
+        this.orgUnit = orgunit;
         ModelRecordStore modelRecordStore;
-        Enumeration orgUnits = orgunitVector.elements();
-        OrgUnit orgunit = null;
-        while ( orgUnits.hasMoreElements() )
+        try
         {
-            try
-            {
-                modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB );
-                orgunit = (OrgUnit) orgUnits.nextElement();
-                modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgunit ) );
-                i += 1;
-            }
-            catch ( RecordStoreException rse )
-            {
-            }
+            modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB );
+            modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgunit ) );
+        }
+        catch ( RecordStoreException rse )
+        {
         }
     }
 
@@ -1184,6 +1131,13 @@ public class DHISMIDlet
                 System.out.println( de.getName() + " or  " + de.getId() + "   val   " + txtField.getString() );
             }
         }
+    }
+
+    public void error( String error )
+    {
+        Form errorForm = new Form( "Problem with server configuration" );
+        errorForm.append( error );
+        switchDisplayable( null, errorForm  );
     }
 
 }

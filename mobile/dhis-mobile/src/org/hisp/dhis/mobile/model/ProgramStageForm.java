@@ -16,10 +16,6 @@ import javax.microedition.rms.RecordStoreException;
 
 import org.hisp.dhis.mobile.db.ModelRecordStore;
 
-/**
- *
- * @author abyotag_adm
- */
 public class ProgramStageForm extends AbstractModel {
 
     private Vector dataElements;

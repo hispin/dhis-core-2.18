@@ -6,47 +6,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Resources -->
 
-  <bean id="case.api.MobileUser" 
-    class="org.hisp.dhis.patient.api.resources.MobileUserResource" scope="prototype" />
+  <bean id="org.hisp.dhis.web.api.resources.UserResource" 
+    class="org.hisp.dhis.web.api.resources.UserResource" scope="prototype" />
 
-  <bean id="case.api.OrgUnit" 
-    class="org.hisp.dhis.patient.api.resources.OrgUnitResource" scope="prototype" />
+  <bean id="org.hisp.dhis.web.api.resources.OrgUnitResource" 
+    class="org.hisp.dhis.web.api.resources.OrgUnitResource" scope="prototype" />
 
-  <bean id="case.api.ActivityPlan"
-    class="org.hisp.dhis.patient.api.resources.ActivitiesResource" scope="prototype" />
-
-  <bean id="case.api.ProgramForms"
-    class="org.hisp.dhis.patient.api.resources.ProgramFormsResource" scope="prototype" />
-
-  <bean id="org.hisp.dhis.patient.api.resources.FormsResource"
-    class="org.hisp.dhis.patient.api.resources.FormsResource" scope="prototype" />
+  <bean id="org.hisp.dhis.web.api.resources.FormsResource"
+    class="org.hisp.dhis.web.api.resources.FormsResource" scope="prototype" />
 
   <!-- Web service layer -->
 
-  <bean id="org.hisp.dhis.patient.api.service.ActivityPlanModelService"
-      class="org.hisp.dhis.patient.api.service.ActivityPlanModelService" />
+  <bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
+      class="org.hisp.dhis.web.api.service.ActivityPlanModelService" />
 
-  <bean id="org.hisp.dhis.patient.api.service.IProgramStageService"
-      class="org.hisp.dhis.patient.api.service.IProgramStageService" />
-
-  <!-- Entity bean mapping -->
-
-  <bean id="mappingFactory" class="org.hisp.dhis.patient.api.service.MappingFactory">
-    <property name="mappers">
-      <set>
-        <bean id="orgUnitsMapper"
-          class="org.hisp.dhis.patient.api.service.mapping.OrgUnitsMapper" />
-        <bean id="activityPlanMapper"
-          class="org.hisp.dhis.patient.api.service.mapping.ActivityPlanMapper" />
-        <bean id="activityPlanItemMapper"
-          class="org.hisp.dhis.patient.api.service.mapping.ActivityPlanItemMapper" />
-        <bean id="beneficiaryMapper"
-          class="org.hisp.dhis.patient.api.service.mapping.BeneficiaryMapper" />
-        <bean id="taskMapper"
-          class="org.hisp.dhis.patient.api.service.mapping.TaskMapper" />
-      </set>
-    </property>
-  </bean>
+  <bean id="org.hisp.dhis.web.api.service.ProgramStageService"
+      class="org.hisp.dhis.web.api.service.ProgramStageService" />
 
   <!-- Response writers -->
 
