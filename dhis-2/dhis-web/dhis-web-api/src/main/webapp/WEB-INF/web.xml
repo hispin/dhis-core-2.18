@@ -2,7 +2,7 @@
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
   "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
-  <display-name>DHIS 2</display-name>
+  <display-name>DHIS Case Entry</display-name>
   
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -10,7 +10,7 @@
   </context-param>
   <context-param>
     <param-name>automaticAccessType</param-name>
-    <param-value>databaseAdmin</param-value>
+    <param-value>ghostAdmin</param-value>
   </context-param>
   
   <filter>
@@ -18,21 +18,19 @@
     <filter-class>org.hisp.dhis.servlet.filter.HttpRedirectFilter</filter-class>
     <init-param>
       <param-name>redirectPath</param-name>
-      <param-value>dhis-web-portal/redirect.action</param-value>
+      <param-value>api/</param-value>
     </init-param>
   </filter>
   <filter>
     <filter-name>OpenSessionInViewFilter</filter-name>
     <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
   </filter>
-  <filter>
-    <filter-name>filterChainProxy</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-  </filter>
-  <filter>
-    <filter-name>Struts</filter-name>
-    <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
-  </filter>
+  
+	<filter>
+		<filter-name>filterChainProxy</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
   
   <filter-mapping>
     <filter-name>RedirectFilter</filter-name>
@@ -50,10 +48,6 @@
     <filter-name>filterChainProxy</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  <filter-mapping>
-    <filter-name>Struts</filter-name>
-    <url-pattern>*.action</url-pattern>
-  </filter-mapping>
   
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -61,20 +55,6 @@
   <listener>
     <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
   </listener>
-  
-  <!-- For the dhis-web-mapping module (pdf printing service) -->
-  
-  <servlet>
-    <servlet-name>mapfish.print</servlet-name>
-    <servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
-    <init-param>
-      <param-name>config</param-name>
-      <param-value>config.yaml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-<!-- For the dhis-web-api module -->
 
   <servlet>
     <servlet-name>web-api</servlet-name>
@@ -89,21 +69,9 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
-
-  <servlet-mapping>
-    <servlet-name>mapfish.print</servlet-name>
-    <url-pattern>/pdf/*</url-pattern>
-  </servlet-mapping>
-
   <servlet-mapping>
     <servlet-name>web-api</servlet-name>
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
-
-
-  <error-page>
-   <exception-type>java.lang.Throwable</exception-type>
-   <location>/error.html</location>
-  </error-page>
 
 </web-app>

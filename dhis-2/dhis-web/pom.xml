@@ -24,8 +24,7 @@
     <module>dhis-web-dashboard-integration</module>
     <module>dhis-web-excel-reporting</module>
     <module>dhis-web-caseentry</module>
-	<module>dhis-web-cbhis-webservice</module>
-    <module>dhis-web-cbhis-api</module>
+    <module>dhis-web-api</module>
     <module>dhis-web-portal</module>
   </modules>
 
