@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-MIDlet-Vendor: HISP
-MIDlet-Version: 1.0.0
-MIDlet-1: CBHISMIDlet,,org.hisp.dhis.cbhis.gui.CBHISMIDlet
-MicroEdition-Configuration: CLDC-1.0
-MIDlet-Name: CBHIS Mobile Client
-MicroEdition-Profile: MIDP-2.0
-

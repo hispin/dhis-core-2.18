@@ -135,15 +135,9 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-	<dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-cbhis-webservice</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-cbhis-api</artifactId>
+      <artifactId>dhis-web-api</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
