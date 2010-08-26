@@ -28,6 +28,7 @@ import org.hisp.dhis.mobile.model.DataElement;
 import org.hisp.dhis.mobile.model.OrgUnit;
 import org.hisp.dhis.mobile.model.ProgramStageForm;
 import org.hisp.dhis.mobile.model.User;
+import org.hisp.dhis.mobile.util.AlertUtil;
 
 public class DHISMIDlet
     extends MIDlet
@@ -1107,8 +1108,6 @@ public class DHISMIDlet
         System.out.println( "The form is:  " + programStageForm.getName() + "  with an ID of:  "
             + programStageForm.getId() );
 
-        System.out.println( ".... and the values:  " );
-
         Vector des = programStageForm.getDataElements();
 
         for ( int i = 0; i < des.size(); i++ )
@@ -1134,12 +1133,10 @@ public class DHISMIDlet
 
     public void error( String error )
     {
-        Form errorForm = new Form( "Problem with server configuration" );
-        errorForm.append( error );
-        switchDisplayable( null, errorForm  );
+        switchDisplayable( AlertUtil.getErrorAlert( "Problem with server", error ), getLoginForm() );
     }
 
     public void loginNeeded() {
-        switchDisplayable( new Alert( "Username/password was wrong" ), getLoginForm());   
+        switchDisplayable( AlertUtil.getInfoAlert( "Login failed", "Username/password was wrong" ), getLoginForm());   
     }
 }
