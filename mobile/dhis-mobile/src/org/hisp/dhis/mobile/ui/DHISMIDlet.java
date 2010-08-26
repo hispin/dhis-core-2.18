@@ -1,6 +1,5 @@
 package org.hisp.dhis.mobile.ui;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -20,8 +19,8 @@ import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.RecordStoreException;
 
 import org.hisp.dhis.mobile.connection.DownloadManager;
-import org.hisp.dhis.mobile.db.ModelRecordStore;
 import org.hisp.dhis.mobile.db.SettingsRectordStore;
+import org.hisp.dhis.mobile.db.Storage;
 import org.hisp.dhis.mobile.model.AbstractModel;
 import org.hisp.dhis.mobile.model.Activity;
 import org.hisp.dhis.mobile.model.DataElement;
@@ -297,11 +296,8 @@ public class DHISMIDlet
     }
 
     /**
-     * Returns an initiliazed instance of mainMenuList component.
-     * 
-     * @return the initialized component instance
+     * Method to initialize the downloaded forms screen.
      */
-    // Method to initialize the downloaded forms screen.
     public List getDownloadedFormsList()
     {
         if ( downloadedFormsList == null )
@@ -317,11 +313,15 @@ public class DHISMIDlet
     // Action when user select a downloaded form
     private void downloadedFormsSelectAction()
     {
-        AbstractModel downloadedProgramStage = (AbstractModel) getAllForm().elementAt(
-            ((List) getDownloadedFormsList()).getSelectedIndex() );
+        int index = ((List) getDownloadedFormsList()).getSelectedIndex();
+
+        AbstractModel downloadedProgramStage = Storage.getForm( index ) ;
+
         System.out.println( "Selected ID: " + downloadedProgramStage.getId() );
-        System.out.println( "Name: " + fetchForm( downloadedProgramStage.getId() ).getName() );
-        this.getForm( fetchForm( downloadedProgramStage.getId() ) );
+
+        ProgramStageForm form = Storage.fetchForm( downloadedProgramStage.getId() );
+        System.out.println( "Name: " + form.getName() );
+        this.getForm( form );
     }
 
     // the "Back" command of the downloaded forms list
@@ -334,22 +334,6 @@ public class DHISMIDlet
         return downloadedBckCmd;
     }
 
-    // Get all Form from RMS
-    public Vector getAllForm()
-    {
-        ModelRecordStore modelRecordStore = null;
-        Vector downloadedFormVector = null;
-        try
-        {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.FORM_DB );
-            downloadedFormVector = modelRecordStore.getAllRecord();
-        }
-        catch ( RecordStoreException rse )
-        {
-
-        }
-        return downloadedFormVector;
-    }
 
     public void displayDownloadedForms( Vector downloadedForms )
     {
@@ -413,7 +397,7 @@ public class DHISMIDlet
             }
             else if ( __selectedString.equals( "Record Data" ) )
             {
-                this.displayDownloadedForms( this.getAllForm() );
+                this.displayDownloadedForms( Storage.getAllForm() );
             }
             else if ( __selectedString.equals( "Settings" ) )
             {
@@ -670,7 +654,7 @@ public class DHISMIDlet
             form.setCommandListener( this );
 
             // This is just for test .....
-            ProgramStageForm frm = fetchForm( 1 );
+            ProgramStageForm frm = Storage.fetchForm( 1 );
             renderForm( frm, form );
         }
         return form;
@@ -951,44 +935,11 @@ public class DHISMIDlet
         downloadManager.start();
     }
 
-    public ProgramStageForm fetchForm( int formId )
-    {
-        ModelRecordStore modelRecordStore = null;
-        ProgramStageForm frm = null;
-
-        try
-        {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.FORM_DB );
-            byte rec[] = modelRecordStore.getRecord( formId );
-            if ( rec != null )
-                frm = ProgramStageForm.recordToProgramStageForm( rec );
-        }
-        catch ( RecordStoreException rse )
-        {
-        }
-
-        return frm;
-    }
 
     public void saveActivities( Vector activitiesVector )
     {
         this.activitiesVector = activitiesVector;
-        ModelRecordStore modelRecordStore = new ModelRecordStore( ModelRecordStore.ACTIVITY_DB );
-        Enumeration activities = activitiesVector.elements();
-        Activity activity = null;
-        int i = 0;
-        while ( activities.hasMoreElements() )
-        {
-            try
-            {
-                activity = (Activity) activities.nextElement();
-                modelRecordStore.addRecord( Activity.activityToRecord( activity ) );
-                i += 1;
-            }
-            catch ( RecordStoreException rse )
-            {
-            }
-        }
+        Storage.storeActivities(activitiesVector);
     }
 
     public void displayCurActivities()
@@ -1025,25 +976,7 @@ public class DHISMIDlet
 
     public void saveForm( ProgramStageForm programStageForm )
     {
-        ModelRecordStore modelRecordStore;
-        try
-        {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.FORM_DB );
-            modelRecordStore.addRecord( ProgramStageForm.programStageFormToRecord( programStageForm ) );
-        }
-        catch ( RecordStoreException rse )
-        {
-        }
-
-        try
-        {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.DATAELEMENT_DB );
-            modelRecordStore.AddDataElementRecords( programStageForm.getDataElements() );
-        }
-        catch ( RecordStoreException rse )
-        {
-        }
-
+        Storage.storeForm(programStageForm);
     }
 
     public void renderForm( ProgramStageForm prStgFrm, Form form )
@@ -1092,15 +1025,7 @@ public class DHISMIDlet
     public void saveOrgUnit( OrgUnit orgunit )
     {
         this.orgUnit = orgunit;
-        ModelRecordStore modelRecordStore;
-        try
-        {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB );
-            modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgunit ) );
-        }
-        catch ( RecordStoreException rse )
-        {
-        }
+        Storage.saveOrgUnit(orgUnit);
     }
 
     public void sendRecordedData()
