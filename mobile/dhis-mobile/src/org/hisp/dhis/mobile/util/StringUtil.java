@@ -50,7 +50,6 @@ public class StringUtil
         int month = Integer.parseInt( strDate.substring( 5, 7 ) );
         int year = Integer.parseInt( strDate.substring( 0, 4 ) );
 
-        System.err.println(strDate + ": " + day +" " + month + " " +year );;
         cal.set( Calendar.DATE, day );
         cal.set( Calendar.MONTH, month-1 );
         cal.set( Calendar.YEAR, year );
