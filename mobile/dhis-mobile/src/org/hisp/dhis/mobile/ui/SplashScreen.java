@@ -34,7 +34,8 @@ public class SplashScreen extends Canvas
     }
 
     protected void paint( Graphics g ){
-        g.setColor(255, 255, 255);
+        //g.setColor(255, 255, 255);
+        g.setColor(66, 80, 115);
         g.fillRect(0, 0, getWidth(), getHeight());
         if (image != null)
             g.drawImage (image, getWidth()/2, getHeight()/2, Graphics.HCENTER | Graphics.VCENTER);
