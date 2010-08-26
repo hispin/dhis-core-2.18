@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.hisp.dhis.mobile.ui;
 
 import java.util.Timer;
@@ -50,7 +45,7 @@ public class SplashScreen extends Canvas
     }
 
     protected void showNotify(){
-        timer.schedule( new CountDown(), 3000 );
+        timer.schedule( new CountDown(), 2000 );
     }
 
     private void dismissSplashScreen(){

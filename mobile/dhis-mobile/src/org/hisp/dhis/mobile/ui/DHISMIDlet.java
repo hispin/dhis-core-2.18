@@ -1005,7 +1005,6 @@ public class DHISMIDlet
                 getActivitiesList().append( "\n-------\n" );
                 getActivitiesList().append( "Beneficiary: " + activity.getBeneficiary().getFullName() );
                 getActivitiesList().append( "Due Date: " + activity.getDueDate().toString() );
-                getActivitiesList().append( "Form: " + activity.getTask().getProgStageName() );
                 activity = null;
             }
         }
@@ -1140,4 +1139,7 @@ public class DHISMIDlet
         switchDisplayable( null, errorForm  );
     }
 
+    public void loginNeeded() {
+        switchDisplayable( new Alert( "Username/password was wrong" ), getLoginForm());   
+    }
 }

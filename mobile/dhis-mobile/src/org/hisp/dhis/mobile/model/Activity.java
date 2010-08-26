@@ -5,17 +5,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
-public class Activity implements Persistent
+public class Activity
 {
 
     private Beneficiary beneficiary;
 
     private Task task;
 
-    // private Date dueDate;
-    private String dueDate;
-
+    private Date dueDate;
+    
     public Activity()
     {
     }
@@ -41,24 +41,15 @@ public class Activity implements Persistent
         this.task = task;
     }
 
-    public String getDueDate()
+    public Date getDueDate()
     {
         return dueDate;
     }
 
-    public void setDueDate( String dueDate )
+    public void setDueDate( Date dueDate )
     {
         this.dueDate = dueDate;
     }
-
-    // public Date getDueDate() {
-    // return dueDate;
-    // }
-    //
-    //
-    // public void setDueDate(Date dueDate) {
-    // this.dueDate = dueDate;
-    // }
 
     public static Activity recordToActivity( byte[] rec )
     {
@@ -75,12 +66,10 @@ public class Activity implements Persistent
             beneficiary.setMiddleName( din.readUTF() );
             beneficiary.setFirstName( din.readUTF() );
 
-            // activity.setDueDate(new Date(din.readLong()));
-            activity.setDueDate( din.readUTF() );
+            activity.setDueDate(new Date(din.readLong()));
 
             task.setProgStageInstId( din.readInt() );
             task.setProgStageId( din.readInt() );
-            task.setProgStageName( din.readUTF() );
             task.setComplete( din.readBoolean() );
 
             activity.setTask( task );
@@ -106,12 +95,10 @@ public class Activity implements Persistent
             dout.writeUTF( activity.getBeneficiary().getMiddleName() );
             dout.writeUTF( activity.getBeneficiary().getFirstName() );
             // Write Due Date
-            // dout.writeLong(activity.getDueDate().getTime());
-            dout.writeUTF( activity.getDueDate() );
+            dout.writeLong(activity.getDueDate().getTime());
             // Write Task Information
             dout.writeInt( activity.getTask().getProgStageInstId() );
             dout.writeInt( activity.getTask().getProgStageId() );
-            dout.writeUTF( activity.getTask().getProgStageName() );
             dout.writeBoolean( activity.getTask().isComplete() );
             dout.flush();
         }
@@ -121,20 +108,6 @@ public class Activity implements Persistent
             e.printStackTrace();
         }
         return deOs.toByteArray();
-    }
-
-    public void read( DataInputStream dis )
-        throws IOException, InstantiationException, IllegalAccessException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void write( DataOutputStream dos )
-        throws IOException
-    {
-        // TODO Auto-generated method stub
-        
     }
 
 
