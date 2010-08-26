@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,6 @@ import com.sun.jersey.api.core.ResourceContext;
 @Path( "user" )
 public class UserResource
 {
-
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
 
     @Autowired
     private CurrentUserService currentUserService;

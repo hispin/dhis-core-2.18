@@ -16,45 +16,45 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.mobile.util;
+package org.hisp.dhis.mobile.parser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.Date;
+import org.hisp.dhis.mobile.model.OrgUnit;
+import org.kxml2.io.KXmlParser;
 
-public class StringUtil
+public class OrgUnitParser
+    extends AbstractXmlParser
 {
 
-    public static String streamToString( InputStream is )
-        throws IOException
+    public String getTag()
     {
-        InputStreamReader r = new InputStreamReader( is );
-        char[] buffer = new char[32];
-        StringBuffer sb = new StringBuffer();
-        int count;
-
-        while ( (count = r.read( buffer, 0, buffer.length )) > -1 )
-        {
-            sb.append( buffer, 0, count );
-        }
-
-        return sb.toString();
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    public static Date getDateFromString( String strDate )
+    public Object readInternal( KXmlParser parser )
+        throws Exception
     {
-        Calendar cal = Calendar.getInstance();
-        int day = Integer.parseInt( strDate.substring( 8, 10 ) );
-        int month = Integer.parseInt( strDate.substring( 5, 7 ) );
-        int year = Integer.parseInt( strDate.substring( 0, 4 ) );
 
-        System.err.println(strDate + ": " + day +" " + month + " " +year );;
-        cal.set( Calendar.DATE, day );
-        cal.set( Calendar.MONTH, month-1 );
-        cal.set( Calendar.YEAR, year );
-        return cal.getTime();
+        OrgUnit orgUnit = new OrgUnit();
+
+        // picking Name and ID attribute
+        String name = parser.getAttributeValue( 0 );
+        String id = parser.getAttributeValue( 1 );
+        orgUnit.setName( name );
+        orgUnit.setId( Integer.parseInt( id ) );
+        // picking URLs
+        parser.nextTag();
+        if ( parser.getName().equals( "allProgramForms" ) )
+        {
+            orgUnit.setProgramFormsLink( parser.getAttributeValue( 0 ) );
+        }
+        parser.nextTag();
+        parser.nextTag();
+        if ( parser.getName().equals( "currentActivities" ) )
+        {
+            orgUnit.setActivitiesLink( parser.getAttributeValue( 0 ) );
+        }
+        return orgUnit;
     }
 
 }

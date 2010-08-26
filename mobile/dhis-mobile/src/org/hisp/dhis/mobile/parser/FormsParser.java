@@ -16,45 +16,62 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.mobile.util;
+package org.hisp.dhis.mobile.parser;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Vector;
 
-public class StringUtil
+import org.hisp.dhis.mobile.model.ProgramStageForm;
+import org.kxml2.io.KXmlParser;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+public class FormsParser
+    extends AbstractXmlParser
 {
+    public static String FORMS_TAG = "forms";
 
-    public static String streamToString( InputStream is )
-        throws IOException
+    public String getTag()
     {
-        InputStreamReader r = new InputStreamReader( is );
-        char[] buffer = new char[32];
-        StringBuffer sb = new StringBuffer();
-        int count;
+        return FORMS_TAG;
+    }
 
-        while ( (count = r.read( buffer, 0, buffer.length )) > -1 )
+    public Object readInternal( KXmlParser parser )
+        throws XmlPullParserException, IOException
+    {
+        Vector forms = new Vector();
+        while ( parser.nextTag() != XmlPullParser.END_TAG )
+            forms.addElement( parseForm( parser ) );
+        return forms;
+    }
+
+    public ProgramStageForm parseForm( KXmlParser parser )
+        throws IOException, XmlPullParserException
+    {
+
+        ProgramStageForm programStage = new ProgramStageForm();
+
+        parser.require( XmlPullParser.START_TAG, null, "form" );
+
+        while ( parser.nextTag() != XmlPullParser.END_TAG )
         {
-            sb.append( buffer, 0, count );
+            parser.require( XmlPullParser.START_TAG, null, null );
+            String name = parser.getName();
+            String text = parser.nextText();
+
+            if ( name.equals( "id" ) )
+            {
+                programStage.setId( Integer.valueOf( text ).intValue() );
+            }
+            else if ( name.equals( "name" ) )
+            {
+                programStage.setName( text );
+            }
         }
 
-        return sb.toString();
+        parser.require( XmlPullParser.END_TAG, null, "form" );
+        return programStage;
     }
 
-    public static Date getDateFromString( String strDate )
-    {
-        Calendar cal = Calendar.getInstance();
-        int day = Integer.parseInt( strDate.substring( 8, 10 ) );
-        int month = Integer.parseInt( strDate.substring( 5, 7 ) );
-        int year = Integer.parseInt( strDate.substring( 0, 4 ) );
-
-        System.err.println(strDate + ": " + day +" " + month + " " +year );;
-        cal.set( Calendar.DATE, day );
-        cal.set( Calendar.MONTH, month-1 );
-        cal.set( Calendar.YEAR, year );
-        return cal.getTime();
-    }
 
 }

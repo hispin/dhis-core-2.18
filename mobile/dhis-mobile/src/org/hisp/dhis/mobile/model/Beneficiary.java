@@ -11,7 +11,29 @@ public class Beneficiary
     {
     }
 
-    // Getter and Setter
+    public String getFullName()
+    {
+        boolean space = false;
+        String name = "";
+        
+        if (firstName != null && firstName.length() != 0) {
+            name = firstName;
+            space = true;
+        }
+        if (middleName != null && middleName.length() != 0) {
+            if (space)
+                name += " ";
+            name += middleName;
+            space = true;
+        }
+        if (lastName != null && lastName.length() != 0) {
+            if (space)
+                name += " ";
+            name += lastName;
+        }
+        return name;
+    }
+
     public int getId()
     {
         return id;
@@ -20,11 +42,6 @@ public class Beneficiary
     public void setId( int id )
     {
         this.id = id;
-    }
-
-    public String getFullName()
-    {
-        return getFirstName() + " " + getMiddleName() + " " + getLastName();
     }
 
     public String getFirstName()
