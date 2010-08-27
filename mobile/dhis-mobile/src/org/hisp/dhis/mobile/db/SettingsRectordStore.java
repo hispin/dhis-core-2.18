@@ -16,6 +16,7 @@ import javax.microedition.rms.RecordStoreException;
  *
  * @author abyotag_adm
  */
+
 public class SettingsRectordStore {
     
     private String dbName;

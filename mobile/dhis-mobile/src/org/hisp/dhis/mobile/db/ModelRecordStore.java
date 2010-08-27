@@ -15,7 +15,7 @@ public class ModelRecordStore {
     public static final String ORGUNIT_DB = "ORGUNIT";
     public static final String DATAELEMENT_DB = "DATAELEMENT";
     public static final String ACTIVITY_DB = "ACTIVITY";   
-    
+    public static final String USER_DB = "USER";   
     private String dbName;   
 
     public ModelRecordStore(String dbName){        

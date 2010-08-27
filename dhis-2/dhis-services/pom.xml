@@ -26,7 +26,7 @@
     <module>dhis-service-mapping</module>
     <module>dhis-service-aggregationengine-default</module>
     <module>dhis-service-patient</module>
-    <module>dhis-service-mobile-model</module>
+    <!--<module>dhis-service-mobile-model</module>-->
   </modules>
   
   <dependencies>

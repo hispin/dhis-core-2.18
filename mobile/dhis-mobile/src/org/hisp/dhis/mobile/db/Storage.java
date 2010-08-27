@@ -29,16 +29,19 @@ package org.hisp.dhis.mobile.db;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import javax.microedition.rms.RecordEnumeration;
+import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreNotOpenException;
 
 import org.hisp.dhis.mobile.model.AbstractModel;
 import org.hisp.dhis.mobile.model.Activity;
 import org.hisp.dhis.mobile.model.OrgUnit;
 import org.hisp.dhis.mobile.model.ProgramStageForm;
+import org.hisp.dhis.mobile.model.User;
 
 public class Storage
 {
-
     // Get all Form from RMS
     public static Vector getAllForm()
     {
@@ -56,7 +59,6 @@ public class Storage
         return downloadedFormVector;
     }
 
-    
     public static ProgramStageForm fetchForm( int formId )
     {
         ModelRecordStore modelRecordStore = null;
@@ -76,11 +78,10 @@ public class Storage
         return frm;
     }
 
-    
-    public static AbstractModel getForm(int index) {
+    public static AbstractModel getForm( int index )
+    {
         return (AbstractModel) getAllForm().elementAt( index );
     }
-
 
     public static void storeActivities( Vector activitiesVector )
     {
@@ -101,7 +102,6 @@ public class Storage
             }
         }
     }
-
 
     public static void storeForm( ProgramStageForm programStageForm )
     {
@@ -125,17 +125,74 @@ public class Storage
         }
     }
 
-
     public static void saveOrgUnit( OrgUnit orgUnit )
     {
+        // ModelRecordStore modelRecordStore;
+        // try
+        // {
+        // modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB
+        // );
+        // modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgUnit ) );
+        // }
+        // catch ( RecordStoreException rse )
+        // {
+        // }
+        OrgUnitRecordStore orgUnitStore = new OrgUnitRecordStore();
+        orgUnitStore.save( orgUnit );
+        orgUnitStore = null;
+    }
+
+    public static void saveUser( User user )
+   
+    {
+        clear(ModelRecordStore.USER_DB);
         ModelRecordStore modelRecordStore;
         try
         {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB );
-            modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgUnit ) );
+            modelRecordStore = new ModelRecordStore( ModelRecordStore.USER_DB );
+            modelRecordStore.addRecord( User.userToRecord( user ) );
         }
         catch ( RecordStoreException rse )
         {
+        }
+    }
+    
+    public static void clear( String dbName )
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( dbName, true );
+            re = rs.enumerateRecords( null, null, false );
+            int id;
+            while ( re.hasNextElement() )
+            {
+                id = re.nextRecordId();
+                rs.deleteRecord( id );
+            }
+        }
+        catch ( Exception e )
+        {
+               System.out.println(e.getMessage());
+        }
+        finally
+        {
+            if ( re != null )
+                re.destroy();
+            if ( rs != null )
+                try
+                {
+                    rs.closeRecordStore();
+                }
+                catch ( RecordStoreNotOpenException e )
+                {
+                    e.printStackTrace();
+                }
+                catch ( RecordStoreException e )
+                {
+                    e.printStackTrace();
+                }
         }
     }
 }
