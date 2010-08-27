@@ -72,6 +72,8 @@ public class DHISMIDlet
 
     private Form loginForm;
 
+    private Form pinForm;
+
     // add one more form to handle downloaded form list
     private List downloadedFormsList;
 
@@ -113,10 +115,18 @@ public class DHISMIDlet
 
     private Command orgUnitBackCmd;
 
+    private Command pinFormNextCmd;
+
+    private Command pinFormReinitCmd;
+
+    private Command pinFormExitCmd;
+
     // add one more back command for the downloaded forms list
     private Command downloadedBckCmd;
 
     private Image logo;
+
+    private TextField pinTextField;
 
     /**
      * The DHISMIDlet constructor.
@@ -126,8 +136,8 @@ public class DHISMIDlet
     }
 
     /**
-     * Initilizes the application. It is called only once when the MIDlet is started. The method is called before the
-     * <code>startMIDlet</code> method.
+     * Initilizes the application. It is called only once when the MIDlet is
+     * started. The method is called before the <code>startMIDlet</code> method.
      */
     private void initialize()
     {
@@ -138,8 +148,8 @@ public class DHISMIDlet
      */
     public void startMIDlet()
     {
-        new SplashScreen( getLogo(), getDisplay(), (Displayable) getLoginForm() );
-
+        new SplashScreen( getLogo(), getDisplay(), (Displayable) getLoginForm(), (Displayable) getPinForm());
+        
     }
 
     /**
@@ -150,11 +160,13 @@ public class DHISMIDlet
     }
 
     /**
-     * Switches a current displayable in a display. The <code>display</code> instance is taken from
-     * <code>getDisplay</code> method. This method is used by all actions in the design for switching displayable.
+     * Switches a current displayable in a display. The <code>display</code>
+     * instance is taken from <code>getDisplay</code> method. This method is
+     * used by all actions in the design for switching displayable.
      * 
-     * @param alert the Alert which is temporarily set to the display; if <code>null</code>, then
-     *        <code>nextDisplayable</code> is set immediately
+     * @param alert the Alert which is temporarily set to the display; if
+     *        <code>null</code>, then <code>nextDisplayable</code> is set
+     *        immediately
      * @param nextDisplayable the Displayable to be set
      */
     public void switchDisplayable( Alert alert, Displayable nextDisplayable )
@@ -172,7 +184,8 @@ public class DHISMIDlet
     }
 
     /**
-     * Called by a system to indicated that a command has been invoked on a particular displayable.
+     * Called by a system to indicated that a command has been invoked on a
+     * particular displayable.
      * 
      * @param command the Command that was invoked
      * @param displayable the Displayable where the command was invoked
@@ -224,16 +237,19 @@ public class DHISMIDlet
                 login();
                 if ( user != null )
                 {
-//                    DownloadManager downloadManager = new DownloadManager( this, serverUrl + "user", user, DownloadManager.DOWNLOAD_ALL );
-//                    downloadManager.start();
-//                    Form waitForm = new Form( "Making connection" );
-//                    waitForm.append( "Please wait........" );
-//                    switchDisplayable( null, waitForm );
-                    switchDisplayable( null, getMainMenuList() );
+                    // DownloadManager downloadManager = new DownloadManager(
+                    // this, serverUrl + "user", user,
+                    // DownloadManager.DOWNLOAD_ALL );
+                    // downloadManager.start();
+                    // Form waitForm = new Form( "Making connection" );
+                    // waitForm.append( "Please wait........" );
+                    // switchDisplayable( null, waitForm );
+                    // switchDisplayable( null, getMainMenuList() );
                 }
                 else
                 {
-                    getDisplay().setCurrent( new Alert( "You must login" ), loginForm );
+                    // getDisplay().setCurrent( new Alert( "You must login" ),
+                    // loginForm );
                 }
             }
         }
@@ -278,7 +294,34 @@ public class DHISMIDlet
             {
                 this.switchDisplayable( null, mainMenuList );
             }
+        } else if (displayable == pinForm){
+            if (command == pinFormNextCmd){
+                this.saveData();
+            } else if (command == pinFormReinitCmd) {
+                switchDisplayable( null, getLoginForm() );
+            }
         }
+    }
+
+    private void saveData()
+    {
+        try
+        {
+            SettingsRectordStore settingStore = new SettingsRectordStore( "SETTINGS" );
+            settingStore.put( "pin", this.getPinTextField().getString() );
+            settingStore.save();
+        }
+        catch ( RecordStoreException e )
+        {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+
+    private void savePin()
+    {
+        // TODO Auto-generated method stub
+        
     }
 
     /**
@@ -315,7 +358,7 @@ public class DHISMIDlet
     {
         int index = ((List) getDownloadedFormsList()).getSelectedIndex();
 
-        AbstractModel downloadedProgramStage = Storage.getForm( index ) ;
+        AbstractModel downloadedProgramStage = Storage.getForm( index );
 
         System.out.println( "Selected ID: " + downloadedProgramStage.getId() );
 
@@ -333,7 +376,6 @@ public class DHISMIDlet
         }
         return downloadedBckCmd;
     }
-
 
     public void displayDownloadedForms( Vector downloadedForms )
     {
@@ -373,7 +415,8 @@ public class DHISMIDlet
     }
 
     /**
-     * Performs an action assigned to the selected list element in the mainMenuList component.
+     * Performs an action assigned to the selected list element in the
+     * mainMenuList component.
      */
     public void mainMenuListAction()
     {
@@ -461,7 +504,8 @@ public class DHISMIDlet
     }
 
     /**
-     * Performs an action assigned to the selected list element in the frmDnldList component.
+     * Performs an action assigned to the selected list element in the
+     * frmDnldList component.
      */
     public void frmDnldListAction()
     {
@@ -660,6 +704,47 @@ public class DHISMIDlet
         return form;
     }
 
+    public Form getPinForm()
+    {
+        if ( pinForm == null )
+        {
+            pinForm = new Form( "Enter a 4 digit PIN" );
+            pinForm.append( this.getPinTextField() );
+            pinForm.addCommand( this.getPinFormNextCmd() );
+            pinForm.addCommand( this.getPinFormReinitCmd() );
+            pinForm.setCommandListener( this );
+        }
+        return pinForm;
+    }
+
+    private Command getPinFormReinitCmd()
+    {
+        if ( pinFormReinitCmd == null )
+        {
+            pinFormReinitCmd = new Command( "ReInit", Command.SCREEN, 1 );
+        }
+        return pinFormReinitCmd;
+    }
+
+    private Command getPinFormNextCmd()
+    {
+        if ( pinFormNextCmd == null )
+        {
+            pinFormNextCmd = new Command( "Next", Command.SCREEN, 0 );
+        }
+        return pinFormNextCmd;
+    }
+
+    private TextField getPinTextField()
+    {
+        if ( pinTextField == null )
+        {
+            pinTextField = new TextField( "PIN", "", 4, TextField.NUMERIC );
+
+        }
+        return pinTextField;
+    }
+
     public void afterInit()
     {
         switchDisplayable( null, getMainMenuList() );
@@ -709,7 +794,7 @@ public class DHISMIDlet
     {
         if ( loginForm == null )
         {
-            loginForm = new Form( "Please login", new Item[] { getUserName(), getPassword() } );
+            loginForm = new Form( "Please login", new Item[] { getUserName(), getPassword(), getUrl() } );
             loginForm.addCommand( getLgnFrmExtCmd() );
             loginForm.addCommand( getLgnFrmLgnCmd() );
             loginForm.setCommandListener( this );
@@ -796,8 +881,8 @@ public class DHISMIDlet
     }
 
     /**
-     * Called when MIDlet is started. Checks whether the MIDlet have been already started and initialize/starts or
-     * resumes the MIDlet.
+     * Called when MIDlet is started. Checks whether the MIDlet have been
+     * already started and initialize/starts or resumes the MIDlet.
      */
     public void startApp()
     {
@@ -824,8 +909,8 @@ public class DHISMIDlet
     /**
      * Called to signal the MIDlet to terminate.
      * 
-     * @param unconditional if true, then the MIDlet has to be unconditionally terminated and all resources has to be
-     *        released.
+     * @param unconditional if true, then the MIDlet has to be unconditionally
+     *        terminated and all resources has to be released.
      */
     public void destroyApp( boolean unconditional )
     {
@@ -846,12 +931,14 @@ public class DHISMIDlet
         // Take action based on login value
         if ( user != null )
         {
-            System.out.println( "Login successfull" );
+            DownloadManager downloadManager = new DownloadManager( this, "http://localhost:8080/dhis-web-api/api/user",
+                user, DownloadManager.DOWNLOAD_ORGUNIT );
+            downloadManager.start();
 
         }
         else
         {
-            System.out.println( "Login failed..." );
+            this.error( "Username and password cannot be empty" );
         }
     }
 
@@ -890,20 +977,22 @@ public class DHISMIDlet
 
     private void browseActivities()
     {
-        if ( activitiesVector == null || activitiesVector.size() == 0 ) {
+        if ( activitiesVector == null || activitiesVector.size() == 0 )
+        {
             downloadManager = new DownloadManager( this, serverUrl + "user", user, DownloadManager.DOWNLOAD_ORGUNIT );
             downloadManager.start();
         }
-        else {
+        else
+        {
             displayCurActivities();
         }
-    
+
     }
 
     private void browseForms()
     {
         loadSettings();
-        downloadManager = new DownloadManager( this, serverUrl  + "forms", user, DownloadManager.DOWNLOAD_FORMS );
+        downloadManager = new DownloadManager( this, serverUrl + "forms", user, DownloadManager.DOWNLOAD_FORMS );
         downloadManager.start();
     }
 
@@ -931,15 +1020,14 @@ public class DHISMIDlet
     private void downloadForm( int formId )
     {
         loadSettings();
-        downloadManager = new DownloadManager( this, serverUrl + "forms/" + formId , user, DownloadManager.DOWNLOAD_FORM );
+        downloadManager = new DownloadManager( this, serverUrl + "forms/" + formId, user, DownloadManager.DOWNLOAD_FORM );
         downloadManager.start();
     }
-
 
     public void saveActivities( Vector activitiesVector )
     {
         this.activitiesVector = activitiesVector;
-        Storage.storeActivities(activitiesVector);
+        Storage.storeActivities( activitiesVector );
     }
 
     public void displayCurActivities()
@@ -976,7 +1064,7 @@ public class DHISMIDlet
 
     public void saveForm( ProgramStageForm programStageForm )
     {
-        Storage.storeForm(programStageForm);
+        Storage.storeForm( programStageForm );
     }
 
     public void renderForm( ProgramStageForm prStgFrm, Form form )
@@ -1025,7 +1113,7 @@ public class DHISMIDlet
     public void saveOrgUnit( OrgUnit orgunit )
     {
         this.orgUnit = orgunit;
-        Storage.saveOrgUnit(orgUnit);
+        Storage.saveOrgUnit( orgUnit );
     }
 
     public void sendRecordedData()
@@ -1061,7 +1149,8 @@ public class DHISMIDlet
         switchDisplayable( AlertUtil.getErrorAlert( "Problem with server", error ), getLoginForm() );
     }
 
-    public void loginNeeded() {
-        switchDisplayable( AlertUtil.getInfoAlert( "Login failed", "Username/password was wrong" ), getLoginForm());   
+    public void loginNeeded()
+    {
+        switchDisplayable( AlertUtil.getInfoAlert( "Login failed", "Username/password was wrong" ), getLoginForm() );
     }
 }

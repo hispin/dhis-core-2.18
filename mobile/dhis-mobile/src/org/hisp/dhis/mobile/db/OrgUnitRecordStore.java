@@ -16,121 +16,154 @@ import org.hisp.dhis.mobile.model.OrgUnit;
  * @author Tran Ng Minh Luan
  * 
  */
-public class OrgUnitRecordStore {
+public class OrgUnitRecordStore
+{
 
-	private String dbName;
+    private String dbName;
 
-	private Vector orgUnitsVector;
+    private Vector orgUnitsVector;
 
-	// Constructor
-	public OrgUnitRecordStore() {
+    // Constructor
+    public OrgUnitRecordStore()
+    {
+        this.dbName = "ORGUNIT";
+    }
 
-	}
+    // Getter & Setter
+    public void setOrgUnitsVector( Vector orgUnitsVector )
+    {
+        this.orgUnitsVector = orgUnitsVector;
+    }
 
-	// Getter & Setter
-	public void setOrgUnitsVector(Vector orgUnitsVector) {
-		this.orgUnitsVector = orgUnitsVector;
-	}
-	
-	// Getter & Setter
+    // Getter & Setter
 
-	public String getDbName() {
-		return dbName;
-	}
+    public String getDbName()
+    {
+        return dbName;
+    }
 
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-	}
+    public void setDbName( String dbName )
+    {
+        this.dbName = dbName;
+    }
 
-	// Supportive Methods
-	public void save() {
-		clear();
-		RecordStore rs = null;
-		try {
-			rs = RecordStore.openRecordStore(dbName, true);
-			if (orgUnitsVector != null && orgUnitsVector.size() > 0) {
-				Enumeration orgUnits = orgUnitsVector.elements();
-				byte[] orgUnitByte;
-				while (orgUnits.hasMoreElements()) {
-					orgUnitByte = OrgUnit.orgUnitToRecord((OrgUnit) orgUnits
-							.nextElement());
-					rs.addRecord(orgUnitByte, 0, orgUnitByte.length);
-				}
-				orgUnitByte = null;
-			}
-		} catch (RecordStoreException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			if (rs != null)
-				try {
-					rs.closeRecordStore();
-				} catch (RecordStoreNotOpenException e) {
-					e.printStackTrace();
-				} catch (RecordStoreException e) {
-					e.printStackTrace();
-				}
-		}
-	}
+    // Supportive Methods
+    public void save( OrgUnit orgUnit )
+    {
+        clear();
+        RecordStore rs = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( dbName, true );
 
-	public void update(AbstractModel model) {
-		RecordStore rs = null;
-		RecordEnumeration re = null;
-		try {
-			rs = RecordStore.openRecordStore(dbName, true);
-			RecordFilter rsFilter = new AbstractModelRecordFilter(model);
-			re = rs.enumerateRecords(rsFilter, null, false);
-			Integer id;
-			byte[] orgUnitByte;
-			while (re.hasNextElement()) {
-				id = new Integer(re.nextRecordId());
-				orgUnitByte = OrgUnit.orgUnitToRecord((OrgUnit) model);
-				rs.setRecord(id.intValue(), orgUnitByte, 0, orgUnitByte.length);
+            rs.addRecord( OrgUnit.orgUnitToRecord( orgUnit ), 0, OrgUnit.orgUnitToRecord( orgUnit ).length );
 
-			}
-			// release variable
-			orgUnitByte = null;
-			id = null;
-		} catch (Exception e) {
+        }
+        catch ( RecordStoreException e )
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if ( rs != null )
+                try
+                {
+                    rs.closeRecordStore();
+                }
+                catch ( RecordStoreNotOpenException e )
+                {
+                    e.printStackTrace();
+                }
+                catch ( RecordStoreException e )
+                {
+                    e.printStackTrace();
+                }
+        }
+    }
 
-		} finally {
-			if (re != null)
-				re.destroy();
-			if (rs != null)
-				try {
-					rs.closeRecordStore();
-				} catch (RecordStoreNotOpenException e) {
-					e.printStackTrace();
-				} catch (RecordStoreException e) {
-					e.printStackTrace();
-				}
-		}
-	}
+    public void update( AbstractModel model )
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( dbName, true );
+            RecordFilter rsFilter = new AbstractModelRecordFilter( model );
+            re = rs.enumerateRecords( rsFilter, null, false );
+            Integer id;
+            byte[] orgUnitByte;
+            while ( re.hasNextElement() )
+            {
+                id = new Integer( re.nextRecordId() );
+                orgUnitByte = OrgUnit.orgUnitToRecord( (OrgUnit) model );
+                rs.setRecord( id.intValue(), orgUnitByte, 0, orgUnitByte.length );
 
-	public void clear() {
-		RecordStore rs = null;
-		RecordEnumeration re = null;
-		try {
-			rs = RecordStore.openRecordStore(dbName, true);
-			re = rs.enumerateRecords(null, null, false);
-			int id;
-			while (re.hasNextElement()) {
-				id = re.nextRecordId();
-				rs.deleteRecord(id);
-			}
-		} catch (Exception e) {
+            }
+            // release variable
+            orgUnitByte = null;
+            id = null;
+        }
+        catch ( Exception e )
+        {
 
-		} finally {
-			if (re != null)
-				re.destroy();
-			if (rs != null)
-				try {
-					rs.closeRecordStore();
-				} catch (RecordStoreNotOpenException e) {
-					e.printStackTrace();
-				} catch (RecordStoreException e) {
-					e.printStackTrace();
-				}
-		}
-	}
+        }
+        finally
+        {
+            if ( re != null )
+                re.destroy();
+            if ( rs != null )
+                try
+                {
+                    rs.closeRecordStore();
+                }
+                catch ( RecordStoreNotOpenException e )
+                {
+                    e.printStackTrace();
+                }
+                catch ( RecordStoreException e )
+                {
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    public void clear()
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( dbName, true );
+            re = rs.enumerateRecords( null, null, false );
+            int id;
+            while ( re.hasNextElement() )
+            {
+                id = re.nextRecordId();
+                rs.deleteRecord( id );
+            }
+        }
+        catch ( Exception e )
+        {
+
+        }
+        finally
+        {
+            if ( re != null )
+                re.destroy();
+            if ( rs != null )
+                try
+                {
+                    rs.closeRecordStore();
+                }
+                catch ( RecordStoreNotOpenException e )
+                {
+                    e.printStackTrace();
+                }
+                catch ( RecordStoreException e )
+                {
+                    e.printStackTrace();
+                }
+        }
+    }
 
 }

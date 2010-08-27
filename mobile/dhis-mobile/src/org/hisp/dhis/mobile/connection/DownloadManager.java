@@ -78,7 +78,8 @@ public class DownloadManager
             {
                 OrgUnit orgunit = (OrgUnit) download( url, new OrgUnitParser() );
                 dhisMIDlet.saveOrgUnit( orgunit );
-                dhisMIDlet.downloadActivities();
+                dhisMIDlet.switchDisplayable( null, dhisMIDlet.getPinForm() );
+                // dhisMIDlet.downloadActivities();
             }
             else if ( task.equals( DOWNLOAD_ACTIVITYPLAN ) )
             {
@@ -135,8 +136,22 @@ public class DownloadManager
                     // Redirect: get the new location
                     url = connection.getHeaderField( "location" );
 
-                    if ( connection != null ) try { connection.close(); } catch ( IOException ioe ) { } 
-                    if ( inStream != null ) try { inStream.close(); } catch ( IOException ioe ) { } 
+                    if ( connection != null )
+                        try
+                        {
+                            connection.close();
+                        }
+                        catch ( IOException ioe )
+                        {
+                        }
+                    if ( inStream != null )
+                        try
+                        {
+                            inStream.close();
+                        }
+                        catch ( IOException ioe )
+                        {
+                        }
 
                     connection = null;
                     break;
@@ -146,6 +161,9 @@ public class DownloadManager
                     throw new IOException( error );
                 case HttpConnection.HTTP_UNAUTHORIZED:
                     throw new AuthenticationException();
+                case HttpConnection.HTTP_NOT_FOUND:
+                    connection.close();
+                    throw new IOException("Server not found");
                 default:
                     // Error: throw exception
                     connection.close();
@@ -157,8 +175,22 @@ public class DownloadManager
         }
         finally
         {
-            if ( connection != null ) try { connection.close(); } catch ( IOException ioe ) { } 
-            if ( inStream != null ) try { inStream.close(); } catch ( IOException ioe ) { } 
+            if ( connection != null )
+                try
+                {
+                    connection.close();
+                }
+                catch ( IOException ioe )
+                {
+                }
+            if ( inStream != null )
+                try
+                {
+                    inStream.close();
+                }
+                catch ( IOException ioe )
+                {
+                }
         }
     }
 

@@ -18,6 +18,12 @@
  */
 package org.hisp.dhis.mobile.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class User
 {
 
@@ -53,6 +59,44 @@ public class User
     public void setPassword( String password )
     {
         this.password = password;
+    }
+
+    public static User recordToUser( byte[] rec )
+    {
+        ByteArrayInputStream bin = new ByteArrayInputStream( rec );
+        DataInputStream din = new DataInputStream( bin );
+
+        User user = new User();
+        try
+        {
+            user.setUsername( din.readUTF() );
+            user.setPassword( din.readUTF() );
+
+        }
+        catch ( IOException ioe )
+        {
+        }
+
+        return user;
+    }
+
+    public static byte[] userToRecord( User user )
+    {
+        ByteArrayOutputStream deOs = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( deOs );
+        
+        try
+        {
+            dout.writeUTF( user.getUsername() );
+            dout.writeUTF( user.getPassword() );
+            dout.flush();
+        }
+        catch ( IOException e )
+        {
+            System.out.println( e );
+            e.printStackTrace();
+        }
+        return deOs.toByteArray();
     }
 
 }
