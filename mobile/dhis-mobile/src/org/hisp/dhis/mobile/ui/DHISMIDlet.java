@@ -34,9 +34,7 @@ public class DHISMIDlet
     implements CommandListener
 {
 
-    private String serverUrl = "http://localhost:8080/api/";
-
-    private static final String DOWNLOAD_FORM = "Download Form";
+    private String serverUrl = "http://localhost:8080/dhis-web-api/api/";
 
     private boolean midletPaused = false;
 
@@ -48,9 +46,9 @@ public class DHISMIDlet
 
     private Vector programStagesVector = new Vector();
 
-    private OrgUnit orgUnit;
-
     private Vector activitiesVector = new Vector();
+
+    private OrgUnit orgUnit;
 
     private ProgramStageForm programStageForm;
 
@@ -58,7 +56,7 @@ public class DHISMIDlet
 
     private List formDownloadList;
 
-    private Form activityList;
+    private List activityList;
 
     private Form settingsForm;
 
@@ -73,6 +71,8 @@ public class DHISMIDlet
     private Form loginForm;
 
     private Form pinForm;
+
+    private Form waitForm;
 
     // add one more form to handle downloaded form list
     private List downloadedFormsList;
@@ -148,8 +148,10 @@ public class DHISMIDlet
      */
     public void startMIDlet()
     {
-        new SplashScreen( getLogo(), getDisplay(), (Displayable) getLoginForm(), (Displayable) getPinForm());
+       getPinForm().addCommand(this.getPinFormExitCmd());
         
+        new SplashScreen( getLogo(), getDisplay(), (Displayable) getLoginForm(), (Displayable) getPinForm() );
+
     }
 
     /**
@@ -173,6 +175,7 @@ public class DHISMIDlet
     {
 
         Display display = getDisplay();
+
         if ( alert == null )
         {
             display.setCurrent( nextDisplayable );
@@ -235,22 +238,6 @@ public class DHISMIDlet
             else if ( command == lgnFrmLgnCmd )
             {
                 login();
-                if ( user != null )
-                {
-                    // DownloadManager downloadManager = new DownloadManager(
-                    // this, serverUrl + "user", user,
-                    // DownloadManager.DOWNLOAD_ALL );
-                    // downloadManager.start();
-                    // Form waitForm = new Form( "Making connection" );
-                    // waitForm.append( "Please wait........" );
-                    // switchDisplayable( null, waitForm );
-                    // switchDisplayable( null, getMainMenuList() );
-                }
-                else
-                {
-                    // getDisplay().setCurrent( new Alert( "You must login" ),
-                    // loginForm );
-                }
             }
         }
         else if ( displayable == mainMenuList )
@@ -294,36 +281,105 @@ public class DHISMIDlet
             {
                 this.switchDisplayable( null, mainMenuList );
             }
-        } else if (displayable == pinForm){
-            if (command == pinFormNextCmd){
-                this.saveData();
-            } else if (command == pinFormReinitCmd) {
-                switchDisplayable( null, getLoginForm() );
+        }
+        else if ( displayable == pinForm )
+        {
+            SettingsRectordStore settingRs = null;
+            if ( command == pinFormNextCmd )
+            {
+                    //check empty pin textfield
+                    if(!getPinTextField().getString().equals( "" )){
+                         // case 1: Later Startup, User Information has not been
+                            // loaded
+                        
+                            try
+                            {
+                                settingRs = new SettingsRectordStore( "SETTINGS" );
+                                if ( this.user == null )
+                                {
+                                    if ( getPinTextField().getString().equals( settingRs.get( "pin" ) ) )
+                                    {
+                                        // Load User Information
+                                        this.user = Storage.loadUser();
+                                        // Load OrgUnit
+                                        this.orgUnit = Storage.loadOrgUnit();
+                                        // Load Activities
+                                        switchDisplayable( null, this.getWaitForm( "Load Activities", "Loading.....please wait" ) );
+                                        this.loadActivities();
+                                        // Load Forms
+                                    }
+                                    else
+                                    {
+                                        this.getPinTextField().setString( "" );
+                                        switchDisplayable(
+                                            AlertUtil.getInfoAlert( "Error", "Wrong PIN number, please input again" ), getPinForm() );
+                                    }
+                                    // case 2: First Startup, User Information initialized
+                                    // from input
+                                }
+                                else
+                                {
+                                    // Save PIN
+                                    settingRs.put( "pin", this.getPinTextField().getString() );
+                                    settingRs.save();
+                                    // Save User Information
+                                    Storage.saveUser( this.user );
+                                    // Clear, Download and Save activities
+                                    switchDisplayable( null, this.getWaitForm( "Download Activities", "Downloading.....please wait" ) );
+                                    downloadActivities();
+                                    //Download and Save Forms
+                                    
+                                }
+                                settingRs = null;
+                                }
+                            catch ( RecordStoreException e )
+                            {
+                                e.printStackTrace();
+                            }
+                    }else{
+                        switchDisplayable(AlertUtil.getInfoAlert( "Error", "You must input the 4-digit PIN code" ), getPinForm() );
+                    }
+            }
+            else if ( command == pinFormReinitCmd )
+            {
+                this.getDisplay().setCurrent( AlertUtil.getConfirmAlert( this, getPinForm(), getLoginForm() ) );
+            }else if (command == pinFormExitCmd){
+                exitMIDlet();
             }
         }
     }
 
-    private void saveData()
-    {
-        try
-        {
-            SettingsRectordStore settingStore = new SettingsRectordStore( "SETTINGS" );
-            settingStore.put( "pin", this.getPinTextField().getString() );
-            settingStore.save();
-        }
-        catch ( RecordStoreException e )
-        {
-            System.out.println(e.getMessage());
-        }
-        
-    }
+    /**
+     * Returns an vector of activities loaded from RMS
+     */
 
-    private void savePin()
+    // this Thread should moved to manager class like DownloadManager
+    private void loadActivities()
     {
-        // TODO Auto-generated method stub
-        
+        new Thread()
+        {
+            public void run()
+            {
+                activitiesVector = Storage.loadActivities();
+                switchDisplayable( null, getMainMenuList() );
+            }
+        }.start();
     }
-
+    
+    /**
+     * Returns an initiliazed instance of exitCommand component.
+     * 
+     * @return the initialized component instance
+     */
+    public Command getPinFormExitCmd()
+    {
+        if ( pinFormExitCmd == null )
+        {
+            pinFormExitCmd = new Command( "Exit", Command.EXIT, 0 );
+        }
+        return pinFormExitCmd;
+    }
+    
     /**
      * Returns an initiliazed instance of exitCommand component.
      * 
@@ -400,14 +456,17 @@ public class DHISMIDlet
         if ( mainMenuList == null )
         {
             mainMenuList = new List( "Menu", Choice.IMPLICIT );
-            mainMenuList.append( DOWNLOAD_FORM, null );
-            mainMenuList.append( "Download Activity Plan", null );
-            mainMenuList.append( "Record Data", null );
-            mainMenuList.append( "Settings", null );
+            //mainMenuList.append( DOWNLOAD_FORM, null );
+            mainMenuList.append( "Activity Plan", null );
+            mainMenuList.append( "Send Finished Records", null );
+            //mainMenuList.append( "Download Activity Plan", null );
+            //mainMenuList.append( "Record Data", null );
+            //mainMenuList.append( "Settings", null );
 
             mainMenuList.addCommand( getMnuListExtCmd() );
 
             mainMenuList.setCommandListener( this );
+            
             mainMenuList.setFitPolicy( Choice.TEXT_WRAP_DEFAULT );
             mainMenuList.setSelectedFlags( new boolean[] { false, false, false, false } );
         }
@@ -423,20 +482,9 @@ public class DHISMIDlet
         String __selectedString = getMainMenuList().getString( getMainMenuList().getSelectedIndex() );
         if ( __selectedString != null )
         {
-            if ( __selectedString.equals( DOWNLOAD_FORM ) )
+            if ( __selectedString.equals( "Activity Plan" ))
             {
-                browseForms();
-                Form waitForm = new Form( "Making connection" );
-                waitForm.append( "Please wait........" );
-                switchDisplayable( null, waitForm );
-            }
-            else if ( __selectedString.equals( "Download Activity Plan" ) )
-            {
-                browseActivities();
-                Form waitForm = new Form( "Making connection" );
-                waitForm.append( "Please wait........" );
-                switchDisplayable( null, waitForm );
-                System.out.println( "I will download activity plans from here" );
+                displayCurActivities();
             }
             else if ( __selectedString.equals( "Record Data" ) )
             {
@@ -493,14 +541,10 @@ public class DHISMIDlet
 
     public void downloadActivities()
     {
-        String urlDownloadActivities = orgUnit.getActivitiesLink();
+        String urlDownloadActivities = this.orgUnit.getActivitiesLink();
 
         downloadManager = new DownloadManager( this, urlDownloadActivities, user, DownloadManager.DOWNLOAD_ACTIVITYPLAN );
         downloadManager.start();
-
-        Form form = new Form( "Downloading" );
-        form.append( "Please wait" );
-        switchDisplayable( null, form );
     }
 
     /**
@@ -549,6 +593,24 @@ public class DHISMIDlet
             actvyPlnListBakCmd = new Command( "Back", Command.BACK, 0 );
         }
         return actvyPlnListBakCmd;
+    }
+
+    public Form getWaitForm( String title, String msg )
+    {
+        if ( waitForm == null )
+        {
+            waitForm = new Form( title );
+            waitForm.append( msg );
+            return waitForm;
+        }
+        else
+        {
+            waitForm.deleteAll();
+            waitForm.setTitle( title );
+            waitForm.append( msg );
+            return waitForm;
+        }
+
     }
 
     /**
@@ -714,6 +776,10 @@ public class DHISMIDlet
             pinForm.addCommand( this.getPinFormReinitCmd() );
             pinForm.setCommandListener( this );
         }
+        else if ( pinForm != null )
+        {
+            getPinTextField().setString( "" );
+        }
         return pinForm;
     }
 
@@ -739,7 +805,7 @@ public class DHISMIDlet
     {
         if ( pinTextField == null )
         {
-            pinTextField = new TextField( "PIN", "", 4, TextField.NUMERIC );
+            pinTextField = new TextField( "PIN", "", 4, TextField.NUMERIC | TextField.PASSWORD );
 
         }
         return pinTextField;
@@ -798,6 +864,8 @@ public class DHISMIDlet
             loginForm.addCommand( getLgnFrmExtCmd() );
             loginForm.addCommand( getLgnFrmLgnCmd() );
             loginForm.setCommandListener( this );
+        }else{
+            getPassword().setString( "" );
         }
         return loginForm;
     }
@@ -918,7 +986,6 @@ public class DHISMIDlet
 
     private void login()
     {
-
         if ( getUserName().getString() != null && getPassword().getString() != null )
         {
             String username = getUserName().getString().trim();
@@ -928,10 +995,9 @@ public class DHISMIDlet
                 user = new User( username, password );
             }
         }
-        // Take action based on login value
         if ( user != null )
         {
-            DownloadManager downloadManager = new DownloadManager( this, "http://localhost:8080/dhis-web-api/api/user",
+            DownloadManager downloadManager = new DownloadManager( this, getUrl().getString(),
                 user, DownloadManager.DOWNLOAD_ORGUNIT );
             downloadManager.start();
 
@@ -973,20 +1039,6 @@ public class DHISMIDlet
         catch ( RecordStoreException rse )
         {
         }
-    }
-
-    private void browseActivities()
-    {
-        if ( activitiesVector == null || activitiesVector.size() == 0 )
-        {
-            downloadManager = new DownloadManager( this, serverUrl + "user", user, DownloadManager.DOWNLOAD_ORGUNIT );
-            downloadManager.start();
-        }
-        else
-        {
-            displayCurActivities();
-        }
-
     }
 
     private void browseForms()
@@ -1034,7 +1086,8 @@ public class DHISMIDlet
     {
         if ( activitiesVector == null || activitiesVector.size() == 0 )
         {
-            getActivitiesList().append( "No Activity Available" );
+            getActivitiesList().deleteAll();
+            getActivitiesList().append( "No Activity Available", null );
         }
         else
         {
@@ -1042,20 +1095,20 @@ public class DHISMIDlet
             for ( int i = 0; i < activitiesVector.size(); i++ )
             {
                 Activity activity = (Activity) activitiesVector.elementAt( i );
-                getActivitiesList().append( "\n-------\n" );
-                getActivitiesList().append( "Beneficiary: " + activity.getBeneficiary().getFullName() );
-                getActivitiesList().append( "Due Date: " + activity.getDueDate().toString() );
+                getActivitiesList().append(
+                    "Beneficiary: " + activity.getBeneficiary().getFullName() + "\n" + "Due Date: "
+                        + activity.getDueDate().toString() + "\n", null );
                 activity = null;
             }
         }
         switchDisplayable( null, activityList );
     }
 
-    public Form getActivitiesList()
+    public List getActivitiesList()
     {
         if ( activityList == null )
         {
-            activityList = new Form( "Current Activities" );
+            activityList = new List( "Current Activities", Choice.IMPLICIT );
             activityList.addCommand( getActvyPlnListBakCmd() );
             activityList.setCommandListener( this );
         }

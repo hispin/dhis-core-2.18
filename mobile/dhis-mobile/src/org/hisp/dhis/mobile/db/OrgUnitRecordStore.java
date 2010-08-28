@@ -16,6 +16,7 @@ import org.hisp.dhis.mobile.model.OrgUnit;
  * @author Tran Ng Minh Luan
  * 
  */
+
 public class OrgUnitRecordStore
 {
 
@@ -26,7 +27,7 @@ public class OrgUnitRecordStore
     // Constructor
     public OrgUnitRecordStore()
     {
-        this.dbName = "ORGUNIT";
+        this.dbName = ModelRecordStore.ORGUNIT_DB;
     }
 
     // Getter & Setter
