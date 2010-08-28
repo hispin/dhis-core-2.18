@@ -12,8 +12,7 @@ import javax.microedition.rms.RecordStoreException;
 
 import org.hisp.dhis.mobile.db.SettingsRectordStore;
 
-public class SplashScreen
-    extends Canvas
+public class SplashScreen extends Canvas
 {
 
     private Display display;

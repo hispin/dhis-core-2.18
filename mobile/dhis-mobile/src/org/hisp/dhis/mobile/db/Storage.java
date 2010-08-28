@@ -26,16 +26,12 @@
  */
 package org.hisp.dhis.mobile.db;
 
-import java.util.Enumeration;
 import java.util.Vector;
-
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreNotOpenException;
-
 import org.hisp.dhis.mobile.model.AbstractModel;
-import org.hisp.dhis.mobile.model.Activity;
 import org.hisp.dhis.mobile.model.OrgUnit;
 import org.hisp.dhis.mobile.model.ProgramStageForm;
 import org.hisp.dhis.mobile.model.User;
@@ -83,24 +79,19 @@ public class Storage
         return (AbstractModel) getAllForm().elementAt( index );
     }
 
-    public static void storeActivities( Vector activitiesVector )
+    public static void storeActivities( Vector activityVector )
     {
-        ModelRecordStore modelRecordStore = new ModelRecordStore( ModelRecordStore.ACTIVITY_DB );
-        Enumeration activities = activitiesVector.elements();
-        Activity activity = null;
-        int i = 0;
-        while ( activities.hasMoreElements() )
-        {
-            try
-            {
-                activity = (Activity) activities.nextElement();
-                modelRecordStore.addRecord( Activity.activityToRecord( activity ) );
-                i += 1;
-            }
-            catch ( RecordStoreException rse )
-            {
-            }
-        }
+        clear(ModelRecordStore.ACTIVITY_DB);
+        ActivityRecordStore activityRecordStore = new ActivityRecordStore();
+        activityRecordStore.setActivityVector( activityVector );
+        activityRecordStore.save();
+        activityRecordStore = null;
+    }
+    
+    public static Vector loadActivities(){
+        ActivityRecordStore activityRecordStore = new ActivityRecordStore();
+        return activityRecordStore.loadAll();
+        
     }
 
     public static void storeForm( ProgramStageForm programStageForm )
@@ -127,19 +118,37 @@ public class Storage
 
     public static void saveOrgUnit( OrgUnit orgUnit )
     {
-        // ModelRecordStore modelRecordStore;
-        // try
-        // {
-        // modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB
-        // );
-        // modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgUnit ) );
-        // }
-        // catch ( RecordStoreException rse )
-        // {
-        // }
-        OrgUnitRecordStore orgUnitStore = new OrgUnitRecordStore();
-        orgUnitStore.save( orgUnit );
-        orgUnitStore = null;
+        clear(ModelRecordStore.ORGUNIT_DB);
+        ModelRecordStore modelRecordStore;
+        try
+        {
+            modelRecordStore = new ModelRecordStore( ModelRecordStore.ORGUNIT_DB );
+            modelRecordStore.addRecord( OrgUnit.orgUnitToRecord( orgUnit ) );
+        }
+        catch ( RecordStoreException rse )
+        {
+        }
+    }
+    
+    public static OrgUnit loadOrgUnit()
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        OrgUnit orgUnit = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( ModelRecordStore.ORGUNIT_DB, true );
+            re = rs.enumerateRecords( null, null, false );
+            while(re.hasNextElement()){
+                orgUnit = OrgUnit.recordToOrgUnit( re.nextRecord());
+            }
+            return orgUnit;
+        }
+        catch ( RecordStoreException rse )
+        {
+            rse.printStackTrace();
+            return null;
+        }
     }
 
     public static void saveUser( User user )
@@ -154,6 +163,27 @@ public class Storage
         }
         catch ( RecordStoreException rse )
         {
+        }
+    }
+    
+    public static User loadUser()
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        User user = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( ModelRecordStore.USER_DB, true );
+            re = rs.enumerateRecords( null, null, false );
+            while(re.hasNextElement()){
+                user = User.recordToUser(re.nextRecord());
+            }
+            return user;
+        }
+        catch ( RecordStoreException rse )
+        {
+            rse.printStackTrace();
+            return null;
         }
     }
     

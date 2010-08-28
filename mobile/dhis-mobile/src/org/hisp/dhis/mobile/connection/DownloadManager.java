@@ -85,7 +85,8 @@ public class DownloadManager
             {
                 Vector activitiesVector = (Vector) download( url, new ActivityPlanParser() );
                 dhisMIDlet.saveActivities( activitiesVector );
-                dhisMIDlet.displayCurActivities();
+                dhisMIDlet.switchDisplayable( null, dhisMIDlet.getMainMenuList() );
+                //dhisMIDlet.displayCurActivities();
             }
             else if ( task.equals( DOWNLOAD_ALL ) )
             {
