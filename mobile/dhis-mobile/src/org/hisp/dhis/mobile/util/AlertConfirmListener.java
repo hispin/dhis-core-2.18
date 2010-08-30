@@ -7,29 +7,44 @@ import javax.microedition.midlet.MIDlet;
 
 import org.hisp.dhis.mobile.ui.DHISMIDlet;
 
-public class AlertConfirmListener implements CommandListener
+public abstract class AlertConfirmListener implements CommandListener
 {
-    private Displayable currentScrren;
+    protected Displayable currentScrren;
     
-    private Displayable nextScreen;
+    protected Displayable nextScreen;
 
-    private MIDlet midlet;
+    protected MIDlet midlet;
     
-    public AlertConfirmListener( MIDlet midlet, Displayable currentScrren, Displayable nextScreen )
+    public AlertConfirmListener(  )
     {
-        this.midlet = midlet;
-        this.nextScreen = nextScreen;
+        
+    }
+    
+    public void setCurrentScrren( Displayable currentScrren )
+    {
         this.currentScrren = currentScrren;
     }
 
+
+
+    public void setNextScreen( Displayable nextScreen )
+    {
+        this.nextScreen = nextScreen;
+    }
+
+
+
+    public void setMidlet( MIDlet midlet )
+    {
+        this.midlet = midlet;
+    }
+
+
+
     public void commandAction( Command c, Displayable d )
     {
-        if(c.getCommandType() == Command.OK){
-            //Do other actions
-            ((DHISMIDlet)this.midlet).switchDisplayable(null,nextScreen);
-        }else if(c.getCommandType() == Command.CANCEL){
-            ((DHISMIDlet)this.midlet).switchDisplayable(null,currentScrren);
-        }
+        //Define action when Command == OK
+        //Define action when Command == CANCEL
     }
 
 }
