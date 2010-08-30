@@ -81,17 +81,18 @@ public class Storage
 
     public static void storeActivities( Vector activityVector )
     {
-        clear(ModelRecordStore.ACTIVITY_DB);
+        clear( ModelRecordStore.ACTIVITY_DB );
         ActivityRecordStore activityRecordStore = new ActivityRecordStore();
         activityRecordStore.setActivityVector( activityVector );
         activityRecordStore.save();
         activityRecordStore = null;
     }
-    
-    public static Vector loadActivities(){
+
+    public static Vector loadActivities()
+    {
         ActivityRecordStore activityRecordStore = new ActivityRecordStore();
         return activityRecordStore.loadAll();
-        
+
     }
 
     public static void storeForm( ProgramStageForm programStageForm )
@@ -116,9 +117,58 @@ public class Storage
         }
     }
 
+    public static void storeForms( Vector programStageFormVector )
+    {
+        clear( ModelRecordStore.FORM_DB );
+        clear( ModelRecordStore.DATAELEMENT_DB );
+        ModelRecordStore modelRecordStore;
+        for ( int i = 0; i < programStageFormVector.size(); i++ )
+        {
+            try
+            {
+                modelRecordStore = new ModelRecordStore( ModelRecordStore.FORM_DB );
+                modelRecordStore.addRecord( ProgramStageForm
+                    .programStageFormToRecord( (ProgramStageForm) programStageFormVector.elementAt( i ) ) );
+                modelRecordStore = new ModelRecordStore( ModelRecordStore.DATAELEMENT_DB );
+                modelRecordStore.AddDataElementRecords( ((ProgramStageForm) programStageFormVector.elementAt( i ))
+                    .getDataElements() );
+            }
+            catch ( RecordStoreException rse )
+            {
+                System.out.println( rse.getMessage() );
+            }
+
+        }
+
+    }
+    
+    public static Vector loadForms()
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        Vector formsVector = new Vector();
+        try
+        {
+            rs = RecordStore.openRecordStore( ModelRecordStore.FORM_DB, true );
+            re = rs.enumerateRecords( null, null, false );
+            while ( re.hasNextElement() )
+            {
+                formsVector.addElement( ProgramStageForm.recordToProgramStageForm( re.nextRecord() ) );
+            }
+            re = null;
+            rs = null;
+            return formsVector;
+        }
+        catch ( RecordStoreException rse )
+        {
+            rse.printStackTrace();
+            return null;
+        }
+    }
+
     public static void saveOrgUnit( OrgUnit orgUnit )
     {
-        clear(ModelRecordStore.ORGUNIT_DB);
+        clear( ModelRecordStore.ORGUNIT_DB );
         ModelRecordStore modelRecordStore;
         try
         {
@@ -129,7 +179,7 @@ public class Storage
         {
         }
     }
-    
+
     public static OrgUnit loadOrgUnit()
     {
         RecordStore rs = null;
@@ -139,8 +189,9 @@ public class Storage
         {
             rs = RecordStore.openRecordStore( ModelRecordStore.ORGUNIT_DB, true );
             re = rs.enumerateRecords( null, null, false );
-            while(re.hasNextElement()){
-                orgUnit = OrgUnit.recordToOrgUnit( re.nextRecord());
+            while ( re.hasNextElement() )
+            {
+                orgUnit = OrgUnit.recordToOrgUnit( re.nextRecord() );
             }
             return orgUnit;
         }
@@ -152,9 +203,9 @@ public class Storage
     }
 
     public static void saveUser( User user )
-   
+
     {
-        clear(ModelRecordStore.USER_DB);
+        clear( ModelRecordStore.USER_DB );
         ModelRecordStore modelRecordStore;
         try
         {
@@ -165,7 +216,7 @@ public class Storage
         {
         }
     }
-    
+
     public static User loadUser()
     {
         RecordStore rs = null;
@@ -175,8 +226,9 @@ public class Storage
         {
             rs = RecordStore.openRecordStore( ModelRecordStore.USER_DB, true );
             re = rs.enumerateRecords( null, null, false );
-            while(re.hasNextElement()){
-                user = User.recordToUser(re.nextRecord());
+            while ( re.hasNextElement() )
+            {
+                user = User.recordToUser( re.nextRecord() );
             }
             return user;
         }
@@ -186,7 +238,7 @@ public class Storage
             return null;
         }
     }
-    
+
     public static void clear( String dbName )
     {
         RecordStore rs = null;
@@ -204,7 +256,7 @@ public class Storage
         }
         catch ( Exception e )
         {
-               System.out.println(e.getMessage());
+            System.out.println( e.getMessage() );
         }
         finally
         {

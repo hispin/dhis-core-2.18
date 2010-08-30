@@ -19,6 +19,7 @@ import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.RecordStoreException;
 
 import org.hisp.dhis.mobile.connection.DownloadManager;
+import org.hisp.dhis.mobile.db.ActivityRecordStore;
 import org.hisp.dhis.mobile.db.SettingsRectordStore;
 import org.hisp.dhis.mobile.db.Storage;
 import org.hisp.dhis.mobile.model.AbstractModel;
@@ -35,8 +36,7 @@ public class DHISMIDlet
     extends MIDlet
     implements CommandListener
 {
-
-    private String serverUrl = "http://localhost:8080/dhis-web-api/api/";
+    private String serverUrl = "http://localhost:8080/api/";
 
     private boolean midletPaused = false;
 
@@ -108,6 +108,8 @@ public class DHISMIDlet
     private Command deFrmSavCmd;
 
     private Command screenCommand;
+    
+    private Command saveCommand;
 
     private Command backCommand;
 
@@ -216,10 +218,13 @@ public class DHISMIDlet
         {
             if ( command == backCommand )
             {
-                switchDisplayable( null, getDownloadedFormsList() );
+                switchDisplayable( null, getActivitiesList() );
             }
             else if ( command == screenCommand )
             {
+                sendRecordedData();
+            } else if (command == saveCommand){
+                
             }
         }
         else if ( displayable == formDownloadList )
@@ -257,11 +262,12 @@ public class DHISMIDlet
             else if ( command == getMnuListDnldCmd() )
             {
                 // clear DataValue
-                
+
                 this.getDisplay().setCurrent(
                     AlertUtil.getConfirmAlert( "Warning",
-                        "All data which are not sent to the server will be clear, do you want to continue ?", new DnlActivitiesConfirmAlertListener(), this,
-                        getMainMenuList(), getWaitForm("Redownloading Activities", "Downloading.....Please wait") ) );
+                        "All data which are not sent to the server will be clear, do you want to continue ?",
+                        new DnlActivitiesConfirmAlertListener(), this, getMainMenuList(),
+                        getWaitForm( "Redownloading Activities", "Downloading.....Please wait" ) ) );
             }
             else if ( command == mnuListExtCmd )
             {
@@ -276,7 +282,7 @@ public class DHISMIDlet
             }
             else if ( command == stngsOkCmd )
             {
-                //save new settings
+                // save new settings
                 switchDisplayable( null, getMainMenuList() );
             }
         }
@@ -285,6 +291,8 @@ public class DHISMIDlet
             if ( command == actvyPlnListBakCmd )
             {
                 switchDisplayable( null, getMainMenuList() );
+            } else if (command == List.SELECT_COMMAND){
+                this.displaySelectedActivity();
             }
         }
         else if ( displayable == downloadedFormsList )
@@ -323,8 +331,9 @@ public class DHISMIDlet
                                 // Load Activities
                                 switchDisplayable( null,
                                     this.getWaitForm( "Load Activities", "Loading.....please wait" ) );
+                                this.loadForms();
                                 this.loadActivities();
-                                // Load Forms
+
                             }
                             else
                             {
@@ -347,6 +356,7 @@ public class DHISMIDlet
                             // Clear, Download and Save activities
                             switchDisplayable( null,
                                 this.getWaitForm( "Download Activities", "Downloading.....please wait" ) );
+                            downloadForms();
                             downloadActivities();
                             // Download and Save Forms
 
@@ -367,13 +377,21 @@ public class DHISMIDlet
             else if ( command == pinFormReinitCmd )
             {
                 this.getDisplay().setCurrent(
-                    AlertUtil.getConfirmAlert( "Confirmation", "Are you sure ?",new DefaultAlertConfirmListener(  ), this, getPinForm(), getLoginForm() ) );
+                    AlertUtil.getConfirmAlert( "Confirmation", "Are you sure ?", new DefaultAlertConfirmListener(),
+                        this, getPinForm(), getLoginForm() ) );
             }
             else if ( command == pinFormExitCmd )
             {
                 exitMIDlet();
             }
         }
+    }
+
+    private void displaySelectedActivity()
+    {
+        Activity selectedActivity = (Activity) activitiesVector.elementAt( getActivitiesList().getSelectedIndex() );
+        ProgramStageForm formOfActivity = Storage.fetchForm( selectedActivity.getTask().getProgStageId() );
+        this.renderForm( formOfActivity, getForm() );
     }
 
     /**
@@ -391,6 +409,26 @@ public class DHISMIDlet
                 switchDisplayable( null, getMainMenuList() );
             }
         }.start();
+    }
+
+    private void loadForms()
+    {
+        new Thread()
+        {
+            public void run()
+            {
+                programStagesVector = Storage.loadForms();
+            }
+        }.start();
+
+    }
+
+    private void downloadForms()
+    {
+        DownloadManager manager = new DownloadManager( this, this.url.getString() + "forms/", user,
+            DownloadManager.DOWNLOAD_FORMS );
+        manager.start();
+
     }
 
     /**
@@ -669,13 +707,14 @@ public class DHISMIDlet
     {
         if ( settingsForm == null )
         {
-            //settingsForm = new Form( "Configurable Parameters", new Item[] { getUrl(), getAdminPass() } );
-            //settingsForm = new Form( "Configurable Parameters", new Item[] { getUrl() } );
-            System.out.println(getUrl().getString());
-            settingsForm = new Form("Configurable Parameters");
-            
-            
-            //settingsForm.append( getUrlInSetting() );
+            // settingsForm = new Form( "Configurable Parameters", new Item[] {
+            // getUrl(), getAdminPass() } );
+            // settingsForm = new Form( "Configurable Parameters", new Item[] {
+            // getUrl() } );
+            System.out.println( getUrl().getString() );
+            settingsForm = new Form( "Configurable Parameters" );
+
+            // settingsForm.append( getUrlInSetting() );
             settingsForm.addCommand( getSetngsBakCmd() );
             settingsForm.addCommand( getStngsOkCmd() );
             settingsForm.setCommandListener( this );
@@ -810,6 +849,7 @@ public class DHISMIDlet
             form = new Form( "form" );
             form.addCommand( getBackCommand() );
             form.addCommand( getScreenCommand() );
+            form.addCommand(getSaveCommand());
             form.setCommandListener( this );
 
             // This is just for test .....
@@ -817,6 +857,14 @@ public class DHISMIDlet
             renderForm( frm, form );
         }
         return form;
+    }
+
+    private Command getSaveCommand()
+    {
+        if (saveCommand == null){
+            saveCommand = new Command( "Save", Command.SCREEN, 0 );
+        }
+        return saveCommand;
     }
 
     public Form getPinForm()
@@ -904,7 +952,7 @@ public class DHISMIDlet
     {
         if ( screenCommand == null )
         {
-            screenCommand = new Command( "Save", Command.SCREEN, 0 );
+            screenCommand = new Command( "Send", Command.SCREEN, 0 );
         }
         return screenCommand;
     }
@@ -1072,13 +1120,13 @@ public class DHISMIDlet
         {
             settingsRecord = new SettingsRectordStore( "SETTINGS" );
             settingsRecord.put( "url", url.getString() );
-            //settingsRecord.put( "adminPass", adminPass.getString() );
+            // settingsRecord.put( "adminPass", adminPass.getString() );
             settingsRecord.save();
         }
         catch ( RecordStoreException rse )
         {
         }
-        
+
         settingsRecord = null;
     }
 
@@ -1262,5 +1310,11 @@ public class DHISMIDlet
     public void loginNeeded()
     {
         switchDisplayable( AlertUtil.getInfoAlert( "Login failed", "Username/password was wrong" ), getLoginForm() );
+    }
+
+    public void saveForms( Vector downloadedProgramStagesVector )
+    {
+        this.programStagesVector = downloadedProgramStagesVector;
+        Storage.storeForms( this.programStagesVector );
     }
 }
