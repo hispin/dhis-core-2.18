@@ -28,6 +28,8 @@ import org.hisp.dhis.mobile.model.OrgUnit;
 import org.hisp.dhis.mobile.model.ProgramStageForm;
 import org.hisp.dhis.mobile.model.User;
 import org.hisp.dhis.mobile.util.AlertUtil;
+import org.hisp.dhis.mobile.util.DefaultAlertConfirmListener;
+import org.hisp.dhis.mobile.util.DnlActivitiesConfirmAlertListener;
 
 public class DHISMIDlet
     extends MIDlet
@@ -84,6 +86,8 @@ public class DHISMIDlet
     private Command exitCommand;
 
     private Command mnuListDnldCmd;
+
+    private Command mnuListSettingCmd;
 
     private Command mnuListExtCmd;
 
@@ -148,8 +152,8 @@ public class DHISMIDlet
      */
     public void startMIDlet()
     {
-       getPinForm().addCommand(this.getPinFormExitCmd());
-        
+        getPinForm().addCommand( this.getPinFormExitCmd() );
+
         new SplashScreen( getLogo(), getDisplay(), (Displayable) getLoginForm(), (Displayable) getPinForm() );
 
     }
@@ -246,6 +250,19 @@ public class DHISMIDlet
             {
                 mainMenuListAction();
             }
+            else if ( command == getMnuListSettingCmd() )
+            {
+                switchDisplayable( null, getSettingsForm() );
+            }
+            else if ( command == getMnuListDnldCmd() )
+            {
+                // clear DataValue
+                
+                this.getDisplay().setCurrent(
+                    AlertUtil.getConfirmAlert( "Warning",
+                        "All data which are not sent to the server will be clear, do you want to continue ?", new DnlActivitiesConfirmAlertListener(), this,
+                        getMainMenuList(), getWaitForm("Redownloading Activities", "Downloading.....Please wait") ) );
+            }
             else if ( command == mnuListExtCmd )
             {
                 exitMIDlet();
@@ -257,10 +274,9 @@ public class DHISMIDlet
             {
                 switchDisplayable( null, getMainMenuList() );
             }
-            else if ( command == setngsSaveCmd )
+            else if ( command == stngsOkCmd )
             {
-                // should try to save global parameters.......
-                saveSettings();
+                //save new settings
                 switchDisplayable( null, getMainMenuList() );
             }
         }
@@ -287,63 +303,74 @@ public class DHISMIDlet
             SettingsRectordStore settingRs = null;
             if ( command == pinFormNextCmd )
             {
-                    //check empty pin textfield
-                    if(!getPinTextField().getString().equals( "" )){
-                         // case 1: Later Startup, User Information has not been
-                            // loaded
-                        
-                            try
+                // check empty pin textfield
+                if ( !getPinTextField().getString().equals( "" ) )
+                {
+                    // case 1: Later Startup, User Information has not been
+                    // loaded
+
+                    try
+                    {
+                        settingRs = new SettingsRectordStore( "SETTINGS" );
+                        if ( this.user == null )
+                        {
+                            if ( getPinTextField().getString().equals( settingRs.get( "pin" ) ) )
                             {
-                                settingRs = new SettingsRectordStore( "SETTINGS" );
-                                if ( this.user == null )
-                                {
-                                    if ( getPinTextField().getString().equals( settingRs.get( "pin" ) ) )
-                                    {
-                                        // Load User Information
-                                        this.user = Storage.loadUser();
-                                        // Load OrgUnit
-                                        this.orgUnit = Storage.loadOrgUnit();
-                                        // Load Activities
-                                        switchDisplayable( null, this.getWaitForm( "Load Activities", "Loading.....please wait" ) );
-                                        this.loadActivities();
-                                        // Load Forms
-                                    }
-                                    else
-                                    {
-                                        this.getPinTextField().setString( "" );
-                                        switchDisplayable(
-                                            AlertUtil.getInfoAlert( "Error", "Wrong PIN number, please input again" ), getPinForm() );
-                                    }
-                                    // case 2: First Startup, User Information initialized
-                                    // from input
-                                }
-                                else
-                                {
-                                    // Save PIN
-                                    settingRs.put( "pin", this.getPinTextField().getString() );
-                                    settingRs.save();
-                                    // Save User Information
-                                    Storage.saveUser( this.user );
-                                    // Clear, Download and Save activities
-                                    switchDisplayable( null, this.getWaitForm( "Download Activities", "Downloading.....please wait" ) );
-                                    downloadActivities();
-                                    //Download and Save Forms
-                                    
-                                }
-                                settingRs = null;
-                                }
-                            catch ( RecordStoreException e )
-                            {
-                                e.printStackTrace();
+                                // Load User Information
+                                this.user = Storage.loadUser();
+                                // Load OrgUnit
+                                this.orgUnit = Storage.loadOrgUnit();
+                                // Load Activities
+                                switchDisplayable( null,
+                                    this.getWaitForm( "Load Activities", "Loading.....please wait" ) );
+                                this.loadActivities();
+                                // Load Forms
                             }
-                    }else{
-                        switchDisplayable(AlertUtil.getInfoAlert( "Error", "You must input the 4-digit PIN code" ), getPinForm() );
+                            else
+                            {
+                                this.getPinTextField().setString( "" );
+                                switchDisplayable(
+                                    AlertUtil.getInfoAlert( "Error", "Wrong PIN number, please input again" ),
+                                    getPinForm() );
+                            }
+                            // case 2: First Startup, User Information
+                            // initialized
+                            // from input
+                        }
+                        else
+                        {
+                            // Save PIN
+                            settingRs.put( "pin", this.getPinTextField().getString() );
+                            settingRs.save();
+                            // Save User Information
+                            Storage.saveUser( this.user );
+                            // Clear, Download and Save activities
+                            switchDisplayable( null,
+                                this.getWaitForm( "Download Activities", "Downloading.....please wait" ) );
+                            downloadActivities();
+                            // Download and Save Forms
+
+                        }
+                        settingRs = null;
                     }
+                    catch ( RecordStoreException e )
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    switchDisplayable( AlertUtil.getInfoAlert( "Error", "You must input the 4-digit PIN code" ),
+                        getPinForm() );
+                }
             }
             else if ( command == pinFormReinitCmd )
             {
-                this.getDisplay().setCurrent( AlertUtil.getConfirmAlert( this, getPinForm(), getLoginForm() ) );
-            }else if (command == pinFormExitCmd){
+                this.getDisplay().setCurrent(
+                    AlertUtil.getConfirmAlert( "Confirmation", "Are you sure ?",new DefaultAlertConfirmListener(  ), this, getPinForm(), getLoginForm() ) );
+            }
+            else if ( command == pinFormExitCmd )
+            {
                 exitMIDlet();
             }
         }
@@ -365,7 +392,7 @@ public class DHISMIDlet
             }
         }.start();
     }
-    
+
     /**
      * Returns an initiliazed instance of exitCommand component.
      * 
@@ -379,7 +406,7 @@ public class DHISMIDlet
         }
         return pinFormExitCmd;
     }
-    
+
     /**
      * Returns an initiliazed instance of exitCommand component.
      * 
@@ -456,17 +483,19 @@ public class DHISMIDlet
         if ( mainMenuList == null )
         {
             mainMenuList = new List( "Menu", Choice.IMPLICIT );
-            //mainMenuList.append( DOWNLOAD_FORM, null );
+            // mainMenuList.append( DOWNLOAD_FORM, null );
             mainMenuList.append( "Activity Plan", null );
             mainMenuList.append( "Send Finished Records", null );
-            //mainMenuList.append( "Download Activity Plan", null );
-            //mainMenuList.append( "Record Data", null );
-            //mainMenuList.append( "Settings", null );
+            // mainMenuList.append( "Download Activity Plan", null );
+            // mainMenuList.append( "Record Data", null );
+            // mainMenuList.append( "Settings", null );
 
             mainMenuList.addCommand( getMnuListExtCmd() );
+            mainMenuList.addCommand( getMnuListDnldCmd() );
+            mainMenuList.addCommand( getMnuListSettingCmd() );
 
             mainMenuList.setCommandListener( this );
-            
+
             mainMenuList.setFitPolicy( Choice.TEXT_WRAP_DEFAULT );
             mainMenuList.setSelectedFlags( new boolean[] { false, false, false, false } );
         }
@@ -482,20 +511,52 @@ public class DHISMIDlet
         String __selectedString = getMainMenuList().getString( getMainMenuList().getSelectedIndex() );
         if ( __selectedString != null )
         {
-            if ( __selectedString.equals( "Activity Plan" ))
+            if ( __selectedString.equals( "Activity Plan" ) )
             {
                 displayCurActivities();
             }
-            else if ( __selectedString.equals( "Record Data" ) )
+            else if ( __selectedString.equals( "Send Finished Records" ) )
             {
-                this.displayDownloadedForms( Storage.getAllForm() );
+
             }
-            else if ( __selectedString.equals( "Settings" ) )
-            {
-                loadSettings();
-                switchDisplayable( null, getSettingsForm() );
-            }
+            // else if ( __selectedString.equals( "Record Data" ) )
+            // {
+            // this.displayDownloadedForms( Storage.getAllForm() );
+            // }
+            // else if ( __selectedString.equals( "Settings" ) )
+            // {
+            // loadSettings();
+            // switchDisplayable( null, getSettingsForm() );
+            // }
         }
+    }
+
+    /**
+     * Returns an initiliazed instance of mnuListSettingCmd component.
+     * 
+     * @return the initialized component instance
+     */
+    public Command getMnuListSettingCmd()
+    {
+        if ( mnuListSettingCmd == null )
+        {
+            mnuListSettingCmd = new Command( "Settings", Command.ITEM, 1 );
+        }
+        return mnuListSettingCmd;
+    }
+
+    /**
+     * Returns an initiliazed instance of mnuListDnldCmd component.
+     * 
+     * @return the initialized component instance
+     */
+    public Command getMnuListDnldCmd()
+    {
+        if ( mnuListDnldCmd == null )
+        {
+            mnuListDnldCmd = new Command( "Download Activity", Command.ITEM, 1 );
+        }
+        return mnuListDnldCmd;
     }
 
     /**
@@ -511,20 +572,6 @@ public class DHISMIDlet
             mnuListExtCmd = new Command( "Exit", Command.EXIT, 0 );
         }
         return mnuListExtCmd;
-    }
-
-    /**
-     * Returns an initiliazed instance of mnuListDnldCmd component.
-     * 
-     * @return the initialized component instance
-     */
-    public Command getMnuListDnldCmd()
-    {
-        if ( mnuListDnldCmd == null )
-        {
-            mnuListDnldCmd = new Command( "Download", Command.SCREEN, 0 );
-        }
-        return mnuListDnldCmd;
     }
 
     public List getFormDownloadList()
@@ -622,9 +669,15 @@ public class DHISMIDlet
     {
         if ( settingsForm == null )
         {
-            settingsForm = new Form( "Configurable Parameters", new Item[] { getUrl(), getAdminPass() } );
+            //settingsForm = new Form( "Configurable Parameters", new Item[] { getUrl(), getAdminPass() } );
+            //settingsForm = new Form( "Configurable Parameters", new Item[] { getUrl() } );
+            System.out.println(getUrl().getString());
+            settingsForm = new Form("Configurable Parameters");
+            
+            
+            //settingsForm.append( getUrlInSetting() );
             settingsForm.addCommand( getSetngsBakCmd() );
-            settingsForm.addCommand( getSetngsSaveCmd() );
+            settingsForm.addCommand( getStngsOkCmd() );
             settingsForm.setCommandListener( this );
         }
         return settingsForm;
@@ -864,7 +917,9 @@ public class DHISMIDlet
             loginForm.addCommand( getLgnFrmExtCmd() );
             loginForm.addCommand( getLgnFrmLgnCmd() );
             loginForm.setCommandListener( this );
-        }else{
+        }
+        else
+        {
             getPassword().setString( "" );
         }
         return loginForm;
@@ -997,8 +1052,8 @@ public class DHISMIDlet
         }
         if ( user != null )
         {
-            DownloadManager downloadManager = new DownloadManager( this, getUrl().getString(),
-                user, DownloadManager.DOWNLOAD_ORGUNIT );
+            DownloadManager downloadManager = new DownloadManager( this, getUrl().getString() + "user", user,
+                DownloadManager.DOWNLOAD_ORGUNIT );
             downloadManager.start();
 
         }
@@ -1017,12 +1072,14 @@ public class DHISMIDlet
         {
             settingsRecord = new SettingsRectordStore( "SETTINGS" );
             settingsRecord.put( "url", url.getString() );
-            settingsRecord.put( "adminPass", adminPass.getString() );
+            //settingsRecord.put( "adminPass", adminPass.getString() );
             settingsRecord.save();
         }
         catch ( RecordStoreException rse )
         {
         }
+        
+        settingsRecord = null;
     }
 
     private void loadSettings()
