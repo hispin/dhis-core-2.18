@@ -65,8 +65,29 @@ public class DownloadManager
 
             if ( task.equals( DOWNLOAD_FORMS ) )
             {
+                // Vector programStagesVector = (Vector) download( url, new
+                // FormsParser() );
+                // dhisMIDlet.displayFormsForDownload( programStagesVector );
+
+                // Get the ProgramStageForm vector (without dataelements)
                 Vector programStagesVector = (Vector) download( url, new FormsParser() );
-                dhisMIDlet.displayFormsForDownload( programStagesVector );
+
+                ProgramStageForm form = null;
+                ProgramStageForm completeForm = null;
+
+                // for each form on the vector, set dataelement vector for it
+                for ( int i = 0; i < programStagesVector.size(); i++ )
+                {
+                    form = (ProgramStageForm) programStagesVector.elementAt( i );
+                    completeForm = (ProgramStageForm) download( url + form.getId(), new FormParser() );
+                    form.setDataElements( completeForm.getDataElements() );
+                }
+                form = null;
+                completeForm = null;
+
+                // now we have a completed form vector (each form has id, name
+                // and dataelement vector). Then call the save method
+                dhisMIDlet.saveForms( programStagesVector );
             }
             else if ( task.equals( DOWNLOAD_FORM ) )
             {
@@ -86,7 +107,7 @@ public class DownloadManager
                 Vector activitiesVector = (Vector) download( url, new ActivityPlanParser() );
                 dhisMIDlet.saveActivities( activitiesVector );
                 dhisMIDlet.switchDisplayable( null, dhisMIDlet.getMainMenuList() );
-                //dhisMIDlet.displayCurActivities();
+                // dhisMIDlet.displayCurActivities();
             }
             else if ( task.equals( DOWNLOAD_ALL ) )
             {
@@ -164,7 +185,7 @@ public class DownloadManager
                     throw new AuthenticationException();
                 case HttpConnection.HTTP_NOT_FOUND:
                     connection.close();
-                    throw new IOException("Server not found");
+                    throw new IOException( "Server not found" );
                 default:
                     // Error: throw exception
                     connection.close();
