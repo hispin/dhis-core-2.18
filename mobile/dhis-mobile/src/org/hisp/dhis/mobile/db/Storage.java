@@ -26,12 +26,15 @@
  */
 package org.hisp.dhis.mobile.db;
 
+import java.util.Hashtable;
 import java.util.Vector;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 import org.hisp.dhis.mobile.model.AbstractModel;
+import org.hisp.dhis.mobile.model.Activity;
+import org.hisp.dhis.mobile.model.DataValue;
 import org.hisp.dhis.mobile.model.OrgUnit;
 import org.hisp.dhis.mobile.model.ProgramStageForm;
 import org.hisp.dhis.mobile.model.User;
@@ -137,11 +140,9 @@ public class Storage
             {
                 System.out.println( rse.getMessage() );
             }
-
         }
-
     }
-    
+
     public static Vector loadForms()
     {
         RecordStore rs = null;
@@ -163,6 +164,78 @@ public class Storage
         {
             rse.printStackTrace();
             return null;
+        }
+    }
+
+    public static void storeDataValue( DataValue dataValue )
+    {
+        ModelRecordStore modelRecordStore;
+        try
+        {
+            modelRecordStore = new ModelRecordStore( ModelRecordStore.DATAVALUE_DB );
+            modelRecordStore.addRecord( DataValue.dataValueToRecord( dataValue ) );
+        }
+        catch ( RecordStoreException rse )
+        {
+            System.out.println( rse.getMessage() );
+        }
+    }
+
+    public static Hashtable loadDataValues( Activity activity )
+    {
+        Hashtable dataValuesTable = new Hashtable();
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        try
+        {
+            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
+            re = rs.enumerateRecords( null, null, false );
+            while ( re.hasNextElement() )
+            {
+                DataValue dataValue = DataValue.recordToDataValue( re.nextRecord() );
+                if ( dataValue.getProgramInstanceId() == activity.getTask().getProgStageInstId() )
+                {
+                    dataValuesTable.put( String.valueOf( dataValue.getDataElementId() ), dataValue.getValue() );
+                }
+            }
+            re = null;
+            rs = null;
+            return dataValuesTable;
+        }
+        catch ( RecordStoreException rse )
+        {
+            rse.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void updateDataValue( Activity activity, DataValue newDataValue )
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        try
+        {
+            DataValueFilter filter = new DataValueFilter();
+            filter.setDataElementID( newDataValue.getDataElementId() );
+            filter.setProStageInstanceID( activity.getTask().getProgStageInstId() );
+            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
+            re = rs.enumerateRecords( filter, null, false );
+            while ( re.hasNextElement() )
+            {
+                if ( re.numRecords() == 1 )
+                {
+                    int id = re.nextRecordId();
+                    byte[] data = DataValue.dataValueToRecord( newDataValue );
+                    rs.setRecord( id, data, 0, data.length );
+                    System.out.println( newDataValue.getValue() + " ID: " + id );
+                }
+            }
+            re = null;
+            rs = null;
+        }
+        catch ( RecordStoreException rse )
+        {
+            rse.printStackTrace();
         }
     }
 
