@@ -1,5 +1,6 @@
 package org.hisp.dhis.mobile.ui;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -25,6 +26,7 @@ import org.hisp.dhis.mobile.db.Storage;
 import org.hisp.dhis.mobile.model.AbstractModel;
 import org.hisp.dhis.mobile.model.Activity;
 import org.hisp.dhis.mobile.model.DataElement;
+import org.hisp.dhis.mobile.model.DataValue;
 import org.hisp.dhis.mobile.model.OrgUnit;
 import org.hisp.dhis.mobile.model.ProgramStageForm;
 import org.hisp.dhis.mobile.model.User;
@@ -53,6 +55,10 @@ public class DHISMIDlet
     private OrgUnit orgUnit;
 
     private ProgramStageForm programStageForm;
+
+    private Activity selectedActivity;
+
+    private Hashtable dataValueTable = new Hashtable();
 
     private List mainMenuList;
 
@@ -108,7 +114,7 @@ public class DHISMIDlet
     private Command deFrmSavCmd;
 
     private Command screenCommand;
-    
+
     private Command saveCommand;
 
     private Command backCommand;
@@ -223,8 +229,10 @@ public class DHISMIDlet
             else if ( command == screenCommand )
             {
                 sendRecordedData();
-            } else if (command == saveCommand){
-                
+            }
+            else if ( command == saveCommand )
+            {
+                saveDataValue();
             }
         }
         else if ( displayable == formDownloadList )
@@ -291,7 +299,9 @@ public class DHISMIDlet
             if ( command == actvyPlnListBakCmd )
             {
                 switchDisplayable( null, getMainMenuList() );
-            } else if (command == List.SELECT_COMMAND){
+            }
+            else if ( command == List.SELECT_COMMAND )
+            {
                 this.displaySelectedActivity();
             }
         }
@@ -387,11 +397,92 @@ public class DHISMIDlet
         }
     }
 
+    private void saveDataValue()
+    {
+        Vector des = programStageForm.getDataElements();
+        for ( int i = 0; i < des.size(); i++ )
+        {
+            DataElement de = (DataElement) des.elementAt( i );
+            if ( dataValueTable.get( String.valueOf( de.getId() ) ) != null )
+            {
+                this.updateDataValue( de );
+            }
+            else
+            {
+                this.storeNewDataValue( de );
+            }
+        }
+        loadDataValues( selectedActivity );
+
+    }
+
+    private void storeNewDataValue( DataElement de )
+    {
+        if ( de.getType() == DataElement.TYPE_DATE )
+        {
+            DateField dateField = (DateField) formElements.get( de );
+            if ( dateField.getDate() != null )
+            {
+                Storage.storeDataValue( getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(),
+                    String.valueOf( dateField.getDate().getTime() ) ) );
+                System.out.println( "Store new: " + de.getName() );
+            }
+        }
+        else
+        {
+            TextField txtField = (TextField) formElements.get( de );
+            if ( !txtField.getString().equalsIgnoreCase( "" ) )
+            {
+                Storage.storeDataValue( getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(),
+                    txtField.getString() ) );
+                System.out.println( "Store new: " + de.getName() );
+            }
+        }
+
+    }
+
+    private void updateDataValue( DataElement de )
+    {
+
+        if ( de.getType() == DataElement.TYPE_DATE )
+        {
+            DateField dateField = (DateField) formElements.get( de );
+            if ( dateField.getDate() != null )
+            {
+                Storage.updateDataValue(
+                    selectedActivity,
+                    getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(),
+                        String.valueOf( dateField.getDate().getTime() ) ) );
+                System.out.println( "Updating: " + de.getName() );
+            }
+        }
+        else
+        {
+            TextField txtField = (TextField) formElements.get( de );
+            if ( !txtField.getString().equalsIgnoreCase( "" ) )
+            {
+                Storage.updateDataValue( selectedActivity,
+                    getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(), txtField.getString() ) );
+                System.out.println( "Updating: " + de.getName() );
+            }
+        }
+
+    }
+
     private void displaySelectedActivity()
     {
-        Activity selectedActivity = (Activity) activitiesVector.elementAt( getActivitiesList().getSelectedIndex() );
+        selectedActivity = (Activity) activitiesVector.elementAt( getActivitiesList().getSelectedIndex() );
         ProgramStageForm formOfActivity = Storage.fetchForm( selectedActivity.getTask().getProgStageId() );
         this.renderForm( formOfActivity, getForm() );
+    }
+
+    private DataValue getDataValue( int progStageId, int dataElementID, String value )
+    {
+        DataValue dataValue = new DataValue();
+        dataValue.setProgramInstanceId( progStageId );
+        dataValue.setDataElementId( dataElementID );
+        dataValue.setValue( value );
+        return dataValue;
     }
 
     /**
@@ -425,7 +516,7 @@ public class DHISMIDlet
 
     private void downloadForms()
     {
-        DownloadManager manager = new DownloadManager( this, this.url.getString() + "forms/", user,
+        DownloadManager manager = new DownloadManager( this, orgUnit.getProgramFormsLink(), user,
             DownloadManager.DOWNLOAD_FORMS );
         manager.start();
 
@@ -480,8 +571,6 @@ public class DHISMIDlet
         int index = ((List) getDownloadedFormsList()).getSelectedIndex();
 
         AbstractModel downloadedProgramStage = Storage.getForm( index );
-
-        System.out.println( "Selected ID: " + downloadedProgramStage.getId() );
 
         ProgramStageForm form = Storage.fetchForm( downloadedProgramStage.getId() );
         System.out.println( "Name: " + form.getName() );
@@ -849,19 +938,20 @@ public class DHISMIDlet
             form = new Form( "form" );
             form.addCommand( getBackCommand() );
             form.addCommand( getScreenCommand() );
-            form.addCommand(getSaveCommand());
+            form.addCommand( getSaveCommand() );
             form.setCommandListener( this );
 
             // This is just for test .....
             ProgramStageForm frm = Storage.fetchForm( 1 );
-            renderForm( frm, form );
+//            renderForm( frm, form );
         }
         return form;
     }
 
     private Command getSaveCommand()
     {
-        if (saveCommand == null){
+        if ( saveCommand == null )
+        {
             saveCommand = new Command( "Save", Command.SCREEN, 0 );
         }
         return saveCommand;
@@ -1148,7 +1238,7 @@ public class DHISMIDlet
 
     private void browseForms()
     {
-        loadSettings();
+        // loadSettings();
         downloadManager = new DownloadManager( this, serverUrl + "forms", user, DownloadManager.DOWNLOAD_FORMS );
         downloadManager.start();
     }
@@ -1227,7 +1317,7 @@ public class DHISMIDlet
 
     public void renderForm( ProgramStageForm prStgFrm, Form form )
     {
-
+        loadDataValues( selectedActivity );
         programStageForm = prStgFrm;
 
         if ( prStgFrm == null )
@@ -1237,7 +1327,6 @@ public class DHISMIDlet
         else
         {
             form.deleteAll();
-
             form.setTitle( prStgFrm.getName() );
             Vector des = prStgFrm.getDataElements();
 
@@ -1247,18 +1336,33 @@ public class DHISMIDlet
                 if ( de.getType() == DataElement.TYPE_DATE )
                 {
                     DateField dateField = new DateField( de.getName(), DateField.DATE );
+                    if ( dataValueTable.get( String.valueOf( de.getId() ) ) != null )
+                    {
+                        Date date = new Date();
+                        date.setTime( Long.parseLong( (String) dataValueTable.get( String.valueOf( de.getId() ) ) ) );
+                        dateField.setDate( date );
+                        System.out.println("Date in db is: " + date.toString());
+                    }
                     form.append( dateField );
                     formElements.put( de, dateField );
                 }
                 else if ( de.getType() == DataElement.TYPE_INT )
                 {
                     TextField intField = new TextField( de.getName(), "", 32, TextField.NUMERIC );
+                    if ( dataValueTable.get( String.valueOf( de.getId() ) ) != null )
+                    {
+                        intField.setString( (String) dataValueTable.get( String.valueOf( de.getId() ) ) );
+                    }
                     form.append( intField );
                     formElements.put( de, intField );
                 }
                 else
                 {
                     TextField txtField = new TextField( de.getName(), "", 32, TextField.ANY );
+                    if ( dataValueTable.get( String.valueOf( de.getId() ) ) != null )
+                    {
+                        txtField.setString( (String) dataValueTable.get( String.valueOf( de.getId() ) ) );
+                    }
                     form.append( txtField );
                     formElements.put( de, txtField );
                 }
@@ -1266,6 +1370,11 @@ public class DHISMIDlet
         }
 
         switchDisplayable( null, form );
+    }
+
+    private void loadDataValues( Activity activity )
+    {
+        dataValueTable = Storage.loadDataValues( selectedActivity );
     }
 
     public void saveOrgUnit( OrgUnit orgunit )

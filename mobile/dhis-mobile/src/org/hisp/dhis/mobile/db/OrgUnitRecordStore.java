@@ -98,7 +98,6 @@ public class OrgUnitRecordStore
                 id = new Integer( re.nextRecordId() );
                 orgUnitByte = OrgUnit.orgUnitToRecord( (OrgUnit) model );
                 rs.setRecord( id.intValue(), orgUnitByte, 0, orgUnitByte.length );
-
             }
             // release variable
             orgUnitByte = null;
