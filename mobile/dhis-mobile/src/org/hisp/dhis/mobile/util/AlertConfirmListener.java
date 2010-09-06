@@ -7,6 +7,10 @@ import javax.microedition.midlet.MIDlet;
 
 import org.hisp.dhis.mobile.ui.DHISMIDlet;
 
+/**
+ * @author Tran Ng Minh Luan
+ *
+ */
 public abstract class AlertConfirmListener implements CommandListener
 {
     protected Displayable currentScrren;
