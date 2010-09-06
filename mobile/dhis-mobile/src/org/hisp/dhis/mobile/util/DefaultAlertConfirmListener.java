@@ -6,6 +6,10 @@ import javax.microedition.lcdui.Displayable;
 
 import org.hisp.dhis.mobile.ui.DHISMIDlet;
 
+/**
+ * @author Tran Ng Minh Luan
+ *
+ */
 public class DefaultAlertConfirmListener extends AlertConfirmListener
 {
     public DefaultAlertConfirmListener(){

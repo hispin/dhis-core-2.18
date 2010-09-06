@@ -79,7 +79,7 @@ public class DownloadManager
                 for ( int i = 0; i < programStagesVector.size(); i++ )
                 {
                     form = (ProgramStageForm) programStagesVector.elementAt( i );
-                    completeForm = (ProgramStageForm) download( "http://localhost:8080/api/forms/" + form.getId(), new FormParser() );
+                    completeForm = (ProgramStageForm) download( dhisMIDlet.getUrl().getString() + "forms/" + form.getId(), new FormParser() );
                     form.setDataElements( completeForm.getDataElements() );
                 }
                 form = null;

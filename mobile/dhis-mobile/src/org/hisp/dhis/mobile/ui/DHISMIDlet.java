@@ -18,9 +18,7 @@ import javax.microedition.lcdui.List;
 import javax.microedition.lcdui.TextField;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.RecordStoreException;
-
 import org.hisp.dhis.mobile.connection.DownloadManager;
-import org.hisp.dhis.mobile.db.ActivityRecordStore;
 import org.hisp.dhis.mobile.db.SettingsRectordStore;
 import org.hisp.dhis.mobile.db.Storage;
 import org.hisp.dhis.mobile.model.AbstractModel;
@@ -70,8 +68,6 @@ public class DHISMIDlet
 
     private TextField url;
 
-    private TextField adminPass;
-
     private Form dataEntryForm;
 
     private Form form;
@@ -82,7 +78,6 @@ public class DHISMIDlet
 
     private Form waitForm;
 
-    // add one more form to handle downloaded form list
     private List downloadedFormsList;
 
     private TextField userName;
@@ -139,6 +134,8 @@ public class DHISMIDlet
     private Image logo;
 
     private TextField pinTextField;
+
+    private TextField urlInSetting;
 
     /**
      * The DHISMIDlet constructor.
@@ -269,8 +266,6 @@ public class DHISMIDlet
             }
             else if ( command == getMnuListDnldCmd() )
             {
-                // clear DataValue
-
                 this.getDisplay().setCurrent(
                     AlertUtil.getConfirmAlert( "Warning",
                         "All data which are not sent to the server will be clear, do you want to continue ?",
@@ -290,7 +285,7 @@ public class DHISMIDlet
             }
             else if ( command == stngsOkCmd )
             {
-                // save new settings
+                saveSettings();
                 switchDisplayable( null, getMainMenuList() );
             }
         }
@@ -341,6 +336,7 @@ public class DHISMIDlet
                                 // Load Activities
                                 switchDisplayable( null,
                                     this.getWaitForm( "Load Activities", "Loading.....please wait" ) );
+                                this.loadSettings();
                                 this.loadForms();
                                 this.loadActivities();
 
@@ -358,6 +354,9 @@ public class DHISMIDlet
                         }
                         else
                         {
+                            // Save URL
+                            System.out.println( "save url:" + getUrl().getString() );
+                            settingRs.put( "url", getUrl().getString() );
                             // Save PIN
                             settingRs.put( "pin", this.getPinTextField().getString() );
                             settingRs.save();
@@ -480,7 +479,7 @@ public class DHISMIDlet
     {
         selectedActivity = (Activity) activitiesVector.elementAt( getActivitiesList().getSelectedIndex() );
         ProgramStageForm formOfActivity = Storage.fetchForm( selectedActivity.getTask().getProgStageId() );
-        this.renderForm( formOfActivity, getForm() );
+        this.getForm( formOfActivity );
     }
 
     private DataValue getDataValue( int progStageId, int dataElementID, String value )
@@ -804,13 +803,10 @@ public class DHISMIDlet
         if ( settingsForm == null )
         {
             // settingsForm = new Form( "Configurable Parameters", new Item[] {
-            // getUrl(), getAdminPass() } );
             // settingsForm = new Form( "Configurable Parameters", new Item[] {
             // getUrl() } );
-            System.out.println( getUrl().getString() );
             settingsForm = new Form( "Configurable Parameters" );
-
-            // settingsForm.append( getUrlInSetting() );
+            settingsForm.append( getUrlInSetting() );
             settingsForm.addCommand( getSetngsBakCmd() );
             settingsForm.addCommand( getStngsOkCmd() );
             settingsForm.setCommandListener( this );
@@ -875,17 +871,33 @@ public class DHISMIDlet
     }
 
     /**
-     * Returns an initiliazed instance of adminPass component.
+     * Returns an initiliazed instance of url component in setting form.
      * 
      * @return the initialized component instance
      */
-    public TextField getAdminPass()
+    private TextField getUrlInSetting()
     {
-        if ( adminPass == null )
+        String urlBase = "";
+        try
         {
-            adminPass = new TextField( "Admin Password", "", 32, TextField.ANY | TextField.PASSWORD );
+            SettingsRectordStore settingRs = new SettingsRectordStore( "SETTINGS" );
+            urlBase = settingRs.get( "url" );
+            System.out.println( "Base URL:" + urlBase );
+            settingRs = null;
         }
-        return adminPass;
+        catch ( RecordStoreException e )
+        {
+            e.printStackTrace();
+        }
+        if ( urlInSetting == null )
+        {
+            urlInSetting = new TextField( "URL Server", urlBase, 64, TextField.URL );
+        }
+        else
+        {
+            urlInSetting.setString( urlBase );
+        }
+        return urlInSetting;
     }
 
     /**
@@ -1017,11 +1029,20 @@ public class DHISMIDlet
     // Real downloaded forms select
     public Form getForm( ProgramStageForm selectedForm )
     {
-        form = new Form( "From" );
-        form.addCommand( getBackCommand() );
-        form.addCommand( getScreenCommand() );
-        form.setCommandListener( this );
-        renderForm( selectedForm, form );
+        if ( form == null )
+        {
+            form = new Form( "From" );
+            form.addCommand( getBackCommand() );
+            form.addCommand( getScreenCommand() );
+            form.addCommand( getSaveCommand() );
+            form.setCommandListener( this );
+            renderForm( selectedForm, form );
+        }
+        else
+        {
+            form.deleteAll();
+            renderForm( selectedForm, form );
+        }
 
         return form;
     }
@@ -1211,20 +1232,26 @@ public class DHISMIDlet
 
     private void saveSettings()
     {
-
         SettingsRectordStore settingsRecord;
 
         try
         {
             settingsRecord = new SettingsRectordStore( "SETTINGS" );
-            settingsRecord.put( "url", url.getString() );
-            // settingsRecord.put( "adminPass", adminPass.getString() );
+            settingsRecord.put( "url", urlInSetting.getString() );
+            getUrl().setString( urlInSetting.getString() );
+            this.orgUnit.setActivitiesLink( urlInSetting.getString()
+                + this.orgUnit.getActivitiesLink().substring( this.orgUnit.getActivitiesLink().indexOf( "orgUnits" ) ) );
+            this.orgUnit.setProgramFormsLink( urlInSetting.getString()
+                + this.orgUnit.getProgramFormsLink()
+                    .substring( this.orgUnit.getProgramFormsLink().indexOf( "orgUnits" ) ) );
+
+           this.saveOrgUnit( this.orgUnit ); 
+           // settingsRecord.put( "adminPass", adminPass.getString() );
             settingsRecord.save();
         }
         catch ( RecordStoreException rse )
         {
         }
-
         settingsRecord = null;
     }
 
@@ -1237,7 +1264,7 @@ public class DHISMIDlet
             settingsRecord = new SettingsRectordStore( "SETTINGS" );
 
             getUrl().setString( settingsRecord.get( "url" ) );
-            getAdminPass().setString( settingsRecord.get( "adminPass" ) );
+            settingsRecord = null;
         }
         catch ( RecordStoreException rse )
         {
