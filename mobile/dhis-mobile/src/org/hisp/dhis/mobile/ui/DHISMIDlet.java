@@ -465,6 +465,13 @@ public class DHISMIDlet
                     getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(), txtField.getString() ) );
                 System.out.println( "Updating: " + de.getName() );
             }
+            else
+            {
+                Storage.deleteDataValue( selectedActivity,
+                    getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(), txtField.getString() ) );
+                System.out.println( "Deleting: " + de.getName() );
+
+            }
         }
 
     }
@@ -943,7 +950,7 @@ public class DHISMIDlet
 
             // This is just for test .....
             ProgramStageForm frm = Storage.fetchForm( 1 );
-//            renderForm( frm, form );
+            // renderForm( frm, form );
         }
         return form;
     }
@@ -1193,6 +1200,7 @@ public class DHISMIDlet
             DownloadManager downloadManager = new DownloadManager( this, getUrl().getString() + "user", user,
                 DownloadManager.DOWNLOAD_ORGUNIT );
             downloadManager.start();
+            switchDisplayable( null, getWaitForm( "Connecting", "Please wait..." ) );
 
         }
         else
@@ -1341,7 +1349,7 @@ public class DHISMIDlet
                         Date date = new Date();
                         date.setTime( Long.parseLong( (String) dataValueTable.get( String.valueOf( de.getId() ) ) ) );
                         dateField.setDate( date );
-                        System.out.println("Date in db is: " + date.toString());
+                        System.out.println( "Date in db is: " + date.toString() );
                     }
                     form.append( dateField );
                     formElements.put( de, dateField );
