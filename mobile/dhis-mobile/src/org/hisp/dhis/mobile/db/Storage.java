@@ -238,6 +238,35 @@ public class Storage
             rse.printStackTrace();
         }
     }
+    
+    public static void deleteDataValue( Activity activity, DataValue newDataValue )
+    {
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        try
+        {
+            DataValueFilter filter = new DataValueFilter();
+            filter.setDataElementID( newDataValue.getDataElementId() );
+            filter.setProStageInstanceID( activity.getTask().getProgStageInstId() );
+            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
+            re = rs.enumerateRecords( filter, null, false );
+            while ( re.hasNextElement() )
+            {
+                if ( re.numRecords() == 1 )
+                {
+                    int id = re.nextRecordId();
+                    rs.deleteRecord( id );
+                }
+            }
+            filter = null;
+            re = null;
+            rs = null;
+        }
+        catch ( RecordStoreException rse )
+        {
+            rse.printStackTrace();
+        }
+    }
 
     public static void saveOrgUnit( OrgUnit orgUnit )
     {
