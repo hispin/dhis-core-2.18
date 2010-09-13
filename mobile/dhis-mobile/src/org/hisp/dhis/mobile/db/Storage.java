@@ -31,6 +31,8 @@ import java.util.Vector;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 import org.hisp.dhis.mobile.model.AbstractModel;
 import org.hisp.dhis.mobile.model.Activity;
@@ -168,17 +170,12 @@ public class Storage
     }
 
     public static void storeDataValue( DataValue dataValue )
+        throws RecordStoreException
     {
         ModelRecordStore modelRecordStore;
-        try
-        {
-            modelRecordStore = new ModelRecordStore( ModelRecordStore.DATAVALUE_DB );
-            modelRecordStore.addRecord( DataValue.dataValueToRecord( dataValue ) );
-        }
-        catch ( RecordStoreException rse )
-        {
-            System.out.println( rse.getMessage() );
-        }
+        modelRecordStore = new ModelRecordStore( ModelRecordStore.DATAVALUE_DB );
+        modelRecordStore.addRecord( DataValue.dataValueToRecord( dataValue ) );
+
     }
 
     public static Hashtable loadDataValues( Activity activity )
@@ -195,7 +192,7 @@ public class Storage
                 DataValue dataValue = DataValue.recordToDataValue( re.nextRecord() );
                 if ( dataValue.getProgramInstanceId() == activity.getTask().getProgStageInstId() )
                 {
-                    dataValuesTable.put( String.valueOf( dataValue.getDataElementId() ), dataValue.getValue() );
+                    dataValuesTable.put( String.valueOf( dataValue.getDataElementId() ), dataValue );
                 }
             }
             re = null;
@@ -210,62 +207,53 @@ public class Storage
     }
 
     public static void updateDataValue( Activity activity, DataValue newDataValue )
+        throws RecordStoreException
     {
         RecordStore rs = null;
         RecordEnumeration re = null;
-        try
+
+        DataValueFilter filter = new DataValueFilter();
+        filter.setDataElementID( newDataValue.getDataElementId() );
+        filter.setProStageInstanceID( activity.getTask().getProgStageInstId() );
+        rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
+        re = rs.enumerateRecords( filter, null, false );
+        while ( re.hasNextElement() )
         {
-            DataValueFilter filter = new DataValueFilter();
-            filter.setDataElementID( newDataValue.getDataElementId() );
-            filter.setProStageInstanceID( activity.getTask().getProgStageInstId() );
-            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
-            re = rs.enumerateRecords( filter, null, false );
-            while ( re.hasNextElement() )
+            if ( re.numRecords() == 1 )
             {
-                if ( re.numRecords() == 1 )
-                {
-                    int id = re.nextRecordId();
-                    byte[] data = DataValue.dataValueToRecord( newDataValue );
-                    rs.setRecord( id, data, 0, data.length );
-                    System.out.println( newDataValue.getValue() + " ID: " + id );
-                }
+                int id = re.nextRecordId();
+                byte[] data = DataValue.dataValueToRecord( newDataValue );
+                rs.setRecord( id, data, 0, data.length );
             }
-            re = null;
-            rs = null;
         }
-        catch ( RecordStoreException rse )
-        {
-            rse.printStackTrace();
-        }
+        re = null;
+        rs = null;
+
     }
-    
+
     public static void deleteDataValue( Activity activity, DataValue newDataValue )
+        throws RecordStoreException
     {
         RecordStore rs = null;
         RecordEnumeration re = null;
-        try
+
+        DataValueFilter filter = new DataValueFilter();
+        filter.setDataElementID( newDataValue.getDataElementId() );
+        filter.setProStageInstanceID( activity.getTask().getProgStageInstId() );
+        rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
+        re = rs.enumerateRecords( filter, null, false );
+        while ( re.hasNextElement() )
         {
-            DataValueFilter filter = new DataValueFilter();
-            filter.setDataElementID( newDataValue.getDataElementId() );
-            filter.setProStageInstanceID( activity.getTask().getProgStageInstId() );
-            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
-            re = rs.enumerateRecords( filter, null, false );
-            while ( re.hasNextElement() )
+            if ( re.numRecords() == 1 )
             {
-                if ( re.numRecords() == 1 )
-                {
-                    int id = re.nextRecordId();
-                    rs.deleteRecord( id );
-                }
+                int id = re.nextRecordId();
+                rs.deleteRecord( id );
             }
-            filter = null;
-            re = null;
-            rs = null;
         }
-        catch ( RecordStoreException rse )
-        {
-            rse.printStackTrace();
-        }
+        filter = null;
+        re = null;
+        rs = null;
+
     }
 
     public static void saveOrgUnit( OrgUnit orgUnit )
