@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-  <!-- Resources -->
-
-  <bean id="org.hisp.dhis.web.api.resources.UserResource" 
-    class="org.hisp.dhis.web.api.resources.UserResource" scope="prototype" />
-
-  <bean id="org.hisp.dhis.web.api.resources.OrgUnitResource" 
-    class="org.hisp.dhis.web.api.resources.OrgUnitResource" scope="prototype" />
-
-  <bean id="org.hisp.dhis.web.api.resources.FormsResource"
-    class="org.hisp.dhis.web.api.resources.FormsResource" scope="prototype" />
-
-  <!-- Web service layer -->
-
-  <bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
-      class="org.hisp.dhis.web.api.service.ActivityPlanModelService" />
-
-  <bean id="org.hisp.dhis.web.api.service.ProgramStageService"
-      class="org.hisp.dhis.web.api.service.ProgramStageService" />
-
-  <!-- Response writers -->
-
+	
+	<!-- Resources -->
+	
+	<bean id="org.hisp.dhis.web.api.resources.UserResource"
+		class="org.hisp.dhis.web.api.resources.UserResource" scope="prototype"/>
+	
+	<bean id="org.hisp.dhis.web.api.resources.OrgUnitResource"
+		class="org.hisp.dhis.web.api.resources.OrgUnitResource"
+		scope="prototype"/>
+	
+	<bean id="org.hisp.dhis.web.api.resources.FormsResource"
+		class="org.hisp.dhis.web.api.resources.FormsResource" scope="prototype"/>
+	
+	<!-- Web service layer -->
+	
+	<bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
+		class="org.hisp.dhis.web.api.service.ActivityPlanModelService"/>
+	
+	<bean id="org.hisp.dhis.web.api.service.ProgramStageService"
+		class="org.hisp.dhis.web.api.service.ProgramStageService"/>
+	
+	<!-- Response writers -->
+	
+	<!-- ImportDataValue beans -->
+	<bean id="org.hisp.dhis.web.api.action.ImportDataValueAction"
+		class="org.hisp.dhis.web.api.action.ImportDataValueAction">
+		<property name="programStageInstanceService">
+			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
+		</property>
+		<property name="patientDataValueService">
+			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+		</property>
+		<property name="orgUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		</property>
+	</bean>
+	
 </beans>
