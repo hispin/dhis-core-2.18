@@ -1,0 +1,8 @@
+MIDlet-1: DHISMIDlet,,org.hisp.dhis.mobile.reporting.gui.DHISMIDlet
+MIDlet-Jar-Size: 53382
+MIDlet-Jar-URL: DHISMobile.jar
+MIDlet-Name: DHISMobile
+MIDlet-Vendor: HISP
+MIDlet-Version: 1.0.0
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.1
