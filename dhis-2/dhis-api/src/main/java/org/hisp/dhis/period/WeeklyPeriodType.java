@@ -73,7 +73,7 @@ public class WeeklyPeriodType
     }
 
     private Period createPeriod( Calendar cal )
-    {
+    {    	
         cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
 
         Date startDate = cal.getTime();
@@ -82,6 +82,7 @@ public class WeeklyPeriodType
 
         return new Period( this, startDate, cal.getTime() );
     }
+ 
 
     @Override
     public int getFrequencyOrder()

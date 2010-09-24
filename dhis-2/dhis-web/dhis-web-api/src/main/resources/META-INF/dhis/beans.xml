@@ -3,7 +3,29 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!--  Providers -->
 	
+	<bean id="org.hisp.dhis.web.api.provider.ActivityPlanProvider"
+		class="org.hisp.dhis.web.api.provider.ActivityPlanProvider" scope="singleton"/>
+		
+	<bean id="org.hisp.dhis.web.api.provider.ProgramProvider"
+		class="org.hisp.dhis.web.api.provider.ProgramProvider" scope="singleton"/>
+	
+	<bean id="org.hisp.dhis.web.api.provider.DataSetProvider"
+		class="org.hisp.dhis.web.api.provider.DataSetProvider" scope="singleton"/>
+		
+	<bean id="org.hisp.dhis.web.api.provider.AbstractModelListProvider"
+		class="org.hisp.dhis.web.api.provider.AbstractModelListProvider" scope="singleton"/>
+		
+	<!--  Consumers  -->	
+	<bean id="org.hisp.dhis.web.api.consumer.DataSetValueConsumer"
+		class="org.hisp.dhis.web.api.consumer.DataSetValueConsumer" scope="singleton"/>
+		
+	<bean id="org.hisp.dhis.web.api.consumer.ActivityValueConsumer"
+		class="org.hisp.dhis.web.api.consumer.ActivityValueConsumer" scope="singleton"/>	
+		
+		
 	<!-- Resources -->
 	
 	<bean id="org.hisp.dhis.web.api.resources.UserResource"
@@ -13,22 +35,51 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.web.api.resources.OrgUnitResource"
 		scope="prototype"/>
 	
-	<bean id="org.hisp.dhis.web.api.resources.FormsResource"
-		class="org.hisp.dhis.web.api.resources.FormsResource" scope="prototype"/>
+	<bean id="org.hisp.dhis.web.api.resources.FormResource"
+		class="org.hisp.dhis.web.api.resources.FormResource" scope="prototype"/>
+		
+	<bean id="org.hisp.dhis.web.api.resources.DataSetResource"
+      class="org.hisp.dhis.web.api.resources.DataSetResource" scope="prototype"/>   
+      
+    <bean id="org.hisp.dhis.web.api.resources.ProgramResource"
+      class="org.hisp.dhis.web.api.resources.ProgramResource" scope="prototype"/>
+      
+    <bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
+      class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>  
 	
-	<!-- Web service layer -->
+	
+	<!-- Services -->
 	
 	<bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
 		class="org.hisp.dhis.web.api.service.ActivityPlanModelService"/>
 	
+	<bean id="org.hisp.dhis.web.api.service.IActivityPlanService"
+		class="org.hisp.dhis.web.api.service.DefaultActivityPlanService"/>
+		
 	<bean id="org.hisp.dhis.web.api.service.ProgramStageService"
 		class="org.hisp.dhis.web.api.service.ProgramStageService"/>
+		
+ 	<bean id="org.hisp.dhis.web.api.service.IProgramService"
+		class="org.hisp.dhis.web.api.service.DefaultProgramService"/>
+	
+	<bean id="org.hisp.dhis.web.api.service.IDataSetService"
+      class="org.hisp.dhis.web.api.service.DefaultDataSetService" />	
+      
+    <bean id="org.hisp.dhis.web.api.service.IDataValueService"
+      class="org.hisp.dhis.web.api.service.DefaultDataValueService" />
+      
+    <bean id="org.hisp.dhis.web.api.service.IActivityValueService"
+      class="org.hisp.dhis.web.api.service.DefaultActivityValueService" />  
+      
+    <bean id="org.hisp.dhis.web.api.service.IPeriodService"
+      class="org.hisp.dhis.web.api.service.DefaultPeriodService" />
 	
 	<!-- Response writers -->
 	
 	<!-- ImportDataValue beans -->
 	<bean id="org.hisp.dhis.web.api.action.ImportDataValueAction"
 		class="org.hisp.dhis.web.api.action.ImportDataValueAction">
+		
 		<property name="programStageInstanceService">
 			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
 		</property>
@@ -44,6 +95,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
-	</bean>
-	
+		
+	</bean>	
+
 </beans>
+

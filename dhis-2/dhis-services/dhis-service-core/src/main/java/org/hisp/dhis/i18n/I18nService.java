@@ -46,7 +46,9 @@ public interface I18nService
     // -------------------------------------------------------------------------
 
     public void internationalise( Object object );
-
+    
+    public void localise( Object object, Locale locale );
+    
     // -------------------------------------------------------------------------
     // Object
     // -------------------------------------------------------------------------

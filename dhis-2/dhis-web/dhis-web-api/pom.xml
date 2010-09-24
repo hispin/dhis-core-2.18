@@ -33,6 +33,12 @@
 
   <dependencies>
 
+	<dependency>
+  		<groupId>com.jcraft</groupId>
+  		<artifactId>jzlib</artifactId>
+  		<version>1.0.7</version>
+	</dependency>
+
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
@@ -77,9 +83,21 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
+   <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-i18n</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-administration</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>

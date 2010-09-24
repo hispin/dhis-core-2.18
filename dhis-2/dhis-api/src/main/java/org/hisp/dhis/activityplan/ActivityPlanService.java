@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
@@ -18,7 +19,11 @@ public interface ActivityPlanService
 {
     String ID = ActivityPlanService.class.getName();
     
-    Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit );
+    Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit );    
+    
+    Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, Collection<Program> programs );
+    
+    Collection<Activity> getActivitiesByProgram( Collection<Program> programs);    
     
     Collection<Activity> getActivitiesByBeneficiary( Patient beneficiary );
     

@@ -193,6 +193,11 @@ public interface DataSetService
      * @return a collection of data elements.
      */
     Collection<DataElement> getDataElements( DataSet dataSet );
+    
+    /**
+     * Returns all DataSets that can be collected through mobile.
+     */
+    Collection<DataSet> getDataSetsForMobile();
 
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation

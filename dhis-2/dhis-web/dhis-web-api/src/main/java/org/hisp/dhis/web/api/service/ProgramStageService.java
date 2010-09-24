@@ -46,9 +46,9 @@ public class ProgramStageService {
 		for( ProgramStageDataElement programStageDataElement : dataElements )
 		{
 			DataElement de = new DataElement();
-			de.setDeId( programStageDataElement.getDataElement().getId() );
-			de.setDeName( programStageDataElement.getDataElement().getName() );
-			de.setDeType( programStageDataElement.getDataElement().getType() );
+			de.setId( programStageDataElement.getDataElement().getId() );
+			de.setName( programStageDataElement.getDataElement().getName() );
+			de.setType( programStageDataElement.getDataElement().getType() );
 			des.add( de );
 		}
 		

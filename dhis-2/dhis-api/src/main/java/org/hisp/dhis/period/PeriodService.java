@@ -275,5 +275,6 @@ public interface PeriodService
      * @param periodType the Class type of the PeriodType.
      * @return a PeriodType instance.
      */
-    PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType );
+    PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType );  
+    
 }

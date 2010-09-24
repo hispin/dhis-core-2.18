@@ -288,7 +288,12 @@ public class DefaultDataSetService
     public Collection<DataElement> getDataElements( DataSet dataSet )
     {
         return i18n( i18nService, dataSet.getDataElements() );
-    }
+    }    
+    
+	public Collection<DataSet> getDataSetsForMobile() 
+	{
+		return i18n( i18nService, dataSetStore.getDataSetsForMobile() );		
+	}
 
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
@@ -323,5 +328,4 @@ public class DefaultDataSetService
     {
         return dataSetStore.getFrequencyOverrideAssociationsBySource( source );
     }
-
 }

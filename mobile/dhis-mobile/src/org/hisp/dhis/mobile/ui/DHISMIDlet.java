@@ -21,6 +21,7 @@ import javax.microedition.rms.RecordStoreException;
 
 import org.hisp.dhis.mobile.connection.DataValueUploadManager;
 import org.hisp.dhis.mobile.connection.DownloadManager;
+import org.hisp.dhis.mobile.db.ActivityRecordStore;
 import org.hisp.dhis.mobile.db.SettingsRectordStore;
 import org.hisp.dhis.mobile.db.Storage;
 import org.hisp.dhis.mobile.model.AbstractModel;
@@ -33,6 +34,7 @@ import org.hisp.dhis.mobile.model.User;
 import org.hisp.dhis.mobile.util.AlertUtil;
 import org.hisp.dhis.mobile.util.DnlActivitiesConfirmAlertListener;
 import org.hisp.dhis.mobile.util.ReinitConfirmListener;
+import org.hisp.dhis.mobile.util.StringUtil;
 
 public class DHISMIDlet
     extends MIDlet
@@ -139,6 +141,8 @@ public class DHISMIDlet
 
     private TextField urlInSetting;
 
+    private Command completeCmd;
+
     /**
      * The DHISMIDlet constructor.
      */
@@ -227,11 +231,20 @@ public class DHISMIDlet
             }
             else if ( command == screenCommand )
             {
-                sendRecordedData();
+                //sendRecordedData();
             }
             else if ( command == saveCommand )
             {
                 saveDataValues();
+            }else if(command == completeCmd){
+                selectedActivity.getTask().setComplete( true );
+                ActivityRecordStore activityRs = new ActivityRecordStore();
+                activityRs.update( selectedActivity );
+                activityRs = null;
+                switchDisplayable( null, getWaitForm( "Reload Activities", "Reloading....." ) );
+                activitiesVector = Storage.loadActivities();
+                displayCurActivities();
+                //switchDisplayable( null, getActivitiesList() );
             }
         }
         else if ( displayable == formDownloadList )
@@ -441,7 +454,7 @@ public class DHISMIDlet
             if ( dateField.getDate() != null )
             {
                 Storage.storeDataValue( getDataValue( selectedActivity.getTask().getProgStageInstId(), de.getId(),
-                    String.valueOf( dateField.getDate().getTime() ) ) );
+                    String.valueOf( dateField.getDate().getTime() ) )) ;
                 System.out.println( "Store new: " + de.getName() );
             }
         }
@@ -668,7 +681,8 @@ public class DHISMIDlet
             }
             else if ( __selectedString.equals( "Send Finished Records" ) )
             {
-
+                switchDisplayable( null, getWaitForm( "Send DataValues", "Sending, please wait" ) );
+                sendRecordedData();
             }
             // else if ( __selectedString.equals( "Record Data" ) )
             // {
@@ -974,8 +988,9 @@ public class DHISMIDlet
         {
             form = new Form( "Form" );
             form.addCommand( getBackCommand() );
-            form.addCommand( getScreenCommand() );
+            //form.addCommand( getScreenCommand() );
             form.addCommand( getSaveCommand() );
+			form.addCommand( getCompleteCommand() );
             form.setCommandListener( this );
         }
         else
@@ -983,6 +998,13 @@ public class DHISMIDlet
             form.deleteAll();
         }
         return form;
+    }
+	private Command getCompleteCommand()
+    {
+        if(this.completeCmd == null){
+            this.completeCmd = new Command("Complete", Command.SCREEN, 0);
+        }
+        return this.completeCmd;
     }
 
     private Command getSaveCommand()
@@ -1428,6 +1450,10 @@ public class DHISMIDlet
         switchDisplayable( null, form );
     }
 
+    private Vector loadAllDataValues(){
+        return Storage.loadAllDataValues();
+    }
+    
     private void loadDataValues( Activity activity )
     {
         dataValueTable = Storage.loadDataValues( selectedActivity );
@@ -1444,7 +1470,7 @@ public class DHISMIDlet
         // Need more test
         try
         {
-            this.saveDataValueToRMS();
+            //this.saveDataValueToRMS();
         }
         catch ( Exception e )
         {
@@ -1453,8 +1479,9 @@ public class DHISMIDlet
         // If you are running Apache Tomcat, use the URL
         // http://localhost:8080/dhis-web-api/dhis-web-api/importDataValue.action
         // Otherwise, use http://localhost:8080/dhis-web-api/importDataValue.action for Jetty
-        DataValueUploadManager uploadManager = new DataValueUploadManager( this, dataValueTable,
-            "http://localhost:8080/dhis-web-api/importDataValue.action", orgUnit, user );
+        System.out.println("DataValue's quantity will be sent:"+dataValueTable.size());
+        DataValueUploadManager uploadManager = new DataValueUploadManager( this, loadAllDataValues(),
+            "http://localhost:8080/dhis-web-api/dhis-web-api/importDataValue.action", orgUnit, user );
         this.switchDisplayable( null, this.getWaitForm( "Please wait", "Uploading..." ) );
         uploadManager.start();
 

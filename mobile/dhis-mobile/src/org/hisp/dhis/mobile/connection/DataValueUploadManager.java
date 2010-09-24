@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
@@ -22,7 +23,7 @@ public class DataValueUploadManager
 {
     private DHISMIDlet dhisMidlet;
 
-    private Hashtable dataValueTable;
+    private Vector dataValueVector;
 
     private String url;
 
@@ -30,10 +31,10 @@ public class DataValueUploadManager
 
     private User user;
 
-    public DataValueUploadManager( DHISMIDlet dhisMidlet, Hashtable dataValueTable, String url, OrgUnit orgUnit,
+    public DataValueUploadManager( DHISMIDlet dhisMidlet, Vector dataValueVector, String url, OrgUnit orgUnit,
         User user )
     {
-        this.dataValueTable = dataValueTable;
+        this.dataValueVector = dataValueVector;
         this.url = url;
         this.orgUnit = orgUnit;
         this.user = user;
@@ -86,13 +87,13 @@ public class DataValueUploadManager
             // System.out.println( "Status: " + connection.getResponseCode() );
             // }
 
-            int numOfDataValue = dataValueTable.size();
+            int numOfDataValue = dataValueVector.size();
             System.out.println( "No of DataValues: " + numOfDataValue );
             dos = new DataOutputStream( opt );
 
             dos.writeInt( numOfDataValue );
             dos.writeInt( orgUnit.getId() );
-            en = dataValueTable.elements();
+            en = dataValueVector.elements();
             while ( en.hasMoreElements() )
             {
                 DataValue dataValue = (DataValue) en.nextElement();
@@ -111,7 +112,7 @@ public class DataValueUploadManager
             }
             System.out.println( buffer.toString() );
             dhisMidlet.switchDisplayable( AlertUtil.getInfoAlert( "Result", buffer.toString() ),
-                dhisMidlet.getActivitiesList() );
+                dhisMidlet.getMainMenuList() );
         }
         catch ( Exception e )
         {

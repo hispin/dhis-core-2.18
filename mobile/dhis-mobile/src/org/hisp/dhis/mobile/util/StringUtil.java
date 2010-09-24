@@ -55,5 +55,17 @@ public class StringUtil
         cal.set( Calendar.YEAR, year );
         return cal.getTime();
     }
+    
+    public static String getStringFromDate(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int d = c.get(Calendar.DATE);
+        
+        int m = c.get(Calendar.MONTH)+1;
+        
+        int y = c.get(Calendar.YEAR);
+        
+        return y+"-"+(m<10? "0": "")+m+"-"+(d<10? "0": "")+d; 
+    }
 
 }
