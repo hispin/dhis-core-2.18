@@ -115,6 +115,11 @@ public interface DataSetStore
 
     Collection<DataSet> getDataSetsBySource( Source source );
     
+    /**
+     * Returns all DataSets that can be collected through mobile.
+     */
+    Collection<DataSet> getDataSetsForMobile();
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

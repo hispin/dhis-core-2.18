@@ -167,7 +167,7 @@ public class I18nFormat
 
         String keyStartDate = "format." + typeName + ".startDate";
         String keyEndDate = "format." + typeName + ".endDate";
-
+        
         String startDate = commonFormatting( period.getStartDate(), resourceBundle.getString( keyStartDate ) );
         String endDate = commonFormatting( period.getEndDate(), resourceBundle.getString( keyEndDate ) );
 

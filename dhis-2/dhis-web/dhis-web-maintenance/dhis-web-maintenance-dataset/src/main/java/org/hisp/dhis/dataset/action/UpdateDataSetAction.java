@@ -87,6 +87,13 @@ public class UpdateDataSetAction
     {
         this.selectedList = selectedList;
     }
+    
+    private boolean mobile;
+    
+    public void setMobile(boolean mobile) 
+    {
+		this.mobile = mobile;
+	}
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -150,6 +157,7 @@ public class UpdateDataSetAction
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.setDataElements( dataElements );
+        dataSet.setMobile( mobile );
 
         dataSetService.updateDataSet( dataSet );
 

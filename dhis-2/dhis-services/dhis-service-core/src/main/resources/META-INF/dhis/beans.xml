@@ -246,7 +246,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.period.PeriodService"
     class="org.hisp.dhis.period.DefaultPeriodService">
     <property name="periodStore"
-      ref="org.hisp.dhis.period.PeriodStore"/>
+      ref="org.hisp.dhis.period.PeriodStore"/>    
   </bean>
 	
   <bean id="org.hisp.dhis.dataset.DataSetService"

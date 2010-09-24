@@ -22,6 +22,8 @@ public class Activity
     private ProgramStageInstance task;
 
     private Date dueDate;
+    
+    private boolean completed;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -94,5 +96,19 @@ public class Activity
     {
         return dueDate;
     }
+
+	/**
+	 * @param completed the completed to set
+	 */
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+
+	/**
+	 * @return the completed
+	 */
+	public boolean isCompleted() {
+		return completed;
+	}
 
 }

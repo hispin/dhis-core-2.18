@@ -81,8 +81,7 @@ public class DefaultActivityPlanService
         return getActivties( programInstances );
 
     }
-
-    @Override
+    
     public Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit )
     {
         Collection<Activity> activities = new ArrayList<Activity>();
@@ -106,7 +105,44 @@ public class DefaultActivityPlanService
         }
 
         return activities;
-    }
+    }	
+	
+	public Collection<Activity> getActivitiesByProvider(
+			OrganisationUnit organisationUnit, Collection<Program> programs) {
+		
+		Collection<Activity> activities = new ArrayList<Activity>();        
+        
+        if( programService.getPrograms( organisationUnit ).containsAll( programs ) )
+        {        	
+        	Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
+        	
+        	// -----------------------------------------------------------------
+            // Get next activities for the active programInstances
+            // -----------------------------------------------------------------
+
+            activities = getActivties( programInstances );
+        }        
+
+        return activities;
+	}
+	
+	public Collection<Activity> getActivitiesByProgram(
+			Collection<Program> programs) {
+		
+		Collection<Activity> activities = new ArrayList<Activity>();   
+		
+		Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
+    	
+    	// -----------------------------------------------------------------
+        // Get next activities for the active programInstances
+        // -----------------------------------------------------------------
+
+        activities = getActivties( programInstances );
+        
+        return activities;
+	}
+
+	
 
     @Override
     public Collection<Activity> getActivitiesByTask( ProgramStageInstance task )
@@ -179,7 +215,7 @@ public class DefaultActivityPlanService
 
         return activities;
 
-    }
+    }	
 
     // -------------------------------------------------------------------------
     // Supportive methods

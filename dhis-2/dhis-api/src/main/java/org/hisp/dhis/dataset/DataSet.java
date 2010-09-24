@@ -90,6 +90,11 @@ public class DataSet
      */
     private Integer sortOrder;
     
+    /**
+     * Property indicating if the dataset could be collected using mobile data entry.
+     */
+    private Boolean mobile = false;
+    
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -252,4 +257,14 @@ public class DataSet
     {
         return sections;
     }
+
+	public void setMobile(Boolean mobile) 
+	{
+		this.mobile = mobile;
+	}
+	
+	public Boolean getMobile() 
+	{
+		return mobile;
+	}
 }

@@ -165,6 +165,17 @@ public class HibernateDataSetStore
         return query.list();
     }
     
+    @SuppressWarnings( "unchecked" )
+	public Collection<DataSet> getDataSetsForMobile() {   	
+        
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( DataSet.class );
+        criteria.add( Restrictions.eq( "mobile", true ) );
+        
+        return criteria.list();
+	}
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------
@@ -234,4 +245,5 @@ public class HibernateDataSetStore
 
         return criteria.list();
     }
+	
 }

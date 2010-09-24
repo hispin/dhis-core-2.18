@@ -17,7 +17,7 @@ public class ActivityPlanItemMapper
         Activity item = new Activity();
 
         item.setBeneficiary( new BeneficiaryMapper().getModel( activity.getBeneficiary()) );
-        item.setDueDate( activity.getDueDate() );
+        item.setDueDate( activity.getDueDate() );        
         item.setTask( new TaskMapper().getModel( activity.getTask()) );
         return item;
     }

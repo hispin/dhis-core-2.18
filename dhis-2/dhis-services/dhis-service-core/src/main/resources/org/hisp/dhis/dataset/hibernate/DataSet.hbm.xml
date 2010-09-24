@@ -51,5 +51,7 @@
 	
 	<property name="sortOrder"/>
 	
+	<property name="mobile"/>
+	
   </class>
 </hibernate-mapping>

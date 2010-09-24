@@ -58,7 +58,7 @@ public class DefaultPeriodService
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
-    }
+    }   
 
     // -------------------------------------------------------------------------
     // Period
@@ -258,5 +258,5 @@ public class DefaultPeriodService
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
     {
         return periodStore.getPeriodFromDates( startDate, endDate, periodType );
-    }
+    }	
 }

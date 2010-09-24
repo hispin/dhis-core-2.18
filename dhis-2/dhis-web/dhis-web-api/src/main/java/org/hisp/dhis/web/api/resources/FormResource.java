@@ -13,7 +13,7 @@ import org.hisp.dhis.web.api.service.ProgramStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/forms")
-public class FormsResource {
+public class FormResource {
 
 	@Autowired
 	private ProgramStageService programStageService;

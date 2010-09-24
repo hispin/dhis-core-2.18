@@ -128,12 +128,19 @@ public class AddDataSetAction
     {
         this.selectedList = selectedList;
     }
+    
+    private boolean mobile;
+    
+    public void setMobile(boolean mobile) 
+    {
+		this.mobile = mobile;
+	}
 
     // -------------------------------------------------------------------------
     // Action
-    // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------    
 
-    public String execute()
+	public String execute()
         throws Exception
     {
     	// ---------------------------------------------------------------------
@@ -153,6 +160,9 @@ public class AddDataSetAction
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
+        
+        dataSet.setMobile( mobile );
+        
 
         for ( String id : selectedList )
         {

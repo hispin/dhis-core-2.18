@@ -175,35 +175,42 @@ public class Storage
         ModelRecordStore modelRecordStore;
         modelRecordStore = new ModelRecordStore( ModelRecordStore.DATAVALUE_DB );
         modelRecordStore.addRecord( DataValue.dataValueToRecord( dataValue ) );
-
     }
-
+    
+    public static Vector loadAllDataValues(  )
+    {
+        DataValueRecordStore dataValueRs = new DataValueRecordStore();
+        return dataValueRs.loadAllDataValues();
+    }
+    
     public static Hashtable loadDataValues( Activity activity )
     {
-        Hashtable dataValuesTable = new Hashtable();
-        RecordStore rs = null;
-        RecordEnumeration re = null;
-        try
-        {
-            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
-            re = rs.enumerateRecords( null, null, false );
-            while ( re.hasNextElement() )
-            {
-                DataValue dataValue = DataValue.recordToDataValue( re.nextRecord() );
-                if ( dataValue.getProgramInstanceId() == activity.getTask().getProgStageInstId() )
-                {
-                    dataValuesTable.put( String.valueOf( dataValue.getDataElementId() ), dataValue );
-                }
-            }
-            re = null;
-            rs = null;
-            return dataValuesTable;
-        }
-        catch ( RecordStoreException rse )
-        {
-            rse.printStackTrace();
-            return null;
-        }
+        DataValueRecordStore dataValueRs = new DataValueRecordStore();
+        return dataValueRs.loadDataValues( activity );
+//        Hashtable dataValuesTable = new Hashtable();
+//        RecordStore rs = null;
+//        RecordEnumeration re = null;
+//        try
+//        {
+//            rs = RecordStore.openRecordStore( ModelRecordStore.DATAVALUE_DB, true );
+//            re = rs.enumerateRecords( null, null, false );
+//            while ( re.hasNextElement() )
+//            {
+//                DataValue dataValue = DataValue.recordToDataValue( re.nextRecord() );
+//                if ( dataValue.getProgramInstanceId() == activity.getTask().getProgStageInstId() )
+//                {
+//                    dataValuesTable.put( String.valueOf( dataValue.getDataElementId() ), dataValue );
+//                }
+//            }
+//            re = null;
+//            rs = null;
+//            return dataValuesTable;
+//        }
+//        catch ( RecordStoreException rse )
+//        {
+//            rse.printStackTrace();
+//            return null;
+//        }
     }
 
     public static void updateDataValue( Activity activity, DataValue newDataValue )
