@@ -1,9 +1,14 @@
 package org.hisp.dhis.mobile.reporting.connection;
 
 import com.jcraft.jzlib.ZInputStream;
+import com.sun.midp.io.Base64;
+
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.io.*;
+import javax.microedition.rms.RecordStoreException;
+
+import org.hisp.dhis.mobile.reporting.db.SettingsRecordStore;
 import org.hisp.dhis.mobile.reporting.gui.DHISMIDlet;
 import org.hisp.dhis.mobile.reporting.model.AbstractModel;
 import org.hisp.dhis.mobile.reporting.model.AbstractModelList;
@@ -12,6 +17,7 @@ import org.hisp.dhis.mobile.reporting.model.ActivityValue;
 import org.hisp.dhis.mobile.reporting.model.DataSet;
 import org.hisp.dhis.mobile.reporting.model.DataSetValue;
 import org.hisp.dhis.mobile.reporting.model.Program;
+import org.hisp.dhis.mobile.reporting.util.AlertUtil;
 
 public class ConnectionManager extends Thread {
 
@@ -22,6 +28,7 @@ public class ConnectionManager extends Thread {
 	public static final String DOWNLOAD_PROGRAM = "program";
 	public static final String DOWNLOAD_ACTIVITYPLAN = "activityplan";
 	public static final String UPLOAD_ACTIVITY_VALUES = "uploadactivityvalue";
+	public static final String AUTHENTICATE = "authenticate";
 
 	Vector abstractModelListVector = new Vector();
 	private DataSet dataSet = null;
@@ -119,8 +126,10 @@ public class ConnectionManager extends Thread {
 
 		// set HTTP basic authentication
 		if (userName != null && password != null) {
-			conn.setRequestProperty("Authorization",
-					"Basic " + BasicAuth.encode(userName,password));
+//			conn.setRequestProperty("Authorization",
+//					"Basic " + BasicAuth.encode(userName,password));
+		    byte[] auth = (userName+":"+password).getBytes();
+		        conn.setRequestProperty( "Authorization", "Basic " + Base64.encode( auth, 0, auth.length ));
 		}
 	}
 
@@ -183,6 +192,78 @@ public class ConnectionManager extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}					
+		} else if (task.equals(ConnectionManager.AUTHENTICATE)) {
+			authenticate(rootUrl + "user");
+		}
+	}
+	
+	private void authenticate(String url) {
+		HttpConnection hcon = null;
+
+		try {
+			int redirectTimes = 0;
+			boolean redirect;
+			do {
+				redirect = false;
+				hcon = (HttpConnection) Connector.open(url);
+				configureConnection(hcon);
+
+				int status = hcon.getResponseCode();
+				switch (status) {
+				case HttpConnection.HTTP_OK:
+					dhisMIDlet.setLogin(true);
+					saveInitSetting();
+					dhisMIDlet.switchDisplayable(null, dhisMIDlet.getPinForm());
+					break;
+                case HttpConnection.HTTP_SEE_OTHER:
+                case HttpConnection.HTTP_TEMP_REDIRECT:
+                case HttpConnection.HTTP_MOVED_TEMP:
+                case HttpConnection.HTTP_MOVED_PERM:
+					url = hcon.getHeaderField("location");
+					if (hcon != null)
+						hcon.close();
+
+					hcon = null;
+					redirectTimes++;
+					redirect = true;
+					break;
+				default:
+					hcon.close();
+					throw new IOException("Response status not OK:" + status);
+				}
+
+			} while (redirect == true && redirectTimes < 5);
+			if (redirectTimes == 5) {
+				throw new IOException("Too much redirects");
+			}
+		} catch (SecurityException e) {
+			dhisMIDlet.switchDisplayable(AlertUtil.getErrorAlert("Error", e.getMessage()), dhisMIDlet.getLoginForm());
+			e.printStackTrace();
+		} catch (Exception e) {
+			dhisMIDlet.switchDisplayable(AlertUtil.getErrorAlert("Error", e.getMessage()), dhisMIDlet.getLoginForm());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (hcon != null)
+					hcon.close();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
+		}
+
+	}
+	
+	private void saveInitSetting() {
+		SettingsRecordStore settingsRecord = null;
+		try {
+			settingsRecord = new SettingsRecordStore(
+					SettingsRecordStore.SETTINGS_DB);
+			settingsRecord.put("url", dhisMIDlet.getServerUrl().getString());
+			settingsRecord.put("username", dhisMIDlet.getUserName().getString());
+			settingsRecord.put("password", dhisMIDlet.getPassword().getString());
+			settingsRecord.save();
+		} catch (RecordStoreException e) {
+			e.printStackTrace();
 		}
 	}
 

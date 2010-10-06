@@ -8,10 +8,23 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class ProgramStage extends AbstractModel {
-	
+	private int programId;
+    
 	private Vector dataElements = new Vector();
 	
-	public Vector getDataElements() {
+	
+	
+	public int getProgramId()
+        {
+            return programId;
+        }
+    
+        public void setProgramId( int programId )
+        {
+            this.programId = programId;
+        }
+
+        public Vector getDataElements() {
 		return dataElements;
 	}
 
@@ -20,12 +33,13 @@ public class ProgramStage extends AbstractModel {
 	}
 
 	public byte[] serialize() throws IOException
-    {
+        {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream dout = new DataOutputStream(bout);       
-
+        
         dout.writeInt(this.getId());
-        dout.writeUTF(this.getName());        
+        dout.writeUTF(this.getName());
+        dout.writeInt( this.programId );
         dout.writeInt(dataElements.size());
 
         for(int i=0; i<dataElements.size(); i++)
@@ -43,10 +57,14 @@ public class ProgramStage extends AbstractModel {
     {
         ByteArrayInputStream bin = new ByteArrayInputStream(data);
         DataInputStream din = new DataInputStream(bin);
-
+        
         this.setId( din.readInt() ) ;
         this.setName( din.readUTF() );        
 
+        //ignore programId
+        din.readInt();
+        //end
+        
         int size = din.readInt();
 
         for(int i=0; i<size; i++)

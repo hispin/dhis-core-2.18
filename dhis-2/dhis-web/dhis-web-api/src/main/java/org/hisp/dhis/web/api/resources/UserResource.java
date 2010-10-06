@@ -47,7 +47,7 @@ public class UserResource
 
         if ( units.isEmpty() )
         {
-            return Response.status( Status.NOT_FOUND ).build();
+            return Response.status( Status.NO_CONTENT ).build();
         }
         else if ( units.size() > 1 )
         {

@@ -7,6 +7,9 @@ package org.hisp.dhis.mobile.reporting.gui;
 
 import java.util.*;
 import javax.microedition.lcdui.*;
+import javax.microedition.rms.RecordStoreException;
+
+import org.hisp.dhis.mobile.reporting.db.SettingsRecordStore;
 
 /**
  * 
@@ -16,16 +19,20 @@ public class SplashScreen extends Canvas {
 
 	private Display display;
 
-	private Displayable nextScreen;
+	private Displayable loginForm;
+
+	private Displayable pinForm;
 
 	private Image image;
 
 	private Timer timer = new Timer();
 
-	public SplashScreen(Image image, Display display, Displayable nextScreen) {
+	public SplashScreen(Image image, Display display, Displayable loginForm,
+			Displayable pinForm) {
 		this.image = image;
 		this.display = display;
-		this.nextScreen = nextScreen;
+		this.loginForm = loginForm;
+		this.pinForm = pinForm;
 		display.setCurrent(this);
 	}
 
@@ -51,7 +58,19 @@ public class SplashScreen extends Canvas {
 
 	private void dismissSplashScreen() {
 		timer.cancel();
-		display.setCurrent(nextScreen);
+		SettingsRecordStore settingStore = null;
+
+		try {
+			settingStore = new SettingsRecordStore(
+					SettingsRecordStore.SETTINGS_DB);
+			if (settingStore.get("pin").equals("")) {
+				display.setCurrent(loginForm);
+			} else {
+				display.setCurrent(pinForm);
+			}
+		} catch (RecordStoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// count down for the splash display

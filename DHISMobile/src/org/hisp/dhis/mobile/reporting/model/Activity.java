@@ -111,7 +111,7 @@ public class Activity implements ISerializable
     }   
     
     
-    public void deSerialize(DataInputStream din) throws IOException {
+        public void deSerialize(DataInputStream din) throws IOException {
     	
     	this.setDueDate(new Date(din.readLong()));    	
     	this.beneficiary.deSerialize(din);    	
