@@ -103,7 +103,8 @@ public class ActivityRecordStore implements Runnable {
             }
             return recordId;
         }
-	public void save() {
+	
+        public void save() {
 		
 		clear();
 		

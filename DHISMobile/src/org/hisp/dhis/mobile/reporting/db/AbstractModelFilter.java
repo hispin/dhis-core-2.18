@@ -34,7 +34,7 @@ public class AbstractModelFilter implements RecordFilter {
 				.recordToAbstractModel(suspect);
 		matches = abstractModel.getId() == model.getId()
 				&& abstractModel.getName().equalsIgnoreCase(model.getName());
-
+		close();
 		return matches;
 	}
 

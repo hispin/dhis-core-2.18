@@ -10,6 +10,8 @@ import javax.microedition.rms.RecordStoreException;
 import java.util.Vector;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreNotOpenException;
+
 import org.hisp.dhis.mobile.reporting.model.AbstractModel;
 
 /**
@@ -134,4 +136,31 @@ public class ModelRecordStore {
 				rs.closeRecordStore();
 		}
 	}
+	
+	public static void clear(String db) {
+		RecordStore rs = null;
+		RecordEnumeration re = null;
+		try {
+			rs = RecordStore.openRecordStore(db, true);
+			re = rs.enumerateRecords(null, null, false);
+			int id;
+			while (re.hasNextElement()) {
+				id = re.nextRecordId();
+				rs.deleteRecord(id);
+			}
+		} catch (Exception e) {
+
+		} finally {
+			if (re != null)
+				re.destroy();
+			if (rs != null)
+				try {
+					rs.closeRecordStore();
+				} catch (RecordStoreNotOpenException e) {
+					e.printStackTrace();
+				} catch (RecordStoreException e) {
+					e.printStackTrace();
+				}
+		}
+	}	
 }

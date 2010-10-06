@@ -80,15 +80,15 @@ extends AbstractXmlParser
         String name = parser.getName();
         String text = parser.nextText();
 
-        if ( name.equals( "deId" ) )
+        if ( name.equals( "id" ) )
         {
             de.setId( Integer.valueOf( text ).intValue() );
         }
-        else if ( name.equals( "deName" ) )
+        else if ( name.equals( "name" ) )
         {
             de.setName( text );
         }
-        else if ( name.equals( "deType" ) )
+        else if ( name.equals( "type" ) )
         {
             if ( text.equals( "int" ) )
                 de.setType( DataElement.TYPE_INT );
