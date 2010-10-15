@@ -12,17 +12,17 @@ import java.util.Vector;
 
 /**
  * @author abyotag_adm
- *
+ * 
  */
 public class ActivityValue implements ISerializable {
-	
+
 	private int programInstanceId;
-	
+
 	private Vector dataValues = new Vector();
-	
+
 	public ActivityValue() {
 	}
-	
+
 	public void setProgramInstanceId(int programInstanceId) {
 		this.programInstanceId = programInstanceId;
 	}
@@ -60,7 +60,7 @@ public class ActivityValue implements ISerializable {
 		ByteArrayInputStream bin = new ByteArrayInputStream(data);
 		DataInputStream din = new DataInputStream(bin);
 
-		this.setProgramInstanceId(din.readInt());		
+		this.setProgramInstanceId(din.readInt());
 
 		int size = din.readInt();
 

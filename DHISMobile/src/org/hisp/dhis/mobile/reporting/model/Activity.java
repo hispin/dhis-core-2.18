@@ -7,148 +7,128 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-public class Activity implements ISerializable
-{
+public class Activity implements ISerializable {
 
-    private Beneficiary beneficiary;
+	private Beneficiary beneficiary;
 
-    private Task task;
+	private Task task;
 
-    private Date dueDate;   
-    
-    public Activity()
-    {
-    }
+	private Date dueDate;
 
-    // Getter and Setter
-    public Beneficiary getBeneficiary()
-    {
-        return beneficiary;
-    }
+	public Activity() {
+	}
 
-    public void setBeneficiary( Beneficiary beneficiary )
-    {
-        this.beneficiary = beneficiary;
-    }
+	// Getter and Setter
+	public Beneficiary getBeneficiary() {
+		return beneficiary;
+	}
 
-    public Task getTask()
-    {
-        return task;
-    }
+	public void setBeneficiary(Beneficiary beneficiary) {
+		this.beneficiary = beneficiary;
+	}
 
-    public void setTask( Task task )
-    {
-        this.task = task;
-    }
+	public Task getTask() {
+		return task;
+	}
 
-    public Date getDueDate()
-    {
-        return dueDate;
-    }
+	public void setTask(Task task) {
+		this.task = task;
+	}
 
-    public void setDueDate( Date dueDate )
-    {
-        this.dueDate = dueDate;
-    }    
+	public Date getDueDate() {
+		return dueDate;
+	}
 
-    public static Activity recordToActivity( byte[] rec )
-    {
-        ByteArrayInputStream bin = new ByteArrayInputStream( rec );
-        DataInputStream din = new DataInputStream( bin );
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
 
-        Activity activity = new Activity();
-        Beneficiary beneficiary = new Beneficiary();
-        Task task = new Task();
-        try
-        {
-            beneficiary.setId( din.readInt() );
-            beneficiary.setLastName( din.readUTF() );
-            beneficiary.setMiddleName( din.readUTF() );
-            beneficiary.setFirstName( din.readUTF() );
+	public static Activity recordToActivity(byte[] rec) {
+		ByteArrayInputStream bin = new ByteArrayInputStream(rec);
+		DataInputStream din = new DataInputStream(bin);
 
-            activity.setDueDate(new Date(din.readLong()));
+		Activity activity = new Activity();
+		Beneficiary beneficiary = new Beneficiary();
+		Task task = new Task();
+		try {
+			beneficiary.setId(din.readInt());
+			beneficiary.setLastName(din.readUTF());
+			beneficiary.setMiddleName(din.readUTF());
+			beneficiary.setFirstName(din.readUTF());
 
-            task.setProgStageInstId( din.readInt() );
-            task.setProgStageId( din.readInt() );
-            task.setComplete( din.readBoolean() );
+			activity.setDueDate(new Date(din.readLong()));
 
-            activity.setTask( task );
-            activity.setBeneficiary( beneficiary );
-        }
-        catch ( IOException ioe )
-        {
-        }
+			task.setProgStageInstId(din.readInt());
+			task.setProgStageId(din.readInt());
+			task.setComplete(din.readBoolean());
 
-        return activity;
-    }
+			activity.setTask(task);
+			activity.setBeneficiary(beneficiary);
+		} catch (IOException ioe) {
+		}
 
-    public static byte[] activityToRecord( Activity activity )
-    {
-        ByteArrayOutputStream deOs = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream( deOs );
+		return activity;
+	}
 
-        try
-        {
-            // Write Beneficiary Information
-            dout.writeInt( activity.getBeneficiary().getId() );
-            dout.writeUTF( activity.getBeneficiary().getLastName() );
-            dout.writeUTF( activity.getBeneficiary().getMiddleName() );
-            dout.writeUTF( activity.getBeneficiary().getFirstName() );
-            // Write Due Date
-            dout.writeLong(activity.getDueDate().getTime());
-            // Write Task Information
-            dout.writeInt( activity.getTask().getProgStageInstId() );
-            dout.writeInt( activity.getTask().getProgStageId() );
-            dout.writeBoolean( activity.getTask().isComplete() );
-            dout.flush();
-        }
-        catch ( IOException e )
-        {
-            System.out.println( e );
-            e.printStackTrace();
-        }
-        return deOs.toByteArray();
-    }   
-    
-    
-        public void deSerialize(DataInputStream din) throws IOException {
-    	
-    	this.setDueDate(new Date(din.readLong()));    	
-    	this.beneficiary.deSerialize(din);    	
-		this.task.deSerialize(din);		
+	public static byte[] activityToRecord(Activity activity) {
+		ByteArrayOutputStream deOs = new ByteArrayOutputStream();
+		DataOutputStream dout = new DataOutputStream(deOs);
+
+		try {
+			// Write Beneficiary Information
+			dout.writeInt(activity.getBeneficiary().getId());
+			dout.writeUTF(activity.getBeneficiary().getLastName());
+			dout.writeUTF(activity.getBeneficiary().getMiddleName());
+			dout.writeUTF(activity.getBeneficiary().getFirstName());
+			// Write Due Date
+			dout.writeLong(activity.getDueDate().getTime());
+			// Write Task Information
+			dout.writeInt(activity.getTask().getProgStageInstId());
+			dout.writeInt(activity.getTask().getProgStageId());
+			dout.writeBoolean(activity.getTask().isComplete());
+			dout.flush();
+		} catch (IOException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+		return deOs.toByteArray();
+	}
+
+	public void deSerialize(DataInputStream din) throws IOException {
+
+		this.setDueDate(new Date(din.readLong()));
+		this.beneficiary.deSerialize(din);
+		this.task.deSerialize(din);
 	}
 
 	public byte[] serialize() throws IOException {
-		
-		ByteArrayOutputStream deOs = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream( deOs );
 
-        try
-        {
-            // Write Beneficiary Information
-            dout.writeInt( this.getBeneficiary().getId() );
-            dout.writeUTF( this.getBeneficiary().getLastName() );
-            dout.writeUTF( this.getBeneficiary().getMiddleName() );
-            dout.writeUTF( this.getBeneficiary().getFirstName() );
-            // Write Due Date
-            dout.writeLong(this.getDueDate().getTime());
-            // Write Task Information
-            dout.writeInt( this.getTask().getProgStageInstId() );
-            dout.writeInt( this.getTask().getProgStageId() );
-            dout.writeBoolean( this.getTask().isComplete() );
-            dout.flush();
-        }
-        catch ( IOException e )
-        {
-            System.out.println( e );
-            e.printStackTrace();
-        }
-        
-        return deOs.toByteArray();
+		ByteArrayOutputStream deOs = new ByteArrayOutputStream();
+		DataOutputStream dout = new DataOutputStream(deOs);
+
+		try {
+			// Write Beneficiary Information
+			dout.writeInt(this.getBeneficiary().getId());
+			dout.writeUTF(this.getBeneficiary().getLastName());
+			dout.writeUTF(this.getBeneficiary().getMiddleName());
+			dout.writeUTF(this.getBeneficiary().getFirstName());
+			// Write Due Date
+			dout.writeLong(this.getDueDate().getTime());
+			// Write Task Information
+			dout.writeInt(this.getTask().getProgStageInstId());
+			dout.writeInt(this.getTask().getProgStageId());
+			dout.writeBoolean(this.getTask().isComplete());
+			dout.flush();
+		} catch (IOException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+
+		return deOs.toByteArray();
 	}
 
 	public void deSerialize(byte[] data) throws IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

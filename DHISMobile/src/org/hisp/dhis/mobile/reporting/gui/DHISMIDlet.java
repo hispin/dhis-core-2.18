@@ -36,14 +36,13 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	Vector dataSetsVector = new Vector();
 	Vector programsVector = new Vector();
 	Vector activitiesVector = new Vector();
-	
+
 	private DataSet selectedDataSet;
 	private Activity selectedActivity;
 	private ProgramStage selectedProgramStage;
-	
+
 	private Hashtable dataElements = new Hashtable();
 
-	
 	private String selectedPeriod;
 	private DateField dailyPeriodDateField;
 	private TextField url;
@@ -63,9 +62,9 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private Form pinForm;
 	private Form settingsForm;
 	private Form periodForm;
-	private Form waitForm;		
+	private Form waitForm;
 	private Form activityDetailForm;
-	private List activityPlanList;	
+	private List activityPlanList;
 	private List dataSetDisplayList;
 	private List servicesList;
 	private List maintenanceList;
@@ -85,13 +84,13 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private Command activityDetailOkCmd;
 	private Command stngsOkCmd;
 	private Command setngsBakCmd;
-	private Command setngsSaveCmd;	
+	private Command setngsSaveCmd;
 	private Command deFrmBakCmd;
 	private Command deFrmSndCmd;
-	private Command deFrmSavCmd;	
+	private Command deFrmSavCmd;
 	private Command activityFrmBakCmd;
 	private Command activityFrmSndCmd;
-	private Command activityFrmSavCmd;	
+	private Command activityFrmSavCmd;
 	private Command screenCommand;
 	private Command backCommand;
 	private Command okCommand;
@@ -126,7 +125,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 * Performs an action assigned to the Mobile Device - MIDlet Started point.
 	 */
 	public void startMIDlet() {
-		new SplashScreen(getLogo(), getDisplay(), (Displayable) getLoginForm(), (Displayable) getPinForm());
+		new SplashScreen(getLogo(), getDisplay(), (Displayable) getLoginForm(),
+				(Displayable) getPinForm());
 	}
 
 	/**
@@ -165,250 +165,181 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 * @param displayable
 	 *            the Displayable where the command was invoked
 	 */
-	public void commandAction(Command command, Displayable displayable) 
-	{
-		if (displayable == dataEntryForm) 
-		{
-			if (command == deFrmBakCmd) 
-			{
+	public void commandAction(Command command, Displayable displayable) {
+		if (displayable == dataEntryForm) {
+			if (command == deFrmBakCmd) {
 				switchDisplayable(null, getDataSetDisplayList());
-			} 
-			else if (command == deFrmSndCmd) 
-			{
+			} else if (command == deFrmSndCmd) {
 				sendData();
-			}
-			else if (command == deFrmSavCmd) 
-			{
+			} else if (command == deFrmSavCmd) {
 				saveData();
-			}			
-		}
-		if (displayable == activityEntryForm) 
-		{
-			if (command == activityFrmBakCmd) 
-			{
-				switchDisplayable(null, getActivityPlanList());
-			} 
-			else if (command == activityFrmSndCmd) 
-			{
-				sendActivity();
 			}
-			else if (command == activityFrmSavCmd) 
-			{
+		}
+		if (displayable == activityEntryForm) {
+			if (command == activityFrmBakCmd) {
+				switchDisplayable(null, getActivityPlanList());
+			} else if (command == activityFrmSndCmd) {
+				sendActivity();
+			} else if (command == activityFrmSavCmd) {
 				saveActivity();
-			}			
-		} 
-		else if (displayable == dataSetDisplayList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
+			}
+		} else if (displayable == dataSetDisplayList) {
+			if (command == List.SELECT_COMMAND) {
 				dataSetDisplayListAction();
-			} else if (command == dsLstBakCmd) 
-			{
+			} else if (command == dsLstBakCmd) {
 				switchDisplayable(null, getServicesList());
 			}
-		} 
-		else if (displayable == deleteList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
+		} else if (displayable == deleteList) {
+			if (command == List.SELECT_COMMAND) {
 				deleteListAction();
-			} 
-			else if (command == deleteBakCmd) 
-			{
+			} else if (command == deleteBakCmd) {
 				switchDisplayable(null, getMaintenanceList());
-			} 
-			else if (command == dsDeleteCmd) 
-			{
-				AbstractModel model = (AbstractModel) dataSetsVector.elementAt(((List) getDeleteList()).getSelectedIndex());
+			} else if (command == dsDeleteCmd) {
+				AbstractModel model = (AbstractModel) dataSetsVector
+						.elementAt(((List) getDeleteList()).getSelectedIndex());
 				deleteDataSet(model);
 				switchDisplayable(null, getMaintenanceList());
 			}
-		}
-		else if(displayable == deleteProgList)
-		{
-		    if(command == List.SELECT_COMMAND){
-		        AbstractModel model = (AbstractModel) programsVector.elementAt(((List) getDeleteProgList()).getSelectedIndex());
-		        deleteProgramsAndProgramStages(model);
-		    }else if(command == deleteBakCmd){
-		        switchDisplayable( null, getMaintenanceList() );
-		    }
-		}
-		else if (displayable == dsDnldList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
+		} else if (displayable == deleteProgList) {
+			if (command == List.SELECT_COMMAND) {
+				AbstractModel model = (AbstractModel) programsVector
+						.elementAt(((List) getDeleteProgList())
+								.getSelectedIndex());
+				deleteProgramsAndProgramStages(model);
+			} else if (command == deleteBakCmd) {
+				switchDisplayable(null, getMaintenanceList());
+			}
+		} else if (displayable == dsDnldList) {
+			if (command == List.SELECT_COMMAND) {
 				dsDnldListAction();
-			} 
-			else if (command == dsDnldListBakCmd) 
-			{
+			} else if (command == dsDnldListBakCmd) {
 				switchDisplayable(null, getMaintenanceList());
 			}
-		} 
-		else if (displayable == prDnldList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
+		} else if (displayable == prDnldList) {
+			if (command == List.SELECT_COMMAND) {
 				prDnldListAction();
-			} 
-			else if (command == prDnldListBakCmd) 
-			{
+			} else if (command == prDnldListBakCmd) {
 				switchDisplayable(null, getMaintenanceList());
 			}
-		}
-		else if (displayable == loginForm) 
-		{
-			if (command == lgnFrmExtCmd) 
-			{
+		} else if (displayable == loginForm) {
+			if (command == lgnFrmExtCmd) {
 				exitMIDlet();
-			} else if (command == lgnFrmLgnCmd) 
-			{
+			} else if (command == lgnFrmLgnCmd) {
 				switchDisplayable(null, getWaitForm());
 				login();
-//				switchDisplayable(null, getMainMenuList());
+				// switchDisplayable(null, getMainMenuList());
 			}
-		} 
-		else if (displayable == mainMenuList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
+		} else if (displayable == mainMenuList) {
+			if (command == List.SELECT_COMMAND) {
 				mainMenuListAction();
-			} 
-			else if (command == mnuListExtCmd) 
-			{
+			} else if (command == mnuListExtCmd) {
 				exitMIDlet();
-			}		
-		}
-		else if (displayable == servicesList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
-				servicesListAction();
-			} 
-			else if (command == srvcsBakCmd) 
-			{
-				switchDisplayable(null, getMainMenuList());
-			} 
-		} 		
-		else if (displayable == activityPlanList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
-				activityListAction();
-			} 
-			else if (command == actvPlnLstBakCmd) 
-			{
-				switchDisplayable(null, getServicesList());
 			}
-			else if (command == activityDetailCmd) 
-			{				
+		} else if (displayable == servicesList) {
+			if (command == List.SELECT_COMMAND) {
+				servicesListAction();
+			} else if (command == srvcsBakCmd) {
+				switchDisplayable(null, getMainMenuList());
+			}
+		} else if (displayable == activityPlanList) {
+			if (command == List.SELECT_COMMAND) {
+				activityListAction();
+			} else if (command == actvPlnLstBakCmd) {
+				switchDisplayable(null, getServicesList());
+			} else if (command == activityDetailCmd) {
 				activityDetailsAction();
 				switchDisplayable(null, getActivityDetailForm());
 			}
-		} 
-		else if (displayable == activityDetailForm) 
-		{
-			if (command == activityDetailOkCmd) 
-			{
+		} else if (displayable == activityDetailForm) {
+			if (command == activityDetailOkCmd) {
 				switchDisplayable(null, getActivityPlanList());
-			}			
-		}
-		else if (displayable == maintenanceList) 
-		{
-			if (command == List.SELECT_COMMAND) 
-			{
+			}
+		} else if (displayable == maintenanceList) {
+			if (command == List.SELECT_COMMAND) {
 				maintenanceListAction();
-			} 
-			else if (command == mntnceBakCmd) 
-			{
+			} else if (command == mntnceBakCmd) {
 				switchDisplayable(null, getMainMenuList());
 			}
-		} 
-		else if (displayable == periodForm) 
-		{
-			if (command == periodBakCmd) 
-			{
+		} else if (displayable == periodForm) {
+			if (command == periodBakCmd) {
 				switchDisplayable(null, getDataSetDisplayList());
-			} 
-			else if (command == selectDailyPeriodCmd) 
-			{
+			} else if (command == selectDailyPeriodCmd) {
 				getDisplay().setCurrent(new CalendarCanvas(this));
-			} 
-			else if (command == periodNxtCmd) 
-			{
+			} else if (command == periodNxtCmd) {
 				switchDisplayable(null, getDataEntryForm());
 
-				if (selectedDataSet.getPeriodType().equals("Daily")) 
-				{
-					selectedPeriod = Period.formatDailyPeriod(dailyPeriodDateField.getDate());
-				} 
-				else if (selectedDataSet.getPeriodType().equals("Weekly")) 
-				{
-					selectedPeriod = Period.formatWeeklyPeriod(getPeriodChoice().getString(getPeriodChoice().getSelectedIndex()));
-				} 
-				else if (selectedDataSet.getPeriodType().equals("Monthly")) 
-				{
-					selectedPeriod = Period.formatMonthlyPeriod(getPeriodChoice().getString(getPeriodChoice().getSelectedIndex()));
-				} 
-				else 
-				{
-					selectedPeriod = getPeriodChoice().getString(getPeriodChoice().getSelectedIndex());
+				if (selectedDataSet.getPeriodType().equals("Daily")) {
+					selectedPeriod = Period
+							.formatDailyPeriod(dailyPeriodDateField.getDate());
+				} else if (selectedDataSet.getPeriodType().equals("Weekly")) {
+					selectedPeriod = Period
+							.formatWeeklyPeriod(getPeriodChoice().getString(
+									getPeriodChoice().getSelectedIndex()));
+				} else if (selectedDataSet.getPeriodType().equals("Monthly")) {
+					selectedPeriod = Period
+							.formatMonthlyPeriod(getPeriodChoice().getString(
+									getPeriodChoice().getSelectedIndex()));
+				} else {
+					selectedPeriod = getPeriodChoice().getString(
+							getPeriodChoice().getSelectedIndex());
 				}
 
 				displayDataEntry(selectedDataSet, getDataEntryForm());
 			}
-		} 
-		else if (displayable == settingsForm) 
-		{
-			if (command == setngsBakCmd) 
-			{
+		} else if (displayable == settingsForm) {
+			if (command == setngsBakCmd) {
 				switchDisplayable(null, getMainMenuList());
-			} 
-			else if (command == setngsSaveCmd) 
-			{
+			} else if (command == setngsSaveCmd) {
 				saveSettings();
 				switchDisplayable(null, getMainMenuList());
-			} 
+			}
 		} else if (displayable == pinForm) {
 			if (command == pinFormNextCmd) {
 				checkPIN();
-			} else if (command == exitCommand){
+			} else if (command == exitCommand) {
 				exitMIDlet();
 			} else if (command == pinFormReinitCmd) {
 				ReinitConfirmListener listener = new ReinitConfirmListener();
 				listener.setCurrentScrren(getPinForm());
 				listener.setNextScreen(getLoginForm());
-				this.getDisplay().setCurrent(AlertUtil.getConfirmAlert("Reinisialize", "All of the data will be lost. Are you sure you want to reinit", listener, this, getPinForm(), getLoginForm()));
+				this.getDisplay()
+						.setCurrent(
+								AlertUtil
+										.getConfirmAlert(
+												"Reinisialize",
+												"All of the data will be lost. Are you sure you want to reinit",
+												listener, this, getPinForm(),
+												getLoginForm()));
 			}
 		}
 	}
-		
+
 	private void checkPIN() {
 		SettingsRecordStore settingRs = null;
-        try
-        {
-            settingRs = new SettingsRecordStore( SettingsRecordStore.SETTINGS_DB );
-            if ( settingRs.get( "pin" ).equals(""))
-            {
-                if (!getPinTextField().getString().equals("")){
-                	settingRs.put("pin", getPinTextField().getString().trim());
-                	settingRs.save();
-                	switchDisplayable(null, getMainMenuList());
-                } else {
-                	switchDisplayable(AlertUtil.getInfoAlert("Error", "PIN cannot be empty"), getPinForm());
-                }
-            } else {
-            	if (settingRs.get( "pin" ).equals(getPinTextField().getString())){
-            		switchDisplayable(null, getMainMenuList());
-            	} else {
-            		switchDisplayable(AlertUtil.getInfoAlert("Error", "Ivalid PIN"), getPinForm());
-            	}
-            }
-            settingRs = null;
-        }
-        catch ( RecordStoreException e )
-        {
-            e.printStackTrace();
-        }
+		try {
+			settingRs = new SettingsRecordStore(SettingsRecordStore.SETTINGS_DB);
+			if (settingRs.get("pin").equals("")) {
+				if (!getPinTextField().getString().equals("")) {
+					settingRs.put("pin", getPinTextField().getString().trim());
+					settingRs.save();
+					switchDisplayable(null, getMainMenuList());
+				} else {
+					switchDisplayable(AlertUtil.getInfoAlert("Error",
+							"PIN cannot be empty"), getPinForm());
+				}
+			} else {
+				if (settingRs.get("pin").equals(getPinTextField().getString())) {
+					switchDisplayable(null, getMainMenuList());
+				} else {
+					switchDisplayable(
+							AlertUtil.getInfoAlert("Error", "Ivalid PIN"),
+							getPinForm());
+				}
+			}
+			settingRs = null;
+		} catch (RecordStoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -452,7 +383,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				getMainMenuList().getSelectedIndex());
 		if (__selectedString != null) {
 			if (__selectedString.equals("Services")) {
-				switchDisplayable(null, getServicesList());				
+				switchDisplayable(null, getServicesList());
 			} else if (__selectedString.equals("Maintenance")) {
 				switchDisplayable(null, getMaintenanceList());
 			} else if (__selectedString.equals("Settings")) {
@@ -485,7 +416,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return mnuListDnldCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of dsDnldList component.
 	 * 
@@ -499,8 +430,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			prDnldList.setSelectedFlags(new boolean[] {});
 		}
 		return prDnldList;
-	}	
-	
+	}
+
 	/**
 	 * Performs an action assigned to the selected list element in the
 	 * prDnldList component.
@@ -509,16 +440,15 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		AbstractModel model = (AbstractModel) programsVector
 				.elementAt(((List) getPrDnldList()).getSelectedIndex());
 
-		getWaitForm().deleteAll();		
+		getWaitForm().deleteAll();
 		getWaitForm().setTitle("Downloading program");
 		getWaitForm().append("Please wait........");
-		
+
 		switchDisplayable(null, getWaitForm());
-		
+
 		downloadProgram(model.getId());
 
 	}
-
 
 	/**
 	 * Returns an initiliazed instance of dsDnldList component.
@@ -544,16 +474,16 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				.elementAt(((List) getDsDnldList()).getSelectedIndex());
 
 		getWaitForm().deleteAll();
-		
+
 		getWaitForm().setTitle("Downloading dataset");
 		getWaitForm().append("Please wait........");
-		
+
 		switchDisplayable(null, getWaitForm());
-		
+
 		downloadDataSet(model.getId());
 
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of prDnldListBakCmd component.
 	 * 
@@ -696,7 +626,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return dataEntryForm;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityEntryForm component.
 	 * 
@@ -712,7 +642,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return activityEntryForm;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityDetailCmd component.
 	 * 
@@ -724,7 +654,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return activityDetailCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityDetailOkCmd component.
 	 * 
@@ -748,7 +678,6 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return deFrmBakCmd;
 	}
-	
 
 	/**
 	 * Returns an initiliazed instance of deFrmSndCmd component.
@@ -761,7 +690,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return deFrmSndCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of deFrmSavCmd component.
 	 * 
@@ -773,7 +702,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return deFrmSavCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityFrmBakCmd component.
 	 * 
@@ -785,7 +714,6 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return activityFrmBakCmd;
 	}
-	
 
 	/**
 	 * Returns an initiliazed instance of activityFrmSndCmd component.
@@ -798,7 +726,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return activityFrmSndCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityFrmSavCmd component.
 	 * 
@@ -850,7 +778,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return loginForm;
 	}
-	
+
 	public Form getPinForm() {
 		if (pinForm == null) {
 			pinForm = new Form("Enter a 4 digit PIN");
@@ -864,7 +792,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return pinForm;
 	}
-	
+
 	private TextField getPinTextField() {
 		if (pinTextField == null) {
 			pinTextField = new TextField("PIN", "", 4, TextField.NUMERIC
@@ -913,11 +841,11 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return password;
 	}
-	
+
 	public TextField getServerUrl() {
 		if (serverURL == null) {
 			serverURL = new TextField("Server Location",
-					"http://localhost:8080/api/", 64, TextField.URL);
+					"http://localhost:8080/cbhis/api/", 64, TextField.URL);
 		}
 		return serverURL;
 	}
@@ -974,22 +902,21 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return logo;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityDetailForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
-	public Form getActivityDetailForm() 
-	{		
+	public Form getActivityDetailForm() {
 		if (activityDetailForm == null) {
 			activityDetailForm = new Form("Details");
 			activityDetailForm.addCommand(getActivityDetailOkCmd());
 			activityDetailForm.setCommandListener(this);
 		}
-		return activityDetailForm;	
+		return activityDetailForm;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of activityPlanList component.
 	 * 
@@ -997,8 +924,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public List getActivityPlanList() {
 		if (activityPlanList == null) {
-			activityPlanList = new List("Select activity",Choice.IMPLICIT);
-			activityPlanList.addCommand(getActvPlnLstBakCmd());			
+			activityPlanList = new List("Select activity", Choice.IMPLICIT);
+			activityPlanList.addCommand(getActvPlnLstBakCmd());
 			activityPlanList.setCommandListener(this);
 		}
 		return activityPlanList;
@@ -1069,7 +996,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return dsLstBakCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of servicesList component.
 	 * 
@@ -1085,84 +1012,82 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			servicesList.setSelectedFlags(new boolean[] { false, false });
 		}
 		return servicesList;
-	}	
-	
+	}
+
 	/**
 	 * Performs an action assigned to the selected list element in the
 	 * servicesList component.
 	 */
 	public void servicesListAction() {
-		String __selectedString = getServicesList().getString(getServicesList().getSelectedIndex());
-		if (__selectedString != null) 
-		{
-			if (__selectedString.equals("DataSet Reporting")) 
-			{				
-				
+		String __selectedString = getServicesList().getString(
+				getServicesList().getSelectedIndex());
+		if (__selectedString != null) {
+			if (__selectedString.equals("DataSet Reporting")) {
+
 				loadDataSets(getDataSetDisplayList());
 				switchDisplayable(null, getDataSetDisplayList());
 
-			} 
-			else if (__selectedString.equals("Name-based Data Entry")) 
-			{					
-				
-				getWaitForm().deleteAll();				
+			} else if (__selectedString.equals("Name-based Data Entry")) {
+
+				getWaitForm().deleteAll();
 				getWaitForm().setTitle("Loading activities");
-				getWaitForm().append("Please wait........");				
-				switchDisplayable(null, getWaitForm());			
-				
-				ActivityRecordStore activityRecordStore = new ActivityRecordStore(this);
-				Thread thread = new Thread( activityRecordStore );
-				thread.start();						
+				getWaitForm().append("Please wait........");
+				switchDisplayable(null, getWaitForm());
+
+				ActivityRecordStore activityRecordStore = new ActivityRecordStore(
+						this);
+				Thread thread = new Thread(activityRecordStore);
+				thread.start();
 			}
 		}
 	}
-	
+
 	/**
 	 * Performs an action assigned to the selected list element in the
 	 * servicesList component.
 	 */
 	public void activityListAction() {
-		
-		selectedActivity = (Activity) activitiesVector.elementAt(((List) getActivityPlanList()).getSelectedIndex());
-		
+
+		selectedActivity = (Activity) activitiesVector
+				.elementAt(((List) getActivityPlanList()).getSelectedIndex());
+
 		ModelRecordStore modelRecordStore = null;
 		ProgramStage prStage = null;
 
 		try {
-			modelRecordStore = new ModelRecordStore(ModelRecordStore.PROGRAM_STAGE_DB);
-			byte rec[] = modelRecordStore.getRecord(selectedActivity.getTask().getProgStageId());
-			if (rec != null){				
+			modelRecordStore = new ModelRecordStore(
+					ModelRecordStore.PROGRAM_STAGE_DB);
+			byte rec[] = modelRecordStore.getRecord(selectedActivity.getTask()
+					.getProgStageId());
+			if (rec != null) {
 				prStage = new ProgramStage();
 				prStage.deSerialize(rec);
-			}		
-			
+			}
+
 		} catch (RecordStoreException rse) {
-			
-		}catch (IOException e){}	
-		
-		displayActivity( selectedActivity, prStage, getActivityEntryForm());		
-	}
-	
-	public void displayActivity(Activity activity, ProgramStage programStage, Form form) 
-	{
-		
-		if( activity == null || programStage == null )
-		{
-		        form.deleteAll();
-			form.append("The requested form is not available");
+
+		} catch (IOException e) {
 		}
-		else
-		{
+
+		displayActivity(selectedActivity, prStage, getActivityEntryForm());
+	}
+
+	public void displayActivity(Activity activity, ProgramStage programStage,
+			Form form) {
+
+		if (activity == null || programStage == null) {
+			form.deleteAll();
+			form.append("The requested form is not available");
+		} else {
 			selectedActivity = activity;
 			selectedProgramStage = programStage;
-			
+
 			form.deleteAll();
-			
+
 			form.setTitle(programStage.getName());
 			Vector des = programStage.getDataElements();
 
-			for (int i = 0; i < des.size(); i++) 
-			{
+			for (int i = 0; i < des.size(); i++) {
 				DataElement de = (DataElement) des.elementAt(i);
 				if (de.getType().equals("date")) {
 					DateField dateField = new DateField(de.getName(),
@@ -1184,46 +1109,53 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		switchDisplayable(null, form);
 	}
-	
+
 	/**
 	 * Performs an action assigned to the selected list element in the
 	 * activityPlanList component.
 	 */
-	public void activityDetailsAction() 
-	{		
+	public void activityDetailsAction() {
 		getActivityDetailForm().deleteAll();
-		
-		selectedActivity = (Activity) activitiesVector.elementAt(((List) getActivityPlanList()).getSelectedIndex());
-		
+
+		selectedActivity = (Activity) activitiesVector
+				.elementAt(((List) getActivityPlanList()).getSelectedIndex());
+
 		ModelRecordStore modelRecordStore = null;
 		ProgramStage prStage = null;
 
 		try {
-			modelRecordStore = new ModelRecordStore(ModelRecordStore.PROGRAM_STAGE_DB);
-			byte rec[] = modelRecordStore.getRecord(selectedActivity.getTask().getProgStageId());
-			if (rec != null){				
+			modelRecordStore = new ModelRecordStore(
+					ModelRecordStore.PROGRAM_STAGE_DB);
+			byte rec[] = modelRecordStore.getRecord(selectedActivity.getTask()
+					.getProgStageId());
+			if (rec != null) {
 				prStage = new ProgramStage();
 				prStage.deSerialize(rec);
 				getActivityDetailForm().setTitle("Details");
-	                        System.out.println(prStage);
-	                        getActivityDetailForm().append( "Service: " + prStage.getName() 
-	                                        + "\nName:  " + selectedActivity.getBeneficiary().getFullName() 
-	                                        + "\nDue date: " + Period.formatDailyPeriod(selectedActivity.getDueDate()));
-			}			
-			else{
-			    getActivityDetailForm().deleteAll();
-			    getActivityDetailForm().append( "There is no details" );
-			    
+				System.out.println(prStage);
+				getActivityDetailForm().append(
+						"Service: "
+								+ prStage.getName()
+								+ "\nName:  "
+								+ selectedActivity.getBeneficiary()
+										.getFullName()
+								+ "\nDue date: "
+								+ Period.formatDailyPeriod(selectedActivity
+										.getDueDate()));
+			} else {
+				getActivityDetailForm().deleteAll();
+				getActivityDetailForm().append("There is no details");
+
 			}
-			
+
 		} catch (RecordStoreException rse) {
-			
-		}catch (IOException e){}
-		
-		
-		switchDisplayable(null, getActivityDetailForm());		
+
+		} catch (IOException e) {
+		}
+
+		switchDisplayable(null, getActivityDetailForm());
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of maintenanceLst component.
 	 * 
@@ -1240,10 +1172,10 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			maintenanceList.append("Delete Activity Plan", null);
 			maintenanceList.addCommand(getMntnceBakCmd());
 			maintenanceList.setCommandListener(this);
-			//maintenanceList.setSelectedFlags(new boolean[] { false, false });
+			// maintenanceList.setSelectedFlags(new boolean[] { false, false });
 		}
 		return maintenanceList;
-	}	
+	}
 
 	/**
 	 * Performs an action assigned to the selected list element in the
@@ -1253,50 +1185,39 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		String __selectedString = getMaintenanceList().getString(
 				getMaintenanceList().getSelectedIndex());
 		if (__selectedString != null) {
-			if (__selectedString.equals("Download DataSet")) 
-			{				
+			if (__selectedString.equals("Download DataSet")) {
 				getWaitForm().deleteAll();
 				getWaitForm().setTitle("Making connection");
 				getWaitForm().append("Please wait........");
-				switchDisplayable(null, getWaitForm());				
+				switchDisplayable(null, getWaitForm());
 				browseDataSets();
-			} 
-			else if (__selectedString.equals("Delete DataSet")) 
-			{
+			} else if (__selectedString.equals("Delete DataSet")) {
 				loadDataSets(getDeleteList());
 				switchDisplayable(null, getDeleteList());
-			}
-			else if(__selectedString.equals("Download Program"))
-			{
+			} else if (__selectedString.equals("Download Program")) {
 				getWaitForm().deleteAll();
 				getWaitForm().setTitle("Making connection");
 				getWaitForm().append("Please wait........");
-				switchDisplayable(null, getWaitForm());				
+				switchDisplayable(null, getWaitForm());
 				browsePrograms();
-			}
-			else if (__selectedString.equals("Delete Program")) 
-			{
+			} else if (__selectedString.equals("Delete Program")) {
 				populatePrograms(getDeleteProgList());
 				switchDisplayable(null, getDeleteProgList());
-			}
-			else if(__selectedString.equals("Download Activity Plan"))
-			{
+			} else if (__selectedString.equals("Download Activity Plan")) {
 				getWaitForm().deleteAll();
 				getWaitForm().setTitle("Downloading activityplan");
 				getWaitForm().append("Please wait........");
 				switchDisplayable(null, getWaitForm());
-				
+
 				downloadActivityPlan();
+			} else if (__selectedString.equals("Delete Activity Plan")) {
+				getWaitForm().deleteAll();
+				getWaitForm().setTitle("Deleting Activity Plan");
+				getWaitForm().append("Please wait........");
+				switchDisplayable(null, getWaitForm());
+
+				deleteActivityPlan();
 			}
-			else if (__selectedString.equals("Delete Activity Plan")) 
-			{
-    			        getWaitForm().deleteAll();
-                                getWaitForm().setTitle("Deleting Activity Plan");
-                                getWaitForm().append("Please wait........");
-                                switchDisplayable(null, getWaitForm());
-                                
-                                deleteActivityPlan();
-			}			
 		}
 	}
 
@@ -1311,7 +1232,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return mntnceBakCmd;
 	}
-	
+
 	/**
 	 * Returns an initiliazed instance of srvcsBakCmd component.
 	 * 
@@ -1323,7 +1244,6 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return srvcsBakCmd;
 	}
-	
 
 	/**
 	 * Returns an initiliazed instance of dhisUserName component.
@@ -1357,7 +1277,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public Form getPeriodForm() {
 		if (periodForm == null) {
-			periodForm = new Form("Select Period", new Item[] { getPeriodChoice() });
+			periodForm = new Form("Select Period",
+					new Item[] { getPeriodChoice() });
 			periodForm.addCommand(getPeriodNxtCmd());
 			periodForm.addCommand(getPeriodBakCmd());
 			periodForm.setCommandListener(this);
@@ -1440,22 +1361,21 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return errorAlert;
 	}
-	
+
 	/**
-         * Returns an initiliazed instance of deleteProgList component.
-         * 
-         * @return the initialized component instance
-         */
-        public List getDeleteProgList() {
-                if (deleteProgList == null) {
-                    deleteProgList = new List("Please select", Choice.IMPLICIT);
-                    deleteProgList.addCommand(getDeleteBakCmd());                       
-                    deleteProgList.setCommandListener(this);
-                }               
-                return deleteProgList;
-        }
-	
-	
+	 * Returns an initiliazed instance of deleteProgList component.
+	 * 
+	 * @return the initialized component instance
+	 */
+	public List getDeleteProgList() {
+		if (deleteProgList == null) {
+			deleteProgList = new List("Please select", Choice.IMPLICIT);
+			deleteProgList.addCommand(getDeleteBakCmd());
+			deleteProgList.setCommandListener(this);
+		}
+		return deleteProgList;
+	}
+
 	/**
 	 * Returns an initiliazed instance of deleteList component.
 	 * 
@@ -1464,15 +1384,12 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	public List getDeleteList() {
 		if (deleteList == null) {
 			deleteList = new List("Please select", Choice.IMPLICIT);
-			deleteList.addCommand(getDeleteBakCmd());			
+			deleteList.addCommand(getDeleteBakCmd());
 			deleteList.setCommandListener(this);
-		}		
-		if( deleteList.size() > 0 )
-		{
-			deleteList.addCommand(getDsDeleteCmd());
 		}
-		else
-		{
+		if (deleteList.size() > 0) {
+			deleteList.addCommand(getDsDeleteCmd());
+		} else {
 			deleteList.removeCommand(getDsDeleteCmd());
 		}
 		return deleteList;
@@ -1483,7 +1400,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 * deleteList component.
 	 */
 	public void deleteListAction() {
-	    
+
 	}
 
 	/**
@@ -1579,7 +1496,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 		try {
 
-			settingsRecord = new SettingsRecordStore(SettingsRecordStore.SETTINGS_DB);
+			settingsRecord = new SettingsRecordStore(
+					SettingsRecordStore.SETTINGS_DB);
 			settingsRecord.put("url", getUrl().getString());
 			settingsRecord.put("username", getDhisUserName().getString());
 			settingsRecord.put("password", getDhisUserPass().getString());
@@ -1589,53 +1507,51 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		} catch (RecordStoreException rse) {
 		}
 	}
-	
-	public void loadActivityPlan(Vector activities) 
-	{		
-		activitiesVector.removeAllElements();	
-		activitiesVector = activities;	
-		
+
+	public void loadActivityPlan(Vector activities) {
+		activitiesVector.removeAllElements();
+		activitiesVector = activities;
+
 		getActivityPlanList().deleteAll();
-		
-		if( activitiesVector.size() > 0 )
-			getActivityPlanList().addCommand(getActivityDetailCmd());				
+
+		if (activitiesVector.size() > 0)
+			getActivityPlanList().addCommand(getActivityDetailCmd());
 		else
-			getActivityPlanList().removeCommand(getActivityDetailCmd());		
+			getActivityPlanList().removeCommand(getActivityDetailCmd());
 
 		for (int i = 0; i < activities.size(); i++) {
 			Activity activity = (Activity) activities.elementAt(i);
-			getActivityPlanList().insert(i, activity.getBeneficiary().getFullName(), null);			
-		}	
-		
+			getActivityPlanList().insert(i,
+					activity.getBeneficiary().getFullName(), null);
+		}
+
 		switchDisplayable(null, getActivityPlanList());
 	}
-	
-	private void populatePrograms(List list) 
-	{
-	    programsVector.removeAllElements();
-	    ModelRecordStore modelRecordStore = null;
-	    Vector programs = null;
-            try {
-                modelRecordStore = new ModelRecordStore(ModelRecordStore.PROGRAM_DB);
-                programs = modelRecordStore.getAllRecord();
-            } catch (RecordStoreException rse) {
-                rse.printStackTrace();
-            }
-            
-            list.deleteAll();
-            if(programs!=null){
-                for (int i = 0; i < programs.size(); i++) {
-                    AbstractModel prog = (AbstractModel) programs.elementAt(i);
-                    list.insert(i, prog.getName(), null);
-                    programsVector.addElement(prog);
-                }
-            }
-            
-            switchDisplayable( null, getDeleteProgList() );
+
+	private void populatePrograms(List list) {
+		programsVector.removeAllElements();
+		ModelRecordStore modelRecordStore = null;
+		Vector programs = null;
+		try {
+			modelRecordStore = new ModelRecordStore(ModelRecordStore.PROGRAM_DB);
+			programs = modelRecordStore.getAllRecord();
+		} catch (RecordStoreException rse) {
+			rse.printStackTrace();
+		}
+
+		list.deleteAll();
+		if (programs != null) {
+			for (int i = 0; i < programs.size(); i++) {
+				AbstractModel prog = (AbstractModel) programs.elementAt(i);
+				list.insert(i, prog.getName(), null);
+				programsVector.addElement(prog);
+			}
+		}
+
+		switchDisplayable(null, getDeleteProgList());
 	}
 
-	private void loadDataSets(List list) 
-	{
+	private void loadDataSets(List list) {
 		dataSetsVector.removeAllElements();
 		ModelRecordStore modelRecordStore = null;
 		Vector dataSets = null;
@@ -1651,7 +1567,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			AbstractModel ds = (AbstractModel) dataSets.elementAt(i);
 			list.insert(i, ds.getName(), null);
 			dataSetsVector.addElement(ds);
-		}		
+		}
 	}
 
 	private void loadSettings() {
@@ -1660,10 +1576,10 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		try {
 			settingsRecord = new SettingsRecordStore(
 					SettingsRecordStore.SETTINGS_DB);
-			
+
 			String localeSetting = "";
 			localeSetting = settingsRecord.get("locale");
-			
+
 			if (localeSetting.trim().length() == 0) {
 				localeSetting = System.getProperty("microedition.locale");
 				if (localeSetting == null) {
@@ -1682,46 +1598,45 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 	private void browseDataSets() {
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(), ConnectionManager.BROWSE_DATASETS);
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
+				ConnectionManager.BROWSE_DATASETS);
 		connectionManager.start();
 	}
-	
+
 	private void browsePrograms() {
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(), ConnectionManager.BROWSE_PROGRAMS);
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
+				ConnectionManager.BROWSE_PROGRAMS);
 		connectionManager.start();
 	}
-	
-	private void deleteActivityPlan()
-	{
-	    new Thread(new Runnable()
-            {
-                
-	        public void run() {
-	            ActivityRecordStore activityRs = new ActivityRecordStore();
-	            activityRs.clear();
-	            switchDisplayable( null, getMaintenanceList() );
-                }
-            }
-	        
-	    ).start();    
-	    
-	        
+
+	private void deleteActivityPlan() {
+		new Thread(new Runnable() {
+
+			public void run() {
+				ActivityRecordStore activityRs = new ActivityRecordStore();
+				activityRs.clear();
+				switchDisplayable(null, getMaintenanceList());
+			}
+		}
+
+		).start();
+
 	}
-	
-	private void downloadActivityPlan() 
-	{		
+
+	private void downloadActivityPlan() {
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(), ConnectionManager.DOWNLOAD_ACTIVITYPLAN);
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
+				ConnectionManager.DOWNLOAD_ACTIVITYPLAN);
 		connectionManager.start();
 	}
-	
+
 	public void displayProgramsForDownload(Vector programs) {
 		programsVector = programs;
 		if (programs == null) {
@@ -1736,22 +1651,21 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 		switchDisplayable(null, getPrDnldList());
 	}
-	
+
 	private void downloadProgram(int programId) {
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(), ConnectionManager.DOWNLOAD_PROGRAM,
-				programId);
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
+				ConnectionManager.DOWNLOAD_PROGRAM, programId);
 		connectionManager.start();
 	}
-	
 
 	public void displayDataSetsForDownload(Vector dataSets) {
 		dataSetsVector = dataSets;
 
 		if (dataSets == null) {
-		        getDsDnldList().deleteAll();
+			getDsDnldList().deleteAll();
 			getDsDnldList().append("No Datasets available", null);
 		} else {
 			getDsDnldList().deleteAll();
@@ -1766,10 +1680,10 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 	private void downloadDataSet(int dataSetId) {
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(), ConnectionManager.DOWNLOAD_DATASET,
-				dataSetId);
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
+				ConnectionManager.DOWNLOAD_DATASET, dataSetId);
 		connectionManager.start();
 	}
 
@@ -1783,23 +1697,25 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			if (rec != null)
 				ds = new DataSet();
 			try {
-				ds.deSerialize(rec);				
+				ds.deSerialize(rec);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
-		} catch (RecordStoreException rse) {}
+		} catch (RecordStoreException rse) {
+		}
 
 		return ds;
 	}
 
-	public void saveDataSet(DataSet dataSet) {	
-		
+	public void saveDataSet(DataSet dataSet) {
+
 		if (dataSet != null) {
 			ModelRecordStore modelRecordStore;
 
 			try {
 
-				modelRecordStore = new ModelRecordStore(ModelRecordStore.DATASET_DB);
+				modelRecordStore = new ModelRecordStore(
+						ModelRecordStore.DATASET_DB);
 				try {
 					modelRecordStore.AddRecord(dataSet.serialize());
 				} catch (IOException ex) {
@@ -1808,47 +1724,46 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 					getErrorAlert().setString("FAILURE");
 					switchDisplayable(getErrorAlert(), getDsDnldList());
 				}
-				
+
 				getSuccessAlert().setTitle("Download Status");
 				getSuccessAlert().setString("SUCCESS");
 				switchDisplayable(getSuccessAlert(), getDsDnldList());
-				
-			} catch (RecordStoreException rse) {}
-		} 
-		else 
-		{			
+
+			} catch (RecordStoreException rse) {
+			}
+		} else {
 			getErrorAlert().setTitle("Download Status");
 			getErrorAlert().setString("FAILURE");
 			switchDisplayable(getErrorAlert(), getDsDnldList());
 		}
 
 	}
-	
+
 	public void saveProgram(Program program) {
-		
-		if (program != null) 
-		{
+
+		if (program != null) {
 			ModelRecordStore programRecordStore;
 			ModelRecordStore programStageRecordStore;
 
 			try {
-				programRecordStore = new ModelRecordStore(ModelRecordStore.PROGRAM_DB);
-				programStageRecordStore = new ModelRecordStore(ModelRecordStore.PROGRAM_STAGE_DB);
-				
-				try {					
-					AbstractModel model = new AbstractModel();					
-					model.setId( program.getId() );
-					model.setName( program.getName() );
-					
+				programRecordStore = new ModelRecordStore(
+						ModelRecordStore.PROGRAM_DB);
+				programStageRecordStore = new ModelRecordStore(
+						ModelRecordStore.PROGRAM_STAGE_DB);
+
+				try {
+					AbstractModel model = new AbstractModel();
+					model.setId(program.getId());
+					model.setName(program.getName());
+
 					programRecordStore.AddRecord(model.serialize());
-					
+
 					Vector prStgs = program.getProgramStages();
-					for(int i=0; i<prStgs.size(); i++)
-					{
+					for (int i = 0; i < prStgs.size(); i++) {
 						ProgramStage prStg = (ProgramStage) prStgs.elementAt(i);
-						prStg.setProgramId( model.getId() );
-						programStageRecordStore.AddRecord( prStg.serialize() );	
-					}					
+						prStg.setProgramId(model.getId());
+						programStageRecordStore.AddRecord(prStg.serialize());
+					}
 				} catch (IOException ex) {
 					// ex.printStackTrace();
 					getErrorAlert().setTitle("Download Status");
@@ -1859,40 +1774,36 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				getSuccessAlert().setString("SUCCESS");
 				switchDisplayable(getSuccessAlert(), getPrDnldList());
 
-			} catch (RecordStoreException rse) {}
-		} 
-		else 
-		{			
+			} catch (RecordStoreException rse) {
+			}
+		} else {
 			getErrorAlert().setTitle("Download Status");
 			getErrorAlert().setString("FAILURE");
 			switchDisplayable(getErrorAlert(), getPrDnldList());
-		}	
+		}
 	}
-	
-	public void saveActivityPlan(ActivityPlan activityPlan) 
-	{		
+
+	public void saveActivityPlan(ActivityPlan activityPlan) {
 		if (activityPlan != null) {
-			
-			ActivityRecordStore activityRecordStore = new ActivityRecordStore();				
-			activityRecordStore.setActivityVector(activityPlan.getActivities());			
-			
+
+			ActivityRecordStore activityRecordStore = new ActivityRecordStore();
+			activityRecordStore.setActivityVector(activityPlan.getActivities());
+
 			activityRecordStore.save();
-			
+
 			getSuccessAlert().setTitle("Download Status");
 			getSuccessAlert().setString("SUCCESS");
-			switchDisplayable(getSuccessAlert(), getMaintenanceList());			
-			
-		} 
-		else 
-		{			
+			switchDisplayable(getSuccessAlert(), getMaintenanceList());
+
+		} else {
 			getErrorAlert().setTitle("Download Status");
 			getErrorAlert().setString("FAILURE");
 			switchDisplayable(getErrorAlert(), getMaintenanceList());
-		}	
+		}
 	}
-	
+
 	public void displayDataEntry(DataSet ds, Form form) {
-		
+
 		selectedDataSet = ds;
 
 		if (ds == null) {
@@ -1962,47 +1873,47 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 		return dsValue;
 	}
-	
+
 	public void sendData() {
 		DataSetValue dsValue = generateDataSetValue();
 
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(),
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
 				ConnectionManager.UPLOAD_DATASET_VALUES, dsValue);
 		connectionManager.start();
 	}
-	
-	public void saveData() 
-	{
-		DataSetValue dsValue = generateDataSetValue();		
-		System.out.println("Dataset to save:  " + dsValue.getId() + " " + dsValue.getName() + " " + dsValue.getpName() );		
+
+	public void saveData() {
+		DataSetValue dsValue = generateDataSetValue();
+		System.out.println("Dataset to save:  " + dsValue.getId() + " "
+				+ dsValue.getName() + " " + dsValue.getpName());
 	}
-	
-	public void sendActivity() 
-	{		
+
+	public void sendActivity() {
 		ActivityValue activityValue = generateActivityValue();
 
 		loadSettings();
-		ConnectionManager connectionManager = new ConnectionManager(this, getUrl().getString(),
-				getDhisUserName().getString(), getDhisUserPass().getString(),
-				getLocale().getString(),
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
 				ConnectionManager.UPLOAD_ACTIVITY_VALUES, activityValue);
 		connectionManager.start();
-		
+
 	}
-	
-	public void saveActivity() 
-	{
-		System.out.println("I will try to save the filled activity from here...");		
+
+	public void saveActivity() {
+		System.out
+				.println("I will try to save the filled activity from here...");
 	}
-	
+
 	private ActivityValue generateActivityValue() {
 		Vector des = selectedProgramStage.getDataElements();
 
 		ActivityValue activityValue = new ActivityValue();
-		activityValue.setProgramInstanceId(selectedActivity.getTask().getProgStageInstId());		
+		activityValue.setProgramInstanceId(selectedActivity.getTask()
+				.getProgStageInstId());
 
 		DataElement de;
 		String val;
@@ -2011,7 +1922,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 			if (de.getType().equals("date")) {
 				DateField dateField = (DateField) dataElements.get(de);
-				val = Period.formatDailyPeriod( dateField.getDate());
+				val = Period.formatDailyPeriod(dateField.getDate());
 			} else if (de.getType().equals("int")) {
 				TextField intField = (TextField) dataElements.get(de);
 				val = intField.getString();
@@ -2039,21 +1950,21 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		} catch (RecordStoreException rse) {
 		}
 	}
-	
-	private void deleteProgramsAndProgramStages(AbstractModel model){
-	       ModelRecordStore progRecord = null;
-	       ProgramStageRecordStore progStageRecord = null;
-               try {
-                       progRecord = new ModelRecordStore(ModelRecordStore.PROGRAM_DB);
-                       progStageRecord = new ProgramStageRecordStore();
-                       //Delete ProgramStages have programId = model.getId();
-                       progStageRecord.deleteProgStageOfProgId( model.getId() );
-                       //Delete Program has id = model.getId();
-                       progRecord.deleteRecord(model);
-                       //should refresh deleteProgList here and show it again
-                       switchDisplayable( null, getMaintenanceList() );
-               } catch (RecordStoreException rse) {
-               }    
+
+	private void deleteProgramsAndProgramStages(AbstractModel model) {
+		ModelRecordStore progRecord = null;
+		ProgramStageRecordStore progStageRecord = null;
+		try {
+			progRecord = new ModelRecordStore(ModelRecordStore.PROGRAM_DB);
+			progStageRecord = new ProgramStageRecordStore();
+			// Delete ProgramStages have programId = model.getId();
+			progStageRecord.deleteProgStageOfProgId(model.getId());
+			// Delete Program has id = model.getId();
+			progRecord.deleteRecord(model);
+			// should refresh deleteProgList here and show it again
+			switchDisplayable(null, getMaintenanceList());
+		} catch (RecordStoreException rse) {
+		}
 	}
 
 	public DateField getDailyPeriodDateField() {
@@ -2071,7 +1982,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 		return selectDailyPeriodCmd;
 	}
-	
+
 	public boolean isLogin() {
 		return login;
 	}

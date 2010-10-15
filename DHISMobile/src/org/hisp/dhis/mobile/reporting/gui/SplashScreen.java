@@ -76,9 +76,7 @@ public class SplashScreen extends Canvas {
 	// count down for the splash display
 	private class CountDown extends TimerTask {
 		public void run() {
-
 			dismissSplashScreen();
-
 		}
 	}
 }

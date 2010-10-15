@@ -18,7 +18,7 @@ import javax.microedition.rms.RecordStoreException;
 public class SettingsRecordStore {
 
 	public static final String SETTINGS_DB = "SETTINGS";
-	
+
 	private String dbName;
 
 	private Hashtable hashtable;

@@ -20,7 +20,7 @@ import org.hisp.dhis.mobile.reporting.model.AbstractModel;
  */
 public class ModelRecordStore {
 
-	public static final String DATASET_DB = "DATASET";	
+	public static final String DATASET_DB = "DATASET";
 	public static final String PROGRAM_DB = "PROGRAM";
 	public static final String PROGRAM_STAGE_DB = "PROGRAMSTAGE";
 	public static final String ACTIVITY_PLAN_DB = "ACTIVITYPLAN";
@@ -38,7 +38,8 @@ public class ModelRecordStore {
 		byte nextRec[] = null;
 		try {
 			rs = RecordStore.openRecordStore(dbName, true);
-			AbstractModelComparator comparator = new AbstractModelComparator(AbstractModelComparator.SORT_BY_ID);
+			AbstractModelComparator comparator = new AbstractModelComparator(
+					AbstractModelComparator.SORT_BY_ID);
 			re = rs.enumerateRecords(null, comparator, false);
 			while (re.hasNextElement()) {
 				nextRec = re.nextRecord();
@@ -53,17 +54,18 @@ public class ModelRecordStore {
 		}
 		return null;
 	}
-	
+
 	public byte[] getRecord(AbstractModel model) throws RecordStoreException {
 		RecordStore rs = null;
-		RecordEnumeration re = null;		
+		RecordEnumeration re = null;
 		try {
 			rs = RecordStore.openRecordStore(dbName, true);
 			AbstractModelFilter filter = new AbstractModelFilter(model);
-			AbstractModelComparator comparator = new AbstractModelComparator(AbstractModelComparator.SORT_BY_ID);
+			AbstractModelComparator comparator = new AbstractModelComparator(
+					AbstractModelComparator.SORT_BY_ID);
 			re = rs.enumerateRecords(filter, comparator, false);
-			while( re.hasNextElement() ) {
-				return re.nextRecord();				
+			while (re.hasNextElement()) {
+				return re.nextRecord();
 			}
 		} finally {
 			if (re != null)
@@ -81,7 +83,8 @@ public class ModelRecordStore {
 			rs = RecordStore.openRecordStore(dbName, true);
 			AbstractModel model = AbstractModel.recordToAbstractModel(rec);
 			AbstractModelFilter filter = new AbstractModelFilter(model);
-			AbstractModelComparator comparator = new AbstractModelComparator(AbstractModelComparator.SORT_BY_ID);
+			AbstractModelComparator comparator = new AbstractModelComparator(
+					AbstractModelComparator.SORT_BY_ID);
 			re = rs.enumerateRecords(filter, comparator, false);
 			while (re.hasNextElement()) {
 				int id = re.nextRecordId();
@@ -102,7 +105,8 @@ public class ModelRecordStore {
 		byte nextRec[] = null;
 		try {
 			rs = RecordStore.openRecordStore(dbName, true);
-			AbstractModelComparator comparator = new AbstractModelComparator(AbstractModelComparator.SORT_BY_NAME);
+			AbstractModelComparator comparator = new AbstractModelComparator(
+					AbstractModelComparator.SORT_BY_NAME);
 			re = rs.enumerateRecords(null, comparator, false);
 			while (re.hasNextElement()) {
 				nextRec = re.nextRecord();
@@ -123,7 +127,8 @@ public class ModelRecordStore {
 		try {
 			rs = RecordStore.openRecordStore(dbName, true);
 			AbstractModelFilter filter = new AbstractModelFilter(model);
-			AbstractModelComparator comparator = new AbstractModelComparator(AbstractModelComparator.SORT_BY_ID);
+			AbstractModelComparator comparator = new AbstractModelComparator(
+					AbstractModelComparator.SORT_BY_ID);
 			re = rs.enumerateRecords(filter, comparator, false);
 			while (re.hasNextElement()) {
 				int id = re.nextRecordId();
@@ -136,7 +141,7 @@ public class ModelRecordStore {
 				rs.closeRecordStore();
 		}
 	}
-	
+
 	public static void clear(String db) {
 		RecordStore rs = null;
 		RecordEnumeration re = null;
@@ -162,5 +167,5 @@ public class ModelRecordStore {
 					e.printStackTrace();
 				}
 		}
-	}	
+	}
 }
