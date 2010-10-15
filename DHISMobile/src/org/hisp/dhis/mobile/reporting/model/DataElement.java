@@ -56,7 +56,7 @@ public class DataElement extends AbstractModel implements ISerializable {
 		this.setName(din.readUTF());
 		this.setType(din.readUTF());
 	}
-	
+
 	public void deSerialize(DataInputStream din) throws IOException {
 
 		this.setId(din.readInt());

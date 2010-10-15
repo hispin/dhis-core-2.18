@@ -15,7 +15,7 @@ import java.io.IOException;
  * 
  * @author abyotag_adm
  */
-public class AbstractModel implements ISerializable{
+public class AbstractModel implements ISerializable {
 
 	private int id;
 
@@ -71,22 +71,22 @@ public class AbstractModel implements ISerializable{
 	}
 
 	public byte[] serialize() throws IOException {
-		
+
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		DataOutputStream dout = new DataOutputStream(bout);
 
 		dout.writeInt(this.getId());
-		dout.writeUTF(this.getName());	
+		dout.writeUTF(this.getName());
 
 		return bout.toByteArray();
 	}
 
 	public void deSerialize(byte[] data) throws IOException {
-		
+
 		ByteArrayInputStream bin = new ByteArrayInputStream(data);
 		DataInputStream din = new DataInputStream(bin);
 
 		this.setId(din.readInt());
-		this.setName(din.readUTF());		
+		this.setName(din.readUTF());
 	}
 }

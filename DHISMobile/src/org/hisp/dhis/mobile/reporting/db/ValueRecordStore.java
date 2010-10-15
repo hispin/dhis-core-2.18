@@ -40,18 +40,18 @@ public class ValueRecordStore {
 		}
 		return null;
 	}
-	
+
 	public byte[] getRecord(AbstractModel model) throws RecordStoreException {
 		RecordStore rs = null;
-		RecordEnumeration re = null;		
+		RecordEnumeration re = null;
 		try {
 			rs = RecordStore.openRecordStore(dbName, true);
 			AbstractModelFilter filter = new AbstractModelFilter(model);
 			AbstractModelComparator comparator = new AbstractModelComparator(
 					AbstractModelComparator.SORT_BY_ID);
 			re = rs.enumerateRecords(filter, comparator, false);
-			while( re.hasNextElement() ) {
-				return re.nextRecord();				
+			while (re.hasNextElement()) {
+				return re.nextRecord();
 			}
 		} finally {
 			if (re != null)
