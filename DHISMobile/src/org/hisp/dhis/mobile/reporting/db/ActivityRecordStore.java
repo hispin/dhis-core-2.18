@@ -17,14 +17,19 @@ import org.hisp.dhis.mobile.reporting.model.Activity;
  * 
  */
 public class ActivityRecordStore implements Runnable {
+	public static final String LOAD_ALL_ACTIVITYPLAN = "loadall";
+	public static final String LOAD_CURRENT_ACTIVITYPLAN = "loadcurrent";
+	public static final String LOAD_COMPLETED_ACTIVITYPLAN = "loadcompleted";
 	private String dbName;
+	private String task;
 	private Vector activityVector;
 	private DHISMIDlet dhisMIDlet;
 
 	// Constructor
-	public ActivityRecordStore(DHISMIDlet dhisMIDlet) {
+	public ActivityRecordStore(DHISMIDlet dhisMIDlet, String task) {
 		this.dbName = ModelRecordStore.ACTIVITY_DB;
 		this.dhisMIDlet = dhisMIDlet;
+		this.task = task;
 	}
 
 	// Constructor
@@ -187,9 +192,69 @@ public class ActivityRecordStore implements Runnable {
 				}
 		}
 	}
+	
+	public void loadCurrentActivityPlan(){
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        ActivityRecordFilter rf = new ActivityRecordFilter( ActivityRecordFilter.filterByStatusIncomplete ); 
+        activityVector = new Vector();
+        try {
+                rs = RecordStore.openRecordStore(dbName, true);
+                re = rs.enumerateRecords(rf, null, false);
+                while (re.hasNextElement()) {
+                	activityVector.addElement(Activity.recordToActivity(re.nextRecord()));
+                }
+        } catch (Exception e) {
+
+        } finally {
+                if (re != null)
+                        re.destroy();
+                if (rs != null)
+                        try {
+                                rs.closeRecordStore();
+                        } catch (RecordStoreNotOpenException e) {
+                                e.printStackTrace();
+                        } catch (RecordStoreException e) {
+                                e.printStackTrace();
+                        }
+        }
+	}
+	
+	public void loadCompletedActivityPlan(){
+        RecordStore rs = null;
+        RecordEnumeration re = null;
+        ActivityRecordFilter rf = new ActivityRecordFilter( ActivityRecordFilter.filterByStatusComplete ); 
+        activityVector = new Vector();
+        try {
+                rs = RecordStore.openRecordStore(dbName, true);
+                re = rs.enumerateRecords(rf, null, false);
+                while (re.hasNextElement()) {
+                	activityVector.addElement(Activity.recordToActivity(re.nextRecord()));
+                }
+        } catch (Exception e) {
+
+        } finally {
+                if (re != null)
+                        re.destroy();
+                if (rs != null)
+                        try {
+                                rs.closeRecordStore();
+                        } catch (RecordStoreNotOpenException e) {
+                                e.printStackTrace();
+                        } catch (RecordStoreException e) {
+                                e.printStackTrace();
+                        }
+        }
+	}
 
 	public void run() {
+		if (task.equalsIgnoreCase(LOAD_ALL_ACTIVITYPLAN)){
 		loadAll();
 		dhisMIDlet.loadActivityPlan(getActivityVector());
+		} else if (task.equalsIgnoreCase(LOAD_COMPLETED_ACTIVITYPLAN)){
+			
+		} else {
+			
+		}
 	}
 }

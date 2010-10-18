@@ -133,7 +133,9 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private Command selectDailyPeriodCmd;
 	private Command pinFormNextCmd;
 	private Command pinFormReinitCmd;
+	private Command settingCommand;
 	private Image logo;
+
 
 	/**
 	 * The DHISMIDlet constructor.
@@ -266,6 +268,9 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				mainMenuListAction();
 			} else if (command == mnuListExtCmd) {
 				exitMIDlet();
+			} else {
+				loadSettings();
+				switchDisplayable(null, getSettingsForm());
 			}
 		} else if (displayable == servicesList) {
 			if (command == List.SELECT_COMMAND) {
@@ -394,16 +399,27 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	public List getMainMenuList() {
 		if (mainMenuList == null) {
 			mainMenuList = new List("Main Menu", Choice.IMPLICIT);
-			mainMenuList.append("Services", null);
-			mainMenuList.append("Maintenance", null);
-			mainMenuList.append("Settings", null);
+			mainMenuList.append("Current Activity Plan", null);
+			mainMenuList.append("Completed Activity Plan", null);
+			mainMenuList.append("Update Avtivity Plan", null);
+//			mainMenuList.append("Services", null);
+//			mainMenuList.append("Maintenance", null);
+//			mainMenuList.append("Settings", null);
 			mainMenuList.addCommand(getMnuListExtCmd());
+			mainMenuList.addCommand(getSettingCommand());
 			mainMenuList.setCommandListener(this);
 			mainMenuList.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
 			mainMenuList
 					.setSelectedFlags(new boolean[] { false, false, false });
 		}
 		return mainMenuList;
+	}
+
+	private Command getSettingCommand() {
+		if (settingCommand == null){
+			settingCommand = new Command("Settings", Command.SCREEN, 0);
+		}
+		return settingCommand;
 	}
 
 	/**
@@ -624,7 +640,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public TextField getUrl() {
 		if (url == null) {
-			url = new TextField("Server Location", "http://localhost:8080/",
+			url = new TextField("Server Location", "http://localhost:8080/api/",
 					64, TextField.URL);
 		}
 		return url;
@@ -877,7 +893,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	public TextField getServerUrl() {
 		if (serverURL == null) {
 			serverURL = new TextField("Server Location",
-					"http://localhost:8080/cbhis/api/", 64, TextField.URL);
+					"http://localhost:8080/api/", 64, TextField.URL);
 		}
 		return serverURL;
 	}
@@ -1067,7 +1083,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				switchDisplayable(null, getWaitForm());
 
 				ActivityRecordStore activityRecordStore = new ActivityRecordStore(
-						this);
+						this, ActivityRecordStore.LOAD_ALL_ACTIVITYPLAN);
 				Thread thread = new Thread(activityRecordStore);
 				thread.start();
 			}
@@ -1514,7 +1530,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			if (getUserName().getString().trim().length() != 0
 					&& getPassword().getString().trim().length() != 0) {
 				ConnectionManager connectionManager = new ConnectionManager(
-						this, getServerUrl().getString(), getUserName()
+						this, getUrl().getString(), getUserName()
 								.getString(), getPassword().getString(),
 						getLocale().getString(), ConnectionManager.AUTHENTICATE);
 				connectionManager.start();
