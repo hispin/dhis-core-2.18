@@ -1,5 +1,32 @@
 package org.hisp.dhis.mobile.reporting.gui;
 
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -115,7 +142,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Initilizes the application. It is called only once when the MIDlet is
+	 * Initializes the application. It is called only once when the MIDlet is
 	 * started. The method is called before the <code>startMIDlet</code> method.
 	 */
 	private void initialize() {
@@ -225,6 +252,11 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			if (command == lgnFrmExtCmd) {
 				exitMIDlet();
 			} else if (command == lgnFrmLgnCmd) {
+				if (getUserName().getString().trim().length() == 0
+						|| getPassword().getString().trim().length() == 0) {
+						switchDisplayable(AlertUtil.getErrorAlert("Incomplete Form", "Username or Password Missing"), getLoginForm());
+						return;
+				}
 				switchDisplayable(null, getWaitForm());
 				login();
 				// switchDisplayable(null, getMainMenuList());
@@ -343,7 +375,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of exitCommand component.
+	 * Returns an initialized instance of exitCommand component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -355,7 +387,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of mainMenuList component.
+	 * Returns an initialized instance of mainMenuList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -394,7 +426,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of mnuListExtCmd component.
+	 * Returns an initialized instance of mnuListExtCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -406,7 +438,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of mnuListDnldCmd component.
+	 * Returns an initialized instance of mnuListDnldCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -418,7 +450,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dsDnldList component.
+	 * Returns an initialized instance of dsDnldList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -451,7 +483,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dsDnldList component.
+	 * Returns an initialized instance of dsDnldList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -485,7 +517,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of prDnldListBakCmd component.
+	 * Returns an initialized instance of prDnldListBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -497,7 +529,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dsDnldListBakCmd component.
+	 * Returns an initialized instance of dsDnldListBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -509,7 +541,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of frmDnldCmd component.
+	 * Returns an initialized instance of frmDnldCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -521,7 +553,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of actvPlnLstBakCmd component.
+	 * Returns an initialized instance of actvPlnLstBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -533,7 +565,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of settingsForm component.
+	 * Returns an initialized instance of settingsForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -550,7 +582,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of stngsOkCmd component.
+	 * Returns an initialized instance of stngsOkCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -562,7 +594,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of setngsBakCmd component.
+	 * Returns an initialized instance of setngsBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -574,7 +606,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of setngsSaveCmd component.
+	 * Returns an initialized instance of setngsSaveCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -586,7 +618,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of url component.
+	 * Returns an initialized instance of url component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -599,7 +631,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dhisUserPass component.
+	 * Returns an initialized instance of dhisUserPass component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -612,7 +644,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dataEntryForm component.
+	 * Returns an initialized instance of dataEntryForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -628,7 +660,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityEntryForm component.
+	 * Returns an initialized instance of activityEntryForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -644,7 +676,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityDetailCmd component.
+	 * Returns an initialized instance of activityDetailCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -656,7 +688,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityDetailOkCmd component.
+	 * Returns an initialized instance of activityDetailOkCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -668,7 +700,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of deFrmBakCmd component.
+	 * Returns an initialized instance of deFrmBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -680,7 +712,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of deFrmSndCmd component.
+	 * Returns an initialized instance of deFrmSndCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -692,7 +724,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of deFrmSavCmd component.
+	 * Returns an initialized instance of deFrmSavCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -704,7 +736,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityFrmBakCmd component.
+	 * Returns an initialized instance of activityFrmBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -716,7 +748,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityFrmSndCmd component.
+	 * Returns an initialized instance of activityFrmSndCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -728,7 +760,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityFrmSavCmd component.
+	 * Returns an initialized instance of activityFrmSavCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -740,7 +772,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of backCommand component.
+	 * Returns an initialized instance of backCommand component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -752,7 +784,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of screenCommand component.
+	 * Returns an initialized instance of screenCommand component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -764,7 +796,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of loginForm component.
+	 * Returns an initialized instance of loginForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -817,7 +849,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of userName component.
+	 * Returns an initialized instance of userName component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -830,7 +862,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of password component.
+	 * Returns an initialized instance of password component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -851,7 +883,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of lgnFrmExtCmd component.
+	 * Returns an initialized instance of lgnFrmExtCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -863,7 +895,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of okCommand component.
+	 * Returns an initialized instance of okCommand component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -875,7 +907,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of lgnFrmLgnCmd component.
+	 * Returns an initialized instance of lgnFrmLgnCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -887,7 +919,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of logo component.
+	 * Returns an initialized instance of logo component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -904,7 +936,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityDetailForm component.
+	 * Returns an initialized instance of activityDetailForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -918,7 +950,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of activityPlanList component.
+	 * Returns an initialized instance of activityPlanList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -932,7 +964,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dataSetDisplayList component.
+	 * Returns an initialized instance of dataSetDisplayList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -986,7 +1018,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dsLstBakCmd component.
+	 * Returns an initialized instance of dsLstBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -998,7 +1030,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of servicesList component.
+	 * Returns an initialized instance of servicesList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1157,7 +1189,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of maintenanceLst component.
+	 * Returns an initialized instance of maintenanceLst component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1222,7 +1254,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of mntnceBakCmd component.
+	 * Returns an initialized instance of mntnceBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1234,7 +1266,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of srvcsBakCmd component.
+	 * Returns an initialized instance of srvcsBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1246,7 +1278,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dhisUserName component.
+	 * Returns an initialized instance of dhisUserName component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1259,7 +1291,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of locale component.
+	 * Returns an initialized instance of locale component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1271,7 +1303,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of periodForm component.
+	 * Returns an initialized instance of periodForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1287,7 +1319,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of periodBakCmd component.
+	 * Returns an initialized instance of periodBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1299,7 +1331,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of periodNxtCmd component.
+	 * Returns an initialized instance of periodNxtCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1311,7 +1343,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of periodChoice component.
+	 * Returns an initialized instance of periodChoice component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1324,7 +1356,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of waitForm component.
+	 * Returns an initialized instance of waitForm component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1336,7 +1368,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of successAlert component.
+	 * Returns an initialized instance of successAlert component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1350,7 +1382,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of errorAlert component.
+	 * Returns an initialized instance of errorAlert component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1363,7 +1395,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of deleteProgList component.
+	 * Returns an initialized instance of deleteProgList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1377,7 +1409,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of deleteList component.
+	 * Returns an initialized instance of deleteList component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1404,7 +1436,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of deleteBakCmd component.
+	 * Returns an initialized instance of deleteBakCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1416,7 +1448,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	}
 
 	/**
-	 * Returns an initiliazed instance of dsDeleteCmd component.
+	 * Returns an initialized instance of dsDeleteCmd component.
 	 * 
 	 * @return the initialized component instance
 	 */
@@ -1487,7 +1519,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 						getLocale().getString(), ConnectionManager.AUTHENTICATE);
 				connectionManager.start();
 			}
-		}
+		} 
 	}
 
 	private void saveSettings() {
