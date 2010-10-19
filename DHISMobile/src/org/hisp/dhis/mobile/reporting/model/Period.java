@@ -168,6 +168,64 @@ public class Period {
 
 		return formattedPeriod.toString();
 	}
+	
+	public static Date stringToDate(String string){
+		String token[] = split(string, '-');
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(Calendar.YEAR, Integer.parseInt(token[0]));
+		
+		if (String.valueOf(token[1].charAt(0)).equals("0")){
+			cal.set(Calendar.MONTH, Integer.parseInt(String.valueOf(token[1].charAt(1))) - 1);
+			System.out.println(String.valueOf(token[1].charAt(1)));
+		} else {
+			cal.set(Calendar.MONTH, Integer.parseInt(token[1]) - 1);
+			System.out.println(token[1]);
+		}
+		
+		if (String.valueOf(token[2].charAt(0)).equals("0")){
+			cal.set(Calendar.DATE, Integer.parseInt(String.valueOf(token[2].charAt(1))));
+		} else {
+			cal.set(Calendar.DATE, Integer.parseInt(token[2]));
+		}
+		return cal.getTime();
+	}
+	
+
+
+	public static String[] split( String str, char separatorChar ) {
+	      if ( str == null ) {
+	         return null;
+	      }
+	      int       len    = str.length();
+	      if ( len == 0 ) {
+	         return null;
+	      }
+	      Vector    list   = new Vector();
+	      int       i      = 0;
+	      int       start  = 0;
+	      boolean   match  = false;
+	      while ( i < len ) {
+	         if ( str.charAt( i ) == separatorChar ) {
+	            if ( match ) {
+	               list.addElement( str.substring( start, i ).trim() );
+	               match = false;
+	            }
+	            start = ++i;
+	            continue;
+	         }
+	         match = true;
+	         i++;
+	      }
+	      if ( match ) {
+	         list.addElement( str.substring( start, i ).trim() );
+	      }
+	      String[]  arr    = new String[list.size()];
+	      list.copyInto( arr );
+	      return arr;
+	   }
+
+
 
 	public static String formatWeeklyPeriod(String week) {
 		week = week.substring(5, week.length());

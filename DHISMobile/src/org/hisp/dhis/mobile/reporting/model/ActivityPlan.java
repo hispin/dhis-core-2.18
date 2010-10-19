@@ -19,7 +19,7 @@ public class ActivityPlan implements ISerializable {
 
 	public void deSerialize(DataInputStream din) throws IOException {
 		int size = din.readInt();
-	        
+
 		for (int i = 0; i < size; i++) {
 			Activity activity = new Activity();
 			activity.setDueDate(new Date(din.readLong()));
@@ -30,12 +30,12 @@ public class ActivityPlan implements ISerializable {
 			b.setMiddleName(din.readUTF());
 			b.setLastName(din.readUTF());
 			int attsNumb = din.readInt();
-			
+
 			Vector attsVector = b.getAttsValues();
-			
-	                for(int j=0;j<attsNumb;j++){	                    
-	                    attsVector.addElement( din.readUTF() );
-	                }
+
+			for (int j = 0; j < attsNumb; j++) {
+				attsVector.addElement(din.readUTF());
+			}
 			activity.setBeneficiary(b);
 
 			Task t = new Task();
