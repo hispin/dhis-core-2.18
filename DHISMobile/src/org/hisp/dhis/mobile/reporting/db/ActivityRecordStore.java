@@ -31,6 +31,12 @@ public class ActivityRecordStore implements Runnable {
 		this.dhisMIDlet = dhisMIDlet;
 		this.task = task;
 	}
+	
+	public ActivityRecordStore(DHISMIDlet dhisMIDlet) {
+		this.dbName = ModelRecordStore.ACTIVITY_DB;
+		this.dhisMIDlet = dhisMIDlet;
+
+	}
 
 	// Constructor
 	public ActivityRecordStore() {
@@ -193,68 +199,127 @@ public class ActivityRecordStore implements Runnable {
 		}
 	}
 	
-	public void loadCurrentActivityPlan(){
-        RecordStore rs = null;
-        RecordEnumeration re = null;
-        ActivityRecordFilter rf = new ActivityRecordFilter( ActivityRecordFilter.filterByStatusIncomplete ); 
-        activityVector = new Vector();
-        try {
-                rs = RecordStore.openRecordStore(dbName, true);
-                re = rs.enumerateRecords(rf, null, false);
-                while (re.hasNextElement()) {
-                	activityVector.addElement(Activity.recordToActivity(re.nextRecord()));
-                }
-        } catch (Exception e) {
-
-        } finally {
-                if (re != null)
-                        re.destroy();
-                if (rs != null)
-                        try {
-                                rs.closeRecordStore();
-                        } catch (RecordStoreNotOpenException e) {
-                                e.printStackTrace();
-                        } catch (RecordStoreException e) {
-                                e.printStackTrace();
-                        }
-        }
+	public void loadCurrentActivityPlan() {
+		RecordStore rs = null;
+		RecordEnumeration re = null;
+		ActivityRecordFilter rf = new ActivityRecordFilter(
+				ActivityRecordFilter.filterByStatusIncomplete);
+		activityVector = new Vector();
+		try {
+			rs = RecordStore.openRecordStore(dbName, true);
+			re = rs.enumerateRecords(rf, null, false);
+			while (re.hasNextElement()) {
+				activityVector.addElement(Activity.recordToActivity(re
+						.nextRecord()));
+				System.gc();
+			}
+			rf = null;
+			re = null;
+			rs = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (re != null)
+				re.destroy();
+			if (rs != null)
+				try {
+					rs.closeRecordStore();
+				} catch (RecordStoreNotOpenException e) {
+					e.printStackTrace();
+				} catch (RecordStoreException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 	
-	public void loadCompletedActivityPlan(){
-        RecordStore rs = null;
-        RecordEnumeration re = null;
-        ActivityRecordFilter rf = new ActivityRecordFilter( ActivityRecordFilter.filterByStatusComplete ); 
-        activityVector = new Vector();
-        try {
-                rs = RecordStore.openRecordStore(dbName, true);
-                re = rs.enumerateRecords(rf, null, false);
-                while (re.hasNextElement()) {
-                	activityVector.addElement(Activity.recordToActivity(re.nextRecord()));
-                }
-        } catch (Exception e) {
+	public void loadCompletedActivityPlan() {
+		RecordStore rs = null;
+		RecordEnumeration re = null;
+		ActivityRecordFilter rf = new ActivityRecordFilter(
+				ActivityRecordFilter.filterByStatusComplete);
+		activityVector = new Vector();
+		try {
+			rs = RecordStore.openRecordStore(dbName, true);
+			re = rs.enumerateRecords(rf, null, false);
+			while (re.hasNextElement()) {
+				activityVector.addElement(Activity.recordToActivity(re
+						.nextRecord()));
+				System.gc();
+			}
+			rf = null;
+			re = null;
+			rs = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (re != null)
+				re.destroy();
+			if (rs != null)
+				try {
+					rs.closeRecordStore();
+				} catch (RecordStoreNotOpenException e) {
+					e.printStackTrace();
+				} catch (RecordStoreException e) {
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	public void updateActivityStatus(Activity activity) {
+		RecordStore rs = null;
+		RecordEnumeration re = null;
+		ActivityRecordFilter rf = new ActivityRecordFilter(
+				ActivityRecordFilter.filterByProgStageInstId);
+		rf.setProgStageInstId(dhisMIDlet.getSelectedActivity().getTask()
+				.getProgStageInstId());
+		try {
+			rs = RecordStore.openRecordStore(dbName, true);
+			if (activity != null) {
+				re = rs.enumerateRecords(rf, null, true);
+				if (re.numRecords() == 1) {
+					int id = re.nextRecordId();
+					byte[] activityBytes = Activity.activityToRecord(dhisMIDlet
+							.getSelectedActivity());
+					rs.setRecord(id, activityBytes, 0, activityBytes.length);
+				}
+			}
 
-        } finally {
-                if (re != null)
-                        re.destroy();
-                if (rs != null)
-                        try {
-                                rs.closeRecordStore();
-                        } catch (RecordStoreNotOpenException e) {
-                                e.printStackTrace();
-                        } catch (RecordStoreException e) {
-                                e.printStackTrace();
-                        }
-        }
+			rf = null;
+			re = null;
+			rs = null;
+			System.gc();
+		} catch (RecordStoreException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null)
+				try {
+					rs.closeRecordStore();
+				} catch (RecordStoreNotOpenException e) {
+					e.printStackTrace();
+				} catch (RecordStoreException e) {
+					e.printStackTrace();
+				}
+		}
+
 	}
 
 	public void run() {
-		if (task.equalsIgnoreCase(LOAD_ALL_ACTIVITYPLAN)){
-		loadAll();
-		dhisMIDlet.loadActivityPlan(getActivityVector());
-		} else if (task.equalsIgnoreCase(LOAD_COMPLETED_ACTIVITYPLAN)){
-			
-		} else {
-			
+		// if (task.equalsIgnoreCase(LOAD_ALL_ACTIVITYPLAN)) {
+		// loadAll();
+		// dhisMIDlet.loadActivityPlan(getActivityVector());
+		if (task.equalsIgnoreCase(LOAD_COMPLETED_ACTIVITYPLAN)) {
+			loadCompletedActivityPlan();
+			dhisMIDlet.loadActivityPlan(getActivityVector());
+		} else if (task.equalsIgnoreCase(LOAD_CURRENT_ACTIVITYPLAN)) {
+			loadCurrentActivityPlan();
+			 dhisMIDlet.loadActivityPlan(getActivityVector());
+			// } else if (task.equalsIgnoreCase(UPDATE_ACTIVITY)) {
+			// updateActivity();
+			//
+			// }
+			// loadAll();
+			// dhisMIDlet.loadActivityPlan(getActivityVector());
 		}
+		System.gc();
 	}
 }

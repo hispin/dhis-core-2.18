@@ -48,7 +48,6 @@ import org.hisp.dhis.mobile.reporting.model.Program;
 import org.hisp.dhis.mobile.reporting.util.AlertUtil;
 
 import com.jcraft.jzlib.ZInputStream;
-import com.sun.midp.io.Base64;
 
 public class ConnectionManager extends Thread {
 
@@ -129,7 +128,7 @@ public class ConnectionManager extends Thread {
 				+ " Configuration/"
 				+ System.getProperty("microedition.configuration");
 	}
-	
+
 	public ConnectionManager(DHISMIDlet dhisMIDlet, String rootUrl,
 			String userName, String password, String locale, String task,
 			ActivityValue activityValue) {
@@ -147,7 +146,6 @@ public class ConnectionManager extends Thread {
 				+ System.getProperty("microedition.configuration");
 	}
 
-
 	private void configureConnection(HttpConnection conn) throws IOException {
 
 		conn.setRequestProperty("User-Agent", ua);
@@ -157,74 +155,75 @@ public class ConnectionManager extends Thread {
 
 		// set HTTP basic authentication
 		if (userName != null && password != null) {
-		    byte[] auth = (userName+":"+password).getBytes();
-		    conn.setRequestProperty( "Authorization", "Basic " +  Base64.encode( auth, 0, auth.length ));
+			byte[] auth = (userName + ":" + password).getBytes();
+			conn.setRequestProperty("Authorization",
+					"Basic " + Base64.encode(auth, 0, auth.length));
 		}
 	}
 
 	public void run() {
-		if (task.equals(ConnectionManager.BROWSE_DATASETS)) 
-		{			
+		if (task.equals(ConnectionManager.BROWSE_DATASETS)) {
 			downloadAbstractModelList(rootUrl + "mobile-datasets");
-			dhisMIDlet.displayDataSetsForDownload(abstractModelListVector);			
-		} 
-		else if (task.equals(ConnectionManager.DOWNLOAD_DATASET)) 
-		{			
-			downloadDataSet(rootUrl + "mobile-datasets/" + param);			
-			dhisMIDlet.saveDataSet(dataSet);			
-		} 
-		else if (task.equals((ConnectionManager.UPLOAD_DATASET_VALUES))) 
-		{			
+			dhisMIDlet.displayDataSetsForDownload(abstractModelListVector);
+		} else if (task.equals(ConnectionManager.DOWNLOAD_DATASET)) {
+			downloadDataSet(rootUrl + "mobile-datasets/" + param);
+			dhisMIDlet.saveDataSet(dataSet);
+		} else if (task.equals((ConnectionManager.UPLOAD_DATASET_VALUES))) {
 			byte[] request_body;
 			try {
-				
+
 				request_body = dataSetValue.serialize();
-				
-				String result = upload(rootUrl + "mobile-datasets/values", "application/vnd.org.dhis2.datasetvalue+serialized", request_body);
+
+				String result = upload(rootUrl + "mobile-datasets/values",
+						"application/vnd.org.dhis2.datasetvalue+serialized",
+						request_body);
 				dhisMIDlet.getSuccessAlert().setTitle("Upload Status");
 				dhisMIDlet.getSuccessAlert().setString(result);
 				dhisMIDlet.switchDisplayable(dhisMIDlet.getSuccessAlert(),
-				dhisMIDlet.getDataSetDisplayList());
-				
+						dhisMIDlet.getActivityPlanList());
+
 			} catch (IOException e) {
 				e.printStackTrace();
-			}						
-		}
-		else if (task.equals(ConnectionManager.BROWSE_PROGRAMS)) 
-		{
+			}
+		} else if (task.equals(ConnectionManager.BROWSE_PROGRAMS)) {
 			downloadAbstractModelList(rootUrl + "programs");
 			dhisMIDlet.displayProgramsForDownload(abstractModelListVector);
-		}
-		else if (task.equals(ConnectionManager.DOWNLOAD_PROGRAM)) 
-		{			
-			downloadProgram(rootUrl + "programs/" + param);			
-			dhisMIDlet.saveProgram(program);			
-		}		
-		else if (task.equals(ConnectionManager.DOWNLOAD_ACTIVITYPLAN)) 
-		{			
-			downloadActivityPlan(rootUrl + "activityplan/current");			
-			dhisMIDlet.saveActivityPlan(activityPlan);			
-		}
-		else if( task.equals(ConnectionManager.UPLOAD_ACTIVITY_VALUES))
-		{
+		} else if (task.equals(ConnectionManager.DOWNLOAD_PROGRAM)) {
+			downloadProgram(rootUrl + "programs/" + param);
+			dhisMIDlet.saveProgram(program);
+		} else if (task.equals(ConnectionManager.DOWNLOAD_ACTIVITYPLAN)) {
+			downloadActivityPlan(rootUrl + "activityplan/current");
+			dhisMIDlet.saveActivityPlan(activityPlan);
+		} else if (task.equals(ConnectionManager.UPLOAD_ACTIVITY_VALUES)) {
 			byte[] request_body;
 			try {
 				request_body = activityValue.serialize();
-				
-				String result = upload(rootUrl + "activityplan/values", "application/vnd.org.dhis2.activityvaluelist+serialized", request_body);
+
+				String result = upload(
+						rootUrl + "activityplan/values",
+						"application/vnd.org.dhis2.activityvaluelist+serialized",
+						request_body);
 				dhisMIDlet.getSuccessAlert().setTitle("Upload Status");
 				dhisMIDlet.getSuccessAlert().setString(result);
-				dhisMIDlet.switchDisplayable(dhisMIDlet.getSuccessAlert(), dhisMIDlet.getActivityPlanList());
-				
+				if (result.equalsIgnoreCase("SUCCESS")) {
+					dhisMIDlet.getActivityPlanList()
+							.delete(dhisMIDlet.getActivityPlanList()
+									.getSelectedIndex());
+					dhisMIDlet.saveActivity();
+				}
+				dhisMIDlet.switchDisplayable(dhisMIDlet.getSuccessAlert(),
+						dhisMIDlet.getActivityPlanList());
+
 			} catch (IOException e) {
 				e.printStackTrace();
-			}					
+			}
 		} else if (task.equals(ConnectionManager.AUTHENTICATE)) {
 			authenticate(rootUrl + "user");
 		}
 	}
-	
+
 	private void authenticate(String url) {
+		System.out.println("URL: " + url);
 		HttpConnection hcon = null;
 
 		try {
@@ -242,10 +241,10 @@ public class ConnectionManager extends Thread {
 					saveInitSetting();
 					dhisMIDlet.switchDisplayable(null, dhisMIDlet.getPinForm());
 					break;
-                case HttpConnection.HTTP_SEE_OTHER:
-                case HttpConnection.HTTP_TEMP_REDIRECT:
-                case HttpConnection.HTTP_MOVED_TEMP:
-                case HttpConnection.HTTP_MOVED_PERM:
+				case HttpConnection.HTTP_SEE_OTHER:
+				case HttpConnection.HTTP_TEMP_REDIRECT:
+				case HttpConnection.HTTP_MOVED_TEMP:
+				case HttpConnection.HTTP_MOVED_PERM:
 					url = hcon.getHeaderField("location");
 					if (hcon != null)
 						hcon.close();
@@ -264,10 +263,14 @@ public class ConnectionManager extends Thread {
 				throw new IOException("Too much redirects");
 			}
 		} catch (SecurityException e) {
-			dhisMIDlet.switchDisplayable(AlertUtil.getErrorAlert("Error", e.getMessage()), dhisMIDlet.getLoginForm());
+			dhisMIDlet.switchDisplayable(
+					AlertUtil.getErrorAlert("Error", e.getMessage()),
+					dhisMIDlet.getLoginForm());
 			e.printStackTrace();
 		} catch (Exception e) {
-			dhisMIDlet.switchDisplayable(AlertUtil.getErrorAlert("Error", e.getMessage()), dhisMIDlet.getLoginForm());
+			dhisMIDlet.switchDisplayable(
+					AlertUtil.getErrorAlert("Error", e.getMessage()),
+					dhisMIDlet.getLoginForm());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -279,15 +282,17 @@ public class ConnectionManager extends Thread {
 		}
 
 	}
-	
+
 	private void saveInitSetting() {
 		SettingsRecordStore settingsRecord = null;
 		try {
 			settingsRecord = new SettingsRecordStore(
 					SettingsRecordStore.SETTINGS_DB);
-			settingsRecord.put("url", dhisMIDlet.getServerUrl().getString());
-			settingsRecord.put("username", dhisMIDlet.getUserName().getString());
-			settingsRecord.put("password", dhisMIDlet.getPassword().getString());
+			settingsRecord.put("url", dhisMIDlet.getUrl().getString());
+			settingsRecord
+					.put("username", dhisMIDlet.getUserName().getString());
+			settingsRecord
+					.put("password", dhisMIDlet.getPassword().getString());
 			settingsRecord.save();
 		} catch (RecordStoreException e) {
 			e.printStackTrace();
@@ -302,7 +307,7 @@ public class ConnectionManager extends Thread {
 			int redirectTimes = 0;
 			boolean redirect;
 			do {
-				redirect = false;				
+				redirect = false;
 				hcon = (HttpConnection) Connector.open(url);
 				configureConnection(hcon);
 
@@ -346,10 +351,10 @@ public class ConnectionManager extends Thread {
 			if (redirectTimes == 5) {
 				throw new IOException("Too much redirects");
 			}
-		}catch (SecurityException e){	
-			//e.printStackTrace();
-		}catch (Exception e) {		
-			//e.printStackTrace();
+		} catch (SecurityException e) {
+			// e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
 		} finally {
 			try {
 				if (hcon != null)
@@ -359,18 +364,18 @@ public class ConnectionManager extends Thread {
 
 			} catch (IOException ioe) {
 			}
-		}		
+		}
 	}
-	
+
 	private void downloadProgram(String url) {
 		HttpConnection hcon = null;
 		DataInputStream dis = null;
-
+		System.out.println("Pro URL" + url);
 		try {
 			int redirectTimes = 0;
 			boolean redirect;
 			do {
-				redirect = false;				
+				redirect = false;
 				hcon = (HttpConnection) Connector.open(url);
 				configureConnection(hcon);
 
@@ -414,10 +419,10 @@ public class ConnectionManager extends Thread {
 			if (redirectTimes == 5) {
 				throw new IOException("Too much redirects");
 			}
-		}catch (SecurityException e){	
-			//e.printStackTrace();
-		}catch (Exception e) {		
-			//e.printStackTrace();
+		} catch (SecurityException e) {
+			// e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
 		} finally {
 			try {
 				if (hcon != null)
@@ -427,7 +432,7 @@ public class ConnectionManager extends Thread {
 
 			} catch (IOException ioe) {
 			}
-		}		
+		}
 	}
 
 	private void downloadActivityPlan(String url) {
@@ -438,7 +443,7 @@ public class ConnectionManager extends Thread {
 			int redirectTimes = 0;
 			boolean redirect;
 			do {
-				redirect = false;				
+				redirect = false;
 				hcon = (HttpConnection) Connector.open(url);
 				configureConnection(hcon);
 
@@ -482,9 +487,9 @@ public class ConnectionManager extends Thread {
 			if (redirectTimes == 5) {
 				throw new IOException("Too much redirects");
 			}
-		}catch (SecurityException e){	
+		} catch (SecurityException e) {
 			e.printStackTrace();
-		}catch (Exception e) {		
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -495,7 +500,7 @@ public class ConnectionManager extends Thread {
 
 			} catch (IOException ioe) {
 			}
-		}		
+		}
 	}
 
 	private void downloadAbstractModelList(String url) {
@@ -506,10 +511,10 @@ public class ConnectionManager extends Thread {
 			int redirectTimes = 0;
 			boolean redirect;
 			do {
-				redirect = false;				
-				hcon = (HttpConnection) Connector.open(url);				
+				redirect = false;
+				hcon = (HttpConnection) Connector.open(url);
 				configureConnection(hcon);
-				
+
 				hcon.setRequestProperty("Accept",
 						"application/vnd.org.dhis2.abstractmodellist+serialized");
 
@@ -558,26 +563,24 @@ public class ConnectionManager extends Thread {
 			if (redirectTimes == 5) {
 				throw new IOException("Too much redirects");
 			}
-		}catch (SecurityException e){
-			//e.printStackTrace();
-		}catch (Exception e) {
-			//e.printStackTrace();
-		} finally {			
-			try {				
-				if (hcon != null)
-				{					
+		} catch (SecurityException e) {
+			// e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
+		} finally {
+			try {
+				if (hcon != null) {
 					hcon.close();
-				}					
-				if (dis != null)
-				{					
+				}
+				if (dis != null) {
 					dis.close();
-				}					
+				}
 			} catch (IOException ioe) {
 			}
-		}	
-	}	
-	
-	private String upload(String url, String contentType, byte[] request_body ) {
+		}
+	}
+
+	private String upload(String url, String contentType, byte[] request_body) {
 		HttpConnection hcon = null;
 		DataInputStream dis = null;
 		DataOutputStream dos = null;
@@ -592,12 +595,13 @@ public class ConnectionManager extends Thread {
 				hcon = (HttpConnection) Connector.open(url);
 				configureConnection(hcon);
 
-				hcon.setRequestProperty("Content-Type",contentType);
+				hcon.setRequestProperty("Content-Type", contentType);
 				hcon.setRequestMethod(HttpConnection.POST);
 
-				hcon.setRequestProperty("Content-Length", ""+request_body.toString().length());
+				hcon.setRequestProperty("Content-Length", ""
+						+ request_body.toString().length());
 				dos = hcon.openDataOutputStream();
-				
+
 				for (int i = 0; i < request_body.length; i++) {
 					dos.writeByte(request_body[i]);
 				}
@@ -640,11 +644,11 @@ public class ConnectionManager extends Thread {
 			if (redirectTimes == 5) {
 				throw new IOException("Too much redirects");
 			}
-		}catch (SecurityException e){
+		} catch (SecurityException e) {
 			responseMessage.append("FAILURE");
-			//e.printStackTrace();
-		}catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
 		} finally {
 			try {
 				if (hcon != null)
@@ -654,99 +658,61 @@ public class ConnectionManager extends Thread {
 			} catch (IOException ioe) {
 			}
 		}
-		
-		return responseMessage.toString();		
+
+		return responseMessage.toString();
 	}
 
-
-	/*private String upload(String url) {
-		HttpConnection hcon = null;
-		DataInputStream dis = null;
-		DataOutputStream dos = null;
-		StringBuffer responseMessage = new StringBuffer();
-
-		try {
-			int redirectTimes = 0;
-			boolean redirect;
-			do {
-				redirect = false;
-
-				hcon = (HttpConnection) Connector.open(url);
-				configureConnection(hcon);
-
-				hcon.setRequestProperty("Content-Type",
-						"application/vnd.org.dhis2.datasetvalue+serialized");
-				hcon.setRequestMethod(HttpConnection.POST);
-
-				if (dataSetValue != null) {
-					hcon.setRequestProperty("Content-Length", ""
-							+ dataSetValue.serialize().toString().length());
-				}
-
-				if (dataSetValue != null) {
-					dos = hcon.openDataOutputStream();
-					byte[] request_body = dataSetValue.serialize();
-
-					for (int i = 0; i < request_body.length; i++) {
-						dos.writeByte(request_body[i]);
-					}
-					dos.flush();
-				}
-
-				dis = new DataInputStream(hcon.openInputStream());
-
-				int ch;
-				while ((ch = dis.read()) != -1) {
-					responseMessage.append((char) ch);
-				}
-
-				int status = hcon.getResponseCode();
-
-				switch (status) {
-				case HttpConnection.HTTP_OK:
-					break;
-				case HttpConnection.HTTP_TEMP_REDIRECT:
-				case HttpConnection.HTTP_MOVED_TEMP:
-				case HttpConnection.HTTP_MOVED_PERM:
-
-					url = hcon.getHeaderField("location");
-
-					if (dis != null)
-						dis.close();
-					if (hcon != null)
-						hcon.close();
-
-					hcon = null;
-					redirectTimes++;
-					redirect = true;
-					break;
-				default:
-					hcon.close();
-					throw new IOException("Response status not OK:" + status);
-				}
-
-			} while (redirect == true && redirectTimes < 5);
-
-			if (redirectTimes == 5) {
-				throw new IOException("Too much redirects");
-			}
-		}catch (SecurityException e){
-			responseMessage.append("FAILURE");
-			//e.printStackTrace();
-		}catch (Exception e) {
-			//e.printStackTrace();
-		} finally {
-			try {
-				if (hcon != null)
-					hcon.close();
-				if (dis != null)
-					dis.close();
-			} catch (IOException ioe) {
-			}
-		}
-		
-		return responseMessage.toString();		
-	}*/
+	/*
+	 * private String upload(String url) { HttpConnection hcon = null;
+	 * DataInputStream dis = null; DataOutputStream dos = null; StringBuffer
+	 * responseMessage = new StringBuffer();
+	 * 
+	 * try { int redirectTimes = 0; boolean redirect; do { redirect = false;
+	 * 
+	 * hcon = (HttpConnection) Connector.open(url); configureConnection(hcon);
+	 * 
+	 * hcon.setRequestProperty("Content-Type",
+	 * "application/vnd.org.dhis2.datasetvalue+serialized");
+	 * hcon.setRequestMethod(HttpConnection.POST);
+	 * 
+	 * if (dataSetValue != null) { hcon.setRequestProperty("Content-Length", ""
+	 * + dataSetValue.serialize().toString().length()); }
+	 * 
+	 * if (dataSetValue != null) { dos = hcon.openDataOutputStream(); byte[]
+	 * request_body = dataSetValue.serialize();
+	 * 
+	 * for (int i = 0; i < request_body.length; i++) {
+	 * dos.writeByte(request_body[i]); } dos.flush(); }
+	 * 
+	 * dis = new DataInputStream(hcon.openInputStream());
+	 * 
+	 * int ch; while ((ch = dis.read()) != -1) { responseMessage.append((char)
+	 * ch); }
+	 * 
+	 * int status = hcon.getResponseCode();
+	 * 
+	 * switch (status) { case HttpConnection.HTTP_OK: break; case
+	 * HttpConnection.HTTP_TEMP_REDIRECT: case HttpConnection.HTTP_MOVED_TEMP:
+	 * case HttpConnection.HTTP_MOVED_PERM:
+	 * 
+	 * url = hcon.getHeaderField("location");
+	 * 
+	 * if (dis != null) dis.close(); if (hcon != null) hcon.close();
+	 * 
+	 * hcon = null; redirectTimes++; redirect = true; break; default:
+	 * hcon.close(); throw new IOException("Response status not OK:" + status);
+	 * }
+	 * 
+	 * } while (redirect == true && redirectTimes < 5);
+	 * 
+	 * if (redirectTimes == 5) { throw new IOException("Too much redirects"); }
+	 * }catch (SecurityException e){ responseMessage.append("FAILURE");
+	 * //e.printStackTrace(); }catch (Exception e) { //e.printStackTrace(); }
+	 * finally { try { if (hcon != null) hcon.close(); if (dis != null)
+	 * dis.close(); } catch (IOException ioe) { } }
+	 * 
+	 * return responseMessage.toString(); }
+	 */
 
 	private DataInputStream getDecompressedStream(DataInputStream dis)
 			throws IOException {
