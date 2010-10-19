@@ -48,6 +48,7 @@ import org.hisp.dhis.mobile.reporting.model.Program;
 import org.hisp.dhis.mobile.reporting.util.AlertUtil;
 
 import com.jcraft.jzlib.ZInputStream;
+import com.sun.midp.io.Base64;
 
 public class ConnectionManager extends Thread {
 
@@ -157,7 +158,7 @@ public class ConnectionManager extends Thread {
 		// set HTTP basic authentication
 		if (userName != null && password != null) {
 		    byte[] auth = (userName+":"+password).getBytes();
-		    conn.setRequestProperty( "Authorization", "Basic " + Base64.encode( auth, 0, auth.length ));
+		    conn.setRequestProperty( "Authorization", "Basic " +  Base64.encode( auth, 0, auth.length ));
 		}
 	}
 
@@ -482,9 +483,9 @@ public class ConnectionManager extends Thread {
 				throw new IOException("Too much redirects");
 			}
 		}catch (SecurityException e){	
-			//e.printStackTrace();
+			e.printStackTrace();
 		}catch (Exception e) {		
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally {
 			try {
 				if (hcon != null)

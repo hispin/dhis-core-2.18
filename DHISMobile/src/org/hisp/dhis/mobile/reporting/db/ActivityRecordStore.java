@@ -178,7 +178,7 @@ public class ActivityRecordStore implements Runnable {
 						.nextRecord()));
 			}
 		} catch (Exception e) {
-
+		    e.printStackTrace();
 		} finally {
 			if (re != null)
 				re.destroy();

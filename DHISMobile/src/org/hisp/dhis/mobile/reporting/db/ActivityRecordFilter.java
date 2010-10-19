@@ -76,6 +76,10 @@ public class ActivityRecordFilter implements RecordFilter {
 				dis.readUTF();
 				dis.readUTF();
 				dis.readUTF();
+				int i = dis.readInt();
+				for(int j = 0; j < i; j++){
+				    dis.readUTF();
+				}
 				dis.readLong();
 				dis.readInt();
 				dis.readInt();
@@ -104,6 +108,10 @@ public class ActivityRecordFilter implements RecordFilter {
 				dis.readUTF();
 				dis.readUTF();
 				dis.readUTF();
+				int i = dis.readInt();
+                                for(int j = 0; j < i; j++){
+                                    dis.readUTF();
+                                }
 				dis.readLong();
 				dis.readInt();
 				dis.readInt();
@@ -132,6 +140,10 @@ public class ActivityRecordFilter implements RecordFilter {
 				dis.readUTF();
 				dis.readUTF();
 				dis.readUTF();
+				int i = dis.readInt();
+                                for(int j = 0; j < i; j++){
+                                    dis.readUTF();
+                                }
 				dis.readLong();
 				if (dis.readInt() == this.progStageInstId) {
 					return true;

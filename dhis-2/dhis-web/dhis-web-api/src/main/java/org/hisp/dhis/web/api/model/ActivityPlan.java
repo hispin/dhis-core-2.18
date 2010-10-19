@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,6 +50,7 @@ public class ActivityPlan implements ISerializable
         DataOutputStream dout = new DataOutputStream(bout);       
         
         dout.writeInt(activitiesList.size());
+        
 
         for(int i=0; i<activitiesList.size(); i++)
         {
@@ -57,7 +59,15 @@ public class ActivityPlan implements ISerializable
         	dout.writeLong(activity.getDueDate().getTime());
         	
         	Beneficiary b = activity.getBeneficiary();
-        	dout.writeInt(b.getId()); dout.writeUTF(b.getFirstName()); dout.writeUTF(b.getMiddleName()); dout.writeUTF(b.getLastName());
+        	dout.writeInt(b.getId()); 
+        	dout.writeUTF(b.getFirstName()); 
+        	dout.writeUTF(b.getMiddleName()); 
+        	dout.writeUTF(b.getLastName());
+        	Set<String> atts = b.getPatientAttValues();
+                dout.writeInt( atts.size() );
+                for(String att : atts){
+                    dout.writeUTF( att );
+                }
         	
         	Task t = activity.getTask();
         	dout.writeInt(t.getId()); dout.writeInt(t.getProgramStageId()); dout.writeBoolean(t.isCompleted());           

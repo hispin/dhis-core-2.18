@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,6 +19,22 @@ public class Beneficiary implements ISerializable
     private String middleName;
 
     private String lastName;
+    
+    private Set<String> patientAttValues;
+    
+    
+
+    
+    
+    public Set<String> getPatientAttValues()
+    {
+        return patientAttValues;
+    }
+
+    public void setPatientAttValues( Set<String> patientAttValues )
+    {
+        this.patientAttValues = patientAttValues;
+    }
 
     @XmlAttribute
     public int getId()
@@ -96,5 +113,7 @@ public class Beneficiary implements ISerializable
 	public void deSerialize(byte[] data) throws IOException {
 		// TODO Auto-generated method stub		
 	}
+
+    
 
 }

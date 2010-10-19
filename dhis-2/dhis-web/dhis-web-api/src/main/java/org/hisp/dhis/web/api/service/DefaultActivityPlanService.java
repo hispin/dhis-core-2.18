@@ -5,12 +5,20 @@ package org.hisp.dhis.web.api.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.ActivityPlan;
+import org.hisp.dhis.web.api.model.Beneficiary;
 import org.hisp.dhis.web.api.service.mapping.ActivitiesMapper;
+import org.hisp.dhis.web.api.service.mapping.TaskMapper;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +35,9 @@ public class DefaultActivityPlanService implements IActivityPlanService {
 	
 	@Autowired
 	private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
+	
+	@Autowired
+        private PatientAttributeValueService patientAttValueService ;
 	
 	@Autowired
     private CurrentUserService currentUserService;
@@ -68,10 +79,80 @@ public class DefaultActivityPlanService implements IActivityPlanService {
             }
         }
 
-        ActivityPlan plan = new ActivitiesMapper().getModel( activities );
+//        ActivityPlan plan = new ActivitiesMapper().getModel( activities );
+        ActivityPlan plan = getActivityPlanModel(activities);
         
-        System.out.println("The size of the plan is:  " + plan.getActivitiesList().size());
 
         return plan;
 	}
+	
+	
+	
+	
+	//method replace the Mappers
+        private org.hisp.dhis.web.api.model.ActivityPlan getActivityPlanModel( Collection<org.hisp.dhis.activityplan.Activity> activities )
+            {
+                ActivityPlan plan = new ActivityPlan();
+
+                if ( activities == null || activities.isEmpty() )
+                {
+                    return plan;
+                }
+
+                List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
+                plan.setActivitiesList( items );
+                int i = 0;
+                for ( org.hisp.dhis.activityplan.Activity activity : activities )
+                {
+                    //there are error on db with patientattributeid 14, so I limit the patient to be downloaded
+                    if(i<=10){
+                        org.hisp.dhis.web.api.model.Activity temp = getActivityModel( activity);
+                        if(temp != null){
+                            items.add(temp);
+                        }
+                        i++;
+                    }
+                }
+                return plan;
+            }
+        
+        
+        private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
+        {
+            if ( activity == null )
+            {
+                return null;
+            }
+            org.hisp.dhis.web.api.model.Activity item = new org.hisp.dhis.web.api.model.Activity();
+            Patient patient = activity.getBeneficiary();
+            
+            item.setBeneficiary( getBeneficiaryModel(patient) );
+            item.setDueDate( activity.getDueDate() );
+            item.setTask( new TaskMapper().getModel( activity.getTask()) );
+            return item;
+        }
+        
+        
+        
+        private org.hisp.dhis.web.api.model.Beneficiary getBeneficiaryModel( Patient patient )
+        {
+            
+
+            Beneficiary beneficiary = new Beneficiary();
+
+            Set<String> patientAttValues = new HashSet<String>();
+            
+            
+            beneficiary.setId( patient.getId() );
+            beneficiary.setFirstName( patient.getFirstName() );
+            beneficiary.setLastName( patient.getLastName() );
+            beneficiary.setMiddleName( patient.getMiddleName() );
+            
+            for(PatientAttributeValue value : patientAttValueService.getPatientAttributeValues( patient )){
+                patientAttValues.add( value.getPatientAttribute().getName() +" : "+ value.getValue());
+            }
+            beneficiary.setPatientAttValues( patientAttValues );
+            
+            return beneficiary;
+        }
 }
