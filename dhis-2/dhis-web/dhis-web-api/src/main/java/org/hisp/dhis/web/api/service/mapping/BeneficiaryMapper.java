@@ -21,7 +21,7 @@ public class BeneficiaryMapper
         beneficiary.setFirstName( patient.getFirstName() );
         beneficiary.setLastName( patient.getLastName() );
         beneficiary.setMiddleName( patient.getMiddleName() );
-
+        
         return beneficiary;
     }
 

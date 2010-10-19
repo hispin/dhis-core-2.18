@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Vector;
 
 public class Activity implements ISerializable {
 
@@ -51,13 +52,22 @@ public class Activity implements ISerializable {
 		Beneficiary beneficiary = new Beneficiary();
 		Task task = new Task();
 		try {
+		        // Read Beneficiary Information
 			beneficiary.setId(din.readInt());
 			beneficiary.setLastName(din.readUTF());
 			beneficiary.setMiddleName(din.readUTF());
 			beneficiary.setFirstName(din.readUTF());
-
+			Vector atts = new Vector();
+			beneficiary.setAttsValues( atts );
+			int numAtt = din.readInt();
+                        for(int i = 0; i < numAtt; i++){
+                            atts.addElement(din.readUTF());                         
+                        }
+                        
+                        // Write Due Date
 			activity.setDueDate(new Date(din.readLong()));
-
+			
+			// Write Task Information
 			task.setProgStageInstId(din.readInt());
 			task.setProgStageId(din.readInt());
 			task.setComplete(din.readBoolean());
@@ -75,20 +85,27 @@ public class Activity implements ISerializable {
 		DataOutputStream dout = new DataOutputStream(deOs);
 
 		try {
-			// Write Beneficiary Information
+		        // Write Beneficiary Information
 			dout.writeInt(activity.getBeneficiary().getId());
 			dout.writeUTF(activity.getBeneficiary().getLastName());
 			dout.writeUTF(activity.getBeneficiary().getMiddleName());
 			dout.writeUTF(activity.getBeneficiary().getFirstName());
+			Vector atts = activity.getBeneficiary().getAttsValues();
+                        int numAtt = atts.size();
+                        dout.writeInt(numAtt);
+                        for(int i = 0; i < numAtt; i++){
+                            dout.writeUTF( (String)atts.elementAt( i ) );
+                        }
+                        
 			// Write Due Date
 			dout.writeLong(activity.getDueDate().getTime());
+			
 			// Write Task Information
 			dout.writeInt(activity.getTask().getProgStageInstId());
 			dout.writeInt(activity.getTask().getProgStageId());
 			dout.writeBoolean(activity.getTask().isComplete());
 			dout.flush();
 		} catch (IOException e) {
-			System.out.println(e);
 			e.printStackTrace();
 		}
 		return deOs.toByteArray();
@@ -120,7 +137,6 @@ public class Activity implements ISerializable {
 			dout.writeBoolean(this.getTask().isComplete());
 			dout.flush();
 		} catch (IOException e) {
-			System.out.println(e);
 			e.printStackTrace();
 		}
 

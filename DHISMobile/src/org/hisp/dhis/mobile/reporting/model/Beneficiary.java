@@ -2,6 +2,7 @@ package org.hisp.dhis.mobile.reporting.model;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.Vector;
 
 public class Beneficiary implements ISerializable {
 
@@ -9,6 +10,8 @@ public class Beneficiary implements ISerializable {
 
 	private String firstName, middleName, lastName;
 
+	private Vector attsValues;
+	
 	public Beneficiary() {
 	}
 
@@ -66,7 +69,24 @@ public class Beneficiary implements ISerializable {
 		this.lastName = lastName;
 	}
 
-	public byte[] serialize() throws IOException {
+	
+	
+	public Vector getAttsValues()
+        {
+    	    if(attsValues == null){
+    	        this.attsValues = new Vector();
+    	        return attsValues;
+    	    }else{
+    	        return attsValues;
+    	    }        
+        }
+
+    public void setAttsValues( Vector attsValues )
+    {
+        this.attsValues = attsValues;
+    }
+
+    public byte[] serialize() throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -81,5 +101,11 @@ public class Beneficiary implements ISerializable {
 		this.setFirstName(din.readUTF());
 		this.setMiddleName(din.readUTF());
 		this.setLastName(din.readUTF());
+		this.attsValues = new Vector();
+		int attsNumb = din.readInt();
+		for(int j=0;j<attsNumb;j++){
+		    attsValues.addElement( din.readUTF() );
+		}
+		
 	}
 }

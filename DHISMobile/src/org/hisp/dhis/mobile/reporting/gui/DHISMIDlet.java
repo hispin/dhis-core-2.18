@@ -402,15 +402,14 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			mainMenuList.append("Current Activity Plan", null);
 			mainMenuList.append("Completed Activity Plan", null);
 			mainMenuList.append("Update Avtivity Plan", null);
-//			mainMenuList.append("Services", null);
-//			mainMenuList.append("Maintenance", null);
-//			mainMenuList.append("Settings", null);
+			mainMenuList.append("Services", null);
+			mainMenuList.append("Maintenance", null);
+			mainMenuList.append("Settings", null);
 			mainMenuList.addCommand(getMnuListExtCmd());
 			mainMenuList.addCommand(getSettingCommand());
 			mainMenuList.setCommandListener(this);
 			mainMenuList.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
-			mainMenuList
-					.setSelectedFlags(new boolean[] { false, false, false });
+			mainMenuList.setSelectedFlags(new boolean[] { false, false, false, false, false, false });
 		}
 		return mainMenuList;
 	}
@@ -640,7 +639,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	 */
 	public TextField getUrl() {
 		if (url == null) {
-			url = new TextField("Server Location", "http://localhost:8080/api/",
+			url = new TextField("Server Location", "http://localhost:8280/dhis-web-api/api/",
 					64, TextField.URL);
 		}
 		return url;
@@ -893,7 +892,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	public TextField getServerUrl() {
 		if (serverURL == null) {
 			serverURL = new TextField("Server Location",
-					"http://localhost:8080/api/", 64, TextField.URL);
+					"http://localhost:8280/dhis-web-api/api/", 64, TextField.URL);
 		}
 		return serverURL;
 	}
@@ -1187,6 +1186,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 								+ "\nName:  "
 								+ selectedActivity.getBeneficiary()
 										.getFullName()
+										+"\n"+generatePatientAtts(selectedActivity.getBeneficiary().getAttsValues())
 								+ "\nDue date: "
 								+ Period.formatDailyPeriod(selectedActivity
 										.getDueDate()));
@@ -1202,6 +1202,14 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		}
 
 		switchDisplayable(null, getActivityDetailForm());
+	}
+	
+	private String generatePatientAtts(Vector atts){
+	    String infos = "";
+	    for(int i =0; i< atts.size(); i++){
+	        infos += "\n"+atts.elementAt( i )+"\n";
+	    }
+	    return infos;
 	}
 
 	/**
