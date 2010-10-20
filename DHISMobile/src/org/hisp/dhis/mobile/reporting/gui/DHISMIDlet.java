@@ -54,6 +54,7 @@ import org.hisp.dhis.mobile.reporting.model.ProgramStage;
 import org.hisp.dhis.mobile.reporting.util.AlertUtil;
 import org.hisp.dhis.mobile.reporting.util.ReinitConfirmListener;
 
+
 /**
  * @author abyotag_adm
  */
@@ -1644,15 +1645,18 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 		for (int i = 0; i < activities.size(); i++) {
 			Activity activity = (Activity) activities.elementAt(i);
-			getActivityPlanList().insert(i,
-					activity.getBeneficiary().getFullName(), null);
+			
+			getActivityPlanList().insert(
+					i,
+					activity.getBeneficiary().getFullName() + "\n"
+							+ Period.formatDailyPeriod(activity.getDueDate()), null);
+
 		}
 
 		switchDisplayable(null, getActivityPlanList());
 	}
 
 	private void populatePrograms(List list) {
-		programsVector.removeAllElements();
 		ModelRecordStore modelRecordStore = null;
 		Vector programs = null;
 		try {
