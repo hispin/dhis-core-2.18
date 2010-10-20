@@ -65,20 +65,12 @@ public class DefaultActivityPlanService implements IActivityPlanService {
         DateMidnight to = from.plusMonths( 1 );
 
         Collection<Activity> allActivities = activityPlanService.getActivitiesByProvider( unit );
-        Collection<Activity> activities = new ArrayList<Activity>();
 
         ActivityPlan plan = new ActivityPlan();
 
-        if ( activities == null || activities.isEmpty() )
-        {
-            return plan;
-        }
-
         List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
-        plan.setActivitiesList( items );
-        int i = 0;
 
-        
+        int i = 0;
         for ( Activity activity : allActivities )
         {
             //there are error on db with patientattributeid 14, so I limit the patient to be downloaded
@@ -100,7 +92,10 @@ public class DefaultActivityPlanService implements IActivityPlanService {
             	a.setLate(true);
             }
         }
-
+        if (!items.isEmpty()) {
+        	plan.setActivitiesList( items );
+        }
+        
         return plan;
 	}
 	
