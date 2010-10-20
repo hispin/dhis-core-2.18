@@ -14,6 +14,8 @@ public class Activity implements ISerializable
 
     private Beneficiary beneficiary;
 
+    private boolean late = false;
+
     private Task task;
 
     private Date dueDate;   
@@ -48,6 +50,16 @@ public class Activity implements ISerializable
         this.dueDate = dueDate;
     }
 
+    
+    
+	public boolean isLate() {
+		return late;
+	}
+
+	public void setLate(boolean late) {
+		this.late = late;
+	}
+
 	@Override
 	public byte[] serialize() throws IOException {
 		// TODO Auto-generated method stub
@@ -70,6 +82,7 @@ public class Activity implements ISerializable
         DataOutputStream dout = new DataOutputStream(bout);
         
         this.getBeneficiary().serialize(dout);
+        dout.writeBoolean(late);
         this.getTask().serialize(dout);        
         dout.writeLong(this.getDueDate().getTime());       
         
@@ -82,5 +95,6 @@ public class Activity implements ISerializable
 	public void deSerialize(byte[] data) throws IOException {
 		// TODO Auto-generated method stub
 		
-	}	
+	}
+
 }
