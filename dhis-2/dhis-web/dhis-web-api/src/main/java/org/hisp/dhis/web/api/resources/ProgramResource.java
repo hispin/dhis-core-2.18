@@ -30,7 +30,8 @@ public class ProgramResource {
 	@Produces( "application/vnd.org.dhis2.abstractmodellist+serialized" ) 
 	public AbstractModelList getAllMobileDataSets(@HeaderParam("accept-language") String locale) 
 	{	
-	    return iprogramService.getAllProgramsForLocale( locale );
+//	    return iprogramService.getAllProgramsForLocale( locale );
+		return null;
 	}	
 		
 	@GET 

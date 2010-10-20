@@ -16,12 +16,25 @@ public class Activity implements ISerializable {
 
 	private Date dueDate;
 
+	private boolean late;
+	
 	public Activity() {
 	}
 
 	// Getter and Setter
+	
+	
+	
 	public Beneficiary getBeneficiary() {
 		return beneficiary;
+	}
+
+	public boolean isLate() {
+		return late;
+	}
+
+	public void setLate(boolean late) {
+		this.late = late;
 	}
 
 	public void setBeneficiary(Beneficiary beneficiary) {
@@ -57,6 +70,7 @@ public class Activity implements ISerializable {
 			beneficiary.setLastName(din.readUTF());
 			beneficiary.setMiddleName(din.readUTF());
 			beneficiary.setFirstName(din.readUTF());
+			activity.setLate(din.readBoolean());
 			Vector atts = new Vector();
 			beneficiary.setAttsValues( atts );
 			int numAtt = din.readInt();
@@ -90,6 +104,7 @@ public class Activity implements ISerializable {
 			dout.writeUTF(activity.getBeneficiary().getLastName());
 			dout.writeUTF(activity.getBeneficiary().getMiddleName());
 			dout.writeUTF(activity.getBeneficiary().getFirstName());
+			dout.writeBoolean(activity.isLate());
 			Vector atts = activity.getBeneficiary().getAttsValues();
                         int numAtt = atts.size();
                         dout.writeInt(numAtt);

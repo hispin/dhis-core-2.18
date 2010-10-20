@@ -76,6 +76,7 @@ public class ActivityRecordFilter implements RecordFilter {
 				dis.readUTF();
 				dis.readUTF();
 				dis.readUTF();
+				dis.readBoolean();
 				int i = dis.readInt();
 				for(int j = 0; j < i; j++){
 				    dis.readUTF();
@@ -108,6 +109,7 @@ public class ActivityRecordFilter implements RecordFilter {
 				dis.readUTF();
 				dis.readUTF();
 				dis.readUTF();
+				dis.readBoolean();
 				int i = dis.readInt();
                                 for(int j = 0; j < i; j++){
                                     dis.readUTF();
@@ -140,6 +142,7 @@ public class ActivityRecordFilter implements RecordFilter {
 				dis.readUTF();
 				dis.readUTF();
 				dis.readUTF();
+				dis.readBoolean();
 				int i = dis.readInt();
                                 for(int j = 0; j < i; j++){
                                     dis.readUTF();

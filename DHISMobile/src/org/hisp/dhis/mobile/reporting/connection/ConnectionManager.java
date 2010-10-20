@@ -42,6 +42,7 @@ import org.hisp.dhis.mobile.reporting.model.AbstractModel;
 import org.hisp.dhis.mobile.reporting.model.AbstractModelList;
 import org.hisp.dhis.mobile.reporting.model.ActivityPlan;
 import org.hisp.dhis.mobile.reporting.model.ActivityValue;
+import org.hisp.dhis.mobile.reporting.model.ActivityWrapper;
 import org.hisp.dhis.mobile.reporting.model.DataSet;
 import org.hisp.dhis.mobile.reporting.model.DataSetValue;
 import org.hisp.dhis.mobile.reporting.model.Program;
@@ -59,7 +60,8 @@ public class ConnectionManager extends Thread {
 	public static final String DOWNLOAD_ACTIVITYPLAN = "activityplan";
 	public static final String UPLOAD_ACTIVITY_VALUES = "uploadactivityvalue";
 	public static final String AUTHENTICATE = "authenticate";
-
+	public static final String DOWNLOAD_ALL = "downloadall";
+	
 	Vector abstractModelListVector = new Vector();
 	private DataSet dataSet = null;
 	private Program program = null;
@@ -76,7 +78,7 @@ public class ConnectionManager extends Thread {
 	private int param;
 	private DataSetValue dataSetValue;
 	private ActivityValue activityValue;
-
+	private ActivityWrapper activityWrapper;
 	public ConnectionManager() {
 	}
 
@@ -219,7 +221,86 @@ public class ConnectionManager extends Thread {
 			}
 		} else if (task.equals(ConnectionManager.AUTHENTICATE)) {
 			authenticate(rootUrl + "user");
+		}else if(task.equals(ConnectionManager.DOWNLOAD_ALL)){
+			downloadAll(rootUrl + "download");
+			dhisMIDlet.saveActivityPlan(activityWrapper.getActivityPlan());
+			Vector progs = activityWrapper.getPrograms();
+			int numbProg = progs.size();			
+			for(int i = 0; i < numbProg; i++){
+				dhisMIDlet.saveProgram((Program)progs.elementAt(i));
+			}
+			//save programs trong activity wrapper
 		}
+	}
+
+	private void downloadAll(String url) {
+		HttpConnection hcon = null;
+		DataInputStream dis = null;
+		System.out.println("Pro URL" + url);
+		try {
+			int redirectTimes = 0;
+			boolean redirect;
+			do {
+				redirect = false;
+				hcon = (HttpConnection) Connector.open(url);
+				configureConnection(hcon);
+
+				hcon.setRequestProperty("Accept",
+						"application/vnd.org.dhis2.activitywrapper+serialized");
+
+				dis = new DataInputStream(hcon.openInputStream());
+				dis = getDecompressedStream(dis);
+
+				if (dis != null) {
+					activityWrapper = new ActivityWrapper();
+					activityWrapper.deSerialize(dis);
+				}
+
+				int status = hcon.getResponseCode();
+				switch (status) {
+				case HttpConnection.HTTP_OK:
+					break;
+				case HttpConnection.HTTP_TEMP_REDIRECT:
+				case HttpConnection.HTTP_MOVED_TEMP:
+				case HttpConnection.HTTP_MOVED_PERM:
+
+					url = hcon.getHeaderField("location");
+
+					if (dis != null)
+						dis.close();
+					if (hcon != null)
+						hcon.close();
+
+					hcon = null;
+					redirectTimes++;
+					redirect = true;
+					break;
+				default:
+					hcon.close();
+					throw new IOException("Response status not OK:" + status);
+				}
+
+			} while (redirect == true && redirectTimes < 5);
+
+			if (redirectTimes == 5) {
+				throw new IOException("Too much redirects");
+			}
+		} catch (SecurityException e) {
+			 e.printStackTrace();
+		} catch (Exception e) {
+			 e.printStackTrace();
+		} finally {
+			try {
+				if (hcon != null)
+					hcon.close();
+				if (dis != null)
+					dis.close();
+
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
+		}
+		
 	}
 
 	private void authenticate(String url) {
@@ -240,6 +321,8 @@ public class ConnectionManager extends Thread {
 					dhisMIDlet.setLogin(true);
 					saveInitSetting();
 					dhisMIDlet.switchDisplayable(null, dhisMIDlet.getPinForm());
+//					dhisMIDlet.setDownloading(true);
+//					dhisMIDlet.downloadAll();
 					break;
 				case HttpConnection.HTTP_SEE_OTHER:
 				case HttpConnection.HTTP_TEMP_REDIRECT:
@@ -248,7 +331,6 @@ public class ConnectionManager extends Thread {
 					url = hcon.getHeaderField("location");
 					if (hcon != null)
 						hcon.close();
-
 					hcon = null;
 					redirectTimes++;
 					redirect = true;

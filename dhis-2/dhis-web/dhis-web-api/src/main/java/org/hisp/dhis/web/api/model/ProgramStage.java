@@ -57,7 +57,7 @@ public class ProgramStage extends AbstractModel {
             dout.writeUTF( de.getType() );
         }       
         
-        //bout.flush();
+        bout.flush();
         bout.writeTo(out);    	
     } 
     
@@ -66,7 +66,7 @@ public class ProgramStage extends AbstractModel {
         dout.writeInt(this.getId());
         dout.writeUTF(this.getName());        
         dout.writeInt(dataElements.size());
-
+        System.out.println("add dataelement");
         for(int i=0; i<dataElements.size(); i++)
         {
             DataElement de = (DataElement)dataElements.get(i);

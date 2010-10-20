@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>dhis-web-api</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>DHIS Web API</name>
 
   <build>

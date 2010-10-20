@@ -58,18 +58,20 @@ public class ActivityPlan implements ISerializable
         	
         	dout.writeLong(activity.getDueDate().getTime());
         	
+        	System.out.println("add beneficiary");        	
         	Beneficiary b = activity.getBeneficiary();
         	dout.writeInt(b.getId()); 
         	dout.writeUTF(b.getFirstName()); 
         	dout.writeUTF(b.getMiddleName()); 
         	dout.writeUTF(b.getLastName());
         	dout.writeBoolean(activity.isLate());
+        	System.out.println("add beneficiary att");
         	Set<String> atts = b.getPatientAttValues();
                 dout.writeInt( atts.size() );
                 for(String att : atts){
                     dout.writeUTF( att );
                 }
-        	
+            System.out.println("add task");
         	Task t = activity.getTask();
         	dout.writeInt(t.getId()); dout.writeInt(t.getProgramStageId()); dout.writeBoolean(t.isCompleted());           
         }      
