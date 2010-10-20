@@ -66,58 +66,46 @@ public class DefaultActivityPlanService implements IActivityPlanService {
 
         Collection<Activity> allActivities = activityPlanService.getActivitiesByProvider( unit );
         Collection<Activity> activities = new ArrayList<Activity>();
+
+        ActivityPlan plan = new ActivityPlan();
+
+        if ( activities == null || activities.isEmpty() )
+        {
+            return plan;
+        }
+
+        List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
+        plan.setActivitiesList( items );
+        int i = 0;
+
+        
         for ( Activity activity : allActivities )
         {
-            long dueTime = activity.getDueDate().getTime();
+            //there are error on db with patientattributeid 14, so I limit the patient to be downloaded
+            if(i++>10){
+            	break;
+            }
+
+        	long dueTime = activity.getDueDate().getTime();
             if ( to.isBefore( dueTime ) )
             {
                 continue;
             }
             
-            if (from.isBefore( dueTime ) || !activity.getTask().isCompleted()) {
-                activities.add( activity );
+            if (from.isBefore( dueTime )) {
+                items.add( getActivityModel( activity) );
+            } else if (!activity.getTask().isCompleted()) {
+            	org.hisp.dhis.web.api.model.Activity a = getActivityModel( activity);
+            	items.add( a );
+            	a.setLate(true);
             }
         }
-
-//        ActivityPlan plan = new ActivitiesMapper().getModel( activities );
-        ActivityPlan plan = getActivityPlanModel(activities);
-        
 
         return plan;
 	}
 	
-	
-	
-	
-	//method replace the Mappers
-        private org.hisp.dhis.web.api.model.ActivityPlan getActivityPlanModel( Collection<org.hisp.dhis.activityplan.Activity> activities )
-            {
-                ActivityPlan plan = new ActivityPlan();
 
-                if ( activities == null || activities.isEmpty() )
-                {
-                    return plan;
-                }
-
-                List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
-                plan.setActivitiesList( items );
-                int i = 0;
-                for ( org.hisp.dhis.activityplan.Activity activity : activities )
-                {
-                    //there are error on db with patientattributeid 14, so I limit the patient to be downloaded
-                    if(i<=10){
-                        org.hisp.dhis.web.api.model.Activity temp = getActivityModel( activity);
-                        if(temp != null){
-                            items.add(temp);
-                        }
-                        i++;
-                    }
-                }
-                return plan;
-            }
-        
-        
-        private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
+		private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
         {
             if ( activity == null )
             {

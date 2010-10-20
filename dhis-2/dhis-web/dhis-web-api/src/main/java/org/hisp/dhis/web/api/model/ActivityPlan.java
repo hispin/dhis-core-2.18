@@ -63,6 +63,7 @@ public class ActivityPlan implements ISerializable
         	dout.writeUTF(b.getFirstName()); 
         	dout.writeUTF(b.getMiddleName()); 
         	dout.writeUTF(b.getLastName());
+        	dout.writeBoolean(activity.isLate());
         	Set<String> atts = b.getPatientAttValues();
                 dout.writeInt( atts.size() );
                 for(String att : atts){
