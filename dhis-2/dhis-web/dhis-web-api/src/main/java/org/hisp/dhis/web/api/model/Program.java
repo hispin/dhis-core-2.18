@@ -47,18 +47,18 @@ public class Program extends AbstractModel {
     {
     	ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream dout = new DataOutputStream(bout);       
-
+        System.out.println("add program info");
         dout.writeInt(this.getId());
         dout.writeUTF(this.getName());        
         dout.writeInt(programStages.size());
-
+        System.out.println("add program stages");
         for(int i=0; i<programStages.size(); i++)
         {
         	ProgramStage programStage = (ProgramStage)programStages.get(i);
         	programStage.serialize(dout);            
         }       
         
-        //bout.flush();
+        bout.flush();
         bout.writeTo(out);    	
     }        
 }

@@ -72,7 +72,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private ProgramStage selectedProgramStage;
 
 	private Hashtable dataElements = new Hashtable();
-
+	private boolean downloading = true;
 	private String selectedPeriod;
 	private DateField dailyPeriodDateField;
 	private TextField url;
@@ -257,16 +257,19 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		} else if (displayable == loginForm) {
 			if (command == lgnFrmExtCmd) {
 				exitMIDlet();
-			} else if (command == lgnFrmLgnCmd) {
+			} 
+			else if (command == lgnFrmLgnCmd) {
 				if (getUserName().getString().trim().length() == 0
 						|| getPassword().getString().trim().length() == 0) {
 					switchDisplayable(AlertUtil.getErrorAlert(
 							"Incomplete Form", "Username or Password Missing"),
 							getLoginForm());
 					return;
-				}
+			}
 				switchDisplayable(null, getWaitForm());
+				
 				login();
+				
 				// switchDisplayable(null, getMainMenuList());
 			}
 		} else if (displayable == mainMenuList) {
@@ -383,6 +386,16 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		} catch (RecordStoreException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+
+	public boolean isDownloading() {
+		return downloading;
+	}
+
+	public void setDownloading(boolean downloading) {
+		this.downloading = downloading;
 	}
 
 	/**
@@ -1294,6 +1307,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			maintenanceList.append("Delete Program", null);
 			maintenanceList.append("Download Activity Plan", null);
 			maintenanceList.append("Delete Activity Plan", null);
+			maintenanceList.append("Download All",null);
 			maintenanceList.addCommand(getMntnceBakCmd());
 			maintenanceList.setCommandListener(this);
 			// maintenanceList.setSelectedFlags(new boolean[] { false, false });
@@ -1341,9 +1355,18 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				switchDisplayable(null, getWaitForm());
 
 				deleteActivityPlan();
+			}else if(__selectedString.equals("Download All")){
+				getWaitForm().deleteAll();
+				getWaitForm().setTitle("Download All");
+				getWaitForm().append("Please wait........");
+				switchDisplayable(null, getWaitForm());
+
+				downloadAll();
 			}
 		}
 	}
+	
+	
 
 	/**
 	 * Returns an initialized instance of mntnceBakCmd component.
@@ -1732,6 +1755,15 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				ConnectionManager.BROWSE_DATASETS);
 		connectionManager.start();
 	}
+	
+	public void downloadAll(){
+		loadSettings();
+		ConnectionManager connectionManager = new ConnectionManager(this,
+				getUrl().getString(), getDhisUserName().getString(),
+				getDhisUserPass().getString(), getLocale().getString(),
+				ConnectionManager.DOWNLOAD_ALL);
+		connectionManager.start();
+	}
 
 	private void browsePrograms() {
 		loadSettings();
@@ -1898,9 +1930,10 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 					getErrorAlert().setString("FAILURE");
 					switchDisplayable(getErrorAlert(), getDsDnldList());
 				}
-				getSuccessAlert().setTitle("Download Status");
-				getSuccessAlert().setString("SUCCESS");
-				switchDisplayable(getSuccessAlert(), getPrDnldList());
+//				getSuccessAlert().setTitle("Download Status");
+//				getSuccessAlert().setString("SUCCESS");
+//				switchDisplayable(getSuccessAlert(), getPrDnldList());
+				switchDisplayable(getSuccessAlert(), getMainMenuList());
 
 			} catch (RecordStoreException rse) {
 			}
@@ -1926,7 +1959,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		} else {
 			getErrorAlert().setTitle("Download Status");
 			getErrorAlert().setString("FAILURE");
-			switchDisplayable(getErrorAlert(), getMaintenanceList());
+//			switchDisplayable(getErrorAlert(), getMaintenanceList());
+			switchDisplayable(getErrorAlert(), getMainMenuList());
 		}
 	}
 

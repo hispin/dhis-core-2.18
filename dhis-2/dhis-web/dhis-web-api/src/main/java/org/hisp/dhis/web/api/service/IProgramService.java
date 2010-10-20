@@ -3,6 +3,8 @@
  */
 package org.hisp.dhis.web.api.service;
 
+import java.util.List;
+
 import org.hisp.dhis.web.api.model.AbstractModelList;
 import org.hisp.dhis.web.api.model.Program;
 
@@ -12,7 +14,7 @@ import org.hisp.dhis.web.api.model.Program;
  */
 public interface IProgramService {
 	
-	AbstractModelList getAllProgramsForLocale( String localeString );
+	List<Program> getAllProgramsForLocale( String localeString );
 	
 	Program getProgramForLocale( int programId, String localeString );
 

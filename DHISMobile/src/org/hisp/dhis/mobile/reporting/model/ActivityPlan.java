@@ -19,6 +19,7 @@ public class ActivityPlan implements ISerializable {
 
 	public void deSerialize(DataInputStream din) throws IOException {
 		int size = din.readInt();
+		System.out.println("number activities:"+size);
 
 		for (int i = 0; i < size; i++) {
 			Activity activity = new Activity();
@@ -29,8 +30,12 @@ public class ActivityPlan implements ISerializable {
 			b.setFirstName(din.readUTF());
 			b.setMiddleName(din.readUTF());
 			b.setLastName(din.readUTF());
+			boolean late = din.readBoolean();
+			System.out.println("deserialize late status:"+late);
+			activity.setLate(late);
+			
 			int attsNumb = din.readInt();
-
+			System.out.println("deserialized attribute number:"+attsNumb);
 			Vector attsVector = b.getAttsValues();
 
 			for (int j = 0; j < attsNumb; j++) {

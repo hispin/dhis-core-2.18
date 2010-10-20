@@ -44,42 +44,65 @@ public class DefaultProgramService implements IProgramService
     // ProgramService
     // -------------------------------------------------------------------------
 	
-	public AbstractModelList getAllProgramsForLocale(String localeString) 
-	{
-		Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
-        OrganisationUnit unit = null;
-        
-        if( units.size() > 0 )
-        {
-        	unit = units.iterator().next();       	
-        }
-        else
-        {
-        	return null;
-        }
-        
-        Locale locale = LocaleUtil.getLocale(localeString);
-		
-		AbstractModelList abstractModelList = new AbstractModelList();
+//	public AbstractModelList getAllProgramsForLocale(String localeString) 
+//	{
+//		Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+//        OrganisationUnit unit = null;
+//        
+//        if( units.size() > 0 )
+//        {
+//        	unit = units.iterator().next();       	
+//        }
+//        else
+//        {
+//        	return null;
+//        }
+//        
+//        Locale locale = LocaleUtil.getLocale(localeString);
+//		
+//		AbstractModelList abstractModelList = new AbstractModelList();
+//
+//		List<AbstractModel> abstractModels = new ArrayList<AbstractModel>();
+//
+//		for (org.hisp.dhis.program.Program program : programService.getPrograms(unit)) 
+//		{			
+//			program = i18n( i18nService, locale, program );		
+//
+//			AbstractModel abstractModel = new AbstractModel();
+//
+//			abstractModel.setId( program.getId());				
+//			abstractModel.setName(program.getName());			
+//
+//			abstractModels.add(abstractModel);										
+//		}
+//		
+//		abstractModelList.setAbstractModels(abstractModels);
+//		
+//		return abstractModelList;
+//	}
+	
+	public List<Program> getAllProgramsForLocale(String localeString) 
+    {
+            List<Program> programs = new ArrayList<Program>();
+            
+            Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+            OrganisationUnit unit = null;
+    
+            if( units.size() > 0 )
+            {
+                    unit = units.iterator().next();         
+            }
+            else
+            {
+                    return null;
+            }
+            for (org.hisp.dhis.program.Program program : programService.getPrograms(unit)) 
+            {                       
+                programs.add(getProgramForLocale( program.getId() , localeString));                                                                              
+            }
 
-		List<AbstractModel> abstractModels = new ArrayList<AbstractModel>();
-
-		for (org.hisp.dhis.program.Program program : programService.getPrograms(unit)) 
-		{			
-			program = i18n( i18nService, locale, program );		
-
-			AbstractModel abstractModel = new AbstractModel();
-
-			abstractModel.setId( program.getId());				
-			abstractModel.setName(program.getName());			
-
-			abstractModels.add(abstractModel);										
-		}
-		
-		abstractModelList.setAbstractModels(abstractModels);
-		
-		return abstractModelList;
-	}
+            return programs;
+    }
 	
 	public Program getProgramForLocale(int programId, String localeString) 
 	{

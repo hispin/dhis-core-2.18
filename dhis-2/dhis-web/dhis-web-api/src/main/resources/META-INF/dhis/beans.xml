@@ -22,10 +22,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.web.api.consumer.DataSetValueConsumer"
 		class="org.hisp.dhis.web.api.consumer.DataSetValueConsumer" scope="singleton"/>
 		
+	<bean id="org.hisp.dhis.web.api.provider.ActivityWrapperProvider"
+		class="org.hisp.dhis.web.api.provider.ActivityWrapperProvider" scope="singleton"/>	
+		
 	<bean id="org.hisp.dhis.web.api.consumer.ActivityValueConsumer"
-		class="org.hisp.dhis.web.api.consumer.ActivityValueConsumer" scope="singleton"/>	
-		
-		
+		class="org.hisp.dhis.web.api.consumer.ActivityValueConsumer" scope="singleton"/>
 	<!-- Resources -->
 	
 	<bean id="org.hisp.dhis.web.api.resources.UserResource"
@@ -47,7 +48,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
       class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>  
 	
-	
+	<bean id="org.hisp.dhis.web.api.resources.ActivityWrapperResource"
+      class="org.hisp.dhis.web.api.resources.ActivityWrapperResource" scope="prototype"/>  
+      
 	<!-- Services -->
 	
 	<bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
