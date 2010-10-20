@@ -83,6 +83,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private TextField serverURL;
 	private TextField pinTextField;
 	private ChoiceGroup periodChoice;
+	private ChoiceGroup choiceGroup;
 	private Alert successAlert;
 	private Alert errorAlert;
 	private Form activityEntryForm;
@@ -1179,6 +1180,12 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 						intField.setString(dataValue.getVal());
 						form.append(intField);
 						dataElements.put(de, intField);
+					} else if (de.getType().equals("bool")) {
+						choiceGroup = new ChoiceGroup("", Choice.MULTIPLE);
+						choiceGroup.append(de.getName(), null);
+						choiceGroup.setFitPolicy(Choice.TEXT_WRAP_ON);
+						form.append(choiceGroup);
+						dataElements.put(de, choiceGroup);
 					} else {
 						TextField txtField = new TextField(de.getName(), "",
 								32, TextField.ANY);
@@ -2068,6 +2075,9 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				TextField intField = (TextField) dataElements.get(de);
 				val = intField.getString();
 
+			} else if (de.getType().equals("bool")) {
+				ChoiceGroup boolField = (ChoiceGroup) dataElements.get(de);
+				val = boolField.isSelected(0) == true ? "true" : "false";
 			} else {
 				TextField txtField = (TextField) dataElements.get(de);
 				val = txtField.getString();
