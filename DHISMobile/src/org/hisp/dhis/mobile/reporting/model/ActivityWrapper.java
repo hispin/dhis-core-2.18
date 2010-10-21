@@ -32,9 +32,6 @@ public class ActivityWrapper {
 		this.activityPlan = activityPlan;
 	}
 	
-	
-	
-	
 	public void deSerialize(DataInputStream din) throws IOException {
 		this.activityPlan = new ActivityPlan();
 		this.programs = new Vector();
@@ -42,11 +39,14 @@ public class ActivityWrapper {
 		int numbProgram = din.readInt();
 		System.out.println("Deserialize of ActivityWrapper - Number of Programs:"+numbProgram);
 		activityPlan.deSerialize(din);
-		
+		System.out.println("deserialize programs:");
 		for(int i=0; i<numbProgram;i++){
 			Program program = new Program();
 			program.deSerialize(din);
+			programs.addElement(program);
 		}
+		
+		System.out.println("ActivityWrapper: number of programs:"+programs.size());
 	}
 	
 	

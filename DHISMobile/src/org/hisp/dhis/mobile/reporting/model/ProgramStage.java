@@ -85,13 +85,14 @@ public class ProgramStage extends AbstractModel {
 	}
 
 	public void deSerialize(DataInputStream din) throws IOException {
-
+		
 		this.setId(din.readInt());
 		this.setName(din.readUTF());
 
 		int size = din.readInt();
-
+		System.out.println("Deserialize dataelement:" + size);
 		for (int i = 0; i < size; i++) {
+			System.out.println("current size of dataelement vector:"+dataElements.size());
 			DataElement de = new DataElement();
 			de.setId(din.readInt());
 			de.setName(din.readUTF());
