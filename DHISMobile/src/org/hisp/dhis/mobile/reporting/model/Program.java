@@ -48,12 +48,13 @@ public class Program extends AbstractModel {
 		this.setName(din.readUTF());
 
 		int size = din.readInt();
-
+		System.out.println("deserialize programstages:"+size);
 		for (int i = 0; i < size; i++) {
 			System.out.println("In loop... pr");
 			ProgramStage prStg = new ProgramStage();
 			prStg.deSerialize(din);
 			this.programStages.addElement(prStg);
+			System.out.println("current size of programstages vector:"+programStages.size());
 		}
 	}
 }

@@ -13,6 +13,7 @@ public class ReinitConfirmListener extends AlertConfirmListener {
 		if (c.getCommandType() == Command.OK) {
 			ModelRecordStore.clear(ModelRecordStore.ACTIVITY_PLAN_DB);
 			ModelRecordStore.clear(ModelRecordStore.ACTIVITY_DB);
+			ModelRecordStore.clear(ModelRecordStore.ACTIVITYVALUE_DB);
 			ModelRecordStore.clear(ModelRecordStore.DATASET_DB);
 			ModelRecordStore.clear(ModelRecordStore.PROGRAM_DB);
 			ModelRecordStore.clear(ModelRecordStore.PROGRAM_STAGE_DB);

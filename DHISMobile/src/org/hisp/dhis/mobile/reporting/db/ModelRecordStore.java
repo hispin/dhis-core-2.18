@@ -23,6 +23,7 @@ public class ModelRecordStore {
 	public static final String DATASET_DB = "DATASET";
 	public static final String PROGRAM_DB = "PROGRAM";
 	public static final String PROGRAM_STAGE_DB = "PROGRAMSTAGE";
+	public static final String ACTIVITYVALUE_DB = "ACTIVITYVALUE";
 	public static final String ACTIVITY_PLAN_DB = "ACTIVITYPLAN";
 	public static final String ACTIVITY_DB = "ACTIVITY";
 

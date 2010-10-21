@@ -28,12 +28,26 @@ package org.hisp.dhis.mobile.reporting.gui;
  */
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
-import javax.microedition.midlet.*;
-import javax.microedition.lcdui.*;
+
+import javax.microedition.lcdui.Alert;
+import javax.microedition.lcdui.AlertType;
+import javax.microedition.lcdui.Choice;
+import javax.microedition.lcdui.ChoiceGroup;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.DateField;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.List;
+import javax.microedition.lcdui.TextField;
+import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.RecordStoreException;
+
 import org.hisp.dhis.mobile.reporting.connection.ConnectionManager;
 import org.hisp.dhis.mobile.reporting.db.ActivityRecordStore;
 import org.hisp.dhis.mobile.reporting.db.ActivityValueRecordStore;
@@ -61,7 +75,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 
 	private boolean midletPaused = false;
 	private boolean login = false;
-
+	private boolean currentActivyt = true;
 	Vector dataSetsVector = new Vector();
 	Vector programsVector = new Vector();
 	Vector activitiesVector = new Vector();
@@ -94,6 +108,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private Form periodForm;
 	private Form waitForm;
 	private Form activityDetailForm;
+	private List villageForm;
 	private List activityPlanList;
 	private List dataSetDisplayList;
 	private List servicesList;
@@ -137,6 +152,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	private Command pinFormNextCmd;
 	private Command pinFormReinitCmd;
 	private Command settingCommand;
+	private Command villageBackCmd;
 	private Image logo;
 
 	/**
@@ -289,14 +305,41 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			if (command == List.SELECT_COMMAND) {
 				activityListAction();
 			} else if (command == actvPlnLstBakCmd) {
-				switchDisplayable(null, getMainMenuList());
+				// switchDisplayable(null, getMainMenuList());
+				if (this.currentActivyt) {
+					switchDisplayable(null, getVillageForms());
+				} else {
+					switchDisplayable(null, getMainMenuList());
+				}
+
 			} else if (command == activityDetailCmd) {
-				activityDetailsAction();
-				switchDisplayable(null, getActivityDetailForm());
+				// activityDetailsAction();
+				// switchDisplayable(null, getActivityDetailForm());
 			}
 		} else if (displayable == activityDetailForm) {
 			if (command == activityDetailOkCmd) {
-				switchDisplayable(null, getActivityPlanList());
+				// switchDisplayable(null, getActivityPlanList());
+
+				ModelRecordStore modelRecordStore = null;
+				ProgramStage prStage = null;
+
+				try {
+					modelRecordStore = new ModelRecordStore(
+							ModelRecordStore.PROGRAM_STAGE_DB);
+					byte rec[] = modelRecordStore.getRecord(selectedActivity
+							.getTask().getProgStageId());
+					if (rec != null) {
+						prStage = new ProgramStage();
+						prStage.deSerialize(rec);
+					}
+
+				} catch (RecordStoreException rse) {
+
+				} catch (IOException e) {
+				}
+
+				displayActivity(selectedActivity, prStage,
+						getActivityEntryForm());
 			}
 		} else if (displayable == maintenanceList) {
 			if (command == List.SELECT_COMMAND) {
@@ -337,6 +380,26 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				saveSettings();
 				switchDisplayable(null, getMainMenuList());
 			}
+		} else if (displayable == villageForm) {
+			if (command == List.SELECT_COMMAND) {
+				if (villageForm.getSelectedIndex() == 0) {
+					this.prepairToLoadActivityPlan();
+					ActivityRecordStore activityRecordStore = new ActivityRecordStore(
+							this, ActivityRecordStore.LOAD_CURRENT_ACTIVITYPLAN);
+					Thread thread = new Thread(activityRecordStore);
+					thread.start();
+				} else {
+					switchDisplayable(AlertUtil.getInfoAlert("Warning",
+							"There is no activity"), getVillageForms());
+					// Form emptyForm = new Form("Villages");
+					// emptyForm.addCommand(getActvPlnLstBakCmd());
+					// emptyForm.append("There is no activity");
+					// switchDisplayable(null, emptyForm);
+				}
+			} else if (command == villageBackCmd) {
+				switchDisplayable(null, getMainMenuList());
+			}
+
 		} else if (displayable == pinForm) {
 			if (command == pinFormNextCmd) {
 				checkPIN();
@@ -366,7 +429,11 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				if (!getPinTextField().getString().equals("")) {
 					settingRs.put("pin", getPinTextField().getString().trim());
 					settingRs.save();
-					switchDisplayable(null, getMainMenuList());
+					getWaitForm().deleteAll();
+					getWaitForm().append("Dowloading . . ");
+					switchDisplayable(null, getWaitForm());
+
+					this.downloadAll();
 				} else {
 					switchDisplayable(AlertUtil.getInfoAlert("Error",
 							"PIN cannot be empty"), getPinForm());
@@ -394,6 +461,13 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		this.downloading = downloading;
 	}
 
+	private Command getVillageBackCmd() {
+		if (villageBackCmd == null) {
+			villageBackCmd = new Command("Back", Command.BACK, 0);
+		}
+		return villageBackCmd;
+	}
+
 	/**
 	 * Returns an initialized instance of exitCommand component.
 	 * 
@@ -418,14 +492,14 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 			mainMenuList.append("Completed Activity Plan", null);
 			mainMenuList.append("Update Avtivity Plan", null);
 			// mainMenuList.append("Services", null);
-			mainMenuList.append("Maintenance", null);
+			// mainMenuList.append("Maintenance", null);
 			// mainMenuList.append("Settings", null);
 			mainMenuList.addCommand(getMnuListExtCmd());
 			mainMenuList.addCommand(getSettingCommand());
 			mainMenuList.setCommandListener(this);
 			mainMenuList.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
-			mainMenuList.setSelectedFlags(new boolean[] { false, false, false,
-					false });
+			mainMenuList
+					.setSelectedFlags(new boolean[] { false, false, false });
 		}
 		return mainMenuList;
 	}
@@ -453,12 +527,19 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				loadSettings();
 				switchDisplayable(null, getSettingsForm());
 			} else if (__selectedString.equals("Current Activity Plan")) {
-				this.prepairToLoadActivityPlan();
-				ActivityRecordStore activityRecordStore = new ActivityRecordStore(
-						this, ActivityRecordStore.LOAD_CURRENT_ACTIVITYPLAN);
-				Thread thread = new Thread(activityRecordStore);
-				thread.start();
+				this.currentActivyt = true;
+				switchDisplayable(null, getVillageForms());
+
+				// this.prepairToLoadActivityPlan();
+				// ActivityRecordStore activityRecordStore = new
+				// ActivityRecordStore(
+				// this, ActivityRecordStore.LOAD_CURRENT_ACTIVITYPLAN);
+				// Thread thread = new Thread(activityRecordStore);
+				// thread.start();
 			} else if (__selectedString.equals("Completed Activity Plan")) {
+				this.currentActivyt = false;
+				switchDisplayable(null, getVillageForms());
+
 				this.prepairToLoadActivityPlan();
 				ActivityRecordStore activityRecordStore = new ActivityRecordStore(
 						this, ActivityRecordStore.LOAD_COMPLETED_ACTIVITYPLAN);
@@ -473,6 +554,21 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		getWaitForm().setTitle("Loading activities");
 		getWaitForm().append("Please wait........");
 		switchDisplayable(null, getWaitForm());
+	}
+
+	private List getVillageForms() {
+		if (villageForm == null) {
+			villageForm = new List("Villages", Choice.IMPLICIT);
+			villageForm.append("Village 1", null);
+			villageForm.append("Village 2", null);
+			villageForm.append("Village 3", null);
+			villageForm.append("Village 4", null);
+
+			villageForm.addCommand(getVillageBackCmd());
+
+			villageForm.setCommandListener(this);
+		}
+		return villageForm;
 	}
 
 	/**
@@ -1132,25 +1228,29 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		selectedActivity = (Activity) activitiesVector
 				.elementAt(((List) getActivityPlanList()).getSelectedIndex());
 
-		ModelRecordStore modelRecordStore = null;
-		ProgramStage prStage = null;
+		activityDetailsAction();
 
-		try {
-			modelRecordStore = new ModelRecordStore(
-					ModelRecordStore.PROGRAM_STAGE_DB);
-			byte rec[] = modelRecordStore.getRecord(selectedActivity.getTask()
-					.getProgStageId());
-			if (rec != null) {
-				prStage = new ProgramStage();
-				prStage.deSerialize(rec);
-			}
+		switchDisplayable(null, getActivityDetailForm());
 
-		} catch (RecordStoreException rse) {
-
-		} catch (IOException e) {
-		}
-
-		displayActivity(selectedActivity, prStage, getActivityEntryForm());
+		// ModelRecordStore modelRecordStore = null;
+		// ProgramStage prStage = null;
+		//
+		// try {
+		// modelRecordStore = new ModelRecordStore(
+		// ModelRecordStore.PROGRAM_STAGE_DB);
+		// byte rec[] = modelRecordStore.getRecord(selectedActivity.getTask()
+		// .getProgStageId());
+		// if (rec != null) {
+		// prStage = new ProgramStage();
+		// prStage.deSerialize(rec);
+		// }
+		//
+		// } catch (RecordStoreException rse) {
+		//
+		// } catch (IOException e) {
+		// }
+		//
+		// displayActivity(selectedActivity, prStage, getActivityEntryForm());
 	}
 
 	public void displayActivity(Activity activity, ProgramStage programStage,
@@ -1178,7 +1278,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 					if (de.getType().equals("date")) {
 						DateField dateField = new DateField(de.getName(),
 								DateField.DATE);
-						if (dataValue.getVal() != null) {
+						if (!dataValue.getVal().equalsIgnoreCase("null")) {
 							dateField.setDate(Period.stringToDate(dataValue
 									.getVal()));
 						}
@@ -1199,6 +1299,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 						} else {
 							choiceGroup.setSelectedIndex(0, true);
 						}
+
 						form.append(choiceGroup);
 						dataElements.put(de, choiceGroup);
 					} else {
@@ -1223,6 +1324,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 								32, TextField.NUMERIC);
 						form.append(intField);
 						dataElements.put(de, intField);
+
 					} else if (de.getType().equals("bool")) {
 						choiceGroup = new ChoiceGroup("", Choice.MULTIPLE);
 						choiceGroup.append(de.getName(), null);
@@ -1230,6 +1332,7 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 						form.append(choiceGroup);
 						dataElements.put(de, choiceGroup);
 					} else {
+
 						TextField txtField = new TextField(de.getName(), "",
 								32, TextField.ANY);
 						form.append(txtField);
@@ -1249,8 +1352,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 	public void activityDetailsAction() {
 		getActivityDetailForm().deleteAll();
 
-		selectedActivity = (Activity) activitiesVector
-				.elementAt(((List) getActivityPlanList()).getSelectedIndex());
+		// selectedActivity = (Activity) activitiesVector
+		// .elementAt(((List) getActivityPlanList()).getSelectedIndex());
 
 		ModelRecordStore modelRecordStore = null;
 		ProgramStage prStage = null;
@@ -1673,12 +1776,22 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 		for (int i = 0; i < activities.size(); i++) {
 			Activity activity = (Activity) activities.elementAt(i);
 
-			getActivityPlanList().insert(
-					i,
-					activity.getBeneficiary().getFullName() + "\n"
-							+ Period.formatDailyPeriod(activity.getDueDate()),
-					null);
-
+			if (activity.isLate()) {
+				getActivityPlanList().insert(
+						i,
+						"*"
+								+ activity.getBeneficiary().getFullName()
+								+ "\n"
+								+ Period.formatDailyPeriod(activity
+										.getDueDate()), null);
+			} else {
+				getActivityPlanList().insert(
+						i,
+						activity.getBeneficiary().getFullName()
+								+ "\n"
+								+ Period.formatDailyPeriod(activity
+										.getDueDate()), null);
+			}
 		}
 
 		switchDisplayable(null, getActivityPlanList());
@@ -2109,10 +2222,8 @@ public class DHISMIDlet extends MIDlet implements CommandListener {
 				DateField dateField = (DateField) dataElements.get(de);
 				if (dateField.getDate() != null) {
 					val = Period.formatDailyPeriod(dateField.getDate());
-					System.out.println(val);
 				} else {
-					val = Period.formatDailyPeriod(new Date());
-					System.out.println(val);
+					val = "null";
 				}
 			} else if (de.getType().equals("int")) {
 				TextField intField = (TextField) dataElements.get(de);

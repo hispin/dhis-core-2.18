@@ -46,7 +46,8 @@ public class ProgramStage extends AbstractModel {
         DataOutputStream dout = new DataOutputStream(bout);       
 
         dout.writeInt(this.getId());
-        dout.writeUTF(this.getName());        
+        dout.writeUTF(this.getName());   
+        
         dout.writeInt(dataElements.size());
 
         for(int i=0; i<dataElements.size(); i++)
@@ -61,22 +62,22 @@ public class ProgramStage extends AbstractModel {
         bout.writeTo(out);    	
     } 
     
-    public void serialize( DataOutputStream dout ) throws IOException
-    {
-        dout.writeInt(this.getId());
-        dout.writeUTF(this.getName());        
-        dout.writeInt(dataElements.size());
-        System.out.println("add dataelement");
-        for(int i=0; i<dataElements.size(); i++)
-        {
-            DataElement de = (DataElement)dataElements.get(i);
-            dout.writeInt( de.getId() );
-            dout.writeUTF( de.getName() );
-            dout.writeUTF( de.getType() );
-        }       
-        
-        dout.flush();            	
-    } 
+//    public void serialize( DataOutputStream dout ) throws IOException
+//    {
+//        dout.writeInt(this.getId());
+//        dout.writeUTF(this.getName());        
+//        dout.writeInt(dataElements.size());
+//        System.out.println("add dataelement");
+//        for(int i=0; i<dataElements.size(); i++)
+//        {
+//            DataElement de = (DataElement)dataElements.get(i);
+//            dout.writeInt( de.getId() );
+//            dout.writeUTF( de.getName() );
+//            dout.writeUTF( de.getType() );
+//        }       
+//        
+//        dout.flush();            	
+//    } 
     
     public void deSerialize(byte[] data) throws IOException
     {

@@ -229,6 +229,7 @@ public class ConnectionManager extends Thread {
 			for(int i = 0; i < numbProg; i++){
 				dhisMIDlet.saveProgram((Program)progs.elementAt(i));
 			}
+			dhisMIDlet.setDownloading(false);
 			//save programs trong activity wrapper
 		}
 	}
@@ -277,6 +278,7 @@ public class ConnectionManager extends Thread {
 					break;
 				default:
 					hcon.close();
+					
 					throw new IOException("Response status not OK:" + status);
 				}
 
