@@ -33,6 +33,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.mock.MockSource;
@@ -127,6 +128,51 @@ public class DataSetStoreTest
         dataSets = dataSetStore.getDataSetsBySource( unitC );
         
         assertEquals( 0, dataSets.size() );
+    }
+
+    @Test
+    public void testGetDataSetsBySources()
+    {
+        OrganisationUnit unitA = createOrganisationUnit( 'A' );
+        OrganisationUnit unitB = createOrganisationUnit( 'B' );  
+        OrganisationUnit unitC = createOrganisationUnit( 'C' );  
+        organisationUnitService.addOrganisationUnit( unitA );
+        organisationUnitService.addOrganisationUnit( unitB );
+        organisationUnitService.addOrganisationUnit( unitC );
+
+        DataSet dataSetA = createDataSet( 'A', periodType );
+        DataSet dataSetB = createDataSet( 'B', periodType );
+        DataSet dataSetC = createDataSet( 'C', periodType );
+        DataSet dataSetD = createDataSet( 'D', periodType );
+        dataSetA.getSources().add( unitA );
+        dataSetA.getSources().add( unitB );
+        dataSetB.getSources().add( unitA );
+        dataSetC.getSources().add( unitB );
+        
+        dataSetStore.addDataSet( dataSetA );
+        dataSetStore.addDataSet( dataSetB );
+        dataSetStore.addDataSet( dataSetC );
+        dataSetStore.addDataSet( dataSetD );
+        
+        Collection<Source> sources = new HashSet<Source>();
+        sources.add( unitA );
+        sources.add( unitB );
+        
+        Collection<DataSet> dataSets = dataSetStore.getDataSetsBySources( sources );
+
+        assertEquals( 3, dataSets.size() );
+        assertTrue( dataSets.contains( dataSetA ) );
+        assertTrue( dataSets.contains( dataSetB ) );
+        assertTrue( dataSets.contains( dataSetC ) );
+
+        sources = new HashSet<Source>();
+        sources.add( unitA );
+        
+        dataSets = dataSetStore.getDataSetsBySources( sources );
+        
+        assertEquals( 2, dataSets.size() );
+        assertTrue( dataSets.contains( dataSetA ) );
+        assertTrue( dataSets.contains( dataSetB ) );
     }
     
     @Test

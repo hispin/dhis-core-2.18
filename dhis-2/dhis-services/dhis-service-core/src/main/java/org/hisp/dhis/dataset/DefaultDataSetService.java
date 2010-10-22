@@ -155,14 +155,7 @@ public class DefaultDataSetService
 
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
-        Set<DataSet> dataSets = new HashSet<DataSet>();
-
-        for ( Source source : sources )
-        {
-            dataSets.addAll( getDataSetsBySource( source ) );
-        }
-        
-        return dataSets;
+        return getDataSetsBySources( sources );
     }
 
     public int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<? extends Source> sources )

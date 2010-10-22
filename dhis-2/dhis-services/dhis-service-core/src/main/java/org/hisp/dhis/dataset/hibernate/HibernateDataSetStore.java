@@ -40,6 +40,7 @@ import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.util.ConversionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -163,6 +164,14 @@ public class HibernateDataSetStore
         query.setEntity( "source", source );
         
         return query.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSet> getDataSetsBySources( Collection<Source> sources )
+    {
+        String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ConversionUtils.getIdentifiers( Source.class, sources ) ).list();
     }
     
     @SuppressWarnings( "unchecked" )

@@ -46,6 +46,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -297,6 +298,14 @@ public class HibernateDataElementStore
         final String sql = "select count(*) from categoryoptioncombo where categoryoptioncomboid=" + id;
         
         return statementManager.getHolder().queryForInteger( sql ) > 0;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
+    {
+        String hql = "select distinct de from DataElement de join de.dataSets ds where ds.id in (:ids)";
+        
+        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
     }
     
     // -------------------------------------------------------------------------

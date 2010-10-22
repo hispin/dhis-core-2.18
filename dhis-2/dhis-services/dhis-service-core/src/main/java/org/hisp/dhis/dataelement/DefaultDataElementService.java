@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.comparator.CategoryComboSizeComparator;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
@@ -479,6 +480,11 @@ public class DefaultDataElementService
         return map;
     }
 
+    public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
+    {
+        return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------
