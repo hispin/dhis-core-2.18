@@ -174,14 +174,13 @@ public class DefaultResourceBundleManager
 
     private Collection<Locale> getAvailableLocalesFromDir( String dirPath )
     {
-        File dir = new File( dirPath );
-        
+        dirPath = dirPath.replaceAll( "%20", " " );
+        File dir = new File( dirPath );    
         Set<Locale> availableLocales = new HashSet<Locale>();
-
         File[] files = dir.listFiles( new FilenameFilter()
         {
             public boolean accept( File dir, String name )
-            {
+            {             
                 return name.startsWith( globalResourceBundleName ) && name.endsWith( EXT_RESOURCE_BUNDLE );
             }
         } );

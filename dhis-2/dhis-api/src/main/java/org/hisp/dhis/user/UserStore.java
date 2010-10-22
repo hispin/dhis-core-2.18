@@ -89,6 +89,14 @@ public interface UserStore
     Collection<User> getUsersWithoutOrganisationUnit();
 
     /**
+     * Returns a Collection of Users which are having given Phone number.
+     * 
+     * @param phoneNumber
+     * @return a Collection of Users.
+     */
+    Collection<User> getUsersByPhoneNumber( String phoneNumber );
+
+    /**
      * Deletes a User.
      * 
      * @param user the User to delete.
@@ -235,4 +243,6 @@ public interface UserStore
      * @param userSetting the UserSetting to delete.
      */
     void deleteUserSetting( UserSetting userSetting );
+    
+    Collection<User> getAllUsers( int from, int to );
 }

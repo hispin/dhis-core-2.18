@@ -34,6 +34,7 @@ import java.util.Set;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.source.Source;
 
@@ -64,8 +65,15 @@ public class SaveAssignMultiDataSetForOrgunitAction
         this.dataSetService = dataSetService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
 
     private Collection<String> selectedDataSets = new HashSet<String>();
@@ -73,6 +81,13 @@ public class SaveAssignMultiDataSetForOrgunitAction
     public void setSelectedDataSets( Collection<String> selectedDataSets )
     {
         this.selectedDataSets = selectedDataSets;
+    }
+
+    private boolean assignStatus;
+
+    public void setAssignStatus( boolean assignStatus )
+    {
+        this.assignStatus = assignStatus;
     }
 
     // -------------------------------------------------------------------------
@@ -86,48 +101,29 @@ public class SaveAssignMultiDataSetForOrgunitAction
 
         Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();
 
-        getUnitsInTheTree( rootUnits, unitsInTheTree );
+        organisationUnitService.getUnitsInTheTree( rootUnits, unitsInTheTree );
+
+        Set<Source> selectedOrganisationUnits = organisationUnitService.convert( selectionTreeManager
+            .getReloadedSelectedOrganisationUnits() );
 
         for ( String dataSetId : selectedDataSets )
         {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+            DataSet dataSet = dataSetService.getDataSet( Integer.valueOf( dataSetId ) );
 
             Set<Source> assignedSources = dataSet.getSources();
 
-            assignedSources.removeAll( convert( unitsInTheTree ) );
+            if ( !assignStatus )
+            {
+                assignedSources.removeAll( organisationUnitService.convert( unitsInTheTree ) );
+            }
 
-            Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
-                .getReloadedSelectedOrganisationUnits();
-
-            assignedSources.addAll( convert( selectedOrganisationUnits ) );
+            assignedSources.addAll( selectedOrganisationUnits );
 
             dataSet.setSources( assignedSources );
-            
+
             dataSetService.updateDataSet( dataSet );
         }
-        
+
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
-    {
-        Set<Source> sources = new HashSet<Source>();
-
-        sources.addAll( organisationUnits );
-
-        return sources;
-    }
-
-    private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
-    {
-        for ( OrganisationUnit root : rootUnits )
-        {
-            unitsInTheTree.add( root );
-            getUnitsInTheTree( root.getChildren(), unitsInTheTree );
-        }
     }
 }

@@ -8,7 +8,8 @@
     "shortName": "$!encoder.jsEncode( ${dataElement.shortName} )",
     "code": "$!encoder.jsEncode( ${dataElement.code} )",
     "type": "$!{dataElement.type}",
-    "aggregationOperator": "$!{dataElement.aggregationOperator}"
+    "aggregationOperator": "$!{dataElement.aggregationOperator}",
+	"zeroIsSignificant": "$!{dataElement.zeroIsSignificant}"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

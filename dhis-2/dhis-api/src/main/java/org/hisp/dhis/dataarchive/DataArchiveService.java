@@ -34,7 +34,9 @@ import java.util.Date;
  */
 public interface DataArchiveService
 {
+    String ID = DataArchiveService.class.getName();
+
     int archiveData( Date startDate, Date endDate, DataArchiveOperation operation, DataEliminationStrategy strategy );
-    
+
     int getNumberOfOverlappingValues();
 }

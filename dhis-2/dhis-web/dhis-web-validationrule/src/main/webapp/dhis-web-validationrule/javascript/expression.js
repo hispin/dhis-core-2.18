@@ -87,7 +87,7 @@ function updateTextualExpression( expressionFieldName )
 }
 
 function checkNotEmpty( field, message ){
-		
+
 	if( field.value.length == 0 ){
 		setInnerHTML( field.name + "Info", message );
 		$( '#'+ field.name ).css( "background-color", "#ffc5c5" );
@@ -114,6 +114,11 @@ function validateExpression()
 			{expression: expression},
 			function( json ){
 				byId( "textualExpression" ).innerHTML = json.message;
+				if( json.response == 'error')
+				{
+					$( '#expression' ).css( "background-color", "#ffc5c5" );
+					return;
+				}
 				var description = byId( "expDescription" ).value;
 				var expression = byId( "expression" ).value;
 				var textualDescription = byId( "textualExpression" ).innerHTML;

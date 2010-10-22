@@ -103,7 +103,7 @@
 
       <tr>
         <td colspan="3">
-          <span id="message"/>
+          <span id="message"></span>
         </td>
       </tr>
 

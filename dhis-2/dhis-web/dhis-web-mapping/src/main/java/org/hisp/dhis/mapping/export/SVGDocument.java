@@ -30,8 +30,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.period.Period;
 
 /**
  * @author Tran Thanh Tri
@@ -54,6 +54,8 @@ public class SVGDocument
     private String period;
 
     private Indicator indicator;
+    
+    private DataElement dataElement;
 
     private boolean includeLegends;
 
@@ -67,11 +69,13 @@ public class SVGDocument
 
     public StringBuffer getSVGForImage()
     {
+        String indicatorName = this.indicator != null ? this.indicator.getName() : this.dataElement.getName();
+        
         String title_ = "<g id=\"title\" style=\"display: block; visibility: visible;\"><text id=\"title\" x=\"30\" y=\"15\" font-size=\"14\" font-weight=\"bold\"><tspan>"
             + this.title + "</tspan></text></g>";
 
         String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"30\" font-size=\"12\"><tspan>"
-            + this.indicator.getName() + "</tspan></text></g>";
+            + indicatorName + "</tspan></text></g>";
 
         String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"30\" y=\"45\" font-size=\"12\"><tspan>"
             + this.period + "</tspan></text></g>";
@@ -251,6 +255,16 @@ public class SVGDocument
     public void setIndicator( Indicator indicator )
     {
         this.indicator = indicator;
+    }
+
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
+
+    public void setDataElement( DataElement dataElement )
+    {
+        this.dataElement = dataElement;
     }
 
     public int getWidth()

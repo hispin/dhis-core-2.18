@@ -229,18 +229,19 @@ public class DefaultReportService
 
         int dataElementid = 1020;
 
-        if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" )
-            || lltype.equalsIgnoreCase( "lllivebirth-l5DECodes.xml" )
-            || lltype.equalsIgnoreCase( "lllivebirth-l6DECodes.xml" ) )
+        if ( lltype.equalsIgnoreCase( "lllivebirth-l4DECodes.xml" ) || lltype.equalsIgnoreCase( "lllivebirth-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "lllivebirth-l6DECodes.xml" ) )
+        {
             dataElementid = 1020;
-        else if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" )
-            || lltype.equalsIgnoreCase( "lldeath-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l6DECodes.xml" ) )
-            dataElementid = 1027;
-        else if ( lltype.equalsIgnoreCase( "llmaternaldeath-l4DECodes.xml" )
-            || lltype.equalsIgnoreCase( "llmaternaldeath-l5DECodes.xml" )
-            || lltype.equalsIgnoreCase( "llmaternaldeath-l6DECodes.xml" ) )
+        }
+        else if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l6DECodes.xml" ) )
+        {
+           dataElementid = 1027;
+        }
+        else if ( lltype.equalsIgnoreCase( "llmaternaldeath-l4DECodes.xml" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l6DECodes.xml" ) )
+        {
             dataElementid = 1032;
-
+        }
+        
         try
         {
             query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
@@ -266,6 +267,7 @@ public class DefaultReportService
     public List<Report_inDesign> getReportDesign( Report_in report )
     {
         List<Report_inDesign> deCodes = new ArrayList<Report_inDesign>();
+        
         String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
             .getValue();
 

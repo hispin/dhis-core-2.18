@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
+import org.hisp.dhis.source.Source;
 
 /**
  * Defines methods for working with OrganisationUnits.
@@ -215,6 +216,23 @@ public interface OrganisationUnitService
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
     
+    
+    /**
+     * Convert the OrganisationUnit collection to the set of Source 
+     * 
+     * @return a Set with Source entries.
+     */
+    Set<Source> convert( Collection<OrganisationUnit> organisationUnits );
+    
+    /**
+     * Get the units in tree by the collection of given roots
+     * 
+     * @param rootUnits the collection of given roots.
+     * @param unitsInTheTree the units in tree.
+     */
+    void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree );
+   
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
@@ -233,7 +251,7 @@ public interface OrganisationUnitService
      * @param parentId the parent organisation unit identifier.
      */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
-    
+ 
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------

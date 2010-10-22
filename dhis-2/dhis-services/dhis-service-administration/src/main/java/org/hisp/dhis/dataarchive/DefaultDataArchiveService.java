@@ -84,7 +84,7 @@ public class DefaultDataArchiveService
         {
             dataArchiveStore.unArchiveData( startDate, endDate );
         }
-        
+
         return dataArchiveStore.getNumberOfArchivedValues();
     }
 

@@ -475,16 +475,18 @@ function selectAll( list )
 
 function ageOnchange()
 {
-	jQuery("#birthDate").val("").removeClass("error").rules("remove","required");
-	jQuery("#age").rules("add",{required:true});
+	//jQuery("#birthDate").val("").removeClass("error").rules("remove","required");
+	//jQuery("#age").rules("add",{required:true});
+	jQuery("#birthDate").val("");
 
 }
 
 function bdOnchange()
 {
-	jQuery("#age").rules("remove","required");
-	jQuery("#age").val("")
-	jQuery("#birthDate").rules("add",{required:true});
+	//jQuery("#age").rules("remove","required");
+	//jQuery("#age").val("");
+	//jQuery("#birthDate").rules("add",{required:true});
+	jQuery("#age").val("");
 }
 
 
@@ -600,7 +602,7 @@ function toggleUnderAge(this_)
 {
 	if( jQuery(this_).is(":checked"))
 	{
-		tb_show(i18n_child_representative,"showAddRepresentative.action?TB_iframe=true&height=500&width=500",null);
+		tb_show(i18n_child_representative,"showAddRepresentative.action?TB_iframe=true&height=400&width=500",null);
 	}else
 	{
 		jQuery("input.idfield").each(function(){

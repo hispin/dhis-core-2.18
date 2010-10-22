@@ -414,11 +414,11 @@ public class DefaultExpressionService
     public String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues, boolean aggregated )
     {
         StringBuffer buffer = null;
-
+        
         if ( expression != null )
         {
             final Matcher matcher = FORMULA_PATTERN.matcher( expression );
-
+            
             buffer = new StringBuffer();
 
             while ( matcher.find() )
@@ -428,11 +428,11 @@ public class DefaultExpressionService
                 final DataElementOperand operand = getOperand( replaceString );
                 
                 String value = null;
-                
+              
                 if ( aggregated )
                 {
                     Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand.getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
-                    
+
                     value = aggregatedValue != null ? String.valueOf( aggregatedValue ) : null;
                 }
                 else

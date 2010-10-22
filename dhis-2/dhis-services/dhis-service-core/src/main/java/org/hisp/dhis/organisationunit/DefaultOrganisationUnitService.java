@@ -40,6 +40,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
@@ -540,5 +541,25 @@ public class DefaultOrganisationUnitService
     public int getNumberOfOrganisationUnits()
     {
         return organisationUnitStore.getNumberOfOrganisationUnits();
+    }
+
+    @Override
+    public Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
+    {
+        Set<Source> sources = new HashSet<Source>();
+
+        sources.addAll( organisationUnits );
+
+        return sources;
+    }
+
+    @Override
+    public void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
+    {
+        for ( OrganisationUnit root : rootUnits )
+        {
+            unitsInTheTree.add( root );
+            getUnitsInTheTree( root.getChildren(), unitsInTheTree );
+        }
     }
 }

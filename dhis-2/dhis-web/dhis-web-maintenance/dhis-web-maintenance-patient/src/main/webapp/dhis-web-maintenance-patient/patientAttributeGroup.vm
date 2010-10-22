@@ -20,11 +20,10 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $patientAttributeGroup in $patientAttributeGroups )
-              <tr>
+              <tr id="tr${patientAttributeGroup.id}">
               
-                <td#alternate( $mark )>$encoder.htmlEncode( $patientAttributeGroup.name )</td>                
+                <td>$encoder.htmlEncode( $patientAttributeGroup.name )</td>                
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdatePatientAttributeGroupForm.action?id=$patientAttributeGroup.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
@@ -39,11 +38,6 @@
                 </td>
                 
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
             #end
 
           </tbody>
@@ -59,7 +53,7 @@
 				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
                 <p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
                 <p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
-                <p><label>$i18n.getString( "required" ):</label><br><span id="requiredField"></span></p>
+                <p><label>$i18n.getString( "number_of_attribute" ):</label><br><span id="noAttributeField"></span></p>
 			</div>
 
 		</td>

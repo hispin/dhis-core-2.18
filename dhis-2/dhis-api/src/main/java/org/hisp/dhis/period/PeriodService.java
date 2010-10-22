@@ -252,6 +252,8 @@ public interface PeriodService
      */
     Collection<Period> namePeriods( Collection<Period> periods, I18nFormat format );
     
+    Period reloadPeriod( Period period );
+    
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------

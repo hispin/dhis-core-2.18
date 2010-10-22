@@ -45,7 +45,7 @@ public class ValidatePatientAttributeAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PatientAttributeService patientAttributeService;
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -56,7 +56,7 @@ public class ValidatePatientAttributeAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
@@ -64,19 +64,12 @@ public class ValidatePatientAttributeAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }    
 
     private String message;
 
@@ -99,57 +92,16 @@ public class ValidatePatientAttributeAction
     public String execute()
         throws Exception
     {
+        name = name.trim();
 
-        if ( nameField == null )
+        PatientAttribute match = patientAttributeService.getPatientAttributeByName( name );
+
+        if ( match != null && (id == null || match.getId() != id) )
         {
-            message = i18n.getString( "please_specify_a_name" );
+            message = i18n.getString( "name_in_use" );
 
             return INPUT;
         }
-
-        else
-        {
-            nameField = nameField.trim();
-
-            if ( nameField.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_name" );
-
-                return INPUT;
-            }
-            
-            PatientAttribute match = patientAttributeService.getPatientAttributeByName( nameField );
-            
-            if ( match != null && ( id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "name_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        if ( description == null )
-        {
-            message = i18n.getString( "please_specify_a_description" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_description" );
-
-                return INPUT;
-            }
-        }        
-        
-        // ---------------------------------------------------------------------
-        // Validation success
-        // ---------------------------------------------------------------------
 
         message = i18n.getString( "everything_is_ok" );
 

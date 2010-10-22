@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping.action;
 
 import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE_TYPE;
 import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_GEOJSON;
+import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_DATABASE;
 import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
 import static org.hisp.dhis.mapping.MappingService.MAP_DATE_TYPE_FIXED;
 
@@ -80,7 +81,7 @@ public class GetMapUserSettingsAction
     public String execute()
         throws Exception
     {
-        mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+        mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
         
         mapDateType = (String) userSettingService.getUserSetting( KEY_MAP_DATE_TYPE, MAP_DATE_TYPE_FIXED );
         

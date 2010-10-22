@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataElementGroupOrder>
+	<name>$dataElementGroupOrder.name</name>
+	<code>$dataElementGroupOrder.code</code>
+	<dataElements>
+	#foreach( $dataElement in $dataElementGroupOrder.dataElements )
+		<dataElement>
+			<id>$dataElement.id</id>
+			<name>$encoder.xmlEncode( $dataElement.name )</name>
+		</dataElement>
+	#end
+	</dataElements>
+</dataElementGroupOrder>

@@ -240,6 +240,7 @@ public class SearchPatientAction
         {
             patientAttribute = patientAttributeService.getPatientAttribute(sortPatientAttributeId);
         }
+        
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
@@ -266,6 +267,7 @@ public class SearchPatientAction
 
             //System.out.println("listAll startPos "+  startPos+" endPos "+ endPos );
             patients = patientService.getPatientsByOrgUnitAttr( organisationUnit , startPos,endPos, patientAttribute );
+            
             if( patients != null && patients.size() > 0 ) 
             {
                 //System.out.println("patients size = "+patients.size());
@@ -278,7 +280,8 @@ public class SearchPatientAction
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
                     {
-                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                        mapPatientPatientAttr.put(patient, 
+                        		patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
                     }
                 }
             }
@@ -316,6 +319,7 @@ public class SearchPatientAction
                 {
                     patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
                 }
+                
                 for( Patient patient : patients )
                 {
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
@@ -325,7 +329,7 @@ public class SearchPatientAction
                     }
                 }
             }
-            
+System.out.println("\n patientAttributeValueService.searchPatientAttributeValue : " + patients);       
             return SUCCESS;
         }
 
@@ -467,7 +471,7 @@ public class SearchPatientAction
                 }
             }
         }
-        
+    
         return SUCCESS;
 
     }

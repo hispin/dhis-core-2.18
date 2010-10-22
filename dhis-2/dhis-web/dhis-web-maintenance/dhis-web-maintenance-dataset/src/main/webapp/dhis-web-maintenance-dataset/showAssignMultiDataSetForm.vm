@@ -1,7 +1,15 @@
+<script>
+
+	jQuery(document).ready(	function()
+	{
+		validation( 'assignMultiDataSetForm', confirmToSumbit );
+	});
+
+</script>
+
 <h3>$i18n.getString( "dataset_assignment_editor" )</h3>
 
-<form id="assignMultiDataSetForm" action="saveAssignMultiDataSetForOrgunit.action" method="post" onsubmit="selectAllById('selectedDataSets')">
-
+<form id="assignMultiDataSetForm" action="saveAssignMultiDataSetForOrgunit.action" method="POST">
 <table>
 	<tr>
 		<th>$i18n.getString( "available_datasets" )</th><td></td><th>$i18n.getString( "selected_datasets" )</th>
@@ -13,7 +21,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select id="availableDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )">
+			<select id="availableDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="reloadTree( 'availableDataSets', 'selectedDataSets' )">
 			#foreach( $dataSet in $availableDataSets )
 				<option value="$dataSet.id">$dataSet.name</option>
 			#end
@@ -21,90 +29,35 @@
 		</td>
 		
 		<td style="text-align:center">			
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )" /><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )" /><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataSets', 'selectedDataSets' )"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedDataSets', 'availableDataSets' )"/>			
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="reloadTree( 'availableDataSets', 'selectedDataSets' )" /><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="reloadTree( 'selectedDataSets', 'availableDataSets' )" /><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="reloadTree( 'availableDataSets', 'selectedDataSets', 'ALL' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="reloadTree( 'selectedDataSets', 'availableDataSets', 'ALL' )"/>			
 		</td>	
 		<td>
-			<select id="selectedDataSets" name="selectedDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )" />
+			<select id="selectedDataSets" name="selectedDataSets" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="reloadTree( 'selectedDataSets', 'availableDataSets' )" class="{validate:{required:true}}"/>
 		</td>
 	</tr>	
 </table>
 
 <div><br/></div>
-#organisationUnitSelectionTree( true, true, false)
+#organisationUnitSelectionTree( true, true, false )
+<br/>
+
+<table>
+	<tr>
+		<th>$i18n.getString( "optional" )</th>
+	</tr>
+	<tr><td>
+		<input type="checkbox" id="assignStatus" name="assignStatus" value="true"/>$i18n.getString( "not_change_old_but_assign_new_only" )
+	</td></tr>
+</table>
 
 <p>
 	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
 	<input type="button" onclick="window.location.href='index.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/>
 </p>
 </form>
-
-<!-- Add new Div -->
-
-<div id="addDataSetEditorDiv" style="position:fixed;display:none;width:350px;z-index:11;background-color: white;border: medium solid silver;height:220px;padding:20px;">
-<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="javascript: closeDiv('addDataSetEditorDiv')">[x]</div>
-
-<h4 align="center">$i18n.getString( "add_dataset" )</h4>
-
-<form id="addDataSetEditorForm" name="addDataSetEditorForm" action="addDataSetEditor.action" method="post" >
-	<table id="detailsList">
-		<col/> ## Labels
-		<col/> ## Input
-		<thead>
-			<tr>
-				<th colspan="2">$i18n.getString( "dataset_details" )</th>
-			</tr>
-		</thead>
-		<tbody>
-		<tr>
-			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:2}}"/></td>
-		</tr>
-		<tr>
-			<td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="20" class="{validate:{required:true,minlength:2}}"/></td>
-		</tr>
-		<tr>
-			<td><label>$i18n.getString( "code" )</label></td>
-			<td><input type="text" id="code" name="code" style="width:20em" maxlength="40"/></td>
-		</tr>
-		<tr>
-			<td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td>
-				<select id="frequencySelect" name="frequencySelect" style="min-width:20em" class="{validate:{required:true}}">
-				</select>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-	    <tr>
-			<td colspan="3" align="center">
-				<input type="submit" value="$i18n.getString( 'save' )" style="width:13em"/>
-				<input type="button" onclick="javascript: closeDiv('addDataSetEditorDiv')" value="$i18n.getString( 'cancel' )" style="width:12em"/>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-		</tbody>
-	</table>
-</form>
-</div>
-
-<!-- Rename Div -->
-<div id="renameDataSetEditorDiv" style="position:fixed;display:none;width:550px;z-index:11;background-color: white;border: medium solid silver;height:50px;padding:10px;">
-<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="javascript: closeDiv('renameDataSetEditorDiv')">[x]</div>
-<table width="100%" height="100%" border="0" cellpadding="2" cellspacing="2">
-		<tr align="center">
-			<td>$i18n.getString( "name" ): </td>
-			<td><input type="text" id="dateSetNameField" style="width:30em" onkeyup="javascript: checkKeyCodeAndValidateRenameField(event);"/></td>
-			<td>
-				<input id="addRenameDataSetButton" type="button" value="$i18n.getString( 'ok' )"/>
-				<input type="button" onclick="javascript: closeDiv( 'renameDataSetEditorDiv' );" value="$i18n.getString( 'cancel' )"/>
-			</td>
-		</tr>	  
-	</table>
-	
-</div>
 
 <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
 	<div style="float:right">
@@ -113,7 +66,7 @@
 	<p><span id="warningField"></span></p>
 </div>
 
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"/>
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
 
 <script type="text/javascript">
 
@@ -121,11 +74,73 @@
 		setMessage( '$i18n.getString( "$message" )' + '<br/><br/>[<strong>' + '$i18n.getString( "$name" ) </strong>]' );
 	#end
 	
-	var previousName = '';
-
+	var confirmStatus = '';
 	var i18n_add_success = '$encoder.jsEscape( $i18n.getString( "add_success" ) , "'")';
 	var i18n_rename_success = '$encoder.jsEscape( $i18n.getString( "rename_success" ) , "'")';
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'")';
+	var i18n_confirm_save = '$encoder.jsEscape( $i18n.getString( "confirm_save" ) , "'")';
 	var i18n_dataset_unselected = '$encoder.jsEscape( $i18n.getString( "choose_dataset" ) , "'")';
+	var i18n_datasets_different_orgunitlist = '$encoder.jsEscape( $i18n.getString( "datasets_different_orgunitlist" ) , "'")';
+	
+	// --------------------------------------------------------------
+	// Methods
+	// --------------------------------------------------------------
+	
+	function reloadTree( sourceListId, targetListId, typeMove )
+	{
+		if ( typeMove == undefined ) {
+			moveSelectedById( sourceListId, targetListId );
+		}
+		else {
+			moveAllById( sourceListId, targetListId );
+		}
+		reload();
+	}
+	
+	function reload()
+	{
+		jQuery.post( "mergeAssignedOrgunits.action",
+		{ selectedDataSets: getArrayValueOfListById( 'selectedDataSets' )
+		},
+		function( xml ){
+			var responseLen = jQuery( xml ).find('unitId').length;
+			var selectedListLen = byId('selectedDataSets').options.length;
+			
+			if ( responseLen == 0 )
+			{
+				confirmStatus = 'required';
+				if ( selectedListLen != 0 )
+				{
+					setHeaderDelayMessage( i18n_datasets_different_orgunitlist );
+				}
+			}
+			else
+			{
+				confirmStatus = '';
+			}
+			selectedOrganisationUnitXMLABCDEF( xml );
+		});	
+	}
+	
+	function confirmToSumbit()
+	{
+		var assignStatus = $("#assignStatus").is(':checked');
+		
+		if ( (confirmStatus != '') && !assignStatus ) {
+		
+			if ( window.confirm( i18n_confirm_save ) )
+			{
+				submitForm();
+			}
+			else return;
+		}
+		submitForm();
+	}
+	
+	function submitForm()
+	{
+		selectAllById('selectedDataSets');
+		byId('assignMultiDataSetForm').submit();
+	}
 	
 </script>

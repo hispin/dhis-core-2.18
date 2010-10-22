@@ -50,6 +50,23 @@
     <filter-name>Struts</filter-name>
     <url-pattern>*.action</url-pattern>
   </filter-mapping>
+
+    <servlet>
+        <servlet-name>jcaptcha</servlet-name>
+        <servlet-class>org.hisp.dhis.security.action.CaptchaImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+        <servlet-name>jcaptcha</servlet-name>
+        <url-pattern>/dhis-web-commons/security/jcaptcha.jpg</url-pattern>
+  </servlet-mapping>
+  <servlet>
+        <servlet-name>captchaValidator</servlet-name>
+        <servlet-class>org.hisp.dhis.security.action.CaptchaValidateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+        <servlet-name>captchaValidator</servlet-name>
+        <url-pattern>/dhis-web-commons/security/captchaValidator</url-pattern>
+  </servlet-mapping>
   
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

@@ -54,11 +54,11 @@ public class AddProgramAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String description;
@@ -100,7 +100,7 @@ public class AddProgramAction
 
         Program program = new Program();             
                 
-        program.setName( nameField );
+        program.setName( name );
         program.setDescription( description );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );

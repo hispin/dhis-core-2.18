@@ -1156,7 +1156,7 @@
                 <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">inputStream</param>
                 <param name="contentDisposition">filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>
+                <param name="bufferSize">1024</param> 
             </result>
         </action>
 		
@@ -1180,6 +1180,7 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
+		
 		
 	
 		

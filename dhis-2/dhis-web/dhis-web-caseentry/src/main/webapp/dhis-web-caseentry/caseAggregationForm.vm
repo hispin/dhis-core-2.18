@@ -19,7 +19,7 @@
                         <table>
                             <tr>
                                 <td class="NormalB" colspan="2">
-                                    $i18n.getString( "dataset_list" ) : <br>
+                                   <strong> $i18n.getString( "dataset_list" ) : </strong><br>
                                     <select id="selectedDataSets" name="selectedDataSets" onchange="getdSetPeriods()" >
                                         #foreach ( $dataSet in $datasets )
                                             <option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
@@ -34,11 +34,11 @@
                                                         
                             <tr>
                                 <td class="NormalB">
-                                    $i18n.getString( "from" )<br>
+                                    <strong>$i18n.getString( "from" )</strong><br>
                                     <select id="sDateLB" name="sDateLB"></select>
                                 </td>
                                 <td class="NormalB">
-                                    $i18n.getString( "to" )<br>
+                                    <strong>$i18n.getString( "to" )</strong><br>
                                     <select id="eDateLB" name="eDateLB"></select>
                                 </td>
                             </tr>
@@ -49,7 +49,7 @@
                             <tr>
                                 <td class="NormalB"><br/><input type="submit" name="Aggregate" value="Aggregate" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" /></td>
                                 <td class="NormalB">
-                                    $i18n.getString( "ga_facilityby" )<br>
+                                   <strong> $i18n.getString( "ga_facilityby" )</strong><br>
                                         <select id="facilityLB" name="facilityLB">
                                             <option value="random" selected>Selected</option>
                                             <option value="immChildren" >Immediate Children</option>
@@ -70,7 +70,7 @@
                             </tr>
                             <tr>
                                 <td class="NormalB">
-                                    $i18n.getString( "ga_orgunit" )<br>
+                                   <strong> $i18n.getString( "ga_orgunit" )</strong><br>
                                     <select name="orgUnitListCB" id="orgUnitListCB" multiple style="width: 325px;height: 110px" ondblclick="remOUFunction()">
                                     </select>
                                 </td>

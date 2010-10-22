@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Properties;
+
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSetService;
 
@@ -84,7 +85,7 @@ public class XmlCreatorService extends Thread
     @Override
     public void run()
     {
-        System.out.println( "Info to convert to XML: " + info );
+        //System.out.println( "Info to convert to XML: " + info );
         String dhis2Home = System.getenv( "DHIS2_HOME" );
         String[] text = info.split( "#" );
         String msgVersion = text[0];
@@ -128,9 +129,10 @@ public class XmlCreatorService extends Thread
             writer.write( "<info>" + info + "</info>\n" );
             writer.write( "</mxf>\n" );
             writer.close();
-        } catch ( Exception e )
+        } catch (Exception e)
         {
-            e.printStackTrace();
+            System.out.println("Exception while creating XML File"+ e.getMessage());
+            return;
         }
     }
 }

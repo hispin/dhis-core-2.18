@@ -34,48 +34,35 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.PeriodService;
 
-public class CreateMobileAppAction
-    implements Action
-{
+public class CreateMobileAppAction implements Action {
 
     private String mvnPath;
-
     private String mvnStatus;
-
     private String[] splashImg;
-
     private String[] availableDatasets;
-
     private String mobileAppFilename;
 
-    public String getMobileAppFilename()
-    {
-        String webappPath = ServletActionContext.getServletContext().getRealPath( "/" );
+    public String getMobileAppFilename() {
+        String webappPath = ServletActionContext.getServletContext().getRealPath("/");
         String appPath = webappPath + "/dhis-web-mobile/javame_src/target";
-        File appFile = new File( appPath, "dhis-javame-1.0.0-me.jar" );
-        if ( appFile.exists() )
-        {
+        File appFile = new File(appPath, "dhis-javame-1.0.0-me.jar");
+        if (appFile.exists()) {
             mobileAppFilename = appFile.getName();
         }
         return mobileAppFilename;
     }
 
-    public String[] getSplashImg()
-    {
-        String webappPath = ServletActionContext.getServletContext().getRealPath( "/" );
+    public String[] getSplashImg() {
+        String webappPath = ServletActionContext.getServletContext().getRealPath("/");
         String imgPath = webappPath + "/dhis-web-mobile/javame_src/src/main/resources/splash";
-        File imgFolder = new File( imgPath );
+        File imgFolder = new File(imgPath);
         File[] images;
-        if ( imgFolder.exists() )
-        {
-            if ( imgFolder.isDirectory() )
-            {
+        if (imgFolder.exists()) {
+            if (imgFolder.isDirectory()) {
                 images = imgFolder.listFiles();
                 String[] imageNames = new String[images.length];
-                for ( int i = 0; i < images.length; i++ )
-                {
-                    if ( images[i].getName().contains( ".png" ) )
-                    {
+                for (int i = 0; i < images.length; i++) {
+                    if (images[i].getName().contains(".png")) {
                         imageNames[i] = images[i].getName();
                     }
                 }
@@ -85,24 +72,18 @@ public class CreateMobileAppAction
         return splashImg;
     }
 
-    public String getMvnPath()
-    {
-        String PATH = System.getenv( "PATH" );
+    public String getMvnPath() {
+        String PATH = System.getenv("PATH");
         String[] locations;
-        if ( getOSName().equals( "win" ) )
-        {
-            locations = PATH.split( ";" );
+        if (getOSName().equals("win")) {
+            locations = PATH.split(";");
+        } else {
+            locations = PATH.split(":");
         }
-        else
-        {
-            locations = PATH.split( ":" );
-        }
-        for ( String location : locations )
-        {
-            File folder = new File( location );
-            String filePath = scanPath( getOSName(), folder );
-            if ( !filePath.equals( "" ) )
-            {
+        for (String location : locations) {
+            File folder = new File(location);
+            String filePath = scanPath(getOSName(), folder);
+            if (!filePath.equals("")) {
                 mvnPath = filePath;
                 break;
             }
@@ -110,68 +91,48 @@ public class CreateMobileAppAction
         return mvnPath;
     }
 
-    public void setMvnPath( String path )
-    {
-        File mvnFolder = new File( path );
-        String filePath = scanPath( getOSName(), mvnFolder );
-        if ( !filePath.equals( "" ) )
-        {
+    public void setMvnPath(String path) {
+        File mvnFolder = new File(path);
+        String filePath = scanPath(getOSName(), mvnFolder);
+        if (!filePath.equals("")) {
             this.mvnPath = filePath;
-        }
-        else
-        {
+        } else {
             mvnStatus = "Could not find mvn.bat at the location you entered";
         }
     }
 
-    public String getMvnStatus()
-    {
+    public String getMvnStatus() {
         return mvnStatus;
     }
 
-    public void setMvnStatus( String status )
-    {
+    public void setMvnStatus(String status) {
         this.mvnStatus = status;
     }
 
-    private String getOSName()
-    {
+    private String getOSName() {
         String osName;
-        if ( System.getProperty( "os.name" ).toLowerCase().contains( "windows" ) )
-        {
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             osName = "win";
-        }
-        else
-        {
+        } else {
             osName = "nix";
         }
         return osName;
     }
 
-    private String scanPath( String osName, File folder )
-    {
+    private String scanPath(String osName, File folder) {
         String filePath = new String();
-        if ( folder.exists() )
-        {
-            if ( folder.isDirectory() )
-            {
+        if (folder.exists()) {
+            if (folder.isDirectory()) {
                 File[] files = folder.listFiles();
-                for ( File file : files )
-                {
-                    if ( osName.equals( "win" ) )
-                    {
-                        if ( file.getName().equals( "mvn.bat" ) )
-                        {
+                for (File file : files) {
+                    if (osName.equals("win")) {
+                        if (file.getName().equals("mvn.bat")) {
                             filePath = file.getAbsolutePath();
                             break;
                         }
-                    }
-                    else
-                    {
-                        if ( osName.equals( "nix" ) )
-                        {
-                            if ( file.getName().equals( "mvn" ) )
-                            {
+                    } else {
+                        if (osName.equals("nix")) {
+                            if (file.getName().equals("mvn")) {
                                 filePath = file.getAbsolutePath();
                                 break;
                             }
@@ -182,28 +143,22 @@ public class CreateMobileAppAction
         }
         return filePath;
     }
-
     private DataSetService dataSetService;
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
+    public void setDataSetService(DataSetService dataSetService) {
         this.dataSetService = dataSetService;
     }
-
     private PeriodService periodService;
 
-    public void setPeriodService( PeriodService periodService )
-    {
+    public void setPeriodService(PeriodService periodService) {
         this.periodService = periodService;
     }
 
-    public String[] getAvailableDatasets()
-    {
+    public String[] getAvailableDatasets() {
         int i = 0;
         Collection<DataSet> allDataSets = dataSetService.getAllDataSets();
         availableDatasets = new String[allDataSets.size()];
-        for ( DataSet dataSet : allDataSets )
-        {
+        for (DataSet dataSet : allDataSets) {
             availableDatasets[i] = dataSet.getName();
             i++;
         }
@@ -212,10 +167,9 @@ public class CreateMobileAppAction
 
     @Override
     public String execute()
-        throws Exception
-    {
-        // SMSService service = new SMSService();
-        // service.testSMSService();
+            throws Exception {
+        //SMSService service = new SMSService();
+        //service.testSMSService();
         return SUCCESS;
     }
 }

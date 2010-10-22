@@ -6,155 +6,31 @@ var BASECOORDINATE;
 var MAPSOURCE;
 /* Fixed periods or from-to dates */
 var MAPDATETYPE;
-/* A map object */
-var MAPDATA = new Object();
-MAPDATA[thematicMap] = new Object();
-MAPDATA[thematicMap2] = new Object();
-MAPDATA[organisationUnitAssignment] = new Object();
-/* Filename or level */
-var URL;
 /* Active mapview id parameter from URL */
 var PARAMETER;
 /* Current expanded accordion panel */
 var ACTIVEPANEL;
 /* Mask */
 var MASK;
-/* Labels activated (boolean) */
-var LABELS = new Object();
-LABELS[thematicMap] = false;
-LABELS[thematicMap2] = false;
-LABELS[organisationUnitAssignment] = false;
 /* Legend colors for export */
 var COLORINTERPOLATION;
 /* Export values */
 var EXPORTVALUES;
 /* Currently selected vector feature */
-var FEATURE = new Object();
-FEATURE[thematicMap] = new Object();
-FEATURE[thematicMap2] = new Object();
+var FEATURE = {};
+FEATURE[thematicMap] = {};
+FEATURE[thematicMap2] = {};
 /* Global chart for show/hide */
 var CHART;
-/* Current map value types */
-var VALUETYPE = new Object();
-VALUETYPE.polygon = map_value_type_indicator;
-VALUETYPE.point = map_value_type_indicator;
 /* Top level organisation unit */
-var TOPLEVELUNIT = new Object();
+var TOPLEVELUNIT = {};
 /* Locate feature window */
 var lfw;
-
-/* Detect mapview parameter in URL */
-function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
-/* Input validation */
-function validateInput(name){return (name.length<=25);}
-/* Date validation */
-function validateDates(startDate,endDate){if(!startDate || !endDate){return true;}return startDate >= endDate ? false : true;}
-/* Decide multiselect height based on screen resolution */
-function getMultiSelectHeight(){var h=screen.height;if(h<=800){return 220;}else if(h<=1050){return 310;}else if(h<=1200){return 470;}else{return 900;}}
-/* Make map view numbers numeric */
-function getNumericMapView(mapView){mapView.id=parseFloat(mapView.id);mapView.indicatorGroupId=parseFloat(mapView.indicatorGroupId);mapView.indicatorId=parseFloat(mapView.indicatorId);mapView.periodId=parseFloat(mapView.periodId);mapView.method=parseFloat(mapView.method);mapView.classes=parseFloat(mapView.classes);mapView.mapLegendSetId=parseFloat(mapView.mapLegendSetId);mapView.longitude=parseFloat(mapView.longitude);mapView.latitude=parseFloat(mapView.latitude);mapView.zoom=parseFloat(mapView.zoom);return mapView;}
-/* Get number of decimals */
-function getNumberOfDecimals(x,dec_sep){var tmp=new String();tmp=x;if(tmp.indexOf(dec_sep)>-1){return tmp.length-tmp.indexOf(dec_sep)-1;}else{return 0;}}
-/* Debug */
-function getKeys(obj){var temp=[];for(var k in obj){if(obj.hasOwnProperty(k)){temp.push(k);}}return temp;}
-/* Toggle feature labels */
-function getActivatedOpenLayersStyleMap(nameColumn) {
-    return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${labelString}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])), 'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
-}
-function getDeactivatedOpenLayersStyleMap() {
-    return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
-}
-function toggleFeatureLabelsPolygons(layer) {
-    function activateLabels() {
-        layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[thematicMap].nameColumn);
-        LABELS[thematicMap] = true;
-    }
-    function deactivateLabels() {
-        layer.styleMap = getDeactivatedOpenLayersStyleMap();
-        LABELS[thematicMap] = false;
-    }
-    
-    if (LABELS[thematicMap]) {
-        deactivateLabels();
-    }
-    else {
-        activateLabels();
-    }
-    
-    FEATURE[thematicMap] = layer.features;
-    choropleth.applyValues();
-}
-function toggleFeatureLabelsPoints(layer) {
-    function activateLabels() {
-        layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[thematicMap2].nameColumn);
-        LABELS[thematicMap2] = true;
-    }
-    function deactivateLabels() {
-        layer.styleMap = getDeactivatedOpenLayersStyleMap();
-        LABELS[thematicMap2] = false;
-    }
-    
-    if (LABELS[thematicMap2]) {
-        deactivateLabels();
-    }
-    else {
-        activateLabels();
-    }
-    
-    FEATURE[thematicMap2] = layer.features;
-    proportionalSymbol.applyValues();
-}
-function toggleFeatureLabelsAssignment(classify, layer) {
-    function activateLabels() {
-        layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[organisationUnitAssignment].nameColumn);
-        LABELS[organisationUnitAssignment] = true;
-    }
-    function deactivateLabels() {
-        layer.styleMap = getDeactivatedOpenLayersStyleMap();
-        LABELS[organisationUnitAssignment] = false;
-    }
-    
-    if (classify) {
-        if (LABELS[organisationUnitAssignment]) {
-            deactivateLabels();
-        }
-        else {
-            activateLabels();
-        }
-        mapping.classify(false,true);
-    }
-    else {
-        if (LABELS[organisationUnitAssignment]) {
-            activateLabels();
-        }
-    }
-}    
-    
-/* Sort method */
-function sortByValue(a,b){return b.value-a.value;}
-/* Create JSON for map export */
-function getExportDataValueJSON(mapvalues){var json='{';json+='"datavalues":';json+='[';mapvalues.sort(sortByValue);for(var i=0;i<mapvalues.length;i++){json+='{';json+='"organisation": "'+mapvalues[i].orgUnitId+'",';json+='"value": "'+mapvalues[i].value+'" ';json+=i<mapvalues.length-1?'},':'}'}json+=']';json+='}';return json}
-
-function getLegendsJSON(){
-    var widget = ACTIVEPANEL == thematicMap ? choropleth : proportionalSymbol;
-    var json = '{';
-	json += '"legends":';
-	json += '[';
-	for(var i = 0; i < widget.imageLegend.length; i++) {
-		json += '{';
-		json += '"label": "' + widget.imageLegend[i].label + '",';
-		json += '"color": "' + widget.imageLegend[i].color + '" ';
-		json += i < widget.imageLegend.length-1 ? '},' : '}';
-	}
-	json += ']';
-	json += '}';
-	return json;
-}
 
 Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 	/* Ext 3.2.0 override */
-	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed( true );},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed( false );}});
+	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
     /* Disallow right clicks */
 	document.body.oncontextmenu = function(){return false;};
 	/* Activate tooltip */
@@ -162,6 +38,7 @@ Ext.onReady( function() {
 
 	MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
 	MASK = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
+    PARAMETER = GLOBALS.util.getUrlParam('view') ? GLOBALS.util.getUrlParam('view') : 0;
     
 	/* Base layers */
 	function addBaseLayersToMap() {
@@ -198,14 +75,8 @@ Ext.onReady( function() {
 			}
         });
     }
-    
     addBaseLayersToMap();
     
-    /* Get map view parameter and apply to global variable */
-    if (getUrlParam('view')) {
-        PARAMETER = getUrlParam('view');
-    }
-	
 	Ext.Ajax.request({
 		url: path_mapping + 'getBaseCoordinate' + type,
 		method: 'GET',
@@ -216,7 +87,7 @@ Ext.onReady( function() {
 			Ext.Ajax.request({
 				url: path_mapping + 'getMapView' + type,
 				method: 'GET',
-				params: { id: PARAMETER || 0 },
+				params: {id: PARAMETER || 0},
 				success: function(r) {
 					var mst = Ext.util.JSON.decode(r.responseText).mapView[0].mapSourceType;
                     var mdt = Ext.util.JSON.decode(r.responseText).mapView[0].mapDateType;
@@ -233,7 +104,7 @@ Ext.onReady( function() {
 							Ext.Ajax.request({
 								url: path_mapping + 'setMapUserSettings' + type,
 								method: 'POST',
-								params: { mapSourceType: MAPSOURCE, mapDateType: MAPDATETYPE },
+								params: {mapSourceType: MAPSOURCE, mapDateType: MAPDATETYPE},
 								success: function() {
 			
 	/* Section: mapview */
@@ -323,7 +194,7 @@ Ext.onReady( function() {
                         }
                     }
 					
-					if (validateInput(vn) == false) {
+					if (GLOBALS.util.validateInputNameLength(vn) == false) {
 						Ext.message.msg(false, i18n_map_view_name_cannot_be_longer_than_25_characters );
 						return;
 					}
@@ -599,17 +470,14 @@ Ext.onReady( function() {
                         lcb = Ext.getCmp('maplegendtype_cb').getValue() == map_legend_type_automatic ? true : Ext.getCmp('maplegendset_cb').getValue() ? true : false;
                     }
                     else if (ACTIVEPANEL == thematicMap2) {
-                        vcb = Ext.getCmp('mapvaluetype_cb2').getValue() == map_value_type_indicator ? Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
-                        dcb = MAPDATETYPE == map_date_type_fixed ? Ext.getCmp('period_cb2').getValue() : Ext.getCmp('startdate_df2').getValue() && Ext.getCmp('startdate_df2').getValue() ? true : false;
-                        period = MAPDATETYPE == map_date_type_fixed ? Ext.getCmp('period_cb2').getRawValue() : new Date(Ext.getCmp('startdate_df2').getRawValue()).format('Y M j') + ' - ' + new Date(Ext.getCmp('enddate_df2').getRawValue()).format('Y M j');
-                        mcb = MAPSOURCE == map_source_type_database ? Ext.getCmp('map_tf2').getValue() : Ext.getCmp('map_cb2').getValue();
-                        lcb = Ext.getCmp('maplegendtype_cb2').getValue() == map_legend_type_automatic ? true : Ext.getCmp('maplegendset_cb2').getValue() ? true : false;
+                        Ext.message.msg(false,'Please use <span class="x-msg-hl">polygon layer</span> for printing');
+                        return;
                     }
                     else {
                         Ext.message.msg(false, i18n_please_expand_layer_panel);
                         return;
-                    }   
-
+                    }
+                    
                     if (vcb && dcb && mcb && lcb) {
                     	
 						var svgElement = document.getElementsByTagName('svg')[0];
@@ -643,7 +511,7 @@ Ext.onReady( function() {
                             document.getElementById('includeLegendsField').value = includeLegend;  
                             document.getElementById('periodField').value = period;  
                             document.getElementById('indicatorField').value = vcb; 
-                            document.getElementById('legendsField').value = getLegendsJSON();
+                            document.getElementById('legendsField').value = GLOBALS.util.getLegendsJSON();
 
                             exportForm.submit();
                         }
@@ -736,7 +604,7 @@ Ext.onReady( function() {
                         document.getElementById('includeValuesField').value = includeValues; 
                         document.getElementById('periodField').value = period;  
                         document.getElementById('indicatorField').value = indicator;   
-                        document.getElementById('legendsField').value = getLegendsJSON();
+                        document.getElementById('legendsField').value = GLOBALS.util.getLegendsJSON();
                         document.getElementById('dataValuesField').value = EXPORTVALUES;
 
                         exportForm.submit();
@@ -789,7 +657,7 @@ Ext.onReady( function() {
                         return;
                     }
                     
-                    if (!validateInput(mln)) {
+                    if (!GLOBALS.util.validateInputNameLength(mln)) {
                         Ext.message.msg(false, i18n_name_can_not_longer_than_25 );
                         return;
                     }
@@ -879,7 +747,7 @@ Ext.onReady( function() {
             { html: '<div class="window-field-label-first">'+i18n_display_name+'</div>' },
             new Ext.form.TextField({id:'predefinedmaplegendsetname_tf',isFormField:true,hideLabel:true,emptyText:emptytext,width:combo_width}),
             { html: '<div class="window-field-label">'+i18n_legends+'</div>' },
-			new Ext.ux.Multiselect({id:'predefinednewmaplegend_ms',isFormField:true,hideLabel:true,dataFields:['id','name','startValue','endValue','color','displayString'],valueField:'id',displayField:'displayString',width:multiselect_width,height:getMultiSelectHeight(),store:predefinedMapLegendStore}),
+			new Ext.ux.Multiselect({id:'predefinednewmaplegend_ms',isFormField:true,hideLabel:true,dataFields:['id','name','startValue','endValue','color','displayString'],valueField:'id',displayField:'displayString',width:multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:predefinedMapLegendStore}),
             {
                 xtype: 'button',
                 id: 'newpredefinedmaplegendset_b',
@@ -1045,7 +913,7 @@ Ext.onReady( function() {
                 }					
             }),
             { html: '<div class="window-field-label">'+i18n_indicator+'</div>' },
-			new Ext.ux.Multiselect({id:'predefinedmaplegendsetindicator_ms',isFormField:true,hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:multiselect_width,height:getMultiSelectHeight(),store:predefinedMapLegendSetIndicatorStore}),
+			new Ext.ux.Multiselect({id:'predefinedmaplegendsetindicator_ms',isFormField:true,hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:predefinedMapLegendSetIndicatorStore}),
             {
                 xtype: 'button',
                 id: 'assignpredefinedmaplegendsetindicator_b',
@@ -1147,7 +1015,7 @@ Ext.onReady( function() {
                 }					
             }),
             { html: '<div class="window-field-label">'+i18n_dataelement+'</div>' },
-			new Ext.ux.Multiselect({id:'predefinedmaplegendsetdataelement_ms',isFormField:true,hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:multiselect_width,height:getMultiSelectHeight(),store:predefinedMapLegendSetDataElementStore}),
+			new Ext.ux.Multiselect({id:'predefinedmaplegendsetdataelement_ms',isFormField:true,hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:predefinedMapLegendSetDataElementStore}),
             {
                 xtype: 'button',
                 id: 'assignpredefinedmaplegendsetdataelement_b',
@@ -1223,16 +1091,16 @@ Ext.onReady( function() {
 							w.setHeight(151);
 						}
 						else if (tab.id == 'predefinedmaplegendset2') {
-							w.setHeight(getMultiSelectHeight() + 180);
+							w.setHeight(GLOBALS.util.getMultiSelectHeight() + 180);
 						}
 						else if (tab.id == 'predefinedmaplegendset3') {
 							w.setHeight(151);
 						}
                         else if (tab.id == 'predefinedmaplegendset4') {
-                            w.setHeight(getMultiSelectHeight() + 180);
+                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 180);
                         }
                         else if (tab.id == 'predefinedmaplegendset5') {
-                            w.setHeight(getMultiSelectHeight() + 180);
+                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 180);
                         }
 					}
 				},
@@ -1435,17 +1303,8 @@ Ext.onReady( function() {
 							var file = Ext.util.JSON.decode(r.responseText);
 							var keys = [];
 							var data = [];
-							
-							function getKeys(object) {
-								for (var key in object) {
-									if (object.hasOwnProperty(key)) {
-										keys.push(key);
-									}
-								}
-								return keys;
-							}
 
-							var nameList = getKeys(file.features[0].properties);
+							var nameList = GLOBALS.util.getKeys(file.features[0].properties);
 							for (var i = 0; i < nameList.length; i++) {
 								data.push(new Array(nameList[i]));
 							}
@@ -1592,18 +1451,8 @@ Ext.onReady( function() {
 							success: function(r) {
 								var file = Ext.util.JSON.decode(r.responseText);
 								var keys = [];
-								var data = [];
-								
-								function getKeys(object) {
-									for (var key in object) {
-										if (object.hasOwnProperty(key)) {
-											keys.push(key);
-										}
-									}
-									return keys;
-								}
 
-								var nameList = getKeys(file.features[0].properties);
+								var nameList = GLOBALS.util.getKeys(file.features[0].properties);
 								for (var i = 0; i < nameList.length; i++) {
 									data.push(new Array(nameList[i]));
 								}
@@ -1657,7 +1506,7 @@ Ext.onReady( function() {
 						return;
                     }
                     
-                    if (validateInput(nn) == false) {
+                    if (GLOBALS.util.validateInputNameLength(nn) == false) {
                         Ext.message.msg(false, '<span class="x-msg-hl">' + i18n_map + ' ' + i18n_name_can_not_longer_than_25 + '</span>');
                         return;
                     }
@@ -1757,7 +1606,7 @@ Ext.onReady( function() {
                 return;
             }
             
-            if (validateInput(en) == false) {
+            if (GLOBALS.util.validateInputNameLength(en) == false) {
                 Ext.message.msg(false, i18n_name_can_not_longer_than_25 );
                 return;
             }
@@ -1879,17 +1728,8 @@ Ext.onReady( function() {
 								var file = Ext.util.JSON.decode(r.responseText);
 								var keys = [];
 								var data = [];
-								
-								function getKeys(object) {
-									for (var key in object) {
-										if (object.hasOwnProperty(key)) {
-											keys.push(key);
-										}
-									}
-									return keys;
-								}
 
-								var nameList = getKeys(file.features[0].properties);
+								var nameList = GLOBALS.util.getKeys(file.features[0].properties);
 								for (var i = 0; i < nameList.length; i++) {
 									data.push(new Array(nameList[i]));
 								}
@@ -1907,17 +1747,8 @@ Ext.onReady( function() {
 								var file = Ext.util.JSON.decode(r.responseText);
 								var keys = [];
 								var data = [];
-								
-								function getKeys(object) {
-									for (var key in object) {
-										if (object.hasOwnProperty(key)) {
-											keys.push(key);
-										}
-									}
-									return keys;
-								}
 
-								var nameList = getKeys(file.features[0].properties);
+								var nameList = GLOBALS.util.getKeys(file.features[0].properties);
 								for (var i = 0; i < nameList.length; i++) {
 									data.push(new Array(nameList[i]));
 								}
@@ -2246,7 +2077,7 @@ Ext.onReady( function() {
 						return;
 					}
 					
-					if (validateInput(mln) == false) {
+					if (GLOBALS.util.validateInputNameLength(mln) == false) {
 						Ext.message.msg(false, i18n_overlay_name_cannot_be_longer_than_25_characters );
 						return;
 					}
@@ -2457,7 +2288,7 @@ Ext.onReady( function() {
 						return;
 					}
 					
-					if (validateInput(mlbn) == false) {
+					if (GLOBALS.util.validateInputNameLength(mlbn) == false) {
 						Ext.message.msg(false, i18n_baselayer_name_cannot_be_longer_than_25_characters );
 						return;
 					}
@@ -2594,7 +2425,7 @@ Ext.onReady( function() {
 						value: MAPSOURCE,
 						store: new Ext.data.SimpleStore({
 							fields: ['id', 'text'],
-							data: [[map_source_type_geojson, 'GeoJSON files'], [map_source_type_shapefile, 'Shapefiles'], [map_source_type_database, 'DHIS database']]
+							data: [[map_source_type_database, 'DHIS database'], [map_source_type_geojson, 'GeoJSON files'], [map_source_type_shapefile, 'Shapefiles']]
 						}),
 						listeners: {
 							'select': {
@@ -3111,7 +2942,7 @@ Ext.onReady( function() {
             layout: 'fit',
             defaults: {layout: 'fit', bodyStyle:'padding:8px; border:0px'},
             width: 250,
-            height: getMultiSelectHeight() + 145,
+            height: GLOBALS.util.getMultiSelectHeight() + 145,
             items: [
                 {
                     xtype: 'panel',
@@ -3147,7 +2978,7 @@ Ext.onReady( function() {
                                 {
                                     xtype: 'grid',
                                     id: 'featuregrid_gp',
-                                    height: getMultiSelectHeight(),
+                                    height: GLOBALS.util.getMultiSelectHeight(),
                                     store: featureStore,
                                     cm: new Ext.grid.ColumnModel({
                                         columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
@@ -3235,14 +3066,22 @@ Ext.onReady( function() {
                                         if (layer.features.length > 0) {
                                             if (layer.name == 'Polygon layer') {
                                                 if (ACTIVEPANEL == thematicMap) {
-                                                    toggleFeatureLabelsPolygons(layer);
+                                                    GLOBALS.util.toggleFeatureLabels(choropleth);
+                                                }
+                                                else if (ACTIVEPANEL == organisationUnitAssignment) {
+                                                    GLOBALS.util.toggleFeatureLabelsAssignment();
                                                 }
                                                 else {
-                                                    toggleFeatureLabelsAssignment(true, layer);
+                                                    Ext.message.msg(false, 'Please use <span class="x-msg-hl">Point layer</span> options');
                                                 }
                                             }
                                             else if (layer.name == 'Point layer') {
-                                                toggleFeatureLabelsPoints(layer);
+                                                if (ACTIVEPANEL == thematicMap2) {
+                                                    GLOBALS.util.toggleFeatureLabels(proportionalSymbol);
+                                                }
+                                                else {
+                                                    Ext.message.msg(false, 'Please use <span class="x-msg-hl">Polygon layer</span> options');
+                                                }
                                             }
                                         }
                                         else {
@@ -3407,8 +3246,8 @@ Ext.onReady( function() {
                 fn: function() {
                     if (ACTIVEPANEL != thematicMap) {
                         ACTIVEPANEL = thematicMap;
-                        choroplethLayer.setVisibility(false);
-                        choropleth.classify(false, true);
+                        this.layer.setVisibility(false);
+                        this.classify(false, true);
                     }
                 }
             }
@@ -3429,8 +3268,8 @@ Ext.onReady( function() {
                 fn: function() {
                     if (ACTIVEPANEL != thematicMap2) {
                         ACTIVEPANEL = thematicMap2;
-                        proportionalSymbolLayer.setVisibility(false);
-                        proportionalSymbol.classify(false, true);
+                        this.layer.setVisibility(false);
+                        this.classify(false, true);
                     }
                 }
             }
@@ -3441,18 +3280,18 @@ Ext.onReady( function() {
         id: 'mapping',
         map: MAP,
         layer: choroplethLayer,
-        title: '<span class="panel-title">'+i18n_assign_organisation_units_to_map+'</span>',
+        title: '<span class="panel-title">' + i18n_assign_organisation_units_to_map + '</span>',
         url: 'init',
         featureSelection: false,
-        legendDiv: 'choroplethLegend',
+        legendDiv: 'polygonlegend',
         defaults: {width: 130},
         listeners: {
             expand: {
                 fn: function() {
                     ACTIVEPANEL = organisationUnitAssignment;
-                    choroplethLayer.setVisibility(false);
-                    proportionalSymbolLayer.setVisibility(false);
-                    mapping.classify(false, true);
+                    this.layer.setVisibility(false);
+                    proportionalSymbol.layer.setVisibility(false);
+                    this.classify(false, true);
                 }
             }
         }
@@ -3469,8 +3308,7 @@ Ext.onReady( function() {
 		tooltip: i18n_zoom_in,
 		handler:function() {
 			MAP.zoomIn();
-		},
-		scope: this
+		}
 	});
 	
 	var zoomOutButton = new Ext.Button({
@@ -3478,17 +3316,30 @@ Ext.onReady( function() {
 		tooltip: i18n_zoom_out,
 		handler:function() {
 			MAP.zoomOut();
-		},
-		scope: this
+		}
 	});
 	
 	var zoomMaxExtentButton = new Ext.Button({
 		iconCls: 'icon-zoommin',
 		tooltip: i18n_zoom_to_visible_extent,
 		handler: function() {
-			MAP.zoomToMaxExtent();
-		},
-		scope: this
+            if (ACTIVEPANEL == thematicMap) {
+                if (choropleth.layer.getDataExtent()) {
+                    MAP.zoomToExtent(choropleth.layer.getDataExtent());
+                }
+                else {
+                    Ext.message.msg(false, 'Vector layer is empty');
+                }
+            }
+            else if (ACTIVEPANEL == thematicMap2) {
+                if (proportionalSymbol.layer.getDataExtent()) {
+                    MAP.zoomToExtent(proportionalSymbol.layer.getDataExtent());
+                }
+                else {
+                    Ext.message.msg(false, 'Vector layer is empty');
+                }
+            }
+        }
 	});
 	
 	var favoritesButton = new Ext.Button({
@@ -3724,37 +3575,7 @@ Ext.onReady( function() {
                     proportionalSymbol,
                     shapefilePanel,
                     mapping,
-					adminPanel //,
-					// {
-						// xtype: 'print-multi',
-						// id: 'printMultiPage_p',
-						// title: '<span class="panel-title">Print multi page PDF</span>',
-						// formConfig: {
-							// labelWidth: 65,
-							// bodyStyle: 'padding: 7px;',
-							// defaults: {
-								// width: 140,
-								// listWidth: 140
-							// }
-						// },
-						// columns: [
-							// {
-								// header: 'Map title',
-								// width: 80,
-								// dataIndex: 'mapTitle',
-								// editor: new Ext.form.TextField()
-							// },
-							// {
-								// header: 'Comment',
-								// dataIndex: 'comment',
-								// editor: new Ext.form.TextField()
-							// }
-						// ],
-						// border: false,
-						// map: MAP,
-						// configUrl: printConfigUrl,
-						// overrides: layerOverrides
-					// }
+					adminPanel
                 ]
             },
             {
@@ -3907,225 +3728,17 @@ Ext.onReady( function() {
 	}});
 });
 
-/* Section: select features */
-// var popup;
-
-// var featureWindow = new Ext.Window({
-    // closeAction: 'hide',
-    // items: [
-        // {
-            // xtype: 'menu',
-            // id: 'feature_m',
-            // floating: false,
-            // items: [
-                // {
-                    // html: 'Centre orgunit in the map',
-                    // iconCls: 'no-icon',
-                    // listeners: {
-                        // 'click': {
-                            // fn: function() {
-                                // MAP.setCenter(FEATURE.geometry.getBounds().getCenterLonLat());
-                            // }
-                        // }
-                    // }
-                // },
-                // {
-                    // html: 'Indicator value timeseries',
-                    // iconCls: 'no-icon',
-                    // listeners: {
-                        // 'click': {
-                            // fn: function() {
-                                // periodWindow.setPagePosition(Ext.getCmp('east').x - 262, Ext.getCmp('center').y + 135);
-                                // periodWindow.show();
-                            // }
-                        // }
-                    // }
-                // }
-            // ]
-        // }
-    // ]
-// });
-
-// var periodTypeTimeseriesStore = new Ext.data.JsonStore({
-    // url: path_mapping + 'getAllPeriodTypes' + type,
-    // root: 'periodTypes',
-    // fields: ['name'],
-    // autoLoad: true
-// });
-
-// var periodTimeseriesStore = new Ext.data.JsonStore({
-    // url: path_mapping + 'getPeriodsByPeriodType' + type,
-    // baseParams: { name: 0 },
-    // root: 'periods',
-    // fields: ['id', 'name', 'value'],
-    // autoLoad: false                
-// });
-
-// var periodWindow = new Ext.Window({
-    // title: 'Select periods',
-    // closeAction: 'hide',
-    // defaults: { bodyStyle: 'padding:8px; border:0px' },
-    // width: 250,
-    // items: [
-        // {
-            // xtype: 'panel',
-            // items: [
-                // { html: '<div class="window-field-label-first">Period type</div>' },
-                // {
-                    // xtype: 'combo',
-                    // id: 'periodtypetimeseries_cb',
-                    // fieldLabel: 'Period type',
-                    // typeAhead: true,
-                    // editable: false,
-                    // valueField: 'name',
-                    // displayField: 'name',
-                    // mode: 'remote',
-                    // forceSelection: true,
-                    // triggerAction: 'all',
-                    // emptyText: emptytext,
-                    // labelSeparator: labelseparator,
-                    // selectOnFocus: true,
-                    // width: combo_width,
-                    // store: periodTypeTimeseriesStore,
-                    // listeners: {
-                        // 'select': {
-                            // fn: function() {
-                                // var pt = Ext.getCmp('periodtypetimeseries_cb').getValue();
-                                // periodTimeseriesStore.baseParams = { name: pt };
-                                // periodTimeseriesStore.load();
-                            // },
-                            // scope: this
-                        // }
-                    // }
-                // },
-                // { html: '<div class="window-field-label">Periods</div>' },
-                // {
-                    // xtype: 'multiselect',
-                    // id: 'periodstimeseries_ms',
-                    // dataFields: ['id', 'name'],
-                    // valueField: 'id',
-                    // displayField: 'name',
-                    // width: multiselect_width,
-                    // height: getMultiSelectHeight(),
-                    // store: periodTimeseriesStore
-                // },
-                // { html: '<div class="window-field-label">Window width</div>' },
-                // {
-                    // xtype: 'textfield',
-                    // id: 'timeserieswindowwidth_tf',
-                    // value: 800,
-                    // width: combo_number_width
-                // },
-                // { html: '<div class="window-field-label">Window height</div>' },
-                // {
-                    // xtype: 'textfield',
-                    // id: 'timeserieswindowheight_tf',
-                    // value: 400,
-                    // width: combo_number_width
-                // },
-                // {
-                    // xtype: 'button',
-                    // id: 'timeseries_b',
-                    // isFormField: true,
-                    // hideLabel: true,
-                    // cls: 'window-button',
-                    // text: 'Create graph',
-                    // handler: function() {
-                        // var iid = Ext.getCmp('indicator_cb').getValue();
-                        // var pids = Ext.getCmp('periodstimeseries_ms').getValue();
-                        
-                        // var pidArray = new Array();
-                        // pidArray = pids.split(',');
-                        
-                        // var pnameArray = new Array();
-                        // for (var i = 0; i < pidArray.length; i++) {
-                            // pnameArray[i] = [i, periodTimeseriesStore.getById(pidArray[i]).data.name];
-                        // }
-                        
-                        // setMapValueTimeseriesStore(iid, pidArray, pnameArray, URL);
-                        // mapValueTimeseriesStore.load();
-                    // }
-                // }
-            // ]
-        // }
-    // ]
-// });
-
-// var mapValueTimeseriesStore;
-
-// function setMapValueTimeseriesStore(iid, pidArray, pnameArray, URL) {
-    // var params = pidArray[0];
-    // if (pidArray.length > 1) {
-        // for (var i = 1; i < pidArray.length; i++) {
-            // params += '&periodIds=' + pidArray[i];
-        // }
-    // }
-    
-    // mapValueTimeseriesStore = new Ext.data.JsonStore({
-        // url: path_mapping + 'getIndicatorMapValuesByMapAndFeatureId' + type + '?indicatorId=' + iid + '&mapLayerPath=' + URL + '&featureId=' + FEATURE.attributes[MAPDATA.nameColumn] + '&periodIds=' + params,
-        // root: 'mapvalues',
-        // fields:['orgUnitId', 'orgUnitName', 'featureId', 'periodId', 'value'],
-        // autoLoad: false,
-        // listeners: {
-            // 'load': {
-                // fn: function() {
-                    // var title = FEATURE.attributes[MAPDATA.nameColumn];
-                    // var indicator = Ext.getCmp('indicator_cb').getRawValue();
-                    
-                    // var valueArray = new Array();
-                    // for (var i = 0; i < pidArray.length; i++) {
-                        // for (var j = 0; j < mapValueTimeseriesStore.getCount(); j++) {
-                            // if (mapValueTimeseriesStore.getAt(j).data.periodId == pidArray[i]) {
-                                // valueArray[i] = [i, parseFloat(mapValueTimeseriesStore.getAt(j).data.value)];
-                            // }
-                        // }
-                    // }
-
-                    // CHART = getChart(title + ', ' + indicator, pnameArray, FEATURE.attributes[MAPDATA.nameColumn], valueArray);
-                    // CHART.show();
-                // }
-            // }
-        // }
-    // });
-// }
-
-// function getChart(title, pnameArray, name, valueArray) {
-    // var width = Ext.getCmp('timeserieswindowwidth_tf').getValue() || 800;
-    // var height = Ext.getCmp('timeserieswindowheight_tf').getValue() || 400;
-    
-    // return new Ext.Window({
-        // title: title,
-        // defaults: { bodyStyle: 'padding:10px 32px 12px 22px; border:0px' },
-        // items: [{
-            // xtype: 'panel',
-            // items: [{
-                // xtype: 'flot',
-                // width: 1000,
-                // height: 300,
-                // series: [valueArray],
-                // xaxis: {
-                    // ticks: pnameArray
-                // }
-            // }]
-        // }]
-    // });
-// }
-
-// var chartWindow = new Ext.Window({
-    // closeAction: 'hide',
-    // defaults: { bodyStyle: 'padding:8px; border:0px' },
-    // items: CHART
-// });
-
 /* Section: select features polygon */
+var popup;
+
 function onHoverSelectPolygon(feature) {
     FEATURE[thematicMap] = feature;
 
     if (ACTIVEPANEL == organisationUnitAssignment) {
-        Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn] + '</span>', false);
+        Ext.getCmp('featureinfo_l').setText('<span style="color:black">' + FEATURE[thematicMap].attributes[mapping.mapData.nameColumn] + '</span>', false);
     }
     else {
-        Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap].attributes[MAPDATA[thematicMap].nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap].attributes.value + '</div>', false);
+        Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap].attributes[choropleth.mapData.nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap].attributes.value + '</div>', false);
     }
 }
 
@@ -4165,7 +3778,7 @@ function onClickSelectPolygon(feature) {
 			height: 65,
 			layout: 'fit',
 			plain: true,
-			html: '<div class="window-orgunit-text">' + FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn] + '</div>',
+			html: '<div class="window-orgunit-text">' + FEATURE[thematicMap].attributes[mapping.mapData.nameColumn] + '</div>',
 			x: x,
 			y: y,
 			listeners: {
@@ -4179,7 +3792,7 @@ function onClickSelectPolygon(feature) {
 		
 		popup = feature_popup;		
 		feature_popup.show();
-		mapping.relation = FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn];
+		mapping.relation = FEATURE[thematicMap].attributes[mapping.mapData.nameColumn];
     }
 	//else {
         // featureWindow.setPagePosition(Ext.getCmp('east').x - 202, Ext.getCmp('center').y + 41);
@@ -4194,7 +3807,7 @@ function onClickUnselectPolygon(feature) {}
 /* Section: select features point */
 function onHoverSelectPoint(feature) {
     FEATURE[thematicMap2] = feature;
-    Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap2].attributes[MAPDATA[thematicMap2].nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap2].attributes.value + '</div>', false);
+    Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap2].attributes[proportionalSymbol.mapData.nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap2].attributes.value + '</div>', false);
 }
 
 function onHoverUnselectPoint(feature) {
@@ -4216,7 +3829,7 @@ function onClickSelectPoint(feature) {
             
             Ext.getCmp('map_tf2').setValue(feature.data.name);
             Ext.getCmp('map_tf2').value = feature.attributes.id;
-            proportionalSymbol.loadFromDatabase(Ext.getCmp('map_tf2').value);
+            proportionalSymbol.loadFromDatabase(feature.attributes.id, true);
         }
         else {
             Ext.message.msg(false, i18n_no_coordinates_found);

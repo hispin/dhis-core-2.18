@@ -27,13 +27,16 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: RemoveDataElementGroupAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @version $Id: RemoveDataElementGroupAction.java 2869 2007-02-20 14:26:09Z
+ *          andegje $
  */
 public class RemoveDataElementGroupAction
     extends ActionSupport
@@ -50,6 +53,17 @@ public class RemoveDataElementGroupAction
     }
 
     // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
@@ -61,12 +75,35 @@ public class RemoveDataElementGroupAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        dataElementService.deleteDataElementGroup( dataElementService.getDataElementGroup( id ) );
+        try
+        {
+            dataElementService.deleteDataElementGroup( dataElementService.getDataElementGroup( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }

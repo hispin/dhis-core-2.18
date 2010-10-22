@@ -230,6 +230,10 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementByName( name ) );
     }
+    
+    public Collection<DataElement> searchDataElementByName( String key ){
+    	return i18n( i18nService, dataElementStore.searchDataElementByName( key ) );
+    }
 
     public DataElement getDataElementByAlternativeName( String alternativeName )
     {
@@ -640,4 +644,25 @@ public class DefaultDataElementService
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
     }
+
+    public Collection<DataElement> getAllDataElements( int from, int to )
+    {
+        return dataElementStore.getAllDataElements( from, to );
+    }
+
+    public int getNumberOfDataElements()
+    {
+        return dataElementStore.getNumberOfDataElements();
+    }
+
+    public Collection<DataElement> searchDataElementByName( String key, int from, int to )
+    {
+        return dataElementStore.searchDataElementByName( key, from, to );
+    }
+
+    public int countNumberOfSearchDataElementByName( String key )
+    {
+        return dataElementStore.countNumberOfSearchDataElementByName( key );
+    }
+
 }

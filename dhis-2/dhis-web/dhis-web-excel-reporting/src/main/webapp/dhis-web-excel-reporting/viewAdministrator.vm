@@ -3,6 +3,7 @@
 <ul class="introList">
     #introListImgItem( "getConfiguration.action" "configuration" "systemsettings")
     #introListImgItem( "listReportExcel.action" "reports" "pivottable")
+	#introListImgItem( "jcharts.action" "chart" "jchart")
     #introListImgItem( "listDataEntryStatus.action" "data_status" "validationcriteria")
 	#introListImgItem( "listAllExcelItemGroup.action" "excel_item" "program" )
     #introListImgItem( "listAllExcelTemplates.action" "excel_template_management" , "excel")

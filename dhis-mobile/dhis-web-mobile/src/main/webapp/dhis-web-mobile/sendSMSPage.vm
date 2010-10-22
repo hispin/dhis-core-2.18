@@ -7,7 +7,6 @@
         background-color: #8FABC7;
     }
 </style>
-#if ($result)<script>setHeaderMessage("$result");</script>#end
 
 <div class="statusBar" #if ($smsServiceStatus)style="background-color: olive"#end>
     #if ($smsServiceStatus)
@@ -29,4 +28,5 @@
             <tr><td></td><td><input type="submit" name="send" value="Send SMS"/></td>
         </table>
     </form>
+<span id="message" style="display:#if($message.trim().equals(""))none #else block #end">$message</span>
 </div>

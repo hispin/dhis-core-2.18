@@ -48,7 +48,7 @@
       </tr>
       <tr>       
 		<td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )" disabled="disabled">
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById(this.id, 'selectedList')">
             #foreach ( $availableDataElementCategory in $allDataElementCategories )
               <option value="$availableDataElementCategory.id">$encoder.htmlEncode( $availableDataElementCategory.name )</option>
             #end
@@ -56,13 +56,13 @@
         </td>
        </td>
 		 <td valign="top" align="center">		 
-          <input type="button" value="&gt;" onclick="move( 'availableList' )"/><br/>	
-		  <input type="button" value="&lt;" onclick="move ( 'selectedList' )"/><br/><br/>
-		  <a href="#" onclick="moveUp('selectedList')"><img src="../images/move_up.png" border="0" alt=""/></a><br/><br/>
-		  <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""/></a>		  
+          <input type="button" value="&gt;" onclick="moveSelectedById('availableList', 'selectedList')" title="$i18n.getString( 'move_selected' )"/><br/>	
+		  <input type="button" value="&lt;" onclick="moveSelectedById('selectedList', 'availableList')" title="$i18n.getString( 'remove_selected' )"/><br/><br/>
+		  <a onclick="moveUpSelectedOption('selectedList')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
+		  <a onclick="moveDownSelectedOption('selectedList')" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_down' )"/></a>		  
         </td> 
 		<td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById(this.id, 'availableList')">
             #foreach ( $dataElementCategory in $dataElementCategories )
               <option value="$dataElementCategory.id">$encoder.htmlEncode( $dataElementCategory.name )</option>
             #end
@@ -73,7 +73,7 @@
         <td></td>
 		<td></td> 
 		<td>
-			<select id="selectedCategories" name="selectedCategories" class="{validate:{required:true}}" style="display:none"/>			
+			<select id="selectedCategories" name="selectedCategories" class="{validate:{required:true}}" style="display:none"></select>
 		</td>
       </tr>
     </tbody>

@@ -61,6 +61,10 @@ public class RemovePatientAttributeGroupAction
         this.id = id;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {

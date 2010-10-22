@@ -26,23 +26,31 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.config.ConfigurationService;
+import org.hisp.dhis.config.Configuration_IN;
 
 import com.keypoint.PngEncoder;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-public class ExportToExcelAction extends ActionSupport
+public class ExportToExcelAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+/*
     private LocationManager locationManager;
 
     public void setLocationManager( LocationManager locationManager )
     {
         this.locationManager = locationManager;
+    }
+ */  
+    private ConfigurationService configurationService;
+
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
     }
     
     // -------------------------------------------------------------------------
@@ -149,14 +157,18 @@ public class ExportToExcelAction extends ActionSupport
         else if(chartDisplayOption.equalsIgnoreCase("desend")) { sortByDesscending(); }
         else if(chartDisplayOption.equalsIgnoreCase("alphabet")) { sortByAlphabet(); }          
                 
-        File outputReportFile = locationManager.getFileForWriting( UUID.randomUUID().toString() + ".xls", "db", "output" );
+        //File outputReportFile = locationManager.getFileForWriting( UUID.randomUUID().toString() + ".xls", "db", "output" );
         
-        /*
-        String outputReportPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra"
-        + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        */
         
-        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( outputReportFile );
+     //   String outputReportFile = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue()
+     //   + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String outputReportFile = System.getenv( "DHIS2_HOME" ) + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue()
+          + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+       
+       // System.out.println("Env Variable is  :" + System.getenv( "DHIS2_HOME" ) );
+       // System.out.println("Complete path is :" + outputReportFile );
+        
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File(outputReportFile) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "ChartOutput", 0 );
         
         if(viewSummary.equals( "no" ))

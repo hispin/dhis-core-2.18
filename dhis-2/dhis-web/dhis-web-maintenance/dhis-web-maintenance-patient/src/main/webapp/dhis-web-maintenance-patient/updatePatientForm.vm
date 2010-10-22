@@ -1,5 +1,5 @@
 #macro( validate $type $require )
-  #if( $type == "int" )
+  #if( $type == "NUMBER" )
   	{validate:{ number:true #if($require), required:true #end }}
   #elseif( $type == "string" )
   	{validate:{ alphanumeric:true #if($require), required:true #end }}
@@ -29,22 +29,22 @@
 
 <table>
 	<tr><th colspan="2">$i18n.getString( "system_identifier" )</th></tr>
-	<tr><td colspan="2" style="text-align: center">$systemIdentifier</td></tr>
+	<tr><td></td><td>$systemIdentifier</td></tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
 		<th colspan="2">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
+		<td><label for="firstName">$i18n.getString( "first_name" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30], letterswithbasicpunc: true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" )</label></td>
-		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
+		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em" class="{validate:{required:false, letterswithbasicpunc: true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em" class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
+		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em" class="{validate:{required:false, letterswithbasicpunc: true}}"></td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
@@ -101,8 +101,9 @@
 		#set( $representative = $patient.representative ) 
 		<tr>
 			<td>$i18n.getString("representative")</td>
-			<td>$patient.representative.getFullName() <a title="$i18n.getString('patient_info')" href="#" id="btnRepresentativeInfo" rel="#representativeInfo"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
-			<script>jQuery("#btnRepresentativeInfo").cluetip({width:'350px'});</script>
+			<td>$!patient.representative.getFullName() 
+				<a title="$i18n.getString('patient_info')" href="#" id="btnRepresentativeInfo" rel="#representativeInfo"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+				<script>jQuery("#btnRepresentativeInfo").cluetip({width:'350px'});</script>
 		</tr>
 	#end
 	
@@ -136,19 +137,19 @@
 		                    <option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
-		                <input type="text" id="attr$attribute.id"  name="attr$attribute.id"  value="$!attributeValue" #validate( "date"  $attribute.mandatory ) style="width:30em" >
+		                <input type="text" id="attr$attribute.id"  name="attr$attribute.id"  value="$!attributeValue" class=' #validate( "default"  $attribute.mandatory )' style="width:30em" >
 		                <script type="text/javascript">
                             datePickerValid( 'attr$attribute.id' );
                         </script>                 
 					#elseif( $attribute.valueType == "COMBO" )
-						<select  id="attr$attribute.id"  name="attr$attribute.id" #validate( "default"  $attribute.mandatory ) style="width:30em"  >
+						<select  id="attr$attribute.id"  name="attr$attribute.id" style="width:30em"  class=' #validate( "default"  $attribute.mandatory )'>
 							 <option value="">[$i18n.getString( "please_select" )]</option>
 						#foreach ($option in $attribute.attributeOptions )
 							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 						#end
 						</select>
 					#else 
-						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" #validate( $attribute.valueType  $attribute.mandatory )   style="width:30em" >
+						<input type="text"  id="attr$attribute.id"  name="attr$attribute.id"   value="$!attributeValue" class=' #validate( $attribute.valueType  $attribute.mandatory )'  >
 					#end
 				</td>		
 			</tr>
@@ -173,19 +174,19 @@
 		                    <option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
 		                </select>                
 		            #elseif( $attribute.valueType == "DATE" )
-		                <input type="text" id="attr$attribute.id"    style="width:30em" name="attr$attribute.id"  value="$!attributeValue" #validate( ""  $attribute.mandatory )>
+		                <input type="text" id="attr$attribute.id"    style="width:30em" name="attr$attribute.id"  value="$!attributeValue" class=' #validate( "default"  $attribute.mandatory )'>
 		                <script type="text/javascript">
                             datePickerValid( 'attr$attribute.id' );
                         </script>                    
 					#elseif( $attribute.valueType == "COMBO" )
-						<select  id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" #validate( "default"  $attribute.mandatory ) >
+						<select  id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" class=' #validate( "default"  $attribute.mandatory )' >
 							 <option value="">[$i18n.getString( "please_select" )]</option>
 						#foreach ($option in $attribute.attributeOptions )
 							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 						#end
 						</select>
 					#else 
-						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" #validate( $attribute.valueType  $attribute.mandatory )   style="width:30em" >
+						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" style="width:30em" class=' #validate( $attribute.valueType  $attribute.mandatory )'>
 					#end
 				</td>		
 			</tr>
@@ -233,33 +234,33 @@ div#hiddenModalContent td {padding: 2px 5px}
 <div id="representativeInfo" style="display:none">
 <table>
 	<tr>
-		<td><strong>$i18n.getString("full_name")</strong></td>
-		<td>$representative.getFullName()</td>
+		<td><strong>$i18n.getString("full_name"):</strong></td>
+		<td>$!representative.getFullName()</td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("gender")</strong></td>
-		<td> $representative.gender</td>
+		<td><strong>$i18n.getString("gender"):</strong></td>
+		<td> $!representative.gender</td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("birth_date")</strong></td>
-		<td>$format.formatDate( $representative.birthDate )</td>
+		<td><strong>$i18n.getString("date_of_birth"):</strong></td>
+		<td>$!format.formatDate( $!representative.birthDate )</td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("age")</strong></td>
-		<td> $representative.getAge() </td>
+		<td><strong>$i18n.getString("age"):</strong></td>
+		<td> $!representative.getAge() </td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("blood_group")</strong></td>
-		<td>$representative.getBloodGroup()</td>
+		<td><strong>$i18n.getString("blood_group"):</strong></td>
+		<td>$!representative.getBloodGroup()</td>
 	</tr>
 	#foreach( $patientIdentifier in $representative.identifiers )
 	  <tr>  
-	  	<td><strong>#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name #else $i18n.getString("system_identifier") #end</strong></td>      
-	      <td> $patientIdentifier.identifier </td>
+	  	<td><strong>#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name: #else $i18n.getString("system_identifier"): #end</strong></td>      
+	      <td> $!patientIdentifier.identifier </td>
 	   </tr>
 	#end
 	<tr>
-		<td><strong>$i18n.getString("programs")</strong></td>
+		<td><strong>$i18n.getString("programs"):</strong></td>
 		<td>  
 			 #foreach( $program in $representative.programs )
 			 	#if( $velocityCount == 1 )

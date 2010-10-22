@@ -65,20 +65,13 @@ public class ValidateProgramAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
+    
     private String message;
 
     public String getMessage()
@@ -100,57 +93,16 @@ public class ValidateProgramAction
     public String execute()
         throws Exception
     {
+        name = name.trim();
 
-        if ( nameField == null )
+        Program match = programService.getProgramByName( name );
+
+        if ( match != null && (id == null || match.getId() != id) )
         {
-            message = i18n.getString( "please_specify_a_name" );
+            message = i18n.getString( "duplicate_names" );
 
-            return INPUT;
+            return ERROR;
         }
-
-        else
-        {
-            nameField = nameField.trim();
-
-            if ( nameField.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_name" );
-
-                return INPUT;
-            }
-
-            Program match = programService.getProgramByName( nameField );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "duplicate_names" );
-
-                return INPUT;
-            }
-        }
-
-        if ( description == null )
-        {
-            message = i18n.getString( "please_specify_a_description" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_description" );
-
-                return INPUT;
-            }
-        }
-
-        // ---------------------------------------------------------------------
-        // Validation success
-        // ---------------------------------------------------------------------
 
         message = i18n.getString( "everything_is_ok" );
 

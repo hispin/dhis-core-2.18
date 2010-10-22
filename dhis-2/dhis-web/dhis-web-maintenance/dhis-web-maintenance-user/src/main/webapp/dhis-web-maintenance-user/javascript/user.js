@@ -23,6 +23,9 @@ function userReceived( userElement )
     var phoneNumber = getElementValue( userElement, 'phoneNumber' );
 	setInnerHTML( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
 
+	var numberOrgunit = getElementValue( userElement, 'numberOrgunit' );
+	setInnerHTML( 'numberOrgunitField', numberOrgunit ? numberOrgunit : '[' + i18n_none + ']' );
+	
     showDetails();
 }
 

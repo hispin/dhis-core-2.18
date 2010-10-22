@@ -128,14 +128,7 @@ implements Action
     @Override
     public String execute()
         throws Exception
-    {
-        if ( dataSetIds == null )
-        {
-            message = i18n.getString( "not_choose_dataset" );
-            organisationUnitSelectionManager.clearSelectedOrganisationUnits();
-            return INPUT;
-        }
-        
+    {  
         Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
         if ( orgUnits == null || orgUnits.size() ==0 )
         {

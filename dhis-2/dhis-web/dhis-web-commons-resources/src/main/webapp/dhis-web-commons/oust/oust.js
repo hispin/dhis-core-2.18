@@ -100,7 +100,7 @@ function SelectionTreeSelection()
         for ( var i = 0, unitIdElement; ( unitIdElement = unitIdElements[i] ); ++i )
         {
             unitIds[i] = unitIdElement.firstChild.nodeValue;
-			selectedOrganisationUnit.push( unitIdElement.firstChild.nodeValue );	
+			selectedOrganisationUnit.push( unitIds[i] );	
         }
 		
         if ( !listenerFunction )

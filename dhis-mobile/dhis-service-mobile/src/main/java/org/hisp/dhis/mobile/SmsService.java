@@ -36,20 +36,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+
 import org.hisp.dhis.messaging.api.MessageService;
 import org.hisp.dhis.mobile.api.MobileImportService;
 import org.hisp.dhis.mobile.api.XmlCreatorService;
-import org.smslib.AGateway.Protocols;
 import org.smslib.GatewayException;
+import org.smslib.ICallNotification;
 import org.smslib.IInboundMessageNotification;
 import org.smslib.IOutboundMessageNotification;
 import org.smslib.IQueueSendingNotification;
 import org.smslib.InboundBinaryMessage;
 import org.smslib.InboundMessage;
-import org.smslib.Message.MessageTypes;
 import org.smslib.OutboundMessage;
 import org.smslib.Service;
 import org.smslib.TimeoutException;
+import org.smslib.AGateway.Protocols;
+import org.smslib.Message.MessageTypes;
 import org.smslib.modem.SerialModemGateway;
 
 public class SmsService implements MessageService
@@ -89,11 +91,14 @@ public class SmsService implements MessageService
 
     private OutboundNotification outboundNotification;
 
+    private CallNotification callNotification;
+
     public SmsService()
     {
         serv = new Service();
         inboundNotification = new InboundNotification();
         outboundNotification = new OutboundNotification();
+        callNotification = new CallNotification();
     }
 
     private Service getService()
@@ -168,25 +173,31 @@ public class SmsService implements MessageService
             try
             {
                 serv.sendMessage( message );
+                getService().getLogger().logInfo( "Message Sent to: " + recipient, null, null );
                 return "SUCCESS";
-            } catch ( TimeoutException ex )
+            } 
+            catch ( TimeoutException ex )
             {
                 getService().getLogger().logError( "Timeout error in sending message", ex, null );
                 return "ERROR";
-            } catch ( GatewayException ex )
+            } 
+            catch ( GatewayException ex )
             {
                 getService().getLogger().logError( "Gateway Exception in sending message", ex, null );
                 return "ERROR";
-            } catch ( IOException ex )
+            } 
+            catch ( IOException ex )
             {
                 getService().getLogger().logError( "IO Exception in sending message", ex, null );
                 return "ERROR";
-            } catch ( InterruptedException ex )
+            } 
+            catch ( InterruptedException ex )
             {
                 getService().getLogger().logError( "Interrupted Exception in sending message", ex, null );
                 return "ERROR";
             }
-        } else
+        } 
+        else
         {
             getService().getLogger().logError( "Service not running", null, null );
             return "SERVICE NOT RUNNING";
@@ -196,31 +207,93 @@ public class SmsService implements MessageService
     @Override
     public void processMessage( Object message )
     {
+        int delSMSflag = 0;
         try
         {
-            getService().getLogger().logInfo( "Starting processing message", null, null );
+            getService().getLogger().logInfo( "---Starting processing message---", null, null );
             InboundBinaryMessage binaryMsg = (InboundBinaryMessage) message;
             byte[] compressedData = binaryMsg.getDataBytes();
             String unCompressedText = new String( Compressor.decompress( compressedData ), "UTF-8" );
 
             String sender = binaryMsg.getOriginator();
             Date sendTime = binaryMsg.getDate();
-            saveData( sender, sendTime, unCompressedText );
-            getService().getLogger().logInfo( "Saved Report. Sending Acknowledgement to " + sender, null, null );
-            sendAck( sender, "REPORT", unCompressedText );
+            
+            // Creating XML File
+            getService().getLogger().logInfo( "Creating XML file...", null, null );
+            createXMLFile( sender, sendTime, unCompressedText );
+            
+            //Delete SMS
+            getService().getLogger().logInfo( "Deleting SMS...", null, null );
+            if ( getProperties().getProperty( "settings.delete_after_processing", "no" ).equalsIgnoreCase( "yes" ) )
+            {
+                try
+                {
+                    getService().deleteMessage( (InboundMessage) message );
+                    getService().getLogger().logInfo( "Deleted message", null, null );
+                    delSMSflag = 1;
+                } 
+                catch ( Exception e )
+                {
+                    getService().getLogger().logError( "Error deleting received message!", e, null );
+                }
+            }
+            
+            // Import data into DHIS
+            getService().getLogger().logInfo( "Importing data into DHIS...", null, null );
+            String statusMessage = importData( sender, sendTime, unCompressedText );
+            
+            //Sending ACK/Status SMS
+            getService().getLogger().logInfo( "Sending ACK/Status messge...", null, null );
+            sendMessage( sender, statusMessage );
+            
+            getService().getLogger().logInfo( "---Message Processing Finished---", null, null );
+            
+            //String statusMessage = saveData( sender, sendTime, unCompressedText );
+            //getService().getLogger().logInfo( "Saved Report. Sending Acknowledgement to " + sender, null, null );
+            //sendAck( sender, "REPORT", unCompressedText );
+            //sendMessage( sender, statusMessage );
 
-        } catch ( UnsupportedEncodingException uneex )
+        } 
+        catch ( UnsupportedEncodingException uneex )
         {
             getService().getLogger().logError( "Error reading encoding: ", uneex, null );
             return;
-        } catch ( ClassCastException ccex )
+        } 
+        catch ( ClassCastException ccex )
         {
             getService().getLogger().logError( "Error performing ClassCast: ", ccex, null );
             return;
-        } catch ( ArithmeticException aex )
+        } 
+        catch ( ArithmeticException aex )
         {
             getService().getLogger().logError( "Error performing arithmatic operation: ", aex, null );
             return;
+        } 
+        catch (ArrayIndexOutOfBoundsException aiobex)
+        {
+            getService().getLogger().logError( "Error with message format. PLEASE CHECK APP VERSION: ", aiobex, null );
+            return;
+        } 
+        catch (NullPointerException npex)
+        {
+            getService().getLogger().logError( "MISSING form number. PLEASE CHECK formIDLayout.csv: ", npex, null );
+            return;
+        }
+        finally
+        {
+            if ( getProperties().getProperty( "settings.delete_after_processing", "no" ).equalsIgnoreCase( "yes" ) && delSMSflag == 0 )
+            {
+                try
+                {
+                    getService().deleteMessage( (InboundMessage) message );
+                    getService().getLogger().logInfo( "Deleted message", null, null );
+                } 
+                catch ( Exception e )
+                {
+                    getService().getLogger().logError( "Error deleting received message!", e, null );
+                }
+            }
+            getService().getLogger().logInfo( "---Message Processing Finished---", null, null );
         }
     }
 
@@ -266,16 +339,43 @@ public class SmsService implements MessageService
         }
     }
 
-    @Override
-    public void saveData( String mobileNumber, Date sendTime, String data )
+    public void createXMLFile( String mobileNumber, Date sendTime, String data )
     {
         xmlCreatorService.setPhoneNumber( mobileNumber );
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd-HH-mm-ss" );
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd_HH-mm-ss" );
         String timeStamp = dateFormat.format( sendTime );
         xmlCreatorService.setSendTime( timeStamp );
         xmlCreatorService.setInfo( data );
         xmlCreatorService.run(); //should be made thread-safe
-        mobileImportService.importAllFiles();
+        getService().getLogger().logInfo( "XML successfully created for msg from: " + mobileNumber, null, null );
+    }
+
+    public String importData( String mobileNumber, Date sendTime, String data )
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd_HH-mm-ss" );
+        String timeStamp = dateFormat.format( sendTime );
+
+        String importFileName = mobileNumber + timeStamp.replace( ":", "-" ) + ".xml";
+        String statusMessage = mobileImportService.importXMLFile( importFileName );
+        getService().getLogger().logInfo( "Importing Completed for current messages", null, null );
+        return statusMessage;
+    }
+    
+    @Override
+    public String saveData( String mobileNumber, Date sendTime, String data )
+    {
+        xmlCreatorService.setPhoneNumber( mobileNumber );
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd_HH-mm-ss" );
+        String timeStamp = dateFormat.format( sendTime );
+        xmlCreatorService.setSendTime( timeStamp );
+        xmlCreatorService.setInfo( data );
+        xmlCreatorService.run(); //should be made thread-safe
+        getService().getLogger().logInfo( "XML successfully created for msg from: " + mobileNumber, null, null );
+        //mobileImportService.importAllFiles();
+        String importFileName = mobileNumber + timeStamp.replace( ":", "-" ) + ".xml";
+        String statusMessage = mobileImportService.importXMLFile( importFileName );
+        getService().getLogger().logInfo( "Importing Completed for current messages", null, null );
+        return statusMessage;
     }
 
     private void processStatusReport( InboundMessage message )
@@ -283,7 +383,6 @@ public class SmsService implements MessageService
         String originator = message.getOriginator();
         getService().getLogger().logInfo( "STATUS REPORT received from: " + originator, null, null );
     }
-
 
     /*------------------------------------------------------------------
      * Internal methods
@@ -293,6 +392,7 @@ public class SmsService implements MessageService
     private String loadConfiguration() throws Exception
     {
         CONFIG_FILE = System.getenv( "DHIS2_HOME" ) + File.separator + "SMSServer.conf";
+        
         if ( new File( CONFIG_FILE ).exists() )
         {
             FileInputStream f = new FileInputStream( CONFIG_FILE );
@@ -371,8 +471,14 @@ public class SmsService implements MessageService
                     String pin = getProperties().getProperty( modemName + ".pin" );
                     String inbound = getProperties().getProperty( modemName + ".inbound" );
                     String outbound = getProperties().getProperty( modemName + ".outbound" );
+                    String simMemLocation = getProperties().getProperty(modemName + ".simMemLocation");
 
                     SerialModemGateway gateway = new SerialModemGateway( modemName, port, baudRate, manufacturer, model );
+
+                    if( simMemLocation != null || !simMemLocation.equals("-") )
+                    {
+                        gateway.getATHandler().setStorageLocations(simMemLocation);
+                    }
 
                     if ( protocol != null && protocol.equalsIgnoreCase( "PDU" ) )
                     {
@@ -392,6 +498,8 @@ public class SmsService implements MessageService
                     {
                         gateway.setSimPin( pin );
                     }
+
+                    getService().setCallNotification( callNotification );
 
                     if ( inbound.equalsIgnoreCase( "yes" ) )
                     {
@@ -446,27 +554,45 @@ public class SmsService implements MessageService
         {
             if ( msgType == MessageTypes.INBOUND )
             {
-                getService().getLogger().logInfo( "New INBOUND MESSAGE on Gateway: " + gatewayId, null, null );
+                getService().getLogger().logInfo( "New INBOUND MESSAGE on Gateway: " + gatewayId + " from " + msg.getOriginator(), null, null );
                 processMessage( msg );
-            } else
+            } 
+            else
             {
                 if ( msgType == MessageTypes.STATUSREPORT )
                 {
-                    getService().getLogger().logInfo( "New STATUS REPORT on Gateway: " + gatewayId, null, null );
+                    getService().getLogger().logInfo( "New STATUS REPORT on Gateway: " + gatewayId + " from " + msg.getOriginator(), null, null );
                     processStatusReport( msg );
                 }
+
+                if ( getProperties().getProperty( "settings.delete_after_processing", "no" ).equalsIgnoreCase( "yes" ) )
+                {
+                    try
+                    {
+                        getService().deleteMessage( msg );
+                        getService().getLogger().logInfo( "Deleted message", null, null );
+                    } 
+                    catch ( Exception e )
+                    {
+                        getService().getLogger().logError( "Error deleting received message!", e, null );
+                    }
+                }
             }
+            
+            /*
             if ( getProperties().getProperty( "settings.delete_after_processing", "no" ).equalsIgnoreCase( "yes" ) )
             {
                 try
                 {
                     getService().deleteMessage( msg );
                     getService().getLogger().logInfo( "Deleted message", null, null );
-                } catch ( Exception e )
+                } 
+                catch ( Exception e )
                 {
                     getService().getLogger().logError( "Error deleting received message!", e, null );
                 }
             }
+            */
         }
     }
     //</editor-fold>
@@ -490,6 +616,17 @@ public class SmsService implements MessageService
         public void process( String gtwId, OutboundMessage msg )
         {
             getService().getLogger().logInfo( "**** >>>> Now Sending: " + msg.getRecipient(), null, gtwId );
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" InboundCallNotification Class ">
+    class CallNotification implements ICallNotification
+    {
+
+        public void process( String gatewayId, String callerId )
+        {
+            getService().getLogger().logInfo( "**** >>>> Getting call from: " + callerId, null, null );
         }
     }
     //</editor-fold>

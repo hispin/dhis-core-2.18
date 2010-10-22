@@ -32,14 +32,27 @@
 
 		</td>
 		<td style="width:10em; padding-left:2em; vertical-align:top">
-
-			<div id="detailsArea" style="display:none">
-				<div style="float:right">
-					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
-				</div>				
-				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
-				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
-				<p><label>$i18n.getString( "sql_statement" ):</label><br/><span id="sqlQueryField"></span></p>
+			
+			<div id="detailsInfo" style="display:none;">
+				<table width="100%">
+					<tr style="background-color:#3F5D8E; color:#FFFFFF">
+						<td colspan='2'><strong>$i18n.getString('details')</strong>
+						<a href="javascript:hideById('detailsInfo'); unLockScreen();" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )" align="right"/></a>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>$i18n.getString( "name" ):</strong></td>
+						<td id="nameField"></td>
+					</tr>
+					<tr>
+						<td><strong>$i18n.getString( "description" ):</strong></td>
+						<td id="descriptionField"></td>
+					</tr>
+					<tr>
+						<td><strong>$i18n.getString( "sql_statement" ):</strong></td>
+						<td id="sqlQueryField"></td>
+					</tr>
+				</table>
 			</div>
 			
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">

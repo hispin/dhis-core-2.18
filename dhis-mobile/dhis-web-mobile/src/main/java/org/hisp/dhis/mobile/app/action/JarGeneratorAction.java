@@ -39,129 +39,97 @@ import java.io.InputStreamReader;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
-public class JarGeneratorAction
-    implements Action
-{
+public class JarGeneratorAction implements Action {
 
     private String mvnBin;
-
     private String splash;
-
     private String selectDataSet;
-
     private String dataElements;
 
-    public void setDataElements( String dataElements )
-    {
+    public void setDataElements(String dataElements) {
         this.dataElements = dataElements;
     }
 
-    public void setSelectDataSet( String selectDataSet )
-    {
+    public void setSelectDataSet(String selectDataSet) {
         this.selectDataSet = selectDataSet;
     }
 
-    public String getMvnBin()
-    {
+    public String getMvnBin() {
         return mvnBin;
     }
 
-    public void setMvnBin( String mvnBin )
-    {
+    public void setMvnBin(String mvnBin) {
         this.mvnBin = mvnBin;
     }
 
-    public String getSplash()
-    {
+    public String getSplash() {
         return splash;
     }
 
-    public void setSplash( String splash )
-    {
+    public void setSplash(String splash) {
         this.splash = splash;
     }
 
-    private static String readFileAsString( File file )
-        throws java.io.IOException
-    {
+    private static String readFileAsString(File file) throws java.io.IOException {
         byte[] buffer = new byte[(int) file.length()];
-        BufferedInputStream f = new BufferedInputStream( new FileInputStream( file ) );
-        f.read( buffer );
+        BufferedInputStream f = new BufferedInputStream(new FileInputStream(file));
+        f.read(buffer);
         f.close();
-        return new String( buffer );
+        return new String(buffer);
     }
 
-    public void replaceStringInFile( File dir, String fileName, String match, String replacingString )
-    {
-        try
-        {
-            File srcFile = new File( dir, fileName );
-            File destFile = new File( dir, "temp" );
-            if ( srcFile.exists() )
-            {
-                String str = readFileAsString( srcFile );
-                str = str.replaceFirst( match, replacingString );
-                FileWriter fw = new FileWriter( destFile );
-                fw.write( str );
+    public void replaceStringInFile(File dir, String fileName, String match, String replacingString) {
+        try {
+            File srcFile = new File(dir, fileName);
+            File destFile = new File(dir, "temp");
+            if (srcFile.exists()) {
+                String str = readFileAsString(srcFile);
+                str = str.replaceFirst(match, replacingString);
+                FileWriter fw = new FileWriter(destFile);
+                fw.write(str);
                 fw.close();
             }
-            FileUtils.copyFile( destFile, srcFile );
+            FileUtils.copyFile(destFile, srcFile);
             destFile.delete();
-        }
-        catch ( FileNotFoundException ex )
-        {
+        } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-        }
-        catch ( IOException ex )
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
-        }
-        catch ( Exception ex )
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
-    public String execute()
-        throws Exception
-    {
-        String webappPath = ServletActionContext.getServletContext().getRealPath( "/" );
+    public String execute() throws Exception {
+        String webappPath = ServletActionContext.getServletContext().getRealPath("/");
         String javameSrc = webappPath + "/dhis-web-mobile/javame_src/src/main/java/org/hisp/dhis/mobile";
-        File dir = new File( javameSrc );
+        File dir = new File(javameSrc);
 
-        // For splash screen
-        replaceStringInFile( dir, "DHISMobile.java", "\\w*.png", splash );
+        //For splash screen
+        replaceStringInFile(dir, "DHISMobile.java", "\\w*.png", splash);
 
-        // For dataset
-        replaceStringInFile( dir, "FormsListPage.java", "formNames\\[].*;", "formNames[] = {\"" + selectDataSet
-            + "\"};" );
+        //For dataset
+        replaceStringInFile(dir, "FormsListPage.java", "formNames\\[].*;", "formNames[] = {\"" + selectDataSet + "\"};");
 
-        // For dataElements
-        replaceStringInFile( dir, "DHISMobile.java", "dataElements =.*\\},\\{", "dataElements = {{" + dataElements
-            + "},{" );
+        //For dataElements
+        replaceStringInFile(dir, "DHISMobile.java", "dataElements =.*\\},\\{", "dataElements = {{" + dataElements + "},{");
 
-        // For language
-        // replaceStringInFile(dir, "DHISMobile.java", "", language);
+        //For language
+        //replaceStringInFile(dir, "DHISMobile.java", "", language);
 
-        // For patient-program stage
-        // replaceStringInFile(dir, "DHISMobile.java", "", patient_program);
+        //For patient-program stage
+        //replaceStringInFile(dir, "DHISMobile.java", "", patient_program);
 
-        ProcessBuilder pb = new ProcessBuilder( mvnBin, "install", "-f", ServletActionContext.getServletContext()
-            .getRealPath( "/" )
-            + "/dhis-web-mobile/javame_src/pom.xml" );
-
-        pb.redirectErrorStream( true );
+        ProcessBuilder pb = new ProcessBuilder(mvnBin, "install", "-f", ServletActionContext.getServletContext().getRealPath("/") + "/dhis-web-mobile/javame_src/pom.xml");
+        pb.redirectErrorStream(true);
         Process p = pb.start();
         InputStream is = p.getInputStream();
-        BufferedReader br = new BufferedReader( new InputStreamReader( is ) );
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String str;
-
-        while ( (str = br.readLine()) != null )
-        {
-            System.out.println( str );
+        while ((str = br.readLine()) != null) {
+            System.out.println(str);
         }
-
         return SUCCESS;
     }
 }

@@ -27,116 +27,9 @@ function patientAttributeReceived( patientAttributeElement )
 // -----------------------------------------------------------------------------
 // Remove Patient Attribute
 // -----------------------------------------------------------------------------
-
 function removePatientAttribute( patientAttributeId, name )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + name );
-    
-    if ( result )
-    {
-    	var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removePatientAttributeCompleted );
-        window.location.href = 'removePatientAttribute.action?id=' + patientAttributeId;
-    }
-}
-
-function removePatientAttributeCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'patientAttribute.action';
-    }
-    else if ( type = 'error' )
-    {
-        setInnerHTML( 'warningField', message );
-        
-        showWarning();
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Add Patient Attribute
-// -----------------------------------------------------------------------------
-
-function validateAddPatientAttribute()
-{
-	
-	var url = 'validatePatientAttribute.action?' +
-			'nameField=' + getFieldValue( 'nameField' ) +			
-	        '&description=' + getFieldValue( 'description' );
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );    
-    request.send( url );        
-
-    return false;
-}
-
-function addValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        var form = document.getElementById( 'addPatientAttributeForm' );        
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_adding_patient_atttibute_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
-// -----------------------------------------------------------------------------
-// Update Patient Attribute
-// -----------------------------------------------------------------------------
-
-function validateUpdatePatientAttribute()
-{
-	
-    var url = 'validatePatientAttribute.action?' + 
-    		'id=' + getFieldValue( 'id' ) +
-    		'&nameField=' + getFieldValue( 'nameField' ) +			
-	        '&description=' + getFieldValue( 'description' );
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationCompleted );   
-    
-    request.send( url );
-        
-    return false;
-}
-
-function updateValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-    	var form = document.getElementById( 'updatePatientAttributeForm' );        
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_saving_program_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
+    removeItem( patientAttributeId, name, i18n_confirm_delete, 'removePatientAttribute.action' );
 }
 
 ATTRIBUTE_OPTION = 
@@ -206,6 +99,6 @@ ATTRIBUTE_OPTION =
 	},
 	createInput : function ()
 	{
-		return "<tr><td><input type='text' name='attrOptions' /><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
+		return "<tr><td><input type='text' name='attrOptions' style='width:28em'/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
 }

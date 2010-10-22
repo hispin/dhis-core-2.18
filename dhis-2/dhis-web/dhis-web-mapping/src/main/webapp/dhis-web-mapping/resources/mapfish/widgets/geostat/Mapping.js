@@ -24,129 +24,45 @@
 
 Ext.namespace('mapfish.widgets', 'mapfish.widgets.geostat');
 
-/**
- * Class: mapfish.widgets.geostat.Choropleth
- * Use this class to create a widget allowing to display choropleths
- * on the map.
- *
- * Inherits from:
- * - {Ext.FormPanel}
- */
-
 mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 
-    /**
-     * APIProperty: layer
-     * {<OpenLayers.Layer.Vector>} The vector layer containing the features that
-     *      are styled based on statistical values. If none is provided, one will
-     *      be created.
-     */
     layer: null,
-
-    /**
-     * APIProperty: format
-     * {<OpenLayers.Format>} The OpenLayers format used to get features from
-     *      the HTTP request response. GeoJSON is used if none is provided.
-     */
+    
     format: null,
 
-    /**
-     * APIProperty: url
-     * {String} The URL to the web service. If none is provided, the features
-     *      found in the provided vector layer will be used.
-     */
     url: null,
 
-    /**
-     * APIProperty: featureSelection
-     * {Boolean} A boolean value specifying whether feature selection must
-     *      be put in place. If true a popup will be displayed when the
-     *      mouse goes over a feature.
-     */
     featureSelection: true,
 
-    /**
-     * APIProperty: nameAttribute
-     * {String} The feature attribute that will be used as the popup title.
-     *      Only applies if featureSelection is true.
-     */
     nameAttribute: null,
 
-    /**
-     * APIProperty: indicator
-     * {String} (read-only) The feature attribute currently chosen
-     *     Useful if callbacks are registered on 'featureselected'
-     *     and 'featureunselected' events
-     */
     indicator: null,
 
-    /**
-     * APIProperty: indicatorText
-     * {String} (read-only) The raw value of the currently chosen indicator
-     *     (ie. human readable)
-     *     Useful if callbacks are registered on 'featureselected'
-     *     and 'featureunselected' events
-     */
     indicatorText: null,
 
-    /**
-     * Property: coreComp
-     * {<mapfish.GeoStat.ProportionalSymbol>} The core component object.
-     */
     coreComp: null,
 
-    /**
-     * Property: classificationApplied
-     * {Boolean} true if the classify was applied
-     */
     classificationApplied: false,
 
-    /**
-     * Property: ready
-     * {Boolean} true if the widget is ready to accept user commands.
-     */
     ready: false,
 
-    /**
-     * Property: border
-     *     Styling border
-     */
     border: false,
 
-    /**
-     * APIProperty: loadMask
-     *     An Ext.LoadMask config or true to mask the widget while loading (defaults to false).
-     */
     loadMask: false,
 
-    /**
-     * APIProperty: labelGenerator
-     *     Generator for bin labels
-     */
     labelGenerator: null,
-
-    getGridPanelHeight: function() {
-        var h = screen.height;
-        
-        if (h <= 800) {
-            return 180;
-        }
-        else if (h <= 1050) {
-            return 480;
-        }
-        else if (h <= 1200) {
-            return 600;
-        }
-        else {
-            return 900;
-        }
-    },
      
     newUrl: false,
 	
 	relation: false,
+    
+    mapData: false,
+    
+    labels: false,
 	
     initComponent : function() {
+        
+        mapData = {};
     
         mapStore = new Ext.data.JsonStore({
             url: path_mapping + 'getAllMaps' + type,
@@ -242,7 +158,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 				autoExpandColumn: 'organisationUnitId',
 				enableHdMenu: true,
                 width: gridpanel_width,
-                height: this.getGridPanelHeight(),
+                height: GLOBALS.util.getGridPanelHeight(),
                 view: gridView,
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
@@ -259,7 +175,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             handler: function()
                             {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.message.msg(false, i18n_please_select_map );
+                                    Ext.message.msg(false, i18n_please_select_map);
                                     return;
                                 }
                                 mapping.autoAssign(true);
@@ -309,7 +225,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             handler: function()
                             {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
-                                    Ext.message.msg(false, i18n_please_select_map );
+                                    Ext.message.msg(false, i18n_please_select_map);
                                     return;
                                 }
                                 
@@ -318,7 +234,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								var msg;
 								
                                 if (selection == '') {
-                                    Ext.message.msg(false, i18n_please_select_least_one_organisation_unit_in_the_list );
+                                    Ext.message.msg(false, i18n_please_select_least_one_organisation_unit_in_the_list);
                                     return;
                                 }
 								
@@ -348,7 +264,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 										mapping.classify(true, true);
 									},
 									failure: function() {
-										alert( i18n_error_while_deleting_relation_map_and_oranisation_unit );
+										alert(i18n_error_while_deleting_relation_map_and_oranisation_unit);
 									} 
 								});
                             },
@@ -368,20 +284,20 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 									url: path_mapping + 'getMapOrganisationUnitRelationByFeatureId' + type,
 									method: 'POST',
 									params: {featureId:mapping.relation, mapLayerPath:mlp},
-									success: function( responseObject ) {
-										var mour = Ext.util.JSON.decode( responseObject.responseText ).mapOrganisationUnitRelation[0];
+									success: function(r) {
+										var mour = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelation[0];
 										if (mour.featureId == '') {
 											Ext.Ajax.request({
 												url: path_mapping + 'addOrUpdateMapOrganisationUnitRelation' + type,
 												method: 'POST',
-												params: { mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation },
-												success: function( responseObject ) {
+												params: {mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation},
+												success: function() {
 													Ext.message.msg(true, '<span class="x-msg-hl">' + mapping.relation + '</span> (' + i18n_in_the_map + ') ' + i18n_assigned_to + ' <span class="x-msg-hl">' + name + '</span> (' + i18n_database + ').');
 													Ext.getCmp('grid_gp').getStore().load();
 													popup.hide();
 													mapping.relation = false;
 													Ext.getCmp('filter_tf').setValue('');
-													mapping.classify(true);
+													mapping.classify(true, true);
 												},
 												failure: function() {
 													alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
@@ -472,8 +388,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     applyValues: function(color, noCls) {
         var options = {};
         
-        mapping.indicator = options.indicator = 'value';
-        options.method = 1;
+        mapping.indicator = 'value';
+        options.indicator = mapping.indicator;
+        options.method = 2;
         options.numClasses = noCls;
         
         var colorA = new mapfish.ColorRgb();
@@ -493,21 +410,22 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         MASK.msg = i18n_loading ;
         MASK.show();
 
-        var level = MAPDATA[organisationUnitAssignment].organisationUnitLevel;
+        var level = this.mapData.organisationUnitLevel;
 
         Ext.Ajax.request({
             url: path_mapping + 'getOrganisationUnitsAtLevel' + type,
             method: 'POST',
-            params: { level: level },
+            params: {level: level},
+            scope: this,
             success: function(r) {
-                FEATURE[thematicMap] = MAP.getLayersByName('Polygon layer')[0].features;
+                FEATURE[thematicMap] = this.layer.features;
                 var organisationUnits = Ext.util.JSON.decode(r.responseText).organisationUnits;
-                var nameColumn = MAPDATA[organisationUnitAssignment].nameColumn;
-                var mlp = MAPDATA[organisationUnitAssignment].mapLayerPath;
+                var nameColumn = this.mapData.nameColumn;
+                var mlp = this.mapData.mapLayerPath;
                 var count_match = 0;
                 var relations = '';
                 
-                for ( var i = 0; i < FEATURE[thematicMap].length; i++ ) {
+                for (var i = 0; i < FEATURE[thematicMap].length; i++) {
                     FEATURE[thematicMap][i].attributes.compareName = FEATURE[thematicMap][i].attributes[nameColumn].split(' ').join('').toLowerCase();
                 }
         
@@ -536,9 +454,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         MASK.msg = i18n_applying_organisation_units_relations ;
                         MASK.show();
                         
-                        Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + ' (map <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>, db <span class="x-msg-hl">' + organisationUnits.length + '</span>).');
-                        // Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + '.<br><br>Database: <span class="x-msg-hl">' + organisationUnits.length + '</span><br>Shapefile: <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>');                        
-                        
+                        Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + ' (map <span class="x-msg-hl">' + FEATURE[thematicMap].length + '</span>, db <span class="x-msg-hl">' + organisationUnits.length + '</span>)');
+                       
                         Ext.getCmp('grid_gp').getStore().load();
                         mapping.classify(false, position);
                     },
@@ -555,58 +472,43 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 
     classify: function(exception, position) {
         if (mapping.validateForm(exception)) {
-        
             MASK.msg = i18n_creating_map;
             MASK.show();
             
             Ext.Ajax.request({
                 url: path_mapping + 'getMapByMapLayerPath' + type,
                 method: 'POST',
-                params: { mapLayerPath: mapping.newUrl },
+                params: {mapLayerPath: mapping.newUrl},
+                scope: this,
                 success: function(r) {
-                    MAPDATA[ACTIVEPANEL] = Ext.util.JSON.decode(r.responseText).map[0];
+                    this.mapData = Ext.util.JSON.decode(r.responseText).map[0];
                     
-                    MAPDATA[ACTIVEPANEL].organisationUnitLevel = parseFloat(MAPDATA[ACTIVEPANEL].organisationUnitLevel);
-                    MAPDATA[ACTIVEPANEL].longitude = parseFloat(MAPDATA[ACTIVEPANEL].longitude);
-                    MAPDATA[ACTIVEPANEL].latitude = parseFloat(MAPDATA[ACTIVEPANEL].latitude);
-                    MAPDATA[ACTIVEPANEL].zoom = parseFloat(MAPDATA[ACTIVEPANEL].zoom);
-                    
-                    if (!position) {
-                        if (MAPDATA[ACTIVEPANEL].zoom != MAP.getZoom()) {
-                            MAP.zoomTo(MAPDATA[ACTIVEPANEL].zoom);
-                        }
-                        MAP.setCenter(new OpenLayers.LonLat(MAPDATA[ACTIVEPANEL].longitude, MAPDATA[ACTIVEPANEL].latitude));
-                    }
-                    
-                    if (MAPVIEW) {
-                        if (MAPVIEW.longitude && MAPVIEW.latitude && MAPVIEW.zoom) {
-                            MAP.setCenter(new OpenLayers.LonLat(MAPVIEW.longitude, MAPVIEW.latitude), MAPVIEW.zoom);
-                        }
-                        else {
-                            MAP.setCenter(new OpenLayers.LonLat(MAPDATA[ACTIVEPANEL].longitude, MAPDATA[ACTIVEPANEL].latitude), MAPDATA[ACTIVEPANEL].zoom);
-                        }
-                        MAPVIEW = false;
-                    }
+                    this.mapData.organisationUnitLevel = parseFloat(this.mapData.organisationUnitLevel);
+                    this.mapData.longitude = parseFloat(this.mapData.longitude);
+                    this.mapData.latitude = parseFloat(this.mapData.latitude);
+                    this.mapData.zoom = parseFloat(this.mapData.zoom);
             
-                    var polygonLayer = MAP.getLayersByName('Polygon layer')[0];
-                    FEATURE[thematicMap] = polygonLayer.features;
-                    
-                    if (LABELS[thematicMap]) {
-                        toggleFeatureLabelsPolygons(false, polygonLayer);
+                    if (!position) {
+                        MAP.zoomToExtent(this.layer.getDataExtent());
                     }
+
+                    FEATURE[thematicMap] = this.layer.features;
         
-                    var mlp = MAPDATA[organisationUnitAssignment].mapLayerPath;
+                    var mlp = this.mapData.mapLayerPath;
                     var relations =	Ext.getCmp('grid_gp').getStore();
-                    var nameColumn = MAPDATA[organisationUnitAssignment].nameColumn;
+                    var nameColumn = this.mapData.nameColumn;
                     var noCls = 1;
                     var noAssigned = 0;
         
                     for (var i = 0; i < FEATURE[thematicMap].length; i++) {
-                        FEATURE[thematicMap][i].attributes['value'] = 0;
+                        FEATURE[thematicMap][i].attributes.value = 0;
+                        FEATURE[thematicMap][i].attributes.labelString = '';
 
                         for (var j = 0; j < relations.getTotalCount(); j++) {
-                            if (relations.getAt(j).data.featureId == FEATURE[thematicMap][i].attributes[nameColumn]) {
-                                FEATURE[thematicMap][i].attributes['value'] = 1;
+                            var name = FEATURE[thematicMap][i].attributes[nameColumn];
+                            if (relations.getAt(j).data.featureId == name) {
+                                FEATURE[thematicMap][i].attributes.value = 1;
+                                FEATURE[thematicMap][i].attributes.labelString = name;
                                 noAssigned++;
                                 noCls = noCls < 2 ? 2 : noCls;
                                 break;

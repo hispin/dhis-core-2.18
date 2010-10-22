@@ -32,34 +32,24 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
-public class SplashUploadAction
-    extends ActionSupport
-{
+public class SplashUploadAction extends ActionSupport {
 
     private File file;
-
     private String contentType;
-
     private String filename;
-
     private String[] splashImg;
 
-    public String[] getSplashImg()
-    {
-        String webappPath = ServletActionContext.getServletContext().getRealPath( "/" );
+    public String[] getSplashImg() {
+        String webappPath = ServletActionContext.getServletContext().getRealPath("/");
         String imgPath = webappPath + "/dhis-web-mobile/javame_src/src/main/resources/splash";
-        File imgFolder = new File( imgPath );
+        File imgFolder = new File(imgPath);
         File[] images;
-        if ( imgFolder.exists() )
-        {
-            if ( imgFolder.isDirectory() )
-            {
+        if (imgFolder.exists()) {
+            if (imgFolder.isDirectory()) {
                 images = imgFolder.listFiles();
                 String[] imageNames = new String[images.length];
-                for ( int i = 0; i < images.length; i++ )
-                {
-                    if ( images[i].getName().contains( ".png" ) )
-                    {
+                for (int i = 0; i < images.length; i++) {
+                    if (images[i].getName().contains(".png")) {
                         imageNames[i] = images[i].getName();
                     }
                 }
@@ -69,34 +59,26 @@ public class SplashUploadAction
         return splashImg;
     }
 
-    public void setUpload( File file )
-    {
+    public void setUpload(File file) {
         this.file = file;
     }
 
-    public void setUploadContentType( String contentType )
-    {
+    public void setUploadContentType(String contentType) {
         this.contentType = contentType;
     }
 
-    public void setUploadFileName( String filename )
-    {
+    public void setUploadFileName(String filename) {
         this.filename = filename;
     }
 
     @Override
-    public String execute()
-    {
-        try
-        {
-            String webappPath = ServletActionContext.getServletContext().getRealPath( "/" );
+    public String execute() {
+        try {
+            String webappPath = ServletActionContext.getServletContext().getRealPath("/");
             String imgPath = webappPath + "/dhis-web-mobile/javame_src/src/main/resources/splash";
-            File imgFolder = new File( imgPath );
-            FileUtils
-                .copyFile( file, new File( imgFolder, String.valueOf( imgFolder.listFiles().length + 1 ) + ".png" ) );
-        }
-        catch ( IOException ex )
-        {
+            File imgFolder = new File(imgPath);
+            FileUtils.copyFile(file, new File(imgFolder, String.valueOf(imgFolder.listFiles().length + 1) + ".png"));
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return SUCCESS;

@@ -13,8 +13,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reports.Report_in;
+import org.hisp.dhis.reports.util.Report;
 import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,7 +24,8 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
-public class PortalReportsFormAction implements Action
+public class PortalReportsFormAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -40,40 +40,38 @@ public class PortalReportsFormAction implements Action
     }
 
     private PeriodService periodService;
-    
-    public void setPeriodService(PeriodService periodService) 
+
+    public void setPeriodService( PeriodService periodService )
     {
-		this.periodService = periodService;
-	}
-    
-    
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
+    private List<Report> reportList;
 
-private List<Report_in> reportList;
-
-    public List<Report_in> getReportList()
+    public List<Report> getReportList()
     {
         return reportList;
     }
-    
+
     private List<Period> periodList;
-    
-    public List<Period> getPeriodList() 
+
+    public List<Period> getPeriodList()
     {
-		return periodList;
-	}
+        return periodList;
+    }
 
     private SimpleDateFormat simpleDateFormat;
-    
-	public SimpleDateFormat getSimpleDateFormat() 
-	{
-		return simpleDateFormat;
-	}
 
-	private String raFolderName;
+    public SimpleDateFormat getSimpleDateFormat()
+    {
+        return simpleDateFormat;
+    }
+
+    private String raFolderName;
 
     private Collection<PeriodType> periodTypes;
 
@@ -81,13 +79,14 @@ private List<Report_in> reportList;
     {
         return periodTypes;
     }
-    
+
     private Collection<Period> periods = new ArrayList<Period>();
 
     public Collection<Period> getPeriods()
     {
         return periods;
     }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -97,12 +96,12 @@ private List<Report_in> reportList;
         throws Exception
     {
         raFolderName = reportService.getRAFolderName();
-        
+
         periodList = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         periods.addAll( periodList );
-        
-       // reportList = new ArrayList<Report>();
-        
+
+        reportList = new ArrayList<Report>();
+
         getSelectedReportList();
 
         return SUCCESS;
@@ -132,7 +131,7 @@ private List<Report_in> reportList;
         String reportType = "";
         String reportLevel = "";
         String reportModel = "";
-        String reportFileName = "";        
+        String reportFileName = "";
 
         try
         {
@@ -179,10 +178,10 @@ private List<Report_in> reportList;
                     Element reportLevelElement = (Element) reportLevelList.item( 0 );
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
- 
-                    //Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                    //reportList.add( reportObj );       
-                    
+
+                    Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
+                    reportList.add( reportObj );
+
                 }
             }// end of for loop with s var
         }// try block end

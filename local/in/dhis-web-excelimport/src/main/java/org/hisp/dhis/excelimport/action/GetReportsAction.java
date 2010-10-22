@@ -127,6 +127,7 @@ public class GetReportsAction
                 ouName = orgUnit.getShortName();
                 System.out.println( ouName );
                 getSelectedReportList( reportListFileName );
+                //System.out.println("\n\n Report File Name:" + reportListFileName );
             }
             catch ( Exception e )
             {

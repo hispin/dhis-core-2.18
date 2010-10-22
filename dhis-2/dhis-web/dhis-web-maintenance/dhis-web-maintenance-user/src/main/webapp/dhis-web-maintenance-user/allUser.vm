@@ -44,6 +44,10 @@
 				#end
 				</tbody>
 			</table>
+			<p></p>
+	  		<div class="paging-container">
+				#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 
@@ -56,6 +60,7 @@
 				<p><label>$i18n.getString( "firstName" ):</label><br/><span id="firstNameField"></span></p>
 				<p><label>$i18n.getString( "email" ):</label><br/><span id="emailField"></span></p>
                 <p><label>$i18n.getString( "phone_number" ):</label><br/><span id="phoneNumberField"></span></p>
+				<p><label>$i18n.getString( "number_of_orgunit" ):</label><br/><span id="numberOrgunitField"></span></p>					
 			</div>
 			
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">

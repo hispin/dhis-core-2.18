@@ -98,7 +98,7 @@ public class GetDataSetsAction
     public void setName( String name )
     {
         this.name = name;
-    }
+    }   
 
     // -------------------------------------------------------------------------
     // Output

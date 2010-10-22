@@ -73,6 +73,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="bookmarkStore" ref="org.hisp.dhis.reportexcel.BookmarkStore" />	
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />	
 	</bean>
+	
+	<!-- JChart -->
+	
+	<bean id="org.hisp.dhis.jchart.JChartStore" 
+		class="org.hisp.dhis.jchart.hibernate.HibernateJChartStore">		
+		<property name="clazz" value="org.hisp.dhis.jchart.JChart" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.jchart.JChartService" 
+		class="org.hisp.dhis.jchart.DefaultJChartService">		
+		<property name="jchartStore" ref="org.hisp.dhis.jchart.JChartStore" />
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />	
+	</bean>
+	
+	
 
 
 

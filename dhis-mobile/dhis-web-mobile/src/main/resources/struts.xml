@@ -24,11 +24,13 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/sendSMSPage.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
+			<param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
         </action>
         <action name="mobileSettings" class="org.hisp.dhis.mobile.action.MobileSettingsAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/mobileSettingsPage.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
+			<param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
         </action>
 
         <!-- Create Mobile Application -->

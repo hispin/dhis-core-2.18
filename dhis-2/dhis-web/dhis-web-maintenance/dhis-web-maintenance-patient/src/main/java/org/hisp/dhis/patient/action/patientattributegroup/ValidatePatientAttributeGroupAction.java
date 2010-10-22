@@ -59,11 +59,7 @@ public class ValidatePatientAttributeGroupAction
 
     private Integer id;
 
-    private String nameField;
-
-    private String description;
-
-    private String[] selectedAttributes;
+    private String name;
     
     private String message;
 
@@ -77,25 +73,15 @@ public class ValidatePatientAttributeGroupAction
     {
         this.i18n = i18n;
     }
-
-    public void setSelectedAttributes( String[] selectedAttributes )
-    {
-        this.selectedAttributes = selectedAttributes;
-    }
-
+    
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
+        this.name = name;
     }
 
     public String getMessage()
@@ -111,63 +97,17 @@ public class ValidatePatientAttributeGroupAction
         throws Exception
     {
 
-        if ( nameField == null )
+        name = name.trim();
+
+        PatientAttributeGroup match = patientAttributeGroupService.getPatientAttributeGroupByName( name );
+
+        if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
-            message = i18n.getString( "please_specify_a_name" );
+            message = i18n.getString( "name_in_use" );
 
             return INPUT;
         }
-
-        else
-        {
-            nameField = nameField.trim();
-
-            if ( nameField.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_name" );
-
-                return INPUT;
-            }
-
-            PatientAttributeGroup match = patientAttributeGroupService.getPatientAttributeGroupByName( nameField );
-            
-            if ( match != null && (id == null || match.getId() != id.intValue()) )
-            {
-                message = i18n.getString( "name_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        if ( description == null )
-        {
-            message = i18n.getString( "please_specify_a_description" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_description" );
-
-                return INPUT;
-            }
-        }
-
-        if ( selectedAttributes == null || selectedAttributes.length == 0)
-        {
-            message = i18n.getString( "please_specify_attributes" );
-
-            return INPUT;
-        }
-        // ---------------------------------------------------------------------
-        // Validation success
-        // ---------------------------------------------------------------------
-
+        
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;

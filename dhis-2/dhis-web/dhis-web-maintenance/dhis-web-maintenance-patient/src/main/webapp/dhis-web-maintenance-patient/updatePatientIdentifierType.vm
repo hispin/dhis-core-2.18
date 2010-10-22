@@ -1,6 +1,13 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'updatePatientIdentifierTypeForm', validateUpdatePatientIdentifierType );	
+		
+		jQuery('name').focus();
+			
+		validation( 'updatePatientIdentifierTypeForm', function(form){
+				form.submit();
+			}); 
+		
+		checkValueIsExist( "name", "validatePatientIdentifierType.action", {id:getFieldValue('id')});
 	});		
 </script>
 
@@ -12,19 +19,19 @@
 <table>	
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="nameField" name="nameField"  value="$encoder.htmlEncode($patientIdentifierType.name)" maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[4,100]}}"></td>
+		<td><input type="text" id="name" name="name"  value="$encoder.htmlEncode($patientIdentifierType.name)" maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[4,100]}}"></td>
 		<td></td>
 	</tr>	
 	
 	<tr>
 		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode($patientIdentifierType.description)" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode($patientIdentifierType.description)" style="width:30em" class="{validate:{required:true,minlength:4, maxlength: 150}}"></td>
 		<td></td>
 	</tr>	
 	
 	<tr>
 		<td><label>$i18n.getString( "identifier_format" ) </label></td>
-		<td><input type="text" id="formatField" name="formatField" value="$encoder.htmlEncode($!patientIdentifierType.format)" style="width:30em" ></td>
+		<td><input type="text" id="format" name="format" value="$encoder.htmlEncode($!patientIdentifierType.format)" style="width:30em" ></td>
 		<td></td>
 	</tr>	
 	

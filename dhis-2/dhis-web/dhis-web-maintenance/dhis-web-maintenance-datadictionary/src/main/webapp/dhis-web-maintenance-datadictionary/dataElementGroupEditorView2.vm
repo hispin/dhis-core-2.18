@@ -22,7 +22,7 @@
 	$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroupEditor" )
 </h3>
 
-<span id='message' style="position:fixed;top:80px;right:5px;" onclick="hideById('message');"/>
+<span id='message' style="position:fixed;top:80px;right:5px;" onclick="hideById('message');"></span>
 
 <table>
 	<tr>
@@ -33,9 +33,9 @@
 	</tr>
 
 	<tr>		
-		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterAvailableDataElements();"/></td>		
-		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"/></td>
-		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"/></td>		
+		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableDataElements');"/></td>		
+		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'assignedGroups');"/></td>
+		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableGroups');"/></td>		
 	</tr>
 
 	<tr>
@@ -44,15 +44,15 @@
 			</select>
 		</td>
 		<td>
-			<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="removeSelectedGroups();" onMouseOut="javascript: hideToolTip();">
+			<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="moveSelectedById(this.id, 'availableGroups');" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:42px"/><br/><br/>
-			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:42px"/>
+			<input type="button" value="&lt;" onclick="moveSelectedById('availableGroups', 'assignedGroups');" style="width:42px"/><br/><br/>
+			<input type="button" value="&gt;" onclick="moveSelectedById('assignedGroups', 'availableGroups');" style="width:42px"/>
 		</td>	
 		<td>
-          <select name="select" size="30" multiple="multiple" class="select" id="availableGroups" ondblclick="addSelectedGroups()" onmouseout="javascript: hideToolTip();">
+          <select name="select" size="30" multiple="multiple" class="select" id="availableGroups" ondblclick="moveSelectedById(this.id, 'assignedGroups');" onmouseout="javascript: hideToolTip();">
           </select>
 </td>		
 	</tr>
@@ -77,8 +77,8 @@
   <tr align="center">
     <td>$i18n.getString( "name" )</td>
 	<td><input type="text" id="groupName" style="width:20em"/></td>
-	<td><input id="addRenameGroupButton" type="button" value="$i18n.getString( 'ok' )">
-	<input type="button" onclick="showHideDiv( 'addDataElementGroupForm' ); deleteDivEffect();" value="$i18n.getString( 'cancel' )"/></td>
+	<td><input id="addRenameGroupButton" type="submit" value="$i18n.getString( 'ok' )">
+	<input type="button" onclick="hideById( 'addDataElementGroupForm' );unLockScreen();" value="$i18n.getString( 'cancel' )"/></td>
   </tr>
 
 </table>

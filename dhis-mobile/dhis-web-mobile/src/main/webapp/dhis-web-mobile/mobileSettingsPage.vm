@@ -19,8 +19,10 @@
             #if($outbound_interval) <tr><td>Outbound Interval: </td><td><input size="100" name="outbound_interval" type="text" value="$outbound_interval" /></td></tr> #end
             #if($delete_after_processing) <tr><td>Delete after processing: </td><td><input size="100" name="delete_after_processing" type="text" value="$delete_after_processing" /></td></tr> #end
             #if($send_mode) <tr><td>Send Mode: </td><td><input size="100" name="send_mode" type="text" value="$send_mode" /></td></tr> #end
+            #if($simMemLocation) <tr><td>SIM Memory Location: </td><td><input size="100" name="simMemLocation" type="text" value="$simMemLocation" /></td></tr> #end
             <tr><td></td><td></td></tr>
             <tr><td></td><td><input type="submit" name="send" value="Save Settings"/></td>
         </table>
     </form>
+    <span id="message" style="display:#if($message.trim().equals(""))none #else block #end">$message</span>
 </div>

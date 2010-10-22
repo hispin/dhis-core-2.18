@@ -46,7 +46,7 @@
             }
     );
 	
-	
+/*	
 function orgUnitHasBeenSelected( orgUnitIds )
 {    
 	if(orgUnitIds == null || orgUnitIds == "" )
@@ -57,8 +57,8 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	if(orgUnitIds != null)
 		getOUDetails(orgUnitIds);	
 }
-
-selection.setListenerFunction( orgUnitHasBeenSelected );
+*/
+//selection.setListenerFunction( orgUnitHasBeenSelected );
 
 </script>
 
@@ -101,6 +101,7 @@ selection.setListenerFunction( orgUnitHasBeenSelected );
             <td class="NormalB">
                 Reports :<br />
                 <select id="reportList" name="reportList" style="width:200px" class="{validate:{required:true}}">
+                	
                 </select>
             </td>
         </tr>

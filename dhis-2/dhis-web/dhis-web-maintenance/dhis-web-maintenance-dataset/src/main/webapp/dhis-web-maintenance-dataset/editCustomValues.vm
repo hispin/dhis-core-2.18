@@ -742,5 +742,5 @@ h4 {
 </tbody>
 </table>                                  
 
-<span id="message"/>
+<span id="message"></span>
 <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id"/>

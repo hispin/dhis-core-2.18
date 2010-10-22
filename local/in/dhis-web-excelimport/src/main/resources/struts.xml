@@ -64,8 +64,7 @@
 			class="org.hisp.dhis.excelimport.action.GetReportsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excelimport/responseImportReport.vm</result>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,javascript/reports.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/reports.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js</param>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		

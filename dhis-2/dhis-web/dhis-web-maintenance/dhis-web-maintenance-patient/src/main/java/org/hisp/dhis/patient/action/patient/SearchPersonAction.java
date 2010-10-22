@@ -82,9 +82,6 @@ public class SearchPersonAction implements Action
     {
         patients =  patientService.searchPatient( identifierTypeId, attributeId, searchValue );
         
-        
-        
-        
         if( patients != null && patients.size() > 0 )
         {
             for ( Patient p : patients )

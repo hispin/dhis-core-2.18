@@ -77,6 +77,7 @@ public class ValidateSurveyAction implements Action
 
     private I18n i18n;
 
+    
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;

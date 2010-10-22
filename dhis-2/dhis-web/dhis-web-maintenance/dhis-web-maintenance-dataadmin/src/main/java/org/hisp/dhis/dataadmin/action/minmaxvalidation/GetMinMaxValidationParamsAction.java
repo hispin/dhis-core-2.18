@@ -28,12 +28,9 @@ package org.hisp.dhis.dataadmin.action.minmaxvalidation;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,32 +63,6 @@ public class GetMinMaxValidationParamsAction
     public Collection<DataSet> getDataSets()
     {
         return dataSets;
-    }
-
-    private List<OrganisationUnitLevel> levels;
-
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
-    private Collection<OrganisationUnitGroup> orgunitGroups;
-
-    public Collection<OrganisationUnitGroup> getOrgunitGroups()
-    {
-        return orgunitGroups;
     }
 
     // -------------------------------------------------------------------------

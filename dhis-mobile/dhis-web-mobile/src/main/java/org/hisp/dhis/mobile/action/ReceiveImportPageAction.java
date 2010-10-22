@@ -29,20 +29,17 @@ package org.hisp.dhis.mobile.action;
 
 import com.opensymphony.xwork2.Action;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hisp.dhis.mobile.SmsService;
 import org.hisp.dhis.mobile.api.MobileImportService;
 
-public class ReceiveImportPageAction
-    implements Action
+public class ReceiveImportPageAction implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
     SmsService smsService;
 
     public void setSmsService( SmsService smsService )
@@ -60,7 +57,7 @@ public class ReceiveImportPageAction
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-    String result;
+    String result = "";
 
     public String getResult()
     {
@@ -82,8 +79,7 @@ public class ReceiveImportPageAction
         if ( statAction.equalsIgnoreCase( "Start" ) )
         {
             this.result = smsService.startService();
-        }
-        else
+        } else
         {
             this.result = smsService.stopService();
         }
@@ -101,9 +97,11 @@ public class ReceiveImportPageAction
 
     public List<File> getPending()
     {
-        File pendingFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator
-            + "pending" );
-        pending = new ArrayList<File>( FileUtils.listFiles( pendingFolder, new String[] { "xml" }, false ) );
+        File pendingFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator + "pending" );
+        pending = (List<File>) FileUtils.listFiles( pendingFolder, new String[]
+            {
+                "xml"
+            }, false );
         return pending;
     }
 
@@ -111,9 +109,11 @@ public class ReceiveImportPageAction
 
     public List<File> getBounced()
     {
-        File bouncedFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator
-            + "bounced" );
-        bounced = new ArrayList<File>( FileUtils.listFiles( bouncedFolder, new String[] { "xml" }, false ) );
+        File bouncedFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator + "bounced" );
+        bounced = (List<File>) FileUtils.listFiles( bouncedFolder, new String[]
+            {
+                "xml"
+            }, false );
         return bounced;
     }
 
@@ -121,9 +121,11 @@ public class ReceiveImportPageAction
 
     public List<File> getCompleted()
     {
-        File completedFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator
-            + "completed" );
-        completed = new ArrayList<File>( FileUtils.listFiles( completedFolder, new String[] { "xml" }, false ) );
+        File completedFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator + "completed" );
+        completed = (List<File>) FileUtils.listFiles( completedFolder, new String[]
+            {
+                "xml"
+            }, false );
         return completed;
     }
 

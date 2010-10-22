@@ -241,16 +241,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/zeroValueStorageManagement.vm</param>
-			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="javascripts">
-				javascript/zeroValueStorageManagement.js</param>
-		</action>
-		
-		<action name="getDataElementsByZeroIsSignificantAndGroup"
-			class="org.hisp.dhis.dataadmin.action.zerovaluestorage.GetDataElementsByZeroIsSignificantAndGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseDataElements.vm</result>
-		</action>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>		
+		</action>		
 		
 		<action name="updateZeroIsSignificantForDataElements"
 			class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificantForDataElementsAction">
@@ -282,23 +274,23 @@
 		
 		<!-- Min/Max validation -->
 		
-		<action name="getMinMaxValidationParams"
+		<action name="generateMinMaxValue"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
-			<result name="success" type="chain">
-				getMinMaxValidationParamsChain</result>
-			<result name="input" type="chain">
-				getMinMaxValidationParamsChain</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseError.vm</result>
 		</action>
 		
 		<action name="removeMinMaxValue"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction">
-			<result name="success" type="chain">
-				getMinMaxValidationParamsChain</result>
-			<result name="input" type="chain">
-				getMinMaxValidationParamsChain</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-dataadmin/responseError.vm</result>
 		</action>
 		
-		<action name="getMinMaxValidationParamsChain"
+		<action name="getMinMaxValidationParams"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction">
 			<!--  <interceptor-ref name="organisationUnitTreeStack"/> -->
 			<result name="success" type="velocity">/main.vm</result>

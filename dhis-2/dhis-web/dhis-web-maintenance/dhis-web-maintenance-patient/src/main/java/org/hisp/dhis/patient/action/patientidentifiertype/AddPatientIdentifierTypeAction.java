@@ -49,11 +49,11 @@ public class AddPatientIdentifierTypeAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String nameField;
+    private String name;
 
+    private String format;
+    
     private String description;
-
-    private String formatField;
     
     private Boolean mandatory;
     
@@ -67,9 +67,9 @@ public class AddPatientIdentifierTypeAction
         throws Exception
     {
         PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
-        patientIdentifierType.setName( nameField );
+        patientIdentifierType.setName( name );
         patientIdentifierType.setDescription( description );
-        patientIdentifierType.setFormat( formatField );
+        patientIdentifierType.setFormat( format );
         patientIdentifierType.setRelated( related.booleanValue() );
         patientIdentifierType.setMandatory( mandatory.booleanValue() );
         
@@ -82,22 +82,21 @@ public class AddPatientIdentifierTypeAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
+    public void setFormat( String format )
+    {
+        this.format = format;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+    
     public void setDescription( String description )
     {
         this.description = description;
     }
 
-
-    public void setFormatField( String formatField )
-    {
-        this.formatField = formatField;
-    }
-
-    public void setNameField( String nameField )
-    {
-        this.nameField = nameField;
-    }
-    
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;

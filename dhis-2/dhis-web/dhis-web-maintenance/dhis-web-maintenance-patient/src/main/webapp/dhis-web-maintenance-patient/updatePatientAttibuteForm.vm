@@ -1,23 +1,35 @@
 <script>
 	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
 	var i118_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
-
+	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
+	var isSubmit = true;
+	
 	jQuery(document).ready(	function(){
-			validation( 'updatePatientAttributeForm', function(){
-				if( ATTRIBUTE_OPTION.checkOnSubmit() ) 
-				validateUpdatePatientAttribute();
-			} );		
-			#if( $patientAttribute.attributeOptions.size() == 0 ) 
-					jQuery("#attributeComboRow").hide();
-			#end
+			validation( 'updatePatientAttributeForm', function(form){
+				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
+					form.submit();
+				}
+			}, function(){
+				isSubmit = true;
+				jQuery.each($('#updatePatientAttributeForm').serializeArray(), function(i, field) {
+					if( field.value == ""){
+						setInnerHTML("attrMessage", i18n_field_is_required);
+						isSubmit = false;
+					}
+				});
+			}); 
 			
+			jQuery("#attributeComboRow").hide();
+			
+			checkValueIsExist( "name", "validatePatientAttribute.action", {id:getFieldValue('id')});
+
 	});		
 </script>
 
 
 <h3>$i18n.getString( "update_patient_attribute" )</h3>
 
-<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action="updatePatientAttribute.action" method="post" >
+<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action="updatePatientAttribute.action" method="get" >
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$patientAttribute.id">
@@ -32,7 +44,7 @@
     <tbody>
       <tr>
         <td>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
-        <td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $patientAttribute.name )" style="width:30em" class="{validate:{required:true,rangelength:[2,35]}}"></td>
+        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttribute.name )" style="width:30em" class="{validate:{required:true,rangelength:[2,35]}}"></td>
       </tr>   
       <tr>
         <td>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
@@ -42,7 +54,7 @@
       <tr>
 		<td width="20em"><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="mandatory" name="mandatory" style="min-width:20em">
+			<select id="mandatory" name="mandatory" style="min-width:30.5em">
 				<option value="true" #if( $patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
 				<option value="false" #if( !$patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
 			</select>
@@ -53,7 +65,7 @@
 	<tr>
 		<td width="20em"><label for="inheritable">$i18n.getString( "inheritable" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="inheritable" name="inheritable" style="min-width:20em">
+			<select id="inheritable" name="inheritable" style="min-width:30.5em">
 				<option value="true" #if( $patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "yes" )</option>
 				<option value="false" #if( !$patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "no" )</option>
 			</select>
@@ -64,7 +76,7 @@
       <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>
-            <select id="valueType" name="valueType" style="min-width:20em" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
+            <select id="valueType" name="valueType" style="min-width:30.5em" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
                 <option value="NUMBER" #if( $patientAttribute.valueType == 'NUMBER' ) selected="selected" #end>$i18n.getString( "number" )</option>
                 <option value="TEXT" #if( $patientAttribute.valueType == 'TEXT' ) selected="selected" #end>$i18n.getString( "text" )</option>
                 <option value="YES/NO" #if( $patientAttribute.valueType == 'YES/NO' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
@@ -79,11 +91,12 @@
     		<table id="attrOptionContainer">
     			 #foreach($option in $patientAttribute.attributeOptions) 
     			 	<tr><td>
-    			 		<input type='text' name='attrOption$option.id' value="$option.name" /><a href='#' style='text-decoration: none; margin-left:0.5em;' title='$i18n.getString( "remove_option" )'  onClick='ATTRIBUTE_OPTION.remove(this,$option.id)'>[ - ]</a>
-   			 		</td></tr>
+    			 		<input type='text' name='attrOption$option.id' value="$option.name" style="width:28em;"/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='$i18n.getString( "remove_option" )'  onClick='ATTRIBUTE_OPTION.remove(this,$option.id)'>[ - ]</a>
+   			 		</td>
+					</tr>
     			 #end
     		</table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a></td>
-    	<td></td>
+    	<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
       </tr>
       <tr>
         <td colspan="3" style="height:15px"></td>

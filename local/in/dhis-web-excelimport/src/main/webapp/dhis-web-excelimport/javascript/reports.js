@@ -104,6 +104,7 @@ function getPeriods()
   var ouId = document.reportForm.ouIDTB.value;
   var reportListFileName = document.reportForm.reportListFileNameTB.value;
   
+  
   getReports(ouId, reportListFileName);
 }
 
@@ -111,11 +112,13 @@ function getReports( ouId, reportListFileName )
 { 
   var periodTypeList = document.getElementById( "periodTypeId" );
   var periodType = periodTypeList.options[ periodTypeList.selectedIndex ].value;
+  //var reportListFileName = document.reportForm.reportListFileNameTB.value;
   var autogenvalue = document.getElementById( "autogen" ).value;
+ // alert("file:" +reportListFileName + ", periodType :" + periodType + ", ouid:" + ouId);
           
   if ( periodType != "NA" && ouId != null && ouId != "" )
   { 
-	   $.post("getReports.action",
+	  $.post("getReports.action",
 		{
 			periodType : periodType,
 			ouId : ouId,
@@ -127,6 +130,7 @@ function getReports( ouId, reportListFileName )
 			getReportsReceived(data);
 		},'xml');
   }
+
 }
 
 function getReportsReceived( xmlObject )
@@ -156,7 +160,8 @@ function getReportsReceived( xmlObject )
 		option.value = id;
 		option.text = name;
 		reportsList.add( option, null );
-		
+	
+		//$("#reportList").append("<option value='"+ id +"'>" + name + "</option>");
 		reportModels.put( id, model );
 		reportFileNames.put( id, fileName );
 		checkerFileNames.put( id, checkerFileName );

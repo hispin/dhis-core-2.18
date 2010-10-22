@@ -43,8 +43,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -52,7 +51,7 @@ import com.opensymphony.xwork2.Action;
  *          ch_bharath1 $
  */
 public class GetDataElementListAction
-    implements Action
+    extends ActionPagingSupport
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -153,13 +152,129 @@ public class GetDataElementListAction
     {
         return dataElementGroupId;
     }
+    
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+    
+    public String getKey()
+    {
+        return key;
+    }
 
     // -------------------------------------------------------------------------
-    // Action implemantation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
     public String execute()
+    {
+        prepareDataDictionary();
+
+        // ---------------------------------------------------------------------
+        // Criteria
+        // ---------------------------------------------------------------------
+
+        List<DataElement> allResult;
+        
+        if ( dataDictionaryId != null && dataElementGroupId == null )
+        {
+            allResult = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
+
+            Collections.sort( allResult, dataElementComparator );
+            this.paging = createPaging( allResult.size() );
+            dataElements = getBlockElement( allResult, paging.getStartPos(), paging.getPageSize() );
+        }
+        else if ( dataDictionaryId == null && dataElementGroupId != null )
+        {
+            allResult = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( dataElementGroupId ) );
+            
+            Collections.sort( allResult, dataElementComparator );
+            this.paging = createPaging( allResult.size() );
+            dataElements = getBlockElement( allResult, paging.getStartPos(), paging.getPageSize() );
+        }
+        else if ( dataDictionaryId != null && dataElementGroupId != null )
+        {
+            Collection<DataElement> dictionary = dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId );
+
+            Collection<DataElement> members = dataElementService.getDataElementsByGroupId( dataElementGroupId );
+            
+            allResult = new ArrayList<DataElement>( CollectionUtils.intersection( dictionary, members ) );
+
+            Collections.sort( allResult, dataElementComparator );
+            this.paging = createPaging( allResult.size() );
+            dataElements = getBlockElement( allResult, paging.getStartPos(), paging.getPageSize() );
+        }
+        else
+        {
+            this.paging = createPaging( dataElementService.getNumberOfDataElements() );
+
+            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements( paging.getStartPos(), paging.getPageSize() ) );
+        }
+
+        displayPropertyHandler.handle( dataElements );
+        
+        return SUCCESS;
+    }
+    
+    public String searchDataElementByName()
+    {
+        
+        prepareDataDictionary();
+        
+        // ---------------------------------------------------------------------
+        // Criteria
+        // ---------------------------------------------------------------------
+        if ( key.isEmpty() )
+        {
+            return INPUT;
+        }
+
+        
+        List<DataElement> allResult;
+        
+        if ( dataDictionaryId != null && dataDictionaryId != -1 && (dataElementGroupId == null || dataElementGroupId == -1 ) )
+        {
+            allResult = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
+            allResult = searchByDataElementName(allResult, key);
+            Collections.sort( allResult, dataElementComparator );
+            this.paging = createPaging( allResult.size() );
+            dataElements = getBlockElement( allResult, paging.getStartPos(), paging.getPageSize() );
+        }
+        else if ( (dataDictionaryId == null || dataDictionaryId == -1) && dataElementGroupId != null  && dataElementGroupId != -1 )
+        {
+            allResult = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( dataElementGroupId ) );
+            allResult = searchByDataElementName(allResult, key);
+            Collections.sort( allResult, dataElementComparator );
+            this.paging = createPaging( allResult.size() );
+            dataElements = getBlockElement( allResult, paging.getStartPos(), paging.getPageSize() );
+        }
+        else if ( dataDictionaryId != null && dataElementGroupId != null && dataDictionaryId != -1 && dataElementGroupId != -1 )
+        {
+            Collection<DataElement> dictionary = dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId );
+
+            Collection<DataElement> members = dataElementService.getDataElementsByGroupId( dataElementGroupId );
+            
+            allResult = new ArrayList<DataElement>( CollectionUtils.intersection( dictionary, members ) );
+            allResult = searchByDataElementName(allResult, key);
+            Collections.sort( allResult, dataElementComparator );
+            this.paging = createPaging( allResult.size() );
+            dataElements = getBlockElement( allResult, paging.getStartPos(), paging.getPageSize() );
+        }
+        else
+        {
+            this.paging = createPaging( dataElementService.countNumberOfSearchDataElementByName(key) );
+            dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementByName( key, this.paging.getStartPos(), this.paging.getPageSize() ) );
+        }
+
+        displayPropertyHandler.handle( dataElements );
+        return SUCCESS;
+    }
+
+    private void prepareDataDictionary()
     {
         if ( dataDictionaryId == null ) // None, get current data dictionary
         {
@@ -185,37 +300,17 @@ public class GetDataElementListAction
         dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
 
         Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );
-
-        // ---------------------------------------------------------------------
-        // Criteria
-        // ---------------------------------------------------------------------
-
-        if ( dataDictionaryId != null && dataElementGroupId == null )
-        {
-            dataElements = new ArrayList<DataElement>( dataDictionaryService
-                .getDataElementsByDictionaryId( dataDictionaryId ) );
-        }
-        else if ( dataDictionaryId == null && dataElementGroupId != null )
-        {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( dataElementGroupId ) );
-        }
-        else if ( dataDictionaryId != null && dataElementGroupId != null )
-        {
-            Collection<DataElement> dictionary = dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId );
-
-            Collection<DataElement> members = dataElementService.getDataElementsByGroupId( dataElementGroupId );
-
-            dataElements = new ArrayList<DataElement>( CollectionUtils.intersection( dictionary, members ) );
-        }
-        else
-        {
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        }
-
-        Collections.sort( dataElements, dataElementComparator );
-
-        displayPropertyHandler.handle( dataElements );
-
-        return SUCCESS;
     }
+    
+    private List<DataElement> searchByDataElementName( List<DataElement> dataElementList, String key )
+    { 
+        List<DataElement> result = new ArrayList<DataElement>();
+        for(DataElement eachElement : dataElementList) {
+            if(eachElement.getName().contains( key.trim() ) ) {
+                result.add( eachElement );
+            }
+        }
+        return result;
+    }
+    
 }

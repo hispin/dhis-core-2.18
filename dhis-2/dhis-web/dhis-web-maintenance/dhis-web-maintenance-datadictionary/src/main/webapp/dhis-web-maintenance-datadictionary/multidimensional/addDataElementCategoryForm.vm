@@ -32,62 +32,67 @@
 <form id="addDataElementCategoryForm" name="addDataElementCategoryForm" action="addDataElementCategory.action" method="post">
   <table>
     <tr>
-      <th colspan="3">$i18n.getString( "details" )</th>      
+      <th colspan="4">$i18n.getString( "details" )</th>      
     </tr>
     <tr>
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="name" name="name" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
-      <td></td>
+      <td colspan="3"><input type="text" id="name" name="name" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
     </tr>      
     <tr>
       <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-      <td>
+      <td colspan="3">
 		<div style="inline">
-			<select id="conceptId" name="conceptId" style="min-width:140px" class="{validate:{required:true}}">				
+			<select id="conceptId" name="conceptId" style="width:305px" class="{validate:{required:true}}">				
 				#foreach( $concept in $concepts )
 				<option value="$concept.id">$concept.name</option>
 				#end
 			</select>
 		</div>
 	  </td>
-      <td></td>
     </tr>   
     <tr>
-      <td colspan="3" style="height:15px"></td>
+      <td colspan="4" style="height:15px"></td>
     </tr>
   	<tr>
-  	  <th colspan="3">$i18n.getString( "category_options" )
+  	  <th colspan="4">$i18n.getString( "category_options" )
 	  <select id="memberValidator"  class="{validate:{required:true}}" style="display:none"/></th>  	  
 	</tr>
 	<tr>
 	  <td><label>$i18n.getString( "name" )</label></td>
-	  <td><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"/></td>
-	  <td></td>
-	</tr>
+	  <td colspan="3"><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"/></td>
+    </tr>
     <tr>
       <td></td>
-      <td colspan="2">
+      <td colspan="3">
       	<input type="button" value="$i18n.getString( 'add_category_option' )" onclick="addCategoryOption()" style="width:200px"/>
       </td>
     </tr>
     <tr>
       <td></td>
       <td>
+	  <table>
+	  <tr>
+	  <td>
         <select multiple size="10" id="categoryOptionNames" name="categoryOptionNames" style="width:300px">           
-        </select>   
-      </td>
-      <td style="width:30px; text-align:center">
-      	<a href="javascript:moveUpSelectedOption( 'categoryOptionNames' )"><img src="../images/move_up.png"/></a><br/><br/>
+        </select>
+	  </td>	
+      <td>	  
+		<a href="javascript:moveUpSelectedOption( 'categoryOptionNames' )"><img src="../images/move_up.png"/></a><br/><br/>
       	<a href="javascript:moveDownSelectedOption( 'categoryOptionNames' )"><img src="../images/move_down.png"/></a><br/><br/>
         <a href="javascript:removeSelectedOption( 'categoryOptionNames' )"><img src="../images/delete.png"/></a>
       </td>
+	  </tr>
+	 </table>
+      </td>
+    
+      <td style="width:30px; text-align:center">&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="3" style="height:15px"></td>
+      <td colspan="4" style="height:15px"></td>
     </tr>
 	<tr>
 	  <td></td>
-	  <td colspan="2">
+	  <td colspan="3">
 		<input type="submit"  value="$i18n.getString( 'add' )" style="width:100px">
 		<input type="button" onclick="window.location.href='category.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
       </td>

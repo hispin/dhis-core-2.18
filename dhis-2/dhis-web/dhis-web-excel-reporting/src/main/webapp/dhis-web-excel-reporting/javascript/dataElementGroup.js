@@ -1,6 +1,19 @@
+
+function addOptionToListWithToolTip( list, optionValue, optionText )
+{
+    var option = document.createElement( "option" );
+    option.value = optionValue;
+    option.text = optionText;
+	option.onmousemove = function(e) {
+		showToolTip(e, optionText);
+	}
+    list.add( option, null );
+}
+
 /*
 * 	Open Add Data Element Group Order 
 */
+
 function openAddDataElementGroupOrder(){
 	getALLDataElementGroups();
 	document.forms['dataElementGroups'].action = "addDataElementGroupOrder.action";
@@ -20,13 +33,13 @@ function getALLDataElementGroups(){
 
 function getALLDataElementGroupsReceived(xmlObject){
 	
-	var availableDataElementGroups = document.getElementById('availableDataElementGroups');
+	var availableDataElementGroups = byId('availableDataElementGroups');
 	availableDataElementGroups.options.length = 0;
 	var dataElementGroups = xmlObject.getElementsByTagName('dataElementGroup');
 	availableDataElementGroups.options.add(new Option("ALL", null));
 	for(var i=0;i<dataElementGroups.length;i++){
-		var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
+		var id = getElementValue(dataElementGroups.item(i), 'id');
+		var name = getElementValue(dataElementGroups.item(i), 'name');
 		availableDataElementGroups.options.add(new Option(name, id));			
 	}			
 	getDataElementsByGroup(byId("availableDataElementGroups").value);
@@ -46,22 +59,17 @@ function getDataElementsByGroup( id ){
 
 function getDataElementsByGroupReceived( datalement ){
 	var dataElements = datalement.getElementsByTagName( "dataElement" );
-	var listDataElement = document.getElementById('availableDataElements');
+	var listDataElement = byId('availableDataElements');
 	listDataElement.options.length = 0;
 	for ( var i = 0; i < dataElements.length; i++ )
     {
-        var id = dataElements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-        var name = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;  
-		//listDataElement.options.add(new Option(name, id));  
-		var option = new Option( name, id );
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
-		}
-		listDataElement.add( option, null );
+        var id = getElementValue(dataElements[i], 'id');
+        var name = getElementValue(dataElements[i], 'name');
+		addOptionToListWithToolTip( listDataElement, id, name );
     }
 	
-	var availableDataElements = document.getElementById('availableDataElements');
-	var selectedDataElements = document.getElementById('dataElementIds');
+	var availableDataElements = byId('availableDataElements');
+	var selectedDataElements = byId('dataElementIds');
 	for(var i=0;i<availableDataElements.options.length;i++){
 		for(var j=0;j<selectedDataElements.options.length;j++){				
 			if(availableDataElements.options[i].value==selectedDataElements.options[j].value){					
@@ -114,26 +122,22 @@ function openUpdateDataElementOrder( id ){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( openUpdateDataElementOrderReceived );
-	var url = "getDataElementGroupOrder.action?id=" + id;
+	var url = "getDataElementGroupOrderForCategory.action?id=" + id;
 	request.send(url);
 }
 
 function openUpdateDataElementOrderReceived(xmlObject)
 {
-		var listDataElement = document.getElementById('dataElementIds');
+		var listDataElement = byId('dataElementIds');
 		listDataElement.options.length = 0;
-		byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
-		byId("code").value = getElementValue(xmlObject,'code');
+		byId("name").value = getElementValue(xmlObject, 'name');
+		byId("code").value = getElementValue(xmlObject, 'code');
 		var dataElements = xmlObject.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
 		
 		for(var i=0;i<dataElements.length;i++){
-			var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
-			var id = dataElements[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-			var option =  new Option( name, id );
-			option.onmousemove  = function(e){
-				showToolTip( e, this.text);
-			}
-			listDataElement.options.add(option);
+			var name = getElementValue(dataElements[i], 'name');
+			var id = getElementValue(dataElements[i], 'id');
+			addOptionToListWithToolTip( listDataElement, id, name );
 		}
 		
 		document.forms['dataElementGroups'].action = "updateDataElementGroupOrder.action";		
@@ -162,4 +166,3 @@ function updateDataElementGroupOrder(){
 	window.location = url;
 	
 }
-

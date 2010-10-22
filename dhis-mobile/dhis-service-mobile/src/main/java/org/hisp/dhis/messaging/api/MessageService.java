@@ -46,5 +46,5 @@ public interface MessageService
 
     String sendMessage( String recipient, String msg );
 
-    void saveData( String userId, Date msgTime, String data );
+    String saveData( String userId, Date msgTime, String data );
 }

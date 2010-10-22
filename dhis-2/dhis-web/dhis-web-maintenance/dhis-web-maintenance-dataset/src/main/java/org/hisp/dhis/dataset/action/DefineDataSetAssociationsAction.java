@@ -34,6 +34,7 @@ import java.util.Set;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.source.Source;
 
@@ -66,6 +67,13 @@ public class DefineDataSetAssociationsAction
         this.dataSetService = dataSetService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -89,45 +97,23 @@ public class DefineDataSetAssociationsAction
 
         Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();
 
-        getUnitsInTheTree( rootUnits, unitsInTheTree );
+        organisationUnitService.getUnitsInTheTree( rootUnits, unitsInTheTree );
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         Set<Source> assignedSources = dataSet.getSources();
 
-        assignedSources.removeAll( convert( unitsInTheTree ) );
+        assignedSources.removeAll( organisationUnitService.convert( unitsInTheTree ) );
 
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
             .getReloadedSelectedOrganisationUnits();
 
-        assignedSources.addAll( convert( selectedOrganisationUnits ) );
+        assignedSources.addAll( organisationUnitService.convert( selectedOrganisationUnits ) );
 
         dataSet.setSources( assignedSources );
 
         dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
-    {
-        Set<Source> sources = new HashSet<Source>();
-
-        sources.addAll( organisationUnits );
-
-        return sources;
-    }
-
-    private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
-    {
-        for ( OrganisationUnit root : rootUnits )
-        {
-            unitsInTheTree.add( root );
-            getUnitsInTheTree( root.getChildren(), unitsInTheTree );
-        }
     }
 }

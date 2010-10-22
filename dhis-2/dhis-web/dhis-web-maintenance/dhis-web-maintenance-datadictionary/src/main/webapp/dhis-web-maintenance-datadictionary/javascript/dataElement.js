@@ -322,3 +322,128 @@ function getDataElementIdsForValidate()
 		dataElementValidators.append('<option value="' + item.value + '" selected="selected">' + item.value + '</option>');	
 	});
 }
+
+
+// -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
+
+function searchDataElementName(){
+	
+	var params = 'key=' + getFieldValue('key');
+		params += '&dataDictionaryId=' + getFieldValue('dataDictionaryList');
+		params += '&dataElementGroupId=' + getFieldValue('dataElementGroupList');
+	var request = new Request();
+    request.setResponseTypeXML( 'dataElementCategory' );
+    request.setCallbackSuccess( searchDataElementNameReceived );
+	request.sendAsPost(params);
+    request.send( 'searchDataElement.action' );
+}
+
+function searchDataElementNameReceived(xmlObject){
+
+	 var type = xmlObject.getAttribute( 'type' );
+	 if (  type != null && type == 'input' ){
+		window.location.href = 'dataElement.action';
+		return;
+	 }
+	
+	// get dataelement list
+	 var dataElements = xmlObject.getElementsByTagName( "dataElement" );
+	// get tbody to add dataelements
+	var myTable = byId( 'dataElementList');
+	var tBody = myTable.getElementsByTagName('tbody')[0];
+	// delete row into tbody
+	for(var k = tBody.rows.length; k >= 0;k--)
+	{
+		myTable.deleteRow(k - 1);
+	}
+		
+	// add header for table
+	var newTR = document.createElement('tr');
+	// add column name
+	var newTD1 = document.createElement('th');
+	newTD1.innerHTML = i18n_name;
+	newTD1.setAttribute('colspan', 3);
+	// add column operators
+	var newTD2 = document.createElement('th');
+	newTD2.innerHTML = i18n_operations;
+	newTD2.setAttribute('colspan', 5);
+	newTD2.setAttribute('class', '{sorter: false}');
+	
+	newTR.appendChild ( newTD1 );
+	newTR.appendChild ( newTD2 );
+
+	tBody.appendChild(newTR);	
+	
+	for ( var i = 0 ; i < dataElements.length ; i++ )
+	{
+		// get dataelement
+		var de = dataElements.item(i);
+		var id = de.getElementsByTagName("id")[0].firstChild.nodeValue;
+		var name = de.getElementsByTagName("name")[0].firstChild.nodeValue;
+		
+		// add new row
+		var newTR = document.createElement('tr');
+		if( i%2 == 0){
+			newTR.setAttribute( "class", "odd listRow" ); 
+		}else{
+			newTR.setAttribute( "class", "par listAlternateRow" ); 
+		}
+		// add new column
+		var newTD = document.createElement('td');
+		newTD.innerHTML = name;
+		newTD.setAttribute('colspan', 3);
+		// insert column into row
+		newTR.appendChild ( newTD );
+		// add new column
+		newTR = addOperatorColumns( newTR, id, name );
+		
+		tBody.appendChild(newTR);
+	}
+}
+
+function addOperatorColumns(rowObject, dataElementId, dataElementName) {
+	if (dataDictionaryMode == "extended") {
+		// add new column
+		var newTD = document.createElement('td');
+		newTD.innerHTML = '<a href="showUpdateExtendedDataElementForm.action?id='
+				+ dataElementId
+				+ '" '
+				+ ' title="'
+				+ i18n_edit
+				+ '"><img src="../images/edit.png" alt="'
+				+ i18n_edit
+				+ '"></a>';
+		rowObject.appendChild(newTD);
+	} else {
+		var newTD = document.createElement('td');
+		newTD.innerHTML = '<a href="showUpdateDataElementForm.action?id='
+				+ dataElementId + '" title=' + i18n_edit + '>'
+				+ '<img src=../images/edit.png alt=' + i18n_edit + '></a>';
+		rowObject.appendChild(newTD);
+	}
+
+	var newTD1 = document.createElement('td');
+	newTD1.innerHTML = "<a href=\"javascript:translate( 'DataElement', "
+			+ dataElementId + " )\"  title=" + i18n_translation_translate + '>'
+			+ '<img src="../images/i18n.png" alt="'
+			+ i18n_translation_translate + ' )"></a>';
+	rowObject.appendChild(newTD1);
+
+	var newTD2 = document.createElement('td');
+	newTD2.innerHTML = "<a href=\"javascript:removeDataElement("
+			+ dataElementId + ",'" + dataElementName + "' )\" title="
+			+ i18n_remove + '>' + '<img src="../images/delete.png" alt="'
+			+ i18n_remove + '"></a>';
+	rowObject.appendChild(newTD2);
+
+	var newTD3 = document.createElement('td');
+	newTD3.innerHTML = '<a href="javascript:showDataElementDetails( '
+			+ dataElementId + ')"  title=' + i18n_show_details + '>'
+			+ '<img src="../images/information.png" alt="' + i18n_show_details
+			+ '"></a>';
+	rowObject.appendChild(newTD3);
+
+	return rowObject;
+}

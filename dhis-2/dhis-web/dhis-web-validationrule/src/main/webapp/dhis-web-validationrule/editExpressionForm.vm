@@ -47,7 +47,7 @@
   	  
   	  <select id="dataSetId" name="dataSetId" style="min-width:450px" onchange="filterDataElements( 'dataSetId', 'filter' )">
 	  	#if($!dataSets.size() > 0)
-			<option value="$ALL">[ $i18n.getString( "filter_by_group_view_all" ) ]</option>
+			<option value="$ALL">[ $i18n.getString( "filter_by_dataset_view_all" ) ]</option>
 			<option value="$ALL">[ $i18n.getString( "view_all" ) ]</option>
 			#foreach ( $dataSet in $dataSets )
 			  <option value="$dataSet.id" #if ( $dataSetId == $dataSet.id ) selected="selected"#end>$encoder.htmlEncode( $dataSet.name )</option>

@@ -61,11 +61,11 @@ public class UpdateProgramAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String description;
@@ -105,7 +105,7 @@ public class UpdateProgramAction
     {
         Program program = programService.getProgram( id );     
             
-        program.setName( nameField );
+        program.setName( name );
         program.setDescription( description );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );

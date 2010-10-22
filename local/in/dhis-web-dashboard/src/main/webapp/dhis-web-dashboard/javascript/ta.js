@@ -1,3 +1,29 @@
+
+
+function ouradioSelection( evt )
+{
+	//var ouSelCBId = document.getElementById( "ouSelCB" );
+	//if( ouSelCBId.checked )
+	//{
+	//	return;
+	//}
+	
+	var excelItems = byId('ouRadio');
+	
+	if(excelItems.checked && excelItems.getAttribute('value') == "orgUnitGroupRadio")
+	{
+		getOrgUnitGroups();
+	}
+	else if(excelItems.checked && excelItems.getAttribute('value') == "orgUnitSelectedRadio")
+	{
+		ouSelCBChange();
+	}
+	else
+	{
+		ouLevelSelected();
+	}
+}
+
 function getOrgUnitGroups()
 {
 	var ouLevelId = document.getElementById( "orgUnitLevelCB" );
@@ -15,31 +41,14 @@ function getOrgUnitGroups()
 	}
 }
 
-function ouradioSelection( evt )
-{
-	var ouSelCBId = document.getElementById( "ouSelCB" );
-	if( ouSelCBId.checked )
-	{
-		return;
-	}
-
-	
-	var excelItems = byId('ouRadio');
-	if(excelItems.checked && excelItems.getAttribute('value') == "orgUnitGroupRadio"){
-		getOrgUnitGroups();
-	}else
-	{
-		ouSelCBChange();
-	}
-}
 
 function ouSelCBChange()
 {
-    var ouSelCBId = document.getElementById( "ouSelCB" );
+    //var ouSelCBId = document.getElementById( "ouSelCB" );
     var ouListCDId = document.getElementById( "orgUnitListCB" );
     var ouLevelId = document.getElementById( "orgUnitLevelCB" );
 	
-    if( ouSelCBId.checked )
+    //if( ouSelCBId.checked )
     {
         $('#orgUnitListCB').removeAttr('disabled');
 		
@@ -47,6 +56,7 @@ function ouSelCBChange()
          $("#orgUnitLevelCB").attr("disabled", "disabled");
         $('#ViewReport').removeAttr('disabled');
     }
+    /*
     else
     {
 	$('#orgUnitLevelCB').removeAttr('disabled');
@@ -54,13 +64,30 @@ function ouSelCBChange()
         $("#orgUnitListCB").attr("disabled", "disabled");
         
     }
-	
+	*/
     if( selOrgUnitId != null && selOrgUnitId != "NONE" && selOrgUnitId != "")
     {
         getOUDeatilsForTA( selOrgUnitId );
     }
+    
 	
 }
+
+function ouLevelSelected()
+{
+    var ouListCDId = document.getElementById( "orgUnitListCB" );
+    var ouLevelId = document.getElementById( "orgUnitLevelCB" );
+
+	$('#orgUnitLevelCB').removeAttr('disabled');
+    clearList( ouListCDId );
+    $("#orgUnitListCB").attr("disabled", "disabled");
+
+    if( selOrgUnitId != null && selOrgUnitId != "NONE" && selOrgUnitId != "")
+    {
+        getOUDeatilsForTA( selOrgUnitId );
+    }
+}
+
 
 function aggPeriodCBChange()
 {
@@ -318,6 +345,7 @@ function getIndicatorsReceived( xmlObject )
 //addOptionPlaceHolder( availableIndicators );
 }
 
+
 function getPeriods()
 {
     var periodTypeList = document.getElementById( "periodTypeLB" );
@@ -413,6 +441,7 @@ function getPeriodsReceived( xmlObject )
 
 function getOUDeatilsForTA( orgUnitIds )
 {
+	
     /* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds+"&type=ta";
 	
     var request = new Request();
@@ -438,9 +467,10 @@ function getOUDeatilsForTA( orgUnitIds )
 
 function getOUDetailsForTARecevied(xmlObject)
 {
-    var ouSelCBId = document.getElementById( "ouSelCB" );
+   // var ouSelCBId = document.getElementById( "ouSelCB" );
     var ouListCDId = document.getElementById( "orgUnitListCB" );
     var ouLevelId = document.getElementById( "orgUnitLevelCB" );
+    var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
 		
     var orgUnits = xmlObject.getElementsByTagName("orgunit");
 
@@ -450,24 +480,34 @@ function getOUDetailsForTARecevied(xmlObject)
         var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
         var ouLevel = orgUnits[ i ].getElementsByTagName("level")[0].firstChild.nodeValue;
         var maxOULevel = orgUnits[ i ].getElementsByTagName("maxoulevel")[0].firstChild.nodeValue;
-
-        if( ouSelCBId.checked )
+         
+        
+        if( ouRadioVal == "orgUnitSelectedRadio"  )
         {
             ouListCDId.disabled = false;
-            
+            clearList( ouLevelId );
             document.getElementById( "ViewReport" ).disabled = false;
     		
             clearList( ouLevelId );
             ouLevelId.disabled = true;
-    		
+            
+            var flag = 0;
             for(var i=0; i < ouListCDId.options.length; i++)
             {
-                if( id == ouListCDId.options[i].value ) return;
+                if( id == ouListCDId.options[i].value ) 
+                {
+                	flag = 1;
+                	break;
+                }
             }
-        	
-            ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName, id, false, false);
+            
+            
+            if( flag == 0 )
+            {
+            	ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName, id, false, false);
+            }
         }
-        else
+        else 
         {
             clearList( ouListCDId );
     		
@@ -475,13 +515,12 @@ function getOUDetailsForTARecevied(xmlObject)
             var selouRadioButton = $( "input[name='ouRadio']:checked" ).val();
             if( selouRadioButton == "orgUnitGroupRadio" )
             {
-		getOrgUnitGroups();
+            	getOrgUnitGroups();
             }
             else
             {
                 getorgUnitLevels( ouLevel, maxOULevel );
-            }
-            
+            }            
         }
     }    		
 }
@@ -531,9 +570,10 @@ function remOUFunction()
 
 function formValidations()
 {
-		
     var selectedServices = document.getElementById("selectedServices");
     var orgUnitListCB = document.getElementById("orgUnitListCB");
+    var selOUListLength = document.tabularAnalysisForm.orgUnitListCB.options.length;
+   // alert(selOUListLength);
     var orgUnitLevelCB = document.getElementById("orgUnitLevelCB");
     var yearLB = document.getElementById("yearLB");
     var periodLB = document.getElementById("periodLB");
@@ -541,37 +581,72 @@ function formValidations()
     var aggPeriodCB = document.getElementById("aggPeriodCB");
     var periodTypeList = document.getElementById( "periodTypeLB" );
     var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-	
-    if( selectedServices.options.length <= 0 ) {
-        alert("Please select DataElement/Indicator(s)");return false;
+    var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
+  
+    var k=0;
+    if( selectedServices.options.length <= 0 ) 
+    {
+        alert("Please select DataElement/Indicator(s)");
+        return false;
     }
 	
     if( periodTypeId == yearlyPeriodTypeName )
     {
-        if( yearLB.selectedIndex < 0 ) {
-            alert("Please select Year(s)");return false;
+        if( yearLB.selectedIndex < 0 ) 
+        {
+            alert("Please select Year(s)");
+            return false;
         }
     }
     else
     {
-        if( yearLB.selectedIndex < 0 ) {
-            alert("Please select Year(s)");return false;
+        if( yearLB.selectedIndex < 0 ) 
+        {
+            alert("Please select Year(s)");
+            return false;
         }
-        if( periodLB.selectedIndex < 0 ) {
-            alert("Please select Period(s)");return false;
+        if( periodLB.selectedIndex < 0 ) 
+        {
+            alert("Please select Period(s)");
+            return false;
         }
     }
 	
-    if( ouSelCB.checked)
+    if( ouRadioVal == "orgUnitSelectedRadio" )
     {
-        if(orgUnitListCB.options.length <=0 ) {
-            alert( "Please select OrgUnit(s)" );return false;
+        //if( orgUnitListCB.selectedIndex < 0 ) 
+    	if( selOUListLength <= 0 )
+        {
+            alert( "Please select OrgUnit(s)" );
+            return false;
+        }
+    	/*
+        else
+        {
+        	for(k=0;k<selOUListLength;k++)
+        	{
+        		document.tabularAnalysisForm.orgUnitListCB.options[k].selected = true;
+        	}
+    	}
+    	*/
+    }
+    else if( ouRadioVal == "orgUnitGroupRadio" ) 
+    { 
+    	if( orgUnitLevelCB.selectedIndex < 0 ) 
+    	{
+            alert( "Please select OrgUnitGroup" );
+            return false;
         }
     }
-    else if( orgUnitLevelCB.selectedIndex < 0 ) {
-        alert( "Please select OrgUnitLevel" );return false;
+    else if( ouRadioVal == "orgUnitLevelRadio" )
+    {
+	   if(orgUnitLevelCB.selectedIndex < 0  ) 
+	   {
+           alert( "Please select OrgUnitLevel" );
+           return false;
+       }
     }
-		
+	   
     orgUnitListCB.disabled = false;
     for(k = 0; k < selectedServices.options.length; k++)
     {
