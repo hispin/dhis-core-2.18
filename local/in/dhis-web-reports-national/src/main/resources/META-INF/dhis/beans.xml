@@ -711,6 +711,45 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
+	<!-- Meta Data Reports -->
+	<bean
+		id="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportAnalyserFormAction"
+		class="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportAnalyserFormAction"
+		scope="prototype">
+		
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+		</property>
+		
+	</bean>
+	
+	   <bean
+		id="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportResultAction"
+		class="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportResultAction"
+		scope="prototype">
+			<property name="statementManager" ref="statementManager"/>
+			<property name="dataElementService"
+				ref="org.hisp.dhis.dataelement.DataElementService"/>
+			<property name="organisationUnitService"
+				ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+			<property name="organisationUnitgroupService"
+				ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+			<property name="dataSetService"
+				ref="org.hisp.dhis.dataset.DataSetService"/>
+			<property name="indicatorService"
+				ref="org.hisp.dhis.indicator.IndicatorService"/>
+			<property name="validationRuleService"
+				ref="org.hisp.dhis.validation.ValidationRuleService">
+			</property>
+			<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+			</property>
+			<!--<property name="userCredentials" ref="org.hisp.dhis.user.UserCredentials">
+			</property>-->
+			<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
+			 </property>
+			 <property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
+		</bean>
+	
+	
 	<!-- Advanced Reports -->
 	
 	<bean

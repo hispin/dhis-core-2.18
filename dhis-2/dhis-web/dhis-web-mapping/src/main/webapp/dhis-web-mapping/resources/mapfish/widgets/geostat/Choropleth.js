@@ -1382,9 +1382,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             var polygonLayer = MAP.getLayersByName('Polygon layer')[0];
             FEATURE[thematicMap] = polygonLayer.features;
             
-            if (LABELS[thematicMap]) {
-                toggleFeatureLabelsPolygons(false, polygonLayer);
-            }
+            // if (LABELS[thematicMap]) {
+                // toggleFeatureLabelsPolygons(false, polygonLayer);
+            // }
 
             var indicatorOrDataElementId = VALUETYPE.polygon == map_value_type_indicator ?
                 Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();

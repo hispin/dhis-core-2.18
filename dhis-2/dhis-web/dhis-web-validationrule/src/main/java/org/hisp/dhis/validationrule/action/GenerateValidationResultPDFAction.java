@@ -31,7 +31,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -94,7 +93,7 @@ public class GenerateValidationResultPDFAction
     public String execute()
         throws Exception
     {
-        Map<String, List<ValidationResult>> results = (Map<String, List<ValidationResult>>) SessionUtils.
+        List<ValidationResult> results = (List<ValidationResult>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();

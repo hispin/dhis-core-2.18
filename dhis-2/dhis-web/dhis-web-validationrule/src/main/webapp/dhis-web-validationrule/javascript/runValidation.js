@@ -27,6 +27,7 @@ function runValidationCompleted( messageElement )
 			$( "div#analysisInput" ).hide();
 			$( "div#analysisResult" ).show();
 			$( "div#analysisResult" ).html( data );
+			pageInit();
 		} );
     }
     else if ( type == 'error' )

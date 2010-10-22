@@ -1382,10 +1382,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             var pointLayer = MAP.getLayersByName('Point layer')[0];
             FEATURE[thematicMap2] = pointLayer.features;
             
-            if (LABELS[thematicMap2]) {
-                toggleFeatureLabelsPoints(false, pointLayer);
-            }
-            
             var indicatorOrDataElementId = VALUETYPE.point == map_value_type_indicator ?
                 Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
             var dataUrl = VALUETYPE.point == map_value_type_indicator ?
