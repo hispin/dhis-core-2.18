@@ -1,7 +1,19 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'addOrganisationUnitGroupForm', validateAddOrganisationUnitGroup );				
-	});	
+		validation( 'addOrganisationUnitGroupForm', function( form ){ form.submit() }, function(){
+			ous = jQuery( "#organisationValidator" );
+			ous.attr( 'multiple', 'multiple');
+			ous.empty();
+			jQuery.each(selectionTreeSelection.getSelected(), function(i, item ){
+				ous.append( '<option value="' + item + '" selected="true">' + item + '</option>' );				
+			});
+		} );	
+		
+		checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );		
+		
+		selectionTree.clearSelectedOrganisationUnits();
+			
+	});
 </script>
 
 
@@ -9,125 +21,17 @@
 
 <form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
 
-<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"/></p>
-<span class="error"></span>
-
-  <table id="selectionTable">
+<p>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"/></p>
+<table>
 	<tr>
-	  <td>
-		<input type="button" value="$i18n.getString( "select_all_at_level" )" onclick="selectAllAtLevel()" style="width:12em">
-		<select id="levelList" name="levelList" style="width:12em">
-			#foreach( $lev in $levels )
-				<option value="$lev.level" #if ( $level == $lev.level )selected="selected"#end>$encoder.htmlEncode( $lev.name )</option>
-			#end
-		</select>
-		<input type="button" value="$i18n.getString( "unselect_all_at_level" )" onclick="unselectAllAtLevel()" style="width:12em">
-		<input type="button" value="$i18n.getString( "unselect_all" )" onclick="unselectAll()" style="width:12em">        
-	  </td>
+		<td>
+			#parse( "/dhis-web-commons/oust/selectionTreeExtend.vm" )
+			<select id="organisationValidator" name="organisationValidator" class="{validate:{required:true}}" style="display:none"/>
+		</td>
 	</tr>
-	<tr>
-	  <td>
-	  	<input type="button" value="$i18n.getString( "select_all_in_group" )" onclick="selectGroup()" style="width:12em">
-	  	<select id="groupList" name="groupList" style="width:12em">
-	  		#foreach ( $group in $groups )
-	  			<option value="$group.id" #if ( $organisationUnitGroupId == $group.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
-		  	#end
-	  	</select>
-	  	<input type="button" value="$i18n.getString( "unselect_all_in_group" )" onclick="unselectGroup()" style="width:12em">
-  	  </td>
-	</tr>
-    <tr>
-      <td>
-        <div id="selectionTree" style="width:50em;height:30em;overflow:auto;border:1px solid #cccccc"></div>
-
-        <script type="text/javascript">
-		
-			var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
-
-			selectionTreeSelection.setMultipleSelectionAllowed( true );
-			selectionTreeSelection.setOnSelectFunction( treeClicked );
-			selectionTreeSelection.setListenerFunction( selectCompleted );
-			selectionTree.clearSelectedOrganisationUnits();
-			selectionTree.buildSelectionTree();
-
-			var numberOfSelects = 0;
-
-			function selectAllAtLevel()
-			{
-				var request = new Request();
-				request.setCallbackSuccess( selectReceived );
-				request.send( 'selectLevel.action?level=' + getListValue( 'levelList' ) );
-			}
-
-			function unselectAllAtLevel()
-			{
-				var request = new Request();
-				request.setCallbackSuccess( selectReceived );
-				request.send( 'unselectLevel.action?level=' + getListValue( 'levelList' ) );
-			}
-
-			function selectGroup()
-			{
-				var request = new Request();
-				request.setCallbackSuccess( selectReceived );
-				request.send( 'selectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
-			}
-
-			function unselectGroup()
-			{
-				var request = new Request();
-				request.setCallbackSuccess( selectReceived );
-				request.send( 'unselectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
-			}
-
-			function unselectAll()
-			{
-				var request = new Request();
-				request.setCallbackSuccess( selectReceived );
-				request.send( 'unselectAll.action' );
-			}
-
-			function selectReceived()
-			{
-				selectionTree.buildSelectionTree();
-			}
-
-			function treeClicked()
-			{
-				numberOfSelects++;
-				
-				setMessage( i18n_loading );
-				
-				document.getElementById( "submitButton" ).disabled = true;
-			}
-
-			function selectCompleted( selectedUnits )
-			{
-				numberOfSelects--;
-				
-				if ( numberOfSelects <= 0 )
-				{
-					hideMessage();
-					
-					document.getElementById( "submitButton" ).disabled = false;
-				}
-			}
-
-
-
-        </script>
-        
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em">
-		<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( "cancel" )" style="width:10em">
-      </td>
-    </tr>
-  </table>
+</table>	
+<p>
+	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/>
+</p>  
 </form>
-
-<span id="message"></span>
-

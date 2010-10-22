@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
- * @version $Id StatementManagerDataBrowserStore.java 2010-04-06 Jason Pickering, Dang Duy Hieu$
+ * @version $Id StatementManagerDataBrowserStore.java 2010-04-06 jasonpp,
+ *          ddhieu$
  */
 public class StatementManagerDataBrowserStore
     implements DataBrowserStore
@@ -51,7 +52,7 @@ public class StatementManagerDataBrowserStore
         try
         {
             StringBuffer sqlsb = new StringBuffer();
-            sqlsb.append( "(SELECT d.datasetid AS ID, d.name AS DataSet, COUNT(*) AS counts_of_aggregated_values " );
+            sqlsb.append( "(SELECT d.datasetid AS id, d.name AS dataset, COUNT(*) AS counts_of_aggregated_values " );
             sqlsb.append( "FROM datavalue dv " );
             sqlsb.append( "JOIN datasetmembers dsm ON (dv.dataelementid = dsm.dataelementid) " );
             sqlsb.append( "JOIN dataset d ON (d.datasetid = dsm.datasetid) " );
@@ -96,7 +97,8 @@ public class StatementManagerDataBrowserStore
         try
         {
             StringBuffer sqlsb = new StringBuffer();
-            sqlsb.append( "(SELECT d.dataelementgroupid AS ID, d.name AS DataElementGroup, COUNT(*) AS counts_of_aggregated_values " );
+            sqlsb
+                .append( "(SELECT d.dataelementgroupid AS id, d.name AS dataelementgroup, COUNT(*) AS counts_of_aggregated_values " );
             sqlsb.append( "FROM datavalue dv " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON (dv.dataelementid = degm.dataelementid)" );
             sqlsb.append( "JOIN dataelementgroup d ON (d.dataelementgroupid = degm.dataelementgroupid) " );
@@ -142,10 +144,11 @@ public class StatementManagerDataBrowserStore
         {
             StringBuffer sqlsb = new StringBuffer();
 
-            sqlsb.append( "(SELECT oug.orgunitgroupid, oug.name AS OrgUnitGroup, COUNT(*) AS counts_of_aggregated_values " );
+            sqlsb
+                .append( "(SELECT oug.orgunitgroupid, oug.name AS orgunitgroup, COUNT(*) AS counts_of_aggregated_values " );
             sqlsb.append( "FROM orgunitgroup oug " );
             sqlsb.append( "JOIN orgunitgroupmembers ougm ON oug.orgunitgroupid = ougm.orgunitgroupid " );
-            sqlsb.append( "JOIN organisationunit ou ON  ougm.organisationunitid = ou.organisationunitid " );
+            sqlsb.append( "JOIN organisationunit ou ON ougm.organisationunitid = ou.organisationunitid " );
             sqlsb.append( "JOIN datavalue dv ON ou.organisationunitid = dv.sourceid " );
             sqlsb.append( "WHERE dv.periodid IN " + splitListHelper( betweenPeriodIds ) + " " );
             sqlsb.append( "GROUP BY oug.orgunitgroupid, oug.name " );
@@ -186,7 +189,7 @@ public class StatementManagerDataBrowserStore
         try
         {
             StringBuffer sqlsb = new StringBuffer();
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement " );
+            sqlsb.append( "(SELECT de.dataelementid, de.name AS dataelement " );
             sqlsb.append( "FROM dataelement de JOIN datavalue dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "JOIN datasetmembers dsm ON (de.dataelementid = dsm.dataelementid) " );
             sqlsb.append( "WHERE dsm.datasetid = '" + dataSetId + "' " );
@@ -225,7 +228,7 @@ public class StatementManagerDataBrowserStore
 
         try
         {
-            sqlsb.append( "(SELECT deg.dataelementgroupid, deg.name AS DataElementGroup " );
+            sqlsb.append( "(SELECT deg.dataelementgroupid, deg.name AS dataelementgroup " );
             sqlsb.append( "FROM dataelementgroup deg " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON deg.dataelementgroupid = degm.dataelementgroupid " );
             sqlsb.append( "JOIN datavalue dv ON degm.dataelementid = dv.dataelementid " );
@@ -265,7 +268,7 @@ public class StatementManagerDataBrowserStore
         try
         {
             StringBuffer sqlsb = new StringBuffer();
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement " );
+            sqlsb.append( "(SELECT de.dataelementid, de.name AS dataelement " );
             sqlsb.append( "FROM dataelement de JOIN datavalue dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON (de.dataelementid = degm.dataelementid) " );
             sqlsb.append( "WHERE degm.dataelementgroupid = '" + dataElementGroupId + "' " );
@@ -303,7 +306,7 @@ public class StatementManagerDataBrowserStore
         try
         {
             StringBuffer sqlsb = new StringBuffer();
-            sqlsb.append( "(SELECT o.organisationunitid, o.name AS OrganisationUnit " );
+            sqlsb.append( "(SELECT o.organisationunitid, o.name AS organisationunit " );
             sqlsb.append( "FROM organisationunit o " );
             sqlsb.append( "WHERE o.parentid = '" + orgUnitParent + "' " );
             sqlsb.append( "ORDER BY o.name)" );
@@ -339,7 +342,7 @@ public class StatementManagerDataBrowserStore
         try
         {
             StringBuffer sqlsb = new StringBuffer();
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement " );
+            sqlsb.append( "(SELECT de.dataelementid, de.name AS dataelement " );
             sqlsb.append( "FROM dataelement AS de " );
             sqlsb.append( "INNER JOIN datavalue AS dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "INNER JOIN datasetmembers AS dsm ON (de.dataelementid = dsm.dataelementid) " );
@@ -390,14 +393,15 @@ public class StatementManagerDataBrowserStore
         {
             i++;
 
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement, Count(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sqlsb
+                .append( "(SELECT de.dataelementid, de.name AS dataelement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS periodid, p.startdate AS columnheader " );
             sqlsb.append( "FROM dataelement de JOIN datavalue dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "JOIN datasetmembers dsm ON (de.dataelementid = dsm.dataelementid) " );
             sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
             sqlsb.append( "WHERE dsm.datasetid = '" + dataSetId + "' AND dv.periodid = '" + periodId + "' " );
-            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startDate)" );
+            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startdate)" );
 
-            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY PeriodId " : "\n UNION \n" );
+            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY columnheader " : "\n UNION \n" );
         }
 
         try
@@ -436,15 +440,16 @@ public class StatementManagerDataBrowserStore
         {
             i++;
 
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sqlsb
+                .append( "(SELECT de.dataelementid, de.name AS dataelement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS periodid, p.startdate AS columnheader " );
             sqlsb.append( "FROM dataelement de JOIN datavalue dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON (de.dataelementid = degm.dataelementid) " );
             sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
             sqlsb.append( "WHERE degm.dataelementgroupid = '" + dataElementGroupId + "' " );
             sqlsb.append( "AND dv.periodid = '" + periodid + "' " );
-            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startDate) " );
+            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startdate) " );
 
-            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY PeriodId " : "\n UNION \n" );
+            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY columnheader " : "\n UNION \n" );
         }
 
         try
@@ -483,17 +488,20 @@ public class StatementManagerDataBrowserStore
         {
             i++;
 
-            sqlsb.append( " (SELECT deg.dataelementgroupid, deg.name, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startdate AS ColumnHeader " );
+            sqlsb
+                .append( " (SELECT deg.dataelementgroupid, deg.name, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS periodid, p.startdate AS columnheader " );
             sqlsb.append( "FROM dataelementgroup AS deg " );
-            sqlsb.append( "INNER JOIN dataelementgroupmembers AS degm ON deg.dataelementgroupid = degm.dataelementgroupid " );
+            sqlsb
+                .append( "INNER JOIN dataelementgroupmembers AS degm ON deg.dataelementgroupid = degm.dataelementgroupid " );
             sqlsb.append( "INNER JOIN datavalue AS dv ON degm.dataelementid = dv.dataelementid " );
             sqlsb.append( "INNER JOIN period AS p ON dv.periodid = p.periodid " );
             sqlsb.append( "INNER JOIN organisationunit AS ou ON dv.sourceid = ou.organisationunitid " );
             sqlsb.append( "INNER JOIN orgunitgroupmembers AS ougm ON ou.organisationunitid = ougm.organisationunitid " );
-            sqlsb.append( "WHERE p.periodid =  '" + periodid + "' AND ougm.orgunitgroupid =  '" + orgUnitGroupId + "' " );
+            sqlsb
+                .append( "WHERE p.periodid =  '" + periodid + "' AND ougm.orgunitgroupid =  '" + orgUnitGroupId + "' " );
             sqlsb.append( "GROUP BY deg.dataelementgroupid,deg.name,p.periodid,p.startdate) " );
 
-            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY PeriodId " : "\n UNION \n" );
+            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY columnheader " : "\n UNION \n" );
         }
 
         try
@@ -520,7 +528,7 @@ public class StatementManagerDataBrowserStore
     }
 
     public Integer setCountOrgUnitsBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
-        List<Integer> betweenPeriodIds )
+        List<Integer> betweenPeriodIds, Integer maxLevel )
     {
         StatementHolder holder = statementManager.getHolder();
 
@@ -530,12 +538,14 @@ public class StatementManagerDataBrowserStore
         dropView( "view_count_descentdants" );
 
         sqlsbDescentdants.append( "CREATE VIEW view_count_descentdants AS " );
-        setUpQueryForDrillDownDescendants( sqlsbDescentdants, orgUnitParent, betweenPeriodIds );
+        setUpQueryForDrillDownDescendants( sqlsbDescentdants, orgUnitParent, betweenPeriodIds, maxLevel );
+
+        table.incrementQueryCount();
 
         try
         {
             TimeUtils.start();
-            
+
             holder.getStatement().executeUpdate( sqlsbDescentdants.toString() );
 
             setUpQueryForDrillDownViewTable( sqlsbDescentdants );
@@ -547,7 +557,7 @@ public class StatementManagerDataBrowserStore
             table.incrementQueryCount();
 
             numResults = table.addColumnToAllRows( resultSet );
-            
+
             TimeUtils.stop();
         }
         catch ( SQLException e )
@@ -575,7 +585,8 @@ public class StatementManagerDataBrowserStore
         {
             i++;
 
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement, Count(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sqlsb
+                .append( "(SELECT de.dataelementid, de.name AS dataelement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS periodid, p.startdate AS columnheader " );
             sqlsb.append( "FROM dataelement AS de " );
             sqlsb.append( "INNER JOIN datavalue AS dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "INNER JOIN datasetmembers AS dsm ON (de.dataelementid = dsm.dataelementid) " );
@@ -583,9 +594,9 @@ public class StatementManagerDataBrowserStore
             sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
             sqlsb.append( "WHERE o.organisationunitid = '" + orgUnitId + "' " );
             sqlsb.append( "AND dv.periodid = '" + periodId + "' " );
-            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startDate)" );
+            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startdate)" );
 
-            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY PeriodId " : "\n UNION \n" );
+            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY columnheader " : "\n UNION \n" );
         }
 
         try
@@ -658,13 +669,17 @@ public class StatementManagerDataBrowserStore
     }
 
     private void setUpQueryForDrillDownDescendants( StringBuffer sb, Integer orgUnitSelected,
-        List<Integer> betweenPeriodIds )
+        List<Integer> betweenPeriodIds, Integer maxLevel )
     {
+        if ( maxLevel == null )
+        {
+            maxLevel = new Integer( organisationUnitService.getNumberOfOrganisationalLevels() );
+        }
+
         int i = 0;
         int loopSize = betweenPeriodIds.size();
         int curLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnitSelected );
-        int maxLevel = organisationUnitService.getNumberOfOrganisationalLevels();
-        int diffLevel = maxLevel - curLevel;
+        int diffLevel = maxLevel.intValue() - curLevel;
         String orgIndex = this.getTableIndexByDiffLevel( diffLevel );
 
         for ( Integer periodid : betweenPeriodIds )
@@ -674,19 +689,25 @@ public class StatementManagerDataBrowserStore
             /**
              * The current organization unit
              */
-            sb.append( "SELECT DISTINCT o.organisationunitid AS parentid, o.name AS OrganisationUnit, COUNT(value) as countdv_descendants, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sb
+                .append( "SELECT DISTINCT o.organisationunitid AS parentid, o.name AS organisationunit, COUNT(value) as countdv_descendants, p.periodid AS periodid, p.startdate AS columnheader " );
             sb.append( "FROM organisationunit o " );
             sb.append( "JOIN datavalue dv ON ( dv.sourceid = o.organisationunitid ) " );
             sb.append( "JOIN period p ON ( p.periodid = dv.periodid ) " );
             sb.append( "WHERE o.parentid = '" + orgUnitSelected + "' " );
             sb.append( "AND dv.periodid = '" + periodid + "' " );
-            sb.append( "GROUP BY o.organisationunitid, OrganisationUnit, p.periodid, p.startdate " );
+            sb.append( "GROUP BY o.organisationunitid, organisationunit, p.periodid, p.startdate " );
             sb.append( "UNION " );
 
             /**
              * All descendant levels of selected organization unit
              */
-            sb.append( "SELECT DISTINCT ou" + orgIndex + ".organisationunitid AS parentid, ou" + orgIndex + ".name AS OrganisationUnit, COUNT(value) as countdv_descendants, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sb
+                .append( "SELECT DISTINCT ou"
+                    + orgIndex
+                    + ".organisationunitid AS parentid, ou"
+                    + orgIndex
+                    + ".name AS organisationunit, COUNT(value) as countdv_descendants, p.periodid AS periodid, p.startdate AS columnheader " );
             sb.append( "FROM datavalue dv " );
             sb.append( "JOIN organisationunit ou ON ( ou.organisationunitid = dv.sourceid ) " );
             this.setUpQueryForJOINTable( sb, diffLevel );
@@ -696,10 +717,10 @@ public class StatementManagerDataBrowserStore
             sb.append( "( " );
             sb.append( this.setUpQueryGetDescendants( curLevel, maxLevel, orgUnitSelected ) );
             sb.append( " ) " );
-            sb.append( "GROUP BY ou" + orgIndex + ".organisationunitid, OrganisationUnit, p.periodid, p.startDate " );
-            
+            sb.append( "GROUP BY ou" + orgIndex + ".organisationunitid, organisationunit, p.periodid, p.startdate " );
+
             sb.append( i < loopSize ? "UNION " : "" );
-           
+
         }
     }
 
@@ -712,7 +733,7 @@ public class StatementManagerDataBrowserStore
 
         for ( j++; j < (maxLevel); j++ )
         {
-            oldSQL = "SELECT DISTINCT idlevel" + (j + 1) + " as descendant FROM _orgunitstructure os WHERE idlevel"
+            oldSQL = "SELECT DISTINCT idlevel" + (j + 1) + " AS descendant FROM _orgunitstructure os WHERE idlevel"
                 + (j) + " IN ( " + oldSQL + " ) ";
         }
 
@@ -723,17 +744,18 @@ public class StatementManagerDataBrowserStore
     {
         sb.delete( 0, sb.capacity() );
 
-        sb.append( "SELECT parentid, organisationunit, sum(countdv_descendants) AS counts_of_aggregated_values, periodid, columnheader " );
+        sb
+            .append( "SELECT parentid, organisationunit, SUM(countdv_descendants) AS counts_of_aggregated_values, periodid, columnheader " );
         sb.append( "FROM view_count_descentdants " );
         sb.append( "GROUP BY parentid, organisationunit, periodid, columnheader " );
-        sb.append( "ORDER BY periodid; " );
+        sb.append( "ORDER BY columnheader; " );
     }
 
     private void setUpQueryForJOINTable( StringBuffer sb, int diffLevel )
     {
         for ( int i = 1; i < diffLevel; i++ )
         {
-            sb.append( "JOIN OrganisationUnit ou" + (i) + " ON ( ou" + (((i == 1) && (i != 0)) ? "" : (i - 1))
+            sb.append( "JOIN organisationunit ou" + (i) + " ON ( ou" + (((i == 1) && (i != 0)) ? "" : (i - 1))
                 + ".parentid = ou" + (i) + ".organisationunitid ) " );
         }
     }

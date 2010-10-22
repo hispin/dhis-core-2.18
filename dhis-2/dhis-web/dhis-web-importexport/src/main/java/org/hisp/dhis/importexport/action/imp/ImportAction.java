@@ -221,8 +221,6 @@ public class ImportAction
                 message = i18n.getString( "file_type_not_allowed" );
 
                 log.warn( "Content type not allowed: " + contentType );
-
-                return SUCCESS;
             }
             
             in = new BufferedInputStream( new FileInputStream( file ) );

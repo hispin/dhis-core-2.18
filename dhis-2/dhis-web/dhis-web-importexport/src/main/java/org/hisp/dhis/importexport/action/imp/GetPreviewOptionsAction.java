@@ -27,11 +27,13 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.importexport.ImportObjectStatus.NEW;
+import static org.hisp.dhis.importexport.ImportObjectStatus.UPDATE;
+import static org.hisp.dhis.importexport.ImportObjectStatus.valueOf;
 import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_STATUS;
 import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_TYPE;
 import static org.hisp.dhis.util.SessionUtils.getSessionVar;
 import static org.hisp.dhis.util.SessionUtils.setSessionVar;
-import static org.hisp.dhis.importexport.ImportObjectStatus.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +50,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectService;
-import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.action.util.ClassMapUtil;
 import org.hisp.dhis.importexport.comparator.ImportObjectComparator;
 import org.hisp.dhis.indicator.Indicator;

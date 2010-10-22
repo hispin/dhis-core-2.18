@@ -2,19 +2,20 @@
 
 function getOUDetails(orgUnitIds)
 {
-	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'orgunit' );
-	request.setCallbackSuccess( getOUDetailsRecevied );
-	request.send( url );
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId : orgUnitIds
+		},
+		function (data)
+		{
+			getOUDetailsRecevied(data);
+		},'xml');	
 
 	getReports();
 }
 
 function getOUDetailsRecevied(xmlObject)
-{
-		
+{	
 	var orgUnits = xmlObject.getElementsByTagName("orgunit");
 
     for ( var i = 0; i < orgUnits.length; i++ )
@@ -23,9 +24,8 @@ function getOUDetailsRecevied(xmlObject)
         var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
 		var level = orgUnits[ i ].getElementsByTagName("level")[0].firstChild.nodeValue;
 		
-		
 		document.reportForm.ouNameTB.value = orgUnitName;
-		document.reportForm.ouLevelTB.value = level;	
+		//document.reportForm.ouLevelTB.value = level;	
     }    		
 }
 
@@ -39,11 +39,14 @@ function getDataElements()
         
     if ( dataElementGroupId != null )
     {
-        var url = "getDataElements.action?id=" + dataElementGroupId;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getDataElementsReceived);
-        request.send(url);
+		$.post("getDataElements.action",
+		{
+			id : dataElementGroupId
+		},
+		function (data)
+		{
+			getDataElementsReceived(data);
+		},'xml');
     }
 }// getDataElements end           
 
@@ -83,13 +86,15 @@ function getPeriods()
   var reportList = document.getElementById( "reportList" );
   
   if ( periodTypeId != "NA" )
-  {   
-    var url = "getPeriods.action?id=" + periodTypeId;
-    
-    var request = new Request();
-      request.setResponseTypeXML( 'period' );
-      request.setCallbackSuccess( getPeriodsReceived );
-      request.send( url );
+  { 
+	  $.post("getPeriods.action",
+		{
+			id : periodTypeId
+		},
+		function (data)
+		{
+			getPeriodsReceived(data);
+		},'xml');
   }
   else
   {
@@ -109,23 +114,31 @@ function getReports( ouId, reportListFileName )
   var autogenvalue = document.getElementById( "autogen" ).value;
           
   if ( periodType != "NA" && ouId != null && ouId != "" )
-  {   
-    var url = "getReports.action?periodType=" + periodType + "&ouId="+ouId + "&reportListFileName="+reportListFileName+"&autogenrep="+autogenvalue;
-    
-    var request = new Request();
-      request.setResponseTypeXML( 'report' );
-      request.setCallbackSuccess( getReportsReceived );
-      request.send( url );
+  { 
+	   $.post("getReports.action",
+		{
+			periodType : periodType,
+			ouId : ouId,
+			reportListFileName : reportListFileName,
+			autogenrep : autogenvalue
+		},
+		function (data)
+		{
+			getReportsReceived(data);
+		},'xml');
   }
 }
 
 function getReportsReceived( xmlObject )
 {	
-    var reportsList = document.getElementById( "reportList" );
-	var orgUnitName = document.getElementById( "ouNameTB" );
+    var reportsList = byId( "reportList" );
+	var orgUnitName = byId( "ouNameTB" );
     
     clearList( reportsList );
     
+	if(xmlObject == null){
+		return;
+	}
     var reports = xmlObject.getElementsByTagName( "report" );
     for ( var i = 0; i < reports.length; i++)
 	{

@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -59,7 +60,7 @@ public class DataMartServiceTimeDimensionTest
 {
     private DataMartService dataMartService;
 
-    private DataMartStore dataMartStore;
+    private AggregatedDataValueService aggregatedDataValueService;
 
     private DataElementCategoryCombo categoryCombo;
     
@@ -74,9 +75,9 @@ public class DataMartServiceTimeDimensionTest
     public void setUpTest()
     {
         dataMartService = (DataMartService) getBean( DataMartService.ID );
-        
-        dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
 
+        aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
+        
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -139,9 +140,9 @@ public class DataMartServiceTimeDimensionTest
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
-        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
-        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodB, unit ) );
-        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodC, unit ) );
+        assertEquals( 100.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
+        assertEquals( 100.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodB, unit ) );
+        assertEquals( 100.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodC, unit ) );
     }
 
     @Test
@@ -178,6 +179,6 @@ public class DataMartServiceTimeDimensionTest
 
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
-        assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
+        assertEquals( 60.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
     }
 }

@@ -78,7 +78,7 @@ public class ImportParams
         {
             return false;
         }
-                
+        
         double _minorVersion = Double.parseDouble( minorVersion ) * 1000;
         double _requiredVersion = Double.parseDouble( requiredVersion ) * 1000;
         
@@ -168,12 +168,6 @@ public class ImportParams
     {
         this.lastUpdated = lastUpdated;
     }
-
-    //----------------------------------------------------------------
-    //
-    // DXF parameters
-    //
-    //----------------------------------------------------------------
 
     public String getNamespace()
     {

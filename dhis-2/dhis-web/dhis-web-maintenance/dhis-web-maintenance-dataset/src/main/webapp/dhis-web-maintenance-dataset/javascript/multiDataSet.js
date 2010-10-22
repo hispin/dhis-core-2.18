@@ -236,7 +236,7 @@ function deleteDataSetEditorCompleted( xmlObject )
 	}
 	else if ( type == "error" )
 	{
-		setFieldValue( 'warningArea', xmlObject.firstChild.nodeValue );
+		setInnerHTML( 'warningArea', xmlObject.firstChild.nodeValue );
 
 		showWarning();
 	}

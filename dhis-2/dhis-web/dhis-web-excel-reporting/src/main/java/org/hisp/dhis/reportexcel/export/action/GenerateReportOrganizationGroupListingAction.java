@@ -122,7 +122,6 @@ public class GenerateReportOrganizationGroupListingAction
             
             String totalFormula = "SUM(";
             
-
             for ( OrganisationUnitGroup organisationUnitGroup : reportExcel.getOrganisationUnitGroups() )
             {
 
@@ -146,7 +145,6 @@ public class GenerateReportOrganizationGroupListingAction
                 }
                 else
                 {
-
                     organisationUnits.retainAll( childrenOrganisationUnits );
                 }
 
@@ -223,7 +221,7 @@ public class GenerateReportOrganizationGroupListingAction
             if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ))
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
-                
+
                 ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );             
                 
             }

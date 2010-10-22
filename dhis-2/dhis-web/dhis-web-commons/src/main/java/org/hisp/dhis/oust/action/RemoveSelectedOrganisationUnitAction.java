@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
@@ -39,7 +40,8 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: RemoveSelectedOrganisationUnitAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @version $Id: RemoveSelectedOrganisationUnitAction.java 2869 2007-02-20
+ *          14:26:09Z andegje $
  */
 public class RemoveSelectedOrganisationUnitAction
     implements Action
@@ -57,6 +59,13 @@ public class RemoveSelectedOrganisationUnitAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -68,11 +77,25 @@ public class RemoveSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int organisationUnitId )
+    public void setId( Integer organisationUnitId )
     {
         this.id = organisationUnitId;
+    }
+
+    private Integer level;
+
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+
+    private Integer organisationUnitGroupId;
+
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
     private Collection<OrganisationUnit> selectedUnits;
@@ -88,18 +111,28 @@ public class RemoveSelectedOrganisationUnitAction
 
     public String execute()
         throws Exception
-    { 
+    {
         try
         {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+            selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
 
-            if ( unit == null )
+            if ( id != null )
             {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
+                OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+                selectedUnits.remove( unit );
             }
 
-            selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();            
-            selectedUnits.remove( unit );           
+            if ( level != null )
+            {
+                selectedUnits.removeAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+            }
+
+            if ( organisationUnitGroupId != null )
+            {
+                selectedUnits.removeAll( organisationUnitGroupService
+                    .getOrganisationUnitGroup( organisationUnitGroupId ).getMembers() );
+            }
+
             selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
         }
         catch ( Exception e )

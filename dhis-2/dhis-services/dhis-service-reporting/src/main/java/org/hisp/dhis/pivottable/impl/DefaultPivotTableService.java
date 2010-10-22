@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -57,12 +57,12 @@ public class DefaultPivotTableService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartService dataMartService;
+    private AggregatedDataValueService aggregatedDataValueService;
     
-    public void setDataMartService( DataMartService dataMartService )
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
-        this.dataMartService = dataMartService;
-    }        
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
 
     private IndicatorService indicatorService;
 
@@ -106,7 +106,7 @@ public class DefaultPivotTableService
         {
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
             
-            indicatorValues = dataMartService.getAggregatedIndicatorValues(
+            indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
                 ConversionUtils.getIdentifiers( Period.class, periods ), 
                 ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
         }
@@ -114,7 +114,7 @@ public class DefaultPivotTableService
         {
             indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
             
-            indicatorValues = dataMartService.getAggregatedIndicatorValues(
+            indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
                 ConversionUtils.getIdentifiers( Indicator.class, indicators ),
                 ConversionUtils.getIdentifiers( Period.class, periods ), 
                 ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );            

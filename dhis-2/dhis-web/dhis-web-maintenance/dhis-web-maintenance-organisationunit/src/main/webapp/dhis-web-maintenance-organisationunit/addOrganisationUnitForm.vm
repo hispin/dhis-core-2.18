@@ -1,9 +1,12 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addOrganisationUnitForm', validateAddOrganisationUnit );		
-		datePicker( 'openingDate' );	
+		validation( 'addOrganisationUnitForm' );	
+		
+		checkValueIsExist( "name", "validateOrganisationUnit.action");
+		
+		datePicker( 'openingDate' );
+			
 	});
-	
 </script>
 
 <h3>$i18n.getString( "create_new_org_unit" )</h3>

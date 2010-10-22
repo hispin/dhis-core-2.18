@@ -33,16 +33,16 @@ import java.util.Map;
 /**
  * @author Lars Helge Overland
  */
-public class Counter
+public class Counter<T>
 {
-    private Map<Integer, Integer> map;
+    private Map<T, Integer> map;
     
     public Counter()
     {
-        map = new HashMap<Integer, Integer>();
+        map = new HashMap<T, Integer>();
     }
     
-    public int count( int key )
+    public int count( T key )
     {
         if ( !map.containsKey( key ) )
         {
@@ -54,5 +54,21 @@ public class Counter
         map.put( key, ++count );
         
         return count;
+    }
+    
+    public Map<T, Integer> getCount()
+    {
+        return map;
+    }
+    
+    public Integer getCount( T key )
+    {
+        return map != null && map.containsKey( key ) ? map.get( key ) : 0;
+    }
+ 
+    @Override
+    public String toString()
+    {
+        return "[" + map.toString() + "]";
     }
 }

@@ -1,7 +1,12 @@
 <script>
 
 	jQuery(document).ready(	function(){
-			validation( 'addIndicatorGroupForm', validateAddIndicatorGroup );				
+		validation( 'addIndicatorGroupForm', function( form ){ form.submit()}, function(){
+			listValidator( 'memberValidator', 'groupMembers' );
+		} );	
+		
+		checkValueIsExist( "name", "validateIndicatorGroup.action");
+			
 	});
 
 </script>
@@ -25,7 +30,9 @@
 
 <table>
 	<tr>
-		<th>$i18n.getString( "available_indicators" )</th><td></td><th>$i18n.getString( "group_members" )</th>
+		<th>$i18n.getString( "available_indicators" )</th><td></td><th>$i18n.getString( "group_members" )
+			<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>
 	<tr>
 		<td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'availableIndicators' )" style="width:100%"></td>

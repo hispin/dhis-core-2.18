@@ -34,16 +34,38 @@ import java.util.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 public class AddSectionAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
+
+    private Integer categoryComboId;
+
+    private Integer dataSetId;
+
+    private String sectionName;
+
+    private DataSet dataSet;
+
+    private DataElementCategoryCombo categoryCombo;
+
+    private List<String> selectedList = new ArrayList<String>();
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    private List<DataElementGroup> dataElementGroups;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -78,41 +100,28 @@ public class AddSectionAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // DisplayPropertyHandler
     // -------------------------------------------------------------------------
 
-    private Integer categoryComboId;
+    private DisplayPropertyHandler displayPropertyHandler;
 
-    private Integer dataSetId;
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
+    }
 
-    private String sectionName;
-
-    private List<String> selectedList = new ArrayList<String>();
-
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
-
-    private DataElementCategoryCombo categoryCombo;
-
-    private DataSet dataSet;
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
 
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
-    public Integer getDataSetId()
-    {
-        return dataSetId;
-    }
-
     public void setSectionName( String sectionName )
     {
         this.sectionName = sectionName;
-    }
-
-    public List<String> getSelectedList()
-    {
-        return selectedList;
     }
 
     public void setSelectedList( List<String> selectedList )
@@ -130,19 +139,9 @@ public class AddSectionAction
         this.categoryComboId = categoryComboId;
     }
 
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
     public void setDataElements( List<DataElement> dataElements )
     {
         this.dataElements = dataElements;
-    }
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
     }
 
     public void setDataSet( DataSet dataSet )
@@ -155,9 +154,38 @@ public class AddSectionAction
         this.categoryCombo = categoryCombo;
     }
 
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
+    }
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    public List<String> getSelectedList()
+    {
+        return selectedList;
+    }
+
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -166,35 +194,40 @@ public class AddSectionAction
 
     public String execute()
         throws Exception
-    {      
-
+    {
         dataSet = dataSetService.getDataSet( dataSetId.intValue() );
 
-        dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
-
-        for ( Section section : dataSet.getSections() )
-        {
-            dataElements.removeAll( section.getDataElements() );
-        }
-
-        categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( categoryComboId.intValue() );
-
-        Iterator<DataElement> dataElementIterator = dataElements.iterator();
-
-        while ( dataElementIterator.hasNext() )
-        {
-            DataElement de = dataElementIterator.next();
-
-            if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
-            {
-                dataElementIterator.remove();
-            }
-        }
-
-        Collections.sort( dataElements, new DataElementNameComparator() );
-        
         if ( this.sectionName == null )
         {
+            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+
+            for ( Section section : dataSet.getSections() )
+            {
+                dataElements.removeAll( section.getDataElements() );
+            }
+
+            categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( categoryComboId.intValue() );
+
+            Iterator<DataElement> dataElementIterator = dataElements.iterator();
+
+            while ( dataElementIterator.hasNext() )
+            {
+                DataElement de = dataElementIterator.next();
+
+                if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
+                {
+                    dataElementIterator.remove();
+                }
+            }
+
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+            Collections.sort( dataElements, new DataElementNameComparator() );
+
+            Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+
+            displayPropertyHandler.handle( dataElements );
+
             return INPUT;
         }
 
@@ -202,7 +235,6 @@ public class AddSectionAction
 
         section.setDataSet( dataSet );
         section.setName( sectionName );
-
         section.setSortOrder( 0 );
 
         List<DataElement> selectedDataElements = new ArrayList<DataElement>();

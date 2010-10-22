@@ -113,9 +113,9 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
             map_legend_type_automatic : Ext.getCmp('maplegendtype_cb').getValue();
 		
 		if (mapLegendType == map_legend_type_automatic) {
-			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
-            for (var i = 0; i < choropleth.imageLegend.length && i < choropleth.colorInterpolation.length; i++) {
-                choropleth.imageLegend[i].color = choropleth.colorInterpolation[i].toHexString();
+			this.colorInterpolation = choropleth.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
+            for (var i = 0; i < choropleth.imageLegend.length && i < this.colorInterpolation.length; i++) {
+                choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
             }
 		}
 		else if (mapLegendType == map_legend_type_predefined) {

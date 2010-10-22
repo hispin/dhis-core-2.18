@@ -123,6 +123,12 @@ public class JdbcDataPruneStore implements DataPruneStore
         sql = "delete from datavalue where sourceid in (" + orgUnitIds + ");";
         jdbcTemplate.execute( sql );
 
+        sql = "delete from mapfile where organisationunitid in (" + orgUnitIds + ");";
+        jdbcTemplate.execute( sql );
+        
+        sql = "delete from feature where organisationunitid in (" + orgUnitIds + ");";
+        jdbcTemplate.execute( sql );
+
         sql = "update organisationunit set parentid=null where organisationunitid in (" + orgUnitIds + ");";
         jdbcTemplate.execute( sql );
 

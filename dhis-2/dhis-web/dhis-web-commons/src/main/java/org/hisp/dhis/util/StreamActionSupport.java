@@ -69,7 +69,12 @@ public abstract class StreamActionSupport
         
         if ( getFilename() != null )
         {
-            response.addHeader( "Content-disposition", "filename=\"" + getFilename() + "\"" );
+            response.addHeader( "Content-Disposition", "attachment; filename=\"" + getFilename() + "\"" );
+        }
+        
+        if ( disallowCache() )
+        {
+            response.addHeader( "Cache-Control", "no-cache" );
         }
         
         try
@@ -94,4 +99,9 @@ public abstract class StreamActionSupport
     protected abstract String getContentType();
     
     protected abstract String getFilename();
+    
+    protected boolean disallowCache()
+    {
+        return false;
+    }
 }

@@ -39,12 +39,12 @@ import junit.framework.TestCase;
 public class GridTest
     extends TestCase
 {
-    private Grid grid;
+    private ListGrid grid;
     
     @Override
     public void setUp()
     {
-        grid = new Grid();
+        grid = new ListGrid();
 
         grid.nextRow();        
         grid.addValue( "11" );
@@ -138,7 +138,7 @@ public class GridTest
     
     public void testAddRegressionColumn()
     {
-        grid = new Grid();        
+        grid = new ListGrid();        
 
         grid.nextRow();        
         grid.addValue( "10.0" );

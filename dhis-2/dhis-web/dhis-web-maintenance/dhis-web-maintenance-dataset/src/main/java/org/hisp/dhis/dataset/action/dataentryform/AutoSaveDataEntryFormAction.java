@@ -27,11 +27,7 @@ package org.hisp.dhis.dataset.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -94,25 +90,27 @@ public class AutoSaveDataEntryFormAction
 
     public String execute()
         throws Exception
-    {   
+    {
         DataSet dataset = dataSetService.getDataSet( dataSetIdField );
 
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataset );
+        DataEntryForm dataEntryForm = dataset.getDataEntryForm();
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, designTextarea );
-            dataEntryFormService.addDataEntryForm( dataEntryForm, DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET,
-                dataset.getId() );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
+            dataEntryFormService.addDataEntryForm( dataEntryForm );
+            
+            dataset.setDataEntryForm(dataEntryForm);
+            dataSetService.updateDataSet( dataset );
         }
         else
         {
             dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode(designTextarea ));
+            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }
 
         return SUCCESS;
     }
-    
+
 }

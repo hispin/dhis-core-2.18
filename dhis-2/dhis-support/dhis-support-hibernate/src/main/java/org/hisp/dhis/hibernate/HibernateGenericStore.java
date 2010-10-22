@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -82,6 +83,17 @@ public class HibernateGenericStore<T>
     protected final Query getQuery( String hql )
     {
         return sessionFactory.getCurrentSession().createQuery( hql );
+    }
+    
+    /**
+     * Creates a SqlQuery.
+     * 
+     * @param sql the sql query.
+     * @return a SqlQuery instance.
+     */
+    protected final SQLQuery getSqlQuery( String sql )
+    {
+        return sessionFactory.getCurrentSession().createSQLQuery( sql );
     }
     
     /**

@@ -1,9 +1,13 @@
 <script>
-	jQuery(document).ready(	function(){
-			validation( 'updateIndicatorTypeForm', validateUpdateIndicatorType );				
-	});
-</script>
 
+	jQuery(document).ready(	function(){
+		validation( 'updateIndicatorTypeForm', function( form ){ form.submit()} );	
+		
+		checkValueIsExist( "name", "validateIndicatorType.action", {id: $indicatorType.id});
+			
+	});
+
+</script>
 <h3>$i18n.getString( "edit_indicator_type" )</h3>
 
 <form id="updateIndicatorTypeForm" action="updateIndicatorType.action" method="post" >
@@ -22,7 +26,7 @@
 	</tr>
 	<tr>
 		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="factor" name="factor" value="$indicatorType.factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true}}"></td>
+		<td><input type="text" id="factor" name="factor" value="$indicatorType.factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true,min:1}}"></td>
 	</tr>
 	<tr>
 		<td></td>

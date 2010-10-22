@@ -8,8 +8,8 @@
 			<tr>
 				<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
 				<td colspan="9" style="text-align:right">
-					<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"></a>
-					<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"></a>
+					<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"></a>
+					<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"></a>
 				</td>
 			</tr>
 		</table>
@@ -35,28 +35,28 @@
               <tr id="tr${dataSet.id}">
                 <td onclick="showDataSetDetails( $dataSet.id )">$encoder.htmlEncode( $dataSet.name )</td>
                 <td style="text-align:center">
-                  <a href="defineDataSetAssociationsForm.action?dataSetId=$dataSet.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
+                  <a href="defineDataSetAssociationsForm.action?dataSetId=$dataSet.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
                 </td>
                 <td style="text-align:center">
-                  <a href="editDataSetForm.action?dataSetId=$dataSet.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                  <a href="editDataSetForm.action?dataSetId=$dataSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
                 </td>
                 <td style="text-align:center">
-                  <a href="editDataSetFormCustomValues.action?dataSetId=$dataSet.id&typeTextOnly=true" title="$i18n.getString( "edit_custom_values" )"><img src="../images/custom_value.png" alt="$i18n.getString( "edit_custom_values" )"></a>
+                  <a href="editDataSetFormCustomValues.action?dataSetId=$dataSet.id&typeTextOnly=true" title="$i18n.getString( 'edit_custom_values' )"><img src="../images/custom_value.png" alt="$i18n.getString( 'edit_custom_values' )"></a>
                 </td>                 
                 <td style="text-align:center">
-                   <a href="javascript:translate( 'DataSet', '$dataSet.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
+                   <a href="javascript:translate( 'DataSet', '$dataSet.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"></a>
                 </td>
                 <td style="text-align:center">
-                  <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
+                  <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
                 </td>				  
                 <td style="text-align:center">
-                  <a href="javascript:window.location.href='displayCompulsoryDataElementsForm.action?id=${dataSet.id}'" title="$i18n.getString( "edit_compulsory_data_elements" )"><img src="../images/edit_compulsory_data_elements.png" alt="$i18n.getString( "edit_compulsory_data_elements" )"></a>
+                  <a href="javascript:window.location.href='displayCompulsoryDataElementsForm.action?id=${dataSet.id}'" title="$i18n.getString( 'edit_compulsory_data_elements' )"><img src="../images/edit_compulsory_data_elements.png" alt="$i18n.getString( 'edit_compulsory_data_elements' )"></a>
                 </td>  
                 <td style="text-align:center">
-                  <a href="javascript:removeDataSet( '$dataSet.id', '$encoder.jsEncode( $dataSet.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+                  <a href="javascript:removeDataSet( '$dataSet.id', '$encoder.jsEncode( $dataSet.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
                 </td>            
                 <td style="text-align:center">
-                  <a href="javascript:showDataSetDetails( $dataSet.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+                  <a href="javascript:showDataSetDetails( $dataSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>
               </tr>
             #end
@@ -69,7 +69,7 @@
 
 			<div id="detailsArea" style="display:none">
 				<div style="float:right">
-					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>
 				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "frequency" ):</label><br><span id="frequencyField"></span></p>
@@ -79,7 +79,7 @@
 			
             <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
                 <div style="float:right">
-                    <a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+                    <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"></a>
                 </div>
                 <p><span id="warningField"></span></p>
             </div>
@@ -89,12 +89,13 @@
 </table>
 
 <script type="text/javascript">
-function showsection(dataSetId)
-{
-	window.location.href="section.action?dataSetId=" + dataSetId;
-}
 
-var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
+	function showsection(dataSetId)
+	{
+		window.location.href="section.action?dataSetId=" + dataSetId;
+	}
+
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
 
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	

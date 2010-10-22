@@ -15,42 +15,20 @@
 
 <!-- The script that registeres selctions in the orgunit tree -->
 <script type="text/javascript">
+	function orgUnitHasBeenSelected( orgUnitIds )
+	{   
+		document.reportForm.ouIDTB.value = orgUnitIds;
+		
+		//reportListFileName = document.reportForm.reportListFileNameTB.value;
+		
+		// call orgUnit selection function
+		getSelectedOrgUnit( orgUnitIds );
 
-function orgUnitHasBeenSelected( orgUnitIds )
-{    
-    document.reportForm.ouIDTB.value = orgUnitIds;
-	
-	//reportListFileName = document.reportForm.reportListFileNameTB.value;
-	
-	// call orgUnit selection function
-	getSelectedOrgUnit( orgUnitIds );
-
-	/*if(orgUnitIds != null && orgUnitIds != "" )
-	{
-		getReports(orgUnitIds, reportListFileName)		
-	}*/
- }
-	// function for displaying OrgUnit
-	
-   function getSelectedOrgUnit( orgUnitIds )
-    {
-        if( orgUnitIds != "" )
-        {
-            var requestString = 'getOrgUnitName.action?selectedOrgUnitId='+orgUnitIds;
-            var request = new Request();
-            request.setResponseTypeXML('dataelement');
-            request.setCallbackSuccess( responseGetSelectedOrgUnitName );
-            request.send(requestString);
-        }
-    }
-	function responseGetSelectedOrgUnitName( dataelement )
-    {
-        var element = dataelement.getElementsByTagName("dataelement");
-        document.reportForm.ouNameTB.value=element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
-    }
-
-	
-selection.setListenerFunction( orgUnitHasBeenSelected );
-
+		/*if(orgUnitIds != null && orgUnitIds != "" )
+		{
+			getReports(orgUnitIds, reportListFileName)		
+		}*/
+	}
+	selection.setListenerFunction( orgUnitHasBeenSelected );
 </script>
 

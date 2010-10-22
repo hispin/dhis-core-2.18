@@ -15,110 +15,115 @@ function removeSurvey( surveyId, surveyName )
   {
     //window.location.href = 'delSurvey.action?surveyId=' + surveyId;
     
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( removeSurveyCompleted );
-    
-    var requestString = 'delSurvey.action?surveyId=' + surveyId;
-                      
-    request.send( requestString ); 
+	$.post("delSurvey.action",
+		{
+			surveyId : surveyId
+		},
+		function (data)
+		{
+			removeSurveyCompleted(data);
+		},'xml');
+		
   }
 }
 
-
 function removeSurveyCompleted( messageElement )
 {
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
+	messageElement = messageElement.getElementsByTagName( "message" )[0];
+	var type = messageElement.getAttribute( "type" );
   
-  if ( type == 'error' )
-  {
-    //document.getElementById( 'message' ).innerHTML = message;
-    //document.getElementById( 'message' ).style.display = 'block';
-    setFieldValue( 'warningField', message );
-        
-    showWarning();
-  }
-  else
-  {
-  	window.location.href = 'index.action';
-  }
+    if ( type == 'error' )
+   {
+		//document.getElementById( 'message' ).innerHTML = message;
+		//document.getElementById( 'message' ).style.display = 'block';
+		var message = messageElement.firstChild.nodeValue;
+		setFieldValue( 'warningField', message );
+			
+		showWarning();
+   }
+   else
+   {
+		window.location.href = 'index.action';
+   }
 }
 
 
 function validateAddSurvey()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( addSurveyValidationCompleted ); 
-  
-  var requestString = 'validateSurvey.action?name=' + document.getElementById( 'name' ).value +
-                      '&shortName=' + document.getElementById( 'shortName' ).value;
-                      
-  request.send( requestString );
+	$.post("validateSurvey.action",
+		{
+			name :  byId( 'name' ).value,
+			shortName : byId( 'shortName' ).value
+		},
+		function (data)
+		{
+			addSurveyValidationCompleted(data);
+		},'xml');
+		
   return false;
 }
 
 function addSurveyValidationCompleted( messageElement )
 {
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
+  	messageElement = messageElement.getElementsByTagName( "message" )[0];
+	var type = messageElement.getAttribute( "type" );
+	var message = messageElement.firstChild.nodeValue;
 
-  if ( type == 'success' )
-  {
-      // Both edit and add form has id='dataSetForm'  
-      
-      var selectedList = document.getElementById( 'selectedList' );
-      for(var k=0;k<selectedList.length;k++)
-      {
-        selectedList.options[k].selected = "true";
-      }  
-      document.forms['addSurveyForm'].submit();
-  } 
-  else if ( type == 'input' )
-  {
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';
-  }
+	if ( type == 'success' )
+	{
+		// Both edit and add form has id='dataSetForm'  
+		  
+		var selectedList = document.getElementById( 'selectedList' );
+		for(var k=0;k<selectedList.length;k++)
+		{
+			selectedList.options[k].selected = "true";
+		}  
+		document.forms['addSurveyForm'].submit();
+	} 
+    else if ( type == 'input' )
+    {
+		setMessage( message );
+	}
 }
 
 
 function validateEditSurvey()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( editSurveyValidationCompleted );
-
-  var requestString = 'validateSurvey.action?name=' + document.getElementById( 'name' ).value +
-                      '&shortName=' + document.getElementById( 'shortName' ).value +
-                      '&url=' + document.getElementById( 'url' ).value +
-  		              '&surveyId=' + document.getElementById( 'surveyId' ).value;
-
-  request.send( requestString );
+  $.post("validateSurvey.action",
+		{
+			name :  byId( 'name' ).value,
+			shortName : byId( 'shortName' ).value,
+			url : byId( 'url' ).value,
+			surveyId : byId( 'surveyId' ).value
+		},
+		function (data)
+		{
+			editSurveyValidationCompleted(data);
+		},'xml');
 
   return false;
 }
 function editSurveyValidationCompleted( messageElement )
 {
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
+  	messageElement = messageElement.getElementsByTagName( "message" )[0];
+	var type = messageElement.getAttribute( "type" );
+	var message = messageElement.firstChild.nodeValue;
 
-  if ( type == 'success' )
-  {
-      // Both edit and add form has id='dataSetForm'
-      var selectedList = document.getElementById( 'selectedList' );
-      for(var k=0;k<selectedList.length;k++)
-      {
-        selectedList.options[k].selected = "true";
-      } 
-      
-      document.forms['editSurveyForm'].submit();
-  }
-  else if ( type == 'input' )
-  {
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';
-  }
+	if ( type == 'success' )
+	{
+		// Both edit and add form has id='dataSetForm'
+		var selectedList = document.getElementById( 'selectedList' );
+		for(var k=0;k<selectedList.length;k++)
+		{
+			selectedList.options[k].selected = "true";
+		} 
+		  
+		document.forms['editSurveyForm'].submit();
+	}
+	else if ( type == 'input' )
+	{
+		setMessage(message);
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -220,28 +225,28 @@ function removeSurveyMembers()
 
 function filterByIndicatorGroup( selectedIndicatorGroup )
 {
-  var request = new Request();
-
-  var requestString = 'filterAvailableIndicatorsByIndicatorGroup.action';
-  
-  var params = 'indicatorGroupId=' + selectedIndicatorGroup;
-
   var selectedList = document.getElementById( 'selectedList' );
 
+  var list = new Array();
   for ( var i = 0; i < selectedList.options.length; ++i)
   {
-  	params += '&selectedIndicators=' + selectedList.options[i].value;
+  	//params += '&selectedIndicators=' + selectedList.options[i].value;
+	list[i] = selectedList.options[i].value;
   }
-
   // Clear the list
   var availableList = document.getElementById( 'availableList' );
 
   availableList.options.length = 0;
 
-  request.setResponseTypeXML( 'indicatorGroup' );
-  request.setCallbackSuccess( filterByIndicatorGroupCompleted );
-  request.sendAsPost( params );
-  request.send( requestString );
+   $.post("filterAvailableIndicatorsByIndicatorGroup.action",
+		{
+			indicatorGroupId : selectedIndicatorGroup,
+			selectedIndicators : list
+		},
+		function (data)
+		{
+			filterByIndicatorGroupCompleted(data);
+		},'xml');
 }
 
 function filterByIndicatorGroupCompleted( indicatorGroup )
@@ -263,32 +268,36 @@ function filterByIndicatorGroupCompleted( indicatorGroup )
 
 function showSurveyDetails( surveyId )
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'survey' );
-  request.setCallbackSuccess( surveyRecieved );
-  request.send( 'getSurvey.action?surveyId=' + surveyId );
+   $.get("getSurvey.action",
+		{
+			surveyId : surveyId
+		},
+		function (data)
+		{
+			surveyRecieved(data);
+		},'xml');
 }
 
 function surveyRecieved( surveyElement )
 {
-  setFieldValue( 'idField', getElementValue( surveyElement, 'id' ) );
-  setFieldValue( 'nameField', getElementValue( surveyElement, 'name' ) ); 
-  setFieldValue( 'indicatorCountField', getElementValue( surveyElement, 'indicatorCount' ) );
-  setFieldValue( 'descriptionField', getElementValue( surveyElement, 'description' ) );
-  var urlOrg = getElementValue( surveyElement, 'url' );
+  byId('idField').innerHTML = surveyElement.getElementsByTagName( 'id' )[0].firstChild.nodeValue;
+  byId('nameField').innerHTML = surveyElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;
+  byId('indicatorCountField').innerHTML = surveyElement.getElementsByTagName( 'indicatorCount' )[0].firstChild.nodeValue;
+  byId('descriptionField').innerHTML = surveyElement.getElementsByTagName( 'description' )[0].firstChild.nodeValue;
+  var urlOrg = surveyElement.getElementsByTagName( 'url' )[0].firstChild.nodeValue;
  
   if( urlOrg == null || urlOrg.length <=0 )
   {
-    urlOrg = 'NONE';
-    setFieldValue( 'urlField', urlOrg );
+     urlOrg = 'NONE';
+     byId('urlField').innerHTML = urlOrg;
   }
   else
   {  
     var occur = urlOrg.match("http://");
     if( occur == null || occur.length <=0 )
-      setFieldValue( 'urlField', "<a href='http://"+urlOrg+"' target='_blank'>"+urlOrg+"</a>" );
+      byId('urlField').innerHTML = "<a href='http://"+urlOrg+"' target='_blank'>"+urlOrg+"</a>";
     else
-      setFieldValue( 'urlField', "<a href='"+urlOrg+"' target='_blank'>"+urlOrg+"</a>" );
+      byId('urlField').innerHTML = "<a href='"+urlOrg+"' target='_blank'>"+urlOrg+"</a>";
   }   
       
     showDetails();

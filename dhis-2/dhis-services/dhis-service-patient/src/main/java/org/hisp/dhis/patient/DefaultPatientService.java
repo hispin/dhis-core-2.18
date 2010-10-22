@@ -187,7 +187,19 @@ public class DefaultPatientService
 
     public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
     {
+        //List<Patient> patientList = (ArrayList<Patient>) patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
         return  patientIdentifierService.listPatientByOrganisationUnit( organisationUnit ,  min,  max );
+    }
+
+    public Collection<Patient> getPatientsByOrgUnitAttr( OrganisationUnit organisationUnit, int min, int max , PatientAttribute patientAttribute)
+    {
+        List<Patient> patientList =  (ArrayList<Patient>) patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
+        if(patientAttribute != null)
+        {
+            List<Patient> sortedPatientList = (ArrayList<Patient>) sortPatientsByAttribute(patientList, patientAttribute);
+            return sortedPatientList.subList(min, max);
+        }
+        return patientList.subList(min, max);
     }
 
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )

@@ -51,15 +51,11 @@
     </action>
     
     <action name="getAvailableAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction">
-      <result name="success" type="chain">getAvailableStyles</result>
-    </action>
-    
-    <action name="getAvailableStyles" class="org.hisp.dhis.settings.action.user.GetAvailableStylesAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/userSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
-    
+	
     <action name="setCurrentLocale" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
@@ -67,7 +63,7 @@
     <action name="setCurrentLocaleDb" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
-
+	
     <action name="setCurrentSortOrder" class="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
@@ -79,10 +75,6 @@
     <action name="setCurrentDataDictionaryMode" class="org.hisp.dhis.settings.action.user.SetCurrentDataDictionaryModeAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>    
-    
-    <action name="setCurrentStyle" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
     
     <action name="setAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction">
       <result name="success" type="redirect">userSettings.action</result>

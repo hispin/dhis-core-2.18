@@ -35,7 +35,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateDataElementGroupAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @version $Id: ValidateDataElementGroupAction.java 2869 2007-02-20 14:26:09Z
+ *          andegje $
  */
 public class ValidateDataElementGroupAction
     extends ActionSupport
@@ -93,30 +94,16 @@ public class ValidateDataElementGroupAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
 
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
-            
             DataElementGroup match = dataElementService.getDataElementGroupByName( name );
-            
+
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
 

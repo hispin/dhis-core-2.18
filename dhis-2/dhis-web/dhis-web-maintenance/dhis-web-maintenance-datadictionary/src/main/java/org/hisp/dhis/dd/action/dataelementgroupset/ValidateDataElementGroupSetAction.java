@@ -89,46 +89,22 @@ public class ValidateDataElementGroupSetAction
 
     public String execute()
     {
-        if ( name == null )
-        {
-            message = i18n.getString( "please_enter_name" );
 
-            return ERROR;
-        }
-
-        if ( name.trim().length() == 0 )
-        {
-            message = i18n.getString( "please_enter_name" );
-
-            return ERROR;
-        }
-
-        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSetByName( name );
-
-        if ( id == null )
+        if ( name != null )
         {
 
-            if ( dataElementGroupSet != null )
+            DataElementGroupSet match = dataElementService.getDataElementGroupSetByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_aldready_exists" );
 
                 return ERROR;
+
             }
 
         }
-        else
-        {
-            DataElementGroupSet dataElementGroupSetTemp = dataElementService.getDataElementGroupSet( id );
-
-            if ( dataElementGroupSet != null && (!dataElementGroupSetTemp.equals( dataElementGroupSet )) )
-            {
-                message = i18n.getString( "name_aldready_exists" );
-
-                return ERROR;
-            }
-
-        }
-
+        
         return SUCCESS;
     }
 }

@@ -47,6 +47,7 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -171,7 +172,7 @@ public class SearchPatientAction
         this.pageSize = pageSize;
     }
     
-    private Integer defaultPageSize = 50;
+    private Integer defaultPageSize = 4;
     
     public void setDefaultPageSize( Integer defaultPageSize )
     {
@@ -199,17 +200,48 @@ public class SearchPatientAction
         return mapRelationShip;
     }
 
+    public Integer sortPatientAttributeId;
+
+    public Integer getSortPatientAttributeId() {
+        return sortPatientAttributeId;
+    }
+
+    public void setSortPatientAttributeId(Integer sortPatientAttributeId) {
+        this.sortPatientAttributeId = sortPatientAttributeId;
+    }
+
+    private Map<Patient,String> mapPatientPatientAttr = new HashMap<Patient,String>();
+
+    public Map<Patient, String> getMapPatientPatientAttr() {
+        return mapPatientPatientAttr;
+    }
+
+    public void setMapPatientPatientAttr(Map<Patient, String> mapPatientPatientAttr) {
+        this.mapPatientPatientAttr = mapPatientPatientAttr;
+    }
+
+    PatientAttribute patientAttribute;
+
+    public PatientAttribute getPatientAttribute() {
+        return patientAttribute;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
+            throws Exception
     {
         // ---------------------------------------------------------------------
         // Validate selected OrganisationUnit
         // ---------------------------------------------------------------------
-
+        if(sortPatientAttributeId!=null)
+        {
+            
+            patientAttribute = patientAttributeService.getPatientAttribute(sortPatientAttributeId);
+            
+        }
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
@@ -220,23 +252,36 @@ public class SearchPatientAction
 
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
-            
-            
+            //System.out.println(" listAll ");
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?listAll=true", pageSize == null ? defaultPageSize : pageSize );
             
             pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
             
             total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-            
+           // System.out.println("total = "+total);
             pagingUtil.setTotal( total );
-            
-            patients = patientService.getPatientsByOrgUnit( organisationUnit , pagingUtil.getStartPos(), pagingUtil.getPageSize() );
-            
+
+            int numberOfPages = pagingUtil.getNumberOfPages();//2
+            int pageSize = pagingUtil.getPageSize();//4
+            int startPos = pagingUtil.getStartPos();//0,4
+            int endPos = ( startPos + pageSize > total ) ? total : ( startPos + pageSize );//4,7
+
+            //System.out.println("listAll startPos "+  startPos+" endPos "+ endPos );
+            patients = patientService.getPatientsByOrgUnitAttr( organisationUnit , startPos,endPos, patientAttribute );
             if( patients != null && patients.size() > 0 ) 
             {
+                //System.out.println("patients size = "+patients.size());
+                /*f(sortPatientAttributeId!=null && patientAttribute!=null)
+                {
+                    patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
+                }*/
                 for( Patient patient : patients )
                 {
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                    if(sortPatientAttributeId!=null && patientAttribute!=null)
+                    {
+                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                    }
                 }
             }
             
@@ -253,7 +298,7 @@ public class SearchPatientAction
             selectedStateManager.setSearchText( searchText );
 
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-            
+            //System.out.println(" searchingAttributeId != null && searchText != null ");
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) 
                 + "?searchingAttributeId=" + searchingAttributeId + "&searchText=" + searchText
                 , pageSize == null ? defaultPageSize : pageSize );
@@ -263,15 +308,23 @@ public class SearchPatientAction
             total = patientAttributeValueService.countSearchPatientAttributeValue( patientAttribute, searchText );
             
             pagingUtil.setTotal( total );
-
+            //System.out.println(" searchingAttributeId != null && searchText != null ");
             patients = patientAttributeValueService.searchPatientAttributeValue(
                 patientAttribute, searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
 
             if( patients != null && patients.size() > 0 ) 
             {
+                if(sortPatientAttributeId!=null && patientAttribute!=null)
+                {
+                    patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
+                }
                 for( Patient patient : patients )
                 {
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                    if(sortPatientAttributeId!=null && patientAttribute!=null)
+                    {
+                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                    }
                 }
             }
             
@@ -284,7 +337,7 @@ public class SearchPatientAction
             selectedStateManager.clearSearchingAttributeId();
 
             selectedStateManager.setSearchText( searchText );
-            
+            //System.out.println("  searchingAttributeId == null && searchText != null ");
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?searchText=" + searchText, pageSize == null ? defaultPageSize : pageSize );
             
             pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
@@ -297,9 +350,16 @@ public class SearchPatientAction
 
             if( patients != null && patients.size() > 0 ) 
             {
+                if(sortPatientAttributeId!=null && patientAttribute!=null)
+                {
+                    patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
+                }
                 for( Patient patient : patients )
                 {
-                    mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                    if(sortPatientAttributeId!=null && patientAttribute!=null)
+                    {
+                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                    }
                 }
             }
             
@@ -314,7 +374,7 @@ public class SearchPatientAction
 
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
-            
+            //System.out.println("  second listAll ");
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()), pageSize == null ? defaultPageSize : pageSize );
             
             pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
@@ -327,9 +387,17 @@ public class SearchPatientAction
             
             if( patients != null && patients.size() > 0 ) 
             {
+                if(sortPatientAttributeId!=null && patientAttribute!=null)
+                {
+                    patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
+                }
                 for( Patient patient : patients )
                 {
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                    if(sortPatientAttributeId!=null && patientAttribute!=null)
+                    {
+                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                    }
                 }
             }
             
@@ -345,7 +413,7 @@ public class SearchPatientAction
         if ( searchingAttributeId != null && searchText != null )
         {
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-            
+            //System.out.println(" second  searchingAttributeId != null && searchText != null ");
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) 
                 + "?searchingAttributeId=" + searchingAttributeId + "&searchText=" + searchText
                 , pageSize == null ? defaultPageSize : pageSize );
@@ -355,20 +423,27 @@ public class SearchPatientAction
             total = patientAttributeValueService.countSearchPatientAttributeValue( patientAttribute, searchText );
             
             pagingUtil.setTotal( total );
-
+            //System.out.println("pageSize = "+pageSize == null ? defaultPageSize : pageSize);
             patients = patientAttributeValueService.searchPatientAttributeValue(
                 patientAttribute, searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
             
             if( patients != null && patients.size() > 0 ) 
             {
+                if(sortPatientAttributeId!=null && patientAttribute!=null)
+                {
+                    patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
+                }
                 for( Patient patient : patients )
                 {
-                    mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                    if(sortPatientAttributeId!=null && patientAttribute!=null)
+                    {
+                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                    }
                 }
             }
         }
         
-        
+        //System.out.println(" inside class ");
         pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?searchText=" + searchText, pageSize == null ? defaultPageSize : pageSize );
         
         pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
@@ -376,14 +451,22 @@ public class SearchPatientAction
         total = patientService.countGetPatients( searchText );
         
         pagingUtil.setTotal( total );
-        
+
         patients = patientService.getPatients( searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
         
         if( patients != null && patients.size() > 0 ) 
         {
+            if(sortPatientAttributeId!=null && patientAttribute!=null)
+            {
+                patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
+            }
             for( Patient patient : patients )
             {
                 mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                if(sortPatientAttributeId!=null && patientAttribute!=null)
+                {
+                    mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                }
             }
         }
         

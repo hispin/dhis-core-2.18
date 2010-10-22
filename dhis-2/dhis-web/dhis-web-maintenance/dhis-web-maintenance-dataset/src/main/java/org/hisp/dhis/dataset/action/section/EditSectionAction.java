@@ -36,6 +36,9 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
@@ -55,6 +58,13 @@ public class EditSectionAction
     public void setSectionService( SectionService sectionService )
     {
         this.sectionService = sectionService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -92,6 +102,8 @@ public class EditSectionAction
     private DataElementCategoryCombo categoryCombo;
 
     private List<DataElement> dataElementOfDataSet = new ArrayList<DataElement>();
+
+    private List<DataElementGroup> dataElementGroups;
 
     public Integer getSectionId()
     {
@@ -143,6 +155,11 @@ public class EditSectionAction
         return categoryCombo;
     }
 
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -153,7 +170,7 @@ public class EditSectionAction
         section = sectionService.getSection( sectionId.intValue() );
 
         dataSet = section.getDataSet();
-        
+
         categoryCombo = section.getDataElements().iterator().next().getCategoryCombo();
 
         dataElementOfDataSet = new ArrayList<DataElement>( dataSet.getDataElements() );
@@ -164,7 +181,7 @@ public class EditSectionAction
         {
             dataElementOfDataSet.removeAll( s.getDataElements() );
         }
-        
+
         Iterator<DataElement> dataElementIterator = dataElementOfDataSet.iterator();
 
         while ( dataElementIterator.hasNext() )
@@ -175,9 +192,13 @@ public class EditSectionAction
             {
                 dataElementIterator.remove();
             }
-        }       
+        }
+
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementOfDataSet, dataElementComparator );
+
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         displayPropertyHandler.handle( dataElementOfDataSet );
 

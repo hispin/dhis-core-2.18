@@ -53,10 +53,8 @@
 		
 		<action name="validateSurvey"
 			class="org.hisp.dhis.survey.action.ValidateSurveyAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-survey/responseSuccess.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-survey/responseInput.vm</result>
+			<result name="success" type="velocity-xml">/dhis-web-survey/responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">/dhis-web-survey/responseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -90,9 +88,9 @@
 		
 		<action name="delSurvey"
 			class="org.hisp.dhis.survey.action.DelSurveyAction">
-			<result name="success" type="redirect">index.action</result>
+			<result name="success" type="velocity-xml">/dhis-web-survey/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-survey/responseNone.vm</result>
+				/dhis-web-survey/responseError.vm</result>
 			<!--<param name="requiredAuthorities">F_DATASET_DELETE</param>-->
 		</action>
 		
@@ -208,7 +206,7 @@
 		
 		<action name="saveValue"
 			class="org.hisp.dhis.survey.action.SaveValueAction">
-			<result name="success" type="velocity">status.vm</result>
+			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<!--<param name="requiredAuthorities">
 			F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>-->
@@ -227,14 +225,14 @@
 		
 		<action name="saveMapping"
 			class="org.hisp.dhis.target.action.SaveMappingAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="delMapping"
 			class="org.hisp.dhis.target.action.DelMappingAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
@@ -243,14 +241,14 @@
 		
 		<action name="getDataElements"
 			class="org.hisp.dhis.target.action.GetDataElementsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDataElement.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="getmessage"
 			class="org.hisp.dhis.target.action.GetMesageAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>

@@ -1,3 +1,16 @@
+<script>
+	
+$(document).ready(function(){
+	$("#searchIcon").click(function(){
+		$("#searchSpan").toggle();
+		$("#searchSpan").focus();
+	});
+});
+
+</script>
+
+<img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="$i18n.getString( 'locate_organisation_unit_by_code' )">
+<span id="searchSpan" style="display:none"><input type="text" id="searchField" name="key" style="width:130px"><input type="button" value="Find" onclick="getOrgunitByCode()"></span>
 
 #macro( parseNode $node )
 	#if( $node.hasChildren )

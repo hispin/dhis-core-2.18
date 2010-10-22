@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.webportal.module.Module;
 import org.hisp.dhis.webportal.module.ModuleManager;
 
@@ -60,6 +61,14 @@ public class GetSystemSettingsAction
     {
         this.moduleManager = moduleManager;
     }
+    
+    private StyleManager styleManager;
+
+    public void setStyleManager( StyleManager styleManager )
+    {
+        this.styleManager = styleManager;
+    }
+
 
     // -------------------------------------------------------------------------
     // Output
@@ -79,6 +88,21 @@ public class GetSystemSettingsAction
         return modules;
     }
         
+
+    private SortedMap<String, String> styles;
+
+    public SortedMap<String, String> getStyles()
+    {
+        return styles;
+    }
+    
+    private String currentStyle;
+
+    public String getCurrentStyle()
+    {
+        return currentStyle;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -88,6 +112,10 @@ public class GetSystemSettingsAction
     	flags = systemSettingManager.getFlags();
         
         modules = moduleManager.getMenuModules();
+        
+        styles = styleManager.getStyles();
+        
+        currentStyle = styleManager.getCurrentStyle();
         
         return SUCCESS;
     }

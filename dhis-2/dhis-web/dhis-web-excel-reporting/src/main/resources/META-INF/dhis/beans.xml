@@ -143,15 +143,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.action.ValidateAddReportExcelAction"
-		class="org.hisp.dhis.reportexcel.action.ValidateAddReportExcelAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction"
-		class="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction"
+	<bean id="org.hisp.dhis.reportexcel.action.ValidateReportExcelAction"
+		class="org.hisp.dhis.reportexcel.action.ValidateReportExcelAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
@@ -324,6 +317,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.ListReportExcelItemAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.item.action.SetupReportExcelItemFormAction"
+		class="org.hisp.dhis.reportexcel.item.action.SetupReportExcelItemFormAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
@@ -351,15 +351,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.item.action.ValidateAddReportExcelItemAction"
-		class="org.hisp.dhis.reportexcel.item.action.ValidateAddReportExcelItemAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.item.action.ValidateUpdateReportExcelItemAction"
-		class="org.hisp.dhis.reportexcel.item.action.ValidateUpdateReportExcelItemAction"
+		id="org.hisp.dhis.reportexcel.item.action.ValidationReportExcelItemAction"
+		class="org.hisp.dhis.reportexcel.item.action.ValidationReportExcelItemAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
@@ -377,11 +370,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-
-	<bean id="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction"
-		class="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction"
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.item.action.GetReporExceltItemsBySheetAction"
+		class="org.hisp.dhis.reportexcel.item.action.GetReporExceltItemsBySheetAction"
 		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="reportExcelService"
+			ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.item.action.CopyReportExcelItemAction"
@@ -395,16 +390,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.GetListSheetAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
-		class="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction"
-		scope="prototype">
-		<property name="expressionService">
-			<ref bean="org.hisp.dhis.expression.ExpressionService" />
-		</property>
-	</bean>
+	</bean>	
 
 	<!-- EXPORT REPORT EXCEL -->
 
@@ -619,9 +605,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction"
 		class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction"
-		scope="prototype">		
+		scope="prototype">
 		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />			
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
 	<bean
@@ -630,23 +616,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="organisationUnitSelectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByDataSetAction"
 		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByDataSetAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="organisationUnitSelectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-	</bean>	
+	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction"
@@ -899,6 +889,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.excelitemgroup.action.ValidateExcelItemGroupAction"
 		class="org.hisp.dhis.reportexcel.excelitemgroup.action.ValidateExcelItemGroupAction"
 		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
 	<bean
@@ -1010,6 +1002,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- EXCEL ITEM                                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+	<bean id="org.hisp.dhis.reportexcel.excelitem.action.SetupExcelItemFormAction"
+		class="org.hisp.dhis.reportexcel.excelitem.action.SetupExcelItemFormAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.reportexcel.excelitem.action.AddExcelItemAction"
 		class="org.hisp.dhis.reportexcel.excelitem.action.AddExcelItemAction"
 		scope="prototype">
@@ -1046,8 +1046,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
+	</bean>	
 
 	<bean
 		id="org.hisp.dhis.reportexcel.excelitem.action.UpdateExcelItemAction"
@@ -1072,7 +1071,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
-
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitem.action.UpdateExcelItemFormAction"
+		class="org.hisp.dhis.reportexcel.excelitem.action.UpdateExcelItemFormAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="expressionService"
+			ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemAction"
 		class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemAction"
 		scope="prototype">
@@ -1405,15 +1418,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.chart.action.GetChildrenOrganisationUnitAction"
 		class="org.hisp.dhis.reportexcel.chart.action.GetChildrenOrganisationUnitAction"
 		scope="prototype">
 		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />	
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationInChartAction"
 		class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationInChartAction"
@@ -1421,11 +1434,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />	
-		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />		
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationDEChartAction"
 		class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationDEChartAction"
@@ -1433,59 +1446,50 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />		
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.action.SaveBookmarkAction"
-		class="org.hisp.dhis.reportexcel.action.SaveBookmarkAction"
-		scope="prototype">
-		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />		
+
+	<bean id="org.hisp.dhis.reportexcel.action.SaveBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.SaveBookmarkAction" scope="prototype">
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />	
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction"
-		class="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction"
-		scope="prototype">
-		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />	
+
+	<bean id="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction" scope="prototype">
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />		
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction"
-		class="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction"
-		scope="prototype">
-		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />		
+
+	<bean id="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction" scope="prototype">
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.action.GetBookmarkAction"
-		class="org.hisp.dhis.reportexcel.action.GetBookmarkAction"
-		scope="prototype">
-		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />		
+
+	<bean id="org.hisp.dhis.reportexcel.action.GetBookmarkAction"
+		class="org.hisp.dhis.reportexcel.action.GetBookmarkAction" scope="prototype">
+		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.action.SetBookmarkTypeCompleteReportAction"
 		class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeCompleteReportAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />		
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction"
+
+	<bean id="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction"
 		class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />		
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 </beans>

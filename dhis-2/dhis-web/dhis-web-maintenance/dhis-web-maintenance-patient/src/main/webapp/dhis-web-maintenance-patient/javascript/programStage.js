@@ -164,12 +164,12 @@ function showProgramStageDetails( programStageId )
 
 function programStageReceived( programStageElement )
 {
-	setFieldValue( 'idField', getElementValue( programStageElement, 'id' ) );
-	setFieldValue( 'nameField', getElementValue( programStageElement, 'name' ) );	
-    setFieldValue( 'descriptionField', getElementValue( programStageElement, 'description' ) );
-    setFieldValue( 'stageInProgramField', getElementValue( programStageElement, 'stageInProgram' ) );   
-    setFieldValue( 'minDaysFromStartField', getElementValue( programStageElement, 'minDaysFromStart' ) );    
-    setFieldValue( 'dataElementCountField', getElementValue( programStageElement, 'dataElementCount' ) );   
+	setInnerHTML( 'idField', getElementValue( programStageElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( programStageElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( programStageElement, 'description' ) );
+    setInnerHTML( 'stageInProgramField', getElementValue( programStageElement, 'stageInProgram' ) );   
+    setInnerHTML( 'minDaysFromStartField', getElementValue( programStageElement, 'minDaysFromStart' ) );    
+    setInnerHTML( 'dataElementCountField', getElementValue( programStageElement, 'dataElementCount' ) );   
    
     showDetails();
 }
@@ -202,7 +202,7 @@ function removeProgramStageCompleted( messageElement )
     }
     else if ( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }
@@ -338,7 +338,7 @@ function updateValidationCompleted( messageElement )
     }
 }
 
-function viewDataEntryForm( associationId, associationName )
+function viewDataEntryForm( associationId )
 {
-    window.location.href = 'viewDataEntryForm.action?associationId=' + associationId +'&associationName=' + associationName;
+    window.location.href = 'viewDataEntryForm.action?associationId=' + associationId;
 }

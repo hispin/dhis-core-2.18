@@ -13,9 +13,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.dataentryform.DataEntryFormAssociationStore"
-		class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormAssociationStore" />
-
 	<bean id="org.hisp.dhis.dataentryform.DataEntryFormStore"
 		class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormStore" />
 
@@ -170,6 +167,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.translation.TranslationStore"
 		class="org.hisp.dhis.translation.hibernate.HibernateTranslationStore" />
 
+	<bean id="org.hisp.dhis.aggregation.AggregatedDataValueStore"
+		class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedDataValueStore"/>
+
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.dataelement.DataElementOperandService"
@@ -227,8 +227,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.dataset.DataSetService" class="org.hisp.dhis.dataset.DefaultDataSetService">
 		<property name="dataSetStore" ref="org.hisp.dhis.dataset.DataSetStore" />
-		<property name="dataEntryFormService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
@@ -248,22 +246,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.dataentryform.DataEntryFormService" class="org.hisp.dhis.dataentryform.DefaultDataEntryFormService">
 		<property name="dataEntryFormStore"
 			ref="org.hisp.dhis.dataentryform.DataEntryFormStore" />
-		<property name="dataEntryFormAssociationService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"
-		class="org.hisp.dhis.dataentryform.DefaultDataEntryFormAssociationService">
-		<property name="dataEntryFormAssociationStore"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationStore" />
 	</bean>
 
 	<bean id="org.hisp.dhis.expression.ExpressionService" class="org.hisp.dhis.expression.DefaultExpressionService">
 		<property name="expressionStore" ref="org.hisp.dhis.expression.ExpressionStore" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.validation.ValidationRuleService" class="org.hisp.dhis.validation.DefaultValidationRuleService">
@@ -272,6 +262,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.validation.ValidationRuleGroupStore" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementCategoryService"
@@ -405,7 +397,26 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
-
+	
+	<bean id="org.hisp.dhis.aggregation.AggregatedDataValueService"
+		class="org.hisp.dhis.aggregation.DefaultAggregatedDataValueService">
+		<property name="aggregatedDataValueStore"
+			ref="org.hisp.dhis.aggregation.AggregatedDataValueStore"/>
+	</bean>
+	
+	<!-- Concept Name -->
+	
+	<bean id="org.hisp.dhis.concept.ConceptStore"
+		class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz" value="org.hisp.dhis.concept.Concept"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.concept.ConceptService" 
+		class="org.hisp.dhis.concept.DefaultConceptService">
+		<property name="conceptStore" ref="org.hisp.dhis.concept.ConceptStore" />
+	</bean>
+	
 	<!-- I18nService -->
 
 	<bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
@@ -1059,7 +1070,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="propertyNames">
 			<list>
 				<value>name</value>
-				<value>title</value>
 			</list>
 		</property>
 
@@ -1197,8 +1207,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler">
 		<property name="dataEntryFormService"
 			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
-		<property name="dataEntryFormAssociationService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"
@@ -1241,7 +1249,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.dataset.DataSetDeletionHandler" class="org.hisp.dhis.dataset.DataSetDeletionHandler">
+	<bean id="org.hisp.dhis.dataset.DataSetDeletionHandler" 
+		class="org.hisp.dhis.dataset.DataSetDeletionHandler">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
@@ -1253,7 +1262,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<bean id="org.hisp.dhis.dataset.SectionDeletionHandler" class="org.hisp.dhis.dataset.SectionDeletionHandler">
+	<bean id="org.hisp.dhis.dataset.SectionDeletionHandler" 
+		class="org.hisp.dhis.dataset.SectionDeletionHandler">
 		<property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
 	</bean>
 
@@ -1268,7 +1278,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.indicator.IndicatorDeletionHandler" class="org.hisp.dhis.indicator.IndicatorDeletionHandler">
+	<bean id="org.hisp.dhis.indicator.IndicatorDeletionHandler" 
+		class="org.hisp.dhis.indicator.IndicatorDeletionHandler">
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	</bean>
@@ -1296,7 +1307,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.validation.ValidationRuleService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.datavalue.DataValueDeletionHandler" class="org.hisp.dhis.datavalue.DataValueDeletionHandler">
+	<bean id="org.hisp.dhis.datavalue.DataValueDeletionHandler" 
+		class="org.hisp.dhis.datavalue.DataValueDeletionHandler">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
@@ -1334,10 +1346,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.user.UserSettingDeletionHandler" class="org.hisp.dhis.user.UserSettingDeletionHandler">
+	<bean id="org.hisp.dhis.user.UserSettingDeletionHandler" 
+		class="org.hisp.dhis.user.UserSettingDeletionHandler">
 		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" 
+		class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
+		<property name="categoryService" 
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+	</bean>
+	
 	<!-- Security -->
 
 	<bean id="org.hisp.dhis.security.PasswordManager"
@@ -1379,38 +1398,58 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" />
-					<ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
-					<ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" />
-					<ref local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
-					<ref local="org.hisp.dhis.dataset.SectionDeletionHandler" />
-					<ref local="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.dataset.SectionDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler" />
-					<ref local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
-					<ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
-					<ref local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
-					<ref local="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
-					<ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
-					<ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
-					<ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
-					<ref local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
-					<ref local="org.hisp.dhis.user.UserDeletionHandler" />
-					<ref local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
-					<ref local="org.hisp.dhis.user.UserCredentialsDeletionHandler" />
-					<ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.user.UserDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.user.UserCredentialsDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.user.UserSettingDeletionHandler" />
+					<ref 
+						local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
 				</list>
 			</list>
 		</property>
@@ -1464,11 +1503,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				method="intercept" />
 			<aop:before pointcut="execution( * org.hisp.dhis.user.UserStore.delete*(..) )"
 				method="intercept" />
+			<aop:before pointcut="execution( * org.hisp.dhis.concept.ConceptService.delete*(..) )"
+				method="intercept" />
 		</aop:aspect>
 
 		<aop:aspect ref="statementInterceptor">
 			<aop:around
-				pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate(..) )"
+				pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate*(..) )"
 				method="intercept" />
 			<aop:around
 				pointcut="execution( * org.hisp.dhis.dataanalysis.DataAnalysisService.analyse(..) )"

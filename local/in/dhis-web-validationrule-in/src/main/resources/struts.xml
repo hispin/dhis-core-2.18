@@ -23,7 +23,7 @@
     </action> 
     
     <action name="getValidationRule" class="org.hisp.dhis.validationrule.action.GetValidationRuleAction">
-      <result name="success" type="velocity">/dhis-web-validationrule/responseValidationRule.vm</result>
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseValidationRule.vm</result>
       <!--<interceptor-ref name="transactionStack"/>-->      
     </action>
         
@@ -54,14 +54,14 @@
     </action>
       
     <action name="validateValidationRule" class="org.hisp.dhis.validationrule.action.ValidateValidationRuleActionIN">
-      <result name="success" type="velocity">/dhis-web-validationrule/responseSuccess.vm</result>
-      <result name="error" type="velocity">/dhis-web-validationrule/responseError.vm</result>
-      <result name="input" type="velocity">/dhis-web-validationrule/responseInput.vm</result>
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-validationrule/responseError.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-validationrule/responseInput.vm</result>
       <!--<interceptor-ref name="transactionStack"/>-->
     </action>
     
     <action name="getTextualExpression"	class="org.hisp.dhis.validationrule.action.GetTextualExpressionAction">
-      <result name="success" type="velocity">/dhis-web-validationrule/responseTextualExpression.vm</result>
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseTextualExpression.vm</result>
       <!--<interceptor-ref name="transactionStack"/>-->
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -100,7 +100,7 @@
     </action>    
     
     <action name="getFilteredDataElements" class="org.hisp.dhis.validationrule.action.GetFilteredDataElementsActionIN">
-      <result name="success" type="velocity">/dhis-web-validationrule/responseOperandList.vm</result>			
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseOperandList.vm</result>			
       <!--<interceptor-ref name="transactionStack"/>-->
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -116,7 +116,7 @@
     </action>
     
     <action name="getValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.GetValidationRuleGroupAction">
-      <result name="success" type="velocity">/dhis-web-validationrule/responseValidationRuleGroup.vm</result>
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseValidationRuleGroup.vm</result>
       <!--<interceptor-ref name="transactionStack"/>-->      
     </action>
         
@@ -161,9 +161,9 @@
     </action>
     
     <action name="validateValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.ValidateValidationRuleGroupAction">
-      <result name="success" type="velocity">/dhis-web-validationrule/responseSuccess.vm</result>
-      <result name="error" type="velocity">/dhis-web-validationrule/responseError.vm</result>
-      <result name="input" type="velocity">/dhis-web-validationrule/responseInput.vm</result>
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-validationrule/responseError.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-validationrule/responseInput.vm</result>
       <!--<interceptor-ref name="transactionStack"/>-->
     </action>
     
@@ -200,9 +200,9 @@
     </action>
             
     <action name="validateRunValidation" class="org.hisp.dhis.validationrule.action.ValidateRunValidationActionIN" >
-      <result name="success" type="velocity">/dhis-web-validationrule/responseSuccess.vm</result>
-      <result name="error" type="velocity">/dhis-web-validationrule/responseError.vm</result>
-      <result name="input" type="velocity">/dhis-web-validationrule/responseInput.vm</result> 
+      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-validationrule/responseError.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-validationrule/responseInput.vm</result> 
       <!--<interceptor-ref name="transactionStack"/>-->
     </action>
     

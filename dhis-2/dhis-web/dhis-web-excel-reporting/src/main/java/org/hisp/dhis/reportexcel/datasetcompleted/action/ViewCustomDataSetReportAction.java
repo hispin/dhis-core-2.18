@@ -182,7 +182,7 @@ public class ViewCustomDataSetReportAction
         // Get the custom data entry form if any
         // -----------------------------------------------------------------
 
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+        DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
 
         customDataEntryFormCode = CustomDataSetReportGenerator.prepareReportContent( dataEntryForm.getHtmlCode(),
             dataValues );

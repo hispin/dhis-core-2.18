@@ -13,9 +13,9 @@ function showValidationRuleGroupDetails( id )
 
 function validationRuleGroupReceived( xmlObject )
 {
-    setFieldValue( 'nameField', getElementValue( xmlObject, 'name' ) );
-    setFieldValue( 'descriptionField', getElementValue( xmlObject, 'description' ) );
-    setFieldValue( 'memberCountField', getElementValue( xmlObject, 'memberCount' ) );
+    setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
+    setInnerHTML( 'descriptionField', getElementValue( xmlObject, 'description' ) );
+    setInnerHTML( 'memberCountField', getElementValue( xmlObject, 'memberCount' ) );
 
     showDetails();
 }

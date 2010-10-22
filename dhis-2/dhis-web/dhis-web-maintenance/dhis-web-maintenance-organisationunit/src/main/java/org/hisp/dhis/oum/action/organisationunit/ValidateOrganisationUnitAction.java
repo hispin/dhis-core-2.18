@@ -27,10 +27,7 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -38,7 +35,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: ValidateOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
+ *          torgeilo $
  */
 public class ValidateOrganisationUnitAction
     extends ActionSupport
@@ -46,13 +44,6 @@ public class ValidateOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -77,27 +68,6 @@ public class ValidateOrganisationUnitAction
     public void setName( String name )
     {
         this.name = name;
-    }
-
-    private String shortName;
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
-    private String openingDate;
-
-    public void setOpeningDate( String openingDate )
-    {
-        this.openingDate = openingDate;
-    }
-
-    private String closedDate;
-
-    public void setClosedDate( String closedDate )
-    {
-        this.closedDate = closedDate;
     }
 
     // -------------------------------------------------------------------------
@@ -128,22 +98,8 @@ public class ValidateOrganisationUnitAction
         // Validate values
         // ---------------------------------------------------------------------
 
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_a_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_a_name" );
-
-                return INPUT;
-            }
 
             OrganisationUnit match = organisationUnitService.getOrganisationUnitByName( name );
 
@@ -151,67 +107,9 @@ public class ValidateOrganisationUnitAction
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
-        }
-
-        if ( shortName == null )
-        {
-            message = i18n.getString( "specify_a_short_name" );
-
-            return INPUT;
-        }
-
-        Date oDate;
-
-        if ( openingDate == null || openingDate.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_an_opening_date" );
-
-            return INPUT;
-        }
-        else
-        {
-            oDate = format.parseDate( openingDate.trim() );
-
-            if ( oDate == null )
-            {
-                message = i18n.getString( "enter_a_valid_opening_date" );
-
-                return INPUT;
-            }
-        }
-
-        if ( closedDate == null || closedDate.trim().length() == 0 )
-        {
-        }
-        else
-        {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id.intValue() );
-
-            if ( organisationUnit.getChildren().size() != 0 )
-            {
-                message = i18n.getString( "org_unit_with_children_cannot_be_closed" );
-
-                return INPUT;
-            }
-
-            Date cDate = format.parseDate( closedDate.trim() );
-
-            if ( cDate == null )
-            {
-                message = i18n.getString( "enter_a_valid_opening_date" );
-
-                return INPUT;
-            }
-
-            if ( cDate.before( oDate ) )
-            {
-                message = i18n.getString( "closed_date_cannot_be_before_opening_date" );
-
-                return INPUT;
-            }
-        }
+        }        
 
         message = "OK";
 

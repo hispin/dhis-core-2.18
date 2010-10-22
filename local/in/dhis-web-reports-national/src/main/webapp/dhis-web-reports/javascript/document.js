@@ -5,7 +5,7 @@ function saveDocument()
     
     //var url = "validateDocument.action?name=" + name;
     
-    var request = new Request();
+    /* var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( saveDocumentReceived );
     //request.send( url );
@@ -13,7 +13,16 @@ function saveDocument()
     var requestString = "validateDocument.action";
     var params = "name=" + name;
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("validateDocument.action",
+		{
+			name : name
+		},
+		function (data)
+		{
+			saveDocumentReceived(data);
+		},'xml');
 }
 
 function saveDocumentReceived( messageElement )
@@ -39,12 +48,21 @@ function removeDocument( id )
     
     if ( dialog )
     {
-        //window.location.href = "removeDocument.action?id=" + id;
+        /* //window.location.href = "removeDocument.action?id=" + id;
         var request = new Request();
         var requestString = "removeDocument.action";
         var params = "id=" + id ;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("removeDocument.action",
+			{
+				id : id
+			},
+			function (data)
+			{
+			},'xml');
+		
     }
 }
 
@@ -54,12 +72,20 @@ function addDocumentToDashboard( id )
     
     if ( dialog )
     {
-        var request = new Request(); 
+        /* var request = new Request(); 
         //request.send( "addDocumentToDashboard.action?id=" + id );
         var requestString = "addDocumentToDashboard.action";
         var params = "id=" + id ;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("addDocumentToDashboard.action",
+			{
+				id : id
+			},
+			function (data)
+			{
+			},'xml');
     }
 }
 

@@ -27,13 +27,17 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 import javax.xml.namespace.QName;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ProcessState;
@@ -47,7 +51,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -116,7 +119,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 /**
  * DXFConverter class
@@ -246,11 +248,11 @@ public class DXFConverter
         this.olapURLService = olapURLService;
     }
 
-    private DataMartService dataMartService;
+    private AggregatedDataValueService aggregatedDataValueService;
 
-    public void setDataMartService( DataMartService dataMartService )
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
-        this.dataMartService = dataMartService;
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
     private BatchHandlerFactory batchHandlerFactory;
@@ -954,7 +956,7 @@ public class DXFConverter
                     .createBatchHandler( ImportDataValueBatchHandler.class ).init();
 
                 XMLConverter converter = new DataValueConverter( batchHandler, importDataValueBatchHandler,
-                    dataMartService, importObjectService, params, objectMappingGenerator
+                    aggregatedDataValueService, importObjectService, params, objectMappingGenerator
                         .getDataElementMapping( params.skipMapping() ), objectMappingGenerator
                         .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
                         .getOrganisationUnitMapping( params.skipMapping() ), objectMappingGenerator

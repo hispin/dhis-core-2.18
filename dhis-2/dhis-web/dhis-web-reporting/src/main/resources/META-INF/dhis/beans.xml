@@ -416,9 +416,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <bean id="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction" 
     class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction" 
-    scope="prototype">	
-    <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+    scope="prototype">
 	<property name="dataSetReportService"
 	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
     <property name="dataSetService"

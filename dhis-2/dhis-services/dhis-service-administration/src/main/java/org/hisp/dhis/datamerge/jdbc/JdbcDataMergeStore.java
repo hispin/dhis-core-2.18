@@ -69,30 +69,13 @@ public class JdbcDataMergeStore
 
         // Move from source to destination where destination does not exist
         
-        String sql =             
-            "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid=" + destCategoryOptionComboId + " " +
-            "WHERE dataelementid=" + sourceDataElementId + " and categoryoptioncomboid=" + sourceCategoryOptionComboId + " " +
-            "AND NOT EXISTS ( " +
-                "SELECT * FROM datavalue AS d2 " +
-                "WHERE d2.dataelementid=" + destDataElementId + " " +
-                "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " +
-                "AND d1.periodid=d2.periodid " +
-                "AND d1.sourceid=d2.sourceid );";
-
+        String sql = statementBuilder.getMoveFromSourceToDestination( destDataElementId, destCategoryOptionComboId, sourceDataElementId, sourceCategoryOptionComboId );
         log.info( sql );        
         jdbcTemplate.execute( sql );
         
         // Update destination with source where source is last update
         
-        sql =
-            "UPDATE datavalue SET value=d2.value,storedby=d2.storedby,lastupdated=d2.lastupdated,comment=d2.comment,followup=d2.followup " +
-            "FROM datavalue AS d2 " +
-            "WHERE datavalue.periodid=d2.periodid " +
-            "AND datavalue.sourceid=d2.sourceid " +
-            "AND datavalue.lastupdated<d2.lastupdated " +
-            "AND datavalue.dataelementid=" + destDataElementId + " AND datavalue.categoryoptioncomboid=" + destCategoryOptionComboId + " " +
-            "AND d2.dataelementid=" + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
-
+        sql = statementBuilder.getUpdateDestination( destDataElementId, destCategoryOptionComboId, sourceDataElementId, sourceCategoryOptionComboId );
         log.info( sql );        
         jdbcTemplate.execute( sql );
 
@@ -150,5 +133,6 @@ public class JdbcDataMergeStore
         
         log.info( sql );        
         jdbcTemplate.execute( sql );
+
     }
 }

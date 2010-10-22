@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
@@ -53,28 +55,65 @@ public class GetOperandsAction
     {
         this.dataElementService = dataElementService;
     }
-    
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private String aggregationOperator;
+
+    public void setAggregationOperator( String aggregationOperator )
+    {
+        this.aggregationOperator = aggregationOperator;
+    }
+
     public List<DataElementOperand> operands;
-    
+
     public List<DataElementOperand> getOperands()
     {
         return operands;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        operands = new ArrayList<DataElementOperand>( dataElementService.getAllGeneratedOperands() );
-        
+        List<DataElement> dataElements = new ArrayList<DataElement>();
+
+        if ( id == null )        {
+            
+            dataElements = new ArrayList<DataElement>( dataElementService.getAggregateableDataElements() );
+        }
+        else
+        {
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( id ) );
+        }
+
+        if ( aggregationOperator != null )
+        {
+            dataElements.retainAll( dataElementService.getDataElementsByAggregationOperator( aggregationOperator ) );
+        }
+
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements ) );
+
         Collections.sort( operands, new DataElementOperandNameComparator() );
-        
+
         return SUCCESS;
     }
 }

@@ -35,7 +35,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateIndicatorAction.java 4015 2007-11-15 14:46:04Z larshelg $
+ * @version $Id: ValidateIndicatorAction.java 4015 2007-11-15 14:46:04Z larshelg
+ *          $
  */
 public class ValidateIndicatorAction
     extends ActionSupport
@@ -50,7 +51,7 @@ public class ValidateIndicatorAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -88,57 +89,8 @@ public class ValidateIndicatorAction
     public void setAlternativeName( String alternativeName )
     {
         this.alternativeName = alternativeName;
-    }
-
-    private Integer indicatorTypeId;
-
-    public void setIndicatorTypeId( Integer indicatorTypeId )
-    {
-        this.indicatorTypeId = indicatorTypeId;
-    }
-
-    private String numerator;
-
-    public void setNumerator( String numerator )
-    {
-        this.numerator = numerator;
-    }
-    
-    private String numeratorDescription;
-
-    public void setNumeratorDescription( String numeratorDescription )
-    {
-        this.numeratorDescription = numeratorDescription;
-    }
-
-    private String numeratorAggregationOperator;
-
-    public void setNumeratorAggregationOperator( String numeratorAggregationOperator )
-    {
-        this.numeratorAggregationOperator = numeratorAggregationOperator;
-    }
-
-    private String denominator;
-
-    public void setDenominator( String denominator )
-    {
-        this.denominator = denominator;
-    }
-
-    private String denominatorDescription;
-
-    public void setDenominatorDescription( String denominatorDescription )
-    {
-        this.denominatorDescription = denominatorDescription;
-    }
-
-    private String denominatorAggregationOperator;
-
-    public void setDenominatorAggregationOperator( String denominatorAggregationOperator )
-    {
-        this.denominatorAggregationOperator = denominatorAggregationOperator;
-    }
-    
+    }   
+   
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -156,22 +108,8 @@ public class ValidateIndicatorAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
 
             Indicator match = indicatorService.getIndicatorByName( name );
 
@@ -179,38 +117,23 @@ public class ValidateIndicatorAction
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
 
-        if ( shortName == null )
+        if ( shortName != null )
         {
-            message = i18n.getString( "specify_short_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            shortName = shortName.trim();
-
-            if ( shortName.length() == 0 )
-            {
-                message = i18n.getString( "specify_short_name" );
-
-                return INPUT;
-            }
-
             Indicator match = indicatorService.getIndicatorByShortName( shortName );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "short_name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
 
-        if ( alternativeName != null && alternativeName.trim().length() != 0 )
+        if ( alternativeName != null )
         {
             Indicator match = indicatorService.getIndicatorByAlternativeName( alternativeName );
 
@@ -218,58 +141,9 @@ public class ValidateIndicatorAction
             {
                 message = i18n.getString( "alternative_name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
-        }
-
-        if ( indicatorTypeId == null )
-        {
-            message = i18n.getString( "choose_indicator_type" );
-
-            return INPUT;
-        }
-        
-        if ( numerator == null || numerator.trim().isEmpty() )
-        {
-            message = i18n.getString( "specify_numerator" );
-
-            return INPUT;
-        }
-        
-        if ( numeratorDescription == null || numeratorDescription.trim().isEmpty() )
-        {
-            message = i18n.getString( "specify_numerator_description" );
-
-            return INPUT;
-        }
-        
-        if ( numeratorAggregationOperator == null || numeratorAggregationOperator.trim().isEmpty() )
-        {
-            message = i18n.getString( "specify_numerator_agg_operator" );
-
-            return INPUT;
-        }
-        
-        if ( denominator == null || denominator.trim().isEmpty() )
-        {
-            message = i18n.getString( "specify_denominator" );
-
-            return INPUT;
-        }
-        
-        if ( denominatorDescription == null || denominatorDescription.trim().isEmpty() )
-        {
-            message = i18n.getString( "specify_denominator_description" );
-
-            return INPUT;
-        }
-        
-        if ( denominatorAggregationOperator == null || denominatorAggregationOperator.trim().isEmpty() )
-        {
-            message = i18n.getString( "specify_denominator_agg_operator" );
-
-            return INPUT;
-        }
+        }       
 
         message = i18n.getString( "everything_is_ok" );
 

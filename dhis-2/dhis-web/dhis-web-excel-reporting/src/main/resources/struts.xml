@@ -40,10 +40,10 @@
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 			<param name="javascripts">
-       			../dhis-web-commons/util/validate/jquery.validate.js,
-       			../dhis-web-commons/util/jquery.metadata.js,
-      			../dhis-web-commons/util/validate/additional-methods.js,
-      			../dhis-web-commons/util/validate/messages_locale.js
+				../dhis-web-commons/util/validate/jquery.validate.js,
+				../dhis-web-commons/util/jquery.metadata.js,
+				../dhis-web-commons/util/validate/additional-methods.js,
+				../dhis-web-commons/util/validate/messages_locale.js
       		</param>
 		</action>
 
@@ -103,26 +103,21 @@
 
 
 		<!-- REPORT EXCEL CORE ACTION -->
-		
+
 		<action name="addReportExcelForm"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/addReportExcelForm.vm</param>			
+			<param name="page">/dhis-web-excel-reporting/report/addReportExcelForm.vm</param>
 			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js</param>
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>		
+		</action>
 
 		<action name="addReportExcel"
 			class="org.hisp.dhis.reportexcel.action.AddReportExcelAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="getListExcelTemplateFile"
-			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseFiles.vm</result>
 		</action>
 
 		<action name="deleteReportExcel"
@@ -135,63 +130,53 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="getReportExcel"
-			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReport.vm</result>
-		</action>
-
 		<action name="getReportExcelGroups"
 			class="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction">
 			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseReportGroups.vm</result>
+				/dhis-web-excel-reporting/report/ajax/responseReportGroups.vm
+			</result>
 		</action>
 
 		<action name="listReportExcel"
 			class="org.hisp.dhis.reportexcel.action.ListReportExcelAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/reports.vm</param>
+			<param name="page">/dhis-web-excel-reporting/report/reports.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js,javascript/commons.js</param>
+			<param name="javascripts">javascript/reports.js</param>
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
-		
+
 		<action name="updateReportExcelForm"
 			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
-			<result name="success" type="chain">updateReportExcelFormChain</result>
+			<result name="success" type="chain">updateReportExcelFormChain
+			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
-		
+
 		<action name="updateReportExcelFormChain"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/updateReportExcelForm.vm</param>			
+			<param name="page">/dhis-web-excel-reporting/report/updateReportExcelForm.vm</param>
 			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js</param>
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>	
+		</action>
 
 		<action name="updateReportExcel"
 			class="org.hisp.dhis.reportexcel.action.UpdateReportExcelAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="validateAddReportExcel"
-			class="org.hisp.dhis.reportexcel.action.ValidateAddReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-		</action>
-
-		<action name="validateUpdateReportExcel"
-			class="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
+		<action name="validateReportExcelAction"
+			class="org.hisp.dhis.reportexcel.action.ValidateReportExcelAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<!-- REPORT EXCEL CATEGORY ACTION -->
@@ -362,7 +347,8 @@
 
 		<action name="updateReportExcelUserRole"
 			class="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
 		</action>
 
 		<!-- REPORT EXCEL ITEM ACTION -->
@@ -370,59 +356,53 @@
 		<action name="listReportExcelItemAction"
 			class="org.hisp.dhis.reportexcel.item.action.ListReportExcelItemAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/reportItems.vm</param>
+			<param name="page">/dhis-web-excel-reporting/report/reportItems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">
-				javascript/reportItem.js,
-				javascript/dataelement.js,
-				javascript/jquery.autocomplete.js,
-				javascript/commons.js
-			</param>
-			<param name="stylesheets">style/jquery.autocomplete.css,
-				style/style.css</param>
+			<param name="javascripts">javascript/reportItem.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="getReportExcelItems"
-			class="org.hisp.dhis.reportexcel.item.action.ListReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReportItems.vm</result>
+		<action name="validationReportExcelItem"
+			class="org.hisp.dhis.reportexcel.item.action.ValidationReportExcelItemAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getReportExcelItem"
-			class="org.hisp.dhis.reportexcel.item.action.GetReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReportItem.vm</result>
-		</action>
-
-		<action name="validateAddReportExcelItem"
-			class="org.hisp.dhis.reportexcel.item.action.ValidateAddReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-		</action>
-
-		<action name="validateUpdateReportExcelItem"
-			class="org.hisp.dhis.reportexcel.item.action.ValidateUpdateReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
+		<action name="addReportExcelItemForm"
+			class="org.hisp.dhis.reportexcel.item.action.SetupReportExcelItemFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/report/addReportExcelItemForm.vm</param>
+			<param name="javascripts">javascript/reportItem.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
 		<action name="addReportExcelItem"
 			class="org.hisp.dhis.reportexcel.item.action.AddReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReportItem.vm</result>
+			<result name="success" type="redirect">
+				listReportExcelItemAction.action?reportId=${reportId}
+			</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="updateReportExcelItemForm"
+			class="org.hisp.dhis.reportexcel.item.action.SetupReportExcelItemFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/report/updateReportExcelItemForm.vm</param>
+			<param name="javascripts">javascript/reportItem.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
 		<action name="updateReportExcelItem"
 			class="org.hisp.dhis.reportexcel.item.action.UpdateReportExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReportItem.vm</result>
+			<result name="success" type="redirect">
+				listReportExcelItemAction.action?reportId=${reportId}
+			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
+
 
 		<action name="deleteReportExcelItem"
 			class="org.hisp.dhis.reportexcel.item.action.DeleteReportExcelItemAction">
@@ -444,19 +424,18 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-
-		<action name="getOptionCombos"
-			class="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseOptionCombo.vm</result>
-		</action>
-
 		<action name="getAllReportExcels"
 			class="org.hisp.dhis.reportexcel.action.ListReportExcelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseListReport.vm</result>
 		</action>
 
+		<action name="getReportExcelItemsBySheet"
+			class="org.hisp.dhis.reportexcel.item.action.GetReporExceltItemsBySheetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/report/responseReportItems.vm</result>
+		</action>
+		
 		<action name="copyReportExcelItems"
 			class="org.hisp.dhis.reportexcel.item.action.CopyReportExcelItemAction">
 			<result name="success" type="velocity-xml">
@@ -481,14 +460,7 @@
 			class="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseDataElementOrder.vm</result>
-		</action>
-
-		<action name="getFormulaText"
-			class="org.hisp.dhis.reportexcel.expression.action.GetFormulaTextAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseFormulaText.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
+		</action>	
 
 		<!-- GENERATE REPORT EXCEL ACTION -->
 
@@ -505,7 +477,7 @@
 				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
 				javascript/commons.js,
-				javascript/preview.js,				
+				javascript/preview.js,
 				../dhis-web-commons/util/jquery-ui.js,
 				../dhis-web-commons/util/jquery.jqprint.0.3.js
 			</param>
@@ -631,10 +603,11 @@
 		</action>
 
 		<!-- DATA SET COMPLETED REPORT ACTION -->
-		
+
 		<action name="selectDataSetCompletedReport"
 			class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeCompleteReportAction">
-			<result name="success" type="chain">selectDataSetCompletedReportChain</result>
+			<result name="success" type="chain">selectDataSetCompletedReportChain
+			</result>
 		</action>
 
 		<action name="selectDataSetCompletedReportChain"
@@ -650,12 +623,12 @@
 				ext/adapter/ext/ext-base.js,
 				ext/ext-all.js,
 				ext/ux/MultiSelect.js,
-				ext/ux/ItemSelector.js,					
+				ext/ux/ItemSelector.js,
 				javascript/dataSetCompleted.js				
 			</param>
 			<param name="stylesheets">
 				ext/resources/css/ext-all.css,
-				ext/ux/css/MultiSelect.css,				
+				ext/ux/css/MultiSelect.css,
 				style/dataSetCompleted.css
 			</param>
 		</action>
@@ -667,7 +640,7 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="viewCompleteReportByDataSet"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByDataSetAction">
 			<result name="success" type="velocity">
@@ -677,17 +650,19 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataSetCompleted.js</param>
 		</action>
-		
+
 		<action name="viewCustomDataSetReport"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction">
-			<result name="success" type="velocity">/dhis-web-excel-reporting/responseCustomDataSetReport.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>			
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseCustomDataSetReport.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="getSelectedOrganisationUnit"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetSelectedOrganisationUnitAction">
-			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonOrganisationUnit.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>			
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonOrganisationUnit.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<!-- PREVIEW REPORT EXCEL ACTION -->
@@ -887,10 +862,19 @@
 		<!-- EXCEL ITEM GROUP                                               -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+		<action name="addExcelItemGroupForm"
+			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/import/addExcelItemGroup.vm</param>
+			<param name="javascripts">javascript/excelitemgroups.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
 		<action name="addExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.AddExcelItemGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="redirect">
+				listAllExcelItemGroup.action
+			</result>
 		</action>
 
 		<action name="deleteExcelItemGroup"
@@ -906,7 +890,7 @@
 		<action name="listAllExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.ListAllExcelItemGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/excelitemgroups.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/excelitemgroups.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">
@@ -918,28 +902,44 @@
 		<action name="getAllExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.ListAllExcelItemGroupAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseExcelItemGroups.vm</result>
+				/dhis-web-excel-reporting/import/responseExcelItemGroups.vm</result>
 		</action>
 
+		<action name="updateExcelItemGroupForm"
+			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
+			<result name="success" type="chain">updateExcelItemGroupFormChain
+			</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="updateExcelItemGroupFormChain"
+			class="org.hisp.dhis.reportexcel.excelitemgroup.action.GetExcelItemGroupByIdAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/import/updateExcelItemGroup.vm</param>
+			<param name="javascripts">javascript/excelitemgroups.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
 
 		<action name="updateExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateExcelItemGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="redirect">
+				listAllExcelItemGroup.action
+			</result>
 		</action>
 
 		<action name="validateExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.ValidateExcelItemGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="getExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.GetExcelItemGroupByIdAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseExcelItemGroup.vm</result>
+				/dhis-web-excel-reporting/import/responseExcelItemGroup.vm</result>
 		</action>
 
 		<action name="updateExcelItemGroupAssociations"
@@ -951,7 +951,7 @@
 		<action name="openUpdateOrgnisationUnitGroupForExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupForCategoryAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/associateOrgUnitGroupForExcelItemGroup.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/associateOrgunitGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/commons.js</param>
 		</action>
@@ -970,7 +970,7 @@
 		<action name="listDataElementGroupOrderForExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.GetExcelItemGroupByIdAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/listDataElementGroupByExcelItemGroup.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/listDataElementGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/ui.core.js,javascript/ui.sortable.js,
 				javascript/sortedDataElementGroup.js,javascript/commons.js</param>
@@ -1007,7 +1007,7 @@
 		<action name="openSortDataElementForCategory"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/sortDataElementsForCategory.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/sortDataElements.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/sortedDataElementGroup.js</param>
 			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
@@ -1029,10 +1029,18 @@
 		<!-- EXCEL ITEM                                                     -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+		<action name="addExcelItemForm"
+			class="org.hisp.dhis.reportexcel.excelitem.action.SetupExcelItemFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/import/addExcelItem.vm</param>
+			<param name="javascripts">javascript/excelitems.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
 		<action name="addExcelItem"
-			class="org.hisp.dhis.reportexcel.excelitem.action.AddExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			class="org.hisp.dhis.reportexcel.excelitem.action.AddExcelItemAction">			
+			<result name="success" type="redirect">
+				listExcelItems.action?excelItemGroupId=${excelItemGroupId}</result>
 		</action>
 
 		<action name="deleteExcelItem"
@@ -1054,7 +1062,7 @@
 		<action name="getExcelItemParam"
 			class="org.hisp.dhis.reportexcel.excelitem.action.GetExcelItemParamAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/excelitems.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/excelitems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">javascript/excelitems.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
@@ -1063,7 +1071,7 @@
 		<action name="listExcelItems"
 			class="org.hisp.dhis.reportexcel.excelitem.action.ListExcelItemAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/excelitems.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/excelitems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">
@@ -1074,30 +1082,45 @@
 			<param name="stylesheets">style/style.css</param>
 		</action>
 
+		<action name="updateExcelItemForm"
+			class="org.hisp.dhis.reportexcel.excelitem.action.SetupExcelItemFormAction">
+			<result name="success" type="chain">updateExcelItemChainForm
+			</result>
+		</action>
+
+		<action name="updateExcelItemChainForm"
+			class="org.hisp.dhis.reportexcel.excelitem.action.GetExcelItemByIdAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/import/updateExcelItem.vm</param>
+			<param name="javascripts">javascript/excelitems.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
 		<action name="updateExcelItem"
 			class="org.hisp.dhis.reportexcel.excelitem.action.UpdateExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="redirect">
+				listExcelItems.action?excelItemGroupId=${excelItemGroupId}</result>
 		</action>
 
 		<action name="validateExcelItem"
 			class="org.hisp.dhis.reportexcel.excelitem.action.ValidateExcelItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="getExcelItem"
 			class="org.hisp.dhis.reportexcel.excelitem.action.GetExcelItemByIdAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseExcelItem.vm</result>
+				/dhis-web-excel-reporting/import/responseExcelItem.vm</result>
 		</action>
 
 		<action name="getExcelItemsByGroup"
 			class="org.hisp.dhis.reportexcel.excelitem.action.ListExcelItemAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseExcelItems.vm
+				/dhis-web-excel-reporting/import/responseExcelItems.vm
 			</result>
 		</action>
 
@@ -1148,7 +1171,7 @@
 		<action name="openExcelItemGroupAssociations"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenExcelItemGroupAssociationsAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/excelitemgroupassociation.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/excelitemgroupassociation.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
 		</action>
@@ -1181,7 +1204,7 @@
 		<action name="getExcelItemGroupChain"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.GetExcelItemGroupByIdAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/excelitemgroupassociation.vm</param>
+			<param name="page">/dhis-web-excel-reporting/import/excelitemgroupassociation.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
 		</action>
@@ -1217,7 +1240,7 @@
 		<action name="previewDataOrganizationGroup"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction">
 			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseExcelItemValueByOrganisations.vm
+				/dhis-web-excel-reporting/responseExcelItemValuesByOrgunits.vm
 			</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
@@ -1383,7 +1406,7 @@
 		</action>
 
 		<!-- Ext Chart -->
-		
+
 		<action name="chart"
 			class="org.hisp.dhis.reportexcel.action.SetBookmarkTypeChartAction">
 			<result name="success" type="chain">chartChain</result>
@@ -1395,7 +1418,7 @@
 			<param name="page">/dhis-web-excel-reporting/chart.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,				
+				../dhis-web-commons/ouwt/ouwt.js,
 				ext/adapter/ext/ext-base.js,
 				ext/ext-all.js,
 				ext/ux/MultiSelect.js,
@@ -1434,7 +1457,7 @@
 				/dhis-web-excel-reporting/jsonPeriodTypes.vm
 			</result>
 		</action>
-		
+
 		<action name="getOrganisationUnitGroup"
 			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
 			<result name="success" type="velocity-json">
@@ -1448,7 +1471,7 @@
 				/dhis-web-excel-reporting/jsonOrganisationUnitAndParentAction.vm
 			</result>
 		</action>
-		
+
 		<action name="getChildrenOrganisationUnit"
 			class="org.hisp.dhis.reportexcel.chart.action.GetChildrenOrganisationUnitAction">
 			<result name="success" type="velocity-json">
@@ -1483,51 +1506,51 @@
 				/dhis-web-excel-reporting/jsonChartValues.vm
 			</result>
 		</action>
-		
+
 		<action name="generateOrganisationDEChart"
 			class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationDEChartAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-excel-reporting/jsonChartValues.vm
 			</result>
 		</action>
-		
+
 		<action name="generateOrganisationInChart"
 			class="org.hisp.dhis.reportexcel.chart.action.GenerateOrganisationInChartAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-excel-reporting/jsonChartValues.vm
 			</result>
 		</action>
-		
+
 		<action name="viewBookmarkChart"
 			class="org.hisp.dhis.reportexcel.action.GetBookmarkAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-excel-reporting/jsonBookmarkChart.vm
 			</result>
 		</action>
-		
+
 		<!-- Bookmark  -->
-		
+
 		<action name="saveBookmark"
 			class="org.hisp.dhis.reportexcel.action.SaveBookmarkAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
-		
+
 		<action name="deleteBookmark"
 			class="org.hisp.dhis.reportexcel.action.DeleteBookmarkAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
-		
+
 		<action name="getBookmark"
 			class="org.hisp.dhis.reportexcel.action.GetBookmarkAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-excel-reporting/jsonBookmark.vm
 			</result>
 		</action>
-		
+
 		<action name="getAllBookmark"
 			class="org.hisp.dhis.reportexcel.action.GetAllBookmarkAction">
 			<result name="success" type="velocity-json">

@@ -27,6 +27,7 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 
@@ -68,6 +69,13 @@ public class ValidateDataElementCategoryOptionAction
         this.name = name;
     }
 
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -85,22 +93,18 @@ public class ValidateDataElementCategoryOptionAction
 
     public String execute()
     {
-        if ( name == null || name.isEmpty() )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
+            DataElementCategoryOption match = dataElementCategoryService.getDataElementCategoryOptionByName( name );
 
-            return INPUT;
-        }
-        else
-        {
-            if ( dataElementCategoryService.getDataElementCategoryOptionByName( name ) != null )
+            if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
-        
+
         message = "ok";
 
         return SUCCESS;

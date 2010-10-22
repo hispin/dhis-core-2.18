@@ -4,20 +4,29 @@ var numberOfSelects = 0;
 function selectAllAtLevel()
 {
 	showOverlay();
-	var request = new Request();
+	/* var request = new Request();
     request.setCallbackSuccess( selectReceived );
     //request.send( 'selectLevel.action?level=' + getListValue( 'levelList' ) );
     var requestString = "selectLevel.action";
     var params = 'level=' + getListValue( 'levelList' );   
 
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("selectLevel.action",
+		{
+			level : getListValue( 'levelList' )
+		},
+		function (data)
+		{
+			selectReceived(data);
+		},'xml');	
 }
 
 function unselectAllAtLevel()
 {
 	showOverlay();
-	var request = new Request();
+	/* var request = new Request();
     request.setCallbackSuccess( selectReceived );
     //request.send( 'unselectLevel.action?level=' + getListValue( 'levelList' ) );
     
@@ -25,14 +34,23 @@ function unselectAllAtLevel()
     var params = 'level=' + getListValue( 'levelList' );	
 
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("unselectLevel.action",
+		{
+			level : getListValue( 'levelList' )
+		},
+		function (data)
+		{
+			selectReceived(data);
+		},'xml');	
 
 }
 
 function selectGroup()
 {
 	showOverlay();
-    var request = new Request();
+    /* var request = new Request();
     request.setCallbackSuccess( selectReceived );
     //request.send( 'selectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
     
@@ -40,14 +58,24 @@ function selectGroup()
     var params = 'organisationUnitGroupId=' + getListValue( 'groupList' );	
 
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("selectOrganisationUnitGroup.action",
+		{
+			organisationUnitGroupId : getListValue( 'groupList' )
+		},
+		function (data)
+		{
+			selectReceived(data);
+		},'xml');	
 
 }
 
 function unselectGroup()
 {
 	showOverlay();
-    var request = new Request();
+   
+    /* var request = new Request();
     request.setCallbackSuccess( selectReceived );
     //request.send( 'unselectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
     
@@ -55,16 +83,34 @@ function unselectGroup()
     var params = 'organisationUnitGroupId=' + getListValue( 'groupList' );	
 
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("unselectOrganisationUnitGroup.action",
+		{
+			organisationUnitGroupId : getListValue( 'groupList' )
+		},
+		function (data)
+		{
+			selectReceived(data);
+		},'xml');	
 
 }
 
 function unselectAll()
 {
 	showOverlay();
-    var request = new Request();
+	
+    /* var request = new Request();
     request.setCallbackSuccess( selectReceived );
-    request.send( 'unselectAll.action' );
+    request.send( 'unselectAll.action' ); */
+	
+	$.post("unselectAll.action",
+		{
+		},
+		function (data)
+		{
+			selectReceived(data);
+		},'xml');	
 }
 
 function selectReceived()

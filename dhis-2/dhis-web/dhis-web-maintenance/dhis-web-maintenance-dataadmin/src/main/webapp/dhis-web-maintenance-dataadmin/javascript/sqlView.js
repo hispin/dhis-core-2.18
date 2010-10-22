@@ -48,11 +48,11 @@ function showSqlViewDetails( viewId )
 
 function sqlViewDetailsReceived( viewElement )
 {
-    setFieldValue( 'nameField', getElementValue( viewElement, 'name' ) );
+    setInnerHTML( 'nameField', getElementValue( viewElement, 'name' ) );
     
 	var description = getElementValue( viewElement, 'description' );
-    setFieldValue( 'descriptionField', description ? description : '[' + i18n_none + ']' );
-    setFieldValue( 'sqlQueryField', getElementValue( viewElement, 'sqlquery' ) );
+    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+    setInnerHTML( 'sqlQueryField', getElementValue( viewElement, 'sqlquery' ) );
     
     showDetails();
 }

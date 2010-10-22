@@ -34,6 +34,7 @@ import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -86,8 +87,6 @@ public class AddProgramStageAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-
 
     private int id;
 
@@ -146,8 +145,10 @@ public class AddProgramStageAction
         programStage.setDescription( description );
         if( minDaysFromStart != null )
             programStage.setMinDaysFromStart( minDaysFromStart.intValue() );
-        programStageService.saveProgramStage( programStage );
         
+//        programStage.setDataEntryForm(new DataEntryForm());
+        
+        programStageService.saveProgramStage( programStage );
         if ( minDaysFromStart == null )
         {
             minDaysFromStart = 0; 

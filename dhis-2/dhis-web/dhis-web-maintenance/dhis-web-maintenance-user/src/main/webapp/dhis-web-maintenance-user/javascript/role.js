@@ -13,9 +13,9 @@ function showRoleDetails( roleId )
 
 function roleReceived( xmlObject )
 {
-    setFieldValue( 'nameField', getElementValue( xmlObject, 'name' ) );
-    setFieldValue( 'membersField', getElementValue( xmlObject, 'members' ) );
-    setFieldValue( 'dataSetsField', getElementValue( xmlObject, 'dataSets' ) );
+    setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
+    setInnerHTML( 'membersField', getElementValue( xmlObject, 'members' ) );
+    setInnerHTML( 'dataSetsField', getElementValue( xmlObject, 'dataSets' ) );
 
     showDetails();
 }

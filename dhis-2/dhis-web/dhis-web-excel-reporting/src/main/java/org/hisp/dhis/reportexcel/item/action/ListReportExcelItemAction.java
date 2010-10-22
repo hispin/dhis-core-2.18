@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.item.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,18 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.item.action;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -57,10 +51,6 @@ public class ListReportExcelItemAction
 
     private ReportExcelService reportService;
 
-    private DataElementService dataElementService;
-
-    private IndicatorService indicatorService;
-
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
@@ -70,10 +60,6 @@ public class ListReportExcelItemAction
     private List<ReportExcelItem> reportItems;
 
     private ReportExcel reportExcel;
-
-    private List<DataElementGroup> dataElementGroups;
-
-    private List<IndicatorGroup> indicatorGroups;
 
     private List<Integer> sheets;
 
@@ -103,26 +89,6 @@ public class ListReportExcelItemAction
         this.sheetNo = sheetNo;
     }
 
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    public List<IndicatorGroup> getIndicatorGroups()
-    {
-        return indicatorGroups;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     public ReportExcel getReportExcel()
     {
         return reportExcel;
@@ -145,27 +111,15 @@ public class ListReportExcelItemAction
 
         if ( sheetNo == null )
         {
-
             reportItems = new ArrayList<ReportExcelItem>( reportExcel.getReportExcelItems() );
-
         }
         else
         {
-
             reportItems = new ArrayList<ReportExcelItem>( reportService.getReportExcelItem( sheetNo, reportId ) );
-
         }
         sheets = new ArrayList<Integer>( reportService.getSheets( reportId ) );
 
         Collections.sort( reportItems, new ReportExcelItemNameComparator() );
-
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-
-        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
 
         return SUCCESS;
     }

@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -240,6 +241,16 @@ public interface PeriodService
      * @return a collection of Periods.
      */
     List<Period> getPeriods( Period lastPeriod, int historyLength );
+    
+    /**
+     * Populates the name property of Period with the formatted name for the
+     * Periods in the given collection.
+     * 
+     * @param periods the collection of Periods.
+     * @param format the I18nFormat.
+     * @return a collection of Periods.
+     */
+    Collection<Period> namePeriods( Collection<Period> periods, I18nFormat format );
     
     // -------------------------------------------------------------------------
     // PeriodType

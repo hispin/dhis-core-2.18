@@ -67,7 +67,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="maintenanceService" ref="org.hisp.dhis.maintenance.MaintenanceService" />
 		<property name="completenessStore"
 			ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
-		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
@@ -243,8 +243,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction"
 		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
-		<property name="organisationUnitSelectionManager">
-			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService" />

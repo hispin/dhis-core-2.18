@@ -40,9 +40,9 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,11 +72,11 @@ public class DefaultCrossTabService
         this.crossTabStore = crossTabTableManager;
     }
     
-    private DataMartStore dataMartStore;
-        
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
-        this.dataMartStore = dataMartStore;
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
     
     // -------------------------------------------------------------------------
@@ -118,7 +118,7 @@ public class DefaultCrossTabService
             {
                 for ( final Integer sourceId : organisationUnitIds )
                 {
-                    map = dataMartStore.getDataValueMap( periodId, sourceId );
+                    map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
                     
                     valueList = new ArrayList<String>( operandList.size() + 2 );
                     

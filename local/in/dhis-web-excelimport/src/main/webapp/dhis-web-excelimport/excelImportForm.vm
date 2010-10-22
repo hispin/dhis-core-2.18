@@ -45,7 +45,21 @@
                 jQuery("#name").focus();
             }
     );
-    
+	
+	
+function orgUnitHasBeenSelected( orgUnitIds )
+{    
+	if(orgUnitIds == null || orgUnitIds == "" )
+	{
+		return;
+	}
+
+	if(orgUnitIds != null)
+		getOUDetails(orgUnitIds);	
+}
+
+selection.setListenerFunction( orgUnitHasBeenSelected );
+
 </script>
 
 <h1>Excel Import Form</h1>

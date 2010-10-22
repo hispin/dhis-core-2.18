@@ -166,4 +166,14 @@ public class DefaultExcelItemService
         excelItemStore.deleteDataElementGroupOrder( id );
     }
 
+    public ExcelItem getExcelItem( String name )
+    {
+        return excelItemStore.getExcelItem( name );
+    }
+
+    public ExcelItemGroup getExcelItemGroup( String name )
+    {
+        return excelItemStore.getExcelItemGroup( name );
+    }
+
 }

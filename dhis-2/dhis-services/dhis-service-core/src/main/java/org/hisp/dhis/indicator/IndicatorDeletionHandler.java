@@ -99,13 +99,20 @@ public class IndicatorDeletionHandler
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             Set<DataElement> daels = expressionService.getDataElementsInExpression( indicator.getNumerator() );
-            if ( daels != null && daels.contains( dataElement ) ) return false;
+            
+            if ( daels != null && daels.contains( dataElement ) )
+            {
+                return false;
+            }
             
             daels = expressionService.getDataElementsInExpression( indicator.getDenominator() );
-            if ( daels != null && daels.contains( dataElement ) ) return false;
+            
+            if ( daels != null && daels.contains( dataElement ) )
+            {
+                return false;
+            }
         }
 
         return true;
     }
-
 }

@@ -1,13 +1,20 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'updateOrganisationUnitForm', validateUpdateOrganisationUnit );		
-		datePickerInRange( 'openingDate', 'closedDate' );	
-	});		
+		validation( 'updateOrganisationUnitForm' );	
+		
+		checkValueIsExist( "name", "validateOrganisationUnit.action", {
+			id: $organisationUnit.id			
+		});		
+		
+		datePickerInRange( 'openingDate', 'closedDate', true, false );	
+			
+	});
 </script>
+
 
 <h3>$i18n.getString( "edit_org_unit" )</h3>
 
-<form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post" onsubmit="return validateUpdateOrganisationUnit()">
+<form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$organisationUnit.id">
@@ -67,8 +74,6 @@
 </table>
 
 </form>
-
-<span id="message"></span>
 
 <script type="text/javascript">
 

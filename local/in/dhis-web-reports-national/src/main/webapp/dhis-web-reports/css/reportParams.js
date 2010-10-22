@@ -9,12 +9,21 @@ function getOrganisationUnitsParent()
     
     if ( organisationUnitLevel != null )
     {
-        var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
+       /*  var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
         
         var request = new Request();
         request.setResponseTypeXML( 'organisationUnit' );
         request.setCallbackSuccess( getOrganisationUnitsParentReceived );
-        request.send( url );        
+        request.send( url );   */
+
+		$.post("../dhis-web-commons-ajax/getOrganisationUnits.action",
+			{
+				level : organisationUnitLevel
+			},
+			function (data)
+			{
+				getOrganisationUnitsParentReceived(data);
+			},'xml');		
     }
 }
 
@@ -44,12 +53,21 @@ function getOrganisationUnitsSingle()
     
     if ( organisationUnitLevel != null )
     {
-        var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
+        /* var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
         
         var request = new Request();
         request.setResponseTypeXML( 'organisationUnit' );
         request.setCallbackSuccess( getOrganisationUnitsSingleReceived );
-        request.send( url );        
+        request.send( url );        */
+		
+		$.post("../dhis-web-commons-ajax/getOrganisationUnits.action",
+			{
+				level : organisationUnitLevel
+			},
+			function (data)
+			{
+				getOrganisationUnitsSingleReceived(data);
+			},'xml');	
     }
 }
 

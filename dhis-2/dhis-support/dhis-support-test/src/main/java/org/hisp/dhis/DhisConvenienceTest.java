@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -49,6 +50,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -128,6 +130,8 @@ public abstract class DhisConvenienceTest
     protected OrganisationUnitService organisationUnitService;
 
     protected OrganisationUnitGroupService organisationUnitGroupService;
+    
+    protected AggregatedDataValueService aggregatedDataValueService;
 
     protected PeriodService periodService;
 
@@ -144,6 +148,8 @@ public abstract class DhisConvenienceTest
     protected MappingService mappingService;
 
     protected ProgramStageService programStageService;
+    
+    protected DataEntryFormService dataEntryFormService;
 
     static
     {

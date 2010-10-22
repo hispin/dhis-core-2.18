@@ -36,8 +36,8 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
@@ -71,7 +71,7 @@ public class AggregatedDataValueConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private DataMartService dataMartService;
+    private AggregatedDataValueService aggregatedDataValueService;
 
     private DataSetService dataSetService;
     
@@ -84,11 +84,11 @@ public class AggregatedDataValueConverter
     /**
      * Constructor for write operations.
      */
-    public AggregatedDataValueConverter( DataMartService dataMartService,
+    public AggregatedDataValueConverter( AggregatedDataValueService aggregatedDataValueService,
         DataSetService dataSetService,
         PeriodService periodService )
     {
-        this.dataMartService = dataMartService;
+        this.aggregatedDataValueService = aggregatedDataValueService;
         this.dataSetService = dataSetService;
         this.periodService = periodService;
     }
@@ -119,7 +119,7 @@ public class AggregatedDataValueConverter
                     
                     log.debug( "Using period type: " + periodType.getName() + " for data element: " + dataElement.getName() );
                     
-                    values = dataMartService.getAggregatedDataValues( dataElement.getId(), 
+                    values = aggregatedDataValueService.getAggregatedDataValues( dataElement.getId(), 
                         getIdentifiers( Period.class, periods ), params.getOrganisationUnits() );
                     
                     for ( AggregatedDataValue value : values )

@@ -1,3 +1,28 @@
+
+	
+// function for displaying OrgUnit
+function getSelectedOrgUnit( orgUnitIds )
+{
+    if( orgUnitIds != "" )
+    {
+		$.post("getOrgUnitName.action",
+			{
+				selectedOrgUnitId : orgUnitIds
+			},
+			function (data)
+			{
+				 responseGetSelectedOrgUnitName(data);
+			},'xml');
+			
+	}
+}
+
+function responseGetSelectedOrgUnitName( dataelement )
+{
+    var element = dataelement.getElementsByTagName("dataelement");
+    document.reportForm.ouNameTB.value=element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
+}
+
 function getAllPeriods() {
 	var periodTypeList = document.getElementById("periodTypeId");
 	var periodTypeId = periodTypeList.options[periodTypeList.selectedIndex].value;

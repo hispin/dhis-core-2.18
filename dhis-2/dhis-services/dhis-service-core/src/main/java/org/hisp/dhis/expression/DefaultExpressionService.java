@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
@@ -95,6 +96,13 @@ public class DefaultExpressionService
     {
         this.dataValueService = dataValueService;
     }
+    
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
 
     private DataElementCategoryService categoryService;
 
@@ -136,9 +144,9 @@ public class DefaultExpressionService
     // Business logic
     // -------------------------------------------------------------------------
 
-    public Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues )
+    public Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues, boolean aggregate )
     {
-        final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues );
+        final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues, aggregate );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }    
@@ -403,7 +411,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
 
-    public String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues )
+    public String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues, boolean aggregated )
     {
         StringBuffer buffer = null;
 
@@ -419,7 +427,18 @@ public class DefaultExpressionService
 
                 final DataElementOperand operand = getOperand( replaceString );
                 
-                final String value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(), operand.getOptionComboId() );
+                String value = null;
+                
+                if ( aggregated )
+                {
+                    Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand.getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
+                    
+                    value = aggregatedValue != null ? String.valueOf( aggregatedValue ) : null;
+                }
+                else
+                {
+                    value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(), operand.getOptionComboId() );
+                }
                 
                 if ( value == null && nullIfNoValues )
                 {
@@ -450,4 +469,5 @@ public class DefaultExpressionService
         
         return new DataElementOperand( dataElementId, categoryOptionComboId ); 
     }
+
 }

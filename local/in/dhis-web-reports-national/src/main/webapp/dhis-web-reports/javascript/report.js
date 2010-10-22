@@ -7,23 +7,55 @@ function runAndViewReport( reportId, reportUrl )
     var params2;
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
-        //url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
-        params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+        ///url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+        
+		//params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+		
+		$.post("createTable.action",
+			{
+				id : reportId,
+				mode : report,
+				reportingPeriod : getListValue( "reportingPeriod" )
+			},
+			function (data)
+			{
+				runAndViewReportReceived(data);
+			},'xml');
     }
     
     if ( document.getElementById( "parentOrganisationUnitId" ) != null )
     {
-        //url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
-        params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+        ////url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+        //params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+		$.post("createTable.action",
+			{
+				id : reportId,
+				mode : report,
+				parentOrganisationUnitId : getListValue( "parentOrganisationUnitId" )
+			},
+			function (data)
+			{
+				runAndViewReportReceived(data);
+			},'xml');
     }
     
     if ( document.getElementById( "organisationUnitId" ) != null )
     {
-        //url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
-        params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+        ////url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+        //params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+		$.post("createTable.action",
+			{
+				id : reportId,
+				mode : report,
+				organisationUnitId : getListValue( "organisationUnitId" )
+			},
+			function (data)
+			{
+				runAndViewReportReceived(data);
+			},'xml');
     }
     
-    tempUrl = reportUrl;
+    /* tempUrl = reportUrl;
     
     var request = new Request();
     request.setCallbackSuccess( runAndViewReportReceived );    
@@ -32,7 +64,7 @@ function runAndViewReport( reportId, reportUrl )
     var requestString = "createTable.action";
     var params = "id=" + reportId + "&mode=report" + params2;
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
 
 }
 
@@ -43,7 +75,7 @@ function runAndViewReportReceived( messageElement )
 
 function getReportStatus()
 {   
-    //var url = "getStatus.action";
+    /* //var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( "status" );
@@ -51,7 +83,15 @@ function getReportStatus()
     //request.send( url );
 
     var requestString = "getStatus.action";
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("getStatus.action",
+		{
+		},
+		function (data)
+		{
+			reportStatusReceived(data);
+		},'xml');
 }
 
 function reportStatusReceived( xmlObject )
@@ -103,12 +143,21 @@ function removeReport( id )
 	
     if ( dialog )
     {
-        //window.location.href = "removeReport.action?id=" + id;
+        /* //window.location.href = "removeReport.action?id=" + id;
         var request = new Request();
         var requestString = "removeReport.action";
         var params = "id=" + id ;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("removeReport.action",
+		{
+			id : id
+		},
+		function (data)
+		{
+			reportStatusReceived(data);
+		},'xml');
     }
 }
 

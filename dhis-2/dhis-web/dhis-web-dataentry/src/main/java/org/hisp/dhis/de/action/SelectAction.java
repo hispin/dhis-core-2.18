@@ -39,7 +39,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -92,13 +91,6 @@ public class SelectAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private CompleteDataSetRegistrationService registrationService;
@@ -362,7 +354,7 @@ public class SelectAction
         // Get the custom data entry form if any
         // ---------------------------------------------------------------------
 
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( selectedDataSet );
+        DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
 
         customDataEntryFormExists = (dataEntryForm != null);
 

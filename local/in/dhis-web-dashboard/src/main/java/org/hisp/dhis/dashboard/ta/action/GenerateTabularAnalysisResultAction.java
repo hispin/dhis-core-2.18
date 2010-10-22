@@ -310,27 +310,59 @@ public class GenerateTabularAnalysisResultAction
         else
         {
             selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            
-            selOUList = getChildOrgUnitTree( selOrgUnit );
-                        
-            Iterator<OrganisationUnit> ouIterator = selOUList.iterator();
-            while( ouIterator.hasNext() )
+
+            System.out.println("slected group : "+ouRadio );
+
+            if( ouRadio.equalsIgnoreCase( "orgUnitGroupRadio" ) )
             {
-                OrganisationUnit orgU = ouIterator.next();
-                if( organisationUnitService.getLevelOfOrganisationUnit( orgU ) > orgUnitLevelCB )
+                List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+                System.out.println("ordunitlevelcb = "+orgUnitLevelCB);
+               OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+               selOUList = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+               selOUList.retainAll( orgUnitList1 );
+               List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>(selOUList);
+               int minLevel = organisationUnitService.getLevelOfOrganisationUnit( selOrgUnit );
+               //int maxLevel = organisationUnitService.getLevelOfOrganisationUnit( ouList.get( 0 ) );
+
+               Collections.sort( selOUList, new OrganisationUnitNameComparator() );
+               //displayPropertyHandler.handle( selOUList );
+            }
+            else
+            {
+                selOUList = getChildOrgUnitTree( selOrgUnit );
+
+                Iterator<OrganisationUnit> ouIterator = selOUList.iterator();
+                while( ouIterator.hasNext() )
                 {
-                    ouIterator.remove();
+                    OrganisationUnit orgU = ouIterator.next();
+                    if( organisationUnitService.getLevelOfOrganisationUnit( orgU ) > orgUnitLevelCB )
+                    {
+                        ouIterator.remove();
+                    }
                 }
             }
         }
-        
+        System.out.println("selectedoulebel = "+organisationUnitService.getLevelOfOrganisationUnit( selOrgUnit ));
         int minOULevel = 1;
-        minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
-        
         int maxOuLevel = 1;
-        if( orgUnitLevelCB != null ) maxOuLevel = orgUnitLevelCB;
-        else maxOuLevel = minOULevel;
+        if( selOUList != null && selOUList.size() > 0 )
+        {
+            if(orgUnitLevelCB != null && ouRadio.equalsIgnoreCase("orgUnitGroupRadio") )
+            {
+                maxOuLevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            }
+            else if(orgUnitLevelCB != null && ouRadio.equalsIgnoreCase("orgUnitLevelRadio") )
+            {
+                minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            }
+        }
         
+        if(orgUnitLevelCB != null && ouRadio.equalsIgnoreCase("orgUnitLevelRadio") ) maxOuLevel = orgUnitLevelCB;
+        else if(orgUnitLevelCB != null && ouRadio.equalsIgnoreCase("orgUnitGroupRadio") ) minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOrgUnit );
+        else maxOuLevel = minOULevel;
+
+        System.out.println("maxlevelou = "+maxOuLevel + " minoulevel = "+minOULevel);
         int c1 = headerCol+1;
         
         if( ouSelCB != null )
@@ -481,16 +513,18 @@ public class GenerateTabularAnalysisResultAction
             }
             else
             {
-                for(int i = 1; i <= maxOuLevel-minOULevel+1; i++ )
-                {          
+                 OrganisationUnit parentOu = ou;
+                for(int i = maxOuLevel-minOULevel+1; i >= minOULevel-1; i-- )
+                {
                     if( i == colCount )
                     {
                         sheet0.addCell( new Label( colCount, headerRow+1+rowCount, ou.getName(), getCellFormat2() ) );
                     }
                     else
                     {
-                        sheet0.addCell( new Label( i, headerRow+1+rowCount, " ", getCellFormat2() ) );
-                    }                
+                        parentOu = parentOu.getParent();
+                        sheet0.addCell( new Label( i, headerRow+1+rowCount, parentOu.getName(), getCellFormat2() ) );
+                    } 
                 }
             }
             
@@ -573,18 +607,18 @@ public class GenerateTabularAnalysisResultAction
                     
                     String tempStr = "";
                     
-                    double tempAggVal;
+                    Double tempAggVal;
                     if( flag == 1 )
                     {
                         tempAggVal= aggregationService.getAggregatedNumeratorValue( selIndicator, sDate, eDate, ou );
-                        if(tempAggVal == -1 ) tempAggVal = 0.0;
+                        if(tempAggVal == null ) tempAggVal = 0.0;
                         pwnumAggValue = tempAggVal;
                         tempAggVal = aggregationService.getAggregatedDenominatorValue( selIndicator, sDate, eDate, ou );
-                        if(tempAggVal == -1 ) tempAggVal = 0.0;
+                        if(tempAggVal == null ) tempAggVal = 0.0;
                         pwdenAggValue = tempAggVal;
                         
                         tempAggVal = aggregationService.getAggregatedIndicatorValue( selIndicator, sDate, eDate, ou );
-                        if(tempAggVal == -1 ) tempAggVal = 0.0;
+                        if(tempAggVal == null ) tempAggVal = 0.0;
                         pwdAggIndValue = tempAggVal;
                         
                         pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
@@ -598,7 +632,7 @@ public class GenerateTabularAnalysisResultAction
                             if( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
                             {
                                 tempAggVal = aggregationService.getAggregatedDataValue( selDataElement, selDecoc, sDate, eDate, ou );
-                                if(tempAggVal == -1 ) tempAggVal = 0.0;
+                                if(tempAggVal == null ) tempAggVal = 0.0;
                                 pwdvAggValue = tempAggVal;
                                 
                                 tempStr = ""+(int) pwdvAggValue;
@@ -639,7 +673,7 @@ public class GenerateTabularAnalysisResultAction
                                     DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
     
                                     tempAggVal = aggregationService.getAggregatedDataValue( selDataElement, decoc1, sDate, eDate, ou );
-                                    if(tempAggVal == -1 ) tempAggVal = 0.0;
+                                    if(tempAggVal == null ) tempAggVal = 0.0;
                                     pwdvAggValue += tempAggVal;                                
                                 }
                                 

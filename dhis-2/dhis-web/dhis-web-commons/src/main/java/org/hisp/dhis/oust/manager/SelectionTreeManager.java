@@ -98,19 +98,13 @@ public interface SelectionTreeManager
 
     /**
      * Returns the selected OrganisationUnits. The returned OrganisationUnits
-     * are always in the subtree of the selected root. The OrganisationUnits are
-     * fetched within the current transaction.
+     * are always in the subtree of the selected root. 
      * 
      * @return the selected OrganisationUnits or an empty collection if no unit
      *         is selected
      */
     Collection<OrganisationUnit> getSelectedOrganisationUnits();
     
-    /**
-     * Clears the selection and makes getSelectedOrganisationUnit() return null.
-     */
-    void clearSelectedOrganisationUnits();
-
     /**
      * Convenience method for getting one selected OrganisationUnit. If multiple
      * OrganisationUnits are selected, this method returns one of them.
@@ -121,6 +115,31 @@ public interface SelectionTreeManager
     OrganisationUnit getSelectedOrganisationUnit();
 
     /**
+     * Returns the selected OrganisationUnits. The returned OrganisationUnits
+     * are always in the subtree of the selected root. The OrganisationUnits
+     * are associated with the current session.
+     * 
+     * @return the selected OrganisationUnits or an empty collection if no unit
+     *         is selected
+     */
+    Collection<OrganisationUnit> getReloadedSelectedOrganisationUnits();
+
+    /**
+     * Convenience method for getting one selected OrganisationUnit. If multiple
+     * OrganisationUnits are selected, this method returns one of them. The 
+     * OrganisationUnits are associated with the current session.
+     * 
+     * @return a selected OrganisationUnit or null if no OrganisationUnit is
+     *         selected
+     */
+    OrganisationUnit getReloadedSelectedOrganisationUnit();
+    
+    /**
+     * Clears the selection and makes getSelectedOrganisationUnit() return null.
+     */
+    void clearSelectedOrganisationUnits();
+
+    /**
      * Convenience method for setting one selected OrganisationUnit.
      * 
      * @param unit
@@ -129,6 +148,4 @@ public interface SelectionTreeManager
      *             if the argument is null
      */
     void setSelectedOrganisationUnit( OrganisationUnit unit );
-    
-    Collection<OrganisationUnit> getReloadedSelectedOrganisationUnits();
 }

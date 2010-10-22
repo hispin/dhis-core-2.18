@@ -1724,5 +1724,82 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		
 	</bean>
+	<!--physical reports -->
+    <bean id="org.hisp.dhis.reports.physical.action.PhysicalReportFormAction"
+        class="org.hisp.dhis.reports.physical.action.PhysicalReportFormAction" scope="prototype">
+    <property name="reportService">
+           <ref bean="org.hisp.dhis.reports.ReportService"/>    
+    </property>
+    <property name="periodService">
+           <ref bean="org.hisp.dhis.period.PeriodService"/>
+            </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction"
+        class="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction" scope="prototype">
+        
+		<property name="reportService">
+            <ref bean="statementManager"/></property>
+		
+            <property name="dataSetService">
+                 <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+            </property>
+            <property name="periodService">
+                 <ref bean="org.hisp.dhis.period.PeriodService"/>
+            </property>
+            <property name="dataElementService">
+                 <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+            </property>
+            <property name="aggregationService">
+                 <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+            </property>
+			<property name="dataElementCategoryOptionComboService">
+		    <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		    </property>
+            <property name="dataValueService">
+                 <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+            </property>
+		<property name="currentUserService">
+                 <ref bean="org.hisp.dhis.user.CurrentUserService"/>
+            </property>
+        
+    </bean>
+	
+	<!-- CS Review Reports Start 09/08/2010-->
+    <bean
+        id="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportFormAction"
+        class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportFormAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    <bean
+        id="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportResultAction"
+        class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportResultAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService">
+        </property>
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService">
+        </property>
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
+        </property>
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
+        </property>
+        <property name="statementManager" ref="statementManager">
+        </property>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+        </property>
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
+        </property>
+       <property name="dataElementCategoryOptionComboService"
+            ref ="org.hisp.dhis.dataelement.DataElementCategoryService">
+            </property>
+    </bean>
+    <!-- CS Review Reports End 09/08/2010-->
+	
+	
+	
 	
 </beans>

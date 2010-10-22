@@ -53,7 +53,6 @@ public class DataElementCategoryConverter
     
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
-    private static final String FIELD_CONCEPT = "concept";
 
     
     // -------------------------------------------------------------------------
@@ -102,7 +101,6 @@ public class DataElementCategoryConverter
                 
                 writer.writeElement( FIELD_ID, String.valueOf( category.getId() ) );
                 writer.writeElement( FIELD_NAME, category.getName() );
-                writer.writeElement( FIELD_CONCEPT, category.getConceptName() );
 
                 writer.closeElement();
             }
@@ -121,7 +119,6 @@ public class DataElementCategoryConverter
             
             category.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             category.setName( values.get( FIELD_NAME ) );
-            category.setConceptName( values.get( FIELD_CONCEPT ) );
             
             importObject( category, params );
         }

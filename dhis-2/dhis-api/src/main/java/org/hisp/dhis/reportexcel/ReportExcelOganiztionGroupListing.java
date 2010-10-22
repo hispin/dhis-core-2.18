@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,9 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.reportexcel;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -105,5 +105,18 @@ public class ReportExcelOganiztionGroupListing
     public boolean isPeriodColumnListing()
     {
         return false;
+    }
+
+    @Override
+    public List<String> getItemTypes()
+    {
+        List<String> types = new ArrayList<String>();
+        types.add( ReportExcelItem.TYPE.DATAELEMENT );
+        types.add( ReportExcelItem.TYPE.ORGANISATION );
+        types.add( ReportExcelItem.TYPE.INDICATOR );
+        types.add( ReportExcelItem.TYPE.SERIAL );
+        types.add( ReportExcelItem.TYPE.FORMULA_EXCEL );
+
+        return types;
     }
 }

@@ -28,8 +28,6 @@ package org.hisp.dhis.dataset.action.pivotassociation;
 
 import org.hisp.dhis.dataset.PivotDataSetAssociationTable;
 import org.hisp.dhis.dataset.PivotDataSetAssociationTableService;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 

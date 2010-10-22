@@ -36,6 +36,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.datadictionary.DataDictionary;
@@ -50,7 +51,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -290,13 +290,13 @@ public class DefaultImportObjectManager
         this.periodService = periodService;
     }
     
-    private DataMartService dataMartService;
-
-    public void setDataMartService( DataMartService dataMartService )
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
-        this.dataMartService = dataMartService;
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
-
+    
     // -------------------------------------------------------------------------
     // ImportObjectManager implementation
     // -------------------------------------------------------------------------
@@ -1049,7 +1049,7 @@ public class DefaultImportObjectManager
         
         Collection<ImportDataValue> importValues = importDataValueService.getImportDataValues( ImportObjectStatus.NEW );
         
-        Importer<DataValue> importer = new DataValueImporter( batchHandler, dataMartService, params );
+        Importer<DataValue> importer = new DataValueImporter( batchHandler, aggregatedDataValueService, params );
         
         for ( ImportDataValue importValue : importValues )
         {

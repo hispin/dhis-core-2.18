@@ -1,6 +1,10 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'updateIndicatorForm', validateUpdateIndicator );				
+		validation( 'updateIndicatorForm', function( form ){ form.submit()} );	
+		checkValueIsExist( "name", "validateIndicator.action", {id:getFieldValue('id')});
+		checkValueIsExist( "shortName", "validateIndicator.action" , {id:getFieldValue('id')});
+		checkValueIsExist( "alternativeName", "validateIndicator.action" , {id:getFieldValue('id')});
+		checkValueIsExist( "code", "validateIndicator.action" , {id:getFieldValue('id')});
 	});
 </script>
 
@@ -10,10 +14,10 @@
 
 <div>
 	<input type="hidden" id="id" name="id" value="$indicator.id">
-	<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator">
+	
 	<input type="hidden" id="numeratorDescription" name="numeratorDescription" value="$!indicator.numeratorDescription">
 	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator" value="$!indicator.numeratorAggregationOperator">
-	<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator">
+	
 	<input type="hidden" id="denominatorDescription" name="denominatorDescription" value="$!indicator.denominatorDescription">
 	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator" value="$!indicator.denominatorAggregationOperator">
 </div>
@@ -54,8 +58,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" class="{validate:{required:true}}">
-				<option value="null">[$i18n.getString( "select" )]</option>
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em">			
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id"#if( $indicator.indicatorType.id == $indicatorType.id ) selected="selected"#end>$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
@@ -68,8 +71,21 @@
     </tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="showEditNumeratorForm()" style="width:10em"><input
-				type="button" value="$i18n.getString( 'edit_denominator' )" onclick="showEditDenominatorForm()" style="width:10em"></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:20em"/>
+			<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator" class="{validate:{required:true}}"/>
+		</td>		
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em">			
+			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator" class="{validate:{required:true}}"/>
+		</td>
+	</tr>
+	<tr>
+		<td height="20px"></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -79,12 +95,6 @@
 
 </form>
 
-<span id="message"></span>
 
-<script type="text/javascript">
+#parse( "/dhis-web-maintenance-datadictionary/indicatorExpressionBuilderForm.vm" )
 
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
-</script>

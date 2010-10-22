@@ -61,7 +61,6 @@
 										formValidations();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 				jQuery("#name").focus();
 			}
 	);
@@ -69,7 +68,6 @@
 		<h1>Organisationunit Wise Progress Report</h1><hr /><br />
 	        
 		<form id="reportForm" name="reportForm" action="ouwisegenerateProgressReport.action" method="post" target="_blank">
-           <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
             <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>		                
 				<tr>
 					<td class="NormalB">

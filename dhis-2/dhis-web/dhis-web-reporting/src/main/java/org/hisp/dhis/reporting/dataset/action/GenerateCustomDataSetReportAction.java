@@ -30,7 +30,6 @@ package org.hisp.dhis.reporting.dataset.action;
 import java.util.Map;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datasetreport.DataSetReportService;
@@ -52,14 +51,7 @@ public class GenerateCustomDataSetReportAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }    
-        
+            
     private DataSetReportService dataSetReportService;
 
     public void setDataSetReportService( DataSetReportService dataSetReportService )
@@ -162,7 +154,7 @@ public class GenerateCustomDataSetReportAction
         {
             Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly );
             
-            DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+            DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
             
             customDataEntryFormCode = dataSetReportService.prepareReportContent( dataEntryForm.getHtmlCode(), aggregatedDataValueMap );
             

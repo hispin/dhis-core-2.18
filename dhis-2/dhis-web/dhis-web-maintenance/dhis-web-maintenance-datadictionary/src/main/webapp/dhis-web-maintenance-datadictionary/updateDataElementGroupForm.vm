@@ -1,6 +1,7 @@
 <script>
-	jQuery(document).ready(	function(){
-			validation( 'updateDataElementGroupForm', validateUpdateDataElementGroup );				
+		jQuery(document).ready(	function(){
+		validation( 'updateDataElementGroupForm', function( form ){ form.submit()}, beforeSubmit );	
+		checkValueIsExist( "name", "validateDataElementGroup.action", {id: getFieldValue( 'id' )});		
 	});
 </script>
 
@@ -18,7 +19,8 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}">	
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -27,7 +29,9 @@
 
 <table>
 	<tr>
-		<th>$i18n.getString( "available_data_elements" )</th><td></td><th>$i18n.getString( "group_members" )</th>
+		<th>$i18n.getString( "available_data_elements" )</th><td></td><th>$i18n.getString( "group_members" )
+		<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
+		</th>
 	</tr>
 	<tr>		
 		<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableDataElements' )" style="width:25em"></td>
@@ -63,13 +67,3 @@
 <p><input type="submit" value="$i18n.getString( "save" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataElementGroup.action'" style="width:10em"></p>
 
 </form>
-
-<span id="message"></span>
-
-<script type="text/javascript">
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
-</script>

@@ -39,11 +39,11 @@ import org.hisp.dhis.period.Period;
  */
 public class SVGDocument
 {
-    static final String doctype = "<?xml version='1.0' encoding='UTF-8'?>"
+    private static final String doctype = "<?xml version='1.0' encoding='UTF-8'?>"
         + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\" ["
         + "<!ATTLIST svg   xmlns:attrib CDATA #IMPLIED> <!ATTLIST path attrib:divname CDATA #IMPLIED>]>";
 
-    static final String namespace = "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:attrib=\"http://www.carto.net/attrib/\"  ";
+    private static final String namespace = "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:attrib=\"http://www.carto.net/attrib/\"  ";
 
     private String title;
 
@@ -51,7 +51,7 @@ public class SVGDocument
 
     private String legends;
 
-    private Period period;
+    private String period;
 
     private Indicator indicator;
 
@@ -60,8 +60,6 @@ public class SVGDocument
     private int width;
 
     private int height;
-
-    private String imageFormat;
 
     public SVGDocument()
     {
@@ -76,7 +74,7 @@ public class SVGDocument
             + this.indicator.getName() + "</tspan></text></g>";
 
         String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"30\" y=\"45\" font-size=\"12\"><tspan>"
-            + this.period.getName() + "</tspan></text></g>";
+            + this.period + "</tspan></text></g>";
 
         String svg_ = doctype + this.svg;
 
@@ -134,6 +132,9 @@ public class SVGDocument
 
             String color = legend.getString( "color" );
 
+            System.out.println( "1 l " + label + " c " + color );
+            System.out.println( legend );
+            
             result += "<rect x='" + x + "' y='" + (y + 1) + "' height='1' width='1' fill='" + color
                 + "' stroke='#000000' stroke-width='0.001'/>";
 
@@ -168,6 +169,9 @@ public class SVGDocument
 
             String color = legend.getString( "color" );
 
+            System.out.println( "1 l " + label + " c " + color );
+            System.out.println( legend );
+            
             result += "<rect x='" + x + "' y='" + (y + 15) + "' height='15' width='30' fill='" + color
                 + "' stroke='#000000' stroke-width='1'/>";
 
@@ -182,6 +186,12 @@ public class SVGDocument
         return result;
     }
 
+    @Override
+    public String toString()
+    {
+        return svg;
+    }
+    
     public boolean isIncludeLegends()
     {
         return includeLegends;
@@ -223,12 +233,12 @@ public class SVGDocument
         this.legends = legends;
     }
 
-    public Period getPeriod()
+    public String getPeriod()
     {
         return period;
     }
 
-    public void setPeriod( Period period )
+    public void setPeriod( String period )
     {
         this.period = period;
     }
@@ -261,21 +271,5 @@ public class SVGDocument
     public void setHeight( int height )
     {
         this.height = height;
-    }
-
-    public String getImageFormat()
-    {
-        return imageFormat;
-    }
-
-    public void setImageFormat( String imageFormat )
-    {
-        this.imageFormat = imageFormat;
-    }
-
-    @Override
-    public String toString()
-    {
-        return this.svg;
     }
 }

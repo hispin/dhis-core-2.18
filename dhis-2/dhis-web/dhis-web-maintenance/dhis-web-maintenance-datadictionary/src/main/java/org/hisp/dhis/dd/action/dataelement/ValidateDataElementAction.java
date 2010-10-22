@@ -27,11 +27,7 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 
@@ -55,13 +51,6 @@ public class ValidateDataElementAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private I18n i18n;
@@ -101,39 +90,7 @@ public class ValidateDataElementAction
     public void setShortName( String shortName )
     {
         this.shortName = shortName;
-    }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
-    // -------------------------------------------------------------------------
-    // Calculated data elements
-    // -------------------------------------------------------------------------
-
-    private String calculated;
-
-    public void setCalculated( String calculated )
-    {
-        this.calculated = calculated;
-    }
-
-    private Collection<String> dataElementIds;
-
-    public void setDataElementIds( Collection<String> dataElementIds )
-    {
-        this.dataElementIds = dataElementIds;
-    }
-
-    private Integer selectedCategoryComboId;
-
-    public void setSelectedCategoryComboId( Integer selectedCategoryComboId )
-    {
-        this.selectedCategoryComboId = selectedCategoryComboId;
-    }
+    }  
 
     // -------------------------------------------------------------------------
     // Output
@@ -156,22 +113,8 @@ public class ValidateDataElementAction
         // Validating DataElement fields
         // ----------------------------------------------------------------------
 
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
 
             DataElement match = dataElementService.getDataElementByName( name );
 
@@ -179,26 +122,12 @@ public class ValidateDataElementAction
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
 
-        if ( shortName == null )
+        if ( shortName != null )
         {
-            message = i18n.getString( "specify_short_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            shortName = shortName.trim();
-
-            if ( shortName.length() == 0 )
-            {
-                message = i18n.getString( "specify_short_name" );
-
-                return INPUT;
-            }
 
             DataElement match = dataElementService.getDataElementByShortName( shortName );
 
@@ -206,7 +135,7 @@ public class ValidateDataElementAction
             {
                 message = i18n.getString( "short_name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
 
@@ -218,66 +147,10 @@ public class ValidateDataElementAction
             {
                 message = i18n.getString( "alternative_name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
-        }
-
-        if ( selectedCategoryComboId == null )
-        {
-            message = i18n.getString( "select_categorycombo" );
-
-            return INPUT;
-        }
-
-        // ---------------------------------------------------------------------
-        // Validating CalculatedDataElement fields
-        // ---------------------------------------------------------------------
-
-        if ( calculated != null && calculated.equals( "on" ) )
-        {
-            if ( valueType != null && (!valueType.equals( DataElement.VALUE_TYPE_INT )) )
-            {
-                message = i18n.getString( "cde_must_be_number" );
-
-                return INPUT;
-            }
-
-            if ( dataElementIds != null && dataElementIds.size() > 1 )
-            {
-                DataElement dataElement;
-                DataElementCategoryOptionCombo optionCombo;
-
-                message = "";
-
-                for ( String operandId : dataElementIds )
-                {
-                    String dataElementIdStr = operandId.substring( 0, operandId.indexOf( '.' ) );
-                    String optionComboIdStr = operandId.substring( operandId.indexOf( '.' ) + 1, operandId.length() );
-
-                    dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdStr ) );
-                    optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
-                        .parseInt( optionComboIdStr ) );
-
-                    if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) || optionCombo == null )
-                    {
-                        message += dataElement.getName() + ", ";
-                    }
-                }
-
-                if ( !message.equals( "" ) )
-                {
-                    message = i18n.getString( "cde_data_elements_must_be_numbers" ) + ": "
-                        + message.substring( 0, message.length() - 2 );
-                    return INPUT;
-                }
-            }
-            else
-            {
-                message = i18n.getString( "cde_must_have_data_elements" );
-
-                return INPUT;
-            }
-        }
+        }      
+   
 
         // ---------------------------------------------------------------------
         // Validation success

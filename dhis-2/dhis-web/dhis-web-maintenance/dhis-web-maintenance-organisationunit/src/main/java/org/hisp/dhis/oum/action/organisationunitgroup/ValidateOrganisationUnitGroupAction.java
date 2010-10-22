@@ -97,35 +97,17 @@ public class ValidateOrganisationUnitGroupAction
         // ---------------------------------------------------------------------
         // Validate values
         // ---------------------------------------------------------------------
-
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "please_specify_a_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_name" );
-
-                return INPUT;
-            }
-
             OrganisationUnitGroup match = organisationUnitGroupService.getOrganisationUnitGroupByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_is_already_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
-
-        // TODO validate exclusivity
 
         message = "OK";
 

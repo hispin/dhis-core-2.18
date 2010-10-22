@@ -1,4 +1,32 @@
+function changeValueType( value )
+{
+	if( value == 'int' ){
+		enable( 'calculated' );
+	}else{
+		disable( 'calculated' );		
+	}	
+	
+	updateAggreationOperation( value );
+}
 
+function updateAggreationOperation( value )
+{
+	if( value== 'string' || value== 'date')
+	{		
+        hideById("aggregationOperator");
+	}else{		
+        showById("aggregationOperator");
+	}
+}
+
+function changeCategory( value )
+{	
+	if( value == getFieldValue( 'defaultCategoryCombo') ){
+		enable( 'calculated' );
+	}else{
+		disable( 'calculated' );
+	}
+}
 // -----------------------------------------------------------------------------
 // Change data element group and data dictionary
 // -----------------------------------------------------------------------------
@@ -27,17 +55,17 @@ function showDataElementDetails( dataElementId )
 
 function dataElementReceived( dataElementElement )
 {
-    setFieldValue( 'nameField', getElementValue( dataElementElement, 'name' ) );
-    setFieldValue( 'shortNameField', getElementValue( dataElementElement, 'shortName' ) );
+    setInnerHTML( 'nameField', getElementValue( dataElementElement, 'name' ) );
+    setInnerHTML( 'shortNameField', getElementValue( dataElementElement, 'shortName' ) );
 
     var alternativeName = getElementValue( dataElementElement, 'alternativeName' );
-    setFieldValue( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
+    setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
     
     var description = getElementValue( dataElementElement, 'description' );
-    setFieldValue( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 
     var active = getElementValue( dataElementElement, 'active' );
-    setFieldValue( 'activeField', active == 'true' ? i18n_yes : i18n_no );
+    setInnerHTML( 'activeField', active == 'true' ? i18n_yes : i18n_no );
     
     var typeMap = { 
         'int':i18n_number,
@@ -45,14 +73,14 @@ function dataElementReceived( dataElementElement )
         'string':i18n_text
     };
     var type = getElementValue( dataElementElement, 'valueType' );
-    setFieldValue( 'typeField', typeMap[type] );
+    setInnerHTML( 'typeField', typeMap[type] );
     
     var domainTypeMap = {
         'aggregate':i18n_aggregate,
         'patient':i18n_patient
     };
     var domainType = getElementValue( dataElementElement, 'domainType' );
-    setFieldValue( 'domainTypeField', domainTypeMap[domainType] );
+    setInnerHTML( 'domainTypeField', domainTypeMap[domainType] );
     
     var aggregationOperator = getElementValue( dataElementElement, 'aggregationOperator' );
     var aggregationOperatorText = i18n_none;
@@ -64,15 +92,15 @@ function dataElementReceived( dataElementElement )
     {
         aggregationOperatorText = i18n_average;
     }
-    setFieldValue( 'aggregationOperatorField', aggregationOperatorText );   
+    setInnerHTML( 'aggregationOperatorField', aggregationOperatorText );   
     
-    setFieldValue( 'categoryComboField', getElementValue( dataElementElement, 'categoryCombo' ) );
+    setInnerHTML( 'categoryComboField', getElementValue( dataElementElement, 'categoryCombo' ) );
     
     var url = getElementValue( dataElementElement, 'url' );
-    setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
+    setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
 	
     var lastUpdated = getElementValue( dataElementElement, 'lastUpdated' );
-    setFieldValue( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
+    setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
 	
     showDetails();
 }
@@ -127,50 +155,6 @@ function getDataElementsReceived( xmlObject )
         availableDataElements.add( option, null );
     }
 }
-
-// -----------------------------------------------------------------------------
-// Remove calculated and agrregationoperator option
-// -----------------------------------------------------------------------------
-function showorhideoperator()
-{
-    var type = document.getElementById( 'valueType' ).value;
-    if(type != "int" && type != "bool")
-    {
-        jQuery("#lblOperator").hide();
-        jQuery("#aggregationOperator").hide();
-    }
-    else
-    {
-        jQuery("#lblOperator").show();
-        jQuery("#aggregationOperator").show();
-
-    }
-    if(type != "int")
-    {
-        jQuery("#lblCalculated").hide();
-        jQuery("#calculated").hide();
-    }
-    else
-    {
-        jQuery("#lblCalculated").show();
-        jQuery("#calculated").show();
-    }
-}
-
-function showorhideeditoperator()
-{
-    var type = document.getElementById( 'valueType' ).value;
-    if(type != "int" && type != "bool")
-    {
-        jQuery("#lblOperator").hide();
-        jQuery("#aggregationOperator").hide();
-    }
-    else
-    {
-        jQuery("#lblOperator").show();
-        jQuery("#aggregationOperator").show();
-    }
-}
 // -----------------------------------------------------------------------------
 // Remove data element
 // -----------------------------------------------------------------------------
@@ -179,255 +163,6 @@ function removeDataElement( dataElementId, dataElementName )
 {
     removeItem( dataElementId, dataElementName, i18n_confirm_delete, 'removeDataElement.action' );
 }
-
-// -----------------------------------------------------------------------------
-// Checks for zero factors in calculated window
-// -----------------------------------------------------------------------------
-function checkZeroFactors()
-{
-    if( jQuery("#calculated").attr("checked") )
-    {
-        var factors = jQuery("input[name='factors']");
-        var isInvalid = false;
-        for( var i =0; i< factors.length; i++ )
-        {
-            if( checkValueInvalid(jQuery(factors[i]).val() ) ){
-                isInvalid = true;
-                jQuery(factors[i]).focus();
-                jQuery(factors[i]).css({
-                    "background-color":"#FFCFCF"
-                });
-
-            }else{
-                jQuery(factors[i]).css({
-                    "background-color":"white"
-                });
-            }
-        }
-        if( isInvalid ){
-            alert(i18n_error_zero_value);
-            return false;
-        }
-        return true;
-    }else{
-        var factors = jQuery("input[name='factors']");
-        var value = null;
-        for( var i =0; i< factors.length; i++ )
-        {
-            value = jQuery(factors[i]).val();
-            if( checkValueInvalid( value ) ){
-                jQuery(factors[i]).val("1");
-            }
-        }
-        return true;
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Add data element
-// -----------------------------------------------------------------------------
-
-function validateAddDataElement()
-{
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );
-    
-    var params = 'name=' + getFieldValue( 'name' ) +
-    '&shortName=' + getFieldValue( 'shortName' ) +
-    '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-    '&code=' + getFieldValue( 'code' ) +
-    '&valueType=' + getSelectValue( 'valueType' ) +
-    '&calculated=' + getCheckboxValue( 'calculated' ) +
-    '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
-    makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds'));
-
-    request.sendAsPost( params );
-    request.send( "validateDataElement.action" );
-    return false;
-}
-
-/**
- * Make a CGI parameter string for the given field name and set of values
- * 
- * @param fieldName name of the field to make a string for
- * @param values array of values to add to the string
- * @returns String on the form '&fieldName=value1...$fieldName=valueN'
- */
-function makeValueString( fieldName, values )
-{
-    var valueStr = "";
-	
-    for ( var i = 0, value; value = values[i]; i++ )
-    {
-        valueStr += "&" + fieldName + "=" + value;
-    }
-	
-    return valueStr;
-}
-
-function addValidationCompleted( messageElement )
-{        
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        document.getElementById( 'selectedCategoryComboId' ).disabled = false;
-        document.getElementById( 'valueType' ).disabled = false;
-        selectAllById( "aggregationLevels" );
-        selectAllById( "dataElementGroupSets" );
-        document.getElementById( "addDataElementForm" ).submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_adding_data_element_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
-
-/**
- * Returns the first value of the specified select box
- * 
- * @param selectId
- * @return The first (or only) String value of the given select box, 
- * 		or null if no options are selected
- */
-function getSelectValue( selectId )
-{
-    var select = document.getElementById( selectId );
-    var option = select.options[select.selectedIndex];
-	
-    if ( option )
-    {
-        return option.value;
-    }
-    else
-    {
-        return null;
-    }
-}
-
-/**
- * Returns the values for the specified select box
- * 
- * @param id id of the select box to get values for
- * @return Array of String values from the given select box,
- * 		or an empty array if no options are selected
- */
-function getSelectValues( selectId )
-{
-    var select = document.getElementById( selectId );
-    var values = [];
-    for ( var i = 0, option; option = select.options[i]; i++ )
-    {
-        if ( option.selected )
-        {
-            values.push(option.value);
-        }
-    }
-	
-    return values;
-}
-
-/**
- * Returns the value for the specified checkbox
- * 
- * @param checkboxId id of the checkbox to get a value for
- * @return String value for the specified checkbox,
- * 		or null if the checkbox is not checked
- */
-function getCheckboxValue( checkboxId )
-{
-    var checkbox = document.getElementById( checkboxId );
-	
-    return ( checkbox != null && checkbox.checked ? checkbox.value : null );
-}
-
-/**
- * Returns the values for a set of inputs with the same name,
- * under a specified parent node.
- * 
- * @param parentId id of the parent node to limit the search to
- * @param fieldName form name of the inputs to get values for
- * @return Array with the String values for the specified inputs,
- * 		or an empty Array if no inputs with that name exist under the specified parent node
- */
-function getInputValuesByParentId( parentId, fieldName )
-{
-    var node = document.getElementById(parentId);
-	
-    if ( ! node )
-    {
-        return [];
-    }
-	
-    var inputs = node.getElementsByTagName("input");
-    values = [];
-	
-    for ( var i = 0, input; input = inputs[i]; i++ )
-    {
-        if ( input.name == fieldName )
-        {
-            values.push(input.value);
-        }
-    }
-	
-    return values;
-	
-}
-
-// -----------------------------------------------------------------------------
-// Update data element
-// -----------------------------------------------------------------------------
-
-function validateUpdateDataElement()
-{
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationCompleted );   
-    
-    var params = 'id=' + getFieldValue( 'id' ) +
-    '&name=' + getFieldValue( 'name' ) +
-    '&shortName=' + getFieldValue( 'shortName' ) +
-    '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-    '&code=' + getFieldValue( 'code' ) +
-    '&calculated=' + getCheckboxValue( 'calculated' ) +
-    '&selectedCategoryComboId=' + getSelectValue( 'selectedCategoryComboId' ) +
-    makeValueString('dataElementIds', getInputValuesByParentId('selectedDataElements', 'dataElementIds') ) ;
-
-    request.sendAsPost( params );
-    request.send( "validateDataElement.action" );
-    return false;
-}
-
-function updateValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        selectAllById( "aggregationLevels" );
-        selectAllById( "dataElementGroupSets" );
-        document.getElementById( "updateDataElementForm" ).submit();
-
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_saving_data_element_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
-
 // -----------------------------------------------------------------------------
 // Calculated Data Elements
 // -----------------------------------------------------------------------------
@@ -439,27 +174,25 @@ function updateValidationCompleted( messageElement )
  */
 function addCDEDataElements()
 {
-    var available = byId('availableDataElements');
-    var option;
-
-    removeTablePlaceholder();
-
-    for ( var i = available.options.length - 1; i >= 0; i-- )
-    {
-        option = available.options[i];
-
-        if ( option.selected )
-        {
-            available.remove(i);
-            addCDEDataElement( option.value, option.firstChild.nodeValue );
-        }
-    }
+	var alvailableList = jQuery("#availableDataElements option");
+	
+	jQuery("#selectedDataElements tr.placeholder").remove();
+	
+	var selectedList = jQuery("#selectedDataElements")
+	
+	jQuery.each( alvailableList, function(i, item){
+		if( item.selected ){
+			var id = item.value;
+			var name = item.firstChild.nodeValue;
+			jQuery( item ).remove();
+			addCDEDataElement( id, name, i);			
+		}
+	});
+	
+	updateValidatorRulesForFactors();
 }
 
-/**
- * Add a single data element to the CDE table.
- */
-function addCDEDataElement( id, name )
+function addCDEDataElement( id, name, index )
 {
     var tr = document.createElement('tr');
 
@@ -473,7 +206,7 @@ function addCDEDataElement( id, name )
     var factorTd = tr.appendChild(document.createElement('td'));
     var factorInput = factorTd.appendChild(document.createElement('input'));
     factorInput.type = 'text';
-    factorInput.name = 'factors';
+    factorInput.name = 'factors-' + index;
     factorInput.value = 1;
 
     var opTd = tr.appendChild(document.createElement('td'));
@@ -493,23 +226,16 @@ function addCDEDataElement( id, name )
  * Remove all elements from the CDE table.
  */
 function removeCDEDataElements( e )
-{
-    var selectedDataElements = byId('selectedDataElements');
-    var trs = selectedDataElements.getElementsByTagName('tr');
-
-    if ( trs.length < 2 ) // Skip headings
-    { 
-        return;
-    }
-
-    var tr;
-    
-    for ( var i = trs.length - 1; i > 0; i-- )
-    {
-        tr = trs[i];
+{	
+	var trs = jQuery( "#selectedDataElements tr[class!=placeholder]:gt(0)");
+	
+	jQuery.each( trs, function(i, item){		
+		var deId = jQuery( "input[name=dataElementIds]", item )[0].value;
+		var deName = jQuery( "td", item )[0].firstChild.nodeValue
+		jQuery(item).remove();
+		jQuery("#availableDataElements").append( '<option value="' + deId + '" selected="true">' + deName + '</option>' );
 		
-        removeCDE( tr );       
-    }
+	});	   
 }
 
 /**
@@ -517,39 +243,31 @@ function removeCDEDataElements( e )
  */
 function removeCDEDataElement( e )
 {    
-    var tr = this.parentNode.parentNode;
-
-    removeCDE( tr );
-}
-
-function removeCDE( tr )
-{
-    //Add data back to the list of available data elements
-    var td = tr.getElementsByTagName('td')[0];
-    var option = document.createElement('option');
-    option.value = td.getElementsByTagName('input')[0].value;
-    option.text = td.firstChild.nodeValue;
-    byId('availableDataElements').add(option, null);
-
-    //Remove data from the table of data elements
-    tr.parentNode.removeChild(tr);
-}
-
-/**
- * Remove placeholder from the selected data elements table
- */
-function removeTablePlaceholder()
-{
-    var table = byId('selectedDataElements').getElementsByTagName('tbody')[0];
-    var trs = table.getElementsByTagName('tr');
+	var tr = jQuery( this ).parent().parent();	
+	var deId = tr.find( "input[name=dataElementIds]").val();
+	var deName = tr.find( "td:first" ).text();
+	tr.remove();
+	jQuery("#availableDataElements").append( '<option value="' + deId + '" selected="true">' + deName + '</option>' );
 	
-    for ( var i = 0, tr; tr = trs[i]; i++ )
-    {
-        if ( tr.getAttribute('class') == 'placeholder' )
-        {
-            table.removeChild(tr);
-        }
-    }
+}
+
+function updateValidatorRulesForFactors()
+{
+	var inputs = jQuery("#selectedDataElements input[name|=factors]");
+	
+	jQuery.each(inputs, function(i, item ){				
+		removeValidatorRules( item );
+		addValidatorRules( item, {required:true, number:true});			
+	});
+}
+
+function removeValidatorRulesForFactors()
+{
+	var inputs = jQuery("#selectedDataElements input[name|=factors]");
+	
+	jQuery.each(inputs, function(i, item ){			
+		removeValidatorRules( item );		
+	});
 }
 
 /**
@@ -557,47 +275,50 @@ function removeTablePlaceholder()
  * @param id Id of the element to toggle
  * @param display Whether or not to display the element
  */
-function toggleByIdAndFlagIfDefaultCombo( id, display, defaultId )
-{
-    var node = byId(id);
-    var comboId = getSelectValue( 'selectedCategoryComboId' );
-
+function toggleCDEForm()
+{    
+	id = 'calculatedContainer';
+	display = isChecked( 'calculated' );
+	
     if( display )
     {
-    //		jQuery("input[name='factors']").each(function(){
-    //			jQuery(this).rules("add","required");
-    //		});
+		disable( 'valueType' );
+		disable( 'selectedCategoryComboId' );
+		showById( id );	
+		addValidatorRulesById("selectedDEValidator", {
+			required: true			
+		});
+		updateValidatorRulesForFactors();
     }
     else
     {
-        document.getElementById( 'selectedCategoryComboId' ).disabled = false;
-        document.getElementById( 'type' ).disabled = false;
-        node.style.display = (display ? 'block' : 'none');
-        return;
-    }
-    
-    if ( !comboId )
-    {
-        return;
-    }
-	
-    if ( !node )
-    {
-        return;
-    }
-	
-    if ( comboId == defaultId )
-    {
-        node.style.display = (display ? 'block' : 'none');
-    }
-    else//if(comboId != defaultId )
-    {
-        alert("Calculated Dataelement can be created for default category combination only");
+        enable( 'valueType' );
+        enable( 'selectedCategoryComboId' );
+		hideById( id );
+		removeValidatorRulesById("selectedDEValidator");
+		removeValidatorRulesForFactors();
+    } 
+   
+}
 
-        document.getElementById( 'calculated' ).checked = false;
+function getFactors()
+{
+	var factorsSubmit = jQuery("#factorsSubmit");
+	var inputs = jQuery("#selectedDataElements input[name|=factors]");
 
-        return;
-    }
+	jQuery.each(inputs, function(i, item ){				
+		factorsSubmit.append('<option value="' + item.value + '" selected="selected">' + item.value + '</option>');	
+	});
+}
+
+function getDataElementIdsForValidate()
+{
+	var dataElementValidators = jQuery("#selectedDEValidator");
+	var inputs = jQuery( "#selectedDataElements input[type=hidden]" );
 	
-    return;
+	dataElementValidators.children().remove();
+	
+	jQuery.each(inputs, function(i, item ){				
+		dataElementValidators.append('<option value="' + item.value + '" selected="selected">' + item.value + '</option>');	
+	});
 }

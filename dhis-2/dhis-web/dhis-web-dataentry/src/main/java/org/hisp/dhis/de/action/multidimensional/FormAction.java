@@ -49,7 +49,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
@@ -75,7 +74,6 @@ import com.opensymphony.xwork2.Action;
 public class FormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -97,13 +95,6 @@ public class FormAction
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private DataElementService dataElementService;
@@ -537,7 +528,7 @@ public class FormAction
         // Get the custom data entry form (if any)
         // ---------------------------------------------------------------------
 
-        dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+        dataEntryForm = dataSet.getDataEntryForm();
 
         cdeFormExists = (dataEntryForm != null);
 

@@ -117,16 +117,15 @@ public class GenerateReportCategoryAction
 
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
                 {
-
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElement
-                            .getName() ), ExcelUtils.TEXT, sheet, this.csText10Bold );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElement
+                            .getName(), ExcelUtils.TEXT, sheet, this.csText10Bold );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_CODE ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElement
-                            .getCode() ), ExcelUtils.TEXT, sheet, this.csTextICDJustify );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElement
+                            .getCode(), ExcelUtils.TEXT, sheet, this.csTextICDJustify );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                     {

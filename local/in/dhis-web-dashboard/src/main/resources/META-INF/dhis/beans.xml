@@ -350,6 +350,53 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dashboard.ds.action.ExportToExcelAction"
 		scope="prototype">
     </bean>
+
+    <!-- DataStatus based on data entry Validation Pass-->
+
+	<bean
+		id="org.hisp.dhis.dashboard.ds.action.GenerateValidationStatusResultAction"
+		class="org.hisp.dhis.dashboard.ds.action.GenerateValidationStatusResultAction"
+		scope="prototype">
+		<property name="dashBoardService">
+			<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+		<property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
+	</bean>
+
+    <!-- Data Status based on last updation in selected data set-->
+
+	<bean
+		id="org.hisp.dhis.dashboard.ds.action.GenerateLastUpdatedDataSetResultAction"
+		class="org.hisp.dhis.dashboard.ds.action.GenerateLastUpdatedDataSetResultAction"
+		scope="prototype">
+
+		<property name="dashBoardService">
+			<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+		<property name="userStore">
+			<ref bean="org.hisp.dhis.user.UserStore"/>
+		</property>
+	    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+	</bean>
 	
 	<!-- DataStatus Orgnisationunit GroupSet Wise-->
 	
@@ -530,6 +577,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
+        <property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
 		
     </bean>
 	
@@ -562,6 +612,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="dataValueService">
             <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>
     </bean>
 	

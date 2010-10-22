@@ -1,0 +1,9 @@
+#set( $size = $organisationUnitLevels.size() )
+{ "levels": [
+#foreach( $level in $organisationUnitLevels )
+  {    
+    "name": "$!encoder.jsEncode( ${level.name} )",
+    "level": "$level.level"
+  }#if( $velocityCount < $size ),#end    
+#end
+] }

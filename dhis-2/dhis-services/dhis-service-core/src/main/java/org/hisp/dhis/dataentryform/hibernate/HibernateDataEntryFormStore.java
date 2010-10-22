@@ -28,14 +28,17 @@ package org.hisp.dhis.dataentryform.hibernate;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.program.ProgramStage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -111,6 +114,30 @@ public class HibernateDataEntryFormStore
 
         Criteria criteria = session.createCriteria( DataEntryForm.class );
 
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( ProgramStage.class ).add(
+            Restrictions.in( "dataEntryForm.id", programStageIds ) ).setProjection(
+            Projections.distinct( Projections.property( "dataEntryForm" ) ) );
+        
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( DataSet.class ).add(
+            Restrictions.in( "dataEntryForm.id", dataSetIds ) ).setProjection(
+            Projections.distinct( Projections.property( "dataEntryForm" ) ) );
+        
         return criteria.list();
     }
 

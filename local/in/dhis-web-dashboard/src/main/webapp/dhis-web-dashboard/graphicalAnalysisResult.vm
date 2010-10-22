@@ -424,7 +424,7 @@ function Request()
 			<td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1)</td>
                 
 			#foreach($data in $onedataList)
-				#if( $categoryLB.equals( "period" ) ) 
+				#if( $categoryLB.equals( "period" ) && !$ougSetCB && $riRadio.equals( "dataElementsRadio" ) )
 					<td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><a href="#" onclick="javascript:drillDownResult( event, '$selectedValues.get($count3)' )" target="_blank">$data</a></td>               		             
 					#set( $count3 = $count3 + 1 )
 				#else

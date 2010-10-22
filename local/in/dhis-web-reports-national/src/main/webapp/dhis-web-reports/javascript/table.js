@@ -5,7 +5,7 @@
 
 function createTable( tableId )
 {
-    //var url = "createTable.action?id=" + tableId + "&mode=table";
+    /* //var url = "createTable.action?id=" + tableId + "&mode=table";
     var params;
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
@@ -32,7 +32,53 @@ function createTable( tableId )
 
     var requestString = "createTable.action";
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	if ( byId( "reportingPeriod" ) != null )
+    {
+        ////url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+        //params += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+		
+		$.post("createTable.action",
+			{
+				reportingPeriod : getListValue( "reportingPeriod" )
+			},
+			function (data)
+			{
+				createTableReceived(data);
+			},'xml');
+
+    }
+    
+    if ( document.getElementById( "parentOrganisationUnitId" ) != null )
+    {
+        ////url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+        //params += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+		
+		$.post("createTable.action",
+			{
+				parentOrganisationUnitId : getListValue( "parentOrganisationUnitId" )
+			},
+			function (data)
+			{
+				createTableReceived(data);
+			},'xml');
+    }
+    
+    if ( document.getElementById( "organisationUnitId" ) != null )
+    {
+        ////url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+        //params += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+		
+		$.post("createTable.action",
+			{
+				organisationUnitId : etListValue( "organisationUnitId" )
+			},
+			function (data)
+			{
+				createTableReceived(data);
+			},'xml');
+    }
 }
 
 function createTableReceived( messageElement )
@@ -42,7 +88,7 @@ function createTableReceived( messageElement )
 
 function getTableStatus()
 {
-    //var url = "getStatus.action";
+    /* //var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( 'status' );
@@ -50,7 +96,15 @@ function getTableStatus()
     //request.send( url );
 
     var requestString = "getStatus.action";
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("getStatus.action",
+		{
+		},
+		function (data)
+		{
+			tableStatusReceived(data);
+		},'xml');
 }
 
 function tableStatusReceived( xmlObject )
@@ -90,7 +144,7 @@ function saveTable()
         var tableId = document.getElementById( "tableId" ).value;
         var tableName = document.getElementById( "tableName" ).value;
         
-        //var url = "validateTable.action?id=" + tableId + "&name=" + tableName;
+        /* //var url = "validateTable.action?id=" + tableId + "&name=" + tableName;
         
         var request = new Request();
         request.setResponseTypeXML( 'message' );
@@ -100,7 +154,17 @@ function saveTable()
         var requestString = "validateTable.action";
         var params = "id=" + tableId + "&name=" + tableName;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("validateTable.action",
+			{
+				id : tableId,
+				name : tableName
+			},
+			function (data)
+			{
+				saveTableReceived(data);
+			},'xml');
     }
 }
 
@@ -154,12 +218,20 @@ function removeTable( tableId, tableName )
     
     if ( result )
     {
-        //window.location.href = "removeTable.action?id=" + tableId;
+        /* //window.location.href = "removeTable.action?id=" + tableId;
         var request = new Request();
         var requestString = "removeTable.action";
         var params = "id=" + tableId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("removeTable.action",
+			{
+				id : tableId
+			},
+			function ( data )
+			{
+			},'xml');
     }
 }
 
@@ -260,7 +332,7 @@ function organisationUnitReportParamsChecked()
 
 function showTableDetails( tableId )
 {
-    var request = new Request();
+   /*  var request = new Request();
     request.setResponseTypeXML( 'reportTable' );
     request.setCallbackSuccess( tableReceived );
     //request.send( 'getTable.action?id=' + tableId );
@@ -268,7 +340,16 @@ function showTableDetails( tableId )
     var requestString = "getTable.action";
     var params = "id=" + tableId;
     request.sendAsPost( params );
-    request.send( requestString );
+    request.send( requestString ); */
+	
+	$.post("getTable.action",
+		{
+			id : tableId
+		},
+		function ( data )
+		{
+			tableReceived (data);
+		},'xml');
 }
 
 function tableReceived( xmlObject )

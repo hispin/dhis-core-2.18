@@ -66,9 +66,17 @@ function runAndViewDataSetReport( previewReport )
         
         tempPreviewReport = previewReport;
         
-        var request = new Request();
+        /* var request = new Request();
         request.setCallbackSuccess( runAndViewDataSetReportReceived );    
-        request.send( "createDataSetReportDataSource.action" );
+        request.send( "createDataSetReportDataSource.action" ); */
+		
+		$.post("createDataSetReportDataSource.action",
+			{
+			},
+			function (data)
+			{
+				 runAndViewDataSetReportReceived(data);
+			},'xml');
     }
 }
 
@@ -79,12 +87,20 @@ function runAndViewDataSetReportReceived( messageElement )
 
 function getDataSetReportStatus()
 {   
-    var url = "getStatus.action";
+    /* var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( "status" );
     request.setCallbackSuccess( dataSetReportStatusReceived );    
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("getStatus.action",
+		{
+		},
+		function (data)
+		{
+			dataSetReportStatusReceived(data);
+		},'xml');
 }
 
 function dataSetReportStatusReceived( xmlObject )

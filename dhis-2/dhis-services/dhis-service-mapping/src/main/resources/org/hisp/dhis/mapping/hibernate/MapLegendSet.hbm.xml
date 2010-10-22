@@ -34,6 +34,12 @@
             <many-to-many column="indicatorid" 
 				class="org.hisp.dhis.indicator.Indicator" foreign-key="fk_maplegendset_indicator"/>
         </set>
+		
+		<set name="dataElements" table="maplegendsetdataelement">
+            <key column="legendsetid"/>
+            <many-to-many column="dataelementid" 
+                class="org.hisp.dhis.dataelement.DataElement" foreign-key="fk_maplegendset_dataelement"/>
+        </set>
       
     </class>
     

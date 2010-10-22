@@ -1,9 +1,12 @@
 <script>
-
 	jQuery(document).ready(	function(){
-			validation( 'addIndicatorForm', validateAddIndicator );				
+		validation( 'addIndicatorForm', function( form ){ form.submit()} );	
+		checkValueIsExist( "name", "validateIndicator.action" );
+		checkValueIsExist( "shortName", "validateIndicator.action" );
+		checkValueIsExist( "alternativeName", "validateIndicator.action" );
+		checkValueIsExist( "code", "validateIndicator.action" );
 	});
-
+	var previousName = '';
 </script>
 
 <h3>$i18n.getString( "create_new_indicator" )</h3>
@@ -11,10 +14,10 @@
 <form id="addIndicatorForm" action="addIndicator.action" method="post" >
 
 <div>
-	<input type="hidden" id="numerator" name="numerator">
+	
 	<input type="hidden" id="numeratorDescription" name="numeratorDescription">
 	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator">
-	<input type="hidden" id="denominator" name="denominator">
+	
 	<input type="hidden" id="denominatorDescription" name="denominatorDescription">
 	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator">
 </div>
@@ -55,8 +58,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" class="{validate:{required:true}}">
-				<option value="null">[$i18n.getString( "select" )]</option>
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em">				
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id">$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
@@ -69,8 +71,21 @@
     </tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="showEditNumeratorForm()" style="width:10em"><input
-				type="button" value="$i18n.getString( 'edit_denominator' )" onclick="showEditDenominatorForm()" style="width:10em"></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:20em"/>
+			<input type="hidden" id="numerator" name="numerator" class="{validate:{required:true}}"/>
+		</td>	
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em">
+			<input type="hidden" id="denominator" name="denominator" class="{validate:{required:true}}"/>
+		</td>
+	</tr>
+	<tr>
+		<td height="20px"></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -80,14 +95,5 @@
 
 </form>
 
-<span id="message"></span>
+#parse( "/dhis-web-maintenance-datadictionary/indicatorExpressionBuilderForm.vm" )
 
-<script type="text/javascript">
-
-	var previousName = '';
-	
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
-</script>

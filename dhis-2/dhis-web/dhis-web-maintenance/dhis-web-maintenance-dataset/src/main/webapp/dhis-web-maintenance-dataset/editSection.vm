@@ -7,7 +7,7 @@
 			dataSetId:function(){return jQuery("#dataSetId").val()}
 			,name: function(){return jQuery("#sectionName").val()}
 			,sectionId: function(){return jQuery("#sectionId").val()}
-			});	
+		});	
 		
 	});
 	
@@ -20,6 +20,7 @@
   <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id">
   <input type="hidden" id="sectionId" name="sectionId" value="$section.id">
+  <input type="hidden" id="categoryComboId" name="categoryComboId" value="$categoryCombo.id">
   </div>
   
   <table id="detailsList">
@@ -32,37 +33,57 @@
     </thead>
     <tbody>
       <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name" maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>        
       </tr>     
       <tr>
-      	<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+      	<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" style="width:20em" value="$dataSet.name" disabled="disabled"></td>
       </tr>
       <tr>
-        <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"></td>
       </tr>
     </tbody>
   </table>
 
   <table id="dataElementSelectionArea">
-    <col> ## Selected DataElements
-    <col> ## Actions
     <col> ## Available DataElements
+	<col> ## Actions
+    <col> ## Selected DataElements
     <thead>
       <tr>                
         <th>$i18n.getString( "available_data_elements" )</th>
-		<th></th>
+		<th>$i18n.getString( "filter" )</th>
 		<th>$i18n.getString( "selected_data_elements" )</th>
       </tr>
     </thead>
     <tbody>
       
+	  <tr>        
+        <td>
+          <select id="dataElementGroupSelect" name="dataElementGroupSelect" style="min-width:26.5em"
+            onchange="javascript:filterByDataElementGroupForSection( this.options[this.selectedIndex].value )">
+            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
+            #foreach ( $dataElementGroup in $dataElementGroups )
+            <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
+            #end
+          </select>
+        </td>
+        <td align="center">[$i18n.getString( "group" )]</td>
+        <td></td>        
+      </tr>
+      
+      <tr>
+      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:26em"/></td>
+      	<td align="center">[$i18n.getString( "name" )]</td>
+      	<td><input type="text" id="dataSetSectionMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:26em"/></td>
+      </tr>
+	  
       <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'selectedList' ) )">
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelected( this, byId( 'selectedList' ) )">
             <!-- Show all available DataElements -->
             #foreach ( $availableDataElement in $dataElementOfDataSet )
               <option value="$availableDataElement.id"> $availableDataElement.name</option>
@@ -76,7 +97,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' );"/>
 		</td>
 		<td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelected( this, byId( 'availableList' ) )">
             #foreach ( $dataElement in $section.dataElements )
               <option value="$dataElement.id">$dataElement.name</option>
             #end
@@ -96,8 +117,8 @@
 
       <tr>
         <td colspan="3">
-          <input type="submit" name="save" value="$i18n.getString( "save" )"><input type="button"
-            onclick="window.location.href='section.action'" value="$i18n.getString( "cancel" )">
+          <input type="submit" name="save" value="$i18n.getString( 'save' )"><input type="button"
+            onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )">
         </td>
       </tr>
     </tbody>

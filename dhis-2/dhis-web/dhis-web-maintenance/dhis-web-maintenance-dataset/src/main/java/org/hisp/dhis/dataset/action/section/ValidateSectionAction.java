@@ -79,13 +79,6 @@ public class ValidateSectionAction
         this.name = name;
     }
 
-    private String title;
-
-    public void setTitle( String title )
-    {
-        this.title = title;
-    }
-
     private String message;
 
     public String getMessage()
@@ -108,8 +101,7 @@ public class ValidateSectionAction
         {
             Section match = sectionService.getSectionByName( name, dataSetId );
 
-            if ( match != null
-                && (sectionId == null || match.getId() != sectionId)  )
+            if ( match != null && (sectionId == null || match.getId() != sectionId)  )
             {
                 message = i18n.getString( "duplicate_names" );
 

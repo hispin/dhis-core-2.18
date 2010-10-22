@@ -30,6 +30,7 @@ package org.hisp.dhis.mapping;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 
 /**
@@ -38,10 +39,6 @@ import org.hisp.dhis.indicator.Indicator;
  */
 public class MapLegendSet
 {
-    public static final String MAPLEGENDSET_TYPE_AUTOMATIC = "automatic";
-
-    public static final String MAPLEGENDSET_TYPE_PREDEFINED = "predefined";
-
     private int id;
 
     private String name;
@@ -59,13 +56,15 @@ public class MapLegendSet
     private Set<MapLegend> mapLegends = new HashSet<MapLegend>();
 
     private Set<Indicator> indicators = new HashSet<Indicator>();
+    
+    private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     public MapLegendSet()
     {
     }
 
     public MapLegendSet( String name, String type, int method, int classes, String colorLow, String colorHigh,
-        Set<MapLegend> mapLegends, Set<Indicator> indicators )
+        Set<MapLegend> mapLegends, Set<Indicator> indicators, Set<DataElement> dataElements )
     {
         this.name = name;
         this.type = type;
@@ -75,6 +74,7 @@ public class MapLegendSet
         this.colorHigh = colorHigh;
         this.mapLegends = mapLegends;
         this.indicators = indicators;
+        this.dataElements = dataElements;
     }
 
     // -------------------------------------------------------------------------
@@ -202,5 +202,15 @@ public class MapLegendSet
     public void setIndicators( Set<Indicator> indicators )
     {
         this.indicators = indicators;
+    }
+
+    public Set<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    public void setDataElements( Set<DataElement> dataElements )
+    {
+        this.dataElements = dataElements;
     }
 }

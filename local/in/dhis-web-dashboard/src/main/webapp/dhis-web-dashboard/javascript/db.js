@@ -1,16 +1,14 @@
 
 function getOUDeatilsForAA(orgUnitIds)
 {
-    //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-    var request = new Request();
-    request.setResponseTypeXML( 'orgunit' );
-    request.setCallbackSuccess( getOUDetailsForAARecevied );
-    //request.send( url );
-
-    var requestString = "getOrgUnitDetails.action";
-    var params = "orgUnitId=" + orgUnitIds;
-    request.sendAsPost( params );
-    request.send( requestString );
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId:orgUnitIds
+		},
+		function (data)
+		{
+			getOUDetailsForAARecevied(data);
+		},'xml');
 }
 
 /*
@@ -55,17 +53,14 @@ function getOUDetailsForNRRecevied(xmlObject)
 
 function getOUDeatilsForGA(orgUnitIds)
 {
-    //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-	
-    var request = new Request();
-    request.setResponseTypeXML( 'orgunit' );
-    request.setCallbackSuccess( getOUDetailsForGARecevied );
-    //request.send( url );
-
-    var requestString = "getOrgUnitDetails.action";
-    var params = "orgUnitId=" + orgUnitIds;
-    request.sendAsPost( params );
-    request.send( requestString );
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId:orgUnitIds
+		},
+		function (data)
+		{
+			getOUDetailsForGARecevied(data);
+		},'xml');
 }
 
 function getOUDetailsForGARecevied(xmlObject)
@@ -107,18 +102,14 @@ function getOUDetailsForGARecevied(xmlObject)
 
 function getOUDetails(orgUnitIds)
 {
-    //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-	
-    var request = new Request();
-    request.setResponseTypeXML( 'orgunit' );
-    request.setCallbackSuccess( getOUDetailsRecevied );
-    //request.send( url );
-
-    var requestString = "getOrgUnitDetails.action";
-    var params = "orgUnitId=" + orgUnitIds;
-    request.sendAsPost( params );
-    request.send( requestString );
-
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId:orgUnitIds
+		},
+		function (data)
+		{
+			getOUDetailsRecevied(data);
+		},'xml');
 }
 
 function getOUDetailsRecevied(xmlObject)
@@ -167,18 +158,15 @@ function getOrgUnitGroups()
     var orgUnitGroupSetId = orgUnitGroupSetList.options[ orgUnitGroupSetList.selectedIndex ].value;
 	
     if ( orgUnitGroupSetId != null )
-    {
-        //var url = "getOrgUnitGroups.action?orgUnitGroupSetId=" + orgUnitGroupSetId;
-		
-        var request = new Request();
-        request.setResponseTypeXML( 'orgunitgroup' );
-        request.setCallbackSuccess( getOrgUnitGroupsReceived );
-        //request.send( url );
-
-        var requestString = "getOrgUnitGroups.action";
-        var params = "orgUnitGroupSetId=" + orgUnitGroupSetId;
-        request.sendAsPost( params );
-        request.send( requestString );
+    {	
+		$.post("getOrgUnitGroups.action",
+		{
+			orgUnitGroupSetId:orgUnitGroupSetId
+		},
+		function (data)
+		{
+			getOrgUnitGroupsReceived(data);
+		},'xml');
     }
 }
 function groupChangeFunction(evt)
@@ -217,19 +205,17 @@ function getDataElements()
     
     var deSelectionList = document.getElementById("deSelection");    
     var deOptionValue = deSelectionList.options[ deSelectionList.selectedIndex ].value;
-    
     if ( dataElementGroupId != null )
     {
-        //var url = "getDataElements.action?id=" + dataElementGroupId + "&deOptionValue=" + deOptionValue;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getDataElementsReceived);
-        //request.send(url);
-
-        var requestString = "getDataElements.action";
-        var params = "id=" + dataElementGroupId + "&deOptionValue=" + deOptionValue;
-        request.sendAsPost( params );
-        request.send( requestString );
+		$.post("getDataElements.action",
+		{
+			id:dataElementGroupId,
+			deOptionValue:deOptionValue
+		},
+		function (data)
+		{
+			getDataElementsReceived(data);
+		},'xml');
     }
 }// getDataElements end           
 
@@ -243,16 +229,14 @@ function getDataElementsWithOutOptionCombo()
     
     if ( dataElementGroupId != null )
     {
-        //var url = "getDataElements.action?id=" + dataElementGroupId;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getDataElementsReceived);
-        //request.send(url);
-
-        var requestString = "getDataElements.action";
-        var params = "id=" + dataElementGroupId;
-        request.sendAsPost( params );
-        request.send( requestString );
+		$.post("getDataElements.action",
+		{
+			id:dataElementGroupId
+		},
+		function (data)
+		{
+			getDataElementsReceived(data);
+		},'xml');
     }
 }// getDataElements end          
 
@@ -266,17 +250,17 @@ function getDataElementsGroupsInDataSet()
     
     if ( dataSetId != null )
     {
-        //var url = "getDataElementsGroupAndDataSetAction.action?id=" + dataSetId;
-        var request = new Request();
-        request.setResponseTypeXML('dataElementGroup');
-        request.setCallbackSuccess(getDataElementsGroupsReceived);
-        //request.send(url);
-        
-        var requestString = "getDataElementsGroupAndDataSetAction.action";
-        var params = "id=" + dataSetId;
-        request.sendAsPost( params );
-        request.send( requestString );
-
+		if ( dataElementGroupId != null )
+		{
+			$.post("getDataElementsGroupAndDataSetAction.action",
+			{
+				id:dataSetId
+			},
+			function (data)
+			{
+				getDataElementsGroupsReceived(data);
+			},'xml');
+		}
     }
 }// getDataElementGroups end          
 
@@ -344,17 +328,14 @@ function getIndicators()
 	
     if ( indicatorGroupId != null )
     {
-        //var url = "getIndicators.action?id=" + indicatorGroupId;
-		
-        var request = new Request();
-        request.setResponseTypeXML( 'indicator' );
-        request.setCallbackSuccess( getIndicatorsReceived );
-        //request.send( url );
-
-        var requestString = "getIndicators.action";
-        var params = "id=" + indicatorGroupId;
-        request.sendAsPost( params );
-        request.send( requestString );
+		$.post("getIndicators.action",
+			{
+				id:indicatorGroupId
+			},
+			function (data)
+			{
+				getIndicatorsReceived(data);
+			},'xml');
     }
 }
 
@@ -365,17 +346,15 @@ function getSurveyIndicators()
   
     if ( indicatorGroupId != null )
     {
-        //var url = "getIndicators.action?id=" + indicatorGroupId+"&surveyflag=yes";
-    
-        var request = new Request();
-        request.setResponseTypeXML( 'indicator' );
-        request.setCallbackSuccess( getIndicatorsReceived );
-        //request.send( url );
-
-        var requestString = "getIndicators.action";
-        var params = "id=" + indicatorGroupId+"&surveyflag=yes";
-        request.sendAsPost( params );
-        request.send( requestString );
+		$.post("getIndicators.action",
+			{
+				id:indicatorGroupId
+			},
+			function (data)
+			{
+				getIndicatorsReceived(data);
+			},'xml');
+			
     }
 }
 

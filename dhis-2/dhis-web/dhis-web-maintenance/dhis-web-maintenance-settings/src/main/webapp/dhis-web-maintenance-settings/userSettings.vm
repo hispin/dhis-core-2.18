@@ -38,13 +38,6 @@ function dataDictionaryModeChanged( list )
 	window.location.href = "setCurrentDataDictionaryMode.action?currentDataDictionaryMode=" + mode;
 }
 
-function styleChanged( list )
-{
-	var style = list.options[list.selectedIndex].value;
-	
-	window.location.href = "setCurrentStyle.action?currentStyle=" + style;
-}
-
 function autoSaveDataEntryForm( value )
 {
 	window.location.href = "setAutoSaveDataEntryForm.action?autoSave=" + value;
@@ -91,14 +84,6 @@ function autoSaveDataEntryForm( value )
 <select onchange="dataDictionaryModeChanged( this );" style="min-width:250px">
 #foreach( $mode in $dataDictionaryModes )
 	<option value="$mode" #if( $mode == $currentDataDictionaryMode )selected="selected"#end>$i18n.getString( $mode )</option>
-#end
-</select>
-
-<h4>$i18n.getString( "style" )</h4>
-
-<select onchange="styleChanged( this );" style="min-width:250px">
-#foreach( $style in $styles.entrySet() )
-	<option value="$style.value" #if( $style.value == $currentStyle )selected="selected"#end>$i18n.getString( $style.key )</option>
 #end
 </select>
 

@@ -39,9 +39,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   		<property name="dataValueService">
 			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
 		</property>
-  		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-		</property>
+  		<property name="dataElementCategoryService"
+      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
 	</bean>
 	
 

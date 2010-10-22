@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -47,6 +48,22 @@ public abstract class Source
 {
     protected Set<DataSet> dataSets = new HashSet<DataSet>();
 
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public Set<DataElement> getDataElementsInDataSets()
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
+        return dataElements;
+    }
+    
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------

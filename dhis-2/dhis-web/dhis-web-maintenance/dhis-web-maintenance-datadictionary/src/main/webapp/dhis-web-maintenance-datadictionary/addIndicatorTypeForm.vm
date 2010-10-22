@@ -1,7 +1,10 @@
 <script>
 
 	jQuery(document).ready(	function(){
-			validation( 'addIndicatorTypeForm', validateAddIndicatorType );				
+		validation( 'addIndicatorTypeForm', function( form ){ form.submit()} );	
+		
+		checkValueIsExist( "name", "validateIndicatorType.action");
+			
 	});
 
 </script>
@@ -19,7 +22,7 @@
 	</tr>
 	<tr>
 		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="factor" name="factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true}}"></td>
+		<td><input type="text" id="factor" name="factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true,min:1}}"></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -28,13 +31,3 @@
 </table>
 
 </form>
-
-<span id="message"></span>
-
-<script type="text/javascript">
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
-</script>

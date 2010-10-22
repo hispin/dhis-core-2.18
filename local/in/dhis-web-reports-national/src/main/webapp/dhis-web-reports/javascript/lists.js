@@ -10,7 +10,7 @@ function getDataElements()
 	
 	if ( dataElementGroupId != null )
 	{
-		//var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + dataElementGroupId + "&aggregate=true";
+		/* //var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + dataElementGroupId + "&aggregate=true";
 				
 		var request = new Request();
 	    request.setResponseTypeXML( 'dataElement' );
@@ -20,7 +20,17 @@ function getDataElements()
         var requestString = "../dhis-web-commons-ajax/getDataElements.action";
         var params = "id=" + dataElementGroupId + "&aggregate=true";
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getDataElements.action",
+			{
+				id : dataElementGroupId,
+				aggregate : "true"
+			},
+			function (data)
+			{
+				getDataElementsReceived(data);
+			},'xml');
 	}
 }
 
@@ -55,7 +65,7 @@ function getCategoryComboDataElements()
     
     if ( categoryComboId != null )
     {
-        //var url = "../dhis-web-commons-ajax/getDataElements.action?categoryComboId=" + categoryComboId + "&aggregate=true";
+        /* //var url = "../dhis-web-commons-ajax/getDataElements.action?categoryComboId=" + categoryComboId + "&aggregate=true";
         
         var request = new Request();
         request.setResponseTypeXML( 'dataElement' );
@@ -65,7 +75,17 @@ function getCategoryComboDataElements()
         var requestString = "../dhis-web-commons-ajax/getDataElements.action";
         var params = "categoryComboId=" + categoryComboId + "&aggregate=true";
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getDataElements.action",
+			{
+				categoryComboId : categoryComboId,
+				aggregate : "true"
+			},
+			function (data)
+			{
+				getCategoryComboDataElementsReceived(data);
+			},'xml');
     }
 }
 
@@ -98,7 +118,7 @@ function getIndicators()
 	
 	if ( indicatorGroupId != null )
 	{
-		//var url = "../dhis-web-commons-ajax/getIndicators.action?id=" + indicatorGroupId;
+		/* //var url = "../dhis-web-commons-ajax/getIndicators.action?id=" + indicatorGroupId;
 		
 		var request = new Request();
 	    request.setResponseTypeXML( 'indicator' );
@@ -108,7 +128,16 @@ function getIndicators()
         var requestString = "../dhis-web-commons-ajax/getIndicators.action";
         var params = "id=" + indicatorGroupId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getIndicators.action",
+			{
+				id : indicatorGroupId
+			},
+			function (data)
+			{
+				getIndicatorsReceived(data);
+			},'xml');
 	}
 }
 
@@ -143,7 +172,7 @@ function getOrganisationUnits()
 	
 	if ( organisationUnitLevel != null )
 	{
-		//var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
+		/* //var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
 		
 		var request = new Request();
 	    request.setResponseTypeXML( 'organisationUnit' );
@@ -153,7 +182,16 @@ function getOrganisationUnits()
         var requestString = "../dhis-web-commons-ajax/getOrganisationUnits.action";
         var params = "level=" + organisationUnitLevel;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getOrganisationUnits.action",
+			{
+				level : organisationUnitLevel
+			},
+			function (data)
+			{
+				getOrganisationUnitsReceived(data);
+			},'xml');
 	}
 }
 
@@ -188,7 +226,7 @@ function getOrganisationUnitsToSelected()
     
     if ( organisationUnitLevel != null )
     {
-        //var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
+        /* //var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
         
         var request = new Request();
         request.setResponseTypeXML( 'organisationUnit' );
@@ -198,7 +236,16 @@ function getOrganisationUnitsToSelected()
         var requestString = "../dhis-web-commons-ajax/getOrganisationUnits.action";
         var params = "level=" + organisationUnitLevel;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getOrganisationUnits.action",
+			{
+				level : organisationUnitLevel
+			},
+			function (data)
+			{
+				getOrganisationUnitsToSelectedReceived(data);
+			},'xml');
     }
 }
 
@@ -229,7 +276,7 @@ function getOrganisationUnitChildren()
 	
 	if ( organisationUnitId != null )
 	{
-		//var url = "../dhis-web-commons-ajax/getOrganisationUnitChildren.action?id=" + organisationUnitId;
+		/* //var url = "../dhis-web-commons-ajax/getOrganisationUnitChildren.action?id=" + organisationUnitId;
 		
 		var request = new Request();
 	    request.setResponseTypeXML( 'organisationUnit' );
@@ -239,7 +286,16 @@ function getOrganisationUnitChildren()
         var requestString = "../dhis-web-commons-ajax/getOrganisationUnitChildren.action";
         var params = "id=" + organisationUnitId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getOrganisationUnitChildren.action",
+			{
+				id : organisationUnitId
+			},
+			function (data)
+			{
+				getOrganisationUnitChildrenReceived(data);
+			},'xml');
 	}
 }
 
@@ -272,7 +328,7 @@ function getPeriods()
 	
 	if ( periodTypeId != null )
 	{		
-		//var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
+		/* //var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
 		
 		var request = new Request();
 	    request.setResponseTypeXML( 'period' );
@@ -282,7 +338,16 @@ function getPeriods()
         var requestString = "../dhis-web-commons-ajax/getPeriods.action";
         var params = "name=" + periodTypeId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getPeriods.action",
+			{
+				name : periodTypeId
+			},
+			function (data)
+			{
+				getPeriodsReceived(data);
+			},'xml');
 	}
 }
 
@@ -317,7 +382,7 @@ function getPeriodsToSelected()
     
     if ( periodTypeId != null )
     {       
-        //var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
+        /* //var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
         
         var request = new Request();
         request.setResponseTypeXML( 'period' );
@@ -327,7 +392,16 @@ function getPeriodsToSelected()
         var requestString = "../dhis-web-commons-ajax/getPeriods.action";
         var params = "name=" + periodTypeId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getPeriods.action",
+			{
+				name : periodTypeId
+			},
+			function (data)
+			{
+				getPeriodsToSelectedReceived(data);
+			},'xml');
     }
 }
 

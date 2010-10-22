@@ -13,15 +13,15 @@ function showUserDetails( userId )
 
 function userReceived( userElement )
 {
-    setFieldValue( 'usernameField', getElementValue( userElement, 'username' ) );
-    setFieldValue( 'surnameField', getElementValue( userElement, 'surname' ) );
-    setFieldValue( 'firstNameField', getElementValue( userElement, 'firstName' ) );
+    setInnerHTML( 'usernameField', getElementValue( userElement, 'username' ) );
+    setInnerHTML( 'surnameField', getElementValue( userElement, 'surname' ) );
+    setInnerHTML( 'firstNameField', getElementValue( userElement, 'firstName' ) );
 
     var email = getElementValue( userElement, 'email' );
-    setFieldValue( 'emailField', email ? email : '[' + i18n_none + ']' );
+    setInnerHTML( 'emailField', email ? email : '[' + i18n_none + ']' );
 
     var phoneNumber = getElementValue( userElement, 'phoneNumber' );
-	setFieldValue( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
+	setInnerHTML( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
 
     showDetails();
 }

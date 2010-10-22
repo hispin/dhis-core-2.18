@@ -64,9 +64,14 @@
 	color:#666;
 	padding-left:21px;
 }
+.x-date-picker {
+    border-color:#aaaaaa;
+}
+.x-date-inner .x-date-today a {
+    border-color:#999999;
+}
 
 /* OpenLayers overrides */
-
 div.olMapViewport {
     border-top:1px solid #bebebe;
 }

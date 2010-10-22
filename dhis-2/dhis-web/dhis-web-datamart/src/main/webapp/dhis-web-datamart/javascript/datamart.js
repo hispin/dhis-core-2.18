@@ -175,11 +175,11 @@ function showDataMartExportDetails( id )
 
 function dataMartExportReceived( xmlObject )
 {
-    setFieldValue( "nameField", getElementValue( xmlObject, "name" ) );
-    setFieldValue( "dataElementField", getElementValue( xmlObject, "dataElements" ) );
-    setFieldValue( "indicatorField", getElementValue( xmlObject, "indicators" ) );
-    setFieldValue( "organisationUnitField", getElementValue( xmlObject, "organisationUnits" ) );
-    setFieldValue( "periodField", getElementValue( xmlObject, "periods" ) );
+    setInnerHTML( "nameField", getElementValue( xmlObject, "name" ) );
+    setInnerHTML( "dataElementField", getElementValue( xmlObject, "dataElements" ) );
+    setInnerHTML( "indicatorField", getElementValue( xmlObject, "indicators" ) );
+    setInnerHTML( "organisationUnitField", getElementValue( xmlObject, "organisationUnits" ) );
+    setInnerHTML( "periodField", getElementValue( xmlObject, "periods" ) );
     
     showDetails();
 }

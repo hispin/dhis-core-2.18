@@ -1,7 +1,30 @@
-<script>
+<script>	
 	jQuery(document).ready(	function(){
-			validation( 'addDataElementCategoryForm', validateAddDataElementCategory );				
+		validation( 'addDataElementCategoryForm', function( form ){ form.submit()}, function(){
+			listValidator( 'memberValidator', 'categoryOptionNames' );			
+		} );		
+		checkValueIsExist( "name", "validateDataElementCategory.action");	
+					
 	});
+	
+	function addCategoryOption()
+	{
+		var value = getFieldValue( 'categoryOptionName' );
+		if( value.length == 0 ) markInvalid( 'categoryOptionName', i18n_specify_category_option_name );
+		else if( listContainsById( 'categoryOptionNames', value ) ) markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
+		else{
+			jQuery.postJSON( 'validateDataElementCategoryOption.action', 
+			{name: value }, function(json){
+				if( json.response == 'success' ){					
+					addOption( 'categoryOptionNames', value, value );
+				}else{
+					markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
+				}
+			});
+			
+		}
+
+	}
 </script>
 
 <h3>$i18n.getString( "create_new_data_element_category" )</h3>
@@ -9,8 +32,7 @@
 <form id="addDataElementCategoryForm" name="addDataElementCategoryForm" action="addDataElementCategory.action" method="post">
   <table>
     <tr>
-      <th colspan="2">$i18n.getString( "details" )</th>
-      <td></td>
+      <th colspan="3">$i18n.getString( "details" )</th>      
     </tr>
     <tr>
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -19,25 +41,33 @@
     </tr>      
     <tr>
       <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="conceptName" name="conceptName" style="width:25em" maxlength="10" class="{validate:{required:true,minlength:2,maxlength:10}}"></td>
+      <td>
+		<div style="inline">
+			<select id="conceptId" name="conceptId" style="min-width:140px" class="{validate:{required:true}}">				
+				#foreach( $concept in $concepts )
+				<option value="$concept.id">$concept.name</option>
+				#end
+			</select>
+		</div>
+	  </td>
       <td></td>
     </tr>   
     <tr>
       <td colspan="3" style="height:15px"></td>
     </tr>
   	<tr>
-  	  <th colspan="2">$i18n.getString( "category_options" )</th>
-  	  <td></td>
+  	  <th colspan="3">$i18n.getString( "category_options" )
+	  <select id="memberValidator"  class="{validate:{required:true}}" style="display:none"/></th>  	  
 	</tr>
 	<tr>
 	  <td><label>$i18n.getString( "name" )</label></td>
-	  <td><input type="text" id="categoryOptionName" style="width:25em"></td>
+	  <td><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"/></td>
 	  <td></td>
 	</tr>
     <tr>
       <td></td>
       <td colspan="2">
-      	<input type="button" value="$i18n.getString( "add_category_option" )" onclick="validateAddCategoryOption()" style="width:200px">
+      	<input type="button" value="$i18n.getString( 'add_category_option' )" onclick="addCategoryOption()" style="width:200px">
       </td>
     </tr>
     <tr>
@@ -65,11 +95,14 @@
   </table>
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
     var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
     var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
     var i18n_must_include_category_option = '$encoder.jsEscape( $i18n.getString( "must_include_category_option" ) , "'")';
-	var mode = 'add';
+	
+	function removeDataElementCategory( categoryId, categoryName )
+	{
+		removeItem( categoryId, categoryName, i18n_confirm_delete, 'removeDataElementCategory.action' );
+	}
+		
 </script>

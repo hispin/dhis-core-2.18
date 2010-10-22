@@ -56,6 +56,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="dataMartService"
       ref="org.hisp.dhis.datamart.DataMartService"/>
+	<property name="aggregatedDataValueService"
+	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
     <property name="completenessService"
       ref="registrationDataCompletenessService"/>
   </bean>
@@ -188,6 +190,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="expressionService"
+      ref="org.hisp.dhis.expression.ExpressionService"/>
   </bean>
   
   <!-- Workbook -->
@@ -208,8 +212,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.pivottable.PivotTableService"
     class="org.hisp.dhis.pivottable.impl.DefaultPivotTableService">
-    <property name="dataMartService" 
-        ref="org.hisp.dhis.datamart.DataMartService"/>
+	<property name="aggregatedDataValueService"
+	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
     <property name="indicatorService" 
         ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService" 

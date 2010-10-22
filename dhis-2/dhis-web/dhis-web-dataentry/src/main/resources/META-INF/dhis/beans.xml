@@ -54,7 +54,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="registrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="dataEntryScreenManager"
@@ -75,7 +74,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementOrderManager"
 			ref="org.hisp.dhis.order.manager.DataElementOrderManager" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="standardCommentsManager"
 			ref="org.hisp.dhis.de.comments.StandardCommentsManager" />
 		<property name="minMaxDataElementService"
@@ -101,7 +99,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="minMaxDataElementService"
 			ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />

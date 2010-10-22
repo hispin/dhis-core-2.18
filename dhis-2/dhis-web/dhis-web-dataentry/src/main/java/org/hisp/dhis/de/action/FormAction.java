@@ -42,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
@@ -104,13 +103,6 @@ public class FormAction
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private StandardCommentsManager standardCommentsManager;
@@ -394,7 +386,7 @@ public class FormAction
         // Get the custom data entry form (if any)
         // ---------------------------------------------------------------------
 
-        dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+        dataEntryForm = dataSet.getDataEntryForm();
         cdeFormExists = (dataEntryForm != null);
 
         if ( cdeFormExists )

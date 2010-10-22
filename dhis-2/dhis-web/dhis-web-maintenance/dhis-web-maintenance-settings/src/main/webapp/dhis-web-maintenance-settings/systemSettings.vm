@@ -7,6 +7,14 @@
 
 <p><input type="text" name="applicationTitle" style="width:30em" value="$!applicationTitle"></p>
 
+<h4>$i18n.getString( "style" )</h4>
+
+<select style="min-width:250px" name='currentStyle' id='currentStyle'>
+#foreach( $style in $styles.entrySet() )
+	<option value="$style.value" #if( $style.value == $currentStyle )selected="selected"#end>$i18n.getString( $style.key )</option>
+#end
+</select>
+
 <h4>$i18n.getString( "max_attempts" )</h4>
 
 <p><input type="text" name="maxAttempts" style="width:30em" value="$!maxAttempts"></p>

@@ -187,10 +187,11 @@ public interface DataBrowserStore
      * @param table the DataBrowserTable to insert column into
      * @param orgUnitParent the OrganisationUnit parent id
      * @param betweenPeriodIds list of Period ids
+     * @param maxLevel is the max level of the hierarchy
      * @return 0 if no results are found else number of rows inserted
      */
     Integer setCountOrgUnitsBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
-        List<Integer> betweenPeriodIds );
+        List<Integer> betweenPeriodIds, Integer maxLevel );
 
     /**
      * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List

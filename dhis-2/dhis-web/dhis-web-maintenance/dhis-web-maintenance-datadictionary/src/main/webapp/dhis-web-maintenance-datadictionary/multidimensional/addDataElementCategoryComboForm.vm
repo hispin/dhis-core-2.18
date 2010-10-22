@@ -1,9 +1,14 @@
-<script>
+<script>	
 	jQuery(document).ready(	function(){
-			validation( 'addDataElementCategoryComboForm', validateAddDataElementCategoryCombo );				
+		validation( 'addDataElementCategoryComboForm', function( form ){ 
+			validateSelectedCategories( form );
+		}, function(){
+			listValidator( 'selectedCategories', 'selectedList' );			
+		} );		
+		checkValueIsExist( "name", "validateDataElementCategoryCombo.action");				
 	});
+	
 </script>
-
 <h3>$i18n.getString( "create_new_data_element_category_combo" )</h3>
 
 <form id="addDataElementCategoryComboForm" name="addDataElementCategoryComboForm" action="addDataElementCategoryCombo.action" method="post" >
@@ -53,13 +58,20 @@
           </select>
         </td>
       </tr>
+	  <tr>
+        <td></td>
+		<td></td> 
+		<td>
+			<select id="selectedCategories" name="selectedCategories" class="{validate:{required:true}}" style="display:none"/>			
+		</td>
+      </tr>
 
     </tbody>
   </table>
 
-  <p><input type="submit" name="add" value="$i18n.getString( "add" )" style="width:10em"><input 
-            type="button" name="cancel" onclick="window.location.href='categoryCombo.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
+	<p>
+		<input type="submit" name="add" value="$i18n.getString( "add" )" style="width:10em">
+		<input type="button" name="cancel" onclick="window.location.href='categoryCombo.action'" value="$i18n.getString( "cancel" )" style="width:10em">
+	</p>
 
 </form>
-
-<span id="message"></span>

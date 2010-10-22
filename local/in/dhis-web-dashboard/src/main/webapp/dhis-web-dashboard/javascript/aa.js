@@ -2,7 +2,8 @@
 // Indicator or Dataelement radio button changed function
 function riradioSelection(evt)
 {
-	selriRadioButton = evt.target.value;
+    var selriRadioButton = $( "input[name='riRadio']:checked" ).val();
+       
     if(selriRadioButton == "dataElementsRadio")
     {
 		document.ChartGenerationForm.indicatorGroupId.disabled = true;

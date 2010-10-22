@@ -29,7 +29,9 @@ package org.hisp.dhis.validation;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
@@ -47,6 +49,33 @@ public interface ValidationRuleService
     // ValidationRule business logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns a Grid containing the percentage of aggregated violations. Periods
+     * are listed as columns and Sources are listed as rows.
+     */
+    Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods, List<? extends Source> sources );
+    
+    /**
+     * Validates AggregatedDataValues.
+     * 
+     * @param startDate the start date.
+     * @param endDate the end date.
+     * @param sources a collection of Sources.
+     * @return a collection of ValidationResults for each validation violation. 
+     */
+    Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<? extends Source> sources );
+
+    /**
+     * Validate AggregatedDataValues.
+     * 
+     * @param startDate the start date.
+     * @param endDate the end date.
+     * @param sources a collection of Sources.
+     * @param group a group of ValidationRules.
+     * @return a collection of ValidationResults for each validation violation. 
+     */
+    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<? extends Source> sources, ValidationRuleGroup group );
+    
     /**
      * Validate DataValues.
      * 
@@ -124,9 +153,10 @@ public interface ValidationRuleService
     ValidationRule getValidationRule( int id );
 
     /**
+     * Get the ValidationRules with the corresponding identifiers.
      * 
-     * @param identifiers
-     * @return
+     * @param identifiers the collection of identifiers.
+     * @return a collection of validation rules.
      */
     Collection<ValidationRule> getValidationRules( Collection<Integer> identifiers );
     
@@ -144,7 +174,20 @@ public interface ValidationRuleService
      */
     ValidationRule getValidationRuleByName( String name );
     
+    /**
+     * Get the validation rules which are associated with the given data elements.
+     * 
+     * @param dataElements the collection of data elements.
+     * @return a collection of validation rules.
+     */
     Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements );
+    
+    /**
+     * Get all data elements associated with any validation rule.
+     * 
+     * @return a collection of data elements.
+     */
+    Collection<DataElement> getDataElementsInValidationRules();
     
     // -------------------------------------------------------------------------
     // ValidationRuleGroup

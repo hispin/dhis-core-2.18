@@ -34,9 +34,9 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.StatementManager;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.ExportParams;
@@ -90,11 +90,11 @@ public class DataValueConverter
     /**
      * Constructor for write operations.
      */
-    public DataValueConverter( DataMartService dataMartService,
+    public DataValueConverter( AggregatedDataValueService aggregatedDataValueService,
         StatementManager statementManager,
         PeriodService periodService )
     {
-        this.dataMartService = dataMartService;
+        this.aggregatedDataValueService = aggregatedDataValueService;
         this.statementManager = statementManager;
         this.periodService = periodService;
     }
@@ -104,7 +104,7 @@ public class DataValueConverter
      */
     public DataValueConverter( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        DataMartService dataMartService,
+        AggregatedDataValueService aggregatedDataValueService,
         ImportObjectService importObjectService,
         ImportParams params,
         Map<Object, Integer> dataElementMapping,
@@ -114,7 +114,7 @@ public class DataValueConverter
     {
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
-        this.dataMartService = dataMartService;
+        this.aggregatedDataValueService = aggregatedDataValueService;
         this.importObjectService = importObjectService;
         this.params = params;
         this.dataElementMapping = dataElementMapping;
@@ -145,7 +145,7 @@ public class DataValueConverter
                 {
                     for ( final Period period : periods )
                     {
-                        values = dataMartService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
+                        values = aggregatedDataValueService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
                         
                         for ( final DeflatedDataValue value : values )
                         {   

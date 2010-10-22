@@ -38,41 +38,46 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetExcelItemParamAction implements Action {
+public class GetExcelItemParamAction
+    implements Action
+{
 
-	// -------------------------------------------------------------------------
-	// Dependency
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
 
-	private DataSetService dataSetService;
+    private DataSetService dataSetService;
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-	private Collection<DataSet> dataSets;
+    private Collection<DataSet> dataSets;
 
-	// -------------------------------------------------------------------------
-	// Getter && Setter
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------------------------------------
 
-	public Collection<DataSet> getDataSets() {
-		return dataSets;
-	}
+    public Collection<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
 
-	public void setDataSetService(DataSetService dataSetService) {
-		this.dataSetService = dataSetService;
-	}
-	
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
-	public String execute() throws Exception {
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-		dataSets = dataSetService.getAllDataSets();
+    public String execute()
+        throws Exception
+    {
+        dataSets = dataSetService.getAllDataSets();
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

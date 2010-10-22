@@ -34,11 +34,17 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.aggregation.AggregatedDataValue;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -49,7 +55,9 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.mock.MockSource;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -57,6 +65,7 @@ import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.MathUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -65,10 +74,9 @@ import org.junit.Test;
 public class ValidationRuleServiceTest
     extends DhisTest
 {
-    private ValidationRuleService validationRuleService;
-
-    private ExpressionService expressionService;
-
+    @Autowired
+    private BatchHandlerFactory batchHandlerFactory;
+    
     private DataElement dataElementA;
 
     private DataElement dataElementB;
@@ -149,7 +157,7 @@ public class ValidationRuleServiceTest
 
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
+        periodType = new MonthlyPeriodType();
 
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
@@ -209,16 +217,22 @@ public class ValidationRuleServiceTest
         dataSet.getSources().add( sourceA );
         dataSet.getSources().add( sourceB );
 
+        dataElementA.getDataSets().add( dataSet );
+        dataElementB.getDataSets().add( dataSet );
+        dataElementC.getDataSets().add( dataSet );
+        dataElementD.getDataSets().add( dataSet );
+        
         dataSetService.addDataSet( dataSet );
-
-        validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB,
-            periodType );
-        validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_GREATER, expressionB, expressionC,
-            periodType );
-        validationRuleC = createValidationRule( 'C', ValidationRule.OPERATOR_LESSER_EQUAL, expressionB, expressionA,
-            periodType );
-        validationRuleD = createValidationRule( 'D', ValidationRule.OPERATOR_LESSER, expressionA, expressionC,
-            periodType );
+        
+        dataElementService.updateDataElement( dataElementA );
+        dataElementService.updateDataElement( dataElementB );
+        dataElementService.updateDataElement( dataElementC );
+        dataElementService.updateDataElement( dataElementD );
+        
+        validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB, periodType );
+        validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_GREATER, expressionB, expressionC, periodType );
+        validationRuleC = createValidationRule( 'C', ValidationRule.OPERATOR_LESSER_EQUAL, expressionB, expressionA, periodType );
+        validationRuleD = createValidationRule( 'D', ValidationRule.OPERATOR_LESSER, expressionA, expressionC, periodType );
 
         group = createValidationRuleGroup( 'A' );
     }
@@ -232,7 +246,100 @@ public class ValidationRuleServiceTest
     // ----------------------------------------------------------------------
     // Business logic tests
     // ----------------------------------------------------------------------
+    
+    @Test
+    public void testGetAggregatedValidationResult()
+    {
+        validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleService.saveValidationRule( validationRuleB );
+        validationRuleService.saveValidationRule( validationRuleC );
+        validationRuleService.saveValidationRule( validationRuleD );
 
+        List<Period> periods = new ArrayList<Period>();
+        periods.add( periodA );
+        periods.add( periodB );
+        
+        List<Source> sources = new ArrayList<Source>();
+        sources.add( sourceA );
+        sources.add( sourceB );
+        
+        Collection<ValidationResult> results = new HashSet<ValidationResult>();
+        
+        results.add( new ValidationResult( periodA, sourceA, validationRuleA, 1, 1 ) );
+        results.add( new ValidationResult( periodA, sourceA, validationRuleB, 1, 1 ) );
+        results.add( new ValidationResult( periodA, sourceA, validationRuleC, 1, 1 ) );
+        results.add( new ValidationResult( periodB, sourceB, validationRuleA, 1, 1 ) );
+        results.add( new ValidationResult( periodB, sourceB, validationRuleB, 1, 1 ) );
+        
+        Grid grid = validationRuleService.getAggregateValidationResult( results, periods, sources );
+        
+        // First row is Periods, first column in each row is Source
+        
+        assertEquals( "75.0", grid.getValue( 1, 1 ) );
+        assertEquals( "0.0", grid.getValue( 1, 2 ) );
+        assertEquals( "0.0", grid.getValue( 2, 1 ) );
+        assertEquals( "50.0", grid.getValue( 2, 2 ) );
+    }
+    
+    @Test
+    public void testValidateAggregatedDateDateSources()
+    {
+        periodService.addPeriod( periodA );
+        periodService.addPeriod( periodB );
+        
+        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
+        
+        batchHandler.addObject( new AggregatedDataValue( dataElementA.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceA.getId(), 0, 1.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementB.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceA.getId(), 0, 2.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementC.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceA.getId(), 0, 3.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementD.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceA.getId(), 0, 4.0 ) );
+
+        batchHandler.addObject( new AggregatedDataValue( dataElementA.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceA.getId(), 0, 1.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementB.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceA.getId(), 0, 2.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementC.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceA.getId(), 0, 3.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementD.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceA.getId(), 0, 4.0 ) );
+
+        batchHandler.addObject( new AggregatedDataValue( dataElementA.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceB.getId(), 0, 1.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementB.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceB.getId(), 0, 2.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementC.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceB.getId(), 0, 3.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementD.getId(), categoryOptionCombo.getId(), periodA.getId(), 0, sourceB.getId(), 0, 4.0 ) );
+
+        batchHandler.addObject( new AggregatedDataValue( dataElementA.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceB.getId(), 0, 1.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementB.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceB.getId(), 0, 2.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementC.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceB.getId(), 0, 3.0 ) );
+        batchHandler.addObject( new AggregatedDataValue( dataElementD.getId(), categoryOptionCombo.getId(), periodB.getId(), 0, sourceB.getId(), 0, 4.0 ) );
+        
+        batchHandler.flush();
+
+        validationRuleService.saveValidationRule( validationRuleA );
+        validationRuleService.saveValidationRule( validationRuleB );
+        validationRuleService.saveValidationRule( validationRuleC );
+        validationRuleService.saveValidationRule( validationRuleD );
+
+        Collection<ValidationResult> results = validationRuleService.validateAggregate( getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceB, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceB, validationRuleA, 3.0, -1.0 ) );
+
+        reference.add( new ValidationResult( periodA, sourceA, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodA, sourceB, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodB, sourceB, validationRuleB, -1.0, 4.0 ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( results.size(), 8 );
+        assertEquals( reference, results );
+    }
+    
     @Test
     public void testValidateDateDateSources()
     {

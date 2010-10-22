@@ -1,10 +1,13 @@
-<script>
+<script>	
 	jQuery(document).ready(	function(){
-			validation( 'editDataElementCategoryComboForm', function(){
-				submitForm(); 
-				validateEditDataElementCategoryCombo();
-			} );				
+		validation( 'editDataElementCategoryComboForm', function( form ){ 
+			validateSelectedCategories( form );
+		}, function(){
+			listValidator( 'selectedCategories', 'selectedList' );			
+		} );		
+		checkValueIsExist( "name", "validateDataElementCategoryCombo.action", {id: $dataElementCategoryCombo.id});				
 	});
+	
 </script>
 
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>
@@ -66,6 +69,13 @@
           </select>
         </td>	       
       </tr>
+	  <tr>
+        <td></td>
+		<td></td> 
+		<td>
+			<select id="selectedCategories" name="selectedCategories" class="{validate:{required:true}}" style="display:none"/>			
+		</td>
+      </tr>
     </tbody>
   </table>
 
@@ -73,5 +83,3 @@
           type="button" name="cancel" onclick="window.location.href='categoryCombo.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
        
 </form>
-   
-<span id="message"></span>

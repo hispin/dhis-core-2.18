@@ -68,7 +68,7 @@ public class JdbcStatisticsProvider
         objectCounts.put( Objects.SOURCE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM source" ) );
         objectCounts.put( Objects.VALIDATIONRULE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM validationrule" ) );
         objectCounts.put( Objects.PERIOD, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM period" ) );
-        objectCounts.put( Objects.USER, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM user" ) );
+        objectCounts.put( Objects.USER, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM users" ) );
         objectCounts.put( Objects.DATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM datavalue" ) );
         
         try

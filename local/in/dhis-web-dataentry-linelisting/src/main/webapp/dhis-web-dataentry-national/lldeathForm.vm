@@ -86,7 +86,7 @@
 	#foreach( $llDataValue in $llDataValues)
 		#if($count1 == 3)
 			<td>
-				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLDSexField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
+				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLDSexField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end>
 					<option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
 					<option value="M" #if($llDataValue.getValue() && $llDataValue.getValue()=="M") selected #end>Male</option>
 					<option value="F" #if($llDataValue.getValue() && $llDataValue.getValue()=="F") selected #end>Female</option>
@@ -94,7 +94,7 @@
 			</td>			
 		#elseif($count1 == 4)
 			<td>
-				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLDAgeCategoryField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
+				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLDAgeCategoryField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end>
 					<option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
 					<option value="B1DAY" #if($llDataValue.getValue() && $llDataValue.getValue()=="B1DAY") selected #end>BELOW 1 DAY</option>
 					<option value="B1WEEK" #if($llDataValue.getValue() && $llDataValue.getValue()=="B1WEEK") selected #end>1 DAY - 1 WEEK</option>
@@ -108,7 +108,7 @@
 			</td>
 		#elseif($count1 == 5)
 			<td>
-				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLDPCDField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
+				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLDPCDField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end>
 					<option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
 					<option value="ASPHYXIA" #if($llDataValue.getValue() && $llDataValue.getValue()=="ASPHYXIA") selected #end>ASPHYXIA</option>					
 					<option value="SEPSIS" #if($llDataValue.getValue() && $llDataValue.getValue()=="SEPSIS") selected #end>SEPSIS</option>
@@ -135,15 +135,15 @@
 					<option value="NK" #if($llDataValue.getValue() && $llDataValue.getValue()=="NK") selected #end>NOT KNOWN</option>
 				</select>
 			</td>
-            <td>
+            <td #if( $locked ) style="display:none" #end>
                 <a href="javascript:removeLLRecord( '$llDataValue.getRecordNo()' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
             </td>           
 			
 		#elseif($count1 == 1)
 			<td align="center"><div id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].slno" align='center'>$slno</div></td>
-			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLDNameField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLDNameField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"  #if( $locked ) disabled="disabled"#end></td>
 		#else
-			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLDVillageField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLDVillageField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"  #if( $locked ) disabled="disabled"#end></td>
 		#end
 		#set($count1 = $count1+1)
 		#set( $lastRecord = $llDataValue.getRecordNo() )		
@@ -151,7 +151,7 @@
 	#set( $slno = $slno + 1 )			
 	</tr>	
 #end
-<tr>
+<tr #if( $locked ) style="display:none" #end>
 	<td align="center"><div id='value[1027].value:value[$recordNo].slno' align='center'>$slno</div></td>
 	<td><input name="entryfield" id="value[1027].value:value[$recordNo].value" type="text" value="" onchange="validateLLDNameField(1027,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
 	<td><input name="entryfield" id="value[1028].value:value[$recordNo].value" type="text" value="" onchange="validateLLDVillageField(1028,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>

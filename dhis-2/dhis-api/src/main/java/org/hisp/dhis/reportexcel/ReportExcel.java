@@ -27,9 +27,9 @@ package org.hisp.dhis.reportexcel;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -40,7 +40,6 @@ import org.hisp.dhis.user.UserAuthorityGroup;
  * @version $Id$
  */
 public abstract class ReportExcel
-
 {
 
     private int id;
@@ -99,6 +98,8 @@ public abstract class ReportExcel
     public abstract boolean isPeriodColumnListing();
 
     public abstract boolean isNormal();
+
+    public abstract List<String> getItemTypes();
 
     // -------------------------------------------------------------------------
     // Abstract methods

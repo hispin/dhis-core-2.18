@@ -104,9 +104,15 @@ public class HibernatePatientIdentifierStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit, int min, int max )
     {
+
+        String hql = "select distinct p from Patient p join p.identifiers i where i.organisationUnit = :organisationUnit order by p.id";
+        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults( max ).list();
+
+        /*
     	return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
-            .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).setFirstResult( min ).setMaxResults( max ).list();
+            .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).setFirstResult( min ).setMaxResults( max ).list();*/
     }
+    
 
     public Patient getPatient( PatientIdentifierType idenType, String value )
     {

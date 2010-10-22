@@ -35,6 +35,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.patient.paging.PagingUtil;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -79,6 +80,35 @@ public class SearchPatientFormAction
     {
         return patientAttributes;
     }
+
+    private Integer currentPage;
+
+    public void setCurrentPage( Integer currentPage )
+    {
+        this.currentPage = currentPage;
+    }
+
+    private Integer pageSize;
+
+    public void setPageSize( Integer pageSize )
+    {
+        this.pageSize = pageSize;
+    }
+
+    private Integer defaultPageSize = 4;
+
+    public void setDefaultPageSize( Integer defaultPageSize )
+    {
+        this.defaultPageSize = defaultPageSize;
+    }
+
+    private PagingUtil pagingUtil;
+
+    public PagingUtil getPagingUtil()
+    {
+        return pagingUtil;
+    }
+    
 
     // -------------------------------------------------------------------------
     // Action implementation

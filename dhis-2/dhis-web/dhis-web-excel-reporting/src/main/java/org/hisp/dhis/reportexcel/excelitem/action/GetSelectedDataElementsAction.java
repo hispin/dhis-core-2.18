@@ -56,7 +56,7 @@ public class GetSelectedDataElementsAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private Comparator<DataElement> dataElementComparator;
 
     public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
@@ -80,24 +80,25 @@ public class GetSelectedDataElementsAction
     public void setDataSetId( int dataSetId )
     {
         this.dataSetId = dataSetId;
-    }   
+    }
 
     private List<DataElement> dataElements;
 
-    public List<DataElement> getDataElements() {
-		return dataElements;
-	}
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-  
-	public String execute()
-        throws Exception
-    {        
-    	DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-    	dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+    public String execute()
+        throws Exception
+    {
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+        dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         Collections.sort( dataElements, dataElementComparator );
 

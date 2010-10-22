@@ -103,12 +103,10 @@
 
 		<action name="validateDataElement"
 			class="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -258,12 +256,11 @@
 
 		<action name="validateDataElementGroup"
 			class="org.hisp.dhis.dd.action.dataelementgroup.ValidateDataElementGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<!-- Data Element Group Set -->
@@ -310,10 +307,11 @@
 
 		<action name="validateDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.ValidateDataElementGroupSetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="deleteDataElementGroupSet"
@@ -483,12 +481,10 @@
 
 		<action name="validateIndicatorGroup"
 			class="org.hisp.dhis.dd.action.indicatorgroup.ValidateIndicatorGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -535,10 +531,11 @@
 
 		<action name="validateIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.ValidateIndicatorGroupSetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="deleteIndicatorGroupSet"
@@ -565,8 +562,7 @@
 			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorType.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorType.js</param>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>			
 		</action>
 
 		<action name="getIndicatorType"
@@ -618,12 +614,10 @@
 
 		<action name="validateIndicatorType"
 			class="org.hisp.dhis.dd.action.indicatortype.ValidateIndicatorTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -705,47 +699,12 @@
 
 		<action name="validateIndicator"
 			class="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<!-- Indicator denum -->
-
-		<action name="editDenum"
-			class="org.hisp.dhis.dd.action.indicatordenum.GetDenumAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/editDenumForm.vm</param>
-			<param name="javascripts">javascript/denum.js</param>
-			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
-		</action>
-
-		<action name="getFilteredDataElements"
-			class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonOperands.vm</result>
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="getFormulaText"
-			class="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseFormulaText.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="validateDenum"
-			class="org.hisp.dhis.dd.action.indicatordenum.ValidateDenumAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
+		</action>		
 
 		<!-- DataDictionary -->
 
@@ -813,12 +772,10 @@
 
 		<action name="validateDataDictionary"
 			class="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -925,8 +882,9 @@
 		</action>
 
 		<!-- Category -->
-
-		<action name="showAddDataElementCategoryForm" class="org.hisp.dhis.dd.action.NoAction">
+		
+		<action name="showAddDataElementCategoryForm" 
+			class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryForm.vm</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
@@ -943,12 +901,10 @@
 
 		<action name="validateDataElementCategory"
 			class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -1020,12 +976,10 @@
 
 		<action name="validateDataElementCategoryCombo"
 			class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -1085,12 +1039,84 @@
 
 		<action name="validateDataElementCategoryOption"
 			class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<!-- Concept Name -->
+		
+		<action name="getConcept"
+			class="org.hisp.dhis.dd.action.concept.GetConceptAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+				/dhis-web-maintenance-datadictionary/multidimensional/responseConcept.vm</result>
 		</action>
 
+		<action name="concept"
+			class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-datadictionary/multidimensional/concept.vm</param>
+			<param name="javascripts">javascript/concept.js</param>
+			<param name="requiredAuthorities">F_CONCEPT_MANAGEMENT</param>
+		</action>
+		
+		<action name="showAddConceptForm"
+			class="org.hisp.dhis.dd.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-datadictionary/multidimensional/addConceptForm.vm</param>
+			<param name="javascripts">javascript/concept.js</param>
+			<param name="requiredAuthorities">F_CONCEPT_ADD</param>
+		</action>
+				
+		<action name="showUpdateConceptForm"
+			class="org.hisp.dhis.dd.action.concept.GetConceptAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+			<param name="page">
+				/dhis-web-maintenance-datadictionary/multidimensional/updateConceptForm.vm</param>
+			<param name="javascripts">javascript/concept.js</param>
+			<param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
+		</action>
+		
+		<action name="validateAddUpdateConcept"
+			class="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="addConcept"
+			class="org.hisp.dhis.dd.action.concept.AddConceptAction">
+			<result name="success" type="redirect">concept.action</result>
+			<result name="error" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_CONCEPT_ADD</param>
+		</action>
+		
+		<action name="updateConceptInstance"
+			class="org.hisp.dhis.dd.action.concept.UpdateConceptAction">
+			<result name="success" type="redirect">concept.action</result>
+			<result name="error" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
+		</action>
+		
+		<action name="removeConcept"
+			class="org.hisp.dhis.dd.action.concept.RemoveConceptAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_CONCEPT_DELETE</param>
+		</action>
+		
 	</package>
 
 </struts>

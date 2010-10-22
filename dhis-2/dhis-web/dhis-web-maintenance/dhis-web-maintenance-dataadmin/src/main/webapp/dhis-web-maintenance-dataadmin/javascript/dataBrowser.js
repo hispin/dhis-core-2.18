@@ -7,60 +7,6 @@
 currentUrlLink = "";
 currentParentId = "";
 
-// ---------------------------------------------------------------
-
-function validateForDrillDown()
-{
-    var periodType = getListValue( "periodTypeId" );
-    var fromDate = byId( "fromDate" ).value.split('-');
-    var toDate = byId( "toDate" ).value.split('-');
-    var mode = byId( "searchOption" ).value;
-    
-    if ( periodType == "null" )
-    {
-        setMessage( i18n_drilldown_choose_period_type );
-        return false;
-    }
-    
-    if ( fromDate[0] != "" && fromDate.length != 3 )
-    {
-        setMessage( i18n_drilldown_fromdate_invalid );
-        return false;
-    }
-    
-    if ( toDate[0] != "" && toDate.length != 3 )
-    {
-        setMessage( i18n_drilldown_enddate_invalid );
-        return false;
-    }
-    
-    if ( fromDate[0] > toDate[0] )
-    {
-        setMessage( i18n_drilldown_fromdate_is_later_than_todate );
-        return false;
-    }
-    
-    if ( fromDate[0] == toDate[0] && fromDate[1] > toDate[1] )
-    {
-        setMessage( i18n_drilldown_fromdate_is_later_than_todate );
-        return false;
-    }
-    
-    if ( fromDate[0] == toDate[0] && fromDate[1] == toDate[1] && fromDate[2] > toDate[2] )
-    {
-        setMessage( i18n_drilldown_fromdate_is_later_than_todate );
-        return false;
-    }
-    
-    if ( mode == "null" )
-    {
-        setMessage( i18n_drilldown_select_browse_mode );
-        return false;
-    }
-    
-    return true;
-}
-
 function modeHandler()
 {
     var modeList = byId( "searchOption" );

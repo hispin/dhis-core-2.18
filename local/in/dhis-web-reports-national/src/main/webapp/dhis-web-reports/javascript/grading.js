@@ -7,7 +7,7 @@ function getOrgUnitGroups()
 	
     if ( orgUnitGroupSetId != null )
     {
-        //var url = "getOrgUnitGroups.action?orgUnitGroupSetId=" + orgUnitGroupSetId;
+        /* //var url = "getOrgUnitGroups.action?orgUnitGroupSetId=" + orgUnitGroupSetId;
 		
         var request = new Request();
         request.setResponseTypeXML( 'orgunitgroup' );
@@ -17,7 +17,16 @@ function getOrgUnitGroups()
         var requestString = "getOrgUnitGroups.action";
         var params = "orgUnitGroupSetId=" + orgUnitGroupSetId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("getOrgUnitGroups.action",
+			{
+				orgUnitGroupSetId : orgUnitGroupSetId
+			},
+			function (data)
+			{
+				getOrgUnitGroupsReceived(data);
+			},'xml');
     }
 }
 
@@ -119,8 +128,7 @@ function formValidations()
             document.reportForm.orgUnitListCB.options[k].selected = true;
         }
     }
-	
-	  	  
+		  
     var viewBy = document.getElementById("viewByCB");
 			 
     var form = document.getElementById( 'reportForm' );

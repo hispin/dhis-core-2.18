@@ -535,7 +535,7 @@ function findDataElementCount()
 
   var requestString = 'getSelectedDataElements.action';
   
-  var params = 'associationId=' + document.getElementById( 'associationIdField' ).value + '&associationName=' + document.getElementById( 'associationNameField' ).value ;
+  var params = 'associationId=' + document.getElementById( 'associationIdField' ).value;
         
   params += '&designCode=' + htmlCode;
   
@@ -677,7 +677,6 @@ function getOptionCombosCompleted( optionComboElement )
 	{ 
 	  	var dataElementSelector = document.getElementById( 'dataElementSelector' );
 	  	var optionComboSelector = document.getElementById( 'optionComboSelector' );
-        var associationName = document.getElementById( 'associationNameField' ).value;
         var associationId = document.getElementById( 'associationIdField' ).value;
 	    var selectedOptionComboIds = new Array();
 	    var selectedOptionComboNames = new Array();
@@ -725,7 +724,7 @@ function getOptionCombosCompleted( optionComboElement )
         //var titleValue = "-- "+dataElementId + ". "+ dataElementName+" "+optionComboId+". "+optionComboName+" ("+dataElementType+") --";   	
 		//var dataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
 		
-		FCKSelectElement.Add( associationId, associationName, dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames);
+		FCKSelectElement.Add( associationId, dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames);
 		// dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames
 		return false ; 
 	}		
@@ -768,6 +767,5 @@ h4 {
 			<td></td>
 		</tr>									
 		<input type="hidden" name="associationIdField" id="associationIdField" value="$association.id" />
-        <input type="hidden" name="associationNameField" id="associationNameField" value="$associationName" />
 </body>
 </html>

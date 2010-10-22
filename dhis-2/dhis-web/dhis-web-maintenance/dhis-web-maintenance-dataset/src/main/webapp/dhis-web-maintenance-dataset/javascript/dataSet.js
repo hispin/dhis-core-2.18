@@ -12,10 +12,10 @@ function showDataSetDetails( dataSetId )
 
 function dataSetRecieved( dataSetElement )
 {
-  setFieldValue( 'nameField', getElementValue( dataSetElement, 'name' ) );
-  setFieldValue( 'frequencyField', getElementValue( dataSetElement, 'frequency' ) );
-  setFieldValue( 'dataElementCountField', getElementValue( dataSetElement, 'dataElementCount' ) );
-  setFieldValue( 'dataEntryFormField', getElementValue( dataSetElement, 'dataentryform' ) );
+  setInnerHTML( 'nameField', getElementValue( dataSetElement, 'name' ) );
+  setInnerHTML( 'frequencyField', getElementValue( dataSetElement, 'frequency' ) );
+  setInnerHTML( 'dataElementCountField', getElementValue( dataSetElement, 'dataElementCount' ) );
+  setInnerHTML( 'dataEntryFormField', getElementValue( dataSetElement, 'dataentryform' ) );
 
   showDetails();
 }

@@ -14,6 +14,16 @@
 	var monthNames = new Array("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar");
 	var quarterNames = new Array("Q1","Q2","Q3","Q4");
 	var halfYearNames = new Array("HY1","HY2");
+
+        var orgUnitGroupIds = new Array();
+	var orgUnitGroupNames = new Array();
+
+	#set( $count1 = 0 );
+	#foreach( $orgUnitGroup in $orgUnitGroups )
+	   orgUnitGroupIds[$count1] = $orgUnitGroup.id;
+	   orgUnitGroupNames[$count1] = '$orgUnitGroup.name';
+	   #set( $count1 = $count1 + 1 );
+	#end
 	
 	
 	
@@ -138,10 +148,13 @@
 						</td>
 						<td class="NormalB">&nbsp;</td>
 						<td class="NormalB">
+
+                            <input type="radio" id="ouRadio" name="ouRadio" value="orgUnitGroupRadio"    onclick="ouradioSelection(event)"> OrgUnitGroups
+                            <br>
+                            <input type="radio" id="ouRadio" name="ouRadio" value="orgUnitLevelRadio" onclick="ouradioSelection(event)" checked> OrgUnit Levels
 							<br>
-							OrgUnit Levels:<br>
 							<select name="orgUnitLevelCB" id="orgUnitLevelCB" size="7" style="width: 150px;">
-							</select>						
+							</select>
 						</td>
 					</tr>
 				</table>

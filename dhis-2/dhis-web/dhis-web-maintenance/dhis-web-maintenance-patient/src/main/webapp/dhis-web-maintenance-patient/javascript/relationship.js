@@ -12,10 +12,10 @@ function showRelationshipTypeDetails( relationshipTypeId )
 
 function relationshipTypeReceived( relationshipTypeElement )
 {
-	setFieldValue( 'idField', getElementValue( relationshipTypeElement, 'id' ) );
-	setFieldValue( 'aIsToBField', getElementValue( relationshipTypeElement, 'aIsToB' ) );	
-	setFieldValue( 'bIsToAField', getElementValue( relationshipTypeElement, 'bIsToA' ) );       
-	setFieldValue( 'descriptionField', getElementValue( relationshipTypeElement, 'description' ) );
+	setInnerHTML( 'idField', getElementValue( relationshipTypeElement, 'id' ) );
+	setInnerHTML( 'aIsToBField', getElementValue( relationshipTypeElement, 'aIsToB' ) );	
+	setInnerHTML( 'bIsToAField', getElementValue( relationshipTypeElement, 'bIsToA' ) );       
+	setInnerHTML( 'descriptionField', getElementValue( relationshipTypeElement, 'description' ) );
    
     showDetails();
 }
@@ -48,7 +48,7 @@ function removeRelationshipTypeCompleted( messageElement )
     }
     else if( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }
@@ -290,7 +290,7 @@ function removeRelationshipCompleted( messageElement )
 	}	
 	else if( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }
@@ -332,14 +332,14 @@ function representativeReceived( patientElement )
 		buttonSecondField= '<input type="button" value="' + i18n_yes_and_attribute + '" onclick="javascript:saveRepresentative( true )">';
 	}	
 	
-	setFieldValue( 'labelField', labelField );
-	setFieldValue( 'buttonFirstField', buttonFirstField );
-	setFieldValue( 'buttonSecondField', buttonSecondField );
-	setFieldValue( 'partnerIdField', partnerId );	
-	setFieldValue( 'fullNameField', getElementValue( patientElement, 'fullName' ) );
-	setFieldValue( 'genderField', getElementValue( patientElement, 'gender' ) );	
-    setFieldValue( 'dateOfBirthField', getElementValue( patientElement, 'dateOfBirth' ) );    
-    setFieldValue( 'ageField', getElementValue( patientElement, 'age' ) );
+	setInnerHTML( 'labelField', labelField );
+	setInnerHTML( 'buttonFirstField', buttonFirstField );
+	setInnerHTML( 'buttonSecondField', buttonSecondField );
+	setInnerHTML( 'partnerIdField', partnerId );	
+	setInnerHTML( 'fullNameField', getElementValue( patientElement, 'fullName' ) );
+	setInnerHTML( 'genderField', getElementValue( patientElement, 'gender' ) );	
+    setInnerHTML( 'dateOfBirthField', getElementValue( patientElement, 'dateOfBirth' ) );    
+    setInnerHTML( 'ageField', getElementValue( patientElement, 'age' ) );
 	
 	var attributes = patientElement.getElementsByTagName( "attribute" );   
     
@@ -350,7 +350,7 @@ function representativeReceived( patientElement )
 		attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';		
 	}
 	
-	setFieldValue( 'attributeField', attributeValues );   
+	setInnerHTML( 'attributeField', attributeValues );   
    
     showPartnerDetail( true );
 }

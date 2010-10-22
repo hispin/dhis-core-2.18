@@ -12,10 +12,10 @@ function showProgramDetails( programId )
 
 function programReceived( programElement )
 {
-	setFieldValue( 'idField', getElementValue( programElement, 'id' ) );
-	setFieldValue( 'nameField', getElementValue( programElement, 'name' ) );	
-    setFieldValue( 'descriptionField', getElementValue( programElement, 'description' ) );    
-    setFieldValue( 'programStageCountField', getElementValue( programElement, 'programStageCount' ) );
+	setInnerHTML( 'idField', getElementValue( programElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( programElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( programElement, 'description' ) );    
+    setInnerHTML( 'programStageCountField', getElementValue( programElement, 'programStageCount' ) );
    
     showDetails();
 }
@@ -48,7 +48,7 @@ function removeProgramCompleted( messageElement )
     }
     else if ( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }

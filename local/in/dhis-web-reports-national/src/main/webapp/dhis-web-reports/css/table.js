@@ -5,7 +5,7 @@
 
 function createTable( tableId )
 {
-    var url = "createTable.action?id=" + tableId + "&mode=table";
+    /* var url = "createTable.action?id=" + tableId + "&mode=table";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
@@ -24,7 +24,20 @@ function createTable( tableId )
     
     var request = new Request();
     request.setCallbackSuccess( createTableReceived );    
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("createTable.action",
+		{
+			id : tableId,
+			mode : "table",
+			reportingPeriod : getListValue( "reportingPeriod" ),
+			parentOrganisationUnitId : getListValue( "parentOrganisationUnitId" ),
+			organisationUnitId : getListValue( "organisationUnitId" )
+		},
+		function (data)
+		{
+			createTableReceived(data);
+		},'xml');	
 }
 
 function createTableReceived( messageElement )
@@ -34,12 +47,20 @@ function createTableReceived( messageElement )
 
 function getTableStatus()
 {
-    var url = "getStatus.action";
+    /* var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( 'status' );
     request.setCallbackSuccess( tableStatusReceived );    
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("getStatus.action",
+		{
+		},
+		function (data)
+		{
+			tableStatusReceived(data);
+		},'xml');	
 }
 
 function tableStatusReceived( xmlObject )
@@ -79,12 +100,22 @@ function saveTable()
         var tableId = document.getElementById( "tableId" ).value;
         var tableName = document.getElementById( "tableName" ).value;
         
-        var url = "validateTable.action?id=" + tableId + "&name=" + tableName;
+        /* var url = "validateTable.action?id=" + tableId + "&name=" + tableName;
         
         var request = new Request();
         request.setResponseTypeXML( 'message' );
         request.setCallbackSuccess( saveTableReceived );
-        request.send( url );
+        request.send( url ); */
+		
+		$.post("validateTable.action",
+		{
+			id : tableId,
+			name : tableName
+		},
+		function (data)
+		{
+			saveTableReceived(data);
+		},'xml');	
     }
 }
 
@@ -239,10 +270,19 @@ function organisationUnitReportParamsChecked()
 
 function showTableDetails( tableId )
 {
-	var request = new Request();
+	/* var request = new Request();
     request.setResponseTypeXML( 'reportTable' );
     request.setCallbackSuccess( tableReceived );
-    request.send( 'getTable.action?id=' + tableId );	
+    request.send( 'getTable.action?id=' + tableId );	*/
+	
+	$.post("getTable.action",
+		{
+			id : tableId
+		},
+		function (data)
+		{
+			tableReceived(data);
+		},'xml');	
 }
 
 function tableReceived( xmlObject )

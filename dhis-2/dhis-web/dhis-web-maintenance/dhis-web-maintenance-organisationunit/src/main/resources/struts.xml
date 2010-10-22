@@ -40,12 +40,10 @@
 
 		<action name="validateOrganisationUnit"
 			class="org.hisp.dhis.oum.action.organisationunit.ValidateOrganisationUnitAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -133,20 +131,17 @@
 
 		<action name="validateOrganisationUnitGroup"
 			class="org.hisp.dhis.oum.action.organisationunitgroup.ValidateOrganisationUnitGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseInput.vm</result>
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="openAddOrganisationUnitGroup"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SetupAssociationsTreeAction">
+			class="org.hisp.dhis.oum.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js</param>
+			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupForm.vm</param>			
 			<param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
 		</action>		
 
@@ -158,17 +153,11 @@
 		</action>
 
 		<action name="openUpdateOrganisationUnitGroup"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SetupAssociationsTreeAction">
-			<result name="success" type="chain">openUpdateOrganisationUnitGroupChain</result>
-			<param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>			
-		</action>
-		
-		<action name="openUpdateOrganisationUnitGroupChain"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction">
+			class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js</param>			
-		</action>
+			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupForm.vm</param>		
+			<param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>			
+		</action>		
 
 		<action name="updateOrganisationUnitGroup"
 			class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction">
@@ -186,39 +175,6 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUP_DELETE</param>
 		</action>
-
-		<!-- Organisation Select -->
-
-		<action name="selectLevel"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SelectLevelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-		</action>
-
-		<action name="unselectLevel"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.UnselectLevelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-		</action>
-
-		<action name="selectOrganisationUnitGroup"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SelectOrganisationUnitGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-		</action>
-
-		<action name="unselectOrganisationUnitGroup"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.UnselectOrganisationUnitGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-		</action>
-
-		<action name="unselectAll"
-			class="org.hisp.dhis.oum.action.organisationunitgroup.select.UnselectAllAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-		</action>
-
 
 		<!-- OrganisationUnitGroupSet -->
 
@@ -248,13 +204,11 @@
 
 		<action name="validateOrganisationUnitGroupSet"
 			class="org.hisp.dhis.oum.action.organisationunitgroupset.ValidateGroupSetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseInput.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
+			<result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>			
 		</action>
 
 		<action name="showAddOrganisationUnitGroupSetForm"

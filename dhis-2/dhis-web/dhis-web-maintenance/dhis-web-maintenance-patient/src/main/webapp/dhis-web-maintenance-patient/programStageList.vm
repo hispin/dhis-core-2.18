@@ -62,7 +62,7 @@
                 </td>
                 
                 <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:viewDataEntryForm( '$association.id' , '$associationName' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
+                  <a href="javascript:viewDataEntryForm( '$association.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
                 </td>
                 
               </tr>

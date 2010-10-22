@@ -130,7 +130,7 @@ public class DefaultDataBrowserService
     }
 
     public DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
-        PeriodType periodType )
+        PeriodType periodType, Integer maxLevel )
     {
         if ( startDate == null || startDate.length() == 0 )
         {
@@ -146,7 +146,8 @@ public class DefaultDataBrowserService
 
         dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
 
-        Integer numResults = dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
+        Integer numResults = dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds,
+            maxLevel );
 
         if ( numResults == 0 )
         {

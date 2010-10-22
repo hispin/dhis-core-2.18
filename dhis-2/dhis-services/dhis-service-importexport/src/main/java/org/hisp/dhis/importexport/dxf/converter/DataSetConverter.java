@@ -43,6 +43,8 @@ import org.hisp.dhis.importexport.importer.DataSetImporter;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodType;
 
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_11;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: DataSetConverter.java 6455 2008-11-24 08:59:37Z larshelg $
@@ -141,18 +143,28 @@ public class DataSetConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
-            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
-            
             final DataSet dataSet = new DataSet();
             
             PeriodType periodType = new MonthlyPeriodType();
             dataSet.setPeriodType( periodType );
+            
+            reader.moveToStartElement( FIELD_ID );
+            dataSet.setId( Integer.parseInt( reader.getElementValue() ) );
+            
+            reader.moveToStartElement( FIELD_NAME );            
+            dataSet.setName( reader.getElementValue() );
 
-            dataSet.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-            dataSet.setName( values.get( FIELD_NAME ) );
-            dataSet.setShortName( values.get( FIELD_SHORT_NAME ) );
-            dataSet.setCode( values.get( FIELD_CODE ) );
-            dataSet.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
+            if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_11 ) )
+            {
+                reader.moveToStartElement( FIELD_SHORT_NAME );
+                dataSet.setShortName( reader.getElementValue() );
+            
+                reader.moveToStartElement( FIELD_CODE );
+                dataSet.setCode( reader.getElementValue() );
+            }
+
+            reader.moveToStartElement( FIELD_PERIOD_TYPE );
+            dataSet.getPeriodType().setId( periodTypeMapping.get( reader.getElementValue() ) );
             
             importObject( dataSet, params );
         }

@@ -66,6 +66,8 @@ public interface PatientService
 
     Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max );
 
+    Collection<Patient> getPatientsByOrgUnitAttr( OrganisationUnit organisationUnit, int min, int max , PatientAttribute patientAttribute);
+
     int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit );
 
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max );

@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf;
  */
 
 import static junit.framework.Assert.assertEquals;
+import static org.apache.commons.io.IOUtils.copy;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -92,7 +93,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DXFImportServiceTest
     extends DhisTest
 {
-
     private final int dataASize = 3;
 
     private final int dataBSize = 5;
@@ -160,12 +160,12 @@ public class DXFImportServiceTest
         inputStreamA = classLoader.getResourceAsStream( "dxfA.zip" );
         inputStreamAx = classLoader.getResourceAsStream( "dxfA.xml" );
         inputStreamAz = classLoader.getResourceAsStream( "dxfA.xml.gz" );
-        inputStreamB = classLoader.getResourceAsStream( "dxfB.zip" );
-        inputStreamC = classLoader.getResourceAsStream( "dxfC.zip" );
-        inputStreamD = classLoader.getResourceAsStream( "dxfD.zip" );
-        inputStreamE = classLoader.getResourceAsStream( "dxfE.zip" );
-        inputStreamF = classLoader.getResourceAsStream( "dxfF.zip" );
-        inputStreamG = classLoader.getResourceAsStream( "dxfG.zip" );
+        inputStreamB = classLoader.getResourceAsStream( "dxfB.xml" );
+        inputStreamC = classLoader.getResourceAsStream( "dxfC.xml" );
+        inputStreamD = classLoader.getResourceAsStream( "dxfD.xml" );
+        inputStreamE = classLoader.getResourceAsStream( "dxfE.xml" );
+        inputStreamF = classLoader.getResourceAsStream( "dxfF.xml" );
+        inputStreamG = classLoader.getResourceAsStream( "dxfG.xml" );
         inputStreamH = classLoader.getResourceAsStream( "changeroot.xml" );
         inputStreamExcelx = classLoader.getResourceAsStream( "orgunits.xlsx" );
         inputStreamSdmx = classLoader.getResourceAsStream( "sdmx_cross.zip" );
@@ -229,7 +229,6 @@ public class DXFImportServiceTest
             transforms.close();
             simplexsl.close();
         }
-
     }
 
     @Override
@@ -573,20 +572,5 @@ public class DXFImportServiceTest
         assertEquals( importObjectService.getImportObjects( GroupMemberType.DATASET ).size(), expectedSize * expectedSize );
 
         assertEquals( importObjectService.getImportObjects( GroupMemberType.ORGANISATIONUNITGROUP ).size(), expectedSize * expectedSize );
-    }
-
-    // utility method to copy streams
-    public void copy( InputStream in, OutputStream out ) throws IOException
-    {
-        byte buffer[] = new byte[1024 * 1024]; // 1MB
-        while ( true )
-        {
-            int count = in.read( buffer );
-            if ( count == -1 )
-            {
-                break;
-            }
-            out.write( buffer, 0, count );
-        }
     }
 }

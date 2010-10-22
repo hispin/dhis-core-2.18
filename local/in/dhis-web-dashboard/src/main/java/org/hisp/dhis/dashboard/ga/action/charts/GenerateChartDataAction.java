@@ -341,6 +341,11 @@ public class GenerateChartDataAction
     {
         this.ougSetCB = ougSetCB;
     }
+    
+    public String getOugSetCB()
+    {
+        return ougSetCB;
+    }
 
     private String aggDataCB;
 
@@ -878,13 +883,14 @@ public class GenerateChartDataAction
                     {
                         decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
                     }
-                    String values = selectedOrgUnit.getId() + ":"+ dElement.getId() + ":"+ decoc.getId() + ":" + p.getId();
-                    selectedValues.add(values);
                     
                     if( deSelection.equalsIgnoreCase( "optioncombo" ) )
                     {
                         if( ougSetCB == null )
                         {
+                            String values = selectedOrgUnit.getId() + ":"+ dElement.getId() + ":"+ decoc.getId() + ":" + p.getId();
+                            selectedValues.add(values);
+
                             if( aggDataCB == null )
                             {
                                 DataValue dv1 = dataValueService.getDataValue( selectedOrgUnit, dElement, p, decoc );
@@ -956,6 +962,9 @@ public class GenerateChartDataAction
 
                             if ( ougSetCB == null )
                             {
+                                String values = selectedOrgUnit.getId() + ":"+ dElement.getId() + ":"+ decoc1.getId() + ":" + p.getId();
+                                selectedValues.add(values);
+
                                 if ( aggDataCB == null )
                                 {
                                     DataValue dv1 = dataValueService.getDataValue( selectedOrgUnit, dElement, p, decoc1 );

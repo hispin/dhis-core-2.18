@@ -17,12 +17,14 @@
     
     <property name="minDaysFromStart" column="mindaysfromstart"/>   
     
-    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid"/>    
+    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_programstage_program"/>    
     
-     <set name="programStageDataElements" inverse="true"  >
+    <set name="programStageDataElements" inverse="true">
       <key column="programstageid"/>
       <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
     </set>  	
+	
+	<many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" cascade="all" foreign-key="fk_programstage_dataentryform"/>
 	
   </class>
 </hibernate-mapping>

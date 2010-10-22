@@ -1,0 +1,90 @@
+<script>
+	var deExpressionValidator = null;
+	
+	jQuery(document).ready(function(){	
+		deExpressionValidator = validation( 'dataelement-form', function(){ 
+			updateDeExpression();
+		});	
+
+		remoteValidate( jQuery( "#dataelement textarea[id=formula]"), '../dhis-web-commons-ajax-json/getExpressionText.action' );	
+	
+	});	
+	
+	
+</script>
+
+<div id="dataelement" style="display:none">
+	<form id="dataelement-form">
+	<table width="100%">
+		<tr>
+			<th>$i18n.getString( "formula" )</th>			
+			<th>$i18n.getString( "dataelement" )</th>
+		<tr>
+		<tr valign="top">
+			<td height="139">
+				<textarea id="formula" name="expression" cols="40" rows="5" class="{validate:{required:true}}"></textarea><br>
+				<a href="#" onclick="insertOperation( '(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
+				<a href="#" onclick="insertOperation( ')' )"><img src="images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"></a>
+				<a href="#" onclick="insertOperation( '*' )"><img src="images/multiply.png" alt="$i18n.getString( 'multiply' )"></a>
+				<a href="#" onclick="insertOperation( '/' )"><img src="images/divide.png" alt="$i18n.getString( 'divide' )"></a>
+				<a href="#" onclick="insertOperation( '+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
+				<a href="#" onclick="insertOperation( '-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
+			</td>
+			<td>	
+				<select id="groupSelect" style="width:500px"onchange="getDataElements(this.value, '#dataelement select[id=elementSelect]')"></select>												
+				<select id="elementSelect" size="15" style="width:500px;" ondblclick="insertExpression()"></select>	
+			</td>			
+		</tr>
+		<tr>
+			<th colspan="2">$i18n.getString( "description" )</th>
+		<tr>	
+		<tr>
+			<td colspan="2">
+				<div id="expression-description" style="width:750px;height:30px;overflow:auto"></div>
+			</td>
+		</th>
+	</table>
+	<br>
+	<br>
+	<center>
+		<input type="submit" value="$i18n.getString('ok')" style="width:100px"/>
+		<input type="button" value="$i18n.getString('clean')" onclick="cleanFormula()" style="width:100px"/>
+		<input type="button" value="$i18n.getString('cancel')" onclick="hideById('dataelement'); unLockScreen();" style="width:100px"/>
+	</center>
+	</form>
+</div>
+
+<script>
+	function updateDeExpression()
+	{
+		expression = jQuery( '#dataelement textarea[id=formula]' ).val();
+		setFieldValue( 'expression', expression );
+		hideById('dataelement'); 
+		unLockScreen();
+	}
+	
+	function deExpressionBuilderForm()
+	{
+		loadDataElementGroups("#dataelement select[id=groupSelect]") ;	
+		
+		setFieldValue( 'dataelement textarea[id=formula]', getFieldValue('expression') );
+		
+		showPopupWindowById( 'dataelement', 800, 400 );				
+	}
+	
+	function getDataElements( id, target )
+	{
+		#if($reportExcel.isCategory()) 
+		loadDataElementsByGroup( id, target);
+		#else 		
+		loadOperands( target, {id:id} );
+		#end
+	}
+	
+	function getOptionCombos( id, targetId )
+	{
+		loadCategoryOptionComboByDE( id, targetId );
+	}
+	
+</script>
+

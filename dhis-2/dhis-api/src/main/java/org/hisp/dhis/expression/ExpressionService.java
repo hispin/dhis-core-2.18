@@ -100,11 +100,13 @@ public interface ExpressionService
      * @param period The Period.
      * @param nullIfNoValues indicates whether null should be returned if no
      *        DataValues are registered for a DataElement in the expression.
+     * @param aggregated indicates whether aggregated or raw data should be
+     *        used when evaluating the expression.
      * @return The value of the given Expression, or null
      *         if no values are registered for a given combination of 
      *         DataElement, Source, and Period.
      */
-    Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues );
+    Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues, boolean aggregate );
     
     /**
      * Returns all DataElements associated with the CalculatedDataElement.
@@ -191,7 +193,10 @@ public interface ExpressionService
      * @param source The Source.
      * @param nullIfNoValues indicates whether null should be returned if no
      *        DataValues are registered for a DataElement in the expression.
+     * @param aggregated indicates whether aggregated or raw data should be
+     *        used when evaluating the expression.
      * @return A numerical expression.
      */    
-    String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues );
+    String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues, boolean aggregated );
+
 }

@@ -194,9 +194,9 @@ public class ImportDataNormalExcelGroupAction
             for ( ExcelItem excelItem : excelItems )
             {
                 HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
-
+                
                 String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow(), excelItem.getColumn(), sheet );
-
+                
                 if ( value.length() > 0 )
                 {
                     DataElementOperand operand = expressionService.getOperandsInExpression( excelItem.getExpression() ).iterator()

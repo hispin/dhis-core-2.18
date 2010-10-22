@@ -160,9 +160,10 @@ public class MappingStoreTest
     {
         mappingStore.addMap( mapA );
 
-        MapView mapView = new MapView( "MapViewA", MapView.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
-            new DataElementGroup(), new DataElement(), periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE,
-            "sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, "1", "1", 1 );
+        MapView mapView = new MapView( "MapViewA", MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
+            new DataElementGroup(), new DataElement(), MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
+            MappingService.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1,
+            "", "A", "B", mapLegendSet, "1", "1", 1 );
 
         int idA = mappingStore.addMapView( mapView );
 

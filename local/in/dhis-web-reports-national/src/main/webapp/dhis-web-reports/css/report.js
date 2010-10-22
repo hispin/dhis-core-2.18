@@ -3,7 +3,7 @@ var tempUrl = null;
 
 function runAndViewReport( reportId, reportUrl )
 {
-    var url = "createTable.action?id=" + reportId + "&mode=report";
+   /* var url = "createTable.action?id=" + reportId + "&mode=report";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
@@ -24,7 +24,20 @@ function runAndViewReport( reportId, reportUrl )
     
     var request = new Request();
     request.setCallbackSuccess( runAndViewReportReceived );    
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("createTable.action",
+		{
+			id : reportId,
+			mode : report,
+			reportingPeriod : getListValue( "reportingPeriod" ),
+			parentOrganisationUnitId : getListValue( "parentOrganisationUnitId" ),
+			organisationUnitId : getListValue( "organisationUnitId" )
+		},
+		function (data)
+		{
+			runAndViewReportReceived(data);
+		},'xml');
 }
 
 function runAndViewReportReceived( messageElement )
@@ -34,12 +47,20 @@ function runAndViewReportReceived( messageElement )
 
 function getReportStatus()
 {   
-    var url = "getStatus.action";
+    /* var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( "status" );
     request.setCallbackSuccess( reportStatusReceived );    
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("getStatus.action",
+		{
+		},
+		function (data)
+		{
+			reportStatusReceived(data);
+		},'xml');
 }
 
 function reportStatusReceived( xmlObject )

@@ -48,21 +48,21 @@
 		<!-- AJAX Requests -->
 		<action name="getDataElements"
 			class="org.hisp.dhis.excelimport.action.GetDataElementsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excelimport/responseDataElement.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="getPeriods"
 			class="org.hisp.dhis.excelimport.action.GetPeriodsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excelimport/responsePeriod.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="getReports"
 			class="org.hisp.dhis.excelimport.action.GetReportsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excelimport/responseImportReport.vm</result>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/reports.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js</param>
@@ -71,7 +71,7 @@
 		
 		<action name="getOrgUnitDetails"
 			class="org.hisp.dhis.excelimport.action.GetOrgUnitsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excelimport/responseOrgUnit.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>

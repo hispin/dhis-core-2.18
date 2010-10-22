@@ -215,37 +215,37 @@ public class GenerateMetaDataReportResultAction
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateOrgUnitList();
-           
+
         }
         else if ( metaDataId.equalsIgnoreCase( ORGUNITGRP ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateOrgUnitGroupList();
-            
+
         }
         else if ( metaDataId.equalsIgnoreCase( DATAELEMENT ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateDataElementList();
-            
+
         }
         else if ( metaDataId.equalsIgnoreCase( DATAELEMENTGRP ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateDataElementGroupList();
-            
+
         }
         else if ( metaDataId.equalsIgnoreCase( INDIACTOR ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateIndicatorList();
-           
+
         }
         else if ( metaDataId.equalsIgnoreCase( INDICATORGRP ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateIndicatorGroupList();
-           
+
         }
         else if ( metaDataId.equalsIgnoreCase( DATASET ) )
         {
@@ -261,30 +261,30 @@ public class GenerateMetaDataReportResultAction
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateValidationGroupList();
-            
+
         }
         else if ( metaDataId.equalsIgnoreCase( USER ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateUserList();
-            
+
         }
         else if ( metaDataId.equalsIgnoreCase( ORGUNIT_USER ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateOrgUnitTreeAlongWithUsers();
-            
+
         }
 
         else if ( metaDataId.equalsIgnoreCase( SUMMARY ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateSummaryReport();
-            
+
         }
 
         statementManager.destroy();
-        
+
         System.out.println( "Report Generation End Time is : \t" + new Date() );
 
         return SUCCESS;
@@ -295,7 +295,7 @@ public class GenerateMetaDataReportResultAction
     // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
-    // Methods for getting data elements List in Excel Sheet
+    // Methods for getting Summary List in Excel Sheet
     // -------------------------------------------------------------------------
     public void generateSummaryReport()
         throws Exception
@@ -336,9 +336,9 @@ public class GenerateMetaDataReportResultAction
         Collection<User> UserList = new ArrayList<User>( userStore.getAllUsers() );
         int user = UserList.size();
 
-        //----------------------------------------------------------------------
+        // ----------------------------------------------------------------------
         // Coding For Printing MetaData
-        //----------------------------------------------------------------------
+        // ----------------------------------------------------------------------
         // -
 
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
@@ -440,7 +440,11 @@ public class GenerateMetaDataReportResultAction
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
         outputReportFile.deleteOnExit();
     }
-
+    
+    // -------------------------------------------------------------------------
+    // Methods for getting DataElement  wise List in Excel Sheet
+    // -------------------------------------------------------------------------
+    
     public void generateDataElementList()
         throws Exception
     {
@@ -682,7 +686,7 @@ public class GenerateMetaDataReportResultAction
         WritableCellFormat wCellformat = new WritableCellFormat();
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setWrap( false );
-        wCellformat.setAlignment( Alignment.LEFT );
+        wCellformat.setAlignment( Alignment.CENTRE );
 
         int rowStart = 0;
         int colStart = 0;
@@ -703,12 +707,11 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 2, rowStart, "organisationUnitShortName", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 3, rowStart, "organisationUnitOpeningDate", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 4, rowStart, "organisationUnitClosedDate", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 5, rowStart, "organisationUnitType", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 6, rowStart, "organisationUnitParentName", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 7, rowStart, "organisationUnitCode", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 8, rowStart, "organisationUnitUrl", getCellFormat1() ) );
-                
-               
+                sheet0.addCell( new Label( colStart + 5, rowStart, "organisationUnitParentName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 6, rowStart, "organisationUnitCode", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 7, rowStart, "organisationUnitUrl", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 8, rowStart, "Last Updated", getCellFormat1() ) );
+
             }
         }
 
@@ -736,7 +739,7 @@ public class GenerateMetaDataReportResultAction
             // Attributes 30/06/2010
             if ( incID.equalsIgnoreCase( PRINT ) )
             {
-                sheet0.mergeCells( colStart + 1, rowStart, colStart + 9, rowStart );
+                sheet0.mergeCells( colStart + 1, rowStart, colStart + 8, rowStart );
             }
 
             rowStart++;
@@ -759,6 +762,7 @@ public class GenerateMetaDataReportResultAction
                     if ( incID.equalsIgnoreCase( SOURCE ) )
                     {
                         sheet0.addCell( new Number( colStart, rowStart, organisationUnit.getId(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 1, rowStart, organisationUnit.getName(), wCellformat ) );
                     }
 
                     // for printing all attributes data in Excel Sheet
@@ -769,11 +773,20 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 1, rowStart, organisationUnit.getName(), wCellformat ) );
                         sheet0
                             .addCell( new Label( colStart + 2, rowStart, organisationUnit.getShortName(), wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 3, rowStart,
-                            organisationUnit.getOpeningDate().toString(), wCellformat ) );
-                        // sheet0.addCell( new Label(colStart + 5, rowStart,
-                        // organisationUnit.getClosedDate().toString(),
-                        // wCellformat ) );
+                        // Null check for opening date
+                        String opendate = new String();
+                        if ( organisationUnit.getOpeningDate() != null )
+                        {
+                            opendate = organisationUnit.getOpeningDate().toString();
+
+                        }
+                        else
+                        {
+                            opendate = "";
+                        }
+
+                        sheet0.addCell( new Label( colStart + 3, rowStart, opendate, wCellformat ) );
+                        // Null check for opening date
                         String closedate = new String();
                         if ( organisationUnit.getClosedDate() != null )
                         {
@@ -786,11 +799,7 @@ public class GenerateMetaDataReportResultAction
                         }
                         sheet0.addCell( new Label( colStart + 4, rowStart, closedate, wCellformat ) );
 
-                      //  sheet0.addCell( new Label( colStart + 5, rowStart, organisationUnit.getType(), wCellformat ) );
-                        // sheet0.addCell( new Label(colStart + 7, rowStart,
-                        // organisationUnit.getParent().getName(), wCellformat )
-                        // );
-
+                        // Null check for Parent Name
                         String PARENT = new String();
                         if ( organisationUnit.getParent() != null )
                         {
@@ -801,9 +810,22 @@ public class GenerateMetaDataReportResultAction
                         {
                             PARENT = "ROOT";
                         }
-                        sheet0.addCell( new Label( colStart + 6, rowStart, PARENT, wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 7, rowStart, organisationUnit.getCode(), wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 8, rowStart, organisationUnit.getUrl(), wCellformat ) );
+
+                        sheet0.addCell( new Label( colStart + 5, rowStart, PARENT, wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 6, rowStart, organisationUnit.getCode(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 7, rowStart, organisationUnit.getUrl(), wCellformat ) );
+                        // Null check for last updation
+                        String lastUpdate = new String();
+                        if ( organisationUnit.getLastUpdated() != null )
+                        {
+                            lastUpdate = organisationUnit.getLastUpdated().toString();
+
+                        }
+                        else
+                        {
+                            lastUpdate = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 8, rowStart, lastUpdate, wCellformat ) );
 
                     }
                     else
@@ -1017,17 +1039,13 @@ public class GenerateMetaDataReportResultAction
             if ( incID != null )
             {
 
-                if ( incID.equalsIgnoreCase( SOURCE ) )
-                {
-                    sheet0.addCell( new Number( colStart, rowStart, ou.getId(), getCellFormat2() ) );
-                }
                 // for printing all attributes data in Excel Sheet 30/06/2010
-                else if ( incID.equalsIgnoreCase( PRINT ) )
+                if ( incID.equalsIgnoreCase( PRINT ) )
                 {
                     sheet0.addCell( new Number( colStart, rowStart, ou.getId(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 1, rowStart, ou.getName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 2, rowStart, ou.getShortName(), wCellformat ) );
-                    
+
                     // sheet0.addCell( new Label(colStart + 5, rowStart,
                     // organisationUnit.getClosedDate().toString(),
                     // wCellformat ) );
@@ -1041,8 +1059,9 @@ public class GenerateMetaDataReportResultAction
                     {
                         opendate = "";
                     }
+
                     sheet0.addCell( new Label( colStart + 3, rowStart, opendate, wCellformat ) );
-                    
+
                     String closedate = new String();
                     if ( ou.getClosedDate() != null )
                     {
@@ -1053,9 +1072,11 @@ public class GenerateMetaDataReportResultAction
                     {
                         closedate = "";
                     }
+
                     sheet0.addCell( new Label( colStart + 4, rowStart, closedate, wCellformat ) );
 
-                   // sheet0.addCell( new Label( colStart + 5, rowStart, ou.getType(), wCellformat ) );
+                    // sheet0.addCell( new Label( colStart + 5, rowStart,
+                    // ou.getType(), wCellformat ) );
                     // sheet0.addCell( new Label(colStart + 7, rowStart,
                     // organisationUnit.getParent().getName(), wCellformat )
                     // );
@@ -1071,9 +1092,10 @@ public class GenerateMetaDataReportResultAction
                         PARENT = "ROOT";
                     }
                     sheet0.addCell( new Label( colStart + 5, rowStart, PARENT, wCellformat ) );
+
                     sheet0.addCell( new Label( colStart + 6, rowStart, ou.getCode(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, ou.getUrl(), wCellformat ) );
-                    
+
                     String lastUpdate = new String();
                     if ( ou.getLastUpdated() != null )
                     {
@@ -1087,21 +1109,35 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 8, rowStart, lastUpdate, wCellformat ) );
 
                 }
-               else 
+
+                else if ( incID.equalsIgnoreCase( SOURCE ) )
+                {
+                    sheet0.addCell( new Number( colStart, rowStart, ou.getId(), getCellFormat2() ) );
+                    int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
+                    sheet0.addCell( new Label( colStart + ouLevel, rowStart, ou.getName(), getCellFormat2() ) );
+                    // System.out.println("ID is : " + ou.getId() +
+                    // "and name is : " + ou.getName());
+                }
+
+                else
                 {
                     int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
 
                     sheet0.addCell( new Label( colStart + ouLevel, rowStart, ou.getName(), getCellFormat2() ) );
+                    // System.out.println("Level is : " + ouLevel);
+                    // System.out.println("in not ID only Name is :" +
+                    // ou.getName() );
                 }
-                
-
             }
 
-            int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
-            
-            sheet0.addCell( new Label( colStart + ouLevel, rowStart, ou.getName(), getCellFormat2() ) );
+            // int ouLevel = organisationUnitService.getLevelOfOrganisationUnit(
+            // ou.getId() );
 
-            sheet0.addCell( new Label( colStart + 1, rowStart, ou.getName(),getCellFormat2() ) );
+            // sheet0.addCell( new Label( colStart + ouLevel, rowStart,
+            // ou.getName(), getCellFormat2() ) );
+
+            // sheet0.addCell( new Label( colStart + 1, rowStart,
+            // ou.getName(),getCellFormat2() ) );
 
             rowStart++;
         }
@@ -1218,7 +1254,7 @@ public class GenerateMetaDataReportResultAction
 
             sheet0.addCell( new Label( colStart + 1, rowStart, indicator.getName(), wCellformat ) );
 
-            //expressionService.getExpressionDescription(indicator.getDenominator
+            // expressionService.getExpressionDescription(indicator.getDenominator
             // () );
             // expressionService.getExpressionDescription(
             // indicator.getNumerator() );

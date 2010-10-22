@@ -3,12 +3,21 @@ function saveDocument()
 {
     var name = document.getElementById( "name" );
     
-    var url = "validateDocument.action?name=" + name;
+    /* var url = "validateDocument.action?name=" + name;
     
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( saveDocumentReceived );
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("validateDocument.action",
+		{
+			name : name
+		},
+		function (data)
+		{
+			saveDocumentReceived(data);
+		},'xml');
 }
 
 function saveDocumentReceived( messageElement )

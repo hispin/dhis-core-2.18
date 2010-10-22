@@ -75,6 +75,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="sectionService">
 			<ref bean="org.hisp.dhis.dataset.SectionService"/>
 		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+		</property>
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.section.UpdateSectionAction"
@@ -343,9 +346,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
-		<property name="dataEntryFormService">
-			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
-		</property>
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
@@ -378,9 +378,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction"
 		class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction"
 		scope="prototype">
-		<property name="dataEntryFormService">
-			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
-		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
@@ -538,6 +535,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection"
+		class="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 	</bean>
 	
