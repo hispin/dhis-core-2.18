@@ -37,7 +37,7 @@
 		</tr>
 		<tr>
 			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><textarea id="description" name="description" style="width:20em; height:6em" class="{validate:{required:true,minlength:2,maxlength:255}}">$!encoder.htmlEncode( $!sqlViewObject.description )</textarea></td>
+			<td><textarea id="description" name="description" style="width:20em; height:6em" maxlength="255" class="{validate:{required:true,minlength:2}}">$!encoder.htmlEncode( $!sqlViewObject.description )</textarea></td>
 		</tr>
 		<tr>
 			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

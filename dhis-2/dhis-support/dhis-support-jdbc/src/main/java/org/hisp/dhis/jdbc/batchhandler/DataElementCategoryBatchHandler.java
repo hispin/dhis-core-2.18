@@ -38,6 +38,8 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 public class DataElementCategoryBatchHandler
     extends AbstractBatchHandler<DataElementCategory>
 {
+
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -92,9 +94,9 @@ public class DataElementCategoryBatchHandler
     }
     
     protected void setValues( DataElementCategory category )
-    {        
+    {
         statementBuilder.setValue( category.getUuid() );
         statementBuilder.setValue( category.getName() );
-        statementBuilder.setValue( category.getConcept() );
+        statementBuilder.setValue( category.getConcept().getId() );
     }
 }

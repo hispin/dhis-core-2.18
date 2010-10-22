@@ -1,0 +1,49 @@
+<script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
+
+## You don't have to use this template directly if you don't want to
+<table cellspacing=0 width="100%">
+	<thead>
+		<tr>
+			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )
+			<select id="treeSelectedId" name="treeSelectedId" #if( $requied ) class="{validate:{required:true}}" #end multiple="multiple" style="display:none"/>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>											
+				<div id="selectionTree" style="padding:5px;"></div>	
+			</td>
+		</tr>
+	</tbody>
+</table>
+<script>
+	
+	var selectedOrganisationUnitListABCDEF;
+	
+	function addSelectedOrganisationUnitABCDEF( id )
+	{
+		selectedOrganisationUnitListABCDEF.append( '<option value="' + id + ' selected="selected">' + id + '</option>');
+	}	
+	
+	function selectOrganisationUnitABCDEF( ids )
+	{
+		selectedOrganisationUnitListABCDEF.empty();
+		
+		jQuery.each( ids, function(i, item ){
+			selectedOrganisationUnitListABCDEF.append( '<option value="' + item + ' selected="selected">' + item + '</option>');
+		});
+	}
+
+	jQuery(document).ready( function(){				
+		selectionTreeSelection.setMultipleSelectionAllowed( false );
+		selectedOrganisationUnitListABCDEF = jQuery( "#treeSelectedId" );
+		#if( $requied )			
+			selectionTreeSelection.setListenerFunction( selectOrganisationUnitABCDEF );
+		#end
+		#if( $cleanAll )						
+			selectionTree.clearSelectedOrganisationUnits();			
+		#end	
+		selectionTree.buildSelectionTree();	
+	});	
+</script>

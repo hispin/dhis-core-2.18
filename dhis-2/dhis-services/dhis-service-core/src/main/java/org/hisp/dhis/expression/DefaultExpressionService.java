@@ -305,7 +305,7 @@ public class DefaultExpressionService
             // that the formula is mathematically valid
             // -----------------------------------------------------------------
 
-            matcher.appendReplacement( buffer, "1" );
+            matcher.appendReplacement( buffer, "1.0" );
         }
         
         matcher.appendTail( buffer );

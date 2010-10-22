@@ -49,14 +49,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.importexport.ImportException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * GenericXMLConvertor transforms imported foreign XML to dxf.
  * 
  * @author bobj
  */
-@Component("preConverter")
 public class XMLPreConverter
 {
     private final Log log = LogFactory.getLog( XMLPreConverter.class );

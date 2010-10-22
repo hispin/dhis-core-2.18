@@ -232,7 +232,7 @@ public class DefaultSelectionTreeManager
 
     private OrganisationUnit reloadOrganisationUnit( OrganisationUnit unit )
     {
-        return organisationUnitService.getOrganisationUnit( unit.getId() );
+        return unit == null ? null : organisationUnitService.getOrganisationUnit( unit.getId() );
     }
 
     private Collection<OrganisationUnit> reloadOrganisationUnits( Collection<OrganisationUnit> units )

@@ -29,6 +29,7 @@ package org.hisp.dhis.importexport.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.amplecode.staxwax.framework.XPathFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +38,6 @@ import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.importexport.ImportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 
 /**
@@ -49,7 +49,6 @@ import org.w3c.dom.Node;
  * @author bobj
  * @version created 30-Apr-2010
  */
-@Component( "location-manager-xslt-locator" )
 public class LocManagerXSLTLocator
     implements XSLTLocator
 {

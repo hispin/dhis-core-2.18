@@ -38,7 +38,6 @@ import org.springframework.stereotype.Component;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Component("databaseInfoProvider")
 public class HibernateDatabaseInfoProvider
     implements DatabaseInfoProvider
 {

@@ -39,7 +39,6 @@ import com.thoughtworks.xstream.XStream;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Component("configurationManager")
 public class DefaultConfigurationManager<T>
     implements ConfigurationManager<T>
 {

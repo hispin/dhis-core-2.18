@@ -18,14 +18,6 @@
  */
 
 /**
- * In this file people will find :
- *   - GeoStat
- *   - Distribution
- *   - Classification
- *
- */
-
-/**
  * @requires OpenLayers/Layer/Vector.js
  * @requires OpenLayers/Popup/AnchoredBubble.js
  * @requires OpenLayers/Feature/Vector.js
@@ -34,107 +26,34 @@
  * @requires OpenLayers/Ajax.js
  */
 
-/**
- * Class: mapfish.GeoStat
- * Base class for geo-statistics. This class is not meant to be used directly, it serves
- * as the base for specific geo-statistics implementations.
- */
 mapfish.GeoStat = OpenLayers.Class({
 
-    /**
-     * APIProperty: layer
-     * {<OpenLayers.Layer.Vector>} The vector layer containing the features that
-     *      are styled based on statistical values. If none is provided, one will
-     *      be created.
-     */
     layer: null,
 
-    /**
-     * APIProperty: format
-     * {<OpenLayers.Format>} The OpenLayers format used to get features from
-     *      the HTTP request response. GeoJSON is used if none is provided.
-     */
     format: null,
 
-    /**
-     * APIProperty: url
-     * {String} The URL to the web service. If none is provided, the features
-     *      found in the provided vector layer will be used.
-     */
     url: null,
 
-    /**
-     * APIProperty: requestSuccess
-     * {Function} Function called upon success with the HTTP request.
-     */
     requestSuccess: function(request) {},
 
-    /**
-     * APIProperty: requestFailure
-     * {Function} Function called upon failure with the HTTP request.
-     */
     requestFailure: function(request) {},
 
-    /**
-     * APIProperty: featureSelection
-     * {Boolean} A boolean value specifying whether feature selection must
-     *      be put in place. If true a popup will be displayed when the
-     *      mouse goes over a feature.
-     */
     featureSelection: true,
 
-    /**
-     * APIProperty: nameAttribute
-     * {String} The feature attribute that will be used as the popup title.
-     *      Only applies if featureSelection is true.
-     */
     nameAttribute: null,
 
-    /**
-     * APIProperty: indicator
-     * {String} Defines the attribute to apply classification on
-     */
     indicator: null,
 
-    /**
-     * Property: defaultSymbolizer
-     * {Object} This symbolizer is used in the constructor to define
-     *      the default style in the style object associated with the
-     *      "default" render intent. This symbolizer is extended with
-     *      OpenLayers.Feature.Vector.style['default']. It can be
-     *      overridden in subclasses.
-     */
     defaultSymbolizer: {},
 
-    /**
-     * Property: selectSymbolizer
-     * {Object} This symbolizer is used in the constructor to define
-     *      the select style in the style object associated with the
-     *      "select" render intent. When rendering selected features
-     *      it is extended with the default symbolizer. It can be
-     *      overridden in subclasses.
-     */
-    selectSymbolizer: {'strokeColor': '#000000'}, // neutral stroke color
+    selectSymbolizer: {'strokeColor': '#000000'},
 
-    /**
-     * Property: legendDiv
-     * {Object} Reference to the DOM container for the legend to be
-     *     generated.
-     */
     legendDiv: null,
 
-    /**
-     * Constructor: mapfish.GeoStat
-     *
-     * Parameters:
-     * map - {<OpenLayers.Map>} OpenLayers map object
-     * options - {Object} Hashtable of extra options
-     */
     initialize: function(map, options) {
         this.map = map;
         this.addOptions(options);
         if (!this.layer) {
-            // no layer specified, create one
             var styleMap = new OpenLayers.StyleMap({
                 'default': new OpenLayers.Style(
                     OpenLayers.Util.applyDefaults(
@@ -153,44 +72,18 @@ mapfish.GeoStat = OpenLayers.Class({
             this.layer = layer;
         }
 
-/*
-        if (this.featureSelection) {
-            // create select feature control so that popups can
-            // be displayed on feature selection
-            this.layer.events.on({
-                'featureselected': this.showDetails,
-                'featureunselected': this.hideDetails,
-                scope: this
-            });
-            var selectFeature = new OpenLayers.Control.SelectFeature(
-                this.layer,
-                {'hover': true}
-            );
-            map.addControl(selectFeature);
-            selectFeature.activate();
-        }
-*/        
         this.setUrl(this.url);
         this.legendDiv = Ext.get(options.legendDiv);
     },
  
     setUrl: function(url) {
-        // get features from web service if a url is specified
         this.url = url;
         if (this.url) {
-            OpenLayers.loadURL(
-                this.url, '', this, this.onSuccess, this.onFailure);
+            OpenLayers.loadURL(this.url, '', this, this.onSuccess, this.onFailure);
         }
     },
 
-    /**
-     * Method: onSuccess
-     *
-     * Parameters:
-     * request - {Object}
-     */
     onSuccess: function(request) {
-    
         var doc = request.responseXML;
         if (!doc || !doc.documentElement) {
             doc = request.responseText;
@@ -215,28 +108,12 @@ mapfish.GeoStat = OpenLayers.Class({
         else if (ACTIVEPANEL == organisationUnitAssignment) {
             mapping.classify(false);
         }
-        
-        
-
-        // MASK.hide();
     },
 
-    /**
-     * Method: onFailure
-     *
-     * Parameters:
-     * request - {Object}
-     */
     onFailure: function(request) {
         this.requestFailure(request);
     },
 
-    /**
-     * Method: addOptions
-     *
-     * Parameters:
-     * newOptions - {Object}
-     */
     addOptions: function(newOptions) {
         if (newOptions) {
             if (!this.options) {
@@ -249,22 +126,8 @@ mapfish.GeoStat = OpenLayers.Class({
         }
     },
 
-    /**
-     * Method: extendStyle
-     *      Extent layer style for the default render intent and
-     *      for the select render intent if featureSelection is
-     *      set.
-     *
-     * Parameters:
-     * renderIntent - {String} The render intent
-     * rules - {Array({<OpenLayers.Rule>})} Array of new rules to add
-     * symbolizer - {Object} Object with new styling options
-     * context - {Object} Object representing the new context
-     */
     extendStyle: function(rules, symbolizer, context) {
         var style = this.layer.styleMap.styles['default'];
-        // replace rules entirely - the geostat object takes control
-        // on the style rules of the "default" render intent
         if (rules) {
             style.rules = rules;
         }
@@ -284,13 +147,6 @@ mapfish.GeoStat = OpenLayers.Class({
         }
     },
 
-    /**
-     * APIMethod: applyClassification
-     *      To be overriden by subclasses.
-     *
-     * Parameters:
-     * options - {Object}
-     */
     applyClassification: function(options) {
         this.layer.renderer.clear();
         this.layer.redraw();
@@ -298,20 +154,12 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.setVisibility(true);
     },
 
-    /**
-     * Method: showDetails
-     *
-     * Parameters:
-     * obj - {Object}
-     */
     showDetails: function(obj) {
         var feature = obj.feature;
-        // popup html
         var html = typeof this.nameAttribute == 'string' ?
             '<h4 style="margin-top:5px">'
                 + feature.attributes[this.nameAttribute] +'</h4>' : '';
         html += this.indicator + ": " + feature.attributes[this.indicator];
-        // create popup located in the bottom right of the map
         var bounds = this.layer.map.getExtent();
         var lonlat = new OpenLayers.LonLat(bounds.right, bounds.bottom);
         var size = new OpenLayers.Size(200, 100);
@@ -323,14 +171,7 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.map.addPopup(popup);
     },
 
-    /**
-     * Method: hideDetails
-     *
-     * Parameters:
-     * obj - {Object}
-     */
     hideDetails: function(obj) {
-        //remove all other popups from screen
         var map= this.layer.map;
         for (var i = map.popups.length - 1; i >= 0; --i) {
             map.removePopup(map.popups[i]);
@@ -338,20 +179,12 @@ mapfish.GeoStat = OpenLayers.Class({
     },
 
     CLASS_NAME: "mapfish.GeoStat"
-
 });
 
-/**
- * Distribution Class
- */
 mapfish.GeoStat.Distribution = OpenLayers.Class({
 
-    /**
-     * Property: labelGenerator
-     *     Generator for bin labels
-     */
-    labelGenerator: function(bin, binIndex, nbBins) {
-        return this.defaultLabelGenerator(bin, binIndex, nbBins)
+    labelGenerator: function(bin, binIndex, nbBins, maxDec) {
+        return this.defaultLabelGenerator(bin, binIndex, nbBins, maxDec)
     },
 
     values: null,
@@ -370,33 +203,15 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         this.maxVal = this.nbVal ? mapfish.Util.max(this.values) : 0;
     },
 
-    /**
-     * Method: labelGenerator
-     *    Generator for bin labels
-     *
-     * Parameters:
-     *   bin - {<mapfish.GeoStat.Bin>} Lower bound limit value
-     *   binIndex - {Integer} Current bin index
-     *   nBins - {Integer} Total number of bins
-     */
-    defaultLabelGenerator: function(bin, binIndex, nbBins) {
+    defaultLabelGenerator: function(bin, binIndex, nbBins, maxDec) {
 		if (ACTIVEPANEL == organisationUnitAssignment) {
-            if (bin.upperBound < 1) {
-                return 'Available' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
-            }
-            else {
-                return 'Assigned' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
-            }
+            return bin.upperBound < 1 ?
+                'Available' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )' : 'Assigned' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 		}
 		else {
-            var upper = parseFloat(bin.upperBound);
-            
-            if (bin.upperBound > bin.lowerBound) {
-                if (binIndex < nbBins-1) {
-                    upper -= parseFloat("0.1");
-                }
-            }
-			return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + upper.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+            lower = parseFloat(bin.lowerBound).toFixed(maxDec);
+            upper = parseFloat(bin.upperBound).toFixed(maxDec);
+            return lower + ' - ' + upper + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 		}
     },
 
@@ -426,11 +241,19 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
 		
 		var imageLegend = new Array();
+        var maxDec = 0;
+        
+        for (var i = 0; i < bounds.length; i++) {
+            var dec = getNumberOfDecimals(bounds[i].toString(), ".");
+            maxDec = dec > maxDec ? dec : maxDec;
+        }
+        
+        maxDec = maxDec > 2 ? 2 : maxDec;
 		
         for (var i = 0; i < nbBins; i++) {
             bins[i] = new mapfish.GeoStat.Bin(binCount[i], bounds[i], bounds[i + 1], i == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
-            bins[i].label = labelGenerator(bins[i], i, nbBins);
+            bins[i].label = labelGenerator(bins[i], i, nbBins, maxDec);
 			imageLegend[i] = new Object();
 			imageLegend[i].label = bins[i].label;
         }
@@ -479,39 +302,16 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         return this.classifyWithBounds(bounds);
     },
 
-    /**
-     * Returns:
-     * {Number} Maximal number of classes according to the Sturge's rule
-     */
     sturgesRule: function() {
         return Math.floor(1 + 3.3 * Math.log(this.nbVal, 10));
     },
 	
-    /**
-     * Method: classify
-     *    This function calls the appropriate classifyBy... function.
-     *    The name of classification methods are defined by class constants
-     *
-     * Parameters:
-     * method - {Integer} Method name constant as defined in this class
-     * nbBins - {Integer} Number of classes
-     * bounds - {Array(Integer)} Array of bounds to be used for by bounds method
-     *
-     * Returns:
-     * {<mapfish.GeoStat.Classification>} Classification
-     */
     classify: function(method, nbBins, bounds) {
-		var mlt;
-        if (ACTIVEPANEL == thematicMap) {
-            mlt = Ext.getCmp('maplegendtype_cb').getValue();
-        }
-        else if (ACTIVEPANEL == thematicMap2) {
-            mlt = Ext.getCmp('maplegendtype_cb2').getValue();
-        }
-        else if (ACTIVEPANEL == organisationUnitAssignment) {
-            mlt = map_legend_type_automatic;
-        }
-
+        var mlt = ACTIVEPANEL == thematicMap ?
+            choropleth.legend.type : ACTIVEPANEL == thematicMap2 ?
+                proportionalSymbol.legend.type : ACTIVEPANEL == organisationUnitAssignment ?
+                    map_legend_type_automatic : map_legend_type_automatic;
+    
 		if (mlt == map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
 				var str = ACTIVEPANEL == thematicMap ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
@@ -543,12 +343,9 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     Ext.getCmp('bounds_tf2').setValue(newInput);
                 }
 				
-				for (var i = 0; i < bounds.length; i++)
-				{
+				for (var i = 0; i < bounds.length; i++) {
 					bounds[i] = parseFloat(bounds[i]);
-					
-					if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
-					{
+					if (bounds[i] < this.minVal || bounds[i] > this.maxVal) {
 						Ext.message.msg(false, 'Class breaks must be higher than <span class="x-msg-hl">' + this.minVal + '</span> and lower than <span class="x-msg-hl">' + this.maxVal + '</span>.');
 					}
 				}
@@ -559,10 +356,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 		}
 		else if (mlt == map_legend_type_predefined) {
 			bounds = ACTIVEPANEL == thematicMap ? choropleth.bounds : proportionalSymbol.bounds;
-			if (bounds[0] <= this.minVal) {
-				bounds[0] = this.minVal;
-			}
-			else {
+
+			if (bounds[0] > this.minVal) {
 				bounds.unshift(this.minVal);
                 if (ACTIVEPANEL == thematicMap) {
                     choropleth.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
@@ -571,11 +366,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     proportionalSymbol.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
                 }
 			}
-			
-			if (bounds[bounds.length-1] >= this.maxVal) {
-				bounds[bounds.length-1] = this.maxVal;
-			}
-			else {
+
+			if (bounds[bounds.length-1] < this.maxVal) {
 				bounds.push(this.maxVal);
                 if (ACTIVEPANEL == thematicMap) {
                     choropleth.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
@@ -612,26 +404,12 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     CLASS_NAME: "mapfish.GeoStat.Distribution"
 });
 
-/**
- * Constant: mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS
- */
 mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS = 1;
 
-/**
- * Constant: mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS
- */
 mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS = 2;
 
-/**
- * Constant: mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS
- */
 mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS = 3;
 
-/**
- * Bin is category of the Classification.
- * When they are defined, lowerBound is within the class
- * and upperBound is outside de the class.
- */
 mapfish.GeoStat.Bin = OpenLayers.Class({
     label: null,
     nbVal: null,
@@ -649,9 +427,6 @@ mapfish.GeoStat.Bin = OpenLayers.Class({
     CLASS_NAME: "mapfish.GeoStat.Bin"
 });
 
-/**
- * Classification summarizes a Distribution by regrouping data within several Bins.
- */
 mapfish.GeoStat.Classification = OpenLayers.Class({
     bins: [],
 

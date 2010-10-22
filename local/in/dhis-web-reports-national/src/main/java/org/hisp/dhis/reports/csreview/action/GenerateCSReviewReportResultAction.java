@@ -461,7 +461,8 @@ public class GenerateCSReviewReportResultAction
 
         outputReportWorkbook.close();
 
-        fileName = reportFileNameTB.replace( ".xls", "" );
+        //fileName = reportFileNameTB.replace( ".xls", "" );
+        fileName = reportFileNameTB;
         File outputReportFile = new File( outputReportPath );
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 

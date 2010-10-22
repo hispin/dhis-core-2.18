@@ -36,7 +36,7 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,13 +59,13 @@ public class SelectFormAction
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
-    } 
+    }
 
-    private PeriodDatabaseService periodDatabaseService;
+    private PeriodGenericManager periodGenericManager;
 
-    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
     {
-        this.periodDatabaseService = periodDatabaseService;
+        this.periodGenericManager = periodGenericManager;
     }
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
@@ -97,8 +97,8 @@ public class SelectFormAction
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
-    } 
-    
+    }
+
     public List<Period> getPeriods()
     {
         return periods;
@@ -123,12 +123,13 @@ public class SelectFormAction
 
         groups = new ArrayList<String>( reportService.getReportExcelGroups() );
 
-        periodDatabaseService.setSelectedPeriodTypeName( MonthlyPeriodType.NAME );
+        periodGenericManager.setPeriodType( MonthlyPeriodType.NAME );       
+        
 
-        periods = periodDatabaseService.getPeriodList();
+        periods = periodGenericManager.getPeriodList();
 
         Collections.sort( groups );
-       
+
         return SUCCESS;
     }
 

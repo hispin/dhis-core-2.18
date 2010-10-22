@@ -1,8 +1,8 @@
 <project>
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
-    <version>2.0.3</version>
-    <installerFilename>${product_shortname}-${product_version}-${platform_name}--lite-installer.${platform_exec_suffix}</installerFilename>
+    <version>2.0.5</version>
+    <installerFilename>${product_shortname}-${product_version}-${platform_name}-live-postgresql.${platform_exec_suffix}</installerFilename>
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
     <leftImage>../../resources/images/dhis2-logo-rotated.png</leftImage>

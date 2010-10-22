@@ -25,6 +25,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -69,6 +71,13 @@ public class DefaultReportService
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     private PeriodService periodService;
@@ -187,16 +196,7 @@ public class DefaultReportService
     // -------------------------------------------------------------------------
     // for Report Result Action input/otput
     // -------------------------------------------------------------------------
-/*    
-    private List<String> serviceType;
-    private List<String> deCodeType;
-    
-    serviceType = new ArrayList<String>();
-    deCodeType = new ArrayList<String>();
-    
-    
-*/   
-    
+
     
    // private String reportModelTB;
 
@@ -541,87 +541,15 @@ public class DefaultReportService
 
     } // getDataElementPeriodType end
     
-// // getDECodes Function  
-
-/*
-    public List<String> getDECodes( String fileName )
-    {
-        List<String> deCodes = new ArrayList<String>();
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
-            + File.separator + fileName;
-        try
-        {
-            String newpath = System.getenv( "DHIS2_HOME" );
-            if ( newpath != null )
-            {
-                path = newpath + File.separator + raFolderName + File.separator + fileName;
-            }
-        }
-        catch ( NullPointerException npe )
-        {
-            // do nothing, but we might be using this somewhere without
-            // USER_HOME set, which will throw a NPE
-        }
-
-        try
-        {
-            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse( new File( path ) );
-            if ( doc == null )
-            {
-                // System.out.println( "There is no DECodes related XML file in
-                // the user home" );
-                return null;
-            }
-
-            NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
-            int totalDEcodes = listOfDECodes.getLength();
-
-            for ( int s = 0; s < totalDEcodes; s++ )
-            {
-                Element deCodeElement = (Element) listOfDECodes.item( s );
-                NodeList textDECodeList = deCodeElement.getChildNodes();
-                deCodes.add( ((Node) textDECodeList.item( 0 )).getNodeValue().trim() );
-                serviceType.add( deCodeElement.getAttribute( "stype" ) );
-                deCodeType.add( deCodeElement.getAttribute( "type" ) );
-                sheetList.add( new Integer( deCodeElement.getAttribute( "sheetno" ) ) );
-                rowList.add( new Integer( deCodeElement.getAttribute( "rowno" ) ) );
-                colList.add( new Integer( deCodeElement.getAttribute( "colno" ) ) );
-
-            }// end of for loop with s var
-        }// try block end
-        catch ( SAXParseException err )
-        {
-            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
-            System.out.println( " " + err.getMessage() );
-        }
-        catch ( SAXException e )
-        {
-            Exception x = e.getException();
-            ((x == null) ? e : x).printStackTrace();
-        }
-        catch ( Throwable t )
-        {
-            t.printStackTrace();
-        }
-        return deCodes;
-    }// getDECodes end
-*/    
-    // functoin getResultDataValue start
     public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
-//      int deFlag2 = 0;
+        //int deFlag2 = 0;
         int isAggregated = 0;
-        isAggregated = 0;
 
         try
         {
             // 6b1b7b5b7b5b7
-            // System.out.println( "expression : " + formula + " ***** " +
-            // String.valueOf( startDate ) + " **** "
-            // + String.valueOf( endDate ) );
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -664,9 +592,9 @@ public class DefaultReportService
                     {
                         replaceString = String.valueOf( aggregatedValue );
 
-                       // deFlag2 = 1;
+                        //deFlag2 = 1;
 
-                        isAggregated = 0;
+                        isAggregated = 1;
                     }
 
                 }
@@ -794,12 +722,11 @@ public class DefaultReportService
     public String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
-       // int deFlag2 = 0;
-       // int isAggregated = 0;
+        //int deFlag2 = 0;
+    //    int isAggregated = 0;
        
         try
         {
-
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -814,8 +741,7 @@ public class DefaultReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -835,8 +761,7 @@ public class DefaultReportService
                 {
 
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
 
                     if ( periodList == null || periodList.isEmpty() )
                     {
@@ -846,7 +771,6 @@ public class DefaultReportService
                     }
                     else
                     {
-
                         double aggregatedValue = 0.0;
                         for ( Period tempPeriod : periodList )
                         {
@@ -863,16 +787,15 @@ public class DefaultReportService
 
                         replaceString = String.valueOf( aggregatedValue );
 
-                       // deFlag2 = 1;
+                        //deFlag2 = 1;
                     }
                 }
                 else
                 {
                     deFlag1 = 1;
-                   // deFlag2 = 0;
+                    //deFlag2 = 0;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
                     {
@@ -885,8 +808,7 @@ public class DefaultReportService
                         tempPeriod = (Period) periodList.get( 0 );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
 
                     if ( dataValue != null )
                     {
@@ -1003,8 +925,7 @@ public class DefaultReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -1040,8 +961,7 @@ public class DefaultReportService
                         tempPeriod = (Period) periodList.get( 0 );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
 
                     if ( dataValue != null )
                     {
@@ -1051,23 +971,19 @@ public class DefaultReportService
                         {
                             replaceString = "Yes";
                         }
+                        else if ( dataValue.getValue().equalsIgnoreCase( "false" ) )
+                        {
+                            replaceString = "No";
+                        }
                         else
                         {
-                            if ( dataValue.getValue().equalsIgnoreCase( "false" ) )
-                            {
-                                replaceString = "No";
-                            }
-                            else
-                            {
-                                replaceString = dataValue.getValue();
-                            }
+                            replaceString = dataValue.getValue();
                         }
                     }
                     else
                     {
                         replaceString = "";
                     }
-
                 }
                 else
                 {
@@ -1130,4 +1046,296 @@ public class DefaultReportService
     }
     
  // functoin getBooleanDataValue end
+    
+    //function getStartingEndingPeriods starts
+    
+    public List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod)
+    {
+
+        List<Calendar> calendarList = new ArrayList<Calendar>();
+
+        Calendar tempStartDate = Calendar.getInstance();
+        Calendar tempEndDate = Calendar.getInstance();
+
+        Period previousPeriod = new Period();
+        previousPeriod = getPreviousPeriod( selectedPeriod );
+
+        if ( deType.equalsIgnoreCase( "ccmcy" ) )
+        {
+            tempStartDate.setTime( selectedPeriod.getStartDate() );
+            if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
+            {
+                tempStartDate.roll( Calendar.YEAR, -1 );
+            }
+            tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+            tempEndDate.setTime( selectedPeriod.getEndDate() );
+            // System.out.println("CCMCY : "+ String.valueOf(
+            // tempStartDate.getTime()) +" ------ "+String.valueOf(
+            // tempEndDate.getTime()));
+        } 
+        else if ( deType.equalsIgnoreCase( "cpmcy" ) )
+            {
+                tempStartDate.setTime( previousPeriod.getStartDate() );
+                if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
+                {
+                    tempStartDate.roll( Calendar.YEAR, -1 );
+                }
+                tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+                tempEndDate.setTime( previousPeriod.getEndDate() );
+            } 
+        else if ( deType.equalsIgnoreCase( "cmpy" ) )
+                {
+                    tempStartDate.setTime( selectedPeriod.getStartDate() );
+                    tempEndDate.setTime( selectedPeriod.getEndDate() );
+
+                    tempStartDate.roll( Calendar.YEAR, -1 );
+                    tempEndDate.roll( Calendar.YEAR, -1 );
+                } 
+        else if ( deType.equalsIgnoreCase( "ccmpy" ) )
+                    {
+                        tempStartDate.setTime( selectedPeriod.getStartDate() );
+                        tempEndDate.setTime( selectedPeriod.getEndDate() );
+
+                        tempStartDate.roll( Calendar.YEAR, -1 );
+                        tempEndDate.roll( Calendar.YEAR, -1 );
+
+                        if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
+                        {
+                            tempStartDate.roll( Calendar.YEAR, -1 );
+                        }
+                        tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+
+                    } else if ( deType.equalsIgnoreCase( "pmcy" ) )
+                        {
+                            tempStartDate.setTime( previousPeriod.getStartDate() );
+                            tempEndDate.setTime( previousPeriod.getEndDate() );
+                        } else
+                        {
+                            tempStartDate.setTime( selectedPeriod.getStartDate() );
+                            tempEndDate.setTime( selectedPeriod.getEndDate() );
+                        }
+
+        // System.out.print(deType+" -- ");
+        calendarList.add( tempStartDate );
+        calendarList.add( tempEndDate );
+
+        return calendarList;
+    }
+  //function getStartingEndingPeriods end
+    
+    //function getPreviousPeriod starts
+    
+    public Period getPreviousPeriod( Period selectedPeriod )
+    {
+        Period period = new Period();
+        Calendar tempDate = Calendar.getInstance();
+        tempDate.setTime( selectedPeriod.getStartDate() );
+        if ( tempDate.get( Calendar.MONTH ) == Calendar.JANUARY )
+        {
+            tempDate.set( Calendar.MONTH, Calendar.DECEMBER );
+            tempDate.roll( Calendar.YEAR, -1 );
+
+        } else
+        {
+            tempDate.roll( Calendar.MONTH, -1 );
+        }
+        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
+
+        return period;
+    }
+    
+  //function getPreviousPeriod end
+    
+    public String getResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+        {
+    		int deFlag1 = 0;
+    		int deFlag2 = 0;
+    		
+            try
+            {
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int indicatorId = Integer.parseInt( replaceString );
+
+                    Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+                    if ( indicator == null )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+
+                    Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                        organisationUnit );
+
+                    if ( aggregatedValue == null )
+                    {
+                        replaceString = NULL_REPLACEMENT;
+                    } else
+                    {
+                        replaceString = String.valueOf( aggregatedValue );
+                        deFlag2 = 1;
+                    }
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+
+                matcher.appendTail( buffer );
+
+                String resultValue = "";
+                if ( deFlag1 == 0 )
+                {
+                    double d = 0.0;
+                    try
+                    {
+                        d = MathUtils.calculateExpression( buffer.toString() );
+                    } catch ( Exception e )
+                    {
+                        d = 0.0;
+                    }
+                    if ( d == -1 )
+                    {
+                        d = 0.0;
+                    } else
+                    {
+                        d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        resultValue = "" + d;
+                    }
+
+                    if ( deFlag2 == 0 )
+                    {
+                        resultValue = " ";
+                    }
+                } else
+                {
+                    resultValue = buffer.toString();
+                    deFlag2 = 0;
+                }
+                return resultValue;
+            } catch ( NumberFormatException ex )
+            {
+                throw new RuntimeException( "Illegal DataElement id", ex );
+            }
+        }
+    public String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+        {
+    		int deFlag1 = 0;
+    		int deFlag2 = 0;
+            try
+            {
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int indicatorId = Integer.parseInt( replaceString );
+
+                    Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+                    if ( indicator == null )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+
+                    String numeratorExp = indicator.getNumerator();
+                    String denominatorExp = indicator.getDenominator();
+                    int indicatorFactor = indicator.getIndicatorType().getFactor();
+                    String reportModelTB = null;
+					String numeratorVal = getIndividualResultDataValue( numeratorExp, startDate, endDate, organisationUnit, reportModelTB  );
+                    String denominatorVal = getIndividualResultDataValue( denominatorExp, startDate, endDate, organisationUnit, reportModelTB );
+
+                    double numeratorValue;
+                    try
+                    {
+                        numeratorValue = Double.parseDouble( numeratorVal );
+                    } catch ( Exception e )
+                    {
+                        numeratorValue = 0.0;
+                    }
+
+                    double denominatorValue;
+                    try
+                    {
+                        denominatorValue = Double.parseDouble( denominatorVal );
+                    } catch ( Exception e )
+                    {
+                        denominatorValue = 1.0;
+                    }
+
+                    double aggregatedValue;
+                    try
+                    {
+                        aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
+                    } catch ( Exception e )
+                    {
+                        System.out.println( "Exception while calculating Indicator value for Indicaotr " + indicator.getName() );
+                        aggregatedValue = 0.0;
+                    }
+
+                    replaceString = String.valueOf( aggregatedValue );
+                    deFlag2 = 1;
+
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+
+                matcher.appendTail( buffer );
+
+                String resultValue = "";
+                if ( deFlag1 == 0 )
+                {
+                    double d = 0.0;
+                    try
+                    {
+                        d = MathUtils.calculateExpression( buffer.toString() );
+                    } catch ( Exception e )
+                    {
+                        d = 0.0;
+                    }
+                    if ( d == -1 )
+                    {
+                        d = 0.0;
+                    } else
+                    {
+                        d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        resultValue = "" + d;
+                    }
+
+                    if ( deFlag2 == 0 )
+                    {
+                        resultValue = " ";
+                    }
+                } else
+                {
+                    deFlag2 = 0;
+                    resultValue = buffer.toString();
+                }
+                return resultValue;
+            } catch ( NumberFormatException ex )
+            {
+                throw new RuntimeException( "Illegal DataElement id", ex );
+            }
+        }
+    
 }

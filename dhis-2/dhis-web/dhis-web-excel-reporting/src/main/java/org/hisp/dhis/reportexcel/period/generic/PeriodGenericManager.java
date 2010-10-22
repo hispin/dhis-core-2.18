@@ -41,6 +41,8 @@ public interface PeriodGenericManager
     public void setSelectedPeriodIndex( Integer index );
 
     public Integer getSelectedPeriodIndex();
+    
+    public Period getSelectedPeriod( Integer index );
 
     public Period getSelectedPeriod();
     

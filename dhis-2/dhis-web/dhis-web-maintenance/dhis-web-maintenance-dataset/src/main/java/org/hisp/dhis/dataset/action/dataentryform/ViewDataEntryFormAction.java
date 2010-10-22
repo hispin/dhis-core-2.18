@@ -115,6 +115,7 @@ public class ViewDataEntryFormAction
     {
         return status;
     }
+    
     private Boolean autoSave;
 
     public Boolean getAutoSave()
@@ -122,6 +123,13 @@ public class ViewDataEntryFormAction
         return autoSave;
     }
     
+    private String htmlCode;
+
+    public String getHtmlCode()
+    {
+        return htmlCode;
+    }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -140,7 +148,7 @@ public class ViewDataEntryFormAction
         else
         {
             status = "EDIT";
-            dataEntryForm.setHtmlCode( prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) );
+            htmlCode = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
         }
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );

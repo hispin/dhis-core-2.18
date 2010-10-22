@@ -28,28 +28,38 @@ package org.hisp.dhis.reporting.document.action;
  */
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.external.location.LocationManager;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.util.StreamActionSupport;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class LoadDocumentFromFileSystemAction
-    implements Action
+    extends StreamActionSupport
 {
+    private static final Log log = LogFactory.getLog( LoadDocumentFromFileSystemAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private LocationManager locationManager;
-    
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
+
     private DocumentService documentService;
 
     public void setDocumentService( DocumentService documentService )
@@ -58,7 +68,7 @@ public class LoadDocumentFromFileSystemAction
     }   
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -68,37 +78,36 @@ public class LoadDocumentFromFileSystemAction
         this.id = id;
     }   
     
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private InputStream inputStream;
-
-    public InputStream getInputStream()
-    {
-        return inputStream;
-    }
-    
-    private String fileName;
-
-    public String getFileName()
-    {
-        return fileName;
-    }
+    private Document document;
     
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        Document document = documentService.getDocument( id );
+        document = documentService.getDocument( id );
         
-        inputStream = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
+        InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
         
-        fileName = document.getUrl();
+        IOUtils.copy( in, out );
+        
+        log.info( "Document " + document.getName() + ", " + document.getUrl() + ", " + document.getContentType() );
         
         return SUCCESS;
+    }
+
+    @Override
+    protected String getContentType()
+    {
+        return document != null ? document.getContentType() : null;
+    }
+
+    @Override
+    protected String getFilename()
+    {
+        return document != null ? document.getUrl() : null;
     }
 }

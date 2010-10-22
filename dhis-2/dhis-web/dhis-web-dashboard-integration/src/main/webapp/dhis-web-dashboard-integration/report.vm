@@ -1,14 +1,4 @@
 
-<script type="text/javascript">
-	
-function viewReport( url )
-{
-    var dialog = window.open( url, "_blank", "directories=no, height=800, width=800, \
-        location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
-}
-
-</script>
-
 <table class="contentProviderTable">
     <tr>
     	<th colspan="2">$i18n.getString( "report" )</th>
@@ -16,7 +6,7 @@ function viewReport( url )
     #foreach ( $report in $reports )
     <tr>
     	<td>
-    		<a href="javascript:viewReport( '$encoder.htmlEncode( $report.url )' )">$report.name</a>
+    		<a href="$encoder.htmlEncode( $report.url )">$report.name</a>
     	</td>
     	<td style="width:16px">
     		<a href="javascript:window.location.href='removeReport.action?id=$report.id'" title="$i18n.getString( 'remove' )">

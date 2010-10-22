@@ -41,6 +41,8 @@ import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ProcessState;
+import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -75,6 +77,7 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
@@ -136,6 +139,7 @@ public class DXFConverter
     public static final String NAMESPACE_10 = "http://dhis2.org/schema/dxf/1.0";
     public static final String MINOR_VERSION_10 = "1.0";
     public static final String MINOR_VERSION_11 = "1.1";
+    public static final String MINOR_VERSION_12 = "1.2";
 
     private final Log log = LogFactory.getLog( DXFConverter.class );
 
@@ -148,6 +152,13 @@ public class DXFConverter
     public void setImportObjectService( ImportObjectService importObjectService )
     {
         this.importObjectService = importObjectService;
+    }
+
+    private ConceptService conceptService;
+
+    public void setConceptService( ConceptService conceptService )
+    {
+        this.conceptService = conceptService;
     }
 
     private DataElementService dataElementService;
@@ -309,7 +320,23 @@ public class DXFConverter
 
         while ( reader.next() )
         {
-            if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
+            if ( reader.isStartElement( ConceptConverter.COLLECTION_NAME ) )
+            {
+                state.setMessage( "importing_concepts" );
+
+                BatchHandler<Concept> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ConceptBatchHandler.class ).init();
+
+                XMLConverter converter = new ConceptConverter( batchHandler, importObjectService,
+                    conceptService );
+
+                converterInvoker.invokeRead( converter, reader, params );
+
+                batchHandler.flush();
+
+                log.info( "Imported Conceptss" );
+            }
+            else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_data_element_category_options" );
 
@@ -333,7 +360,7 @@ public class DXFConverter
                     .createBatchHandler( DataElementCategoryBatchHandler.class ).init();
 
                 XMLConverter converter = new DataElementCategoryConverter( batchHandler, importObjectService,
-                    categoryService );
+                    categoryService, conceptService );
 
                 converterInvoker.invokeRead( converter, reader, params );
 

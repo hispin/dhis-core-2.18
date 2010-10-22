@@ -63,6 +63,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager"
 		class="org.hisp.dhis.reportexcel.period.generic.DefaultPeriodGenericManager"
 		scope="singleton">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<bean
@@ -349,6 +350,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.item.action.GetDataElementCategoryOptionCombosAction"
+		class="org.hisp.dhis.reportexcel.item.action.GetDataElementCategoryOptionCombosAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.item.action.ValidationReportExcelItemAction"
@@ -400,8 +408,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 	</bean>
 
 	<bean
@@ -421,8 +429,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 	</bean>
 
 	<bean
@@ -444,8 +452,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 		<property name="organisationUnitService"
@@ -472,8 +480,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
@@ -498,8 +506,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
@@ -525,8 +533,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
@@ -674,8 +682,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 	</bean>
 
 	<bean
@@ -708,8 +716,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 	</bean>
@@ -735,8 +743,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 	</bean>
@@ -762,8 +770,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 	</bean>
@@ -789,8 +797,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="periodDatabaseService"
-			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 	</bean>

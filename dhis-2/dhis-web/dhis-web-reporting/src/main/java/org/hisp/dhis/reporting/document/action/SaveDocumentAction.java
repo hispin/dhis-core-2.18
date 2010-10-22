@@ -130,7 +130,6 @@ public class SaveDocumentAction
         if ( id != null )
         {
             document = documentService.getDocument( id );
-
         }
         
         if ( !external && file != null )
@@ -148,6 +147,7 @@ public class SaveDocumentAction
 
             url = fileName;
             document.setUrl( url );
+            document.setContentType( contentType );
         }
 
         else if ( external )

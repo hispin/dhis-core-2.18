@@ -30,10 +30,10 @@ package org.hisp.dhis.dataprune;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -55,8 +55,12 @@ public class DefaultDataPruneService
         this.organisationUnitService = organisationUnitService;
     }
 
-    @Autowired
     private DataPruneStore dataPruneStore;
+
+    public void setDataPruneStore( DataPruneStore dataPruneStore )
+    {
+        this.dataPruneStore = dataPruneStore;
+    }
 
     // -------------------------------------------------------------------------
     // DataPruneService implementation

@@ -84,6 +84,13 @@ public class AutoSaveDataEntryFormAction
         this.designTextarea = designTextarea;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -97,10 +104,12 @@ public class AutoSaveDataEntryFormAction
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
-            dataEntryFormService.addDataEntryForm( dataEntryForm );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService
+                .prepareDataEntryFormCode( designTextarea ) );
+            int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
+            message = id + "";
             
-            dataset.setDataEntryForm(dataEntryForm);
+            dataset.setDataEntryForm( dataEntryForm );
             dataSetService.updateDataSet( dataset );
         }
         else
@@ -108,6 +117,7 @@ public class AutoSaveDataEntryFormAction
             dataEntryForm.setName( nameField );
             dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            message = dataEntryForm.getId() + "";
         }
 
         return SUCCESS;

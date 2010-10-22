@@ -3,13 +3,13 @@
 // Delete DataEntryForm
 // -----------------------------------------------------------------------------
 
-function removeDataEntryForm( dataEntryFormId, dataEntryFormName )
+function removeDataEntryForm( dataSetIdField, dataEntryFormId, dataEntryFormName )
 {
   var request = new Request();
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( removeDataEntryFormCompleted );
  
-  var requestString = 'delDataEntryForm.action?dataEntryFormId=' + dataEntryFormId;
+  var requestString = 'delDataEntryForm.action?dataSetId=' + dataSetIdField + "&dataEntryFormId=" + dataEntryFormId;
   var result = window.confirm( i18n_confirm_delete + '\n\n' + dataEntryFormName );
 
   if ( result )
@@ -66,7 +66,7 @@ function validateDataEntryForm()
   }        
 
   params += '&dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
-    
+  
   request.sendAsPost( params );
   request.send( requestString );
 
@@ -185,7 +185,13 @@ function autoSaveDataEntryForm(){
 
 	var request = new Request();
 	request.setResponseTypeXML( 'dataSet' );
-	request.setCallbackSuccess( function (xmlObject){setMessage(i18n_save_success);} );
+	request.setCallbackSuccess( 
+		function (xmlObject)
+			{
+				setMessage(i18n_save_success); 
+				stat = "EDIT";
+				dataEntryFormId = xmlObject.firstChild.nodeValue;
+			} );
 	  
 	var params = 'nameField=' + getFieldValue('nameField');
 		params += '&designTextarea=' + designTextarea;

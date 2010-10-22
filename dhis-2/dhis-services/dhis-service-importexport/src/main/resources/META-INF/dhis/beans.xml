@@ -227,6 +227,8 @@
         <property name="importObjectService"
                   ref="org.hisp.dhis.importexport.ImportObjectService" />
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="conceptService"
+                  ref="org.hisp.dhis.concept.ConceptService" />
         <property name="categoryService"
                   ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
@@ -261,15 +263,21 @@
 	<!-- XSLT based import                                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+	<bean id="xsltLocator" class="org.hisp.dhis.importexport.xml.LocManagerXSLTLocator"/>
+	
+	<bean id="preConverter" class="org.hisp.dhis.importexport.xml.XMLPreConverter"/>
+
     <bean id="org.hisp.dhis.importexport.invoker.ConverterInvoker"
           class="org.hisp.dhis.importexport.invoker.DefaultConverterInvoker" />
-
+		  
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- DXF Export                                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<bean id="org.hisp.dhis.importexport.DXFExportService"
 		class="org.hisp.dhis.importexport.dxf.exporter.DefaultDXFExportService">
+		<property name="conceptService"
+			ref="org.hisp.dhis.concept.ConceptService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />

@@ -42,6 +42,8 @@ import org.hisp.dhis.common.IdentifiableObject;
 public class Concept
     extends IdentifiableObject
 {
+
+    public static String DEFAULT_CONCEPT_NAME = "default";
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

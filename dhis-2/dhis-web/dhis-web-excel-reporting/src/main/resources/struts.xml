@@ -66,38 +66,38 @@
 
 		<action name="getPeriodsByPeriodTypeDB"
 			class="org.hisp.dhis.reportexcel.period.db.action.GetPeriodsByPeriodTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
 		<action name="nextPeriodsDB"
 			class="org.hisp.dhis.reportexcel.period.db.action.NextPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
 		<action name="previousPeriodsDB"
 			class="org.hisp.dhis.reportexcel.period.db.action.PreviousPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
 		<action name="getPeriodsByPeriodTypeGeneric"
 			class="org.hisp.dhis.reportexcel.period.generic.action.GetPeriodsByPeriodTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
 		<action name="nextPeriodsGeneric"
 			class="org.hisp.dhis.reportexcel.period.generic.action.NextPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
 		<action name="previousPeriodsGeneric"
 			class="org.hisp.dhis.reportexcel.period.generic.action.PreviousPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
 
@@ -132,7 +132,7 @@
 
 		<action name="getReportExcelGroups"
 			class="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/report/ajax/responseReportGroups.vm
 			</result>
 		</action>
@@ -222,13 +222,7 @@
 			<result name="success" type="redirect">
 				listDataElementGroupOrder.action?id=${id}</result>
 		</action>
-
-		<action name="getDataElementGroupOrder"
-			class="org.hisp.dhis.reportexcel.category.action.GetDataElementGroupOrderAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseDataElementOrder.vm</result>
-		</action>
-
+		
 		<action name="openSortDataElement"
 			class="org.hisp.dhis.reportexcel.category.action.GetDataElementGroupOrderAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -401,8 +395,12 @@
 				listReportExcelItemAction.action?reportId=${reportId}
 			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>	
+		
+		<action name="getDataElementCategoryOptionCombos"
+			class="org.hisp.dhis.reportexcel.item.action.GetDataElementCategoryOptionCombosAction">
+			<result name="success" type="velocity-json">/dhis-web-excel-reporting/report/ajax/jsonDataElementCategoryOptionCombos.vm</result>			
 		</action>
-
 
 		<action name="deleteReportExcelItem"
 			class="org.hisp.dhis.reportexcel.item.action.DeleteReportExcelItemAction">
@@ -475,11 +473,10 @@
 				style/ui.all.css</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/export.js,
-				javascript/commons.js,
+				javascript/export.js,				
 				javascript/preview.js,
-				../dhis-web-commons/util/jquery-ui.js,
-				../dhis-web-commons/util/jquery.jqprint.0.3.js
+				../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js,
+				../dhis-web-commons/javascripts/jQuery/jquery.jqprint.0.3.js
 			</param>
 		</action>
 

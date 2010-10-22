@@ -16,7 +16,7 @@
 <form id="updateIndicatorGroupForm" action="updateIndicatorGroup.action" method="post" >
 
 <div>
-	<input type="hidden" id="id" name="id" value="$indicatorGroup.id">
+	<input type="hidden" id="id" name="id" value="$indicatorGroup.id"/>
 </div>
 
 <table>
@@ -24,8 +24,8 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -38,9 +38,9 @@
 		<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/></th>
 	</tr>
 	<tr>
-		<td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'availableIndicators' )" style="width:100%"></td>
+		<td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'availableIndicators' )" style="width:100%"/></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>		
-		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:100%"></td>
+		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:100%"/></td>
 	</tr>
 	<tr>
 		<td>
@@ -69,6 +69,6 @@
 	</tr>
 </table>
 
-<p><input type="submit" value="$i18n.getString( "save" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='indicatorGroup.action'" style="width:10em"></p>
+<p><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicatorGroup.action'" style="width:10em"/></p>
 
 </form>

@@ -74,6 +74,7 @@ import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
@@ -132,7 +133,7 @@ public abstract class GenerateReportSupport
 
     protected PeriodService periodService;
 
-    protected PeriodDatabaseService periodDatabaseService;
+    protected PeriodGenericManager periodGenericManager;   
 
     protected ReportExcelService reportService;
 
@@ -253,9 +254,9 @@ public abstract class GenerateReportSupport
         this.initPOIStylesManager = initPOIStylesManager;
     }
 
-    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
     {
-        this.periodDatabaseService = periodDatabaseService;
+        this.periodGenericManager = periodGenericManager;
     }
 
     // -----------------------------------------
@@ -391,7 +392,8 @@ public abstract class GenerateReportSupport
     }
 
     protected void installPeriod( Period period )
-    {
+    {       
+        
         Calendar calendar = Calendar.getInstance();
 
         // Monthly period

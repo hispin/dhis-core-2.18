@@ -31,7 +31,7 @@ import static org.hisp.dhis.importexport.ImportParams.ATTRIBUTE_NAMESPACE;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.ATTRIBUTE_EXPORTED;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.ATTRIBUTE_MINOR_VERSION;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.DXFROOT;
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_11;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_12;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.NAMESPACE_10;
 
 import java.io.BufferedInputStream;
@@ -48,6 +48,7 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -60,6 +61,7 @@ import org.hisp.dhis.importexport.dxf.converter.AggregatedDataValueConverter;
 import org.hisp.dhis.importexport.dxf.converter.CalculatedDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryCategoryOptionAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociationConverter;
+import org.hisp.dhis.importexport.dxf.converter.ConceptConverter;
 import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
 import org.hisp.dhis.importexport.dxf.converter.CompleteDataSetRegistrationConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryConverter;
@@ -128,6 +130,13 @@ public class DefaultDXFExportService
 
     @Autowired
     private StatementManager statementManager;
+
+    private ConceptService conceptService;
+
+    public void setConceptService(ConceptService conceptService)
+    {
+        this.conceptService = conceptService;
+    }
 
     private DataElementCategoryService categoryService;
 
@@ -261,7 +270,7 @@ public class DefaultDXFExportService
             // Writes to one end of the pipe 
             // -----------------------------------------------------------------
             
-            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_11, ATTRIBUTE_EXPORTED, DateUtils.getMediumDateString() };
+            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_12, ATTRIBUTE_EXPORTED, DateUtils.getMediumDateString() };
             
             ExportPipeThread thread = new ExportPipeThread( sessionFactory );
             
@@ -271,6 +280,7 @@ public class DefaultDXFExportService
             thread.setRootName( DXFROOT );
             thread.setRootProperties( rootProperties );
             
+            thread.registerXMLConverter( new ConceptConverter( conceptService ) );
             thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryComboConverter( categoryService ) );

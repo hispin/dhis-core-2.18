@@ -1,18 +1,18 @@
 <h3>$i18n.getString( "indicator_group_editor" ) #openHelp( "indicatorGroupEditor" )</h3>
 
-<table >	
+<table>	
 	<tr>
 		<th>$i18n.getString( "indicator_group" )</th>
 		<th><span id="groupNameView" style="display:block;"></span></th>		
-		<td rowspan=2><a href="indicatorGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>
+		<td rowspan=2><a href="indicatorGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"/></a></td>
 		<th>$i18n.getString( "available_indicators" )</th>
 		
 	</tr>
 	
 	<tr>
-		<td><input id="indicatorGroupsFilter" type="text" style="width:300px;" onkeyup="filterIndicatorGroups();"></td>
-		<td><input id="selecteIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterSelectedIndicators();"></td>		
-		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"></td>
+		<td><input id="indicatorGroupsFilter" type="text" style="width:300px;" onkeyup="filterIndicatorGroups();"/></td>
+		<td><input id="selecteIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterSelectedIndicators();"/></td>		
+		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"/></td>
 	</tr>
 
 	<tr>
@@ -26,8 +26,8 @@
 		</td>
 		
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedIndicators();" style="width:30px"><br><br>
-			<input type="button" value="&gt;" onclick="removeSelectedIndicators();" style="width:30px">
+			<input type="button" value="&lt;" onclick="addSelectedIndicators();" style="width:30px"/><br/><br/>
+			<input type="button" value="&gt;" onclick="removeSelectedIndicators();" style="width:30px"/>
 		</td>
 		<td>
 			<select class="select" id="availableIndicators" multiple="multiple" size="30"  ondblclick="addSelectedIndicators();" disabled="true" onMouseOut="javascript: hideToolTip();">				
@@ -38,22 +38,20 @@
 		<td>			
 			<a href="javascript:sortList( 'indicatorGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
 			<a href="javascript:sortList( 'indicatorGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
-			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px"><input 
-			       type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px"><input 
-			       type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px"/><input 
+			       type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px"/><input 
+			       type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px"/>
 		</td>
 		<td>
 			<a href="javascript:sortList( 'selectedIndicatoss', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
 			<a href="javascript:sortList( 'selectedIndicatoss', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
-			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:updateIndicatorGroupMembers()">
+			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:updateIndicatorGroupMembers()"/>
 		</td>
 		<td></td>
 		<td>
-			<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>						
+			<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>						
 		</td>
-		
-		
 	</tr>
 </table>
 
@@ -74,7 +72,7 @@
 
 <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
 	<div style="float:right">
-		<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+		<a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"></a>
 	</div>
 	<p><span id="warningField"></span></p>
 </div>
@@ -107,4 +105,3 @@
 	initList();
 	
 </script>
-

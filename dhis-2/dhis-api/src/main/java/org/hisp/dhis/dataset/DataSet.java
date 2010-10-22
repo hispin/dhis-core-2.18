@@ -35,6 +35,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
@@ -57,23 +58,23 @@ public class DataSet
      * All DataElements associated with this DataSet.
      */
     private Collection<DataElement> dataElements = new HashSet<DataElement>();
-    
+
     /**
-     * The DataElementOperands for which data must be entered in order for the DataSet to
-     * be considered as complete.
+     * The DataElementOperands for which data must be entered in order for the
+     * DataSet to be considered as complete.
      */
     private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
-    
+
     /**
      * All Sources that register data with this DataSet.
      */
     private Set<Source> sources = new HashSet<Source>();
-    
+
     /**
-    * Property indicating whether the DataSet is locked for data entry.
-    */
+     * Property indicating whether the DataSet is locked for data entry.
+     */
     private Boolean locked = false;
-        
+
     /**
      * The Sections associated with the DataSet.
      */
@@ -83,7 +84,7 @@ public class DataSet
      * Indicating position in the custom sort order.
      */
     private Integer sortOrder;
-    
+
     /**
      * Property indicating if the dataset could be collected using mobile data entry.
      */
@@ -94,7 +95,6 @@ public class DataSet
      */
     private DataEntryForm dataEntryForm;
 
-    
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -102,25 +102,25 @@ public class DataSet
     public DataSet()
     {
     }
-    
+
     public DataSet( String name )
     {
         this.name = name;
     }
-    
+
     public DataSet( String name, PeriodType periodType )
     {
         this.name = name;
         this.periodType = periodType;
     }
-    
+
     public DataSet( String name, String shortName, PeriodType periodType )
     {
         this.name = name;
         this.shortName = shortName;
         this.periodType = periodType;
     }
-    
+
     public DataSet( String name, String shortName, String code, PeriodType periodType )
     {
         this.name = name;
@@ -128,7 +128,7 @@ public class DataSet
         this.code = code;
         this.periodType = periodType;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -171,7 +171,7 @@ public class DataSet
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-    
+
     public PeriodType getPeriodType()
     {
         return periodType;
@@ -258,13 +258,25 @@ public class DataSet
         return sections;
     }
 
-	public void setMobile(Boolean mobile) 
-	{
-		this.mobile = mobile;
-	}
+    public void setMobile(Boolean mobile) 
+    {
+        this.mobile = mobile;
+    }
 	
-	public Boolean getMobile() 
-	{
-		return mobile;
-	}
+    public Boolean getMobile() 
+    {
+        return mobile;
+    }
+
+    public Set<OrganisationUnit> getOrganisationUnis()
+    {
+        Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
+
+        for ( Source s : this.sources )
+        {
+            result.add( (OrganisationUnit) s );
+        }
+
+        return result;
+    }
 }

@@ -27,15 +27,8 @@ package org.hisp.dhis.patient.action.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,14 +42,7 @@ public class SetupAssociationsTreeAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
+	
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -96,24 +82,7 @@ public class SetupAssociationsTreeAction
     {
         program = programService.getProgram( id );
         
-        selectionTreeManager.setSelectedOrganisationUnits( convert( program.getOrganisationUnits() ) );
-        
         return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<OrganisationUnit> convert( Collection<OrganisationUnit> orgUnits )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        
-        for ( OrganisationUnit orgUnit : orgUnits )
-        {        	
-            organisationUnits.add( orgUnit );
-        }       
-        
-        return organisationUnits;
-    }
+    
 }

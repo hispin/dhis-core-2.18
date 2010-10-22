@@ -177,11 +177,11 @@ public class DefaultDataElementService
         } );
     }
 
-    public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
+    public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
     {
-        if ( dataElementIds != null && !dataElementIds.isEmpty() )
+        if ( dataElementIds != null )
         {
-            dataElementStore.setZeroIsSignificantForDataElements( dataElementIds, zeroIsSignificant );
+            dataElementStore.setZeroIsSignificantForDataElements( dataElementIds );
         }
     }
 

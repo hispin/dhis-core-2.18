@@ -40,6 +40,7 @@ import org.hisp.dhis.system.util.LoggingHashMap;
  */
 public class NameMappingUtil
 {
+    private static ThreadLocal<Map<Object, String>> conceptMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> categoryMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> categoryOptionMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> categoryComboMap = new ThreadLocal<Map<Object, String>>();
@@ -66,6 +67,7 @@ public class NameMappingUtil
     
     public static void clearMapping()
     {
+        conceptMap.remove();
         categoryMap.remove();
         categoryOptionMap.remove();
         categoryComboMap.remove();
@@ -88,6 +90,26 @@ public class NameMappingUtil
     }
 
     // -------------------------------------------------------------------------
+    // Concept
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a map entry with Concept identifier as key and name as value.
+     */
+    public static void addConceptMapping( Object conceptId, String conceptName )
+    {
+        put( conceptMap, conceptId, conceptName );
+    }
+
+    /**
+     * Returns a Map with all Concept identifier and name entries.
+     */
+    public static Map<Object, String> getConceptMap()
+    {
+        return conceptMap.get() != null ? new HashMap<Object, String>( conceptMap.get() ) : new HashMap<Object, String>();
+    }
+
+    // -------------------------------------------------------------------------
     // Category
     // -------------------------------------------------------------------------
 
@@ -98,7 +120,7 @@ public class NameMappingUtil
     {
         put( categoryMap, categoryId, categoryName );
     }
-    
+
     /**
      * Returns a Map with all DataElementCategory identifier and name entries.
      */

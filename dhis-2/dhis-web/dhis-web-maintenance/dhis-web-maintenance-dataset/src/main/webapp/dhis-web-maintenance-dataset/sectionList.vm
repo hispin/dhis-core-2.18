@@ -5,7 +5,7 @@
 		<td>
 		<table width="100%">
 			<tr>
-				<td><label>$i18n.getString( "select_dataset" )</label><br>
+				<td><label>$i18n.getString( "select_dataset" )</label><br/>
 					<select id="dataSetId" name="dataSetId" style="min-width:20em" onchange="javascript:getSectionByDataSet(this.options[this.selectedIndex].value)">
 						<option value=null selected="selected" >[ $i18n.getString( "all" ) ]</option>
 						#foreach ( $dataset in $datasets )
@@ -14,7 +14,7 @@
 					</select>
 				</td>
 				<td>	
-					<label>$i18n.getString( "select_categorycombo" )</label><br>			  
+					<label>$i18n.getString( "select_categorycombo" )</label><br/>			  
 					<select id="categoryComboId" name="categoryComboId" style="min-width:20em">
 						<option value=null selected="selected" >[ $i18n.getString( "all" ) ]</option>
 						#foreach ( $categoryCombo in $categoryCombos )
@@ -23,9 +23,9 @@
 					</select>					
 				</td>
 				<td style="text-align:right">
-					<input type="button" value="$i18n.getString( 'add_new' )" onclick="javascript:addSectionSubmit()" style="width:80px"><br>
-					<input type="button" value="$i18n.getString( 'sort_section' )" onclick="javascript:sortOrderSubmit()" style="width:80px"><br>
-					<input type="button" value="$i18n.getString( 'cancel' )" onclick="javascript:window.location.href='dataSet.action'" style="width:80px">
+					<input type="button" value="$i18n.getString( 'add_new' )" onclick="javascript:addSectionSubmit()" style="width:80px"/><br/>
+					<input type="button" value="$i18n.getString( 'sort_section' )" onclick="javascript:sortOrderSubmit()" style="width:80px"/><br/>
+					<input type="button" value="$i18n.getString( 'cancel' )" onclick="javascript:window.location.href='dataSet.action'" style="width:80px"/>
 				</td>		
 			</tr>
 		</table>
@@ -33,8 +33,8 @@
 	<tr>
     <td style="vertical-align:top">
 		<table class="listTable" id="listTable"> 
-			<col />	
-			<col />	
+			<col/>	
+			<col/>	
 			<col width="150px"/>
 			<thead>				
 				<tr>
@@ -49,11 +49,11 @@
 					<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.dataSet.name )</td> 
 					<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.name )</td> 				
 					<td style="text-align:center">
-						<a href="javascript:translate( '$section.getClass().getSimpleName()', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"></a>
-						<a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-						<a href="editSectionAction.action?sectionId=$section.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-						<a href="greySection.action?sectionId=$section.id" title="$i18n.getString( 'section_grey_field_managment' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'section_grey_field_managment' )"></a>
-						<a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+						<a href="javascript:translate( '$section.getClass().getSimpleName()', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+						<a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="editSectionAction.action?sectionId=$section.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+						<a href="greySection.action?sectionId=$section.id" title="$i18n.getString( 'section_grey_field_managment' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'section_grey_field_managment' )"/></a>
+						<a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>               
 				</tr>
 				#end
@@ -66,12 +66,12 @@
 				<div style="float:right">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>				
-				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
-				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
-				<p><label>$i18n.getString( "title" ):</label><br><span id="titleField"></span></p>
-				<p><label>$i18n.getString( "dataset" ):</label><br><span id="dataSetField"></span></p>
-				<p><label>$i18n.getString( "category_combo" ):</label><br><span id="categoryComboField"></span></p>				
-				<p><label>$i18n.getString( "number_of_data_elements" ):</label><br><span id="dataElementCountField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
+				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+				<p><label>$i18n.getString( "title" ):</label><br/><span id="titleField"></span></p>
+				<p><label>$i18n.getString( "dataset" ):</label><br/><span id="dataSetField"></span></p>
+				<p><label>$i18n.getString( "category_combo" ):</label><br/><span id="categoryComboField"></span></p>				
+				<p><label>$i18n.getString( "number_of_data_elements" ):</label><br/><span id="dataElementCountField"></span></p>
 			</div>
 
 		</td>

@@ -27,7 +27,6 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -91,6 +90,13 @@ public class ValidateRunValidationAction
         this.endDate = endDate;
     }
     
+    private boolean aggregate;
+    
+    public void setAggregate( boolean aggregate )
+    {
+        this.aggregate = aggregate;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -111,13 +117,20 @@ public class ValidateRunValidationAction
     {
         try
         {           
-            Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
-    
-            if ( selectedOrganisationUnits.isEmpty() )
+            OrganisationUnit selectedOrganisationUnit = selectionTreeManager.getReloadedSelectedOrganisationUnit() ;
+            
+            if ( selectedOrganisationUnit == null )
             {
                 message = i18n.getString( "specify_organisationunit" );
                 
                 return INPUT;
+            }
+
+            if( aggregate && selectedOrganisationUnit.getChildren().size() == 0){
+            	 
+            	message = i18n.getString( "specify_organisationunit_has_children" );
+                 
+                 return INPUT;
             }
         }
         catch ( Exception e )

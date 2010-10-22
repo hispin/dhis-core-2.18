@@ -31,11 +31,11 @@
 		</tr>
 		<tr>
 			<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" style="width:25em" maxlength="50" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
+			<td><input type="text" id="name" name="name" style="width:25em" maxlength="50" class="{validate:{required:true,minlength:2}}"/></td>
 		</tr>
 		<tr>
 			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><textarea id="description" name="description" style="width:25em; height:6em" class="{validate:{required:true,minlength:2,maxlength:255}}"></textarea></td>
+			<td><textarea id="description" name="description" style="width:25em; height:6em" maxlength="255" class="{validate:{required:true,minlength:2}}"></textarea></td>
 		</tr>
 		<tr>
 			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -109,7 +109,7 @@
 	<br/>
 </div>
 
-<span id="message"></span>
+<span id="message"/>
 
 <script type="text/javascript">
 

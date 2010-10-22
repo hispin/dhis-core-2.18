@@ -1,17 +1,8 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addOrganisationUnitGroupForm', function( form ){ form.submit() }, function(){
-			ous = jQuery( "#organisationValidator" );
-			ous.attr( 'multiple', 'multiple');
-			ous.empty();
-			jQuery.each(selectionTreeSelection.getSelected(), function(i, item ){
-				ous.append( '<option value="' + item + '" selected="true">' + item + '</option>' );				
-			});
-		} );	
+		validation( 'addOrganisationUnitGroupForm', function( form ){ form.submit() });	
 		
-		checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );		
-		
-		selectionTree.clearSelectedOrganisationUnits();
+		checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );			
 			
 	});
 </script>
@@ -21,12 +12,11 @@
 
 <form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
 
-<p>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"/></p>
+<p>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em> <input type="text" name="name" id="name" style="width:300px" maxlength="160" class="{validate:{required:true,minlength:2}}"/></p>
 <table>
 	<tr>
 		<td>
-			#parse( "/dhis-web-commons/oust/selectionTreeExtend.vm" )
-			<select id="organisationValidator" name="organisationValidator" class="{validate:{required:true}}" style="display:none"/>
+			#organisationUnitSelectionTree( true, true, true )			
 		</td>
 	</tr>
 </table>	

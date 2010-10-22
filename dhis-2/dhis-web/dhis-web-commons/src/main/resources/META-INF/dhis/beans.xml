@@ -122,7 +122,7 @@
 		</property>
 		<property name="treeStateManager">
 			<ref local="org.hisp.dhis.ouwt.manager.TreeStateManager" />
-		</property>
+		</property>		
 	</bean>
 
 	<bean id="org.hisp.dhis.ouwt.action.ExpandSubtreeAction" class="org.hisp.dhis.ouwt.action.ExpandSubtreeAction"
@@ -218,7 +218,7 @@
 		scope="prototype">
 		<property name="selectionTreeManager">
 			<ref local="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
+		</property>	
 	</bean>
 
 	<bean id="org.hisp.dhis.oust.action.SetSelectedOrganisationUnitAction"
@@ -255,6 +255,17 @@
 		<property name="organisationUnitGroupService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>
+		<property name="selectionTreeManager">
+			<ref local="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.oust.action.SelectAllOrganisationUnitAction"
+		class="org.hisp.dhis.oust.action.SelectAllOrganisationUnitAction"
+		scope="prototype">
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>		
 		<property name="selectionTreeManager">
 			<ref local="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		</property>

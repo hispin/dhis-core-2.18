@@ -18,7 +18,7 @@ function validateRunValidation()
     request.setCallbackSuccess( runValidationCompleted );
     
     request.send( 'validateRunValidation.action?startDate=' + getFieldValue( 'startDate' ) +
-        '&endDate=' + getFieldValue( 'endDate' ) );
+        '&endDate=' + getFieldValue( 'endDate' ) + '&aggregate=' +  getFieldValue( 'aggregate' ) );
         
     return false;
 }

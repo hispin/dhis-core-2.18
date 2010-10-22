@@ -67,4 +67,4 @@
     </tr>
 </table>
 
-<p><img src="viewStatisticsChart.action" alt="$i18n.getString( 'number_of_objects' )" style="border: 1px solid #d0d0d0; margin-left: 2px"></p>
+<p><img src="viewStatisticsChart.action" alt="$i18n.getString( 'number_of_objects' )" style="border: 1px solid #d0d0d0; margin-left: 2px"/></p>

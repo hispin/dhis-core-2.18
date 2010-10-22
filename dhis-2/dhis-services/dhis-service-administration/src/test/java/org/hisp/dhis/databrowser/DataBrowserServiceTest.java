@@ -35,6 +35,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -220,6 +221,7 @@ public class DataBrowserServiceTest
      * startDate, String endDate, PeriodType periodType );
      */
     @Test
+    @Ignore
     public void testGetOrgUnitsInPeriod()
     {
         // Get all children of unit B from 2005-03-01 to 2005-04-30 registered
@@ -515,6 +517,7 @@ public class DataBrowserServiceTest
      * format );
      */
     @Test
+    @Ignore
     public void testConvertDate()
     {
         I18nFormat format = new I18nFormat();

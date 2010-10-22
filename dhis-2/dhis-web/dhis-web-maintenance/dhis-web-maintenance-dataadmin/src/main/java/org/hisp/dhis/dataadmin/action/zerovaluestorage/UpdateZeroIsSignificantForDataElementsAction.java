@@ -27,6 +27,7 @@ package org.hisp.dhis.dataadmin.action.zerovaluestorage;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementService;
@@ -56,14 +57,7 @@ public class UpdateZeroIsSignificantForDataElementsAction
     // Input
     // -------------------------------------------------------------------------
 
-    private List<Integer> ignoreZeroValueDataElements;
-    
-    public void setIgnoreZeroValueDataElements( List<Integer> ignoreZeroValueDataElements )
-    {
-        this.ignoreZeroValueDataElements = ignoreZeroValueDataElements;
-    }
-    
-    private List<Integer> zeroDataValueElements;
+    private List<Integer> zeroDataValueElements = new ArrayList<Integer>();
 
     public void setZeroDataValueElements( List<Integer> zeroDataValueElements )
     {
@@ -74,9 +68,7 @@ public class UpdateZeroIsSignificantForDataElementsAction
     public String execute()
         throws Exception
     {
-        dataElementService.setZeroIsSignificantForDataElements( ignoreZeroValueDataElements, false );
-
-        dataElementService.setZeroIsSignificantForDataElements( zeroDataValueElements, true );
+        dataElementService.setZeroIsSignificantForDataElements( zeroDataValueElements );
 
         return SUCCESS;
     }

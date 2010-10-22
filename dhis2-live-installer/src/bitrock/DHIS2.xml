@@ -1,13 +1,13 @@
 <project>
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
-    <version>2.0.4</version>
-    <installerFilename></installerFilename>
+    <version>2.0.5</version>
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
     <leftImage>../../resources/images/dhis2-logo-rotated.png</leftImage>
     <logoImage>../../resources/images/dhis2-logo.png</logoImage>
     <splashImage>../../resources/images/dhis2-logo.png</splashImage>
+    <allowLanguageSelection>1</allowLanguageSelection>
     <preBuildActionList>
         <copyFile>
             <destination>${build_project_directory}/temp/</destination>

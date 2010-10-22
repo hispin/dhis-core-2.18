@@ -48,13 +48,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 /**
  * @author Torgeir Lorange Ostby
  */
-@Component("hibernateConfigurationProvider")
 public class DefaultHibernateConfigurationProvider
     implements HibernateConfigurationProvider
 {

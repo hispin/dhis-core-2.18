@@ -15,11 +15,10 @@
 				<col width="20">
 				<col width="20">
 				<col width="20">
-				<col width="20">
 				<thead>							
 				<tr>
 					<th>$i18n.getString( "name" )</th>
-					<th>$i18n.getString('periodtype')</th>
+					<th  width="100px">$i18n.getString('periodtype')</th>
 					<th colspan="3" class="{sorter: false}">$i18n.getString( "operations" )</th>	
 				</tr>
 				</thead>			
@@ -33,8 +32,7 @@
 					<td style="text-align:center"><a href="javascript:showValidationRuleDetails( $validationRule.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a></td>
 				</tr>
 				#end
-				<tr></tbody>
-			    <td>                  
+				</tbody>               
 			</table>
 
 		</td>
@@ -71,7 +69,8 @@
 	var i18n_greater_than_or_equal_to = '$encoder.jsEscape( $i18n.getString( "greater_than_or_equal_to" ) , "'")';
 	var i18n_less_than = '$encoder.jsEscape( $i18n.getString( "less_than" ) , "'")';
 	var i18n_less_than_or_equal_to = '$encoder.jsEscape( $i18n.getString( "less_than_or_equal_to" ) , "'")';
-	jQuery(document).ready(function(){		
+	
+	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	
 	});
 </script>

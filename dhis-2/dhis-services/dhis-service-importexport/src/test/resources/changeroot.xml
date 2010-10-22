@@ -1,5 +1,11 @@
 <?xml version='1.0'?>
 <change>
+    <concepts>
+        <concept>
+            <id>1</id>
+            <name>test</name>
+        </concept>
+    </concepts>
     <categoryOptions>
         <categoryOption>
             <id>65</id>
@@ -22,10 +28,12 @@
         <category>
             <id>65</id>
             <name>categoryA</name>
+            <conceptid>1</conceptid>
         </category>
         <category>
             <id>66</id>
             <name>categoryB</name>
+            <conceptid>1</conceptid>
         </category>
     </categories>
     <categoryCombos>

@@ -86,9 +86,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.program.ProgramInstanceService"/>
     <property name="programStageInstanceService"
       ref="org.hisp.dhis.program.ProgramStageInstanceService"/> 
-     <property name="associationService"
-      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"/>
-                   
   </bean>
   
   <bean id="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction"
@@ -180,9 +177,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="minMaxDataElementService"
       ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
       	<property name="dataEntryScreenManager"
-      ref="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"/>
-        <property name="associationService"
-      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"/>
+      ref="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"/>       
          <property name="systemSettingManager"
       ref="org.hisp.dhis.options.SystemSettingManager"/>
          <property name="selectedStateManager"
@@ -263,9 +258,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
         <property name="dataEntryScreenManager"
       ref="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"/>
-        <property name="associationService"
-      ref="org.hisp.dhis.dataentryform.DataEntryFormAssociationService"/>
-         <property name="systemSettingManager"
+        <property name="systemSettingManager"
       ref="org.hisp.dhis.options.SystemSettingManager"/>
          <property name="selectedStateManager"
       ref="org.hisp.dhis.caseentry.state.SelectedStateManager"/>

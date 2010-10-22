@@ -1,46 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns="http://www.dhis.org/schema/config"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.dhis.org/schema/config"
     targetNamespace="http://www.dhis.org/schema/config" elementFormDefault="qualified">
 
-        <xs:complexType name="ConfigType">
-            <xs:sequence>
-                <xs:element name="LocaleLanguage" type="xs:string" default="en" />
-                <xs:element name="LocaleCountry" type="xs:string" default="" />
-                <xs:element name="Port" type="xs:int" default="8080" />
-                <xs:element name="Host" type="xs:string" default="localhost" />
-                <xs:element name="PreferredBrowser" type="xs:string" default="" />
-                <xs:element name="DatabaseConnections">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Connection" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Name" type="xs:string"/>
-                                        <xs:element name="Type"> 
-                                            <xs:simpleType>
-                                                <xs:restriction base="xs:string">
-                                                    <xs:enumeration value="h2"/>
-                                                    <xs:enumeration value="postgres"/>
-                                                    <xs:enumeration value="mysql"/>
-                                                </xs:restriction>
-                                            </xs:simpleType>
-                                        </xs:element>
-                                        <xs:element name="URL" type="xs:string"/>
-                                        <xs:element name="UserName" type="xs:string"/>
-                                        <xs:element name="Password" type="xs:string" default="" minOccurs="0"/>
-                                    </xs:sequence>
-                                    <xs:attribute name="ID" type="xs:ID" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="selected" type="xs:IDREF"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:sequence>
-        </xs:complexType>
+    <xs:complexType name="ConfigType">
+        <xs:sequence>
+            <xs:element name="AppConfiguration">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="LocaleLanguage" type="xs:string" default="en"/>
+                        <xs:element name="LocaleCountry" type="xs:string" default=""/>
+                        <xs:element name="Port" type="xs:int" default="8080"/>
+                        <xs:element name="Host" type="xs:string" default="localhost"/>
+                        <xs:element name="PreferredBrowser" type="xs:string" default=""/>
+                        <xs:element name="MaxFormContentSize" type="xs:int" default="400000"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DatabaseConfiguration">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ConnectionTypes">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="ConnectionType" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Dialect" type="xs:string"/>
+                                                <xs:element name="DriverClass" type="xs:string"/>
+                                            </xs:sequence>
+                                            <xs:attribute name="id" type="xs:ID" use="required"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DatabaseConnections">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Connection" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Name" type="xs:string"/>
+                                                <xs:element name="URL" type="xs:string"/>
+                                                <xs:element name="UserName" type="xs:string"/>
+                                                <xs:element name="Password" type="xs:string"
+                                                  default="" minOccurs="0"/>
+                                            </xs:sequence>
+                                            <xs:attribute name="type" type="xs:IDREF" use="required"/>
+                                            <xs:attribute name="id" type="xs:ID" use="required"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="selected" type="xs:IDREF" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 
-    <xs:element name="Config" type="ConfigType">
-    </xs:element>
-    
+    <xs:element name="Config" type="ConfigType"> </xs:element>
+
 </xs:schema>

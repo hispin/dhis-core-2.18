@@ -154,11 +154,13 @@ function getDataElementsReceived( xmlObject )
         var dataElementName = dataElements[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
         if ( listContains(selectedDataElements, id) == false )
         {
-            var option = document.createElement("option");
+            /* var option = document.createElement("option");
             option.value = id;
             option.text = dataElementName;
             option.title = dataElementName;
-            availableDataElements.add(option, null);
+            availableDataElements.add(option, null); */
+			
+			$("#availableDataElements").append("<option value='"+ id +"' title='" + dataElementName + "'>" + dataElementName + "</option>");
         }
     }    
 }// getDataElementsReceived end
@@ -271,7 +273,7 @@ function getReports( ouId, reportListFileName )
 function getReports( ouId, reportTypeName )
 { 
 	var periodTypeList = byId( "periodTypeId" );
-	if( periodTypeList == null ){
+	if( periodTypeList == null || periodTypeList.options.length == 0){
 		return;
 	}
     var periodType = periodTypeList.options[ periodTypeList.selectedIndex ].value;
@@ -321,10 +323,12 @@ function getReportsReceived( xmlObject )
 	
         orgUnitName.value = ouName;
 	
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = name;
-        reportsList.add( option, null );
+        reportsList.add( option, null ); */
+		
+		$("#reportList").append("<option value='"+ id +"'>" + name + "</option>");
 		
         reportModels.put(id,model);
         reportFileNames.put(id,fileName);
@@ -352,10 +356,12 @@ function getPeriodsReceived( xmlObject )
 		
         if ( listContains( selectedPeriods, id ) == false )
         {
-            var option = document.createElement( "option" );
+            /* var option = document.createElement( "option" );
             option.value = id;
             option.text = periodName;
-            availablePeriods.add( option, null );
+            availablePeriods.add( option, null ); */
+			
+			$("#availablePeriods").append("<option value='"+ id +"'>" + periodName + "</option>");
         }
     }
 	

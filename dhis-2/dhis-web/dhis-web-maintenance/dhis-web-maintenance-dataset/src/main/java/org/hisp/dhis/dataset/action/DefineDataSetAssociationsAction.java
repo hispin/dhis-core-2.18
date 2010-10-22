@@ -41,12 +41,12 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Kristian
- * @version $Id: DefineDataSetAssociationsAction.java 3648 2007-10-15 22:47:45Z larshelg $
+ * @version $Id: DefineDataSetAssociationsAction.java 3648 2007-10-15 22:47:45Z
+ *          larshelg $
  */
 public class DefineDataSetAssociationsAction
     implements Action
 {
-    private int dataSetId;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -64,13 +64,15 @@ public class DefineDataSetAssociationsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }    
- 
+    }
+
     // -------------------------------------------------------------------------
-    // Getters & Setters
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    public void setDataSetId( int dataSetId )
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
@@ -82,7 +84,7 @@ public class DefineDataSetAssociationsAction
     public String execute()
         throws Exception
     {
-    	
+
         Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
 
         Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();
@@ -95,7 +97,8 @@ public class DefineDataSetAssociationsAction
 
         assignedSources.removeAll( convert( unitsInTheTree ) );
 
-        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
+            .getReloadedSelectedOrganisationUnits();
 
         assignedSources.addAll( convert( selectedOrganisationUnits ) );
 
@@ -113,18 +116,18 @@ public class DefineDataSetAssociationsAction
     private Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
     {
         Set<Source> sources = new HashSet<Source>();
-        
+
         sources.addAll( organisationUnits );
-        
+
         return sources;
-    }   
-    
+    }
+
     private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
     {
-    	for( OrganisationUnit root : rootUnits )
+        for ( OrganisationUnit root : rootUnits )
         {
-    		unitsInTheTree.add( root );
-    		getUnitsInTheTree( root.getChildren(), unitsInTheTree );    		
+            unitsInTheTree.add( root );
+            getUnitsInTheTree( root.getChildren(), unitsInTheTree );
         }
     }
 }

@@ -5,7 +5,6 @@
 
 <div>
 	<input type="hidden" id="side" name="side" value="$side">
-	<input type="hidden" id="periodTypeName" name="periodTypeName" value="$periodTypeName">
 </div>
 
 <table width="750">
@@ -19,8 +18,8 @@
   	<td></td>
   </tr>
   <tr>
-	<td colspan="2"><input type="text" id="description"  name="description" value="$!encoder.htmlEncode( $description )" style="width:250px"></td>
-	<td></td>
+	<td colspan="2"><input type="text" id="expDescription"  name="expDescription" value="$!encoder.htmlEncode( $description )" style="width:250px" onblur="checkNotEmpty( this, i18n_description_not_null );"></td>
+	<td><span id="expDescriptionInfo" style="color:red"></span></td>
   </tr>
   <tr>
   	<td colspan="3" height="15"></td>
@@ -30,13 +29,14 @@
 	<th>$i18n.getString( "available_data_elements" )</th>
   </tr>  
   <tr>
-	<td valign="top"><textarea id="expression" name="expression" style="width:250px; height:180px" onkeyup="updateTextualExpression( 'expression' )">$!encoder.htmlEncode( $!expression )</textarea><br>
+	<td valign="top"><textarea id="expression" name="expression" style="width:250px; height:180px" onkeyup="updateTextualExpression( 'expression' )" onblur="checkNotEmpty( this, i18n_expression_not_null );">$!encoder.htmlEncode( $!expression )</textarea><br>
   	  <a href="#" onclick="insertText( 'expression', '(' )"><img src="images/left_parent.png" alt="$i18n.getString( "left_brackets" )"></a>
 	  <a href="#" onclick="insertText( 'expression', ')' )"><img src="images/right_parent.png" alt="$i18n.getString( "right_brackets" )"></a>
 	  <a href="#" onclick="insertText( 'expression', '*' )"><img src="images/multiply.png" alt="$i18n.getString( "multiply" )"></a>
 	  <a href="#" onclick="insertText( 'expression', '/' )"><img src="images/divide.png" alt="$i18n.getString( "divide" )"></a>
 	  <a href="#" onclick="insertText( 'expression', '+' )"><img src="images/plus.png" alt="$i18n.getString( "plus" )"></a>
 	  <a href="#" onclick="insertText( 'expression', '-' )"><img src="images/minus.png" alt="$i18n.getString( "minus" )"></a>
+	  <span id='expressionInfo' style="color:red"></span>
 	</td>
 	<td>
 	  <input type="button" value="&lt;" onclick="insertText( 'expression', dataElementId.options[ dataElementId.selectedIndex ].value )">
@@ -68,7 +68,7 @@
   <tr>
   	<td colspan="2">
 	  <input type="button" value="$i18n.getString( 'save' )" style="width:125px" onclick="validateExpression()"><input 
-	  	type="button" value="$i18n.getString( 'cancel' )" style="width:125px" onclick="javascript:window.close()">
+	  	type="button" value="$i18n.getString( 'cancel' )" style="width:125px" onclick="hideById('dynamicContent');unLockScreen();">
 	</td>
 	<td></td>
   </tr>

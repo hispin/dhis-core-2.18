@@ -33,7 +33,6 @@ package org.hisp.dhis.sqlview;
  */
 public class SqlViewJoinLib
 {
-
     public static final String COCN_JOIN_CS = "JOIN _categorystructure AS _cs ON _cocn.categoryoptioncomboid = _cs.categoryoptioncomboid \n";
 
     public static final String COCN_JOIN_DV = "JOIN datavalue AS dv ON _cocn.categoryoptioncomboid = dv.categoryoptioncomboid \n";
@@ -47,8 +46,6 @@ public class SqlViewJoinLib
     public static final String DV_JOIN_DEGSS = "JOIN _dataelementgroupsetstructure AS _degss ON dv.dataelementid = _degss.dataelementid \n";
 
     public static final String DV_JOIN_OUS = "JOIN _orgunitstructure AS _ous ON dv.sourceid = _ous.organisationunitid \n";
-
-    public static final String DV_JOIN_OUGSS = "JOIN _orgunitgroupsetstructure AS _ougss ON dv.sourceid = _ougss.organisationunitid \n";
 
     public static final String DV_JOIN_OUSTGSS = "JOIN _organisationunitgroupsetstructure AS _oustgss ON dv.sourceid = _oustgss.organisationunitid \n";
 
@@ -90,13 +87,6 @@ public class SqlViewJoinLib
      * between DataValue and _OrgUnitStructure
      */
     public static final String COCN_JOIN_OUS = COCN_JOIN_DV + DV_JOIN_OUS;
-
-    /**
-     * COCN_JOIN_OUGSS presents to the relationship between two resourcetables
-     * _CategoryOptionComboname and _OrgUnitGroupSetStructure through the INNER
-     * JOIN between DataValue and _OrgUnitGroupSetStructure
-     */
-    public static final String COCN_JOIN_OUGSS = COCN_JOIN_DV + DV_JOIN_OUGSS;
 
     /**
      * COCN_JOIN_OUSTGSS presents to the relationship between two resourcetables
@@ -155,13 +145,6 @@ public class SqlViewJoinLib
      * JOIN between DataValue and _OrgUnitStructure
      */
     public static final String DEGSS_JOIN_OUS = DEGSS_JOIN_DV + DV_JOIN_OUS;
-
-    /**
-     * DEGSS_JOIN_OUGSS presents to the relationship between two resourcetables
-     * _DataElementGroupSetStructure and _OrgUnitGroupSetStructure through the
-     * INNER JOIN between DataValue and _OrgUnitGroupSetStructure
-     */
-    public static final String DEGSS_JOIN_OUGSS = DEGSS_JOIN_DV + DV_JOIN_OUGSS;
 
     /**
      * DEGSS_JOIN_OUSTGSS presents to the relationship between two

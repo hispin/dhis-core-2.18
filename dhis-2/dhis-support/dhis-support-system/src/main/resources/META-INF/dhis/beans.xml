@@ -4,15 +4,14 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   
-  <bean id="org.hisp.dhis.system.startup.StartupRoutineExecutor"
-    class="org.hisp.dhis.system.startup.DefaultStartupRoutineExecutor"/>
+  <bean id="org.hisp.dhis.system.startup.StartupRoutineExecutor" class="org.hisp.dhis.system.startup.DefaultStartupRoutineExecutor"/>
   
-  <bean id="processCoordinator" 
-    class="org.amplecode.cave.process.SpringProcessCoordinator"
-    destroy-method="close"/>
+  <bean id="processCoordinator" class="org.amplecode.cave.process.SpringProcessCoordinator" destroy-method="close"/>
 
-  <bean id="deletionInterceptor"
-    class="org.hisp.dhis.system.deletion.DeletionInterceptor">
-  </bean>
+  <bean id="deletionInterceptor" class="org.hisp.dhis.system.deletion.DeletionInterceptor"/>
+  
+  <bean id="deletionManager" class="org.hisp.dhis.system.deletion.DefaultDeletionManager"/>
+  
+  <bean id="databaseInfoProvider" class="org.hisp.dhis.system.database.HibernateDatabaseInfoProvider"/>
     
 </beans>

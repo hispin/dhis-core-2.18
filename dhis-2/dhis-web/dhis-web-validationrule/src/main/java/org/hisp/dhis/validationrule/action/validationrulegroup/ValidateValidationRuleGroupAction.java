@@ -75,13 +75,6 @@ public class ValidateValidationRuleGroupAction
     {
         this.name = name;
     }
-    
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -100,20 +93,6 @@ public class ValidateValidationRuleGroupAction
 
     public String execute()
     {
-        if ( name == null || name.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_name" );
-            
-            return INPUT;
-        }
-        
-        if ( description == null || description.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_description" );
-            
-            return INPUT;
-        }
-        
         ValidationRuleGroup match = validationRuleService.getValidationRuleGroupByName( name );
         
         if ( match != null && ( id == null || match.getId() != id ) )

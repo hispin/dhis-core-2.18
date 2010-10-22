@@ -219,9 +219,10 @@
     
     <!-- DataSet association -->
     
-    <action name="defineDataSetAssociationsForm"
-      class="org.hisp.dhis.dataset.action.SetupAssociationsTreeAction">
-      <result name="success" type="chain">getDataSetAssociationOptions</result>
+   	<action name="defineDataSetAssociationsForm"
+      class="org.hisp.dhis.dataset.action.GetDataSetAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/dataSetAssociations.vm</param>      
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -229,45 +230,7 @@
       class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction">
       <result name="success" type="redirect">dataSet.action</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-    
-    <action name="selectLevel"
-      class="org.hisp.dhis.dataset.action.SelectLevelAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-    
-    <action name="unselectLevel"
-      class="org.hisp.dhis.dataset.action.UnselectLevelAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-    
-    <action name="selectOrganisationUnitGroup"
-      class="org.hisp.dhis.dataset.action.SelectOrganisationUnitGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-    
-    <action name="unselectOrganisationUnitGroup"
-      class="org.hisp.dhis.dataset.action.UnselectOrganisationUnitGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-    
-    <action name="unselectAll"
-      class="org.hisp.dhis.dataset.action.UnselectAllAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-    
-    <action name="getDataSetAssociationOptions"
-      class="org.hisp.dhis.dataset.action.GetDataSetAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/dataSetAssociations.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
+    </action>    
     
     <!-- DataEntryForm -->
         

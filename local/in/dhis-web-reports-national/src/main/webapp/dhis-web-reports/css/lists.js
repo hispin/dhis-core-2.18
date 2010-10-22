@@ -45,10 +45,12 @@ function getDataElementsReceived( xmlObject )
         
         if ( listContains( selectedDataElements, id ) == false )
         {               
-            var option = document.createElement( "option" );
+            /* var option = document.createElement( "option" );
             option.value = id;
             option.text = dataElementName;
-            availableDataElements.add( option, null );
+            availableDataElements.add( option, null ); */
+			
+			$("#availableDataElements").append("<option value='"+ id +"'>" + dataElementName + "</option>");
         }
     }
 }
@@ -94,10 +96,12 @@ function getCategoryComboDataElementsReceived( xmlObject )
         var id = dataElements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var dataElementName = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = dataElementName;
-        availableDataElements.add( option, null );
+        availableDataElements.add( option, null ); */
+		
+		$("#availableDataElements").append("<option value='"+ id +"'>" + dataElementName + "</option>");
     }
 }
 
@@ -143,10 +147,13 @@ function getIndicatorsReceived( xmlObject )
         
         if ( listContains( selectedIndicators, id ) == false )
         {               
-            var option = document.createElement( "option" );
+            /* var option = document.createElement( "option" );
             option.value = id;
             option.text = indicatorName;
-            availableIndicators.add( option, null );
+            availableIndicators.add( option, null ); */
+			
+			$("#availableIndicators").append("<option value='"+ id +"'>" + indicatorName + "</option>");
+
         }
     }
 }
@@ -193,10 +200,12 @@ function getOrganisationUnitsReceived( xmlObject )
         
         if ( listContains( selectedOrganisationUnits, id ) == false )
         {                       
-            var option = document.createElement( "option" );
+            /* var option = document.createElement( "option" );
             option.value = id;
             option.text = organisationUnitName;
-            availableOrganisationUnits.add( option, null );
+            availableOrganisationUnits.add( option, null ); */
+			
+			$("#availableOrganisationUnits").append("<option value='"+ id +"'>" + organisationUnitName + "</option>");
         }
     }
 }
@@ -239,10 +248,12 @@ function getOrganisationUnitsToSelectedReceived( xmlObject )
         var id = organisationUnits[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var organisationUnitName = organisationUnits[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = organisationUnitName;
-        selectedOrganisationUnits.add( option, null );
+        selectedOrganisationUnits.add( option, null ); */
+		
+		$("#selectedOrganisationUnits").append("<option value='"+ id +"'>" + organisationUnitName + "</option>");
     }
 }
 
@@ -286,10 +297,12 @@ function getOrganisationUnitChildrenReceived( xmlObject )
         
         if ( listContains( selectedOrganisationUnits, id ) == false )
         {
-            var option = document.createElement( "option" );
+            /* var option = document.createElement( "option" );
             option.value = id;
             option.text = organisationUnitName;
-            selectedOrganisationUnits.add( option, null );
+            selectedOrganisationUnits.add( option, null ); */
+			
+			$("#selectedOrganisationUnits").append("<option value='"+ id +"'>" + organisationUnitName + "</option>");
         }
     }
 }
@@ -335,10 +348,12 @@ function getPeriodsReceived( xmlObject )
 		
 		if ( listContains( selectedPeriods, id ) == false )
 		{						
-			var option = document.createElement( "option" );
+			/* var option = document.createElement( "option" );
 			option.value = id;
 			option.text = periodName;
-			availablePeriods.add( option, null );
+			availablePeriods.add( option, null ); */
+			
+			$("#availablePeriods").append("<option value='"+ id +"'>" + periodName + "</option>");
 		}			
 	}
 }
@@ -381,9 +396,11 @@ function getPeriodsToSelectedReceived( xmlObject )
         var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var periodName = periods[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = periodName;
-        selectedPeriods.add( option, null );
+        selectedPeriods.add( option, null ); */
+		
+		$("#selectedPeriods").append("<option value='"+ id +"'>" + periodName + "</option>");
     }
 }

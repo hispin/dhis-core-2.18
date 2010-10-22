@@ -106,7 +106,7 @@ public class HibernatePatientStore
         Number rs =  (Number)getCriteria( 
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).setProjection( Projections.rowCount() ).uniqueResult();
         return rs != null ? rs.intValue() : 0;
     }
 

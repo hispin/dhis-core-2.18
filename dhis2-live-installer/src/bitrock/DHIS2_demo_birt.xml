@@ -1,13 +1,14 @@
 <project>
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
-    <version>2.0.4</version>
-   <installerFilename>${product_shortname}-${product_version}-${platform_name}-demo-installer.${platform_exec_suffix}</installerFilename> 
+    <version>2.0.5</version>
+    <installerFilename>${product_shortname}-${product_version}-${platform_name}-live-demo.${platform_exec_suffix}</installerFilename>
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
     <leftImage>../../resources/images/dhis2-logo-rotated.png</leftImage>
     <logoImage>../../resources/images/dhis2-logo.png</logoImage>
     <splashImage>../../resources/images/dhis2-logo.png</splashImage>
+    <allowLanguageSelection>1</allowLanguageSelection>
     <preBuildActionList>
         <copyFile>
             <destination>${build_project_directory}/temp/</destination>
@@ -175,7 +176,7 @@
             <name>birt</name>
             <description>Birt Reporting Framework</description>
             <canBeEdited>1</canBeEdited>
-            <detailedDescription>The Birt Reporting Framework. Install this compoenent if you plan to use BIRT reports.</detailedDescription>
+            <detailedDescription>The Birt Reporting Framework. Install this component if you plan to use BIRT reports.</detailedDescription>
             <selected>0</selected>
             <show>1</show>
             <folderList>
@@ -219,22 +220,7 @@
                     <platforms>all</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../resources/demodb/database.h2.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/database.trace.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.12.log.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.data.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.index.db</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../resources/demodb/dhis2.trace.db</origin>
+                            <origin>../../resources/demodb/demo.h2.db</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>

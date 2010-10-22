@@ -31,7 +31,10 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -57,6 +60,9 @@ public class DataElementDefaultDimensionPopulator
 
     private DataElementService dataElementService;
 
+    @Autowired
+    private ConceptService  conceptService;
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
@@ -77,9 +83,39 @@ public class DataElementDefaultDimensionPopulator
     public void execute()
         throws Exception
     {
+        String defaultConceptName = Concept.DEFAULT_CONCEPT_NAME;
+
+        Concept defaultConcept = conceptService.getConceptByName( defaultConceptName );
+
+        if ( defaultConcept == null )
+        {
+            conceptService.generateDefaultConcept();
+
+            defaultConcept = conceptService.getConceptByName( defaultConceptName );
+
+            log.info( "Added default concept" );
+        }
+
+        DataElementCategory defaultCategory = categoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );
+
+        if ( defaultCategory == null )
+        {
+            categoryService.generateDefaultDimension();
+
+            defaultCategory = categoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );
+
+            log.info( "Added default category" );
+        }
+
+        defaultCategory.setConcept( defaultConcept );
+
+        categoryService.updateDataElementCategory( defaultCategory );
+
         String defaultName = DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
         DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( defaultName );
+
+        log.info( "Linked default category with default concept" );
 
         if ( categoryCombo == null )
         {

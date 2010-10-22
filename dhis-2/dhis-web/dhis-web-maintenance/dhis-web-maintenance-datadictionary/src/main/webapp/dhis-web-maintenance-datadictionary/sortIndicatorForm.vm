@@ -4,10 +4,10 @@
 <form id="sortOrderForm" action="saveIndicatorSortOrder.action" method="post">
     
 <p>
-<input type="button" value="$i18n.getString( 'move_up' )" style="width:130px" onclick="moveUpSelectedOption( 'indicators' )"><input 
-type="button" value="$i18n.getString( 'move_down' )" style="width:130px" onclick="moveDownSelectedOption( 'indicators' )"><input
-type="button" value="$i18n.getString( 'move_to_top' )" style="width:130px" onclick="moveSelectedOptionToTop( 'indicators' )"><input
-type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" onclick="moveSelectedOptionToBottom( 'indicators' )">
+<input type="button" value="$i18n.getString( 'move_up' )" style="width:130px" onclick="moveUpSelectedOption( 'indicators' )"/><input 
+type="button" value="$i18n.getString( 'move_down' )" style="width:130px" onclick="moveDownSelectedOption( 'indicators' )"/><input
+type="button" value="$i18n.getString( 'move_to_top' )" style="width:130px" onclick="moveSelectedOptionToTop( 'indicators' )"/><input
+type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" onclick="moveSelectedOptionToBottom( 'indicators' )"/>
 </p>
 
 <p>
@@ -19,8 +19,8 @@ type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" on
 </p>
 
 <p>
-<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"><input 
-type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='indicator.action'">
+<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"/><input 
+type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='indicator.action'"/>
 </p>
 
 </form>

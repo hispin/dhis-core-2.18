@@ -27,7 +27,6 @@ package org.hisp.dhis.dashboard.ga.action.charts;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,8 +43,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.struts2.ServletActionContext;
@@ -72,11 +69,6 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -1306,6 +1298,23 @@ public class GenerateChartDataAction
                      */
                     if ( ougSetCB == null || facilityLB.equals( "children" ) )
                     {
+                       
+                       /*
+                        if ( childOrgUnit == null || startPeriod == null || endPeriod == null )
+                        {
+                            System.out.println("childOrgUnit/startPeriod/ endPeriod is null");
+                        }
+                        else
+                        {
+                            System.out.println("childOrgUnit:" +childOrgUnit.getName()+ "startPeriod: " +startPeriod.getStartDate()+ "endPeriod:" + endPeriod.getEndDate() );
+                        }
+                        */
+                        Double tempVal = aggregationService
+                        .getAggregatedIndicatorValue( ind, startPeriod.getStartDate(), endPeriod.getEndDate(),
+                            childOrgUnit );
+                        
+                        if( tempVal != null)
+                        {  
                         serviceValues[countForServiceList][countForChildOrgUnitList] = aggregationService
                             .getAggregatedIndicatorValue( ind, startPeriod.getStartDate(), endPeriod.getEndDate(),
                                 childOrgUnit )
@@ -1316,7 +1325,14 @@ public class GenerateChartDataAction
                         denVal = aggregationService.getAggregatedDenominatorValue( ind, startPeriod.getStartDate(),
                             endPeriod.getEndDate(), childOrgUnit )
                             / noOfPeriods;
-
+                        }
+                        else
+                        {  
+                        serviceValues[countForServiceList][countForChildOrgUnitList] = 0.0;
+                        numVal = 0.0;
+                        denVal = 0.0;
+                        }
+                       
                     }
                     else
                     {
@@ -1512,6 +1528,33 @@ public class GenerateChartDataAction
                         }
                     }
                 }
+              //22/09/2010 add 
+                Double tempVal = aggregationService
+                .getAggregatedIndicatorValue( ind, startPeriod.getStartDate(), endPeriod.getEndDate(),
+                    childOrgUnit );
+                
+                if( tempVal != null)
+                {  
+                    serviceValues[countForServiceList][countForChildOrgUnitList] /= noOfChildren;
+                    serviceValues[countForServiceList][countForChildOrgUnitList] = Math
+                        .round( serviceValues[countForServiceList][countForChildOrgUnitList] * Math.pow( 10, 1 ) )
+                        / Math.pow( 10, 1 );
+
+                    numVal = Math.round( numVal * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                    denVal = Math.round( denVal * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                }
+                else
+                {  
+                    serviceValues[countForServiceList][countForChildOrgUnitList] = 0.0;
+                    serviceValues[countForServiceList][countForChildOrgUnitList] = 0.0;
+                    numVal = 0.0;
+                    denVal = 0.0;
+                }
+
+                // end 22/09/2010
+                    
+                    
+                    
                 serviceValues[countForServiceList][countForChildOrgUnitList] /= noOfChildren;
                 serviceValues[countForServiceList][countForChildOrgUnitList] = Math
                     .round( serviceValues[countForServiceList][countForChildOrgUnitList] * Math.pow( 10, 1 ) )

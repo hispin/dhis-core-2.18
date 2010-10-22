@@ -27,21 +27,15 @@ package org.hisp.dhis.resourcetable.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 
 import org.amplecode.quick.Statement;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
-import org.hisp.dhis.resourcetable.GroupSetStructure;
-import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
@@ -58,12 +52,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class HibernateResourceTableStore
     implements ResourceTableStore
 {
+    private static final Log log = LogFactory.getLog( HibernateResourceTableStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -72,92 +65,58 @@ public class HibernateResourceTableStore
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
 
-    public int addOrganisationUnitStructure( OrganisationUnitStructure structure )
+    public void createOrganisationUnitStructure()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( structure );
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + TABLE_NAME_ORGANISATION_UNIT_STRUCTURE );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        String sql = "CREATE TABLE " + TABLE_NAME_ORGANISATION_UNIT_STRUCTURE + " ( " +
+            "organisationunitid INTEGER NOT NULL, " +
+            "level INTEGER, " +
+            "idlevel1 INTEGER, " +
+            "idlevel2 INTEGER, " +
+            "idlevel3 INTEGER, " +
+            "idlevel4 INTEGER, " +
+            "idlevel5 INTEGER, " +
+            "idlevel6 INTEGER, " +
+            "idlevel7 INTEGER, " +
+            "idlevel8 INTEGER, " +
+            "PRIMARY KEY (organisationunitid) )";
+        
+        log.info( "Create organisation unit structure table SQL: " + sql );
+        
+        jdbcTemplate.update( sql );            
     }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnitStructure> getOrganisationUnitStructures()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( OrganisationUnitStructure.class );
-
-        return criteria.list();
-    }
-
-    public int deleteOrganisationUnitStructures()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "DELETE FROM OrganisationUnitStructure" );
-
-        return query.executeUpdate();
-    }
-
-    // -------------------------------------------------------------------------
-    // GroupSetStructure
-    // -------------------------------------------------------------------------
-
-    public int addGroupSetStructure( GroupSetStructure structure )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( structure );
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<GroupSetStructure> getGroupSetStructures()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( GroupSetStructure.class );
-
-        return criteria.list();
-    }
-
-    public int deleteGroupSetStructures()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "DELETE FROM GroupSetStructure" );
-
-        return query.executeUpdate();
-    }
-
+    
     // -------------------------------------------------------------------------
     // DataElementCategoryOptionComboName
     // -------------------------------------------------------------------------
-
-    public int addDataElementCategoryOptionComboName( DataElementCategoryOptionComboName name )
+    
+    public void createDataElementCategoryOptionComboName()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( name );
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + TABLE_NAME_CATEGORY_OPTION_COMBO_NAME );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        String sql = "CREATE TABLE " + TABLE_NAME_CATEGORY_OPTION_COMBO_NAME + 
+            " ( categoryoptioncomboid INTEGER NOT NULL, categoryoptioncomboname VARCHAR(250) )";
+        
+        log.info( "Create category option combo name table SQL: " + sql );
+        
+        jdbcTemplate.update( sql );
     }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<DataElementCategoryOptionComboName> getDataElementCategoryOptionComboNames()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementCategoryOptionComboName.class );
-
-        return criteria.list();
-    }
-
-    public int deleteDataElementCategoryOptionComboNames()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "DELETE FROM DataElementCategoryOptionComboName" );
-
-        return query.executeUpdate();
-    }
-
+    
     // -------------------------------------------------------------------------
     // DataElementGroupSetTable
     // -------------------------------------------------------------------------

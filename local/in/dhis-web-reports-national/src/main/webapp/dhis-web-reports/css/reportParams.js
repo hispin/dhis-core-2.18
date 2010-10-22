@@ -40,10 +40,12 @@ function getOrganisationUnitsParentReceived( xmlObject )
         var id = organisationUnits[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var organisationUnitName = organisationUnits[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = organisationUnitName;
-        availableOrganisationUnits.add( option, null );
+        availableOrganisationUnits.add( option, null ); */
+		
+		$("#parentOrganisationUnitId").append("<option value='"+ id +"'>" + organisationUnitName + "</option>");
     }
 }
 
@@ -84,9 +86,11 @@ function getOrganisationUnitsSingleReceived( xmlObject )
         var id = organisationUnits[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var organisationUnitName = organisationUnits[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = organisationUnitName;
-        availableOrganisationUnits.add( option, null );
+        availableOrganisationUnits.add( option, null ); */
+		
+		$("#organisationUnitId").append("<option value='"+ id +"'>" + organisationUnitName + "</option>");
     }
 }

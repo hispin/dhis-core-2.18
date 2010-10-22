@@ -31,6 +31,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -70,6 +71,13 @@ public class GeneratePhysicalReportResultAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+    
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -208,7 +216,7 @@ public class GeneratePhysicalReportResultAction
     {
         // Intialisation
         
-        
+        statementManager.initialise();
         deCodeType = new ArrayList<String>();
         serviceType = new ArrayList<String>();
         sheetList = new ArrayList<Integer>();
@@ -343,12 +351,15 @@ public class GeneratePhysicalReportResultAction
         outputReportWorkbook.close();
 
         fileName = reportFileNameTB.replace( ".xls", "" );
+        fileName += periodNameList + ".xls";
+        //fileName = reportFileNameTB;
         File outputReportFile = new File( outputReportPath );
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
         System.out.println( "Report Generation End Time is : \t" + new Date() );
 
         outputReportFile.deleteOnExit();
+        statementManager.destroy();
 
         return SUCCESS;
     }

@@ -53,16 +53,17 @@
             <td>&nbsp;</td>
         </tr>     
   <tr>
-    <td> 
-      <input type="submit" id="Generate" name ="Generate" title= "Generate report" value="$i18n.getString( "generate" )" style="width:6em" disable="false">    
+   
+    <!--  <input type="submit" id="Generate" name ="Generate" title= "Generate report" value="$i18n.getString( "generate" )" style="width:6em" disable="false"> -->
+      <td><input type="submit" id= "generate" name="generate" title= "Generate report" value="$i18n.getString( "generate" )"  style="width:6em" #if( $!reportList.size() == 0 ) disabled #end >      
     </td>  
   </tr>
       <tr>
       <td>&nbsp;</td>
             <td>
                 <input type="hidden" name="reportModelTB" id="reportModelTB">
-        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
-        <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="">  
+                <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
+                <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="">  
             </td>
         </tr>
     </table>

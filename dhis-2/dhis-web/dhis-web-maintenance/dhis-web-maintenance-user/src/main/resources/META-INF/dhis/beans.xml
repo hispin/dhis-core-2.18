@@ -48,9 +48,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userStore">
 			<ref bean="org.hisp.dhis.user.UserStore" />
 		</property>
-		<property name="organisationUnitGroupService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.user.action.GetOrgunitUserListAction"
@@ -116,16 +113,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="selectionManager">
 			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		</property>
-		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService" />
-		</property>
+		</property>		
 		<property name="userStore">
 			<ref bean="org.hisp.dhis.user.UserStore" />
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		</property>
+		</property>		
 	</bean>
 
 	<bean

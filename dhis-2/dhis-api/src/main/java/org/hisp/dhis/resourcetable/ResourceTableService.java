@@ -34,18 +34,12 @@ package org.hisp.dhis.resourcetable;
 public interface ResourceTableService
 {
     String ID = ResourceTableService.class.getName();
-    
+
     /**
      * Generates a resource table containing the hierarchy graph for each
      * OrganisationUnit.
      */
     void generateOrganisationUnitStructures();
-    
-    /**
-     * Generates a resource table containing the relationships between
-     * OrganisationUnit, OrganisationUnitGroup, and OrganisationUnitGroupSet.
-     */
-    void generateGroupSetStructures();
     
     /**
      * Generates a resource table containing id and a derived name for

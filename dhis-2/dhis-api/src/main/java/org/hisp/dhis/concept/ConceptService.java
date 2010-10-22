@@ -52,6 +52,8 @@ public interface ConceptService
     Concept getConceptByName( String conceptName );
 
     Collection<Concept> getAllConcepts();
+
+    void generateDefaultConcept();
     
     // -------------------------------------------------------------------------
     // Concept expanding

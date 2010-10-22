@@ -8,14 +8,11 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,18 +34,7 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
-import org.hisp.dhis.aggregation.AggregationService;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
@@ -57,7 +43,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
-import org.hisp.dhis.system.util.MathUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -71,8 +56,6 @@ public class GenerateUpwardReportAnalyserResultAction
     implements Action
 {
 
-    private static final String NULL_REPLACEMENT = "0";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -81,13 +64,6 @@ public class GenerateUpwardReportAnalyserResultAction
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     private ReportService reportService;
@@ -104,13 +80,6 @@ public class GenerateUpwardReportAnalyserResultAction
         this.periodService = periodService;
     }
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -121,34 +90,6 @@ public class GenerateUpwardReportAnalyserResultAction
     public OrganisationUnitService getOrganisationUnitService()
     {
         return organisationUnitService;
-    }
-
-    private AggregationService aggregationService;
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    private DataElementCategoryService dataElementCategoryOptionComboService;
-    
-    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
-    {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
 
     private I18nFormat format;
@@ -574,7 +515,7 @@ public class GenerateUpwardReportAnalyserResultAction
 
                 Calendar tempStartDate = Calendar.getInstance();
                 Calendar tempEndDate = Calendar.getInstance();
-                List<Calendar> calendarList = new ArrayList<Calendar>( getStartingEndingPeriods( deType ) );
+                List<Calendar> calendarList = new ArrayList<Calendar>( reportService.getStartingEndingPeriods( deType, selectedPeriod ) );
                 if ( calendarList == null || calendarList.isEmpty() )
                 {
                     tempStartDate.setTime( selectedPeriod.getStartDate() );
@@ -752,7 +693,7 @@ public class GenerateUpwardReportAnalyserResultAction
 
                 Calendar tempStartDate = Calendar.getInstance();
                 Calendar tempEndDate = Calendar.getInstance();
-                List<Calendar> calendarList = new ArrayList<Calendar>( getStartingEndingPeriods( deType ) );
+                List<Calendar> calendarList = new ArrayList<Calendar>( reportService.getStartingEndingPeriods( deType, selectedPeriod ) );
                 if ( calendarList == null || calendarList.isEmpty() )
                 {
                     tempStartDate.setTime( selectedPeriod.getStartDate() );
@@ -1281,11 +1222,12 @@ public class GenerateUpwardReportAnalyserResultAction
                                                                                                                             {
                                                                                                                                 if ( aggCB == null )
                                                                                                                                 {
-                                                                                                                                    tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                   // tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                	 tempStr = reportService.getIndividualResultDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                                                                                                                                 } else
                                                                                                                                 {
-                                                                                                                                    tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
-                                                                                                                                        currentOrgUnit );
+                                                                                                                                    //tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                	tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                                                                                                                                 }
 
                                                                                                                                 if ( deFlag2 == 1 )
@@ -1304,11 +1246,12 @@ public class GenerateUpwardReportAnalyserResultAction
                                                                                                                                 {
                                                                                                                                     if ( aggCB == null )
                                                                                                                                     {
-                                                                                                                                        tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
-                                                                                                                                            tempEndDate.getTime(), currentOrgUnit.getParent() );
+                                                                                                                                        //tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                                                                                                                                    	tempStr = reportService.getIndividualResultIndicatorValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
                                                                                                                                     } else
                                                                                                                                     {
-                                                                                                                                        tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                                                                                                                                        //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                                                                                                                                    	tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
                                                                                                                                     }
 
                                                                                                                                     if ( deFlag2 == 1 )
@@ -1328,22 +1271,23 @@ public class GenerateUpwardReportAnalyserResultAction
                                                                                                                                     {
                                                                                                                                         if ( aggCB == null )
                                                                                                                                         {
-                                                                                                                                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
-                                                                                                                                                tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                            //tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                        	tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
                                                                                                                                         } else
                                                                                                                                         {
-                                                                                                                                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
-                                                                                                                                                tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                            //tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                        	tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
                                                                                                                                         }
                                                                                                                                     } else
                                                                                                                                     {
                                                                                                                                         if ( aggCB == null )
                                                                                                                                         {
-                                                                                                                                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
-                                                                                                                                                tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                            //tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                        	tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                                                                                                                                         } else
                                                                                                                                         {
-                                                                                                                                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                            //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                                                                                                                                        	tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                                                                                                                                         }
                                                                                                                                         if ( deFlag2 == 1 )
                                                                                                                                         {
@@ -1756,177 +1700,11 @@ public class GenerateUpwardReportAnalyserResultAction
         return SUCCESS;
     }
 
-    public List<Calendar> getStartingEndingPeriods( String deType )
-    {
-
-        List<Calendar> calendarList = new ArrayList<Calendar>();
-
-        Calendar tempStartDate = Calendar.getInstance();
-        Calendar tempEndDate = Calendar.getInstance();
-
-        Period previousPeriod = new Period();
-        previousPeriod = getPreviousPeriod();
-
-        if ( deType.equalsIgnoreCase( "ccmcy" ) )
-        {
-            tempStartDate.setTime( selectedPeriod.getStartDate() );
-            if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
-            {
-                tempStartDate.roll( Calendar.YEAR, -1 );
-            }
-            tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
-            tempEndDate.setTime( selectedPeriod.getEndDate() );
-            // System.out.println("CCMCY : "+ String.valueOf(
-            // tempStartDate.getTime()) +" ------ "+String.valueOf(
-            // tempEndDate.getTime()));
-        } else
-        {
-            if ( deType.equalsIgnoreCase( "cpmcy" ) )
-            {
-                tempStartDate.setTime( previousPeriod.getStartDate() );
-                if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
-                {
-                    tempStartDate.roll( Calendar.YEAR, -1 );
-                }
-                tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
-                tempEndDate.setTime( previousPeriod.getEndDate() );
-            } else
-            {
-                if ( deType.equalsIgnoreCase( "cmpy" ) )
-                {
-                    tempStartDate.setTime( selectedPeriod.getStartDate() );
-                    tempEndDate.setTime( selectedPeriod.getEndDate() );
-
-                    tempStartDate.roll( Calendar.YEAR, -1 );
-                    tempEndDate.roll( Calendar.YEAR, -1 );
-                } else
-                {
-                    if ( deType.equalsIgnoreCase( "ccmpy" ) )
-                    {
-                        tempStartDate.setTime( selectedPeriod.getStartDate() );
-                        tempEndDate.setTime( selectedPeriod.getEndDate() );
-
-                        tempStartDate.roll( Calendar.YEAR, -1 );
-                        tempEndDate.roll( Calendar.YEAR, -1 );
-
-                        if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
-                        {
-                            tempStartDate.roll( Calendar.YEAR, -1 );
-                        }
-                        tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
-
-                    } else
-                    {
-                        if ( deType.equalsIgnoreCase( "pmcy" ) )
-                        {
-                            tempStartDate.setTime( previousPeriod.getStartDate() );
-                            tempEndDate.setTime( previousPeriod.getEndDate() );
-
-                        } else
-                        {
-
-                            tempStartDate.setTime( selectedPeriod.getStartDate() );
-                            tempEndDate.setTime( selectedPeriod.getEndDate() );
-                        }
-                    }
-                }
-            }
-        }
-
-        // System.out.print(deType+" -- ");
-        calendarList.add( tempStartDate );
-        calendarList.add( tempEndDate );
-
-        return calendarList;
-    }
-
-    public Period getPreviousPeriod()
-    {
-        Period period = new Period();
-        Calendar tempDate = Calendar.getInstance();
-        tempDate.setTime( selectedPeriod.getStartDate() );
-        if ( tempDate.get( Calendar.MONTH ) == Calendar.JANUARY )
-        {
-            tempDate.set( Calendar.MONTH, Calendar.DECEMBER );
-            tempDate.roll( Calendar.YEAR, -1 );
-
-        } else
-        {
-            tempDate.roll( Calendar.MONTH, -1 );
-        }
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
-        period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
-
-        return period;
-    }
-
-    public Period getPeriodByMonth( int month, int year, PeriodType periodType )
-    {
-        int monthDays[] =
-        {
-            31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-        };
-
-        Calendar cal = Calendar.getInstance();
-        cal.set( year, month, 1, 0, 0, 0 );
-        Date firstDay = new Date( cal.getTimeInMillis() );
-
-        if ( periodType.getName().equals( "Monthly" ) )
-        {
-            cal.set( year, month, 1, 0, 0, 0 );
-            if ( year % 4 == 0 )
-            {
-                cal.set( Calendar.DAY_OF_MONTH, monthDays[month] + 1 );
-            } else
-            {
-                cal.set( Calendar.DAY_OF_MONTH, monthDays[month] );
-            }
-        } else
-        {
-            if ( periodType.getName().equals( "Yearly" ) )
-            {
-                cal.set( year, Calendar.DECEMBER, 31 );
-            }
-        }
-
-        Date lastDay = new Date( cal.getTimeInMillis() );
-
-        Period newPeriod = new Period();
-
-        newPeriod.setStartDate( firstDay );
-        newPeriod.setEndDate( lastDay );
-        newPeriod.setPeriodType( periodType );
-
-        return newPeriod;
-    }
-
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator<PeriodType> iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-
-                break;
-            }
-        }
-        if ( periodType == null )
-        {
-            System.out.println( "No Such PeriodType" );
-            return null;
-        }
-        return periodType;
-    }
-
     public List<String> getDECodes( String fileName )
     {
         List<String> deCodes = new ArrayList<String>();
         String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName + File.separator + fileName;
+        
         try
         {
             String newpath = System.getenv( "DHIS2_HOME" );
@@ -1934,7 +1712,8 @@ public class GenerateUpwardReportAnalyserResultAction
             {
                 path = newpath + File.separator + raFolderName + File.separator + fileName;
             }
-        } catch ( NullPointerException npe )
+        } 
+        catch ( NullPointerException npe )
         {
             // do nothing, but we might be using this somewhere without
             // USER_HOME set, which will throw a NPE
@@ -1972,711 +1751,17 @@ public class GenerateUpwardReportAnalyserResultAction
         {
             System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
             System.out.println( " " + err.getMessage() );
-        } catch ( SAXException e )
+        } 
+        catch ( SAXException e )
         {
             Exception x = e.getException();
             ( ( x == null ) ? e : x ).printStackTrace();
-        } catch ( Throwable t )
+        } 
+        catch ( Throwable t )
         {
             t.printStackTrace();
         }
         return deCodes;
     }// getDECodes end
 
-    /*
-     * Returns the PeriodType Object for selected DataElement, If no PeriodType
-     * is found then by default returns Monthly Period type
-     */
-    public PeriodType getDataElementPeriodType( DataElement de )
-    {
-        List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Iterator<DataSet> it = dataSetList.iterator();
-        while ( it.hasNext() )
-        {
-            DataSet ds = (DataSet) it.next();
-            List<DataElement> dataElementList = new ArrayList<DataElement>( ds.getDataElements() );
-            if ( dataElementList.contains( de ) )
-            {
-                return ds.getPeriodType();
-            }
-        }
-
-        return null;
-
-    } // getDataElementPeriodType end
-
-    /**
-     * Converts an expression on the form<br>
-     * [34] + [23], where the numbers are IDs of DataElements, to the form<br>
-     * 200 + 450, where the numbers are the values of the DataValues registered
-     * for the Period and source.
-     * 
-     * @return The generated expression
-     */
-    private String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
-    {
-        isAggregated = 0;
-        
-        try
-        {       
-            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-
-            Matcher matcher = pattern.matcher( formula );
-            StringBuffer buffer = new StringBuffer();
-
-            String resultValue = "";
-
-            while ( matcher.find() )
-            {
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
-
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int dataElementId = Integer.parseInt( replaceString );
-                int optionComboId = Integer.parseInt( optionComboIdStr );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-
-                if ( dataElement == null || optionCombo == null )
-                {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
-                }
-                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                {
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == null )
-                    {
-                        replaceString = NULL_REPLACEMENT;
-                        deFlag2 = 0;
-                        
-                    } 
-                    else
-                    {
-                        replaceString = String.valueOf( aggregatedValue );
-
-                        deFlag2 = 1;
-                        
-                        isAggregated = 1;
-                    }
-
-                } 
-                else
-                {
-                    deFlag1 = 1;
-                    deFlag2 = 0;
-                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
-                    Period tempPeriod = new Period();
-                    if ( periodList == null || periodList.isEmpty() )
-                    {
-                        replaceString = "";
-                        matcher.appendReplacement( buffer, replaceString );
-                        continue;
-                    } else
-                    {
-                        tempPeriod = (Period) periodList.get( 0 );
-                    }
-
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
-
-                    if ( dataValue != null )
-                    {
-                        // Works for both text and boolean data types
-
-                        replaceString = dataValue.getValue();
-                    } else
-                    {
-                        replaceString = "";
-                    }
-
-                    if ( replaceString == null )
-                    {
-                        replaceString = "";
-                    }
-                }
-                matcher.appendReplacement( buffer, replaceString );
-
-                resultValue = replaceString;
-            }
-
-            matcher.appendTail( buffer );
-
-            if ( deFlag1 == 0 )
-            {
-
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                } catch ( Exception e )
-                {
-                    d = 0.0;
-                    resultValue = "";
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-                    resultValue = "";
-                } else
-                {
-
-                    // This is to display financial data as it is like 2.1476838
-                    resultValue = "" + d;
-
-                    // These lines are to display financial data that do not
-                    // have decimals
-                    d = d * 10;
-
-                    if ( d % 10 == 0 )
-                    {
-                        resultValue = "" + (int) d / 10;
-                    }
-
-                    d = d / 10;
-
-                    // These line are to display non financial data that do not
-                    // require decimals
-                    if ( !( reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) ) )
-                    {
-                        resultValue = "" + (int) d;
-                    }
-
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
-                }
-
-            } else
-            {
-                deFlag2 = 0;
-                resultValue = buffer.toString();
-            }
-
-            if( isAggregated == 0 )
-            {
-                resultValue = " ";
-            }
-            
-            if ( resultValue.equalsIgnoreCase( "" ) )
-            {
-                resultValue = " ";
-            }
-
-            
-            return resultValue;
-        } catch ( NumberFormatException ex )
-        {
-            throw new RuntimeException( "Illegal DataElement id", ex );
-        }
-    }
-
-    private String getIndividualResultDataValue( String formula, Date startDate, Date endDate,
-        OrganisationUnit organisationUnit )
-    {
-        try
-        {
-
-            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-
-            Matcher matcher = pattern.matcher( formula );
-            StringBuffer buffer = new StringBuffer();
-
-            String resultValue = "";
-            boolean valueDoesNotExist = true;
-
-            while ( matcher.find() )
-            {
-
-
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
-
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int dataElementId = Integer.parseInt( replaceString );
-                int optionComboId = Integer.parseInt( optionComboIdStr );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-
-                if ( dataElement == null || optionCombo == null )
-                {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
-                }
-                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                {
-
-                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
-
-                    if ( periodList == null || periodList.isEmpty() )
-                    {
-                        replaceString = "";
-                        matcher.appendReplacement( buffer, replaceString );
-                        continue;
-                    } else
-                    {
-
-                        double aggregatedValue = 0.0;
-                        for ( Period tempPeriod : periodList )
-                        {
-                            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement,
-                                tempPeriod, optionCombo );
-
-                            if ( dataValue != null )
-                            {
-                                aggregatedValue += Double.parseDouble( dataValue.getValue() );
-
-                                valueDoesNotExist = false;
-                            }
-                        }
-
-                        replaceString = String.valueOf( aggregatedValue );
-
-                        deFlag2 = 1;
-                    }
-                } else
-                {
-                    deFlag1 = 1;
-                    deFlag2 = 0;
-                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
-                    Period tempPeriod = new Period();
-                    if ( periodList == null || periodList.isEmpty() )
-                    {
-                        replaceString = "";
-                        matcher.appendReplacement( buffer, replaceString );
-                        continue;
-                    } else
-                    {
-                        tempPeriod = (Period) periodList.get( 0 );
-                    }
-
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
-
-                    if ( dataValue != null )
-                    {
-                        // Works for both text and boolean data types
-
-                        replaceString = dataValue.getValue();
-                        valueDoesNotExist = false;
-                    } else
-                    {
-                        replaceString = "";
-                    }
-
-                    if ( replaceString == null )
-                    {
-                        replaceString = "";
-                    }
-                }
-                matcher.appendReplacement( buffer, replaceString );
-
-                resultValue = replaceString;
-            }
-
-            matcher.appendTail( buffer );
-
-            if ( deFlag1 == 0 )
-            {
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                } catch ( Exception e )
-                {
-                    d = 0.0;
-
-                    resultValue = "";
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-
-                    resultValue = "";
-                } else
-                {
-                    // This is to display financial data as it is like 2.1476838
-                    resultValue = "" + d;
-
-                    // These lines are to display financial data that do not
-                    // have decimals
-                    d = d * 10;
-
-                    if ( d % 10 == 0 )
-                    {
-                        resultValue = "" + (int) d / 10;
-                    }
-
-                    d = d / 10;
-
-                    // These line are to display non financial data that do not
-                    // require decimals
-                    if ( !( reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) ) )
-                    {
-                        resultValue = "" + (int) d;
-                    }
-
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
-                }
-            } else
-            {
-                deFlag2 = 0;
-                resultValue = buffer.toString();
-            }
-
-            if ( valueDoesNotExist )
-            {
-                resultValue = " ";
-            }
-
-            if ( resultValue.equalsIgnoreCase( "" ) )
-            {
-                resultValue = " ";
-            }
-
-            return resultValue;
-        } catch ( NumberFormatException ex )
-        {
-            throw new RuntimeException( "Illegal DataElement id", ex );
-        }
-    }
-
-    private String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
-    {
-        try
-        {
-            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-
-            Matcher matcher = pattern.matcher( formula );
-            StringBuffer buffer = new StringBuffer();
-
-            while ( matcher.find() )
-            {
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
-
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int dataElementId = Integer.parseInt( replaceString );
-                int optionComboId = Integer.parseInt( optionComboIdStr );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-
-                if ( dataElement == null || optionCombo == null )
-                {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
-                }
-
-                if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
-                {
-                    deFlag1 = 1;
-                    deFlag2 = 0;
-                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
-                    Period tempPeriod = new Period();
-                    if ( periodList == null || periodList.isEmpty() )
-                    {
-                        replaceString = "";
-                        matcher.appendReplacement( buffer, replaceString );
-                        continue;
-                    } else
-                    {
-                        tempPeriod = (Period) periodList.get( 0 );
-                    }
-
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
-
-                    if ( dataValue != null )
-                    {
-                        // Works for both text and boolean data types
-
-                        if ( dataValue.getValue().equalsIgnoreCase( "true" ) )
-                        {
-                            replaceString = "Yes";
-                        } else
-                        {
-                            if ( dataValue.getValue().equalsIgnoreCase( "false" ) )
-                            {
-                                replaceString = "No";
-                            } else
-                            {
-                                replaceString = dataValue.getValue();
-                            }
-                        }
-                    } else
-                    {
-                        replaceString = "";
-                    }
-
-                } else
-                {
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
-                        startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == null )
-                    {
-                        replaceString = NULL_REPLACEMENT;
-                    } else
-                    {
-                        replaceString = String.valueOf( aggregatedValue );
-
-                        deFlag2 = 1;
-                    }
-                }
-                matcher.appendReplacement( buffer, replaceString );
-            }
-
-            matcher.appendTail( buffer );
-
-            String resultValue = "";
-            if ( deFlag1 == 0 )
-            {
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                } catch ( Exception e )
-                {
-                    d = 0.0;
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-                } else
-                {
-                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-                    resultValue = "" + (int) d;
-                }
-
-                if ( deFlag2 == 0 )
-                {
-                    resultValue = " ";
-                }
-            } else
-            {
-                deFlag2 = 0;
-                resultValue = buffer.toString();
-            }
-            return resultValue;
-        } catch ( NumberFormatException ex )
-        {
-            throw new RuntimeException( "Illegal DataElement id", ex );
-        }
-    }
-
-    private String getResultIndicatorValue( String formula, Date startDate, Date endDate,
-        OrganisationUnit organisationUnit )
-    {
-        try
-        {
-
-            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-
-            Matcher matcher = pattern.matcher( formula );
-            StringBuffer buffer = new StringBuffer();
-
-            while ( matcher.find() )
-            {
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int indicatorId = Integer.parseInt( replaceString );
-
-                Indicator indicator = indicatorService.getIndicator( indicatorId );
-
-                if ( indicator == null )
-                {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
-
-                }
-
-                Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
-                    organisationUnit );
-
-                if ( aggregatedValue == null )
-                {
-                    replaceString = NULL_REPLACEMENT;
-                } else
-                {
-                    replaceString = String.valueOf( aggregatedValue );
-                    deFlag2 = 1;
-                }
-                matcher.appendReplacement( buffer, replaceString );
-            }
-
-            matcher.appendTail( buffer );
-
-            String resultValue = "";
-            if ( deFlag1 == 0 )
-            {
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                } catch ( Exception e )
-                {
-                    d = 0.0;
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-                } else
-                {
-                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-                    resultValue = "" + d;
-                }
-
-                if ( deFlag2 == 0 )
-                {
-                    resultValue = " ";
-                }
-            } else
-            {
-                resultValue = buffer.toString();
-                deFlag2 = 0;
-            }
-            return resultValue;
-        } catch ( NumberFormatException ex )
-        {
-            throw new RuntimeException( "Illegal DataElement id", ex );
-        }
-    }
-
-    private String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate,
-        OrganisationUnit organisationUnit )
-    {
-        try
-        {
-            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-
-            Matcher matcher = pattern.matcher( formula );
-            StringBuffer buffer = new StringBuffer();
-
-            while ( matcher.find() )
-            {
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int indicatorId = Integer.parseInt( replaceString );
-
-                Indicator indicator = indicatorService.getIndicator( indicatorId );
-
-                if ( indicator == null )
-                {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
-
-                }
-
-                String numeratorExp = indicator.getNumerator();
-                String denominatorExp = indicator.getDenominator();
-                int indicatorFactor = indicator.getIndicatorType().getFactor();
-                String numeratorVal = getIndividualResultDataValue( numeratorExp, startDate, endDate, organisationUnit );
-                String denominatorVal = getIndividualResultDataValue( denominatorExp, startDate, endDate,
-                    organisationUnit );
-
-                double numeratorValue;
-                try
-                {
-                    numeratorValue = Double.parseDouble( numeratorVal );
-                } catch ( Exception e )
-                {
-                    numeratorValue = 0.0;
-                }
-
-                double denominatorValue;
-                try
-                {
-                    denominatorValue = Double.parseDouble( denominatorVal );
-                } catch ( Exception e )
-                {
-                    denominatorValue = 1.0;
-                }
-
-                double aggregatedValue;
-                try
-                {
-                    aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
-                } catch ( Exception e )
-                {
-                    System.out.println( "Exception while calculating Indicator value for Indicaotr " + indicator.getName() );
-                    aggregatedValue = 0.0;
-                }
-
-                replaceString = String.valueOf( aggregatedValue );
-                deFlag2 = 1;
-
-                matcher.appendReplacement( buffer, replaceString );
-            }
-
-            matcher.appendTail( buffer );
-
-            String resultValue = "";
-            if ( deFlag1 == 0 )
-            {
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                } catch ( Exception e )
-                {
-                    d = 0.0;
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-                } else
-                {
-                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-                    resultValue = "" + d;
-                }
-
-                if ( deFlag2 == 0 )
-                {
-                    resultValue = " ";
-                }
-            } else
-            {
-                deFlag2 = 0;
-                resultValue = buffer.toString();
-            }
-            return resultValue;
-        } catch ( NumberFormatException ex )
-        {
-            throw new RuntimeException( "Illegal DataElement id", ex );
-        }
-    }
 }

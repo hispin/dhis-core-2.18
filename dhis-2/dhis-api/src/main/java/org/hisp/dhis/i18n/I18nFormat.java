@@ -31,10 +31,12 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 
 /**
  * @author Pham Thi Thuy
@@ -51,13 +53,13 @@ public class I18nFormat
     }
 
     /**
-     * Constructor should only be used for testing purposes. Use 
+     * Constructor should only be used for testing purposes. Use
      * I18nManager.getI18nFormat for normal use.
      */
     public I18nFormat()
-    {   
+    {
     }
-    
+
     // -------------------------------------------------------------------------
     // Init
     // -------------------------------------------------------------------------
@@ -160,9 +162,12 @@ public class I18nFormat
 
         return commonFormatting( date, resourceBundle.getString( "format.datetime" ) );
     }
+    
+   
 
     public String formatPeriod( Period period )
     {
+
         String typeName = period.getPeriodType().getName();
 
         String keyStartDate = "format." + typeName + ".startDate";
@@ -173,6 +178,41 @@ public class I18nFormat
 
         return Character.toUpperCase( startDate.charAt( 0 ) ) + startDate.substring( 1 ) + endDate;
     }
+    
+    
+    
+    /*
+
+    public String formatPeriod( Period period )
+    {
+        Date startdate = period.getStartDate();
+
+        if ( period.getPeriodType().getName().equals( QuarterlyPeriodType.NAME ) )
+        {
+
+            int year = startdate.getYear() + 1900;
+
+            Calendar c = Calendar.getInstance();
+            c.set( Calendar.YEAR, year );
+            c.set( Calendar.MONTH, Calendar.JANUARY );
+            c.set( Calendar.DATE, 1 );
+            
+            startdate = c.getTime();
+
+        }
+
+        String typeName = period.getPeriodType().getName();
+
+        String keyStartDate = "format." + typeName + ".startDate";
+        String keyEndDate = "format." + typeName + ".endDate";
+
+        String startDate = commonFormatting( startdate, resourceBundle.getString( keyStartDate ) );
+        String endDate = commonFormatting( period.getEndDate(), resourceBundle.getString( keyEndDate ) );
+
+        return Character.toUpperCase( startDate.charAt( 0 ) ) + startDate.substring( 1 ) + endDate;
+    }
+    
+    */
 
     // -------------------------------------------------------------------------
     // Support methods

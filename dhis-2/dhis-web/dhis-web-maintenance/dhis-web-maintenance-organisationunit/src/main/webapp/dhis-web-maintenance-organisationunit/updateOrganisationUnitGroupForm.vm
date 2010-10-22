@@ -1,13 +1,6 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'updateOrganisationUnitGroupForm', function( form ){ form.submit() }, function(){
-			ous = jQuery( "#organisationValidator" );
-			ous.attr( 'multiple', 'multiple');
-			ous.empty();
-			jQuery.each(selectionTreeSelection.getSelected(), function(i, item ){
-				ous.append( '<option value="' + item + '" selected="true">' + item + '</option>' );				
-			});
-		} );	
+		validation( 'updateOrganisationUnitGroupForm', function( form ){ form.submit() } );	
 		
 		checkValueIsExist( "name", "validateOrganisationUnitGroup.action", {id:$!organisationUnitGroup.id} );	
 	
@@ -17,19 +10,19 @@
 <h3>$i18n.getString( "edit_org_unit_group" )</h3>
 
 <form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">
-<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
-<span id="message" style="position:absolute;top:80px;right:5px"></span>
-<p>$i18n.getString( "name" )  <em title="$i18n.getString( "required" )" class="required">*</em><input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"/></p>
-<table>
-	<tr>
-		<td>
-			#parse( "/dhis-web-commons/oust/selectionTreeExtend.vm" )
-			<select id="organisationValidator" name="organisationValidator" class="{validate:{required:true}}" style="display:none"/>
-		</td>
-	</tr>
-</table>
-<p>
-	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
-	<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/>
-</p>  
+	<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
+	
+	<span id="message" style="position:absolute;top:80px;right:5px"/>
+	<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em><input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name" maxlength="160" class="{validate:{required:true,minlength:2}}"/></p>
+	<table>
+		<tr>
+			<td>
+				#organisationUnitSelectionTree( false, true, true )
+			</td>
+		</tr>
+	</table>
+	<p>
+		<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+		<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/>
+	</p>  
 </form>

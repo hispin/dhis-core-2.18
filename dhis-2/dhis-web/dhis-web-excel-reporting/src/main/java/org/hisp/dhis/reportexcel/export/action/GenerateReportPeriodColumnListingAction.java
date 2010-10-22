@@ -56,7 +56,9 @@ public class GenerateReportPeriodColumnListingAction
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        Period period = periodDatabaseService.getSelectedPeriod();
+        
+        Period period = periodGenericManager.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService

@@ -17,11 +17,11 @@
 
 <div id="overlapsDiv" class="overlaps">
     <p>$i18n.getString( "there_are" ) <span id="number"></span> $i18n.getString( "overlapping_values" )</p>
-    <input type="radio" name="strategy" id="oldestRadio" value="oldest" checked="checked">
-        <label for="oldestRadio">$i18n.getString( 'eliminate_oldest' )</label><br>
-	<input type="radio" name="strategy" id="archiveRadio" value="archive">
-	    <label for="archiveRadio">$i18n.getString( 'eliminate_from_archive' )</label><br>
-	<input type="radio" name="strategy" id="regularRadio" value="regular">
+    <input type="radio" name="strategy" id="oldestRadio" value="oldest" checked="checked"/>
+        <label for="oldestRadio">$i18n.getString( 'eliminate_oldest' )</label><br/>
+	<input type="radio" name="strategy" id="archiveRadio" value="archive"/>
+	    <label for="archiveRadio">$i18n.getString( 'eliminate_from_archive' )</label><br/>
+	<input type="radio" name="strategy" id="regularRadio" value="regular"/>
 	    <label for="regularRadio">$i18n.getString( 'eliminate_from_regular' )</label>
 </div>
 
@@ -29,29 +29,29 @@
 	$i18n.getString( "there_are_no_overlapping_values" )
 </div>
 
-<br>
+<br/>
 
 <div id="contentDiv" style="display:none">
 <table width="100%">
     <tr>
         <td style="width:170px">$i18n.getString( "start_date" ) ($i18n.getString( "format.date" ))</td>
-        <td><input type="text" id="startDate"></td>
+        <td><input type="text" id="startDate"/></td>
     </tr>
     <tr>
         <td>$i18n.getString( "end_date" ) ($i18n.getString( "format.date" ))</td>
-        <td><input type="text" id="endDate"></td>
+        <td><input type="text" id="endDate"/></td>
     </tr>
     <tr>
     	<td></td>
-    	<td><input type="button" value="$i18n.getString( 'archive' )" style="width:100px" onclick="archive( 'archive' )"><input 
-    	           type="button" value="$i18n.getString( 'unarchive' )" style="width:100px" onclick="archive( 'unarchive' )"></td>
+    	<td><input type="button" value="$i18n.getString( 'archive' )" style="width:100px" onclick="archive( 'archive' )"/><input 
+    	           type="button" value="$i18n.getString( 'unarchive' )" style="width:100px" onclick="archive( 'unarchive' )"/></td>
     </tr> 
 </table>
 </div>
 
-<br>
+<br/>
 
-<span id="message"></span>
+<span id="message"/>
 
 <script type="text/javascript">
     var i18n_archiving = '$encoder.jsEscape( $i18n.getString( "archiving" ) , "'")';

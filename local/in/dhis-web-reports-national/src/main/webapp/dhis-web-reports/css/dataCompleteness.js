@@ -247,9 +247,11 @@ function getPeriodsReceived( xmlObject )
         var endDate = periods[i].getElementsByTagName( "endDate" )[0].firstChild.nodeValue;
         var periodName = periods[i].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         
-        var option = document.createElement( "option" );
+        /* var option = document.createElement( "option" );
         option.value = id;
         option.text = periodName;
-        periodList.add( option, null );
+        periodList.add( option, null ); */
+		
+		$("#periodId").append("<option value='"+ id +"'>" + periodName + "</option>");
     }
 }

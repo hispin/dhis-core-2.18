@@ -26,15 +26,15 @@
 	<tr>
 		<th>$i18n.getString( "data_element_group" )</th>
 		<th><span id="groupNameView" style="display:block;"></span></th>
-		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>
+		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action?view=$view" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"/></a></td>
 		<th>$i18n.getString( "available_dataelements" )</th>
 
 	</tr>
 
 	<tr>
-		<td><input id="dataElementGroupsFilter" type="text" style="width:300px;" onkeyup="filterDataElementGroups();"></td>
-		<td><input id="selecteDataElementsFilter" type="text" style="width:300px;" onkeyup="filterSelectedDataElements();"></td>
-		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterAvailableDataElements();"></td>
+		<td><input id="dataElementGroupsFilter" type="text" style="width:300px;" onkeyup="filterDataElementGroups();"/></td>
+		<td><input id="selecteDataElementsFilter" type="text" style="width:300px;" onkeyup="filterSelectedDataElements();"/></td>
+		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterAvailableDataElements();"/></td>
 	</tr>
 
 	<tr>
@@ -48,8 +48,8 @@
 		</td>
 
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedDataElements();" style="width:42px"><br><br>
-			<input type="button" value="&gt;" onclick="removeSelectedDataElements();" style="width:42px">
+			<input type="button" value="&lt;" onclick="addSelectedDataElements();" style="width:42px"/><br/><br/>
+			<input type="button" value="&gt;" onclick="removeSelectedDataElements();" style="width:42px"/>
 		</td>
 		<td>
 			<select class="select" id="availableDataElements" multiple="multiple" size="30" ondblclick="addSelectedDataElements();" disabled="true" onMouseOut="javascript: hideToolTip();">
@@ -58,21 +58,21 @@
 	</tr>
 	<tr>
 		<td>
-			<a href="javascript:sortList( 'dataElementGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'dataElementGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataElementGroupForm()" style="width:70px">
-			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataElementGroupForm()" style="width:70px">
-			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataElementGroup()" style="width:70px">
+			<a href="javascript:sortList( 'dataElementGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'dataElementGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataElementGroupForm()" style="width:70px"/>
+			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataElementGroupForm()" style="width:70px"/>
+			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataElementGroup()" style="width:70px"/>
 		</td>
 		<td>
-			<a href="javascript:sortList( 'selectedDataElements', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'selectedDataElements', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<input type="button" value="$i18n.getString( 'update_dataelement_group_members' )" onclick="javascript:updateDataElementGroupMembers()">
+			<a href="javascript:sortList( 'selectedDataElements', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'selectedDataElements', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<input type="button" value="$i18n.getString( 'update_dataelement_group_members' )" onclick="javascript:updateDataElementGroupMembers()"/>
 		</td>
 		<td></td>
 		<td>
-			<a href="javascript:sortList( 'availableDataElements', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'availableDataElements', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
+			<a href="javascript:sortList( 'availableDataElements', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'availableDataElements', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
 		</td>
 
 
@@ -86,7 +86,7 @@
   <tr align="center">
     <td>$i18n.getString( "name" )</td>
 	<td><input type="text" id="groupName" style="width:20em"/></td>
-	<td><input id="addRenameGroupButton" type="button" value="$i18n.getString( 'ok' )">
+	<td><input id="addRenameGroupButton" type="button" value="$i18n.getString( 'ok' )"/>
 	<input type="button" onclick="showHideDiv( 'addDataElementGroupForm' ); deleteDivEffect();" value="$i18n.getString( 'cancel' )"/></td>
   </tr>
 
@@ -96,13 +96,12 @@
 
 <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
 	<div style="float:right">
-		<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+		<a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"/></a>
 	</div>
 	<p><span id="warningField"></span></p>
 </div>
 
 <div id="tooltip"></div>
-
 
 <script type="text/javascript">
 	var i18n_select_dataelement_group = '$encoder.jsEscape( $i18n.getString( "select_dataelement_group" ) , "'")';

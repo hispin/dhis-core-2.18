@@ -12,14 +12,14 @@
 		<th colspan="4">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
 		<td></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true}}"></td>
+		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true}}"/></td>
 		<td></td>
 		<td></td>
 	</tr>
@@ -42,8 +42,8 @@
           </select>
         </td>
         <td>
-          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'selectedList', 'availableList' )">
-          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableList', 'selectedList' )">
+          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'selectedList', 'availableList' )"/>
+          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableList', 'selectedList' )"/>
 		</td>
 		<td>
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' )">
@@ -61,8 +61,8 @@
           </select>
         </td>
 		<td>
-          <input type="button" value="&lt;" onclick="moveSelectedById( 'selectedListAuthority', 'availableListAuthority' )">
-          <input type="button" value="&gt;" onclick="moveSelectedById ( 'availableListAuthority', 'selectedListAuthority' )">
+          <input type="button" value="&lt;" onclick="moveSelectedById( 'selectedListAuthority', 'availableListAuthority' )"/>
+          <input type="button" value="&gt;" onclick="moveSelectedById ( 'availableListAuthority', 'selectedListAuthority' )"/>
 		</td>		
         <td>
           <select id="selectedListAuthority" name="selectedListAuthority" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedListAuthority', 'availableListAuthority' )">
@@ -71,12 +71,12 @@
 	</tr>	
 	<tr>
 		<td></td>
-		<td valign="top"><input type="submit" value="$i18n.getString( "add" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='allRole.action'" style="width:10em"></td>
+		<td valign="top"><input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='allRole.action'" style="width:10em"/></td>
 	</tr>
   </table>
 </form>
 
-<span id="message"></span>
+<span id="message"/>
 
 <script type="text/javascript">
 	var i18n_adding_role_failed = '$encoder.jsEscape( $i18n.getString( "adding_role_failed" ) , "'")';

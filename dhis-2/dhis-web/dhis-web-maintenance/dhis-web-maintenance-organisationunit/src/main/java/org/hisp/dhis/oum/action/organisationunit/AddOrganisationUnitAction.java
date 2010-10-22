@@ -27,6 +27,8 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 import java.util.Date;
 
 import org.hisp.dhis.i18n.I18nFormat;
@@ -35,8 +37,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
 /**
  * @author Torgeir Lorange Ostby

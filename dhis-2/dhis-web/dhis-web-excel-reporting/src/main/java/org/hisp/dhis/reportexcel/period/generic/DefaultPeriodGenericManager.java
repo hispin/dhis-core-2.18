@@ -27,7 +27,6 @@ package org.hisp.dhis.reportexcel.period.generic;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -37,8 +36,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -52,27 +51,41 @@ public class DefaultPeriodGenericManager
 
     private static final Log log = LogFactory.getLog( DefaultPeriodGenericManager.class );
 
-    public static final String SESSION_KEY_SELECTED_PERIOD_GENERIC_INDEX = "SESSION_KEY_SELECTED_PERIOD_GENERIC_INDEX";
 
-    public static final String SESSION_KEY_BASE_PERIOD_GENERIC = "SESSION_KEY_BASE_PERIOD_GENERIC";
+    public static final String SESSION_KEY_SELECTED_PERIOD_TYPE= "SESSION_KEY_SELECTED_PERIOD_TYPE";
 
-    public static final String SESSION_KEY_BASE_PERIOD_TYPE_GENERIC = "SESSION_KEY_BASE_PERIOD_TYPE_GENERIC";
+    public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "SESSION_KEY_SELECTED_PERIOD_INDEX";
 
+    public static final String SESSION_KEY_BASE_PERIOD = "SESSION_KEY_BASE_PERIOD";
+    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+  
+
+    // -------------------------------------------------------------------------
+    // Period
+    // -------------------------------------------------------------------------
+    
     public void setSelectedPeriodIndex( Integer index )
     {
-
-        getSession().put( SESSION_KEY_SELECTED_PERIOD_GENERIC_INDEX, index );
+        getSession().put( SESSION_KEY_SELECTED_PERIOD_INDEX, index );
     }
 
     public Integer getSelectedPeriodIndex()
     {
-
-        return (Integer) getSession().get( SESSION_KEY_SELECTED_PERIOD_GENERIC_INDEX );
+        return (Integer) getSession().get( SESSION_KEY_SELECTED_PERIOD_INDEX );
     }
 
     public Period getSelectedPeriod()
     {
-
         Integer index = getSelectedPeriodIndex();
 
         if ( index == null )
@@ -92,14 +105,13 @@ public class DefaultPeriodGenericManager
 
     public void clearSelectedPeriod()
     {
-        getSession().remove( SESSION_KEY_SELECTED_PERIOD_GENERIC_INDEX );
+        getSession().remove( SESSION_KEY_SELECTED_PERIOD_INDEX );
     }
 
     public List<Period> getPeriodList()
     {
-
         Period basePeriod = getBasePeriod();
-
+        
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
         List<Period> periods = periodType.generatePeriods( basePeriod );
@@ -107,51 +119,41 @@ public class DefaultPeriodGenericManager
         Date now = new Date();
 
         Iterator<Period> iterator = periods.iterator();
-
+        
         while ( iterator.hasNext() )
         {
-
             if ( iterator.next().getStartDate().after( now ) )
             {
-
                 iterator.remove();
             }
         }
-
-        Collections.sort( periods, new AscendingPeriodComparator() );
-
+        
         return periods;
     }
-
+    
     public void nextPeriodSpan()
     {
-
         List<Period> periods = getPeriodList();
-
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
         Period basePeriod = periods.get( periods.size() - 1 );
-
         Period newBasePeriod = periodType.getNextPeriod( basePeriod );
 
-        if ( newBasePeriod.getStartDate().before( new Date() ) )
+        if ( newBasePeriod.getStartDate().before( new Date() ) ) // Future periods not allowed
         {
-            getSession().put( SESSION_KEY_BASE_PERIOD_GENERIC, newBasePeriod );
+            getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
         }
     }
 
     public void previousPeriodSpan()
     {
-
         List<Period> periods = getPeriodList();
-
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
         Period basePeriod = periods.get( 0 );
-
         Period newBasePeriod = periodType.getPreviousPeriod( basePeriod );
 
-        getSession().put( SESSION_KEY_BASE_PERIOD_GENERIC, newBasePeriod );
+        getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
     }
 
     // -------------------------------------------------------------------------
@@ -160,22 +162,13 @@ public class DefaultPeriodGenericManager
 
     private PeriodType getPeriodType()
     {
-
-        String periodTypeName = (String) getSession().get( SESSION_KEY_BASE_PERIOD_TYPE_GENERIC );
-
-        if ( periodTypeName == null )
-        {
-            throw new IllegalStateException( "Cannot ask for Period Type when no Period Type Name is setted" );
-        }
-
-        return PeriodType.getPeriodTypeByName( periodTypeName );
+        return (PeriodType) getSession().get( SESSION_KEY_SELECTED_PERIOD_TYPE );
     }
 
     private Period getBasePeriod()
     {
-
-        Period basePeriod = (Period) getSession().get( SESSION_KEY_BASE_PERIOD_GENERIC );
-
+        Period basePeriod = (Period) getSession().get( SESSION_KEY_BASE_PERIOD );
+        
         PeriodType periodType = getPeriodType();
 
         if ( basePeriod == null )
@@ -183,18 +176,14 @@ public class DefaultPeriodGenericManager
             log.debug( "Base period is null, creating new" );
 
             basePeriod = periodType.createPeriod();
-
-            getSession().put( SESSION_KEY_BASE_PERIOD_GENERIC, basePeriod );
-
+            getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
         }
         else if ( !basePeriod.getPeriodType().equals( periodType ) )
         {
-
             log.debug( "Wrong type of base period, transforming" );
 
             basePeriod = periodType.createPeriod( basePeriod.getStartDate() );
-
-            getSession().put( SESSION_KEY_BASE_PERIOD_GENERIC, basePeriod );
+            getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
         }
 
         return basePeriod;
@@ -202,13 +191,20 @@ public class DefaultPeriodGenericManager
 
     private static final Map<String, Object> getSession()
     {
-
         return ActionContext.getContext().getSession();
     }
 
     @Override
-    public void setPeriodType( String periodTypeNam )
+    public Period getSelectedPeriod( Integer index )
     {
-        getSession().put( SESSION_KEY_BASE_PERIOD_TYPE_GENERIC, periodTypeNam );
+        // TODO Auto-generated method stub
+        return null;
     }
+
+    @Override
+    public void setPeriodType( String periodType )
+    {
+        getSession().put( SESSION_KEY_SELECTED_PERIOD_TYPE, periodService.getPeriodTypeByName( periodType ) );
+    }
+
 }

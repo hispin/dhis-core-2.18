@@ -16,6 +16,8 @@ var tempUrl = null;
 
 function runAndViewReport( reportId, reportUrl )
 {
+    setWaitMessage( i18n_please_wait );
+        
     var url = "createTable.action?id=" + reportId + "&doDataMart=" + getListValue( "doDataMart" ) + "&mode=report";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
@@ -64,7 +66,7 @@ function reportStatusReceived( xmlObject )
     {
         setMessage( i18n_process_completed );
         
-        viewReport( tempUrl );        
+        window.location.href = tempUrl;
     }
     else if ( statusMessage == null )
     {
@@ -83,12 +85,6 @@ function reportStatusReceived( xmlObject )
 function waitAndGetReportStatus( millis )
 {
     setTimeout( "getReportStatus();", millis );
-}
-
-function viewReport( url )
-{
-	var dialog = window.open( url, "_blank", "directories=no, height=800, width=800, \
-		location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
 }
 
 function addReport()

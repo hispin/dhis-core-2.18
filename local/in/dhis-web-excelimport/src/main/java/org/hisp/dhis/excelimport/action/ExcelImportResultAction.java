@@ -548,7 +548,8 @@ public class ExcelImportResultAction
         String excelImportFolderName = "excelimport";
 
         inputStream = new BufferedInputStream( new FileInputStream( file ) );
-
+        
+       
         String excelTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + excelImportFolderName + File.separator + "template" + File.separator + reportFileNameTB;
 
@@ -574,7 +575,7 @@ public class ExcelImportResultAction
         }
         
         Workbook excelImportFile = Workbook.getWorkbook( file );
-
+       
         Workbook excelTemplateFile = Workbook.getWorkbook( new File( excelTemplatePath ) );
 
         excelValidator = validateReport( deCodesImportXMLFileName, excelImportFile, excelTemplateFile );

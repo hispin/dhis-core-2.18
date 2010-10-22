@@ -12,7 +12,7 @@ function saveCompulsoryDataElements()
 <h3>$i18n.getString( "edit_compulsory_data_elements" )</h3>
 
 <form id="compulsoryDataElementsForm" action="saveCompulsoryDataElements.action" method="post">
-<input type="hidden" name="id" value="$!id">
+<input type="hidden" name="id" value="$!id"/>
 <table>
 	<tr>
         <th>$i18n.getString( "available_data_elements" )</th>
@@ -28,9 +28,9 @@ function saveCompulsoryDataElements()
    	        </select>
     	</td>
     	<td>    	
-    		<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'availableOperands', 'selectedOperands' )">
-            <br>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveSelectedById( 'selectedOperands', 'availableOperands' )">
+    		<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'availableOperands', 'selectedOperands' )"/>
+            <br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveSelectedById( 'selectedOperands', 'availableOperands' )"/>
         </td>
         <td>
             <select id="selectedOperands" name="selectedOperands" size="15" style="width:325px" multiple="multiple" ondblclick="moveSelectedById( 'selectedOperands', 'availableOperands' )">
@@ -45,8 +45,8 @@ function saveCompulsoryDataElements()
     </tr>
     <tr>
     	<td>
-    		<input type="button" value="$i18n.getString( 'save' )" onclick="saveCompulsoryDataElements()" style="width:160px"><input
-    		       type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataSet.action'" style="width:160px">
+    		<input type="button" value="$i18n.getString( 'save' )" onclick="saveCompulsoryDataElements()" style="width:160px"/><input
+    		       type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataSet.action'" style="width:160px"/>
         </td>	
     </tr>
 </table>

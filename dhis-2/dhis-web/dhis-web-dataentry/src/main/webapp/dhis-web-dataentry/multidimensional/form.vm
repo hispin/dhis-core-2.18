@@ -43,7 +43,7 @@
         #foreach( $categoryCombo in $orderedCategoryCombos )
         	
         	<div style="border:1px solid #808080;width:98%">            
-        		<table class="listTable">
+        		<table class="mainPageTable" cellpadding="0">
         			#set( $colCount = $numberOfTotalColumns.get( $categoryCombo.id )  ) 
                     #set( $categories = $orderedCategories.get( $categoryCombo.id )  )
                     #set( $optionsMap = $orderedOptionsMap.get( $categoryCombo.id )  )
@@ -58,7 +58,8 @@
                             #set( $cols = $colRepeat.get( $category.id ) )
                             #foreach( $col in $cols )
                                 #foreach( $categoryOption in $categoryOptions )
-                                    <th colspan="$colCount"> <div align="center"> $categoryOption.name</div> </th>
+                                	#set( $optionName = $categoryOption.name )
+                                    <th colspan="$colCount"> <div align="center"> #if( $optionName != "default" ) $optionName #end </div> </th>
                                 #end
                             #end                            
                         </tr>
@@ -69,7 +70,14 @@
                     #set( $dataElements = $orderedDataElements.get( $categoryCombo )  )
                     #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryCombo.id )  )
 
+					#set( $mark = 0 )
                     #foreach( $dataElement in $dataElements )
+                    	#if( $mark == 1 )
+            				#set( $mark = 0 )
+        				#else
+            				#set( $mark = 1 )
+        				#end
+        				 
                         #set( $count = $count + 1 )
                         #set( $calculatedValue = false )
                         #set( $calculatedValue = $calculatedValueMap.get( $dataElement ) )
@@ -78,7 +86,7 @@
                         #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
                         <tr>            
                             ##data element name
-                            <td>
+                            <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
                                 <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
                 
                                     #if( $useShortName )

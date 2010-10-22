@@ -1,30 +1,32 @@
 
 <!-- Control panel -->
 
-<input type="button" value='$i18n.getString( "data" )' style="width:80px" onclick="showCriteria()">
-<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="showPivot()">&nbsp;
+<input type="button" value='$i18n.getString( "data" )' style="width:80px" onclick="showCriteria()"/>
+<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="showPivot()"/>&nbsp;
 <label id="dataLabel" style="color:#606060"></label>
-<hr style="height:1px; color:#d9ece1">
+<hr style="height:1px; color:#d9ece1"/>
 
 <!-- Criteria -->
 
 <div id="criteria" style="display:none">
 
 <p>
-<label>$i18n.getString( "organisation_unit_level" )</label>
-<select id="level" style="width:200px">
-  <option value="-1">[ $i18n.getString( "select_level" )... ]</option>
-</select>
+	<label>$i18n.getString( "organisation_unit_level" )</label>
+	<select id="level" style="width:200px">
+		<option value="-1">[ $i18n.getString( "select_level" )... ]</option>
+	</select>
 </p>
+
 <p>
-<label>$i18n.getString( "period_type" )</label>
-<select id="periodType" style="width:200px">
-  <option value="null">[ $i18n.getString( "select_period_type" )... ]</option>
-</select>
+	<label>$i18n.getString( "period_type" )</label>
+	<select id="periodType" style="width:200px">
+		<option value="null">[ $i18n.getString( "select_period_type" )... ]</option>
+	</select>
 </p>
+
 <p>
-<input type="button" value='$i18n.getString( "get_data" )' style="width:80px" onclick="getData()">
-<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()">
+	<input type="button" value='$i18n.getString( "get_data" )' style="width:80px" onclick="getData()"/>
+	<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()"/>
 </p>
 
 </div>
@@ -37,18 +39,18 @@
 <table>
   <tr>
     <td><label>$i18n.getString( "datasets" )</label></td>
-    <td><input type="checkbox" id="dataSetBox" checked="checked"></td>
+    <td><input type="checkbox" id="dataSetBox" checked="checked"/></td>
   </tr>
   <tr>
     <td><label>$i18n.getString( "org_units" )</label></td>
-    <td><input type="checkbox" id="orgunitBox"></td>
+    <td><input type="checkbox" id="orgunitBox"/></td>
   </tr>
 </table>
 </p>
 
 <p>
-<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="pivotData()">
-<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()">
+	<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="pivotData()"/>
+	<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()"/>
 </p>
 
 </div>
@@ -57,10 +59,8 @@
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 
-<div id="contentDiv">
-    
-<table id="pivotTable" class="pivot"></table>
-
+<div id="contentDiv"> 
+	<table id="pivotTable" class="pivot"></table>
 </div>
 
 <!-- I18n variables && Init page -->

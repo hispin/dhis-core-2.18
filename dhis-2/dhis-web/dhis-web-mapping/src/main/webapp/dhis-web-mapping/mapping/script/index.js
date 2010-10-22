@@ -13,15 +13,13 @@ MAPDATA[thematicMap2] = new Object();
 MAPDATA[organisationUnitAssignment] = new Object();
 /* Filename or level */
 var URL;
-/* Active mapview object  */
-var MAPVIEW;
 /* Active mapview id parameter from URL */
 var PARAMETER;
 /* Current expanded accordion panel */
 var ACTIVEPANEL;
 /* Mask */
 var MASK;
-/* Boolean */
+/* Labels activated (boolean) */
 var LABELS = new Object();
 LABELS[thematicMap] = false;
 LABELS[thematicMap2] = false;
@@ -36,19 +34,14 @@ FEATURE[thematicMap] = new Object();
 FEATURE[thematicMap2] = new Object();
 /* Global chart for show/hide */
 var CHART;
-/* Current legend type and method */
-var LEGEND = new Object();
-LEGEND[thematicMap] = new Object();
-LEGEND[thematicMap2] = new Object();
-LEGEND[thematicMap].type = LEGEND[thematicMap2].type = map_legend_type_automatic;
-LEGEND[thematicMap].method = LEGEND[thematicMap2].method = 2;
-LEGEND[thematicMap].classes = LEGEND[thematicMap2].classes = 5;
 /* Current map value types */
 var VALUETYPE = new Object();
 VALUETYPE.polygon = map_value_type_indicator;
 VALUETYPE.point = map_value_type_indicator;
 /* Top level organisation unit */
 var TOPLEVELUNIT = new Object();
+/* Locate feature window */
+var lfw;
 
 /* Detect mapview parameter in URL */
 function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
@@ -60,6 +53,10 @@ function validateDates(startDate,endDate){if(!startDate || !endDate){return true
 function getMultiSelectHeight(){var h=screen.height;if(h<=800){return 220;}else if(h<=1050){return 310;}else if(h<=1200){return 470;}else{return 900;}}
 /* Make map view numbers numeric */
 function getNumericMapView(mapView){mapView.id=parseFloat(mapView.id);mapView.indicatorGroupId=parseFloat(mapView.indicatorGroupId);mapView.indicatorId=parseFloat(mapView.indicatorId);mapView.periodId=parseFloat(mapView.periodId);mapView.method=parseFloat(mapView.method);mapView.classes=parseFloat(mapView.classes);mapView.mapLegendSetId=parseFloat(mapView.mapLegendSetId);mapView.longitude=parseFloat(mapView.longitude);mapView.latitude=parseFloat(mapView.latitude);mapView.zoom=parseFloat(mapView.zoom);return mapView;}
+/* Get number of decimals */
+function getNumberOfDecimals(x,dec_sep){var tmp=new String();tmp=x;if(tmp.indexOf(dec_sep)>-1){return tmp.length-tmp.indexOf(dec_sep)-1;}else{return 0;}}
+/* Debug */
+function getKeys(obj){var temp=[];for(var k in obj){if(obj.hasOwnProperty(k)){temp.push(k);}}return temp;}
 /* Toggle feature labels */
 function getActivatedOpenLayersStyleMap(nameColumn) {
     return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${labelString}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])), 'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
@@ -156,8 +153,6 @@ function getLegendsJSON(){
 
 Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
-	/* Cookie provider */
-	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 	/* Ext 3.2.0 override */
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed( true );},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed( false );}});
     /* Disallow right clicks */
@@ -207,8 +202,9 @@ Ext.onReady( function() {
     addBaseLayersToMap();
     
     /* Get map view parameter and apply to global variable */
-    if (getUrlParam('view')){PARAMETER=getUrlParam('view');}
-	var mapViewParam = PARAMETER || 0;
+    if (getUrlParam('view')) {
+        PARAMETER = getUrlParam('view');
+    }
 	
 	Ext.Ajax.request({
 		url: path_mapping + 'getBaseCoordinate' + type,
@@ -220,7 +216,7 @@ Ext.onReady( function() {
 			Ext.Ajax.request({
 				url: path_mapping + 'getMapView' + type,
 				method: 'GET',
-				params: { id: mapViewParam },
+				params: { id: PARAMETER || 0 },
 				success: function(r) {
 					var mst = Ext.util.JSON.decode(r.responseText).mapView[0].mapSourceType;
                     var mdt = Ext.util.JSON.decode(r.responseText).mapView[0].mapDateType;
@@ -340,7 +336,7 @@ Ext.onReady( function() {
 							
 							for (var i = 0; i < mapViews.length; i++) {
 								if (mapViews[i].name == vn) {
-									Ext.message.msg(false, i18n_there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>.');
+									Ext.message.msg(false, i18n_there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>');
 									return;
 								}
 							}
@@ -372,7 +368,7 @@ Ext.onReady( function() {
                                     zoom: zoom
                                 },
 								success: function(r) {
-									Ext.message.msg(true, 'The view <span class="x-msg-hl">' + vn + '</span> ' + i18n_was_registered + '.');
+									Ext.message.msg(true, 'The view <span class="x-msg-hl">' + vn + '</span> ' + i18n_was_registered);
 									Ext.getCmp('view_cb').getStore().load();
 									Ext.getCmp('mapview_cb').getStore().load();
 									Ext.getCmp('viewname_tf').reset();
@@ -554,21 +550,21 @@ Ext.onReady( function() {
 				displayField: 'text',
 				isFormField: true,
 				width: combo_width_fieldset,
-				minListWidth: combo_list_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all'
 			},
 			{
 				xtype: 'combo',
 				id: 'exportimagequality_cb',
-				fieldLabel: i18n_image_quality,
+				// fieldLabel: i18n_image_resolution,
+                fieldLabel: 'Image resolution',
 				labelSeparator: labelseparator,
 				editable: false,
 				valueField: 'id',
 				displayField: 'text',
 				isFormField: true,
 				width: combo_width_fieldset,
-				minListWidth: combo_list_width_fieldset,
+				minListWidth: combo_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all',
 				value: 1,
@@ -615,29 +611,22 @@ Ext.onReady( function() {
                     }   
 
                     if (vcb && dcb && mcb && lcb) {
-                    	var svgChildren = document.getElementById('_OpenLayers_Container').childNodes;
-						var svgDivId = null;
-
-						for (i = 0; i < svgChildren.length; i++) { // Search for div containing SVG
-							svgDivId = svgChildren[i].getAttribute('id');
-							if (svgDivId && svgDivId.indexOf('OpenLayers.Layer.Vector_') != -1) {
-								break;
-							}
-						}
-
-						var svg = document.getElementById(svgDivId).innerHTML;
-						var objectSVGDocument = document.getElementById(svgDivId).childNodes[0];
+                    	
+						var svgElement = document.getElementsByTagName('svg')[0];
+						var parentSvgElement = svgElement.parentNode;
 						
-                        var viewBox = objectSVGDocument.getAttribute('viewBox');
+						var svg = parentSvgElement.innerHTML;
+						
+                        var viewBox = svgElement.getAttribute('viewBox');
                         var title = Ext.getCmp('exportimagetitle_tf').getValue();
-                    
+                    	
                         if (!title) {
                             Ext.message.msg(false, i18n_please_enter_map_title );
                         }
                         else {
                             var q = Ext.getCmp('exportimagequality_cb').getValue();
-                            var w = objectSVGDocument.getAttribute('width') * q;
-                            var h = objectSVGDocument.getAttribute('height') * q;
+                            var w = svgElement.getAttribute('width') * q;
+                            var h = svgElement.getAttribute('height') * q;
                             var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
                             
                             Ext.getCmp('exportimagetitle_tf').reset();
@@ -812,7 +801,7 @@ Ext.onReady( function() {
                             var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
                             for (var i = 0; i < mapLegends.length; i++) {
                                 if (mln == mapLegends[i].name) {
-                                    Ext.message.msg(false, i18n_legend + '<span class="x-msg-hl">' + ln + '</span> ' + i18n_already_exists);
+                                    Ext.message.msg(false, i18n_legend + '<span class="x-msg-hl">' + mln + '</span> ' + i18n_already_exists);
                                     return;
                                 }
                             }
@@ -827,7 +816,7 @@ Ext.onReady( function() {
                                     Ext.getCmp('predefinedmaplegendname_tf').reset();
                                     Ext.getCmp('predefinedmaplegendstartvalue_tf').reset();
                                     Ext.getCmp('predefinedmaplegendendvalue_tf').reset();
-                                    Ext.getCmp('predefinedmaplegendcolor_cp').clearValue();
+                                    Ext.getCmp('predefinedmaplegendcolor_cp').reset();
                                 },
                                 failure: function() {
                                     alert( 'Error: addOrUpdateMapLegend' );
@@ -951,7 +940,7 @@ Ext.onReady( function() {
                             Ext.getCmp('predefinedmaplegendsetindicator2_cb').getStore().load();
 							Ext.getCmp('maplegendset_cb').getStore().load();
 							Ext.getCmp('predefinedmaplegendsetname_tf').reset();
-							Ext.getCmp('predefinednewmaplegend_ms').clearValue();							
+							Ext.getCmp('predefinednewmaplegend_ms').reset();							
                         },
                         failure: function() {
                             alert( 'Error: addOrUpdateMapLegendSet' );
@@ -2989,6 +2978,7 @@ Ext.onReady( function() {
         var baseLayerOptionsWindow = new Ext.Window({
             id: 'baselayeroptions_w',
             title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
+            width: 180,
             items: [
                 {
                     xtype: 'menu',
@@ -2996,8 +2986,8 @@ Ext.onReady( function() {
                     floating: false,
                     items: [
                         {
-                            html: 'Show WMS legend',
-                            iconCls: 'no-icon',
+                            text: 'Show WMS legend',
+                            iconCls: 'menu-layeroptions-wmslegend',
                             listeners: {
                                 'click': {
                                     fn: function() {
@@ -3030,47 +3020,58 @@ Ext.onReady( function() {
                             }
                         },
                         {
-                            html: 'Opacity',
-                            menu: {
+                            text: 'Opacity',
+                            iconCls: 'menu-layeroptions-opacity',
+                            menu: { 
                                 items: [
                                     {
-                                        html: '0.1',
+                                        text: '0.1',
+                                        iconCls: 'menu-layeroptions-opacity-10',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
                                     },
                                     {
-                                        html: '0.2',
+                                        text: '0.2',
+                                        iconCls: 'menu-layeroptions-opacity-20',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
                                     },
                                     {
-                                        html: '0.3',
+                                        text: '0.3',
+                                        iconCls: 'menu-layeroptions-opacity-30',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
                                     },
                                     {
-                                        html: '0.4',
+                                        text: '0.4',
+                                        iconCls: 'menu-layeroptions-opacity-40',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
                                     },
                                     {
-                                        html: '0.5',
+                                        text: '0.5',
+                                        iconCls: 'menu-layeroptions-opacity-50',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
                                     },
                                     {
-                                        html: '0.6',
+                                        text: '0.6',
+                                        iconCls: 'menu-layeroptions-opacity-60',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
                                     },
                                     {
-                                        html: '0.7',
+                                        text: '0.7',
+                                        iconCls: 'menu-layeroptions-opacity-70',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
                                     },
                                     {
-                                        html: '0.8',
+                                        text: '0.8',
+                                        iconCls: 'menu-layeroptions-opacity-80',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
                                     },
                                     {
-                                        html: '0.9',
+                                        text: '0.9',
+                                        iconCls: 'menu-layeroptions-opacity-90',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
                                     },
                                     {
-                                        html: '1.0',
+                                        text: '1.0',
+                                        iconCls: 'menu-layeroptions-opacity-100',
                                         listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
                                     }
                                 ]
@@ -3080,37 +3081,37 @@ Ext.onReady( function() {
                 }
             ]
         });
-        baseLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 190, Ext.getCmp('center').y + 50);
+        baseLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 206, Ext.getCmp('center').y + 50);
         baseLayerOptionsWindow.show();
     }
+    
     
     function showVectorLayerOptions(layer) {
         if (Ext.getCmp('vectorlayeroptions_w')) {
             Ext.getCmp('vectorlayeroptions_w').destroy();
         }
         
-        var data = [];
-        var layer = MAP.getLayersByName(layer.name)[0];
-        
+        var data = [];        
         for (var i = 0; i < layer.features.length; i++) {
-            data.push([i, layer.features[i].data.name]);
+            data.push([layer.features[i].data.id || i, layer.features[i].data.name]);
         }
         
         var featureStore = new Ext.data.ArrayStore({
             mode: 'local',
             autoDestroy: true,
-            idProperty: 'i',
-            fields: ['i', 'name'],
-            data: [data]
+            idProperty: 'id',
+            fields: ['id','name'],
+            sortInfo: {field: 'name', direction: 'ASC'},
+            data: data
         });
         
         var locateFeatureWindow = new Ext.Window({
             id: 'locatefeature_w',
             title: 'Locate features',
             layout: 'fit',
-            closeAction: 'hide',
             defaults: {layout: 'fit', bodyStyle:'padding:8px; border:0px'},
-            width: 200,
+            width: 250,
+            height: getMultiSelectHeight() + 145,
             items: [
                 {
                     xtype: 'panel',
@@ -3118,42 +3119,88 @@ Ext.onReady( function() {
                         {
                             xtype: 'panel',
                             items: [
-                                { html: '<div class="window-field-label-first">Feature name</div>' },
+                                { html: '<div class="window-field-label-first">' + i18n_highlight_color + '</div>' },
+                                {
+                                    xtype: 'colorfield',
+                                    labelSeparator: labelseparator,
+                                    id: 'highlightcolor_cf',
+                                    allowBlank: false,
+                                    isFormField: true,
+                                    width: combo_width,
+                                    value: "#0000FF"
+                                },
+                                { html: '<div class="window-field-label">' + i18n_feature_filter + '</div>' },
                                 {
                                     xtype: 'textfield',
-                                    id: 'locatefeature_tf'
+                                    id: 'locatefeature_tf',
+                                    enableKeyEvents: true,
+                                    listeners: {
+                                        'keyup': {
+                                            fn: function() {
+                                                var p = Ext.getCmp('locatefeature_tf').getValue();
+                                                featureStore.filter('name', p, true, false);
+                                            }
+                                        }
+                                    }
                                 },
-                                { html: '<div class="window-field-label"></div>' },
+                                { html: '<div class="window-field-nolabel"></div>' },
                                 {
                                     xtype: 'grid',
                                     id: 'featuregrid_gp',
-                                    autoHeight: true,
+                                    height: getMultiSelectHeight(),
                                     store: featureStore,
                                     cm: new Ext.grid.ColumnModel({
-                                        columns: [
-                                            {   
-                                                id: 'name',
-                                                header: 'Features',
-                                                dataIndex: 'name',
-                                                width: 200
-                                            }
-                                        ]
+                                        columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
                                     }),
                                     sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
                                     viewConfig: {forceFit: true},
                                     sortable: true,
-                                    // autoExpandColumn: 'name'
+                                    autoExpandColumn: 'name',
+                                    listeners: {
+                                        'cellclick': {
+                                            fn: function(g, ri, ci) {
+                                                layer.redraw();
+                                                
+                                                var id, feature, backupF, backupS;
+                                                id = g.getStore().getAt(ri).data.id;
+                                                
+                                                for (var i = 0; i < layer.features.length; i++) {
+                                                    if (layer.features[i].data.id == id) {
+                                                        feature = layer.features[i];
+                                                        break;
+                                                    }
+                                                }
+                                                
+                                                if (feature) {
+                                                    var color = Ext.getCmp('highlightcolor_cf').getValue();
+                                                    layer.drawFeature(feature,{'fillColor':color, 'strokeColor':color});
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             ]
                         }
                     ]
                 }
-            ]
-        });                    
+            ],
+            listeners: {
+                'close': {
+                    fn: function() {
+                        lfw = false;
+                        layer.redraw();
+                    }
+                }
+            }
+        });
+        
+        lfw = locateFeatureWindow;
         
         var vectorLayerOptionsWindow = new Ext.Window({
             id: 'vectorlayeroptions_w',
             title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
+            closeAction: 'hide',
+            width: 180,
             items: [
                 {
                     xtype: 'menu',
@@ -3161,90 +3208,114 @@ Ext.onReady( function() {
                     floating: false,
                     items: [
                         {
-                            html: 'Opacity',
-                            menu: {
-                                items: [
-                                    {
-                                        html: '0.1',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
-                                    },
-                                    {
-                                        html: '0.2',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
-                                    },
-                                    {
-                                        html: '0.3',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
-                                    },
-                                    {
-                                        html: '0.4',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
-                                    },
-                                    {
-                                        html: '0.5',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
-                                    },
-                                    {
-                                        html: '0.6',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
-                                    },
-                                    {
-                                        html: '0.7',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
-                                    },
-                                    {
-                                        html: '0.8',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
-                                    },
-                                    {
-                                        html: '0.9',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
-                                    },
-                                    {
-                                        html: '1.0',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            html: 'Show/hide labels',
+                            text: 'Locate feature',
+                            iconCls: 'menu-layeroptions-locate',
                             listeners: {
                                 'click': {
                                     fn: function() {
-                                        if (layer.name == 'Polygon layer') {
-                                            if (ACTIVEPANEL == thematicMap) {
-                                                toggleFeatureLabelsPolygons(layer);
-                                            }
-                                            else {
-                                                toggleFeatureLabelsAssignment(true, layer);
-                                            }
+                                        if (layer.features.length > 0) {
+                                            locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - 272, Ext.getCmp('center').y + 50);
+                                            locateFeatureWindow.show();
+                                            vectorLayerOptionsWindow.hide();
                                         }
-                                        else if (layer.name == 'Point layer') {
-                                            toggleFeatureLabelsPoints(layer);
+                                        else {
+                                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
                                         }
                                     }
                                 }
                             }
+                        },
+                        
+                        {
+                            text: 'Show/hide labels',
+                            iconCls: 'menu-layeroptions-labels',
+                            listeners: {
+                                'click': {
+                                    fn: function() {
+                                        if (layer.features.length > 0) {
+                                            if (layer.name == 'Polygon layer') {
+                                                if (ACTIVEPANEL == thematicMap) {
+                                                    toggleFeatureLabelsPolygons(layer);
+                                                }
+                                                else {
+                                                    toggleFeatureLabelsAssignment(true, layer);
+                                                }
+                                            }
+                                            else if (layer.name == 'Point layer') {
+                                                toggleFeatureLabelsPoints(layer);
+                                            }
+                                        }
+                                        else {
+                                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        
+                        {
+                            text: 'Opacity',
+                            iconCls: 'menu-layeroptions-opacity',
+                            menu: { 
+                                items: [
+                                    {
+                                        text: '0.1',
+                                        iconCls: 'menu-layeroptions-opacity-10',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
+                                    },
+                                    {
+                                        text: '0.2',
+                                        iconCls: 'menu-layeroptions-opacity-20',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
+                                    },
+                                    {
+                                        text: '0.3',
+                                        iconCls: 'menu-layeroptions-opacity-30',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
+                                    },
+                                    {
+                                        text: '0.4',
+                                        iconCls: 'menu-layeroptions-opacity-40',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
+                                    },
+                                    {
+                                        text: '0.5',
+                                        iconCls: 'menu-layeroptions-opacity-50',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
+                                    },
+                                    {
+                                        text: '0.6',
+                                        iconCls: 'menu-layeroptions-opacity-60',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
+                                    },
+                                    {
+                                        text: '0.7',
+                                        iconCls: 'menu-layeroptions-opacity-70',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
+                                    },
+                                    {
+                                        text: '0.8',
+                                        iconCls: 'menu-layeroptions-opacity-80',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
+                                    },
+                                    {
+                                        text: '0.9',
+                                        iconCls: 'menu-layeroptions-opacity-90',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
+                                    },
+                                    {
+                                        text: '1.0',
+                                        iconCls: 'menu-layeroptions-opacity-100',
+                                        listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
+                                    }
+                                ]
+                            }
                         }
-                        // ,
-                        // {
-                            // html: 'Locate feature',
-                            // listeners: {
-                                // 'click': {
-                                    // fn: function() {
-                                        // locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - 173, Ext.getCmp('center').y + 50);
-                                        // locateFeatureWindow.show();
-                                        // vectorLayerOptionsWindow.hide();
-                                    // }
-                                // }
-                            // }
-                        // }                                        
                     ]
                 }
             ]
         });
-        vectorLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 173, Ext.getCmp('center').y + 50);
+        vectorLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 202, Ext.getCmp('center').y + 50);
         vectorLayerOptionsWindow.show();
     }
 	
@@ -3538,7 +3609,7 @@ Ext.onReady( function() {
 	var mapToolbar = new Ext.Toolbar({
 		id: 'map_tb',
 		items: [
-			' ',' ',' ',
+			' ',' ',' ',' ',
 			mapLabel,
 			' ',' ',' ',' ',' ',
 			zoomInButton,
@@ -3554,7 +3625,8 @@ Ext.onReady( function() {
 			'-',
 			helpButton,
 			'->',
-			exitButton
+			exitButton,
+            ' '
 		]
 	});
     
@@ -3652,37 +3724,37 @@ Ext.onReady( function() {
                     proportionalSymbol,
                     shapefilePanel,
                     mapping,
-					adminPanel,
-					{
-						xtype: 'print-multi',
-						id: 'printMultiPage_p',
-						title: '<span class="panel-title">Print multi page PDF</span>',
-						formConfig: {
-							labelWidth: 65,
-							bodyStyle: 'padding: 7px;',
-							defaults: {
-								width: 140,
-								listWidth: 140
-							}
-						},
-						columns: [
-							{
-								header: 'Map title',
-								width: 80,
-								dataIndex: 'mapTitle',
-								editor: new Ext.form.TextField()
-							},
-							{
-								header: 'Comment',
-								dataIndex: 'comment',
-								editor: new Ext.form.TextField()
-							}
-						],
-						border: false,
-						map: MAP,
-						configUrl: printConfigUrl,
-						overrides: layerOverrides
-					}
+					adminPanel //,
+					// {
+						// xtype: 'print-multi',
+						// id: 'printMultiPage_p',
+						// title: '<span class="panel-title">Print multi page PDF</span>',
+						// formConfig: {
+							// labelWidth: 65,
+							// bodyStyle: 'padding: 7px;',
+							// defaults: {
+								// width: 140,
+								// listWidth: 140
+							// }
+						// },
+						// columns: [
+							// {
+								// header: 'Map title',
+								// width: 80,
+								// dataIndex: 'mapTitle',
+								// editor: new Ext.form.TextField()
+							// },
+							// {
+								// header: 'Comment',
+								// dataIndex: 'comment',
+								// editor: new Ext.form.TextField()
+							// }
+						// ],
+						// border: false,
+						// map: MAP,
+						// configUrl: printConfigUrl,
+						// overrides: layerOverrides
+					// }
                 ]
             },
             {
@@ -3701,7 +3773,7 @@ Ext.onReady( function() {
 	
     shapefilePanel.hide();
 	mapping.hide();
-	Ext.getCmp('printMultiPage_p').hide();
+	// Ext.getCmp('printMultiPage_p').hide();
 	ACTIVEPANEL = thematicMap;
     
 	/* Section: map controls */
@@ -3781,8 +3853,8 @@ Ext.onReady( function() {
             }
         }
     });
-	
-	Ext.getCmp('maplegendset_cb').hideField();
+    
+    Ext.getCmp('maplegendset_cb').hideField();
     Ext.getCmp('maplegendset_cb2').hideField();
 	Ext.getCmp('bounds_tf').hideField();
     Ext.getCmp('bounds_tf2').hideField();
@@ -4045,7 +4117,7 @@ Ext.onReady( function() {
     // items: CHART
 // });
 
-/* Section: select features */
+/* Section: select features polygon */
 function onHoverSelectPolygon(feature) {
     FEATURE[thematicMap] = feature;
 
@@ -4062,41 +4134,27 @@ function onHoverUnselectPolygon(feature) {
 }
 
 function onClickSelectPolygon(feature) {
-// function getKeys(obj){var temp=[];for(var k in obj){if(obj.hasOwnProperty(k)){temp.push(k);}}return temp;}
-// var l = MAP.getLayersByName('Polygon layer')[0];
-// l.drawFeature(feature,{'fillColor':'blue'});
-
     FEATURE[thematicMap] = feature;
-
 	var east_panel = Ext.getCmp('east');
 	var x = east_panel.x - 210;
 	var y = east_panel.y + 41;
     
-    if (ACTIVEPANEL == thematicMap && MAPSOURCE == map_source_type_database) {
-        Ext.getCmp('map_tf').setValue(feature.data.name);
-        
-        for (var i = 0; i < feature.layer.features.length; i++) {
-            if (feature.data.name == feature.layer.features[i].attributes.name) {
-                Ext.getCmp('map_tf').value = feature.layer.features[i].attributes.id;
-                break;
+    if (MAPSOURCE == map_source_type_database) {
+        if (feature.attributes.hasChildrenWithCoordinates) {
+            if (lfw) {
+                lfw.destroy();
             }
+            
+            Ext.getCmp('map_tf').setValue(feature.data.name);
+            Ext.getCmp('map_tf').value = feature.attributes.id;
+            choropleth.loadFromDatabase(feature.attributes.id, true);
         }
-        
-        choropleth.loadFromDatabase(Ext.getCmp('map_tf').value);
-    }
-    else if (ACTIVEPANEL == thematicMap2 && MAPSOURCE == map_source_type_database) {
-        Ext.getCmp('map_tf2').setValue(feature.data.name);
-        
-        for (var i = 0; i < feature.layer.features.length; i++) {
-            if (feature.data.name == feature.layer.features[i].attributes.name) {
-                Ext.getCmp('map_tf2').value = feature.layer.features[i].attributes.id;
-                break;
-            }
+        else {
+            Ext.message.msg(false, i18n_no_coordinates_found);
         }
-        
-        proportionalSymbol.loadFromDatabase(Ext.getCmp('map_tf2').value);
     }
-    else if (ACTIVEPANEL == organisationUnitAssignment) {
+    
+    if (ACTIVEPANEL == organisationUnitAssignment) {
 		if (popup) {
 			popup.destroy();
 		}
@@ -4123,22 +4181,47 @@ function onClickSelectPolygon(feature) {
 		feature_popup.show();
 		mapping.relation = FEATURE[thematicMap].attributes[MAPDATA[organisationUnitAssignment].nameColumn];
     }
-	else {
+	//else {
         // featureWindow.setPagePosition(Ext.getCmp('east').x - 202, Ext.getCmp('center').y + 41);
         // featureWindow.setTitle(FEATURE.attributes[MAPDATA.nameColumn]);
         // featureWindow.show();
         // periodWindow.hide();
-	}
+	//}
 }
 
 function onClickUnselectPolygon(feature) {}
 
-function onClickSelectPoint(feature) {}
-function onClickUnselectPoint(feature) {}
+/* Section: select features point */
 function onHoverSelectPoint(feature) {
     FEATURE[thematicMap2] = feature;
     Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + FEATURE[thematicMap2].attributes[MAPDATA[thematicMap2].nameColumn] + '</div><div style="color:#555">' + FEATURE[thematicMap2].attributes.value + '</div>', false);
 }
+
 function onHoverUnselectPoint(feature) {
     Ext.getCmp('featureinfo_l').setText('<span style="color:#666">'+ i18n_no_feature_selected +'.</span>', false);
 }
+
+function onClickSelectPoint(feature) {
+    FEATURE[thematicMap2] = feature;
+
+	var east_panel = Ext.getCmp('east');
+	var x = east_panel.x - 210;
+	var y = east_panel.y + 41;
+	
+    if (MAPSOURCE == map_source_type_database) {
+        if (feature.attributes.hasChildrenWithCoordinates) {
+            if (lfw) {
+                lfw.destroy();
+            }
+            
+            Ext.getCmp('map_tf2').setValue(feature.data.name);
+            Ext.getCmp('map_tf2').value = feature.attributes.id;
+            proportionalSymbol.loadFromDatabase(Ext.getCmp('map_tf2').value);
+        }
+        else {
+            Ext.message.msg(false, i18n_no_coordinates_found);
+        }
+    }
+}
+
+function onClickUnselectPoint(feature) {}

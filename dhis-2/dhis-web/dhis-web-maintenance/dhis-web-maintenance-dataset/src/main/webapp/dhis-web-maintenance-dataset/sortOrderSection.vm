@@ -3,8 +3,8 @@
 
 <form id="sortOrderForm" name="sortOrderForm" action="sortOrderSection.action" method="post" onsubmit="selectAllById( 'selectedList' );">
   <table id="detailsList">
-    <col> ## Labels
-    <col> ## Input
+    <col/> ## Labels
+    <col/> ## Input
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "sort_section" )</th>
@@ -12,8 +12,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="dataSetName" name="dataSetName" style="width:20em" value="$encoder.htmlEncode( $dataSet.name )" disabled="disabled"></td>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="dataSetName" name="dataSetName" style="width:20em" value="$encoder.htmlEncode( $dataSet.name )" disabled="disabled"/></td>
       </tr>
      
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -21,9 +21,9 @@
   </table>
 
   <table id="dataElementSelectionArea">
-    <col> ## Selected DataElements
-    <col> ## Actions
-    <col> ## Available DataElements
+    <col/> ## Selected DataElements
+    <col/> ## Actions
+    <col/> ## Available DataElements
     <thead>
       <tr>
         <th>$i18n.getString( "available_sections" )</th>
@@ -41,9 +41,9 @@
           </select>
         </td>
         <td valign="top">
-          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelected( document.getElementById( 'availableList' ), document.getElementById( 'selectedList' ) )">
-          <br>
-          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelected( document.getElementById( 'selectedList' ), document.getElementById( 'availableList' ) )">
+          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelected( document.getElementById( 'availableList' ), document.getElementById( 'selectedList' ) )"/>
+          <br/>
+          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelected( document.getElementById( 'selectedList' ), document.getElementById( 'availableList' ) )"/>
         </td>
         <td>
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'availableList' ) )">
@@ -59,8 +59,8 @@
 
       <tr>
         <td colspan="4">
-          <input type="submit" value="$i18n.getString( "save" )"><input type="button" 
-            onclick="window.location.href='section.action'" value="$i18n.getString( "cancel" )"></td>
+          <input type="submit" value="$i18n.getString( 'save' )"/><input type="button" 
+            onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )"/></td>
       </tr>
     </tbody>
   </table>

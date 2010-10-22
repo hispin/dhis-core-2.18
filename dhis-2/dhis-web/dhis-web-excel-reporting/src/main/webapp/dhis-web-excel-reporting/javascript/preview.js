@@ -22,7 +22,7 @@ function previewReport() {
 	
 	lockScreen();
 	
-	var url = "previewReportExcel.action?reportId=" + getListValue('report') + "&periodId=" + getListValue('period');
+	var url = "previewReportExcel.action?reportId=" + getListValue('report') + "&periodIndex=" + getListValue('period');
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );

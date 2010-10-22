@@ -93,4 +93,11 @@ public class DefaultConceptService
         return conceptStore.getAll();
     }
 
+    @Override
+    public void generateDefaultConcept()
+    {
+        Concept defaultConcept = new Concept("default");
+        conceptStore.save( defaultConcept );
+    }
+
 }

@@ -1,5 +1,4 @@
 /*
- *
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
@@ -45,42 +44,47 @@ public class LiveMessagingService
     private static final String defaultLanguage = "en";
 
     private static final String defaultCountry = "GB";
+    private static final Locale defaultLocale = new Locale (defaultLanguage, defaultCountry);
+    private static final String messageLocation = "messages/messages";
 
-    private ResourceBundle getMessageBundle()
+    private ResourceBundle getDefaultMessageBundle()
     {
         ResourceBundle messages;
-        String currentLanguage = TrayApp.getInstance().getConfig().getLocaleLanguage();
-        String currentCountry = TrayApp.getInstance().getConfig().getLocaleCountry();
-        Locale currentLocale = new Locale( currentLanguage, currentCountry );
+        messages = ResourceBundle.getBundle(messageLocation, defaultLocale);
+        return messages;
+    }
+
+    private ResourceBundle getMessageBundle(Locale currentLocale)
+    {
+        ResourceBundle messages;
+        messages = getDefaultMessageBundle();
         log.debug( "Current locale set to " + currentLocale.toString() );
         try
         {
-            messages = ResourceBundle.getBundle( "messages", currentLocale );
+            messages = ResourceBundle.getBundle( messageLocation, currentLocale );
         } catch ( Exception e )
         {
-            //problem loading the desired resource bundle
-            //fall back to default
-            log.error( "The desired resource bundle could not be loaded.Usig default" );
-            currentLocale = new Locale( defaultLanguage, defaultCountry );
-            messages = ResourceBundle.getBundle( "messages", currentLocale );
+            //problem loading the desired resource bundle fall back to default
+            log.error( "The desired resource bundle could not be loaded." );
+            
         }
-
         return messages;
     }
 
     public String getString( String messageName )
     {
+        String currentLanguage = TrayApp.appConfig.getLocaleLanguage();
+        String currentCountry = TrayApp.appConfig.getLocaleCountry();
+        Locale currentLocale = new Locale(currentLanguage,currentCountry);
+        ResourceBundle messages = getMessageBundle(currentLocale);
 
-        ResourceBundle messages = getMessageBundle();
-
-        String returnMessage = null;
-        if ( messageName.isEmpty() )
+        String returnMessage = messageName;
+        if ( messageName.isEmpty() | messageName == null )
         {
             returnMessage = "messageName not valid";
             return returnMessage;
         } else
         {
-
             if ( messages.containsKey( messageName ) )
             {
                 returnMessage = messages.getString( messageName );
@@ -89,10 +93,9 @@ public class LiveMessagingService
                 {
                     returnMessage = "Message not found";
                 }
-
             } else
             {
-                returnMessage = "Message key " + messageName + " not found.";
+                returnMessage = getDefaultMessageBundle().getString( messageName );
             }
             return returnMessage;
         }

@@ -17,7 +17,7 @@
 <form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
 
 <div>
-	<input type="hidden" id="id" name="id" value="$organisationUnit.id">
+	<input type="hidden" id="id" name="id" value="$organisationUnit.id"/>
 </div>
 
 <table>
@@ -26,25 +26,25 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" maxlength="160" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+		<td><input type="text" id="name" name="name" maxlength="160" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="25" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:25}}"></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="25" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnit.code )" maxlength="25" style="width:20em" class="{validate:{maxlength:25}}"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnit.code )" maxlength="25" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em" class="{validate:{required:true}}"></td>
+		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em" class="{validate:{required:true}}"/></td>
 		<td></td>
 	</tr>	
 
 	<tr #if( $numberOfChildren != 0 ) style="display:none" #end>
 		<td><label for="closedDate">$i18n.getString( "closed_date" ) ($i18n.getString( "format.date.label" ))</label></td>
-		<td><input type="text" id="closedDate" name="closedDate" value="$!format.formatDate( $organisationUnit.closedDate )" style="width:20em"></td>
+		<td><input type="text" id="closedDate" name="closedDate" value="$!format.formatDate( $organisationUnit.closedDate )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="active">$i18n.getString( "registers_date" )</label></td>
@@ -65,11 +65,11 @@
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em" maxlength="255" class="{validate:{maxlength:255,url:true}}"></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em" maxlength="255" class="{validate:{maxlength:255,url:true}}"/></td>
     </tr>
 	<tr>
 		<td></td>
-		<td><input type="submit" value="$i18n.getString( "save" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='organisationUnit.action'" style="width:10em"></td>
+		<td><input type="submit" value="$i18n.getString( "save" )" style="width:10em"/><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='organisationUnit.action'" style="width:10em"/></td>
 	</tr>
 </table>
 

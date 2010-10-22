@@ -42,11 +42,13 @@ function getOrgUnitGroupsReceived(xmlObject)
         var id = orgUnitGroups[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
         var orgUnitGroupName = orgUnitGroups[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
 
-        var option = document.createElement("option");
+        /* var option = document.createElement("option");
         option.value = id;
         option.text = orgUnitGroupName;
         option.title = orgUnitGroupName;
-        orgUnitGroupList.add(option, null);
+        orgUnitGroupList.add(option, null); */
+		
+		$("#orgUnitListCB").append("<option value='"+ id +"' title='" + orgUnitGroupName + "'>" + orgUnitGroupName + "</option>");
     }	
 }
 

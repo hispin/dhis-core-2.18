@@ -88,6 +88,7 @@ function autoSaveDataEntryForm( value )
 </select>
 
 <h4>$i18n.getString( "auto_save_data_entry_form" )</h4>
-<input type="checkbox" #if($autoSave == 'true') checked #end onchange="autoSaveDataEntryForm(this.checked);">
+<input type="checkbox" #if($autoSave == 'true') checked #end onchange="autoSaveDataEntryForm(this.checked);"/>
+
 </form>
 #end

@@ -27,7 +27,10 @@ package org.hisp.dhis.dataadmin.action.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.resourcetable.ResourceTableService;
+import org.hisp.dhis.sqlview.SqlViewService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -38,10 +41,19 @@ import com.opensymphony.xwork2.ActionSupport;
 public class GenerateResourceTableAction
     extends ActionSupport
 {
+    private static final Log log = LogFactory.getLog( GenerateResourceTableAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
+    private SqlViewService sqlViewService;
+
+    public void setSqlViewService( SqlViewService sqlViewService )
+    {
+        this.sqlViewService = sqlViewService;
+    }
+
     private ResourceTableService resourceTableService;
 
     public void setResourceTableService( ResourceTableService resourceTableService )
@@ -58,13 +70,6 @@ public class GenerateResourceTableAction
     public void setOrganisationUnit( boolean organisationUnit )
     {
         this.organisationUnit = organisationUnit;
-    }
-
-    private boolean groupSet;
-
-    public void setGroupSet( boolean groupSet )
-    {
-        this.groupSet = groupSet;
     }
 
     private boolean dataElementGroupSetStructure;
@@ -109,16 +114,15 @@ public class GenerateResourceTableAction
     public String execute() 
         throws Exception
     {
+        sqlViewService.dropAllSqlViewTables();
+        
+        log.info( "Dropped all sql views" );
+        
         if ( organisationUnit )
         {
             resourceTableService.generateOrganisationUnitStructures();
         }
         
-        if ( groupSet )
-        {
-            resourceTableService.generateGroupSetStructures();
-        }
-
         if ( dataElementGroupSetStructure )
         {
             resourceTableService.generateDataElementGroupSetTable();
@@ -143,6 +147,12 @@ public class GenerateResourceTableAction
         {
             resourceTableService.generateCategoryOptionComboNames();
         }
+        
+        log.info( "Generated resource tables" );
+        
+        sqlViewService.createAllViewTables();
+        
+        log.info( "Created all views" );
         
         return SUCCESS;
     }

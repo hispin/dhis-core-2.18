@@ -13,8 +13,6 @@ function removeSurvey( surveyId, surveyName )
 
   if ( result )
   {
-    //window.location.href = 'delSurvey.action?surveyId=' + surveyId;
-    
 	$.post("delSurvey.action",
 		{
 			surveyId : surveyId
@@ -34,11 +32,8 @@ function removeSurveyCompleted( messageElement )
   
     if ( type == 'error' )
    {
-		//document.getElementById( 'message' ).innerHTML = message;
-		//document.getElementById( 'message' ).style.display = 'block';
-		var message = messageElement.firstChild.nodeValue;
-		setFieldValue( 'warningField', message );
-			
+    	var message = messageElement.firstChild.nodeValue;
+		setFieldValue( 'warningField', message );			
 		showWarning();
    }
    else
@@ -268,7 +263,7 @@ function filterByIndicatorGroupCompleted( indicatorGroup )
 
 function showSurveyDetails( surveyId )
 {
-   $.get("getSurvey.action",
+	$.get("getSurvey.action",
 		{
 			surveyId : surveyId
 		},
@@ -280,26 +275,17 @@ function showSurveyDetails( surveyId )
 
 function surveyRecieved( surveyElement )
 {
-  byId('idField').innerHTML = surveyElement.getElementsByTagName( 'id' )[0].firstChild.nodeValue;
-  byId('nameField').innerHTML = surveyElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;
-  byId('indicatorCountField').innerHTML = surveyElement.getElementsByTagName( 'indicatorCount' )[0].firstChild.nodeValue;
-  byId('descriptionField').innerHTML = surveyElement.getElementsByTagName( 'description' )[0].firstChild.nodeValue;
-  var urlOrg = surveyElement.getElementsByTagName( 'url' )[0].firstChild.nodeValue;
  
-  if( urlOrg == null || urlOrg.length <=0 )
-  {
-     urlOrg = 'NONE';
-     byId('urlField').innerHTML = urlOrg;
-  }
-  else
-  {  
-    var occur = urlOrg.match("http://");
-    if( occur == null || occur.length <=0 )
-      byId('urlField').innerHTML = "<a href='http://"+urlOrg+"' target='_blank'>"+urlOrg+"</a>";
-    else
-      byId('urlField').innerHTML = "<a href='"+urlOrg+"' target='_blank'>"+urlOrg+"</a>";
-  }   
-      
-    showDetails();
+  setInnerHTML( 'idField', getElementValue( surveyElement, 'id' ) );
+  setInnerHTML( 'nameField', getElementValue( surveyElement, 'name' ) );
+  setInnerHTML( 'indicatorCountField', getElementValue( surveyElement, 'indicatorCount' ) );
+  
+  var desCription = getElementValue( surveyElement, 'description' );
+  setInnerHTML( 'descriptionField', desCription ? desCription : '[' + i18n_none + ']' );
+  
+  var url = getElementValue( surveyElement, 'url' );
+  setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
+  
+   showDetails();
 }
 

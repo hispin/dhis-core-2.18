@@ -137,18 +137,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
 	</bean>
 	
-	<!-- DataSet -->
-	
-	<bean id="org.hisp.dhis.dataset.action.SetupAssociationsTreeAction"
-		class="org.hisp.dhis.dataset.action.SetupAssociationsTreeAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-	</bean>
+	<!-- DataSet -->	
 	
 	<bean id="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"
 		class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"
@@ -159,53 +148,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.SelectLevelAction"
-		class="org.hisp.dhis.dataset.action.SelectLevelAction" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.UnselectLevelAction"
-		class="org.hisp.dhis.dataset.action.UnselectLevelAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.UnselectAllAction"
-		class="org.hisp.dhis.dataset.action.UnselectAllAction" scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.SelectOrganisationUnitGroupAction"
-		class="org.hisp.dhis.dataset.action.SelectOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.UnselectOrganisationUnitGroupAction"
-		class="org.hisp.dhis.dataset.action.UnselectOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-	</bean>
+	</bean>		
 	
 	<bean id="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"
 		class="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"
@@ -345,13 +288,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataset.action.GetDataSetAction" scope="prototype">
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+		</property>		
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 		</property>
 	</bean>
 	
@@ -415,6 +354,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction"
 		class="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction"
 		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
 		<property name="dataEntryFormService">
 			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
 		</property>

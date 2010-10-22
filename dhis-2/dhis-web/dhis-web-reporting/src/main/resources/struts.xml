@@ -43,8 +43,9 @@
     </action>
     
     <action name="validateDocument" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-reporting/responseInput.vm</result>
+      <result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -54,12 +55,7 @@
     </action>
     
     <action name="loadDocument" class="org.hisp.dhis.reporting.document.action.LoadDocumentFromFileSystemAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/file</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
-        <param name="bufferSize">10240</param>
-      </result>
+      <result name="success" type="outputStreamResult"/>
     </action>
     
     <!-- Chart -->
@@ -333,8 +329,15 @@
         <param name="contentDisposition">filename="DataCompletenessReport.pdf"</param>
         <param name="bufferSize">10240</param>        
       </result>
+	  <result name="error" type="redirect">dataCompletenessPDFError.action</result>
     </action>
     
+	<action name="dataCompletenessPDFError" class="org.hisp.dhis.reporting.action.NoAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-commons/oust/selectedOrgunitError.vm</param>
+		<param name="menu">/dhis-web-reporting/menu.vm</param>
+	</action>
+	
     <action name="getDataCompletenessWorkbook" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessWorkbookAction">
       <result name="success" type="stream">
         <param name="contentType">application/vnd.ms-excel</param>

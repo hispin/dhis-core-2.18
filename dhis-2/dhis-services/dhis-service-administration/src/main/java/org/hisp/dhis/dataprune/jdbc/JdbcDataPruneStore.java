@@ -37,14 +37,11 @@ import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Quang Nguyen
  * @version Apr 6, 2010 5:48:15 PM
  */
-
-@Component
 public class JdbcDataPruneStore implements DataPruneStore
 {
     private static final Log log = LogFactory.getLog( JdbcDataPruneStore.class );

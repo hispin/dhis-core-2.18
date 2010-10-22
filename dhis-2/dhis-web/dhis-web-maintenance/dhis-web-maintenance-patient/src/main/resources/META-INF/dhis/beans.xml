@@ -610,8 +610,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.patient.action.program.SetupAssociationsTreeAction"
 		class="org.hisp.dhis.patient.action.program.SetupAssociationsTreeAction"
 		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 	
@@ -622,45 +620,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.program.SelectLevelAction"
-		class="org.hisp.dhis.patient.action.program.SelectLevelAction" scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.program.UnselectLevelAction"
-		class="org.hisp.dhis.patient.action.program.UnselectLevelAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.program.UnselectAllAction"
-		class="org.hisp.dhis.patient.action.program.UnselectAllAction" scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.program.SelectOrganisationUnitGroupAction"
-		class="org.hisp.dhis.patient.action.program.SelectOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.program.UnselectOrganisationUnitGroupAction"
-		class="org.hisp.dhis.patient.action.program.UnselectOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 	
 	<!-- Program_ValidationCriteria Association  -->

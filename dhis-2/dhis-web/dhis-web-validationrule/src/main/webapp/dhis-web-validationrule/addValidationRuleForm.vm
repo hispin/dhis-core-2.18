@@ -6,34 +6,21 @@
 	jQuery(document).ready(
 			function()
 			{
-				disabledPeriodTypeField();
-				jQuery("#addValidationRuleForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddValidationRule();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
 				jQuery("#name").focus();
+				
+				// validation form
+				validation( 'addValidationRuleForm', function( form ){ 			
+					form.submit();			
+				});
+				
+				checkValueIsExist( "name", "validateValidationRule.action");
 			}
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$encoder.htmlEncode( $i18n.getString( "create_new_validation_rule" ) )</h3>
 
-<form id="addValidationRuleForm" action="addValidationRule.action" method="post" >
-
-<div>
-	<input type="hidden" id="leftSideDescription" name="leftSideDescription">
-	<input type="hidden" id="leftSideExpression" name="leftSideExpression">
-	<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
-	<input type="hidden" id="rightSideDescription" name="rightSideDescription">
-	<input type="hidden" id="rightSideExpression" name="rightSideExpression">
-	<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">
-</div>
+<form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="enable('periodTypeName');">
 
 <table>
 	<tr>
@@ -60,8 +47,8 @@
 	<tr>
 		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="operator" name="operator" style="width:20em">
-				<option value="none">[ $i18n.getString( "select_operator" ) ]</option>
+			<select id="operator" name="operator" style="width:20em" class="{validate:{required:true}}">
+				<option value="">[ $i18n.getString( "select_operator" ) ]</option>
 				<option value="equal_to">$encoder.htmlEncode( $i18n.getString( "equal_to" ) )</option>
 				<option value="not_equal_to">$encoder.htmlEncode( $i18n.getString( "not_equal_to" ) )</option>
 				<option value="greater_than">$encoder.htmlEncode( $i18n.getString( "greater_than" ) )</option>
@@ -73,8 +60,15 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'edit_left_side' )" style="width:10em" onclick="showEditLeftSideExpressionForm();"><input 
-		           type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="showEditRightSideExpressionForm();"></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'edit_left_side' )" style="width:10em" onclick="showEditLeftSideExpressionForm();">
+				<input type="hidden" id="leftSideDescription" name="leftSideDescription">
+				<input type="hidden" id="leftSideExpression" name="leftSideExpression" class="{validate:{required:true}}">
+				<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
+		    <input type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="showEditRightSideExpressionForm();"></td>
+				<input type="hidden" id="rightSideDescription" name="rightSideDescription">
+				<input type="hidden" id="rightSideExpression" name="rightSideExpression" class="{validate:{required:true}}">
+				<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">
 	</tr>
 	<tr>
 		<td></td>
@@ -83,14 +77,11 @@
 	</tr>
 </table>
 
+<div id="dynamicContent"></div>
+
 </form>
 
-<span id="message"></span>
-
-<script type="text/javascript">
-	
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-	
+<script>
+	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
+	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
 </script>

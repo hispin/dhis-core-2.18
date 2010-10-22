@@ -246,17 +246,16 @@ public class HibernateDataElementStore
 
         return query.list();
     }
-
-    public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant )
+    
+    public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
     {
-        String sql = "update DataElement d set d.zeroIsSignificant=:zeroIsSignificant where d.id in (:ids)";
-
-        Query query = sessionFactory.getCurrentSession().createQuery( sql );
-
-        query.setParameter( "zeroIsSignificant", zeroIsSignificant );
-        query.setParameterList( "ids", dataElementIds );
-
-        query.executeUpdate();
+        String sql = "update dataelement d set d.zeroissignificant=false";
+        
+        statementManager.getHolder().executeUpdate( sql );
+        
+        sql = "update dataelement d set d.zeroissignificant=true where d.dataelementid in (" + TextUtils.getCommaDelimitedString( dataElementIds ) + ")";
+        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     @SuppressWarnings( "unchecked" )

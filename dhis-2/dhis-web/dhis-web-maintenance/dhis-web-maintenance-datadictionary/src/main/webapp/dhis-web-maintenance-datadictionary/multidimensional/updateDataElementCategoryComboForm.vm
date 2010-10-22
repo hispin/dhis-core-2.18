@@ -13,7 +13,7 @@
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>
 
 <form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" >
-  <input type="hidden" id="id" name="id" value="$dataElementCategoryCombo.id">
+  <input type="hidden" id="id" name="id" value="$dataElementCategoryCombo.id"/>
   
   <table id="detailsList">
     <thead>
@@ -23,8 +23,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>
@@ -56,10 +56,10 @@
         </td>
        </td>
 		 <td valign="top" align="center">		 
-          <input type="button" value="&gt;" onclick="move( 'availableList' )"><br>	
-		  <input type="button" value="&lt;" onclick="move ( 'selectedList' )">	<br>	<br>  	
-		  <a href="#" onclick="moveUp('selectedList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
-		  <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""></a>		  
+          <input type="button" value="&gt;" onclick="move( 'availableList' )"/><br/>	
+		  <input type="button" value="&lt;" onclick="move ( 'selectedList' )"/><br/><br/>
+		  <a href="#" onclick="moveUp('selectedList')"><img src="../images/move_up.png" border="0" alt=""/></a><br/><br/>
+		  <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""/></a>		  
         </td> 
 		<td>
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em">
@@ -79,7 +79,7 @@
     </tbody>
   </table>
 
-<p><input type="submit" name="update" value="$i18n.getString( "update" )" style="width:10em"><input 
-          type="button" name="cancel" onclick="window.location.href='categoryCombo.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
+<p><input type="submit" name="update" value="$i18n.getString( 'update' )" style="width:10em"/>
+<input type="button" name="cancel" onclick="window.location.href='categoryCombo.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/></p>
        
 </form>

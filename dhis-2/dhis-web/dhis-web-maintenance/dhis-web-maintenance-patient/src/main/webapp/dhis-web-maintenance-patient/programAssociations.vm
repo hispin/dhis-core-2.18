@@ -10,45 +10,10 @@
   <table id="selectionTable">
 	<tr>
 	  <td>
-		<input type="button" value="$i18n.getString( "select_all_at_level" )" onclick="selectAllAtLevel()" style="width:12em">
-		<select id="levelList" name="levelList" style="width:12em">
-			#foreach( $lev in $levels )
-				<option value="$lev.level" #if ( $level == $lev.level )selected="selected"#end>$encoder.htmlEncode( $lev.name )</option>
-			#end
-		</select>
-		<input type="button" value="$i18n.getString( "unselect_all_at_level" )" onclick="unselectAllAtLevel()" style="width:12em">
-		<input type="button" value="$i18n.getString( "unselect_all" )" onclick="unselectAll()" style="width:12em">        
+		#organisationUnitSelectionTree( false, true, false )
 	  </td>
-	</tr>
-	<tr>
-	  <td>
-	  	<input type="button" value="$i18n.getString( "select_all_in_group" )" onclick="selectGroup()" style="width:12em">
-	  	<select id="groupList" name="groupList" style="width:12em">
-	  		#foreach ( $group in $groups )
-	  			<option value="$group.id" #if ( $organisationUnitGroupId == $group.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
-		  	#end
-	  	</select>
-	  	<input type="button" value="$i18n.getString( "unselect_all_in_group" )" onclick="unselectGroup()" style="width:12em">
-  	  </td>
-	</tr>
-    <tr>
-      <td>
-        <div id="selectionTree" style="width:50em;height:30em;overflow:auto;border:1px solid #cccccc"></div>
-
-        <script type="text/javascript">
-
-          selectionTreeSelection.setMultipleSelectionAllowed( true );
-          selectionTreeSelection.setOnSelectFunction( treeClicked );
-          selectionTreeSelection.setListenerFunction( selectCompleted );
-		  //selectionTree.clearSelectedOrganisationUnits();
-          selectionTree.buildSelectionTree();
-
-        </script>
-        
-      </td>
     </tr>
-
-    <tr>
+	<tr>
       <td>
         <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em"><input type="button"
             onclick="window.location.href='program.action'" value="$i18n.getString( "cancel" )" style="width:10em">

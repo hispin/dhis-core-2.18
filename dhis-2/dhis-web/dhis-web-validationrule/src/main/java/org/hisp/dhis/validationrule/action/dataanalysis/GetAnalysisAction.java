@@ -147,7 +147,7 @@ public class GetAnalysisAction
     {
         this.standardDeviation = standardDeviation;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -171,7 +171,7 @@ public class GetAnalysisAction
         
         if ( fromDate != null && toDate != null && dataSets != null && organisationUnit != null )
         {
-            periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) ); //TODO improve
+            periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
 
             for ( String id : dataSets )
             {
@@ -185,7 +185,7 @@ public class GetAnalysisAction
         }
         
         DataAnalysisService service = serviceProvider.provide( key );
-        
+
         if ( service != null ) // Follow-up analysis has no input params
         {      
             dataValues = service.analyse( unit, dataElements, periods, standardDeviation );

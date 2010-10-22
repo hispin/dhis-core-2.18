@@ -3,12 +3,12 @@
 
 <form action="moveOrganisationUnit.action" method="post">
 <div style="inline">
-<input type="hidden" id="organisationUnitToMoveId" name="organisationUnitToMoveId">
-<input type="hidden" id="newParentOrganisationUnitId" name="newParentOrganisationUnitId">
+<input type="hidden" id="organisationUnitToMoveId" name="organisationUnitToMoveId"/>
+<input type="hidden" id="newParentOrganisationUnitId" name="newParentOrganisationUnitId"/>
 </div>
 <table>
-	<col style="width:2em">
-	<col>
+	<col style="width:2em"/>
+	<col/>
 	<tr>
 		<td rowspan="3" id="step1" style="text-align:center;background-color:#ccffcc">1.</td>
 		<th>$i18n.getString( "select_an_org_unit_to_move" )</th>
@@ -17,7 +17,7 @@
 		<td><span id="toMoveNameField">[$i18n.getString( "not_selected" )]</span></td>
 	</tr>
 	<tr>
-		<td><input id="confirmOrganisationUnitToMoveButton" type="button" value="$i18n.getString( "confirm" )" onclick="organisationUnitToMoveConfirmed()" style="width:10em" disabled="disabled"></td>
+		<td><input id="confirmOrganisationUnitToMoveButton" type="button" value="$i18n.getString( 'confirm' )" onclick="organisationUnitToMoveConfirmed()" style="width:10em" disabled="disabled"/></td>
 	</tr>
 	<tr>
 		<td colspan="2">&nbsp;</td>
@@ -30,7 +30,7 @@
 		<td><span id="newParentNameField">[$i18n.getString( "not_selected_moved_to_root_position" )]</span></td>
 	</tr>
 	<tr>
-		<td><input id="confirmNewParentOrganisationUnitButton" type="button" value="$i18n.getString( "confirm" )" onclick="newParentOrganisationUnitConfirmed()" style="width:10em" disabled="disabled"></td>
+		<td><input id="confirmNewParentOrganisationUnitButton" type="button" value="$i18n.getString( 'confirm' )" onclick="newParentOrganisationUnitConfirmed()" style="width:10em" disabled="disabled"/></td>
 	</tr>
 	<tr>
 		<td colspan="2">&nbsp;</td>
@@ -40,11 +40,11 @@
 		<th>$i18n.getString( "move" )</th>
 	</tr>
 	<tr>
-		<td><input id="submitButton" type="submit" value="$i18n.getString( "move" )" style="width:10em" disabled="disabled"><input type="button" value="$i18n.getString( "reset" )" style="width:10em" onclick="window.location.href='hierarchyOperations.action'"></td>
+		<td><input id="submitButton" type="submit" value="$i18n.getString( 'move' )" style="width:10em" disabled="disabled"/><input type="button" value="$i18n.getString( 'reset' )" style="width:10em" onclick="window.location.href='hierarchyOperations.action'"/></td>
 	</tr>
 </table>
 
-<p><span id="message"></span></p>
+<p><span id="message"/></p>
 
 </form>
 

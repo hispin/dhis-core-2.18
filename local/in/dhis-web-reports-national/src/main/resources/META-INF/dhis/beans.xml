@@ -208,29 +208,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 		<property name="statementManager" ref="statementManager"/>
 		
-		<property name="dataElementCategoryOptionComboService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService">
-		</property>
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
 		</property>
 		<!--	<property name="reportService">
 		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
@@ -475,10 +457,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		
 		<property name="statementManager" ref="statementManager"/>
-		
-		<property name="dataElementCategoryOptionComboService">
-		<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
@@ -486,22 +464,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 		
-		<property name="dataElementService">
-		<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property> 
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		
-		<property name="dataValueService">
-		<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
 		<!-- added report service 24/08/2010-->
 		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
 		</property>
@@ -1735,11 +1697,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             </property>
     </bean>
     
-    <bean id="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction"
-        class="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction" scope="prototype">
+		<bean id="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction"
+			class="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction" scope="prototype">
         
-		<property name="reportService">
-            <ref bean="statementManager"/></property>
+		
+		
+		
+		<!--<property name="reportService">
+            <ref bean="statementManager"/></property>-->
+			
+			<property name="statementManager" ref="statementManager">
+        </property>
+		
+			<property name="reportService">
+				<ref bean="org.hisp.dhis.reports.ReportService"/>
+			</property>	
 		
             <property name="dataSetService">
                  <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -1759,7 +1731,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <property name="dataValueService">
                  <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
             </property>
-		<property name="currentUserService">
+			<property name="currentUserService">
                  <ref bean="org.hisp.dhis.user.CurrentUserService"/>
             </property>
         

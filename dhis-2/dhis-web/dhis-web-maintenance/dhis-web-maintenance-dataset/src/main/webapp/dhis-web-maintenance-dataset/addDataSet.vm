@@ -18,8 +18,8 @@
 
 <form id="addDataSetForm" name="addDataSetForm" action="addDataSet.action" method="post" >
   <table id="detailsList">
-    <col> ## Labels
-    <col> ## Input
+    <col/> ## Labels
+    <col/> ## Input
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "dataset_details" )</th>
@@ -29,16 +29,16 @@
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" 
-			class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/>
+			class="{validate:{required:true,minlength:4,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/>
 		</td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="20" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/></td>
+        <td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="20" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" style="width:20em" class="{validate:{rangelength:[4,40],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+        <td><input type="text" id="code" name="code" style="width:20em" maxlength="40" class="{validate:{minlength:4,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -63,9 +63,9 @@
   </table>
 	<br/>&nbsp;
   <table id="dataElementSelectionArea">
-    <col> ## Available DataElements
-    <col> ## Filter
-    <col> ## Selected DataElements
+    <col/> ## Available DataElements
+    <col/> ## Filter
+    <col/> ## Selected DataElements
     <thead>
       <tr>
         <th>$i18n.getString( "available_data_elements" )</th>
@@ -89,9 +89,9 @@
       </tr>
       
       <tr>
-      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:25em"></td>
+      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:25em"/></td>
       	<td>[$i18n.getString( "name" )]</td>
-      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:25em"></td>
+      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:25em"/></td>
       </tr>
       
       <tr>
@@ -127,4 +127,4 @@
   </table>
 </form>
 
-<span id="message"></span>
+<span id="message"/>

@@ -67,14 +67,17 @@ public interface SqlViewService
 
     boolean isViewTableExists( String viewTableName );
 
+    boolean createAllViewTables();
+    
     boolean createViewTable( SqlView sqlViewInstance );
 
-    void dropViewTable( Object object );
+    void dropViewTable( String viewName );
+    
+    void dropAllSqlViewTables();
 
     SqlViewTable getDataSqlViewTable( String viewTableName );
 
     String testSqlGrammar( String sql );
 
     String setUpJoinQuery( Collection<String> tableList );
-
 }
