@@ -224,6 +224,11 @@ public class OrganisationUnit
         
         return FEATURETYPE_NONE;
     }
+    
+    public String getValidCoordinates()
+    {
+        return coordinates != null && !coordinates.isEmpty() ? coordinates : "[]";
+    }
         
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

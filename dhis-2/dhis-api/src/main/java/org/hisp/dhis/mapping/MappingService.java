@@ -381,14 +381,14 @@ public interface MappingService
 
     int addMapView( String name, String mapValueType, int indicatorGroupId, int indicatorId, int dataElementGroupId,
         int dataElementId, String periodTypeName, int periodId, String mapSourceType, String mapSource,
-        String mapLegendType, int method, int classes, String colorLow, String colorHigh, int mapLegendSetId,
+        String mapLegendType, int method, int classes, String bounds, String colorLow, String colorHigh, int mapLegendSetId,
         String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, String mapValueType, int indicatorGroupId, int indicatorId,
         int dataElementGroupId, int dataElementId, String periodTypeName, int periodId, String mapSource,
-        String mapLegendType, int method, int classes, String colorLow, String colorHigh, int mapLegendSetId,
+        String mapLegendType, int method, int classes, String bounds, String colorLow, String colorHigh, int mapLegendSetId,
         String longitude, String latitude, int zoom );
 
     void deleteMapView( MapView view );

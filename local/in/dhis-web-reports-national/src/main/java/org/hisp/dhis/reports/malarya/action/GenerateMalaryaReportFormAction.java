@@ -27,13 +27,12 @@
 package org.hisp.dhis.reports.malarya.action;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,9 +65,9 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    private List<Report> reportList;
+    private List<Report_in> reportList;
 
-    public List<Report> getReportList()
+    public List<Report_in> getReportList()
     {
         return reportList;
     }
@@ -84,7 +83,7 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
     {
         raFolderName = reportService.getRAFolderName();
 
-        reportList = new ArrayList<Report>();
+       // reportList = new ArrayList<Report>();
 
         getSelectedReportList();
 
@@ -163,8 +162,8 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
  
-                    Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                    reportList.add( reportObj );                   
+                   // Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
+                   // reportList.add( reportObj );                   
                 }
             }// end of for loop with s var
         }// try block end

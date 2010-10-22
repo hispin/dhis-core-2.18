@@ -84,7 +84,7 @@ public class SystemSettingInterceptor
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        Map<String, Object> map = new HashMap<String, Object>( 2 );
+        Map<String, Object> map = new HashMap<String, Object>();
         
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
         map.put( KEY_MAX_NUMBER_OF_ATTEMPTS, systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, DEFAULT_MAX_NUMBER_OF_ATTEMPTS ) );

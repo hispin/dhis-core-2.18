@@ -26,54 +26,59 @@
 				javascript/reportManagement.js,javascript/filterTable.js</param>
 		</action>
 		
-        <!-- Report Management Addition Start-->
-        <action name="addReportForm"
-            class="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/addReportForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">javascript/reportManagement.js</param>
-        </action>
-        <action name="addReport"
-            class="org.hisp.dhis.reports.reportmanagement.action.AddReportAction">
-            <result name="success" type="redirect">reportManagement.action</result>
-        </action>
-        <!-- Report Management Addition End-->
+		<!-- Report Management Addition Start-->
+		<action name="addReportForm"
+			class="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/addReportForm.vm</param>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="javascripts">javascript/reportManagement.js</param>
+		</action>
+		<action name="addReport"
+			class="org.hisp.dhis.reports.reportmanagement.action.AddReportAction">
+			<result name="success" type="redirect">
+				reportManagement.action</result>
+		</action>
+		<!-- Report Management Addition End-->
 		
-        <!-- Report Editing/Updation Start-->
-        <action name="editReportForm"
-            class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/editReportForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">javascript/reportManagement.js</param>
-        </action>
-        <action name="editReport"
-            class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction">
-            <result name="success" type="redirect">reportManagement.action</result>
-        </action>
-		  <!-- Report Editing/Updation End-->
-
+		<!-- Report Editing/Updation Start-->
+		<action name="editReportForm"
+			class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/editReportForm.vm</param>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="javascripts">javascript/reportManagement.js</param>
+		</action>
+		<action name="editReport"
+			class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction">
+			<result name="success" type="redirect">
+				reportManagement.action</result>
+		</action>
+		<!-- Report Editing/Updation End-->
+		
+		
 		<!-- Report Management Validation during Addition or Updation of Report Start-->
-        <action name="validateReport"
-            class="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseReportManagementSuccess.vm</result>
-            <result name="input" type="velocity-xml">
-                /dhis-web-reports/responseReportManagementInput.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>		
-        <!-- Report Management Validation during Addition or Updation of Report End-->	
-
-        <!-- Get Report details Start-->
-        
-        <action name="getReport"
-            class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
-            <result name="success" type="velocity-xml">/dhis-web-reports/responseReportManagementObject.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>		
-       <!-- Get Report details end -->	
-										
+		<action name="validateReport"
+			class="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-reports/responseReportManagementSuccess.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-reports/responseReportManagementInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<!-- Report Management Validation during Addition or Updation of Report End-->
+		
+		<!-- Get Report details Start-->
+		
+		<action name="getReport"
+			class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-reports/responseReportManagementObject.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		<!-- Get Report details end -->
+		
 		<!-- Report Association start -->
 		
 		<action name="defineReportAssociationsForm"
@@ -322,24 +327,22 @@
 			
 		</action>
 		
-		<!-- Cumulative Routine Reports -->
-		<action name="cumulativeReportAnalyser"
-			class="org.hisp.dhis.reports.routine.cumulative.action.GenerateCumulativeRoutineReportAnalyserFormAction">
+		<!--Aggregation Report 25/08/2010 start-->
+		<action name="aggregationReportAnalyser"
+			class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-reports/cumulativeRoutineReportAnalysisFront.vm</param>
+				/dhis-web-reports/aggregationReportAnalysisFront.vm</param>
 			<param name="menu">
-				/dhis-web-reports/menuWithTreeForCumRoutineReport.vm</param>
+				/dhis-web-reports/menuWithTreeForAggregationReport.vm</param>
 			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js
-				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
 		
-		<action name="generateCumulativeRoutineReport"
-			class="org.hisp.dhis.reports.routine.cumulative.action.GenerateCumulativeRoutineReportAnalyserResultAction">
+		<action name="generateAggregationReport"
+			class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -347,6 +350,8 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
+		
+		<!-- Aggregation Report 25/08/2010 end -->
 		
 		<!-- Feedback Reports -->
 		<action name="feedbackReportAnalyser"
@@ -439,7 +444,7 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-		<!-- Linelisting Reports -->
+		<!-- Linelisting Reports 26/08/2010-->
 		<action name="linelistingReportAnalyser"
 			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserFormAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -463,43 +468,22 @@
 			</result>
 		</action>
 		
-		<!-- Progress Reports OLD
-		<action name="progressReportAnalyser"
-		class="org.hisp.dhis.reports.progress.action.GenerateProgressReportAnalyserFormAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-reports/progressReportAnalysisFront.vm</param>			
-		<param name="menu">/dhis-web-reports/menuWithTreeForProgressReport.vm</param>
-		<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-		<param name="stylesheets">css/StylesForTags.css</param>
-		<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		
-		<action name="generateProgressReport"
-		class="org.hisp.dhis.reports.progress.action.GenerateProgressAnalyserResultAction">
-		<result name="success" type="stream">
-		<param name="contentType">application/vnd.ms-excel</param>
-		<param name="inputName">inputStream</param>
-		<param name="contentDisposition">filename="${fileName}"</param>
-		<param name="bufferSize">1024</param>
-		</result>
-		</action>-->
-		
-		<!-- Progress Reports -->
-		<action name="progressReportAnalyser"
-			class="org.hisp.dhis.reports.progress.action.GenerateProgressReportAnalyserFormAction">
+		<!-- Progress Reports 26/08/2010-->
+		<action name="periodWiseprogressReportAnalyser"
+			class="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressReportAnalyserFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-reports/progressReportAnalysisFront.vm</param>
+				/dhis-web-reports/periodWiseprogressReportAnalysisFront.vm</param>
 			<param name="menu">
-				/dhis-web-reports/menuWithTreeForProgressReport.vm</param>
+				/dhis-web-reports/menuWithTreeForPeriodWiseProgressReport.vm</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
 		
-		<action name="generateProgressReport"
-			class="org.hisp.dhis.reports.progress.action.GenerateProgressAnalyserResultAction">
+		<action name="generatePeriodWiseProgressReport"
+			class="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressAnalyserResultAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -508,7 +492,7 @@
 			</result>
 		</action>
 		
-		<!-- Oruunit wise Progress Reports -->
+		<!-- Oruunit wise Progress Reports 27/08/2010-->
 		<action name="ouWiseProgressReportAnalyser"
 			class="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -517,9 +501,7 @@
 			<param name="menu">
 				/dhis-web-reports/menuWithTreeForOuWiseProgress.vm</param>
 			<param name="javascripts">
-				../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/lists.js,javascript/reports.js,javascript/hashtable.js
-				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+				../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/lists.js,javascript/reports.js,javascript/hashtable.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>

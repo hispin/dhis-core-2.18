@@ -40,6 +40,8 @@ public interface ModuleManager
 
     Module getModuleByNamespace( String namespace );
 
+    boolean moduleExists( String name );
+    
     List<Module> getMenuModules();
     
     List<Module> getMaintenanceMenuModules();

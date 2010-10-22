@@ -161,19 +161,6 @@ public class ValidateOrganisationUnitAction
 
             return INPUT;
         }
-        else
-        {
-            shortName = shortName.trim();
-
-            OrganisationUnit match = organisationUnitService.getOrganisationUnitByShortName( shortName );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "short_name_in_use" );
-
-                return INPUT;
-            }
-        }
 
         Date oDate;
 

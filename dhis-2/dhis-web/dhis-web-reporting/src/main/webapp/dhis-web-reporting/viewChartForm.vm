@@ -8,7 +8,8 @@
 				  <tr>
                     <td align="right">
                     	<input type="button" value="$i18n.getString( 'add_period_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=period'"><br>
-                    	<input type="button" value="$i18n.getString( 'add_organisation_unit_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=organisationUnit'">
+                    	<input type="button" value="$i18n.getString( 'add_organisation_unit_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=organisationUnit'"><br>
+						<input type="button" value="$i18n.getString( 'add_indicator_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=indicator'">
                     </td>
                 </tr>
 			</table>

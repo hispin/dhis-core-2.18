@@ -118,9 +118,9 @@
                 <td>
                         <input type="submit" name="generate" value='Generate Report'/>
                         <input type="hidden" name="ouIDTB" id="ouIDTB">
-                        <input type="hidden" name="ouLevelTB" id="ouLevelTB">
+      <!--              <input type="hidden" name="ouLevelTB" id="ouLevelTB">
                         <input type="hidden" name="reportModelTB" id="reportModelTB">
-                        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
+                        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB"> -->
                     </td>
                 </tr>
             </table>

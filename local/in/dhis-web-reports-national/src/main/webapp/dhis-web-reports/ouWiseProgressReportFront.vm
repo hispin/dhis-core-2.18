@@ -39,8 +39,8 @@
 				else if(startDateValue > endDateValue) {alert("Starte Date is Greaterthan End Date"); return false;}
 				else if(orgunitIdValue == null || orgunitIdValue == "") {alert("Please Select OrganisationUnit"); return false;}
 
-				document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
-				document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+				//document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
+				//document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
                 document.forms['reportForm'].submit();
 			    //return true;
 			}
@@ -105,8 +105,12 @@
 						<img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
 					</td>
                 </tr>
-				<tr>
-                <td>&nbsp;</td>
+			<tr>
+                <td>
+                    <select id="periodTypeId" name="periodTypeId" style="display:none">
+                        <option value="$periodTypeName">$periodTypeName</option>
+                    </select>
+                </td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
@@ -119,8 +123,11 @@
                         <input type="submit" name="generate" value='Generate Report'/>
                         <input type="hidden" name="ouIDTB" id="ouIDTB">
                         <input type="hidden" name="ouLevelTB" id="ouLevelTB">
-                        <input type="hidden" name="reportModelTB" id="reportModelTB">
-                        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
+                        <input type="hidden" name="autogen" id="autogen" value="0" >
+                        <input type="hidden"  name="periodTypeId" id="periodTypeId" value="$periodTypeName"  >
+                   <!-- <input type="hidden" name="reportModelTB" id="reportModelTB">
+                        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">-->
+                        <input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName">
                     </td>
                 </tr>
             </table>

@@ -115,11 +115,15 @@ function SelectionTree()
 {
     this.clearSelectedOrganisationUnits = function()
     {
-        var request = new Request();
-        request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( clearSelectedOrgUnitsCompleted );
-		request.send( selectionTreePath + 'clearSelectedOrganisationUnits.action' );
-
+    	$.ajax({ 
+    		"url" : selectionTreePath + "clearSelectedOrganisationUnits.action",
+    		async : false,
+			dataType :"xml",
+    		"success" : function( data )
+    	   	{
+    			clearSelectedOrgUnitsCompleted( data );
+    	   	} 
+    	});
     };
 
     this.toggle = function( unitId )
@@ -348,11 +352,11 @@ function SelectionTree()
 	{
 		if ( xmlObject != null )
 		{
-			var type = xmlObject.getAttribute( 'type' );
+			var type = xmlObject.documentElement.attributes.getNamedItem("type").nodeValue;
 			
 			if ( type == 'error' )
 			{
-				alert( xmlObject.firstChild.nodeValue );
+				alert( xmlObject.documentElement.childNodes[0].nodeValue );
 			}
 		}		
 	}

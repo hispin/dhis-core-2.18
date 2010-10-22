@@ -746,7 +746,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</entry>
 				<entry key="shortName">
 					<map>
-						<entry key="unique" value="true" />
+						<entry key="unique" value="false" />
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />

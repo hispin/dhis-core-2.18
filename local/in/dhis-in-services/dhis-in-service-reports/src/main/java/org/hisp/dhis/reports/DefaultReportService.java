@@ -8,20 +8,30 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +45,7 @@ import org.xml.sax.SAXParseException;
 public class DefaultReportService
     implements ReportService
 {
-
+    private static final String NULL_REPLACEMENT = "0";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -74,7 +84,34 @@ public class DefaultReportService
     {
         this.dataSetService = dataSetService;
     }
+    // added services 28/08/2010
+    private DataElementService dataElementService;
 
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private DataElementCategoryService dataElementCategoryOptionComboService;
+    
+    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
+    
+    private AggregationService aggregationService;
+
+    public void setAggregationService( AggregationService aggregationService )
+    {
+        this.aggregationService = aggregationService;
+    }
+    
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
     // -------------------------------------------------------------------------
     // Report_in
     // -------------------------------------------------------------------------
@@ -145,6 +182,23 @@ public class DefaultReportService
     {
         return reportStore.getReportsByPeriodSourceAndReportType( periodType, source, reportType );
     }
+
+    
+    // -------------------------------------------------------------------------
+    // for Report Result Action input/otput
+    // -------------------------------------------------------------------------
+/*    
+    private List<String> serviceType;
+    private List<String> deCodeType;
+    
+    serviceType = new ArrayList<String>();
+    deCodeType = new ArrayList<String>();
+    
+    
+*/   
+    
+    
+   // private String reportModelTB;
 
     // -------------------------------------------------------------------------
     // Support Methods Defination
@@ -486,5 +540,594 @@ public class DefaultReportService
         return null;
 
     } // getDataElementPeriodType end
+    
+// // getDECodes Function  
 
+/*
+    public List<String> getDECodes( String fileName )
+    {
+        List<String> deCodes = new ArrayList<String>();
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
+            + File.separator + fileName;
+        try
+        {
+            String newpath = System.getenv( "DHIS2_HOME" );
+            if ( newpath != null )
+            {
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
+            }
+        }
+        catch ( NullPointerException npe )
+        {
+            // do nothing, but we might be using this somewhere without
+            // USER_HOME set, which will throw a NPE
+        }
+
+        try
+        {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse( new File( path ) );
+            if ( doc == null )
+            {
+                // System.out.println( "There is no DECodes related XML file in
+                // the user home" );
+                return null;
+            }
+
+            NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
+            int totalDEcodes = listOfDECodes.getLength();
+
+            for ( int s = 0; s < totalDEcodes; s++ )
+            {
+                Element deCodeElement = (Element) listOfDECodes.item( s );
+                NodeList textDECodeList = deCodeElement.getChildNodes();
+                deCodes.add( ((Node) textDECodeList.item( 0 )).getNodeValue().trim() );
+                serviceType.add( deCodeElement.getAttribute( "stype" ) );
+                deCodeType.add( deCodeElement.getAttribute( "type" ) );
+                sheetList.add( new Integer( deCodeElement.getAttribute( "sheetno" ) ) );
+                rowList.add( new Integer( deCodeElement.getAttribute( "rowno" ) ) );
+                colList.add( new Integer( deCodeElement.getAttribute( "colno" ) ) );
+
+            }// end of for loop with s var
+        }// try block end
+        catch ( SAXParseException err )
+        {
+            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
+            System.out.println( " " + err.getMessage() );
+        }
+        catch ( SAXException e )
+        {
+            Exception x = e.getException();
+            ((x == null) ? e : x).printStackTrace();
+        }
+        catch ( Throwable t )
+        {
+            t.printStackTrace();
+        }
+        return deCodes;
+    }// getDECodes end
+*/    
+    // functoin getResultDataValue start
+    public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
+    {
+        int deFlag1 = 0;
+//      int deFlag2 = 0;
+        int isAggregated = 0;
+        isAggregated = 0;
+
+        try
+        {
+            // 6b1b7b5b7b5b7
+            // System.out.println( "expression : " + formula + " ***** " +
+            // String.valueOf( startDate ) + " **** "
+            // + String.valueOf( endDate ) );
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int dataElementId = Integer.parseInt( replaceString );
+                int optionComboId = Integer.parseInt( optionComboIdStr );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( dataElement == null || optionCombo == null )
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
+                {
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                        startDate, endDate, organisationUnit );
+                    if ( aggregatedValue == null )
+                    {
+                        replaceString = NULL_REPLACEMENT;
+                        //deFlag2 = 0;
+                    }
+                    else
+                    {
+                        replaceString = String.valueOf( aggregatedValue );
+
+                       // deFlag2 = 1;
+
+                        isAggregated = 0;
+                    }
+
+                }
+                else
+                {
+                    deFlag1 = 1;
+                    //deFlag2 = 0;
+                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
+                        dePeriodType, startDate, endDate ) );
+                    Period tempPeriod = new Period();
+                    if ( periodList == null || periodList.isEmpty() )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+                    else
+                    {
+                        tempPeriod = (Period) periodList.get( 0 );
+                    }
+
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
+                        optionCombo );
+
+                    if ( dataValue != null )
+                    {
+                        // Works for both text and boolean data types
+
+                        replaceString = dataValue.getValue();
+                    }
+                    else
+                    {
+                        replaceString = "";
+                    }
+
+                    if ( replaceString == null )
+                    {
+                        replaceString = "";
+                    }
+                }
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+
+            if ( deFlag1 == 0 )
+            {
+
+                double d = 0.0;
+                try
+                {
+                    d = MathUtils.calculateExpression( buffer.toString() );
+                }
+                catch ( Exception e )
+                {
+                    d = 0.0;
+                    resultValue = "";
+                }
+                if ( d == -1 )
+                {
+                    d = 0.0;
+                    resultValue = "";
+                }
+                else
+                {
+
+                    // This is to display financial data as it is like 2.1476838
+                    resultValue = "" + d;
+
+                    // These lines are to display financial data that do not
+                    // have decimals
+                    d = d * 10;
+
+                    if ( d % 10 == 0 )
+                    {
+                        resultValue = "" + (int) d / 10;
+                    }
+
+                    d = d / 10;
+
+                    // These line are to display non financial data that do not
+                    // require decimals
+                    if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
+                    {
+                        resultValue = "" + (int) d;
+                    }
+
+                    // if ( resultValue.equalsIgnoreCase( "0" ) )
+                    // {
+                    // resultValue = "";
+                    // }
+                }
+
+            }
+            else
+            {
+                //deFlag2 = 0;
+                resultValue = buffer.toString();
+            }
+
+            if( isAggregated == 0 )
+            {
+                resultValue = " ";
+            }
+
+            if ( resultValue.equalsIgnoreCase( "" ) )
+            {
+                resultValue = " ";
+            }
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+    // functoin getResultDataValue start end
+    
+    // functoin getIndividualResultDataValue start
+    
+    public String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
+    {
+        int deFlag1 = 0;
+       // int deFlag2 = 0;
+       // int isAggregated = 0;
+       
+        try
+        {
+
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+            boolean valueDoesNotExist = true;
+
+            while ( matcher.find() )
+            {
+
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int dataElementId = Integer.parseInt( replaceString );
+                int optionComboId = Integer.parseInt( optionComboIdStr );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( dataElement == null || optionCombo == null )
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
+                {
+
+                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
+                        dePeriodType, startDate, endDate ) );
+
+                    if ( periodList == null || periodList.isEmpty() )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+                    else
+                    {
+
+                        double aggregatedValue = 0.0;
+                        for ( Period tempPeriod : periodList )
+                        {
+                            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement,
+                                tempPeriod, optionCombo );
+
+                            if ( dataValue != null )
+                            {
+                                aggregatedValue += Double.parseDouble( dataValue.getValue() );
+
+                                valueDoesNotExist = false;
+                            }
+                        }
+
+                        replaceString = String.valueOf( aggregatedValue );
+
+                       // deFlag2 = 1;
+                    }
+                }
+                else
+                {
+                    deFlag1 = 1;
+                   // deFlag2 = 0;
+                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
+                        dePeriodType, startDate, endDate ) );
+                    Period tempPeriod = new Period();
+                    if ( periodList == null || periodList.isEmpty() )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+                    else
+                    {
+                        tempPeriod = (Period) periodList.get( 0 );
+                    }
+
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
+                        optionCombo );
+
+                    if ( dataValue != null )
+                    {
+                        // Works for both text and boolean data types
+
+                        replaceString = dataValue.getValue();
+                        valueDoesNotExist = false;
+                    }
+                    else
+                    {
+                        replaceString = "";
+                    }
+
+                    if ( replaceString == null )
+                    {
+                        replaceString = "";
+                    }
+                }
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+
+            if ( deFlag1 == 0 )
+            {
+                double d = 0.0;
+                try
+                {
+                    d = MathUtils.calculateExpression( buffer.toString() );
+                }
+                catch ( Exception e )
+                {
+                    d = 0.0;
+
+                    resultValue = "";
+                }
+                if ( d == -1 )
+                {
+                    d = 0.0;
+
+                    resultValue = "";
+                }
+                else
+                {
+                    // This is to display financial data as it is like 2.1476838
+                    resultValue = "" + d;
+
+                    // These lines are to display financial data that do not
+                    // have decimals
+                    d = d * 10;
+
+                    if ( d % 10 == 0 )
+                    {
+                        resultValue = "" + (int) d / 10;
+                    }
+
+                    d = d / 10;
+
+                    // These line are to display non financial data that do not
+                    // require decimals
+                    if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
+                    {
+                        resultValue = "" + (int) d;
+                    }
+
+                    // if ( resultValue.equalsIgnoreCase( "0" ) )
+                    // {
+                    // resultValue = "";
+                    // }
+                }
+            }
+            else
+            {
+                //deFlag2 = 0;
+                resultValue = buffer.toString();
+            }
+
+            if ( valueDoesNotExist )
+            {
+                resultValue = " ";
+            }
+
+            if ( resultValue.equalsIgnoreCase( "" ) )
+            {
+                resultValue = " ";
+            }
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+    // functoin getIndividualResultDataValue end
+    
+     // functoin getBooleanDataValue stsrt
+    
+    public String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
+    {
+        int deFlag1 = 0;
+        int deFlag2 = 0;
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int dataElementId = Integer.parseInt( replaceString );
+                int optionComboId = Integer.parseInt( optionComboIdStr );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( dataElement == null || optionCombo == null )
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+
+                if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
+                {
+                    deFlag1 = 1;
+                    deFlag2 = 0;
+                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
+                        dePeriodType, startDate, endDate ) );
+                    Period tempPeriod = new Period();
+                    if ( periodList == null || periodList.isEmpty() )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+                    else
+                    {
+                        tempPeriod = (Period) periodList.get( 0 );
+                    }
+
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
+                        optionCombo );
+
+                    if ( dataValue != null )
+                    {
+                        // Works for both text and boolean data types
+
+                        if ( dataValue.getValue().equalsIgnoreCase( "true" ) )
+                        {
+                            replaceString = "Yes";
+                        }
+                        else
+                        {
+                            if ( dataValue.getValue().equalsIgnoreCase( "false" ) )
+                            {
+                                replaceString = "No";
+                            }
+                            else
+                            {
+                                replaceString = dataValue.getValue();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        replaceString = "";
+                    }
+
+                }
+                else
+                {
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                        startDate, endDate, organisationUnit );
+                    if ( aggregatedValue == null )
+                    {
+                        replaceString = NULL_REPLACEMENT;
+                    }
+                    else
+                    {
+                        replaceString = String.valueOf( aggregatedValue );
+
+                        deFlag2 = 1;
+                    }
+                }
+                matcher.appendReplacement( buffer, replaceString );
+            }
+
+            matcher.appendTail( buffer );
+
+            String resultValue = "";
+            if ( deFlag1 == 0 )
+            {
+                double d = 0.0;
+                try
+                {
+                    d = MathUtils.calculateExpression( buffer.toString() );
+                }
+                catch ( Exception e )
+                {
+                    d = 0.0;
+                }
+                if ( d == -1 )
+                {
+                    d = 0.0;
+                }
+                else
+                {
+                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                    resultValue = "" + (int) d;
+                }
+
+                if ( deFlag2 == 0 )
+                {
+                    resultValue = " ";
+                }
+            }
+            else
+            {
+                deFlag2 = 0;
+                resultValue = buffer.toString();
+            }
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+    
+ // functoin getBooleanDataValue end
 }

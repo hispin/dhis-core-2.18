@@ -123,6 +123,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>tanzania.png</value>
         </entry>
         <entry>
+          <key><value>uganda</value></key>
+          <value>uganda.png</value>
+        </entry>
+        <entry>
           <key><value>vietnam</value></key>
           <value>vietnam.png</value>
         </entry>

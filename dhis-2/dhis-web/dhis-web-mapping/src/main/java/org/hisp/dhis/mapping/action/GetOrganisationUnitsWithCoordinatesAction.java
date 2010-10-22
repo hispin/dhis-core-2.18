@@ -28,9 +28,12 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -83,7 +86,9 @@ public class GetOrganisationUnitsWithCoordinatesAction
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
         
-        object = parent.getChildren();
+        object = new HashSet<OrganisationUnit>( parent.getChildren() );
+        
+        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
         
         return parent.getChildrenFeatureType();
     }

@@ -12,10 +12,12 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.reports.ReportType;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GenerateLinelistingReportAnalyserFormAction extends ActionSupport
+public class GenerateLinelistingReportAnalyserFormAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -39,7 +41,7 @@ public class GenerateLinelistingReportAnalyserFormAction extends ActionSupport
     {
         return monthlyPeriods;
     }
-    
+
     private SimpleDateFormat simpleDateFormat;
 
     public SimpleDateFormat getSimpleDateFormat()
@@ -53,7 +55,14 @@ public class GenerateLinelistingReportAnalyserFormAction extends ActionSupport
     {
         return monthlyPeriodType;
     }
+    
+    private String reportTypeName;
 
+    public String getReportTypeName()
+    {
+        return reportTypeName;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -62,24 +71,25 @@ public class GenerateLinelistingReportAnalyserFormAction extends ActionSupport
         throws Exception
     {
 
+        reportTypeName = ReportType.RT_LINELIST;
         /* Monthly Periods */
         monthlyPeriodType = new MonthlyPeriodType();
-        
+
         monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( monthlyPeriodType ) );
         Iterator<Period> periodIterator = monthlyPeriods.iterator();
-        while( periodIterator.hasNext() )
+        while ( periodIterator.hasNext() )
         {
             Period p1 = periodIterator.next();
-            
+
             if ( p1.getStartDate().compareTo( new Date() ) > 0 )
             {
-                periodIterator.remove( );
+                periodIterator.remove();
             }
-            
+
         }
         Collections.sort( monthlyPeriods, new PeriodComparator() );
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-        
+
         return SUCCESS;
     }
 

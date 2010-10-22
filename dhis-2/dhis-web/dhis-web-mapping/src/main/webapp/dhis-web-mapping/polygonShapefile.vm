@@ -10,8 +10,7 @@
       "geometry":
         {
           "type":"MultiPolygon",
-          "coordinates":
-            $!encoder.jsEncode( $!{unit.coordinates} )
+           "coordinates":$!encoder.jsEncode( $!{unit.validCoordinates} )
         },
       "properties":
         {

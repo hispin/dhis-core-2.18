@@ -1,7 +1,3 @@
-//  Country dependent variables
-
-    FACILITY_LEVEL = 4;
-
 //  MapFish print module
 
     var layerOverrides = {"World": {overview: true}, Countries: {format: 'image/svg+xml'}};
@@ -65,3 +61,9 @@
     map_layer_type_overlay = 'overlay';
 	map_value_type_indicator = 'indicator';
 	map_value_type_dataelement = 'dataelement';
+    
+//  MapFish
+
+    classify_with_bounds = 1;
+    classify_by_equal_intervals = 2;
+    classify_by_quantils = 3;

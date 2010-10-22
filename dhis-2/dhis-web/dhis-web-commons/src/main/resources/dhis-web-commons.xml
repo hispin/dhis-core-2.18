@@ -47,6 +47,8 @@
 				class="org.hisp.dhis.interceptor.SystemSettingInterceptor" />
 			<interceptor name="styleInterceptor"
 				class="org.hisp.dhis.interceptor.StyleInterceptor" />
+			<interceptor name="contextInterceptor"
+				class="org.hisp.dhis.interceptor.ContextInterceptor" />
 
 			<interceptor name="portalParamsInterceptor"
 				class="org.hisp.dhis.webportal.interceptor.XWorkPortalParamsInterceptor" />
@@ -78,6 +80,7 @@
 				<interceptor-ref name="dataDictionaryModeInterceptor" />
 				<interceptor-ref name="systemSettingInterceptor" />
 				<interceptor-ref name="styleInterceptor" />
+				<interceptor-ref name="contextInterceptor"/>
 				<interceptor-ref name="portalParamsInterceptor" />
 				<interceptor-ref name="portalMenuInterceptor" />
 				<interceptor-ref name="portalModuleInterceptor" />

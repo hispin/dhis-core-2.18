@@ -1,24 +1,16 @@
 package org.hisp.dhis.reports.advanced.action;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.ReportType;
+import org.hisp.dhis.reports.Report_in;
 
-import org.hisp.dhis.reports.api.Report;
-import org.hisp.dhis.reports.util.ReportService;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import com.opensymphony.xwork2.Action;
 
-import com.opensymphony.xwork2.ActionSupport;
-
-public class GenerateAdvancedReportsFormAction extends ActionSupport
+public class GenerateAdvancedReportsFormAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -35,15 +27,26 @@ public class GenerateAdvancedReportsFormAction extends ActionSupport
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
-
+/*
     private List<Report> reportList;
 
     public List<Report> getReportList()
     {
         return reportList;
     }
+*/
+    // -------------------------------------------------------------------------
+    // Input & output
+    // -------------------------------------------------------------------------
+
+    private List<Report_in> reportList;
+
+    public List<Report_in> getReportList()
+    {
+        return reportList;
+    }
     
-    private String raFolderName;
+ //   private String raFolderName;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -52,15 +55,18 @@ public class GenerateAdvancedReportsFormAction extends ActionSupport
     public String execute()
         throws Exception
     {
-        raFolderName = reportService.getRAFolderName();
+       
+        
+       
+       // raFolderName = reportService.getRAFolderName();
 
-        reportList = new ArrayList<Report>();
+        reportList = new ArrayList<Report_in>( reportService.getReportsByReportType( ReportType.RT_ADVANCED_REPORT ) );
 
-        getSelectedReportList();
+        //getSelectedReportList();
 
         return SUCCESS;
     }
-
+    /* 
     public void getSelectedReportList()
     {
         String fileName = "advancedReportsList.xml";
@@ -85,7 +91,7 @@ public class GenerateAdvancedReportsFormAction extends ActionSupport
         String reportType = "";
         String reportLevel = "";
         String reportModel = "";
-        String reportFileName = "";        
+        String reportFileName = "";
 
         try
         {
@@ -132,9 +138,10 @@ public class GenerateAdvancedReportsFormAction extends ActionSupport
                     Element reportLevelElement = (Element) reportLevelList.item( 0 );
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
- 
-                    Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                    reportList.add( reportObj );                   
+
+                    Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName,
+                        reportLevel );
+                    reportList.add( reportObj );
                 }
             }// end of for loop with s var
         }// try block end
@@ -154,5 +161,5 @@ public class GenerateAdvancedReportsFormAction extends ActionSupport
         }
 
     }// getReportList end
-
+*/
 }

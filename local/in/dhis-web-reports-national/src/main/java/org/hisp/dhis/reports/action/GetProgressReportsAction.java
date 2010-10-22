@@ -7,7 +7,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -16,10 +17,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GetProgressReportsAction extends ActionSupport
+public class GetProgressReportsAction
+    implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -38,31 +44,32 @@ public class GetProgressReportsAction extends ActionSupport
         this.orgUnitLevel = orgUnitLevel;
     }
 
-    private List<Report> reportList;
+    private List<Report_in> reportList;
 
-    public List<Report> getReportList()
+    public List<Report_in> getReportList()
     {
         return reportList;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-
     public String execute()
         throws Exception
     {
-        reportList = new ArrayList<Report>();
+       
         
+        //reportList = new ArrayList<Report>();
+
         String raFolderName = reportService.getRAFolderName();
 
-        getSelectedReportList(raFolderName);
+        getSelectedReportList( raFolderName );
 
         return SUCCESS;
     }
 
-    public void getSelectedReportList(String raFolderName)
+    public void getSelectedReportList( String raFolderName )
     {
         String fileName = "progressReportsList.xml";
         String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
@@ -137,8 +144,9 @@ public class GetProgressReportsAction extends ActionSupport
 
                     if ( reportLevel.equals( orgUnitLevel ) )
                     {
-                        Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                        reportList.add( count, reportObj );
+                        //Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName,reportLevel );
+                       // reportList.add( count, reportObj );
+                            
                         count++;
                         System.out.println( reportName + " : " + reportId );
                     }

@@ -50,7 +50,7 @@ public class DefaultLocationManager
 {
     private static final Log log = LogFactory.getLog( DefaultLocationManager.class );
 
-    private static final String LINUX_DEFAULT_DHIS2_HOME = "/opt/dhis2";
+    private static final String DEFAULT_DHIS2_HOME = "/opt/dhis2";
 
     private String externalDir = null;
 
@@ -108,16 +108,13 @@ public class DefaultLocationManager
             else
             {
                 log.info( "Environment variable " + environmentVariable + " not set" );
-                // if Linux try fallback to /opt/dhis2
-                // if ( LINUX_OS_NAME.equals( System.getProperty("os.name") ) ) 
-                if ( true )
+                
+                path = DEFAULT_DHIS2_HOME;
+                
+                if ( directoryIsValid( new File( path ) ) )
                 {
-                    path = LINUX_DEFAULT_DHIS2_HOME;
-                    if ( directoryIsValid( new File( path ) ) )
-                    {
-                        externalDir = path;
-                        log.info( "externalDir set to " + LINUX_DEFAULT_DHIS2_HOME );
-                    }
+                    externalDir = path;
+                    log.info( "Home directory set to " + DEFAULT_DHIS2_HOME );                
                 }
             }
         }

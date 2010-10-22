@@ -118,35 +118,14 @@ public class JdbcDataMergeStore
 
         // Move from source to destination where destination does not exist
         
-        String sql =             
-            "UPDATE datavalue AS d1 SET sourceid=" + destId + " " +
-            "WHERE sourceid=" + sourceId + " " +
-            "AND NOT EXISTS ( " +
-                "SELECT * from datavalue AS d2 " +
-                "WHERE d2.sourceid=" + destId + " " +
-                "AND d1.dataelementid=d2.dataelementid " +
-                "AND d1.periodid=d2.periodid " +
-                "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid );";
-
+        String sql = statementBuilder.getMoveDataValueToDestination( sourceId, destId );
         log.info( sql );        
         jdbcTemplate.execute( sql );
 
         // Summarize destination and source where matching
-        
-        sql =
-            "UPDATE datavalue AS d1 SET value=( " +
-                "SELECT SUM( CAST( value AS " + statementBuilder.getDoubleColumnType() + " ) ) " +
-                "FROM datavalue as d2 " +
-                "WHERE d1.dataelementid=d2.dataelementid " +
-                "AND d1.periodid=d2.periodid " +
-                "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid " +
-                "AND d2.sourceid IN ( " + destId + ", " + sourceId + " ) ) " +
-            "FROM dataelement AS de " +
-            "WHERE d1.sourceid=" + destId + " " +
-            "AND d1.dataelementid=de.dataelementid " +
-            "AND de.valuetype='int';";
 
-        log.info( sql );        
+        sql = statementBuilder.getSummarizeDestinationAndSourceWhereMatching( sourceId, destId );
+        log.info( sql );
         jdbcTemplate.execute( sql );
 
         // TODO also deal with bool and string

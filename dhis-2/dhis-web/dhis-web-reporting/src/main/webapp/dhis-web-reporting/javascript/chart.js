@@ -73,7 +73,7 @@ function saveChartReceived( messageElement )
     {
         selectAllById( "selectedIndicators" );
         
-        if ( dimension == "period" )
+        if ( dimension == "period" || dimension == "indicator")
         {
             selectAllById( "selectedPeriods" );
         }

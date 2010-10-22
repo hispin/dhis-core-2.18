@@ -110,7 +110,7 @@ public class ViewChartAction
             chart = chartService.getJFreeChart( id, format );
             
             Chart temp = chartService.getChart( id );
-                        
+            
             width = temp.getWidth();            
             height = temp.getHeight();
             

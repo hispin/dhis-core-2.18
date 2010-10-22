@@ -122,14 +122,13 @@ public interface OrganisationUnitService
     OrganisationUnit getOrganisationUnitByName( String name );
 
     /**
-     * Returns an OrganisationUnit with a given short name.
+     * Returns an OrganisationUnit with a given code.
      * 
-     * @param shortName the short name of the OrganisationUnit to return.
-     * @return the OrganisationUnit with the given short name, or null if no
-     *         match.
+     * @param code the code of the OrganisationUnit to return.
+     * @return the OrganisationUnit with the given code, or null if not match.
      */
-    OrganisationUnit getOrganisationUnitByShortName( String shortName );
-
+    OrganisationUnit getOrganisationUnitByCode( String code );
+    
     /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an
      * OrganisationUnit with no parent/the parent set to null.

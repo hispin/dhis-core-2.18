@@ -46,7 +46,6 @@ import com.opensymphony.xwork2.Action;
 public class GetDataElementsByZeroIsSignificantAndGroupAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

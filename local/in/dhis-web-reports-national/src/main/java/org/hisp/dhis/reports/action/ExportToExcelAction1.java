@@ -4,9 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class ExportToExcelAction1 extends ActionSupport
+public class ExportToExcelAction1
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -15,7 +16,7 @@ public class ExportToExcelAction1 extends ActionSupport
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -45,24 +46,24 @@ public class ExportToExcelAction1 extends ActionSupport
     }
 
     private String htmlCode;
-    
+
     public void setHtmlCode( String htmlCode )
     {
         this.htmlCode = htmlCode;
     }
-        
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
-    {                        
+    public String execute()
+        throws Exception
+    {
 
         fileName = "pivotTableResult.xls";
         inputStream = new BufferedInputStream( new ByteArrayInputStream( htmlCode.getBytes() ) );
-        
+
         return SUCCESS;
     }
-
 
 }

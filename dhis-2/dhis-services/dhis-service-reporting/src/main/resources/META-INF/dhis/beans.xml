@@ -57,7 +57,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataMartService"
       ref="org.hisp.dhis.datamart.DataMartService"/>
     <property name="completenessService"
-      ref="subjectiveDataCompletenessService"/>
+      ref="registrationDataCompletenessService"/>
   </bean>
   
   <!-- Report -->
@@ -125,19 +125,23 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="services">
 	  <map>
         <entry>
-          <key><value>subjective</value></key>
-          <ref bean="subjectiveDataCompletenessService"/>
+          <key><value>registration</value></key>
+          <ref bean="registrationDataCompletenessService"/>
         </entry>
         <entry>
-          <key><value>objective</value></key>
-          <ref bean="objectiveDataCompletenessService"/>
+          <key><value>compulsory</value></key>
+          <ref bean="compulsoryDataCompletenessService"/>
         </entry>
+        <entry>
+          <key><value>ratio</value></key>
+          <ref bean="ratioDataCompletenessService"/>
+        </entry>		
 	  </map>
     </property>
   </bean>
   
-  <bean id="objectiveDataCompletenessService"
-	class="org.hisp.dhis.completeness.impl.ObjectiveDataSetCompletenessService">
+  <bean id="compulsoryDataCompletenessService"
+	class="org.hisp.dhis.completeness.impl.CompulsoryDataSetCompletenessService">
     <property name="configDir" value="reports"/>
     <property name="configFile" value="dataSetCompletenessConfiguration.xml"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
@@ -145,15 +149,21 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
+	<property name="dataElementService"
+	  ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
     <property name="completenessStore"
       ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
   </bean>
   
-  <bean id="subjectiveDataCompletenessService"
-	class="org.hisp.dhis.completeness.impl.SubjectiveDataSetCompletenessService" 
-	parent="objectiveDataCompletenessService">	
+  <bean id="ratioDataCompletenessService"
+	class="org.hisp.dhis.completeness.impl.RatioDataSetCompletenessService"
+	parent="compulsoryDataCompletenessService"/>
+  
+  <bean id="registrationDataCompletenessService"
+	class="org.hisp.dhis.completeness.impl.RegistrationDataSetCompletenessService" 
+	parent="compulsoryDataCompletenessService">	
     <property name="registrationService"
       ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
   </bean>

@@ -36,4 +36,6 @@ public interface DatabaseInfoProvider
     String ID = DatabaseInfoProvider.class.getName();
     
     DatabaseInfo getDatabaseInfo();
+    
+    boolean isInMemory();
 }

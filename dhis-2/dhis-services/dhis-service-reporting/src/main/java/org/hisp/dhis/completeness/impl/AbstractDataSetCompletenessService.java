@@ -41,6 +41,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessConfiguration;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.configuration.ConfigurationManager;
@@ -108,7 +109,14 @@ public abstract class AbstractDataSetCompletenessService
         this.dataSetService = dataSetService;
     }
     
-    private PeriodService periodService;
+    protected DataElementService dataElementService;
+    
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    protected PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
@@ -139,6 +147,8 @@ public abstract class AbstractDataSetCompletenessService
     public abstract int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period );
     
     public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline );
+    
+    public abstract int getSources( DataSet dataSet, Collection<? extends Source> children );
     
     // -------------------------------------------------------------------------
     // DataSetCompleteness
@@ -229,7 +239,7 @@ public abstract class AbstractDataSetCompletenessService
             result.setName( dataSet.getName() );
             result.setRegistrations( getRegistrations( dataSet, children, period ) );
             result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
-            result.setSources( dataSetService.getSourcesAssociatedWithDataSet( dataSet, children ) );
+            result.setSources( getSources( dataSet, children ) );
             
             result.setDataSetId( dataSet.getId() );
             result.setPeriodId( periodId );
@@ -266,7 +276,7 @@ public abstract class AbstractDataSetCompletenessService
             result.setName( unit.getName() );
             result.setRegistrations( getRegistrations( dataSet, children, period ) );
             result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
-            result.setSources( dataSetService.getSourcesAssociatedWithDataSet( dataSet, children ) );
+            result.setSources( getSources( dataSet, children ) );
             
             result.setDataSetId( dataSetId );
             result.setPeriodId( periodId );
@@ -287,7 +297,7 @@ public abstract class AbstractDataSetCompletenessService
         result.setName( unit.getName() );
         result.setRegistrations( getRegistrations( dataSet, children, period ) );
         result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
-        result.setSources( dataSetService.getSourcesAssociatedWithDataSet( dataSet, children ) );
+        result.setSources( getSources( dataSet, children ) );
         
         result.setDataSetId( dataSet.getId() );
         result.setPeriodId( period.getId() );

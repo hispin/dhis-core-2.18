@@ -18,7 +18,6 @@
 										validateForm();
 									}
 				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
 			}
 	);
 
@@ -74,12 +73,13 @@
        <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
     <td align="left"><input type="submit" id="submitButton" style="width:10em" value="$i18n.getString( 'generate' )">
-	  <input type="button"" style="width:10em" onClick="window.location.href='listReportExcel.action'" value="$i18n.getString( 'cancel' )"></td>
+	<input type="button" onclick="removeMinMaxValue()" id="" style="width:10em" value="$i18n.getString( 'remove' )">
+	  <input type="button"" style="width:10em" onClick="window.location.href='index.action'" value="$i18n.getString( 'cancel' )"></td>
   
   </tr>
 </table>
 </form>
-<span id='message' style='display: block'>$!message</span>
+<span id='message' #if($!message) style='display: block' #end>$!message</span>
 <script type="text/javascript">
 
 	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';

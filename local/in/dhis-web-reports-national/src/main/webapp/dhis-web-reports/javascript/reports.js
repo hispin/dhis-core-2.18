@@ -124,9 +124,9 @@ function getPeriods()
 
         document.reportForm.generate.disabled=false;
         var ouId = document.reportForm.ouIDTB.value;
-        var reportListFileName = document.reportForm.reportListFileNameTB.value;
+        var reportTypeName = document.reportForm.reportTypeNameTB.value;
   
-        getReports(ouId, reportListFileName);
+        getReports( ouId, reportTypeName );
     }
     else
     {
@@ -149,9 +149,9 @@ function getPeriodsForCumulative()
     if ( periodTypeId != "NA" )
     {
         var ouId = document.reportForm.ouIDTB.value;
-        var reportListFileName = document.reportForm.reportListFileNameTB.value;
+        var reportTypeName = document.reportForm.reportTypeNameTB.value;
   
-        getReports(ouId, reportListFileName);
+        getReports(ouId, reportTypeName);
         document.reportForm.generate.disabled=false;
     }
     else
@@ -166,7 +166,7 @@ function getPeriodsForCumulative()
     }
  
 }
-
+/*
 function getReports( ouId, reportListFileName )
 { 
     var periodTypeList = document.getElementById( "periodTypeId" );
@@ -183,11 +183,34 @@ function getReports( ouId, reportListFileName )
         //request.send( url );
 
         var requestString = "getReports.action";
-        var params = "periodType=" + periodType + "&ouId="+ouId + "&reportListFileName="+reportListFileName+"&autogenrep="+autogenvalue;
+//      var params = "periodType=" + periodType + "&ouId="+ouId + "&reportListFileName="+reportListFileName+"&autogenrep="+autogenvalue;
+        var params = "periodType=" + periodType + "&ouId="+ouId + "&reportTypeName="+reportTypeName+"&autogenrep="+autogenvalue;
         request.sendAsPost( params );
         request.send( requestString );
     }
 }
+*/
+// 23/08/2010
+
+function getReports( ouId, reportTypeName )
+{ 
+	var periodTypeList = document.getElementById( "periodTypeId" );
+    var periodType = periodTypeList.options[ periodTypeList.selectedIndex ].value;
+    var autogenvalue = document.getElementById( "autogen" ).value;
+          
+    if ( periodType != "NA" && ouId != null && ouId != "" )
+    {
+        var request = new Request();
+        request.setResponseTypeXML( 'report' );
+        request.setCallbackSuccess( getReportsReceived );
+
+        var requestString = "getReports.action";
+        var params = "periodType=" + periodType + "&ouId="+ouId + "&reportTypeName="+reportTypeName + "&autogenrep="+autogenvalue;
+        request.sendAsPost( params );
+        request.send( requestString );
+    }
+}
+//23/08/2010 end
 
 function getReportsReceived( xmlObject )
 {	
@@ -248,7 +271,7 @@ function getPeriodsReceived( xmlObject )
     }
 	
     // If the list of available periods is empty, an empty placeholder will be added
-    addOptionPlaceHolder( availablePeriods );
+//    addOptionPlaceHolder( availablePeriods );
 }
 
 

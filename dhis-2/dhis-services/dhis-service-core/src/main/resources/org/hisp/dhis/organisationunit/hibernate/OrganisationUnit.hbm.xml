@@ -24,11 +24,11 @@
 		
     <many-to-one name="parent" class="org.hisp.dhis.organisationunit.OrganisationUnit"
         column="parentid" foreign-key="fk_parentid" index="in_parentid"/>
-				
+	
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="true" length="50"/>			
+      <column name="shortname" not-null="true" unique="false" length="50"/>			
     </property>
-		
+	
     <property name="code">
       <column name="code" not-null="false" unique="false" length="25"/>
     </property>

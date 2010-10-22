@@ -46,6 +46,12 @@ public class ReportType
     
     public final static String RT_ORGUNITWISEPROGRESS = "OrgUnitWiseProgress";
     
+    public final static String RT_CSREVIEW = "CS Review";
+
+    public final static String RT_PHYSICAL_OUTPUT = "PhysicalOutput";
+    
+    public final static String RT_ADVANCED_REPORT = "Advanced Reports";      
+    
    // public final static String RT_ = "";
 
     public static List<String> getReportTypes()
@@ -65,6 +71,12 @@ public class ReportType
         reportTypes.add( RT_PERIODWISEPROGRESS );
         
         reportTypes.add( RT_ROUTINE );
+        
+        reportTypes.add( RT_CSREVIEW );
+
+        reportTypes.add( RT_PHYSICAL_OUTPUT );
+        
+        reportTypes.add( RT_ADVANCED_REPORT );
         
           
         return reportTypes;

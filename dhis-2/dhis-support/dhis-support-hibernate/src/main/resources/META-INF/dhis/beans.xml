@@ -19,8 +19,7 @@
 
   <!-- Configuration -->
 
-  <bean id="sessionFactory"
-    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
     <property name="hibernateProperties" ref="hibernateProperties"/>
     <property name="mappingJarLocations" ref="hibernateMappingJarLocations"/>
@@ -38,23 +37,19 @@
     <property name="dataSource" ref="dataSource"/>
   </bean>
     
-  <bean id="driverClassName"
-    class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+  <bean id="driverClassName" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
     <property name="hibernateProperty" value="hibernate.connection.driver_class"/>
   </bean>
     
-  <bean id="url"
-    class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+  <bean id="url" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
     <property name="hibernateProperty" value="hibernate.connection.url"/>
   </bean>
     
-  <bean id="username"
-    class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+  <bean id="username" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
     <property name="hibernateProperty" value="hibernate.connection.username"/>
   </bean>
   
-  <bean id="password"
-    class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+  <bean id="password" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
     <property name="hibernateProperty" value="hibernate.connection.password"/>
   </bean>
     

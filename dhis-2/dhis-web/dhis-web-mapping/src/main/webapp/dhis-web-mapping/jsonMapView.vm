@@ -14,6 +14,7 @@
     "mapLegendType": "$!encoder.jsEncode( ${object.mapLegendType} )",
     "method": "$!{object.method}",
     "classes": "$!{object.classes}",
+    "bounds": "$!{object.bounds}",
     "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
     "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )",
     "mapLegendSetId": "$!{object.mapLegendSet.id}",

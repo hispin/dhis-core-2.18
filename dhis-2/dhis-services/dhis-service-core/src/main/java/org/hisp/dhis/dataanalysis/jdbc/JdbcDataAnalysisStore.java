@@ -105,7 +105,7 @@ public class JdbcDataAnalysisStore
             "FROM datavalue AS dv " +
             "JOIN period AS pe USING (periodid) " +
             "JOIN periodtype AS pt USING (periodtypeid) " +
-            "LEFT JOIN categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
+            "LEFT JOIN _categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
             "WHERE dv.dataelementid='" + dataElement.getId() + "' " +
             "AND dv.categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
             "AND dv.periodid IN (" + periodIds + ") " +
@@ -199,7 +199,7 @@ public class JdbcDataAnalysisStore
             "JOIN periodtype AS pt using (periodtypeid) " +
             "JOIN source AS sr using (sourceid) " +
             "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
-            "LEFT JOIN categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
+            "LEFT JOIN _categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
             "WHERE dv.followup=true";
         
         try

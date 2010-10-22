@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -29,11 +28,11 @@ import jxl.format.CellFormat;
 import jxl.format.VerticalAlignment;
 import jxl.write.Blank;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-import jxl.write.Number;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
@@ -56,9 +55,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.system.util.MathUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,10 +66,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class GenerateRoutineReportAnalyserResultAction
-    extends ActionSupport
+    implements Action
 {
     private static final String NULL_REPLACEMENT = "0";
 
@@ -152,12 +151,21 @@ public class GenerateRoutineReportAnalyserResultAction
         this.dataValueService = dataValueService;
     }
 
-    private DataElementCategoryService dataElementCategoryService;
+    private DataElementCategoryService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryService dataElementCategoryOptionComboService )
     {
-        this.dataElementCategoryService = dataElementCategoryService;
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
+
+    /*
+     * private DataElementCategoryService dataElementCategoryService;
+     * 
+     * public void setDataElementCategoryService( DataElementCategoryService
+     * dataElementCategoryService ) { this.dataElementCategoryService =
+     * dataElementCategoryService; }
+     */
 
     private I18nFormat format;
 
@@ -169,13 +177,12 @@ public class GenerateRoutineReportAnalyserResultAction
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-    private PeriodStore periodStore;
-
-    public void setPeriodStore( PeriodStore periodStore )
-    {
-        this.periodStore = periodStore;
-    }
-
+    /*
+     * private PeriodStore periodStore;
+     * 
+     * public void setPeriodStore( PeriodStore periodStore ) { this.periodStore
+     * = periodStore; }
+     */
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -184,13 +191,10 @@ public class GenerateRoutineReportAnalyserResultAction
     }
 
     /*
-    private String contentType;
-
-    public String getContentType()
-    {
-        return contentType;
-    }
-    */
+     * private String contentType;
+     * 
+     * public String getContentType() { return contentType; }
+     */
 
     private String fileName;
 
@@ -200,13 +204,10 @@ public class GenerateRoutineReportAnalyserResultAction
     }
 
     /*
-    private int bufferSize;
-
-    public int getBufferSize()
-    {
-        return bufferSize;
-    }
-    */
+     * private int bufferSize;
+     * 
+     * public int getBufferSize() { return bufferSize; }
+     */
 
     private MathTool mathTool;
 
@@ -277,7 +278,7 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         return dailyFormat;
     }
-    
+
     private SimpleDateFormat simpleMonthFormat;
 
     public SimpleDateFormat getSimpleMonthFormat()
@@ -298,7 +299,7 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         return simpleYearFormat;
     }
-    
+
     private List<String> deCodeType;
 
     private List<String> serviceType;
@@ -312,11 +313,10 @@ public class GenerateRoutineReportAnalyserResultAction
 
     private String reportModelTB;
 
-    public void setReportModelTB( String reportModelTB )
-    {
-        this.reportModelTB = reportModelTB;
-    }
-
+    /*
+     * public void setReportModelTB( String reportModelTB ) { this.reportModelTB
+     * = reportModelTB; }
+     */
     private String reportList;
 
     public void setReportList( String reportList )
@@ -324,27 +324,21 @@ public class GenerateRoutineReportAnalyserResultAction
         this.reportList = reportList;
     }
 
-    private String startDate;
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    private String endDate;
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
-    }
-
-    private List<String> orgUnitListCB;
-
-    public void setOrgUnitListCB( List<String> orgUnitListCB )
-    {
-        this.orgUnitListCB = orgUnitListCB;
-    }
-
+    /*
+     * private String startDate;
+     * 
+     * public void setStartDate( String startDate ) { this.startDate =
+     * startDate; }
+     * 
+     * private String endDate;
+     * 
+     * public void setEndDate( String endDate ) { this.endDate = endDate; }
+     * 
+     * private List<String> orgUnitListCB;
+     * 
+     * public void setOrgUnitListCB( List<String> orgUnitListCB ) {
+     * this.orgUnitListCB = orgUnitListCB; }
+     */
     private int ouIDTB;
 
     public void setOuIDTB( int ouIDTB )
@@ -365,23 +359,20 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         this.aggCB = aggCB;
     }
-    
+
     private String organisationUnitGroupId;
-    
+
     public void setOrganisationUnitGroupId( String organisationUnitGroupId )
     {
         this.organisationUnitGroupId = organisationUnitGroupId;
     }
-    
-    private String ouNameTB;
-    
-    public void setOuNameTB( String ouNameTB )
-    {
-        this.ouNameTB = ouNameTB;
-    }  
 
-    private Hashtable<String, String> serviceList;
-
+    /*
+     * private String ouNameTB;
+     * 
+     * public void setOuNameTB( String ouNameTB ) { this.ouNameTB = ouNameTB; }
+     */
+    // private Hashtable<String, String> serviceList;
     private List<Integer> sheetList;
 
     private List<Integer> rowList;
@@ -410,7 +401,7 @@ public class GenerateRoutineReportAnalyserResultAction
         return periods;
     }
 
-    private List<Integer> totalOrgUnitsCountList;
+    // private List<Integer> totalOrgUnitsCountList;
 
     private String raFolderName;
 
@@ -420,8 +411,8 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         return childOrgUnits;
     }
-    
-    private List<OrganisationUnit> orgUnit;
+
+    // private List<OrganisationUnit> orgUnit;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -440,18 +431,29 @@ public class GenerateRoutineReportAnalyserResultAction
         slNos = new ArrayList<String>();
         deCodeType = new ArrayList<String>();
         serviceType = new ArrayList<String>();
-        totalOrgUnitsCountList = new ArrayList<Integer>();
-        String deCodesXMLFileName = "";
+        // totalOrgUnitsCountList = new ArrayList<Integer>();
+
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
         simpleMonthFormat = new SimpleDateFormat( "MMM" );
         yearFormat = new SimpleDateFormat( "yyyy" );
         simpleYearFormat = new SimpleDateFormat( "yy" );
-        dailyFormat = new SimpleDateFormat("yyyy-MM-dd");
-        deCodesXMLFileName = reportList + "DECodes.xml";
+        dailyFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        // deCodesXMLFileName = reportList + "DECodes.xml";
 
-        System.out.println("Report Generation Start Time is : \t" + new Date());
-        
+        // getting Reports Details
+
+        String deCodesXMLFileName = "";
+
+        Report_in selReportObj = reportService.getReport( Integer.parseInt( reportList ) );
+        deCodesXMLFileName = selReportObj.getXmlTemplateName();
+        reportModelTB = selReportObj.getModel();
+        reportFileNameTB = selReportObj.getExcelTemplateName();
+
+        System.out.println( reportModelTB + " : " + reportFileNameTB + " : " + deCodesXMLFileName + " : " + ouIDTB );
+
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+
         String parentUnit = "";
 
         sheetList = new ArrayList<Integer>();
@@ -510,7 +512,7 @@ public class GenerateRoutineReportAnalyserResultAction
         if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-PARENT" ) )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-            OrganisationUnit parent = orgUnit.getParent();
+            // OrganisationUnit parent = orgUnit.getParent();
             orgUnitList = new ArrayList<OrganisationUnit>();
 
             Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
@@ -558,17 +560,19 @@ public class GenerateRoutineReportAnalyserResultAction
         dataValueList = new ArrayList<String>();
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
 
-        Iterator it = orgUnitList.iterator();
+        Iterator<OrganisationUnit> it = orgUnitList.iterator();
         int orgUnitCount = 0;
         int orgUnitGroupCount = 0;
 
         int rowCounter = 0;
 
-        // ---------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // -----------------------------
         // Feedback without orgunit START
         // This part is for generating feedback reports for orgunits without any
         // children
-        // ---------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // -----------------------------
 
         OrganisationUnit checkChildOrgunit = new OrganisationUnit();
 
@@ -588,11 +592,11 @@ public class GenerateRoutineReportAnalyserResultAction
 
         if ( children == 0 )
         {
-            int quarterPeriod = 0;
+            // int quarterPeriod = 0;
 
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
-            Iterator it1 = deCodesList.iterator();
+            Iterator<String> it1 = deCodesList.iterator();
             int count1 = 0;
 
             while ( it1.hasNext() )
@@ -600,10 +604,10 @@ public class GenerateRoutineReportAnalyserResultAction
                 String deCodeString = (String) it1.next();
 
                 String deType = (String) deCodeType.get( count1 );
-                String sType = (String) serviceType.get( count1 );
-                int count = 0;
-                double sum = 0.0;
-                int flag1 = 0;
+                // String sType = (String) serviceType.get( count1 );
+                // int count = 0;
+                // double sum = 0.0;
+                // int flag1 = 0;
                 String tempStr = "";
 
                 Calendar tempStartDate = Calendar.getInstance();
@@ -756,22 +760,26 @@ public class GenerateRoutineReportAnalyserResultAction
 
         }
 
-        // ---------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // -----------------------------
         // Feedback without orgunit END
-        // ---------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // -----------------------------
 
-        // ---------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // -----------------------------
         // All other reports START
-        // ---------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // -----------------------------
 
         while ( it.hasNext() && children != 0 )
         {
 
-            int quarterPeriod = 0;
+            // int quarterPeriod = 0;
 
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
-            Iterator it1 = deCodesList.iterator();
+            Iterator<String> it1 = deCodesList.iterator();
             int count1 = 0;
             while ( it1.hasNext() )
             {
@@ -779,9 +787,9 @@ public class GenerateRoutineReportAnalyserResultAction
 
                 String deType = (String) deCodeType.get( count1 );
                 String sType = (String) serviceType.get( count1 );
-                int count = 0;
-                double sum = 0.0;
-                int flag1 = 0;
+                // int count = 0;
+                // double sum = 0.0;
+                // int flag1 = 0;
                 String tempStr = "";
                 double tempNum = 0;
 
@@ -928,7 +936,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "Quarter IV";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -957,7 +965,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "Q4";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -986,7 +994,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "Jan - Mar";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -1015,7 +1023,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "January - March";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -1044,7 +1052,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "Jan";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -1073,7 +1081,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "January";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -1102,7 +1110,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "Mar";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -1131,7 +1139,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         tempStr = "March";
 
-                        quarterPeriod = 1;
+                        // quarterPeriod = 1;
 
                     }
                 }
@@ -1320,63 +1328,65 @@ public class GenerateRoutineReportAnalyserResultAction
 
                     if ( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                       /* if ( organisationUnitGroupId == null )
+                        /*
+                         * if ( organisationUnitGroupId == null ) { tempStr =
+                         * getIndividualResultDataValue( deCodeString,
+                         * tempStartDate.getTime(), tempEndDate .getTime(),
+                         * currentOrgUnit ); } else { tempStr =
+                         * getResultDataValue( deCodeString,
+                         * tempStartDate.getTime(), tempEndDate.getTime(),
+                         * currentOrgUnit ); }
+                         */
+
+                        if ( organisationUnitGroupId.equals( "ALL" ) )
+                        {
+                            tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
+                                currentOrgUnit );
+
+                        }
+                        else if ( organisationUnitGroupId.equals( "Selected_Only" ) )
                         {
                             tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate
                                 .getTime(), currentOrgUnit );
                         }
                         else
                         {
-                            tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
-                                currentOrgUnit );
-                        }*/
-                        
-                        if ( organisationUnitGroupId.equals( "ALL" ) )
-                        {
-                            tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
-                                currentOrgUnit );
-                            
-                        }
-                        else if (organisationUnitGroupId.equals( "Selected_Only" ) )
-                        {
-                            tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate
-                                .getTime(), currentOrgUnit );                            
-                        }
-                        else
-                        {
-                            
-                            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( organisationUnitGroupId ) );
-                            
-                            List<OrganisationUnit> orgGroupMembers = new ArrayList<OrganisationUnit> ( orgUnitGroup.getMembers() );
-                            
-                            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ouIDTB ) );
-                                                         
+
+                            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService
+                                .getOrganisationUnitGroup( Integer.parseInt( organisationUnitGroupId ) );
+
+                            List<OrganisationUnit> orgGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup
+                                .getMembers() );
+
+                            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>(
+                                organisationUnitService.getOrganisationUnitWithChildren( ouIDTB ) );
+
                             orgGroupMembers.retainAll( orgUnitList );
-                            
+
                             double temp = 0;
                             double value = 0;
                             for ( OrganisationUnit unit : orgGroupMembers )
                             {
-                                tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
-                                    unit );
-                                
+                                tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate
+                                    .getTime(), unit );
+
                                 try
                                 {
                                     value = Double.valueOf( tempStr );
                                 }
-                                catch(Exception e)
+                                catch ( Exception e )
                                 {
                                     value = 0.0;
-                                    System.out.println(e);
+                                    System.out.println( e );
                                 }
-                                //value = value + temp;
+                                // value = value + temp;
                                 temp += value;
                             }
 
                             tempNum = temp;
-                            tempStr = String.valueOf( (int)temp );
+                            tempStr = String.valueOf( (int) temp );
                         }
-                        
+
                     }
                     else if ( sType.equalsIgnoreCase( "indicator-parent" ) )
                     {
@@ -1505,14 +1515,14 @@ public class GenerateRoutineReportAnalyserResultAction
                         {
                             try
                             {
-                                    tempNum = Double.valueOf( tempStr );
-                                    sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
+                                tempNum = Double.valueOf( tempStr );
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
 
-                                }
-                                catch(Exception e)
-                                {
-                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                                }
+                            }
+                            catch ( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                     }
 
@@ -1574,14 +1584,14 @@ public class GenerateRoutineReportAnalyserResultAction
                         {
                             try
                             {
-                                    tempNum = Double.valueOf( tempStr );
-                                    sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
+                                tempNum = Double.valueOf( tempStr );
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
 
-                                }
-                                catch(Exception e)
-                                {
-                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                                }
+                            }
+                            catch ( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                     }
 
@@ -1654,14 +1664,14 @@ public class GenerateRoutineReportAnalyserResultAction
                         {
                             try
                             {
-                                    tempNum = Double.valueOf( tempStr );
-                                    sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
+                                tempNum = Double.valueOf( tempStr );
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
 
-                                }
-                                catch(Exception e)
-                                {
-                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                                }
+                            }
+                            catch ( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                     }
 
@@ -1733,21 +1743,21 @@ public class GenerateRoutineReportAnalyserResultAction
                         {
                             try
                             {
-                                    tempNum = Double.valueOf( tempStr );
-                                    sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
+                                tempNum = Double.valueOf( tempStr );
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
 
-                                }
-                                catch(Exception e)
-                                {
-                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                                }
+                            }
+                            catch ( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                     }
 
                     if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-SIBLINGS" )
                         || reportModelTB.equalsIgnoreCase( "INDICATOR-FOR-FEEDBACK" ) )
                     {
-                        
+
                         if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
                         {
 
@@ -1814,16 +1824,16 @@ public class GenerateRoutineReportAnalyserResultAction
                         }
                         else
                         {
-                             try
+                            try
                             {
-                                    tempNum = Double.valueOf( tempStr );
-                                    sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
+                                tempNum = Double.valueOf( tempStr );
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
 
-                                }
-                                catch(Exception e)
-                                {
-                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                                }
+                            }
+                            catch ( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                     }
                     if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
@@ -1897,15 +1907,15 @@ public class GenerateRoutineReportAnalyserResultAction
                         {
                             try
                             {
-                                    tempNum = Double.valueOf( tempStr );
-                                    sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
+                                tempNum = Double.valueOf( tempStr );
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, tempNum, wCellformat ) );
 
-                                }
-                                catch(Exception e)
-                                {
-                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                                }
-                            
+                            }
+                            catch ( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
+
                         }
                     }
 
@@ -1933,8 +1943,8 @@ public class GenerateRoutineReportAnalyserResultAction
         File outputReportFile = new File( outputReportPath );
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
-        System.out.println("Report Generation End Time is : \t" + new Date());
-        
+        System.out.println( "Report Generation End Time is : \t" + new Date() );
+
         outputReportFile.deleteOnExit();
 
         statementManager.destroy();
@@ -2079,9 +2089,9 @@ public class GenerateRoutineReportAnalyserResultAction
 
     public PeriodType getPeriodTypeObject( String periodTypeName )
     {
-        Collection periodTypes = periodService.getAllPeriodTypes();
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
+        Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
             PeriodType tempPeriodType = (PeriodType) iter.next();
@@ -2171,7 +2181,7 @@ public class GenerateRoutineReportAnalyserResultAction
     public PeriodType getDataElementPeriodType( DataElement de )
     {
         List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Iterator it = dataSetList.iterator();
+        Iterator<DataSet> it = dataSetList.iterator();
         while ( it.hasNext() )
         {
             DataSet ds = (DataSet) it.next();
@@ -2203,7 +2213,7 @@ public class GenerateRoutineReportAnalyserResultAction
             // + String.valueOf( endDate ) );
 
             int deFlag1 = 0;
-            int deFlag2 = 0;
+            // int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -2216,7 +2226,8 @@ public class GenerateRoutineReportAnalyserResultAction
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -2224,7 +2235,8 @@ public class GenerateRoutineReportAnalyserResultAction
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                    .getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
                 {
@@ -2234,7 +2246,8 @@ public class GenerateRoutineReportAnalyserResultAction
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                        startDate, endDate, organisationUnit );
                     if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
@@ -2243,7 +2256,7 @@ public class GenerateRoutineReportAnalyserResultAction
                     {
                         replaceString = String.valueOf( aggregatedValue );
 
-                        deFlag2 = 1;
+                        // deFlag2 = 1;
                     }
 
                 }
@@ -2251,7 +2264,8 @@ public class GenerateRoutineReportAnalyserResultAction
                 {
                     deFlag1 = 1;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
+                        dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
                     {
@@ -2264,7 +2278,8 @@ public class GenerateRoutineReportAnalyserResultAction
                         tempPeriod = (Period) periodList.get( 0 );
                     }
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
+                        optionCombo );
 
                     if ( dataValue != null )
                     {
@@ -2355,7 +2370,7 @@ public class GenerateRoutineReportAnalyserResultAction
         try
         {
             int deFlag1 = 0;
-            int deFlag2 = 0;
+            // int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -2363,10 +2378,9 @@ public class GenerateRoutineReportAnalyserResultAction
 
             String resultValue = "";
             boolean valueDoesNotExist = true;
-            
+
             while ( matcher.find() )
             {
-                
 
                 String replaceString = matcher.group();
 
@@ -2380,7 +2394,7 @@ public class GenerateRoutineReportAnalyserResultAction
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
@@ -2421,7 +2435,7 @@ public class GenerateRoutineReportAnalyserResultAction
 
                         replaceString = String.valueOf( aggregatedValue );
 
-                        deFlag2 = 1;
+                        // deFlag2 = 1;
                     }
 
                 }
@@ -2517,10 +2531,10 @@ public class GenerateRoutineReportAnalyserResultAction
             {
                 resultValue = buffer.toString();
             }
-            
-            if(valueDoesNotExist)
+
+            if ( valueDoesNotExist )
                 resultValue = " ";
-            
+
             if ( resultValue.equalsIgnoreCase( "" ) )
                 resultValue = " ";
 
@@ -2557,7 +2571,7 @@ public class GenerateRoutineReportAnalyserResultAction
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
@@ -2879,5 +2893,4 @@ public class GenerateRoutineReportAnalyserResultAction
         }
     }
 
-  
 }

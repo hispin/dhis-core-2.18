@@ -224,7 +224,7 @@
 	  <result name="success" type="velocity">/main.vm</result>        
       <param name="page">/dhis-web-validationrule/followUpAnalysisForm.vm</param>
       <param name="menu">/dhis-web-validationrule/menu.vm</param>
-	  <param name="javascripts"> javascript/dataAnalysis.js</param>
+	  <param name="javascripts"> javascript/dataAnalysis.js,javascript/editDataValue.js</param>
 	</action>
 	
     <action name="getAnalysis" class="org.hisp.dhis.validationrule.action.dataanalysis.GetAnalysisAction">

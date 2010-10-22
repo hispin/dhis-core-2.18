@@ -15,8 +15,8 @@
 		else if(document.reportForm.availablePeriods.options[periodIndex].text == null || document.reportForm.availablePeriods.options[periodIndex].text== "") {alert("Please Select Period"); return false;}
 		else if(orgunitIdValue == null || orgunitIdValue=="" || orgunitIdValue==" ") {alert("Please Select OrganisationUnit"); return false;}
 						
-		document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
-		document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+		//document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
+		//document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
 
 		return true;
 	}			
@@ -66,10 +66,11 @@
           	<td>
           	    <input type="hidden" name="ouIDTB" id="ouIDTB">
           	    <input type="hidden" name="ouLevelTB" id="ouLevelTB">
-          	    <input type="hidden" name="reportModelTB" id="reportModelTB">
           	    <input type="hidden" name="autogen" id="autogen" value="0" >
+ <!--         	<input type="hidden" name="reportModelTB" id="reportModelTB">
 				<input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
-				<input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="linelistingReportsList.xml">	
+				<input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="linelistingReportsList.xml">	-->
+				<input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName">
             </td>
         </tr>
     </table>

@@ -16,7 +16,8 @@ import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddUserAction implements Action
+public class AddUserAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -55,71 +56,72 @@ public class AddUserAction implements Action
         String rawPassword = "hmis";
         String surname = "NRHM";
         String firstName = "HMIS";
-        
+
         int userRoles[] = { 0, 1, 1, 3, 4, 6, 5 };
-        int orgUnitLevels = organisationUnitService.getNumberOfOrganisationalLevels();
-        for(int i = 4; i <= 4; i++)
+//        int orgUnitLevels = organisationUnitService.getNumberOfOrganisationalLevels();
+        for ( int i = 4; i <= 4; i++ )
         {
-            List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( i ));
-            
-            for( OrganisationUnit orgU : ouList )
+            List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService
+                .getOrganisationUnitsAtLevel( i ) );
+
+            for ( OrganisationUnit orgU : ouList )
             {
                 username = orgU.getShortName();
-                
+
                 username = username.replace( " ", "" );
-                
+
                 username = username.toLowerCase();
-                
+
                 username = username.trim();
-               
+
                 Collection<User> tempUserList = userStore.getUsersByOrganisationUnit( orgU );
-                
+
                 int flag = 0;
-                if(tempUserList != null )
+                if ( tempUserList != null )
                 {
-                    for( User u : tempUserList )
-                    {                        
+                    for ( User u : tempUserList )
+                    {
                         UserCredentials uc = userStore.getUserCredentials( u );
-                        if( uc != null && uc.getUsername().equalsIgnoreCase( username ) )
+                        if ( uc != null && uc.getUsername().equalsIgnoreCase( username ) )
                             flag = 1;
-                    }                    
+                    }
                 }
-                
-                if(flag == 1 )
+
+                if ( flag == 1 )
                 {
-                    System.out.println(username+" ALREADY THERE");
+                    System.out.println( username + " ALREADY THERE" );
                     continue;
                 }
-                
+
                 Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>();
                 orgUnits.add( orgU );
-                
+
                 User user = new User();
                 user.setSurname( surname );
                 user.setFirstName( firstName );
                 user.setEmail( email );
                 user.setOrganisationUnits( orgUnits );
-        
+
                 UserCredentials userCredentials = new UserCredentials();
                 userCredentials.setUser( user );
                 userCredentials.setUsername( username );
                 userCredentials.setPassword( passwordManager.encodePassword( username, rawPassword ) );
-                        
+
                 UserAuthorityGroup group = userStore.getUserAuthorityGroup( userRoles[i] );
                 userCredentials.getUserAuthorityGroups().add( group );
-                
+
                 userStore.addUser( user );
                 userStore.addUserCredentials( userCredentials );
-                System.out.println(username+" Created");
+                System.out.println( username + " Created" );
             }// OrgUnit For Loop End
-        
-            System.out.println("**********************************************");
-            System.out.println("User Creation for Level "+i+" is completed");
+
+            System.out.println( "**********************************************" );
+            System.out.println( "User Creation for Level " + i + " is completed" );
         }// OrgUnitLevel for loop end
-        
-        System.out.println("**********************************************");
-        System.out.println("USER CREATION IS FINISHED");
-        System.out.println("**********************************************");
+
+        System.out.println( "**********************************************" );
+        System.out.println( "USER CREATION IS FINISHED" );
+        System.out.println( "**********************************************" );
         return SUCCESS;
     }
 

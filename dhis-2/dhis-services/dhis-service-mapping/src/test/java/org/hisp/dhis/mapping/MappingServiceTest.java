@@ -219,7 +219,7 @@ public class MappingServiceTest
         mappingService.addMap( mapA );
 
         MapView mapView = new MapView( "MapViewA", "indicator", indicatorGroup, indicator, new DataElementGroup(), new DataElement(), periodType, period,
-            MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A",
+            MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", MapLegendSet.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A",
             "B", mapLegendSet, "1", "1", 1 );
 
         int idA = mappingService.addMapView( mapView );

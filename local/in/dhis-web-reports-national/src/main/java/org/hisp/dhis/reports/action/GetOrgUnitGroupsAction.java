@@ -7,16 +7,17 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GetOrgUnitGroupsAction extends ActionSupport
+public class GetOrgUnitGroupsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
@@ -25,21 +26,21 @@ public class GetOrgUnitGroupsAction extends ActionSupport
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-    
+
     private Integer orgUnitGroupSetId;
-    
+
     public void setOrgUnitGroupSetId( Integer orgUnitGroupSetId )
     {
         this.orgUnitGroupSetId = orgUnitGroupSetId;
     }
-    
+
     private List<OrganisationUnitGroup> orgUnitGroups;
-    
+
     public List<OrganisationUnitGroup> getOrgUnitGroups()
     {
         return orgUnitGroups;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -48,13 +49,14 @@ public class GetOrgUnitGroupsAction extends ActionSupport
         throws Exception
     {
 
-        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( orgUnitGroupSetId );
-        
-        if(organisationUnitGroupSet != null )
+        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService
+            .getOrganisationUnitGroupSet( orgUnitGroupSetId );
+
+        if ( organisationUnitGroupSet != null )
         {
-            orgUnitGroups = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSet.getOrganisationUnitGroups());            
+            orgUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet.getOrganisationUnitGroups() );
         }
-        
+
         return SUCCESS;
     }
 

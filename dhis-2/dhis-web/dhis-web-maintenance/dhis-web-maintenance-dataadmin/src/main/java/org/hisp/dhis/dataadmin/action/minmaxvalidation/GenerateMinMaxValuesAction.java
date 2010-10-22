@@ -130,16 +130,14 @@ public class GenerateMinMaxValuesAction
     public String execute()
         throws Exception
     {
-
-        Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
-
         if ( dataSetIds == null )
         {
-            message = i18n.getString( "not_choose_dataset" );
+            organisationUnitSelectionManager.clearSelectedOrganisationUnits();
             return INPUT;
         }
-
-        if ( orgUnits == null )
+        
+        Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
+        if ( orgUnits == null || orgUnits.size() ==0 )
         {
             message = i18n.getString( "not_choose_organisation" );
             return INPUT;

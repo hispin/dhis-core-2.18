@@ -106,4 +106,9 @@ public class HibernateDatabaseInfoProvider
     {   
         return info;
     }
+    
+    public boolean isInMemory()
+    {
+        return info.getUrl() != null && info.getUrl().contains( ":mem:" );
+    }
 }

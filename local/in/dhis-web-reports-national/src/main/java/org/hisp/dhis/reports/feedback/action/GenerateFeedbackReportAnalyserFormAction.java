@@ -2,19 +2,19 @@ package org.hisp.dhis.reports.feedback.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportType;
 
-import com.opensymphony.xwork2.ActionSupport;
-import java.util.Iterator;
+import com.opensymphony.xwork2.Action;
 
 public class GenerateFeedbackReportAnalyserFormAction
-    extends ActionSupport
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -39,14 +39,14 @@ public class GenerateFeedbackReportAnalyserFormAction
     {
         return organisationUnitService;
     }
-
+/*
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public class GenerateFeedbackReportAnalyserFormAction
         return ALL;
     }
 
-    private String raFolderName;
+//    private String raFolderName;
 
     // -------------------------------------------------------------------------
     // Properties
@@ -84,7 +84,14 @@ public class GenerateFeedbackReportAnalyserFormAction
     {
         return periodTypes;
     }
+    
+    private String reportTypeName;
 
+    public String getReportTypeName()
+    {
+        return reportTypeName;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -92,7 +99,9 @@ public class GenerateFeedbackReportAnalyserFormAction
     public String execute()
         throws Exception
     {
-        raFolderName = reportService.getRAFolderName();
+        
+        reportTypeName = ReportType.RT_FEEDBACK;
+        //raFolderName = reportService.getRAFolderName();
 
         /* Period Info */
         periodTypes = periodService.getAllPeriodTypes();

@@ -97,10 +97,7 @@ public class JDBCDataSetCompletenessStore
     
     public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
     {           
-        final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();
-        final int periodId = period.getId();
-        final int dataSetId = dataSet.getId();                
-        
+        final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();        
         final String childrenIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Source.class, children ) );
         final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
         
@@ -110,11 +107,27 @@ public class JDBCDataSetCompletenessStore
                 "FROM datavalue " +
                 "JOIN dataelementoperand USING (dataelementid, categoryoptioncomboid) " +
                 "JOIN datasetoperands USING (dataelementoperandid) " +
-                "WHERE periodid = " + periodId + " " + deadlineCriteria +
+                "WHERE periodid = " + period.getId() + " " + deadlineCriteria +
                 "AND sourceid IN (" + childrenIds + ") " +
-                "AND datasetid = " + dataSetId + " GROUP BY sourceid) AS completed " +
+                "AND datasetid = " + dataSet.getId() + " GROUP BY sourceid) AS completed " +
             "WHERE completed.sources = " + compulsoryElements;
         
         return statementManager.getHolder().queryForInteger( sql );
-    }    
+    }
+    
+    public int getNumberOfValues( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
+    {
+        final String childrenIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Source.class, children ) );
+        final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
+        
+        final String sql =
+            "SELECT count(*) FROM datavalue " +
+            "JOIN datasetmembers USING (dataelementid) " +
+            "JOIN dataset USING (datasetid) " +
+            "WHERE datasetid = " + dataSet.getId() + " " + deadlineCriteria +
+            "AND periodid = " + period.getId() + " " +
+            "AND sourceid IN (" + childrenIds + ")";
+
+        return statementManager.getHolder().queryForInteger( sql );
+    }
 }
