@@ -2,7 +2,7 @@ package org.hisp.dhis.reports.action;
 
 import java.io.File;
 
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportService;
 
 import com.opensymphony.xwork2.Action;
 

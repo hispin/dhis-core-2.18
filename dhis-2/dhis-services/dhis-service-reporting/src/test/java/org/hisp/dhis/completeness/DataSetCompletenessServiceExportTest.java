@@ -85,7 +85,7 @@ public class DataSetCompletenessServiceExportTest
     {
         completenessStore = (DataSetCompletenessStore) getBean( DataSetCompletenessStore.ID );
         
-        completenessService = (DataSetCompletenessService) getBean( "subjectiveDataCompletenessService" );
+        completenessService = (DataSetCompletenessService) getBean( "registrationDataCompletenessService" );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
         

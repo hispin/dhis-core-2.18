@@ -201,18 +201,24 @@ mapfish.GeoStat = OpenLayers.Class({
         this.requestSuccess(request);
         
         if (ACTIVEPANEL == thematicMap) {
+            if (!choropleth.isFormComplete()) {
+                MASK.hide();
+            }
             choropleth.classify(false);
         }
         else if (ACTIVEPANEL == thematicMap2) {
+            if (!proportionalSymbol.isFormComplete()) {
+                MASK.hide();
+            }
             proportionalSymbol.classify(false);
         }
         else if (ACTIVEPANEL == organisationUnitAssignment) {
             mapping.classify(false);
         }
+        
+        
 
-		// if (URL) {
-			// loadMapData(ACTIVEPANEL, false);
-		// }
+        // MASK.hide();
     },
 
     /**
@@ -609,17 +615,17 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 /**
  * Constant: mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS
  */
-mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS = 0;
+mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS = 1;
 
 /**
  * Constant: mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS
  */
-mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS = 1;
+mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS = 2;
 
 /**
  * Constant: mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS
  */
-mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS = 2;
+mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS = 3;
 
 /**
  * Bin is category of the Classification.

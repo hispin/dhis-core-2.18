@@ -2,6 +2,7 @@ package org.hisp.dhis.reports.routine.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -13,13 +14,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportType;
 
-import com.opensymphony.xwork2.ActionSupport;
-import java.util.Iterator;
+import com.opensymphony.xwork2.Action;
 
 public class GenerateRoutineReportAnalyserFormAction
-    extends ActionSupport
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -44,14 +44,14 @@ public class GenerateRoutineReportAnalyserFormAction
     {
         return organisationUnitService;
     }
-
+/*
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
     }
-    
+*/    
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -70,7 +70,7 @@ public class GenerateRoutineReportAnalyserFormAction
         return ALL;
     }
 
-    private String raFolderName;
+//    private String raFolderName;
 
     // -------------------------------------------------------------------------
     // Properties
@@ -103,7 +103,13 @@ public class GenerateRoutineReportAnalyserFormAction
     {
         return orgUnitGroupMembers;
     }
+    
+    private String reportTypeName;
 
+    public String getReportTypeName()
+    {
+        return reportTypeName;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -112,7 +118,10 @@ public class GenerateRoutineReportAnalyserFormAction
     public String execute()
         throws Exception
     {
-        raFolderName = reportService.getRAFolderName();
+       // raFolderName = reportService.getRAFolderName();
+        
+        /* Report Info */
+        reportTypeName = ReportType.RT_ROUTINE;
 
         /* Period Info */
         periodTypes = periodService.getAllPeriodTypes();

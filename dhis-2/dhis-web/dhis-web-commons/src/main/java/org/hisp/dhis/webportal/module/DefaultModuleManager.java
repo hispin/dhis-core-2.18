@@ -107,6 +107,11 @@ public class DefaultModuleManager
 
         return modulesByNamespace.get( namespace );
     }
+    
+    public boolean moduleExists( String name )
+    {
+        return getModuleByName( name ) != null;
+    }
 
     public List<Module> getMenuModules()
     {

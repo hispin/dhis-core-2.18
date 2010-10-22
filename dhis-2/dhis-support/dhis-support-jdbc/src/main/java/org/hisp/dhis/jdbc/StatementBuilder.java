@@ -102,4 +102,9 @@ public interface StatementBuilder
      * @return
      */
     String getDropDatasetForeignKeyForDataEntryFormTable();
+    
+    String getMoveDataValueToDestination( int sourceId, int destinationId );
+    
+    String getSummarizeDestinationAndSourceWhereMatching( int sourceId, int destinationId );
+
 }

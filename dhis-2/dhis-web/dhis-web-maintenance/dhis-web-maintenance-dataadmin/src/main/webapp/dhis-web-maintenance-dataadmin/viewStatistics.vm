@@ -47,6 +47,10 @@
         <td>$objects.getValue( "PERIOD" )</td>
     </tr>
     <tr>
+        <td>$i18n.getString( "users" )</td>
+        <td>$objects.getValue( "USER" )</td>
+    </tr>
+    <tr>
         <td>$i18n.getString( "data_values" )</td>
         <td>$objects.getValue( "DATAVALUE" )</td>
     </tr>

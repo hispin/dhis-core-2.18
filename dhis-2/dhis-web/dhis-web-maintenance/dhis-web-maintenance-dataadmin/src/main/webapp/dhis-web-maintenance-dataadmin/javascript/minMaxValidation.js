@@ -101,3 +101,13 @@ function saveFactor(){
 function saveFactorSuccess(){
 	setMessage( i18n_save_factory_success );
 }
+
+//-----------------------------------------------------------------------------------
+// Organisation Tree
+//-----------------------------------------------------------------------------------
+
+function removeMinMaxValue(){
+	var form = byId("minMaxGeneratingForm");
+	form.action = "removeMinMaxValue.action"
+	form.submit();
+}

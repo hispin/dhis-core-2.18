@@ -286,6 +286,14 @@
 				getMinMaxValidationParamsChain</result>
 		</action>
 		
+		<action name="removeMinMaxValue"
+			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction">
+			<result name="success" type="chain">
+				getMinMaxValidationParamsChain</result>
+			<result name="input" type="chain">
+				getMinMaxValidationParamsChain</result>
+		</action>
+		
 		<action name="getMinMaxValidationParamsChain"
 			class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction">
 			<interceptor-ref name="organisationUnitTreeStack"/>
@@ -299,7 +307,6 @@
 				../dhis-web-commons/util/validate/jquery.validate.js,
 				../dhis-web-commons/util/jquery.metadata.js,
 				../dhis-web-commons/util/validate/additional-methods.js,
-				../dhis-web-commons/validationMessages.action,
 				javascript/minMaxValidation.js </param>
 		</action>
 		

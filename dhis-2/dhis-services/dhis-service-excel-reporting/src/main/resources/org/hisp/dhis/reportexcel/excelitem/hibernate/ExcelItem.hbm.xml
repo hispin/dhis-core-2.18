@@ -21,9 +21,6 @@
 				foreign-key="fk_exceltitem_group" lazy="false" insert="true" />
 		</properties>
 
-
-
-
 		<property name="expression" column="expression" not-null="true" />
 
 		<property name="row" column="excelrow" not-null="true" />
@@ -31,7 +28,6 @@
 		<property name="column" column="excelcolumn" not-null="true" />
 
 		<property name="sheetNo" column="sheetNo" not-null="true" />
-
 
 	</class>
 

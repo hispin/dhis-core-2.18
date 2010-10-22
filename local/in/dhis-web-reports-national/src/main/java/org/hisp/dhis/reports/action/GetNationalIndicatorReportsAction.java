@@ -7,7 +7,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reports.Report_in;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,10 +16,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class GetNationalIndicatorReportsAction
-    extends ActionSupport
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -61,9 +62,9 @@ public class GetNationalIndicatorReportsAction
         return reportModels;
     }
 */
-    private List<Report> reportList;
+    private List<Report_in> reportList;
 
-    public List<Report> getReportList()
+    public List<Report_in> getReportList()
     {
         return reportList;
     }
@@ -81,7 +82,8 @@ public class GetNationalIndicatorReportsAction
         reportIds = new ArrayList<String>();
         reportModels = new ArrayList<String>();
         */
-        reportList = new ArrayList<Report>();
+        
+       // reportList = new ArrayList<Report>();
 
         getSelectedReportList();
 
@@ -164,8 +166,9 @@ public class GetNationalIndicatorReportsAction
 
                     if ( reportType.equals( periodType ) && reportLevel.equals( orgUnitLevel ) )
                     {
-                        Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                        reportList.add( count, reportObj );
+                        //Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
+                       // reportList.add( count, reportObj );
+                       
                         /*                         
                          reportIds.add( count, reportId );
                         reportNames.add( count, reportName );

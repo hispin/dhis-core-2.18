@@ -89,17 +89,6 @@ public class HibernateOrganisationUnitStore
         return (OrganisationUnit) query.uniqueResult();
     }
 
-    public OrganisationUnit getOrganisationUnitByShortName( String shortName )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from OrganisationUnit o where o.shortName = :shortName" );
-
-        query.setString( "shortName", shortName );
-
-        return (OrganisationUnit) query.uniqueResult();
-    }
-
     public OrganisationUnit getOrganisationUnitByCode( String code )
     {
         Session session = sessionFactory.getCurrentSession();

@@ -258,6 +258,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction"
+		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction">
+		<property name="organisationUnitSelectionManager">
+			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
+		<property name="minMaxValuesGenerationService"
+			ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" />
+		<property name="minMaxDataElementService"
+			ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+		</property>
+	</bean>
+	
 	<!-- Min/Max validation - Organisation Unit tree -->
 
 	<bean

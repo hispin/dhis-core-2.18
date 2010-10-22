@@ -163,6 +163,9 @@ public class TableAlteror
         //orgunit coord
         executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
         
+        //orgunit shortname uniqueness
+        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );
+        
         log.info( "Tables updated" );
     }
 

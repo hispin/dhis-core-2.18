@@ -11,8 +11,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reports.api.Report;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.Report_in;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -49,9 +50,9 @@ public class BenificiaryInfoReportsFormAction implements Action
     // -------------------------------------------------------------------------
 
 
-private List<Report> reportList;
+private List<Report_in> reportList;
 
-    public List<Report> getReportList()
+    public List<Report_in> getReportList()
     {
         return reportList;
     }
@@ -84,7 +85,7 @@ private List<Report> reportList;
 
         periodList = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
 
-        reportList = new ArrayList<Report>();
+       // reportList = new ArrayList<Report>();
 
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
@@ -167,8 +168,8 @@ private List<Report> reportList;
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
 
-                    Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                    reportList.add( reportObj );
+                   // Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
+                   // reportList.add( reportObj );
 
                 }
             }// end of for loop with s var

@@ -471,14 +471,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction"
     scope="prototype">
     <property name="completenessService"
-      ref="subjectiveDataCompletenessService"/>
+      ref="registrationDataCompletenessService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction"
     class="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction"
     scope="prototype">
     <property name="completenessService"
-      ref="subjectiveDataCompletenessService"/>
+      ref="registrationDataCompletenessService"/>
   </bean>
   
   <!-- Tallysheet -->

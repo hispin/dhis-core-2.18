@@ -727,6 +727,9 @@
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
+	<bean id="org.hisp.dhis.interceptor.ContextInterceptor"
+		class="org.hisp.dhis.interceptor.ContextInterceptor"/>
+
 	<bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction"
 		class="org.hisp.dhis.useraccount.action.GetCurrentUserAction" scope="prototype">
 		<property name="currentUserService">

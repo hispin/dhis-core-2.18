@@ -1,12 +1,8 @@
 package org.hisp.dhis.reports.datasetlock.action;
 
-//import java.util.ArrayList;
-import java.util.Collection; //import java.util.Iterator;
-//import org.hisp.dhis.organisationunit.OrganisationUnit;
-//import org.hisp.dhis.organisationunit.OrganisationUnitService;
-//import org.hisp.dhis.period.Period;
+import java.util.Collection;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType; //import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.period.PeriodType;
 import com.opensymphony.xwork2.Action;
 
 public class GenerateDataSetLockReportAnalyserFormAction

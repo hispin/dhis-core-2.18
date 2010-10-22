@@ -16,6 +16,7 @@
     "mapLegendType": "$!encoder.jsEncode( ${mapView.mapLegendType} )",
     "method": "$!{mapView.method}",
     "classes": "$!{mapView.classes}",
+    "bounds": "$!{mapView.bounds}",
     "colorLow": "$!encoder.jsEncode( ${mapView.colorLow} )",
     "colorHigh": "$!encoder.jsEncode( ${mapView.colorHigh} )",
     "mapLegendSetId": "$!{mapView.mapLegendSet.id}",

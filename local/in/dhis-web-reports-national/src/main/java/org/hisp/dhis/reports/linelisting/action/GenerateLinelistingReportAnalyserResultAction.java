@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +53,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -67,9 +66,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
+public class GenerateLinelistingReportAnalyserResultAction
+    implements Action
 {
     private static final String NULL_REPLACEMENT = "0";
 
@@ -143,14 +143,23 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     {
         this.dataValueService = dataValueService;
     }
+    
+    private DataElementCategoryService dataElementCategoryOptionComboService;
+    
+    
+    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
 
+    /*
     private DataElementCategoryService dataElementCategoryService;
 
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-
+*/
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -158,12 +167,12 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /*private DBConnection dbConnection;
-    
-    public void setDbConnection( DBConnection dbConnection )
-    {
-        this.dbConnection = dbConnection;
-    }*/
+    /*
+     * private DBConnection dbConnection;
+     * 
+     * public void setDbConnection( DBConnection dbConnection ) {
+     * this.dbConnection = dbConnection; }
+     */
 
     private I18nFormat format;
 
@@ -175,13 +184,14 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
+/*   
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
     }
-
+*/
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -190,13 +200,10 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     }
 
     /*
-    private String contentType;
-
-    public String getContentType()
-    {
-        return contentType;
-    }
-    */
+     * private String contentType;
+     * 
+     * public String getContentType() { return contentType; }
+     */
 
     private String fileName;
 
@@ -206,13 +213,10 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     }
 
     /*
-    private int bufferSize;
-
-    public int getBufferSize()
-    {
-        return bufferSize;
-    }
-    */
+     * private int bufferSize;
+     * 
+     * public int getBufferSize() { return bufferSize; }
+     */
 
     private MathTool mathTool;
 
@@ -289,26 +293,27 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     private List<String> serviceType;
 
     private String reportFileNameTB;
-
+    
+/*
     public void setReportFileNameTB( String reportFileNameTB )
     {
         this.reportFileNameTB = reportFileNameTB;
     }
-
+*/
     private String reportModelTB;
-
+/*
     public void setReportModelTB( String reportModelTB )
     {
         this.reportModelTB = reportModelTB;
     }
-
+*/
     private String reportList;
 
     public void setReportList( String reportList )
     {
         this.reportList = reportList;
     }
-
+/*
     private String startDate;
 
     public void setStartDate( String startDate )
@@ -329,7 +334,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     {
         this.orgUnitListCB = orgUnitListCB;
     }
-
+*/
     private int ouIDTB;
 
     public void setOuIDTB( int ouIDTB )
@@ -344,7 +349,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         this.availablePeriods = availablePeriods;
     }
 
-    private Hashtable<String, String> serviceList;
+//    private Hashtable<String, String> serviceList;
 
     private List<Integer> sheetList;
 
@@ -360,16 +365,16 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
     private Date eDate;
 
-    private List<Integer> totalOrgUnitsCountList;
-    
+//    private List<Integer> totalOrgUnitsCountList;
+
     private OrganisationUnit currentOrgUnit;
 
     private Map<String, String> resMap;
-    
+
     Connection con = null;
-    
+
     private String raFolderName;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -379,44 +384,57 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     {
 
         statementManager.initialise();
-        //con = dbConnection.openConnection();
-        
+        // con = dbConnection.openConnection();
+
         // Initialization
         raFolderName = reportService.getRAFolderName();
-        
+
         mathTool = new MathTool();
         services = new ArrayList<String>();
         slNos = new ArrayList<String>();
         deCodeType = new ArrayList<String>();
         serviceType = new ArrayList<String>();
-        totalOrgUnitsCountList = new ArrayList<Integer>();
-        String deCodesXMLFileName = "";
+//        totalOrgUnitsCountList = new ArrayList<Integer>();
+        //String deCodesXMLFileName = "";
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
         yearFormat = new SimpleDateFormat( "yyyy" );
-        deCodesXMLFileName = reportList + "DECodes.xml";
+       // deCodesXMLFileName = reportList + "DECodes.xml";
 
         initializeResultMap();
+
+        List<Integer> llrecordNos = new ArrayList<Integer>();
+
+//        String parentUnit = "";
         
-        List<Integer> llrecordNos = new ArrayList<Integer>();        
         
-        String parentUnit = "";
+        // Getting Report Details       
+        String deCodesXMLFileName = "";
+
+        Report_in selReportObj = reportService.getReport( Integer.parseInt( reportList ) );
+
+        deCodesXMLFileName = selReportObj.getXmlTemplateName();
+        reportModelTB = selReportObj.getModel();
+        reportFileNameTB = selReportObj.getExcelTemplateName();
+        
+        System.out.println( reportModelTB + " : " + reportFileNameTB + " : " + deCodesXMLFileName + " : " + ouIDTB );
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
 
         sheetList = new ArrayList<Integer>();
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
-        rowMergeList = new ArrayList<Integer>();;
+        rowMergeList = new ArrayList<Integer>();
+        
         colMergeList = new ArrayList<Integer>();
 
-        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator
-            + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator
-            + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+            + "template" + File.separator + reportFileNameTB;
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook
             .createWorkbook( new File( outputReportPath ), templateWorkbook );
-
 
         // Period Info
         selectedPeriod = periodService.getPeriod( availablePeriods );
@@ -425,7 +443,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
         // OrgUnit Info
-        currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );            
+        currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
         llrecordNos = reportService.getLinelistingRecordNos( currentOrgUnit, selectedPeriod, reportList );
 
         // Getting DataValues
@@ -433,15 +451,16 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
 
         int flag = 0;
-        if( llrecordNos.size() == 0 ) flag=1;
+        if ( llrecordNos.size() == 0 )
+            flag = 1;
         Iterator<Integer> it = llrecordNos.iterator();
         int recordCount = 0;
-        while ( it.hasNext() || flag == 1)
-        {                        
+        while ( it.hasNext() || flag == 1 )
+        {
             Integer recordNo = -1;
-            if(flag == 0)
+            if ( flag == 0 )
             {
-                recordNo = (Integer) it.next();                
+                recordNo = (Integer) it.next();
             }
             flag = 0;
 
@@ -453,9 +472,9 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
                 String deType = (String) deCodeType.get( count1 );
                 String sType = (String) serviceType.get( count1 );
-                int count = 0;
-                double sum = 0.0;
-                int flag1 = 0;
+               // int count = 0;
+                //double sum = 0.0;
+              //  int flag1 = 0;
                 String tempStr = "";
 
                 Calendar tempStartDate = Calendar.getInstance();
@@ -493,7 +512,8 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 {
                     tempStr = currentOrgUnit.getParent().getParent().getParent().getParent().getName();
                 }
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD" ) || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" ) )
+                else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                    || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" ) )
                 {
                     tempStr = format.formatDate( sDate ) + " - " + format.formatDate( eDate );
                 }
@@ -543,7 +563,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                     tempStr = " ";
                 }
                 else
-                {                    
+                {
                     if ( sType.equalsIgnoreCase( "dataelement" ) || sType.equalsIgnoreCase( "dataelementnorepeat" ) )
                     {
                         tempStr = getResultDataValue( deCodeString, selectedPeriod, currentOrgUnit );
@@ -555,7 +575,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                     }
                     else if ( sType.equalsIgnoreCase( "lldataelement" ) )
                     {
-                        tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );                        
+                        tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
                     }
                     else
                     {
@@ -570,7 +590,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 int sheetNo = sheetList.get( count1 );
                 int tempMergeCol = colMergeList.get( count1 );
                 int tempMergeRow = rowMergeList.get( count1 );
-                
+
                 WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
                 if ( tempStr == null || tempStr.equals( " " ) )
                 {
@@ -579,27 +599,31 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 else
                 {
 
-                    System.out.println(deCodeString + " : " + tempStr);
-                    
+                    System.out.println( deCodeString + " : " + tempStr );
+
                     String tstr = resMap.get( tempStr.trim() );
-                    if( tstr != null )
+                    if ( tstr != null )
                         tempStr = tstr;
-                    
+
                     if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-DATAELEMENT" ) )
                     {
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) || deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
+                            || deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
                         {
 
                         }
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" )
+                            || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
                         {
 
                         }
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" ) || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
+                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
                         {
 
                         }
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-MONTH" ) || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
+                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
                         {
 
                         }
@@ -607,20 +631,20 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                         {
 
                         }
-                        else if( sType.equalsIgnoreCase( "dataelementnorepeat" ) )
+                        else if ( sType.equalsIgnoreCase( "dataelementnorepeat" ) )
                         {
-                            
+
                         }
                         else
                         {
-                            
+
                             tempRowNo += recordCount;
                         }
-                        
+
                         WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo1 );
 
                         CellFormat cellFormat = cell.getCellFormat();
-                        
+
                         WritableCellFormat wCellformat = new WritableCellFormat();
 
                         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
@@ -629,18 +653,20 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
 
                         if ( cellFormat != null )
-                        {   
-                            if(tempMergeCol > 0 || tempMergeRow > 0)
-                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo+tempMergeCol, tempRowNo+tempMergeRow );
+                        {
+                            if ( tempMergeCol > 0 || tempMergeRow > 0 )
+                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo
+                                    + tempMergeRow );
                             sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, cellFormat ) );
-                            System.out.println("In Pre-Formatted: "+tempStr);
+                            System.out.println( "In Pre-Formatted: " + tempStr );
                         }
                         else
                         {
-                            if(tempMergeCol > 0 || tempMergeRow > 0)
-                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo+tempMergeCol, tempRowNo+tempMergeRow );
+                            if ( tempMergeCol > 0 || tempMergeRow > 0 )
+                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo
+                                    + tempMergeRow );
                             sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
-                            System.out.println("In Cur-Formatted: "+tempStr);
+                            System.out.println( "In Cur-Formatted: " + tempStr );
                         }
                     }
 
@@ -659,13 +685,14 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
          * res.setContentType("application/vnd.ms-excel");
          */
         int noOfRecords = llrecordNos.size();
-        
+
         WritableSheet sheet0 = outputReportWorkbook.getSheet( 0 );
-        
-        sheet0.addCell( new Label( 25, 1, ""+currentOrgUnit.getId(), getCellFormat1() ) );
-        sheet0.addCell( new Label( 25, 2, ""+selectedPeriod.getId(), getCellFormat1() ) );
-        sheet0.addCell( new Label( 25, 3, ""+noOfRecords, getCellFormat1() ) );
-        sheet0.addCell( new Label( 25, 4, ""+reportList, getCellFormat1() ) );
+
+        sheet0.addCell( new Label( 25, 1, "" + currentOrgUnit.getId(), getCellFormat1() ) );
+        sheet0.addCell( new Label( 25, 2, "" + selectedPeriod.getId(), getCellFormat1() ) );
+        sheet0.addCell( new Label( 25, 3, "" + noOfRecords, getCellFormat1() ) );
+        sheet0.addCell( new Label( 25, 4, "" + reportList, getCellFormat1() ) );
+        System.out.println("Current org unit id : " + currentOrgUnit.getId() + ": Selected Period is : " + selectedPeriod.getId() + ": No of Record :" + noOfRecords + ": Report List : " + reportList);
 
         outputReportWorkbook.write();
         outputReportWorkbook.close();
@@ -680,14 +707,16 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
         try
         {
-            
+
         }
         finally
         {
-            if( con!= null ) con.close();
+            if ( con != null )
+                con.close();
         }
-        
+
         statementManager.destroy();
+        System.out.println( "Report Generation End Time is : \t" + new Date() );
 
         return SUCCESS;
     }
@@ -695,7 +724,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     public void initializeResultMap()
     {
         resMap = new HashMap<String, String>();
-        
+
         resMap.put( "NONE", "---" );
         resMap.put( "M", "Male" );
         resMap.put( "F", "Female" );
@@ -706,12 +735,12 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         resMap.put( "B1WEEK", "1 DAY - 1 WEEK" );
         resMap.put( "B1MONTH", "1 WEEK - 1 MONTH" );
         resMap.put( "B1YEAR", "1 MONTH - 1 YEAR" );
-        resMap.put( "B5YEAR", "1 YEAR - 5 YEARS" );                
+        resMap.put( "B5YEAR", "1 YEAR - 5 YEARS" );
         resMap.put( "O5YEAR", "6 YEARS - 14 YEARS" );
-        
+
         resMap.put( "O15YEAR", "15 YEARS - 55 YEARS" );
         resMap.put( "O55YEAR", "OVER 55 YEARS" );
-        
+
         resMap.put( "ASPHYXIA", "ASPHYXIA" );
         resMap.put( "SEPSIS", "SEPSIS" );
         resMap.put( "LOWBIRTHWEIGH", "LOWBIRTHWEIGH" );
@@ -757,24 +786,26 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         resMap.put( "BACD", "BLEEDING AFTER CHILD DELIVERY" );
         resMap.put( "HFBD", "HIGH FEVER BEFORE DELIVERY" );
         resMap.put( "HFAD", "HIGH FEVER AFTER DELIVERY" );
-        
+
     }
-    
-    public WritableCellFormat getCellFormat1() throws Exception
+
+    public WritableCellFormat getCellFormat1()
+        throws Exception
     {
-        WritableCellFormat wCellformat = new WritableCellFormat();                        
-        
+        WritableCellFormat wCellformat = new WritableCellFormat();
+
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.CENTRE );
         wCellformat.setWrap( true );
 
         return wCellformat;
     }
-    
-    public WritableCellFormat getCellFormat2() throws Exception
+
+    public WritableCellFormat getCellFormat2()
+        throws Exception
     {
-        WritableCellFormat wCellformat = new WritableCellFormat();                        
-        
+        WritableCellFormat wCellformat = new WritableCellFormat();
+
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.LEFT );
         wCellformat.setWrap( true );
@@ -889,9 +920,9 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
     public PeriodType getPeriodTypeObject( String periodTypeName )
     {
-        Collection periodTypes = periodService.getAllPeriodTypes();
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
+        Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
             PeriodType tempPeriodType = (PeriodType) iter.next();
@@ -983,7 +1014,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     public PeriodType getDataElementPeriodType( DataElement de )
     {
         List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Iterator it = dataSetList.iterator();
+        Iterator<DataSet> it = dataSetList.iterator();
         while ( it.hasNext() )
         {
             DataSet ds = (DataSet) it.next();
@@ -1002,13 +1033,13 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     {
         Statement st1 = null;
         ResultSet rs1 = null;
-        
+
         String query = "";
         try
         {
-            
-            int deFlag1 = 0;
-            int deFlag2 = 0;
+
+            //int deFlag1 = 0;
+            //int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -1028,8 +1059,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
                 {
@@ -1038,22 +1068,24 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                     continue;
                 }
 
-                //DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
-                //    optionCombo );
-                //st1 = con.createStatement();            
-                
-                query = "SELECT value FROM lldatavalue WHERE sourceid = " + organisationUnit.getId() + " AND periodid = " + period.getId() + " AND dataelementid = " + dataElement.getId() + " AND recordno = "+recordNo;
-                //rs1 = st1.executeQuery( query );
-                
+                // DataValue dataValue = dataValueService.getDataValue(
+                // organisationUnit, dataElement, period,
+                // optionCombo );
+                // st1 = con.createStatement();
+
+                query = "SELECT value FROM lldatavalue WHERE sourceid = " + organisationUnit.getId()
+                    + " AND periodid = " + period.getId() + " AND dataelementid = " + dataElement.getId()
+                    + " AND recordno = " + recordNo;
+                // rs1 = st1.executeQuery( query );
+
                 SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
-                
+
                 String tempStr = "";
-                
-                if(sqlResultSet.next())
+
+                if ( sqlResultSet.next() )
                 {
                     tempStr = sqlResultSet.getString( 1 );
-                }                          
-
+                }
 
                 replaceString = tempStr;
 
@@ -1064,65 +1096,48 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
             String resultValue = "";
             /*
-            if ( deFlag1 == 0 )
-            {
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                }
-                catch ( Exception e )
-                {
-                    d = 0.0;
-                }
-                if ( d == -1 )
-                    d = 0.0;
-                else
-                {
-                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-                    resultValue = "" + (int) d;
-                }
+             * if ( deFlag1 == 0 ) { double d = 0.0; try { d =
+             * MathUtils.calculateExpression( buffer.toString() ); } catch (
+             * Exception e ) { d = 0.0; } if ( d == -1 ) d = 0.0; else { d =
+             * Math.round( d Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+             * resultValue = "" + (int) d; }
+             * 
+             * if ( deFlag2 == 0 ) { resultValue = " "; }
+             * 
+             * } else { resultValue = buffer.toString(); }
+             */
 
-                if ( deFlag2 == 0 )
-                {
-                    resultValue = " ";
-                }
-
-            }
-            else
-            {
-                resultValue = buffer.toString();
-            }*/
-            
             resultValue = buffer.toString();
-            
+
             return resultValue;
         }
         catch ( NumberFormatException ex )
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
-        catch ( Exception e)
+        catch ( Exception e )
         {
-            System.out.println("SQL Exception : "+e.getMessage());     
+            System.out.println( "SQL Exception : " + e.getMessage() );
             return null;
         }
         finally
         {
             try
             {
-                if(st1 != null) st1.close();
-                
-                if(rs1 != null) rs1.close();
+                if ( st1 != null )
+                    st1.close();
+
+                if ( rs1 != null )
+                    rs1.close();
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                System.out.println("SQL Exception : "+e.getMessage());
+                System.out.println( "SQL Exception : " + e.getMessage() );
                 return null;
             }
         }// finally block end
     }
-    
+
     /**
      * Converts an expression on the form<br>
      * [34] + [23], where the numbers are IDs of DataElements, to the form<br>
@@ -1135,8 +1150,8 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     {
         try
         {
-            int deFlag1 = 0;
-            int deFlag2 = 0;
+           // int deFlag1 = 0;
+           // int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -1156,8 +1171,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
                 {
@@ -1166,8 +1180,8 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                     continue;
                 }
 
-                DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
-                    optionCombo );
+                DataValue dataValue = dataValueService
+                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
 
                 if ( dataValue != null )
                 {
@@ -1183,38 +1197,19 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
             String resultValue = "";
             /*
-            if ( deFlag1 == 0 )
-            {
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                }
-                catch ( Exception e )
-                {
-                    d = 0.0;
-                }
-                if ( d == -1 )
-                    d = 0.0;
-                else
-                {
-                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-                    resultValue = "" + (int) d;
-                }
+             * if ( deFlag1 == 0 ) { double d = 0.0; try { d =
+             * MathUtils.calculateExpression( buffer.toString() ); } catch (
+             * Exception e ) { d = 0.0; } if ( d == -1 ) d = 0.0; else { d =
+             * Math.round( d Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+             * resultValue = "" + (int) d; }
+             * 
+             * if ( deFlag2 == 0 ) { resultValue = " "; }
+             * 
+             * } else { resultValue = buffer.toString(); }
+             */
 
-                if ( deFlag2 == 0 )
-                {
-                    resultValue = " ";
-                }
-
-            }
-            else
-            {
-                resultValue = buffer.toString();
-            }*/
-            
             resultValue = buffer.toString();
-            
+
             return resultValue;
         }
         catch ( NumberFormatException ex )
@@ -1248,8 +1243,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
                 {
@@ -1257,7 +1251,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                     matcher.appendReplacement( buffer, replaceString );
                     continue;
                 }
-                
+
                 if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
                 {
                     deFlag1 = 1;
@@ -1278,11 +1272,11 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
 
                     DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
                         optionCombo );
-                    
+
                     if ( dataValue != null )
                     {
                         // Works for both text and boolean data types
-                        
+
                         if ( dataValue.getValue().equalsIgnoreCase( "true" ) )
                         {
                             replaceString = "Yes";
@@ -1396,7 +1390,7 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
                 Double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
-                if ( aggregatedValue == null)
+                if ( aggregatedValue == null )
                 {
                     replaceString = NULL_REPLACEMENT;
                 }

@@ -97,5 +97,14 @@ public interface ReportService
     public List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU );
 
     public PeriodType getDataElementPeriodType( DataElement de );
+    
+    // -------------------------------------------------------------------------
+    // ReportService for Report Result Action
+    // -------------------------------------------------------------------------
+    
+   // public List<String> getDECodes( String fileName );
+    public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
+    public String getIndividualResultDataValue( String formula, Date startDate, Date endDate,OrganisationUnit organisationUnit , String reportModelTB );
+    public String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
 
 }

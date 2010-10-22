@@ -4,9 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class ExportToExcelAction extends ActionSupport
+public class ExportToExcelAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -15,7 +16,7 @@ public class ExportToExcelAction extends ActionSupport
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -24,13 +25,10 @@ public class ExportToExcelAction extends ActionSupport
     }
 
     /*
-    private String contentType;
-
-    public String getContentType()
-    {
-        return contentType;
-    }
-    */
+     * private String contentType;
+     * 
+     * public String getContentType() { return contentType; }
+     */
 
     private String fileName;
 
@@ -40,34 +38,31 @@ public class ExportToExcelAction extends ActionSupport
     }
 
     /*
-    private int bufferSize;
-
-    public int getBufferSize()
-    {
-        return bufferSize;
-    }
-    */
+     * private int bufferSize;
+     * 
+     * public int getBufferSize() { return bufferSize; }
+     */
 
     private String htmlCode;
-    
+
     public void setHtmlCode( String htmlCode )
     {
         this.htmlCode = htmlCode;
     }
-        
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
-    {                        
+    public String execute()
+        throws Exception
+    {
 
         fileName = "dataSetReport.xls";
 
         inputStream = new BufferedInputStream( new ByteArrayInputStream( htmlCode.getBytes() ) );
-        
+
         return SUCCESS;
     }
-
 
 }

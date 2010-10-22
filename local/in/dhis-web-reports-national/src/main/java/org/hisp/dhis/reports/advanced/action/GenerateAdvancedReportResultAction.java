@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,14 +44,14 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.system.util.MathUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -61,10 +60,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class GenerateAdvancedReportResultAction
-    extends ActionSupport
+    implements Action
 {
     private static final String NULL_REPLACEMENT = "0";
 
@@ -112,13 +111,21 @@ public class GenerateAdvancedReportResultAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryService dataElementCategoryService;
+    private DataElementCategoryService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
     {
-        this.dataElementCategoryService = dataElementCategoryService;
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
+/*
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
+*/    
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -224,7 +231,7 @@ public class GenerateAdvancedReportResultAction
     {
         return simpleDateFormat;
     }
-
+/*
     private String reportFileNameTB;
 
     public void setReportFileNameTB( String reportFileNameTB )
@@ -238,7 +245,7 @@ public class GenerateAdvancedReportResultAction
     {
         this.reportModelTB = reportModelTB;
     }
-
+*/
     private String reportList;
 
     public void setReportList( String reportList )
@@ -259,14 +266,14 @@ public class GenerateAdvancedReportResultAction
     {
         this.endDate = endDate;
     }
-
+/*
     private List<String> orgUnitListCB;
 
     public void setOrgUnitListCB( List<String> orgUnitListCB )
     {
         this.orgUnitListCB = orgUnitListCB;
     }
-
+*/
     private Period selectedPeriod;
 
     public Period getSelectedPeriod()
@@ -295,7 +302,7 @@ public class GenerateAdvancedReportResultAction
 
     private Date eDate;
 
-    private List<Integer> ougmemberCountList;
+ //   private List<Integer> ougmemberCountList;
 
     private String raFolderName;
 
@@ -303,7 +310,7 @@ public class GenerateAdvancedReportResultAction
 
     // private int[] monthCount = { 0, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-    private Connection con = null;
+//    private Connection con = null;
 
     // private String orgUnitInfo = "-1";
     // private String aggDataTableName;
@@ -315,7 +322,7 @@ public class GenerateAdvancedReportResultAction
     public String execute()
         throws Exception
     {
-        Date sysStartDate = new Date();
+       // Date sysStartDate = new Date();
 
         //con = (new DBConnection()).openConnection();
 
@@ -327,18 +334,31 @@ public class GenerateAdvancedReportResultAction
         mathTool = new MathTool();
         services = new ArrayList<String>();
         slNos = new ArrayList<String>();
-        ougmemberCountList = new ArrayList<Integer>();
-        String deCodesXMLFileName = "";
-        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-        deCodesXMLFileName = reportList + "DECodes.xml";
-
+//        ougmemberCountList = new ArrayList<Integer>();
         deCodeType = new ArrayList<String>();
         serviceType = new ArrayList<String>();
-
         sheetList = new ArrayList<Integer>();
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
+        
+        String deCodesXMLFileName = "";
+        String reportModelTB = "";
+        String reportFileNameTB = "";
+        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+       // deCodesXMLFileName = reportList + "DECodes.xml";
+        
+        
+        // Getting Report Details
+        Report_in selReportObj = reportService.getReport( Integer.parseInt( reportList ) );
 
+        deCodesXMLFileName = selReportObj.getXmlTemplateName();
+        reportModelTB = selReportObj.getModel();
+        reportFileNameTB = selReportObj.getExcelTemplateName();
+
+        System.out.println( reportModelTB + " : " + reportFileNameTB + " : " + deCodesXMLFileName + " : " + ouIDTB );
+
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+ 
         // deCodeTotalList = new DeCodesXML();
 
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
@@ -359,8 +379,8 @@ public class GenerateAdvancedReportResultAction
         selectedOrgUnit = new OrganisationUnit();
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
 
-        OrganisationUnitGroup ouGroup = new OrganisationUnitGroup();
-        List<OrganisationUnitGroup> orgUnitGroupList = new ArrayList<OrganisationUnitGroup>();
+//        OrganisationUnitGroup ouGroup = new OrganisationUnitGroup();
+//        List<OrganisationUnitGroup> orgUnitGroupList = new ArrayList<OrganisationUnitGroup>();
 
         /*
          * orgUnitGroupList = reportService.getOrgUnitGroupsFromXML(); if (
@@ -455,17 +475,17 @@ public class GenerateAdvancedReportResultAction
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
         int orgUnitCount = 0;
         int orgUnitGroupCount = 0;
-        int ouGroupCount = 0;
-        int ouGroupMemCount = 0;
+ //       int ouGroupCount = 0;
+   //     int ouGroupMemCount = 0;
         int slNo = 0;
-        double[][] groupTotal = new double[ouGroupMemList.size() + 1][deCodesList.size()];
-        List<Double> ouGroupTotal = new ArrayList<Double>();
+    //    double[][] groupTotal = new double[ouGroupMemList.size() + 1][deCodesList.size()];
+    //    List<Double> ouGroupTotal = new ArrayList<Double>();
 
         Integer startRow = 10;
 
         Integer currentRow = startRow;
 
-        Integer last = 0;
+//        Integer last = 0;
 
         Integer rowCounter = 10;
 
@@ -764,7 +784,7 @@ public class GenerateAdvancedReportResultAction
 
         statementManager.destroy();
 
-        Date sysEndDate = new Date();
+//        Date sysEndDate = new Date();
 
         //System.out.println( "*************************************" );
         //System.out.println( "StartDate : " + sysStartDate + " \nEndDate : " + sysEndDate );
@@ -896,9 +916,9 @@ public class GenerateAdvancedReportResultAction
        
     public PeriodType getPeriodTypeObject( String periodTypeName )
     {
-        Collection periodTypes = periodService.getAllPeriodTypes();
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
+        Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
             PeriodType tempPeriodType = (PeriodType) iter.next();
@@ -986,7 +1006,7 @@ public class GenerateAdvancedReportResultAction
             // + String.valueOf( endDate ) );
 
             int deFlag1 = 0;
-            int deFlag2 = 0;
+           // int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -1008,7 +1028,7 @@ public class GenerateAdvancedReportResultAction
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElement == null || optionCombo == null )
@@ -1037,7 +1057,7 @@ public class GenerateAdvancedReportResultAction
                         
                         replaceString = String.valueOf( aggregatedValue );
 
-                        deFlag2 = 1;
+                        //deFlag2 = 1;
                     }
                 }
 

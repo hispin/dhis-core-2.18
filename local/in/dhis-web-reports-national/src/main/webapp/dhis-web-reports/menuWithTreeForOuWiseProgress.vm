@@ -20,6 +20,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
 {    
 
     document.reportForm.ouIDTB.value = orgUnitIds;
+    reportTypeName = document.reportForm.reportTypeNameTB.value;
 	
 	if(orgUnitIds == null || orgUnitIds == "" )
 	{
@@ -28,7 +29,8 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	
     if(orgUnitIds !=null)
 	   {
-	     getOUDetailsForOuWiseProgressReport(orgUnitIds);
+	    // getOUDetailsForOuWiseProgressReport(orgUnitIds);
+	     getReports(orgUnitIds, reportTypeName );
 	   }
 	
 	}

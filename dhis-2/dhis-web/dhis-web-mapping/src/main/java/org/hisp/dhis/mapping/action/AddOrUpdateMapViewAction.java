@@ -136,6 +136,13 @@ public class AddOrUpdateMapViewAction
     {
         this.classes = classes;
     }
+    
+    private String bounds;
+    
+    public void setBounds( String bounds )
+    {
+        this.bounds = bounds;
+    }
 
     private String colorLow;
 
@@ -187,7 +194,7 @@ public class AddOrUpdateMapViewAction
         throws Exception
     {
         mappingService.addOrUpdateMapView( name, mapValueType, indicatorGroupId, indicatorId, dataElementGroupId,
-            dataElementId, periodTypeId, periodId, mapSource, mapLegendType, method, classes, colorLow, colorHigh,
+            dataElementId, periodTypeId, periodId, mapSource, mapLegendType, method, classes, bounds, colorLow, colorHigh,
             mapLegendSetId, longitude, latitude, zoom );
 
         return SUCCESS;

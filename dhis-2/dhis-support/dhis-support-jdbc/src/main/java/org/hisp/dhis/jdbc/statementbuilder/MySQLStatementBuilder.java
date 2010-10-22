@@ -134,4 +134,23 @@ public class MySQLStatementBuilder
     {
         return  "ALTER TABLE dataentryform DROP FOREIGN KEY fk_dataentryform_datasetid;" ;
     }
+
+    @Override
+    public String getMoveDataValueToDestination( int sourceId, int destinationId )
+    {
+        return "UPDATE datavalue AS d1 SET sourceid=" + destinationId + " " + "WHERE sourceid=" + sourceId + " "
+        + "AND NOT EXISTS ( " + "SELECT * from ( SELECT * FROM datavalue ) AS d2 " + "WHERE d2.sourceid=" + destinationId + " "
+        + "AND d1.dataelementid=d2.dataelementid " + "AND d1.periodid=d2.periodid "
+        + "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid );";
+    }
+
+    @Override
+    public String getSummarizeDestinationAndSourceWhereMatching( int sourceId, int destId )
+    {
+        return "UPDATE datavalue AS d1 SET value=( " + "SELECT SUM( value ) " + "FROM (SELECT * FROM datavalue) as d2 "
+            + "WHERE d1.dataelementid=d2.dataelementid " + "AND d1.periodid=d2.periodid "
+            + "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid " + "AND d2.sourceid IN ( " + destId + ", "
+            + sourceId + " ) ) " + "WHERE d1.sourceid=" + destId + " "
+            + "AND d1.dataelementid in ( SELECT dataelementid FROM dataelement WHERE valuetype='int' );";
+    }
 }

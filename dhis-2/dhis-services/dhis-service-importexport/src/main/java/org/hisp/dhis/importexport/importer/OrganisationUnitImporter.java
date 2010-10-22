@@ -104,7 +104,7 @@ public class OrganisationUnitImporter
         
         if ( match == null )
         {
-            match = organisationUnitService.getOrganisationUnitByShortName( object.getShortName() );
+            match = organisationUnitService.getOrganisationUnitByCode( object.getCode() );
         }
         
         return match;

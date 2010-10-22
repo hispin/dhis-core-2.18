@@ -39,8 +39,8 @@
 			                
 			                else if(reportListIndex < 0 || document.reportForm.reportList.options[reportListIndex].text == null) {alert("Please Select Report"); return false;}
 			                
-							document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
-							document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+							//document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
+							//document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
 							return true;
 			            }			
 			        </script>
@@ -106,10 +106,11 @@
           	              <input type="submit" id= "generate" name="generate" value="Generate Report" disabled="disabled">
 						  <input type="hidden" name="autogen" id="autogen" value="0" >
           	              <input type="hidden" name="ouIDTB" id="ouIDTB">
-          	              <input type="hidden" name="ouLevelTB" id="ouLevelTB">
+<!--          	              <input type="hidden" name="ouLevelTB" id="ouLevelTB">
           	              <input type="hidden" name="reportModelTB" id="reportModelTB">
 						  <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
-						  <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="goiReportsList.xml">
+						  <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="goiReportsList.xml">-->
+						  <input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName">
                     	</td>
                 </tr>
             	</table>

@@ -3,6 +3,7 @@ package org.hisp.dhis.reports.portal.action;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -11,7 +12,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,8 +24,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
-import java.util.Collection;
-import org.hisp.dhis.period.PeriodType;
 
 public class PortalReportsFormAction implements Action
 {
@@ -51,9 +52,9 @@ public class PortalReportsFormAction implements Action
     // -------------------------------------------------------------------------
 
 
-private List<Report> reportList;
+private List<Report_in> reportList;
 
-    public List<Report> getReportList()
+    public List<Report_in> getReportList()
     {
         return reportList;
     }
@@ -99,7 +100,8 @@ private List<Report> reportList;
         
         periodList = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         periods.addAll( periodList );
-        reportList = new ArrayList<Report>();
+        
+       // reportList = new ArrayList<Report>();
         
         getSelectedReportList();
 
@@ -178,8 +180,8 @@ private List<Report> reportList;
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
  
-                    Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                    reportList.add( reportObj );       
+                    //Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
+                    //reportList.add( reportObj );       
                     
                 }
             }// end of for loop with s var

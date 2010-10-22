@@ -422,7 +422,7 @@ public class HibernateDataElementStore
             "FROM dataelement as de " +
             "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
             "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
-            "JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid;";
+            "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid;";
         
         try
         {
@@ -447,7 +447,7 @@ public class HibernateDataElementStore
             "FROM dataelement as de " +
             "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
             "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
-            "JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid " +
+            "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid " +
             "WHERE de.dataelementid IN (" + dataElementString + ");";
         
         try

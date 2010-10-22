@@ -20,11 +20,11 @@ function orgUnitHasBeenSelected( orgUnitIds )
 {    
     document.reportForm.ouIDTB.value = orgUnitIds;
 	
-	reportListFileName = document.reportForm.reportListFileNameTB.value;
+	reportTypeName = document.reportForm.reportTypeNameTB.value;
 
 	if(orgUnitIds != null && orgUnitIds != "" )
 	{
-		getReports(orgUnitIds, reportListFileName)		
+		getReports(orgUnitIds, reportTypeName)		
 	}
 }
 

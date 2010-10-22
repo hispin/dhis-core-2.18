@@ -43,6 +43,8 @@
 		
 		<property name="classes"/>
 		
+		<property name="bounds"/>
+		
 		<property name="colorLow"/>
 			
 		<property name="colorHigh"/>

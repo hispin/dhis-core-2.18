@@ -78,6 +78,8 @@ public class MapView
 
     private int classes;
 
+    private String bounds;
+
     private String colorLow;
 
     private String colorHigh;
@@ -96,8 +98,8 @@ public class MapView
 
     public MapView( String name, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
         DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType, Period period,
-        String mapSourceType, String mapSource, String mapLegendType, int method, int classes, String colorLow,
-        String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
+        String mapSourceType, String mapSource, String mapLegendType, int method, int classes, String bounds,
+        String colorLow, String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.mapValueType = mapValueType;
@@ -112,6 +114,7 @@ public class MapView
         this.mapLegendType = mapLegendType;
         this.method = method;
         this.classes = classes;
+        this.bounds = bounds;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
         this.mapLegendSet = mapLegendSet;
@@ -296,6 +299,16 @@ public class MapView
     public void setClasses( int classes )
     {
         this.classes = classes;
+    }
+
+    public String getBounds()
+    {
+        return bounds;
+    }
+
+    public void setBounds( String bounds )
+    {
+        this.bounds = bounds;
     }
 
     public String getColorLow()

@@ -41,7 +41,7 @@ var LEGEND = new Object();
 LEGEND[thematicMap] = new Object();
 LEGEND[thematicMap2] = new Object();
 LEGEND[thematicMap].type = LEGEND[thematicMap2].type = map_legend_type_automatic;
-LEGEND[thematicMap].method = LEGEND[thematicMap2].method = 1;
+LEGEND[thematicMap].method = LEGEND[thematicMap2].method = 2;
 LEGEND[thematicMap].classes = LEGEND[thematicMap2].classes = 5;
 /* Current map value types */
 VALUETYPE = new Object();
@@ -56,6 +56,8 @@ function getUrlParam(strParamName){var output='';var strHref=window.location.hre
 function validateInput(name){return (name.length<=25);}
 /* Decide multiselect height based on screen resolution */
 function getMultiSelectHeight(){var h=screen.height;if(h<=800){return 220;}else if(h<=1050){return 310;}else if(h<=1200){return 470;}else{return 900;}}
+/* Make map view numbers numeric */
+function getNumericMapView(mapView){mapView.id=parseFloat(mapView.id);mapView.indicatorGroupId=parseFloat(mapView.indicatorGroupId);mapView.indicatorId=parseFloat(mapView.indicatorId);mapView.periodId=parseFloat(mapView.periodId);mapView.method=parseFloat(mapView.method);mapView.classes=parseFloat(mapView.classes);mapView.mapLegendSetId=parseFloat(mapView.mapLegendSetId);mapView.longitude=parseFloat(mapView.longitude);mapView.latitude=parseFloat(mapView.latitude);mapView.zoom=parseFloat(mapView.zoom);return mapView;}
 /* Toggle feature labels */
 function getActivatedOpenLayersStyleMap(nameColumn) {
     return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1,'label':'${' + nameColumn + '}','fontFamily':'arial,lucida sans unicode','fontWeight':'bold','fontSize':14},OpenLayers.Feature.Vector.style['default'])), 'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
@@ -173,10 +175,12 @@ Ext.onReady( function() {
 			success: function(r) {
                 var baseLayer = new OpenLayers.Layer.WMS(
                     'World',
-                    'http://iridl.ldeo.columbia.edu/cgi-bin/wms_dev/wms.pl',
-                    {layers: 'Health Regional Africa Meningitis Meningitis Observed'}
+                    // 'http://iridl.ldeo.columbia.edu/cgi-bin/wms_dev/wms.pl',
+                    // {layers: 'Health Regional Africa Meningitis Meningitis Observed'}
+                    'http://labs.metacarta.com/wms/vmap0',
+                    {layers: 'basic'}
                 );
-            
+                
                 MAP.addLayers([baseLayer]);
                 MAP.layers[0].setVisibility(false);
                 
@@ -263,7 +267,9 @@ Ext.onReady( function() {
 					var p = Ext.getCmp('period_cb').getValue();
 					var ms = MAPSOURCE == map_source_type_database ? Ext.getCmp('map_tf').value : Ext.getCmp('map_cb').getValue();
 					var mlt = Ext.getCmp('maplegendtype_cb').getValue();
+                    var m = Ext.getCmp('method_cb').getValue();
 					var c = Ext.getCmp('numClasses_cb').getValue();
+                    var b = Ext.getCmp('bounds_tf').getValue() || '';
 					var ca = Ext.getCmp('colorA_cf').getValue();
 					var cb = Ext.getCmp('colorB_cf').getValue();
 					var mlsid = Ext.getCmp('maplegendset_cb').getValue() || 0;
@@ -307,7 +313,7 @@ Ext.onReady( function() {
 							Ext.Ajax.request({
 								url: path_mapping + 'addOrUpdateMapView' + type,
 								method: 'POST',
-								params: { name: vn, mapValueType: mvt, indicatorGroupId: ig, indicatorId: ii, dataElementGroupId: deg, dataElementId: de, periodTypeId: pt, periodId: p, mapSource: ms, mapLegendType: mlt, method: 2, classes: c, colorLow: ca, colorHigh: cb, mapLegendSetId: mlsid, longitude: lon, latitude: lat, zoom: zoom },
+								params: { name: vn, mapValueType: mvt, indicatorGroupId: ig, indicatorId: ii, dataElementGroupId: deg, dataElementId: de, periodTypeId: pt, periodId: p, mapSource: ms, mapLegendType: mlt, method: m, classes: c, bounds: b, colorLow: ca, colorHigh: cb, mapLegendSetId: mlsid, longitude: lon, latitude: lat, zoom: zoom },
 								success: function(r) {
 									Ext.message.msg(true, 'The view <span class="x-msg-hl">' + vn + '</span> ' + i18n_was_registered);
 									Ext.getCmp('view_cb').getStore().load();
@@ -2946,7 +2952,8 @@ Ext.onReady( function() {
 	}
 	
 	addOverlaysToMap();
-    
+        
+    /* Section: layer options */
     function showWMSLayerOptions(layer) {
         if (Ext.getCmp('baselayeroptions_w')) {
             Ext.getCmp('baselayeroptions_w').destroy();
@@ -3055,6 +3062,68 @@ Ext.onReady( function() {
             Ext.getCmp('vectorlayeroptions_w').destroy();
         }
         
+        var data = [];
+        var layer = MAP.getLayersByName('Polygon layer')[0];
+        
+        for (var i = 0; i < layer.features.length; i++) {
+            data.push([i, layer.features[i].data.name]);
+        }
+        
+        var featureStore = new Ext.data.ArrayStore({
+            mode: 'local',
+            autoDestroy: true,
+            idProperty: 'i',
+            fields: ['i', 'name'],
+            data: [data]
+        });
+        
+        var locateFeatureWindow = new Ext.Window({
+            id: 'locatefeature_w',
+            title: 'Locate features',
+            layout: 'fit',
+            closeAction: 'hide',
+            defaults: {layout: 'fit', bodyStyle:'padding:8px; border:0px'},
+            width: 200,
+            items: [
+                {
+                    xtype: 'panel',
+                    items: [
+                        {
+                            xtype: 'panel',
+                            items: [
+                                { html: '<div class="window-field-label-first">Feature name</div>' },
+                                {
+                                    xtype: 'textfield',
+                                    id: 'locatefeature_tf'
+                                },
+                                { html: '<div class="window-field-label"></div>' },
+                                {
+                                    xtype: 'grid',
+                                    id: 'featuregrid_gp',
+                                    autoHeight: true,
+                                    store: featureStore,
+                                    cm: new Ext.grid.ColumnModel({
+                                        columns: [
+                                            {   
+                                                id: 'name',
+                                                header: 'Features',
+                                                dataIndex: 'name',
+                                                width: 200
+                                            }
+                                        ]
+                                    }),
+                                    sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+                                    viewConfig: {forceFit: true},
+                                    sortable: true,
+                                    // autoExpandColumn: 'name'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        });                    
+        
         var vectorLayerOptionsWindow = new Ext.Window({
             id: 'vectorlayeroptions_w',
             title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
@@ -3131,6 +3200,19 @@ Ext.onReady( function() {
                                 }
                             }
                         }
+                        // ,
+                        // {
+                            // html: 'Locate feature',
+                            // listeners: {
+                                // 'click': {
+                                    // fn: function() {
+                                        // locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - 173, Ext.getCmp('center').y + 50);
+                                        // locateFeatureWindow.show();
+                                        // vectorLayerOptionsWindow.hide();
+                                    // }
+                                // }
+                            // }
+                        // }                                        
                     ]
                 }
             ]
@@ -3948,6 +4030,11 @@ function onHoverUnselectPolygon(feature) {
 }
 
 function onClickSelectPolygon(feature) {
+
+// function getKeys(obj){var temp=[];for(var k in obj){if(obj.hasOwnProperty(k)){temp.push(k);}}return temp;}
+    // var l = MAP.getLayersByName('Polygon layer')[0];
+    // l.drawFeature(feature,{'fillColor':'blue'});
+
 	FEATURE[thematicMap] = feature;
 
 	var east_panel = Ext.getCmp('east');

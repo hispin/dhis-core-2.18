@@ -928,7 +928,7 @@ $.extend($.validator, {
 					data: data,
 					success: function(response) {
 						validator.settings.messages[element.name].remote = previous.originalMessage;
-						var valid = response === true;
+						var valid = response.response === 'success';
 						if ( valid ) {
 							var submitted = validator.formSubmitted;
 							validator.prepareElement(element);
@@ -937,7 +937,7 @@ $.extend($.validator, {
 							validator.showErrors();
 						} else {
 							var errors = {};
-							var message = (previous.message = response || validator.defaultMessage( element, "remote" ));
+							var message = (previous.message = response.message || validator.defaultMessage( element, "remote" ));
 							errors[element.name] = $.isFunction(message) ? message(value) : message;
 							validator.showErrors(errors);
 						}

@@ -3,9 +3,10 @@ package org.hisp.dhis.reports.action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GetOrgUnitsAction extends ActionSupport
+public class GetOrgUnitsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -28,35 +29,35 @@ public class GetOrgUnitsAction extends ActionSupport
     {
         this.orgUnitId = orgUnitId;
     }
-        
+
     private OrganisationUnit orgUnit;
-    
+
     public OrganisationUnit getOrgUnit()
     {
         return orgUnit;
     }
-    
+
     private String ouLevel;
-    
+
     public String getOuLevel()
     {
         return ouLevel;
     }
-    
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         /* OrganisationUnit */
-        if(orgUnitId != null)
+        if ( orgUnitId != null )
         {
-            orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );        
-            ouLevel = ""+organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-            
-            System.out.println(orgUnit.getId() + " ---- "+ orgUnit.getShortName());
+            orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+            ouLevel = "" + organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+
+            System.out.println( orgUnit.getId() + " ---- " + orgUnit.getShortName() );
         }
 
         return SUCCESS;

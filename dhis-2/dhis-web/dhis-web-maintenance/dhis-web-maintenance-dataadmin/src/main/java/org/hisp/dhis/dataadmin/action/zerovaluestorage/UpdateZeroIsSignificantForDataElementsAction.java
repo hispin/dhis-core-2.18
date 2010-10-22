@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 public class UpdateZeroIsSignificantForDataElementsAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -63,7 +62,6 @@ public class UpdateZeroIsSignificantForDataElementsAction
     {
         this.ignoreZeroValueDataElements = ignoreZeroValueDataElements;
     }
-   
     
     private List<Integer> zeroDataValueElements;
 
@@ -71,7 +69,6 @@ public class UpdateZeroIsSignificantForDataElementsAction
     {
         this.zeroDataValueElements = zeroDataValueElements;
     }
-
 
     @Override
     public String execute()
@@ -83,5 +80,4 @@ public class UpdateZeroIsSignificantForDataElementsAction
 
         return SUCCESS;
     }
-
 }
