@@ -30,6 +30,7 @@ package org.hisp.dhis.validation;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
@@ -142,6 +143,8 @@ public interface ValidationRuleService
      * @param name the name of the validation rule.
      */
     ValidationRule getValidationRuleByName( String name );
+    
+    Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements );
     
     // -------------------------------------------------------------------------
     // ValidationRuleGroup

@@ -36,14 +36,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.mock.MockSource;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.WeeklyPeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -53,11 +49,7 @@ import org.junit.Test;
 public class DataSetServiceTest
     extends DhisSpringTest
 {
-    private PeriodStore periodStore;
-
     private DataSetService dataSetService;
-
-    private SourceStore sourceStore;
 
     private PeriodType periodType;
 
@@ -67,9 +59,7 @@ public class DataSetServiceTest
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
-        periodStore = (PeriodStore) getBean( PeriodStore.ID );
-
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
         periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
     }
@@ -200,13 +190,13 @@ public class DataSetServiceTest
     @Test
     public void testGetDataSetsBySource()
     {
-        Source sourceA = new MockSource( "A" );
-        Source sourceB = new MockSource( "B" );
-        Source sourceC = new MockSource( "C" );
+        OrganisationUnit sourceA = createOrganisationUnit( 'A' );
+        OrganisationUnit sourceB = createOrganisationUnit( 'B' );
+        OrganisationUnit sourceC = createOrganisationUnit( 'C' );
         
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
-        sourceStore.addSource( sourceC );
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB );
+        organisationUnitService.addOrganisationUnit( sourceC );
         
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
@@ -247,30 +237,21 @@ public class DataSetServiceTest
     @Test
     public void testGetDataSetsBySources()
     {
-        Source sourceA = new MockSource( "A" );
-        Source sourceB = new MockSource( "B" );
-        Source sourceC = new MockSource( "C" );
-        Source sourceD = new MockSource( "D" );
-        
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
-        sourceStore.addSource( sourceC );
-        sourceStore.addSource( sourceD );
-        
+        OrganisationUnit unitA = createOrganisationUnit( 'A' );
+        OrganisationUnit unitB = createOrganisationUnit( 'B' );  
+        OrganisationUnit unitC = createOrganisationUnit( 'C' );  
+        organisationUnitService.addOrganisationUnit( unitA );
+        organisationUnitService.addOrganisationUnit( unitB );
+        organisationUnitService.addOrganisationUnit( unitC );
+
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
         DataSet dataSetC = createDataSet( 'C', periodType );
         DataSet dataSetD = createDataSet( 'D', periodType );
-        
-        dataSetA.getSources().add( sourceA );
-        dataSetA.getSources().add( sourceB );
-        
-        dataSetB.getSources().add( sourceB );
-        dataSetB.getSources().add( sourceC );        
-
-        dataSetC.getSources().add( sourceC );
-        
-        dataSetD.getSources().add( sourceD );
+        dataSetA.getSources().add( unitA );
+        dataSetA.getSources().add( unitB );
+        dataSetB.getSources().add( unitA );
+        dataSetC.getSources().add( unitB );
         
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
@@ -278,45 +259,42 @@ public class DataSetServiceTest
         dataSetService.addDataSet( dataSetD );
         
         Collection<Source> sources = new HashSet<Source>();
-        
-        sources.add( sourceA );
-        sources.add( sourceD );        
+        sources.add( unitA );
+        sources.add( unitB );
         
         Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( sources );
-        
-        assertEquals( 2, dataSets.size() );
-        assertTrue( dataSets.contains( dataSetA ) );
-        assertTrue( dataSets.contains( dataSetD ) );
-        
-        sources.clear();
-        
-        sources.add( sourceB );
-        sources.add( sourceC );
 
-        dataSets = dataSetService.getDataSetsBySources( sources );
-        
         assertEquals( 3, dataSets.size() );
         assertTrue( dataSets.contains( dataSetA ) );
         assertTrue( dataSets.contains( dataSetB ) );
-        assertTrue( dataSets.contains( dataSetC ) );        
-    }
+        assertTrue( dataSets.contains( dataSetC ) );
 
+        sources = new HashSet<Source>();
+        sources.add( unitA );
+        
+        dataSets = dataSetService.getDataSetsBySources( sources );
+        
+        assertEquals( 2, dataSets.size() );
+        assertTrue( dataSets.contains( dataSetA ) );
+        assertTrue( dataSets.contains( dataSetB ) );
+    }
+    
     @Test
     public void testGetSourcesAssociatedWithDataSet()
     {
-        Source sourceA = new MockSource( "A" );
-        Source sourceB = new MockSource( "B" );
-        Source sourceC = new MockSource( "C" );
-        Source sourceD = new MockSource( "D" );
-        Source sourceE = new MockSource( "E" );
-        Source sourceF = new MockSource( "F" );
+        OrganisationUnit sourceA = createOrganisationUnit( 'A' );
+        OrganisationUnit sourceB = createOrganisationUnit( 'B' );
+        OrganisationUnit sourceC = createOrganisationUnit( 'C' );
+        OrganisationUnit sourceD = createOrganisationUnit( 'D' );
+        OrganisationUnit sourceE = createOrganisationUnit( 'E' );
+        OrganisationUnit sourceF = createOrganisationUnit( 'F' );
         
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
-        sourceStore.addSource( sourceC );
-        sourceStore.addSource( sourceD );
-        sourceStore.addSource( sourceE );
-        sourceStore.addSource( sourceF );
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB );
+        organisationUnitService.addOrganisationUnit( sourceC );
+        organisationUnitService.addOrganisationUnit( sourceD );
+        organisationUnitService.addOrganisationUnit( sourceE );
+        organisationUnitService.addOrganisationUnit( sourceF );
         
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
@@ -341,55 +319,5 @@ public class DataSetServiceTest
         
         assertEquals( 2, dataSetService.getSourcesAssociatedWithDataSet( dataSetA, sources ) );
         assertEquals( 2, dataSetService.getSourcesAssociatedWithDataSet( dataSetB, sources ) );
-    }
-        
-    // -------------------------------------------------------------------------
-    // FrequencyOverrideAssociation
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testFrequencyOverrideAssociation()
-        throws Exception
-    {
-        PeriodType periodType1 = periodStore.getPeriodType( YearlyPeriodType.class );
-        PeriodType periodType2 = periodStore.getPeriodType( MonthlyPeriodType.class );
-        PeriodType periodType3 = periodStore.getPeriodType( WeeklyPeriodType.class );
-
-        DataSet dataSet1 = new DataSet( "name1", periodType1 );
-        DataSet dataSet2 = new DataSet( "name2", periodType2 );
-
-        dataSetService.addDataSet( dataSet1 );
-        dataSetService.addDataSet( dataSet2 );
-
-        Source source1 = new MockSource( "Source1" );
-        Source source2 = new MockSource( "Source2" );
-        sourceStore.addSource( source1 );
-        sourceStore.addSource( source2 );
-
-        FrequencyOverrideAssociation association = new FrequencyOverrideAssociation( dataSet1, source1, periodType3 );
-        
-        dataSetService.addFrequencyOverrideAssociation( association );        
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet1 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source1 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 0 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source2 ).size(), 0 );
-        
-        dataSetService.addFrequencyOverrideAssociation( new FrequencyOverrideAssociation( dataSet1, source2, periodType3 ) );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet1 ).size(), 2 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source1 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 0 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source2 ).size(), 1 );
-        
-        dataSetService.addFrequencyOverrideAssociation( new FrequencyOverrideAssociation( dataSet2, source1, periodType3 ) );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet1 ).size(), 2 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source1 ).size(), 2 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source2 ).size(), 1 );
-        
-        dataSetService.deleteFrequencyOverrideAssociation( association );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet1 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source1 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 1 );
-        assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source2 ).size(), 1 );
     }
 }

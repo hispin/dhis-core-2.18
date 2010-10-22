@@ -27,7 +27,10 @@
 
 package org.hisp.dhis.validation;
 
+import java.util.Collection;
+
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.dataelement.DataElement;
 
 /**
  * @author Chau Thu Tran
@@ -57,4 +60,6 @@ public interface ValidationRuleStore
      * @return the generated unique identifier for the ValidationRule.
      */
     void updateValidationRule( ValidationRule validationRule );
+    
+    Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements );
 }

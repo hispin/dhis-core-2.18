@@ -27,10 +27,16 @@
 
 package org.hisp.dhis.validation.hibernate;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.Session;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleStore;
 
@@ -80,5 +86,24 @@ public class HibernateValidationRuleStore
         Session session = sessionFactory.getCurrentSession();
 
         session.update( validationRule );
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )
+    {
+        Set<ValidationRule> validationRules = new HashSet<ValidationRule>();
+        
+        Collection<Integer> ids = ConversionUtils.getIdentifiers( DataElement.class, dataElements );
+        
+        String hql = "select distinct v from ValidationRule v join v.leftSide ls join ls.dataElementsInExpression lsd where lsd.id in (:ids)";
+        
+        validationRules.addAll( sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ids ).list() );
+        
+        hql = "select distinct v from ValidationRule v join v.rightSide rs join rs.dataElementsInExpression rsd where rsd.id in (:ids)";
+
+        validationRules.addAll( sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ids ).list() );
+        
+        return validationRules;
     }
 }

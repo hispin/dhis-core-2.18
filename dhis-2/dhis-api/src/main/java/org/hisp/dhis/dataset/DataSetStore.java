@@ -120,7 +120,7 @@ public interface DataSetStore
      */
     Collection<DataSet> getDataSetsForMobile();
 
-    Collection<DataSet> getDataSetsBySources( Collection<Source> sources );
+    Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
     
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation

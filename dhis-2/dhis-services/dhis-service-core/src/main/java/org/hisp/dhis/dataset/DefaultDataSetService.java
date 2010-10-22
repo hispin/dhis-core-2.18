@@ -155,7 +155,7 @@ public class DefaultDataSetService
 
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
-        return getDataSetsBySources( sources );
+        return i18n( i18nService, dataSetStore.getDataSetsBySources( sources ) );
     }
 
     public int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<? extends Source> sources )
