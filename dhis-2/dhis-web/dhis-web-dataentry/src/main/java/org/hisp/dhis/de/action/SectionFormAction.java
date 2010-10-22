@@ -322,6 +322,14 @@ public class SectionFormAction
     {
         this.displayMode = displayMode;
     }
+    
+    private Integer defaultOptionComboId;
+    
+    public Integer getDefaultOptionComboId() 
+    {
+		return defaultOptionComboId;
+	}	
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -399,6 +407,8 @@ public class SectionFormAction
                     true );
             }
         }
+        
+        defaultOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {

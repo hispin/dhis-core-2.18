@@ -1,24 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for updateExtendedIndicatorForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateExtendedIndicatorForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateUpdateExtendedIndicator();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'updateExtendedIndicatorForm', validateUpdateExtendedIndicator );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_indicator" )</h3>
 
 <form id="updateExtendedIndicatorForm" action="updateExtendedIndicator.action" method="post" >

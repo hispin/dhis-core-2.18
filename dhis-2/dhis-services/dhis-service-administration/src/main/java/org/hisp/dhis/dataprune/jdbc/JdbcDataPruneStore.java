@@ -64,8 +64,6 @@ public class JdbcDataPruneStore implements DataPruneStore
         
         String orgUnitIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( OrganisationUnit.class, orgUnits )) ;
         
-        long before = System.currentTimeMillis();
-        
         String sql = "delete from datasetlocksource where sourceid in (" + orgUnitIds + ");";
         jdbcTemplate.execute( sql );
         
@@ -134,6 +132,6 @@ public class JdbcDataPruneStore implements DataPruneStore
         sql = "delete from source where sourceid in (" + orgUnitIds + ");";
         jdbcTemplate.execute( sql );
         
-        log.info( "Deleting " + orgUnits.size() + " organisations units sucessfully in " + (System.currentTimeMillis() - before) + " ms.");
+        log.info( "Deleting " + orgUnits.size() + " organisations units sucessfully" );
     }
 }

@@ -32,7 +32,6 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
@@ -76,14 +75,14 @@ public class GetLLGroupAction
         this.displayPropertyHandler = displayPropertyHandler;
     }
 
-
+/*
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------

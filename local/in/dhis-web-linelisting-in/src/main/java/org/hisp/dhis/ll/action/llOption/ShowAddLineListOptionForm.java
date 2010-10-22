@@ -27,8 +27,6 @@ package org.hisp.dhis.ll.action.llOption;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.linelisting.LineListService;
-
 import com.opensymphony.xwork2.Action;
 
 public class ShowAddLineListOptionForm
@@ -38,13 +36,13 @@ public class ShowAddLineListOptionForm
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LineListService lineListService;
+/*    private LineListService lineListService;
 
     public void setLineListService( LineListService lineListService )
     {
         this.lineListService = lineListService;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------

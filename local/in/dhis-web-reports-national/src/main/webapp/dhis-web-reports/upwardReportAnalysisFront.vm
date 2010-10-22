@@ -1,9 +1,5 @@
 
-<html>
-	    <head>
-		        <title>Government of India Reports</title>
-        		
-		        <script>
+<script>
 		            //Global Variables
 		            
 					var reportModels = new HashTable();
@@ -48,8 +44,8 @@
 							return true;
 			            }			
 			        </script>
-	    </head>
-	    <body>
+
+
 	        <h1>Government of India Reports Analyser</h1>
 	        <hr />	
 	        <br />
@@ -118,5 +114,4 @@
                 </tr>
             	</table>
         </form>
-	    </body>
-	</html>        
+	  

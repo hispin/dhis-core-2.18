@@ -23,8 +23,11 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.Collection;
 import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,37 +49,52 @@ public class DefaultSectionService
         this.sectionStore = sectionStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+    
     // -------------------------------------------------------------------------
     // SectionService implementation
     // -------------------------------------------------------------------------
 
     public int addSection( Section section )
     {
-        return sectionStore.addSection( section );
+        int id = sectionStore.addSection( section );
+        
+        i18nService.addObject( section );
+        
+        return id;
     }
 
     public void deleteSection( Section section )
     {
+        i18nService.removeObject( section );
+        
         sectionStore.deleteSection( section );
     }
 
     public Collection<Section> getAllSections()
     {
-        return sectionStore.getAllSections();
+        return i18n( i18nService, sectionStore.getAllSections());
     }
 
     public Section getSection( int id )
     {
-        return sectionStore.getSection( id );
+        return i18n( i18nService, sectionStore.getSection( id ));
     }
 
     public Section getSectionByName( String name )
     {
-        return sectionStore.getSectionByName( name );
+        return i18n( i18nService, sectionStore.getSectionByName( name ));
     }
 
     public void updateSection( Section section )
     {
         sectionStore.updateSection( section );
+        
+        i18nService.verify( section );
     }    
 }

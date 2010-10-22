@@ -37,6 +37,11 @@ public class Report
      */
     private String chckerFileName;
 
+    /**
+     * dataset id
+     */
+    private String datasetId;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -46,7 +51,7 @@ public class Report
 
     }
 
-    public Report( String id, String name, String type, String model, String fileName )
+    public Report( String id, String name, String type, String model, String fileName, String datasetId )
     {
         this.id = id;
         this.name = name;
@@ -54,8 +59,9 @@ public class Report
         this.model = model;
         this.fileName = fileName;
         //this.chckerFileName = checkerFileName;
+        this.datasetId = datasetId;
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -120,4 +126,13 @@ public class Report
         this.chckerFileName = chckerFileName;
     }
 
+    public String getDatasetId()
+    {
+        return datasetId;
+    }
+
+    public void setDatasetId( String datasetId )
+    {
+        this.datasetId = datasetId;
+    }
 }

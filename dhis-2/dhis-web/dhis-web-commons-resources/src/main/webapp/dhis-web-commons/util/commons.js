@@ -767,6 +767,9 @@ function datePicker( id )
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true		
 	});
+	s = jQuery("#" + id );		
+	if( s.val()=='' ) s.val( getCurrentDate() );	
+	s.keypress(function(event) {return;});
 }
 
 /**
@@ -775,7 +778,7 @@ function datePicker( id )
  */
 function datePickerValid( id )
 {
-	$("#" + id).datepicker(
+	jQuery("#" + id).datepicker(
 	{
 		dateFormat:dateFormat,
 		changeMonth: true,
@@ -787,6 +790,10 @@ function datePickerValid( id )
 		buttonImageOnly: true,
 		maxDate: '+0d +0w'
 	});
+	
+	s = jQuery("#" + id );		
+	if( s.val()=='' ) s.val( getCurrentDate() );	
+	s.keypress(function(event) {return;});
 }
 
 
@@ -810,7 +817,7 @@ function datePickerInRange ( startdate, enddate )
 		showAnim:'',
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		buttonImageOnly: true,	
 		onSelect: function(selectedDate)
 		{
 			var option = this.id == startdate ? "minDate" : "maxDate";
@@ -819,6 +826,20 @@ function datePickerInRange ( startdate, enddate )
 			dates.not(this).datepicker("option", option, date);
 		}
 	});
+	s = jQuery("#" + startdate );
+	e = jQuery("#" + enddate );
+	
+	if( s.val()=='' ) s.val( getCurrentDate() );
+	if( e.val()=='' ) e.val( getCurrentDate() );	
+	
+	e.keypress(function(event) {return;});
+	s.keypress(function(event) {return;});
+
+}
+
+function getCurrentDate()
+{	
+	return jQuery.datepicker.formatDate( dateFormat , new Date() ) ;
 }
 
 /**
@@ -890,55 +911,55 @@ function insertTextCommon( inputAreaName, inputText )
 }
 
 /**
- * Create Mask with proccessing * 
+ * Clock screen by mask  * 
  */
-function MaskAjaxProccess()
-{	
-	this.processWidth = 100;
-	this.processHeight = 100;
-	
-	this.width = document.documentElement.clientWidth;
-	this.height = document.documentElement.clientHeight;	
-	this.mask = document.createElement( 'div' );
-	
-	this.mask.id = "mask";
-	this.mask.style.position = "fixed";
-	this.mask.style.display = "none";
-	this.mask.style.top = 0;
-	this.mask.style.width = this.width + "px";
-	this.mask.style.height = this.height + "px";
-	this.mask.style.background = "#000000";
-	this.mask.style.opacity = 0.5;
-	this.mask.style.zIndex = 10;
-	
-	this.process = document.createElement( 'div' );
-	this.process.id = "process";
-	this.process.style.display = "none";
-	this.process.style.position = "fixed";	
-	this.process.style.background = "#000000";
-	this.process.style.backgroundRepeat = "no-repeat";
-	this.process.style.width = this.processWidth + "px";
-	this.process.style.height = this.processHeight + "px";
-	this.process.style.backgroundImage = "url(../images/ajax-loader-preview.gif)";
-	this.process.style.top = ((this.height / 2) - (this.processHeight/2)) + "px";
-	this.process.style.left = ((this.width / 2) - (this.processWidth/2)) + "px";	
-	this.process.style.zIndex = 11;
-	this.process.style.border = "#CCCCCC 3px solid";
-		
-	this.show = function()
-	{		
-		document.body.appendChild(this.process);
-		document.body.appendChild( this.mask );
-			
-		$('#mask' ).fadeIn(1000);
-		$('#process' ).fadeIn(1000);		
-	}	
-	
-	this.hide = function()
-	{			
-		$('#mask'  ).fadeOut(1000);		
-		$('#process'  ).fadeOut(1000);		
-	}	
-	
+function lockScreen()
+{
+	jQuery.blockUI({ message: i18n_waiting , css: { 
+		border: 'none', 
+		padding: '15px', 
+		backgroundColor: '#000', 
+		'-webkit-border-radius': '10px', 
+		'-moz-border-radius': '10px', 
+		opacity: .5, 
+		color: '#fff'			
+	} }); 
 }
-var MaskAjaxProccess = new MaskAjaxProccess();	
+/**
+ * unClock screen   * 
+ */
+function unLockScreen()
+{
+	jQuery.unblockUI();
+}
+
+/**
+ * Create validator for fileds in form  * 
+ */
+ 
+function validation( formId, submitHandler, beforeValidateHandler )
+{
+	jQuery("#" + formId ).validate({
+		 meta:"validate"
+		,errorElement:"td"
+		,beforeValidateHandler:beforeValidateHandler
+		,submitHandler: submitHandler
+	});
+	
+	jQuery('#' + formId + ' input[type=text]')[0].focus();
+}
+
+function showErrorMessage( message, time )
+{
+	jQuery.growlUI( i18n_error, message, 'error', time ); 	
+}
+
+function showSuccessMessage( message, time )
+{
+	jQuery.growlUI( i18n_success, message, 'success', time ); 	
+}
+
+function showWarningMessage( message, time )
+{
+	jQuery.growlUI( i18n_warning, message, 'warning', time ); 	
+}

@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "create_new_line_list_group" )</h3>
+<h3>$i18n.getString( "add_line_list_group" )</h3>
 
 <form id="addLineListGroupElementForm" action="addLineListGroup.action" method="post" onsubmit="return validateAddLineListGroup()">
 
@@ -55,7 +55,7 @@
 		</td>
 	
 		<td>
-			<select id="selectedList" name="selectedList" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
+			<select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
 		</td>
         <td>
             <a href="javascript:moveUp('selectedList')"><img src="../images/move_up.png" alt="$i18n.getString( "move_up" )"></a><br><br>

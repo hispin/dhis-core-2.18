@@ -52,7 +52,7 @@ public class OrganisationUnitStructureBatchHandler
 
     protected void setTableName()
     {
-        statementBuilder.setTableName( "orgunitstructure" );
+        statementBuilder.setTableName( "_orgunitstructure" );
     }
     
     @Override

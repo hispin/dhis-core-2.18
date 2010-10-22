@@ -28,7 +28,8 @@ function lineListGroupReceived( lineListGroupElement )
 
 function removeLineListGroup( lineListGroupId, lineListGroupName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + lineListGroupName );
+    //var result = window.confirm( i18n_confirm_delete + '\n\n' + lineListGroupName );
+    var result = window.confirm( i18n_confirm_delete + '\n\nLine List Group Name: ' + lineListGroupName + '\n\nLine List Group Id: ' +lineListGroupId);
     
     if ( result )
     {
@@ -42,12 +43,14 @@ function removeLineListGroup( lineListGroupId, lineListGroupName )
 
 function validateAddLineListGroup()
 {
-    var request = new Request();
+    var selectedListOption	=	document.getElementById( 'selectedList' );
+    var selectedListNumber	=	selectedListOption.options.length;
+	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
     request.send( 'validateLineListGroupAdd.action?name=' + getFieldValue( 'name' ) + 
         '&shortName=' + htmlEncode( getFieldValue( 'shortName' ) ) +
-        '&periodTypeSelect=' + htmlEncode( getFieldValue( 'periodTypeSelect' ) ) );
+        '&periodTypeSelect=' + htmlEncode( getFieldValue( 'periodTypeSelect' ) ) + '&selectedListNumber=' + selectedListNumber );
 
     return false;
 }

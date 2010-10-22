@@ -22,7 +22,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $lineListElement.shortName )"></td>
+        <td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" value="$!encoder.htmlEncode( $lineListElement.shortName )" readonly="readonly"></td>
       </tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
@@ -31,7 +31,7 @@
       <tr>
         <td><label>Data Type <em title="$i18n.getString( "required" )" class="required">*</label></td>
 		<td>
-			<select id="dataType" name="dataType" style="min-width:20em">
+			<select id="dataType" name="dataType" style="min-width:20em" readonly="readonly">
 				<option value="int" #if( $lineListElement.dataType == 'int' ) selected="selected" #end>Number</option>
 				<option value="string" #if( $lineListElement.dataType == 'string' ) selected="selected" #end>$i18n.getString( "text" )</option>
 				<option value="date" #if( $lineListElement.dataType == 'date' ) selected="selected" #end>Date</option>

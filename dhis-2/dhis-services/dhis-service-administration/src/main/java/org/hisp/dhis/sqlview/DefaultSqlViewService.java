@@ -34,8 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
- * @since 2010-07-06
+ * @version $Id DefaultSqlViewService.java July 06, 2010$
  */
 @Transactional
 public class DefaultSqlViewService
@@ -155,6 +154,18 @@ public class DefaultSqlViewService
     public Collection<String> getAllResourceProperties( String resourceTableName )
     {
         return sqlViewExpandStore.getAllResourceProperties( resourceTableName );
+    }
+
+    @Override
+    public String testSqlGrammar( String sql )
+    {
+        return sqlViewExpandStore.testSqlGrammar( sql );
+    }
+
+    @Override
+    public String setUpJoinQuery( Collection<String> tables )
+    {
+        return sqlViewExpandStore.setUpJoinQuery( tables );
     }
 
 }

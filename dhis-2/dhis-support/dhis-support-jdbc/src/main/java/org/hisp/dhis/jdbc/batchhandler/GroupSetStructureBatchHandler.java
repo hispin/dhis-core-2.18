@@ -53,7 +53,7 @@ public class GroupSetStructureBatchHandler
 
     protected void setTableName()
     {
-        statementBuilder.setTableName( "orgunitgroupsetstructure" );
+        statementBuilder.setTableName( "_orgunitgroupsetstructure" );
     }
     
     @Override

@@ -1,26 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addOrganisationUnitGroupForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateOrganisationUnitGroupForm").validate({
-					  meta:"validate"
-					,errorElement:"span"
-					,errorClass:"error"
-					,submitHandler: function(form)
-									{
-										validateUpdateOrganisationUnitGroup();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#name").focus();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'updateOrganisationUnitGroupForm', validateUpdateOrganisationUnitGroup );				
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_org_unit_group" )</h3>
 
 <form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">

@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,8 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.reportexcel.action;
 
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -103,7 +103,7 @@ public class GetReportExcelAction
         if ( id != null )
         {
             selectionManager.setSelectedReportId( id );
-            
+
             report = reportService.getReportExcel( id );
         }
         else

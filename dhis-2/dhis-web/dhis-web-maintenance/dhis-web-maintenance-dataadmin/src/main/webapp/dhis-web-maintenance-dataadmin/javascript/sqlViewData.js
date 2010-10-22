@@ -92,6 +92,7 @@ var sortQuery = "ORDER BY ";
 var havingbyQuery = "HAVING ";
 var groupbyQuery = "GROUP BY ";
 
+var tableList = [];
 var table = "";
 var field = "";
 var alias = "";

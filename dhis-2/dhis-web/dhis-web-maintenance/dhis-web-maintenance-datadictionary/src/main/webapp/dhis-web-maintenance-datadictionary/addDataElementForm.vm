@@ -2,25 +2,15 @@
 //-----------------------------------------------------------------------
 //init jQuery validation for addDataElementForm
 //-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addDataElementForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-                                        if ( checkZeroFactors() )
-										validateAddDataElement();
-									}
-				});
-                jQuery.validator.setMessages( validationMessage );
-			}
-  
+	jQuery(document).ready(	function(){
+			validation( 'addDataElementForm', function(){
+				if ( checkZeroFactors() )
+				validateAddDataElement();
+			});				
+		}  
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_data_element" )</h3>
 
 <form id="addDataElementForm" action="addDataElement.action" method="post" >

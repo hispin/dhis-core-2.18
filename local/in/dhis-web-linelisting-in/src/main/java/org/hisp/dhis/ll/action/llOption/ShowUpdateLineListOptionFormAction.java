@@ -30,11 +30,10 @@ package org.hisp.dhis.ll.action.llOption;
 import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.hisp.dhis.linelisting.DefaultLineListService;
+import com.opensymphony.xwork2.Action;
 
 public class ShowUpdateLineListOptionFormAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

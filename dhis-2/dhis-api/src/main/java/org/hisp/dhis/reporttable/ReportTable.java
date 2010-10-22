@@ -423,6 +423,18 @@ public class ReportTable
         allUnits.addAll( relativeUnits );
 
         // ---------------------------------------------------------------------
+        // Set name on periods
+        // ---------------------------------------------------------------------
+
+        for ( Period period : allPeriods )
+        {
+            if ( period.getName() == null && i18nFormat != null )
+            {
+                period.setName( i18nFormat.formatPeriod( period ) );
+            }
+        }
+        
+        // ---------------------------------------------------------------------
         // Init dimensional lists
         // ---------------------------------------------------------------------
 

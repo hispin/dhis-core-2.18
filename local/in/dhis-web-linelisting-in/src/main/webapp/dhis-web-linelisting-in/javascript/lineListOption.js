@@ -67,7 +67,8 @@ function getLineListOptionsReceived( xmlObject )
 
 function removeLineListOption( LineListOptionId, LineListOptionName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + LineListOptionName );
+    //var result = window.confirm( i18n_confirm_delete + '\n\n' + LineListOptionName );
+    var result = window.confirm( i18n_confirm_delete + '\n\nLine List Option Name: ' + LineListOptionName + '\n\n Line List Option Id: ' + LineListOptionId);
     
     if ( result )
     {
@@ -82,10 +83,10 @@ function removeLineListOptionCompleted( messageElement )
 {
     var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
-    
+    //alert(type);
     if ( type == 'success' )
     {
-        window.location.href = 'lineListElements.action';
+        window.location.href = 'getLineListOptions.action';
     }
     else if ( type == 'error' )
     {

@@ -1,25 +1,12 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for updateDataElementForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateDataElementForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-                                        if ( checkZeroFactors() )
-										validateUpdateDataElement();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'updateDataElementForm', function(){
+				if ( checkZeroFactors() )
+				validateUpdateDataElement();
+			} );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_data_element" )</h3>
 
 <form id="updateDataElementForm" action="updateDataElement.action" method="post" >

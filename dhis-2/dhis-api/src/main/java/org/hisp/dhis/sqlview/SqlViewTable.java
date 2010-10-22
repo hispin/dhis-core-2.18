@@ -80,8 +80,6 @@ public class SqlViewTable
             {
                 headers.add( rsmd.getColumnLabel( i ) );
             }
-            System.out.println( "\n\n headers : " + headers );
-
         }
         catch ( SQLException e )
         {
@@ -94,7 +92,6 @@ public class SqlViewTable
         try
         {
             int columnNo = rs.getMetaData().getColumnCount();
-            System.out.println( " \n columnNo = " + columnNo );
 
             rs.beforeFirst();
             {
@@ -109,7 +106,6 @@ public class SqlViewTable
 
                     records.add( rows );
                 }
-                System.out.println( "\n\n records : " + records );
             }
         }
         catch ( SQLException e )

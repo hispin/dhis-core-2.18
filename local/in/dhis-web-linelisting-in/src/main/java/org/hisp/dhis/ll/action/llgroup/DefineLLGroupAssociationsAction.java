@@ -46,7 +46,7 @@ import com.opensymphony.xwork2.Action;
 public class DefineLLGroupAssociationsAction
     implements Action
 {
-    private int id;
+   
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -69,8 +69,14 @@ public class DefineLLGroupAssociationsAction
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
+    private int id;
+    
+    public int getId()
+    {
+        return id;
+    }
 
-    public void setid( int id )
+    public void setId( int id )
     {
         this.id = id;
     }
@@ -78,6 +84,8 @@ public class DefineLLGroupAssociationsAction
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
+
+ 
 
     public String execute()
         throws Exception

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.0.5-SNAPSHOT</version>
+    <version>2.0.6-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-web-dashboard</artifactId>
@@ -34,7 +34,18 @@
       <artifactId>dhis-service-patient</artifactId>
       <version>${version}</version>
     </dependency>
-	
+
+ <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-in-service-linelisting</artifactId>
+      <version>${version}</version>
+    </dependency>
+<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-in-service-dbmanager</artifactId>
+      <version>${version}</version>
+    </dependency>
+		
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons</artifactId>

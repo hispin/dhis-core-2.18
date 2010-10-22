@@ -2,7 +2,6 @@ package org.hisp.dhis.ll.action.llelements;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.linelisting.LineListElement;

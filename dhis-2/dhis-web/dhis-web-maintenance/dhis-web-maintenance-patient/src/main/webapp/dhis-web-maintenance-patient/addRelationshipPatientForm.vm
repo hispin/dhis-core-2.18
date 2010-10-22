@@ -14,24 +14,13 @@ td.error {padding-left:1em}
   	{validate:{required:true}}
   #end
 #end
+
 <script>
-	  //-----------------------------------------------------------------------
-	  //init jQuery validation for addPatientForm
-	  //-----------------------------------------------------------------------
-		jQuery(document).ready(function(){
-			jQuery("#addRelationshipPatientForm").validate({
-				 meta:"validate"
-				,errorElement:"td"
-				,submitHandler: function(form)
-								{
-									validateAddRelationshipPatient();
-								}
-			});
-			jQuery.validator.setMessages( validationMessage );
-			jQuery("#firstName").focus();
+	jQuery(document).ready(	function(){
+			validation( 'addRelationshipPatientForm', validateAddRelationshipPatient );		
 			datePickerValid( 'birthDate' );
-			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
-		});
+			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});			
+	});		
 </script>
 
 <h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>

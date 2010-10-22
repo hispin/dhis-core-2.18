@@ -1,26 +1,9 @@
 <script>
-
-//-----------------------------------------------------------------------
-//init jQuery validation for addRoleForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addRoleForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddRole();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#name").focus();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'addRoleForm', validateAddRole );				
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "create_new_user_role" )</h3>
 
 <form id="addRoleForm" action="addRole.action" method="post" >

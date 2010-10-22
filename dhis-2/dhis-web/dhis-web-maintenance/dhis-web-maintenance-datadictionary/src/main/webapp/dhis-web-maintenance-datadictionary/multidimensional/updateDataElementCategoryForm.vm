@@ -1,24 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for editDataElementCategoryForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#editDataElementCategoryForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateEditDataElementCategory();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'editDataElementCategoryForm', validateEditDataElementCategory );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_data_element_category" )</h3>
 
 <form id="editDataElementCategoryForm" name="editDataElementCategoryForm" action="updateDataElementCategory.action" method="post">

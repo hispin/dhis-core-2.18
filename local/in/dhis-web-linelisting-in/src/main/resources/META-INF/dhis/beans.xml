@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
   <!-- Line List Option -->
 
@@ -157,9 +159,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
-        <property name="periodStore">
+      <!--  <property name="periodStore">
             <ref bean="org.hisp.dhis.period.PeriodStore"/>
-        </property>
+        </property>-->
         <property name="dataBaseManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         </property>
@@ -230,9 +232,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
-        <property name="dataBaseManagerInterface">
+      <!--  <property name="dataBaseManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
-        </property>
+        </property>-->
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.llgroup.LineListGroupElementListAction"
@@ -240,9 +242,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
-        <property name="periodService">
+    <!--    <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
+        </property>-->
         <property name="periodStore">
             <ref bean="org.hisp.dhis.period.PeriodStore"/>
         </property>
@@ -270,7 +272,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <bean id="org.hisp.dhis.ll.action.llgroup.SetupAssociationsTreeAction"
     class="org.hisp.dhis.ll.action.llgroup.SetupAssociationsTreeAction"
-    scope="prototype">
+    scope="prototype">		
         <property name="selectionTreeManager">
             <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
         </property>
@@ -345,9 +347,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
-        <property name="dataEntryFormService">
-            <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
         </property>
         <property name="sectionService">
             <ref bean="org.hisp.dhis.dataset.SectionService"/>
@@ -434,53 +433,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
-	<!-- Line List and Data Element Mapping-->
-
-    <bean id="org.hisp.dhis.ll.action.lldataelementmapping.GetOptionCombosAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.GetOptionCombosAction" scope="prototype">
-        <property name="dataElementService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-        </property>
-        <property name="dataElementCategoryOptionComboService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-        </property>
-    </bean>
-
-    <bean id="org.hisp.dhis.ll.action.lldataelementmapping.LineListElementListAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.LineListElementListAction" scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
-    </bean>
-
 	
-    <bean id="org.hisp.dhis.ll.action.lldataelementmapping.LineListOptionListAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.LineListOptionListAction" scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
-    </bean>
-
-	
-    <bean id="org.hisp.dhis.ll.action.lldataelementmapping.LineListGroupListAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.LineListGroupListAction" scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
-    </bean>
-
-    <bean id="org.hisp.dhis.ll.action.lldataelementmapping.AddLineListDataElementMapping"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.AddLineListDataElementMapping" scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
-        <property name="expressionService">
-            <ref bean="org.hisp.dhis.expression.ExpressionService"/>
-        </property>
-        <property name="lineListDataElementMappingService">
-            <ref bean="org.hisp.dhis.linelisting.linelistdataelementmapping.LineListDataElementMappingService"/>
-        </property>
-    </bean>
 
 <!-- Linelisting Aggregation Query Builder -->
     <bean id="org.hisp.dhis.ll.action.llagg.LinelistingAggQueryBuilderFormAction"
@@ -524,9 +477,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
         </property>
-        <property name="categoryService">
+        <!--<property name="categoryService">
             <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-        </property>
+        </property>-->
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+		</property>
     </bean>
 
 <!-- Linelisting Aggregation -->

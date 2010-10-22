@@ -35,15 +35,38 @@ public class ReportType
     public final static String RT_ROUTINE = "Routine";
 
     public final static String RT_LINELIST = "Linelisting";
+    
+    public final static String RT_GOI = "GOI";
+    
+    public final static String RT_FEEDBACK = "Feedback";
+    
+    public final static String RT_AGGREGATION = "Aggregation";
+    
+    public final static String RT_PERIODWISEPROGRESS = "PeriodWiseProgress";
+    
+    public final static String RT_ORGUNITWISEPROGRESS = "OrgUnitWiseProgress";
+    
+   // public final static String RT_ = "";
 
     public static List<String> getReportTypes()
     {
         List<String> reportTypes = new ArrayList<String>();
 
-        reportTypes.add( RT_ROUTINE );
-
+        reportTypes.add( RT_AGGREGATION );
+        
+        reportTypes.add( RT_FEEDBACK );
+        
+        reportTypes.add( RT_GOI );
+        
         reportTypes.add( RT_LINELIST );
-
+        
+        reportTypes.add( RT_ORGUNITWISEPROGRESS );
+        
+        reportTypes.add( RT_PERIODWISEPROGRESS );
+        
+        reportTypes.add( RT_ROUTINE );
+        
+          
         return reportTypes;
     }
 }

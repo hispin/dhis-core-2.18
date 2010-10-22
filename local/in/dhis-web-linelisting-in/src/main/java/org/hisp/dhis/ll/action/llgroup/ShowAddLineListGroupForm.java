@@ -27,14 +27,7 @@ package org.hisp.dhis.ll.action.llgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.linelisting.LineListService;
-
 import com.opensymphony.xwork2.Action;
-import java.util.ArrayList;
-import java.util.List;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodStore;
-import org.hisp.dhis.period.PeriodType;
 
 public class ShowAddLineListGroupForm
     implements Action
@@ -42,14 +35,14 @@ public class ShowAddLineListGroupForm
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+/*
     private LineListService lineListService;
 
     public void setLineListService( LineListService lineListService )
     {
         this.lineListService = lineListService;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------

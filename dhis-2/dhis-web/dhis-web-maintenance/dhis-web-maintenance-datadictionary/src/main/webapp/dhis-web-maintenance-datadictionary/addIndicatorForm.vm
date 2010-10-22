@@ -1,24 +1,11 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addIndicatorForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addIndicatorForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddIndicator();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
+
+	jQuery(document).ready(	function(){
+			validation( 'addIndicatorForm', validateAddIndicator );				
+	});
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "create_new_indicator" )</h3>
 
 <form id="addIndicatorForm" action="addIndicator.action" method="post" >

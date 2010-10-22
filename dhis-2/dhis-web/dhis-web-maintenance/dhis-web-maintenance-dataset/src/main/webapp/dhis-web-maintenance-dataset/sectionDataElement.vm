@@ -35,11 +35,10 @@
            </td>
            
            ##entry
-           <td style="text-align:center">
-           	
-           	#set( $optionComboId = 1 )   
+           <td style="text-align:center"> 	
+           	  
            	#set( $greyedField = "false" )       	
-           	#set( $greyedField = $greyedFields.get( "$dataElement.id:$optionComboId" ) )  
+           	#set( $greyedField = $greyedFields.get( "$dataElement.id:$defaultOptionComboId" ) )  
            	         	           	
            	#if( $greyedField == "true" )           		           	            	
            		<input name="entryfieldTxt" id="[$dataElement.id].txt" type="text" disabled="disabled">

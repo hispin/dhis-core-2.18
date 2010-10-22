@@ -1,25 +1,12 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for updatePatientIdentifierTypeForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updatePatientIdentifierTypeForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateUpdatePatientIdentifierType();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#nameField").focus();
-			}
-	);
+	jQuery(document).ready(	function(){
+		validation( 'updatePatientIdentifierTypeForm', validateUpdatePatientIdentifierType );	
+	});		
 </script>
+
+
 <h3>$i18n.getString( "update_patient_identifier_type" )</h3>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>										
+									
 <form id="updatePatientIdentifierTypeForm" action="updatePatientIdentifierType.action" method="post" >
  <input type="hidden" id="id" name="id" value="$patientIdentifierType.id">
 <table>	

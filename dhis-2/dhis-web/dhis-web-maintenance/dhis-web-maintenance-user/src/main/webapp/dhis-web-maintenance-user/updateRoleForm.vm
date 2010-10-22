@@ -1,25 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for updateRoleForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateRoleForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateUpdateRole();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#name").focus();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'updateRoleForm', validateUpdateRole );				
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_user_role" )</h3>
 
 <form id="updateRoleForm" action="updateRole.action" method="post">

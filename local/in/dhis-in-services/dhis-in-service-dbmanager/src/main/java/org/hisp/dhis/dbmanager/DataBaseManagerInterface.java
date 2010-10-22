@@ -40,6 +40,7 @@ public interface DataBaseManagerInterface
     public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, Source source );
     
     public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, Source source, Period  period );
+    public int rowCount( String tableName );
     
     
 }

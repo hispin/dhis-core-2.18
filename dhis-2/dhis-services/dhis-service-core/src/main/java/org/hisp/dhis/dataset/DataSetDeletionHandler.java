@@ -28,7 +28,6 @@ package org.hisp.dhis.dataset;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -78,18 +77,6 @@ public class DataSetDeletionHandler
         for ( DataSet dataSet : dataSetService.getAllDataSets() )
         {
             if ( dataSet.getSources().remove( source ) )
-            {
-                dataSetService.updateDataSet( dataSet );
-            }
-        }
-    }
-
-    @Override
-    public void deletePeriod( Period period )
-    {
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
-        {
-            if ( dataSet.getLockedPeriods().remove( period ) )
             {
                 dataSetService.updateDataSet( dataSet );
             }

@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,9 +46,6 @@ import com.opensymphony.xwork2.Action;
 public class SetupAssociationsTreeAction
     implements Action
 {
-    private int id;
-
-    private LineListGroup lineListGroup;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -73,17 +69,20 @@ public class SetupAssociationsTreeAction
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-
-    public void setid( int id )
-    {
-        this.id = id;
-    }
-
-    public int getid()
+    private int id;
+    
+    public int getId()
     {
         return id;
     }
 
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    private LineListGroup lineListGroup;
+    
     public LineListGroup getLineListGroup()
     {
         return lineListGroup;
@@ -96,7 +95,19 @@ public class SetupAssociationsTreeAction
     public String execute()
         throws Exception
     {
+        System.out.println("ID : "+id);
+        
         lineListGroup = lineListService.getLineListGroup( id );
+        
+        if( lineListGroup == null )
+        {
+            System.out.println("Linelistgroup is null");
+        }
+        
+        if( selectionTreeManager == null )
+        {
+            System.out.println("selectionTreeManager is null");
+        }
         
         selectionTreeManager.setSelectedOrganisationUnits( convert( lineListGroup.getSources() ) );
 

@@ -1,24 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for updateDataElementGroupForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateDataElementGroupForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateUpdateDataElementGroup();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'updateDataElementGroupForm', validateUpdateDataElementGroup );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_data_element_group" )</h3>
 
 <form id="updateDataElementGroupForm" action="updateDataElementGroup.action" method="post" >

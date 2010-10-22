@@ -1,43 +1,5 @@
 
 
-/*
-function validateExcelImport()
-{
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( excelImportCompleted ); 
-  
-  reportFileNameTB
-  checkerFileNameTB
-  reportModelTB
-  reportList
-  riRadio
-  ouIDTB
-  
-  
-  var requestString = 'excelResultForm.action';
-
-  request.send( requestString );
-
-  return false;
-}
-
-function excelImportCompleted( messageElement )
-{
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
-
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';  	
-  
-}
-
-
-*/
-
-
-
-
 function getOUDetails(orgUnitIds)
 {
 	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
@@ -172,6 +134,7 @@ function getReportsReceived( xmlObject )
 		var model = reports[ i ].getElementsByTagName( "model" )[0].firstChild.nodeValue;
 		var fileName = reports[ i ].getElementsByTagName( "fileName" )[0].firstChild.nodeValue;
 		var checkerFileName = reports[ i ].getElementsByTagName( "checkerFileName" )[0].firstChild.nodeValue;
+		var datasetId = reports[ i ].getElementsByTagName( "datasetid" )[0].firstChild.nodeValue;
 		var ouName = reports[ i ].getElementsByTagName( "ouName" )[0].firstChild.nodeValue;
 	
 		orgUnitName.value = ouName;			
@@ -181,16 +144,16 @@ function getReportsReceived( xmlObject )
 		option.text = name;
 		reportsList.add( option, null );
 		
-		reportModels.put(id,model);
-		reportFileNames.put(id,fileName);
-		checkerFileNames.put(id,checkerFileName);
+		reportModels.put( id, model );
+		reportFileNames.put( id, fileName );
+		checkerFileNames.put( id, checkerFileName );
+		reportDatasets.put( id, datasetId );
 	}
 }
 
 function getPeriodsReceived( xmlObject )
 {	
 	var availablePeriods = document.getElementById( "availablePeriods" );
-	var selectedPeriods = document.getElementById( "selectedPeriods" );
 	
 	clearList( availablePeriods );
 	
@@ -199,43 +162,14 @@ function getPeriodsReceived( xmlObject )
 	for ( var i = 0; i < periods.length; i++)
 	{
 		var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		//var startDate = periods[ i ].getElementsByTagName( "startDate" )[0].firstChild.nodeValue;
-		//var endDate = periods[ i ].getElementsByTagName( "endDate" )[0].firstChild.nodeValue;		
 		var periodName = periods[ i ].getElementsByTagName( "periodname" )[0].firstChild.nodeValue;
 		
-		if ( listContains( selectedPeriods, id ) == false )
-		{						
-			var option = document.createElement( "option" );
-			option.value = id;
-			option.text = periodName;
-			availablePeriods.add( option, null );
-		}			
-	}
-	
-	// If the list of available periods is empty, an empty placeholder will be added
-	//addOptionPlaceHolder( availablePeriods );
+		var option = document.createElement( "option" );
+		option.value = id;
+		option.text = periodName;
+		availablePeriods.add( option, null );
+	}	
 }
-
-/*
-// Overwrite or Don't Import Function
-function riradioSelection(evt)
-{
-	selriRadioButton = evt.target.value;
-    if(selriRadioButton == "overwrite")
-    {
-		document.ChartGenerationForm.reject.disabled = false
-	    
-	    document.ChartGenerationForm.overWrite.disabled = true;
-
-  	}// if block end
-	else
-	{
-		document.ChartGenerationForm.reject.disabled = true;
-	    
-	    document.ChartGenerationForm.overWrite.disabled = false;
-	}// else end
-}// function riradioSelection end
-*/
 
 function submitImportForm()
 {
@@ -245,5 +179,3 @@ function submitImportForm()
 		document.getElementById( "reportForm" ).submit();
 	}
 }
-
-

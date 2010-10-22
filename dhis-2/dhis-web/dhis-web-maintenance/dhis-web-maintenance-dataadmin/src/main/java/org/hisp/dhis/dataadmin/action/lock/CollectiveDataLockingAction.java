@@ -136,14 +136,7 @@ public class CollectiveDataLockingAction
     {
         this.dataSetIds = DataSetIds;
     }
-   /*
-    private Collection<Integer> organisationUnitIds = new ArrayList<Integer>();
-
-    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
-    {
-        this.organisationUnitIds = organisationUnitIds;
-    }
- */
+    
     private String selectionValue = new String();
 
     public void setSelectionValue( String selectionValue )

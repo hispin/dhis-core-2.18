@@ -26,14 +26,15 @@ package org.hisp.dhis.ll.action.llOption;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.hisp.dhis.linelisting.DefaultLineListService;
 import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.hisp.dhis.linelisting.DefaultLineListService;
+import com.opensymphony.xwork2.Action;
 
+//public class GetLineListOptionAction extends ActionSupport
 public class GetLineListOptionAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

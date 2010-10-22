@@ -103,11 +103,19 @@
 
 
 		<!-- REPORT EXCEL CORE ACTION -->
+		
+		<action name="addReportExcelForm"
+			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/addReportExcelForm.vm</param>			
+			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js</param>
+			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>		
 
 		<action name="addReportExcel"
 			class="org.hisp.dhis.reportexcel.action.AddReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReport.vm</result>
+			<result name="success" type="redirect">listReportExcel.action</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -148,11 +156,25 @@
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
+		
+		<action name="updateReportExcelForm"
+			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+			<result name="success" type="chain">updateReportExcelFormChain</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
+		<action name="updateReportExcelFormChain"
+			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/updateReportExcelForm.vm</param>			
+			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js</param>
+			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>	
 
 		<action name="updateReportExcel"
 			class="org.hisp.dhis.reportexcel.action.UpdateReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseReport.vm</result>
+			<result name="success" type="redirect">listReportExcel.action</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 

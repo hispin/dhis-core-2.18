@@ -1,25 +1,12 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for editDataElementCategoryComboForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#editDataElementCategoryComboForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										submitForm(); 
-										validateEditDataElementCategoryCombo()
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'editDataElementCategoryComboForm', function(){
+				submitForm(); 
+				validateEditDataElementCategoryCombo();
+			} );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>
 
 <form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" >

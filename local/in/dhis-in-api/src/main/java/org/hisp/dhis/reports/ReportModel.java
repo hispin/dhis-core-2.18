@@ -34,22 +34,55 @@ public class ReportModel
 {
 
     public final static String RM_STATIC = "static";
-	
+        
     public final static String RM_DYNAMIC_WITH_ROOT = "dynamicwithroot";
-	
+        
     public final static String RM_DYNAMIC_WITHOUT_ROOT = "dynamicwithoutroot";
-	
+    
+    public final static String RM_STATIC_DATAELEMENTS = "STATIC-DATAELEMENTS";
+    
+    public final static String RM_STATIC_FINANCIAL = "STATIC-FINANCIAL";
+    
+    public final static String RM_DYNAMIC_DATAELEMENT = "DYNAMIC-DATAELEMENT";
+    
+    public final static String RM_INDICATOR_FOR_FEEDBACK = "INDICATOR-FOR-FEEDBACK";
+    
+    public final static String INDICATOR_AGAINST_PARENT = "INDICATOR-AGAINST-PARENT";
+    
+    public final static String RM_INDICATOR_AGAINST_SIBLINGS = "INDICATOR-AGAINST-SIBLINGS";
+    
+    public final static String RM_PROGRESSIVE_ORGUNIT = "PROGRESSIVE-ORGUNIT";
+    
+    public final static String RM_PROGRESSIVE_PERIOD = "PROGRESSIVE-PERIOD";
+    
+        
     public static List<String> getReportModels()
     {
         List<String> reportModels = new ArrayList<String>();
 
         reportModels.add( RM_STATIC );
-	
+        
+        reportModels.add( RM_STATIC_DATAELEMENTS );
+        
+        reportModels.add( RM_STATIC_FINANCIAL );
+        
         reportModels.add( RM_DYNAMIC_WITH_ROOT );
 
         reportModels.add( RM_DYNAMIC_WITHOUT_ROOT );
-		
-        return reportModels;		
+
+        reportModels.add( RM_DYNAMIC_DATAELEMENT );
+        
+        reportModels.add( RM_INDICATOR_FOR_FEEDBACK );
+        
+        reportModels.add( INDICATOR_AGAINST_PARENT );
+        
+        reportModels.add( RM_INDICATOR_AGAINST_SIBLINGS );
+        
+        reportModels.add( RM_PROGRESSIVE_ORGUNIT );
+        
+        reportModels.add( RM_PROGRESSIVE_PERIOD );
+
+        return reportModels;            
     }
-	
+        
 }

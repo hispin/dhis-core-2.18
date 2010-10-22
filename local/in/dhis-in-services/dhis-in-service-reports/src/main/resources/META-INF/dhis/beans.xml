@@ -1,58 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  
-<!-- Store definitions -->
-
-  <bean id="org.hisp.dhis.reports.ReportStore"
-    class="org.hisp.dhis.reports.hibernate.HibernateReportStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-    <property name="periodStore"
-      ref="org.hisp.dhis.period.PeriodStore"/>
-  </bean>
 	
-<!-- Service definitions -->
-
-  <bean id="org.hisp.dhis.reports.ReportService"
-    class="org.hisp.dhis.reports.DefaultReportService">
-    <property name="reportStore"
-      ref="org.hisp.dhis.reports.ReportStore"/>	  
-    <property name="configurationService"
-      ref="org.hisp.dhis.config.ConfigurationService"/>
-    <property name="periodStore"
-      ref="org.hisp.dhis.period.PeriodStore"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="dataValueService"
-      ref="org.hisp.dhis.datavalue.DataValueService"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>	  
-  </bean>
-
-<!-- DeletionHandlers -->
-    
-  <bean id="org.hisp.dhis.reports.Report_inDeletionHandler"
-    class="org.hisp.dhis.reports.Report_inDeletionHandler">
-    <property name="reportService"
-      ref="org.hisp.dhis.reports.ReportService"/>
-  </bean>
-  
-<!-- DeletionManager -->
-  
-  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
-    <property name="targetMethod" value="addDeletionHandlers"/>
-    <property name="arguments">
-	  <list>
-        <list>
-          <ref local="org.hisp.dhis.reports.Report_inDeletionHandler"/>
-        </list>
-      </list>
-    </property>
-  </bean>  
-  
+	<!-- Store definitions -->
+	
+	<bean id="org.hisp.dhis.reports.ReportStore"
+		class="org.hisp.dhis.reports.hibernate.HibernateReportStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
+	</bean>
+	
+	<!-- Service definitions -->
+	
+	<bean id="org.hisp.dhis.reports.ReportService"
+		class="org.hisp.dhis.reports.DefaultReportService">
+		<property name="reportStore" ref="org.hisp.dhis.reports.ReportStore"/>
+		<property name="configurationService"
+			ref="org.hisp.dhis.config.ConfigurationService"/>
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+		<property name="dataSetService"
+			ref="org.hisp.dhis.dataset.DataSetService"/>
+	</bean>
+	
+	<!-- DeletionHandlers -->
+	<bean id="org.hisp.dhis.reports.Report_inDeletionHandler"
+		class="org.hisp.dhis.reports.Report_inDeletionHandler">
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
+	</bean>
 </beans>

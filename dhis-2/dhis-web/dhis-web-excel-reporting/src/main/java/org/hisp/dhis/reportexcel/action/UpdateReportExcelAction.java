@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,8 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.reportexcel.action;
 
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -136,8 +136,8 @@ public class UpdateReportExcelAction
 
         if ( periodCol == null || periodRow == null )
         {
-            report.setPeriodColumn( -1 );
-            report.setPeriodRow( -1 );
+            report.setPeriodColumn( null );
+            report.setPeriodRow( null );
         }
         else
         {
@@ -146,8 +146,8 @@ public class UpdateReportExcelAction
         }
         if ( organisationCol == null || organisationRow == null )
         {
-            report.setOrganisationColumn( -1 );
-            report.setOrganisationRow( -1 );
+            report.setOrganisationColumn( null );
+            report.setOrganisationRow( null );
         }
         else
         {

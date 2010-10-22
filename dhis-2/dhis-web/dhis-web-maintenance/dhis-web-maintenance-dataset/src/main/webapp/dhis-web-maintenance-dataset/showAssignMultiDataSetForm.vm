@@ -1,26 +1,3 @@
-<script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addDataSetEditorForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addDataSetEditorForm").validate({
-				 	 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddDataSetEditor();
-									}
-				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-				jQuery("#name").focus();
-			}
-	);
-
-</script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
-
 <h3>$i18n.getString( "dataset_assignment_editor" )</h3>
 
 <form id="assignMultiDataSetForm" action="saveAssignMultiDataSetForOrgunit.action" method="post" onsubmit="selectAllById('selectedDataSets')">

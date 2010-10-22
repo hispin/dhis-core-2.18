@@ -1,27 +1,16 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addPatientAttributeForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addPatientAttributeForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										if( ATTRIBUTE_OPTION.checkOnSubmit() ) 
-										     validateAddPatientAttribute();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#nameField").focus();
-				jQuery("#attributeComboRow").hide();
-			}
-	);
 	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+	
+	jQuery(document).ready(	function(){
+			validation( 'addPatientAttributeForm', function(){
+				if( ATTRIBUTE_OPTION.checkOnSubmit() ) 
+				validateAddPatientAttribute();
+			} );				
+			jQuery("#attributeComboRow").hide();
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>																		
+
+																		
 <h3>$i18n.getString( "add_new_patient_attribute" )</h3>
 <form id="addPatientAttributeForm" action="addPatientAttribute.action" method="post" >
 

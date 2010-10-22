@@ -29,11 +29,10 @@ package org.hisp.dhis.ll.action.llgroup;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.hisp.dhis.linelisting.DefaultLineListService;
+import com.opensymphony.xwork2.Action;
 
 public class GetLineListGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

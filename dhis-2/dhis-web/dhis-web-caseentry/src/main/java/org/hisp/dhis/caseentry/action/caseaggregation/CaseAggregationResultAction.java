@@ -202,7 +202,7 @@ public class CaseAggregationResultAction
                 {
                     CaseAggregationMapping caseAggregationMapping = caseAggregationService
                         .getCaseAggregationMappingByOptionCombo( dElement, optionCombo );
-
+System.out.println("\n\n\n ++++++++++++++ \n caseAggregationMapping : " + caseAggregationMapping);
                     if ( caseAggregationMapping == null || caseAggregationMapping.getExpression() == null
                         || caseAggregationMapping.getExpression().trim().equals( "" ) )
                         break;

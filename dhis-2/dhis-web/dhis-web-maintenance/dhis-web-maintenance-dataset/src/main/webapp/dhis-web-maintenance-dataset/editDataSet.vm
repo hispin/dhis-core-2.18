@@ -1,23 +1,10 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for editDataSetForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#editDataSetForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateEditDataSet();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#name").focus();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'editDataSetForm', validateEditDataSet );
+	});
+	
+	var previousName = '';
+	
 </script>
 
 <h3>$i18n.getString( "edit_dataset" )</h3>
@@ -38,11 +25,11 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )" maxlength="150" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )" maxlength="150" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"></td>
       </tr>      
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" maxlength="20" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"> </td>
+        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" maxlength="20" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"> </td>
       </tr>     
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>

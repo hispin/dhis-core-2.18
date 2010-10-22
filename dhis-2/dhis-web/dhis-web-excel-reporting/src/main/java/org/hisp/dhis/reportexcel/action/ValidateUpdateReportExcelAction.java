@@ -1,3 +1,4 @@
+package org.hisp.dhis.reportexcel.action;
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -25,8 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportexcel.action;
-
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 
@@ -51,8 +50,6 @@ public class ValidateUpdateReportExcelAction
 
     private String name;
 
-    private String excel;
-
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
@@ -72,31 +69,11 @@ public class ValidateUpdateReportExcelAction
         this.name = name;
     }
 
-    public void setExcel( String excel )
-    {
-        this.excel = excel;
-    }
-
-    public String getReportType( String reportType )
-    {
-        return reportType;
-    }
-
     public String execute()
         throws Exception
     {
 
-        if ( name == null )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
-        if ( name.trim().length() == 0 )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
-
+       
         ReportExcel temp = reportService.getReportExcel( id );
 
         ReportExcel reportExcel = reportService.getReportExcel( name );
@@ -104,18 +81,7 @@ public class ValidateUpdateReportExcelAction
         if ( reportExcel != null && !temp.equals( reportExcel ) )
         {
             message = i18n.getString( "name_ready_exist" );
-            return ERROR;
-        }
-
-        if ( excel == null )
-        {
-            message = i18n.getString( "excel_is_null" );
-            return ERROR;
-        }
-
-        if ( excel.trim().length() == 0 )
-        {
-            message = i18n.getString( "excel_is_null" );
+            
             return ERROR;
         }
 

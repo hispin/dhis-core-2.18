@@ -34,8 +34,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
@@ -86,19 +84,6 @@ public class SelectAction
         this.lineListService = lineListService;
     }
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }
 
     private PeriodService periodService;
 

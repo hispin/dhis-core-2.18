@@ -39,6 +39,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -86,10 +87,17 @@ public class SaveCommentAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +122,14 @@ public class SaveCommentAction
     {
         return dataElementId;
     }
-    
+
+    private int organisationUnitId;
+
+    public void setOrganisationUnitId( int organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+
     private Integer optionComboId;
 
     public void setOptionComboId( Integer optionComboId )
@@ -149,12 +164,12 @@ public class SaveCommentAction
 
     public String execute()
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = selectedStateManager.getSelectedPeriod();
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        
+
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
         storedBy = currentUserService.getCurrentUsername();
@@ -181,7 +196,8 @@ public class SaveCommentAction
             {
                 LOG.debug( "Adding DataValue, comment added" );
 
-                dataValue = new DataValue( dataElement, period, organisationUnit, null, storedBy, new Date(), comment, optionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, null, storedBy, new Date(), comment,
+                    optionCombo );
 
                 dataValueService.addDataValue( dataValue );
             }

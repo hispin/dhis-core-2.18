@@ -1,28 +1,8 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addUserForm
-//
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateUserinforForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,beforeValidateHandler : function()
-											{
-												//selectAllById('selectedList');
-											}
-					,submitHandler: function(form)
-									{
-										updateUser();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
 
-				jQuery("#rawPassword").focus();				
-			}
-	);
+	jQuery(document).ready(	function(){
+		validation( 'updateUserinforForm', updateUser );				
+	});
 
 </script>
 
@@ -56,11 +36,11 @@
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"/></td>
+		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em" class="{validate:{required:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "first_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"/></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em" class="{validate:{required:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>

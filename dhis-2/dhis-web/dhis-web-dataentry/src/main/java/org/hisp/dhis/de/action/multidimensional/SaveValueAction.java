@@ -39,6 +39,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -51,7 +52,7 @@ import com.opensymphony.xwork2.Action;
 public class SaveValueAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( SaveValueAction.class );   
+    private static final Log LOG = LogFactory.getLog( SaveValueAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -86,10 +87,17 @@ public class SaveValueAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +122,14 @@ public class SaveValueAction
     {
         return dataElementId;
     }
-    
+
+    private int organisationUnitId;
+
+    public void setOrganisationUnitId( int organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+
     private int optionComboId;
 
     public void setOptionComboId( int optionComboId )
@@ -146,18 +161,18 @@ public class SaveValueAction
     public String getStoredBy()
     {
         return storedBy;
-    }    
-    
+    }
+
     private String inputId;
 
     public String getInputId()
     {
         return inputId;
     }
-    
+
     public void setInputId( String inputId )
     {
-    	this.inputId = inputId;
+        this.inputId = inputId;
     }
 
     // -------------------------------------------------------------------------
@@ -166,16 +181,16 @@ public class SaveValueAction
 
     public String execute()
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = selectedStateManager.getSelectedPeriod();
-        
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );        
 
-        storedBy = currentUserService.getCurrentUsername();        
-        
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );        
-                
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+        storedBy = currentUserService.getCurrentUsername();
+
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+
         if ( storedBy == null )
         {
             storedBy = "[unknown]";
@@ -185,17 +200,17 @@ public class SaveValueAction
         {
             value = null;
         }
-        
+
         if ( value != null )
         {
             value = value.trim();
-        }          
-      
+        }
+
         // ---------------------------------------------------------------------
         // Update data
         // ---------------------------------------------------------------------
 
-        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,optionCombo  );        
+        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
         if ( dataValue == null )
         {
@@ -203,7 +218,8 @@ public class SaveValueAction
             {
                 LOG.debug( "Adding DataValue" );
 
-                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, optionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null,
+                    optionCombo );
                 dataValueService.addDataValue( dataValue );
             }
         }
@@ -214,7 +230,7 @@ public class SaveValueAction
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );
-                        
+
             dataValueService.updateDataValue( dataValue );
         }
 

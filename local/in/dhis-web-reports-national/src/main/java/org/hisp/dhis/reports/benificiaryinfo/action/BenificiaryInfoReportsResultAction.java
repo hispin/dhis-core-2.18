@@ -28,6 +28,7 @@ import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.VerticalAlignment;
+import jxl.format.Font;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -60,6 +61,7 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 import java.util.Collections;
+import jxl.format.Colour;
 import jxl.write.Label;
 import jxl.write.WritableCell;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
@@ -333,6 +335,7 @@ public class BenificiaryInfoReportsResultAction implements Action {
         deWCellformat.setAlignment( Alignment.CENTRE );
         deWCellformat.setVerticalAlignment( VerticalAlignment.JUSTIFY );
         deWCellformat.setWrap( true );
+        deWCellformat.setBackground(Colour.GREY_40_PERCENT);
 
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
@@ -354,7 +357,7 @@ public class BenificiaryInfoReportsResultAction implements Action {
 
             WritableSheet sheet0 = outputReportWorkbook.getSheet( 0 );
             //System.out.println( "curProgram = " + curProgram.getName()  );
-        int count1 = 0;
+            int count1 = 0;
             int rowStart = 0;
 
             Map<String, List<Patient>> ouPatientList = new HashMap<String, List<Patient>>();
@@ -367,10 +370,11 @@ public class BenificiaryInfoReportsResultAction implements Action {
             {
                 // <editor-fold defaultstate="collapsed" desc="saving level of ou in map and list">
                 int level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+
                 ouAndLevel.put( ou, level );
                 if(  !levelsList.contains( level )  )
                 {
-                    //System.out.println( "level "+level );
+                    //System.out.println("ou "+ou.getName() + " level = "+level);
                     levelsList.add( level );
                 }
                 // </editor-fold>
@@ -420,6 +424,7 @@ public class BenificiaryInfoReportsResultAction implements Action {
                     // </editor-fold>
             }
             // </editor-fold>
+            
             // <editor-fold defaultstate="collapsed" desc="getting rowStart">
             for ( String deCodeString : deCodesList )
             {
@@ -431,10 +436,19 @@ public class BenificiaryInfoReportsResultAction implements Action {
                 count1++;
             }
             // </editor-fold>
+            int lastColNo = colList.get(colList.size()-1);
+            // <editor-fold defaultstate="collapsed" desc="adding oulevelname in report as column name">
+            for( int i=levelsList.size()-1;i>=0;i-- )
+            {
+                int level = levelsList.get(i);
+                lastColNo++;
+                sheet0.addCell( new Label(lastColNo , rowStart-1, organisationUnitService.getOrganisationUnitLevelByLevel(level).getName(), deWCellformat ) );
+            }
+            // </editor-fold>
+            
             // <editor-fold defaultstate="collapsed" desc="for loop for ouList">
             for ( OrganisationUnit ou : ouList )
             {
-                
                 List<Patient> patientsList = ouPatientList.get( ou.getName() );
                 // <editor-fold defaultstate="collapsed" desc="for loop for patientsList">
                 for ( Patient patient : patientsList )
@@ -545,6 +559,8 @@ public class BenificiaryInfoReportsResultAction implements Action {
                         count1++;
                     }//end of decodelist for loop
                     // </editor-fold>
+                    
+
                     // <editor-fold defaultstate="collapsed" desc="adding ou in report at the end column">
                     OrganisationUnit ouname = ou;
                     for( int i=levelsList.size()-1;i>=0;i-- )

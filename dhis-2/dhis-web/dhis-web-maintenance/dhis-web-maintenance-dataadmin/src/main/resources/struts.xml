@@ -365,10 +365,10 @@
 			<param name="page">/dhis-web-maintenance-dataadmin/addSqlViewForm.vm</param>
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
 			<param name="javascripts">
-				javascript/sqlViewData.js,javascript/sqlView.js,javascript/jquery.autocomplete.js
-				,../dhis-web-commons/util/validate/jquery.validate.js
-				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/validationMessages.action
+				javascript/sqlViewData.js
+				,javascript/sqlView.js
+				,javascript/sqlViewDesignTool.js
+				,javascript/jquery.autocomplete.js
 			</param>
 			<param name="requiredAuthorities">F_SQLVIEW_ADD</param>
 		</action>
@@ -395,10 +395,12 @@
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/updateSqlViewForm.vm</param>
-			<param name="javascripts">javascript/sqlView.js
-				,../dhis-web-commons/util/validate/jquery.validate.js
-				,../dhis-web-commons/util/validate/additional-methods.js
-				,../dhis-web-commons/validationMessages.action</param>
+			<param name="javascripts">
+				javascript/sqlViewData.js
+				,javascript/sqlView.js
+				,javascript/sqlViewDesignTool.js
+				,javascript/jquery.autocomplete.js
+			</param>
 			<param name="requiredAuthorities">F_SQLVIEW_UPDATE</param>
 		</action>
 		
@@ -466,14 +468,16 @@
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/showDataSqlViewForm.vm</param>
-			<param name="javascripts">javascript/sqlView.js
-				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+			<param name="javascripts">javascript/sqlView.js</param>
 			<param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
 		</action>
 		
 		<action name="getResourceProperties" class="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction">
 		  <result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/jsonResourceProperties.vm</result>
+		</action>
+		
+		<action name="autoJoinResourceTables" class="org.hisp.dhis.dataadmin.action.sqlview.AutoJoinResourceTablesAction">
+		  <result name="success" type="velocity-json">/dhis-web-maintenance-dataadmin/jsonJoinQuery.vm</result>
 		</action>
 		
 	</package>

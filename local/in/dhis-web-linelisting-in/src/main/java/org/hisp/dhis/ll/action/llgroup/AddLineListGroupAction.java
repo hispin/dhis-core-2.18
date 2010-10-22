@@ -32,21 +32,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class AddLineListGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -65,28 +61,28 @@ public class AddLineListGroupAction
     {
         this.periodService = periodService;
     }
-
+/*
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
     }
-
+*/
     private DataBaseManagerInterface dataBaseManagerInterface;
 
     public void setDataBaseManagerInterface( DataBaseManagerInterface dataBaseManagerInterface )
     {
         this.dataBaseManagerInterface = dataBaseManagerInterface;
     }
-
+/*
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -136,7 +132,7 @@ public class AddLineListGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
     @Override
-    @SuppressWarnings("empty-statement")
+   // @SuppressWarnings("empty-statement")
     public String execute()
     {
 

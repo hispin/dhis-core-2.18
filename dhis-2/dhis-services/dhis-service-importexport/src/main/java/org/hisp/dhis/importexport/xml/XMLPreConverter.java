@@ -39,6 +39,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -85,6 +86,9 @@ public class XMLPreConverter
 
     @Autowired
     private XSLTLocator xsltLocator;
+
+    @Autowired
+    URIResolver resolver;
 
     public QName getDocumentRoot(BufferedInputStream xmlDataStream) throws ImportException
     {
@@ -143,8 +147,7 @@ public class XMLPreConverter
         {
             TransformerTask tt = new TransformerTask( sheet, xsltParams );
 
-            // tt.transform( source, result, resolver );
-            tt.transform( source, result, null );
+            tt.transform( source, result, resolver );
             log.debug( "Transform successful" );
 
         } catch ( Exception ex )

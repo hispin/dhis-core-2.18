@@ -32,14 +32,14 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetNumberOfLevelsAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -62,7 +62,7 @@ public class GetNumberOfLevelsAction
     {
         return levels;
     }
-
+        
     // -------------------------------------------------------------------------
     // ActionSupport implementation
     // -------------------------------------------------------------------------
@@ -70,6 +70,7 @@ public class GetNumberOfLevelsAction
     public String execute()
     {
 
+//        System.out.println("ID in GetNumberofLevelsAction : "+id);
         levels = organisationUnitService.getOrganisationUnitLevels();;
         
         return SUCCESS;

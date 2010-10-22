@@ -34,7 +34,7 @@ function lineListElementReceived( lineListElementElement )
 
 function removeLineListElement( lineListElementId, lineListElementName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + lineListElementName );
+    var result = window.confirm( i18n_confirm_delete + '\n\nLine List Element Name: ' + lineListElementName + '\n\nLine List Element Id: ' +lineListElementId);
     
     if ( result )
     {
@@ -49,10 +49,11 @@ function removeLineListElementCompleted( messageElement )
 {
     var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
-
+   // alert(type);
     if ( type == 'success' )
     {
-        window.location.href = 'getLineListElements.action';
+       
+    	window.location.href = 'lineListElements.action';
     }
     else if ( type == 'error' )
     {

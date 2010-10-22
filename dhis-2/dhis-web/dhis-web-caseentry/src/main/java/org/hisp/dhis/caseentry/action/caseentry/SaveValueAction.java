@@ -277,6 +277,7 @@ public class SaveValueAction
             patientDataValue.setTimestamp( new Date() );
 
             patientDataValueService.updatePatientDataValue( patientDataValue );
+            
         }
 
         return SUCCESS;

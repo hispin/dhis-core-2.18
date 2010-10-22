@@ -32,7 +32,6 @@ import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.linelisting.DefaultLineListService;
 
 public class ValidateLineListOptionAction
     implements Action

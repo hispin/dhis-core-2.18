@@ -1,6 +1,5 @@
 
-<h3>Line List Elements</h3>
-
+<font face"Arial" color="blue"><H1>$i18n.getString( "line_list_elements" )</H1></font>
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
@@ -82,5 +81,5 @@ function showsection(lineListElementId)
 	window.location.href="section.action?lineListElementId=" + lineListElementId;
 }
 
-var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
+var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_linelist_element" ) , "'" )';
 </script>

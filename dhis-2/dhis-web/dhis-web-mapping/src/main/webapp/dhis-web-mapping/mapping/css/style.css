@@ -41,7 +41,12 @@
 }
 .x-toolbar .xtb-sep {
     background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
-    height:25px;
+    height:27px;
+}
+#map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
+    border-top:1px solid #bebebe;
+    border-left:1px solid #bebebe;
+    border-right:1px solid #bebebe;
 }
 .x-panel-tbar .x-toolbar {
     padding:0;
@@ -63,7 +68,7 @@
 /* OpenLayers overrides */
 
 div.olMapViewport {
-    border-top:1px solid #DDDDDD;
+    border-top:1px solid #bebebe;
 }
 
 /* OpenLayers (include in lib)

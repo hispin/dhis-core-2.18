@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName" table="categoryoptioncomboname">
+  <class name="org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName" table="_categoryoptioncomboname">
     <id name="id" column="id">
       <generator class="native"/>
     </id>

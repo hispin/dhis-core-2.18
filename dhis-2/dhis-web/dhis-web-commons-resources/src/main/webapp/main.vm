@@ -16,22 +16,23 @@
     #end
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	
-    <script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>    
+        
     <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.metadata.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/ui.datepicker.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.tablesorter.js"></script>	
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.validate.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/util/jquery.validate.ext.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/util/lists.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/ui.datepicker.js"></script>
+	
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.tablesorter.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.blockUI.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.metadata.js"></script>
+	
 	
     <script type="text/javascript" src="../main.js"></script>
-    <script type="text/javascript">
-      var i18n_show_menu = '$encoder.jsEscape( $i18n.getString( "show_menu" ) , "'")';
-      var i18n_hide_menu = '$encoder.jsEscape( $i18n.getString( "hide_menu" ) , "'")';
-    </script>
+  
     <script type="text/javascript" src="../request.js"></script>
     #foreach( $javascript in $javascripts )
       <script type="text/javascript" src="$javascript"></script>

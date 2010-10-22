@@ -1,25 +1,12 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addSectionForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addSectionForm").validate({
-				 	 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										selectAllById( 'selectedList' );
-										validateAddSection();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#sectionName").focus();
-			}
-	);
+	jQuery(document).ready(	function(){
+			validation( 'addSectionForm', function(){
+				selectAllById( 'selectedList' );
+				validateAddSection();
+			} );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "add_section" )</h3>
 
 <form id="addSectionForm" name="addSectionForm" action="addSectionAction.action" method="post" >

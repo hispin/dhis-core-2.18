@@ -1,28 +1,13 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addSectionForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#editDataSetForm").validate({
-				 	 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										// select all in the selectedList!
-                                        selectAllById( 'selectedList' );
-                                        // actually submit the form
-                                        document.forms['editDataSetForm'].submit();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#sectionName").focus();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'editDataSetForm', function(){
+				selectAllById( 'selectedList' );
+				document.forms['editDataSetForm'].submit();
+			} );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
+
 <h3>$i18n.getString( "edit_section" )</h3>
 
 <form id="editDataSetForm" name="editDataSetForm" action="updateSection.action" method="post" >

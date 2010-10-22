@@ -3944,7 +3944,7 @@ function onHoverSelectPolygon(feature) {
 }
 
 function onHoverUnselectPolygon(feature) {
-    Ext.getCmp('featureinfo_l').setText('<span style="color:#666">'+ i18n_no_feature_selected +'.</span>', false);
+    Ext.getCmp('featureinfo_l').setText('<span style="color:#666">'+ i18n_no_feature_selected +'</span>', false);
 }
 
 function onClickSelectPolygon(feature) {

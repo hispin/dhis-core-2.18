@@ -22,9 +22,7 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-in/lineListOption.vm</param>
             <param name="menu">/dhis-web-linelisting-in/menu.vm</param>
-            <param name="javascripts">
-				javascript/lineListOption.js,javascript/filterTable.js
-            </param>
+            <param name="javascripts">javascript/lineListOption.js,javascript/filterTable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
@@ -61,7 +59,8 @@
       class="org.hisp.dhis.ll.action.llOption.ShowUpdateLineListOptionFormAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-in/updateLineListOptionForm.vm</param>
-            <param name="javascripts">javascript/shortName.js,javascript/lineListOption.js,javascript/updateLoad.js</param>
+            <param name="javascripts">javascript/shortName.js,javascript/lineListOption.js</param>
+			<!--<param name="javascripts">javascript/shortName.js,javascript/lineListOption.js,javascript/updateLoad.js</param>-->
             <param name="stylesheets">style/dhis-web-linelisting-in.css</param>
             <param name="requiredAuthorities">F_LINELISTOPTION_UPDATE</param>
         </action>
@@ -95,7 +94,10 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-in/lineListElements.vm</param>
             <param name="menu">/dhis-web-linelisting-in/menu.vm</param>
-            <param name="javascripts">javascript/lineListElement.js</param>
+            <param name="javascripts">javascript/lineListElement.js,javascript/filterTable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+			
         </action>
     
     <!-- Show add Line List Element form-->
@@ -119,9 +121,7 @@
         <action name="editLineListElementForm"
 			class="org.hisp.dhis.ll.action.llelements.GetLineListElementOptionsAction">
             <result name="success" type="velocity">/main.vm</result>
-            <param name="page">
-				/dhis-web-linelisting-in/editLineListElementForm.vm
-            </param>
+            <param name="page">/dhis-web-linelisting-in/editLineListElementForm.vm</param>
             <param name="javascripts">javascript/lineListElement.js,javascript/lineListElementOptions.js</param>
             <param name="requiredAuthorities">F_DATASET_UPDATE</param>
         </action>
@@ -150,7 +150,8 @@
     
         <action name="removeLineListElement"
       class="org.hisp.dhis.ll.action.llelements.RemoveLineListElementAction">
-            <result name="success" type="redirect">lineListElements.action</result>
+           <!-- <result name="success" type="redirect">lineListElements.action</result>-->
+			<result name="success" type="velocity-xml">/dhis-web-linelisting-in/responseSuccess.vm</result>
             <result name="error" type="velocity-xml">/dhis-web-linelisting-in/responseError.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
             <param name="requiredAuthorities">F_LINELISTELEMENT_DELETE</param>
@@ -378,38 +379,7 @@
             <result name="success" type="redirect">showValidationRules.action</result>
             <param name="requiredAuthorities">F_VALIDATIONRULE_ADD</param>
         </action>
-    <!-- LineList and Data Element Mapping -->
-   
-        <action name="selectDataElement"
-      class="org.hisp.dhis.ll.action.lldataelementmapping.SelectDataElementAction">
-            <result name="success" type="velocity">selectDataElement.vm</result>
-            <result name="input" type="velocity-xml">/dhis-web-linelisting-in/responseInput.vm</result>
-            <param name="javascripts">javascript/hashtable.js</param>
-        </action>
     
-        <action name="getOptionCombos"
-      class="org.hisp.dhis.ll.action.lldataelementmapping.GetOptionCombosAction">
-            <result name="success" type="velocity-xml">/dhis-web-linelisting-in/responseOptionCombo.vm</result>
-            <param name="javascripts">javascript/hashtable.js</param>
-        </action>
-    
-	<action name="showAddLineListMappingForm" class="org.hisp.dhis.validationrule.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-linelisting-in/addLineListDataElementMappingForm.vm</param>
-      <param name="menu">/dhis-web-linelisting-in/menu.vm</param>
-      <param name="javascripts">javascript/lineListMapping.js,javascript/expression.js</param>
-    </action>    
-    
-    <action name="addLineListDataElementMapping" class="org.hisp.dhis.ll.action.lldataelementmapping.AddLineListDataElementMapping">
-      <result name="success" type="redirect">getAllLineListMappings.action</result>
-    </action>
-    
-    <action name="getAllLineListMappings" class="org.hisp.dhis.ll.action.lldataelementmapping.GetAllLineListMappingsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-linelisting-in/lineListMappings.vm</param>
-      <param name="menu">/dhis-web-linelisting-in/menu.vm</param>
-      <param name="javascripts">javascript/general.js</param>
-    </action> 
 	
 <!-- Linelisting Aggregation Query Builder -->	
         <action name="showLLAggQueryBuilderForm" class="org.hisp.dhis.ll.action.llagg.LinelistingAggQueryBuilderFormAction">

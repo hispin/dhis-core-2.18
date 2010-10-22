@@ -92,7 +92,7 @@ public class ValidateAddUpdateSqlViewAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
 
     private String message;
@@ -137,12 +137,17 @@ public class ValidateAddUpdateSqlViewAction
         {
             if ( !s.matches( REGEX_SELECT_QUERY ) || s.toLowerCase().contains( REGEX_SELECT_INTO_QUERY ) )
             {
-                message = i18n.getString( "sqlquery_is_invalid" )
-                    + "<br/><span style=\"color:blue;font-weight:bold;font-style:italic;\">"
-                    + i18n.getString( "sqlquery_is_welformed" ) + "</span>";
+                message = i18n.getString( "sqlquery_is_invalid" ) + "<br/>" + i18n.getString( "sqlquery_is_welformed" );
 
                 return INPUT;
             }
+        }
+
+        message = sqlViewService.testSqlGrammar( sqlquery );
+
+        if ( !message.equals( "" ) )
+        {
+            return INPUT;
         }
 
         return SUCCESS;

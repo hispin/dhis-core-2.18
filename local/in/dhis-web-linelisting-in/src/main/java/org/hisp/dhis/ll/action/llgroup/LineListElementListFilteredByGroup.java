@@ -28,21 +28,17 @@ package org.hisp.dhis.ll.action.llgroup;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
-import org.hisp.dhis.linelisting.comparator.LineListElementNameComparator;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Kristian
@@ -52,15 +48,7 @@ import org.hisp.dhis.period.PeriodType;
 public class LineListElementListFilteredByGroup
     implements Action
 {
-    private String id;
-
-    private String selectedList[];
-
-    private List<LineListElement> lineListElements;
-
-    private Integer groupId;
-
-    private List<LineListElement> groupMembers;
+   
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -91,35 +79,58 @@ public class LineListElementListFilteredByGroup
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    public void setid( String id )
+    private String id;
+    
+    public void setId( String id )
     {
         this.id = id;
     }
 
-    public List<LineListElement> getGroupMembers()
+    public String getId()
     {
-        return groupMembers;
+        return id;
     }
 
+    private String selectedList[];
+    
     public void setSelectedList( String[] selectedList )
     {
         this.selectedList = selectedList;
     }
 
+    
+
+    private List<LineListElement> lineListElements;
+    
+    public List<LineListElement> getLineListElements()
+    {
+        return lineListElements;
+    }
+
+    private Integer groupId;
+    
     public void setGroupId( Integer groupId )
     {
         this.groupId = groupId;
     }
 
-    public String getid()
-    {
-        return id;
-    }
 
-    public List<LineListElement> getLineListElements()
+    private List<LineListElement> groupMembers;
+    
+    public List<LineListElement> getGroupMembers()
     {
-        return lineListElements;
+        return groupMembers;
     }
+    
+    /*
+    public void setid( String id )
+    {
+        this.id = id;
+    }
+ */
+ 
+
+ 
 
     private List<PeriodType> periodTypes;
 

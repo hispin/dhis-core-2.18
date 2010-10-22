@@ -400,7 +400,7 @@ public class PortalReportsResultAction implements Action
 
         //Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiersByOrgUnit(  selectedOrgUnit  );
 
-        Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
+        
         //patientListByOrgUnit.addAll(  patientService.getPatientsByOrgUnit(  selectedOrgUnit  )  );
 
         // Getting Programs
@@ -416,6 +416,7 @@ public class PortalReportsResultAction implements Action
             for ( int pn = 0; pn < programNames.length; pn++ )
             {
                 Program curProgram = programService.getProgram( Integer.parseInt( programNames[pn] ) );
+
                 // <editor-fold defaultstate="collapsed" desc="if curprog!=null">
                 if ( curProgram != null )
                 {
@@ -444,32 +445,32 @@ public class PortalReportsResultAction implements Action
                     dhisPortalMap.put( "false", "No" );
 
                     //putting linked facility / place of delivery
-                    dhisPortalMap.put( "( Sub Centre )", "Sub-center" );
-                    dhisPortalMap.put( "( PHC )", "PHC" );
-                    dhisPortalMap.put( "( CHC )", "CH" );
-                    dhisPortalMap.put( "( SDH )", "SDH" );
-                    dhisPortalMap.put( "( DH )", "DH" );
+                    dhisPortalMap.put( "(Sub Centre)", "Sub-center" );
+                    dhisPortalMap.put( "(PHC)", "PHC" );
+                    dhisPortalMap.put( "(CHC)", "CH" );
+                    dhisPortalMap.put( "(SDH)", "SDH" );
+                    dhisPortalMap.put( "(DH)", "DH" );
                     //anemia
-                    dhisPortalMap.put( "( Normal )", "Normal" );
-                    dhisPortalMap.put( "( Moderate <11 )", "( Moderate<11" );
-                    dhisPortalMap.put( "( Severe <7 )", "Severe<7" );
+                    dhisPortalMap.put( "(Normal)", "Normal" );
+                    dhisPortalMap.put( "(Moderate <11)", "( Moderate<11" );
+                    dhisPortalMap.put( "(Severe <7)", "Severe<7" );
                     //anc Complication
-                    dhisPortalMap.put( "( ANC None )", "None" );
-                    dhisPortalMap.put( "( Hypertensive )", "Hypertensive" );
-                    dhisPortalMap.put( "( Diabetics )", "Diabetics" );
-                    dhisPortalMap.put( "( APH )", "APH" );
-                    dhisPortalMap.put( "( Malaria )", "Malaria" );
+                    dhisPortalMap.put( "(ANC None)", "None" );
+                    dhisPortalMap.put( "(Hypertensive)", "Hypertensive" );
+                    dhisPortalMap.put( "(Diabetics)", "Diabetics" );
+                    dhisPortalMap.put( "(APH)", "APH" );
+                    dhisPortalMap.put( "(Malaria)", "Malaria" );
                     //place of delivery home type
-                    dhisPortalMap.put( "( Home non SBA )", "Non SBA" );
-                    dhisPortalMap.put( "( Home SBA )", "SBA" );
+                    dhisPortalMap.put( "(Home non SBA)", "Non SBA" );
+                    dhisPortalMap.put( "(Home SBA)", "SBA" );
                     //place of delivery public
-                    dhisPortalMap.put( "( Sub Centre )", "Sub Centre" );
-                    dhisPortalMap.put( "( PHC. )", "PHC" );
-                    dhisPortalMap.put( "( CHC. )", "CH" );
-                    dhisPortalMap.put( "( SDH. )", "SDH" );
-                    dhisPortalMap.put( "( DH. )", "DH" );
+                    dhisPortalMap.put( "(Sub Centre)", "Sub Centre" );
+                    dhisPortalMap.put( "(PHC.)", "PHC" );
+                    dhisPortalMap.put( "(CHC.)", "CH" );
+                    dhisPortalMap.put( "(SDH.)", "SDH" );
+                    dhisPortalMap.put( "(DH.)", "DH" );
                     //place of delivery private
-                    dhisPortalMap.put( "( Private )", "Private" );
+                    dhisPortalMap.put( "(Private)", "Private" );
                     List<String> podHomeList = new ArrayList<String>();
                     podHomeList.add( "Non SBA" );
                     podHomeList.add( "SBA" );
@@ -485,28 +486,28 @@ public class PortalReportsResultAction implements Action
                     podPrivateList.add( "Private" );
                     //delivery type
 
-                    dhisPortalMap.put( "( Normal. )", "Normal" );
-                    dhisPortalMap.put( "( C Section )", "CS" );
-                    dhisPortalMap.put( "( Instrumental )", "Instrumental" );
+                    dhisPortalMap.put( "(Normal.)", "Normal" );
+                    dhisPortalMap.put( "(C Section)", "CS" );
+                    dhisPortalMap.put( "(Instrumental)", "Instrumental" );
                     //abortion
-                    dhisPortalMap.put( "( MTP < 12 Weeks )", "MTP<12" );
-                    dhisPortalMap.put( "( MTP > 12 Weeks )", "MTP>12" );
-                    dhisPortalMap.put( "( Spontaneous )", "Spontaneous" );//not thr in excel sheet
-                    dhisPortalMap.put( "( None )", "None" );
+                    dhisPortalMap.put( "(MTP < 12 Weeks)", "MTP<12" );
+                    dhisPortalMap.put( "(MTP > 12 Weeks)", "MTP>12" );
+                    dhisPortalMap.put( "(Spontaneous)", "Spontaneous" );//not thr in excel sheet
+                    dhisPortalMap.put( "(None)", "None" );
                     //pnc visit
-                    dhisPortalMap.put( "( with in 7 days )", "Within 7 days" );
-                    dhisPortalMap.put( "( With in 48 hrs )", "Within 48 hours" );
+                    dhisPortalMap.put( "(with in 7 days)", "Within 7 days" );
+                    dhisPortalMap.put( "(With in 48 hrs)", "Within 48 hours" );
                     //pnc complications
-                    dhisPortalMap.put( "( None. )", "None" );
-                    dhisPortalMap.put( "( Sepsis )", "Sepsis" );
-                    dhisPortalMap.put( "( PPH )", "PPH" );
-                    dhisPortalMap.put( "( Death )", "PPH" );
-                    dhisPortalMap.put( "( Others. )", "Others" );
+                    dhisPortalMap.put( "(None.)", "None" );
+                    dhisPortalMap.put( "(Sepsis)", "Sepsis" );
+                    dhisPortalMap.put( "(PPH)", "PPH" );
+                    dhisPortalMap.put( "(Death)", "PPH" );
+                    dhisPortalMap.put( "(Others.)", "Others" );
                     //pp contrapception
-                    dhisPortalMap.put( "( Other method )", "None" );
-                    dhisPortalMap.put( "( Sterilisation )", "Sterilisation" );
-                    dhisPortalMap.put( "( IUD )", "IUD" );
-                    dhisPortalMap.put( "( Injectibles )", "Injectibles" );
+                    dhisPortalMap.put( "(Other method)", "None" );
+                    dhisPortalMap.put( "(Sterilisation)", "Sterilisation" );
+                    dhisPortalMap.put( "(IUD)", "IUD" );
+                    dhisPortalMap.put( "(Injectibles)", "Injectibles" );
                     //child health
                     //blood group
                     dhisPortalMap.put( "A+", "A+" );
@@ -537,11 +538,13 @@ public class PortalReportsResultAction implements Action
                     Map<Patient, ProgramInstance> patientPIList = new HashMap<Patient, ProgramInstance>();
                     Map<ProgramInstance, Collection<ProgramStageInstance>> PIPSIList = new HashMap<ProgramInstance, Collection<ProgramStageInstance>>();
                     Map<ProgramInstance, Collection<ProgramStageInstance>> PIAllPSIList = new HashMap<ProgramInstance, Collection<ProgramStageInstance>>();
+                    Map<Patient, OrganisationUnit> patientOuList = new HashMap<Patient, OrganisationUnit>();
                     orgUnitList = getChildOrgUnitTree( selectedOrgUnit );
-
+                    //System.out.println("curprogram "+curProgram.getName());
                     // <editor-fold defaultstate="collapsed" desc="for loop for Orgunitlist">
                     for ( OrganisationUnit ou : orgUnitList )
                     {
+                        Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
                         patientListByOrgUnit.addAll( patientService.getPatientsByOrgUnit( ou ) );
                         Iterator<Patient> patientIterator = patientListByOrgUnit.iterator();
 
@@ -549,6 +552,7 @@ public class PortalReportsResultAction implements Action
                         while ( patientIterator.hasNext() )
                         {
                             Patient patient = patientIterator.next();
+                            
                             //checking if patient is enrolled to curprog then adding them in one list
                             Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
                             programInstances = programInstanceService.getProgramInstances( patient, curProgram );
@@ -556,6 +560,7 @@ public class PortalReportsResultAction implements Action
                             // <editor-fold defaultstate="collapsed" desc="for loop for programInstances">
                             for ( ProgramInstance pi : programInstances )
                             {
+                                //System.out.println("_________________________________id = "+patient.getId() + " ou = "+ou.getName());
                                 Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
                                 Collection<ProgramStageInstance> allProgramStageInstances = new ArrayList<ProgramStageInstance>();
                                 Iterator itr1 = programStagesList.iterator();
@@ -576,6 +581,7 @@ public class PortalReportsResultAction implements Action
                                                 if ( programStageInstance.getExecutionDate().after( sDate ) && programStageInstance.getExecutionDate().before( eDate ) )
                                                 {
                                                     programStageInstances.add( programStageInstance );
+                                                    //System.out.println("srno: "+programStageInstances.size() + " patient: "+patient + " pi "+pi.getId() + " psi "+programStageInstance.getId());
                                                 }
                                             }
                                         } 
@@ -585,13 +591,15 @@ public class PortalReportsResultAction implements Action
                                         }
                                     }
                                 }
-                                if ( pi != null && !programStageInstances.isEmpty() )
+                                if ( pi != null )
                                 {
                                     //putting pi and psi together
                                     PIPSIList.put( pi, programStageInstances );
                                     PIAllPSIList.put( pi, allProgramStageInstances );
+                                    //System.out.println("allProgramStageInstances size = "+allProgramStageInstances.size()+ " programStageInstances "+programStageInstances.size() + " pi = "+pi.getId() );
                                     //putting patient and pi together
                                     patientPIList.put( patient, pi );
+                                    patientOuList.put(patient, ou);
                                     patientList.add( patient );
 
                                 }
@@ -611,7 +619,7 @@ public class PortalReportsResultAction implements Action
                         ProgramInstance programInstance = patientPIList.get( patient );
 
                         String cAPhoneNumberName = "";
-                        //System.out.println( "______________________________ patient = " + patient.getFullName() + " id = " + patient.getId() );
+                        //System.out.println( "==================== patient = " + patient.getFullName() + " id = " + patient.getId() + " piid = "+ patientPIList.get(patient).getId()+  " psilist size = "+ PIPSIList.get(patientPIList.get(patient)).size() );
                         count1 = 0;
                         int rowNo = rowList.get( 1 ) + rowCount;
                         // <editor-fold defaultstate="collapsed" desc="for loop of deCodesList">
@@ -677,7 +685,7 @@ public class PortalReportsResultAction implements Action
                                             if ( pStageInstance.getExecutionDate() != null ) {
                                                 if ( includePeriod != null ) {
                                                     if ( pStageInstance.getExecutionDate().before( eDate ) ) {
-                                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, selectedOrgUnit );
+                                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
 
                                                         if ( patientDataValue1 == null ) {
                                                             tempStr = " ";
@@ -710,7 +718,7 @@ public class PortalReportsResultAction implements Action
                                                         }
                                                     }
                                                 } else {
-                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, selectedOrgUnit );
+                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
 
                                                     if ( patientDataValue1 == null ) {
                                                         tempStr = " ";
@@ -752,25 +760,30 @@ public class PortalReportsResultAction implements Action
                                     {
                                         if ( deCodeString.equalsIgnoreCase( "FACILITY" ) )
                                         {
-                                            tempStr = selectedOrgUnit.getName();
+                                            tempStr = patientOuList.get(patient).getName();
                                         } 
                                         else
                                         {
                                             int deCodeInt = Integer.parseInt( deCodeString );
-                                            //_______________________all programdes_______________________
+                                            //System.out.println("deCode = "+deCodeString);
                                             DataElement d1e = dataElementService.getDataElement( deCodeInt );
                                             Collection<ProgramStageInstance> programStageInstances = PIAllPSIList.get( programInstance );
                                             Iterator<ProgramStageInstance> itrPSI = programStageInstances.iterator();
                                             while ( itrPSI.hasNext() )
                                             {
                                                 ProgramStageInstance programStageInstance = itrPSI.next();
-                                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, selectedOrgUnit );
+
+                                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                                //System.out.println("psi = "+programStageInstance.getId() + " de = "+d1e + " ou = "+patientOuList.get(patient));
                                                 if ( patientDataValue != null )
                                                 {
+                                                    //System.out.println("tempStr = "+patientDataValue.getValue() + " de = "+d1e.getId());
                                                     if ( d1e.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_STRING ) && d1e.isMultiDimensional() )
                                                     {
+
                                                         DataElementCategoryOptionCombo dataElementCategoryOptionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( Integer.parseInt( patientDataValue.getValue() ) );
                                                         tempStr = dataElementCategoryOptionCombo.getName();
+                                                        
                                                         if ( dhisPortalMap.containsKey( tempStr ) )
                                                         {
                                                             tempStr = dhisPortalMap.get( tempStr );
@@ -789,10 +802,7 @@ public class PortalReportsResultAction implements Action
                                                                 {
                                                                     tempStr = simpleLmpDateFormat.format( doseDate );
                                                                 } 
-                                                                else
-                                                                {
-                                                                    tempStr = "";
-                                                                }
+                                                                
                                                             } 
                                                             else
                                                             {
@@ -800,10 +810,7 @@ public class PortalReportsResultAction implements Action
                                                             }
 
                                                         } 
-                                                        else
-                                                        {
-                                                            tempStr = "";
-                                                        }
+                                                        
                                                     } 
                                                     else
                                                     {
@@ -815,12 +822,17 @@ public class PortalReportsResultAction implements Action
                                                         }
 
                                                     }
+                                                   
                                                 } 
                                                 else
                                                 {
                                                     continue;
                                                 }
-
+                                                
+                                            }
+                                            if(tempStr.trim().equals(""))
+                                            {
+                                                tempStr = "";
                                             }
                                         }
                                         //
@@ -908,7 +920,7 @@ public class PortalReportsResultAction implements Action
                                         while ( itrPSI.hasNext() )
                                         {
                                             ProgramStageInstance programStageInstance = itrPSI.next();
-                                            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, selectedOrgUnit );
+                                            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
                                             if ( patientDataValue != null )
                                             {
                                                 if ( d1e.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_DATE ) )
@@ -960,7 +972,7 @@ public class PortalReportsResultAction implements Action
                                         {
 
                                             ProgramStageInstance programStageInstance = itrPSI.next();
-                                            PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, selectedOrgUnit );
+                                            PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
                                             if ( patientDataValue1 != null )
                                             {
                                                 ifaCount = Integer.parseInt( patientDataValue1.getValue() ) + ifaCount;
@@ -979,12 +991,15 @@ public class PortalReportsResultAction implements Action
                                         int deCodeInt = Integer.parseInt( deCodeString );
                                         PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( deCodeInt );
                                         PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                                        //System.out.println("patient "+patient +" pattr = "+patientAttribute.getName());
+
                                         String name = "";
                                         if ( patientAttributeValue != null )
                                         {
                                             if ( sType.equalsIgnoreCase( "caseAttributePN" ) )
                                             {
                                                 name = patientAttributeValue.getValue();
+                                                System.out.println("name = "+name);
                                                 if ( curProgram.getId() == 1 && dhisPortalMap.containsKey( name ) )
                                                 {
                                                     cAPhoneNumberName = name;

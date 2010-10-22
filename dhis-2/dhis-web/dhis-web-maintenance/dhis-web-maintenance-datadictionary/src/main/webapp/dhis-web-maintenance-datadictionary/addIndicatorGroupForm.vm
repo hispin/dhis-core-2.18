@@ -1,24 +1,11 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addIndicatorGroupForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addIndicatorGroupForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddIndicatorGroup();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
+
+	jQuery(document).ready(	function(){
+			validation( 'addIndicatorGroupForm', validateAddIndicatorGroup );				
+	});
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "create_new_indicator_group" )</h3>
 
 <form id="addIndicatorGroupForm" action="addIndicatorGroup.action" method="post" >
