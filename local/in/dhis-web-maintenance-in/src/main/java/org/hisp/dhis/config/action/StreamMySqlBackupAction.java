@@ -15,10 +15,6 @@ public class StreamMySqlBackupAction
 {
 
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
     // Input and Output Parameters
     // -------------------------------------------------------------------------
 
@@ -80,19 +76,8 @@ public class StreamMySqlBackupAction
             }
 
             out.close();
+
             bis.close();
-
-            System.out.println( "zipFilePath : " + zipFilePath );
-
-            /*
-             * PipedOutputStream out = new PipedOutputStream();
-             * 
-             * PipedInputStream in = new PipedInputStream( out );
-             * 
-             * ZipOutputStream zipOut = new ZipOutputStream( out );
-             * 
-             * zipOut.putNextEntry( new ZipEntry( fileName ) );
-             */
 
             inputStream = new BufferedInputStream( new FileInputStream( zipFilePath ), 1024 );
         }

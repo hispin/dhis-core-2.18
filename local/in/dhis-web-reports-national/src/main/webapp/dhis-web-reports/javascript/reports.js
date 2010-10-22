@@ -399,8 +399,19 @@ function isDate(dtStr)
     }
     if(dtStr > dateString)
     {
-        alert("The Date is greater than Today's Date");
-        return false;
+       if( currentDate.getFullYear() == year &&  mm == month )
+       {
+    	   
+       }
+       else
+       {
+    	   alert("The Date is greater than Today's Date");
+           return false; 
+       }
+    	
+    	
+    	//alert("The Date is greater than Today's Date");
+        //return false;
     }
 
     return true
