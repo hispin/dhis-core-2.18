@@ -1,7 +1,10 @@
 
-<div align="right"><a href="streamMySQLBackup.action?backupFilePath=$backupFilePath">Download</a></div>
 
 <br /><br />
 
-<h3>$statusMessage</h3>
+<h3>$encoder.xmlEncode( $statusMessage ) 
+	#if( $!status == "SUCCESS" ) 
+		<a href="streamMySQLBackup.action?backupFilePath=$backupFilePath"><img  width="60" height="50" src="images/download-icon.jpg" /></a> 
+	#end
+</h3>
 

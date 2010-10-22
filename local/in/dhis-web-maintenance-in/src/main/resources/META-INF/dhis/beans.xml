@@ -33,9 +33,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <property name="configurationService">
         <ref bean="org.hisp.dhis.config.ConfigurationService"/>
       </property>
-      <property name="provider">
-        <ref bean="org.hisp.dhis.system.database.DatabaseInfoProvider"/>
-      </property>	  
   </bean>
 
   <bean id="org.hisp.dhis.config.action.StreamMySqlBackupAction"
