@@ -27,14 +27,9 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.SQLException;
-
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -50,10 +45,7 @@ public class ExecuteSqlViewQueryAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
-    private StatementManager statementManager;
-
+    
     private SqlViewService sqlViewService;
 
     public void setSqlViewService( SqlViewService sqlViewService )
@@ -105,42 +97,16 @@ public class ExecuteSqlViewQueryAction
 
         SqlView sqlViewInstance = sqlViewService.getSqlView( id );
         String viewName = sqlViewService.setUpViewTableName( sqlViewInstance.getName() );
-        final StatementHolder holder = statementManager.getHolder();
 
-        try
-        {
-            dropView( viewName, holder );
-
-            holder.getStatement().executeUpdate( "CREATE VIEW " + viewName + " AS " + sqlViewInstance.getSqlQuery() );
-        }
-        catch ( SQLException e )
+        if ( !sqlViewService.createViewTable( sqlViewInstance ) )
         {
             message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + sqlViewInstance.getName();
+         
             return ERROR;
-        }
-        finally
-        {
-            holder.close();
         }
 
         message = i18n.getString( "sql_view_table_name" ) + " [ " + viewName + " ] " + i18n.getString( "is_created" );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supporting methods
-    // -------------------------------------------------------------------------
-
-    private void dropView( String view, StatementHolder holder )
-    {
-        try
-        {
-            holder.getStatement().executeUpdate( "DROP VIEW IF EXISTS " + view );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to drop view: " + view, ex );
-        }
     }
 }

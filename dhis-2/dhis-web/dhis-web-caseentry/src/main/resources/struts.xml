@@ -149,15 +149,24 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>    
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js</param>      
+      <param name="javascripts">
+      	  ../dhis-web-commons/util/jquery-ui.js, 
+	      ../dhis-web-commons/calendar/calendar.js,
+	      ../dhis-web-commons/calendar/calendar-lang.js,
+	      ../dhis-web-commons/calendar/calendar-setup.js,
+	      ../dhis-web-commons/util/jquery.metadata.js,
+	      ../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,
+	      javascript/customcheckbox/prettyCheckboxes.js
+      </param> 
+      <param name="stylesheets">
+	      ../dhis-web-commons/util/css/redmond/jquery-ui.css,
+	      style/patient.css,
+	      javascript/customcheckbox/prettyCheckboxes.css
+      </param>     
     </action>
 	
 	<action name="viewProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
-      <result name="success" type="velocity">/popup.vm</result>      
-      <param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>                  
-      <param name="javascripts">../dhis-web-commons/util/jquery-ui.js,../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
-      ,../dhis-web-commons/util/jquery.metadata.js,javascript/customcheckbox/prettyCheckboxes.js</param>
-      <param name="stylesheets">../dhis-web-commons/util/css/redmond/jquery-ui.css,style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>
+      <result name="success" type="velocity">/dhis-web-caseentry/programStageDataEntryForm.vm</result>      
     </action>
 
     <action name="completeProgramStageDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">

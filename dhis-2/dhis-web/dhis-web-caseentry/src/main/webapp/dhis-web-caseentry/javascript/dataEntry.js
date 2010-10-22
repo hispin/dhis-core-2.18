@@ -1,8 +1,7 @@
 
-
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
-	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
+	/* var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
 	
 	var width = 800
     var height = 500;
@@ -10,7 +9,19 @@ function viewPrgramStageRecords( programStageInstanceId )
     var top = parseInt( ( screen.availHeight/2 ) - ( height/2 ) );
     var windowFeatures = 'width=' + width + ',height=' + height + ',scrollbars=yes, resizable=yes,left=' + left + ',top=' + top + 'screenX=' + left + ',screenY=' + top;
     
-    window.open( url, '_blank_', windowFeatures);
+    window.open( url, '_blank_', windowFeatures);  */
+	
+	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
+	$('#contentDataRecord').dialog('destroy').remove();
+    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
+        title: 'ProgramStage',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 800,
+        height: 400
+    });
 }
 
 
@@ -923,7 +934,7 @@ function saveDateCustom(  this_ )
     jQuery(this_).css({
         "background-color":"#ffffcc"
     });
-	
+
     var data = jQuery(this_).metadata({
         type:"attr",
         name:"data"

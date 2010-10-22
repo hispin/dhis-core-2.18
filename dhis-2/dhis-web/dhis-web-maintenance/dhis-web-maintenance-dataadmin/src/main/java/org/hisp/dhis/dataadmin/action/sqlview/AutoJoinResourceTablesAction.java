@@ -80,15 +80,15 @@ public class AutoJoinResourceTablesAction
     public String execute()
     {
         fromJoinQuery = "FROM "
-            + (tableList.contains( "_IndicatorGroupSetStructure" ) ? "_IndicatorGroupSetStructure AS _icgss" : "");
+            + (tableList.contains( "_icgss" ) ? "_indicatorgroupsetstructure" : "");
 
-        tableList.remove( "_IndicatorGroupSetStructure" );
+        tableList.remove( "_icgss" );
 
         if ( !tableList.isEmpty() )
         {
             if ( fromJoinQuery.equalsIgnoreCase( "from _indicatorgroupsetstructure" ) )
             {
-                fromJoinQuery += ", ";
+                fromJoinQuery += " AS _icgss, ";
             }
 
             if ( tableList.size() == 1 )

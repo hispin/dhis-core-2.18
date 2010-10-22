@@ -24,14 +24,9 @@
             <td><label>$i18n.getString( "start_date" )</label></td>
             <td>
                 <input type="text" id="startDate" name="startDate" #if( $startDate ) value="$encoder.htmlEncode( $startDate )" #end>
-                <img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "execution_date" )">
-                <script type="text/javascript">
-                    Calendar.setup({
-                        inputField     :    "startDate",      // id of the input field
-                        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-                        button         :    "getStartDate"   // trigger for the calendar (button ID)
-                    });
-                </script>
+				<script type="text/javascript">
+					datePicker('startDate');
+                </script>  	
             </td>
         </tr>
         
@@ -39,14 +34,9 @@
             <td><label>$i18n.getString( "end_date" )</label></td>
             <td>
                 <input type="text" id="endDate" name="endDate" #if( $endDate ) value="$encoder.htmlEncode( $endDate )" #end>
-                <img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "execution_date" )">
                 <script type="text/javascript">
-                    Calendar.setup({
-                        inputField     :    "endDate",      // id of the input field
-                        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-                        button         :    "getEndDate"   // trigger for the calendar (button ID)
-                    });
-                </script>  
+					datePicker('endDate');
+                </script> 				
             </td>      
         </tr>    	                		
     </table>

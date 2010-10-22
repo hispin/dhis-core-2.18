@@ -52,8 +52,8 @@
     
     <action name="validateSection"
       class="org.hisp.dhis.dataset.action.section.ValidateSectionAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -178,8 +178,8 @@
     
     <action name="validateDataSet"
       class="org.hisp.dhis.dataset.action.ValidateDataSetAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

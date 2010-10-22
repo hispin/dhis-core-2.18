@@ -46,7 +46,7 @@ function addSectionSubmit() {
 
 	if (dataSetId == "null" || dataSetId == "" || categoryComboId == "null"
 			|| categoryComboId == "") {
-		window.alert("Please select a dataset/categorycombo");
+		showWarningMessage("Please select a dataset/categorycombo");
 	} else {
 		window.location.href = "addSectionAction.action?dataSetId=" + dataSetId
 				+ "&categoryComboId=" + categoryComboId;
@@ -74,38 +74,6 @@ function getDataElementByDataSet(dataSetId) {
 	request.setCallbackSuccess(filterByDataElementGroupCompleted);
 	request.sendAsPost(params);
 	request.send(requestString);
-}
-
-function addSectionValidationCompleted(messageElement) {
-	var type = messageElement.getAttribute('type');
-	var message = messageElement.firstChild.nodeValue;
-
-	if (type == 'success') {
-		document.forms['addSectionForm'].submit();
-	}
-	/**
-	 * else if ( type == 'error' ) { window.alert( 'Adding the organisation unit
-	 * failed with the following message:\n' + message ); }
-	 */
-	else if (type == 'input') {
-		document.getElementById('message').innerHTML = message;
-		document.getElementById('message').style.display = 'block';
-	}
-}
-
-function validateAddSection() {
-	var request = new Request();
-	request.setResponseTypeXML('message');
-	request.setCallbackSuccess(addSectionValidationCompleted);
-
-	var requestString = 'validateSection.action?name='
-			+ getFieldValue('sectionName') + '&title='
-			+ getFieldValue('sectionTitle');
-
-	request.send(requestString);
-
-	return false;
-
 }
 
 function toggle(dataElementId, optionComboId) {

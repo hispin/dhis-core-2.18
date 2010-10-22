@@ -84,13 +84,6 @@
 			<param name="javascripts">javascript/sqlView.js</param>
 		</action>
 		
-		<action name="generateResourceTable"
-			class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
 		<!-- Cache -->
 		
 		<action name="showCache"
@@ -432,26 +425,6 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-		<action name="dropAllSqlViewTables"
-			class="org.hisp.dhis.dataadmin.action.sqlview.DropAllSqlViewTablesAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-dataadmin/responseError.vm</result>
-			<param name="requiredAuthorities">F_SQLVIEW_REGENERATE</param>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="regenerateAllSqlViewTables"
-			class="org.hisp.dhis.dataadmin.action.sqlview.RegenerateAllSqlViewTablesAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<param name="requiredAuthorities">F_SQLVIEW_REGENERATE</param>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
 		<action name="checkViewTableExistence"
 			class="org.hisp.dhis.dataadmin.action.sqlview.CheckViewTableExistenceAction">
 			<result name="success" type="velocity-json">
@@ -470,6 +443,23 @@
 				/dhis-web-maintenance-dataadmin/showDataSqlViewForm.vm</param>
 			<param name="javascripts">javascript/sqlView.js</param>
 			<param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
+		</action>
+		
+		<action name="dropAllSqlViewTables"
+			class="org.hisp.dhis.dataadmin.action.sqlview.DropAllSqlViewTablesAction">
+			<result name="success" type="chain">generateResourceTables</result>
+			<param name="requiredAuthorities">F_SQLVIEW_REGENERATE</param>
+		</action>
+		
+		<action name="generateResourceTables"
+			class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction">
+			<result name="success" type="redirect">regenerateAllSqlViewTables.action</result>
+		</action>
+		
+		<action name="regenerateAllSqlViewTables"
+			class="org.hisp.dhis.dataadmin.action.sqlview.RegenerateAllSqlViewTablesAction">
+			<result name="success" type="chain">displayResourceTableForm</result>
+			<result name="error" type="chain">displayResourceTableForm</result>
 		</action>
 		
 		<action name="getResourceProperties" class="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction">

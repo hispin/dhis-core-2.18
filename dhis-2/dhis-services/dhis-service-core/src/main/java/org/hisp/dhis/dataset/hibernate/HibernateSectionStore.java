@@ -29,6 +29,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class HibernateSectionStore
         session.delete( section );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Section> getAllSections()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -76,11 +77,12 @@ public class HibernateSectionStore
         return (Section) session.get( Section.class, id );
     }
 
-    public Section getSectionByName( String name )
+    public Section getSectionByName( String name, DataSet dataSet )
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Section.class );
         criteria.add( Restrictions.eq( "name", name ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         return (Section) criteria.uniqueResult();
     }
 
@@ -88,5 +90,5 @@ public class HibernateSectionStore
     {
         Session session = sessionFactory.getCurrentSession();
         session.update( section );
-    }   
+    }
 }

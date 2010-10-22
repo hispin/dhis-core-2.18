@@ -66,7 +66,7 @@ public class ValidateDataSetAction
     public void setCode( String code )
     {
         this.code = code;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -112,61 +112,33 @@ public class ValidateDataSetAction
         // Name
         // ---------------------------------------------------------------------
 
-        if ( name == null )
-        {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
+        if ( name != null )
+        {          
             
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
-
             DataSet match = dataSetService.getDataSetByName( name );
-    
-            if ( match != null && ( dataSetId == null || match.getId() != dataSetId ) )
+
+            if ( match != null && (dataSetId == null || match.getId() != dataSetId) )
             {
                 message = i18n.getString( "duplicate_names" );
-    
-                return INPUT;
+
+                return ERROR;
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // Short name
         // ---------------------------------------------------------------------
 
-        if ( shortName == null )
+      
+        if ( shortName != null )
         {
-            message = i18n.getString( "specify_short_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            shortName = shortName.trim();
-            
-            if ( shortName.length() == 0 )
-            {
-                message = i18n.getString( "specify_short_name" );
-
-                return INPUT;
-            }
-
             DataSet match = dataSetService.getDataSetByShortName( shortName );
-    
-            if ( match != null && ( dataSetId == null || match.getId() != dataSetId ) )
+
+            if ( match != null && (dataSetId == null || match.getId() != dataSetId) )
             {
                 message = i18n.getString( "duplicate_short_names" );
-    
-                return INPUT;
+
+                return ERROR;
             }
         }
 
@@ -178,16 +150,16 @@ public class ValidateDataSetAction
         {
             DataSet match = dataSetService.getDataSetByCode( code );
 
-            if ( match != null && ( dataSetId == null || match.getId() != dataSetId ) )
+            if ( match != null && (dataSetId == null || match.getId() != dataSetId) )
             {
                 message = i18n.getString( "duplicate_codes" );
 
-                return INPUT;
+                return ERROR;
             }
-        }       
-        
+        }
+
         message = "OK";
-        
+
         return SUCCESS;
     }
 }

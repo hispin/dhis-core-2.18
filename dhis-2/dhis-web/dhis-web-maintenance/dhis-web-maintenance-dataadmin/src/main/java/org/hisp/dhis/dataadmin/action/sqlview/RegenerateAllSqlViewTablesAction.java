@@ -27,20 +27,15 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.SQLException;
-
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * Drops all sql-view tables first do regenerate the selected resource
- * tables and all of sql-view tables
+ * Drops all sql-view tables first do regenerate the selected resource tables
+ * and all of sql-view tables
  * 
  * @author Dang Duy Hieu
  * @version $Id RegenerateAllSqlViewTablesAction.java July 06, 2010$
@@ -51,9 +46,6 @@ public class RegenerateAllSqlViewTablesAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
-    private StatementManager statementManager;
 
     private SqlViewService sqlViewService;
 
@@ -87,29 +79,29 @@ public class RegenerateAllSqlViewTablesAction
     public String execute()
     {
         message = "";
-        
-        final StatementHolder holder = statementManager.getHolder();
 
         for ( SqlView sqlView : sqlViewService.getAllSqlViews() )
         {
             String viewName = sqlViewService.setUpViewTableName( sqlView.getName() );
 
-            try
+            if ( !sqlViewService.createViewTable( sqlView ) )
             {
-                holder.getStatement().executeUpdate( "CREATE VIEW " + viewName + " AS " + sqlView.getSqlQuery() );
-            }
-            catch ( SQLException e )
-            {
-                holder.close();
-                message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + viewName;
+                message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + sqlView.getName();
+
                 return ERROR;
             }
 
-            message += i18n.getString( "sql_view_table_name" ) + " [ " + viewName + " ] "
-                + i18n.getString( "is_created" ) + "<br/>";
+            message += "<br/>[ " + viewName + " ]";
         }
 
-        holder.close();
+        if ( message.equals( "" ) )
+        {
+            message = i18n.getString( "there_is_no_view_created" );
+        }
+        else
+        {
+            message = i18n.getString( "view_tables_created" ) + ": " + message;
+        }
 
         return SUCCESS;
     }

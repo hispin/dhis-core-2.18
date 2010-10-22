@@ -33,66 +33,142 @@ package org.hisp.dhis.sqlview;
  */
 public class SqlViewJoinLib
 {
-    /**
-     * COCN_JOIN_DEGSS is presenting the relationship between two 
-     * resourcetables _CategoryOptionComboname and _DataElementGroupSetStructure 
-     * through the INNER JOIN between CategoryCombos_OptionCombos and _DataElementGroupSetStructure
-     */
-    public static final String COCN_JOIN_DEGSS = 
-        "JOIN CategoryCombos_OptionCombos AS ccoc ON _cocn.categoryOptionComboId = ccoc.categoryoptioncomboid \n"
-        + "JOIN CategoryCombo AS cc ON ccoc.categorycomboid = cc.categorycomboid \n"
-        + "JOIN DataElement AS de ON cc.categorycomboid = de.categorycomboid \n"
-        + "JOIN _DataElementGroupSetStructure AS _degss ON de.dataelementid = _degss.dataelementid \n";
+
+    public static final String COCN_JOIN_CS = "JOIN _categorystructure AS _cs ON _cocn.categoryoptioncomboid = _cs.categoryoptioncomboid \n";
+
+    public static final String COCN_JOIN_DV = "JOIN datavalue AS dv ON _cocn.categoryoptioncomboid = dv.categoryoptioncomboid \n";
+
+    public static final String CS_JOIN_COCN = "JOIN _categoryoptioncomboname AS _cocn ON _cs.categoryoptioncomboid = _cocn.categoryoptioncomboid \n";
+
+    public static final String DEGSS_JOIN_DV = "JOIN datavalue AS dv ON _degss.dataelementid = dv.dataelementid \n";
+
+    public static final String DV_JOIN_COCN = "JOIN _categoryoptioncomboname AS _cocn ON dv.categoryoptioncomboid = _cocn.categoryoptioncomboid \n";
+
+    public static final String DV_JOIN_DEGSS = "JOIN _dataelementgroupsetstructure AS _degss ON dv.dataelementid = _degss.dataelementid \n";
+
+    public static final String DV_JOIN_OUS = "JOIN _orgunitstructure AS _ous ON dv.sourceid = _ous.organisationunitid \n";
+
+    public static final String DV_JOIN_OUGSS = "JOIN _orgunitgroupsetstructure AS _ougss ON dv.sourceid = _ougss.organisationunitid \n";
+
+    public static final String DV_JOIN_OUSTGSS = "JOIN _organisationunitgroupsetstructure AS _oustgss ON dv.sourceid = _oustgss.organisationunitid \n";
+
+    public static final String OUS_JOIN_DV = "JOIN datavalue AS dv ON _ous.organisationunitid = dv.sourceid \n";
+
+    public static final String OUGSS_JOIN_DV = "JOIN datavalue AS dv ON _ougss.organisationunitid = dv.sourceid \n";
+
+    public static final String OUSTGSS_JOIN_DV = "JOIN datavalue AS dv ON _oustgss.organisationunitid = dv.sourceid \n";
+
+    public static final String OUS_JOIN_OUGSS = "JOIN _orgunitgroupsetstructure AS _ougss ON _ous.organisationunitid = _ougss.organisationunitid \n";
+
+    public static final String OUS_JOIN_OUSTGSS = "JOIN _organisationunitgroupsetstructure AS _oustgss ON _ous.organisationunitid = _oustgss.organisationunitid \n";
+
+    public static final String OUGSS_JOIN_OUS = "JOIN _orgunitstructure AS _ous ON _ougss.organisationunitid = _ous.organisationunitid \n";
+
+    public static final String OUGSS_JOIN_OUSTGSS = "JOIN _organisationunitgroupsetstructure AS _oustgss ON _ougss.organisationunitid = _oustgss.organisationunitid \n";
+
+    public static final String OUSTGSS_JOIN_OUS = "JOIN _orgunitstructure AS _ous ON _oustgss.organisationunitid = _ous.organisationunitid \n";
+
+    public static final String OUSTGSS_JOIN_OUGSS = "JOIN _orgunitgroupsetstructure AS _ougss ON _oustgss.organisationunitid = _ougss.organisationunitid \n";
 
     /**
-     * DEGSS_JOIN_COCN is presenting to the relationship between two
-     * resourcetables _DataElementGroupSetStructure and _CategoryOptionComboname 
-     * through the INNER JOIN between DataElement and _CategoryOptionComboname
+     * COCN_JOIN_DEGSS presents to the relationship between two resourcetables
+     * _CategoryOptionComboname and _DataElementGroupSetStructure through the
+     * INNER JOIN between DataValue and _DataElementGroupSetStructure
      */
-    public static final String DEGSS_JOIN_COCN = 
-        "JOIN DataElement AS de ON _degss.dataelementid = de.dataelementid \n"
-        + "JOIN CategoryCombo AS cc ON de.categorycomboid = cc.categorycomboid \n"
-        + "JOIN CategoryCombos_OptionCombos AS ccoc ON cc.categorycomboid = ccoc.categorycomboid\n"
-        + "JOIN _CategoryOptionComboname AS _cocn ON ccoc.categoryoptioncomboid = _cocn.categoryoptioncomboid \n";
+    public static final String COCN_JOIN_DEGSS = COCN_JOIN_DV + DV_JOIN_DEGSS;
 
     /**
-     * OUS_JOIN_DEGSS is presenting to the relationship between two
-     * resourcetables _OrgUnitStructure and _DataElementGroupSetStructure 
-     * through the INNER JOIN between DataSetSource and _DataElementGroupSetStructure
+     * DEGSS_JOIN_COCN presents to the relationship between two resourcetables
+     * _dataelementgroupsetstructure and _CategoryOptionComboname through the
+     * INNER JOIN between DataValue and _CategoryOptionComboname
      */
-    public static final String OUS_JOIN_DEGSS = 
-        "JOIN DataSetSource AS dss ON _ous.organisationunitid = dss.sourceid \n"
-        + "JOIN DataSetMembers AS dsm ON dss.datasetid = dsm.datasetid \n"
-        + "JOIN _DataElementGroupSetStructure AS _degss ON dsm.dataelementid = _degss.dataelementid ";
+    public static final String DEGSS_JOIN_COCN = DEGSS_JOIN_DV + DV_JOIN_COCN;
 
     /**
-     * DEGSS_JOIN_OUS is presenting to the relationship between two
-     * resourcetables _DataElementGroupSetStructure and _OrgUnitStructure 
-     * through the INNER JOIN between DataSetMembers and _OrgUnitStructure
+     * COCN_JOIN_OUS presents to the relationship between two resourcetables
+     * _CategoryOptionComboname and _OrgUnitStructure through the INNER JOIN
+     * between DataValue and _OrgUnitStructure
      */
-    public static final String DEGSS_JOIN_OUS = 
-        "JOIN DataSetMembers AS dsm ON _degss.dataelementid = dsm.dataelementid \n"
-        + "JOIN DataSetSource AS dss ON dsm.datasetid = dss.datasetid \n"
-        + "JOIN _OrgUnitStructure AS _ous ON dss.sourceid = _ous.organisationunitid \n";
+    public static final String COCN_JOIN_OUS = COCN_JOIN_DV + DV_JOIN_OUS;
 
     /**
-     * DEGSS_JOIN_OUGSS is presenting to the relationship between two
-     * resourcetables _DataElementGroupSetStructure and _OrgUnitGroupSetStructure 
-     * through the INNER JOIN between DataSetMembers and _OrgUnitGroupSetStructure
+     * COCN_JOIN_OUGSS presents to the relationship between two resourcetables
+     * _CategoryOptionComboname and _OrgUnitGroupSetStructure through the INNER
+     * JOIN between DataValue and _OrgUnitGroupSetStructure
      */
-    public static final String DEGSS_JOIN_OUGSS = 
-        "JOIN DataSetMembers AS dsm ON _degss.dataelementid = dsm.dataelementid \n"
-        + "JOIN DataSetSource AS dss ON dsm.datasetid = dss.datasetid \n"
-        + "JOIN _OrgUnitGroupSetStructure AS _ougss ON dss.sourceid = _ougss.organisationunitid \n";
+    public static final String COCN_JOIN_OUGSS = COCN_JOIN_DV + DV_JOIN_OUGSS;
 
     /**
-     * DEGSS_JOIN_OUSTGSS is presenting to the relationship between two
-     * resourcetables _DataElementGroupSetStructure and _OrganisationUnitGroupSetStructure 
-     * through the INNER JOIN between DataSetMembers and _OrganisationUnitGroupSetStructure
+     * COCN_JOIN_OUSTGSS presents to the relationship between two resourcetables
+     * _CategoryOptionComboname and _OrganisationUnitGroupSetStructure through
+     * the INNER JOIN between DataValue and _OrganisationUnitGroupSetStructure
      */
-    public static final String DEGSS_JOIN_OUSTGSS = 
-        "JOIN DataSetMembers AS dsm ON _degss.dataelementid = dsm.dataelementid \n"
-        + "JOIN DataSetSource AS dss ON dsm.datasetid = dss.datasetid \n"
-        + "JOIN _OrganisationUnitGroupSetStructure AS _oustgss ON dss.sourceid = _oustgss.organisationunitid \n";
+    public static final String COCN_JOIN_OUSTGSS = COCN_JOIN_DV + DV_JOIN_OUSTGSS;
+
+    /**
+     * OUSTGSS_JOIN_COCN presents to the relationship between two resourcetables
+     * _OrganisationUnitGroupSetStructure and _CategoryOptionComboname through
+     * the INNER JOIN between DataValue and _CategoryOptionComboname
+     */
+    public static final String OUSTGSS_JOIN_COCN = OUSTGSS_JOIN_DV + DV_JOIN_COCN;
+
+    /**
+     * OUGSS_JOIN_COCN presents to the relationship between two resourcetables
+     * _OrgUnitGroupSetStructure and _CategoryOptionComboname through the INNER
+     * JOIN between DataValue and _CategoryOptionComboname
+     */
+    public static final String OUGSS_JOIN_COCN = OUGSS_JOIN_DV + DV_JOIN_COCN;
+
+    /**
+     * OUS_JOIN_COCN presents to the relationship between two resourcetables
+     * _OrgUnitStructure and _CategoryOptionComboname through the INNER JOIN
+     * between DataValue and _CategoryOptionComboname
+     */
+    public static final String OUS_JOIN_COCN = OUS_JOIN_DV + DV_JOIN_COCN;
+
+    /**
+     * OUS_JOIN_DEGSS presents to the relationship between two resourcetables
+     * _OrgUnitStructure and _DataElementGroupSetStructure through the INNER
+     * JOIN between DataValue and _DataElementGroupSetStructure
+     */
+    public static final String OUS_JOIN_DEGSS = OUS_JOIN_DV + DV_JOIN_DEGSS;
+
+    /**
+     * OUGSS_JOIN_DEGSS presents to the relationship between two
+     * resourcetables_OrgUnitGroupSetStructure and _DataElementGroupSetStructure
+     * through the INNER JOIN between DataValue and
+     * _DataElementGroupSetStructure
+     */
+    public static final String OUGSS_JOIN_DEGSS = OUGSS_JOIN_DV + DV_JOIN_DEGSS;
+
+    /**
+     * OUGSS_JOIN_DEGSS presents to the relationship between two
+     * _OrganisationUnitGroupSetStructure and _DataElementGroupSetStructure
+     * through the INNER JOIN between DataValue and
+     * _DataElementGroupSetStructure
+     */
+    public static final String OUSTGSS_JOIN_DEGSS = OUSTGSS_JOIN_DV + DV_JOIN_DEGSS;
+
+    /**
+     * DEGSS_JOIN_OUS presents to the relationship between two resourcetables
+     * _DataElementGroupSetStructure and _OrgUnitStructure through the INNER
+     * JOIN between DataValue and _OrgUnitStructure
+     */
+    public static final String DEGSS_JOIN_OUS = DEGSS_JOIN_DV + DV_JOIN_OUS;
+
+    /**
+     * DEGSS_JOIN_OUGSS presents to the relationship between two resourcetables
+     * _DataElementGroupSetStructure and _OrgUnitGroupSetStructure through the
+     * INNER JOIN between DataValue and _OrgUnitGroupSetStructure
+     */
+    public static final String DEGSS_JOIN_OUGSS = DEGSS_JOIN_DV + DV_JOIN_OUGSS;
+
+    /**
+     * DEGSS_JOIN_OUSTGSS presents to the relationship between two
+     * resourcetables _DataElementGroupSetStructure and
+     * _OrganisationUnitGroupSetStructure through the INNER JOIN between
+     * DataValue and _OrganisationUnitGroupSetStructure
+     */
+    public static final String DEGSS_JOIN_OUSTGSS = DEGSS_JOIN_DV + DV_JOIN_OUSTGSS;
 
 }

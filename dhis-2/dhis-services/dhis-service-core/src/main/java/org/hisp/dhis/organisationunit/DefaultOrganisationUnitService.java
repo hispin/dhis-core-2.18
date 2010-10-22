@@ -51,16 +51,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultOrganisationUnitService.java 5951 2008-10-16 17:41:34Z larshelg $
+ * @version $Id: DefaultOrganisationUnitService.java 5951 2008-10-16 17:41:34Z
+ *          larshelg $
  */
 @Transactional
 public class DefaultOrganisationUnitService
     implements OrganisationUnitService
 {
     private static final String LEVEL_PREFIX = "Level ";
-    
+
     private Logger logger = Logger.getLogger( getClass() );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -80,12 +81,12 @@ public class DefaultOrganisationUnitService
     }
 
     private CurrentUserService currentUserService;
-    
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-       
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -98,31 +99,25 @@ public class DefaultOrganisationUnitService
         }
 
         organisationUnit.setLastUpdated( new Date() );
-        
+
         int id = sourceStore.addSource( organisationUnit );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, 
-            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_ADD , 
-            OrganisationUnit.class.getSimpleName(), 
-            organisationUnit.getName()) );
-        
+        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_ADD, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+
         return id;
     }
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit )
     {
         organisationUnit.setLastUpdated( new Date() );
-        
+
         sourceStore.updateSource( organisationUnit );
-        
-        logger.log( AuditLogLevel.AUDIT_TRAIL, 
-            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_EDIT ,  
-            OrganisationUnit.class.getSimpleName(), 
-            organisationUnit.getName()) );
+
+        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_EDIT, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
     }
-    
+
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
     {
         updateOrganisationUnit( organisationUnit );
@@ -137,21 +132,18 @@ public class DefaultOrganisationUnitService
         }
 
         OrganisationUnit parent = organisationUnit.getParent();
-        
+
         if ( parent != null )
         {
             parent.getChildren().remove( organisationUnit );
-            
+
             sourceStore.updateSource( parent );
         }
-        
+
         sourceStore.deleteSource( organisationUnit );
-        
-        logger.log( AuditLogLevel.AUDIT_TRAIL, 
-            AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_DELETE , 
-            OrganisationUnit.class.getSimpleName(),
-            organisationUnit.getName()) );
+
+        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_DELETE, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
     }
 
     public OrganisationUnit getOrganisationUnit( int id )
@@ -163,18 +155,18 @@ public class DefaultOrganisationUnitService
     {
         return sourceStore.getAllSources();
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnits( final Collection<Integer> identifiers )
     {
         Collection<OrganisationUnit> objects = getAllOrganisationUnits();
-        
+
         return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OrganisationUnit>()
+        {
+            public boolean retain( OrganisationUnit object )
             {
-                public boolean retain( OrganisationUnit object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 
     public OrganisationUnit getOrganisationUnit( String uuid )
@@ -209,9 +201,9 @@ public class DefaultOrganisationUnitService
         List<OrganisationUnit> result = new ArrayList<OrganisationUnit>();
 
         int rootLevel = 1;
-        
+
         organisationUnit.setLevel( rootLevel );
-        
+
         result.add( organisationUnit );
 
         addOrganisationUnitChildren( organisationUnit, result, rootLevel );
@@ -229,16 +221,16 @@ public class DefaultOrganisationUnitService
         {
             level++;
         }
-        
+
         for ( OrganisationUnit child : parent.getChildren() )
         {
             child.setLevel( level );
-            
+
             result.add( child );
 
             addOrganisationUnitChildren( child, result, level );
         }
-        
+
         level--;
     }
 
@@ -290,32 +282,33 @@ public class DefaultOrganisationUnitService
 
         return result;
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, OrganisationUnit parent )
     {
         if ( level < 1 )
         {
             throw new IllegalArgumentException( "Level must be greater than zero" );
         }
-        
+
         int parentLevel = getLevelOfOrganisationUnit( parent );
-        
+
         if ( level < parentLevel )
         {
-            throw new IllegalArgumentException( "Level must be greater than or equal to level of parent OrganisationUnit" );
+            throw new IllegalArgumentException(
+                "Level must be greater than or equal to level of parent OrganisationUnit" );
         }
 
         HashSet<OrganisationUnit> result = new HashSet<OrganisationUnit>();
-        
+
         if ( level == parentLevel )
         {
             result.add( parent );
         }
         else
-        {        
+        {
             addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
         }
-        
+
         return result;
     }
 
@@ -344,7 +337,7 @@ public class DefaultOrganisationUnitService
     {
         return getLevelOfOrganisationUnit( getOrganisationUnit( id ) );
     }
-    
+
     public int getLevelOfOrganisationUnit( OrganisationUnit organisationUnit )
     {
         int level = 1;
@@ -405,7 +398,7 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getOrganisationUnitsWithoutGroups();
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
@@ -414,12 +407,12 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getOrganisationUnitHierarchy();
     }
-    
+
     public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
     {
         organisationUnitStore.updateOrganisationUnitParent( organisationUnitId, parentId );
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
@@ -428,16 +421,16 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.addOrganisationUnitLevel( level );
     }
-    
+
     public void updateOrganisationUnitLevel( OrganisationUnitLevel level )
     {
         organisationUnitStore.updateOrganisationUnitLevel( level );
     }
-    
+
     public void addOrUpdateOrganisationUnitLevel( OrganisationUnitLevel level )
     {
         OrganisationUnitLevel existing = getOrganisationUnitLevelByLevel( level.getLevel() );
-        
+
         if ( existing == null )
         {
             addOrganisationUnitLevel( level );
@@ -445,11 +438,11 @@ public class DefaultOrganisationUnitService
         else
         {
             existing.setName( level.getName() );
-            
+
             updateOrganisationUnitLevel( existing );
         }
     }
-    
+
     public void pruneOrganisationUnitLevels( Set<Integer> currentLevels )
     {
         for ( OrganisationUnitLevel level : getOrganisationUnitLevels() )
@@ -460,25 +453,25 @@ public class DefaultOrganisationUnitService
             }
         }
     }
-    
+
     public OrganisationUnitLevel getOrganisationUnitLevel( int id )
     {
         return organisationUnitStore.getOrganisationUnitLevel( id );
     }
-    
+
     public Collection<OrganisationUnitLevel> getOrganisationUnitLevels( final Collection<Integer> identifiers )
     {
         Collection<OrganisationUnitLevel> objects = getOrganisationUnitLevels();
-        
+
         return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<OrganisationUnitLevel>()
+        {
+            public boolean retain( OrganisationUnitLevel object )
             {
-                public boolean retain( OrganisationUnitLevel object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
-    
+
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
         organisationUnitStore.deleteOrganisationUnitLevel( level );
@@ -488,13 +481,19 @@ public class DefaultOrganisationUnitService
     {
         organisationUnitStore.deleteOrganisationUnitLevels();
     }
-    
+
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
     {
-        List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>( organisationUnitStore.getOrganisationUnitLevels() );
-        
+        List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>( organisationUnitStore
+            .getOrganisationUnitLevels() );
+
+        if ( levels.isEmpty() )
+        {
+            levels = this.getFilledOrganisationUnitLevels();
+        }
+
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
-        
+
         return levels;
     }
 
@@ -502,38 +501,38 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getOrganisationUnitLevelByLevel( level );
     }
-    
+
     public OrganisationUnitLevel getOrganisationUnitLevelByName( String name )
     {
         return organisationUnitStore.getOrganisationUnitLevelByName( name );
     }
-    
+
     public List<OrganisationUnitLevel> getFilledOrganisationUnitLevels()
     {
         Map<Integer, OrganisationUnitLevel> levelMap = getOrganisationUnitLevelMap();
-        
+
         List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
-        
+
         for ( int i = 0; i < getNumberOfOrganisationalLevels(); i++ )
         {
             int level = i + 1;
-            
-            levels.add( levelMap.get( level ) != null ? 
-            levelMap.get( level ) : new OrganisationUnitLevel( level, LEVEL_PREFIX + level ) );
+
+            levels.add( levelMap.get( level ) != null ? levelMap.get( level ) : new OrganisationUnitLevel( level,
+                LEVEL_PREFIX + level ) );
         }
-        
+
         return levels;
     }
-    
+
     private Map<Integer, OrganisationUnitLevel> getOrganisationUnitLevelMap()
     {
         Map<Integer, OrganisationUnitLevel> levelMap = new HashMap<Integer, OrganisationUnitLevel>();
-        
+
         for ( OrganisationUnitLevel level : organisationUnitStore.getOrganisationUnitLevels() )
         {
             levelMap.put( level.getLevel(), level );
         }
-        
+
         return levelMap;
     }
 

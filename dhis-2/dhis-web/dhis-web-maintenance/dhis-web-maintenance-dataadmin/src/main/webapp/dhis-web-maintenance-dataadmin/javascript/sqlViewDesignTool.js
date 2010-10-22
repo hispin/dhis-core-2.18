@@ -12,14 +12,14 @@ htmlSortTypes = "";
 function initHtml( i18n_resourcetables, i18n_sorttypes )
 {
 	htmlTables = "<option value=\"null\">[ "+i18n_resourcetables+" ]</option>";
-	htmlTables += "<option value=\"_CategoryOptionComboname\">_CategoryOptionComboname</option>";
-	htmlTables += "<option value=\"_OrgUnitStructure\">_OrgUnitStructure</option>";
-	htmlTables += "<option value=\"_OrgUnitGroupSetStructure\">_OrgUnitGroupSetStructure</option>";
-	htmlTables += "<option value=\"_CategoryStructure\">_CategoryStructure</option>";
-	htmlTables += "<option value=\"_DataElementGroupSetStructure\">_DataElementGroupSetStructure</option>";
-	htmlTables += "<option value=\"_IndicatorGroupSetStructure\">_IndicatorGroupSetStructure</option>";
-	htmlTables += "<option value=\"_OrganisationUnitGroupSetStructure\">_OrganisationUnitGroupSetStructure</option>";
-
+	htmlTables += "<option value=\"_cocn\">_CategoryOptionComboname</option>";
+	htmlTables += "<option value=\"_ous\">_OrgUnitStructure</option>";
+	htmlTables += "<option value=\"_ougss\">_OrgUnitGroupSetStructure</option>";
+	htmlTables += "<option value=\"_cs\">_CategoryStructure</option>";
+	htmlTables += "<option value=\"_degss\">_DataElementGroupSetStructure</option>";
+	htmlTables += "<option value=\"_icgss\">_IndicatorGroupSetStructure</option>";
+	htmlTables += "<option value=\"_oustgss\">_OrganisationUnitGroupSetStructure</option>";
+	
 	htmlSortTypes = "<option value=\"null\">[ "+i18n_sorttypes+" ]</option>";
 	htmlSortTypes += "<option value=\"ASC\">ASCENDING</option>";
 	htmlSortTypes += "<option value=\"DESC\">DESCENDING</option>";
@@ -44,7 +44,7 @@ function createSortTypeCombobox( sortComboId )
 function loadResourceProperties( tableName, fieldIndex )
 {
 	if ( tableName != "null" )
-	{		
+	{
 		$.getJSON(
 			"getResourceProperties.action",
 			{
@@ -174,7 +174,6 @@ function getJoinTable()
 	}
 }
 
-
 function getJoinQuery()
 {
 	$.getJSON(
@@ -293,7 +292,7 @@ function checkFieldValid( tableName, fieldValue )
 {
 	if ( regexCountStar.test(fieldValue) )
 	{
-		return makeUpField( fieldValue.replace(regexCountStar, "COUNT(*)") );
+		return makeUpField( fieldValue.replace(regexCountStar, "COUNT("+tableName+".*)") );
 	}
 	else if ( regexCountOther.test(fieldValue) )
 	{

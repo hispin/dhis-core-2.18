@@ -58,6 +58,20 @@ public class ValidateSectionAction
     // Input & output
     // -------------------------------------------------------------------------
 
+    private Integer sectionId;
+
+    public void setSectionId( Integer sectionId )
+    {
+        this.sectionId = sectionId;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     private String name;
 
     public void setName( String name )
@@ -90,57 +104,21 @@ public class ValidateSectionAction
         // Name
         // ---------------------------------------------------------------------
 
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
+            Section match = sectionService.getSectionByName( name, dataSetId );
 
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
-            
-            Section match = sectionService.getSectionByName( name );
-
-            if ( match != null )
+            if ( match != null
+                && (sectionId == null || match.getId() != sectionId)  )
             {
                 message = i18n.getString( "duplicate_names" );
 
-                return INPUT;
+                return ERROR;
             }
-        }
-        
-        // ---------------------------------------------------------------------
-        // Label
-        // ---------------------------------------------------------------------
-
-        if ( title == null )
-        {
-            message = i18n.getString( "specify_label" );
-
-            return INPUT;
-        }
-        else
-        {
-            title = title.trim();
-
-            if ( title.length() == 0 )
-            {
-                message = i18n.getString( "specify_label" );
-
-                return INPUT;
-            }
-        }
+        }       
 
         message = "OK";
-        
+
         return SUCCESS;
     }
 }

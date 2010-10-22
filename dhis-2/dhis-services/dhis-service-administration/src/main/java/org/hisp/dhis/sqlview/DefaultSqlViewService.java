@@ -27,7 +27,6 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.Collection;
-import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultSqlViewService
     implements SqlViewService
 {
-
-    private static final Pattern p = Pattern.compile( "\\W" );
-
-    private static final String PREFIX_VIEWNAME = "_view";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -112,16 +106,7 @@ public class DefaultSqlViewService
     @Override
     public String setUpViewTableName( String input )
     {
-        String[] items = p.split( input.trim().replaceAll( "_", "" ) );
-
-        input = "";
-
-        for ( String s : items )
-        {
-            input += (s.equals( "" ) == true) ? "" : ("_" + s);
-        }
-
-        return PREFIX_VIEWNAME + input;
+        return sqlViewExpandStore.setUpViewTableName( input );
     }
 
     // -------------------------------------------------------------------------
@@ -139,14 +124,20 @@ public class DefaultSqlViewService
     {
         return sqlViewExpandStore.isViewTableExists( viewTableName );
     }
-        
+
+    @Override
+    public boolean createViewTable( SqlView sqlViewInstance )
+    {
+        return sqlViewExpandStore.createView( sqlViewInstance );
+    }
+
     @Override
     public SqlViewTable getDataSqlViewTable( String viewTableName )
     {
         SqlViewTable sqlViewTable = new SqlViewTable();
-        
+
         sqlViewExpandStore.setUpDataSqlViewTable( sqlViewTable, viewTableName );
-        
+
         return sqlViewTable;
     }
 
@@ -166,6 +157,12 @@ public class DefaultSqlViewService
     public String setUpJoinQuery( Collection<String> tables )
     {
         return sqlViewExpandStore.setUpJoinQuery( tables );
+    }
+
+    @Override
+    public void dropViewTable( Object object )
+    {
+        sqlViewExpandStore.dropView( object );
     }
 
 }

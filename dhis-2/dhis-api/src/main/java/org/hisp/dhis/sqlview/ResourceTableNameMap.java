@@ -1,7 +1,7 @@
 package org.hisp.dhis.sqlview;
 
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,55 +26,33 @@ package org.hisp.dhis.sqlview;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id SqlViewService.java July 06, 2010$
+ * @version $Id ResourceTableNameMap.java Aug 10, 2010$
  */
-public interface SqlViewService
+public class ResourceTableNameMap
 {
-    String ID = SqlViewService.class.getName();
+    private static Map<String, String> resourceNameMap;
 
-    // -------------------------------------------------------------------------
-    // SqlView
-    // -------------------------------------------------------------------------
+    static
+    {
+        resourceNameMap = new HashMap<String, String>();
 
-    int saveSqlView( SqlView sqlView );
+        resourceNameMap.put( "_cocn", "_categoryoptioncomboname" );
+        resourceNameMap.put( "_cs", "_categorystructure" );
+        resourceNameMap.put( "_degss", "_dataelementgroupsetstructure" );
+        resourceNameMap.put( "_icgss", "_indicatorgroupsetstructure" );
+        resourceNameMap.put( "_ous", "_orgunitstructure" );
+        resourceNameMap.put( "_ougss", "_orgunitgroupsetstructure" );
+        resourceNameMap.put( "_oustgss", "_organisationunitgroupsetstructure" );
 
-    void deleteSqlView( SqlView sqlView );
+    }
 
-    void updateSqlView( SqlView sqlView );
-
-    SqlView getSqlView( int viewId );
-
-    SqlView getSqlView( String viewName );
-
-    Collection<SqlView> getAllSqlViews();
-
-    String makeUpForQueryStatement( String query );
-
-    String setUpViewTableName( String input );
-
-    // -------------------------------------------------------------------------
-    // SqlView Expanded
-    // -------------------------------------------------------------------------
-
-    Collection<String> getAllSqlViewNames();
-
-    Collection<String> getAllResourceProperties( String resourceTableName );
-
-    boolean isViewTableExists( String viewTableName );
-
-    boolean createViewTable( SqlView sqlViewInstance );
-
-    void dropViewTable( Object object );
-
-    SqlViewTable getDataSqlViewTable( String viewTableName );
-
-    String testSqlGrammar( String sql );
-
-    String setUpJoinQuery( Collection<String> tableList );
-
+    public static String getNameByAlias( String alias )
+    {
+        return resourceNameMap.get( alias );
+    }
 }
