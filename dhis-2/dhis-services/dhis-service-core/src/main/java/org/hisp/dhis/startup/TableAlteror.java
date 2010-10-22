@@ -68,21 +68,34 @@ public class TableAlteror
     @Transactional
     public void execute()
     {
-        executeSql( "drop table categoryoptioncomboname" );
-        executeSql( "drop table orgunitgroupsetstructure" );
-        executeSql( "drop table orgunitstructure" );
-        executeSql( "drop table orgunithierarchystructure" );
-        executeSql( "drop table orgunithierarchy" );
-        executeSql( "drop table datavalueaudit" );
-        executeSql( "drop table columnorder" );
-        executeSql( "drop table roworder" );
-        executeSql( "alter table dataelementcategoryoption drop column categoryid" );
-        // new is dimension_type
-        executeSql( "alter table reporttable drop column dimensiontype" ); 
+        // ---------------------------------------------------------------------
+        // Drop outdated tables
+        // ---------------------------------------------------------------------
+
+        executeSql( "DROP TABLE categoryoptioncomboname" );
+        executeSql( "DROP TABLE orgunitgroupsetstructure" );
+        executeSql( "DROP TABLE orgunitstructure" );
+        executeSql( "DROP TABLE orgunithierarchystructure" );
+        executeSql( "DROP TABLE orgunithierarchy" );
+        executeSql( "DROP TABLE datavalueaudit" );
+        executeSql( "DROP TABLE columnorder" );
+        executeSql( "DROP TABLE roworder" );
+        executeSql( "DROP TABLE sectionmembers" );
+        executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
+        executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
+        executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
+        executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
+        executeSql( "ALTER TABLE section DROP COLUMN label" );
+        executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
 
         // remove relative period type
-        executeSql( "delete from period where periodtypeid=(select periodtypeid from periodtype where name='Relative')" );
-        executeSql( "delete from periodtype where name='Relative'" );
+        executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name='Relative')" );
+        executeSql( "DELETE FROM periodtype WHERE name='Relative'" );
+
+        // ---------------------------------------------------------------------
+        // Update tables for dimensional model
+        // ---------------------------------------------------------------------
         
         // categories_categoryoptions
         // set to 0 temporarily
@@ -109,9 +122,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE categorycombos_optioncombos ADD CONSTRAINT categorycombos_optioncombos_pkey PRIMARY KEY (categoryoptioncomboid)" );
         executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT fk4bae70f697e49675" );
 
-        // categoryoptioncombo
-        executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
-
         // categoryoptioncombos_categoryoptions
         // set to 0 temporarily
         int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" ); 
@@ -123,7 +133,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)" );
 
         // dataelementcategoryoption
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
         // executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_name_key" ); will be maintained in transition period
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
@@ -143,15 +152,8 @@ public class TableAlteror
         }
         
         // update periodType field to ValidationRule
-        executeSql( "UPDATE validationrule SET periodtypeid = ( SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
-
-        //drop table reporttable_categoryoptioncombos
-        executeSql( "DROP table reporttable_categoryoptioncombos" );
-        
-        // drop unused label column from section table
-        executeSql( "ALTER TABLE section DROP COLUMN label" );
-        executeSql( "DROP TABLE sectionmembers" );
-        
+        executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
+                
         // set varchar to text
         executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
         executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
@@ -159,9 +161,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
         executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
         executeSql( "ALTER TABLE translation ALTER value TYPE text" );
-        
-        //orgunit coord
-        executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
         
         //orgunit shortname uniqueness
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );

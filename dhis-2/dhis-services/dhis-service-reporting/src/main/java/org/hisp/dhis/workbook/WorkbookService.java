@@ -30,7 +30,6 @@ package org.hisp.dhis.workbook;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataset.DataSet;
@@ -57,5 +56,5 @@ public interface WorkbookService
 
     void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet );
     
-    void writeValidationResult( Map<String, List<ValidationResult>> results, OutputStream out, I18n i18n, I18nFormat format );
+    void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format );
 }

@@ -30,10 +30,8 @@ package org.hisp.dhis.validationrule.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +39,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.validation.ValidationResult;
@@ -129,12 +126,12 @@ public class RunValidationAction
     {
         this.validationRuleGroupId = validationRuleGroupId;
     }
+    
+    private List<ValidationResult> validationResults;
 
-    private Map<String, List<ValidationResult>> mapValidationResults;
-
-    public Map<String, List<ValidationResult>> getMapValidationResults()
+    public List<ValidationResult> getValidationResults()
     {
-        return mapValidationResults;
+        return validationResults;
     }
 
     // -------------------------------------------------------------------------
@@ -153,8 +150,6 @@ public class RunValidationAction
         }
 
         sources = organisationUnits;
-
-        List<ValidationResult> validationResults = null;
 
         if ( validationRuleGroupId == -1 )
         {
@@ -175,29 +170,7 @@ public class RunValidationAction
 
         Collections.sort( validationResults, new ValidationResultComparator() );
 
-        mapValidationResults = new HashMap<String, List<ValidationResult>>();
-
-        for ( ValidationResult validationResult : validationResults )
-        {
-            PeriodType periodType = validationResult.getPeriod().getPeriodType();
-
-            if ( periodType != null )
-            {
-
-                List<ValidationResult> result = mapValidationResults.get( periodType.getName() );
-
-                if ( result == null )
-                {
-                    result = new ArrayList<ValidationResult>();
-                }
-
-                result.add( validationResult );
-
-                mapValidationResults.put( periodType.getName(), result );
-            }
-        }
-
-        SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, mapValidationResults );
+        SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, validationResults );
 
         return SUCCESS;
     }

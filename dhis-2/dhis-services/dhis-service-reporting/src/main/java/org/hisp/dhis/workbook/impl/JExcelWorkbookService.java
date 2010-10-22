@@ -395,8 +395,7 @@ public class JExcelWorkbookService
         }
     }
 
-    public void writeValidationResult( Map<String, List<ValidationResult>> results, OutputStream out, I18n i18n,
-        I18nFormat format )
+    public void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
     {
         final int MARGIN_LEFT = 1;
 
@@ -434,38 +433,31 @@ public class JExcelWorkbookService
 
             if ( results != null )
             {
-                for ( String periodTypeName : results.keySet() )
+                for ( ValidationResult result : results )
                 {
-                    List<ValidationResult> validationResults = results.get( periodTypeName );
-                    
-                    sheet.addCell( new Label( MARGIN_LEFT + 0, row++, periodTypeName, columnHeader ) );
-                    
-                    for ( ValidationResult result : validationResults )
-                    {
-                        OrganisationUnit unit = (OrganisationUnit) result.getSource();
+                    OrganisationUnit unit = (OrganisationUnit) result.getSource();
 
-                        Period period = result.getPeriod();
+                    Period period = result.getPeriod();
 
-                        sheet.addCell( new Label( MARGIN_LEFT + 0, row, unit.getName(), text ) );
-                        sheet.addCell( new Label( MARGIN_LEFT + 1, row, format.formatPeriod( period ), text ) );
-                        sheet.addCell( new Label( MARGIN_LEFT + 2, row, result.getValidationRule().getLeftSide()
-                            .getDescription(), text ) );
-                        sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getLeftsideValue(), text ) );
-                        sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule()
-                            .getOperator() ), text ) );
-                        sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getRightsideValue(), text ) );
-                        sheet.addCell( new Label( MARGIN_LEFT + 6, row, result.getValidationRule().getRightSide()
-                            .getDescription(), text ) );
+                    sheet.addCell( new Label( MARGIN_LEFT + 0, row, unit.getName(), text ) );
+                    sheet.addCell( new Label( MARGIN_LEFT + 1, row, format.formatPeriod( period ), text ) );
+                    sheet.addCell( new Label( MARGIN_LEFT + 2, row, result.getValidationRule().getLeftSide()
+                        .getDescription(), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getLeftsideValue(), text ) );
+                    sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule()
+                        .getOperator() ), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getRightsideValue(), text ) );
+                    sheet.addCell( new Label( MARGIN_LEFT + 6, row, result.getValidationRule().getRightSide()
+                        .getDescription(), text ) );
 
-                        row++;
-                    }
+                    row++;
                 }
 
                 workbook.write();
 
                 workbook.close();
                 
-            }// end if
+            }
         }
         catch ( IOException ex )
         {

@@ -44,11 +44,11 @@ LEGEND[thematicMap].type = LEGEND[thematicMap2].type = map_legend_type_automatic
 LEGEND[thematicMap].method = LEGEND[thematicMap2].method = 2;
 LEGEND[thematicMap].classes = LEGEND[thematicMap2].classes = 5;
 /* Current map value types */
-VALUETYPE = new Object();
+var VALUETYPE = new Object();
 VALUETYPE.polygon = map_value_type_indicator;
 VALUETYPE.point = map_value_type_indicator;
 /* Top level organisation unit */
-TOPLEVELUNIT = new Object();
+var TOPLEVELUNIT = new Object();
 
 /* Detect mapview parameter in URL */
 function getUrlParam(strParamName){var output='';var strHref=window.location.href;if(strHref.indexOf('?')>-1){var strQueryString=strHref.substr(strHref.indexOf('?')).toLowerCase();var aQueryString=strQueryString.split('&');for(var iParam=0;iParam<aQueryString.length;iParam++){if(aQueryString[iParam].indexOf(strParamName.toLowerCase()+'=')>-1){var aParam=aQueryString[iParam].split('=');output=aParam[1];break;}}}return unescape(output);}
@@ -65,7 +65,7 @@ function getActivatedOpenLayersStyleMap(nameColumn) {
 function getDeactivatedOpenLayersStyleMap() {
     return new OpenLayers.StyleMap({'default':new OpenLayers.Style(OpenLayers.Util.applyDefaults({'fillOpacity':1,'strokeColor':'#222222','strokeWidth':1},OpenLayers.Feature.Vector.style['default'])),'select':new OpenLayers.Style({'strokeColor':'#000000','strokeWidth':2,'cursor':'pointer'})});
 }
-function toggleFeatureLabelsPolygons(classify, layer) {
+function toggleFeatureLabelsPolygons(layer) {
     function activateLabels() {
         layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[thematicMap].nameColumn);
         layer.refresh();
@@ -77,22 +77,17 @@ function toggleFeatureLabelsPolygons(classify, layer) {
         LABELS[thematicMap] = false;
     }
     
-    if (classify) {
-        if (LABELS[thematicMap]) {
-            deactivateLabels();
-        }
-        else {
-            activateLabels();
-        }
-        choropleth.classify(false,true);
+    if (LABELS[thematicMap]) {
+        deactivateLabels();
     }
     else {
-        if (LABELS[thematicMap]) {
-            activateLabels();
-        }
+        activateLabels();
     }
+    
+    FEATURE[thematicMap] = layer.features;
+    choropleth.applyValues();
 }
-function toggleFeatureLabelsPoints(classify, layer) {
+function toggleFeatureLabelsPoints(layer) {
     function activateLabels() {
         layer.styleMap = getActivatedOpenLayersStyleMap(MAPDATA[thematicMap2].nameColumn);
         layer.refresh();
@@ -104,20 +99,15 @@ function toggleFeatureLabelsPoints(classify, layer) {
         LABELS[thematicMap2] = false;
     }
     
-    if (classify) {
-        if (LABELS[thematicMap2]) {
-            deactivateLabels();
-        }
-        else {
-            activateLabels();
-        }
-        proportionalSymbol.classify(false,true);
+    if (LABELS[thematicMap2]) {
+        deactivateLabels();
     }
     else {
-        if (LABELS[thematicMap2]) {
-            activateLabels();
-        }
+        activateLabels();
     }
+    
+    FEATURE[thematicMap2] = layer.features;
+    proportionalSymbol.applyValues();
 }
 function toggleFeatureLabelsAssignment(classify, layer) {
     function activateLabels() {
@@ -1858,33 +1848,6 @@ Ext.onReady( function() {
         }
     });
     
-    // var newMapComboBox = new Ext.form.ComboBox({
-        // id: 'newmap_cb',
-        // typeAhead: true,
-        // editable: false,
-        // valueField: 'level',
-        // displayField: 'name',
-        // emptyText: emptytext,
-		// hideLabel: true,
-        // mode: 'remote',
-        // forceSelection: true,
-        // triggerAction: 'all',
-        // selectOnFocus: true,
-        // width: combo_width,
-        // minListWidth: combo_width,
-        // store: organisationUnitLevelStore,
-        // listeners: {
-            // 'select': {
-                // fn: function() {
-                    // var level = Ext.getCmp('newmap_cb').getValue();
-                    // organisationUnitStore.baseParams = { level: level, format: 'json' };
-                    // organisationUnit();
-                // },
-                // scope: this
-            // }
-        // }
-    // });
-    
     var editMapComboBox = new Ext.form.ComboBox({
         id: 'editmap_cb',
         typeAhead: true,
@@ -3063,7 +3026,7 @@ Ext.onReady( function() {
         }
         
         var data = [];
-        var layer = MAP.getLayersByName('Polygon layer')[0];
+        var layer = MAP.getLayersByName(layer.name)[0];
         
         for (var i = 0; i < layer.features.length; i++) {
             data.push([i, layer.features[i].data.name]);
@@ -3187,14 +3150,14 @@ Ext.onReady( function() {
                                     fn: function() {
                                         if (layer.name == 'Polygon layer') {
                                             if (ACTIVEPANEL == thematicMap) {
-                                                toggleFeatureLabelsPolygons(true, layer);
+                                                toggleFeatureLabelsPolygons(layer);
                                             }
                                             else {
                                                 toggleFeatureLabelsAssignment(true, layer);
                                             }
                                         }
                                         else if (layer.name == 'Point layer') {
-                                            toggleFeatureLabelsPoints(true, layer);
+                                            toggleFeatureLabelsPoints(layer);
                                         }
                                     }
                                 }
@@ -4032,10 +3995,10 @@ function onHoverUnselectPolygon(feature) {
 function onClickSelectPolygon(feature) {
 
 // function getKeys(obj){var temp=[];for(var k in obj){if(obj.hasOwnProperty(k)){temp.push(k);}}return temp;}
-    // var l = MAP.getLayersByName('Polygon layer')[0];
-    // l.drawFeature(feature,{'fillColor':'blue'});
-
-	FEATURE[thematicMap] = feature;
+// var l = MAP.getLayersByName('Polygon layer')[0];
+// l.drawFeature(feature,{'fillColor':'blue'});
+    
+    FEATURE[thematicMap] = feature;
 
 	var east_panel = Ext.getCmp('east');
 	var x = east_panel.x - 210;

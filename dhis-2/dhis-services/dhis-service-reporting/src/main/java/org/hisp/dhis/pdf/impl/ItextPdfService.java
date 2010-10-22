@@ -288,7 +288,7 @@ public class ItextPdfService
         closeDocument( document );
     }
 
-    public void writeValidationResult( Map<String, List<ValidationResult>> results, OutputStream out, I18n i18n,
+    public void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n,
         I18nFormat format )
     {
         Document document = openDocument( out );
@@ -318,31 +318,22 @@ public class ItextPdfService
 
         if ( results != null )
         {
-            for ( String periodTypeName : results.keySet() )
+            for ( ValidationResult validationResult : results )
             {
-                List<ValidationResult> validationResults = results.get( periodTypeName );
+                OrganisationUnit unit = (OrganisationUnit) validationResult.getSource();
 
-                table.addCell( getCell( 7, 8 ) );
+                Period period = validationResult.getPeriod();
 
-                table.addCell( getItalicCell( periodTypeName, 7 ) );
-
-                for ( ValidationResult validationResult : validationResults )
-                {
-                    OrganisationUnit unit = (OrganisationUnit) validationResult.getSource();
-
-                    Period period = validationResult.getPeriod();
-
-                    table.addCell( getTextCell( unit.getName(), TEXT ) );
-                    table.addCell( getTextCell( format.formatPeriod( period ), TEXT ) );
-                    table.addCell( getTextCell( validationResult.getValidationRule().getLeftSide().getDescription(),
-                        TEXT ) );
-                    table.addCell( getTextCell( String.valueOf( validationResult.getLeftsideValue() ) ) );
-                    table.addCell( getTextCell( i18n.getString( validationResult.getValidationRule().getOperator() ),
-                        1, ALIGN_CENTER ) );
-                    table.addCell( getTextCell( String.valueOf( validationResult.getRightsideValue() ) ) );
-                    table.addCell( getTextCell( validationResult.getValidationRule().getRightSide().getDescription(),
-                        TEXT ) );
-                }
+                table.addCell( getTextCell( unit.getName(), TEXT ) );
+                table.addCell( getTextCell( format.formatPeriod( period ), TEXT ) );
+                table.addCell( getTextCell( validationResult.getValidationRule().getLeftSide().getDescription(),
+                    TEXT ) );
+                table.addCell( getTextCell( String.valueOf( validationResult.getLeftsideValue() ) ) );
+                table.addCell( getTextCell( i18n.getString( validationResult.getValidationRule().getOperator() ),
+                    1, ALIGN_CENTER ) );
+                table.addCell( getTextCell( String.valueOf( validationResult.getRightsideValue() ) ) );
+                table.addCell( getTextCell( validationResult.getValidationRule().getRightSide().getDescription(),
+                    TEXT ) );
             }
         }
 
