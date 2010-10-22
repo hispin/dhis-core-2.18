@@ -10,10 +10,10 @@
   <name>Local India Modules</name>
   
   <modules>
-<!--
+
 	<module>dhis-in-api</module>
     <module>dhis-in-services</module>
--->
+
     <module>dhis-web-dashboard</module>
     <module>dhis-web-dataentry-linelisting</module>
     <module>dhis-web-excelimport</module>

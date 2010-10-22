@@ -26,6 +26,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.screen.DataEntryScreenManager" class="org.hisp.dhis.de.screen.DefaultDataEntryScreenManager">

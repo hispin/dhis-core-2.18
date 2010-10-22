@@ -148,6 +148,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
 	</bean>		
 	
 	<bean id="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"
@@ -429,8 +432,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
 		</property>
 	</bean>
 	
@@ -491,6 +493,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.action.editor.MergeAssignedOrgunitsAction"
+		class="org.hisp.dhis.dataset.action.editor.MergeAssignedOrgunitsAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 	</bean>
 	

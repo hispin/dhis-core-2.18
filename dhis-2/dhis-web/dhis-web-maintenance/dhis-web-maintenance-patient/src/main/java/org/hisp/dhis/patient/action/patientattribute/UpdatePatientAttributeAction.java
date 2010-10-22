@@ -78,11 +78,11 @@ public class UpdatePatientAttributeAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String description;
@@ -129,7 +129,7 @@ public class UpdatePatientAttributeAction
     {
     	 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
 
-         patientAttribute.setName( nameField );
+         patientAttribute.setName( name );
          patientAttribute.setDescription( description );
          patientAttribute.setValueType( valueType );
          patientAttribute.setMandatory( mandatory );

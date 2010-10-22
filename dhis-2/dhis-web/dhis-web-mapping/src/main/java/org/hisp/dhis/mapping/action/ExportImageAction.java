@@ -35,6 +35,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
 import org.hisp.dhis.period.Period;
@@ -70,6 +73,20 @@ public class ExportImageAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+    
+    private DataElementService dataElementService;
+    
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private MappingService mappingService;
+    
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -151,14 +168,28 @@ public class ExportImageAction
         else
         {
             log.info( "Export map from request" );
-
+            
             Indicator _indicator = indicatorService.getIndicator( indicator );
-
+            
+            DataElement _dataElement = dataElementService.getDataElement( indicator );
+            
             svgDocument = new SVGDocument();
-
+            
             svgDocument.setTitle( title );
             svgDocument.setSvg( svg );
-            svgDocument.setIndicator( _indicator );
+            
+            if ( _indicator != null )
+            {
+                svgDocument.setIndicator( _indicator );
+                svgDocument.setDataElement( null );
+            }
+            
+            else
+            {
+                svgDocument.setIndicator( null );
+                svgDocument.setDataElement( _dataElement );
+            }
+            
             svgDocument.setPeriod( period );
             svgDocument.setLegends( legends );
             svgDocument.setIncludeLegends( includeLegends );

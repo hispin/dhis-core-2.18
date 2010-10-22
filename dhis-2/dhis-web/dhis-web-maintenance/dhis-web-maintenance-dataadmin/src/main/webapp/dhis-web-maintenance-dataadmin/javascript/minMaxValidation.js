@@ -1,3 +1,15 @@
+function generateMinMaxValue(){
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( minMaxValueCompleted );	
+	request.sendAsPost(getParamString('dataSetIds'));
+	request.send( 'generateMinMaxValue.action' );
+}
+
+function minMaxValueCompleted( xmlObject ) {
+    setMessage( xmlObject.firstChild.nodeValue );
+	return false;
+}
 //-----------------------------------------------------------------------------------
 // Default Min/Max values
 //-----------------------------------------------------------------------------------
@@ -13,16 +25,6 @@ function saveDefaultValues(){
 
 function saveDefaultValuesCompleted(xmlObject){
 	setMessage(xmlObject.firstChild.nodeValue);
-}
-
-function validateForm(){
-	if(byId('dataSetIds').value=='')
-	{
-		setMessage(i18n_not_choose_dataset);
-		return false;
-	}
-	
-	document.getElementById( 'minMaxGeneratingForm' ).submit();
 }
 
 //------------------------------------------------------------------------------
@@ -45,7 +47,11 @@ function saveFactorSuccess(){
 //-----------------------------------------------------------------------------------
 
 function removeMinMaxValue(){
-	var form = byId("minMaxGeneratingForm");
-	form.action = "removeMinMaxValue.action"
-	form.submit();
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( minMaxValueCompleted );	
+	request.sendAsPost(getParamString('dataSetIds'));
+	request.send( 'removeMinMaxValue.action' );
+	
 }

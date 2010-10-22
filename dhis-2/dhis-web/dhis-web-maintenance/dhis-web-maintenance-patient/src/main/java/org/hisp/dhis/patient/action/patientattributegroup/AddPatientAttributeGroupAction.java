@@ -66,7 +66,7 @@ public class AddPatientAttributeGroupAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String nameField;
+    private String name;
 
     private String description;
 
@@ -81,9 +81,9 @@ public class AddPatientAttributeGroupAction
         this.description = description;
     }
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     public void setSelectedAttributes( String[] selectedAttributes )
@@ -101,7 +101,7 @@ public class AddPatientAttributeGroupAction
 
         PatientAttributeGroup patientAttributeGroup = new PatientAttributeGroup();
 
-        patientAttributeGroup.setName( nameField );
+        patientAttributeGroup.setName( name );
         patientAttributeGroup.setDescription( description );
 
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();

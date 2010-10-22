@@ -168,7 +168,7 @@ public class SaveValueAction
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = selectedStateManager.getSelectedPeriod();
-
+System.out.println("\n\n\n ++++  selected period : " + period + " +++++ \n" );
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         storedBy = currentUserService.getCurrentUsername();

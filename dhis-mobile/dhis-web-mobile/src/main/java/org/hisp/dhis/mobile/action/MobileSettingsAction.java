@@ -233,6 +233,18 @@ public class MobileSettingsAction implements Action
         props.setProperty( "settings.delete_after_processing", delete_after_processing );
     }
 
+    private String simMemLocation = "";
+
+    public void setSimMemLocation(String simMemLocation)
+    {
+        props.setProperty("modem1.simMemLocation", simMemLocation);
+    }
+
+    public String getSimMemLocation()
+    {
+        return props.getProperty( "modem1.simMemLocation" );
+    }
+
     private String send_mode;
 
     public String getSend_mode()
@@ -244,6 +256,14 @@ public class MobileSettingsAction implements Action
     {
         props.setProperty( "settings.send_mode", send_mode );
         props.store( new FileWriter( configFile ), "SMS Server Configuration" );
+        message = "Settings Saved Successfully";
+    }
+
+    private String message = "";
+
+    public String getMessage()
+    {
+        return message;
     }
 
     @Override
@@ -267,12 +287,12 @@ public class MobileSettingsAction implements Action
             props.setProperty( "modem1.outbound", "yes" );
             props.setProperty( "modem1.smsc_number", "" );
             props.setProperty( "modem1.init_string", "ATZ\\\rATZ\\\rATZ\\\r" );
+            props.setProperty( "modem1.simMemLocation", "-");
             props.setProperty( "settings.inbound_interval", "600" );
             props.setProperty( "settings.outbound_interval", "10" );
             props.setProperty( "settings.delete_after_processing", "yes" );
             props.setProperty( "settings.send_mode", "async" );
             props.store( new FileWriter( configFile ), "SMS Server Configuration" );
-
         } else
         {
             props.load( new FileReader( configFile ) );

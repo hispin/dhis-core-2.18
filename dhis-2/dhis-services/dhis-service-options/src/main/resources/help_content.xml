@@ -560,10 +560,6 @@
       <para>The data maintenance module has five options, each described below. </para>
       <itemizedlist>
         <listitem>
-          <para>Clear hierarchy history</para>
-          <para>DHIS 2 maintains an audit trail of changes to the organisation unit hierarchy for aggregation purposes. This function clears the hierarchy history.</para>
-        </listitem>
-        <listitem>
           <para>Clear data mart (aggregated datavalues)</para>
           <para>The data mart is where DHIS 2 stores aggregated data produced during the export to data mart process. This function clears the database table which contains aggregated data element values.</para>
         </listitem>

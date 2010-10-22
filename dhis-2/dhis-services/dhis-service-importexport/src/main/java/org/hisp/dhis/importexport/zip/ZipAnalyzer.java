@@ -48,6 +48,7 @@ public class ZipAnalyzer
     static
     {
         knownDataStreams.add( "Data_CROSS.xml" );        // sdmx cross sectional data file
+        knownDataStreams.add( "GMS_INDICATOR.xml" );     // sdmx indicator metadata
         knownDataStreams.add( "xl/workbook.xml" );       // xslsx file
         knownDataStreams.add( "content.xml" );           // xslsx file
     }

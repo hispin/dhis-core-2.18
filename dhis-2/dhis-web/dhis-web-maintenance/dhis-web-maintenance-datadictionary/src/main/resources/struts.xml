@@ -23,6 +23,16 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElement.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+		</action>
+		
+		<action name="searchDataElement"
+			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction" method="searchDataElementByName">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseDataElements.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="showSortDataElementForm"
@@ -109,6 +119,7 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
 
 		<!-- DataElementGroup Editor -->
 
@@ -962,7 +973,7 @@
 			class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryComboForm.vm</param>
-			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js</param>
+			<param name="javascripts">javascript/categoryCombo.js</param>
 			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
@@ -976,10 +987,10 @@
 
 		<action name="validateDataElementCategoryCombo"
 			class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction">
-			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -1010,7 +1021,7 @@
 			class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryComboForm.vm</param>
-			<param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js</param>
+			<param name="javascripts">javascript/categoryCombo.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 

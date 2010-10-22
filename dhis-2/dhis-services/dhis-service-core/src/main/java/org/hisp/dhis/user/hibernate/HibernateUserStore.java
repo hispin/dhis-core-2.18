@@ -35,7 +35,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
@@ -116,6 +118,14 @@ public class HibernateUserStore
 
         return session.createQuery( "from User" ).list();
     }
+    
+    public Collection<User> getAllUsers( int from, int to )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+
+        return session.createQuery( "from User" ).setFirstResult( from ).setMaxResults( to ).list();
+    }
 
     public Collection<User> getUsersByOrganisationUnit( OrganisationUnit organisationUnit )
     {   
@@ -150,6 +160,18 @@ public class HibernateUserStore
         
         return users;
     }
+
+    @SuppressWarnings("unchecked")
+    public Collection<User> getUsersByPhoneNumber( String phoneNumber )
+    {
+        String hql = "from User u where u.phoneNumber = :phoneNumber";
+        
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        query.setString( "phoneNumber", phoneNumber );
+        
+        return query.list();
+    }
+    
 
     public void deleteUser( User user )
     {

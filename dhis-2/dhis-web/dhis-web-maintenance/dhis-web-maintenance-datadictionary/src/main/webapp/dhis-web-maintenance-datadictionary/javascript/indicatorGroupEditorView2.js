@@ -27,69 +27,42 @@ function hideToolTip(){
 	byId('tooltip').style.display = 'none';
 }
 
+function addOptionToListWithToolTip( list, optionValue, optionText )
+{
+    var option = document.createElement( "option" );
+    option.value = optionValue;
+    option.text = optionText;
+	option.onmousemove = function(e) {
+		showToolTip(e, optionText);
+	}
+    list.add( option, null );
+}
+
+function refreshListById( listId )
+{
+	var list = byId( listId );
+	list.options.length = 0;
+	
+	if ( listId == 'availableGroups' )
+	{
+		for (var id in availableGroups)
+		{		
+			addOptionToListWithToolTip( list, id, availableGroups[id] );
+		}
+	}
+	else if ( listId == 'availableIndicators' )
+	{
+		for (var id in availableIndicators)
+		{		
+			addOptionToListWithToolTip( list, id, availableIndicators[id] );
+		}
+	}
+}
+
 function initList() 
 {
-	var list = document.getElementById('availableGroups');
-	var id;
-
-	for (id in availableGroups) {		
-		var option = new Option( availableGroups[id], id );
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
-		}
-        list.add( option, null );  
-		
-	}
-
-	list = document.getElementById('availableIndicators');
-
-	for (id in availableIndicators) {		
-		var option = new Option( availableIndicators[id], id );
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
-		}
-        list.add( option, null );  
-	}
-	
-}
-
-/*==============================================================================
- *Move selected indicator 
- *==============================================================================*/
-
-function addSelectedGroups()
-{
-    var list = document.getElementById( 'availableGroups' );
-
-    while ( list.selectedIndex != -1 )
-    {
-        var id = list.options[list.selectedIndex].value;
-
-        list.options[list.selectedIndex].selected = false;
-
-        assignedGroups[id] = availableGroups[id];
-
-    }
-
-    filterAssignedGroups();   
-}
-
-function removeSelectedGroups()
-{
-    var list = document.getElementById( 'assignedGroups' );
-
-    while ( list.selectedIndex != -1 )
-    {
-        var id = list.options[list.selectedIndex].value;
-
-        list.options[list.selectedIndex].selected = false;      
-
-		availableGroups[id] = assignedGroups[id];		
-
-        delete assignedGroups[id];
-    }
-
-    filterAssignedGroups();    
+	refreshListById( 'availableGroups' );
+	refreshListById( 'availableIndicators' );
 }
 
 /*==============================================================================
@@ -107,89 +80,41 @@ function getAssignedIndicatorGroups( indicatorId )
 function getAssignedIndicatorGroupsCompleted( indicatorGroups )
 {
 	assignedGroups = new Object();
-	
+	var availableList = byId('availableIndicators');
+	var groupName = availableList.options[ availableList.selectedIndex ].text;
 	var availableIndicatorGroups = indicatorGroups.getElementsByTagName( 'indicatorGroup' );
+	var list = byId('assignedGroups');
+	list.options.length = 0;
 	
 	for( var i=0;i<availableIndicatorGroups.length;i++)
 	{
-		var id = availableIndicatorGroups.item(i).getElementsByTagName( 'id' )[0].firstChild.nodeValue;
-		var name = availableIndicatorGroups.item(i).getElementsByTagName( 'name' )[0].firstChild.nodeValue;
-		assignedGroups[id] = name;		
+		var id = getElementValue( availableIndicatorGroups.item(i), 'id' );
+		var name = getElementValue( availableIndicatorGroups.item(i), 'name' );
+		addOptionToListWithToolTip( list, id, name );
+		assignedGroups[id] = name;
 	}
-	var list = byId('availableIndicators');
-	document.getElementById( 'groupNameView' ).innerHTML = list[list.selectedIndex].text;
 	
-	filterAssignedGroups();
+	refreshListById( 'availableGroups' );
+	visableAvailableIndicators();
+	enable('availableGroups');
+	setInnerHTML('groupNameView', groupName);
 }
 
-/*==============================================================================
- *	Filter Select List
- *==============================================================================*/
-
-function filterAssignedGroups()
+function visableAvailableIndicators()
 {
-    var filter = document.getElementById( 'assignedGroupsFilter' ).value;
-    var list = document.getElementById( 'assignedGroups' );
-
-    list.options.length = 0;
-
-    for ( var id in assignedGroups )
-    {
-        var value = assignedGroups[id];
-
-        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
-        {
-			var option = new Option( value, id );
-			option.onmousemove  = function(e){
-				showToolTip( e, value);				
+	var selectedList = byId( 'assignedGroups' );
+	var availableList = byId( 'availableGroups' );
+	var selectedOptions = selectedList.options;
+	var availableOptions = availableList.options;
+	
+	for(var i=0;i<availableOptions.length;i++){
+		availableList.options[i].style.display='block';
+		for(var j=0;j<selectedOptions.length;j++){			
+			if(availableOptions[i].value==selectedOptions[j].value){				
+				availableList.options[i].style.display='none';
 			}
-            list.add( option, null );			
-
-        }
-    }
-}
-function filterAvailableGroups()
-{
-    var filter = document.getElementById( 'availableGroupsFilter' ).value;
-    var list = document.getElementById( 'availableGroups' );
-    
-    list.options.length = 0;
-    
-    for ( var id in availableGroups )
-    {
-        var value = availableGroups[id];
-        
-        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
-        {
-            var option = new Option( value, id );
-			option.onmousemove  = function(e){
-				showToolTip( e, this.text);
-			}
-	        list.add( option, null );  
-        }
-    }
-}
-
-function filterAvailableIndicators()
-{
-    var filter = document.getElementById( 'availableIndicatorsFilter' ).value;
-    var list = document.getElementById( 'availableIndicators' );
-    
-    list.options.length = 0;
-    
-    for ( var id in availableIndicators )
-    {
-        var value = availableIndicators[id];
-        
-        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
-        {
-            var option = new Option( value, id );
-			option.onmousemove  = function(e){
-				showToolTip( e, this.text);
-			}
-	        list.add( option, null );  
-        }
-    }
+		}
+	}
 }
 
 /*==============================================================================
@@ -198,40 +123,35 @@ function filterAvailableIndicators()
 
 function showAddIndicatorGroupForm()
 {
-	document.getElementById( 'groupName' ).value='';    
-    document.getElementById( 'addRenameGroupButton' ).onclick=validateAddIndicatorGroup;
-    setPositionCenter( 'addIndicatorGroupForm' );	
-    showDivEffect();
-	toggleById('addIndicatorGroupForm');
+	byId( 'groupName' ).value='';    
+    byId( 'addRenameGroupButton' ).onclick=validateAddIndicatorGroup;
+    showPopupWindowById( 'addIndicatorGroupForm', 450, 70 );
 }
 
 function validateAddIndicatorGroup()
 {
-	var name = getFieldValue('groupName');
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( validateAddIndicatorGroupReceived );
-	request.sendAsPost( "name=" + name );
-    request.send( 'validateIndicatorGroup.action' ); 
-}
-
-function validateAddIndicatorGroupReceived( xmlObject )
-{
-    var type = xmlObject.getAttribute( 'type' );
-    
-    if ( type=='input' )
-    {
-        setHeaderDelayMessage(xmlObject.firstChild.nodeValue);
-    }
-    if ( type=='success' )
-    {
-        createNewGroup();
-    }
+	$.postJSON(
+		"validateIndicatorGroup.action",
+		{
+			"name": getFieldValue( 'groupName' )
+		},
+		function( json )
+		{
+			if ( json.response == "success" )
+			{
+				createNewGroup();
+			}
+			else
+			{
+				alert(json.message);
+			}
+		}
+	);
 }
 
 function createNewGroup()
 {
-	var name = document.getElementById( 'groupName' ).value;    
+	var name = byId( 'groupName' ).value;    
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( createNewGroupReceived );
@@ -240,13 +160,20 @@ function createNewGroup()
 }
 
 function createNewGroupReceived( xmlObject )
-{       
-    var id = xmlObject.getElementsByTagName( "id" )[0].firstChild.nodeValue;
-    var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
-    availableGroups[id] = name;
-    filterAvailableGroups();
-    toggleById( 'addIndicatorGroupForm' );
-    deleteDivEffect();  
+{
+    var id = getElementValue( xmlObject, 'id' );
+    var name = getElementValue( xmlObject, 'name' );
+    var list = byId( 'availableGroups' );
+    var option = new Option( name, id );
+	option.selected = true;
+	option.onmousemove  = function(e){
+		showToolTip( e, this.text);
+	}
+	list.add(option , null );
+	availableGroups[id] = name;
+	byId( 'groupNameView' ).innerHTML = name;
+    hideById( 'addIndicatorGroupForm' );
+    unLockScreen();  
 }
 
 /*==============================================================================
@@ -263,50 +190,60 @@ function showRenameIndicatorGroupForm()
 	}
 	else
 	{
-		document.getElementById( 'groupName' ).value = list.options[ list.selectedIndex ].text
-		document.getElementById( 'addRenameGroupButton' ).onclick=validateRenameIndicatorGroup;
-		setPositionCenter( 'addIndicatorGroupForm' );	
-		showDivEffect();
-		toggleById('addIndicatorGroupForm');
+		byId( 'groupName' ).value = list.options[ list.selectedIndex ].text
+		byId( 'addRenameGroupButton' ).onclick=validateRenameIndicatorGroup;
+		showPopupWindowById( 'addIndicatorGroupForm', 450, 70 );
 	}	
 } 
 
 function validateRenameIndicatorGroup()
 {
-	var name = getFieldValue('groupName');
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( validateRenameIndicatorGroupReceived );
-	request.sendAsPost("name=" + name);
-	request.send( 'validateIndicatorGroup.action' ); 	
-}
+	$.postJSON(
+		"validateIndicatorGroup.action",
+		{
+			"name": getFieldValue( 'groupName' )
+		},
+		function( json )
+		{
+			if ( json.response == "success" )
+			{
+				renameGroup();
+			}
+			else
+			{
+				alert(json.message);
+			}
+		}
+	);	
 
-function validateRenameIndicatorGroupReceived( xmlObject )
-{
-    var type = xmlObject.getAttribute( 'type' );
-    
-    if( type=='input' )
-    {
-        setHeaderDelayMessage(xmlObject.firstChild.nodeValue);
-    }
-    
-    if( type=='success' )
-    {
-        renameGroup();
-    }
 }
 
 function renameGroup()
 {
-	var name = document.getElementById( 'groupName' ).value;    
+	var name = getFieldValue( 'groupName' );    
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( createNewGroupReceived );
-	var params = "name=" + name +  "&mode=editor&id=" +  byId('availableGroups').value;
+    request.setCallbackSuccess( renameGroupReceived );
+	var params = "name=" + name + "&mode=editor&id=" + byId('availableGroups').value;
 	request.sendAsPost( params );
     request.send( 'renameIndicatorGroupEditor.action');	
 }
 
+function renameGroupReceived( xmlObject )
+{
+	var id = getElementValue( xmlObject, 'id' );
+	var name = getElementValue( xmlObject, 'name' );
+    var list = byId( 'availableGroups' );
+	var option = list.options[ list.selectedIndex ];
+	option.text = name;
+	option.onmousemove = function(e) {
+		showToolTip(e, name);
+	}
+	availableGroups[ id ] = name;
+    byId( 'groupNameView' ).innerHTML = name;        
+    hideById( 'addIndicatorGroupForm' );
+    unLockScreen(); 
+}
 
 /*==============================================================================
  * Update Member of Indicator Group
@@ -316,12 +253,9 @@ function assignGroupsForIndicator()
 {
 	try
 	{		
-	    var indicatorId = byId('availableIndicators').value;	
-		
+	    var indicatorId = byId('availableIndicators').value;
 	    var request = new Request();
-
 	    var requestString = 'asignGroupsForIndicator.action';
-
 	    var params = "indicatorId=" + indicatorId;
 		params += "&mode=editor";
 
@@ -350,54 +284,16 @@ function assignGroupsForIndicatorReceived( xmlObject )
 /*==============================================================================
  * Delete Indicator Group
  *==============================================================================*/
-/*
-function deleteIndicatorGroup()
-{
-	if( window.confirm( i18n_confirm_delete ) )
-	{
-		var list = byId('availableGroups');
-	
-		if( list.value== '' )
-		{
-			setHeaderDelayMessage(i18n_select_indicator_group);
-		}else{			
-			var request = new Request();
-			request.setResponseTypeXML( 'xmlObject' );
-			request.setCallbackSuccess( deleteIndicatorGroupReceived );
-			request.send( 'deleteIndicatorGroupEditor.action?id=' + list.value ); 	
-		}
-	}
-}
-
-function deleteIndicatorGroupReceived( xmlObject )
-{
-    var type = xmlObject.getAttribute( 'type' );    
-    
-    if ( type == 'success' )
-    {
-		var list = byId('availableGroups');
-        list.remove( list.selectedIndex );
-    }
-	else if ( type == "error" )
-	{
-		setFieldValue( 'warningArea', xmlObject.firstChild.nodeValue );
-
-		showWarning();
-	}
-}
-*/
 
 function deleteIndicatorGroup()
 {
-	if ( window.confirm( i18n_confirm_delete ) )
-	{
-		var list = byId('availableGroups');
+	var list = byId('availableGroups');
 	
-		if ( list.value == '' )
-		{
-			setHeaderDelayMessage(i18n_select_indicator_group);
-		}
-		else
+	try {
+		var id = list.options[ list.selectedIndex ].value;
+		var name = list.options[ list.selectedIndex ].text;
+
+		if ( window.confirm( i18n_confirm_delete ) )
 		{
 			$.getJSON
 			(
@@ -421,5 +317,9 @@ function deleteIndicatorGroup()
 				}
 			);
 		}
+	}
+	catch(e)
+	{
+		setHeaderDelayMessage(i18n_select_indicator_group);
 	}
 }

@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
@@ -45,7 +46,7 @@ import org.hisp.dhis.user.CurrentUserService;
  * @version $Id: GetUserListAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetUserListAction
-    implements Action
+    extends ActionPagingSupport
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -90,8 +91,10 @@ public class GetUserListAction
     public String execute()
         throws Exception
     {
-        Collection<User> users = userStore.getAllUsers();
+        this.paging = createPaging( userStore.getAllUsers().size() );
 
+        Collection<User> users = userStore.getAllUsers( paging.getStartPos(), paging.getPageSize() );
+     
         userCredentialsList = new ArrayList<UserCredentials>();
 
         for ( User user : users )

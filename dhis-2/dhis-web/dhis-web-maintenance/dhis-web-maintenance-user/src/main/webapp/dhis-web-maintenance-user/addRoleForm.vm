@@ -1,12 +1,17 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'addRoleForm', validateAddRole );				
+		jQuery("#name").focus();
+		validation( 'addRoleForm', function( form ){ 			
+			form.submit();			
+		});					
+		checkValueIsExist( "name", "validateRole.action");
 	});		
 </script>
 
 <h3>$i18n.getString( "create_new_user_role" )</h3>
 
-<form id="addRoleForm" action="addRole.action" method="post" >
+
+<form id="addRoleForm" name="addRoleForm" action="addRole.action" method="post" >
   <table>
 	<tr>
 		<th colspan="4">$i18n.getString( "details" )</th>
@@ -76,7 +81,7 @@
   </table>
 </form>
 
-<span id="message"/>
+<span id="message"></span>
 
 <script type="text/javascript">
 	var i18n_adding_role_failed = '$encoder.jsEscape( $i18n.getString( "adding_role_failed" ) , "'")';

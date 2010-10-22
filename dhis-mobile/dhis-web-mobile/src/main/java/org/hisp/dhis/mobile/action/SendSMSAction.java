@@ -60,10 +60,10 @@ public class SendSMSAction implements Action
     {
         if ( statAction.equalsIgnoreCase( "Start" ) )
         {
-            this.result = smsService.startService();
+            this.message = smsService.startService();
         } else
         {
-            this.result = smsService.stopService();
+            this.message = smsService.stopService();
         }
     }
 
@@ -88,11 +88,11 @@ public class SendSMSAction implements Action
         this.send = send;
     }
 
-    String result;
+    String message = "";
 
-    public String getResult()
+    public String getMessage()
     {
-        return result;
+        return message;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class SendSMSAction implements Action
     {
         if ( this.send != null )
         {
-            this.result = smsService.sendMessage( recipient, msg );
+            this.message = smsService.sendMessage( recipient, msg );
         }
         return SUCCESS;
     }

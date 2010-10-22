@@ -60,6 +60,7 @@ public class DataElementCategoryConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_CONCEPT_ID = "conceptid";
+    private static final String FIELD_CONCEPT_NAME = "conceptname"; //deprecated 1.2
 
     private ConceptService conceptService;
 
@@ -146,9 +147,7 @@ public class DataElementCategoryConverter
             } else if (params.getMinorVersion().equals( MINOR_VERSION_11))
             {
                 log.debug("reading category dxf version 1.1");
-                // this version had conceptname as a string
-                // we'll just lose it for now :-(
-                // TODO: fix this
+                // TODO: read concept from conceptname
                 category.setConcept(defaultConcept);
             } else
             {

@@ -168,7 +168,7 @@
     </build>
     <repositories>
         <repository>
-            <url>http://download.java.net/maven/2/</url>
+            <url>http://download.java.net/maven/2</url>
             <id>beans-binding</id>
             <layout>default</layout>
             <name>Repository for library Library[beans-binding]</name>

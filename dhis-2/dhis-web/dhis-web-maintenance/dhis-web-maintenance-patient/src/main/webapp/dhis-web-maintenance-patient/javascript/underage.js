@@ -1,88 +1,32 @@
-jQuery(document).ready(function()
-{
-	jQuery("#tabs").tabs();
-	
-	jQuery("#searchForm").validate({
-		 meta:"validate"
-		,errorElement:"td"
-		,submitHandler: function(form)
-						{
-							searchPerson();
-						}
-		,rules : {
-			relationshipTypeId  :"required"
-			,searchType			:"required"
-			,searchValue		:"required"
-		}
-	});
-	
-	jQuery("#addRepresentativeForm").validate({
-		 meta:"validate"
-		,errorElement:"td"
-		,submitHandler: function(form)
-						{
-							validateAddRepresentative();
-						}
-		,rules : {
-			birthDate :{required:true,dateISO:true,datelessthanequaltoday:true}
-		}
-	});
-	
-	jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-	
-	// Esc key for jQuery thickbox
-	// jQuery thickbox already has this event
-	// but somehow it's over written by jQuery tabs plugin
-	document.onkeydown = function(e){ 	
-		if (e == null) { // ie
-			keycode = event.keyCode;
-		} else { // mozilla
-			keycode = e.which;
-		}
-		if(keycode == 27){ // close
-			window.parent.tb_remove();
-		}
-	}
-});
-
-
 //-----------------------------------------------------------------------------
 //Add Patient
 //-----------------------------------------------------------------------------
 
 function validateAddRepresentative()
-{
-	
-	var relationshipTypeId = jQuery("#relationshipTypeId").val();
-	if( isBlank( relationshipTypeId ))
-	{
-		alert(i18n_please_select_relationshipType);
-	}
-	
-	var params = 
-				'&firstName=' + getFieldValue( 'firstName' ) 
-				+'&middleName=' + getFieldValue( 'middleName' ) 
-				+'&lastName=' + getFieldValue( 'lastName' ) 
-				+'&gender=' + getFieldValue( 'gender' ) 
-				+'&birthDate=' + getFieldValue( 'birthDate' ) 	        
-				+'&age=' + getFieldValue( 'age' ) 
-				+'&genre=' + getFieldValue('gender') 
-				+ getIdParams();
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( addValidationCompleted ); 
-	request.sendAsPost( params );	
-	request.send( "validatePatient.action" );        
-	
-	return false;
+{	
+	$.post("validatePatient.action?" + getIdParams(),
+		{
+			firstName: getFieldValue( 'firstName' ),
+			middleName: getFieldValue( 'middleName' ),
+			lastName: getFieldValue( 'lastName' ),
+			gender: getFieldValue( 'gender' ) ,
+			birthDate: getFieldValue( 'birthDate' ), 	        
+			age: getFieldValue( 'age' ) ,
+			genre: getFieldValue('gender') 
+		},
+		function (data)
+		{
+			addValidationRepresentativeCompleted(data);
+		},'xml');
+		
 }
 
-function addValidationCompleted( messageElement )
+function addValidationRepresentativeCompleted( messageElement )
 {
-	 var type = messageElement.getAttribute( 'type' );
-	 var message = messageElement.firstChild.nodeValue;
-	 
+	messageElement = messageElement.getElementsByTagName( "message" )[0];
+	var type = messageElement.getAttribute( "type" );
+	var message = messageElement.firstChild.nodeValue;
+	
 	 if ( type == 'success' )
 	 {
 		 // Use jQuery Ajax submit 
@@ -91,7 +35,7 @@ function addValidationCompleted( messageElement )
 			   ,url: "addRepresentative.action"
 			   ,data: jQuery("#addRepresentativeForm").serialize()
 			   ,dataType : "xml"
-			   ,success: function(xml){
+			   ,success: function(xml){ 
 			 		autoChoosePerson( xml );
 				}
 			   ,error: function()
@@ -140,10 +84,10 @@ function searchPerson()
 		   ,url: "searchPerson.action"
 		   ,data: jQuery("#searchForm").serialize()
 		   ,dataType : "xml"
-		   ,success: function(xml){
-				showPersons( "listPersons", xml );
+		   ,success: function(xmlObject){
+				showPersons( "searchForm div[id=listPersons]", xmlObject );
 			}
-		   ,error: function()
+		   ,error: function(request,status,errorThrown)
 		   {
 				alert(i18n_error_connect_to_server);
 		   }
@@ -222,7 +166,6 @@ function autoChoosePerson(xmlElement)
 // Set Representative information to parent page.
 function choosePerson(this_)
 {
-	
 	var relationshipTypeId = jQuery("#relationshipTypeId").val();
 	if( isBlank( relationshipTypeId ))
 	{
@@ -251,35 +194,35 @@ function toggleSearchType(this_)
 	var type = jQuery(this_).val();
 	if( "identifier" == type )
 	{
-		jQuery("#rowIdentifier").show().find("#identifierTypeId").rules("add",{"required":true});
-		jQuery("#rowAttribute").hide().find("#attributeId").rules("remove","required");
+		jQuery("#rowIdentifier").show().find("#identifierTypeId").addClass('required:true');
+		jQuery("#rowAttribute").hide().find("#attributeId").removeClass("required");
 		jQuery("#searchValue").val("");
 	}
 	else if( "attribute" == type )
 	{
-		jQuery("#rowIdentifier").hide().find("#identifierTypeId").rules("remove","required");
-		jQuery("#rowAttribute").show().find("#attributeId").rules("add",{"required":true});
+		jQuery("#rowIdentifier").hide().find("#identifierTypeId").removeClass("required");
+		jQuery("#rowAttribute").show().find("#attributeId").addClass("required:true");
 		jQuery("#searchValue").val("");
 	}
 	else if( "name" == type || "" == type )
 	{
-		jQuery("#rowIdentifier").hide().find("#identifierTypeId").rules("remove","required");
-		jQuery("#rowAttribute").hide().find("#attributeId").rules("remove","required");
+		jQuery("#rowIdentifier").hide().find("#identifierTypeId").removeClass("required");
+		jQuery("#rowAttribute").hide().find("#attributeId").removeClass("required");
 		jQuery("#searchValue").val("");
 	}
 }
 
 function ageOnchange()
 {
-	jQuery("#birthDate").val("").rules("remove","required");
-	jQuery("#age").rules("add",{required:true});
+	jQuery("#birthDate").val("").removeClass("required");
+	jQuery("#age").addClass('required:true');
 
 }
 
 function bdOnchange()
 {
-	jQuery("#age").val("").rules("remove","required");
-	jQuery("#birthDate").rules("add",{required:true});
+	jQuery("#age").val("").removeClass("required");
+	jQuery("#birthDate").addClass('required:true');
 }
 function isBlank(text)
 {

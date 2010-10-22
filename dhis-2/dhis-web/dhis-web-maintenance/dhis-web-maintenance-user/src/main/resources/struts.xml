@@ -31,6 +31,7 @@
       <param name="page">/dhis-web-maintenance-user/allUser.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
       <param name="javascripts">javascript/user.js,javascript/filterTable.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>
     

@@ -10,9 +10,9 @@
 	</tr>
 	
 	<tr>
-		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"/></td>
-		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"/></td>				
-		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"/></td>
+		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableIndicators');"/></td>
+		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'assignedGroups');"/></td>				
+		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableGroups');"/></td>
 	</tr>
 
 	<tr>
@@ -21,34 +21,39 @@
 			</select>
 		</td>		
 		<td>
-			<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="removeSelectedGroups();" onMouseOut="javascript: hideToolTip();">
+			<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="moveSelectedById('assignedGroups', 'availableGroups');" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 		
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:30px"/><br/><br/>
-			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:30px"/>
+			<input type="button" value="&lt;" onclick="moveSelectedById('availableGroups', 'assignedGroups');" style="width:30px"/><br/><br/>
+			<input type="button" value="&gt;" onclick="moveSelectedById('assignedGroups', 'availableGroups');" style="width:30px"/>
 		</td>
 		
 		<td>
-			<select class="select" id="availableGroups" multiple="multiple" size="30" onMouseOut="javascript: hideToolTip();" ondblclick="addSelectedGroups();">				
+			<select class="select" id="availableGroups" multiple="multiple" size="30" onMouseOut="javascript: hideToolTip();" ondblclick="moveSelectedById(this.id, 'assignedGroups');">				
 			</select>
 		</td>
 		
 	</tr>
 	<tr>		
-		
-		<td></td>
-		<td>			
+		<td>
+			<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>						
+		</td>
+		<td>
+			<a href="javascript:sortList( 'assignedGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'assignedGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
 			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:assignGroupsForIndicator()"/>
 		</td>
 		<td></td>
 		<td>
+			<a href="javascript:sortList( 'availableGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			<a href="javascript:sortList( 'availableGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>			
 			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px"/>
 			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px"/>
 			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px"/>
 		</td>
-		
 		
 	</tr>
 </table>
@@ -81,7 +86,7 @@
 
 	function cancel(){
 		hideById("addIndicatorGroupForm");
-		deleteDivEffect();
+		unLockScreen();
 	}
 
 	var i18n_select_indicator_group = '$encoder.jsEscape( $i18n.getString( "select_indicator_group" ) , "'")';

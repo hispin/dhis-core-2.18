@@ -21,99 +21,64 @@ function relationshipTypeReceived( relationshipTypeElement )
 }
 
 // -----------------------------------------------------------------------------
-// Remove RelationshipType
-// -----------------------------------------------------------------------------	
-
-function removeRelationshipType( relationshipTypeId, aIsToB, bIsToA )
-{
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + aIsToB + ' ' + bIsToA );
-    
-    if( result )
-    {
-    	var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeRelationshipTypeCompleted );
-        window.location.href = 'removeRelationshipType.action?id=' + relationshipTypeId;
-    }
-}
-
-function removeRelationshipTypeCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if( type == 'success' )
-    {
-        window.location.href = 'relationshipType.action';
-    }
-    else if( type = 'error' )
-    {
-        setInnerHTML( 'warningField', message );
-        
-        showWarning();
-    }
-}
-
-// -----------------------------------------------------------------------------
 // Add RelationshipType
 // -----------------------------------------------------------------------------
 
 function validateAddRelationshipType()
 {
-	
-	var url = 'validateRelationshipType.action?' +
-			'aIsToB=' + getFieldValue( 'aIsToB' ) +			
-	        '&bIsToA=' + getFieldValue( 'bIsToA' ) +
-	        '&description=' + getFieldValue( 'description' );
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );    
-    request.send( url );        
-
-    return false;
+	$.postJSON(
+    	    'validateRelationshipType.action',
+    	    {
+    	        "aIsToB": getFieldValue( 'aIsToB' ),
+				"bIsToA": getFieldValue( 'bIsToA' )
+    	    },
+    	    function( json )
+    	    {
+    	    	if ( json.response == "success" )
+    	    	{
+					var form = document.getElementById( 'addRelationshipTypeForm' );        
+					form.submit();
+    	    	}else if ( json.response == "input" )
+    	    	{
+    	    		setMessage( json.message );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{
+    	    		setMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    	}
+    	    }
+    	);
 }
 
-function addValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if( type == 'success' )
-    {
-        var form = document.getElementById( 'addRelationshipTypeForm' );        
-        form.submit();
-    }
-    else if( type == 'error' )
-    {
-        window.alert( i18n_adding_patient_atttibute_failed + ':' + '\n' + message );
-    }
-    else if( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
 // -----------------------------------------------------------------------------
 // Update RelationshipType
 // -----------------------------------------------------------------------------
 
 function validateUpdateRelationshipType()
 {
-	
-    var url = 'validateRelationshipType.action?' + 
-    		'id=' + getFieldValue( 'id' ) +
-    		'&aIsToB=' + getFieldValue( 'aIsToB' ) +			
-	        '&bIsToA=' + getFieldValue( 'bIsToA' ) +
-	        '&description=' + getFieldValue( 'description' );
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationCompleted );   
-    
-    request.send( url );
-        
-    return false;
+	$.postJSON(
+    	    'validateRelationshipType.action',
+    	    {
+				"id": getFieldValue( 'id' ),
+    	        "aIsToB": getFieldValue( 'aIsToB' ),
+				"bIsToA": getFieldValue( 'bIsToA' )
+    	    },
+    	    function( json )
+    	    {
+    	    	if ( json.response == "success" )
+    	    	{
+					var form = document.getElementById( 'updateRelationshipTypeForm' );        
+					form.submit();
+    	    	}else if ( json.response == "input" )
+    	    	{
+    	    		setMessage( json.message );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{
+    	    		setMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    	}
+    	    }
+    	);
 }
 
 function updateValidationCompleted( messageElement )
@@ -135,6 +100,15 @@ function updateValidationCompleted( messageElement )
         document.getElementById( 'message' ).innerHTML = message;
         document.getElementById( 'message' ).style.display = 'block';
     }
+}
+
+// -----------------------------------------------------------------------------
+// Remove RelationshipType
+// -----------------------------------------------------------------------------	
+
+function removeRelationshipType( relationshipTypeId, aIsToB, bIsToA )
+{
+    removeItem( relationshipTypeId, aIsToB + "/" + bIsToA, i18n_confirm_delete, 'removeRelationshipType.action' );
 }
 
 //------------------------------------------------------------------------------

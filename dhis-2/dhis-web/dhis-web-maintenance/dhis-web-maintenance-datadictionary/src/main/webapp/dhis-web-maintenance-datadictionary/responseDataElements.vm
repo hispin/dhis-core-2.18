@@ -4,6 +4,7 @@
 	<dataElement>
 		<id>$dataElement.id</id>
 		<name>$encoder.xmlEncode( $dataElement.name )</name>
+		<url>$encoder.xmlEncode( $dataElement.url )</url>
 	</dataElement>
 #end
 </dataElements>

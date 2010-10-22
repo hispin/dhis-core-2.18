@@ -185,4 +185,100 @@ public class MySQLStatementBuilder
             + sourceDataElementId
             + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
     }
+    
+    public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
+    	
+    	return "SELECT STDDEV( value ) FROM datavalue " +
+            "WHERE dataelementid='" + dataElementId + "' " +
+            "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
+            "AND sourceid='" + organisationUnitId + "'";
+        
+    }
+    
+    public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
+    	 return  "SELECT AVG( value ) FROM datavalue " +
+            "WHERE dataelementid='" + dataElementId + "' " +
+            "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
+            "AND sourceid='" + organisationUnitId + "'";
+    }
+    
+    public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
+    		String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound ){
+    	
+    	return  "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
+            "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
+            encode( dataElementName ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
+            encode( organisationUnitName ) + " AS sourcename, cc.categoryoptioncomboname " +
+            "FROM datavalue AS dv " +
+            "JOIN period AS pe USING (periodid) " +
+            "JOIN periodtype AS pt USING (periodtypeid) " +
+            "LEFT JOIN _categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
+            "WHERE dv.dataelementid='" + dataElementId + "' " +
+            "AND dv.categoryoptioncomboid='" + categoryOptionComboId + "' " +
+            "AND dv.periodid IN (" + periodIds + ") " +
+            "AND dv.sourceid='" + organisationUnitId + "' " +
+            "AND ( dv.value < '" + lowerBound + "' " +
+            "OR  dv.value > '" + upperBound + "' )";
+   }
+    
+   public String archiveData( String startDate, String endDate )
+   {
+       return "DELETE d FROM datavalue AS d " +
+            "INNER JOIN period as p " +
+            "WHERE d.periodid=p.periodid " +
+            "AND p.startdate>='" + startDate + "' " +
+            "AND p.enddate<='" + endDate + "'";
+   }
+   
+   public String unArchiveData( String startDate, String endDate )
+   {    
+       return "DELETE a FROM datavaluearchive AS a " +
+           "INNER JOIN period AS p " +
+           "WHERE a.periodid=p.periodid " +
+           "AND p.startdate>='" + startDate + "' " +
+           "AND p.enddate<='" + endDate + "'";
+   }
+   
+   public String deleteRegularOverlappingData()
+   {    
+       return "DELETE d FROM datavalue AS d " +
+           "INNER JOIN datavaluearchive AS a " +
+           "WHERE d.dataelementid=a.dataelementid " +
+           "AND d.periodid=a.periodid " +
+           "AND d.sourceid=a.sourceid " +
+           "AND d.categoryoptioncomboid=a.categoryoptioncomboid";
+
+   }
+   
+   public String deleteArchivedOverlappingData()
+   {
+       return "DELETE a FROM datavaluearchive AS a " +
+           "INNER JOIN datavalue AS d " +
+           "WHERE a.dataelementid=d.dataelementid " +
+           "AND a.periodid=d.periodid " +
+           "AND a.sourceid=d.sourceid " +
+           "AND a.categoryoptioncomboid=d.categoryoptioncomboid";
+   }
+   
+   public String deleteOldestOverlappingDataValue()
+   {    
+       return "DELETE d FROM datavalue AS d " +
+           "INNER JOIN datavaluearchive AS a " +
+           "WHERE d.dataelementid=a.dataelementid " +
+           "AND d.periodid=a.periodid " +
+           "AND d.sourceid=a.sourceid " +
+           "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
+           "AND d.lastupdated<a.lastupdated";
+   }
+   
+   public String deleteOldestOverlappingArchiveData()
+   {       
+       return "DELETE a FROM datavaluearchive AS a " +
+           "INNER JOIN datavalue AS d " +
+           "WHERE a.dataelementid=d.dataelementid " +
+           "AND a.periodid=d.periodid " +
+           "AND a.sourceid=d.sourceid " +
+           "AND a.categoryoptioncomboid=d.categoryoptioncomboid " +
+           "AND a.lastupdated<=d.lastupdated";
+   }
 }

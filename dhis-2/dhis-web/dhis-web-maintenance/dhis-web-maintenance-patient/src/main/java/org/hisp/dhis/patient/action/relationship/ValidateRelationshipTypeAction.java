@@ -28,6 +28,7 @@
 package org.hisp.dhis.patient.action.relationship;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 
@@ -45,7 +46,7 @@ public class ValidateRelationshipTypeAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private RelationshipTypeService relationshipTypeService;
 
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
@@ -56,6 +57,13 @@ public class ValidateRelationshipTypeAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private String aIsToB;
 
@@ -69,13 +77,6 @@ public class ValidateRelationshipTypeAction
     public void setBIsToA( String isToA )
     {
         bIsToA = isToA;
-    }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
     }
 
     private String message;
@@ -99,86 +100,24 @@ public class ValidateRelationshipTypeAction
     public String execute()
         throws Exception
     {
-        
-        if ( aIsToB == null )
-        {
-            message = i18n.getString( "please_specify_the_a_side_of_the_relationship_type" );
+        RelationshipType match = relationshipTypeService.getRelationshipType( aIsToB, bIsToA );
 
-            return INPUT;
-        }
-
-        else
-        {
-            aIsToB = aIsToB.trim();
-
-            if ( aIsToB.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_the_a_side_of_the_relationship_type" );
-
-                return INPUT;
-            }
-        }
-
-        if ( bIsToA == null )
-        {
-            message = i18n.getString( "please_specify_the_b_side_of_the_relationship_type" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            bIsToA = bIsToA.trim();
-
-            if ( bIsToA.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_the_b_side_of_the_relationship_type" );
-
-                return INPUT;
-            }
-        }
-
-        if ( description == null )
-        {
-            message = i18n.getString( "please_specify_a_description" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_description" );
-
-                return INPUT;
-            }
-        }
-        
-        RelationshipType relationshipType = relationshipTypeService.getRelationshipType( aIsToB, bIsToA );
-        
-        if( relationshipType != null )
+        if ( match != null && (id == null || match.getId() != id) )
         {
             message = i18n.getString( "relationship_already_exists" );
 
             return INPUT;
         }
-        
-        relationshipType = relationshipTypeService.getRelationshipType( bIsToA, aIsToB );
-        
-        if( relationshipType != null )
+
+        match = relationshipTypeService.getRelationshipType( bIsToA, aIsToB );
+       
+        if ( match != null && (id == null || match.getId() != id) )
         {
             message = i18n.getString( "relationship_already_exists" );
 
             return INPUT;
         }
-        
 
-        // ---------------------------------------------------------------------
-        // Validation success
-        // ---------------------------------------------------------------------
 
         message = i18n.getString( "everything_is_ok" );
 

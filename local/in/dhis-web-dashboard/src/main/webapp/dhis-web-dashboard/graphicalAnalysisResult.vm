@@ -110,6 +110,8 @@ function getSortedListReceived(xmlObject)
     document.getElementById("headingInfoId").innerHTML = document.getElementById("testId").value; 	    	
 }
 
+//fucction for selected Button is ViewChart
+
 function exportToExcelFunction1( summaryOption )
 {
 	var chartDisplayOptionList = document.getElementById("chartDisplayOption");
@@ -126,6 +128,21 @@ function exportToExcelFunction1( summaryOption )
 				return true;				
 			}
 	
+//fucction for selected Button is ViewSummary
+
+function exportToExcelFunction2( summaryOption )
+{
+    var chartDisplayOptionList = document.getElementById("chartDisplayOption");
+    var chartDisplayOptionValue = chartDisplayOptionList.options[ chartDisplayOptionList.selectedIndex ].value;
+    
+    document.getElementById("exportExcelAnchor2").href="exportToExcel.action?viewSummary="+summaryOption+"&chartDisplayOption="+chartDisplayOptionValue;
+
+}
+
+
+
+
+
 </script>
 
 <script>
@@ -340,7 +357,8 @@ function Request()
     <div align="right">
         
         #if($selectedButton.equals("ViewSummary"))
-			            <a href="exportToExcel.action?viewSummary=yes" target="_blank">Export To WorkBook</a>
+			       <!--     <a href="exportToExcel.action?viewSummary=yes" target="_blank">Export To WorkBook</a> -->
+			       <a id="exportExcelAnchor2" name="exportExcelAnchor2" href="#" onclick="javascript:exportToExcelFunction2('yes')" target="_blank">Export To WorkBook</a>
 			            			        	&nbsp;&nbsp;
 			        	<select id="chartDisplayOption" name="chartDisplayOption" onchange="getSortedListForSummary()">
 			        		<option value="none">Select Sort Type</option>
@@ -424,7 +442,7 @@ function Request()
 			<td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1)</td>
                 
 			#foreach($data in $onedataList)
-				#if( $categoryLB.equals( "period" ) && !$ougSetCB && $riRadio.equals( "dataElementsRadio" ) )
+				#if( $categoryLB.equals( "period" ) && !$ougSetCB && $riRadio.equals( "dataElementsRadio" ) && $selectedStatus.get($count3).equals("yes") )
 					<td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><a href="#" onclick="javascript:drillDownResult( event, '$selectedValues.get($count3)' )" target="_blank">$data</a></td>               		             
 					#set( $count3 = $count3 + 1 )
 				#else

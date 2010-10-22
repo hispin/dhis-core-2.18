@@ -93,33 +93,33 @@ public class DefaultPeriodService
     public Collection<Period> getPeriods( final Collection<Integer> identifiers )
     {
         Collection<Period> periods = getAllPeriods();
-        
+
         return identifiers == null ? periods : FilterUtils.filter( periods, new Filter<Period>()
+        {
+            public boolean retain( Period object )
             {
-                public boolean retain( Period object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 
     public Period getPeriodByExternalId( String externalId )
     {
         return periodStore.reloadForceAddPeriod( new Period( externalId ) );
     }
-    
+
     public Collection<Period> getPeriodsByExternalIds( Collection<String> externalIds )
     {
         Collection<Period> periods = new ArrayList<Period>();
-        
+
         for ( String id : externalIds )
         {
             periods.add( getPeriodByExternalId( id ) );
         }
-        
+
         return periods;
     }
-    
+
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
         return periodStore.getPeriodsByPeriodType( periodType );
@@ -129,7 +129,7 @@ public class DefaultPeriodService
     {
         return periodStore.getPeriodsBetweenDates( startDate, endDate );
     }
-    
+
     public Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate )
     {
         return periodStore.getPeriodsBetweenDates( periodType, startDate, endDate );
@@ -195,19 +195,19 @@ public class DefaultPeriodService
     {
         return periodStore.getPeriods( period, dataElements, sources );
     }
-    
+
     public List<Period> reloadPeriods( List<Period> periods )
     {
         List<Period> reloaded = new ArrayList<Period>();
-        
+
         for ( Period period : periods )
         {
             reloaded.add( periodStore.reloadForceAddPeriod( period ) );
         }
-        
+
         return reloaded;
     }
-    
+
     public List<Period> getPeriods( Period lastPeriod, int historyLength )
     {
         List<Period> periods = new ArrayList<Period>( historyLength );
@@ -215,15 +215,15 @@ public class DefaultPeriodService
         CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
 
         Period period = lastPeriod;
-        
+
         Period p = new Period();
 
         for ( int i = 0; i < historyLength; ++i )
         {
             p = getPeriodFromDates( period.getStartDate(), period.getEndDate(), periodType );
-            
+
             periods.add( p != null ? p : period );
-            
+
             period = periodType.getPreviousPeriod( period );
         }
 
@@ -231,17 +231,17 @@ public class DefaultPeriodService
 
         return periods;
     }
-    
+
     public Collection<Period> namePeriods( Collection<Period> periods, I18nFormat format )
     {
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
         }
-        
+
         return periods;
     }
-    
+
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------
@@ -260,14 +260,19 @@ public class DefaultPeriodService
     {
         return PeriodType.getPeriodTypeByName( name );
     }
-    
+
     public PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType )
     {
         return periodStore.getPeriodType( periodType );
     }
-    
+
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
     {
         return periodStore.getPeriodFromDates( startDate, endDate, periodType );
-    }	
+    }
+
+    public Period reloadPeriod( Period period )
+    {
+        return periodStore.reloadPeriod( period );
+    }
 }

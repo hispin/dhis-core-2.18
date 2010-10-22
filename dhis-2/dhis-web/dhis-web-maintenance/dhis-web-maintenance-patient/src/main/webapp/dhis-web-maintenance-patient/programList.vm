@@ -24,22 +24,21 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $program in $programs )
-              <tr>
+              <tr id="tr${program.id}">
               
-                <td#alternate( $mark )>$encoder.htmlEncode( $program.name )</td>                
+                <td>$encoder.htmlEncode( $program.name )</td>                
                 
                 <td style="text-align:center" #alternate( $mark )>
                   <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
                 </td>
 				
 				<td style="text-align:center" #alternate( $mark )>
-                  <a href="defineValidationCriteriaAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_criteria_associations" )"><img src="../images/assign_a.png" alt="$i18n.getString( "assign_criteria" )"></a>
+                  <a href="defineValidationCriteriaAssociationsForm.action?id=$program.id" title="$i18n.getString( "validation_associations" )"><img src="../images/assign_a.png" alt="$i18n.getString( "validation_associations" )"></a>
                 </td>
                 
 				<td style="text-align:center" #alternate( $mark )>
-                  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_validation_associations" )"><img src="../images/assign_b.png" alt="$i18n.getString( "assign_criteria" )"></a>
+                  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "validationDE_associations" )"><img src="../images/assign_b.png" alt="$i18n.getString( "validationDE_associations" )"></a>
                 </td>
 				
                 <td style="text-align:center" #alternate( $mark )>
@@ -59,11 +58,6 @@
                 </td>
                 
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
             #end
 
           </tbody>

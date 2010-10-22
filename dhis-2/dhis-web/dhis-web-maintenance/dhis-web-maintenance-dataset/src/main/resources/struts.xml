@@ -311,11 +311,7 @@
 	  <result name="success" type="velocity">/main.vm</result>
 	  <param name="page">/dhis-web-maintenance-dataset/showAssignMultiDataSetForm.vm</param>
 	  <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-	  <param name="javascripts">../dhis-web-commons/oust/oust.js,
-	  		javascript/shortName.js,
-	  		javascript/dataSet.js,
-	  		javascript/multiDataSet.js
-     </param>
+	  <param name="javascripts">../dhis-web-commons/oust/oust.js</param>
 	</action>
 	
 	<action name="saveAssignMultiDataSetForOrgunit"
@@ -354,6 +350,13 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
+	
+	<action name="mergeAssignedOrgunits"
+		class="org.hisp.dhis.dataset.action.editor.MergeAssignedOrgunitsAction">
+		<result name="success" type="velocity-xml">
+			/dhis-web-commons/ouwt/responseSelect.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>
 
 	 <!-- PivotDataSetAssociationTableService -->
     

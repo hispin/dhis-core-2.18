@@ -30,6 +30,7 @@ import jxl.format.BorderLineStyle;
 import jxl.format.CellFormat;
 import jxl.format.VerticalAlignment;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
@@ -444,7 +445,7 @@ public class GenerateLinelistingReportAnalyserResultAction
 
         // OrgUnit Info
         currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-        llrecordNos = reportService.getLinelistingRecordNos( currentOrgUnit, selectedPeriod, reportList );
+        llrecordNos = reportService.getLinelistingRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
 
         // Getting DataValues
         dataValueList = new ArrayList<String>();
@@ -655,18 +656,38 @@ public class GenerateLinelistingReportAnalyserResultAction
                         if ( cellFormat != null )
                         {
                             if ( tempMergeCol > 0 || tempMergeRow > 0 )
-                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo
-                                    + tempMergeRow );
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, cellFormat ) );
-                            System.out.println( "In Pre-Formatted: " + tempStr );
+                            {
+                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo + tempMergeRow );
+                            }
+                            
+                            try
+                            {
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), cellFormat ) );
+                            }
+                            catch( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, cellFormat ) );
+                            }
+                            
+                            //System.out.println( "In Pre-Formatted: " + tempStr );
                         }
                         else
                         {
                             if ( tempMergeCol > 0 || tempMergeRow > 0 )
-                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo
-                                    + tempMergeRow );
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
-                            System.out.println( "In Cur-Formatted: " + tempStr );
+                            {
+                                sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo + tempMergeRow );
+                            }
+                            
+                            try
+                            {
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                            }
+                            catch( Exception e )
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
+                            }
+
+                            //System.out.println( "In Cur-Formatted: " + tempStr );
                         }
                     }
 

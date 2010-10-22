@@ -5,7 +5,7 @@
 
 <h4>$i18n.getString( "application_title" )</h4>
 
-<p><input type="text" name="applicationTitle" style="width:30em" value="$!applicationTitle"/></p>
+<p><input type="text" name="applicationTitle" style="width:30em" maxlength="40" value="$!applicationTitle"/></p>
 
 <h4>$i18n.getString( "style" )</h4>
 

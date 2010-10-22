@@ -1,4 +1,20 @@
+<script>
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
 
+	jQuery(document).ready(	function(){
+			
+			jQuery('name').focus();
+			
+			validation( 'updatePatientAttributeGroupForm', function(form){
+				form.submit();
+			}, function()
+			{
+				beforeSubmit();
+			}); 
+			
+			checkValueIsExist( "name", "validatePatientAttributeGroup.action", {id:getFieldValue('id')});
+	});		
+</script>
 <h3>$i18n.getString( "update_patient_attribute_group" )</h3>
 <form id="updatePatientAttributeGroupForm" name="updatePatientAttributeGroupForm" action="updatePatientAttributeGroup.action" method="post" onsubmit="return validateUpdatePatientAttributeGroup();">
 
@@ -15,7 +31,7 @@
     <tbody>
       <tr>
         <td>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
-        <td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $patientAttributeGroup.name )" style="width:20em"></td>
+        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttributeGroup.name )" style="width:20em"></td>
 		</tr>   
       <tr>
         <td>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
@@ -28,7 +44,9 @@
       <tr>
       <th colspan="2">$i18n.getString( "availableAttribute" ) </th>
       <th>$i18n.getString( "filter" ) </th>
-      <th>$i18n.getString( "selectedAttribute" )</th>
+      <th>$i18n.getString( "selectedAttribute" )
+		<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
+	  </th>
     </tr>
     <tr>
         <td colspan="2">

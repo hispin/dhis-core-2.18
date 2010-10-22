@@ -133,7 +133,7 @@ public class DataElementCategoryCombo
             return false;
         }
 
-        if ( getClass() != object.getClass() )
+        if ( !(object instanceof DataElementCategoryCombo) )
         {
             return false;
         }

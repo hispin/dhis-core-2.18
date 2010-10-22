@@ -74,4 +74,6 @@ public interface SelectedStateManager
     void nextPeriodSpan();
 
     void previousPeriodSpan();
+    
+    Period reloadPeriod();
 }

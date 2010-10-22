@@ -51,11 +51,11 @@ public class UpdatePatientIdentifierTypeAction
 
     private Integer id;
     
-    private String nameField;
+    private String name;
 
     private String description;
 
-    private String formatField;
+    private String format;
     
     private Boolean mandatory;
     
@@ -73,9 +73,9 @@ public class UpdatePatientIdentifierTypeAction
         if( identifierType != null )
         {
             
-            identifierType.setName( nameField );
+            identifierType.setName( name );
             identifierType.setDescription( description );
-            identifierType.setFormat( formatField );
+            identifierType.setFormat( format );
             identifierType.setMandatory( mandatory.booleanValue() );
             identifierType.setRelated( related.booleanValue() );
             patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
@@ -93,9 +93,9 @@ public class UpdatePatientIdentifierTypeAction
         this.description = description;
     }
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
     
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
@@ -108,9 +108,9 @@ public class UpdatePatientIdentifierTypeAction
         this.id = id;
     }
 
-    public void setFormatField( String formatField )
+    public void setFormat( String format )
     {
-        this.formatField = formatField;
+        this.format = format;
     }
 
     public void setMandatory( Boolean mandatory )

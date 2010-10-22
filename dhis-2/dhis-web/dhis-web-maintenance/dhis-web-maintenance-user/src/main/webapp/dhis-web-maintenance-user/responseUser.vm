@@ -5,4 +5,5 @@
   <firstName>$encoder.xmlEncode( $userCredentials.user.firstName )</firstName>
   <email>$!encoder.xmlEncode( $userCredentials.user.email )</email>
   <phoneNumber>$!encoder.xmlEncode( $userCredentials.user.phoneNumber )</phoneNumber>
+  <numberOrgunit>$userCredentials.user.organisationUnits.size()</numberOrgunit>
 </user>

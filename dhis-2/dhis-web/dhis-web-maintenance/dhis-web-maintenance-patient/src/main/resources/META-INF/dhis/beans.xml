@@ -285,6 +285,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithdoutGroupAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithdoutGroupAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
+	<bean
 		id="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeOptionAction"
 		class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeOptionAction"
 		scope="prototype">
@@ -574,10 +582,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramAction"
 		class="org.hisp.dhis.patient.action.program.GetProgramAction" scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.RemoveProgramAction"
@@ -605,13 +611,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- Program_OrganisationUnit Association -->
-
-	<bean
-		id="org.hisp.dhis.patient.action.program.SetupAssociationsTreeAction"
-		class="org.hisp.dhis.patient.action.program.SetupAssociationsTreeAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
 	
 	<bean
 		id="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction"

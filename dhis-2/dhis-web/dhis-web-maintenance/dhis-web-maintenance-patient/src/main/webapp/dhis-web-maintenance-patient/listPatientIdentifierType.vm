@@ -21,11 +21,10 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $identifierType in $identifierTypes )
-              <tr>
+              <tr id="tr${identifierType.id}">
               
-                <td#alternate( $mark )>$encoder.htmlEncode( $identifierType.name )</td>                
+                <td>$encoder.htmlEncode( $identifierType.name )</td>                
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdatePatientIdentifierTypeForm.action?id=$identifierType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
@@ -40,11 +39,6 @@
                 </td>
                 
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
             #end
 
           </tbody>

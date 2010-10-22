@@ -23,13 +23,12 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $relationshipType in $relationshipTypes )
-              <tr>
+              <tr id="tr${relationshipType.id}">
               
-                <td#alternate( $mark )>$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )</td>
+                <td>$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )</td>
                 
-                <td#alternate( $mark )>$encoder.htmlEncode( $relationshipType.description )</td>               
+                <td>$encoder.htmlEncode( $relationshipType.description )</td>               
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdateRelationshipTypeForm.action?id=$relationshipType.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
@@ -44,11 +43,6 @@
                 </td>           
                 
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
             #end
 
           </tbody>

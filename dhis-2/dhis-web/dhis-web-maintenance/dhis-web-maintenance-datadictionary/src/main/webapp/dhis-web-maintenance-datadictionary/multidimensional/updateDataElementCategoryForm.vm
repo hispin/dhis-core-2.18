@@ -50,7 +50,7 @@
 	  <td>
 		<div style="inline">
 			#set ( $conceptId = $!dataElementCategory.concept.id )
-			<select id="conceptId" name="conceptId" style="min-width:140px" class="{validate:{required:true}}">				
+			<select id="conceptId" name="conceptId" style="width:305px" class="{validate:{required:true}}">				
 				#foreach( $concept in $concepts )
 				<option value="$concept.id" #if ( $concept.id == $conceptId ) selected #end>$concept.name</option>
 				#end
@@ -80,6 +80,9 @@
     <tr>
       <td></td>
       <td>
+	<table>
+	<tr>
+	<td>
         <select multiple size="10" id="categoryOptions" name="categoryOptions" style="width:300px" onclick='getSelectedCategoryOption();'>
         #foreach( $categoryOption in $dataElementCategory.categoryOptions )
         	<option value="$categoryOption.id">$encoder.htmlEncode( $categoryOption.name )</option>
@@ -90,6 +93,9 @@
         <a href="javascript:moveUpSelectedOption( 'categoryOptions' )"><img src="../images/move_up.png"/></a><br/><br/>
         <a href="javascript:moveDownSelectedOption( 'categoryOptions' )"><img src="../images/move_down.png"/></a><br/><br/>
       </td>
+	  </tr>
+	  </table>
+	  </td>
     </tr>
     <tr>
       <td colspan="3" style="height:15px"></td>

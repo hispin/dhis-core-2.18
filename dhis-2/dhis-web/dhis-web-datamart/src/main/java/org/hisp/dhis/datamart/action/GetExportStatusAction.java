@@ -85,22 +85,18 @@ public class GetExportStatusAction
 
     public String execute() 
         throws Exception
-    {
-    	
-    	
+    {    	
         if ( processIsRunning( PROCESS_KEY_DATAMART ) )
         {
             String id = getCurrentRunningProcess( PROCESS_KEY_DATAMART );
             
             ProcessExecutor executor = processCoordinator.getProcess( id );  
             
-            
             if ( executor != null && executor.getProcess() != null && executor.getState() != null && executor.getState() instanceof MessageState )
             {
                 MessageState state = (MessageState) executor.getState();         
                              
                 message = i18n.getString( state.getMessage() );              
-                
                 
                 if ( state.isEnded() || state.isCancelled() )
                 {

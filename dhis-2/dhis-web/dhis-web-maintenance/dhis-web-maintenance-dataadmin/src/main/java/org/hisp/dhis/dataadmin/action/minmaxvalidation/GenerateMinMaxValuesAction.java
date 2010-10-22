@@ -130,11 +130,11 @@ public class GenerateMinMaxValuesAction
     public String execute()
         throws Exception
     {
-        if ( dataSetIds == null )
-        {
-            selectionTreeManager.clearSelectedOrganisationUnits();
-            return INPUT;
-        }
+//        if ( dataSetIds == null )
+//        {
+//            selectionTreeManager.clearSelectedOrganisationUnits();
+//            return INPUT;
+//        }
         
         Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 

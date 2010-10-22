@@ -3,5 +3,5 @@
   <id>$patientAttributeGroup.id</id>
   <name>$encoder.xmlEncode( $patientAttributeGroup.name )</name>
   <description>$encoder.xmlEncode( $patientAttributeGroup.description )</description>
-  <required>$patientAttributeGroup.required</required>     
+  <noAttribute>$patientAttributeGroup.attributes.size()</noAttribute>     
 </patientAttributeGroup>

@@ -35,8 +35,7 @@ public class MobileHomePageAction
 {
 
     @Override
-    public String execute()
-        throws Exception
+    public String execute() throws Exception
     {
         File miFolder = new File( System.getenv( "DHIS2_HOME" ), "mi" );
         if ( !(miFolder.exists() && miFolder.isDirectory()) )

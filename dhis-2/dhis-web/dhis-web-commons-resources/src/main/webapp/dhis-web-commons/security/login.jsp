@@ -4,17 +4,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <title>DHIS 2</title>
-        <script type="text/javascript" src="../util/jquery.js"></script>
+        <title>DHIS 2</title>        
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#j_username').focus();
-            });
+           function f(){
+			document.getElementById( 'j_username' ).focus();
+		   }
         </script>
         <link type="text/css" rel="stylesheet" media="screen" href="../css/login.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
-    <body>
+    <body onload="f()">
         <div class="loginField" align="center">
             <p><img alt="" src="logo_banner.png"></p>
                 <%

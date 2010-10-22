@@ -701,6 +701,12 @@
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.commons.action.GetPeriodTypesAction" 
+        class="org.hisp.dhis.commons.action.GetPeriodTypesAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
 
 	<bean id="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction"
 		class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction"

@@ -27,17 +27,15 @@
 
 package org.hisp.dhis.patient.action.program;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,21 +56,14 @@ public class GetProgramAction
     {
         this.programService = programService;
     }
+    
+    private SelectionTreeManager selectionTreeManager;
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.selectionTreeManager = selectionTreeManager;
     }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -142,13 +133,9 @@ public class GetProgramAction
         throws Exception
     {
         program = programService.getProgram( id );
-
-        levels = organisationUnitService.getOrganisationUnitLevels();
-
-        groups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-
-        Collections.sort( groups, new OrganisationUnitGroupNameComparator() );
-
+        
+        selectionTreeManager.setSelectedOrganisationUnits( program.getOrganisationUnits() );
+        
         return SUCCESS;
 
     }

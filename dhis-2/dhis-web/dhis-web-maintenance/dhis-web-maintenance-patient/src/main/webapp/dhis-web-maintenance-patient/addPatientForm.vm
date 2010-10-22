@@ -21,14 +21,34 @@ td.error {padding-left:1em}
 
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'addPatientForm', validateAddPatient );				
-			datePickerValid( 'birthDate' );
+		//validation( 'addPatientForm', validateAddPatient );		
+		datePickerValid( 'birthDate' );
+		
+		jQuery("#addPatientForm").validate({
+				 meta:"validate"
+				,errorElement:"span"
+				,submitHandler: function(form)
+					{
+						validateAddPatient();
+					}
+				,beforeValidateHandler: function(form)
+					{
+						var birthDate = $('#birthDate').val();
+						var age = $('#age').val();
+						if(age !=''){
+							$( "#memberValidator").val(age);
+						}else{
+							$( "#memberValidator").val(birthDate);
+						}
+					}
+			});
+					
 	});		
 </script>
 
 <h3>$i18n.getString( "add_new_patient" )</h3>	
 																			
-<form id="addPatientForm" action="addPatient.action" method="post">
+<form id="addPatientForm" name="addPatientForm" action="addPatient.action" method="post">
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <table>
@@ -39,16 +59,16 @@ td.error {padding-left:1em}
 		<th colspan="2" class="heading-column">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30"  class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
+		<td><label for="firstName">$i18n.getString( "first_name" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30], letterswithbasicpunc: true}}" ></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td class="input-column"> <input type="text" id="middleName" name="middleName" maxlength="30"   class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
+		<td class="input-column"> <input type="text" id="middleName" name="middleName" maxlength="30" class="{validate:{required:false, letterswithbasicpunc: true}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td class="input-column"><input type="text" id="lastName" name="lastName" maxlength="30"   class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
+		<td class="input-column"><input type="text" id="lastName" name="lastName" maxlength="30" class="{validate:{required:false, letterswithbasicpunc: true}}"></td>
 	</tr>	
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
@@ -68,15 +88,19 @@ td.error {padding-left:1em}
 	<tr>
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
 		<td>			
-			<input type="text" id="birthDate" name="birthDate" style="width:10em"  onchange="bdOnchange()" >
+			<input type="text" id="birthDate" name="birthDate" style="width:10em" onchange="bdOnchange()" >
 			&nbsp;
 			<label for="age">$i18n.getString( "or" )  $i18n.getString( "age" ) </label>
-			<input type="text" id="age" name="age" style="width:4em"  onchange="ageOnchange()" class="{validate:{number:true}}">
+			<input type="text" id="age" name="age" style="width:4em" onchange="ageOnchange()" class="{validate:{number:true, alphanumeric: true}}">
 			&nbsp;&nbsp;&nbsp;
 			<label for="estimated">$i18n.getString( "estimated" )</label>
-                        <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true">
+            <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true">
         </td>
 	   <td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
 	</tr>
  	<tr>
 		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>

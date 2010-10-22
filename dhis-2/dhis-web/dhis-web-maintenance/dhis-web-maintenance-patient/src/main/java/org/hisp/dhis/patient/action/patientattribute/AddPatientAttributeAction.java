@@ -65,11 +65,11 @@ public class AddPatientAttributeAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String description;
@@ -116,7 +116,7 @@ public class AddPatientAttributeAction
     {
         PatientAttribute patientAttribute = new PatientAttribute();
 
-        patientAttribute.setName( nameField );
+        patientAttribute.setName( name );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
         patientAttribute.setMandatory( mandatory );

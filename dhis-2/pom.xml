@@ -55,6 +55,7 @@
       <id>jboss-public-repository-group</id>
       <name>JBoss Public Repository Group</name>
       <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <!-- <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url> -->
       <layout>default</layout>
       <releases>
         <enabled>true</enabled>
@@ -65,10 +66,6 @@
         <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
-    <!-- repository>
-      <id>JBoss</id>
-      <url>http://repository.jboss.org/maven2</url>
-    </repository>-->
   </repositories>
   
   <issueManagement>
@@ -323,7 +320,7 @@
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
-        <version>${spring.version}</version>
+        <version>${spring.security.version}</version>
         <exclusions>
           <exclusion>
             <groupId>org.springframework</groupId>
@@ -346,12 +343,12 @@
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-web</artifactId>
-        <version>${spring.version}</version>
+        <version>${spring.security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-config</artifactId>
-        <version>${spring.version}</version>
+        <version>${spring.security.version}</version>
       </dependency>
       <!--Other -->
       <dependency>
@@ -502,12 +499,12 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
-        <version>3.5.4-Final</version>
+        <version>${hibernate.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-ehcache</artifactId>
-        <version>3.5.4-Final</version>
+        <version>${hibernate.version}</version>
         <exclusions>
           <exclusion>
             <groupId>net.sf.ehcache</groupId>
@@ -518,7 +515,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-entitymanager</artifactId>
-        <version>3.5.4-Final</version>
+        <version>${hibernate.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -661,6 +658,8 @@
   <properties>
     <rootDir></rootDir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.0.3.RELEASE</spring.version>  
+    <spring.version>3.0.4.RELEASE</spring.version>
+    <spring.security.version>3.0.3.RELEASE</spring.security.version>
+    <hibernate.version>3.5.6-Final</hibernate.version>
   </properties>
 </project>

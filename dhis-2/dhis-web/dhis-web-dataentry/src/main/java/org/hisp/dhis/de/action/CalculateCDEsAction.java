@@ -76,7 +76,7 @@ public class CalculateCDEsAction
     {
         this.statefulDataValueSaver = statefulDataValueSaver;
     }
-    
+
     private ExpressionService expressionService;
 
     public void setExpressionService( ExpressionService expressionService )
@@ -85,7 +85,7 @@ public class CalculateCDEsAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -110,56 +110,58 @@ public class CalculateCDEsAction
         throws Exception
     {
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-        
-        Period period = selectedStateManager.getSelectedPeriod();
-        
+
+        Period period = selectedStateManager.reloadPeriod();
+
         Collection<DataElement> dataElements = selectedStateManager.getSelectedDataSet().getDataElements();
-        
+
         if ( dataElements.size() > 0 )
-        {           	
+        {
             Collection<CalculatedDataElement> cdes = dataElementService
-            	.getCalculatedDataElementsByDataElements( dataElements );
-        	
-            //Look for the existence of CDEs in the form itself
-            Iterator<DataElement> iterator = dataElements.iterator();            
+                .getCalculatedDataElementsByDataElements( dataElements );
+
+            // Look for the existence of CDEs in the form itself
+            Iterator<DataElement> iterator = dataElements.iterator();
 
             while ( iterator.hasNext() )
             {
                 DataElement dataElement = iterator.next();
 
                 if ( dataElement instanceof CalculatedDataElement )
-                {                	
-                    cdes.add( (CalculatedDataElement) dataElement );  
+                {
+                    cdes.add( (CalculatedDataElement) dataElement );
                 }
-            }            
-        	
+            }
+
             cdeValueMap = new HashMap<Integer, String>();
 
             String value = null;
 
             for ( CalculatedDataElement cde : cdes )
-            {        		
-    		value = expressionService.getExpressionValue( cde.getExpression(), period, organisationUnit, false, false ).toString();        			
-    		
-    		if ( value == null )
-    		{
-    		    continue;
-    		}
+            {
+                value = expressionService.getExpressionValue( cde.getExpression(), period, organisationUnit, false,
+                    false ).toString();
+                
+                if ( value == null )
+                {
+                    continue;
+                }
 
-    		// Should the value be updated in Data Entry?
-    		if ( dataElements.contains( cde ) )
-    		{        		
-    		    cdeValueMap.put( cde.getId(), value );        			
-    		}
+                // Should the value be updated in Data Entry?
+                if ( dataElements.contains( cde ) )
+                {
+                    cdeValueMap.put( cde.getId(), value );
+                }
 
-    		// Should the value be saved to the database?
-    		if ( cde.isSaved() )
-    		{
-                    DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-    		    statefulDataValueSaver.saveValue( cde.getId(), optionCombo.getId(), "" + value );
-    		}
+                // Should the value be saved to the database?
+                if ( cde.isSaved() )
+                {
+                    DataElementCategoryOptionCombo optionCombo = categoryService
+                        .getDefaultDataElementCategoryOptionCombo();
+                    statefulDataValueSaver.saveValue( cde.getId(), optionCombo.getId(), "" + value );
+                }
 
-    		value = null;
+                value = null;
             }
         }
 

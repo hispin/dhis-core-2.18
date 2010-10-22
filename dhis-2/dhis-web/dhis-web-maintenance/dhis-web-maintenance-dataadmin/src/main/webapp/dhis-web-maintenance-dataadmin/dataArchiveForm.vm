@@ -51,7 +51,7 @@
 
 <br/>
 
-<span id="message"/>
+<span id="message"></span>
 
 <script type="text/javascript">
     var i18n_archiving = '$encoder.jsEscape( $i18n.getString( "archiving" ) , "'")';

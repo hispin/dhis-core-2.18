@@ -1,6 +1,10 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'addProgramForm', validateAddProgram );				
+		validation( 'addProgramForm', function( form ){			
+			form.submit();
+		});				
+		
+		checkValueIsExist( "name", "validateProgram.action");
 	});		
 </script>
 
@@ -11,7 +15,7 @@
 <table>	
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="nameField" name="nameField"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[4,35]}}"></td>
+		<td><input type="text" id="name" name="name" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	</tr>	
 	
@@ -40,6 +44,4 @@
 	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:10em">
 </p>
 
-</form> 	
-
-<span id="message"></span>
+</form>

@@ -95,6 +95,14 @@ public interface DataElementStore
      * @return the DataElement with the given name, or null if no match.
      */
     DataElement getDataElementByName( String name );
+    
+    /**
+     * Returns List of DataElements with a given key.
+     * 
+     * @param key the name of the DataElement to return.
+     * @return List of DataElements with a given key, or all dataelements if no match.
+     */
+    Collection<DataElement> searchDataElementByName( String key );
 
     /**
      * Returns a DataElement with a given alternative name.
@@ -282,4 +290,12 @@ public interface DataElementStore
      * @return a collection of all Operands.
      */
     Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );    
+
+    int getNumberOfDataElements();
+
+    Collection<DataElement> getAllDataElements( int from, int to );
+
+    Collection<DataElement> searchDataElementByName( String key, int from, int to );
+
+    int countNumberOfSearchDataElementByName( String key );
 }

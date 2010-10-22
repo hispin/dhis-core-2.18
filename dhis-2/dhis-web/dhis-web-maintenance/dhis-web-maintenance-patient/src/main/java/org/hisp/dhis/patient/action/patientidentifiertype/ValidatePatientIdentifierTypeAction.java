@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.patientidentifiertype;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
@@ -53,17 +52,13 @@ public class ValidatePatientIdentifierTypeAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-
-    private String nameField;
+    private String name;
 
     private String message;
-    
-    private String description;
 
     private I18n i18n;
-    
-    private Integer id;
 
+    private Integer id;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -72,88 +67,43 @@ public class ValidatePatientIdentifierTypeAction
     public String execute()
         throws Exception
     {
+        PatientIdentifierType match = patientIdentifierTypeService.getPatientIdentifierType( name );
 
-        if ( StringUtils.isBlank( nameField ) )
+        if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
-            message = i18n.getString( "please_specify_a_name" );
+            message = i18n.getString( "name_in_use" );
 
             return INPUT;
         }
-        else
-        {
-
-            PatientIdentifierType match = patientIdentifierTypeService.getPatientIdentifierType( nameField );
-
-            if ( match != null && (id == null || match.getId() != id.intValue()) )
-            {
-                message = i18n.getString( "name_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        if (  StringUtils.isBlank(description) )
-        {
-            message = i18n.getString( "please_specify_a_description" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_description" );
-
-                return INPUT;
-            }
-        }
-
-        // ---------------------------------------------------------------------
-        // Validation success
-        // ---------------------------------------------------------------------
 
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
-
     }
 
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+    
     public String getMessage()
     {
         return message;
     }
 
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    public void setName( String name )
     {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
+        this.name = name;
     }
-
-
-    public void setNameField( String nameField )
-    {
-        this.nameField = nameField;
-    }
-
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
 
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
     }
-
 
     public void setId( Integer id )
     {

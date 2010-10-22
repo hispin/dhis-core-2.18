@@ -1,12 +1,16 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'updateRoleForm', validateUpdateRole );				
+		jQuery("#name").focus();
+		validation( 'updateRoleForm', function( form ){
+			form.submit();			
+		});
+		checkValueIsExist( "name", "validateRole.action", {id:getFieldValue('id')});				
 	});		
 </script>
 
 <h3>$i18n.getString( "edit_user_role" )</h3>
 
-<form id="updateRoleForm" action="updateRole.action" method="post">
+<form id="updateRoleForm" name="updateRoleForm" action="updateRole.action" method="post">
 	<div>
 		<input type="hidden" id="id" name="id" value="$userAuthorityGroup.id"/>
   	</div>

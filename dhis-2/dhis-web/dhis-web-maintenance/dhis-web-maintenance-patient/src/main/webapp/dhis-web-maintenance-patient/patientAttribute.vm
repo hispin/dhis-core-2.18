@@ -20,11 +20,10 @@
           </tr>
 
           <tbody id="list">
-            #set( $mark = false )
             #foreach( $patientAttribute in $patientAttributes )
-              <tr>
+              <tr id="tr${patientAttribute.id}">
               
-                <td#alternate( $mark )>$encoder.htmlEncode( $patientAttribute.name )</td>                
+                <td>$encoder.htmlEncode( $patientAttribute.name )</td>                
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdatePatientAttributeForm.action?id=$patientAttribute.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
@@ -39,12 +38,7 @@
                 </td>
                 
               </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
-            #end
+			#end
 
           </tbody>
 

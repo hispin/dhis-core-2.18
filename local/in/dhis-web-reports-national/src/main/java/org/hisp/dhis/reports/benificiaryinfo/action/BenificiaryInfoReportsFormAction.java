@@ -11,9 +11,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
+import org.hisp.dhis.reports.util.Report;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,7 +23,8 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
-public class BenificiaryInfoReportsFormAction implements Action
+public class BenificiaryInfoReportsFormAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -39,20 +40,18 @@ public class BenificiaryInfoReportsFormAction implements Action
 
     private PeriodService periodService;
 
-    public void setPeriodService(PeriodService periodService)
+    public void setPeriodService( PeriodService periodService )
     {
-		this.periodService = periodService;
-	}
-
+        this.periodService = periodService;
+    }
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
+    private List<Report> reportList;
 
-private List<Report_in> reportList;
-
-    public List<Report_in> getReportList()
+    public List<Report> getReportList()
     {
         return reportList;
     }
@@ -61,17 +60,17 @@ private List<Report_in> reportList;
 
     public List<Period> getPeriodList()
     {
-		return periodList;
-	}
+        return periodList;
+    }
 
     private SimpleDateFormat simpleDateFormat;
 
-	public SimpleDateFormat getSimpleDateFormat()
-	{
-		return simpleDateFormat;
-	}
+    public SimpleDateFormat getSimpleDateFormat()
+    {
+        return simpleDateFormat;
+    }
 
-	private String raFolderName;
+    private String raFolderName;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -85,11 +84,11 @@ private List<Report_in> reportList;
 
         periodList = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
 
-       // reportList = new ArrayList<Report>();
+        reportList = new ArrayList<Report>();
 
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
-        System.out.println("periodList.size " + periodList.size());
+        System.out.println( "periodList.size " + periodList.size() );
 
         getSelectedReportList();
 
@@ -168,8 +167,9 @@ private List<Report_in> reportList;
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
 
-                   // Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                   // reportList.add( reportObj );
+                    Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName,
+                        reportLevel );
+                    reportList.add( reportObj );
 
                 }
             }// end of for loop with s var

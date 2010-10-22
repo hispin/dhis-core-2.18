@@ -15,7 +15,8 @@ function treeSelected( unitIds )
 	        function( json )
 	        {
 	            document.getElementById( "keepNameField" ).innerHTML = json.organisationUnit.name;
-	            document.getElementById( "pruneButton" ).disabled = false;        
+	            document.getElementById( "pruneButton" ).disabled = false; 
+				hideById('message');
 	        }
 	    );
 	}

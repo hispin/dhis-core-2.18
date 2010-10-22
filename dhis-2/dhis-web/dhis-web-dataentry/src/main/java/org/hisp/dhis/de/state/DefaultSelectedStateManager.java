@@ -43,6 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -99,6 +100,13 @@ public class DefaultSelectedStateManager
         this.currentUserService = currentUserService;
     }
 
+    public PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
     // -------------------------------------------------------------------------
     // SelectedStateManager implementation
     // -------------------------------------------------------------------------
@@ -107,6 +115,7 @@ public class DefaultSelectedStateManager
     // OrganisationUnit
     // -------------------------------------------------------------------------
     
+
     public OrganisationUnit getSelectedOrganisationUnit()
     {
         return selectionManager.getSelectedOrganisationUnit();
@@ -260,6 +269,13 @@ public class DefaultSelectedStateManager
         getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
     }
 
+    public Period reloadPeriod(){
+        
+        Period period = getSelectedPeriod();
+
+        return periodService.reloadPeriod( period );
+    }
+    
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------

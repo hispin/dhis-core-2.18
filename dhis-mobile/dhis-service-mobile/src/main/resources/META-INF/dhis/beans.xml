@@ -15,17 +15,20 @@
     <bean id="org.hisp.dhis.mobile.api.MobileImportService"
           class="org.hisp.dhis.mobile.api.DefaultMobileImportService"
           scope="prototype">
+        <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager"/>
         <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
         <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
-        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+		<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
     <bean id="org.hisp.dhis.mobile.api.XmlCreatorService"
           class="org.hisp.dhis.mobile.api.XmlCreatorService"
           scope="prototype">
-        <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+        <property name="dataEntryFormService" ref="org.hisp.dhis.dataset.DataEntryFormService"/>
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
     </bean>
 

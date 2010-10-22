@@ -67,7 +67,7 @@
 
 </form>
 
-<span id="message"/>
+<span id="message"></span>
 
 <script type="text/javascript">
 

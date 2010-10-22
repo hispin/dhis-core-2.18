@@ -1,3 +1,13 @@
+function beforeSubmit()
+{
+	memberValidator = jQuery( "#memberValidator");
+	memberValidator.children().remove();
+	
+	jQuery.each( jQuery( "#selectedAttributes" ).children(), function(i, item){
+		item.selected = 'selected';
+		memberValidator.append( '<option value="' + item.value + '" selected="selected">' + item.value + '</option>');
+	});
+}
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
@@ -15,7 +25,7 @@ function patientAttributeGroupReceived( patientAttributeGroupElement )
 	setInnerHTML( 'idField', getElementValue( patientAttributeGroupElement, 'id' ) );
 	setInnerHTML( 'nameField', getElementValue( patientAttributeGroupElement, 'name' ) );	
     setInnerHTML( 'descriptionField', getElementValue( patientAttributeGroupElement, 'description' ) );
-	setInnerHTML( 'requiredField', getElementValue( patientAttributeGroupElement, 'required' ) );
+	setInnerHTML( 'noAttributeField', getElementValue( patientAttributeGroupElement, 'noAttribute' ) );
 
     showDetails();
 }
@@ -26,114 +36,7 @@ function patientAttributeGroupReceived( patientAttributeGroupElement )
 
 function removePatientAttributeGroup( patientAttributeGroupId, name )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + name );
-    
-    if ( result )
-    {
-    	var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removePatientAttributeGroupCompleted );
-        window.location.href = 'removePatientAttributeGroup.action?id=' + patientAttributeGroupId;
-    }
-}
-
-function removePatientAttributeGroupCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'patientAttributeGroup.action';
-    }
-    else if ( type = 'error' )
-    {
-        setInnerHTML( 'warningField', message );
-        
-        showWarning();
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Add Patient Attribute
-// -----------------------------------------------------------------------------
-
-function validateAddPatientAttributeGroup()
-{
-	var params  = 'nameField=' + getFieldValue( 'nameField' );		
-	    params += '&description=' + getFieldValue( 'description' );
-		params += '&' + getParamString( 'selectedAttributes' );
-		
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );
-	request.sendAsPost(params);	
-    request.send( 'validatePatientAttributeGroup.action' );        
-
-    return false;
-}
-
-function addValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-		selectAllById('selectedAttributes');
-        var form = document.getElementById( 'addPatientAttributeGroupForm' );        
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_adding_patient_atttibute_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
-// -----------------------------------------------------------------------------
-// Update Patient Attribute
-// -----------------------------------------------------------------------------
-
-function validateUpdatePatientAttributeGroup()
-{
-	var params  = 'id=' + getFieldValue( 'id' );
-		params += '&nameField=' + getFieldValue( 'nameField' );		
-	    params += '&description=' + getFieldValue( 'description' );
-		params += '&' + getParamString( 'selectedAttributes' );
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationGroupCompleted );   
-    request.sendAsPost(params);
-    request.send( 'validatePatientAttributeGroup.action' );
-        
-    return false;
-}
-
-function updateValidationGroupCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-		selectAllById('selectedAttributes');
-    	var form = document.getElementById( 'updatePatientAttributeGroupForm' );        
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_saving_program_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
+    removeItem( patientAttributeGroupId, name, i18n_confirm_delete, 'removePatientAttributeGroup.action' );
 }
 
 // -----------------------------------------------------------------------------

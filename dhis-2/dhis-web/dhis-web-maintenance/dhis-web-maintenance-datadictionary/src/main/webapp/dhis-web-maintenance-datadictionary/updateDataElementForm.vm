@@ -3,12 +3,10 @@
 		validation( 'updateDataElementForm', function( form ){			
 			form.submit();
 		},function(){
-			#if ( $calculatedDataElement )
-				getDataElementIdsForValidate();
-				getFactors();	
-			#end	
-				setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
-				setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
+			getDataElementIdsForValidate();
+			getFactors();	
+			setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
+			setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
 		});				
 		
 		checkValueIsExist( "name", "validateDataElement.action", {id:getFieldValue('id')});
@@ -27,9 +25,9 @@
 <h3>$i18n.getString( "edit_data_element" )</h3>
 
 <form id="updateDataElementForm" action="updateDataElement.action" method="post" >
-	<input type="hidden" id="id" name="id" value="$dataElement.id"/>
-	<input type="hidden" id="defaultCategoryCombo" value="$defaultCategoryCombo.id"/>
-	<select name="factors" id="factorsSubmit" multiple="multiple" style="display:none"/>
+	<input type="hidden" id="id" name="id" value="$dataElement.id">
+	<input type="hidden" id="defaultCategoryCombo" value="$defaultCategoryCombo.id">
+	<select name="factors" id="factorsSubmit" multiple="multiple" style="display:none"></select>
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
@@ -85,7 +83,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="aggregationOperator" id="lblOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( "required' )" class="required">*</em></label></td>
+		<td><label for="aggregationOperator" id="lblOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="aggregationOperator" name="aggregationOperator" style="min-width:20em">
 				<option value="sum" #if( $dataElement.aggregationOperator == 'sum' ) selected="selected" #end>$i18n.getString( "sum" )</option>

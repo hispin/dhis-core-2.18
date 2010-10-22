@@ -55,7 +55,7 @@ public class HibernateExcelItemStore
     // ----------------------------------------------------------------------
 
     @Autowired
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;   
 
     private PeriodStore periodStore;
 
@@ -224,5 +224,5 @@ public class HibernateExcelItemStore
 
         return (ExcelItemGroup) criteria.uniqueResult();
     }
-    
+
 }

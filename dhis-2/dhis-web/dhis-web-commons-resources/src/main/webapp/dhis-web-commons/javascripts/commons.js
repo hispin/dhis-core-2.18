@@ -241,32 +241,6 @@ function disableParent( elementId )
 }
 
 /**
- * Enables the element with the given identifier if the element exists in parent window of frame.
- */
-function enableParent( elementId )
-{
-    var element = parent.document.getElementById( elementId );
-    
-    if ( element )
-    {
-        element.disabled = false;
-    }
-}
-
-/**
- * Disables the element with the given identifier if the element exists in parent window of frame.
- */
-function disableParent( elementId )
-{
-    var element = parent.document.getElementById( elementId );
-    
-    if ( element )
-    {
-        element.disabled = true;
-    }
-}
-
-/**
  * Returns true if the element with the given identifier has selected elements
  * associated with it, false if not.
  * 
@@ -536,7 +510,7 @@ function setHeaderDelayMessage( message )
  */
 function hideHeaderMessage()
 {
-    $( 'div#headerMessage' ).slideUp( 'fast' );
+    $( 'div#headerMessage' ).slideUp( 'slow' );
 }   
 
 /**
@@ -1232,4 +1206,20 @@ function deleteDivEffect()
 	{	
 		document.body.removeChild(divEffect);
 	}
+}
+
+/*
+ * Paging
+ */
+function changePageSize( baseLink )
+{
+    var pageSize = jQuery("#sizeOfPage").val();
+    window.location.href = baseLink +"pageSize=" + pageSize ;
+}
+
+function jumpToPage( baseLink )
+{
+    var pageSize = jQuery("#sizeOfPage").val();
+    var currentPage = jQuery("#jumpToPage").val();
+    window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
 }

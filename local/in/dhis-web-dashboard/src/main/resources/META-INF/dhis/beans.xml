@@ -82,6 +82,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataValueService">
             <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
         </property>
+        <property name="caseAggregationMappingService">
+            <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"/>
+        </property>
     </bean>
 	
     <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction"
@@ -765,9 +768,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dashboard.action.ExportToExcelAction"
 		class="org.hisp.dhis.dashboard.action.ExportToExcelAction"
 		scope="prototype">
-        <property name="locationManager">
+ <!--   <property name="locationManager">
             <ref bean="org.hisp.dhis.external.location.LocationManager"/>
-        </property>
+        </property>-->
+		<property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+		</property>
     </bean>
 	
     <bean id="org.hisp.dhis.dashboard.action.GetSortedDataAction"

@@ -48,4 +48,7 @@ public interface MobileImportService
     public void moveFailedFile( String fileName );
 
     public void importAllFiles();
+    
+    public String importXMLFile( String importFile );
+    
 }

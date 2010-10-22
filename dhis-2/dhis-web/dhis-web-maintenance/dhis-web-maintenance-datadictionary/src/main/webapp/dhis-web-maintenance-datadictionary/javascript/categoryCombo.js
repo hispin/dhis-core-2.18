@@ -31,7 +31,7 @@ function removeDataElementCategoryCombo( categoryComboId, categoryComboName )
 function validateSelectedCategories( form )
 {
 	jQuery.postJSON( "validateDataElementCategoryCombo.action",
-		{ selectedCategories: function() { return getArrayValueOfListById( 'selectedList' ) } },
+		{ selectedCategories: getArrayValueOfListById( 'selectedList' ) },
 		function( json ){
 			if( json.response == 'success' ) form.submit();
 			else markInvalid( 'selectedCategories', json.message );

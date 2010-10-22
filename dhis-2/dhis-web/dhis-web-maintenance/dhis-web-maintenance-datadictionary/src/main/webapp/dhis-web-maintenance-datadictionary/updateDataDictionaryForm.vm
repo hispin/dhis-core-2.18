@@ -92,7 +92,7 @@
 	</tr>
 	<tr>	
 		<td>
-			<select id="availableIndicators" name="availableIndicators" size="2" multiple="multiple" style="width:100%; height:20em" ondblclick="addIndicators()">
+			<select id="availableIndicators" name="availableIndicators" size="2" multiple="multiple" style="width:100%; height:20em" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">
 				#foreach( $indicator in $availableIndicators )
                     <option value="$indicator.id">$encoder.htmlEncode( $indicator.name )</option>
                 #end

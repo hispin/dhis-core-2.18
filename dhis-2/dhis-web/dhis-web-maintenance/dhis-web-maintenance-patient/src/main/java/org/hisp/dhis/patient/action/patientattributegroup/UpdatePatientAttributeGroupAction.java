@@ -68,7 +68,7 @@ public class UpdatePatientAttributeGroupAction
 
     private Integer id;
 
-    private String nameField;
+    private String name;
 
     private String description;
 
@@ -83,9 +83,9 @@ public class UpdatePatientAttributeGroupAction
         this.id = id;
     }
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     public void setDescription( String description )
@@ -108,7 +108,7 @@ public class UpdatePatientAttributeGroupAction
 
         PatientAttributeGroup patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( id );
 
-        patientAttributeGroup.setName( nameField );
+        patientAttributeGroup.setName( name );
         patientAttributeGroup.setDescription( description );
 
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();

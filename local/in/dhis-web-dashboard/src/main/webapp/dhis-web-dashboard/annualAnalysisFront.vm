@@ -54,7 +54,7 @@
                     				    <select id="indicatorGroupId" name="indicatorGroupId" style="width:325px" onchange="getIndicators()">
                             				<option value="$ALL">[ Select IndicatorGroup / All ]</option>
                             				#foreach ( $group in $indicatorGroups )
-                                					<option value="$group.id">$group.name</option>
+                                					<option value="$group.id" title="$group.name">$group.name</option>
                             				#end
                         			</select>			
                     			</td>
@@ -80,7 +80,7 @@
     			                    $i18n.getString( "ga_available_indicatorlist" )<br />
                         				<select id="availableIndicators" name="availableIndicators" style="width:325px;" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">
 				                            #foreach ( $indicator in $indicators )
-                                				<option value="$indicator.id">$indicator.name</option>
+                                				<option value="$indicator.id" title="$indicator.name">$indicator.name</option>
                             				#end
 			                        	</select>
 			                        <br />

@@ -174,14 +174,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!--  Data Element Zero Value Storage Management -->
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.GetDataElementsByZeroIsSignificantAndGroupAction"
-		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.GetDataElementsByZeroIsSignificantAndGroupAction"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
 	<bean
 		id="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction"
 		class="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction"

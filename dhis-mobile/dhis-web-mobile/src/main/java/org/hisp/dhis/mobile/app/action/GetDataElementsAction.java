@@ -26,14 +26,14 @@
  */
 package org.hisp.dhis.mobile.app.action;
 
+
 import com.opensymphony.xwork2.Action;
 import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 
-public class GetDataElementsAction
-    implements Action
+public class GetDataElementsAction implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -49,7 +49,6 @@ public class GetDataElementsAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
     private String dataSetName;
 
     public void setDataSetName( String dataSetName )
@@ -57,8 +56,7 @@ public class GetDataElementsAction
         this.dataSetName = dataSetName;
     }
 
-    public String getDataSetName()
-    {
+    public String getDataSetName(){
         return this.dataSetName;
     }
 
