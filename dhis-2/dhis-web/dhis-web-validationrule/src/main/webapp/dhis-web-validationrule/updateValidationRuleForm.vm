@@ -6,34 +6,29 @@
 	jQuery(document).ready(
 			function()
 			{
-				disabledPeriodTypeField();
-				jQuery("#updateValidationRuleForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateUpdateValidationRule();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
 				jQuery("#name").focus();
+				
+				// validation form
+				validation( 'updateValidationRuleForm', function( form ){
+					form.submit();			
+				});
+				/* validation( 'updateValidationRuleForm', function( form ){			
+							form.submit();
+						},function(){
+							validateExpression();
+						});	 */				
+				checkValueIsExist( "name", "validateValidationRule.action", {id:getFieldValue('id')});				
 			}
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$encoder.htmlEncode( $i18n.getString( "edit_validation_rule" ) )</h3>
 
-<form id="updateValidationRuleForm" action="updateValidationRule.action" method="post" >
+<form id="updateValidationRuleForm" action="updateValidationRule.action" method="POST" onsubmit="enable('periodTypeName');">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$!validationRule.id">
-	<input type="hidden" id="leftSideDescription" name="leftSideDescription" value="$!validationRule.leftSide.description">
-	<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!validationRule.leftSide.expression">
-	<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression" value="$!leftSideTextualExpression">
-	<input type="hidden" id="rightSideDescription" name="rightSideDescription" value="$!validationRule.rightSide.description">
-	<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!validationRule.rightSide.expression">
-	<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression" value="$!rightSideTextualExpression">
 </div>
 
 <table>
@@ -50,7 +45,7 @@
 	</tr>
 	<tr>
 		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em">
+		<td><select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" disabled>
 					#foreach ( $periodType in $periodTypes )
              		 <option value="$periodType.name" #if( $validationRule.periodType.name.equals($periodType.name ) ) selected #end>$i18n.getString($periodType.name)</option>
             		#end						
@@ -73,8 +68,16 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'edit_left_side' )" style="width:10em" onclick="showEditLeftSideExpressionForm();">
+		<td>
+			<input type="button" value="$i18n.getString( 'edit_left_side' )" style="width:10em" onclick="showEditLeftSideExpressionForm();">
+				<input type="hidden" id="leftSideDescription" name="leftSideDescription" value="$!validationRule.leftSide.description">
+				<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!validationRule.leftSide.expression" class="{validate:{required:true}}"> 
+				<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression" value="$!leftSideTextualExpression"">
+	
 			<input type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="showEditRightSideExpressionForm();"></td>
+				<input type="hidden" id="rightSideDescription" name="rightSideDescription" value="$!validationRule.rightSide.description" class="{validate:{required:true}}">
+				<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!validationRule.rightSide.expression">
+				<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression" value="$!rightSideTextualExpression">
 	</tr>
 	<tr>
 		<td></td>
@@ -83,14 +86,11 @@
 	</tr>
 </table>
 
+<div id="dynamicContent"></div>
+
 </form>
 
-<span id="message"></span>
-
-<script type="text/javascript">
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
+<script>
+	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
+	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
 </script>

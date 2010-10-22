@@ -14,7 +14,6 @@ function initHtml( i18n_resourcetables, i18n_sorttypes )
 	htmlTables = "<option value=\"null\">[ "+i18n_resourcetables+" ]</option>";
 	htmlTables += "<option value=\"_cocn\">_CategoryOptionComboname</option>";
 	htmlTables += "<option value=\"_ous\">_OrgUnitStructure</option>";
-	htmlTables += "<option value=\"_ougss\">_OrgUnitGroupSetStructure</option>";
 	htmlTables += "<option value=\"_cs\">_CategoryStructure</option>";
 	htmlTables += "<option value=\"_degss\">_DataElementGroupSetStructure</option>";
 	htmlTables += "<option value=\"_icgss\">_IndicatorGroupSetStructure</option>";

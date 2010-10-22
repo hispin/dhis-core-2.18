@@ -8,15 +8,13 @@
 			
 	});
 	
-	
-	
 </script>
 
 <h3>$i18n.getString( "edit_org_unit_group_set" )</h3>
 
 <form id="updateOrganisationUnitGroupSetForm" action="updateOrganisationUnitGroupSet.action" method="post" >
 
-<input type="hidden" id="id" name="id" value="$organisationUnitGroupSet.id">
+<input type="hidden" id="id" name="id" value="$organisationUnitGroupSet.id"/>
 
 <table>
 	<tr>
@@ -25,12 +23,12 @@
 	
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnitGroupSet.name )" style="width:20em" maxlength="230" class="{validate:{required:true,minlength:2,maxlength:230}}"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnitGroupSet.name )" style="width:20em" maxlength="230" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnitGroupSet.description )" style="width:20em" maxlength="255" class="{validate:{required:true,minlength:2,maxlength:255}}"></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnitGroupSet.description )" style="width:20em" maxlength="255" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	
 	<tr>
@@ -50,9 +48,9 @@
 
 <table>
 	<colgroup>
-  		<col width="325px">
-  		<col width="80px">
- 		<col width="325px">
+  		<col width="325px"/>
+  		<col width="80px"/>
+ 		<col width="325px"/>
   	</colgroup>
 	
   	<tr>
@@ -61,9 +59,9 @@
   		<th>$i18n.getString( "selected_groups" )</th>
 	</tr>
     <tr>       
-        <td><input type="text" onkeyup="filterList( this.value, 'availableGroups' )" style="width:25em"></td>
+        <td><input type="text" onkeyup="filterList( this.value, 'availableGroups' )" style="width:25em"/></td>
         <td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-        <td><input type="text" onkeyup="filterList( this.value, 'selectedGroups' )" style="width:25em"></td>
+        <td><input type="text" onkeyup="filterList( this.value, 'selectedGroups' )" style="width:25em"/></td>
     </tr>
 	<tr>
 		<td>
@@ -74,10 +72,10 @@
 			</select>
 		</td>
 		<td style="text-align:center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableGroups', 'selectedGroups' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedGroups', 'availableGroups' )"><br>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availableGroups', 'selectedGroups' )"><br>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedGroups', 'availableGroups' )">
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableGroups', 'selectedGroups' )"/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedGroups', 'availableGroups' )"/><br/>		
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availableGroups', 'selectedGroups' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedGroups', 'availableGroups' )"/>
 		</td>
 		<td>
 			<select multiple size="8" id="selectedGroups" name="selectedGroups" style="width:100%" ondblclick="moveSelectedById( 'selectedGroups', 'availableGroups' )">

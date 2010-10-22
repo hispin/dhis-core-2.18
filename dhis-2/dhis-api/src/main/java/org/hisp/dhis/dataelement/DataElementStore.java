@@ -183,13 +183,11 @@ public interface DataElementStore
     Collection<DataElement> getDataElementsWithGroupSets();
 
     /**
-     * Return void
+     * Defines the given data elements as zero is significant. 
      * 
-     * @param dataElementIs is list of data element id which you want to update
-     *        zeroIsSignificant property is true of false
-     * @param zeroIsSignificant is true or false
+     * @param dataElementIds identifiers of data elements where zero is significant.
      */
-    void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant );
+    void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds );
     
     /**
      * Returns all DataElement which zeroIsSignificant property is true or false

@@ -84,6 +84,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.databrowser.jdbc.StatementManagerDataBrowserStore">
 	<property name="organisationUnitService" 
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+	<property name="sqlViewService" 
+      ref="org.hisp.dhis.sqlview.SqlViewService"/>
   </bean>
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserService"
@@ -115,6 +117,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataprune.DefaultDataPruneService">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+	<property name="dataPruneStore"
+	  ref="org.hisp.dhis.dataprune.DataPruneStore"/>
+  </bean> 
+  
+  <bean id="org.hisp.dhis.dataprune.DataPruneStore"
+    class="org.hisp.dhis.dataprune.jdbc.JdbcDataPruneStore">
   </bean> 
   
   <!-- Data archive -->

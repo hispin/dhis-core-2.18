@@ -54,34 +54,24 @@ function getReportExcelsByGroupReceived( xmlObject ) {
 	byId("selectedOrganisationUnit").innerHTML = selectedOrganisationUnit; 
 }
 
-function getPreviousPeriod() {
-
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'previousPeriodsDB.action' ); 
+function getPreviousPeriod() 
+{
+	jQuery.postJSON('previousPeriodsGeneric.action', responseListPeriodReceived );	
 }
 
-function getNextPeriod() {
-
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'nextPeriodsDB.action' ); 
+function getNextPeriod() 
+{
+	jQuery.postJSON('nextPeriodsGeneric.action', responseListPeriodReceived );	
 }
 
-function responseListPeriodReceived( xmlObject ) {
-
+function responseListPeriodReceived( json ) 
+{	
 	clearListById('period');
-	var nodes = xmlObject.getElementsByTagName('period');
 	
-	for ( var i = 0; i < nodes.length; i++ )
-    {
-        node = nodes.item(i);  
-        var id = node.getElementsByTagName('id')[0].firstChild.nodeValue;
-        var name = node.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('period', name, id);
-    }
+	jQuery.each( json.periods, function(i, item ){
+		addOption('period', item.name , i );
+	});
+	
 }
 
 function generateReportExcel() {
@@ -99,7 +89,7 @@ function generateReportExcel() {
 	request.setCallbackSuccess( generateReportExcelReceived );
 	
 	var params = "reportId=" + byId('report').value;
-	params += "&periodId=" + byId('period').value;
+	params += "&periodIndex=" + byId('period').value;
 	request.sendAsPost(params);
 	request.send( 'generateReportExcel.action');
 	

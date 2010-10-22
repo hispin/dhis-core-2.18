@@ -35,12 +35,9 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author bobj
  */
-@Component("zipAnalyzer")
 public class ZipAnalyzer
 {
     /**

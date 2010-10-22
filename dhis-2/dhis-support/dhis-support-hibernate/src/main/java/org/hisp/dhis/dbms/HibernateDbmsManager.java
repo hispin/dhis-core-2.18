@@ -40,7 +40,6 @@ import org.springframework.stereotype.Component;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Component("dbmsManager")
 public class HibernateDbmsManager
     implements DbmsManager
 {

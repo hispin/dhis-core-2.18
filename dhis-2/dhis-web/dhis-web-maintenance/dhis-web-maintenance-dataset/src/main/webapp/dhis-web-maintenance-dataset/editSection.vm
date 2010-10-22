@@ -18,14 +18,14 @@
 
 <form id="editDataSetForm" name="editDataSetForm" action="updateSection.action" method="post" >
   <div style="display:inline">
-  <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id">
-  <input type="hidden" id="sectionId" name="sectionId" value="$section.id">
-  <input type="hidden" id="categoryComboId" name="categoryComboId" value="$categoryCombo.id">
+  <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id"/>
+  <input type="hidden" id="sectionId" name="sectionId" value="$section.id"/>
+  <input type="hidden" id="categoryComboId" name="categoryComboId" value="$categoryCombo.id"/>
   </div>
   
   <table id="detailsList">
-    <col> ## Labels
-    <col> ## Input
+    <col/> ## Labels
+    <col/> ## Input
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "section_details" )</th>
@@ -34,23 +34,23 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name" maxlength="100" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>        
+        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>        
       </tr>     
       <tr>
       	<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" style="width:20em" value="$dataSet.name" disabled="disabled"></td>
+        <td><input type="text" style="width:20em" value="$dataSet.name" disabled="disabled"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"></td>
+        <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"/></td>
       </tr>
     </tbody>
   </table>
 
   <table id="dataElementSelectionArea">
-    <col> ## Available DataElements
-	<col> ## Actions
-    <col> ## Selected DataElements
+    <col/> ## Available DataElements
+	<col/> ## Actions
+    <col/> ## Selected DataElements
     <thead>
       <tr>                
         <th>$i18n.getString( "available_data_elements" )</th>
@@ -104,21 +104,21 @@
           </select>
         </td> 
         <td style="width:30px; text-align:center">
-            <a href="javascript:moveUpSelectedOption( 'selectedList' )"><img src="../images/move_up.png"></a><br><br>
-            <a href="javascript:moveDownSelectedOption( 'selectedList' )"><img src="../images/move_down.png"></a><br><br>
+            <a href="javascript:moveUpSelectedOption( 'selectedList' )"><img src="../images/move_up.png"/></a><br/><br/>
+            <a href="javascript:moveDownSelectedOption( 'selectedList' )"><img src="../images/move_down.png"/></a><br/><br/>
         </td>       
       </tr>
 
       <tr>
         <td colspan="3">
-          <p><span id="message"></span></p>
+          <p><span id="message"/></p>
         </td>
       </tr>
 
       <tr>
         <td colspan="3">
-          <input type="submit" name="save" value="$i18n.getString( 'save' )"><input type="button"
-            onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )">
+          <input type="submit" name="save" value="$i18n.getString( 'save' )"/><input type="button"
+            onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )"/>
         </td>
       </tr>
     </tbody>

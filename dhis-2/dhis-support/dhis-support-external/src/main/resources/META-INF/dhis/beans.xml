@@ -8,7 +8,11 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-  <context:component-scan base-package="org.hisp.dhis"/>
+  <context:annotation-config/>
+
+  <bean id="configurationManager" class="org.hisp.dhis.external.configuration.DefaultConfigurationManager"/>
+  
+  <bean id="dhisResolver" class="org.hisp.dhis.external.location.DefaultLocationManagerResolver"/>
   
   <bean id="locationManager" class="org.hisp.dhis.external.location.DefaultLocationManager" init-method="init">
     <property name="environmentVariable" value="DHIS2_HOME"/> <!-- Change environment variable -->

@@ -89,7 +89,8 @@ public class GenerateAdvancedReportPeriodColumnListingAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
-        Period period = periodDatabaseService.getSelectedPeriod();
+        Period period = periodGenericManager.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService

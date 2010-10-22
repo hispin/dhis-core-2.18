@@ -62,7 +62,7 @@ public class GetExpandedTreeAction
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
         this.selectionTreeManager = selectionTreeManager;
-    }
+    }  
 
     // -------------------------------------------------------------------------
     // Output
@@ -102,7 +102,8 @@ public class GetExpandedTreeAction
 
     public String execute()
         throws Exception
-    {
+    {     
+        
         roots = new ArrayList<OrganisationUnit>( selectionTreeManager.getRootOrganisationUnits() );
 
         Collections.sort( roots, new OrganisationUnitNameComparator() );

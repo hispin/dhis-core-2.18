@@ -17,7 +17,7 @@
     
 	<property name="mandatory" column="mandatory" not-null="true" />
 	
-	<property name="inheritable" column="inheritable" not-null="true" />
+	<property name="inheritable" column="inheritable" />
     
     <many-to-one name="patientAttributeGroup" column="patientattributegroupid"
 			class="org.hisp.dhis.patient.PatientAttributeGroup"

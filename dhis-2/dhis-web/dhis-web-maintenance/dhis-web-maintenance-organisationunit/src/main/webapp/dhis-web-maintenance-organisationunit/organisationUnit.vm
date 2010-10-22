@@ -7,16 +7,16 @@
 			<table width="100%">
 				<tr>
 					<td>
-						$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form>
+						$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"/></div></form>
 					</td>
-					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOrganisationUnitForm.action'"></td>
+					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddOrganisationUnitForm.action'"/></td>
 				</tr>
 			</table>
 			<table class="listTable" id="listTable">
-				<col>
-				<col width="20">
-				<col width="20">
-				<col width="20">
+				<col/>
+				<col width="20"/>
+				<col width="20"/>
+				<col width="20"/>
                 <thead>				
 				<tr>
 					<th>$i18n.getString( "name" )</th>
@@ -27,9 +27,9 @@
 				#foreach( $organisationUnit in $organisationUnits )
 				<tr id="tr${organisationUnit.id}">
 					<td onclick="showOrganisationUnitDetails( $organisationUnit.id )">$encoder.htmlEncode( $organisationUnit.name )</td>
-					<td style="text-align:center"><a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-					<td style="text-align:center">#if( $organisationUnit.children.size() == 0 )<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>#end</td>
-					<td style="text-align:center"><a href="javascript:showOrganisationUnitDetails( $organisationUnit.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+					<td style="text-align:center"><a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
+					<td style="text-align:center">#if( $organisationUnit.children.size() == 0 )<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>#end</td>
+					<td style="text-align:center"><a href="javascript:showOrganisationUnitDetails( $organisationUnit.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
 				</tr>
 				#end
                 </tbody>
@@ -45,21 +45,21 @@
 
 			<div id="detailsArea" style="display:none">
 				<div style="float:right">
-					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>				
-				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
-				<p><label>$i18n.getString( "short_name" ):</label><br><span id="shortNameField"></span></p>
-				<p><label>$i18n.getString( "opening_date" ):</label><br><span id="openingDateField"></span></p>
-				<p><label>$i18n.getString( "closed_date" ):</label><br><span id="closedDateField"></span></p>
-				<p><label>$i18n.getString( "registers_date" ):</label><br><span id="activeField"></span></p>
-				<p><label>$i18n.getString( "comment" ):</label><br><span id="commentField"></span></p>
-                <p><label>$i18n.getString( "url" ):</label><br><span id="urlField"></span></p>
-                <p><label>$i18n.getString( "last_updated" ):</label><br><span id="lastUpdatedField"></span></p>
+				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+				<p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
+				<p><label>$i18n.getString( "opening_date" ):</label><br/><span id="openingDateField"></span></p>
+				<p><label>$i18n.getString( "closed_date" ):</label><br/><span id="closedDateField"></span></p>
+				<p><label>$i18n.getString( "registers_date" ):</label><br/><span id="activeField"></span></p>
+				<p><label>$i18n.getString( "comment" ):</label><br/><span id="commentField"></span></p>
+                <p><label>$i18n.getString( "url" ):</label><br/><span id="urlField"></span></p>
+                <p><label>$i18n.getString( "last_updated" ):</label><br/><span id="lastUpdatedField"></span></p>
 			</div>
 
             <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
                 <div style="float:right">
-                    <a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+                    <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"/></a>
                 </div>
                 <p><span id="warningField"></span></p>
             </div>

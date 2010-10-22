@@ -39,6 +39,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -92,6 +93,7 @@ public class DataElementCategoryBatchHandlerTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Ignore
     @Test
     public void testAddObject()
     {
@@ -108,6 +110,7 @@ public class DataElementCategoryBatchHandlerTest
         assertTrue( categories.contains( categoryC ) );        
     }
 
+    @Ignore
     @Test
     public void testInsertObject()
     {
@@ -120,6 +123,7 @@ public class DataElementCategoryBatchHandlerTest
         assertNotNull( categoryService.getDataElementCategory( idC ) );
     }
 
+    @Ignore
     @Test
     public void testUpdateObject()
     {

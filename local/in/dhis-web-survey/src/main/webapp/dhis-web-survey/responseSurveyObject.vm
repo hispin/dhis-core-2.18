@@ -3,6 +3,6 @@
   <id>$survey.id</id>
   <name>$encoder.xmlEncode( $survey.name )</name> 
   <indicatorCount>$surveyIndicators.size()</indicatorCount>
-  <url>$survey.url</url>
+  <url>$encoder.xmlEncode( $survey.url )</url>
   <description>$encoder.xmlEncode( $survey.description )</description>   
 </survey>

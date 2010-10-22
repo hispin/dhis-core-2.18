@@ -29,12 +29,14 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitGroupAction.java 1901 2006-09-22 14:42:40Z torgeilo $
+ * @version $Id: GetOrganisationUnitGroupAction.java 1901 2006-09-22 14:42:40Z
+ *          torgeilo $
  */
 public class GetOrganisationUnitGroupAction
     extends ActionSupport
@@ -49,6 +51,13 @@ public class GetOrganisationUnitGroupAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }  
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -85,6 +94,10 @@ public class GetOrganisationUnitGroupAction
         organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id.intValue() );
 
         memberCount = organisationUnitGroup.getMembers().size();
+        
+        selectionTreeManager.clearSelectedOrganisationUnits();
+
+        selectionTreeManager.setSelectedOrganisationUnits( organisationUnitGroup.getMembers() );
 
         return SUCCESS;
     }

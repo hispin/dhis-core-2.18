@@ -2,17 +2,10 @@
 //-----------------------------------------------------------------------
 //init jQuery validation for translateForm
 //-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#translateForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-				setMessage( '$!message' );
-			}
-	);
+	jQuery(document).ready(	function(){
+		validation( 'translateForm', function( form ){ form.submit()} );	
+		setMessage( '$!message' );
+	});
 
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>

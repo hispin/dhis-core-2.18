@@ -11,6 +11,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.databrowser.DataBrowserStore;
 import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.util.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,6 +31,13 @@ public class StatementManagerDataBrowserStore
     private StatementManager statementManager;
 
     private OrganisationUnitService organisationUnitService;
+
+    private SqlViewService sqlViewService;
+
+    public void setSqlViewService( SqlViewService sqlViewService )
+    {
+        this.sqlViewService = sqlViewService;
+    }
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
@@ -535,7 +543,7 @@ public class StatementManagerDataBrowserStore
         Integer numResults = 0;
         StringBuffer sqlsbDescentdants = new StringBuffer();
 
-        dropView( "view_count_descentdants" );
+        sqlViewService.dropViewTable( "view_count_descentdants" );
 
         sqlsbDescentdants.append( "CREATE VIEW view_count_descentdants AS " );
         setUpQueryForDrillDownDescendants( sqlsbDescentdants, orgUnitParent, betweenPeriodIds, maxLevel );
@@ -565,9 +573,11 @@ public class StatementManagerDataBrowserStore
             throw new RuntimeException( "Failed to get aggregated data value", e );
         }
         finally
-        {
+        {            
             holder.close();
         }
+        
+        sqlViewService.dropViewTable( "view_count_descentdants" );
 
         return numResults;
     }
@@ -692,8 +702,8 @@ public class StatementManagerDataBrowserStore
             sb
                 .append( "SELECT DISTINCT o.organisationunitid AS parentid, o.name AS organisationunit, COUNT(value) as countdv_descendants, p.periodid AS periodid, p.startdate AS columnheader " );
             sb.append( "FROM organisationunit o " );
-            sb.append( "JOIN datavalue dv ON ( dv.sourceid = o.organisationunitid ) " );
-            sb.append( "JOIN period p ON ( p.periodid = dv.periodid ) " );
+            sb.append( "JOIN datavalue dv ON (dv.sourceid = o.organisationunitid) " );
+            sb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
             sb.append( "WHERE o.parentid = '" + orgUnitSelected + "' " );
             sb.append( "AND dv.periodid = '" + periodid + "' " );
             sb.append( "GROUP BY o.organisationunitid, organisationunit, p.periodid, p.startdate " );
@@ -709,9 +719,9 @@ public class StatementManagerDataBrowserStore
                     + orgIndex
                     + ".name AS organisationunit, COUNT(value) as countdv_descendants, p.periodid AS periodid, p.startdate AS columnheader " );
             sb.append( "FROM datavalue dv " );
-            sb.append( "JOIN organisationunit ou ON ( ou.organisationunitid = dv.sourceid ) " );
+            sb.append( "JOIN organisationunit ou ON (ou.organisationunitid = dv.sourceid) " );
             this.setUpQueryForJOINTable( sb, diffLevel );
-            sb.append( "JOIN period p ON ( p.periodid = dv.periodid ) " );
+            sb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
             sb.append( "WHERE dv.periodid = '" + periodid + "' " );
             sb.append( "AND dv.sourceid IN " );
             sb.append( "( " );
@@ -770,23 +780,5 @@ public class StatementManagerDataBrowserStore
         int index = diffLevel - 1;
 
         return (index == 0) ? "" : index + "";
-    }
-
-    private void dropView( String view )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            holder.getStatement().executeUpdate( "DROP VIEW IF EXISTS " + view );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to drop view: " + view, ex );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 }

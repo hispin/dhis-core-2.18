@@ -121,8 +121,9 @@ public class HibernatePatientAttributeValueStore
 
     public int countSearchPatientAttributeValue( PatientAttribute patientAttribute, String searchText )
     {
-        return (Integer)getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
+        Number rs =  (Number) getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -130,6 +131,6 @@ public class HibernatePatientAttributeValueStore
         String searchText, int min, int max )
     {
         return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
-            Restrictions.ilike( "value", "%" + searchText + "%" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+            Restrictions.ilike( "value", "'%" + searchText + "%'" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 }

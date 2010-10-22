@@ -45,315 +45,290 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class TableAlteror
-    extends AbstractStartupRoutine
-{
-    private static final Log log = LogFactory.getLog( TableAlteror.class );
+public class TableAlteror extends AbstractStartupRoutine {
+	private static final Log log = LogFactory.getLog(TableAlteror.class);
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+	private StatementManager statementManager;
 
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
+	public void setStatementManager(StatementManager statementManager) {
+		this.statementManager = statementManager;
+	}
 
-    // -------------------------------------------------------------------------
-    // Execute
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Execute
+	// -------------------------------------------------------------------------
 
-    @Transactional
-    public void execute()
-    {
-        // ---------------------------------------------------------------------
-        // Drop outdated tables
-        // ---------------------------------------------------------------------
+	@Transactional
+	public void execute() {
+		// ---------------------------------------------------------------------
+		// Drop outdated tables
+		// ---------------------------------------------------------------------
 
-        executeSql( "DROP TABLE categoryoptioncomboname" );
-        executeSql( "DROP TABLE orgunitgroupsetstructure" );
-        executeSql( "DROP TABLE orgunitstructure" );
-        executeSql( "DROP TABLE orgunithierarchystructure" );
-        executeSql( "DROP TABLE orgunithierarchy" );
-        executeSql( "DROP TABLE datavalueaudit" );
-        executeSql( "DROP TABLE columnorder" );
-        executeSql( "DROP TABLE roworder" );
-        executeSql( "DROP TABLE sectionmembers" );
-        executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
-        executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
-        executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
-        executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
-        executeSql( "ALTER TABLE section DROP COLUMN label" );
-        executeSql( "ALTER TABLE section DROP COLUMN title;" );
-        executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
-        executeSql( "ALTER TABLE dataelementcategory DROP COLUMN conceptName" );
+		executeSql("DROP TABLE categoryoptioncomboname");
+		executeSql("DROP TABLE orgunitgroupsetstructure");
+		executeSql("DROP TABLE orgunitstructure");
+		executeSql("DROP TABLE orgunithierarchystructure");
+		executeSql("DROP TABLE orgunithierarchy");
+		executeSql("DROP TABLE datavalueaudit");
+		executeSql("DROP TABLE columnorder");
+		executeSql("DROP TABLE roworder");
+		executeSql("DROP TABLE sectionmembers");
+		executeSql("DROP TABLE reporttable_categoryoptioncombos");
+		executeSql("ALTER TABLE dataelementcategoryoption drop column categoryid");
+		executeSql("ALTER TABLE reporttable DROP column dimensiontype");
+		executeSql("ALTER TABLE categoryoptioncombo DROP COLUMN displayorder");
+		executeSql("ALTER TABLE dataelementcategoryoption DROP COLUMN shortname");
+		executeSql("ALTER TABLE section DROP COLUMN label");
+		executeSql("ALTER TABLE section DROP COLUMN title;");
+		executeSql("ALTER TABLE organisationunit DROP COLUMN polygoncoordinates");
+		executeSql("ALTER TABLE dataelementcategory DROP COLUMN conceptName");
 
-        // remove relative period type
-        executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name='Relative')" );
-        executeSql( "DELETE FROM periodtype WHERE name='Relative'" );
+		// remove relative period type
+		executeSql("DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name='Relative')");
+		executeSql("DELETE FROM periodtype WHERE name='Relative'");
 
-        // ---------------------------------------------------------------------
-        // Update tables for dimensional model
-        // ---------------------------------------------------------------------
+		// ---------------------------------------------------------------------
+		// Update tables for dimensional model
+		// ---------------------------------------------------------------------
 
-        // categories_categoryoptions
-        // set to 0 temporarily
-        int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" );
-        if ( c1 > 0 )
-        {
-            updateSortOrder( "categories_categoryoptions", "categoryid", "categoryoptionid" );
-        }
-        executeSql( "ALTER TABLE categories_categoryoptions DROP CONSTRAINT categories_categoryoptions_pkey" );
-        executeSql( "ALTER TABLE categories_categoryoptions ADD CONSTRAINT categories_categoryoptions_pkey PRIMARY KEY (categoryid, sort_order)" );
+		// categories_categoryoptions
+		// set to 0 temporarily
+		int c1 = executeSql("UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0");
+		if (c1 > 0) {
+			updateSortOrder("categories_categoryoptions", "categoryid",
+					"categoryoptionid");
+		}
+		executeSql("ALTER TABLE categories_categoryoptions DROP CONSTRAINT categories_categoryoptions_pkey");
+		executeSql("ALTER TABLE categories_categoryoptions ADD CONSTRAINT categories_categoryoptions_pkey PRIMARY KEY (categoryid, sort_order)");
 
-        // categorycombos_categories
-        // set to 0 temporarily
-        int c2 = executeSql( "update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0" );
-        if ( c2 > 0 )
-        {
-            updateSortOrder( "categorycombos_categories", "categorycomboid", "categoryid" );
-        }
-        executeSql( "ALTER TABLE categorycombos_categories DROP CONSTRAINT categorycombos_categories_pkey" );
-        executeSql( "ALTER TABLE categorycombos_categories ADD CONSTRAINT categorycombos_categories_pkey PRIMARY KEY (categorycomboid, sort_order)" );
+		// categorycombos_categories
+		// set to 0 temporarily
+		int c2 = executeSql("update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0");
+		if (c2 > 0) {
+			updateSortOrder("categorycombos_categories", "categorycomboid",
+					"categoryid");
+		}
+		executeSql("ALTER TABLE categorycombos_categories DROP CONSTRAINT categorycombos_categories_pkey");
+		executeSql("ALTER TABLE categorycombos_categories ADD CONSTRAINT categorycombos_categories_pkey PRIMARY KEY (categorycomboid, sort_order)");
 
-        // categorycombos_optioncombos
-        executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT categorycombos_optioncombos_pkey" );
-        executeSql( "ALTER TABLE categorycombos_optioncombos ADD CONSTRAINT categorycombos_optioncombos_pkey PRIMARY KEY (categoryoptioncomboid)" );
-        executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT fk4bae70f697e49675" );
+		// categorycombos_optioncombos
+		executeSql("ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT categorycombos_optioncombos_pkey");
+		executeSql("ALTER TABLE categorycombos_optioncombos ADD CONSTRAINT categorycombos_optioncombos_pkey PRIMARY KEY (categoryoptioncomboid)");
+		executeSql("ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT fk4bae70f697e49675");
 
-        // categoryoptioncombos_categoryoptions
-        // set to 0 temporarily
-        int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" );
-        if ( c3 > 0 )
-        {
-            updateSortOrder( "categoryoptioncombos_categoryoptions", "categoryoptioncomboid", "categoryoptionid" );
-        }
-        executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions DROP CONSTRAINT categoryoptioncombos_categoryoptions_pkey" );
-        executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)" );
+		// categoryoptioncombos_categoryoptions
+		// set to 0 temporarily
+		int c3 = executeSql("update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0");
+		if (c3 > 0) {
+			updateSortOrder("categoryoptioncombos_categoryoptions",
+					"categoryoptioncomboid", "categoryoptionid");
+		}
+		executeSql("ALTER TABLE categoryoptioncombos_categoryoptions DROP CONSTRAINT categoryoptioncombos_categoryoptions_pkey");
+		executeSql("ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)");
 
-        // dataelementcategoryoption
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
-        // executeSql(
-        // "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT
-        // dataelementcategoryoption_name_key"
-        // ); will be maintained in transition period
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
+		// dataelementcategoryoption
+		executeSql("ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid");
+		// executeSql(
+		// "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT
+		// dataelementcategoryoption_name_key"
+		// ); will be maintained in transition period
+		executeSql("ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key");
 
-        // minmaxdataelement query index
-        executeSql( "CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )" );
+		// minmaxdataelement query index
+		executeSql("CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )");
 
-        // drop code unique constraints
-        executeSql( "ALTER TABLE dataelement DROP CONSTRAINT dataelement_code_key" );
-        executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_code_key" );
-        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key" );
+		// drop code unique constraints
+		executeSql("ALTER TABLE dataelement DROP CONSTRAINT dataelement_code_key");
+		executeSql("ALTER TABLE indicator DROP CONSTRAINT indicator_code_key");
+		executeSql("ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key");
 
-        // add mandatory boolean field to patientattribute
-        if ( executeSql( "ALTER TABLE patientattribute ADD mandatory bool" ) >= 0 )
-        {
-            executeSql( "UPDATE patientattribute SET mandatory=false" );
-        }
+		// add mandatory boolean field to patientattribute
+		if (executeSql("ALTER TABLE patientattribute ADD mandatory bool") >= 0) {
+			executeSql("UPDATE patientattribute SET mandatory=false");
+		}
 
-        // update periodType field to ValidationRule
-        executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
+		// update periodType field to ValidationRule
+		executeSql("UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')");
 
-        // set varchar to text
-        executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
-        executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
-        executeSql( "ALTER TABLE datadictionary ALTER description TYPE text" );
-        executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
-        executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
-        executeSql( "ALTER TABLE translation ALTER value TYPE text" );
+		// set varchar to text
+		executeSql("ALTER TABLE dataelement ALTER description TYPE text");
+		executeSql("ALTER TABLE indicator ALTER description TYPE text");
+		executeSql("ALTER TABLE datadictionary ALTER description TYPE text");
+		executeSql("ALTER TABLE validationrule ALTER description TYPE text");
+		executeSql("ALTER TABLE expression ALTER expression TYPE text");
+		executeSql("ALTER TABLE translation ALTER value TYPE text");
 
-        // orgunit shortname uniqueness
-        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );  
-        
+		// orgunit shortname uniqueness
+		executeSql("ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key");
 
-        // update dataset-dataentryform association and programstage -
-        // dataentryform association
-        if ( updateDataSetAssociation() && updateProgramStageAssociation() )
-        {
-            // delete table dataentryformassociation
-            executeSql( "DROP TABLE dataentryformassociation" );
-        }
-        
-        executeSql( "ALTER TABLE section DROP CONSTRAINT section_name_key" );
-        
-        log.info( "Tables updated" );
-    }
+		// update dataset-dataentryform association and programstage -
+		// dataentryform association
+		if (updateDataSetAssociation() && updateProgramStageAssociation()) {
+			// delete table dataentryformassociation
+			executeSql("DROP TABLE dataentryformassociation");
+		}
 
-    private List<Integer> getDistinctIdList( String table, String col1 )
-    {
-        StatementHolder holder = statementManager.getHolder();
+		executeSql("ALTER TABLE section DROP CONSTRAINT section_name_key");
 
-        List<Integer> distinctIds = new ArrayList<Integer>();
+		executeSql("UPDATE patientattribute set inheritable=false where inheritable is null");
 
-        try
-        {
-            Statement statement = holder.getStatement();
+		log.info("Tables updated");
+	}
 
-            ResultSet resultSet = statement.executeQuery( "SELECT DISTINCT " + col1 + " FROM " + table );
+	private List<Integer> getDistinctIdList(String table, String col1) {
+		StatementHolder holder = statementManager.getHolder();
 
-            while ( resultSet.next() )
-            {
-                distinctIds.add( resultSet.getInt( 1 ) );
-            }
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+		List<Integer> distinctIds = new ArrayList<Integer>();
 
-        return distinctIds;
-    }
+		try {
+			Statement statement = holder.getStatement();
 
-    private Map<Integer, List<Integer>> getIdMap( String table, String col1, String col2, List<Integer> distinctIds )
-    {
-        StatementHolder holder = statementManager.getHolder();
+			ResultSet resultSet = statement.executeQuery("SELECT DISTINCT "
+					+ col1 + " FROM " + table);
 
-        Map<Integer, List<Integer>> idMap = new HashMap<Integer, List<Integer>>();
+			while (resultSet.next()) {
+				distinctIds.add(resultSet.getInt(1));
+			}
+		} catch (Exception ex) {
+			log.error(ex);
+		} finally {
+			holder.close();
+		}
 
-        try
-        {
-            Statement statement = holder.getStatement();
+		return distinctIds;
+	}
 
-            for ( Integer distinctId : distinctIds )
-            {
-                List<Integer> foreignIds = new ArrayList<Integer>();
+	private Map<Integer, List<Integer>> getIdMap(String table, String col1,
+			String col2, List<Integer> distinctIds) {
+		StatementHolder holder = statementManager.getHolder();
 
-                ResultSet resultSet = statement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1
-                    + "=" + distinctId );
+		Map<Integer, List<Integer>> idMap = new HashMap<Integer, List<Integer>>();
 
-                while ( resultSet.next() )
-                {
-                    foreignIds.add( resultSet.getInt( 1 ) );
-                }
+		try {
+			Statement statement = holder.getStatement();
 
-                idMap.put( distinctId, foreignIds );
-            }
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+			for (Integer distinctId : distinctIds) {
+				List<Integer> foreignIds = new ArrayList<Integer>();
 
-        return idMap;
-    }
+				ResultSet resultSet = statement.executeQuery("SELECT " + col2
+						+ " FROM " + table + " WHERE " + col1 + "="
+						+ distinctId);
 
-    private void updateSortOrder( String table, String col1, String col2 )
-    {
-        List<Integer> distinctIds = getDistinctIdList( table, col1 );
+				while (resultSet.next()) {
+					foreignIds.add(resultSet.getInt(1));
+				}
 
-        log.info( "Got distinct ids: " + distinctIds.size() );
+				idMap.put(distinctId, foreignIds);
+			}
+		} catch (Exception ex) {
+			log.error(ex);
+		} finally {
+			holder.close();
+		}
 
-        Map<Integer, List<Integer>> idMap = getIdMap( table, col1, col2, distinctIds );
+		return idMap;
+	}
 
-        log.info( "Got id map: " + idMap.size() );
+	private void updateSortOrder(String table, String col1, String col2) {
+		List<Integer> distinctIds = getDistinctIdList(table, col1);
 
-        for ( Integer distinctId : idMap.keySet() )
-        {
-            int sortOrder = 1;
+		log.info("Got distinct ids: " + distinctIds.size());
 
-            for ( Integer foreignId : idMap.get( distinctId ) )
-            {
-                String sql = "UPDATE " + table + " SET sort_order=" + sortOrder++ + " WHERE " + col1 + "=" + distinctId
-                    + " AND " + col2 + "=" + foreignId;
+		Map<Integer, List<Integer>> idMap = getIdMap(table, col1, col2,
+				distinctIds);
 
-                int count = executeSql( sql );
+		log.info("Got id map: " + idMap.size());
 
-                log.info( "Executed: " + count + " - " + sql );
-            }
-        }
-    }
+		for (Integer distinctId : idMap.keySet()) {
+			int sortOrder = 1;
 
-    private int executeSql( String sql )
-    {
-        try
-        {
-            return statementManager.getHolder().executeUpdate( sql );
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
+			for (Integer foreignId : idMap.get(distinctId)) {
+				String sql = "UPDATE " + table + " SET sort_order="
+						+ sortOrder++ + " WHERE " + col1 + "=" + distinctId
+						+ " AND " + col2 + "=" + foreignId;
 
-            return -1;
-        }
-    }
+				int count = executeSql(sql);
 
-    private boolean updateDataSetAssociation()
-    {
-        StatementHolder holder = statementManager.getHolder();
+				log.info("Executed: " + count + " - " + sql);
+			}
+		}
+	}
 
-        try
-        {
-            Statement statement = holder.getStatement();
+	private int executeSql(String sql) {
+		try {
+			return statementManager.getHolder().executeUpdate(sql);
+		} catch (Exception ex) {
+			log.debug(ex);
 
-            ResultSet _resultSet = statement.executeQuery( "SELECT * FROM dataentryformassociation" );
-            if ( _resultSet.next() )
-            {
-                ResultSet resultSet = statement
-                    .executeQuery( "SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'dataset'" );
+			return -1;
+		}
+	}
 
-                while ( resultSet.next() )
-                {
-                    executeSql( "UPDATE dataset SET dataentryform=" + resultSet.getInt( 2 ) + " WHERE datasetid="
-                        + resultSet.getInt( 1 ) );
-                }
-                return true;
-            }
+	private boolean updateDataSetAssociation() {
+		StatementHolder holder = statementManager.getHolder();
 
-            return false;
+		try {
+			Statement statement = holder.getStatement();
 
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-            return false;
-        }
-        finally
-        {
-            holder.close();
-        }
+			ResultSet isUpdated = statement
+					.executeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dataentryformassociation'");
 
-    }
+			if (isUpdated.next()) {
 
-    private boolean updateProgramStageAssociation()
-    {
-        StatementHolder holder = statementManager.getHolder();
+				ResultSet resultSet = statement
+						.executeQuery("SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'dataset'");
 
-        try
-        {
-            Statement statement = holder.getStatement();
+				while (resultSet.next()) {
+					executeSql("UPDATE dataset SET dataentryform="
+							+ resultSet.getInt(2) + " WHERE datasetid="
+							+ resultSet.getInt(1));
+				}
+				return true;
+			}
 
-            ResultSet resultSet = statement
-                .executeQuery( "SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'programstage'" );
+			return false;
 
-            while ( resultSet.next() )
-            {
-                executeSql( "UPDATE programstage SET dataentryform=" + resultSet.getInt( 2 ) + " WHERE programstageid="
-                    + resultSet.getInt( 1 ) );
-            }
-            return true;
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-            return false;
-        }
-        finally
-        {
-            holder.close();
-        }
+		} catch (Exception ex) {
+			log.error(ex);
+			return false;
+		} finally {
+			holder.close();
+		}
 
-    }
+	}
+
+	private boolean updateProgramStageAssociation() {
+		StatementHolder holder = statementManager.getHolder();
+
+		try {
+			Statement statement = holder.getStatement();
+
+			ResultSet isUpdated = statement
+					.executeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dataentryformassociation'");
+
+			if (isUpdated.next()) {
+
+				ResultSet resultSet = statement
+						.executeQuery("SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'programstage'");
+
+				while (resultSet.next()) {
+					executeSql("UPDATE programstage SET dataentryform="
+							+ resultSet.getInt(2) + " WHERE programstageid="
+							+ resultSet.getInt(1));
+				}
+			}
+			return true;
+		} catch (Exception ex) {
+			log.error(ex);
+			return false;
+		} finally {
+			holder.close();
+		}
+
+	}
+
 }

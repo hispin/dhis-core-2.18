@@ -153,6 +153,19 @@ public class OrganisationUnit
     	return !this.children.isEmpty();
     }
 
+    public boolean hasChildrenWithCoordinates()
+    {
+        for ( OrganisationUnit child : children )
+        {
+            if ( child.hasCoordinates() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     public boolean hasCoordinates()
     {
         return coordinates != null && coordinates.trim().length() > 0;

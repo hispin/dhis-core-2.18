@@ -22,6 +22,7 @@
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.datepicker.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.js"></script>	
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.urlencode.js"></script>	
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
@@ -47,7 +48,7 @@
 				jQuery( item ).addClass( 'button' );
 			});
 			
-			jQuery.each(jQuery(":text, textarea"), function(i, item){
+			jQuery.each(jQuery(":text, textarea, :password"), function(i, item){
 				jQuery( item ).addClass( 'text' );
 			});
 			

@@ -176,7 +176,7 @@
               <br />
             </td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td align="right" class="NormalB"> $i18n.getString( "ga_to" )<br>
+            <td class="NormalB"> $i18n.getString( "ga_to" )<br>
               <select id="eDateLB" name="eDateLB">
 		#foreach($period in $monthlyPeriods)
                 <option value="$period.id">$simpleDateFormat.format($period.endDate)</option>

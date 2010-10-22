@@ -34,8 +34,10 @@
 		<td><label>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="period" style="min-width:300px">
+				#set( $i=0)
 				#foreach($period in $periods)
-					<option value='$period.id'>$format.formatPeriod( $period )</option>				
+					<option value='${i}'>$format.formatPeriod( $period )</option>				
+					#set( $i=$i+1)
 				#end
 			</select>
 		</td>

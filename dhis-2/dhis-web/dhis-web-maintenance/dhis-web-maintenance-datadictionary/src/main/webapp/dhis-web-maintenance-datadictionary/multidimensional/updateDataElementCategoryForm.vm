@@ -3,7 +3,7 @@
 	
 	jQuery(document).ready(	function(){
 		validator = validation( 'editDataElementCategoryForm', function( form ){ form.submit()}, function(){
-			listValidator( 'memberValidator', 'categoryOptionNames' );			
+			listValidator( 'memberValidator', 'categoryOptions' );			
 		} );		
 		checkValueIsExist( "name", "validateDataElementCategory.action", {id: $dataElementCategory.id});		
 		
@@ -34,15 +34,15 @@
 
 <form id="editDataElementCategoryForm" name="editDataElementCategoryForm" action="updateDataElementCategory.action" method="post">
   
-  <input type="hidden" id="id" name="id" value="$dataElementCategory.id">
+  <input type="hidden" id="id" name="id" value="$dataElementCategory.id"/>
   
   <table>
     <tr>
       <th colspan="3">$i18n.getString( "details" )</th>      
     </tr>
     <tr>
-      <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElementCategory.name )" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+      <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElementCategory.name )" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
       <td></td>
     </tr>      
     <tr>
@@ -68,13 +68,13 @@
     </tr>
 	<tr>
 	  <td><label>$i18n.getString( "selected_name" )</label></td>
-	  <td><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"></td>
+	  <td><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"/></td>
 	  <td></td>
 	</tr>
 	 <tr>
       <td></td>
       <td colspan="2">
-      	<input type="button" value="$i18n.getString( 'update_category_option' )" onclick="updateCategoryOption();" style="width:200px">
+      	<input type="button" value="$i18n.getString( 'update_category_option' )" onclick="updateCategoryOption();" style="width:200px"/>
       </td>
     </tr>
     <tr>
@@ -87,8 +87,8 @@
         </select>   
       </td>
       <td style="width:30px; text-align:center">
-        <a href="javascript:moveUpSelectedOption( 'categoryOptions' )"><img src="../images/move_up.png"></a><br><br>
-        <a href="javascript:moveDownSelectedOption( 'categoryOptions' )"><img src="../images/move_down.png"></a><br><br>
+        <a href="javascript:moveUpSelectedOption( 'categoryOptions' )"><img src="../images/move_up.png"/></a><br/><br/>
+        <a href="javascript:moveDownSelectedOption( 'categoryOptions' )"><img src="../images/move_down.png"/></a><br/><br/>
       </td>
     </tr>
     <tr>
@@ -97,8 +97,8 @@
     <tr>
       <td></td>
       <td colspan="2">
-        <input type="submit" value="$i18n.getString( "save" )" style="width:100px"><input 
-               type="button" onclick="window.location.href='category.action'" value="$i18n.getString( "cancel" )" style="width:100px"></p>
+        <input type="submit" value="$i18n.getString( 'save' )" style="width:100px"/>
+		<input type="button" onclick="window.location.href='category.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
       </td>
     </tr>
   </table>

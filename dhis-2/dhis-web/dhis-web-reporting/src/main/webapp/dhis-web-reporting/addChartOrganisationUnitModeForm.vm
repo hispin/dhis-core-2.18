@@ -73,7 +73,7 @@
     <td colspan="2">
         <select id="selectedPeriods" name="selectedPeriods" style="min-width:600px">               
             #foreach ( $period in $selectedPeriods )
-                <option value="$period.id">$format.formatPeriod( $period )</option>
+                <option value="$period.externalId">$format.formatPeriod( $period )</option>
             #end
         </select>
     </td>

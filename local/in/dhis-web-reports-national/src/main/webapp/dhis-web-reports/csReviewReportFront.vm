@@ -117,8 +117,9 @@
           <td>&nbsp;</td>
         </tr>         
  
-                <tr>
-          <td><input type="submit" name="generate" value='Generate Report'/></td>
+        <tr>
+        	  <td><input type="submit" id= "generate" name="generate" title= "Generate report" value="$i18n.getString( "generate" )"  style="width:6em" #if( $!reportList.size() == 0 ) disabled #end > </td>
+        <!--  <td><input type="submit" name="generate" value='Generate Report'/></td> -->
             <td>
                    <!-- <input type="submit" name="generate" value='Generate Report'/>
             <input type="hidden" name="autogen" id="autogen" value="0" >

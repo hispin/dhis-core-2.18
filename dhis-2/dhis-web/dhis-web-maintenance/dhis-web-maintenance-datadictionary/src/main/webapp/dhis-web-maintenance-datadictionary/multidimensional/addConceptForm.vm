@@ -16,7 +16,7 @@
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" style="width:20em" maxlength="10"
-		class="{validate:{required:true,rangelength:[3,10],custome_regex:[/^[a-zA-Z][a-zA-Z0-9_]{0,9}$/,'$i18n.getString( 'regex_add_edit_concept' )']}}"></td>
+		class="{validate:{required:true,rangelength:[3,10],custome_regex:[/^[a-zA-Z][a-zA-Z0-9_]{0,9}$/,'$i18n.getString( 'regex_add_edit_concept' )']}}"/></td>
 	</tr>
 	<tr>
 		<td></td>

@@ -5,10 +5,12 @@
 
 function addOption( list, value, text )
 {
-  var option = document.createElement( "option" );
+ /* var option = document.createElement( "option" );
   option.value = value;
   option.text = text;
-  list.add( option, null );
+  list.add( option, null ); */
+  
+  $("#" + list.name).append("<option value='"+ value +"'>" + text + "</option>");
 }
 
 function loadIndicatorGroups()

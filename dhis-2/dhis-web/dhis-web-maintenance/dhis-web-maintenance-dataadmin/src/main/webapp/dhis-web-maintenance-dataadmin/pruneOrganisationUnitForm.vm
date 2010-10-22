@@ -10,11 +10,11 @@
     selectionTree.buildSelectionTree();
 </script>
 
-<br>
+<br/>
 	
 <table>
-    <col style="width:2em">
-    <col>
+    <col style="width:2em"/>
+    <col/>
     <tr>
         <td rowspan="3" style="text-align:center;background-color:#ccffcc"></td>
         <th>$i18n.getString( "select_the_org_unit_to_keep" )</th>
@@ -23,7 +23,7 @@
         <td><span id="keepNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="pruneButton" type="button" value="$i18n.getString( "prune" )" onclick="pruneOrganisationUnit()" style="width:10em" disabled="disabled"></td>
+        <td><input id="pruneButton" type="button" value="$i18n.getString( 'prune' )" onclick="pruneOrganisationUnit()" style="width:10em" disabled="disabled"/></td>
     </tr>
 </table>
 

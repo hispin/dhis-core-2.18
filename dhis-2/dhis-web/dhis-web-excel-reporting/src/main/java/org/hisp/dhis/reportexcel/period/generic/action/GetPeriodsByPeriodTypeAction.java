@@ -79,9 +79,8 @@ public class GetPeriodsByPeriodTypeAction
     public String execute()
         throws Exception
     {
-        if ( periodTypeName == null || periodTypeName == "" )
+        if ( periodTypeName == null  )
         {
-
             periodGenericManager.setPeriodType( MonthlyPeriodType.NAME );
         }
         else

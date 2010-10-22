@@ -30,13 +30,11 @@ package org.hisp.dhis.cache;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: CrossTabDataValue.java 5514 2008-08-04 10:48:07Z larshelg $
  */
-@Component("cacheManager")
 public class DefaultHibernateCacheManager
     implements HibernateCacheManager
 {

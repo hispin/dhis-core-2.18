@@ -11,7 +11,7 @@
 
 <h3>$i18n.getString( "cache_statistics" ) #openHelp( "cacheStatistics" )</h3>
 
-<p><input type="button" style="width:150px" value="$i18n.getString( 'clear_cache' )" onclick="window.location.href='clearCache.action'"></p>
+<p><input type="button" style="width:150px" value="$i18n.getString( 'clear_cache' )" onclick="window.location.href='clearCache.action'"/></p>
 
 <h4>$i18n.getString( "second_level_cache_statistics" )</h4>
 

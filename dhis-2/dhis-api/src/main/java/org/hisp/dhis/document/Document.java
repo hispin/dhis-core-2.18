@@ -41,15 +41,18 @@ public class Document
     
     private boolean external;
     
+    private String contentType;
+    
     public Document()
     {   
     }
     
-    public Document( String name, String url, boolean external )
+    public Document( String name, String url, boolean external, String contentType )
     {
         this.name = name;
         this.url = url;
         this.external = external;
+        this.contentType = contentType;
     }
 
     @Override
@@ -119,5 +122,15 @@ public class Document
     public void setExternal( boolean external )
     {
         this.external = external;
+    }
+
+    public String getContentType()
+    {
+        return contentType;
+    }
+
+    public void setContentType( String contentType )
+    {
+        this.contentType = contentType;
     }
 }

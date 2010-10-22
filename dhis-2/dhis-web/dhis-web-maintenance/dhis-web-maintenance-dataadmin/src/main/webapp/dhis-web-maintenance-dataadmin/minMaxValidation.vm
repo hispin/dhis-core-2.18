@@ -22,64 +22,37 @@
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "min_max_value_generation" )</h3>
+
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <form id="minMaxGeneratingForm" action="getMinMaxValidationParams.action" method="POST">
 <table>
   <tr>
     <th colspan="2">$i18n.getString('available_dataset')</th>
-    <td>&nbsp;</td>
-    <th>$i18n.getString('organisation_unit')</th>
+    <td rowspan="2">#organisationUnitSelectionTree( false, true, false ) </td>
   </tr>
   <tr>
-    <td colspan="2" rowspan="3">	<select size="26px" multiple style="width:30em" id='dataSetIds' name='dataSetIds'>
+    <td colspan="2" rowspan="2">	<select size="26px" multiple style="width:30em" id='dataSetIds' name='dataSetIds'>
          
 	#foreach( $dataSet in $dataSets )
       <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
 	#end
     
     </select></td>
-    <td style="width:10px ">&nbsp;</td>
-    <td><input type="button" value="$i18n.getString( "select_all_at_level" )" onclick="selectAllAtLevel()" style="width:12em">
-		<select id="levelList" name="levelList" style="width:12em">
-			#foreach( $lev in $levels )
-				<option value="$lev.level" #if ( $level == $lev.level )selected="selected"#end>$encoder.htmlEncode( $lev.name )</option>
-			#end
-		</select>
-		<input type="button" value="$i18n.getString( "unselect_all_at_level" )" onclick="unselectAllAtLevel()" style="width:12em">
-		<input type="button" value="$i18n.getString( "unselect_all" )" onclick="unselectAll()" style="width:12em">        
-	  </td>
+    </td>
   </tr>
   <tr>
-    <td style="width:10px ">&nbsp;</td>
-    <td><input type="button" value="$i18n.getString( "select_all_in_group" )" onclick="selectGroup()" style="width:12em">
-	  	<select id="groupList" name="groupList" style="width:12em">
-	  		#foreach ( $group in $orgunitGroups )
-	  			<option value="$group.id">$encoder.htmlEncode( $group.name )</option>
-		  	#end
-	  	</select>
-	  	<input type="button" value="$i18n.getString( "unselect_all_in_group" )" onclick="unselectGroup()" style="width:12em">
-  	  </td>
-  </tr>
-  <tr>
-    <td style="width:10px ">&nbsp;</td>
-    <td>
-<div id="selectionTree" style="width:50em;height:28em;overflow:auto;border:1px solid #cccccc"></div>
- 
-</td>
-  </tr>
-  <tr>
-    <td align="center"> </td>
-       <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-    <td align="left"><input type="submit" id="submitButton" style="width:10em" value="$i18n.getString( 'generate' )">
-	<input type="button" onclick="removeMinMaxValue()" id="" style="width:10em" value="$i18n.getString( 'remove' )">
-	  <input type="button"" style="width:10em" onClick="window.location.href='index.action'" value="$i18n.getString( 'cancel' )"></td>
-  
+  	<td><input type="submit" id="submitButton" style="width:10em" value="$i18n.getString( 'generate' )">
+	<input type="button" onclick="removeMinMaxValue()" id="" style="width:10em" value="$i18n.getString( 'remove' )"/>
+	<input type="button"" style="width:10em" onClick="window.location.href='index.action'" value="$i18n.getString( 'cancel' )"/></td>
   </tr>
 </table>
 </form>
+
 <span id='message' #if($!message) style='display: block' #end>$!message</span>
+
 <script type="text/javascript">
 
 	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
@@ -87,12 +60,6 @@
 	var i18n_not_choose_dataset = '$encoder.jsEncode( $i18n.getString( "not_choose_dataset" ) )';
 	var i18n_not_choose_organisation = '$encoder.jsEncode( $i18n.getString( "not_choose_organisation" ) )';
 	var numberOfSelects = 0;
-  
-    selectionTreeSelection.setMultipleSelectionAllowed( true );
-    selectionTreeSelection.setOnSelectFunction( treeClicked );
-    selectionTreeSelection.setListenerFunction( selectCompleted );
-	selectionTree.clearSelectedOrganisationUnits();
-    selectionTree.buildSelectionTree();
-
+ 
 </script>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>

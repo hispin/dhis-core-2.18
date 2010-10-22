@@ -13,8 +13,8 @@
 	</select>
 </p>
 
-<p><input type="submit" value="$i18n.getString( "save" )" style="width:150px"></p>
+<p><input type="submit" value="$i18n.getString( 'save' )" style="width:150px"/></p>
 
-<input type="hidden" name="organisationUnitId" value="$organisationUnitId">
+<input type="hidden" name="organisationUnitId" value="$organisationUnitId"/>
 
 </form>

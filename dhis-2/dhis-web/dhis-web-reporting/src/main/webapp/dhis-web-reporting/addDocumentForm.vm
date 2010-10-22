@@ -1,3 +1,16 @@
+<script>
+	jQuery(document).ready(	function(){
+		validation( 'documentForm', function( form ){			
+			form.submit();
+		},function(){
+		});	
+		checkValueIsExist( "name", "validateDocument.action", {id: "$!document.id"} );
+	});	
+	
+	function checkUploadFile(){
+		
+	}
+</script>
 
 <h3>$i18n.getString( 'create_new_static_report' )</h3>
 
@@ -8,8 +21,8 @@
         <th colspan="2">$i18n.getString( "details" )</th>
     </tr>
     <tr>
-        <td style="width:70px"><label for="name">$i18n.getString( "name" )</label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!document.name"></td>
+        <td style="width:70px"><label for="name">$i18n.getString( "name" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!document.name" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
     </tr>
     <tr>
     	<td><label for="external">$i18n.getString( "type" )</label></td>
@@ -20,7 +33,7 @@
 				#elseif( $!document)
 				<option value="true">$i18n.getString( "external_url" )</option>
 				#else
-				<option value="false">$i18n.getString( "upload_file" )</option>
+				<option value="false" onclick="checkUploadFile();">$i18n.getString( "upload_file" )</option>
 				<option value="true">$i18n.getString( "external_url" )</option>
 				#end
 			</select>
@@ -31,8 +44,9 @@
 <div id="fileDiv">
 <table>
     <tr>
-        <td style="width:70px"><label for="upload">$i18n.getString( "file" )</label></td>
-        <td><input type="file" id="upload" name="upload" size="25"></td>
+        <td style="width:70px"><label for="upload">$i18n.getString( "file" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="file" id="upload" name="upload" size="25" >
+		</td>
     </tr>
 </table>
 </div>
@@ -40,8 +54,8 @@
 <div id="urlDiv">
 <table>
     <tr>
-        <td style="width:70px"><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em" #if($!document) value="$!document.url" #else value="http://" #end></td>
+        <td style="width:70px"><label for="url">$i18n.getString( "url" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="url" name="url" style="width:20em" #if($!document) value="$!document.url" #else value="http://" #end ></td>
     </tr>
 </table>
 </div>
@@ -53,7 +67,7 @@
     <tr>
         <td></td>
         <td>
-        	<input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="saveDocument()"><input
+        	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"><input
                    type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='displayViewDocumentForm.action'">
         </td>
     </tr>
@@ -61,7 +75,6 @@
 
 </form>
 
-<span id="message"#if ( $message ) style="display:block"#end>$!message</span>
 <script>
 	toggleExternal();
 </script>

@@ -238,9 +238,7 @@ public class SearchPatientAction
         // ---------------------------------------------------------------------
         if(sortPatientAttributeId!=null)
         {
-            
             patientAttribute = patientAttributeService.getPatientAttribute(sortPatientAttributeId);
-            
         }
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
@@ -311,7 +309,7 @@ public class SearchPatientAction
             //System.out.println(" searchingAttributeId != null && searchText != null ");
             patients = patientAttributeValueService.searchPatientAttributeValue(
                 patientAttribute, searchText, pagingUtil.getStartPos(), pagingUtil.getPageSize() );
-
+            
             if( patients != null && patients.size() > 0 ) 
             {
                 if(sortPatientAttributeId!=null && patientAttribute!=null)

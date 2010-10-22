@@ -675,8 +675,8 @@ h4 {
 <h3>$i18n.getString( "manage_custom_values" )</h3>
 
 <table>
-	<col> ## selectdataelement
-	<col> ## select_optioncombo
+	<col/> ## selectdataelement
+	<col/> ## select_optioncombo
 <thead>
   <tr>
     <th>$i18n.getString( "selectdataelement" )</th>
@@ -694,7 +694,7 @@ h4 {
                 
         </td>
         <td>
-            <select name="optionComboSelector" id="optionComboSelector"  onchange="getCustomValues('get')" style="min-width:25em" size="10">
+            <select name="optionComboSelector" id="optionComboSelector" onchange="getCustomValues('get')" style="min-width:25em" size="10">
             </select>
         </td>
     </tr>                       
@@ -709,8 +709,8 @@ h4 {
  </table> 
  
 <table>
-	<col> ## available_customvalue
-	<col> ## select_customvalue
+	<col/> ## available_customvalue
+	<col/> ## select_customvalue
 <thead>
   <tr>
     <th>$i18n.getString( "available_customvalue" )</th>
@@ -735,12 +735,12 @@ h4 {
 <tbody>        
     <tr>
         <td>
-            <input type="button" onclick="remove()" value="$i18n.getString( "delete_custom_value" )" style="width:10em">
-            <input type="button" onclick="window.location.href='dataSet.action'" value="$i18n.getString( "done_custom_value" )" style="width:10em">                
+            <input type="button" onclick="remove()" value="$i18n.getString( 'delete_custom_value' )" style="width:10em"/>
+            <input type="button" onclick="window.location.href='dataSet.action'" value="$i18n.getString( 'done_custom_value' )" style="width:10em"/>
         </td>
     </tr> 
 </tbody>
 </table>                                  
 
-<span id="message"></span>
-<input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id">
+<span id="message"/>
+<input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id"/>

@@ -69,9 +69,9 @@ public class SetSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int organisationUnitId )
+    public void setId( Integer organisationUnitId )
     {
         this.id = organisationUnitId;
     }
@@ -92,6 +92,7 @@ public class SetSelectedOrganisationUnitAction
     {
         try
         {
+            
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
 
             if ( unit == null )

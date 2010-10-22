@@ -50,8 +50,9 @@ public class GetDataCompletenessPDFAction
     implements Action
 {
     private static final String KEY_DATA_COMPLETENESS = "dataSetCompletenessResults";
+
     private static final String KEY_DATA_COMPLETENESS_DATASET = "dataSetCompletenessDataSet";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -62,14 +63,14 @@ public class GetDataCompletenessPDFAction
     {
         this.pdfService = pdfService;
     }
-    
+
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -81,13 +82,15 @@ public class GetDataCompletenessPDFAction
     // Output
     // -------------------------------------------------------------------------
 
+    private OrganisationUnit selectedUnit;
+    
     private InputStream inputStream;
 
     public InputStream getInputStream()
     {
         return inputStream;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -96,19 +99,24 @@ public class GetDataCompletenessPDFAction
     public String execute()
         throws Exception
     {
-        Collection<DataSetCompletenessResult> results = 
-            (Collection<DataSetCompletenessResult>) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
-        
+        Collection<DataSetCompletenessResult> results = (Collection<DataSetCompletenessResult>) SessionUtils
+            .getSessionVar( KEY_DATA_COMPLETENESS );
+
         DataSet dataSet = (DataSet) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS_DATASET );
-        
-        OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
-        
+
+        selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
+
+        if ( selectedUnit == null )
+        {
+            return ERROR;
+        }
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        
-        pdfService.writeDataSetCompletenessResult( results, out, i18n, unit, dataSet );
+
+        pdfService.writeDataSetCompletenessResult( results, out, i18n, selectedUnit, dataSet );
 
         inputStream = new ByteArrayInputStream( out.toByteArray() );
-                
+
         return SUCCESS;
     }
 }

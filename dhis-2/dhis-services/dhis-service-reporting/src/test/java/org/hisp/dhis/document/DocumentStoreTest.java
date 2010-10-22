@@ -57,9 +57,9 @@ public class DocumentStoreTest
     {
         documentStore = (GenericIdentifiableObjectStore<Document>) getBean( "org.hisp.dhis.document.DocumentStore" );
         
-        documentA = new Document( "DocumentA", "UrlA", true );
-        documentB = new Document( "DocumentB", "UrlB", true );
-        documentC = new Document( "DocumentC", "UrlC", false );
+        documentA = new Document( "DocumentA", "UrlA", true, null );
+        documentB = new Document( "DocumentB", "UrlB", true, null );
+        documentC = new Document( "DocumentC", "UrlC", false, null );
     }
 
     @Test

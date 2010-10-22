@@ -1,21 +1,21 @@
 
+var selected = false;
+
 function generateResourceTable()
 {
     var organisationUnit = document.getElementById( "organisationUnit" ).checked;
-    var groupSet = document.getElementById( "groupSet" ).checked;
     var dataElementGroupSetStructure = document.getElementById( "dataElementGroupSetStructure" ).checked;
     var indicatorGroupSetStructure = document.getElementById( "indicatorGroupSetStructure" ).checked;
     var organisationUnitGroupSetStructure = document.getElementById( "organisationUnitGroupSetStructure" ).checked;
     var categoryStructure = document.getElementById( "categoryStructure" ).checked;
     var categoryOptionComboName = document.getElementById( "categoryOptionComboName" ).checked;
     
-    if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
+    if ( organisationUnit || dataElementGroupSetStructure || indicatorGroupSetStructure || 
         organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
     {
         setWaitMessage( i18n_generating_resource_tables );
             
         var params = "organisationUnit=" + organisationUnit + 
-            "&groupSet=" + groupSet + 
             "&dataElementGroupSetStructure=" + dataElementGroupSetStructure +
             "&indicatorGroupSetStructure=" + indicatorGroupSetStructure +
             "&organisationUnitGroupSetStructure=" + organisationUnitGroupSetStructure +
@@ -38,4 +38,16 @@ function generateResourceTable()
 function generateResourceTableReceived( messageElement )
 {
     setMessage( i18n_resource_tables_generated );
+}
+
+function toggleAll()
+{	
+	selected = !selected;
+	
+	document.getElementById( "organisationUnit" ).checked = selected;
+	document.getElementById( "dataElementGroupSetStructure" ).checked = selected;
+	document.getElementById( "indicatorGroupSetStructure" ).checked = selected;
+	document.getElementById( "organisationUnitGroupSetStructure" ).checked = selected;
+	document.getElementById( "categoryStructure" ).checked = selected;
+	document.getElementById( "categoryOptionComboName" ).checked = selected;
 }

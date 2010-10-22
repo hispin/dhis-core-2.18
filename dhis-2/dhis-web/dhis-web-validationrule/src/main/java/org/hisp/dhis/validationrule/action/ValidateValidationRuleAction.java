@@ -27,7 +27,6 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -41,8 +40,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ValidateValidationRuleAction
     extends ActionSupport
 {
-    private static final String NONE = "none";
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -52,13 +49,6 @@ public class ValidateValidationRuleAction
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
-    }
-    
-    private ExpressionService expressionService;
-
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
     }
     
     private I18n i18n;
@@ -85,34 +75,7 @@ public class ValidateValidationRuleAction
     {
         this.name = validationName;
     }
-
-    private String operator;
-
-    public void setOperator( String operator )
-    {
-        this.operator = operator;
-    }
-
-    private String leftSideExpression;
-
-    public void setLeftSideExpression( String leftFormula )
-    {
-        this.leftSideExpression = leftFormula;
-    }
-
-    private String rightSideExpression;
-
-    public void setRightSideExpression( String rightFormula )
-    {
-        this.rightSideExpression = rightFormula;
-    }
-
-    private String periodTypeName;
     
-    public void setPeriodTypeName(String periodTypeName) 
-    {
-        this.periodTypeName = periodTypeName;
-    }
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -155,50 +118,6 @@ public class ValidateValidationRuleAction
 
                 return INPUT;
             }
-        }
-        
-        if ( periodTypeName == null || periodTypeName.equals( NONE ) )
-        {
-            message = i18n.getString( "specify_period_type" );
-            
-            return INPUT;
-        }
-        
-        if ( operator == null || operator.equals( NONE ) )
-        {
-            message = i18n.getString( "specify_operator" );
-            
-            return INPUT;
-        }
-
-        if ( leftSideExpression == null || leftSideExpression.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_left_side" );
-            
-            return INPUT;
-        }
-
-        if ( rightSideExpression == null || rightSideExpression.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_right_side" );
-            
-            return INPUT;
-        }
-        
-        String result = expressionService.expressionIsValid( leftSideExpression );
-        
-        if ( !result.equals( ExpressionService.VALID ) )
-        {
-            message = i18n.getString( result );
-            
-            return INPUT;
-        }
-        
-        if ( !result.equals( ExpressionService.VALID ) )
-        {
-            message = i18n.getString( result );
-            
-            return INPUT;
         }
                 
         message = i18n.getString( "everything_is_ok" );

@@ -1,7 +1,7 @@
 <table class="mainPageTable" cellpadding="0">
-	<col id="noCol">
-    <col id="deCol">
-    <col id="greyCol">    	
+	<col id="noCol"/>
+    <col id="deCol"/>
+    <col id="greyCol"/>    	
     <tr>
         <th>$i18n.getString( "nr" )</th>
         <th>$i18n.getString( "data_element" )</th>
@@ -41,11 +41,11 @@
            	#set( $greyedField = $greyedFields.get( "$dataElement.id:$defaultOptionComboId" ) )  
            	         	           	
            	#if( $greyedField == "true" )           		           	            	
-           		<input name="entryfieldTxt" id="[$dataElement.id].txt" type="text" disabled="disabled">
-           	    <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( "enable" )">           	    
+           		<input name="entryfieldTxt" id="[$dataElement.id].txt" type="text" disabled="disabled"/>
+           	    <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( 'enable' )"/>
            	#else           	        
-           	    <input name="entryfieldTxt" id="[$dataElement.id].txt" type="text">
-                <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( "disable" )">
+           	    <input name="entryfieldTxt" id="[$dataElement.id].txt" type="text"/>
+                <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( 'disable' )"/>
            	#end
            	    
            </td>   

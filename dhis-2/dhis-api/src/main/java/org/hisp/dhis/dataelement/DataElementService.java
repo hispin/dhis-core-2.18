@@ -446,15 +446,14 @@ public interface DataElementService
      * @return data elements with identifier in the given id.
      */
     Collection<DataElement> getDataElementsByGroupId( int groupId );
-    
+
     /**
-     * Return void
+     * Defines the given data elements as zero is significant. All other data elements
+     * are defined as zero is in-significant.
      * 
-     * @param dataElementIs is list of data element id which you want to update
-     *        zeroIsSignificant property is true of false
-     * @param zeroIsSignificant is true or false
+     * @param dataElementIds identifiers of data elements where zero is significant.
      */
-    void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds, boolean zeroIsSignificant );
+    void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds );
 
     /**
      * Returns all DataElement which zeroIsSignificant property is true or false

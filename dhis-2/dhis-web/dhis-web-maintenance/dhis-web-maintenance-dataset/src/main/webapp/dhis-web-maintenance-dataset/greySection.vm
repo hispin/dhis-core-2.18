@@ -1,8 +1,8 @@
   <h3>$i18n.getString( "section_grey_field_managment" )</h3>
   
   <table id="detailsList">
-    <col> ## Labels
-    <col> ## Input
+    <col/> ## Labels
+    <col/> ## Input
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "section_details" )</th>
@@ -10,26 +10,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><b>$section.name</b></td>        
       </tr>
       <tr>
-        <td><label>$i18n.getString( "title" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "title" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><b>$section.title</b></td>
       </tr>
       <tr>
-        <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><b>$section.dataSet.name</b></td>
       </tr>
       <tr>
-        <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><b>$categoryCombo.name</b></td>
       </tr>
     </tbody>    
   </table>
-<br>
-<hr style="clear:both">
-<br> 
+<br/>
+<hr style="clear:both"/>
+<br/> 
 
 <div style="border:1px solid #808080;width:98%">
 	#if( $sectionIsMultiDimensional == "true" )    
@@ -39,16 +39,15 @@
 	#end	
 </div>
 
-<br>
-<hr style="clear:both">
-<br>
+<br/>
+<hr style="clear:both"/>
+<br/>
 	
 <p>
-	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( "back" )">
+	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'back' )"/>
 </p>
 	
 <script type="text/javascript">
     var i18n_enable = '$encoder.jsEscape( $i18n.getString( "enable" ) , "'" )';
     var i18n_disable = '$encoder.jsEscape( $i18n.getString( "disable" ) , "'" )';
-</script>	
-	
+</script>

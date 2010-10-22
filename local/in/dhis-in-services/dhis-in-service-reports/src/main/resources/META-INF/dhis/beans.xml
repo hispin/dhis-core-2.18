@@ -31,6 +31,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
 		</property>
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+		</property>
 	</bean>
 	
 	<!-- DeletionHandlers -->

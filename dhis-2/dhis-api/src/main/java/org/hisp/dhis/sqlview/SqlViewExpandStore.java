@@ -22,7 +22,7 @@ public interface SqlViewExpandStore
 
     boolean createView( SqlView sqlViewInstance );
 
-    void dropView( Object object );
+    void dropViewTable( String sqlViewName );
 
     void setUpDataSqlViewTable( SqlViewTable sqlViewTable, String viewTableName );
 

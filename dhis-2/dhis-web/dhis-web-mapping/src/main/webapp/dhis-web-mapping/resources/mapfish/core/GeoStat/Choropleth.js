@@ -21,96 +21,41 @@
  * @requires core/GeoStat.js
  */
 
-/**
- * Class: mapfish.GeoStat.Choropleth
- * Use this class to create choropleths on a map.
- *
- * Inherits from:
- * - <mapfish.GeoStat>
- */
 mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 
-    /**
-     * APIProperty: colors
-     * {Array(<mapfish.Color>}} Array of 2 colors to be applied to features
-     *     We should use styles instead
-     */
     colors: [
         new mapfish.ColorRgb(120, 120, 0),
         new mapfish.ColorRgb(255, 0, 0)
     ],
 
-    /**
-     * APIProperty: method
-     * {Integer} Specifies the distribution method to use. Possible
-     *      values are:
-     *      mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS and
-     *      mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS
-     */
     method: mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS,
 
-    /**
-     * APIProperty: numClasses
-     * {Integer} Number of classes
-     */
     numClasses: 5,
 
-    /**
-     * Property: defaultSymbolizer
-     * {Object} Overrides defaultSymbolizer in the parent class
-     */
     defaultSymbolizer: {'fillOpacity': 1},
 
-    /**
-     * Property: classification
-     * {<mapfish.GeoStat.Classification>} Defines the different classification to use
-     */
     classification: null,
 
-    /**
-     * Property: colorInterpolation
-     * {Array({<mapfish.Color>})} Array of {<mapfish.Color} resulting from the
-     *      RGB color interpolation
-     */
     colorInterpolation: null,
 
-    /**
-     * Constructor: mapfish.GeoStat.Choropleth
-     *
-     * Parameters:
-     * map - {<OpenLayers.Map>} OpenLayers map object
-     * options - {Object} Hashtable of extra options
-     */
     initialize: function(map, options) {
         mapfish.GeoStat.prototype.initialize.apply(this, arguments);
     },
 
-    /**
-     * APIMethod: updateOptions
-     *      Method used to update the properties method, indicator,
-     *      numClasses and colors.
-     *
-     * Parameters:
-     * newOptions - {Object} options object
-     */
     updateOptions: function(newOptions) {
         var oldOptions = OpenLayers.Util.extend({}, this.options);
         this.addOptions(newOptions);
         if (newOptions) {
             this.setClassification();
-            // this.createColorInterpolation();
         }
     },
 
-    /**
-     * Method: createColorInterpolation
-     *      Generates color interpolation in regard to classification.
-     */
     createColorInterpolation: function() {
         var initialColors = this.colors;
         var numColors = this.classification.bins.length;
 		var mapLegendType = ACTIVEPANEL == organisationUnitAssignment ?
-            map_legend_type_automatic : Ext.getCmp('maplegendtype_cb').getValue();
+            map_legend_type_automatic : ACTIVEPANEL == thematicMap ?
+                Ext.getCmp('maplegendtype_cb').getValue() : Ext.getCmp('maplegendtype_cb2').getValue();
 		
 		if (mapLegendType == map_legend_type_automatic) {
 			this.colorInterpolation = choropleth.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
@@ -120,16 +65,12 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 		}
 		else if (mapLegendType == map_legend_type_predefined) {
 			this.colorInterpolation = choropleth.colorInterpolation;
-            for (var i = 0; i < choropleth.colorInterpolation.length && i < choropleth.colorInterpolation.length; i++) {
+            for (var i = 0; i < choropleth.imageLegend.length && i < choropleth.colorInterpolation.length; i++) {
                 choropleth.imageLegend[i].color = choropleth.colorInterpolation[i].toHexString();
             }
 		}
     },
 	
-    /**
-     * Method: setClassification
-     *      Creates a classification with the features.
-     */
     setClassification: function() {
         var values = [];
         // var features = this.layer.features;
@@ -150,13 +91,6 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         this.createColorInterpolation();
     },
 
-    /**
-     * APIMethod: applyClassification
-     *      Style the features based on the classification
-     *
-     * Parameters:
-     * options - {Object}
-     */
     applyClassification: function(options) {
         this.updateOptions(options);
         var boundsArray = this.classification.getBoundsArray();
@@ -177,10 +111,6 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
     },
 
-    /**
-     * Method: updateLegend
-     *    Update the legendDiv content with new bins label
-     */
     updateLegend: function() {
         if (!this.legendDiv) {
             return;

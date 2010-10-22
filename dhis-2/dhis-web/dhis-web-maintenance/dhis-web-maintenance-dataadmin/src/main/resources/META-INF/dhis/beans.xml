@@ -60,25 +60,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Maintenance -->
 
-	<bean
-		id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
+	<bean id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
 		class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
 		scope="prototype">
 		<property name="maintenanceService" ref="org.hisp.dhis.maintenance.MaintenanceService" />
 		<property name="completenessStore"
 			ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
-		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<!-- Resource table -->
 
-	<bean
-		id="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
+	<bean id="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
 		class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
 		scope="prototype">
-		<property name="resourceTableService"
-			ref="org.hisp.dhis.resourcetable.ResourceTableService" />
+		<property name="resourceTableService" ref="org.hisp.dhis.resourcetable.ResourceTableService" />
+		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
 	</bean>
 
 	<!-- Cache -->
@@ -91,8 +89,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Data integrity -->
 
-	<bean
-		id="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
+	<bean id="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
 		class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
 		scope="prototype">
 		<property name="dataIntegrityService"
@@ -221,25 +218,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction"
 		scope="prototype">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.minmaxvalidation.SetupTreeAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SetupTreeAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService" />
-		</property>
-	</bean>
-
+	
 	<bean
 		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction"
 		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
@@ -276,56 +256,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-	<!-- Min/Max validation - Organisation Unit tree -->
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectLevelAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectLevelAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectOrganisationUnitGroupAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.SelectOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectAllAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectAllAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectLevelAction"
-		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectOrganisationUnitGroupAction"
-		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.UnselectOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitGroupService" 
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
 	<!-- Sql View -->
 	
 	<bean id="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction"
@@ -366,18 +296,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<bean id="org.hisp.dhis.dataadmin.action.sqlview.ExecuteSqlViewQueryAction"
 		class="org.hisp.dhis.dataadmin.action.sqlview.ExecuteSqlViewQueryAction"
-		scope="prototype">
-		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataadmin.action.sqlview.DropAllSqlViewTablesAction"
-		class="org.hisp.dhis.dataadmin.action.sqlview.DropAllSqlViewTablesAction"
-		scope="prototype">
-		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataadmin.action.sqlview.RegenerateAllSqlViewTablesAction"
-		class="org.hisp.dhis.dataadmin.action.sqlview.RegenerateAllSqlViewTablesAction"
 		scope="prototype">
 		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
 	</bean>

@@ -91,7 +91,8 @@ public class GenerateAdvancedReportOrgGroupListingAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId );
 
-        Period period = periodDatabaseService.getSelectedPeriod();
+        Period period = periodGenericManager.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService

@@ -113,9 +113,9 @@ public class GetSurveyAction
         throws Exception
     {
     	survey = surveyService.getSurvey( surveyId );
-
+    	
     	surveyIndicators = new ArrayList<Indicator>( survey.getIndicators() );
-
+    	
         //Collections.sort( surveyIndicators, dataElementComparator );       
                 	
         //displayPropertyHandler.handle( dataSetDataElements );

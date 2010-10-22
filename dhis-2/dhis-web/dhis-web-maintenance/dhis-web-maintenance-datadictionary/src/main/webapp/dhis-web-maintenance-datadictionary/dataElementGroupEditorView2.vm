@@ -22,20 +22,20 @@
 	$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroupEditor" )
 </h3>
 
-<span id='message' style="position:fixed;top:80px;right:5px;" onclick="hideById('message');"></span>
+<span id='message' style="position:fixed;top:80px;right:5px;" onclick="hideById('message');"/>
 
-<table >
+<table>
 	<tr>
 		<th>$i18n.getString( "available_dataelements" )</th>		
 		<th><span id="groupNameView" style="display:block;"></span></th>
-		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>		
+		<td rowspan="2" style="text-align:center"><a href="dataElementGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"/></a></td>		
 		<th>$i18n.getString( "available_groups" )</th>
 	</tr>
 
 	<tr>		
-		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterAvailableDataElements();"></td>		
-		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"></td>
-		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"></td>		
+		<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterAvailableDataElements();"/></td>		
+		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"/></td>
+		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"/></td>		
 	</tr>
 
 	<tr>
@@ -48,8 +48,8 @@
 			</select>
 		</td>
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:42px"><br><br>
-			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:42px">
+			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:42px"/><br/><br/>
+			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:42px"/>
 		</td>	
 		<td>
           <select name="select" size="30" multiple="multiple" class="select" id="availableGroups" ondblclick="addSelectedGroups()" onmouseout="javascript: hideToolTip();">
@@ -57,21 +57,16 @@
 </td>		
 	</tr>
 	<tr>
-		<td></td>	
-		
+		<td></td>
 		<td>			
-			<input type="button" value="$i18n.getString( 'assign_groups_for_dataelement' )" onclick="javascript:assignGroupsForDataElement()">
+			<input type="button" value="$i18n.getString( 'assign_groups_for_dataelement' )" onclick="javascript:assignGroupsForDataElement()"/>
 		</td>
 		<td></td>
 		<td>		
-			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataElementGroupForm()" style="width:70px">
-			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataElementGroupForm()" style="width:70px">
-			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataElementGroup()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataElementGroupForm()" style="width:70px"/>
+			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataElementGroupForm()" style="width:70px"/>
+			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataElementGroup()" style="width:70px"/>
 		</td>
-		
-		
-
-
 	</tr>
 </table>
 
@@ -92,13 +87,12 @@
 
 <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
 	<div style="float:right">
-		<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+		<a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"/></a>
 	</div>
 	<p><span id="warningField"></span></p>
 </div>
 
 <div id="tooltip"></div>
-
 
 <script type="text/javascript">
 	var i18n_select_dataelement_group = '$encoder.jsEscape( $i18n.getString( "select_dataelement_group" ) , "'")';

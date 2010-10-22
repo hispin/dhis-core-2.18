@@ -143,6 +143,5 @@ function filterSaveZeroValueDataElements()
 function submitForm()
 {
 	selectAllById('zeroDataValueElements');
-	selectAllById('ignoreZeroValueDataElements');
 	byId('ZeroDataValueManagement').submit();
 }

@@ -88,23 +88,27 @@ public interface ReportService
     // ReportService Design 
     // -------------------------------------------------------------------------
 
-    public List<Period> getMonthlyPeriods( Date start, Date end );
+    List<Period> getMonthlyPeriods( Date start, Date end );
 
-    public PeriodType getPeriodTypeObject( String periodTypeName );
+    PeriodType getPeriodTypeObject( String periodTypeName );
 
-    public Period getPeriodByMonth( int month, int year, PeriodType periodType );
+    Period getPeriodByMonth( int month, int year, PeriodType periodType );
 
-    public List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU );
+    List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU );
 
-    public PeriodType getDataElementPeriodType( DataElement de );
+    PeriodType getDataElementPeriodType( DataElement de );
     
     // -------------------------------------------------------------------------
     // ReportService for Report Result Action
     // -------------------------------------------------------------------------
     
    // public List<String> getDECodes( String fileName );
-    public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
-    public String getIndividualResultDataValue( String formula, Date startDate, Date endDate,OrganisationUnit organisationUnit , String reportModelTB );
-    public String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
+    String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
+    String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit, String reportModelTB );
+    String getResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
+    List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod );
+    Period getPreviousPeriod( Period selectedPeriod );
 
 }

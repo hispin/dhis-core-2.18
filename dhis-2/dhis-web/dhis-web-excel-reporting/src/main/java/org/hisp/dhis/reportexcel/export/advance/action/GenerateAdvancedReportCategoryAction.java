@@ -90,7 +90,8 @@ public class GenerateAdvancedReportCategoryAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId );
 
-        Period period = periodDatabaseService.getSelectedPeriod();
+        Period period = periodGenericManager.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager

@@ -19,6 +19,18 @@
 
   <!-- Configuration -->
 
+  <bean id="cacheManager" class="org.hisp.dhis.cache.DefaultHibernateCacheManager"/>
+  
+  <bean id="dbmsManager" class="org.hisp.dhis.dbms.HibernateDbmsManager"/>
+  
+  <bean id="hibernateConfigurationProvider" class="org.hisp.dhis.hibernate.DefaultHibernateConfigurationProvider"/>
+  
+  <bean id="hibernateMappingDirectoryLocations" class="org.hisp.dhis.hibernate.HibernateMappingDirectoryLocationsFactoryBean"/>
+  
+  <bean id="hibernateMappingJarLocations" class="org.hisp.dhis.hibernate.HibernateMappingJarLocationsFactoryBean"/>
+  
+  <bean id="hibernateProperties" class="org.hisp.dhis.hibernate.HibernatePropertiesFactoryBean"/>
+
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
     <property name="hibernateProperties" ref="hibernateProperties"/>

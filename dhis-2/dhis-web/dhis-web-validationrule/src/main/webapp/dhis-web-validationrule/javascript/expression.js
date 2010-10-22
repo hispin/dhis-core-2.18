@@ -1,34 +1,39 @@
 
 function showEditLeftSideExpressionForm()
 {
-	var description = htmlEncode( document.getElementById( "leftSideDescription" ).value );
-	var expression = htmlEncode( document.getElementById( "leftSideExpression" ).value );
-	var textualExpression = htmlEncode( document.getElementById( "leftSideTextualExpression" ).value );
-	var periodTypeName = htmlEncode( document.getElementById( "periodTypeName" ).value );
+	var description = byId( "leftSideDescription" ).value;
+	var expression = byId( "leftSideExpression" ).value;
+	var textualExpression = byId( "leftSideTextualExpression" ).value;
+	var periodTypeName = byId( "periodTypeName" ).value;
 	
 	showExpressionForm( "left", description, expression, textualExpression, periodTypeName );
 }
 
 function showEditRightSideExpressionForm()
 {
-	var description = htmlEncode( document.getElementById( "rightSideDescription" ).value );
-	var expression = htmlEncode( document.getElementById( "rightSideExpression" ).value );
-	var textualExpression = htmlEncode( document.getElementById( "rightSideTextualExpression" ).value );
-	var periodTypeName = htmlEncode( document.getElementById( "periodTypeName" ).value );
+	var description = byId( "rightSideDescription" ).value;
+	var expression = byId( "rightSideExpression" ).value;
+	var textualExpression = byId( "rightSideTextualExpression" ).value;
+	var periodTypeName = byId( "periodTypeName" ).value;
 
 	showExpressionForm( "right", description, expression, textualExpression, periodTypeName );
 }
 
 function showExpressionForm( side, description, expression, textualExpression, periodTypeName )
 {
-	var url = "showEditExpressionForm.action?side=" + side +		
-		"&description=" + description +
-		"&expression=" + expression +
-		"&textualExpression=" + textualExpression +
-		"&periodTypeName=" + periodTypeName ;
-		
-    var dialog = window.open( url, "_blank", 
-    	"directories=no, height=600, width=790, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
+	$.post("showEditExpressionForm.action",
+		{
+			side: side,
+			description: description ,
+			expression: expression,
+			textualExpression: textualExpression,
+			periodTypeName: periodTypeName
+		},
+		function (data)
+		{
+			byId('dynamicContent').innerHTML = data;			
+			showPopupWindowById( 'dynamicContent', 755, 450 );
+		},'html');
 }
 
 function insertText( inputAreaName, inputText )
@@ -42,7 +47,7 @@ function filterDataElements( dataSetName, filterName )
 {
 	var dataSet = byId( dataSetName );
 	var dataSetId = dataSet.options[ dataSet.selectedIndex ].value;
-	var filter = htmlEncode( byId( filterName ).value );
+	var filter = byId( filterName ).value;
 	var periodTypeName = getFieldValue( 'periodTypeName');
 	
     var url = "getFilteredDataElements.action";
@@ -72,31 +77,51 @@ function filterDataElements( dataSetName, filterName )
 
 function updateTextualExpression( expressionFieldName )
 {	
-	var expression = htmlEncode( document.getElementById( expressionFieldName ).value );
+	var expression = document.getElementById( expressionFieldName ).value;
 	
-	var url = "getTextualExpression.action?expression=" + expression;
-	
-	var request = new Request();
-	request.setCallbackSuccess( updateTextualExpressionReceived );
-    request.send( url );
+	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
+			{expression: expression},
+			function( json ){
+				byId( "textualExpression" ).innerHTML = json.message;
+			});		
 }
 
-function updateTextualExpressionReceived( messageElement )
-{
-	document.getElementById( "textualExpression" ).innerHTML = messageElement;
+function checkNotEmpty( field, message ){
+		
+	if( field.value.length == 0 ){
+		setInnerHTML( field.name + "Info", message );
+		$( '#'+ field.name ).css( "background-color", "#ffc5c5" );
+		return false;
+	}else{
+		setInnerHTML( field.name + "Info", '' );
+		$( '#'+ field.name ).css( "background-color", "#ffffff" );
+	}
+	
+	return true;
 }
 
 function validateExpression()
 {
-	var description = htmlEncode( byId( "description" ).value );
-	var expression = htmlEncode( byId( "expression" ).value );
+	var description = byId( "expDescription" ).value;
+	var expression = byId( "expression" ).value;
     
-    var url = "validateExpression.action?description=" + description + "&expression=" + expression;
-
-    var request = new Request();
-    request.setResponseTypeXML( "message" );
-    request.setCallbackSuccess( validateExpressionReceived );
-    request.send( url );    
+	if( checkNotEmpty( byId( "expDescription" ), i18n_description_not_null ) == false )
+		return;
+	if( checkNotEmpty( byId( "expression" ), i18n_expression_not_null ) == false )
+		return;
+		
+	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
+			{expression: expression},
+			function( json ){
+				byId( "textualExpression" ).innerHTML = json.message;
+				var description = byId( "expDescription" ).value;
+				var expression = byId( "expression" ).value;
+				var textualDescription = byId( "textualExpression" ).innerHTML;
+				var side = byId( "side" ).value;
+				saveExpression( side, description, expression, textualDescription);
+				disable('periodTypeName');
+				return true;					
+			});		
 }
 
 function validateExpressionReceived( xmlObject )
@@ -106,12 +131,12 @@ function validateExpressionReceived( xmlObject )
     
     if ( type == "success" )
     {
-		var description = byId( "description" ).value;
+		var description = byId( "expDescription" ).value;
 		var expression = byId( "expression" ).value;
 		var textualDescription = byId( "textualExpression" ).innerHTML;
-		var side = htmlEncode( byId( "side" ).value );
+		var side = byId( "side" ).value;
         saveExpression(side, description, expression, textualDescription);
-		window.opener.document.getElementById('periodTypeName').disabled = true;
+		disable('periodTypeName');
     }
     else if ( type == "error" )
     {
@@ -121,23 +146,21 @@ function validateExpressionReceived( xmlObject )
 
 function saveExpression(side, description, expression, textualDescription)
 {
-    if ( window.opener && !window.opener.closed )
-    {
-	    if ( side == "left" )
-	    {
-	    	window.opener.document.getElementById( "leftSideDescription" ).value = description;
-			window.opener.document.getElementById( "leftSideExpression" ).value = expression;
-			window.opener.document.getElementById( "leftSideTextualExpression" ).value = textualDescription;
-		}
-		else if ( side == "right" )
-		{
-			window.opener.document.getElementById( "rightSideDescription" ).value = description;
-			window.opener.document.getElementById( "rightSideExpression" ).value = expression;
-			window.opener.document.getElementById( "rightSideTextualExpression" ).value = textualDescription;
-		}
-    }
-	
-    window.close();
+	if ( side == "left" )
+	{
+		byId( "leftSideDescription" ).value = description;
+		byId( "leftSideExpression" ).value = expression;
+		byId( "leftSideTextualExpression" ).value = textualDescription;
+	}
+	else if ( side == "right" )
+	{
+		byId( "rightSideDescription" ).value = description;
+		byId( "rightSideExpression" ).value = expression;
+		byId( "rightSideTextualExpression" ).value = textualDescription;
+	}
+
+	hideById('dynamicContent');
+	unLockScreen();
 }
 
 // -----------------------------------------------------------------------------
@@ -146,17 +169,17 @@ function saveExpression(side, description, expression, textualDescription)
 
 function setNullExpression(){
 	// set left-expression
-	var description = htmlEncode( byId( "leftSideDescription" ).value );
+	var description = byId( "leftSideDescription" ).value;
 	byId( "leftSideExpression" ).value  = '';
 	byId( "leftSideTextualExpression" ).value = '';
 	saveExpression('left', description, '', '');
 
 	// set right-expression
-	description = htmlEncode( byId( "rightSideDescription" ).value );
+	description = byId( "rightSideDescription" ).value;
 	byId( "rightSideExpression" ).value = '';
 	byId( "rightSideTextualExpression" ).value = '';
 	saveExpression('right', description, '', '');
 	
 	// Show periodType combo
-	byId('periodTypeName').disabled = false;
+	enable('periodTypeName');
 }

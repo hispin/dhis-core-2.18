@@ -16,6 +16,7 @@
         {
           "id":"$!{unit.id}",
           "name":"$!encoder.jsEncode( ${unit.name} )",
+          "hasChildrenWithCoordinates":$!{unit.hasChildrenWithCoordinates()},
           "type":"Facility"
         }
     }#if( $velocityCount < $size ),#end

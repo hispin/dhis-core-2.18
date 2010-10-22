@@ -19,7 +19,7 @@ function analyseData()
 			"&organisationUnit=" + selectedOrganisationUnit +
 			"&" + getParamString( "dataSets" );
 			
-		if ( $( "#standardDeviation" ) )
+		if ( byId( "standardDeviation" ) != null )
 		{
 			url += "&standardDeviation=" + $( "#standardDeviation" ).val();
 		}

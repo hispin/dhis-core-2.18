@@ -43,7 +43,6 @@ function SelectionTreeSelection()
 
     this.select = function( unitId )
     {
-		
         if ( onSelectFunction )
         {
             onSelectFunction();
@@ -59,10 +58,11 @@ function SelectionTreeSelection()
         if ( linkTags[0].className == 'selected' )
         {
             request.send( selectionTreePath + 'removeorgunit.action?id=' + unitId );
-            linkTags[0].className = '';
+            linkTags[0].className = '';			
         }
         else
-        {
+        {			
+			
             if ( multipleSelectionAllowed )
             {
                 request.send( selectionTreePath + 'addorgunit.action?id=' + unitId );
@@ -91,19 +91,22 @@ function SelectionTreeSelection()
 
     function responseReceived( rootElement )
     {
-        if ( !listenerFunction )
-        {
-            return;
-        }
-
-        var unitIds = new Array();
+		selectedOrganisationUnit = new Array();
+	
+		var unitIds = new Array();
 
         var unitIdElements = rootElement.getElementsByTagName( 'unitId' );
         
         for ( var i = 0, unitIdElement; ( unitIdElement = unitIdElements[i] ); ++i )
         {
             unitIds[i] = unitIdElement.firstChild.nodeValue;
+			selectedOrganisationUnit.push( unitIdElement.firstChild.nodeValue );	
         }
+		
+        if ( !listenerFunction )
+        {
+            return;
+        }       
         
         listenerFunction( unitIds );
     }
@@ -270,6 +273,7 @@ function SelectionTree()
         {
             linkTag.className = 'selected';
 			selectedOrganisationUnit.push( childId );
+			addSelectedOrganisationUnitABCDEF( childId );
         }
 
         var childTag = document.createElement( 'li' );

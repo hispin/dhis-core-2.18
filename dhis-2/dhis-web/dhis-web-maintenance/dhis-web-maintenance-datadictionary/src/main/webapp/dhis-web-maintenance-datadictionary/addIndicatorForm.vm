@@ -15,11 +15,11 @@
 
 <div>
 	
-	<input type="hidden" id="numeratorDescription" name="numeratorDescription">
-	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator">
+	<input type="hidden" id="numeratorDescription" name="numeratorDescription"/>
+	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator"/>
 	
-	<input type="hidden" id="denominatorDescription" name="denominatorDescription">
-	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator">
+	<input type="hidden" id="denominatorDescription" name="denominatorDescription"/>
+	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator"/>
 </div>
 
 <table>
@@ -27,24 +27,24 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
 	</tr>
 	<tr>
-		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="20" style="width:20em" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" maxlength="150" class="{validate:{rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" maxlength="150" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" style="width:20em" class="{validate:{rangelength:[3,25],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
+		<td><input type="text" id="code" name="code" style="width:20em" maxlength="25" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{rangelength:[3,250],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{minlength:[3,250],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="annualized">$i18n.getString( "annualized" )</label></td>
@@ -56,7 +56,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em">				
 			#foreach( $indicatorType in $indicatorTypes )
@@ -67,7 +67,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em" maxlength="255" class="{validate:{url:true,maxlength:255}}"></td>
+        <td><input type="text" id="url" name="url" style="width:20em" maxlength="255" class="{validate:{url:true}}"/></td>
     </tr>
 	<tr>
 		<td></td>
@@ -79,7 +79,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em">
+			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"/>
 			<input type="hidden" id="denominator" name="denominator" class="{validate:{required:true}}"/>
 		</td>
 	</tr>
@@ -89,7 +89,7 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="submit" value="$i18n.getString( "add" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='indicator.action'" style="width:10em"></td>
+		<td><input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicator.action'" style="width:10em"/></td>
 	</tr>
 </table>
 

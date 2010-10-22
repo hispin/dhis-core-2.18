@@ -17,16 +17,16 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
 	</tr>
 	<tr>
-		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="factor" name="factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true,min:1}}"></td>
+		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="factor" name="factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true,min:1}}"/></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="submit" value="$i18n.getString( "add" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='indicatorType.action'" style="width:10em"></td>
+		<td><input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicatorType.action'" style="width:10em"/></td>
 	</tr>
 </table>
 

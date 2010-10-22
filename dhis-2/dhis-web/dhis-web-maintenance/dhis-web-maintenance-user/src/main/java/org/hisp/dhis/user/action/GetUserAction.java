@@ -29,12 +29,8 @@ package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
@@ -57,13 +53,6 @@ public class GetUserAction
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,29 +80,20 @@ public class GetUserAction
         return userAuthorityGroups;
     }
 
-    private List<OrganisationUnitGroup> organisationUnitGroups;
-
-    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
-    {
-        return organisationUnitGroups;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------------------------------------   
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        userCredentials = userStore.getUserCredentials( userStore.getUser( id ) );
+        User user = userStore.getUser( id );
+
+        userCredentials = userStore.getUserCredentials( user );
 
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
-        
-        userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
 
-        organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-        
-        Collections.sort( organisationUnitGroups, new OrganisationUnitGroupNameComparator() );
+        userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );        
         
         return SUCCESS;
     }

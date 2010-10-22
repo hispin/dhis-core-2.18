@@ -67,7 +67,7 @@ public class CreateCategoryTableStatement
 
         statement += "PRIMARY KEY ( categoryoptioncomboid ) )";
                 
-        log.info( "Create category table SQL: " + statement );
+        log.info( "Create category structure table SQL: " + statement );
         
         return statement;
     }        

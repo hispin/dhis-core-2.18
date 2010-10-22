@@ -76,69 +76,6 @@ function runSqlViewQuery( viewId )
 	);
 }
 
-function selectOrUnselectALL()
-{
-	var listRadio = document.getElementsByName('resourceTableCheckBox');
-	
-	for (var i = 0 ; i < listRadio.length ; i++) {
-	
-		listRadio.item(i).checked = checkingStatus;
-	}
-	
-	// If true, its means the items unselected yet
-	if ( checkingStatus )
-	{
-		$("#selectAllButton").val( i18n_unselect_all );
-	}
-	else
-	{
-		$("#selectAllButton").val( i18n_select_all );
-	}
-	checkingStatus = !checkingStatus;
-}
-
-// -----------------------------------------------------------------------
-// Re-generating for the resource tables and the view ones
-// -----------------------------------------------------------------------
-
-function validateRegenerateResourceView()
-{
-	var params = "";
-	var organisationUnit = byId( "organisationUnit" ).checked;
-    var groupSet = byId( "groupSet" ).checked;
-    var dataElementGroupSetStructure = byId( "dataElementGroupSetStructure" ).checked;
-    var indicatorGroupSetStructure = byId( "indicatorGroupSetStructure" ).checked;
-    var organisationUnitGroupSetStructure = byId( "organisationUnitGroupSetStructure" ).checked;
-    var categoryStructure = byId( "categoryStructure" ).checked;
-    var categoryOptionComboName = byId( "categoryOptionComboName" ).checked;
-
-    if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
-        organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
-    {
-        setWaitMessage( i18n_regenerating_resource_tables_and_views );
-		
-		var submitForm = byId("regenerateResourceViewForm")
-		
-		params += (organisationUnit == true ? "organisationUnit=true&" : "");
-		params += (groupSet == true ? "groupSet=true&" : "");
-		params += (dataElementGroupSetStructure == true ? "dataElementGroupSetStructure=true&" : "");
-		params += (indicatorGroupSetStructure == true ? "indicatorGroupSetStructure=true&" : "");
-		params += (organisationUnitGroupSetStructure == true ? "organisationUnitGroupSetStructure=true&" : "");
-		params += (categoryStructure == true ? "categoryStructure=true&" : "");
-		params += (categoryOptionComboName == true ? "categoryOptionComboName=true&" : "");
-		
-		submitForm.action +="?"+params;
-		submitForm.submit();
-    }
-    else
-    {
-        setMessage( i18n_select_options );
-		
-		return false;
-    }
-
-}
-
 // -----------------------------------------------------------------------
 // View data from the specified view table
 // -----------------------------------------------------------------------

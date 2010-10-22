@@ -75,13 +75,6 @@ public class ValidateRoleAction
     {
         this.name = name;
     }
-    
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -101,45 +94,22 @@ public class ValidateRoleAction
     public String execute()
         throws Exception
     {
-        if ( id == null )
+        if ( name != null )
         {
-            if ( name == null )
+
+            UserAuthorityGroup match = userStore.getUserAuthorityGroupByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
             {
-                message = i18n.getString( "specify_name" );
+                message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
-            else
-            {
-                name = name.trim();
 
-                if ( name.length() == 0 )
-                {
-                    message = i18n.getString( "specify_name" );
-
-                    return INPUT;
-                }
-
-                UserAuthorityGroup match = userStore.getUserAuthorityGroupByName( name );
-
-                if ( match != null )
-                {
-                    message = i18n.getString( "name_in_use" );
-
-                    return INPUT;
-                }
-            }
         }
 
-        if ( id == null && ( description == null || description.trim().length() == 0 ) )
-        {
-            message = i18n.getString( "specify_description" );
-
-            return INPUT;
-        }
-        
         message = i18n.getString( "everything_is_ok" );
-        
+
         return SUCCESS;
     }
 }

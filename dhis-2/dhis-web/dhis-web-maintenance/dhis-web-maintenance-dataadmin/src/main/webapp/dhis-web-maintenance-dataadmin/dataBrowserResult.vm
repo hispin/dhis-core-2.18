@@ -38,10 +38,10 @@
 		
 		<form method="get" id="childSelectorForm" action="searchResult.action">
 			<div>
-			<input type="hidden" name="searchOption" value="$searchOption">
-			<input type="hidden" name="periodTypeId" value="$periodTypeId">
-			<input type="hidden" name="fromDate" value="$fromDate">
-			<input type="hidden" name="toDate" value="$toDate">
+			<input type="hidden" name="searchOption" value="$searchOption"/>
+			<input type="hidden" name="periodTypeId" value="$periodTypeId"/>
+			<input type="hidden" name="fromDate" value="$fromDate"/>
+			<input type="hidden" name="toDate" value="$toDate"/>
 			<select name="selectedUnitChanger" onchange="javascript:document.getElementById('childSelectorForm').submit();">
 				<option>
 					Select children
@@ -179,7 +179,7 @@
 	<div>
 		<table>
 			<tr>
-				<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='displayDataBrowserForm.action'" style="width:10em"/>
+				<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='displayDataBrowserForm.action'" style="width:10em"/>
 			</tr>
 		</table>
 	</div>
@@ -188,8 +188,8 @@
 
 	<div id="drillDownMenu" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
 	  <ul class="menuDropDownBox">
-		<li class="menuDropDownItem" onclick='viewDrillDownData( "descendant_level" )'>$i18n.getString( "view_data_at_descendant_levels" )&nbsp;</li>
-		<li class="menuDropDownItem" onclick='viewDrillDownData( "current_level" )'>$i18n.getString( "view_data_at_this_level" )&nbsp;</li>
+		<li class="menuDropDownItem" onclick="viewDrillDownData( 'descendant_level' )">$i18n.getString( "view_data_at_descendant_levels" )&nbsp;</li>
+		<li class="menuDropDownItem" onclick="viewDrillDownData( 'current_level' )">$i18n.getString( "view_data_at_this_level" )&nbsp;</li>
 	  </ul>
 	</div>
 

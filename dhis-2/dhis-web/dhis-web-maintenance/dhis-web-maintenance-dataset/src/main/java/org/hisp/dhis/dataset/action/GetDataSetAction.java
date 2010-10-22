@@ -38,11 +38,7 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,33 +73,26 @@ public class GetDataSetAction
     {
         this.dataElementComparator = dataElementComparator;
     }
+   
+    private SelectionTreeManager selectionTreeManager;
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
 
-    private int dataSetId;
+    private Integer dataSetId;
 
-    public int getDataSetId()
+    public Integer getDataSetId()
     {
         return dataSetId;
     }
 
-    public void setDataSetId( int dataSetId )
+    public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
@@ -135,44 +124,6 @@ public class GetDataSetAction
     {
     	return categoryCombo;
     }
-
-    private List<OrganisationUnitLevel> levels;
-    
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
-    }
-
-    private List<OrganisationUnitGroup> groups;
-
-    public List<OrganisationUnitGroup> getGroups()
-    {
-        return groups;
-    }
-
-    private Integer level;
-
-    public Integer getLevel()
-    {
-        return level;
-    }
-    
-    public void setLevel( Integer level )
-    {
-        this.level = level;
-    }
-
-    private Integer organisationUnitGroupId;
-
-    public Integer getOrganisationUnitGroupId()
-    {
-        return organisationUnitGroupId;
-    }
-
-    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
-    {
-        this.organisationUnitGroupId = organisationUnitGroupId;
-    }
     
     // -------------------------------------------------------------------------
     // Action
@@ -189,13 +140,9 @@ public class GetDataSetAction
                 	
         displayPropertyHandler.handle( dataSetDataElements );
 
-        dataEntryForm = dataSet.getDataEntryForm();
+        dataEntryForm = dataSet.getDataEntryForm();        
         
-        levels = organisationUnitService.getOrganisationUnitLevels();        
-
-        groups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-        
-        Collections.sort( groups, new OrganisationUnitGroupNameComparator() );
+        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getOrganisationUnis() );
         
         return SUCCESS;
     }

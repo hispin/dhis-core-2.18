@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "generate_data_mart" )</h3>
+<h3>$i18n.getString( "generate_data_mart" ) #openHelp( "datamarthowto" )</h3>
 
 <form id="exportForm" name="exportForm" method="post" action="saveDataMartExport.action">
 

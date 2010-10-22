@@ -36,11 +36,11 @@
     </tr>
     <tr>
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="name" name="name" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+      <td><input type="text" id="name" name="name" style="width:25em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
       <td></td>
     </tr>      
     <tr>
-      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
       <td>
 		<div style="inline">
 			<select id="conceptId" name="conceptId" style="min-width:140px" class="{validate:{required:true}}">				
@@ -67,7 +67,7 @@
     <tr>
       <td></td>
       <td colspan="2">
-      	<input type="button" value="$i18n.getString( 'add_category_option' )" onclick="addCategoryOption()" style="width:200px">
+      	<input type="button" value="$i18n.getString( 'add_category_option' )" onclick="addCategoryOption()" style="width:200px"/>
       </td>
     </tr>
     <tr>
@@ -77,9 +77,9 @@
         </select>   
       </td>
       <td style="width:30px; text-align:center">
-      	<a href="javascript:moveUpSelectedOption( 'categoryOptionNames' )"><img src="../images/move_up.png"></a><br><br>
-      	<a href="javascript:moveDownSelectedOption( 'categoryOptionNames' )"><img src="../images/move_down.png"></a><br><br>
-        <a href="javascript:removeSelectedOption( 'categoryOptionNames' )"><img src="../images/delete.png"></a>
+      	<a href="javascript:moveUpSelectedOption( 'categoryOptionNames' )"><img src="../images/move_up.png"/></a><br/><br/>
+      	<a href="javascript:moveDownSelectedOption( 'categoryOptionNames' )"><img src="../images/move_down.png"/></a><br/><br/>
+        <a href="javascript:removeSelectedOption( 'categoryOptionNames' )"><img src="../images/delete.png"/></a>
       </td>
     </tr>
     <tr>
@@ -88,8 +88,8 @@
 	<tr>
 	  <td></td>
 	  <td colspan="2">
-		<input type="submit"  value="$i18n.getString( "add" )" style="width:100px"><input 
-               type="button" onclick="window.location.href='category.action'" value="$i18n.getString( "cancel" )" style="width:100px"></p>
+		<input type="submit"  value="$i18n.getString( 'add' )" style="width:100px">
+		<input type="button" onclick="window.location.href='category.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
       </td>
 	</tr>
   </table>

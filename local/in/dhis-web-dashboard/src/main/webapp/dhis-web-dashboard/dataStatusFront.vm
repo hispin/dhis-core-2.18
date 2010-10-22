@@ -99,7 +99,7 @@
         </tr>
         <tr>
             <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                
                 <input type="button" name="ViewSummary" value="View DataSummary" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/>
                 <input type="button" name="ViewStatus" value="View DataStatus" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('DataStatus')"/>
             </td>
@@ -108,7 +108,7 @@
                 <input type="button" name="LastUpdatedStatus" value="   User Details   " style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedStatus')"/>
             </td>
             <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                
                 <input type="button" name="ViewGroupWise" value="View By Data Element Group" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/>
                 <input type="button" name="ValidationStatus" value="Validation Status" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationStatus')"/>
             </td>

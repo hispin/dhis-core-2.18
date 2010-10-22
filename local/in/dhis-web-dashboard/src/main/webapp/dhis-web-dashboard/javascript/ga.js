@@ -121,6 +121,11 @@ function selButtonFunction(selButton)
 function formValidations()
 {
 		
+	//var selriRadioButton = document.ChartGenerationForm.riRadio.value;
+	var selriRadioButton = $( "input[name='riRadio']:checked" ).val();
+	//alert(selriRadioButton);
+	//alert(criteria);
+	//alert(document.ChartGenerationForm.riRadio.value);
 	var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;
 	var selDEListSize  = document.ChartGenerationForm.selectedDataElements.options.length;
 	var selIndListSize  = document.ChartGenerationForm.selectedIndicators.options.length;
@@ -135,15 +140,15 @@ function formValidations()
         
     if(selOUListLength <= 0 && document.getElementById( 'ougSetCB' ).checked ) {alert("Please Select OrganisationUnitGroup");return false;}
     else if(selOUListLength <= 0 ) {alert("Please Select OrganisationUnit");return false;}
-    else if(selriRadioButton == "dataElementsRadio" && selDEListSize <= 0)	 {alert("Please Select DataElement(s)");return false;}
-    else if(selriRadioButton == "indicatorsRadio" && selIndListSize <= 0) {alert("Please Select Indicator(s)");return false;}
+    else if(selriRadioButton == 'dataElementsRadio' && selDEListSize <= 0)	 {alert("Please Select DataElement(s)");return false;}
+    else if(selriRadioButton == 'indicatorsRadio' && selIndListSize <= 0) {alert("Please Select Indicator(s)");return false;}
     else if(sDateIndex < 0) {alert("Please Select Starting Period");return false;}
     else if(eDateIndex < 0) {alert("Please Select Ending Period");return false;}
     else if(category < 0) {alert("Please Select Category");return false;}
     else if(sDate > eDate) {alert("Starting Date is Greater");return false;}
 
 	var k=0;
-	if(selriRadioButton == "dataElementsRadio")
+	if(selriRadioButton == 'dataElementsRadio')
 	{
 		for(k=0;k<document.ChartGenerationForm.selectedDataElements.options.length;k++)
     	{

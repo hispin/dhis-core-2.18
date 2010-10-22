@@ -52,7 +52,9 @@ public class GenerateReportNormalAction
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        Period period = periodDatabaseService.getSelectedPeriod();
+        
+        Period period = periodGenericManager.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         ReportExcelNormal reportExcel = (ReportExcelNormal) reportService

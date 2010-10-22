@@ -114,7 +114,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>
-	</bean>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		</property>
+	</bean>	
 
 	<bean
 		id="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction"

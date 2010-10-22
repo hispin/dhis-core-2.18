@@ -30,27 +30,27 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
+		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
 	</tr>
 	<tr>
-		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="20" class="{validate:{required:true,rangelength:[2,20],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
+		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="20" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" maxlength="150" class="{validate:{rangelength:[3,150],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" style="width:20em" maxlength="150" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" style="width:20em" maxlength="40" class="{validate:{rangelength:[3,40],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></td>
+		<td><input type="text" id="code" name="code" style="width:20em" maxlength="40" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{rangelength:[3,250],alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em" maxlength="150" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"></textarea></td>
 	</tr>
 	<tr>
-		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="domainType" name="domainType" style="min-width:20em">
 				<option value="aggregate" selected="selected">$i18n.getString( "aggregate" )</option>
@@ -59,7 +59,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="valueType" style="min-width:20em"  onchange="changeValueType( this.value )">
 				<option value="int" selected="selected">$i18n.getString( "number" )</option>
@@ -71,7 +71,7 @@
 		</td>
 	</tr>
 	<tr id="aggregationOperator">
-		<td><label for="aggregationOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="aggregationOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select name="aggregationOperator" style="min-width:20em">
 				<option value="sum" selected="selected">$i18n.getString( "sum" )</option>
@@ -81,10 +81,10 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em" class="{validate:{maxlength:255,url:true}}"></td>
+        <td><input type="text" id="url" name="url" style="width:20em" maxlength="255" class="{validate:{url:true}}"/></td>
     </tr>
 	<tr>	
-		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="selectedCategoryComboId" style="min-width:20em" onchange="changeCategory(this.value)">				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
@@ -108,7 +108,7 @@
 <table>
     <tr>
         <td><label for="saved">$i18n.getString( "saved" )</label>&nbsp;
-            <input type="checkbox" id="saved" name="saved" #if( $calculatedDataElement.saved ) checked="checked" #end>
+            <input type="checkbox" id="saved" name="saved" #if( $calculatedDataElement.saved ) checked="checked" #end/>
         </td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@
 				#foreach ( $group in $dataElementGroups )
 					<option value="$group.id">$group.name</option>
 				#end
-			</select><br>
+			</select><br/>
 			<select id="availableDataElements" size="5" multiple="multiple" style="width:450px">
 	            #foreach( $operand in $operands )
 					<option value="[$operand.operandId]">$encoder.htmlEncode( $operand.operandName )</option>
@@ -135,8 +135,8 @@
     </tr>
     <tr>
 		<td>
-			<input id="selectOneButton" type="button" value="$i18n.getString('add_selected')" title="$i18n.getString('add_selected')" onclick="addCDEDataElements()" style="width:120px"><input 
-			       id="deselectAllButton" type="button" value="$i18n.getString('remove_all')" title="$i18n.getString('remove_all')" onclick="removeCDEDataElements()" style="width:120px">
+			<input id="selectOneButton" type="button" value="$i18n.getString('add_selected')" title="$i18n.getString('add_selected')" onclick="addCDEDataElements()" style="width:120px"/><input 
+			       id="deselectAllButton" type="button" value="$i18n.getString('remove_all')" title="$i18n.getString('remove_all')" onclick="removeCDEDataElements()" style="width:120px"/>
 		</td>
     </tr>    
     <tr>
@@ -169,7 +169,7 @@
     </tr>
     <tr>
         <td style="width:200px">$i18n.getString( "data_element_group_sets" )</td>
-        <td><input type="checkbox" onclick="toggleById( 'dataElementGroupSetContainer' )"></td>
+        <td><input type="checkbox" onclick="toggleById( 'dataElementGroupSetContainer' )"/></td>
     </tr>
 </table>
 
@@ -190,8 +190,8 @@
     </tr>
     <tr>
         <td>
-            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataElementGroupSets', 'dataElementGroupSets' )"><input 
-                   type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataElementGroupSets', 'availableDataElementGroupSets' )">
+            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataElementGroupSets', 'dataElementGroupSets' )"/><input 
+                   type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataElementGroupSets', 'availableDataElementGroupSets' )"/>
         </td>
     </tr>
     <tr>
@@ -213,7 +213,7 @@
 	</tr>
 	<tr>
 		<td style="width:200px">$i18n.getString( "aggregation_levels" )</td>
-		<td><input type="checkbox" onclick="toggleById( 'aggregationLevelsContainer' )"></td>
+		<td><input type="checkbox" onclick="toggleById( 'aggregationLevelsContainer' )"/></td>
 	</tr>
 </table>
 
@@ -234,8 +234,8 @@
     </tr>
     <tr>
     	<td>
-		    <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'organisationUnitLevels', 'aggregationLevels' )"><input 
-		           type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'aggregationLevels', 'organisationUnitLevels' )">
+		    <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'organisationUnitLevels', 'aggregationLevels' )"/><input 
+		           type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'aggregationLevels', 'organisationUnitLevels' )"/>
         </td>
     </tr>
     <tr>
@@ -252,8 +252,8 @@
 </div>
 
 <p>
-	<input type="submit" value="$i18n.getString( "add" )" style="width:10em">
-	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataElement.action'" style="width:10em">
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElement.action'" style="width:10em"/>
 </p>
 
 </form>

@@ -84,7 +84,7 @@ public class GenerateAdvancedReportNormalAction
     {
         statementManager.initialise();
 
-        Period period = periodDatabaseService.getSelectedPeriod();
+        Period period = periodGenericManager.getSelectedPeriod();
 
         this.installPeriod( period );
 

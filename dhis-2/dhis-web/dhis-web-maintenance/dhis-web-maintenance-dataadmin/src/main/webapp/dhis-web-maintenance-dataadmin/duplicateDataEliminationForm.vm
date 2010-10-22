@@ -2,16 +2,16 @@
 <h3>$i18n.getString( "duplicate_data_elimination" ) #openHelp( "duplicateDataElimination" )</h3>
 
 <div>
-	<label>$i18n.getString( "filter" ):</label><br>
-	<input type="text" style="width:294px" onkeyup="filterList( this.value, 'operandList' )"><br>
+	<label>$i18n.getString( "filter" ):</label><br/>
+	<input type="text" style="width:294px" onkeyup="filterList( this.value, 'operandList' )"/><br/>
 	<select id="operandList" size="6" style="width:400px" onclick="operandSelected()"></select>
 </div>
 
-<br>
+<br/>
 	
 <table>
-    <col style="width:2em">
-    <col>
+    <col style="width:2em"/>
+    <col/>
     <tr>
         <td rowspan="3" id="step1" style="text-align:center;background-color:#ccffcc">1.</td>
         <th>$i18n.getString( "select_the_data_element_to_eliminate" )</th>
@@ -20,7 +20,7 @@
         <td><span id="eliminateNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="confirmEliminateButton" type="button" value="$i18n.getString( "confirm" )" onclick="eliminateConfirmed()" style="width:10em" disabled="disabled"></td>
+        <td><input id="confirmEliminateButton" type="button" value="$i18n.getString( 'confirm' )" onclick="eliminateConfirmed()" style="width:10em" disabled="disabled"/></td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -33,7 +33,7 @@
         <td><span id="keepNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="confirmKeepButton" type="button" value="$i18n.getString( "confirm" )" onclick="keepConfirmed()" style="width:10em" disabled="disabled"></td>
+        <td><input id="confirmKeepButton" type="button" value="$i18n.getString( 'confirm' )" onclick="keepConfirmed()" style="width:10em" disabled="disabled"/></td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -43,8 +43,8 @@
         <th>$i18n.getString( "eliminate" )</th>
     </tr>
     <tr>
-        <td><input type="button" id="eliminateButton" value="$i18n.getString( "eliminate" )" style="width:10em" onclick="eliminate()" disabled="disabled"><input 
-                   type="button" value="$i18n.getString( "reset" )" style="width:10em" onclick="window.location.href='displayDuplicateDataEliminationForm.action'"></td>
+        <td><input type="button" id="eliminateButton" value="$i18n.getString( 'eliminate' )" style="width:10em" onclick="eliminate()" disabled="disabled"/><input 
+                   type="button" value="$i18n.getString( 'reset' )" style="width:10em" onclick="window.location.href='displayDuplicateDataEliminationForm.action'"/></td>
     </tr>
 </table>
 
@@ -57,4 +57,3 @@
     
     initLists();
 </script>
-

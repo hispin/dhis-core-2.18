@@ -103,15 +103,15 @@ public class DefaultSqlViewService
         return query.replaceAll( ";\\s+", ";" ).replaceAll( ";+", ";" ).replaceAll( "\\s+", " " ).trim();
     }
 
+    // -------------------------------------------------------------------------
+    // SqlView expanded
+    // -------------------------------------------------------------------------
+
     @Override
     public String setUpViewTableName( String input )
     {
         return sqlViewExpandStore.setUpViewTableName( input );
     }
-
-    // -------------------------------------------------------------------------
-    // SqlView expanded
-    // -------------------------------------------------------------------------
 
     @Override
     public Collection<String> getAllSqlViewNames()
@@ -125,6 +125,24 @@ public class DefaultSqlViewService
         return sqlViewExpandStore.isViewTableExists( viewTableName );
     }
 
+    @Override
+    public boolean createAllViewTables()
+    {
+        boolean success = true;
+        
+        for ( SqlView sqlView : getAllSqlViews() )
+        {
+            setUpViewTableName( sqlView.getName() );
+
+            if ( !createViewTable( sqlView ) )
+            {
+                success = false;
+            }
+        }
+        
+        return success;
+    }
+    
     @Override
     public boolean createViewTable( SqlView sqlViewInstance )
     {
@@ -160,9 +178,17 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public void dropViewTable( Object object )
+    public void dropViewTable( String sqlViewTableName )
     {
-        sqlViewExpandStore.dropView( object );
+        sqlViewExpandStore.dropViewTable( sqlViewTableName );
     }
 
+    @Override
+    public void dropAllSqlViewTables()
+    {
+        for ( String viewName : getAllSqlViewNames() )
+        {
+            dropViewTable( viewName );
+        }
+    }
 }

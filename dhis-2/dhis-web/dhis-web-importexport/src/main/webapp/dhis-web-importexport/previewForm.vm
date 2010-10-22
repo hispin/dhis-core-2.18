@@ -28,7 +28,7 @@
 </tr>
 #end
 
-<h3>$i18n.getString( 'import_preview' )</h3>
+<h3>$i18n.getString( 'import_preview' ) #openHelp( "importpreview" )</h3>
 
 <form id="previewForm" name="previewForm" method="post">
 

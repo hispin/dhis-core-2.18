@@ -1,9 +1,0 @@
-An error has occurred.
-
-#if ( !$selectedUnit )
-	<br/>
-	<br/>
-	You must select an OrganisationUnit from the tree.
-#end
-
-<a href="javascript: history.go(-1)">Back</a><br/>

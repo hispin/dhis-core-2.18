@@ -28,7 +28,6 @@ package org.hisp.dhis.user.action;
  */
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
@@ -76,41 +75,6 @@ public class ValidateUserAction
         this.username = username;
     }
 
-    private String surname;
-
-    public void setSurname( String surname )
-    {
-        this.surname = surname;
-    }
-
-    private String firstName;
-
-    public void setFirstName( String firstName )
-    {
-        this.firstName = firstName;
-    }
-
-    private String email;
-
-    public void setEmail( String email )
-    {
-        this.email = email;
-    }
-
-    private String rawPassword;
-
-    public void setRawPassword( String rawPassword )
-    {
-        this.rawPassword = rawPassword;
-    }
-
-    private String retypePassword;
-
-    public void setRetypePassword( String retypePassword )
-    {
-        this.retypePassword = retypePassword;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -127,96 +91,18 @@ public class ValidateUserAction
     public String execute()
         throws Exception
     {
-        if ( id == null )
+        if ( username != null )
         {
-            if ( username == null )
+
+            UserCredentials match = userStore.getUserCredentialsByUsername( username );
+
+            if ( match != null && (id == null || match.getId() != id) )
             {
-                message = i18n.getString( "specify_username" );
+                message = i18n.getString( "username_in_use" );
 
-                return INPUT;
-            } else
-            {
-                username = username.trim();
-
-                if ( username.length() == 0 )
-                {
-                    message = i18n.getString( "specify_username" );
-
-                    return INPUT;
-                }
-
-                UserCredentials match = userStore.getUserCredentialsByUsername( username );
-
-                if ( match != null )
-                {
-                    message = i18n.getString( "username_in_use" );
-
-                    return INPUT;
-                }
+                return ERROR;
             }
-        }
 
-        if ( id == null && ( rawPassword == null || rawPassword.trim().length() == 0 ) )
-        {
-            message = i18n.getString( "specify_raw_password" );
-
-            return INPUT;
-
-        }
-
-        if ( id == null && ( retypePassword == null || retypePassword.trim().length() == 0 ) )
-        {
-            message = i18n.getString( "specify_retype_password" );
-
-            return INPUT;
-        }
-
-        if ( id == null )
-        {
-            if ( rawPassword.trim().length() < 8 )
-            {
-                message = i18n.getString( "password_length_not_valid" );
-
-                return INPUT;
-            }
-            if ( !( rawPassword.matches( ".*\\d+.*" ) && rawPassword.matches( ".*[A-Z]+.*" ) ) )
-            {
-                message = i18n.getString( "password_is_not_valid" );
-                return INPUT;
-            }
-        }
-
-        if ( id == null && ( !ValidationUtils.passwordIsValid( rawPassword ) ) )
-        {
-            message = i18n.getString( "password_is_not_valid" );
-        }
-
-        if ( rawPassword != null && rawPassword.trim().length() != 0 && !rawPassword.equals( retypePassword ) )
-        {
-            message = i18n.getString( "password_un_matched" );
-
-            return INPUT;
-        }
-
-        if ( surname == null || surname.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_surname" );
-
-            return INPUT;
-        }
-
-        if ( firstName == null || firstName.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_first_name" );
-
-            return INPUT;
-        }
-
-        if ( email != null && email.trim().length() > 0 && !ValidationUtils.emailIsValid( email ) )
-        {
-            message = i18n.getString( "email_is_not_valid" );
-
-            return INPUT;
         }
 
         message = i18n.getString( "everything_is_ok" );

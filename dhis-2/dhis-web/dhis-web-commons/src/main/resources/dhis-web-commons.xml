@@ -164,6 +164,13 @@
 				/dhis-web-commons/ouwt/responseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="selectallorgunit"
+			class="org.hisp.dhis.oust.action.SelectAllOrganisationUnitAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ouwt/responseSelect.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 	</package>
 
@@ -209,7 +216,7 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-		</action>
+		</action>		
 		
 		<action name="getOrganisationUnitByCode"
 			class="org.hisp.dhis.ouwt.action.GetOrganisationUnitByCodeAction">

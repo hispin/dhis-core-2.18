@@ -5,21 +5,17 @@
 	jQuery(document).ready(
 			function()
 			{
-				jQuery("#addValidationRuleGroupForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddValidationRuleGroup();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
 				jQuery("#name").focus();
+				
+				validation( 'addValidationRuleGroupForm', 
+				function( form ){ form.submit() }, 
+				function(){ selectAllById('groupMembers') });
+				
+				checkValueIsExist( "name", "validateValidationRuleGroup.action");
 			}
 	);
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_validation_rule_group" )</h3>
 
 <form id="addValidationRuleGroupForm" action="addValidationRuleGroup.action" method="post" >
@@ -33,8 +29,8 @@
         <td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2,maxlength:160}}" ></td>
     </tr>
     <tr>
-        <td><label for="description">$i18n.getString( "description" )</label></td>
-        <td><input type="text" id="description" name="description" style="width:20em"  ></td>
+        <td><label for="description">$i18n.getString( "description" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -69,24 +65,18 @@
 
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
 
     var groupMembers = new Object();
-#foreach( $validationRule in $groupMembers )
-    groupMembers['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
-#end
+	#foreach( $validationRule in $groupMembers )
+		groupMembers['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
+	#end
 
     var availableValidationRules = new Object();
-#foreach( $validationRule in $availableValidationRules )
-    availableValidationRules['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
-#end
+	#foreach( $validationRule in $availableValidationRules )
+		availableValidationRules['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
+	#end
 
     initLists();
-
-    var nameField = document.getElementById( 'name' );
-    nameField.select();
-    nameField.focus();
 
 </script>

@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -50,7 +50,7 @@ public class GenerateReportExcelFlowAction
 
     private SelectionManager selectionManager;
 
-    private PeriodDatabaseService periodDatabaseService;
+    private PeriodGenericManager periodGenericManager;
 
     // -------------------------------------------
     // Input & Output
@@ -58,7 +58,7 @@ public class GenerateReportExcelFlowAction
 
     private Integer reportId;
 
-    private Integer periodId;
+    private Integer periodIndex;
 
     // -------------------------------------------
     // Getter & Setter
@@ -74,14 +74,14 @@ public class GenerateReportExcelFlowAction
         this.selectionManager = selectionManager;
     }
 
-    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
     {
-        this.periodDatabaseService = periodDatabaseService;
+        this.periodGenericManager = periodGenericManager;
     }
 
-    public void setPeriodId( Integer periodId )
+    public void setPeriodIndex( Integer periodIndex )
     {
-        this.periodId = periodId;
+        this.periodIndex = periodIndex;
     }
 
     public void setReportService( ReportExcelService reportService )
@@ -89,17 +89,17 @@ public class GenerateReportExcelFlowAction
         this.reportService = reportService;
     }
 
-	// -------------------------------------------
+    // -------------------------------------------
     // Action implementation
     // -------------------------------------------
-	
+
     public String execute()
         throws Exception
     {
 
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-        periodDatabaseService.setSelectedperiod( periodId );
+        periodGenericManager.setSelectedPeriodIndex( periodIndex );
 
         selectionManager.setSelectedReportId( reportId );
 

@@ -33,6 +33,8 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -40,6 +42,10 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
+import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter. MINOR_VERSION_11;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter. MINOR_VERSION_12;
 
 /**
  * @author Lars Helge Overland
@@ -53,8 +59,10 @@ public class DataElementCategoryConverter
     
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
+    private static final String FIELD_CONCEPT_ID = "conceptid";
 
-    
+    private ConceptService conceptService;
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -73,14 +81,17 @@ public class DataElementCategoryConverter
      * @param batchHandler the batchHandler to use.
      * @param importObjectService the importObjectService to use.
      * @param categoryService the dataElementCategoryService to use.
+     * @param conceptService the ConceptService to use.
      */
     public DataElementCategoryConverter( BatchHandler<DataElementCategory> batchHandler, 
         ImportObjectService importObjectService, 
-        DataElementCategoryService categoryService )
+        DataElementCategoryService categoryService,
+        ConceptService conceptService)
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.categoryService = categoryService;
+        this.conceptService = conceptService;
     }
 
     // -------------------------------------------------------------------------
@@ -101,6 +112,7 @@ public class DataElementCategoryConverter
                 
                 writer.writeElement( FIELD_ID, String.valueOf( category.getId() ) );
                 writer.writeElement( FIELD_NAME, category.getName() );
+                writer.writeElement( FIELD_CONCEPT_ID , String.valueOf(category.getConcept().getId()));
 
                 writer.closeElement();
             }
@@ -111,6 +123,10 @@ public class DataElementCategoryConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
+        Map<Object, String> conceptMap = NameMappingUtil.getConceptMap();
+
+        Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME);
+
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
@@ -119,7 +135,27 @@ public class DataElementCategoryConverter
             
             category.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             category.setName( values.get( FIELD_NAME ) );
-            
+
+            if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_12 ) )
+            {
+                log.debug("reading category dxf version >1.2");
+                int conceptid = Integer.parseInt(values.get(FIELD_CONCEPT_ID ));
+                String conceptName = conceptMap.get( conceptid );
+                category.setConcept( conceptService.getConceptByName( conceptName ) );
+
+            } else if (params.getMinorVersion().equals( MINOR_VERSION_11))
+            {
+                log.debug("reading category dxf version 1.1");
+                // this version had conceptname as a string
+                // we'll just lose it for now :-(
+                // TODO: fix this
+                category.setConcept(defaultConcept);
+            } else
+            {
+                log.debug("reading category dxf version 1.0");
+                category.setConcept(defaultConcept);
+            }
+
             importObject( category, params );
         }
     }

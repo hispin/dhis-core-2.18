@@ -1,3 +1,4 @@
+
 #parse( "/dhis-web-dataentry/select.vm" )
 
 #set( $marker = 0 )
@@ -13,11 +14,11 @@
 		#set( $marker = 1 )
 	#end
 		
-	<div style="border:thin solid; #if( $marker == 0 ) background-color:#ebf0f6 #end">            
+	<div style="border:thin solid; ">            
     	<table class="mainPageTable">    		
    			<tr>		   
-       			<td onclick="openCloseSection( $section.id )" onmouseover="style.backgroundColor='#baffbc';" onmouseout="#if( $marker == 0 ) style.backgroundColor='#ebf0f6' #else style.backgroundColor='#FFFFFF' #end">
-       				<div id="$section.id:name" style="text-align:center"><h3>$encoder.htmlEncode( $section.name )</h3></div>
+       			<td onclick="openCloseSection( $section.id )" onmouseover="style.backgroundColor='#ebf0f6';" onmouseout="style.backgroundColor='#FFFFFF'">
+       				<div id="$section.id:title" style="text-align:center"><h3>$encoder.htmlEncode( $section.title )</h3></div>
        			</td>       				   			        		  
     		</tr>    	
     		<tr>

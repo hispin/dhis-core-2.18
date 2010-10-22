@@ -69,28 +69,14 @@ public class SetupTreeAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
+    }  
 
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
-    }
-    
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
+    } 
 
     // -------------------------------------------------------------------------
     // Input
@@ -134,18 +120,7 @@ public class SetupTreeAction
 
     public String execute()
         throws Exception
-    {
-        if ( currentUserService.getCurrentUser() != null )
-        {
-            Collection<OrganisationUnit> orgUnits = currentUserService.getCurrentUser().getOrganisationUnits();
-
-            if ( orgUnits.size() > 0 )
-            {
-                selectionTreeManager.setRootOrganisationUnits( orgUnits );
-            }
-        }
-
-        selectionTreeManager.clearSelectedOrganisationUnits();
+    {   
 
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
         
@@ -168,11 +143,7 @@ public class SetupTreeAction
             {
                 selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
             }
-        }
-
-        organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-        
-        Collections.sort( organisationUnitGroups, new OrganisationUnitGroupNameComparator() );
+        }       
         
         return SUCCESS;
     }

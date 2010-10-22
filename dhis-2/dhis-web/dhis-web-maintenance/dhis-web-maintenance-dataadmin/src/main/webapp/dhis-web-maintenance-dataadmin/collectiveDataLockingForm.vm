@@ -40,13 +40,13 @@
 					<tr><th>$i18n.getString('organisation_unit')</th></tr>
 					<tr>
 						<td>
-							<input type="submit" value="$i18n.getString( "select_all_at_level" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							<input type="submit" value="$i18n.getString( 'select_all_at_level' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
 							<select id="levelId" name="levelId" style="width:12em" >
                                 #foreach ( $orgUnitLevel in $orgUnitLevels )
                                    <option value="$orgUnitLevel.level" >$orgUnitLevel.name</option>
                                 #end
                             </select>
-							<input type="submit" value="$i18n.getString( "unselect_all_at_level" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							<input type="submit" value="$i18n.getString( 'unselect_all_at_level' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
 							 <select id="selectionValue" name="selectionValue" onlclick="" enabled="true">
                                         <option value="selected" selected>Selected</option>
                                         <option value="Childtree">Child Tree</option>
@@ -55,13 +55,13 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="submit" value="$i18n.getString( "select_all_in_group" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							<input type="submit" value="$i18n.getString( 'select_all_in_group' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
 							<select id="orgGroup" name="orgGroup" style="width:12em" >
 								 #foreach ( $orgUnitGroup in $orgUnitGroups )
 									 <option value="$orgUnitGroup.id">$orgUnitGroup.name</option>
 								 #end
 							</select>
-							<input type="submit" value="$i18n.getString( "unselect_all_in_group" )" onclick="setClickedButtonElementValue(this)" style="width:12em">
+							<input type="submit" value="$i18n.getString( 'unselect_all_in_group' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
 						</td>
 		
 					</tr>
@@ -72,14 +72,14 @@
 				</tr>	
 				<tr>
 					<td>
-						<input type="submit"   onclick="setClickedButtonElementValue(this)" id="Lock" name ="Lock"  value="$i18n.getString( "lock" )" style="width:10em" disabled="true">
-                        <input type="submit" onclick="setClickedButtonElementValue(this)" id="Unlock"  name ="Unlock"    value="$i18n.getString( "unlock" )"  style="width:10em" disabled="true"> 
+						<input type="submit" onclick="setClickedButtonElementValue(this)" id="Lock" name ="Lock" value="$i18n.getString( 'lock' )" style="width:10em" disabled="true"/>
+                        <input type="submit" onclick="setClickedButtonElementValue(this)" id="Unlock" name ="Unlock" value="$i18n.getString( 'unlock' )" style="width:10em" disabled="true"/>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						 <span id="message"></span>
-						 <input type="hidden" id="selectBetweenLockUnlock" name="selectBetweenLockUnlock">
+						 <input type="hidden" id="selectBetweenLockUnlock" name="selectBetweenLockUnlock"/>
 					</td>
 				</tr>							
 			</table>		

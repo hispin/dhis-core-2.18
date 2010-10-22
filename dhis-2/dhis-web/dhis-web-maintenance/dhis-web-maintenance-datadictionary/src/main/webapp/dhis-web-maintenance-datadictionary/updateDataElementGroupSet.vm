@@ -15,8 +15,8 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementGroupSet.name )" maxlength="230" class="{validate:{required:true,minlength:2,maxlength:230}}"/></td>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementGroupSet.name )" maxlength="230" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -30,9 +30,9 @@
 		</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterList( this.value, 'availableDataElementGroups' )" style="width:25em"></td>
+		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterList( this.value, 'availableDataElementGroups' )" style="width:25em"/></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"></td>
+		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"/></td>
 	</tr>
 	<tr>
 		<td>
@@ -59,14 +59,14 @@
 		</td>
 		
 		<td>
-			<a href="javascript:moveUpSelectedOption( 'groupMembers')" title="$i18n.getString( "move_up" )"><img src="../images/move_up.png" alt="$i18n.getString( "move_up" )"></a>
-			<br>
-			<a href="javascript:moveDownSelectedOption( 'groupMembers' )" title="$i18n.getString( "move_down" )"><img src="../images/move_down.png" alt="$i18n.getString( "move_up" )"></a>
+			<a href="javascript:moveUpSelectedOption( 'groupMembers')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a>
+			<br/>
+			<a href="javascript:moveDownSelectedOption( 'groupMembers' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
 		</td>
 	</tr>
 </table>
 
-<p><input type="submit" value="$i18n.getString( "update" )" style="width:10em" /><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataElementGroupSet.action'" style="width:10em"></p>
+<p><input type="submit" value="$i18n.getString( 'update' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElementGroupSet.action'" style="width:10em"/></p>
 
 </form>
 

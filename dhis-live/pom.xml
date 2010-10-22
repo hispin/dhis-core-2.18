@@ -16,7 +16,8 @@
         <defaultGoal>install</defaultGoal>
 
         <plugins>
-            <!--jaxb plugin-->
+			
+            <!--JAXB plugin-->
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
@@ -31,7 +32,6 @@
                     </execution>
                 </executions>
             </plugin>
-
 
             <!-- Maven Assembly -->
             <plugin>
@@ -56,8 +56,8 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
+			
             <!-- Maven Compiler -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -68,6 +68,7 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+			
             <!-- Launch4J -->
             <plugin>
                 <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
@@ -90,8 +91,8 @@
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <supportUrl>http://dhis2.org</supportUrl>
                             <customProcName>false</customProcName>
-                            <initialHeapSize>256MB</initialHeapSize>
-                            <maxHeapSize>512MB</maxHeapSize>
+                            <initialHeapSize>512MB</initialHeapSize>
+                            <maxHeapSize>1024MB</maxHeapSize>
                             <stayAlive>false</stayAlive>
                             <manifest></manifest>
                             <icon>${basedir}/util/launch4j/favicon.ico</icon>
@@ -101,7 +102,9 @@
                             </singleInstance>
                             <jre>
                                 <minVersion>1.6.0_14</minVersion>
-                                <opt>-XX:MaxPermSize=128M</opt>
+                                <opts>
+                                    <opt>-XX:MaxPermSize=256M</opt>
+                                </opts>
                             </jre>
                             <splash>
                                 <file>${basedir}/util/launch4j/dhis2-splash.bmp</file>
@@ -111,8 +114,8 @@
                             </splash>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>emedded</id>
+					<execution>
+                        <id>embedded</id>
                         <phase>package</phase>
                         <goals>
                             <goal>launch4j</goal>
@@ -127,6 +130,8 @@
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <supportUrl>http://dhis2.org</supportUrl>
                             <customProcName>false</customProcName>
+                            <initialHeapSize>512MB</initialHeapSize>
+                            <maxHeapSize>1024MB</maxHeapSize>
                             <stayAlive>false</stayAlive>
                             <manifest></manifest>
                             <icon>${basedir}/util/launch4j/favicon.ico</icon>
@@ -135,9 +140,11 @@
                                 <windowTitle></windowTitle>
                             </singleInstance>
                             <jre>
-                                <path>jre6</path>
+								<path>jre6</path>
                                 <minVersion>1.6.0_14</minVersion>
-                                <opt>-XX:MaxPermSize=128M</opt>
+                                <opts>
+                                    <opt>-XX:MaxPermSize=256M</opt>
+                                </opts>
                             </jre>
                             <splash>
                                 <file>${basedir}/util/launch4j/dhis2-splash.bmp</file>
@@ -147,7 +154,6 @@
                             </splash>
                         </configuration>
                     </execution>
-
                 </executions>
             </plugin>
             <plugin>
@@ -160,7 +166,14 @@
             </plugin>
         </plugins>
     </build>
-
+    <repositories>
+        <repository>
+            <url>http://download.java.net/maven/2/</url>
+            <id>beans-binding</id>
+            <layout>default</layout>
+            <name>Repository for library Library[beans-binding]</name>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.mortbay.jetty</groupId>
@@ -206,7 +219,11 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.1.13</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jdesktop</groupId>
+            <artifactId>beansbinding</artifactId>
+            <version>1.2.1</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

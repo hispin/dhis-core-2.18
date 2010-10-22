@@ -1,37 +1,37 @@
 <h3>$i18n.getString( "indicator_group_editor" ) #openHelp( "indicatorGroupEditor" )</h3>
 
-<table >	
+<table>	
 	<tr>		
 		<th>$i18n.getString( "available_indicators" )</th>
 		<th><span id="groupNameView" style="display:block;"></span></th>		
-		<td rowspan=2><a href="indicatorGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"></a></td>
+		<td rowspan=2><a href="indicatorGroupEditor.action" title="$i18n.getString( 'switch_view' )"><img src="../images/arrow_double_clockwise_y.png" title="$i18n.getString( 'switch_view' )"/></a></td>
 		<th>$i18n.getString( "available_groups" )</th>
 		
 	</tr>
 	
 	<tr>
-		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"></td>
-		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"></td>				
-		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"></td>
+		<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterAvailableIndicators();"/></td>
+		<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterAssignedGroups();"/></td>				
+		<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterAvailableGroups();"/></td>
 	</tr>
 
 	<tr>
 		<td>
-			<select class="select" id="availableIndicators" size="30" onclick="getAssignedIndicatorGroups(this.value)"  onMouseOut="javascript: hideToolTip();">				
+			<select class="select" id="availableIndicators" size="30" onclick="getAssignedIndicatorGroups(this.value)" onMouseOut="javascript: hideToolTip();">				
 			</select>
 		</td>		
 		<td>
-			<select class="select" id="assignedGroups" multiple="multiple" size="30"  ondblclick="removeSelectedGroups();"  onMouseOut="javascript: hideToolTip();">
+			<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="removeSelectedGroups();" onMouseOut="javascript: hideToolTip();">
 			</select>
 		</td>
 		
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:30px"><br><br>
-			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:30px">
+			<input type="button" value="&lt;" onclick="addSelectedGroups();" style="width:30px"/><br/><br/>
+			<input type="button" value="&gt;" onclick="removeSelectedGroups();" style="width:30px"/>
 		</td>
 		
 		<td>
-			<select class="select" id="availableGroups" multiple="multiple"  size="30" onMouseOut="javascript: hideToolTip();" ondblclick="addSelectedGroups();">				
+			<select class="select" id="availableGroups" multiple="multiple" size="30" onMouseOut="javascript: hideToolTip();" ondblclick="addSelectedGroups();">				
 			</select>
 		</td>
 		
@@ -40,13 +40,13 @@
 		
 		<td></td>
 		<td>			
-			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:assignGroupsForIndicator()">
+			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:assignGroupsForIndicator()"/>
 		</td>
 		<td></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px">
-			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px">
-			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px"/>
+			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px"/>
+			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px"/>
 		</td>
 		
 		
@@ -70,7 +70,7 @@
 
 <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
 	<div style="float:right">
-		<a href="javascript:hideWarning()" title='$i18n.getString( 'hide_warning' )'><img src="../images/close.png" alt=$i18n.getString( "hide_warning" )'></a>
+		<a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"/></a>
 	</div>
 	<p><span id="warningField"></span></p>
 </div>

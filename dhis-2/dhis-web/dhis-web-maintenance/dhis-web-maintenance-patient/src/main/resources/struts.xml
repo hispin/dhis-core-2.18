@@ -614,7 +614,6 @@
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programAssociations.vm</param>
-			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -624,42 +623,7 @@
 			</result>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
-
-		<action name="selectLevel"
-			class="org.hisp.dhis.patient.action.program.SelectLevelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
-
-		<action name="unselectLevel"
-			class="org.hisp.dhis.patient.action.program.UnselectLevelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
-
-		<action name="selectOrganisationUnitGroup"
-			class="org.hisp.dhis.patient.action.program.SelectOrganisationUnitGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
-
-		<action name="unselectOrganisationUnitGroup"
-			class="org.hisp.dhis.patient.action.program.UnselectOrganisationUnitGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
-
-		<action name="unselectAll"
-			class="org.hisp.dhis.patient.action.program.UnselectAllAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
-
+		
 		<!-- Program_ValidationCriteria Association -->
 
 		<action name="defineValidationCriteriaAssociationsForm"
@@ -667,8 +631,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/validationCriteriaAssociations.vm</param>
 			<param name="javascripts">
-				../dhis-web-commons/oust/oust.js
-				,javascript/associations.js
 				,javascript/program.js
 			</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
@@ -688,8 +650,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/validationDEAssociations.vm</param>
 			<param name="javascripts">
-				../dhis-web-commons/oust/oust.js
-				,javascript/associations.js
 				,javascript/program.js
 				,javascript/programStageDEValidation.js
 			</param>
@@ -1118,8 +1078,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programsForValidationCriteriaAssociations.vm</param>
 			<param name="javascripts">
-				../dhis-web-commons/oust/oust.js
-				,javascript/associations.js
 				,javascript/program.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
