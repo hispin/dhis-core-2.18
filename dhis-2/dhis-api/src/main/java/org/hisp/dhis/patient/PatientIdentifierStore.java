@@ -44,28 +44,20 @@ public interface PatientIdentifierStore
     PatientIdentifier get( Patient patient );
 
     PatientIdentifier get( String identifier, OrganisationUnit organisationUnit );
+    
+    PatientIdentifier get( PatientIdentifierType type, String identifier );
 
     Collection<PatientIdentifier> getByIdentifier( String identifier );
     
     Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType );
-
-    Collection<PatientIdentifier> getByOrganisationUnit( OrganisationUnit organisationUnit );
     
     PatientIdentifier getPatientIdentifier(String identifier, Patient patient);
+
+    PatientIdentifier getPatientIdentifier(PatientIdentifierType identifierType, Patient patient);
     
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
     
-    PatientIdentifier getPatientIdentifier(PatientIdentifierType identifierType, Patient patient);
-    
-    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit , int min, int max);
-    
-    PatientIdentifier get( PatientIdentifierType type, String identifier );
-    
     Patient getPatient( PatientIdentifierType idenType, String value);
-    
-    int countListPatientByOrganisationUnit( OrganisationUnit orgUnit );
-    
-    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit );
     
     Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max );
     

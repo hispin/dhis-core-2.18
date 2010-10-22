@@ -52,12 +52,12 @@ public class DefaultDataEntryFormService
     {
         this.dataEntryFormStore = dataEntryFormStore;
     }
-    
+
     // ------------------------------------------------------------------------
     // Implemented Methods
     // ------------------------------------------------------------------------
 
-    public int addDataEntryForm( DataEntryForm dataEntryForm)
+    public int addDataEntryForm( DataEntryForm dataEntryForm )
     {
         return dataEntryFormStore.addDataEntryForm( dataEntryForm );
     }
@@ -81,7 +81,7 @@ public class DefaultDataEntryFormService
     {
         return dataEntryFormStore.getDataEntryFormByName( name );
     }
-    
+
     public Collection<DataEntryForm> getAllDataEntryForms()
     {
         return dataEntryFormStore.getAllDataEntryForms();
@@ -161,10 +161,10 @@ public class DefaultDataEntryFormService
 
         return sb.toString();
     }
-    
+
     public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
-        if ( programStageIds == null || programStageIds.size() == 0 )
+        if ( programStageIds == null || programStageIds.isEmpty() )
         {
             return null;
         }

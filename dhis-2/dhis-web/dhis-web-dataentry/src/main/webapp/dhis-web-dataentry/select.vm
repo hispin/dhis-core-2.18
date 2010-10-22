@@ -4,7 +4,7 @@
 
 <div id="currentSelection">
 	#if ( $organisationUnit ) $encoder.htmlEncode( $organisationUnit.name )#else $i18n.getString( "no_organisationunit_selected" ) #end - 
-	#if ( $period ) $format.formatPeriod( $period ) #else $i18n.getString( "no_period_selected" ) #end <br>				
+	#if ( $period ) $format.formatPeriod( $period ) #else $i18n.getString( "no_period_selected" ) #end <br/>				
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span> -
 	<span id="currentOptionCombo">$i18n.getString( "no_option_selected" )</span>	
 </div>
@@ -13,12 +13,12 @@
 <input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
 <div id="actions" style="width:200px text-align:right">
 	
-    <input type="button" value="$i18n.getString( "change_order" )" onclick="changeOrder()" style="width:150px" #if( !$selectedDataSetId || !$auth.hasAccess( "dhis-web-dataentry", "getDataElementOrder" ) || $displayMode !="defaultform") disabled="disabled" #end><br>
-    <input type="button" value="$i18n.getString( "generate_min_max" )" onclick="javascript:generateMinMaxValues();" style="width:150px" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry", "minMaxGeneration" )) disabled="disabled" #end><br>
-    <input type="button" value="$i18n.getString( "run_validation" )" onclick="javascript:validate();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end><br>
-    <input type="button" id="calculateCDEs" value="$i18n.getString( "save_calculated" )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end><br>
+    <input type="button" value="$i18n.getString( 'change_order' )" onclick="changeOrder()" style="width:150px" #if( !$selectedDataSetId || !$auth.hasAccess( "dhis-web-dataentry", "getDataElementOrder" ) || $displayMode !="defaultform") disabled="disabled" #end/><br/>
+    <input type="button" value="$i18n.getString( 'generate_min_max' )" onclick="javascript:generateMinMaxValues();" style="width:150px" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry", "minMaxGeneration" )) disabled="disabled" #end/><br/>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end/><br/>
+    <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end/><br/>
 
-    <br>
+    <br/>
 	<input type="radio" id="displayModeCustom" name="displayMode" value="customform"
        #if( $displayMode == "customform" ) 
            checked="checked" 
@@ -26,8 +26,8 @@
        #if( !$customDataEntryFormExists ) 
            disabled="disabled" 
        #end         
-       onclick="document.getElementById( 'selectForm' ).submit();">    
-    <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br>
+       onclick="document.getElementById( 'selectForm' ).submit();"/>    
+    <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br/>
 
 	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform"
 	   #if( $displayMode == "sectionform" ) 
@@ -36,16 +36,16 @@
 	   #if( !$haveSection ) 
 	       disabled="disabled" 
 	   #end 
-	   onclick="document.getElementById( 'selectForm' ).submit();">
-	<label for="displayModeSection">$i18n.getString( "use_section_form" )</label><br>
+	   onclick="document.getElementById( 'selectForm' ).submit();"/>
+	<label for="displayModeSection">$i18n.getString( "use_section_form" )</label><br/>
 
 	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform"
        #if( $displayMode == "defaultform" ) 
            checked="checked" 
            
        #end       
-       onclick="document.getElementById( 'selectForm' ).submit();">    
-    <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br><br>
+       onclick="document.getElementById( 'selectForm' ).submit();"/>    
+    <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br/><br/>
 
 </div>
 
@@ -53,7 +53,7 @@
 	
 	<tr>
 		<td><label>$i18n.getString( "organisation_unit" )</label></td>
-		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'select' )]" #end style="min-width:350px"/></td>
 	</tr>
 	
 	<tr>
@@ -71,8 +71,8 @@
 	<tr>
 		<td><label for="selectedPeriodIndex">$i18n.getString( "period" )</label></td>
 		<td>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="window.location.href='previousPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="window.location.href='nextPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end><br>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="window.location.href='previousPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="window.location.href='nextPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end/><br/>
 			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="document.getElementById( 'selectForm' ).submit();" #if( $periods.size() == 0 ) disabled="disabled" #end>
 				<option value="null">[$i18n.getString( "select" )]</option>
 			    #foreach( $period in $periods )
@@ -87,8 +87,8 @@
 
 </form>
 
-<hr style="clear:both">
-<br>
+<hr style="clear:both"/>
+<br/>
 
 <script type="text/javascript">
 	var i18n_save_calculated_data_element_success = '$encoder.jsEscape( $i18n.getString( "save_calculated_data_element_success" ) , "'")';

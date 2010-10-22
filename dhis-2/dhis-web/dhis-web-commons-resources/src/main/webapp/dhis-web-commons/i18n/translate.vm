@@ -59,8 +59,8 @@
 	#end
 	<tr>
 		<td></td>
-		<td><input type="submit" value="$i18n.getString( "translation_save")" style="width:10em"/>
-		    <input type="button" value="$i18n.getString( "translation_cancel")" onclick="javascript:location.href='$returnUrl'" style="width:10em"/>
+		<td><input type="submit" value="$i18n.getString( 'translation_save' )" style="width:10em"/>
+		    <input type="button" value="$i18n.getString( 'translation_cancel' )" onclick="javascript:location.href='$returnUrl'" style="width:10em"/>
 	    </td>
 		<td></td>
 	</tr>
@@ -73,15 +73,15 @@
 	</tr>
 	<tr>
 		<td style="width:12em"><label for="language">$i18n.getString( "translation_languagecode" )</label></td>
-		<td><input type="text" id="language" name="language" size=2 style="width:20em"/></td>
+		<td><input type="text" id="language" name="language" size="2" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="country">$i18n.getString( "translation_countrycode" ) </label></td>
-		<td><input type="text" id="country" name="country" size=2 style="width:20em"/></td>
+		<td><input type="text" id="country" name="country" size="2" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( "translation_add")" onclick="addLocale()" style="width:10em"/></td>
+		<td><input type="button" value="$i18n.getString( 'translation_add' )" onclick="addLocale()" style="width:10em"/></td>
 		<td></td>
 	</tr>
 </table>
@@ -92,7 +92,7 @@
 
     var propNames = new Array()
     #set( $count = 0 )
-    #foreach ($propertyName in $propertyNames )
+    #foreach ( $propertyName in $propertyNames )
         propNames[$count] = "$propertyName";
         #set( $count = $count + 1 )
     #end

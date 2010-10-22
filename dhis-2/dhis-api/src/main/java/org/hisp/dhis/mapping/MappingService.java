@@ -106,40 +106,26 @@ public interface MappingService
      * 
      * @param name, Map description.
      * @param mapLayerPath, the link to Geoserver.
-     * @param type, "polygon" or "point"
-     * @param organisationUnitId, the id of the organisation unit.
      * @param organisationUnitLevelId, the level of the organisation units into
      *        which the map is devided.
-     * @param uniqueColumn, the shapefile column which holds the unique
-     *        organisation unit value.
      * @param nameColumn, the shapefile column which holds the name of the
      *        organisation unit.
-     * @param longitude
-     * @param latitude
-     * @param zoom
      * @return a generated unique id of the added Map.
      */
-    int addMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId,
-        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom );
+    int addMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn );
 
     /**
      * Adds a map. If a map with the same mapLayerPath already exists, the map
      * will be updated.
      * 
      * @param name, Map description.
-     * @param mapLayerPath, the link to Geoserver.
-     * @param type, "polygon" or "point"
-     * @param organisationUnitId, the id of the organisation unit.
+     * @param mapLayerPath, the link to Geoserver or GeoJSON file.
      * @param organisationUnitLevelId, the level of the organisation units into
      *        which the map is devided.
      * @param nameColumn, the shapefile column which holds the name of the
      *        organisation unit.
-     * @param longitude
-     * @param latitude
-     * @param zoom
      */
-    void addOrUpdateMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId,
-        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom );
+    void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn );
 
     /**
      * Updates a Map.

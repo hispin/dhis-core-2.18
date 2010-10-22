@@ -3,6 +3,7 @@ package org.hisp.dhis.linelisting;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nService;
@@ -232,6 +233,30 @@ public class DefaultLineListService
     public void updateLineListOption( LineListOption lineListOption )
     {
         lineListStore.updateLineListOption( lineListOption );
+    }
+    
+    // -------------------------------------------------------------------------
+    // LinelistElemnet - Dataelement Mapping
+    // -------------------------------------------------------------------------
+
+    public void addLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap )
+    {
+        lineListStore.addLinelistDataelementMapping( lineListDataElementMap );
+    }
+    
+    public void updateLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap )
+    {
+        lineListStore.updateLinelistDataelementMapping( lineListDataElementMap );
+    }
+    
+    public void deleteLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap )
+    {
+        lineListStore.deleteLinelistDataelementMapping( lineListDataElementMap );
+    }
+
+    public List<LineListDataElementMap> getLinelistDataelementMappings( LineListElement linelistElement, LineListOption linelistOption )
+    {
+        return lineListStore.getLinelistDataelementMappings( linelistElement, linelistOption );
     }
     
 }

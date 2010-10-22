@@ -30,24 +30,6 @@ function removeProgram( programId, name )
 }
 
 // -----------------------------------------------------------------------------
-// Criteria association
-// -----------------------------------------------------------------------------
-
-function assignCriteria(){
-
-	var params = 'programId=' + getFieldValue( 'programId' ) + "&" + getParamString('criteriaIds');
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( function(data){
-		window.location.href = 'program.action';
-	} );
-	request.sendAsPost( params );
-    request.send( "defineCriteriaAssociations.action" );
-        
-}
-
-// -----------------------------------------------------------------------------
 // Create validation for dataelements into program-stages
 // -----------------------------------------------------------------------------
 var dataelementId;

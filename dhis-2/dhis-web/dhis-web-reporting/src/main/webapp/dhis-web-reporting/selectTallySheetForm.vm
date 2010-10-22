@@ -1,3 +1,11 @@
+<script type="text/javascript">
+
+	jQuery(document).ready( function(){
+		// Override the listener after tree loaded succesfully
+		selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
+	});
+	
+</script>
 
 <h3>$i18n.getString( "tally_sheet_generator" )</h3>
 
@@ -21,7 +29,7 @@
 
   <tr>  	
       <td><label>$i18n.getString( "tally_sheet_name" )</label></td>
-      <td><input type="text" id="tallySheetName" name="tallySheetName" value="$i18n.getString( "tally_sheet" )"></td>
+      <td><input type="text" id="tallySheetName" name="tallySheetName" value="$i18n.getString( 'tally_sheet' )"></td>
   </tr>	
   <tr>  	
       <td><label>$i18n.getString( "use_a3_format" )</label></td>
@@ -46,13 +54,7 @@
   </tr>  
   <tr>	
 	<td>
-        <div id="selectionTree" style="width:40em;height:30em;overflow:auto;border:1px solid #cccccc">			
-			<script type="text/javascript">
-          		selectionTreeSelection.setMultipleSelectionAllowed( false );
-				selectionTree.clearSelectedOrganisationUnits();
-          		selectionTree.buildSelectionTree();
-        	</script>
-		</div>	
+		#organisationUnitSelectionTree( true, false, false )
     </td>
   </tr>  
   <tr>  
@@ -69,4 +71,3 @@
     var i18n_select_organisation_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
     var i18n_processing = '$encoder.jsEscape( $i18n.getString( "processing" ), "'")';    
 </script>
-

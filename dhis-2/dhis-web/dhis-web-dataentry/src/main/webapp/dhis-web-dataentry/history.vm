@@ -19,6 +19,8 @@
     $encoder.htmlEncode( $dataElementHistory.optionCombo.name )
 </h3>
 
+<input type="hidden" id="organisationUnitId" value="$dataElementHistory.organisationUnit.id"/>
+
 <table>
 	<tr>		
 		<!-- Column 1 - Comment and Followup -->
@@ -34,18 +36,18 @@
 			        #end
 			    </select>
 			    <input id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
-			        onblur="commentLeft( $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end">
+			        onblur="commentLeft( $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end"/>
 			#end
 			
-			<br><br>
+			<br/><br/>
 			<h4>$i18n.getString( "followup" )</h4>
 			
 		    #if ( $dataValue && $dataValue.isFollowup() )
-                <img id="followup" src="../images/marked_large.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer">
+                <img id="followup" src="../images/marked_large.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
 			#elseif ( $dataValue )
-                <img id="followup" src="../images/unmarked_large.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer">
+                <img id="followup" src="../images/unmarked_large.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
 			#else
-			    <img id="followup" src="../images/unmarked_large.png">
+			    <img id="followup" src="../images/unmarked_large.png"/>
 			#end
 		</td>
 		<!-- Column 2 - Min-max -->
@@ -58,7 +60,7 @@
                     <td><input type="text" id="maxLimit" style="width:10em" value="$maxLimit" class="{validate:{digits:true}}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
                             onchange="saveMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id,  $dataElementHistory.optionCombo.id )"
-                        #else disabled="disabled" #end onfocus="this.select()">
+                        #else disabled="disabled" #end onfocus="this.select()"/>
 						<span id='maxSpan' style="color:red;"></span>
 						</td>
                 </tr>
@@ -68,7 +70,7 @@
                     <td><input type="text" id="minLimit" style="width:10em" value="$minLimit"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
                            onchange="saveMinLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )"
-                        #else disabled="disabled" #end onfocus="this.select()">
+                        #else disabled="disabled" #end onfocus="this.select()"/>
 						<span id='minSpan' style="color:red;"></span>
 					</td>
                 </tr>
@@ -94,7 +96,7 @@
 			#end    
 			
 			<img src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&
-			    categoryOptionComboId=${dataElementHistory.optionCombo.id}">			
+			    categoryOptionComboId=${dataElementHistory.optionCombo.id}"/>			
         </td>
     </tr>
 	<tr>
@@ -113,10 +115,11 @@
 
 </table>
 
-<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" onclick="window.opener.location.reload();window.close()"></p>
+<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="window.opener.location.reload();window.close()"/></p>
 
 <script type="text/javascript">
 
+var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
 var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
 var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
 

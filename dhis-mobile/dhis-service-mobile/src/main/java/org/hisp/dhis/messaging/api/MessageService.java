@@ -28,6 +28,11 @@ package org.hisp.dhis.messaging.api;
 
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.hisp.dhis.mobile.api.SendSMS;
+import org.smslib.InboundMessage;
 
 public interface MessageService
 {
@@ -47,4 +52,18 @@ public interface MessageService
     String sendMessage( String recipient, String msg );
 
     String saveData( String userId, Date msgTime, String data );
+    
+    String sendMessageToGroup( String groupName, List<String> recepients, String msg );
+
+    List<InboundMessage> readAllMessages();
+    
+    String processPendingMessages();
+    
+    String sendMessages( List<SendSMS> sendSMSList );
+    
+    String sendDrafts();
+    
+    Map<String,String> readAllPendingMessages();
+
+    String sendOtaMessage(String recipient, String url, String prompt);
 }

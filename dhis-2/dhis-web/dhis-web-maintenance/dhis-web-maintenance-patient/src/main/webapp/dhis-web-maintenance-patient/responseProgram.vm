@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<program>
-  <id>$program.id</id>
-  <name>$encoder.xmlEncode( $program.name )</name>
-  <description>$encoder.xmlEncode( $program.description )</description>  
-  <programStageCount>$program.programStages.size()</programStageCount>   
-</program>
+{
+	"id":"$program.id",
+	"name":"$!encoder.jsEncode( ${program.name} )",
+	"description": "$!encoder.jsEncode( ${program.description} )",
+	"programStageCount": "$program.programStages.size()"
+}

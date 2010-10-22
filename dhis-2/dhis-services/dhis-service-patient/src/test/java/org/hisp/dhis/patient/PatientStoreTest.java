@@ -45,28 +45,25 @@ public class PatientStoreTest
     extends DhisSpringTest
 {
     private PatientStore patientStore;
-    private PatientIdentifierStore patientIdentifierStore;
     private OrganisationUnitService organisationUnitService;
     
     private Patient patientA;
     private Patient patientB;
+    
     private OrganisationUnit organisationUnit;
 
     @Override
     public void setUpTest()
     {
         patientStore = (PatientStore) getBean( PatientStore.ID );
-        patientIdentifierStore = (PatientIdentifierStore) getBean ( PatientIdentifierStore.ID );
         organisationUnitService = (OrganisationUnitService) getBean ( OrganisationUnitService.ID );
         
         organisationUnit = createOrganisationUnit( 'A' );
-
         organisationUnitService.addOrganisationUnit( organisationUnit );
         
-        patientA = createPatient( 'A' );
-        patientB = createPatient( 'B' );
-
-
+        patientA = createPatient( 'A', organisationUnit );
+        patientB = createPatient( 'B', organisationUnit );
+        
     }
     
     @Test
@@ -74,7 +71,6 @@ public class PatientStoreTest
     {
         int idA = patientStore.save( patientA );
         int idB = patientStore.save( patientB );
-        patientIdentifierStore.listPatientByOrganisationUnit(organisationUnit, idB, idB);
         
         assertEquals( patientA.getFirstName(), patientStore.get( idA ).getFirstName() );
         assertEquals( patientB.getFirstName(), patientStore.get( idB ).getFirstName() );        

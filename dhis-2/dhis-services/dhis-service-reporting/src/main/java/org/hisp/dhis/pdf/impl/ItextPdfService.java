@@ -127,8 +127,9 @@ public class ItextPdfService
 
     public void writeAllDataElements( OutputStream outputStream, I18n i18n )
     {
-        Document document = PDFUtils.openDocument( outputStream );
         initFont();
+        Document document = PDFUtils.openDocument( outputStream );
+
         for ( DataElement element : dataElementService.getAllDataElements() )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
@@ -150,13 +151,14 @@ public class ItextPdfService
             table.addCell( getTextCell( element.getDescription(), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-            table.addCell( getTextCell( getBoolean().get( element.isActive() ), TEXT ) );
+            table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
-            table.addCell( getTextCell( getType().get( element.getType() ), TEXT ) );
+            table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( getAggregationOperator().get( element.getAggregationOperator() ) ) );
+            table.addCell( getTextCell( i18n
+                .getString( getAggregationOperator().get( element.getAggregationOperator() ) ) ) );
 
             table.addCell( getCell( 2, 30 ) );
 
@@ -168,8 +170,9 @@ public class ItextPdfService
 
     public void writeAllIndicators( OutputStream outputStream, I18n i18n )
     {
-        Document document = PDFUtils.openDocument( outputStream );
         initFont();
+        Document document = PDFUtils.openDocument( outputStream );
+
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
@@ -191,7 +194,7 @@ public class ItextPdfService
             table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "annualized" ), 1, ITALIC ) );
-            table.addCell( getTextCell( getBoolean().get( indicator.getAnnualized() ), TEXT ) );
+            table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1, ITALIC ) );
             table.addCell( getTextCell( indicator.getIndicatorType().getName(), TEXT ) );
@@ -225,8 +228,9 @@ public class ItextPdfService
 
     public void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n )
     {
-        Document document = PDFUtils.openDocument( outputStream );
         initFont();
+        Document document = PDFUtils.openDocument( outputStream );
+
         for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
@@ -248,7 +252,7 @@ public class ItextPdfService
             table.addCell( getTextCell( unit.getClosedDate() != null ? unit.getClosedDate().toString() : "" ) );
 
             table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-            table.addCell( getTextCell( getBoolean().get( unit.isActive() ), TEXT ) );
+            table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
             table.addCell( getTextCell( unit.getComment(), TEXT ) );
@@ -264,8 +268,9 @@ public class ItextPdfService
     public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
         I18n i18n, OrganisationUnit unit, DataSet dataSet )
     {
-        Document document = openDocument( out );
         initFont();
+        Document document = openDocument( out );
+
         PdfPTable table = getPdfPTable( true, 0.501f, 0.10f, 0.10f, 0.10f, 0.10f, 0.10f );
 
         table.setHeaderRows( 1 );
@@ -311,8 +316,9 @@ public class ItextPdfService
 
     public void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
     {
-        Document document = openDocument( out );
         initFont();
+        Document document = openDocument( out );
+
         PdfPTable table = getPdfPTable( true, 0.19f, 0.13f, 0.21f, 0.07f, 0.12f, 0.07f, 0.21f );
 
         table.setHeaderRows( 0 );
@@ -362,6 +368,7 @@ public class ItextPdfService
         closeDocument( document );
     }
 
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -369,26 +376,26 @@ public class ItextPdfService
     private Map<Boolean, String> getBoolean()
     {
         Map<Boolean, String> map = new HashMap<Boolean, String>();
-        map.put( true, "Yes" );
-        map.put( false, "No" );
+        map.put( true, "yes" );
+        map.put( false, "no" );
         return map;
     }
 
     private Map<String, String> getType()
     {
         Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.VALUE_TYPE_STRING, "Text" );
-        map.put( DataElement.VALUE_TYPE_INT, "Number" );
-        map.put( DataElement.VALUE_TYPE_BOOL, "Yes/No" );
+        map.put( DataElement.VALUE_TYPE_STRING, "text" );
+        map.put( DataElement.VALUE_TYPE_INT, "number" );
+        map.put( DataElement.VALUE_TYPE_BOOL, "yes_no" );
         return map;
     }
 
     private Map<String, String> getAggregationOperator()
     {
         Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.AGGREGATION_OPERATOR_SUM, "Sum" );
-        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "Average" );
-        map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "Count" );
+        map.put( DataElement.AGGREGATION_OPERATOR_SUM, "sum" );
+        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "average" );
+        map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "count" );
         return map;
     }
 
@@ -400,4 +407,5 @@ public class ItextPdfService
         ITALIC = new Font( bf, 9, Font.ITALIC );
         HEADER3 = new Font( bf, 12, Font.BOLD );
     }
+
 }

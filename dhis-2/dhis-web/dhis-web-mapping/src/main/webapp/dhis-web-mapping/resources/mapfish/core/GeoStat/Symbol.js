@@ -61,16 +61,16 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
     createColorInterpolation: function() {
         var initialColors = this.colors;
         var numColors = this.classification.bins.length;
-		var mapLegendType = ACTIVEPANEL == organisationUnitAssignment ?
-            map_legend_type_automatic : Ext.getCmp('maplegendtype_cb2').getValue();
+		var mapLegendType = ACTIVEPANEL == GLOBALS.config.organisationUnitAssignment ?
+            GLOBALS.config.map_legend_type_automatic : Ext.getCmp('maplegendtype_cb2').getValue();
 		
-		if (mapLegendType == map_legend_type_automatic) {
+		if (mapLegendType == GLOBALS.config.map_legend_type_automatic) {
 			this.colorInterpolation = proportionalSymbol.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
 			for (var i = 0; i < proportionalSymbol.imageLegend.length && i < this.colorInterpolation.length; i++) {
 				proportionalSymbol.imageLegend[i].color = this.colorInterpolation[i].toHexString();
 			}
 		}
-		else if (mapLegendType == map_legend_type_predefined) {
+		else if (mapLegendType == GLOBALS.config.map_legend_type_predefined) {
 			this.colorInterpolation = proportionalSymbol.colorInterpolation;
 			for (var i = 0; i < proportionalSymbol.imageLegend.length && i < proportionalSymbol.colorInterpolation.length; i++) {
 				proportionalSymbol.imageLegend[i].color = proportionalSymbol.colorInterpolation[i].toHexString();
@@ -80,11 +80,10 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
 
     setClassification: function() {
         var values = [];
-        // var features = this.layer.features;
 
-        for (var i = 0; i < FEATURE[thematicMap2].length; i++) {
-           // values.push(features[i].attributes[this.colorIndicator]);
-           values.push(FEATURE[thematicMap2][i].attributes.value);
+        for (var i = 0; i < this.layer.features.length; i++) {
+           // values.push(this.layer.features[i].attributes[this.colorIndicator]);
+           values.push(this.layer.features[i].attributes.value);
         }
         
         var distOptions = {

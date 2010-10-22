@@ -5,7 +5,8 @@
     "id": "$!{map.id}",
     "name": "$!encoder.jsEncode( ${map.name} )",
     "mapLayerPath": "$!encoder.jsEncode( ${map.mapLayerPath} )",
-    "organisationUnitLevel": "$!{map.organisationUnitLevel.level}"
+    "organisationUnitLevel": "$!{map.organisationUnitLevel.level}",
+    "nameColumn": "$!{map.nameColumn}"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

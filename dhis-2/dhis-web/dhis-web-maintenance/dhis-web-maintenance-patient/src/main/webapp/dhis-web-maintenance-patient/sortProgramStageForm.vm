@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "program_stage_sort_order" )</h3>
 																		
 <form id="sortProgramStageForm" name "sortProgramStageForm" action="saveProgramStageSortOder.action" method="post">
@@ -22,8 +21,8 @@
         </td>
         
         <td valign="top" align="center">             
-          <a href="#" onclick="moveUp('sortedList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
-          <a href="#" onclick="moveDown('sortedList')"><img src="../images/move_down.png" border="0" alt=""></a>        
+          <a href="#" onclick="moveUpSelectedOption('programStageList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
+          <a href="#" onclick="moveDownSelectedOption('programStageList')"><img src="../images/move_down.png" border="0" alt=""></a>        
         </td>
           
     <tr>

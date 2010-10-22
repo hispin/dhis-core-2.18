@@ -1,82 +1,72 @@
 <h3>$i18n.getString( "program_stage_management" )</h3>
 
-<table>
-    <tr>
-        <td><label>$i18n.getString( "select_program" )</label><br>
-            <select id="id" name="id" style="min-width:20em" onchange="javascript:getStageByProgram(this.options[this.selectedIndex].value)">
+<table class="mainPageTable">
+	<tr>
+		<td>
+			<label><b>$i18n.getString( "select_program" )</b></label><br>
+            <select id="id" name="id" style="min-width:20em" onchange="getStageByProgram( this.value )">
                 <option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>
                 #foreach ( $program in $programs )
                     <option value="$program.id" #if($id==$program.id) selected="selected" #end>$program.name</option>
                 #end
             </select>
-        </td>
-    </tr>
-</table>
-
-<table class="mainPageTable">
-  <tr>
-    <td style="vertical-align:top">
-    
-      <table class="listTable">
-          <col>
-          <col>     
-          <col width="20">
-          <col width="20">
-          <col width="20">  
-          <col width="20">           
-                    		  
-		  <tr>
-		    <td></td>
-		    <td></td> 
-		  	<td colspan="4" style="text-align:right">
-               <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:75px">
-		  	   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
-		  	   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
-			</td>
+		</td>
+		<td style="text-align:right">
+		   <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:75px">
+		   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
+		   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
+		</td>
+	</tr>
+	<tr>
+		<td style="vertical-align:top" colspan=2>    
+		<table class="listTable">
+		  <col>
+		  <col>     
+		  <col width="20">
+		  <col width="20">
+		  <col width="20">  
+		  <col width="20"> 		  
+		  <tr>            
+			<th>$i18n.getString( "name" )</th>
+			<th>$i18n.getString( "description" )</th>
+			<th colspan="4">$i18n.getString( "operations" )</th>
 		  </tr>
-		  
-          <tr>            
-            <th>$i18n.getString( "name" )</th>
-            <th>$i18n.getString( "description" )</th>
-            <th colspan="4">$i18n.getString( "operations" )</th>
-          </tr>
 
-          <tbody id="list">
-            #set( $mark = false )
-            #foreach( $association in $associations )
-              <tr>
-              
-                <td#alternate( $mark )>$encoder.htmlEncode( $association.name )</td>                
-                <td#alternate( $mark )>$encoder.htmlEncode( $association.description )</td>
-                
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="showUpdateProgramStageForm.action?id=$association.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
-                </td>                
- 
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:removeProgramStage( '$association.id', '$encoder.jsEncode( $association.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-                </td>            
-                
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:showProgramStageDetails( $association.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
-                </td>
-                
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:viewDataEntryForm( '$association.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
-                </td>
-                
-              </tr>
+		  <tbody id="list">
+			#set( $mark = false )
+			#foreach( $association in $associations )
+			  <tr id="tr${association.id}">			  
+				<td#alternate( $mark )>$encoder.htmlEncode( $association.name )</td>                
+				<td#alternate( $mark )>$encoder.htmlEncode( $association.description )</td>
+				
+				<td style="text-align:center"#alternate( $mark )>
+				  <a href="showUpdateProgramStageForm.action?id=$association.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+				</td>                
+
+				<td style="text-align:center"#alternate( $mark )>
+				  <a href="javascript:removeItem( '$association.id', '$encoder.jsEncode( $association.name )', i18n_confirm_delete , 'removeProgramStage.action' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+				</td>            
+				
+				<td style="text-align:center"#alternate( $mark )>
+				  <a href="javascript:showProgramStageDetails( $association.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+				</td>
+				
+				<td style="text-align:center"#alternate( $mark )>
+				  <a href="viewDataEntryForm.action?associationId=$association.id" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
+				</td>
+				
+			  </tr>
 			  #if( $mark )
 				#set( $mark = false )
 			  #else
 				#set( $mark = true )
 			  #end
-            #end
+			#end
 
-          </tbody>
+		  </tbody>
 
-        </table>
-    </td>
+		</table>
+		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 
 			<div id="detailsArea" style="display:none">
@@ -88,11 +78,11 @@
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
 				<p><label>$i18n.getString( "stage_in_program" ):</label><br><span id="stageInProgramField"></span></p>
 				<p><label>$i18n.getString( "min_days_from_start" ):</label><br><span id="minDaysFromStartField"></span></p>
-                <p><label>$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
+				<p><label>$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
 			</div>
 
 		</td>
-  </tr>
+	</tr>
 </table>
 
 <script type="text/javascript">
@@ -101,4 +91,65 @@
 	var i18n_adding_program_stage_failed = '$encoder.jsEscape( $i18n.getString( "adding_program_stage_failed" ), "'")';
 	var i18n_updating_program_stage_failed = '$encoder.jsEscape( $i18n.getString( "updating_program_stage_failed" ), "'")';	
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ), "'")';
+	
+function getStageByProgram( programId )
+{
+	window.location = "programStage.action?id=" + programId;
+}
+
+function addProgramStage()
+{
+	var programId = document.getElementById('id').value;
+
+	if( programId == "null"  || programId == "" )
+	{
+		showWarningMessage( i18n_please_select_program );
+	}
+	else
+	{
+		window.location.href="showAddProgramStageForm.action?id=" + programId;
+	}
+}
+
+
+
+function showSortProgramStage()
+{
+	var programId = document.getElementById('id').value;
+	
+	if( programId == "null"  || programId == "" )
+	{
+		showWarningMessage( i18n_please_select_program );
+	}
+	else
+	{
+		window.location.href="showSortProgramStageForm.action?id=" + programId;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
+
+function showProgramStageDetails( programStageId )
+{
+    var request = new Request();
+    request.setResponseTypeXML( 'programStage' );
+    request.setCallbackSuccess( programStageReceived );
+    request.send( 'getProgramStage.action?id=' + programStageId );
+}
+
+function programStageReceived( programStageElement )
+{
+	setInnerHTML( 'idField', getElementValue( programStageElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( programStageElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( programStageElement, 'description' ) );
+    setInnerHTML( 'stageInProgramField', getElementValue( programStageElement, 'stageInProgram' ) );   
+    setInnerHTML( 'minDaysFromStartField', getElementValue( programStageElement, 'minDaysFromStart' ) );    
+    setInnerHTML( 'dataElementCountField', getElementValue( programStageElement, 'dataElementCount' ) );   
+   
+    showDetails();
+}
+
+	
 </script>

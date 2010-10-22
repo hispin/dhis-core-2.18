@@ -1,51 +1,40 @@
 
-var selectedOrganisationUnitId = null;
-
-function setSelectedOrganisationUnitId( ids )
+function getPeriods( periodTypeList, availableList, selectedList, timespan )
 {
-    if ( ids != null && ids.length == 1 )
-    {
-        selectedOrganisationUnitId = ids[0];
-    }
-
-    displayCompleteness();
+	getAvailablePeriods( periodTypeList, availableList, selectedList, timespan );
+	displayCompleteness();
 }
-
-selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitId );
 
 function displayCompleteness()
 {
     var criteria = $( "input[name='criteria']:checked" ).val();
-    var dataSetList = document.getElementById( "dataSetId" );    
+    var dataSetList = byId( "dataSetId" );    
     var dataSetId = dataSetList.options[ dataSetList.selectedIndex ].value;    
-    var periodList = document.getElementById( "periodId" );
+    var periodList = byId( "periodId" );
     var periodId = null;
     
-    if ( periodList.disabled == false )
+    if ( !periodList.disabled && (periodList.options.length > 0) )
     {
         periodId = periodList.options[ periodList.selectedIndex ].value;
     }
     
-    if ( periodId != null && selectedOrganisationUnitId != null )
+    if ( periodId != null )
     {
         clearTable( "resultTable" );
-        
         showLoader();
         
-        var request = new Request();        
-        var url = null;
+        var request = new Request();   
+        var url = "getDataCompleteness.action" 
+				+ "?periodId=" + periodId 
+				+ "&criteria=" + criteria;
         
         request.setResponseTypeXML( "dataSetCompletenessResult" );
-        
+                    
         if ( dataSetId == "ALL" )
         {            
             // -----------------------------------------------------------------
             // Display completeness by DataSets
             // -----------------------------------------------------------------
-            
-            url = "getDataCompleteness.action?periodId=" + periodId + 
-                  "&organisationUnitId=" + selectedOrganisationUnitId +
-                  "&criteria=" + criteria;
             
             request.setCallbackSuccess( displayCompletenessByDataSetReceived );
         }
@@ -55,21 +44,17 @@ function displayCompleteness()
             // Display completeness by child OrganisationUnits for a DataSet
             // -----------------------------------------------------------------
             
-            url = "getDataCompleteness.action?periodId=" + periodId + 
-                  "&organisationUnitId=" + selectedOrganisationUnitId +
-                  "&dataSetId=" + dataSetId +
-                  "&criteria=" + criteria;
+            url += "&dataSetId=" + dataSetId;
             
             request.setCallbackSuccess( displayCompletenessByOrganisationUnitReceived );
-        }               
-        
+        }
         request.send( url );
     }
 }
 
 function clearTable( tableId )
 {
-    var table = document.getElementById( tableId );
+    var table = byId( tableId );
     
     while ( table.rows.length >  0 )
     {
@@ -95,14 +80,13 @@ function displayCompletenessTable( xmlObject, headerText )
 {
     hideLoader();
     
-    var table = document.getElementById( "resultTable" );
+    var table = byId( "resultTable" );
     
     // -------------------------------------------------------------------------
     // Adding header
     // -------------------------------------------------------------------------
     
     var headerRow = table.insertRow( 0 );
-    
     var columnWidth = "55px";
     
     var headerA = document.createElement( "th" );
@@ -139,13 +123,14 @@ function displayCompletenessTable( xmlObject, headerText )
     // -------------------------------------------------------------------------
     
     var results = xmlObject.getElementsByTagName( "dataSetCompletenessResult" );
-    
     var mark = false;
-    
     var rowIndex = 1;
+    var className = "";
     
     for ( var i = 0; i < results.length; i++ )
     {
+		className = mark ? "listAlternateRow" : "listRow" ;
+	
         var resultName = results[i].getElementsByTagName( "name" )[0].firstChild.nodeValue;
         var sources = results[i].getElementsByTagName( "sources" )[0].firstChild.nodeValue;
         var registrations = results[i].getElementsByTagName( "registrations" )[0].firstChild.nodeValue;
@@ -158,28 +143,28 @@ function displayCompletenessTable( xmlObject, headerText )
         var cellA = row.insertCell( 0 );
         cellA.style.height = "32px";
         cellA.innerHTML = resultName;
-        cellA.className = mark ? "listAlternateRow" : "listRow" ;
+        cellA.className = className
         
         var cellB = row.insertCell( 1 );
         cellB.innerHTML = registrations;
-        cellB.className = mark ? "listAlternateRow" : "listRow" ;
+        cellB.className = className
         
         var cellC = row.insertCell( 2 );
         cellC.innerHTML = sources;
-        cellC.className = mark ? "listAlternateRow" : "listRow" ;
+        cellC.className = className
         
         var cellD = row.insertCell( 3 );
         cellD.innerHTML = percentage;
-        cellD.className = mark ? "listAlternateRow" : "listRow" ;
+        cellD.className = className
         
         var cellE = row.insertCell( 4 );
         cellE.innerHTML = registrationsOnTime;
-        cellE.className = mark ? "listAlternateRow" : "listRow" ;
+        cellE.className = className
                 
         var cellF = row.insertCell( 5 );
         cellF.innerHTML = percentageOnTime;
-        cellF.className = mark ? "listAlternateRow" : "listRow" ;
+        cellF.className = className
         
-        mark = mark ? false : true;
+        mark = !mark;
 	}
 }

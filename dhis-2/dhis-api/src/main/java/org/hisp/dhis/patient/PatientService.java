@@ -54,28 +54,26 @@ public interface PatientService
 
     Collection<Patient> getAllPatients( Boolean isDead );
 
+    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    
     Collection<Patient> getPatiensByGender( String gender );
 
     Collection<Patient> getPatientsByBirthDate( Date birthDate );
 
     Collection<Patient> getPatientsByNames( String name );
-
+    
     Collection<Patient> getPatients( String searchText );
+    
+    Collection<Patient> getPatients( String searchText, int min, int max );
+    
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit );
+    
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max );
 
-    // Collection<Patient> getPatientsByAttribute( PatientAttribute attribute );
-
-    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max );
-
-    Collection<Patient> getPatientsByOrgUnitAttr( OrganisationUnit organisationUnit, int min, int max , PatientAttribute patientAttribute);
-
-    int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit );
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max, PatientAttribute patientAttribute );
 
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max );
-
-    Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
-
-    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
-
+    
     /**
      * Search Patient base on PatientIdentifierType or Attribute or Patient's
      * name
@@ -85,22 +83,23 @@ public interface PatientService
      * @param value
      * @return
      */
-    Collection<Patient> searchPatient( Integer identifierTypeId, Integer attributeId, String value );
+    Collection<Patient> getPatient( Integer identifierTypeId, Integer attributeId, String value );
 
-    Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit );
-
-    Collection<Patient> getPatients( String searchText, int min, int max );
-
-    int countGetPatients( String searchText );
+    Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
 
     Collection<Patient> getPatientsByNames( String name, int min, int max );
+    
+    int countGetPatients( String searchText );
 
     int countnGetPatientsByNames( String name );
 
-    int createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+    int createPatient( Patient patient,Integer representativeId,
         Integer relationshipTypeId, List<PatientAttributeValue> patientAttributeValues );
-
-    public void updatePatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
+    
+    void updatePatient( Patient patient, Integer representativeId,
         Integer relationshipTypeId, List<PatientAttributeValue> valuesForSave,
         List<PatientAttributeValue> valuesForUpdate, Collection<PatientAttributeValue> valuesForDelete );
+    
+    int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit );
+    
 }

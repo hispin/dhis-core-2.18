@@ -71,6 +71,10 @@ public class GetDataCompletenessPDFAction
         this.selectionTreeManager = selectionTreeManager;
     }
 
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -83,7 +87,7 @@ public class GetDataCompletenessPDFAction
     // -------------------------------------------------------------------------
 
     private OrganisationUnit selectedUnit;
-    
+
     private InputStream inputStream;
 
     public InputStream getInputStream()

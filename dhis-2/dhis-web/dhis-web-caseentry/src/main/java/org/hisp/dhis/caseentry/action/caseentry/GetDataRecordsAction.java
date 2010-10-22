@@ -209,7 +209,7 @@ public class GetDataRecordsAction implements Action
         
         patientListByOrgUnit = new ArrayList<Patient>();
         
-        patientListByOrgUnit.addAll( patientService.getPatientsByOrgUnit( organisationUnit ) );
+        patientListByOrgUnit.addAll( patientService.getPatients( organisationUnit ) );
         
         if( sortPatientAttributeId != null )
         {

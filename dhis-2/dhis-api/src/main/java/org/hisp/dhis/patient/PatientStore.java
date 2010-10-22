@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -49,13 +50,15 @@ public interface PatientStore
 
     Collection<Patient> getByNames( String name );
     
-    //Collection<Patient> getByAttribute( PatientAttribute attribute );
+    Collection<Patient> getByNames( String name, int min, int max );
     
-    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );    
     
-    Collection<Patient> getPatientsByNames( String name, int min, int max );
+    Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit );
+    
+    Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max );
+    
+    int countListPatientByOrgunit(OrganisationUnit organisationUnit);
     
     int countGetPatientsByNames( String name );
-    
 }
-

@@ -51,6 +51,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -121,7 +122,7 @@ public abstract class DhisConvenienceTest
     protected IndicatorService indicatorService;
 
     protected DataSetService dataSetService;
-    
+
     protected SectionService sectionService;
 
     protected CompleteDataSetRegistrationService completeDataSetRegistrationService;
@@ -131,7 +132,7 @@ public abstract class DhisConvenienceTest
     protected OrganisationUnitService organisationUnitService;
 
     protected OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     protected AggregatedDataValueService aggregatedDataValueService;
 
     protected PeriodService periodService;
@@ -149,7 +150,7 @@ public abstract class DhisConvenienceTest
     protected MappingService mappingService;
 
     protected ProgramStageService programStageService;
-    
+
     protected DataEntryFormService dataEntryFormService;
 
     static
@@ -792,13 +793,9 @@ public abstract class DhisConvenienceTest
         Map map = new Map();
 
         map.setName( "Map" + uniqueCharacter );
-        map.setOrganisationUnit( unit );
         map.setOrganisationUnitLevel( level );
         map.setMapLayerPath( "MapLayerPath" + uniqueCharacter );
         map.setNameColumn( "NameColumn" + uniqueCharacter );
-        map.setLongitude( "Longitude" + uniqueCharacter );
-        map.setLatitude( "Latitude" + uniqueCharacter );
-        map.setZoom( 1 );
         map.setStaticMapLayerPaths( new HashSet<String>() );
 
         return map;
@@ -882,7 +879,7 @@ public abstract class DhisConvenienceTest
         return programStage;
     }
 
-    public static Patient createPatient( char uniqueChar )
+    public static Patient createPatient( char uniqueChar, OrganisationUnit organisationUnit )
     {
         Patient patient = new Patient();
 
@@ -901,35 +898,61 @@ public abstract class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @return
      */
-    public static ValidationCriteria createValidationCriteria( char uniqueCharacter, String property, int operator, Object value )
+    public static ValidationCriteria createValidationCriteria( char uniqueCharacter, String property, int operator,
+        Object value )
     {
         ValidationCriteria validationCriteria = new ValidationCriteria();
 
         validationCriteria.setName( "ValidationCriteria" + uniqueCharacter );
         validationCriteria.setDescription( "Description" + uniqueCharacter );
-        validationCriteria.setProperty(property);
+        validationCriteria.setProperty( property );
         validationCriteria.setOperator( operator );
         validationCriteria.setValue( value );
 
         return validationCriteria;
     }
 
-    
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param sql A query statement to retreive record/data from database.
+     * 
+     * @return a sqlView instance
      */
     protected static SqlView createSqlView( char uniqueCharacter, String sql )
     {
         SqlView sqlView = new SqlView();
-        
-        sqlView.setName( "SqlView" + uniqueCharacter);
+
+        sqlView.setName( "SqlView" + uniqueCharacter );
         sqlView.setDescription( "Description" + uniqueCharacter );
         sqlView.setSqlQuery( sql );
 
         return sqlView;
     }
-    
+
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     * @param dataSet
+     * @param period
+     * @param sources
+     * @param storedBy
+     * @param timestamp
+     * 
+     * @return a dataSetLock instance
+     */
+    protected static DataSetLock createDataSetLock( DataSet dataSet, Period period,
+        Set<Source> sources, String storedBy, Date timestamp )
+    {
+        DataSetLock dataSetLock = new DataSetLock();
+
+        dataSetLock.setDataSet( dataSet );
+        dataSetLock.setPeriod( period );
+        dataSetLock.setSources( sources );
+        dataSetLock.setStoredBy( storedBy );
+        dataSetLock.setTimestamp( timestamp );
+
+        return dataSetLock;
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

@@ -1,26 +1,16 @@
-
-<script type="text/javascript" src="javascript/FCK/fckeditor.js"></script>
-<script type="text/javascript">
-    var stat = '$status';
-    var dataEntryFormId = -1;
-    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';
-    	
-    #if($status == "EDIT")
-        dataEntryFormId = $dataEntryForm.id;
-    #end
-    
-    var FCKConfig;
-    var FCK;
-    window.onload = function()
-    {
-        var oFCKeditor = new FCKeditor( 'designTextarea' ) ;
-        oFCKeditor.BasePath = "javascript/FCK/";
-        oFCKeditor.ReplaceTextarea();
-    }
-    
+<script type="text/javascript">   
+    var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
+	var i18n_specify_dataelememt = '$encoder.jsEscape( $i18n.getString( "specify_dataelememt" ) , "'" )';
+       
 	jQuery(document).ready(	function()
 	{		
-		validation( 'saveDataEntryForm', function( form ){ form.submit() }, function(){ selectAllById('selectedList') });
+		validation( 'saveDataEntryForm', function( form ){ form.submit() } );		
+		
+		#if( $!dataEntryForm )
+			checkValueIsExist('name', 'validateDataEntryForm.action', {dataEntryFormId:$dataEntryForm.id});
+		#else
+			checkValueIsExist('name', 'validateDataEntryForm.action');
+		#end
 		
 	});
 	
@@ -28,91 +18,416 @@
 
 </script>
      
-</script>
+<style>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post" onsubmit="return validateDataEntryForm()">
-<h3>$i18n.getString( "dataentryform_management_for_program_stage " ): $association.name </h3>
-<table>
-<tr>
-<td>$i18n.getString( "select_method" ) :</td> 
-<td><select name="saveMethod" id="comboSaveMethod" onChange="toggleDiv()">
-    <option value="design" selected>$i18n.getString( "design_dataentry" )</option>
-    <option value="choose">$i18n.getString( "choose_existing_dataentry" )</option>
-</select>
-</td>
-</tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-</table>
-<div class="container" style="display:none"> 
-    <table>
-        <tr>
-            <td>$i18n.getString( "choose_dataentry" ) : </td>
-             <td>
-                 <select id="comboDataEntry" name="dataEntryFormId" onChange="showDataEntryCode(this)" >
-                     <option value="">---------</option>
-                     #foreach( $dataEntry in $listDataEntryForm )
-                        <option value="$dataEntry.id" >$encoder.htmlEncode( $dataEntry.name )</option>
-                     #end
-                 </select>
-             </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-        	<td id="codeContainer"></td>
-        </tr>
-    </table>
-</div>
+#dataElementSelection,
+#existedDataEntry,
+#otherProgramStageDataElements{ 
+	padding: 0.5em; 	
+	z-index:999999;
+	font-size:10pt;
+	
+}
 
+.ui-dialog-titlebar
+{
+	padding:0.1em 0.1em 0.1em 0.1em;
+}
+#ui-dialog-title-dataElementSelection,
+#ui-dialog-title-existedDataEntry,
+#ui-dialog-title-otherProgramStageDataElements{
+	font-size:10pt;
+	color:#FFFFFF;	
+	margin: 0;	
+}
+
+#dataElementSelection tr{
+	cursor:default;	
+}
+
+#dataElementSelection tr.selected{
+	background-color:#2B0AAF;
+	color:#FFFFFF;
+}
+
+#dataElementList{
+	margin-top:5px;
+}
+
+#message_{
+	display:block;
+	color:red;	
+}
+
+</style>
+
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post">
+<input type="hidden" name="programStageId" value="$!programStageId"/>
+<input type="hidden" name="associationIdField" id="associationIdField" value="$association.id" />
+<h3>$i18n.getString( "dataentryform_management_for_program_stage" ): $association.name </h3>
 <div class="container" >
-  <table id="detailsList">
-    <col> ## Labels
-    <col> ## Input
-    <thead>
-      <tr>
-        <th colspan="2">$i18n.getString( "dataentryform_details" )</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"  value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em"></td>
-      </tr>
-      <tr>
-        <td colspan="2">&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
-  
-   <table>
-      <col width="700">  
-      <tr>
-        <th>$i18n.getString( "design_dataentry" )</th>
-      </tr>
-      <tr>
-        <td><textarea id="designTextarea" name="designTextarea" >#if($status == "EDIT") $dataEntryForm.htmlCode #end</textarea></td>
-      </tr>
-      <tr><td><span id="message"></span></td></tr>
-      <tr>
-      <td>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+	<table id="detailsList" width="100%">
+		<col/>
+		<tr>
+			<th>$i18n.getString( "dataentryform_details" )</th>			
+			<td align="right" rowspan="2">
+				#if( !$existingDataEntryForms.isEmpty() )
+				<input type="button" style="width:250px" value="$i18n.getString( 'load_existed_form' )" onclick="openloadExistedForm()"/><br>
+				#end
+				#if(!$dataElements.isEmpty())
+				<input type="button" style="width:250px" value="$i18n.getString( 'dataelement' )" onclick="openDataElementSelector()"/><br>
+				#end
+				#if(!$programStages.isEmpty())
+				<input type="button" style="width:250px" value="$i18n.getString( 'dataelement_of_orther_program_stage' )" onclick="openOtherProgramStageDataElements()"/>
+				#end
+			</td>			
+		</tr>	
+		<tr>
+			<td>
+				<label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
+				<input type="text" id="name" value="$!dataEntryForm.name" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"   style="width:20em">
+			</td>				
+		</tr>	
+	</table>  
+	<table width="100%">      
+		<tr>
+			<th>$i18n.getString( "design_dataentry" )</th>
+		</tr>
+		<tr>
+			<td>$editorManager.create( "designTextarea", "100%", "400" )</td>
+		</tr>
+	</table>
 </div>
 
-<table id="cde_buttontable">
+<table width="100%">	
     <tr>
-        <td>
-            <input type="submit" name="save" value="$i18n.getString( "save" )" onClick="submitForm()">
-            <input type="button" name="cancel" value="$i18n.getString( "cancel" )" onclick="closeDialog();window.location.href='index.action'">
-        </td>
-        <td id="cde_deletebuttoncell">
-            <input type="button" name="delete" value="$i18n.getString( "delete" )" onclick="closeDialog();removeDataEntryForm( $dataEntryForm.id, '$dataEntryForm.name' )" #if($status == "ADD") disabled #end>
-        </td>
+        <td align="right">
+            <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:100px"/>
+            <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStageId'">            
+			#if( $!dataEntryForm )
+			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $association.id )" />
+			#end
+        </td>		
     </tr>
 </table>
   
-  <input type="hidden" name="associationIdField" id="associationIdField" value="$association.id" />
 </form>
+
+<div id="dataElementSelection">	
+	<table>
+		<tr>
+			<td>
+				<b>$i18n.getString( "dataelement" )</b><br>
+				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" onchange="getOptionCombos( this.value, '#dataElementSelection #optionComboIds' )" class="{validate:{required:true}}">
+					#foreach( $de in $dataElements)
+					<option value='$de.toJSON()'>$encoder.htmlEncode( $de.name )</option>
+					#end
+				</select>
+			</td>
+			<td>
+				<b>$i18n.getString( "optioncombo" )</b><br>
+				<select id="optionComboIds" name="optionComboIds" style="min-width:300px" size="10" class="{validate:{required:true}}"/>					
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b>$i18n.getString( "view_as" )</b><br>
+				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
+					<option value="deid">$i18n.getString( "id" )</option>
+					<option value="dename">$i18n.getString( "name" )</option>
+					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
+				</select>
+				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection')"/>
+			</td>
+			<td>
+				<span id="message_"></span>
+			</td>
+		</tr>
+	</table>	
+</div>
+
+<div id="otherProgramStageDataElements">	
+	<table>
+		<tr>
+			<td>
+				<b>$i18n.getString( "program_stage" )</b><br>
+				<select id="programStageIds" style="min-width:300px" onchange="getProgramStageDataElements( this.value )" >
+					<option value=''>$i18n.getString( "select" )</option>
+					#foreach( $p in $programStages)
+					<option value='$p.id'>$encoder.htmlEncode( $p.name )</option>
+					#end
+				</select>				
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<b>$i18n.getString( "dataelement" )</b><br>
+				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" onchange="getOptionCombos( this.value, '#otherProgramStageDataElements #optionComboIds' )" class="{validate:{required:true}}"/>
+			</td>
+			<td>
+				<b>$i18n.getString( "optioncombo" )</b><br>
+				<select id="optionComboIds" name="optionComboIds" style="min-width:300px" size="10" class="{validate:{required:true}}"/>					
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b>$i18n.getString( "view_as" )</b><br>
+				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
+					<option value="deid">$i18n.getString( "id" )</option>
+					<option value="dename">$i18n.getString( "name" )</option>
+					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
+				</select>
+				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements')"/>
+			</td>
+			<td>
+				<span id="message_"></span>
+			</td>
+		</tr>
+	</table>	
+</div>
+
+
+
+<div id="existedDataEntry">	
+	<select id="existedDataEntryId" style="width:300px;float:left">		
+		#foreach( $dataEntry in $existingDataEntryForms )
+			<option value="$dataEntry.id" >$encoder.htmlEncode( $dataEntry.name )</option>
+		#end
+	</select>
+	<input type="button" value="$i18n.getString( 'load' )" style="float:left" onclick="loadExistedForm()"/>	
+</div>
+
+
+<script>
+var dataElementSelector;
+var otherProgramStageDataElements;
+var existedDataEntry;
+
+jQuery(function(){
+	dataElementSelector = jQuery("#dataElementSelection").dialog({
+		title: "$i18n.getString( 'dataelement' )",
+		minWidth: 650,
+		minHeight: 250,
+		width:650,
+		autoOpen: false,
+		zIndex:99999
+	});
+	
+	otherProgramStageDataElements = jQuery("#otherProgramStageDataElements").dialog({
+		title: "$i18n.getString( 'dataelement_of_orther_program_stage' )",
+		minWidth: 650,
+		minHeight: 250,
+		width:650,
+		autoOpen: false,
+		zIndex:99999
+	});
+	
+	existedDataEntry = jQuery("#existedDataEntry").dialog({
+		title: "$i18n.getString( 'choose_existing_dataentry' )",
+		minWidth: 400,
+		minHeight: 80,
+		width:400,
+		autoOpen: false,
+		zIndex:99999
+	});	
+});
+
+function openOtherProgramStageDataElements()
+{
+	otherProgramStageDataElements.dialog("open");
+}
+	
+function openDataElementSelector()
+{
+	dataElementSelector.dialog("open");
+}	
+
+function openloadExistedForm()
+{
+	existedDataEntry.dialog("open");
+}
+
+function loadExistedForm()
+{
+	jQuery.post("showDataEntryForm.action",{
+		dataEntryFormId: getFieldValue( 'existedDataEntryId' )
+	}, function( html ){
+		FCKeditorAPI.GetInstance('designTextarea').SetHTML( html );
+	});
+}
+
+function deleteDataEntryForm( associationId )
+{
+	if( window.confirm( i18n_delete_confirm ) )
+	{
+		window.location = 'delDataEntryForm.action?associationId=' + associationId;
+	}
+}
+
+function getProgramStageDataElements( id )
+{
+	var dataElements = jQuery( "#otherProgramStageDataElements #dataElementIds" );
+	dataElements.empty();
+	jQuery( "#otherProgramStageDataElements #optionComboIds" ).empty();
+	if( id != '' ){
+		jQuery.post("getSelectedDataElements.action",{
+			associationId: id
+		}, function( xml ){			
+			jQuery( xml ).find( 'dataElement' ).each( function(i, item ){			
+				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+			});
+		});
+	}
+}
+
+
+function getOptionCombos( dataElement, target )
+{
+	var dataElement = JSON.parse( dataElement );
+	
+	var optionCombo = jQuery( target );
+	
+	if( dataElement.type=='string' ){
+		optionCombo.attr("multiple", "multiple" );
+	}else{
+		optionCombo.removeAttr( "multiple" );
+	}
+	
+	jQuery.postJSON("../dhis-web-commons-ajax-json/getCategoryOptionCombos.action", {
+		id: dataElement.id
+	}, function( json ){		
+		optionCombo.empty();
+		jQuery.each( json.categoryOptionCombos, function(i, item ){
+			optionCombo.append( "<option value='{\"id\":\"" + item.id + "\",\"name\":\"" + item.name + "\",\"default\":\"" + item.default + "\"}' selected='true'>" + item.name + "</option>" );
+		});
+	});
+}
+
+function insertDataElement( source )
+{
+	var oEditor = FCKeditorAPI.GetInstance('designTextarea') ;
+	
+	var dataElement = JSON.parse( jQuery( source + ' #dataElementIds').val() );
+	if( dataElement == null )
+	{
+		jQuery( source + " #message_").html( "<b>" + i18n_specify_dataelememt + "</b>" );
+		return;
+	}else{
+		jQuery( source + " #message_").html( "" );
+	}
+	var categoryOptionCombos = getSelectedValues( source + ' #optionComboIds' );
+	
+	var associationId = $association.id;
+	
+	var dataElementId = dataElement.id;	
+	var dataElementName = dataElement.name;	
+	var dataElementType = dataElement.type;
+	var viewByValue = jQuery( source + ' #viewBySelector' ).val();	
+	
+	var strPSDataEntryId   = "value["+ associationId +"].value:value["+ dataElementId +"].value";
+    var comboPSDataEntryId = "value["+ associationId +"].combo:value["+ dataElementId +"].combo";
+    var boolPSDataEntryId  = "value["+ associationId +"].boolean:value["+ dataElementId +"].boolean";
+    var datePSDataEntryId  = "value["+ associationId +"].date:value["+ dataElementId +"].date";
+	
+	if(viewByValue == "deid") dispName = "[ " + dataElementId;
+	else if (viewByValue == "deshortname") dispName = "[ " + dataElement.shortName;
+	else dispName = "[ " + dataElementName;
+	
+	viewByValue = "@@" + viewByValue + "@@";
+	
+	var id = "";
+	
+	var selectString = "";
+	
+	if( dataElementType == "string" )
+	{
+		if( categoryOptionCombos[0].default == 'true' )
+		{			
+			strPSDataEntryId  = strPSDataEntryId + ":value["+ categoryOptionCombos[0].id +"].value";
+			selectString += "<input name=\"entryfield\" id=\""+strPSDataEntryId+"\" type=\"text\" value=\"\" onkeypress=\"return keyPress(event, this)\" >";			
+			id = strPSDataEntryId;
+		}else{			
+			selectString = "<select name=\"entryselect\" id=\"" + comboPSDataEntryId + "\" > <option value=\"\">i18n_select_value</option>";
+		
+			jQuery.each( categoryOptionCombos, function(i, item ){
+				selectString += "<option value=\""+ item.id +"\" id=\"combo[" + item.id + "].combo\" >(" + item.name + ")</option>";
+			});
+			
+			selectString += "</select>";
+			
+			id = comboPSDataEntryId;
+		}		
+		
+	}else if (dataElementType == "bool")
+	{
+		selectString = "<select name=\"entryselect\" id=\"" + boolPSDataEntryId + "\" > <option value=\"\">i18n_select_value</option>";
+		selectString += "<option value=\"true\" >i18n_yes</option>";
+		selectString += "<option value=\"false\" >i18n_no</option>";
+		selectString += "</select>";
+		
+		id = boolPSDataEntryId;
+	}else if (dataElementType == "date")
+	{
+		clazz = "date_" + associationId + "_" + dataElementId;
+		selectString = "<input type=\"text\" id=\"" + datePSDataEntryId + "\" name=\"entryfield\" value=\"\" class=\"" + clazz + "\">";	
+		selectString += "<script type=\"text/javascript\">";
+		selectString += "jQuery(function(){";
+		selectString += "datePickerjQuery('." + clazz + "');";	
+		selectString += "});";	
+		selectString += "<\/script>";
+		
+		id = datePSDataEntryId;
+	} else if ( dataElementType == "int" )
+	{
+		jQuery.each( categoryOptionCombos, function(i, item ){
+			optionComboName = item.name;
+			optionComboId = item.id;
+			var titleValue = "-- " + dataElementId + ". "+ dataElementName+" " + optionComboId + ". " + optionComboName+" ("+dataElementType+") --";
+			var displayName = dispName + " - " + optionComboName + " ]";
+			var dataEntryId = "value[" + associationId + "].value:value[" + dataElementId + "].value:value[" + optionComboId + "].value";
+			selectString += "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:10em;text-align:center\"/><br/>";
+			id = dataEntryId;
+		});
+	}
+	
+	if( checkExisted( id ) )
+	{		
+		jQuery( source + " #message_").html( "<b>" + i18n_dataelement_is_inserted + "</b>" );
+		return;
+	}else{
+		jQuery( source + " #message_").html("");
+	}
+	
+	oEditor.InsertHtml( selectString );
+	
+}
+
+function getSelectedValues( jQueryString )
+{
+	var result = new Array();
+	jQuery.each( jQuery( jQueryString ).children(), function(i, item ){
+		if( item.selected==true){
+			result.push( JSON.parse( item.value ) );
+		}
+	});
+	
+	return result;
+}
+
+
+function checkExisted( id )
+{	
+	var result = false;
+	var html = FCKeditorAPI.GetInstance('designTextarea').GetHTML();
+	var input = jQuery( html ).find("select, :text");
+	input.each( function(i, item){		
+		if( id == item.id ) result = true;		
+	});
+	
+	return result;
+}
+
+
+	
+</script>
 

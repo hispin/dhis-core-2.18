@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 
 /**
@@ -71,6 +72,8 @@ public class Patient
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
 
     private Set<Program> programs = new HashSet<Program>();
+
+    private OrganisationUnit organisationUnit;
 
     private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
 
@@ -153,7 +156,15 @@ public class Patient
         return attributes;
     }
 
-    public void setAttributes( Set<PatientAttribute> attributes )
+    public OrganisationUnit getOrganisationUnit() {
+		return organisationUnit;
+	}
+
+	public void setOrganisationUnit(OrganisationUnit organisationUnit) {
+		this.organisationUnit = organisationUnit;
+	}
+
+	public void setAttributes( Set<PatientAttribute> attributes )
     {
         this.attributes = attributes;
     }

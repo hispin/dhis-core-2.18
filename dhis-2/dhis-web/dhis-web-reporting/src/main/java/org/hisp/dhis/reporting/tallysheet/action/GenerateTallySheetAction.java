@@ -42,7 +42,8 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
 /**
- * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
+ * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben
+ *         Wangberg
  * @version $Id$
  */
 public class GenerateTallySheetAction
@@ -65,7 +66,7 @@ public class GenerateTallySheetAction
     {
         this.checked = checked;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -95,41 +96,52 @@ public class GenerateTallySheetAction
         this.tallySheetPdfService = tallySheetPdfService;
     }
 
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
     }
-        
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Variables
     // -------------------------------------------------------------------------
 
     private TallySheet tallySheet;
 
     private List<TallySheetTuple> tallySheetTuples;
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
         tallySheet = (TallySheet) ActionContext.getContext().getSession().get( TallySheet.KEY_TALLY_SHEET );
-        
-        tallySheetTuples = tallySheet.getTallySheetTuples();
 
-        for ( int i = 0; i < checked.length; i++ )
+        if ( tallySheet != null )
         {
-            TallySheetTuple tallySheetTuple = tallySheetTuples.get( i );
-            tallySheetTuple.setChecked( checked[i] );
-            tallySheetTuple.setNumberOfRows( rows[i] );
+            tallySheetTuples = tallySheet.getTallySheetTuples();
+
+            for ( int i = 0; i < checked.length; i++ )
+            {
+                TallySheetTuple tallySheetTuple = tallySheetTuples.get( i );
+                tallySheetTuple.setChecked( checked[i] );
+                tallySheetTuple.setNumberOfRows( rows[i] );
+            }
+
+            Date today = new java.util.Date();
+            DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+            String timestamp = dateFormat.format( today );
+
+            fileName = timestamp + "_" + tallySheet.getTallySheetName() + ".pdf";
+            inputStream = tallySheetPdfService.createTallySheetPdf( tallySheet, i18n );
         }
-
-        Date today = new java.util.Date();
-        DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        String timestamp = dateFormat.format( today );
-
-        fileName = timestamp + "_" + tallySheet.getTallySheetName() + ".pdf";
-        inputStream = tallySheetPdfService.createTallySheetPdf( tallySheet, i18n );
 
         return SUCCESS;
     }

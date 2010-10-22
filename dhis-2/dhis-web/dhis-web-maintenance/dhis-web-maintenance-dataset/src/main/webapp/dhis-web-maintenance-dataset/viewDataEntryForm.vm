@@ -5,11 +5,8 @@
     	
     #if($status == "EDIT")
         dataEntryFormId = $dataEntryForm.id;
-    #end
-    
-    var FCKConfig;
-    var FCK;
-
+    #end    
+  
 	var autoSave = '$!autoSave';
 	
 	var oFCKeditor;
@@ -19,14 +16,11 @@
 				autoSave = false;
 				validateDataEntryForm();
 			} );	
-
-			oFCKeditor = new FCKeditor( 'designTextarea', "100%", 600 );
-			oFCKeditor.BasePath = "javascript/FCK/";
-	        oFCKeditor.ReplaceTextarea();
 						
 			jQuery("#dataElementSelection").resizable({
 				minHeight:210,
-				minWidth:300,
+				minWidth:400,
+				width:400,
 				alsoResize: "#dataElementList"				
 			});			
 			
@@ -76,6 +70,11 @@
 	margin-top:5px;
 }
 
+#message_{
+	display:block;
+	color:red;	
+}
+
 </style>
 
 
@@ -110,7 +109,9 @@
         <th>$i18n.getString( "dataentryform_design" )</th>
       </tr>
       <tr>
-        <td><textarea id="designTextarea" name="designTextarea">#if($status == "EDIT")${htmlCode}#end</textarea></td>
+        <td>
+			$editorManager.create( "designTextarea", "100%", "400" )
+		</td>
       </tr>
       <tr>
       <td>
@@ -136,10 +137,10 @@
 
 <div id="dataElementSelection" class="ui-widget-content">
 <h3 class="ui-widget-header"><b>$i18n.getString( 'dataelement' )</b></h3>
-	<div id="dataElementList" style="height:150px;overflow:auto">
+	<div id="dataElementList" style="height:150px;overflow:auto;border:1px solid #7AAED5">
 	<table width="100%">
 		#foreach( $operand in $operands )
-			<tr id="tr$velocityCount" onclick="select($velocityCount)">
+			<tr id="tr$velocityCount" onclick="select($velocityCount)" ondblclick="insertDataElement()">
 				<td>
 					<input type="hidden" id="json_$velocityCount" value='$operand.toJSON()'/>
 					$encoder.htmlEncode( $operand.operandName )
@@ -148,18 +149,27 @@
 		#end
 	</table>
 	</div>
-	<br>
-	<b>$i18n.getString( "view_as" )</b>
-	<select name="viewBySelector" id="viewBySelector" style="width:150px">		
-		<option value="deid">$i18n.getString( "id" )</option>
-		<option value="dename">$i18n.getString( "name" )</option>
-		<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
-	</select>
-	<input type="button" value="Insert" onclick="insertDataElement()"/>
+	<table>
+		<tr>
+			<td>
+				<b>$i18n.getString( "view_as" )</b><br>
+				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
+					<option value="deid">$i18n.getString( "id" )</option>
+					<option value="dename">$i18n.getString( "name" )</option>
+					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
+				</select>
+				<input type="button" value="Insert" onclick="insertDataElement()"/>
+			</td>
+			<td>
+				<span id="message_"></span>
+			</td>
+		</tr>
+	</table>	
 </div>
 
 <script>
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
+	var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
 	
 	var t;
 	var timer_is_on=0;
@@ -223,17 +233,44 @@ function insertDataElement()
 	
 	viewByValue = "@@" + viewByValue + "@@";
 	
+	var id = "";
+	var html = "";
+	
 	if (dataElementType == "bool")
 	{
-		oEditor.InsertHtml("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryselect\" id=\""+ boolDataEntryId +"\" style=\"width:4em;text-align:center\"/>" );			
+		id = boolDataEntryId;
+		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryselect\" id=\""+ boolDataEntryId +"\" style=\"width:4em;text-align:center\"/>";
 		
-	}	
-	else 
+		
+	}else 
 	{	
-		oEditor.InsertHtml("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>");			
-			
+		id = dataEntryId;
+		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>" ;			
 	}	
 	
+	if( checkExisted( id ) )
+	{		
+		jQuery( "#message_").html( "<b>" + i18n_dataelement_is_inserted + "</b>" );
+		return;
+	}else{
+		jQuery( "#message_").html("");
+	}
+	
+	oEditor.InsertHtml( html );
+	
 }
+
+function checkExisted( id )
+{	
+	var result = false;
+	var html = FCKeditorAPI.GetInstance('designTextarea').GetHTML();
+	var input = jQuery( html ).find("select, :text");
+	input.each( function(i, item){		
+		if( id == item.id ) result = true;		
+	});
+	
+	return result;
+}
+
 	
 </script>

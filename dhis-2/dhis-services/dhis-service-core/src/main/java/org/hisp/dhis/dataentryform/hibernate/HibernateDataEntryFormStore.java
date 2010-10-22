@@ -54,7 +54,7 @@ public class HibernateDataEntryFormStore
 
     @Autowired
     private SessionFactory sessionFactory;
-    
+
     // ------------------------------------------------------------------------
     // DataEntryFormStore implementation
     // ------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public class HibernateDataEntryFormStore
     }
 
     public DataEntryForm getDataEntryFormByDataSet( DataSet dataSet )
-    {   
+    {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataEntryForm.class );
@@ -121,23 +121,23 @@ public class HibernateDataEntryFormStore
     public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( ProgramStage.class ).add(
-            Restrictions.in( "dataEntryForm.id", programStageIds ) ).setProjection(
-            Projections.distinct( Projections.property( "dataEntryForm" ) ) );
-        
+
+        Criteria criteria = session.createCriteria( ProgramStage.class );
+        criteria.add( Restrictions.in( "id", programStageIds ) );
+        criteria.setProjection( Projections.groupProperty( "dataEntryForm" ) );
+
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( DataSet.class ).add(
             Restrictions.in( "dataEntryForm.id", dataSetIds ) ).setProjection(
             Projections.distinct( Projections.property( "dataEntryForm" ) ) );
-        
+
         return criteria.list();
     }
 

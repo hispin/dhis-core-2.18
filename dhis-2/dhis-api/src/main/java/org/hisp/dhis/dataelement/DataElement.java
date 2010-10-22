@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -401,6 +402,19 @@ public class DataElement
         }
 
         return dataElements;
+    }
+    
+    public String toJSON()
+    {   
+        StringBuffer result = new StringBuffer();        
+        
+        result.append( "{" );
+        result.append( "\"id\":\"" + this.id + "\"" );
+        result.append( ",\"name\":\"" + StringEscapeUtils.escapeJavaScript( this.name ) + "\"" );
+        result.append( ",\"shortName\":\"" + StringEscapeUtils.escapeJavaScript( this.shortName ) + "\"" );
+        result.append( ",\"type\":\"" + StringEscapeUtils.escapeJavaScript( this.type ) + "\"" );
+        result.append( "}" );        
+        return result.toString();
     }
 
     // -------------------------------------------------------------------------

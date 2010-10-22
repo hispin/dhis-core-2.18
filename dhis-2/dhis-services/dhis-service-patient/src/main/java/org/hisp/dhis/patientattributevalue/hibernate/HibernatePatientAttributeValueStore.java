@@ -123,6 +123,7 @@ public class HibernatePatientAttributeValueStore
     {
         Number rs =  (Number) getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
+        
         return rs != null ? rs.intValue() : 0;
     }
 

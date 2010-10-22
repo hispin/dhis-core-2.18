@@ -28,22 +28,26 @@ package org.hisp.dhis.patient.action.dataentryform;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.editor.EditorManager;
 import org.hisp.dhis.patient.screen.DataEntryManager;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bharath Kumar
  * @modify Viet Nguyen 3-11-2009
+ * @modify Tran Thanh Tri 13 Oct 2010
  * @version $Id$
  */
 public class ViewDataEntryFormAction
@@ -52,7 +56,7 @@ public class ViewDataEntryFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
@@ -61,25 +65,59 @@ public class ViewDataEntryFormAction
     }
 
     private ProgramStageService programStageService;
-    
-    public void setProgramStageService(ProgramStageService programStageService) {
-		this.programStageService = programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
     }
-    
+
     private DataEntryManager dataEntryManager;
-    
+
     public void setDataEntryManager( DataEntryManager dataEntryManager )
     {
         this.dataEntryManager = dataEntryManager;
     }
+
+    private EditorManager editorManager;
+
+    public EditorManager getEditorManager()
+    {
+        return editorManager;
+    }
+
+    public void setEditorManager( EditorManager editorManager )
+    {
+        this.editorManager = editorManager;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
+    }
+
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-    
+
     private int associationId;
 
-    public void setAssociationId(int associationId) {
+    public void setAssociationId( int associationId )
+    {
         this.associationId = associationId;
+    }
+
+    private Integer programStageId;
+
+    public Integer getProgramStageId()
+    {
+        return programStageId;
+    }
+
+    public void setProgramStageId( Integer programStageId )
+    {
+        this.programStageId = programStageId;
     }
 
     private DataEntryForm dataEntryForm;
@@ -88,71 +126,71 @@ public class ViewDataEntryFormAction
     {
         return dataEntryForm;
     }
-    
+
     private ProgramStage association;
 
-    public ProgramStage getAssociation() {
+    public ProgramStage getAssociation()
+    {
         return association;
     }
-    
-    private String status;
 
-    public String getStatus()
+    private List<DataEntryForm> existingDataEntryForms;
+
+    public List<DataEntryForm> getExistingDataEntryForms()
     {
-        return status;
+        return existingDataEntryForms;
     }
-    
-    private Collection<DataEntryForm> listDataEntryForm;
 
-    public Collection<DataEntryForm> getListDataEntryForm()
+    public List<DataElement> dataElements;
+
+    public List<DataElement> getDataElements()
     {
-        return listDataEntryForm;
+        return dataElements;
+    }
+
+    private List<ProgramStage> programStages;
+
+    public List<ProgramStage> getProgramStages()
+    {
+        return programStages;
     }
 
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
-    
-   
+
     public String execute()
         throws Exception
     {
         association = programStageService.getProgramStage( associationId );
 
         dataEntryForm = association.getDataEntryForm();
-        
-        ProgramStage programStage = programStageService.getProgramStage( associationId );
-        
-        if( programStage == null )
-        {
-            return SUCCESS;
-        }
-        
-        Set<ProgramStage> listProgramStage = programStage.getProgram().getProgramStages();
-        System.out.println("listProgramStages: "+listProgramStage);
-        List<Integer> listAssociationIds = new ArrayList<Integer>();
-        
-        Iterator<ProgramStage> itr = listProgramStage.iterator();
-        while( itr.hasNext() )
-        {
-            int programStageId = itr.next().getId();
-            listAssociationIds.add( programStageId );
-        }
-        listDataEntryForm = dataEntryFormService.listDisctinctDataEntryFormByProgramStageIds( listAssociationIds );
 
-        if ( dataEntryForm == null )
+        List<Integer> listAssociationIds = new ArrayList<Integer>();
+
+        for ( ProgramStage ps : association.getProgram().getProgramStages() )
         {
-            status = "ADD";
+            listAssociationIds.add( ps.getId() );
         }
-        else
-        {
-            status = "EDIT";
-            listDataEntryForm.remove( dataEntryForm );
-            dataEntryForm.setHtmlCode( dataEntryManager.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) );
-        }
+
+        existingDataEntryForms = new ArrayList<DataEntryForm>( dataEntryFormService
+            .listDisctinctDataEntryFormByProgramStageIds( listAssociationIds ) );
+
+        editorManager.setValue( dataEntryForm == null ? "" : dataEntryManager.prepareDataEntryFormCode( dataEntryForm
+            .getHtmlCode() ) );
+
+        existingDataEntryForms.remove( dataEntryForm );
+
+        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( association ) );
+
+        Collections.sort( dataElements, new DataElementNameComparator() );
+        
+        programStages = new ArrayList<ProgramStage>( association.getProgram().getProgramStages() );
+        
+        programStages.remove( association );
+        
+        Collections.sort( programStages, new ProgramStageNameComparator() );
 
         return SUCCESS;
     }
-
-    
 }

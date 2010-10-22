@@ -365,16 +365,19 @@ public class JExcelWorkbookService
 
             row = 7;
 
-            for ( DataSetCompletenessResult result : results )
+            if ( results != null )
             {
-                sheet.addCell( new Label( MARGIN_LEFT, row, result.getName(), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 1, row, result.getRegistrations(), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 2, row, result.getSources(), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getPercentage(), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 4, row, result.getRegistrationsOnTime(), text ) );
-                sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getPercentageOnTime(), text ) );
+                for ( DataSetCompletenessResult result : results )
+                {
+                    sheet.addCell( new Label( MARGIN_LEFT, row, result.getName(), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 1, row, result.getRegistrations(), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 2, row, result.getSources(), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getPercentage(), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 4, row, result.getRegistrationsOnTime(), text ) );
+                    sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getPercentageOnTime(), text ) );
 
-                row++;
+                    row++;
+                }
             }
 
             workbook.write();
@@ -456,7 +459,7 @@ public class JExcelWorkbookService
                 workbook.write();
 
                 workbook.close();
-                
+
             }
         }
         catch ( IOException ex )

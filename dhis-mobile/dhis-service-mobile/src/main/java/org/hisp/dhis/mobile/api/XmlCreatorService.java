@@ -105,7 +105,7 @@ public class XmlCreatorService extends Thread
 
             String[] elementIds = IdString.split( "\\," );
 
-            File file = new File( dhis2Home + File.separator + "mi" + File.separator + "pending" + File.separator + phoneNumber + sendTime.replace( ":", "-" ) + ".xml" );
+            File file = new File( dhis2Home + File.separator + "mi" + File.separator + "pending" + File.separator + phoneNumber + "_" +sendTime.replace( ":", "-" ) + ".xml" );
             FileWriter writer = new FileWriter( file );
             writer.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" );
             writer.write( "<mxf version=\"" + msgVersion + "\">\n" );

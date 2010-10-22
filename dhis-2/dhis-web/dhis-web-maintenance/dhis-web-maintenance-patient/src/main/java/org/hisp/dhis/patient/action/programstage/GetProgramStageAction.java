@@ -27,8 +27,8 @@
 
 package org.hisp.dhis.patient.action.programstage;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -40,6 +40,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
+ * @modified Tran Thanh Tri
  * @version $Id$
  */
 public class GetProgramStageAction
@@ -55,14 +56,14 @@ public class GetProgramStageAction
     {
         this.programStageService = programStageService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -92,7 +93,7 @@ public class GetProgramStageAction
     {
         return programStageDataElements;
     }
-    
+
     private Collection<DataElement> dataElements;
 
     public Collection<DataElement> getDataElements()
@@ -109,18 +110,15 @@ public class GetProgramStageAction
     {
 
         programStage = programStageService.getProgramStage( id );
-        
-        
+
         programStageDataElements = programStage.getProgramStageDataElements();
-        
-        dataElements = dataElementService.getAllDataElements();
-        
-        if( programStageDataElements != null  && programStageDataElements.size() > 0 )
+
+        dataElements = new ArrayList<DataElement>( dataElementService
+            .getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+
+        for ( ProgramStageDataElement psde : programStageDataElements )
         {
-            for( ProgramStageDataElement psde : programStageDataElements )
-            {
-                    dataElements.remove( psde.getDataElement() );
-            }
+            dataElements.remove( psde.getDataElement() );
         }
 
         return SUCCESS;

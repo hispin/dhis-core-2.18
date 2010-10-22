@@ -567,7 +567,7 @@ public class PDFUtils
         }
         catch ( Exception e )
         {
-            throw new RuntimeException( "Error ocurred in create a new instance of BaseFont by the given dimension" );
+            throw new RuntimeException( "Error occurred in creating a BaseFont instance by the given dimension" );
         }
 
     }

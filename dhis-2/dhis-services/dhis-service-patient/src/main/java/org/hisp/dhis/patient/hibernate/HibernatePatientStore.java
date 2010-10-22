@@ -32,11 +32,13 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +79,15 @@ public class HibernatePatientStore
     }
     
     @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getByNames( String name, int min, int max )
+    {
+        return getCriteria( 
+            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setFirstResult( min ).setMaxResults( max ).list(); 
+    }
+    
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate , String gender)
     {
         Criteria crit = getCriteria( );
@@ -100,23 +111,43 @@ public class HibernatePatientStore
         
         return crit.list();
     }
-
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit )
+    {
+        String hql = "select distinct p from Patient p where p.organisationUnit = :organisationUnit order by p.id";
+    
+        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
+    {
+        String hql = "select p from Patient p where p.organisationUnit = :organisationUnit order by p.id";
+       
+        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults( max ).list(); 
+    }
+    
     public int countGetPatientsByNames( String name )
     {
         Number rs =  (Number)getCriteria( 
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).setProjection( Projections.rowCount() ).uniqueResult();
+
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getPatientsByNames( String name, int min, int max )
+    @Override
+    public int countListPatientByOrgunit( OrganisationUnit organisationUnit )
     {
-        return getCriteria( 
-            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setFirstResult( min ).setMaxResults( max ).list(); 
+        Query query = getQuery("select count(p.id) from Patient p where p.organisationUnit.id=:orgUnitId ");
+
+        query.setParameter("orgUnitId", organisationUnit.getId());
+        
+        Number rs = (Number) query.uniqueResult();
+        
+        return rs != null ? rs.intValue() : 0;
     }
     
 }

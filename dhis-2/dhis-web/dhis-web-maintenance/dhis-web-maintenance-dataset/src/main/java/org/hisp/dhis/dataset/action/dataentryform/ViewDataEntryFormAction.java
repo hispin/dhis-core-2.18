@@ -39,12 +39,12 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.editor.EditorManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -88,11 +88,16 @@ public class ViewDataEntryFormAction
         this.userSettingService = userSettingService;
     }
 
-    private DataElementOperandService dataElementOperandService;
+    private EditorManager editorManager;
 
-    public void setDataElementOperandService( DataElementOperandService dataElementOperandService )
+    public EditorManager getEditorManager()
     {
-        this.dataElementOperandService = dataElementOperandService;
+        return editorManager;
+    }
+
+    public void setEditorManager( EditorManager editorManager )
+    {
+        this.editorManager = editorManager;
     }
 
     // -------------------------------------------------------------------------
@@ -120,25 +125,11 @@ public class ViewDataEntryFormAction
         return dataSet;
     }
 
-    private String status;
-
-    public String getStatus()
-    {
-        return status;
-    }
-
     private Boolean autoSave;
 
     public Boolean getAutoSave()
     {
         return autoSave;
-    }
-
-    private String htmlCode;
-
-    public String getHtmlCode()
-    {
-        return htmlCode;
     }
 
     public List<DataElementOperand> operands;
@@ -155,18 +146,18 @@ public class ViewDataEntryFormAction
     public String execute()
         throws Exception
     {
+
         dataSet = dataSetService.getDataSet( dataSetId );
 
         dataEntryForm = dataSet.getDataEntryForm();
 
-        if ( dataEntryForm == null )
+        if ( dataEntryForm != null )
         {
-            status = "ADD";
+            editorManager.setValue( prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) );
         }
         else
         {
-            status = "EDIT";
-            htmlCode = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+            editorManager.setValue( "" );
         }
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );

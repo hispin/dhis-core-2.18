@@ -1,0 +1,13 @@
+<table>
+	<tr><td><label>$i18n.getString( "name" )</label></td><td><span>$encoder.htmlEncode( $dataElement.name )</span></td></tr>
+	<tr><td><label>$i18n.getString( "short_name" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.shortName )</span></td></tr>
+	<tr><td><label>$i18n.getString( "alternative_name" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.name )</span></td></tr>
+	<tr><td><label>$i18n.getString( "description" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.description )</span></td></tr>
+	<tr><td><label>$i18n.getString( "active" )</label></td><td><span> $dataElement.active </span></td></tr>
+	<tr><td><label>$i18n.getString( "domain_type" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.getDomainTypeNullSafe() )</span></td></tr>
+	<tr><td><label>$i18n.getString( "value_type" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.type )</span></td></tr>
+	<tr><td><label>$i18n.getString( "aggregation_operator" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.aggregationOperator )</span></td></tr>
+	<tr><td><label>$i18n.getString( "category_combination" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.categoryCombo.name )</span></td></tr>
+	<tr><td><label>$i18n.getString( "url" )</label></td><td><span>$!encoder.htmlEncode( $dataElement.url )</span></td></tr>
+	<tr><td><label>$i18n.getString( "last_updated" )</label></td><td><span>$!format.formatDate( $dataElement.lastUpdated )</span></td></tr>
+</table>

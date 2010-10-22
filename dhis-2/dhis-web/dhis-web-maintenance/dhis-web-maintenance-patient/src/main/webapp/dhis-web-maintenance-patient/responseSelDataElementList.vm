@@ -2,7 +2,13 @@
 <programStage>
   <dataElements>
     #foreach( $dataElement in $dataElementList )
-      <dataElement id="$dataElement.id" type="$dataElement.type" shortName="$dataElement.shortName">$encoder.xmlEncode( $dataElement.name )</dataElement>
+		<dataElement>
+			<id>$dataElement.id</id>
+			<name>$encoder.xmlEncode( $dataElement.name )</name>
+			<shortName>$encoder.xmlEncode( $dataElement.shortName )</shortName>
+			<type>$dataElement.type</type>
+			<json>$dataElement.toJSON()</json>
+		</dataElement>      
     #end
   </dataElements>
 </programStage>

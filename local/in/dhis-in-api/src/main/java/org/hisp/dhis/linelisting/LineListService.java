@@ -261,4 +261,17 @@ public interface LineListService
      */
     Collection<LineListOption> getAllLineListOptions();
     
+    
+    // -------------------------------------------------------------------------
+    // LinelistElemnet - Dataelement Mapping
+    // -------------------------------------------------------------------------
+
+    void addLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap );
+    
+    void updateLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap );
+    
+    void deleteLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap );
+
+    List<LineListDataElementMap> getLinelistDataelementMappings( LineListElement linelistElement, LineListOption linelistOption );
+    
 }

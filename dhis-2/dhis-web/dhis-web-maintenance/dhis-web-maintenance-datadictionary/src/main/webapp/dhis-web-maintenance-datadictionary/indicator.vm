@@ -28,7 +28,7 @@
                         </div>
                     </td>					
 					<td colspan="4" style="text-align:right">
-                        <input type="button" value="$i18n.getString( 'get_pdf' )" onclick="window.location.href='exportToPdf.action?type=indicator'" style="width:80px"/>
+                        <input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPdfByType( 'indicator' );" style="width:80px"/>
 						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortIndicatorForm.action'" style="width:80px"/>
 					    #if ( $dataDictionaryMode == "extended" )
 							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddExtendedIndicatorForm.action'" style="width:80px"/>
@@ -73,7 +73,7 @@
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 
-			<div id="detailsArea" style="display:none">
+			<div id="detailsArea" style="top:70px;right:20px;display:none">
 				<div style="float:right">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>				

@@ -817,5 +817,10 @@
 			<ref bean="org.hisp.dhis.security.PasswordManager" />
 		</property>  
 	</bean>
+	
+	<bean id="editorManager" class="org.hisp.dhis.editor.FCKEditorManager" scope="prototype">
+	  	<property name="basePath" value="/dhis-web-commons/fckeditor"/>
+	  	<property name="skin" value="silver"/>
+	 </bean>
 
 </beans>

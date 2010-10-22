@@ -29,8 +29,6 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
@@ -48,18 +46,12 @@ public interface PatientIdentifierService
     PatientIdentifier getPatientIdentifier( int id );
 
     PatientIdentifier getPatientIdentifier( Patient patient );
-
-    PatientIdentifier getPatientIdentifier( String identifier, OrganisationUnit organisationUnit );
-
+    
     Collection<PatientIdentifier> getAllPatientIdentifiers();
     
     Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType );
 
     Collection<PatientIdentifier> getPatientIdentifiersByIdentifier( String identifier );
-
-    Collection<PatientIdentifier> getPatientIdentifiersByOrgUnit( OrganisationUnit organisationUnit );
-
-    String getNextIdentifierForOrgUnit( OrganisationUnit orgUnit );
     
     PatientIdentifier getPatientIdentifier(String identifier, Patient patient);
     
@@ -67,15 +59,9 @@ public interface PatientIdentifierService
     
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
     
-    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit , int min, int max);
-    
-    int countListPatientByOrganisationUnit( OrganisationUnit orgUnit );
-    
     PatientIdentifier get( PatientIdentifierType type, String identifier );
     
     Patient getPatient( PatientIdentifierType idenType, String value);
-    
-    Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit );
     
     Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max );
     

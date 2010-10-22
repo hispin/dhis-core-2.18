@@ -5,7 +5,9 @@
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
 	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/css/redmond/ui.datepicker.css">	
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/ui.datepicker.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/ui.thickbox.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery.cluetip.css">
 	
     <link type="image/png" rel="icon" href="../images/favicon.png">    
     
@@ -25,12 +27,15 @@
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.js"></script>	
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.urlencode.js"></script>	
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
+	
 	
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
 	

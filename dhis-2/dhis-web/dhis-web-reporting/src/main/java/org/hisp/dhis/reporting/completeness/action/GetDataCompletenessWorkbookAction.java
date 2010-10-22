@@ -96,13 +96,18 @@ public class GetDataCompletenessWorkbookAction
     public String execute()
         throws Exception
     {
-        Collection<DataSetCompletenessResult> results = 
-            (Collection<DataSetCompletenessResult>) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
+        OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
+        
+        if ( unit == null )
+        {
+            return ERROR;
+        }
 
         DataSet dataSet = (DataSet) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS_DATASET );
         
-        OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
-        
+        Collection<DataSetCompletenessResult> results = 
+            (Collection<DataSetCompletenessResult>) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
         workbookService.writeDataSetCompletenessResult( results, out, i18n, unit, dataSet );

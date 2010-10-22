@@ -87,7 +87,7 @@ public class AddPatientAction
     private PatientAttributeService patientAttributeService;
 
     private PatientAttributeOptionService patientAttributeOptionService;
-    
+
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
@@ -114,7 +114,7 @@ public class AddPatientAction
     // -------------------------------------------------------------------------
     // OutPut
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public Integer getId()
@@ -122,15 +122,14 @@ public class AddPatientAction
         return id;
     }
 
-
     // -------------------------------------------------------------------------
     // Input - others
     // -------------------------------------------------------------------------
 
     private boolean underAge;
-    
+
     private Integer representativeId;
-    
+
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
@@ -165,7 +164,8 @@ public class AddPatientAction
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
         patient.setUnderAge( underAge );
-        
+        patient.setOrganisationUnit( organisationUnit );
+
         if ( birthDate != null )
         {
             birthDate = birthDate.trim();
@@ -194,25 +194,26 @@ public class AddPatientAction
         patient.setRegistrationDate( new Date() );
 
         // -----------------------------------------------------------------------------
-        //  Prepare Patient Identifiers
+        // Prepare Patient Identifiers
         // -----------------------------------------------------------------------------
-        
+
         HttpServletRequest request = ServletActionContext.getRequest();
-        
+
         Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        
+
         String value = null;
-        
+
         PatientIdentifier pIdentifier = null;
 
         if ( identifierTypes != null && identifierTypes.size() > 0 )
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if(identifierType.getFormat().equals("State Format"))
+                if ( identifierType.getFormat().equals( "State Format" ) )
                 {
-                    value = organisationUnit.getCode()+request.getParameter( "progcode" )+request.getParameter( "yearcode" )+request.getParameter( "benicode" );
-                    System.out.println( "value = "+value );
+                    value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
+                        + request.getParameter( "benicode" );
+                    System.out.println( "value = " + value );
                 }
                 else
                 {
@@ -223,13 +224,12 @@ public class AddPatientAction
                     pIdentifier = new PatientIdentifier();
                     pIdentifier.setIdentifierType( identifierType );
                     pIdentifier.setPatient( patient );
-                    pIdentifier.setOrganisationUnit( organisationUnit );
                     pIdentifier.setIdentifier( value.trim() );
                     patient.getIdentifiers().add( pIdentifier );
                 }
             }
         }
-        
+
         // --------------------------------------------------------------------------------
         // Generate system id with this format :
         // (BirthDate)(Gender)(XXXXXX)(checkdigit)
@@ -247,21 +247,20 @@ public class AddPatientAction
 
         systemGenerateIdentifier = new PatientIdentifier();
         systemGenerateIdentifier.setIdentifier( identifier );
-        systemGenerateIdentifier.setOrganisationUnit( organisationUnit );
         systemGenerateIdentifier.setPatient( patient );
-        
+
         patient.getIdentifiers().add( systemGenerateIdentifier );
 
         selectedStateManager.clearListAll();
         selectedStateManager.clearSearchingAttributeId();
         selectedStateManager.setSearchText( systemGenerateIdentifier.getIdentifier() );
-        
+
         // -----------------------------------------------------------------------------
         // Prepare Patient Attributes
         // -----------------------------------------------------------------------------
-        
+
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
-        
+
         List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
 
         PatientAttributeValue attributeValue = null;
@@ -304,13 +303,12 @@ public class AddPatientAction
                 }
             }
         }
-        
-        //-------------------------------------------------------------------------
+
+        // -------------------------------------------------------------------------
         // Save patient
-        //-------------------------------------------------------------------------
-        
-        id =  patientService.createPatient( patient, organisationUnit, representativeId,
-                relationshipTypeId,  patientAttributeValues );
+        // -------------------------------------------------------------------------
+
+        id = patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
 
         return SUCCESS;
     }

@@ -80,7 +80,7 @@ public class SearchPersonAction implements Action
     public String execute()
         throws Exception
     {
-        patients =  patientService.searchPatient( identifierTypeId, attributeId, searchValue );
+        patients =  patientService.getPatient( identifierTypeId, attributeId, searchValue );
         
         if( patients != null && patients.size() > 0 )
         {
@@ -133,7 +133,6 @@ public class SearchPersonAction implements Action
     {
         this.patientAttributeValueService = patientAttributeValueService;
     }
-
 
     public void setSearchValue( String searchValue )
     {

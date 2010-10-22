@@ -32,13 +32,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hisp.dhis.messaging.api.MessageService;
 import org.hisp.dhis.mobile.api.MobileImportService;
+import org.hisp.dhis.mobile.api.SendSMS;
+import org.hisp.dhis.mobile.api.SendSMSService;
 import org.hisp.dhis.mobile.api.XmlCreatorService;
 import org.smslib.GatewayException;
 import org.smslib.ICallNotification;
@@ -48,10 +55,13 @@ import org.smslib.IQueueSendingNotification;
 import org.smslib.InboundBinaryMessage;
 import org.smslib.InboundMessage;
 import org.smslib.OutboundMessage;
+import org.smslib.OutboundWapSIMessage;
 import org.smslib.Service;
 import org.smslib.TimeoutException;
 import org.smslib.AGateway.Protocols;
+import org.smslib.InboundMessage.MessageClasses;
 import org.smslib.Message.MessageTypes;
+import org.smslib.OutboundWapSIMessage.WapSISignals;
 import org.smslib.modem.SerialModemGateway;
 
 public class SmsService implements MessageService
@@ -74,6 +84,14 @@ public class SmsService implements MessageService
         this.mobileImportService = mobileImportService;
     }
 
+    private SendSMSService sendSMSService;
+    
+    public void setSendSMSService( SendSMSService sendSMSService )
+    {
+        this.sendSMSService = sendSMSService;
+    }
+
+    
     /*------------------------------------------------------------------
      * Implementation
     ------------------------------------------------------------------*/
@@ -100,7 +118,31 @@ public class SmsService implements MessageService
         outboundNotification = new OutboundNotification();
         callNotification = new CallNotification();
     }
-
+	
+	@Override
+    public String sendOtaMessage( String recipient, String url, String prompt )
+    {
+        String status = new String();
+        try
+        {
+            OutboundWapSIMessage wapMsg = new OutboundWapSIMessage( recipient, new URL( url ), prompt );
+            wapMsg.setSignal( WapSISignals.HIGH );
+            if ( getServiceStatus() )
+            {
+                getService().sendMessage( wapMsg );
+                status = "WAP MESSAGE SENT";
+            } else
+            {
+                status = "SERVICE IS NOT RUNNING";
+            }
+        } catch ( Exception e )
+        {
+            e.printStackTrace();
+            status = "ERROR SENDING WAP MSG";
+        }
+        return status;
+    }
+    
     private Service getService()
     {
         return serv;
@@ -165,6 +207,130 @@ public class SmsService implements MessageService
     }
 
     @Override
+    public String sendMessageToGroup( String groupName, List<String> recepients, String msg )
+    {
+        if ( getServiceStatus() )
+        {
+            serv.createGroup( groupName );
+            
+            for( String recepient : recepients )
+            {
+                serv.addToGroup( groupName, recepient );
+            }
+            
+            OutboundMessage message = new OutboundMessage( groupName, msg );
+
+            try
+            {
+                serv.sendMessage( message );
+                getService().getLogger().logInfo( "Message Sent to Group: " + groupName, null, null );
+                return "SUCCESS";
+            } 
+            catch ( TimeoutException ex )
+            {
+                getService().getLogger().logError( "Timeout error in sending message", ex, null );
+                return "ERROR";
+            } 
+            catch ( GatewayException ex )
+            {
+                getService().getLogger().logError( "Gateway Exception in sending message", ex, null );
+                return "ERROR";
+            } 
+            catch ( IOException ex )
+            {
+                getService().getLogger().logError( "IO Exception in sending message", ex, null );
+                return "ERROR";
+            } 
+            catch ( InterruptedException ex )
+            {
+                getService().getLogger().logError( "Interrupted Exception in sending message", ex, null );
+                return "ERROR";
+            }
+            finally
+            {
+                serv.removeGroup( groupName );
+            }
+        } 
+        else
+        {
+            getService().getLogger().logError( "Service not running", null, null );
+            return "SERVICE NOT RUNNING";
+        }
+    }
+    
+    @Override
+    public String sendDrafts()
+    {
+        int successCount = 0;
+        int failCount = 0;
+        
+        int draftCount = (int) sendSMSService.getRowCount();
+        
+        List<SendSMS> sendSMSList = new ArrayList<SendSMS>();
+        
+        if( draftCount == 0 )
+        {
+            return "No Drafts to send";
+        }
+        else if( draftCount < SendSMS.sendSMSRange )
+        {
+            sendSMSList.addAll( sendSMSService.getSendSMS( 0, draftCount ) );
+        }
+        else
+        {
+            sendSMSList.addAll( sendSMSService.getSendSMS( 0, SendSMS.sendSMSRange-1 ) );
+        }
+
+        for( SendSMS sendSMS : sendSMSList )
+        {
+            String status = sendMessage( sendSMS.getSenderInfo().split( "_" )[0], sendSMS.getSendingMessage() );
+            if( status.equalsIgnoreCase( "SUCCESS" ) )
+            {
+                sendSMSService.deleteSendSMS( sendSMS );
+                successCount++;
+            }
+            else if( status.equalsIgnoreCase( "MODEMERROR" ) )
+            {
+                getService().getLogger().logError( "Modem Stops Responding...Till then successfully sent : "+successCount, null, null );
+                return "Modem Stops Responding...Till then successfully sent : "+successCount; 
+            }
+            else
+            {
+                failCount++;
+            }
+        }
+        
+        return "SMS Successfully Sent : "+ successCount +" Failed : " + failCount;
+    }
+    
+    @Override
+    public String sendMessages( List<SendSMS> sendSMSList )
+    {
+        int successCount = 0;
+        int failCount = 0;
+        
+        for( SendSMS sendSMS : sendSMSList )
+        {
+            String status = sendMessage( sendSMS.getSenderInfo().split( "_" )[0], sendSMS.getSendingMessage() );
+            if( status.equalsIgnoreCase( "SUCCESS" ) )
+            {
+                successCount++;
+            }
+            else if( status.equalsIgnoreCase( "MODEMERROR" ) )
+            {
+                getService().getLogger().logError( "Modem Stops Responding...Till then successfully sent : "+successCount, null, null );
+                return "Modem Stops Responding...Till then successfully sent : "+successCount; 
+            }
+            else
+            {
+                failCount++;
+            }
+        }
+        
+        return "Successfully sent : "+ successCount +" Failed : " + failCount;
+    }
+    
+    @Override
     public String sendMessage( String recipient, String msg )
     {
         OutboundMessage message = new OutboundMessage( recipient, msg );
@@ -172,9 +338,16 @@ public class SmsService implements MessageService
         {
             try
             {
-                serv.sendMessage( message );
-                getService().getLogger().logInfo( "Message Sent to: " + recipient, null, null );
-                return "SUCCESS";
+                if( serv.sendMessage( message ) )
+                {
+                    getService().getLogger().logInfo( "Message Sent to: " + recipient, null, null );
+                    return "SUCCESS";
+                }
+                else
+                {
+                    getService().getLogger().logError( "Timeout error in sending message to: "+recipient, null, null );
+                    return "MODEMERROR";
+                }
             } 
             catch ( TimeoutException ex )
             {
@@ -239,12 +412,12 @@ public class SmsService implements MessageService
             }
             
             // Import data into DHIS
-            getService().getLogger().logInfo( "Importing data into DHIS...", null, null );
-            String statusMessage = importData( sender, sendTime, unCompressedText );
+            //getService().getLogger().logInfo( "Importing data into DHIS...", null, null );
+            //String statusMessage = importData( sender, sendTime, unCompressedText );
             
             //Sending ACK/Status SMS
-            getService().getLogger().logInfo( "Sending ACK/Status messge...", null, null );
-            sendMessage( sender, statusMessage );
+            //getService().getLogger().logInfo( "Sending ACK/Status messge...", null, null );
+            //sendMessage( sender, statusMessage );
             
             getService().getLogger().logInfo( "---Message Processing Finished---", null, null );
             
@@ -355,7 +528,7 @@ public class SmsService implements MessageService
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd_HH-mm-ss" );
         String timeStamp = dateFormat.format( sendTime );
 
-        String importFileName = mobileNumber + timeStamp.replace( ":", "-" ) + ".xml";
+        String importFileName = mobileNumber + "_" + timeStamp.replace( ":", "-" ) + ".xml";
         String statusMessage = mobileImportService.importXMLFile( importFileName );
         getService().getLogger().logInfo( "Importing Completed for current messages", null, null );
         return statusMessage;
@@ -372,7 +545,7 @@ public class SmsService implements MessageService
         xmlCreatorService.run(); //should be made thread-safe
         getService().getLogger().logInfo( "XML successfully created for msg from: " + mobileNumber, null, null );
         //mobileImportService.importAllFiles();
-        String importFileName = mobileNumber + timeStamp.replace( ":", "-" ) + ".xml";
+        String importFileName = mobileNumber + "_" + timeStamp.replace( ":", "-" ) + ".xml";
         String statusMessage = mobileImportService.importXMLFile( importFileName );
         getService().getLogger().logInfo( "Importing Completed for current messages", null, null );
         return statusMessage;
@@ -384,6 +557,135 @@ public class SmsService implements MessageService
         getService().getLogger().logInfo( "STATUS REPORT received from: " + originator, null, null );
     }
 
+    @Override
+    public String processPendingMessages()
+    {
+        if( !getServiceStatus() )
+        {
+            getService().getLogger().logError( "SMSService not running", null, null );
+            
+            return "SMSService not running";
+        }
+        
+        List<InboundMessage> msgList = new ArrayList<InboundMessage>();
+        
+        msgList = readAllMessages();
+        
+        if( msgList != null && msgList.size() > 0 )
+        {
+            for( InboundMessage msg : msgList )
+            {
+                processMessage( msg );
+            }
+            
+            return "Successfully Processed all Pending Messages.";
+        }
+        else
+        {
+            return "No Pending Messages to Process.";
+        }
+    }
+    
+    @Override
+    public Map<String,String> readAllPendingMessages()
+    {
+        if( !getServiceStatus() )
+        {
+            getService().getLogger().logError( "SMSService not running", null, null );
+            
+            return null;
+        }
+        
+        Map<String,String> pendingMessages = new HashMap<String,String>();
+        // Define a list which will hold the read messages.
+        List<InboundMessage> msgList = new ArrayList<InboundMessage>();
+        try
+        {
+            getService().getLogger().logInfo( "Reading All Pending Messages...", null, null );
+
+            serv.readMessages(msgList, MessageClasses.ALL);
+            
+            for( Object msg : msgList )
+            {
+                try
+                {
+                    InboundBinaryMessage binaryMsg = (InboundBinaryMessage) msg;
+                    byte[] compressedData = binaryMsg.getDataBytes();
+                    String unCompressedText = new String( Compressor.decompress( compressedData ), "UTF-8" );
+                    Date sendTime = binaryMsg.getDate();
+                    String sender = binaryMsg.getOriginator();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd_HH-mm-ss" );
+                    String timeStamp = dateFormat.format( sendTime );
+                    
+                    pendingMessages.put( sender+"_"+timeStamp, unCompressedText );
+
+                }
+                catch ( ClassCastException ccex )
+                {
+                    InboundMessage message = (InboundMessage) msg;
+                    Date sendTime = message.getDate();
+                    String sender = message.getOriginator();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd_HH-mm-ss" );
+                    String timeStamp = dateFormat.format( sendTime );
+                    
+                    try
+                    {
+                        pendingMessages.put( sender+"_"+timeStamp, message.getText() );
+                        getService().getLogger().logInfo( "Normal Text Message", null, null );
+                    }
+                    catch( Exception e )
+                    {
+                        pendingMessages.put( sender+"_"+timeStamp, "Unsupported Format" );
+                        getService().getLogger().logError( "UnSupported Format", null, null );
+                    }
+                }
+                catch( Exception e )
+                {
+                    getService().getLogger().logError( "Error While reading messages, returning whatever sms got till now", null, null );
+                    return pendingMessages;
+                }
+            }
+            
+            return pendingMessages;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            getService().getLogger().logError( "SMSServer: error setting custom balancer!", null, null );
+            
+            return null;
+        }
+    }
+    
+    @Override
+    public List<InboundMessage> readAllMessages()
+    {
+        if( !getServiceStatus() )
+        {
+            getService().getLogger().logError( "SMSService not running", null, null );
+            
+            return null;
+        }
+        
+        // Define a list which will hold the read messages.
+        List<InboundMessage> msgList = new ArrayList<InboundMessage>();
+        try
+        {
+            getService().getLogger().logInfo( "Reading All Messages...", null, null );
+
+            serv.readMessages(msgList, MessageClasses.ALL);
+            
+            return msgList;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            getService().getLogger().logError( "SMSServer: error setting custom balancer!", null, null );
+            
+            return null;
+        }
+    }
+    
     /*------------------------------------------------------------------
      * Internal methods
     ------------------------------------------------------------------*/
@@ -630,6 +932,8 @@ public class SmsService implements MessageService
         }
     }
     //</editor-fold>
+    
+
     //</editor-fold>
     /*----------------------------------------------------------------*/
 }

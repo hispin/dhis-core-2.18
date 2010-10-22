@@ -29,8 +29,6 @@ package org.hisp.dhis.patient;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
@@ -49,8 +47,6 @@ public class PatientIdentifier
     private Patient patient;
 
     private String identifier;
-
-    private OrganisationUnit organisationUnit;
 
     private Boolean preferred = false;
 
@@ -72,8 +68,7 @@ public class PatientIdentifier
         int result = 1;
         result = prime * result + ((identifierType == null) ? 0 : identifierType.hashCode());
         result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-        result = prime * result + ((organisationUnit == null) ? 0 : organisationUnit.hashCode());
-
+        
         return result;
     }
 
@@ -96,14 +91,13 @@ public class PatientIdentifier
 
         PatientIdentifier other = (PatientIdentifier) obj;
 
-        return identifier.equals( other.getIdentifier() ) && identifierType.equals( other.getIdentifierType() )
-            && organisationUnit.equals( other.getOrganisationUnit() );
+        return identifier.equals( other.getIdentifier() ) && identifierType.equals( other.getIdentifierType() );
     }
 
     @Override
     public String toString()
     {
-        return "[" + organisationUnit.getName() + ":" + identifierType.getName() + ":"  + identifier + "]";
+        return "[" + identifierType.getName() + ":"  + identifier + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -148,16 +142,6 @@ public class PatientIdentifier
     public void setPreferred( Boolean preferred )
     {
         this.preferred = preferred;
-    }
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        this.organisationUnit = organisationUnit;
     }
 
     public void setIdentifierType( PatientIdentifierType identifierType )

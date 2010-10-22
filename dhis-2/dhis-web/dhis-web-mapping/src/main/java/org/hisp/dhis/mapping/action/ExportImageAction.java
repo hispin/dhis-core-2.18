@@ -32,16 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
@@ -49,7 +45,7 @@ import org.hisp.dhis.util.StreamActionSupport;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-@SuppressWarnings( "serial" )
+
 public class ExportImageAction
     extends StreamActionSupport
 {
@@ -60,13 +56,6 @@ public class ExportImageAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
 
     private IndicatorService indicatorService;
 
@@ -80,13 +69,6 @@ public class ExportImageAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-    
-    private MappingService mappingService;
-    
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -155,7 +137,7 @@ public class ExportImageAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        log.info( "Exporting image, title: " + title + ", indicator: " + indicator + ", period" + period + ", width: " + width + ", height: " + height );
+        log.info( "Exporting image, title: " + title + ", indicator: " + indicator + ", period: " + period + ", width: " + width + ", height: " + height );
         
         log.info( "Legends: " + legends );
         

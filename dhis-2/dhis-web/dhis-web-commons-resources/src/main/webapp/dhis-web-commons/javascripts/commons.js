@@ -506,6 +506,20 @@ function setHeaderDelayMessage( message )
 }
 
 /**
+ * Sets the header message and hides it after the given seconds, default as 3s.
+ */
+function setHeaderTimeDelayMessage( message, timing )
+{
+	if ( timing == undefined ) { setHeaderDelayMessage( message ); return;}
+	
+	setHeaderMessage( message );
+	
+	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
+	
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", timing );
+}
+
+/**
  * Hides the header message div.
  */
 function hideHeaderMessage()
@@ -537,7 +551,10 @@ function hideInfo()
  */
 function showDetails()
 {
-    $( '#detailsArea' ).show( "fast" );
+    $( '#detailsArea' )
+	.resizable()
+	.draggable()
+	.show( "fast" );
 }
 
 /**
@@ -766,11 +783,31 @@ function datePicker( id )
 	if( s.val()=='' ) s.val( getCurrentDate() );		
 }
 
+function datePickerjQuery( jQueryString )
+{
+	jQuery( jQueryString ).datepicker(
+	{
+		dateFormat:dateFormat,
+		changeMonth: true,
+		changeYear: true,			
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showOn: 'both',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true,
+		constrainInput: true		
+	});
+	s = jQuery( jQueryString );		
+	if( s.val()=='' ) s.val( getCurrentDate() );		
+}
+
+
+
 /**
  * Create jQuery datepicker for input text with id * * 
  * @param id the id of input filed which you want enter date *
  */
-function datePickerValid( id )
+function datePickerValid( id, today )
 {
 	jQuery("#" + id).datepicker(
 	{
@@ -786,8 +823,12 @@ function datePickerValid( id )
 		constrainInput: true
 	});
 	
-	s = jQuery("#" + id );		
-	if( s.val()=='' ) s.val( getCurrentDate() );		
+	if( today == undefined ) today = false;
+	
+	if( today ){
+		s = jQuery("#" + id );		
+		if( s.val()=='' ) s.val( getCurrentDate() );		
+	}
 }
 
 
@@ -1234,4 +1275,33 @@ function jumpToPage( baseLink )
     var pageSize = jQuery("#sizeOfPage").val();
     var currentPage = jQuery("#jumpToPage").val();
     window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
+}
+
+function addShowDetail( jQueryString, width, success, responseType )
+{
+	if( success == undefined ) success = function(data){return data;}
+	if( responseType == undefined ) responseType = 'html';	
+	jQuery( jQueryString ).cluetip( {
+		ajaxProcess: success,
+		ajaxCache: true,
+		ajaxSettings: {
+			dataType: responseType
+		},
+		activation: 'click',
+		sticky: true,
+		closePosition: 'title',
+		closeText: '<img src="../images/hide.png" alt="" />',
+		width: width,
+		arrows: true
+	});
+}
+
+/**
+ * Used to export PDF file by the given type and
+ * the active items in table
+ */
+function exportPdfByType( type )
+{
+	var activeIds = getArrayIdOfActiveRows();
+	window.location.href = 'exportToPdf.action?type=' + type + activeIds;
 }

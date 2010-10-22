@@ -621,24 +621,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 	
-	<!-- Program_ValidationCriteria Association  -->
-
-	<bean
-		id="org.hisp.dhis.patient.action.program.ShowValidationCriteriaAssociationsFormAction"
-		class="org.hisp.dhis.patient.action.program.ShowValidationCriteriaAssociationsFormAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="validationCriteriaService" ref="org.hisp.dhis.validation.ValidationCriteriaService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.patient.action.program.DefineCriteriaAssociationsAction"
-		class="org.hisp.dhis.patient.action.program.DefineCriteriaAssociationsAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="validationCriteriaService" ref="org.hisp.dhis.validation.ValidationCriteriaService" />
-	</bean>
-	
 	<!-- Program_ValidationDE Association  -->
 
 	<bean
@@ -681,6 +663,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
 	<bean
@@ -748,7 +732,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataEntryManager">
 			<ref bean="org.hisp.dhis.patient.screen.DataEntryManager" />
-		</property>
+		</property>		
+		<property name="editorManager" ref="editorManager"/>
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />					
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.screen.DataEntryManager" class="org.hisp.dhis.patient.screen.DefaultDataEntryManager"
@@ -780,20 +767,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataEntryFormService">
 			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction"
-		class="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction"
-		scope="prototype">
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
 		</property>
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patient.action.dataentryform.GetSelectedProgramStagesAction"
-		class="org.hisp.dhis.patient.action.dataentryform.GetSelectedProgramStagesAction"
+		id="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction"
+		class="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction"
 		scope="prototype">
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
@@ -820,15 +801,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.dataentryform.GetOptionCombosAction"
-		class="org.hisp.dhis.patient.action.dataentryform.GetOptionCombosAction"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>		
 	</bean>
 
 	<bean

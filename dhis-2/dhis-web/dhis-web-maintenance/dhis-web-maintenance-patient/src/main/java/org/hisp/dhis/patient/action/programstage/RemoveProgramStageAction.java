@@ -27,12 +27,15 @@
 
 package org.hisp.dhis.patient.action.programstage;
 
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
+ * @modified Tran Thanh Tri
  * @version $Id$
  */
 public class RemoveProgramStageAction
@@ -47,6 +50,13 @@ public class RemoveProgramStageAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -67,6 +77,11 @@ public class RemoveProgramStageAction
     public String execute()
         throws Exception
     {
+        for ( ProgramStageDataElement de : programStageService.getProgramStage( id ).getProgramStageDataElements() )
+        {
+            programStageDataElementService.deleteProgramStageDataElement( de );
+        }
+
         programStageService.deleteProgramStage( programStageService.getProgramStage( id ) );
 
         return SUCCESS;

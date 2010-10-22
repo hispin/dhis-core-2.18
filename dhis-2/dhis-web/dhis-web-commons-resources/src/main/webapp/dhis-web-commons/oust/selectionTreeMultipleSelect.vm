@@ -49,6 +49,7 @@
 		jQuery.each( ids, function(i, item ){
 			selectedOrganisationUnitListABCDEF.append( '<option value="' + item + ' selected="selected">' + item + '</option>');
 		});
+		byId('treeSelectedId').selectedIndex = 0;
 	}
 	
 	function selectedOrganisationUnitXMLABCDEF( xml )

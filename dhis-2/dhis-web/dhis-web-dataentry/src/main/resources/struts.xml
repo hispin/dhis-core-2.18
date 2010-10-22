@@ -26,9 +26,11 @@
 			<param name="page">/dhis-web-dataentry/select.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
 			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js,
-			../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/general.js,
+				javascript/form.js
+			</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
 		</action>
 
@@ -53,9 +55,7 @@
 				javascript/general.js,javascript/form.js,
 				../dhis-web-commons/calendar/calendar.js,
 				../dhis-web-commons/calendar/calendar-lang.js,
-				../dhis-web-commons/calendar/calendar-setup.js,
-				../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
+				../dhis-web-commons/calendar/calendar-setup.js
 			</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
 		</action>
@@ -71,8 +71,7 @@
 				javascript/general.js,javascript/form.js,javascript/section.js,javascript/multidimensional.js,
 				../dhis-web-commons/calendar/calendar.js,
 				../dhis-web-commons/calendar/calendar-lang.js,
-				../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
+				../dhis-web-commons/calendar/calendar-setup.js
 			</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>

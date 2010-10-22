@@ -15,7 +15,7 @@
 
     <property name="description" unique="false" length="256"/>
 
-	<property name="sortOrder"/>
+    <property name="sortOrder"/>
 
   </class>
 </hibernate-mapping>

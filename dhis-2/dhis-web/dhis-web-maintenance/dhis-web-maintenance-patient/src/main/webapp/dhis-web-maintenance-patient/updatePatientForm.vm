@@ -56,6 +56,7 @@
 			<select id="gender" name="gender" style="min-width:20em">
 				<option value="M" #if( $patient.gender == 'M' ) selected="selected" #end>$i18n.getString( "male" )</option>
 				<option value="F" #if( $patient.gender == 'F' ) selected="selected" #end>$i18n.getString( "female" )</option>
+				<option value="T" #if( $patient.gender == 'T' ) selected="selected" #end>$i18n.getString( "transgender" )</option>
 			</select>
 		</td>					
 	</tr>	

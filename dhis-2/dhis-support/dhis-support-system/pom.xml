@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.amplecode</groupId>
       <artifactId>quick</artifactId>
-    </dependency>
+    </dependency>	
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

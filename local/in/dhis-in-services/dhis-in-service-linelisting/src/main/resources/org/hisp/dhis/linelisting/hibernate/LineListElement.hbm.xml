@@ -28,7 +28,7 @@
           column="lloptionid" foreign-key="fk_linelistoption_lloptionid"/>
     </list>
     
-	<property name="sortOrder"/>
-	
+    <property name="sortOrder"/>
+    
   </class>
 </hibernate-mapping>

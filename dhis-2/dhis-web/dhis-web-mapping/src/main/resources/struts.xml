@@ -238,7 +238,7 @@
 		<action name="getMapLegendSetsByType"
 			class="org.hisp.dhis.mapping.action.GetMapLegendSetsByTypeAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonminMapLegendSets.vm</result>
+				/dhis-web-mapping/jsonMapLegendSets.vm</result>
 		</action>
 
 		<action name="assignIndicatorsToMapLegendSet"

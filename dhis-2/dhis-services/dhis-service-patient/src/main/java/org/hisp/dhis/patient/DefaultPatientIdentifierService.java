@@ -27,15 +27,9 @@
 
 package org.hisp.dhis.patient;
 
-
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
-
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -70,11 +64,26 @@ public class DefaultPatientIdentifierService
         patientIdentifierStore.delete( patientIdentifier );
     }
 
+    public void updatePatientIdentifier( PatientIdentifier patientIdentifier )
+    {
+        patientIdentifierStore.update( patientIdentifier );
+    }
+    
+    public PatientIdentifier getPatientIdentifier( int id )
+    {
+        return patientIdentifierStore.get( id );
+    }
+
+    public PatientIdentifier getPatientIdentifier( Patient patient )
+    {
+        return patientIdentifierStore.get( patient );
+    }
+    
     public Collection<PatientIdentifier> getAllPatientIdentifiers()
     {
         return patientIdentifierStore.getAll();
     }
-    
+
     public Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType )
     {
         return patientIdentifierStore.getByType( identifierType );
@@ -84,105 +93,22 @@ public class DefaultPatientIdentifierService
     {
         return patientIdentifierStore.getByIdentifier( identifier );
     }
-
-    public PatientIdentifier getPatientIdentifier( String identifier, OrganisationUnit organisationUnit )
-    {
-        return patientIdentifierStore.get( identifier, organisationUnit );
-    }
-
-    public Collection<PatientIdentifier> getPatientIdentifiersByOrgUnit( OrganisationUnit organisationUnit )
-    {
-        return patientIdentifierStore.getByOrganisationUnit( organisationUnit );
-    }
-
-    public void updatePatientIdentifier( PatientIdentifier patientIdentifier )
-    {
-        patientIdentifierStore.update( patientIdentifier );
-    }
-
-    public PatientIdentifier getPatientIdentifier( Patient patient )
-    {
-        return patientIdentifierStore.get( patient );
-    }
-
-    public PatientIdentifier getPatientIdentifier( int id )
-    {
-        return patientIdentifierStore.get( id );
-    }
-
-    public String getNextIdentifierForOrgUnit( OrganisationUnit orgUnit )
-    {
-        Collection<PatientIdentifier> patientIdentifiers = patientIdentifierStore.getByOrganisationUnit( orgUnit );
-
-        List<String> sortedIdentifiers = new ArrayList<String>();
-
-        String lastAssignedIdentifier = null;
-
-        String nextIdentifier = null;
-
-        for ( PatientIdentifier patientIdentifier : patientIdentifiers )
-        {
-            sortedIdentifiers.add( patientIdentifier.getIdentifier() );
-        }
-
-        Collections.sort( sortedIdentifiers, Collections.reverseOrder() );
-
-        if ( sortedIdentifiers.size() > 0 )
-        {
-            lastAssignedIdentifier = sortedIdentifiers.get( 0 );
-
-            lastAssignedIdentifier = lastAssignedIdentifier.substring( orgUnit.getShortName().length() + 1 );
-        }
-
-        if ( lastAssignedIdentifier == null )
-        {
-            // Not patient is registered yet and take the first index
-
-            nextIdentifier = orgUnit.getShortName() + PatientIdentifier.FIRST_INDEX;
-
-            return nextIdentifier;
-        }
-
-        Integer nextIndex = Integer.parseInt( lastAssignedIdentifier ) + 1;
-
-        String nextIdentifierIndex = nextIndex.toString();
-
-        if ( nextIdentifierIndex.length() < PatientIdentifier.IDENTIFIER_INDEX_LENGTH )
-        {
-            StringBuilder prefix = new StringBuilder( "0" );
-
-            for ( int i = 1; i < PatientIdentifier.IDENTIFIER_INDEX_LENGTH - nextIdentifierIndex.length(); i++ )
-            {
-                prefix.append( "0" );
-            }
-
-            nextIdentifier = orgUnit.getShortName() + "." + prefix + nextIdentifierIndex;
-        }
-
-        return nextIdentifier;
-    }    
     
     public PatientIdentifier getPatientIdentifier( String identifier, Patient patient )
     {
         return patientIdentifierStore.getPatientIdentifier( identifier, patient );
+    }
+    
+    public PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient )
+    {
+        return patientIdentifierStore.getPatientIdentifier( identifierType, patient );
     }
 
     public Collection<PatientIdentifier> getPatientIdentifiers( Patient patient )
     {
         return patientIdentifierStore.getPatientIdentifiers( patient );
     }
-
-    public PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient )
-    {
-        return patientIdentifierStore.getPatientIdentifier( identifierType, patient );
-    }
-
-    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit, int min, int max )
-    {
-        return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit, min, max );
-    }
-
-
+    
     public PatientIdentifier get( PatientIdentifierType type, String identifier )
     {
         return patientIdentifierStore.get( type, identifier );
@@ -192,25 +118,14 @@ public class DefaultPatientIdentifierService
     {
         return patientIdentifierStore.getPatient( idenType, value );
     }
-
-    public int countListPatientByOrganisationUnit( OrganisationUnit orgUnit )
-    {
-        return patientIdentifierStore.countListPatientByOrganisationUnit( orgUnit );
-    }
-
-    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit );
-    }
-
-    public int countGetPatientsByIdentifier( String identifier )
-    {
-        return patientIdentifierStore.countGetPatientsByIdentifier( identifier );
-    }
-
+    
     public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
     {
         return patientIdentifierStore.getPatientsByIdentifier( identifier, min, max );
     }
-
+    
+    public int countGetPatientsByIdentifier( String identifier )
+    {
+        return patientIdentifierStore.countGetPatientsByIdentifier( identifier );
+    }
 }
