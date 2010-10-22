@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.period.PeriodType;
 
@@ -289,6 +290,8 @@ public interface DataElementService
      */
     boolean dataElementCategoryOptionComboExists( int id );
 
+    Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets );
+    
     // -------------------------------------------------------------------------
     // Calculated Data Elements
     // -------------------------------------------------------------------------

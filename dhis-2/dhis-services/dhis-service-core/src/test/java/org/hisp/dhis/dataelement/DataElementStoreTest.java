@@ -41,7 +41,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -55,6 +58,8 @@ public class DataElementStoreTest
 {
     private DataElementStore dataElementStore;
     
+    private DataSetService dataSetService;
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -66,6 +71,8 @@ public class DataElementStoreTest
         dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
     }
 
     // -------------------------------------------------------------------------
@@ -503,6 +510,49 @@ public class DataElementStoreTest
         Collection<DataElement> dataElements = dataElementStore.getDataElementsByZeroIsSignificant( true );
         
         assertTrue( equals( dataElements, dataElementA, dataElementB ) );
+    }
+    
+    @Test
+    public void testGetDataElements()
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        DataElement dataElementD = createDataElement( 'D' );
+        DataElement dataElementE = createDataElement( 'E' );
+        DataElement dataElementF = createDataElement( 'F' );
+        
+        dataElementStore.addDataElement( dataElementA );
+        dataElementStore.addDataElement( dataElementB );
+        dataElementStore.addDataElement( dataElementC );
+        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.addDataElement( dataElementE );
+        dataElementStore.addDataElement( dataElementF );
+        
+        DataSet dataSetA = createDataSet( 'A', new MonthlyPeriodType() );
+        DataSet dataSetB = createDataSet( 'B', new MonthlyPeriodType() );
+        
+        dataSetA.getDataElements().add( dataElementA );
+        dataSetA.getDataElements().add( dataElementC );
+        dataSetA.getDataElements().add( dataElementF );
+        dataSetB.getDataElements().add( dataElementD );
+        dataSetB.getDataElements().add( dataElementF );
+        
+        dataSetService.addDataSet( dataSetA );
+        dataSetService.addDataSet( dataSetB );
+        
+        Collection<DataSet> dataSets = new HashSet<DataSet>();
+        dataSets.add( dataSetA );
+        dataSets.add( dataSetB );
+        
+        Collection<DataElement> dataElements = dataElementStore.getDataElementsByDataSets( dataSets );
+        
+        assertNotNull( dataElements );
+        assertEquals( 4, dataElements.size() );
+        assertTrue( dataElements.contains( dataElementA ) );
+        assertTrue( dataElements.contains( dataElementC ) );
+        assertTrue( dataElements.contains( dataElementD ) );
+        assertTrue( dataElements.contains( dataElementF ) );
     }
 
     // -------------------------------------------------------------------------

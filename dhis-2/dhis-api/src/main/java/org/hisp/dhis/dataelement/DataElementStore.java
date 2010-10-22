@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
@@ -226,6 +227,8 @@ public interface DataElementStore
      * @return true or false.
      */
     boolean dataElementCategoryOptionComboExists( int id );
+    
+    Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets );
 
     // -------------------------------------------------------------------------
     // Calculated Data Elements
