@@ -350,6 +350,11 @@ public class DefaultValidationRuleService
     {
         return validationRuleStore.getByName( name );
     }
+    
+    public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )
+    {
+        return validationRuleStore.getValidationRulesByDataElements( dataElements );
+    }
 
     // -------------------------------------------------------------------------
     // ValidationRuleGroup CRUD operations

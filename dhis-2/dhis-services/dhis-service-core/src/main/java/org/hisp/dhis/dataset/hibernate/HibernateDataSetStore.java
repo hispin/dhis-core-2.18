@@ -167,7 +167,7 @@ public class HibernateDataSetStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataSet> getDataSetsBySources( Collection<Source> sources )
+    public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
         String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";
         
