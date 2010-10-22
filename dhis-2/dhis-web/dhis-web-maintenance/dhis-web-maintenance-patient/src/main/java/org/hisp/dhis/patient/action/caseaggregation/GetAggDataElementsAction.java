@@ -64,7 +64,7 @@ public class GetAggDataElementsAction implements Action
         optionComboIds = new ArrayList<String>();
         
         dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( degId ).getMembers() );
-        
+       
         Iterator<DataElement> deIterator = dataElementList.iterator();
         
         while( deIterator.hasNext() )

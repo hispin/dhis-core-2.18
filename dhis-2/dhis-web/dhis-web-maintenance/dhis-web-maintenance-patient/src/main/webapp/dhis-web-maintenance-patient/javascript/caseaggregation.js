@@ -6,7 +6,7 @@ function getAggDataElements( )
 {
   var degroup = document.getElementById( 'degroup' );
   var degId = degroup.options[ degroup.selectedIndex ].value;
-
+ 
   var requestString = 'getAggDataElements.action?degId=' + degId;
 
   var request = new Request();
@@ -23,7 +23,7 @@ function getAggDataElementsCompleted( dataelementElement )
   clearList( de );
   	
   var dataElementList = dataelementElement.getElementsByTagName( 'dataelement' );
- 
+  
   for ( var i = 0; i < dataElementList.length; i++ )
     {
         var id = dataElementList[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
@@ -34,7 +34,9 @@ function getAggDataElementsCompleted( dataelementElement )
         option.text = name;
         option.title = name;
         
-        de.add(option, null);       	
+        de.add(option, null);  
+        
+      
     }	    
 }
 
@@ -136,6 +138,7 @@ function getPrgramStageDataElementsCompleted( dataelementElement )
 function getCaseAggExpression( )
 {
   var aggde = document.getElementById( 'aggde' );
+	
   var aggdeId = aggde.options[ aggde.selectedIndex ].value;
 
   var requestString = 'getCaseAggExpression.action?aggdeId=' + aggdeId;
@@ -151,9 +154,11 @@ function getCaseAggExpressionCompleted( expressionElement )
 {
   var expressionTA = document.getElementById( 'expression' );
   
-  var expression = expressionElement.firstChild.nodeValue;
- 
-  expressionTA.value = expression;
+  if(expressionElement.firstChild != null )
+  {
+	  var expression = expressionElement.firstChild.nodeValue;
+	  expressionTA.value = expression;
+  }
 }
 
 //-----------------------------------------------------------------

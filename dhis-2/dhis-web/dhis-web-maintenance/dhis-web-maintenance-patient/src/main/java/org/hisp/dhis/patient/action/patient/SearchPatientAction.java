@@ -267,7 +267,7 @@ public class SearchPatientAction
 
             //System.out.println("listAll startPos "+  startPos+" endPos "+ endPos );
             patients = patientService.getPatientsByOrgUnitAttr( organisationUnit , startPos,endPos, patientAttribute );
-            
+
             if( patients != null && patients.size() > 0 ) 
             {
                 //System.out.println("patients size = "+patients.size());
@@ -280,8 +280,10 @@ public class SearchPatientAction
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
                     {
-                        mapPatientPatientAttr.put(patient, 
-                        		patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                        PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                        String value = (attributeValue == null )?"" : attributeValue.getValue();
+                    
+                        mapPatientPatientAttr.put(patient, value);
                     }
                 }
             }
@@ -325,11 +327,14 @@ public class SearchPatientAction
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
                     {
-                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                        PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                        String value = (attributeValue == null )?"" : attributeValue.getValue();
+                    
+                        mapPatientPatientAttr.put(patient, value);
                     }
                 }
             }
-System.out.println("\n patientAttributeValueService.searchPatientAttributeValue : " + patients);       
+
             return SUCCESS;
         }
 
@@ -360,7 +365,10 @@ System.out.println("\n patientAttributeValueService.searchPatientAttributeValue 
                 {
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
                     {
-                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                        PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                        String value = (attributeValue == null )?"" : attributeValue.getValue();
+                    
+                        mapPatientPatientAttr.put(patient, value);
                     }
                 }
             }
@@ -398,7 +406,10 @@ System.out.println("\n patientAttributeValueService.searchPatientAttributeValue 
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
                     {
-                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                        PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                        String value = (attributeValue == null )?"" : attributeValue.getValue();
+                    
+                        mapPatientPatientAttr.put(patient, value);
                     }
                 }
             }
@@ -439,7 +450,10 @@ System.out.println("\n patientAttributeValueService.searchPatientAttributeValue 
                 {
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
                     {
-                        mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                        PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                        String value = (attributeValue == null )?"" : attributeValue.getValue();
+                    
+                        mapPatientPatientAttr.put(patient, value);
                     }
                 }
             }
@@ -467,7 +481,10 @@ System.out.println("\n patientAttributeValueService.searchPatientAttributeValue 
                 mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
                 if(sortPatientAttributeId!=null && patientAttribute!=null)
                 {
-                    mapPatientPatientAttr.put(patient, patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute ).getValue());
+                    PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                    String value = (attributeValue == null )?"" : attributeValue.getValue();
+                
+                    mapPatientPatientAttr.put(patient, value);
                 }
             }
         }

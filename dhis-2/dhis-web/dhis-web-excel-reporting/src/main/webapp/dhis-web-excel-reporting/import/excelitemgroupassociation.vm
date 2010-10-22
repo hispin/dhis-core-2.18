@@ -2,57 +2,8 @@
 <h4>$encoder.htmlEncode( $excelItemGroup.getName() )</h4>
 <form name="excelItemGroupAssociation" action="updateExcelItemGroupAssociations.action" method="POST">
 <input type="hidden" name="excelItemGroupId" value="$excelItemGroup.id">
-<input type="button" value="$i18n.getString( 'remove_all' )" onclick="window.location='unselectAllForExcelItemGroup.action?id=$excelItemGroup.id'" style="width:12em">
-<input type="button" value="$i18n.getString( 'select_all_at_level' )" onclick="selectAllAtLevel( $excelItemGroup.id )" style="width:12em">
-<select id="levelList" name="levelList" style="width:12em">
-	#foreach( $level in $levels )
-		<option value="$level.level" #if ( $selectLevel == $level.level )selected="selected"#end>$encoder.htmlEncode( $level.name )</option>
-	#end
-</select>
-<input type="button" value="$i18n.getString( 'unselect_all_at_level' )" onclick="unselectAllAtLevel( $excelItemGroup.id )" style="width:12em">
-<div id="selectionTree" style="width:50em;height:30em;overflow:auto;border:1px solid #cccccc"></div>
-<span id="message"></span>
-<p> <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em">
-		<input type="button" onclick="window.location.href='listAllExcelItemGroup.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
+
+	#organisationUnitSelectionTree( false, true, true )	
+	<input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em">
+	<input type="button" onclick="window.location.href='listAllExcelItemGroup.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
 </form>
-<script type="text/javascript">
-
-	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
-
-	selectionTreeSelection.setMultipleSelectionAllowed( true );
-	selectionTreeSelection.setOnSelectFunction( treeClicked );
-	selectionTreeSelection.setListenerFunction( selectCompleted );
-	selectionTree.buildSelectionTree();
-
-	var numberOfSelects = 0;
-  
-	function treeClicked()
-	{
-		numberOfSelects++;
-
-		setMessage( i18n_loading );
-
-		document.getElementById( "submitButton" ).disabled = true;
-	}
-
-	function selectCompleted( selectedUnits )
-	{
-		numberOfSelects--;
-
-		if ( numberOfSelects <= 0 )
-		{
-			hideMessage();
-			
-			document.getElementById( "submitButton" ).disabled = false;
-		}
-	}
-	function unselectAllAtLevel( id ){
-		window.location = 'unselectLevelForExcelItemGroup.action?level=' + getFieldValue('levelList') + '&id=' + id;
-	}
-	function selectAllAtLevel( id ){
-		window.location = 'selectLevelForExcelItemGroup.action?level=' + getFieldValue('levelList') + '&id=' + id;
-	}	
-
-
-</script>
-<span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>

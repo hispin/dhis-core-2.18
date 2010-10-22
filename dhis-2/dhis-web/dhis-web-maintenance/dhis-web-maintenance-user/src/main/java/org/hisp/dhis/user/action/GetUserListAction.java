@@ -32,14 +32,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.user.comparator.UsernameComparator;
-
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -65,6 +69,7 @@ public class GetUserListAction
     {
         this.currentUserService = currentUserService;
     }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -83,7 +88,18 @@ public class GetUserListAction
         return currentUserName;
     }
 
-      
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
     // -------------------------------------------------------------------------
     // Action implemantation
     // -------------------------------------------------------------------------
@@ -94,7 +110,7 @@ public class GetUserListAction
         this.paging = createPaging( userStore.getAllUsers().size() );
 
         Collection<User> users = userStore.getAllUsers( paging.getStartPos(), paging.getPageSize() );
-     
+
         userCredentialsList = new ArrayList<UserCredentials>();
 
         for ( User user : users )
@@ -113,4 +129,25 @@ public class GetUserListAction
         currentUserName = userCredentials.getUsername();
         return SUCCESS;
     }
+
+    public String searchUserByName()
+    {
+        if ( key.isEmpty() )
+        {
+            return INPUT;
+        }
+      
+        this.paging = createPaging( userStore.countNumberOfSearchUsersByName(key) );
+        
+        userCredentialsList = new ArrayList<UserCredentials>(userStore.searchUsersByName( key,  paging.getStartPos(), paging.getPageSize() ));
+        
+        Collections.sort( userCredentialsList, new UsernameComparator() );
+        User currentUser = userStore.getUser( currentUserService.getCurrentUser().getId() );
+        UserCredentials userCredentials = userStore.getUserCredentials( currentUser );
+
+        currentUserName = userCredentials.getUsername();
+            
+        return SUCCESS;
+    }
+    
 }

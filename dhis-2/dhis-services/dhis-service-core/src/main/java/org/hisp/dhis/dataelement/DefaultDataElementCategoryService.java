@@ -59,24 +59,27 @@ public class DefaultDataElementCategoryService
 
     private GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore;
 
-    public void setDataElementCategoryStore( GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore )
+    public void setDataElementCategoryStore(
+        GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore )
     {
         this.dataElementCategoryStore = dataElementCategoryStore;
-    }    
+    }
 
     private GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore;
 
-    public void setDataElementCategoryOptionStore( GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore )
+    public void setDataElementCategoryOptionStore(
+        GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore )
     {
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
 
     private GenericIdentifiableObjectStore<DataElementCategoryCombo> dataElementCategoryComboStore;
 
-    public void setDataElementCategoryComboStore( GenericIdentifiableObjectStore<DataElementCategoryCombo> dataElementCategoryComboStore )
+    public void setDataElementCategoryComboStore(
+        GenericIdentifiableObjectStore<DataElementCategoryCombo> dataElementCategoryComboStore )
     {
         this.dataElementCategoryComboStore = dataElementCategoryComboStore;
-    }    
+    }
 
     private GenericStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore;
 
@@ -99,10 +102,10 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategory( DataElementCategory dataElementCategory )
     {
-	if ( dataElementCategory != null && dataElementCategory.getUuid() == null )
-	{
-	    dataElementCategory.setUuid( UUIdUtils.getUUId() );
-	}
+        if ( dataElementCategory != null && dataElementCategory.getUuid() == null )
+        {
+            dataElementCategory.setUuid( UUIdUtils.getUUId() );
+        }
 
         return dataElementCategoryStore.save( dataElementCategory );
     }
@@ -126,18 +129,18 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryStore.get( id );
     }
-    
+
     public Collection<DataElementCategory> getDataElementCategories( final Collection<Integer> identifiers )
     {
         Collection<DataElementCategory> categories = getAllDataElementCategories();
-        
+
         return identifiers == null ? categories : FilterUtils.filter( categories, new Filter<DataElementCategory>()
+        {
+            public boolean retain( DataElementCategory object )
             {
-                public boolean retain( DataElementCategory object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );        
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 
     public DataElementCategory getDataElementCategoryByName( String name )
@@ -155,7 +158,7 @@ public class DefaultDataElementCategoryService
         {
             dataElementCategoryOption.setUuid( UUIdUtils.getUUId() );
         }
-        
+
         return dataElementCategoryOptionStore.save( dataElementCategoryOption );
     }
 
@@ -173,17 +176,18 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryOptionStore.get( id );
     }
-    
+
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
         return dataElementCategoryOptionStore.getByName( name );
     }
-    
+
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( final Collection<Integer> identifiers )
     {
         Collection<DataElementCategoryOption> categoryOptions = getAllDataElementCategoryOptions();
-        
-        return identifiers == null ? categoryOptions : FilterUtils.filter( categoryOptions, new Filter<DataElementCategoryOption>()
+
+        return identifiers == null ? categoryOptions : FilterUtils.filter( categoryOptions,
+            new Filter<DataElementCategoryOption>()
             {
                 public boolean retain( DataElementCategoryOption object )
                 {
@@ -225,12 +229,13 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryComboStore.get( id );
     }
-    
+
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( final Collection<Integer> identifiers )
     {
         Collection<DataElementCategoryCombo> categoryCombo = getAllDataElementCategoryCombos();
-        
-        return identifiers == null ? categoryCombo : FilterUtils.filter( categoryCombo, new Filter<DataElementCategoryCombo>()
+
+        return identifiers == null ? categoryCombo : FilterUtils.filter( categoryCombo,
+            new Filter<DataElementCategoryCombo>()
             {
                 public boolean retain( DataElementCategoryCombo object )
                 {
@@ -268,11 +273,13 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionComboStore.get( id );
     }
 
-    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( final Collection<Integer> identifiers )
+    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(
+        final Collection<Integer> identifiers )
     {
         Collection<DataElementCategoryOptionCombo> categoryOptionCombos = getAllDataElementCategoryOptionCombos();
-        
-        return identifiers == null ? categoryOptionCombos : FilterUtils.filter( categoryOptionCombos, new Filter<DataElementCategoryOptionCombo>()
+
+        return identifiers == null ? categoryOptionCombos : FilterUtils.filter( categoryOptionCombos,
+            new Filter<DataElementCategoryOptionCombo>()
             {
                 public boolean retain( DataElementCategoryOptionCombo object )
                 {
@@ -280,8 +287,9 @@ public class DefaultDataElementCategoryService
                 }
             } );
     }
-    
-    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( Collection<DataElementCategoryOption> categoryOptions )
+
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
+        Collection<DataElementCategoryOption> categoryOptions )
     {
         for ( DataElementCategoryOptionCombo categoryOptionCombo : getAllDataElementCategoryOptionCombos() )
         {
@@ -290,11 +298,12 @@ public class DefaultDataElementCategoryService
                 return categoryOptionCombo;
             }
         }
-        
+
         return null;
     }
-    
-    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
+        DataElementCategoryOptionCombo categoryOptionCombo )
     {
         for ( DataElementCategoryOptionCombo dcoc : getAllDataElementCategoryOptionCombos() )
         {
@@ -316,7 +325,7 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryOptionComboStore.getAll();
     }
-    
+
     public void generateDefaultDimension()
     {
         // ---------------------------------------------------------------------
@@ -393,25 +402,31 @@ public class DefaultDataElementCategoryService
 
         for ( DataElement dataElement : dataElements )
         {
-            Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo()
-                .getOptionCombos();
+            Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
 
-            int frequencyOrder = dataElement.getPeriodType() != null ? dataElement.getPeriodType().getFrequencyOrder() : TwoYearlyPeriodType.FREQUENCY_ORDER; // Assume lowest frequency if no PeriodType
-            
+            int frequencyOrder = dataElement.getPeriodType() != null ? dataElement.getPeriodType().getFrequencyOrder()
+                : TwoYearlyPeriodType.FREQUENCY_ORDER; // Assume lowest
+            // frequency if no
+            // PeriodType
+
             if ( categoryOptionCombos.size() > 1 && !(dataElement instanceof CalculatedDataElement) )
             {
                 for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
                 {
-                    DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + optionCombo.getName(), dataElement.getType(), dataElement.getAggregationOperator(), new ArrayList<Integer>( dataElement.getAggregationLevels() ), frequencyOrder );
+                    DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(),
+                        dataElement.getName() + optionCombo.getName(), dataElement.getType(), dataElement
+                            .getAggregationOperator(), new ArrayList<Integer>( dataElement.getAggregationLevels() ),
+                        frequencyOrder );
 
                     operands.add( operand );
                 }
             }
             else
             {
-                DataElementOperand operand = new DataElementOperand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
-                    dataElement.getName(), dataElement.getType(), dataElement.getAggregationOperator(), new ArrayList<Integer>( dataElement.getAggregationLevels() ), frequencyOrder );
+                DataElementOperand operand = new DataElementOperand( dataElement.getId(), categoryOptionCombos
+                    .iterator().next().getId(), dataElement.getName(), dataElement.getType(), dataElement
+                    .getAggregationOperator(), new ArrayList<Integer>( dataElement.getAggregationLevels() ),
+                    frequencyOrder );
 
                 operands.add( operand );
             }
@@ -430,13 +445,13 @@ public class DefaultDataElementCategoryService
         }
 
         /*
-         * Iterate through the collection of optionsMap every time picking one option
-         * from each collection. Because we have put enough number of
-         * options in each collection, better to remove the picked options
-         * so that we don't get confused how many times to pick an option - pick
-         * an option only once!
-         */        
-        Map<Integer, Collection<DataElementCategoryOption>> optionsMap = prepareOptionsForCombination( categoryCombo ); 
+         * Iterate through the collection of optionsMap every time picking one
+         * option from each collection. Because we have put enough number of
+         * options in each collection, better to remove the picked options so
+         * that we don't get confused how many times to pick an option - pick an
+         * option only once!
+         */
+        Map<Integer, Collection<DataElementCategoryOption>> optionsMap = prepareOptionsForCombination( categoryCombo );
 
         Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>(
             totalOptionCombos );
@@ -496,7 +511,7 @@ public class DefaultDataElementCategoryService
         Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
             categoryCombo.getOptionCombos() );
 
-        int totalColumns = optionCombos.size();        
+        int totalColumns = optionCombos.size();
 
         Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = prepareOptionsForCombination( categoryCombo );
 
@@ -530,14 +545,14 @@ public class DefaultDataElementCategoryService
             }
         }
 
-        return orderdCategoryOptionCombos;        
+        return orderdCategoryOptionCombos;
     }
 
     private Map<Integer, Collection<DataElementCategoryOption>> prepareOptionsForCombination(
         DataElementCategoryCombo categoryCombo )
     {
         // Get categories for a given category
-        
+
         List<DataElementCategory> categories = new ArrayList<DataElementCategory>( categoryCombo.getCategories() );
 
         /*
@@ -554,42 +569,40 @@ public class DefaultDataElementCategoryService
          * 
          * generalizing this we can have total option combinations by
          * multiplying the number of options in each category
-         */        
+         */
         int totalOptionCombos = 1;
 
         for ( DataElementCategory category : categories )
         {
             totalOptionCombos = totalOptionCombos * category.getCategoryOptions().size();
-        }       
+        }
 
         // ---------------------------------------------------------------------
         // Determine the number of times each category is going to repeat
         // ---------------------------------------------------------------------
-        
-        
-        /* Example again Category IPD_OPD, Options I and D
-         *               Category Sex, Options F and M
-         *               Category Age, Options 0-5,5-10,11+
-         *               
+
+        /*
+         * Example again Category IPD_OPD, Options I and D Category Sex, Options
+         * F and M Category Age, Options 0-5,5-10,11+
+         * 
          * Category combination is IPD_OPD+Sex+Age
          * 
          * Option combinations ... with the following arrangement in Data Entry
-         *  
-         *   I |  I | I | I | I  |  I | O |  O | O | O | O  |  O    
-         *   F |  F | F | F | F  |  F | M |  M | M | M | M  |  M     
-         *  0-5|5-10|11+|0-5|5-10|11+1|0-5|5-10|11+|0-5|5-10|11+1
-         *  
-         *  If we rearrange our categories like IPD_OPD+Age+Sex - then we will 
-         *  have the same option combinations, but with different arrangement. 
-         *  
-         *   I |  I | I  | I  | I  |  I | O |  O | O  | O  | O  |  O    
-         *  0-5| 0-5|5-10|5-10| 11+| 11+|0-5| 0-5|5-10|5-10| 11+|11+     
-         *  F  |  M | F  | M  |  F |  M |F  |  M | F  | M  |  F |  M 
-         *  
-         *  If we assume that we will draw a data entry table header, the top 
-         *  a category is in the order list, then the more ColSpan its options 
-         *  are going to have
-         *   
+         * 
+         * I | I | I | I | I | I | O | O | O | O | O | O F | F | F | F | F | F |
+         * M | M | M | M | M | M
+         * 0-5|5-10|11+|0-5|5-10|11+1|0-5|5-10|11+|0-5|5-10|11+1
+         * 
+         * If we rearrange our categories like IPD_OPD+Age+Sex - then we will
+         * have the same option combinations, but with different arrangement.
+         * 
+         * I | I | I | I | I | I | O | O | O | O | O | O 0-5| 0-5|5-10|5-10|
+         * 11+| 11+|0-5| 0-5|5-10|5-10| 11+|11+ F | M | F | M | F | M |F | M | F
+         * | M | F | M
+         * 
+         * If we assume that we will draw a data entry table header, the top a
+         * category is in the order list, then the more ColSpan its options are
+         * going to have
          */
         int categoryColSpan = totalOptionCombos;
 
@@ -653,5 +666,43 @@ public class DefaultDataElementCategoryService
         }
 
         return optionsMap;
+    }
+
+    @Override
+    public Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements )
+    {
+        Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+
+        for ( DataElement dataElement : dataElements )
+        {
+            Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+            
+            if ( categoryOptionCombos.size() > 1 && !(dataElement instanceof CalculatedDataElement) )
+            {
+                for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
+                {
+
+                    DataElementOperand operand = new DataElementOperand();
+                    operand.setDataElement( dataElement );
+                    operand.setCategoryOptionCombo( optionCombo );
+                    operand.updateProperties();
+
+                    operands.add( operand );
+                }
+            }
+            else
+            {
+
+                DataElementOperand operand = new DataElementOperand();
+                operand.setDataElement( dataElement );
+                operand.setCategoryOptionCombo( categoryOptionCombos.iterator().next() );
+                operand.updateProperties();
+
+                operands.add( operand );
+
+            }
+        }
+
+        return operands;
     }
 }

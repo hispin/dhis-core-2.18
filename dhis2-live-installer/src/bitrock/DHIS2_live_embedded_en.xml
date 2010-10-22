@@ -26,6 +26,14 @@
             <destination>${build_project_directory}/temp/</destination>
             <origin>${env(DHIS2_DOCS)}/target/site/en/pdf/dhis2_user_manual_en.pdf</origin>
         </copyFile>
+        <propertiesFileGet>
+            <abortOnError>0</abortOnError>
+            <file>/home/jason/dhis2/dhis2/dhis2-live-installer/resources/installer.properites</file>
+            <key>includedemodb</key>
+            <show>0</show>
+            <showMessageOnError>0</showMessageOnError>
+            <variable>includedemodb</variable>
+        </propertiesFileGet>
     </preBuildActionList>
     <readyToInstallActionList>
         <createDirectory>
@@ -242,6 +250,11 @@
                     </distributionFileList>
                 </folder>
             </folderList>
+            <shouldPackRuleList>
+                <fileExists>
+                    <path>../../resources/browser/FirefoxPortable/FirefoxPortable.exe</path>
+                </fileExists>
+            </shouldPackRuleList>
         </component>
         <component>
             <name>demodb</name>
@@ -267,6 +280,11 @@
                 <fileExists>
                     <path>../../resources/demodb/demo.h2.db</path>
                 </fileExists>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>${includedemodb}</text>
+                    <value>1</value>
+                </compareText>
             </shouldPackRuleList>
         </component>
     </componentList>

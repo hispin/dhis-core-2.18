@@ -233,6 +233,13 @@
     </action>    
     
     <!-- DataEntryForm -->
+    
+    
+    
+    <action name="viewDataEntryForm"
+      class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
+      <result name="success" type="chain">viewDataEntryFormChain</result>
+    </action>
         
     <action name="viewDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction">
@@ -242,6 +249,8 @@
       javascript/FCK/fckeditor.js, javascript/FCK/editor/js/fckeditorcode_gecko.js, javascript/dataEntryForm.js</param>
       <param name="stylesheets">css/cde.css</param>
     </action>
+    
+    
     
     <action name="saveDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction">

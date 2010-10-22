@@ -2,16 +2,36 @@
 
 <table style="width:100%">
 	<tr>
-		<td style="vertical-align:top">
-			<table width="100%">
+		<td>
+			<table width='100%'>
 				<tr>
-					<td>$i18n.getString( "filter_by_username" ): <form style="display:inline" action="none" onsubmit="return false"><input type="text" onkeyup="filterValues( this.value )"/></form></td>
+				<td colspan='5'>
+					<div class="paging-container">
+						#parse( "/dhis-web-commons/paging/paging.vm" )
+					</div>
+				</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td style="vertical-align:top">
+			<table width='100%'>
+				<tr>
+					<td>$i18n.getString( "filter_by_username" ): 
+						<form style="display:inline" action="none" onsubmit="return false">
+							<div style="inline">
+								<input type="text" id='key'>
+								<input type="button" value="$i18n.getString( "go" )" onclick="searchUserName();" />
+							</div>
+						</form>
+					</td>
 					<td></td>
 					<td></td>
 					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddUserForm.action'"/></td>
 				</tr>
 			</table>
-			<table class="listTable" id="listTable">
+			<table class="listTable" id="userList" width='100%'>
 				<col/>
 				<col/>
 				<col/>
@@ -26,8 +46,8 @@
 				<tbody id="list">
 				#foreach( $userCredentials in $userCredentialsList )
 				<tr id="tr${userCredentials.id}">
-					<td onclick="showUserDetails( $userCredentials.id )">$encoder.htmlEncode( $userCredentials.username )</td>
-					<td onclick="showUserDetails( $userCredentials.id )">$encoder.htmlEncode( $userCredentials.user.surname ), $encoder.htmlEncode( $userCredentials.user.firstName )</td>
+					<td>$encoder.htmlEncode( $userCredentials.username )</td>
+					<td>$encoder.htmlEncode( $userCredentials.user.surname ), $encoder.htmlEncode( $userCredentials.user.firstName )</td>
 					<td style="text-align:center">
 					<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
 
@@ -77,7 +97,18 @@
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_user" ) , "'")';
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
+
+	var i18n_edit = '$encoder.jsEscape( $i18n.getString( "edit" ) , "'")';
+	var i18n_remove = '$encoder.jsEscape( $i18n.getString( "remove" ) , "'")';
+	var i18n_show_details = '$encoder.jsEscape( $i18n.getString( "show_details" ) , "'")';
+	var i18n_username = '$encoder.jsEscape( $i18n.getString( "username" ) , "'")';
+	var i18n_name = '$encoder.jsEscape( $i18n.getString( "name" ) , "'")';
+	var i18n_operations = '$encoder.jsEscape( $i18n.getString( "operations" ) , "'")';
+	var currentUserName = '$currentUserName';
+	
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	
+		
+		
 	});
 </script>

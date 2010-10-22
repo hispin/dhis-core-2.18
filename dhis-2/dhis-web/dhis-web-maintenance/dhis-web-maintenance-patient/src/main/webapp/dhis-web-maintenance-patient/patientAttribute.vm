@@ -25,15 +25,15 @@
               
                 <td>$encoder.htmlEncode( $patientAttribute.name )</td>                
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="showUpdatePatientAttributeForm.action?id=$patientAttribute.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
                 </td>                
  
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="javascript:removePatientAttribute( '$patientAttribute.id', '$encoder.jsEncode( $patientAttribute.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center">
                   <a href="javascript:showPatientAttributeDetails( $patientAttribute.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
                 </td>
                 
@@ -59,7 +59,7 @@
 		</td>
   </tr>
 </table>
-
+<p><span id="message"></span></p>
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_attribute" ) , "'" )';
 	var i18n_adding_patient_atttibute_failed = '$encoder.jsEscape( $i18n.getString( "adding_patient_attribute_failed" ), "'")';
@@ -72,4 +72,6 @@
     var i18n_text = '$encoder.jsEscape( $i18n.getString( "text" ) , "'")';
     var i18n_date = '$encoder.jsEscape( $i18n.getString( "date" ) , "'")';
     var i18n_combo = '$encoder.jsEscape( $i18n.getString( "combo" ) , "'")';
+	var i18n_processing = '$encoder.jsEscape( $i18n.getString( "processing" ) , "'")';
+	var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ) , "'")';
 </script>

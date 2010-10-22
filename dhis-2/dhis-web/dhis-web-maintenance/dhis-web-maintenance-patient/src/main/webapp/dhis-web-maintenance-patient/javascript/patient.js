@@ -193,35 +193,9 @@ function patientReceived( patientElement )
 // -----------------------------------------------------------------------------
 // Remove patient
 // -----------------------------------------------------------------------------
-
 function removePatient( patientId, fullName )
 {
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + fullName );
-    
-    if ( result )
-    {
-    	var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removePatientCompleted );
-        window.location.href = 'removePatient.action?id=' + patientId;
-    }
-}
-
-function removePatientCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        window.location.href = 'patientform.action';
-    }
-    else if ( type = 'error' )
-    {
-        setInnerHTML( 'warningField', message );
-        
-        showWarning();
-    }
+	removeItem( patientId, fullName, i18n_confirm_delete, 'removePatient.action' );
 }
 
 //-----------------------------------------------------------------------------
@@ -276,8 +250,7 @@ function disableForm()
 // -----------------------------------------------------------------------------
 
 function validateAddPatient()
-{
-	
+{	
 	var age = document.getElementById( 'age' );
 	var orgunitcode = document.getElementById('orgunitcode');
 	if( age.value != '' )
@@ -626,16 +599,6 @@ function jumpToPage( baseLink )
 	var pageSize = jQuery("#sizeOfPage").val();
 	var currentPage = jQuery("#jumpToPage").val();
 	window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
-}
-
-function toggleRelationshipRow(this_)
-{
-	if( jQuery(this_).attr("checked") ) 
-	{
-		jQuery("tr.relationship-row").each(function(){jQuery(this).show()});
-	}else {
-		jQuery("tr.relationship-row").each(function(){jQuery(this).hide()});
-	}
 }
 
 /**

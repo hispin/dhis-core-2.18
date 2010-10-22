@@ -107,11 +107,32 @@ function CommentSaver( dataElementId_, optionComboId_, value_ )
     }
 }
 
+function isInt(value){
+	if(((value) == parseInt(value)) && !isNaN(parseInt(value))){
+		return true;
+	} else {
+		  return false;
+	} 
+}
+
 function saveMinLimit( organisationUnitId, dataElementId, optionComboId )
 {
     var minLimitField = document.getElementById( "minLimit" );
-    var maxLimitField = document.getElementById( "maxLimit" );
-
+	if(!isInt(minLimitField.value)){
+		setInnerHTML('minSpan', i18n_enter_digits);
+		return;
+	}else{
+		setInnerHTML('minSpan', "");
+	}
+	
+	var maxLimitField = document.getElementById( "maxLimit" );
+	if(!isInt(maxLimitField.value)){
+		setInnerHTML('maxSpan', i18n_enter_digits);
+		return;
+	}else{
+		setInnerHTML('maxSpan', "");
+	}
+    
     var request = new Request();
     request.setCallbackSuccess( refreshWindow );
     request.setCallbackError( refreshWindow );
@@ -147,21 +168,37 @@ function saveMinLimit( organisationUnitId, dataElementId, optionComboId )
 }
 
 function saveMaxLimit( organisationUnitId, dataElementId, optionComboId )
-{
-    var minLimitField = document.getElementById( "minLimit" );
-    var maxLimitField = document.getElementById( "maxLimit" );
-
+{	 
+	var maxLimitField = document.getElementById( "maxLimit" );
+	if(!isInt(maxLimitField.value)){
+		setInnerHTML('maxSpan', i18n_enter_digits);
+		return;
+	}else{
+		setInnerHTML('maxSpan', "");
+	}
+    
+	var minLimitField = document.getElementById( "minLimit" );
+	if(!isInt(minLimitField.value)){
+		setInnerHTML('minSpan', i18n_enter_digits);
+		return;
+	}else{
+		setInnerHTML('minSpan', "");
+	}
+	
     var request = new Request();
+    
     request.setCallbackSuccess( refreshWindow );
     request.setCallbackError( refreshWindow );
 
     if ( maxLimitField.value == '' )
     {
-        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId );
+       
+    	request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId );
+   
     }
     else
     {
-        var minLimit = Number( minLimitField.value );
+    	var minLimit = Number( minLimitField.value );
         var maxLimit = Number( maxLimitField.value );
         
         if ( maxLimit )
@@ -180,7 +217,8 @@ function saveMaxLimit( organisationUnitId, dataElementId, optionComboId )
                 minLimit = maxLimit - 1;
             }
 
-            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+          request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+            
         }
         else
         {

@@ -31,7 +31,7 @@
 	{
 		loadIndicatorGroups( "#indicator select[id=groupSelect]");		
 		
-		showPopupWindowById( 'indicator', 510, 340 );
+		showPopupWindowById( 'indicator', 550, 350 );
 	}
 		
 	function getIndicators( id, target)

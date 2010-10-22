@@ -159,6 +159,11 @@ public class UpdateJChartAction
         jChart.setPeriodType( periodService.getPeriodTypeByClass( pt.getClass() ) );
         jChart.setCategoryType( categoryType );
 
+        if ( jChart.isOrganisationUnitCategory() )
+        {
+            jChart.setLoadPeriodBy( JChart.LOAD_PERIOD_SELECTED );
+        }
+
         jChart.clearAllSeries();
 
         for ( int i = 0; i < indicatorIds.size(); i++ )

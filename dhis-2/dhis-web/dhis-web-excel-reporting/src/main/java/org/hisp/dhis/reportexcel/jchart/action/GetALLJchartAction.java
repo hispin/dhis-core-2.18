@@ -30,11 +30,15 @@ package org.hisp.dhis.reportexcel.jchart.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartComparator;
 import org.hisp.dhis.jchart.JChartSevice;
-import org.hisp.dhis.jchart.JChartStore;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,6 +60,20 @@ public class GetALLJchartAction
         this.jchartService = jchartService;
     }
 
+    private UserStore userStore;
+
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------
     // Output
     // -------------------------------------------
@@ -71,12 +89,33 @@ public class GetALLJchartAction
     public String execute()
         throws Exception
     {
-       
-        jcharts = new ArrayList<JChart>( jchartService.getALLJChart() );
+
+        jcharts = new ArrayList<JChart>();
+
+        List<JChart> jcharts_ = new ArrayList<JChart>( jchartService.getALLJChart() );
+
+        if ( currentUserService.currentUserIsSuper() )
+        {
+            jcharts.addAll( jcharts_ );
+        }
+        else
+        {
+            Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( currentUserService.getCurrentUser() )
+                .getUserAuthorityGroups();
+
+            for ( JChart jchart : jcharts_ )
+            {
+                if ( !CollectionUtils.intersection( jchart.getUserRoles(), userRoles ).isEmpty()
+                    || currentUserService.getCurrentUsername().equals( jchart.getStoredby() ) )
+                {
+                    jcharts.add( jchart );
+                }
+            }
+
+        }
 
         Collections.sort( jcharts, new JChartComparator() );
 
         return SUCCESS;
     }
-
 }

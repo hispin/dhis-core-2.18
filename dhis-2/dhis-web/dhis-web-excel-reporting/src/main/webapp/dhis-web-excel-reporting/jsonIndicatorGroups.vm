@@ -1,9 +1,0 @@
-#set( $size = $indicatorGroups.size() )
-{ "indicatorGroups": [
-#foreach( $indicatorGroup in $indicatorGroups )
-  {
-    "id": "$!{indicatorGroup.id}",
-    "name": "$!encoder.jsEncode( ${indicatorGroup.name} )"
-  }#if( $velocityCount < $size ),#end
-#end
-] }

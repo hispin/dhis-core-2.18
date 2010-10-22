@@ -37,7 +37,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
@@ -339,5 +338,37 @@ public class HibernateUserStore
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( userSetting );
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> searchUsersByName( String key ){
+        
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+      
+        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+        criteria.addOrder( Order.asc( "username" ) );
+
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> searchUsersByName( String key, int from, int to ){
+        
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+      
+        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+        criteria.addOrder( Order.asc( "username" ) );
+        criteria.setFirstResult( from );
+        criteria.setMaxResults( to );
+
+        return criteria.list();
+    }
+    
+    public int countNumberOfSearchUsersByName( String key ){
+        return searchUsersByName( key ).size();
     }
 }

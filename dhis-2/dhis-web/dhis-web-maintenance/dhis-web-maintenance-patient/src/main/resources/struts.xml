@@ -436,7 +436,7 @@
 
 		<action name="updatePatient"
 			class="org.hisp.dhis.patient.action.patient.UpdatePatientAction">
-			<result name="success" type="redirect">searchPatient.action
+			<result name="success" type="chain">showProgramEnrollmentForm
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>

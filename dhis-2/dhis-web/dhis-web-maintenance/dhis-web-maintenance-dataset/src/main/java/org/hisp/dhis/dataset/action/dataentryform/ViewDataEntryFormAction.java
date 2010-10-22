@@ -28,6 +28,7 @@ package org.hisp.dhis.dataset.action.dataentryform;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,7 +38,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -84,6 +88,13 @@ public class ViewDataEntryFormAction
         this.userSettingService = userSettingService;
     }
 
+    private DataElementOperandService dataElementOperandService;
+
+    public void setDataElementOperandService( DataElementOperandService dataElementOperandService )
+    {
+        this.dataElementOperandService = dataElementOperandService;
+    }
+
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -115,19 +126,26 @@ public class ViewDataEntryFormAction
     {
         return status;
     }
-    
+
     private Boolean autoSave;
 
     public Boolean getAutoSave()
     {
         return autoSave;
     }
-    
+
     private String htmlCode;
 
     public String getHtmlCode()
     {
         return htmlCode;
+    }
+
+    public List<DataElementOperand> operands;
+
+    public List<DataElementOperand> getOperands()
+    {
+        return operands;
     }
 
     // -------------------------------------------------------------------------
@@ -152,7 +170,12 @@ public class ViewDataEntryFormAction
         }
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
-        
+
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
+            .getDataElements() ) );
+
+        Collections.sort( operands, new DataElementOperandNameComparator() );
+
         return SUCCESS;
     }
 

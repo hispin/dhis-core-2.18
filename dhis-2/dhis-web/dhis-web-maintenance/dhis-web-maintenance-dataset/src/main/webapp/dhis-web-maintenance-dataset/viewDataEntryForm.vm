@@ -12,18 +12,71 @@
 
 	var autoSave = '$!autoSave';
 	
-
+	var oFCKeditor;
+	
 	jQuery(document).ready(	function(){
 			validation( 'saveDataEntryForm', function(){
 				autoSave = false;
 				validateDataEntryForm();
 			} );	
 
-			var oFCKeditor = new FCKeditor( 'designTextarea' );
+			oFCKeditor = new FCKeditor( 'designTextarea', "100%", 600 );
 			oFCKeditor.BasePath = "javascript/FCK/";
-	        oFCKeditor.ReplaceTextarea();	
+	        oFCKeditor.ReplaceTextarea();
+						
+			jQuery("#dataElementSelection").resizable({
+				minHeight:210,
+				minWidth:300,
+				alsoResize: "#dataElementList"				
+			});			
+			
+			jQuery("#dataElementSelection").draggable({
+				handle:'h3'
+			});
+
+			
+			leftBar.hideAnimated();
+			
+			select( 1 );
+
 	});
+	
+	
 </script>
+
+<style>
+
+#dataElementSelection { 
+	padding: 0.5em; 
+	position:fixed;
+	top:80px;
+	left:500px;
+	z-index:999999;
+	font-size:10pt;
+	
+}
+#dataElementSelection h3 {
+	font-size:10pt;
+	color:#FFFFFF;
+	cursor:move;
+	text-align: center; 
+	margin: 0;
+}
+
+#dataElementSelection tr{
+	cursor:default;	
+}
+
+#dataElementSelection tr.selected{
+	background-color:#2B0AAF;
+	color:#FFFFFF;
+}
+
+#dataElementList{
+	margin-top:5px;
+}
+
+</style>
 
 
 <h3>$i18n.getString( "dataentryform_management" )</h3>
@@ -52,13 +105,12 @@
     </tbody>
   </table>
     
-   <table>
-      <col width="700"/>  
+   <table width="100%">      
       <tr>
         <th>$i18n.getString( "dataentryform_design" )</th>
       </tr>
       <tr>
-        <td><textarea id="designTextarea" name="designTextarea" >#if($status == "EDIT")${htmlCode}#end</textarea></td>
+        <td><textarea id="designTextarea" name="designTextarea">#if($status == "EDIT")${htmlCode}#end</textarea></td>
       </tr>
       <tr>
       <td>
@@ -82,6 +134,30 @@
   <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id" />
 </form>
 
+<div id="dataElementSelection" class="ui-widget-content">
+<h3 class="ui-widget-header"><b>$i18n.getString( 'dataelement' )</b></h3>
+	<div id="dataElementList" style="height:150px;overflow:auto">
+	<table width="100%">
+		#foreach( $operand in $operands )
+			<tr id="tr$velocityCount" onclick="select($velocityCount)">
+				<td>
+					<input type="hidden" id="json_$velocityCount" value='$operand.toJSON()'/>
+					$encoder.htmlEncode( $operand.operandName )
+				</td>
+			</tr>						
+		#end
+	</table>
+	</div>
+	<br>
+	<b>$i18n.getString( "view_as" )</b>
+	<select name="viewBySelector" id="viewBySelector" style="width:150px">		
+		<option value="deid">$i18n.getString( "id" )</option>
+		<option value="dename">$i18n.getString( "name" )</option>
+		<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
+	</select>
+	<input type="button" value="Insert" onclick="insertDataElement()"/>
+</div>
+
 <script>
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
 	
@@ -101,6 +177,63 @@
 		validateDataEntryForm();
 		t=setTimeout("timedCount()", 20000);//1000 -> 1s
 		byId( 'message' ).style.display = 'none';
+	}	
+
+var selected = null;
+
+function select( id )
+{
+	if( selected != null )
+	{
+		jQuery("#tr" + selected ).removeClass( "selected");
 	}
+	
+	jQuery("#tr" + id ).addClass( "selected");
+	
+	selected = id;
+}
+
+
+function insertDataElement()
+{
+	var oEditor = FCKeditorAPI.GetInstance('designTextarea') ;
+	var viewByValue = getFieldValue( 'viewBySelector' );
+	
+	var json = JSON.parse( jQuery("#json_" + selected ).val() );
+	
+	var dataElementId = json.dataElement.id;
+	var dataElementName = json.dataElement.name;
+	var dataElementType = json.dataElement.type;
+	var optionComboName = json.optionCombo.name;
+	var optionComboId = json.optionCombo.id;
+	
+	if(viewByValue == "deid") dispName = "[ " + dataElementId;
+	else if (viewByValue == "deshortname") dispName = "[ " + json.dataElement.shortName;
+	else dispName = "[ " + json.dataElement.name;
+	
+	var titleValue = "-- " + dataElementId + ". " 
+					+ dataElementName + " " 
+					+ optionComboId + ". " 
+					+ optionComboName + " (" 
+					+ dataElementType + ") --";
+					
+	var displayName = dispName + " - " + optionComboName + " ]";
+	var dataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
+	var boolDataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
+	
+	viewByValue = "@@" + viewByValue + "@@";
+	
+	if (dataElementType == "bool")
+	{
+		oEditor.InsertHtml("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryselect\" id=\""+ boolDataEntryId +"\" style=\"width:4em;text-align:center\"/>" );			
+		
+	}	
+	else 
+	{	
+		oEditor.InsertHtml("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>");			
+			
+	}	
+	
+}
 	
 </script>

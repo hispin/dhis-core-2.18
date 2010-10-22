@@ -30,10 +30,11 @@
 <form id="jchartForm" method="POST" action="addJChart.action">
 	<input type="hidden" name="legend" id="legend"/>
 	<table>
+		<col width="100px"/>
 		<tr>
 			<td><label for="title">$i18n.getString('title')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" name="title" id="title" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
-		</tr>
+		</tr>		
 		<tr>
 			<td><label for="type">$i18n.getString('legend')</label></td>
 			<td>
@@ -66,57 +67,81 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="type">$i18n.getString('load_period_by')</label></td>
+			<td><label for="category">$i18n.getString('category')</label></td>
 			<td>
-				<input type="radio" name="loadPeriodBy" value="LOAD_PERIOD_AUTO"  onclick="showPeriodSelection()"/> $i18n.getString('LOAD_PERIOD_AUTO')
-				<input type="radio" name="loadPeriodBy" value="LOAD_PERIOD_SELECTED" checked="true" onclick="showPeriodSelection()"/> $i18n.getString('LOAD_PERIOD_SELECTED')				
+				<input type="radio" name="categoryType" onclick="selectCategoryType()" value="PERIOD_CATEGORY" title="$i18n.getString('period')" checked="true"/>$i18n.getString('period')
+				<input type="radio" name="categoryType" onclick="selectCategoryType()" value="ORGANISATION_UNIT_CATEGORY" title="$i18n.getString('organisation_unit')"/>$i18n.getString('organisation_unit')
 			</td>
 		</tr>
-		<tr><td></td><th><label for="type">$i18n.getString('period')</label></th></tr>
+		<tr><th colspan="4">$i18n.getString('period')</th></tr>
+		<tr id="selectLoadPeriodBy">
+			<td><label for="type">$i18n.getString('load_period_by')</label></td>
+			<td>
+				<select id="loadPeriodBy" name="loadPeriodBy" onchange="showPeriodSelection()" style="width:250px;" >
+					<option value="LOAD_PERIOD_AUTO">$i18n.getString( 'LOAD_PERIOD_AUTO' )</option>
+					<option value="LOAD_PERIOD_SELECTED">$i18n.getString( 'LOAD_PERIOD_SELECTED' )</option>
+				</select>							
+			</td>
+		</tr>
 		<tr>
-			<td></td>
-			<td>				
-				<select id="periodType" name="periodType" style="width:300px;" onchange="loadPeriods(this.value)">
+			<td><label for="type">$i18n.getString('period_type')</label></td>
+			<td>
+				<select id="periodType" name="periodType" style="width:250px;" onchange="loadPeriods(this.value)">
 					#foreach( $periodType in $periodTypes )
 						<option value="$periodType.name">$i18n.getString( $periodType.name )</option>
 					#end
 				</select>
-				<table id="period_selection">
-					<tr>
-						<th><label for="type">$i18n.getString('available_periods')</label></th>
-						<td></td>
-						<th><label for="type">$i18n.getString('selected_periods')</label>
-							<select id="periodIds" name="periodIds" style="display:none"/>
-						</th>
+			</td>	
+		</tr>		
+		<tr>			
+			<td colspan="4">
+				<table width="700px">
+					<col width="100px"/>
+					<tr><th colspan="2">$i18n.getString('axis_x')</th></tr>						
+					<tr id="periods_selection">						
+						<td colspan="2">						
+							<table>
+								<tr>
+									<th><label for="type">$i18n.getString('available_periods')</label></th>
+									<td></td>
+									<th><label for="type">$i18n.getString('selected_periods')</label>
+										<select id="periodIds" name="periodIds" style="display:none"/>
+									</th>
+								</tr>
+								<tr>
+									<td>
+										<select id="availablePeriods" name="availablePeriods" style="width:300px;" multiple size=15" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"/>
+									</td>
+									<td style="text-align:center">
+										<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><br>
+										<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><br>		
+										<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"><br>
+										<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )">
+									</td>
+									<td>
+										<select id="selectedPeriods" name="selectedPeriods" style="width:300px;" multiple size=15" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"/>
+									</td>
+								</tr>
+							</table>								
+						</td>
 					</tr>
-					<tr>
-						<td>
-							<select id="availablePeriods" name="availablePeriods" style="width:300px;" multiple size=15" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"/>
-						</td>
-						<td style="text-align:center">
-							<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><br>
-							<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><br>		
-							<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"><br>
-							<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )">
-						</td>
-						<td>
-							<select id="selectedPeriods" name="selectedPeriods" style="width:300px;" multiple size=15" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"/>
-						</td>
-					</tr>
-				</table>								
+				</table>
 			</td>
-		</tr>
-		<tr><td></td><th><label for="type">$i18n.getString('indicator')</label></th></tr>
 		<tr>
-			<td></td>
-			<td>				
-				<select style="width:300px;" onchange="loadIndicators(this.value)">
-					<option value="">$encoder.htmlEncode( 'ALL' )</option>
-					#foreach( $group in $indicatorGroups )
-						<option value="$group.id">$encoder.htmlEncode( $group.name )</option>
-					#end
-				</select>
-				<table>
+		<tr id="indicator_selection">			
+			<td colspan="4">
+				<table width="700px">					
+					<tr><th colspan="3">$i18n.getString('axis_y')</th></tr>
+					<tr>
+						<td colspan="3">$i18n.getString('indicator_groups')						
+							<select style="width:300px;" onchange="loadIndicators(this.value)">
+								<option value="">$encoder.htmlEncode( 'ALL' )</option>
+								#foreach( $group in $indicatorGroups )
+									<option value="$group.id">$encoder.htmlEncode( $group.name )</option>
+								#end
+							</select>
+						</td>
+					</tr>					
 					<tr>
 						<th><label for="type">$i18n.getString('available_indicators')</label></th>
 						<td></td>
@@ -141,12 +166,11 @@
 							</div>
 						</td>
 					</tr>
-				</table>								
+				</table>
 			</td>
-		</tr>
+		</tr>			
 		<tr>
-			<td></td>
-			<td>
+			<td colspan="4">
 				<input type="submit" value="$i18n.getString('ok')" style="width:150px"/>
 				<input type="button" value="$i18n.getString('cancel')" onclick="window.location = 'jcharts.action'" style="width:150px"/>
 			</td>			
@@ -154,7 +178,7 @@
 	</table>
 </form>
 
-<div id="color_test" class="color" onclick="colorPicker()"></div> 
+
 
 <script>
 
@@ -167,7 +191,8 @@
 	
 	
 	jQuery(function(){
-		showPeriodSelection();	
+		showPeriodSelection();
+		selectCategoryType();
 	});
 	
 	

@@ -1,7 +1,17 @@
+<script>
+	jQuery(document).ready( function()
+	{
+		validation( 'lockingForm', function( form )
+		{
+			validateCollectiveDataLockingForm( form );
+		});
+	});
+</script>
 
 <h3>$i18n.getString( "data_locking_form" ) #openHelp( "dataLocking" )</h3>
 	
-<form id="lockingForm" name="lockingForm" action="collectiveDataLocking.action" method="post" onsubmit="return validateCollectiveDataLockingForm()">
+<form id="lockingForm" name="lockingForm" action="collectiveDataLocking.action" method="POST">
+	<input type="hidden" id="selectBetweenLockUnlock" name="selectBetweenLockUnlock"/>
 	<table>
 		<tr>
 			<td valign="top">
@@ -10,99 +20,79 @@
 					<tr>
 						<td>
 							<select id="periodTypeId" name="periodTypeId" style="min-width:325px" onchange="getPeriods()">
-								<option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
+								<option value="">[ $i18n.getString( "select_period_type" ) ]</option>
 								#foreach ( $periodType in $periodTypes )
 								  <option value="$periodType.name"#if( $currentPeriodTypeId == $type.name ) selected="selected"#end>$periodType.name</option>
 								#end
 							</select>
 						</td>
 					</tr>
+					
 					<tr><td>&nbsp;</td></tr>
-					<tr><th>$i18n.getString( "available_periods" )</th></tr>
+					
+					<tr><th>$i18n.getString( "available_periods" )</th><td></td><th>$i18n.getString( "selected_periods" )</th></tr>
+					
 					<tr>	
 						<td>	
-							<select id="periodId" name="periodId" multiple="multiple" style="min-width:325px;height:11.25em" disabled="true">
+							<select id="availablePeriods" name="availablePeriods" multiple="multiple" style="min-width:325px;height:11.25em" disabled="true" ondblclick="moveSelectedById( this.id, 'selectedPeriods' )">
+							</select>
+						</td>
+						<td style="text-align:center">			
+							<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )" /><br/>
+							<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )" /><br/>
+							<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"/><br/>
+							<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )"/>			
+						</td>	
+						<td>
+							<select id="selectedPeriods" name="selectedPeriods" size="2" multiple="multiple" style="min-width:325px;height:11.25em" ondblclick="moveSelectedById( this.id, 'availablePeriods' )" class="{validate:{required:true}}">
 							</select>
 						</td>
 					</tr>
+						
 					<tr><td>&nbsp;</td></tr>
-					<tr><th>$i18n.getString( "available_datasets" )</th></tr>
+					
+					<tr><th>$i18n.getString( "available_datasets" )</th><td></td><th>$i18n.getString( "selected_datasets" )</th></tr>
 					<tr>
 						<td>
-							<select id="dataSetIds" name="dataSetIds" multiple="multiple" style="min-width:325px;height:12.5em" ondblclick="#" disabled="true"></select>				
+							<select id="availableDataSets" name="availableDataSets" multiple="multiple" style="min-width:325px;height:12.5em" ondblclick="moveSelectedById( this.id, 'selectedDataSets' )" disabled="true"></select>				
+						</td>
+						<td style="text-align:center">			
+							<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )" /><br/>
+							<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )" /><br/>
+							<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataSets', 'selectedDataSets' )"/><br/>
+							<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedDataSets', 'availableDataSets' )"/>			
+						</td>	
+						<td>
+							<select id="selectedDataSets" name="selectedDataSets" size="2" multiple="multiple" style="min-width:325px;height:11.25em" ondblclick="moveSelectedById( this.id, 'availableDataSets' )" class="{validate:{required:true}}">
+							</select>
 						</td>
 					</tr>
 				</table>
-			</td>	  
-			<td>&nbsp;</td>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>#organisationUnitSelectionTree( true, true, false )</td>										
+		</tr>
+		<tr></tr>
+		<tr>
 			<td>
-				<table>
-					<tr><th>$i18n.getString('organisation_unit')</th></tr>
-					<tr>
-						<td>
-							<input type="submit" value="$i18n.getString( 'lock_all_at_level' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
-							<select id="levelId" name="levelId" style="width:12em" >
-                                #foreach ( $orgUnitLevel in $orgUnitLevels )
-                                   <option value="$orgUnitLevel.level" >$orgUnitLevel.name</option>
-                                #end
-                            </select>
-							<input type="submit" value="$i18n.getString( 'unlock_all_at_level' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
-							 <select id="selectionValue" name="selectionValue" onlclick="" enabled="true">
-                                        <option value="selected" selected>Selected</option>
-                                        <option value="Childtree">Child Tree</option>
-                             </select>   							    
-						</td>							
-					</tr>
-					<tr>
-						<td>
-							<input type="submit" value="$i18n.getString( 'lock_all_in_group' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
-							<select id="orgGroup" name="orgGroup" style="width:12em" >
-								 #foreach ( $orgUnitGroup in $orgUnitGroups )
-									 <option value="$orgUnitGroup.id">$orgUnitGroup.name</option>
-								 #end
-							</select>
-							<input type="submit" value="$i18n.getString( 'unlock_all_in_group' )" onclick="setClickedButtonElementValue(this)" style="width:12em"/>
-						</td>
-		
-					</tr>
-				<tr>
-					<td>
-					<div id="selectionTree" style="width:45em;height:28em;overflow:auto;border:1px solid #cccccc"></div>	
-					</td>
-				</tr>	
-				<tr>
-					<td>
-						<input type="submit" onclick="setClickedButtonElementValue(this)" id="Lock" name ="Lock" value="$i18n.getString( 'lock' )" style="width:10em" disabled="true"/>
-                        <input type="submit" onclick="setClickedButtonElementValue(this)" id="Unlock" name ="Unlock" value="$i18n.getString( 'unlock' )" style="width:10em" disabled="true"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						 <span id="message"></span>
-						 <input type="hidden" id="selectBetweenLockUnlock" name="selectBetweenLockUnlock"/>
-					</td>
-				</tr>							
-			</table>		
-		</td>			
-	</tr>
-</table>		
+				<input type="submit" id="lock" name="lock" onclick="setClickedButtonElementValue( true )" value="$i18n.getString( 'lock' )" style="width:10em" disabled="true"/>
+				<input type="submit" id="unlock" name="unlock" onclick="setClickedButtonElementValue( false )" value="$i18n.getString( 'unlock' )" style="width:10em" disabled="true"/>
+			</td>
+		</tr>
+	</table>
 </form>
-							 
-<script type="text/javascript">
-    selectionTreeSelection.setMultipleSelectionAllowed( true );
-    selectionTreeSelection.setOnSelectFunction( treeClicked );
-    selectionTreeSelection.setListenerFunction( selectCompleted );
-    selectionTree.clearSelectedOrganisationUnits();
-    selectionTree.buildSelectionTree();
 
-	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
+<span id="message"></span>
+					 
+<script type="text/javascript">
+
 	var i18n_organisation_unit_not_selected = '$encoder.jsEscape( $i18n.getString( "organisation_unit_not_selected" ) , "'")';
 	var i18n_period_not_selected = '$encoder.jsEscape( $i18n.getString( "period_not_selected" ) , "'")';
 	var i18n_dataset_not_selected = '$encoder.jsEscape( $i18n.getString( "dataset_not_selected" ) , "'")';
 	var i18n_lock = '$encoder.jsEscape( $i18n.getString( "lock" ) , "'")';
 	var i18n_unlock = '$encoder.jsEscape( $i18n.getString( "unlock" ) , "'")';
-	var i18n_select_all_at_level = '$encoder.jsEscape( $i18n.getString( "select_all_at_level" ) , "'")';
-	var i18n_unselect_all_at_level = '$encoder.jsEscape( $i18n.getString( "unselect_all_at_level" ) , "'")';
-	var i18n_select_all_at_group = '$encoder.jsEscape( $i18n.getString( "select_all_in_group" ) , "'")';
-    var i18n_unselect_all_at_group = '$encoder.jsEscape( $i18n.getString( "unselect_all_in_group" ) , "'")';
+	
 </script>

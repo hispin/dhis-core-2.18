@@ -40,9 +40,8 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -67,14 +66,7 @@ public class ViewCompletedReportByDataSetAction
     {
         this.periodService = periodService;
     }
-
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
-
+    
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -90,11 +82,11 @@ public class ViewCompletedReportByDataSetAction
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private I18nFormat format;
@@ -108,18 +100,18 @@ public class ViewCompletedReportByDataSetAction
     // Input
     // -------------------------------------------
 
-    private Integer id;
+    private Integer periodId;
 
-    public void setId( Integer id )
+    public void setPeriodId( Integer periodId )
     {
-        this.id = id;
+        this.periodId = periodId;
     }
 
-    protected Integer[] columns;
+    private List<Integer> dataSetIds;
 
-    public void setColumns( Integer[] columns )
+    public void setDataSetIds( List<Integer> dataSetIds )
     {
-        this.columns = columns;
+        this.dataSetIds = dataSetIds;
     }
 
     // -------------------------------------------
@@ -158,16 +150,9 @@ public class ViewCompletedReportByDataSetAction
     public String execute()
         throws Exception
     {
-        period = periodService.getPeriod( id );
+        period = periodService.getPeriod( periodId );
 
-        /*
-         * organisationUnits = new ArrayList<OrganisationUnit>(
-         * organisationUnitService .getRetainUnitsBetweenChildrenAndMember(
-         * organisationUnitSelectionManager.getSelectedOrganisationUnit() ) );
-         */
-
-        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitSelectionManager
-            .getSelectedOrganisationUnit().getChildren() );
+        organisationUnits = new ArrayList<OrganisationUnit>( selectionTreeManager.getSelectedOrganisationUnits() );
 
         dataSets = new ArrayList<DataSet>();
 
@@ -177,13 +162,13 @@ public class ViewCompletedReportByDataSetAction
 
         completedValues = new HashMap<String, String>();
 
-        for ( Integer id : columns )
+        for ( Integer id : dataSetIds )
         {
             dataSet = dataSetService.getDataSet( id );
 
             for ( OrganisationUnit o : organisationUnits )
             {
-                if ( o.getDataSets().contains( dataSet ) )
+                if ( dataSetService.getDataSetsBySource( o ).contains( dataSet ) )
                 {
 
                     completeDataSetRegistration = completeDataSetRegistrationService.getCompleteDataSetRegistration(
@@ -197,7 +182,7 @@ public class ViewCompletedReportByDataSetAction
                 }
                 else
                 {
-                    completedValues.put( o.getId() + ":" + id, "" );
+                    completedValues.put( o.getId() + ":" + id, null );
                 }
             }
 

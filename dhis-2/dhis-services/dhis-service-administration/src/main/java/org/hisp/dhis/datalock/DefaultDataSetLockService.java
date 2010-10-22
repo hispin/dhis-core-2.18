@@ -28,6 +28,7 @@ package org.hisp.dhis.datalock;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -169,5 +170,70 @@ public class DefaultDataSetLockService
         }
         
         return count;
+    }
+
+    public void applyCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods,
+        Set<Source> selectedSources, String userName )
+    {
+        for ( DataSet dataSet : dataSets )
+        {
+            Set<Source> dataSetOrganisationUnits = dataSet.getSources();
+            Set<Source> selOrgUnitSource = new HashSet<Source>();
+
+            selOrgUnitSource.addAll( selectedSources );
+            selOrgUnitSource.retainAll( dataSetOrganisationUnits );
+
+            for ( Period period : periods )
+            {
+                DataSetLock dataSetLock = this.getDataSetLockByDataSetAndPeriod( dataSet, period );
+                if ( dataSetLock != null )
+                {
+                    Set<Source> lockedOrganisationUnitsSource = dataSetLock.getSources();
+                    selOrgUnitSource.removeAll( lockedOrganisationUnitsSource );
+                    dataSetLock.getSources().addAll( selOrgUnitSource );
+                    dataSetLock.setTimestamp( new Date() );
+                    dataSetLock.setStoredBy( userName );
+                    this.updateDataSetLock( dataSetLock );
+                }
+                else
+                {
+                    dataSetLock = new DataSetLock();
+                    dataSetLock.setPeriod( period );
+                    dataSetLock.setSources( selOrgUnitSource );
+                    dataSetLock.setDataSet( dataSet );
+                    dataSetLock.setTimestamp( new Date() );
+                    dataSetLock.setStoredBy( userName );
+                    this.addDataSetLock( dataSetLock );
+                }
+            }
+        }
+        
+    }
+
+    public void removeCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods,
+        Set<Source> selectedSources, String userName )
+    {
+        for ( DataSet dataSet : dataSets )
+        {
+            Set<Source> dataSetOrganisationUnits = dataSet.getSources();
+            Set<Source> selOrgUnitSource = new HashSet<Source>();
+
+            selOrgUnitSource.addAll( selectedSources );
+            selOrgUnitSource.retainAll( dataSetOrganisationUnits );
+
+            for ( Period period : periods )
+            {
+                DataSetLock dataSetLock = this.getDataSetLockByDataSetAndPeriod( dataSet, period );
+                if ( dataSetLock != null )
+                {
+                    Set<Source> lockedOrganisationUnitsSource = dataSetLock.getSources();
+                    selOrgUnitSource.retainAll( lockedOrganisationUnitsSource );
+                    dataSetLock.getSources().removeAll( selOrgUnitSource );
+                    dataSetLock.setTimestamp( new Date() );
+                    dataSetLock.setStoredBy( userName );
+                    this.updateDataSetLock( dataSetLock );
+                }
+            }
+        }
     }
 }

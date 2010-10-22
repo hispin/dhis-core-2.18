@@ -1,5 +1,5 @@
-
 <script>
+			
     var holdFocus;
     var intType = '$intType';
     var stringType = '$stringType';
@@ -8,13 +8,32 @@
     var tableRowCount = 0;
     var programstageDEisMul;
     var programstageDEdatatype;
-    //var last_deleted=-100;
-    //noOfRecordsDeleted=0;
-    //noOfSmallerRecordsDeleted;
+	var i18n_specify_dataelememt = '$encoder.jsEscape( $i18n.getString( "specify_dataelememt" ) , "'") ';
+    var onsubmit = true;
+   jQuery(document).ready(	function(){
+		
+		jQuery.metadata.setType( "attr", "data" );
+        getProgramStages();
+		
+		validation( 'caseAggFrom', function(form){
+			if(onsubmit){
+				form.submit();
+			}
+		}, function(){
+			if( $('#aggde').val() == null){
+				setHeaderMessage(i18n_specify_dataelememt);
+				$( '#aggde' ).focus();
+				$( '#aggde' ).css( "background-color", "#ffc5c5" );
+				onsubmit = false;
+			}			
+		}); 
+			
+	});
+	
 </script>
 <h3>$i18n.getString( "case_aggregation_mapping" )</h3>
 
-<form id="caseAggFrom" name="caseAggFrom"  method="post" action="saveCaseAggMapping.action">
+<form id="caseAggFrom" action="saveCaseAggMapping.action" method="post">
 
 <table>
     <tr valign="top">
@@ -22,8 +41,7 @@
             
             <table>             
                 <tr>
-                    <td>                
-                        $i18n.getString( "dataelement_group_list" )<br>
+                    <td> $i18n.getString( "dataelement_group_list" )<br>
                         <select id="degroup" name="degroup" style="width:325px" onchange="getAggDataElements()">
                             <option value="0">$encoder.htmlEncode( "Others" )</option>
                         #foreach( $deGroup in $deGroupList )
@@ -176,13 +194,4 @@
                 <input type="button" value="Select" onclick="select_click()"/>
             </div>
 </div>
-<script language="javascript">
-    
-    window.onload=function()
-    {   
-        jQuery.metadata.setType( "attr", "data" );
-        getProgramStages();
-    }
-    
-</script>
 

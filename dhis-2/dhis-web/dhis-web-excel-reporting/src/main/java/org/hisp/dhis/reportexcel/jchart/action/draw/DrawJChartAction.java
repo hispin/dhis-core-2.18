@@ -61,9 +61,17 @@ public class DrawJChartAction
         this.id = id;
     }
 
+    private int periodId;
+
+    public void setPeriodId( int periodId )
+    {
+        this.periodId = periodId;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+    
     private JChartData jchartData;
 
     public JChartData getJchartData()
@@ -75,7 +83,7 @@ public class DrawJChartAction
     public String execute()
         throws Exception
     {
-        jchartData = jchartDataService.getJChartData( id );
+        jchartData = jchartDataService.getJChartData( id, periodId );
 
         return SUCCESS;
     }

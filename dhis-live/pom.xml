@@ -96,10 +96,10 @@
                             <stayAlive>false</stayAlive>
                             <manifest></manifest>
                             <icon>${basedir}/util/launch4j/favicon.ico</icon>
-                            <singleInstance>
-                                <mutexName>dhis-live.mutex</mutexName>
-                                <windowTitle></windowTitle>
-                            </singleInstance>
+                            <singleInstance
+                                mutexName="dhis-live"
+                                windowTitle="DHIS2"
+                            />
                             <jre>
                                 <minVersion>1.6.0_14</minVersion>
                                 <opts>
@@ -135,10 +135,10 @@
                             <stayAlive>false</stayAlive>
                             <manifest></manifest>
                             <icon>${basedir}/util/launch4j/favicon.ico</icon>
-                            <singleInstance>
-                                <mutexName>dhis-live.mutex</mutexName>
-                                <windowTitle></windowTitle>
-                            </singleInstance>
+                            <singleInstance
+                                mutexName="dhis-live"
+                                windowTitle="DHIS2"
+                            />
                             <jre>
 								<path>jre6</path>
                                 <minVersion>1.6.0_14</minVersion>

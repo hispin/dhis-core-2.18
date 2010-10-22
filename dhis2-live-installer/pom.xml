@@ -16,7 +16,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.1</version>
         <executions>
--          <execution>
+<!--          <execution>
 	     <id>DHIS2 Windows Live</id>
              <phase>package</phase>
                <configuration>
@@ -30,7 +30,7 @@
              <goals>
               <goal>exec</goal>
             </goals>
-          </execution> 
+          </execution> -->
           <execution>
              <id>DHIS2 Windows Embedded JRE</id>
              <phase>package</phase>
@@ -60,7 +60,7 @@
              <goals>
               <goal>exec</goal>
             </goals>
-          </execution> --> 
+          </execution> 
           <execution>
              <id>DHIS2 Linux Demo</id>
              <phase>package</phase>
@@ -75,7 +75,7 @@
              <goals>
               <goal>exec</goal>
             </goals>
-          </execution>
+          </execution> -->
         </executions>
       </plugin>
     </plugins>

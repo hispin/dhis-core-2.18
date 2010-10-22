@@ -28,6 +28,8 @@ package org.hisp.dhis.oust.action;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -91,6 +93,13 @@ public class RemoveSelectedOrganisationUnitAction
         this.level = level;
     }
 
+    private Boolean children;
+
+    public void setChildren( Boolean children )
+    {
+        this.children = children;
+    }
+
     private Integer organisationUnitGroupId;
 
     public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
@@ -131,6 +140,25 @@ public class RemoveSelectedOrganisationUnitAction
             {
                 selectedUnits.removeAll( organisationUnitGroupService
                     .getOrganisationUnitGroup( organisationUnitGroupId ).getMembers() );
+            }
+
+            if ( children != null && children == true )
+            {
+
+                Set<OrganisationUnit> selectedOrganisationUnits = new HashSet<OrganisationUnit>( selectedUnits );
+
+                for ( OrganisationUnit selected : selectedOrganisationUnits )
+                {
+                    OrganisationUnit parent = selected.getParent();
+
+                    if ( !selectedOrganisationUnits.contains( parent ) )
+                    {
+                        selectedUnits.removeAll( organisationUnitService.getOrganisationUnitWithChildren( selected
+                            .getId() ) );
+                        
+                        selectedUnits.add( selected );                      
+                    }                    
+                }
             }
 
             selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );

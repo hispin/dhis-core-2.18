@@ -63,7 +63,9 @@
         </td>
         <td><select multiple id="selectedAttributes" name="selectedAttributes" size="15" style="width:25em " ondblclick="moveSelectedById( 'selectedAttributes', 'availableAttributes' )">
         	 #foreach($patientAttribute in $patientAttributeGroup.attributes)
-                <option value='$patientAttribute.id'>$patientAttribute.name</option>
+				#if($!patientAttribute)
+					<option value='$patientAttribute.id'>$patientAttribute.name</option>
+				#end
 			 #end
 		</select></td>
 		

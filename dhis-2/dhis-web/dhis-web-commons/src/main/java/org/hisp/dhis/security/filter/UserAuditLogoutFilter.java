@@ -27,6 +27,8 @@ package org.hisp.dhis.security.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,8 +52,21 @@ public class UserAuditLogoutFilter
 
     public void logout( HttpServletRequest request, HttpServletResponse response, Authentication authentication )
     {
-        String username = (( UserDetails ) authentication.getPrincipal()).getUsername();
-        
-        userAuditService.registerLogout( username );
+        if ( authentication != null )
+        {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+            userAuditService.registerLogout( username );
+        }
+        else
+        {
+            try
+            {
+                response.sendRedirect( request.getContextPath() );
+            }
+            catch ( IOException e )
+            {
+                e.printStackTrace();
+            }
+        }
     }
 }

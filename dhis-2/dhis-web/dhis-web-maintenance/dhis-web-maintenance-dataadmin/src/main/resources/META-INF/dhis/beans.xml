@@ -16,7 +16,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
 		class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
 		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+		<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService"/>
 		<property name="dataSetService"
 			ref="org.hisp.dhis.dataset.DataSetService"/>
 		<property name="organisationUnitService"
@@ -25,11 +26,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.datalock.DataSetLockService"/>
 		<property name="currentUserService"
 			ref="org.hisp.dhis.user.CurrentUserService"/>
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 	</bean>
 			
 	<bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
@@ -56,6 +54,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.lock.ValidateCollectiveDataLockingAction"
+		class="org.hisp.dhis.dataadmin.action.lock.ValidateCollectiveDataLockingAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>		
 	</bean>
 
 	<!-- Maintenance -->

@@ -38,7 +38,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" style="width:20em" maxlength="40" class="{validate:{minlength:4,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+        <td><input type="text" id="code" name="code" style="width:20em" maxlength="40" class="{validate:{minlength:4,alphanumericwithbasicpuncspaces:true,notOnlyDigits:false}}"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

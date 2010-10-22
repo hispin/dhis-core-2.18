@@ -50,7 +50,7 @@ public class SavePeriodColumnAction
     // Input & Output
     // -------------------------------------------
 
-    private Integer id;
+    private Integer reportId;
 
     private String periodType;
 
@@ -69,14 +69,14 @@ public class SavePeriodColumnAction
         this.reportService = reportService;
     }
 
-    public void setId( Integer id )
+    public Integer getReportId()
     {
-        this.id = id;
+        return reportId;
     }
 
-    public Integer getId()
+    public void setReportId( Integer reportId )
     {
-        return id;
+        this.reportId = reportId;
     }
 
     public void setPeriodType( String periodType )
@@ -103,7 +103,8 @@ public class SavePeriodColumnAction
     public String execute()
         throws Exception
     {
-        ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService.getReportExcel( id );
+        ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
+            .getReportExcel( reportId );
 
         PeriodColumn periodColumn = new PeriodColumn();
         periodColumn.setColumn( column );

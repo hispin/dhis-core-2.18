@@ -124,35 +124,37 @@
 	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>	
 		<tr><th colspan="2">$attributeGroup.name</th></tr>
-		#foreach($attribute in $attributeGroup.attributes )
-		#set( $attributeValue = "" )
-		#set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )
-			<tr>
-				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-				<td>
-					#if( $attribute.valueType == "YES/NO" )
-		                <select id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" >              
-		                    <option value="">[$i18n.getString( "please_select" )]</option>
-		                    <option value="true" #if( $attributeValue ) selected="selected" #end>$i18n.getString( "yes" )</option>
-		                    <option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
-		                </select>                
-		            #elseif( $attribute.valueType == "DATE" )
-		                <input type="text" id="attr$attribute.id"  name="attr$attribute.id"  value="$!attributeValue" class=' #validate( "default"  $attribute.mandatory )' style="width:30em" >
-		                <script type="text/javascript">
-                            datePickerValid( 'attr$attribute.id' );
-                        </script>                 
-					#elseif( $attribute.valueType == "COMBO" )
-						<select  id="attr$attribute.id"  name="attr$attribute.id" style="width:30em"  class=' #validate( "default"  $attribute.mandatory )'>
-							 <option value="">[$i18n.getString( "please_select" )]</option>
-						#foreach ($option in $attribute.attributeOptions )
-							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
+		#foreach($attribute in $attributeGroup.attributes)
+			#if($!attribute)
+				#set( $attributeValue = "" )
+				#set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )
+				<tr>
+					<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+					<td>
+						#if( $attribute.valueType == "YES/NO" )
+							<select id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" >              
+								<option value="">[$i18n.getString( "please_select" )]</option>
+								<option value="true" #if( $attributeValue ) selected="selected" #end>$i18n.getString( "yes" )</option>
+								<option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
+							</select>                
+						#elseif( $attribute.valueType == "DATE" )
+							<input type="text" id="attr$attribute.id"  name="attr$attribute.id"  value="$!attributeValue" class=' #validate( "default"  $attribute.mandatory )' style="width:30em" >
+							<script type="text/javascript">
+								datePickerValid( 'attr$attribute.id' );
+							</script>                 
+						#elseif( $attribute.valueType == "COMBO" )
+							<select  id="attr$attribute.id"  name="attr$attribute.id" style="width:30em"  class=' #validate( "default"  $attribute.mandatory )'>
+								 <option value="">[$i18n.getString( "please_select" )]</option>
+							#foreach ($option in $attribute.attributeOptions )
+								<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
+							#end
+							</select>
+						#else 
+							<input type="text"  id="attr$attribute.id"  name="attr$attribute.id"   value="$!attributeValue" class=' #validate( $attribute.valueType  $attribute.mandatory )'  >
 						#end
-						</select>
-					#else 
-						<input type="text"  id="attr$attribute.id"  name="attr$attribute.id"   value="$!attributeValue" class=' #validate( $attribute.valueType  $attribute.mandatory )'  >
-					#end
-				</td>		
-			</tr>
+					</td>		
+				</tr>
+			#end
 		#end
 	#end
 	<tr><td>&nbsp;</td></tr>

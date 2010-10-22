@@ -26,10 +26,6 @@
  */
 package org.hisp.dhis.reportexcel.excelitemgroup.action;
 
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
@@ -52,8 +48,6 @@ public class OpenExcelItemGroupAssociationsAction
 
     private SelectionTreeManager selectionTreeManager;
 
-    private OrganisationUnitService organisationUnitService;
-
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
@@ -62,25 +56,13 @@ public class OpenExcelItemGroupAssociationsAction
 
     private ExcelItemGroup excelItemGroup;
 
-    private List<OrganisationUnitLevel> levels;
-
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
         this.selectionTreeManager = selectionTreeManager;
-    }
-
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
     }
 
     public ExcelItemGroup getExcelItemGroup()
@@ -105,8 +87,6 @@ public class OpenExcelItemGroupAssociationsAction
         excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
         selectionTreeManager.setSelectedOrganisationUnits( excelItemGroup.getOrganisationAssocitions() );
-
-        levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }

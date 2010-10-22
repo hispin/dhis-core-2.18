@@ -245,8 +245,12 @@ function SetGeneratedMinMaxValues()
 
 function generateMinMaxValues()
 {    
-    var setGeneratedMinMaxValues = new SetGeneratedMinMaxValues();
+	lockScreen();
+	var setGeneratedMinMaxValues = new SetGeneratedMinMaxValues();
     setGeneratedMinMaxValues.save();
+	
+	unLockScreen();
+	setMessage(i18n_generate_min_max_success);
 }
 
 // -----------------------------------------------------------------------------

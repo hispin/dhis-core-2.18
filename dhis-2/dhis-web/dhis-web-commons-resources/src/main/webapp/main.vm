@@ -19,6 +19,7 @@
         
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.datepicker.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.js"></script>	

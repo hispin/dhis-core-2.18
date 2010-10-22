@@ -1,7 +1,7 @@
 <script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
 
 ## You don't have to use this template directly if you don't want to
-<table cellspacing=0 width="595px">
+<table cellspacing=0 width="760px">
 	<thead>
 		<tr>
 			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )			
@@ -18,12 +18,14 @@
 						<select id="levelList" name="levelList" style="width:12em"/>
 						<input type="button" value="$i18n.getString( 'unselect_at_level' )" onclick="unSelectOrganisationUnitAtLevel()" style="width:12em"/>
 						<input type="button" value="$i18n.getString( 'unselect_all' )" onclick="unSelectAllTree()" style="width:12em"/>	
+						<input type="button" value="$i18n.getString( 'unselect_children' )" onclick="unSelectChildren()" style="width:12em"/>	
 						<br>
 						<input type="button" value="$i18n.getString( 'select_in_group' )" onclick="selectOrganisationUnitByGroup()" style="width:12em">
 						<select id="groupList" name="groupList" style="width:12em"/>
 						<input type="button" value="$i18n.getString( 'unselect_in_group' )" onclick="unSelectOrganisationUnitByGroup()" style="width:12em">	
 						<input type="button" value="$i18n.getString( 'select_all' )" onclick="selectAllTree()" style="width:12em"/>	
-						<div id="selectionTree" style="padding:5px;"></div>	
+						<input type="button" value="$i18n.getString( 'select_children' )" onclick="selectChildren()" style="width:12em"/>	
+						<div id="selectionTree" style="padding:5px;width:100%"></div>
 					</div>
 				</div>
 			</td>
@@ -61,6 +63,24 @@
 		#end
 		selectionTree.buildSelectionTree();
 	}	
+	
+	function unSelectChildren()
+	{
+		jQuery.get( '../dhis-web-commons/oust/removeorgunit.action',
+			{children: true},
+			function( xml ){
+				selectedOrganisationUnitXMLABCDEF( xml );
+			});
+	}
+	
+	function selectChildren()
+	{
+		jQuery.get( '../dhis-web-commons/oust/addorgunit.action',
+			{children: true},
+			function( xml ){
+				selectedOrganisationUnitXMLABCDEF( xml );
+			});
+	}
 	
 	function selectOrganisationUnitAtLevel()
 	{
