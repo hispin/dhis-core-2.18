@@ -1,6 +1,13 @@
 <script>
-	jQuery(document).ready(	function(){
-			validation( 'addDataSetForm', validateAddDataSet );
+	jQuery(document).ready(	function()
+	{		
+		validation( 'addDataSetForm', function( form ){ form.submit() }, function(){ selectAllById('selectedList') });
+		
+		checkValueIsExist( "name", "validateDataSet.action" );
+		
+		checkValueIsExist( "shortName", "validateDataSet.action" );
+		
+		checkValueIsExist( "code", "validateDataSet.action" );		
 	});
 	
 	var previousName = '';
@@ -21,7 +28,9 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/></td>
+        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" 
+			class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/>
+		</td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

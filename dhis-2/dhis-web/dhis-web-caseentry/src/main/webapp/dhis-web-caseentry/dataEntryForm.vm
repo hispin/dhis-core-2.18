@@ -82,14 +82,9 @@
                 </select>
             #elseif( $programStageDataElement.dataElement.type == "date" )
                 <input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
-                    <img src="../images/calendar_icon.gif" width="16" height="16" id="get$programStageDataElement.dataElement.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "service_date" )">
                     <script type="text/javascript">
-                        Calendar.setup({
-                            inputField     :    "value[$programStageDataElement.dataElement.id].date",      // id of the input field
-                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-                            button         :    "get$programStageDataElement.dataElement.id"   // trigger for the calendar (button ID)
-                        });
-                    </script>                    
+						datePicker('value[$programStageDataElement.dataElement.id].date');
+                    </script>  					
             #else
                 <input name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].value" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
             #end

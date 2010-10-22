@@ -1,4 +1,3 @@
-
 #parse( "/dhis-web-caseentry/multiDataEntrySelect.vm" )
 
 <table class="mainPageTable">
@@ -35,11 +34,11 @@
                         #foreach( $programStageInstance in $programInstance.programStageInstances )
                             #if( $programStageInstance.executionDate )
                                 <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
-                                    <a href="javascript:viewPrgramStageRecords( $programStageInstance.id )">$format.formatDate( $programStageInstance.executionDate )</a>
+                                    <a href="javascript:viewPrgramStageRecords( $programStageInstance.id );">$format.formatDate( $programStageInstance.executionDate )</a>
                                 </td>
                             #else
                                 <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
-									<a href="javascript:viewPrgramStageRecords( $programStageInstance.id )">$format.formatDate( $programStageInstance.dueDate )</a>
+									<a href="javascript:viewPrgramStageRecords( $programStageInstance.id );">$format.formatDate( $programStageInstance.dueDate )</a>
 								</td>
                             #end
                         #end

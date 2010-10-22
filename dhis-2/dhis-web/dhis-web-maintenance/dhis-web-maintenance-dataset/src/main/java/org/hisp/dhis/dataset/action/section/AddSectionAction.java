@@ -87,8 +87,6 @@ public class AddSectionAction
 
     private String sectionName;
 
-    private String sectionTitle;
-
     private List<String> selectedList = new ArrayList<String>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -120,11 +118,6 @@ public class AddSectionAction
     public void setSelectedList( List<String> selectedList )
     {
         this.selectedList = selectedList;
-    }
-
-    public void setSectionTitle( String sectionTitle )
-    {
-        this.sectionTitle = sectionTitle;
     }
 
     public Integer getCategoryComboId()
@@ -173,86 +166,43 @@ public class AddSectionAction
 
     public String execute()
         throws Exception
-    {
-        if ( dataSetId == null )
+    {      
+
+        dataSet = dataSetService.getDataSet( dataSetId.intValue() );
+
+        dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+
+        for ( Section section : dataSet.getSections() )
         {
-            return INPUT;
-        }
-        else
-        {
-            dataSet = dataSetService.getDataSet( dataSetId.intValue() );
+            dataElements.removeAll( section.getDataElements() );
         }
 
-        if ( categoryComboId == null )
-        {
-            return INPUT;
-        }
-        else
-        {
-            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( categoryComboId.intValue() );
 
-            for ( Section section : dataSet.getSections() )
+        Iterator<DataElement> dataElementIterator = dataElements.iterator();
+
+        while ( dataElementIterator.hasNext() )
+        {
+            DataElement de = dataElementIterator.next();
+
+            if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
             {
-                dataElements.removeAll( section.getDataElements() );
-            }
-
-            categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( categoryComboId.intValue() );
-
-            Iterator<DataElement> dataElementIterator = dataElements.iterator();
-
-            while ( dataElementIterator.hasNext() )
-            {
-                DataElement de = dataElementIterator.next();
-
-                if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
-                {
-                    dataElementIterator.remove();
-                }
-            }
-
-            Collections.sort( dataElements, new DataElementNameComparator() );
-
-        }
-
-        if ( sectionName == null )
-        {            
-            return INPUT;
-        }
-
-        else
-        {
-            sectionName = sectionName.trim();
-
-            if ( sectionName.length() == 0 )
-            {                
-                return INPUT;
+                dataElementIterator.remove();
             }
         }
 
-        if ( sectionTitle == null )
-        {            
-            return INPUT;
-        }
-        else
-        {
-            sectionTitle = sectionTitle.trim();
-
-            if ( sectionTitle.length() == 0 )
-            {                
-                return INPUT;
-            }
-        }
-
-        if ( selectedList.size() == 0 )
+        Collections.sort( dataElements, new DataElementNameComparator() );
+        
+        if ( this.sectionName == null )
         {
             return INPUT;
-        }       
+        }
 
         Section section = new Section();
 
         section.setDataSet( dataSet );
         section.setName( sectionName );
-        section.setTitle( sectionTitle );
+
         section.setSortOrder( 0 );
 
         List<DataElement> selectedDataElements = new ArrayList<DataElement>();

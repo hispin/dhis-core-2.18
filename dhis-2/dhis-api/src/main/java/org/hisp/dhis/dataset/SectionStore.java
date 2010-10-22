@@ -69,7 +69,7 @@ public interface SectionStore
      * @param name the name of the Section to retrieve.
      * @return the Section.
      */
-    Section getSectionByName( String name );
+    Section getSectionByName( String name, DataSet dataSet );
 
     /**
      * Retrieves all Sections.

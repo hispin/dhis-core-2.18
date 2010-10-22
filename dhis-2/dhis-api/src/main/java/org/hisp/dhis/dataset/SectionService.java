@@ -69,7 +69,7 @@ public interface SectionService
      * @param name the name of the Section to retrieve.
      * @return the Section.
      */
-    Section getSectionByName( String name );
+    Section getSectionByName( String name, Integer dataSetId );
     
     /**
      * Retrieves all Sections.

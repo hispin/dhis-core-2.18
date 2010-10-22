@@ -27,15 +27,7 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.sqlview.SqlViewService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -43,16 +35,12 @@ import com.opensymphony.xwork2.ActionSupport;
  * @author Dang Duy Hieu
  * @version $Id DropAllSqlViewTablesAction.java July 07, 2010$
  */
-@Transactional
 public class DropAllSqlViewTablesAction
     extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
-    private StatementManager statementManager;
 
     private SqlViewService sqlViewService;
 
@@ -61,6 +49,97 @@ public class DropAllSqlViewTablesAction
         this.sqlViewService = sqlViewService;
     }
 
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private boolean organisationUnit;
+
+    public void setOrganisationUnit( boolean organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
+
+    private boolean groupSet;
+
+    public void setGroupSet( boolean groupSet )
+    {
+        this.groupSet = groupSet;
+    }
+
+    private boolean dataElementGroupSetStructure;
+
+    public void setDataElementGroupSetStructure( boolean dataElementGroupSetStructure )
+    {
+        this.dataElementGroupSetStructure = dataElementGroupSetStructure;
+    }
+
+    private boolean indicatorGroupSetStructure;
+
+    public void setIndicatorGroupSetStructure( boolean indicatorGroupSetStructure )
+    {
+        this.indicatorGroupSetStructure = indicatorGroupSetStructure;
+    }
+
+    private boolean organisationUnitGroupSetStructure;
+
+    public void setOrganisationUnitGroupSetStructure( boolean organisationUnitGroupSetStructure )
+    {
+        this.organisationUnitGroupSetStructure = organisationUnitGroupSetStructure;
+    }
+
+    private boolean categoryStructure;
+
+    public void setCategoryStructure( boolean categoryStructure )
+    {
+        this.categoryStructure = categoryStructure;
+    }
+
+    private boolean categoryOptionComboName;
+
+    public void setCategoryOptionComboName( boolean categoryOptionComboName )
+    {
+        this.categoryOptionComboName = categoryOptionComboName;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    public boolean isOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    public boolean isGroupSet()
+    {
+        return groupSet;
+    }
+
+    public boolean isDataElementGroupSetStructure()
+    {
+        return dataElementGroupSetStructure;
+    }
+
+    public boolean isIndicatorGroupSetStructure()
+    {
+        return indicatorGroupSetStructure;
+    }
+
+    public boolean isOrganisationUnitGroupSetStructure()
+    {
+        return organisationUnitGroupSetStructure;
+    }
+
+    public boolean isCategoryStructure()
+    {
+        return categoryStructure;
+    }
+
+    public boolean isCategoryOptionComboName()
+    {
+        return categoryOptionComboName;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -69,35 +148,9 @@ public class DropAllSqlViewTablesAction
     public String execute()
         throws Exception
     {
-        Set<String> viewerNames = new HashSet<String>( sqlViewService.getAllSqlViewNames() );
-
-        for ( String viewerName : viewerNames )
-        {
-            this.dropView( viewerName );
-        }
+        sqlViewService.dropViewTable( sqlViewService.getAllSqlViewNames() );
 
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Supporting methods
-    // -------------------------------------------------------------------------
-
-    private void dropView( String view )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            holder.getStatement().executeUpdate( "DROP VIEW IF EXISTS " + view );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to drop view: " + view, ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
 }

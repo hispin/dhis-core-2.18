@@ -101,8 +101,9 @@ function selectOrUnselectALL()
 // Re-generating for the resource tables and the view ones
 // -----------------------------------------------------------------------
 
-function regenerateResourceTableAndViewTables()
+function validateRegenerateResourceView()
 {
+	var params = "";
 	var organisationUnit = byId( "organisationUnit" ).checked;
     var groupSet = byId( "groupSet" ).checked;
     var dataElementGroupSetStructure = byId( "dataElementGroupSetStructure" ).checked;
@@ -110,98 +111,32 @@ function regenerateResourceTableAndViewTables()
     var organisationUnitGroupSetStructure = byId( "organisationUnitGroupSetStructure" ).checked;
     var categoryStructure = byId( "categoryStructure" ).checked;
     var categoryOptionComboName = byId( "categoryOptionComboName" ).checked;
-    
+
     if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
         organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
     {
         setWaitMessage( i18n_regenerating_resource_tables_and_views );
 		
-        var url = "dropAllSqlViewTables.action";
-        
-        var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( regenerateResourceTableAndViewTablesReceived );
-        request.send( url );
+		var submitForm = byId("regenerateResourceViewForm")
+		
+		params += (organisationUnit == true ? "organisationUnit=true&" : "");
+		params += (groupSet == true ? "groupSet=true&" : "");
+		params += (dataElementGroupSetStructure == true ? "dataElementGroupSetStructure=true&" : "");
+		params += (indicatorGroupSetStructure == true ? "indicatorGroupSetStructure=true&" : "");
+		params += (organisationUnitGroupSetStructure == true ? "organisationUnitGroupSetStructure=true&" : "");
+		params += (categoryStructure == true ? "categoryStructure=true&" : "");
+		params += (categoryOptionComboName == true ? "categoryOptionComboName=true&" : "");
+		
+		submitForm.action +="?"+params;
+		submitForm.submit();
     }
     else
     {
         setMessage( i18n_select_options );
+		
+		return false;
     }
-}
 
-function regenerateResourceTableAndViewTablesReceived( xmlObject )
-{
-	if ( xmlObject.getAttribute( 'type' ) == 'success' )
-	{
-		generateResourceTableForViews();
-	}
-	else
-	{
-		alert( i18n_regenerating_failed );
-	}
-}
-
-function generateResourceTableForViews()
-{
-    var organisationUnit = byId( "organisationUnit" ).checked;
-    var groupSet = byId( "groupSet" ).checked;
-    var dataElementGroupSetStructure = byId( "dataElementGroupSetStructure" ).checked;
-    var indicatorGroupSetStructure = byId( "indicatorGroupSetStructure" ).checked;
-    var organisationUnitGroupSetStructure = byId( "organisationUnitGroupSetStructure" ).checked;
-    var categoryStructure = byId( "categoryStructure" ).checked;
-    var categoryOptionComboName = byId( "categoryOptionComboName" ).checked;
-    
-    if ( organisationUnit || groupSet || dataElementGroupSetStructure || indicatorGroupSetStructure || 
-        organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
-    {
-        setWaitMessage( i18n_generating_resource_tables );
-            
-        var params = "organisationUnit=" + organisationUnit + 
-            "&groupSet=" + groupSet + 
-            "&dataElementGroupSetStructure=" + dataElementGroupSetStructure +
-            "&indicatorGroupSetStructure=" + indicatorGroupSetStructure +
-            "&organisationUnitGroupSetStructure=" + organisationUnitGroupSetStructure +
-            "&categoryStructure=" + categoryStructure +
-            "&categoryOptionComboName=" + categoryOptionComboName;
-            
-        var url = "generateResourceTable.action";
-        
-        var request = new Request();
-        request.sendAsPost( params );
-        request.setCallbackSuccess( generateResourceTableForViewsReceived );
-        request.send( url );
-    }
-    else
-    {
-        setMessage( i18n_select_options );
-    }
-}
-
-function generateResourceTableForViewsReceived()
-{
-	generateAllSqlViewTables();
-}
-
-function generateAllSqlViewTables()
-{
-	$.getJSON(
-		"regenerateAllSqlViewTables.action",
-		{
-		},
-		function( json )
-		{
-			if ( json.response == "success" )
-			{
-				setMessage( json.message );
-			}
-			else if ( json.response == "error" )
-			{
-				setHeaderDelayMessage( json.message );
-				
-				hideMessage();
-			}
-		}
-	);
 }
 
 // -----------------------------------------------------------------------

@@ -36,8 +36,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * Removes a existing regular expression from the database.
  * 
  * @author Dang Duy Hieu
- * @version $Id$
- * @since 2010-07-06
+ * @version $Id GetSqlViewObjectAction.java July 06, 2010$
  */
 public class GetSqlViewObjectAction
     extends ActionSupport

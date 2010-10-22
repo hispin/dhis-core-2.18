@@ -38,8 +38,6 @@ public class Section
 
     private String name;
 
-    private String title;
-
     private DataSet dataSet;
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -58,8 +56,7 @@ public class Section
 
     public Section( String name, String title, DataSet dataSet, List<DataElement> dataElements, Set<DataElementOperand> greyedFields )
     {
-        this.name = name;
-        this.title = title;
+        this.name = name;      
         this.dataSet = dataSet;
         this.dataElements = dataElements;
         this.greyedFields = greyedFields;
@@ -151,17 +148,7 @@ public class Section
     public void addDataElement( DataElement dataElement )
     {
         this.dataElements.add( dataElement );
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle( String title )
-    {
-        this.title = title;
-    }
+    }  
 
     public int getSortOrder()
     {

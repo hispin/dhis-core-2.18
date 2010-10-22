@@ -55,7 +55,14 @@ public class DefaultSectionService
     {
         i18nService = service;
     }
-    
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     // -------------------------------------------------------------------------
     // SectionService implementation
     // -------------------------------------------------------------------------
@@ -63,38 +70,38 @@ public class DefaultSectionService
     public int addSection( Section section )
     {
         int id = sectionStore.addSection( section );
-        
+
         i18nService.addObject( section );
-        
+
         return id;
     }
 
     public void deleteSection( Section section )
     {
         i18nService.removeObject( section );
-        
+
         sectionStore.deleteSection( section );
     }
 
     public Collection<Section> getAllSections()
     {
-        return i18n( i18nService, sectionStore.getAllSections());
+        return i18n( i18nService, sectionStore.getAllSections() );
     }
 
     public Section getSection( int id )
     {
-        return i18n( i18nService, sectionStore.getSection( id ));
+        return i18n( i18nService, sectionStore.getSection( id ) );
     }
 
-    public Section getSectionByName( String name )
+    public Section getSectionByName( String name, Integer dataSetId )
     {
-        return i18n( i18nService, sectionStore.getSectionByName( name ));
+        return i18n( i18nService, sectionStore.getSectionByName( name, dataSetService.getDataSet( dataSetId ) ) );
     }
 
     public void updateSection( Section section )
     {
         sectionStore.updateSection( section );
-        
+
         i18nService.verify( section );
-    }    
+    }
 }

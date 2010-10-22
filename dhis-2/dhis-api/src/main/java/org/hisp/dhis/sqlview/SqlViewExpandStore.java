@@ -16,13 +16,19 @@ public interface SqlViewExpandStore
 
     Collection<String> getAllSqlViewNames();
 
+    Collection<String> getAllResourceProperties( String resourceTableName );
+
     boolean isViewTableExists( String viewTableName );
-    
+
+    boolean createView( SqlView sqlViewInstance );
+
+    void dropView( Object object );
+
     void setUpDataSqlViewTable( SqlViewTable sqlViewTable, String viewTableName );
 
-    Collection<String> getAllResourceProperties( String resourceTableName );
-    
+    String setUpViewTableName( String input );
+
     String testSqlGrammar( String sql );
-    
+
     String setUpJoinQuery( Collection<String> tables );
 }

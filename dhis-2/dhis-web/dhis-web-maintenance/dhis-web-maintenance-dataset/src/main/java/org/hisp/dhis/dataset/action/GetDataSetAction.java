@@ -199,7 +199,7 @@ public class GetDataSetAction
 
         dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
         
-        levels = organisationUnitService.getOrganisationUnitLevels();
+        levels = organisationUnitService.getOrganisationUnitLevels();        
 
         groups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
         

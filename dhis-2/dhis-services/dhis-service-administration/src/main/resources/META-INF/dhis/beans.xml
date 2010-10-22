@@ -173,7 +173,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
   
   <bean id="org.hisp.dhis.sqlview.SqlViewExpandStore"
-    class="org.hisp.dhis.sqlview.hibernate.HibernateSqlViewExpandStore">
+    class="org.hisp.dhis.sqlview.jdbc.JdbcSqlViewExpandStore">
   </bean>
   
   <bean id="org.hisp.dhis.sqlview.SqlViewService"

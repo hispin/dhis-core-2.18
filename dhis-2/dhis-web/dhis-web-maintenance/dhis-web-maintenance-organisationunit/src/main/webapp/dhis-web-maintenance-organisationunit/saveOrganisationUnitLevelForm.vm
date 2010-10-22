@@ -1,6 +1,6 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'saveOrganisationUnitLevelsForm', function(){} );				
+			validation( 'saveOrganisationUnitLevelsForm', function( form ){ form.submit() } );				
 	});	
 </script>
 
