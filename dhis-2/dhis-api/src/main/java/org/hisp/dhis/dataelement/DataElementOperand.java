@@ -32,8 +32,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 /**
- * This object can act both as a hydrated persisted object and as a wrapper object.
+ * This object can act both as a hydrated persisted object and as a wrapper
+ * object.
  * 
  * @author Abyot Asalefew
  * @version $Id$
@@ -41,9 +44,12 @@ import java.util.List;
 public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>
 {
-    public static final String SEPARATOR = ".";    
+    public static final String SEPARATOR = ".";
+
     private static final String SPACE = "";
+
     private static final String COLUMN_PREFIX = "de";
+
     private static final String COLUMN_SEPARATOR = "_";
 
     // -------------------------------------------------------------------------
@@ -51,9 +57,9 @@ public class DataElementOperand
     // -------------------------------------------------------------------------
 
     private int id;
-    
+
     private DataElement dataElement;
-    
+
     private DataElementCategoryOptionCombo categoryOptionCombo;
 
     // -------------------------------------------------------------------------
@@ -69,13 +75,13 @@ public class DataElementOperand
     private String operandName;
 
     private String valueType;
-    
+
     private String aggregationOperator;
-    
+
     private List<Integer> aggregationLevels = new ArrayList<Integer>();
-    
+
     private int frequencyOrder;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -105,7 +111,8 @@ public class DataElementOperand
         this.operandName = operandName;
     }
 
-    public DataElementOperand( int dataElementId, int optionComboId, String operandName, String valueType, String aggregationOperator, List<Integer> aggregationLevels, int frequencyOrder )
+    public DataElementOperand( int dataElementId, int optionComboId, String operandName, String valueType,
+        String aggregationOperator, List<Integer> aggregationLevels, int frequencyOrder )
     {
         this.dataElementId = dataElementId;
         this.optionComboId = optionComboId;
@@ -116,19 +123,20 @@ public class DataElementOperand
         this.aggregationLevels = aggregationLevels;
         this.frequencyOrder = frequencyOrder;
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
     /**
      * Tests whether the hierarchy level of the OrganisationUnit associated with
-     * the relevant DataValue is equal to or higher than the relevant aggregation
-     * level. Returns true if no aggregation levels exist.
+     * the relevant DataValue is equal to or higher than the relevant
+     * aggregation level. Returns true if no aggregation levels exist.
      * 
-     * @param organisationUnitLevel the hierarchy level of the aggregation OrganisationUnit.
-     * @param dataValueLevel the hierarchy level of the OrganisationUnit associated 
-     *        with the relevant DataValue.
+     * @param organisationUnitLevel the hierarchy level of the aggregation
+     *        OrganisationUnit.
+     * @param dataValueLevel the hierarchy level of the OrganisationUnit
+     *        associated with the relevant DataValue.
      */
     public boolean aggregationLevelIsValid( int organisationUnitLevel, int dataValueLevel )
     {
@@ -136,24 +144,25 @@ public class DataElementOperand
         {
             return true;
         }
-        
+
         final Integer aggregationLevel = getRelevantAggregationLevel( organisationUnitLevel );
-        
+
         return aggregationLevel == null || dataValueLevel <= aggregationLevel;
     }
-    
+
     /**
      * Returns the relevant aggregation level for the DataElement. The relevant
-     * aggregation level will be the next in ascending order after the organisation
-     * unit level. If no aggregation levels lower than the organisation unit level
-     * exist, null is returned.
+     * aggregation level will be the next in ascending order after the
+     * organisation unit level. If no aggregation levels lower than the
+     * organisation unit level exist, null is returned.
      * 
-     * @param organisationUnitLevel the hiearchy level of the relevant OrganisationUnit.
+     * @param organisationUnitLevel the hiearchy level of the relevant
+     *        OrganisationUnit.
      */
     public Integer getRelevantAggregationLevel( int organisationUnitLevel )
     {
         Collections.sort( aggregationLevels );
-        
+
         for ( final Integer aggregationLevel : aggregationLevels )
         {
             if ( aggregationLevel >= organisationUnitLevel )
@@ -161,27 +170,29 @@ public class DataElementOperand
                 return aggregationLevel;
             }
         }
-        
+
         return null;
-    }    
+    }
 
     /**
-     * Generates a DataElementOperand based on the given formula. The formula needs
-     * to be on the form "[<dataelementid>,<categoryoptioncomboid>]".
+     * Generates a DataElementOperand based on the given formula. The formula
+     * needs to be on the form "[<dataelementid>,<categoryoptioncomboid>]".
      * 
      * @param formula the formula.
      * @return a DataElementOperand.
      */
     public static DataElementOperand generateOperand( String formula )
-    {        
+    {
         final int dataElementId = Integer.parseInt( formula.substring( 0, formula.indexOf( SEPARATOR ) ) );
-        final int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1, formula.length() ) );
-        
-        return new DataElementOperand( dataElementId, categoryOptionComboId ); 
+        final int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1,
+            formula.length() ) );
+
+        return new DataElementOperand( dataElementId, categoryOptionComboId );
     }
 
     /**
-     * Returns a name based on the DataElement and the DataElementCategoryOptionCombo.
+     * Returns a name based on the DataElement and the
+     * DataElementCategoryOptionCombo.
      * 
      * @return the name.
      */
@@ -189,9 +200,10 @@ public class DataElementOperand
     {
         return dataElement.getName() + SPACE + categoryOptionCombo.getName();
     }
-    
+
     /**
-     * Returns an id based on the DataElement and the DataElementCategoryOptionCombo.
+     * Returns an id based on the DataElement and the
+     * DataElementCategoryOptionCombo.
      * 
      * @return the id.
      */
@@ -199,12 +211,33 @@ public class DataElementOperand
     {
         return dataElement.getId() + SEPARATOR + categoryOptionCombo.getId();
     }
-    
+
     public String getSimpleName()
     {
         return COLUMN_PREFIX + dataElementId + COLUMN_SEPARATOR + optionComboId;
     }
-    
+
+    public void updateProperties()
+    {
+        if ( this.dataElement == null || this.categoryOptionCombo == null )
+        {
+            throw new NullPointerException( "Data Element or Category Option Combo is null" );
+        }
+        else
+        {
+            this.dataElementId = this.dataElement.getId();
+            this.optionComboId = this.categoryOptionCombo.getId();
+            this.operandId = this.dataElementId + SEPARATOR + this.optionComboId;
+            this.operandName = this.dataElement.getName() + this.categoryOptionCombo.getName();
+            this.aggregationOperator = this.dataElement.getAggregationOperator();
+            this.frequencyOrder = this.dataElement.getFrequencyOrder();
+            this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
+            this.valueType = this.dataElement.getType();            
+
+        }
+
+    }
+
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
@@ -320,7 +353,7 @@ public class DataElementOperand
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals, toString, compareTo 
+    // hashCode, equals, toString, compareTo
     // -------------------------------------------------------------------------
 
     @Override
@@ -328,12 +361,12 @@ public class DataElementOperand
     {
         final int prime = 31;
         int result = 1;
-        
-        result = prime * result + ( ( categoryOptionCombo == null ) ? 0 : categoryOptionCombo.hashCode() );
-        result = prime * result + ( ( dataElement == null ) ? 0 : dataElement.hashCode() );
+
+        result = prime * result + ((categoryOptionCombo == null) ? 0 : categoryOptionCombo.hashCode());
+        result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
         result = prime * result + dataElementId;
         result = prime * result + optionComboId;
-        
+
         return result;
     }
 
@@ -344,19 +377,19 @@ public class DataElementOperand
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final DataElementOperand other = (DataElementOperand) object;
-        
+
         if ( categoryOptionCombo == null )
         {
             if ( other.categoryOptionCombo != null )
@@ -368,7 +401,7 @@ public class DataElementOperand
         {
             return false;
         }
-        
+
         if ( dataElement == null )
         {
             if ( other.dataElement != null )
@@ -380,20 +413,20 @@ public class DataElementOperand
         {
             return false;
         }
-        
+
         if ( dataElementId != other.dataElementId )
         {
             return false;
         }
-        
+
         if ( optionComboId != other.optionComboId )
         {
             return false;
         }
-        
+
         return true;
     }
-    
+
     @Override
     public String toString()
     {
@@ -406,7 +439,25 @@ public class DataElementOperand
         {
             return this.getDataElementId() - other.getDataElementId();
         }
-        
+
         return this.getOptionComboId() - other.getOptionComboId();
-    }    
+    }
+
+    public String toJSON()
+    {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        stringBuffer.append( "{" );
+        stringBuffer.append( "\"dataElement\":{\"id\":\"" + this.dataElementId + "\", \"name\":\""
+            + StringEscapeUtils.escapeJavaScript( this.dataElement.getName() ) + "\",\"shortName\":\""
+            + StringEscapeUtils.escapeJavaScript( this.dataElement.getShortName() ) + "\",\"type\":\""
+            + this.dataElement.getType() + "\"}" );
+
+        stringBuffer.append( ",\"optionCombo\":{\"id\":\"" + this.optionComboId + "\",\"name\":\""
+            + StringEscapeUtils.escapeJavaScript( this.categoryOptionCombo.getName() ) + "\"}" );
+
+        stringBuffer.append( "}" );
+
+        return stringBuffer.toString();
+    }
 }

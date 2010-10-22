@@ -45,7 +45,6 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
@@ -78,28 +77,28 @@ public class DefaultPatientService
     {
         this.patientAttributeValueService = patientAttributeValueService;
     }
-    
+
     private PatientAttributeService patientAttributeService;
-    
+
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
-    
+
     private RelationshipService relationshipService;
-    
+
     public void setRelationshipService( RelationshipService relationshipService )
     {
         this.relationshipService = relationshipService;
     }
-    
+
     private RelationshipTypeService relationshipTypeService;
 
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
@@ -108,7 +107,7 @@ public class DefaultPatientService
     }
 
     // -------------------------------------------------------------------------
-    // PatientDataValue
+    // Patient
     // -------------------------------------------------------------------------
 
     public int savePatient( Patient patient )
@@ -171,35 +170,40 @@ public class DefaultPatientService
         return patients;
     }
 
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int  min, int max )
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max )
     {
         Collection<Patient> patients = new ArrayList<Patient>();
 
         Collection<Patient> allPatients = getPatients( searchText );
 
-        if ( allPatients.retainAll( getPatientsByOrgUnit( organisationUnit , min,  max ) ) )
+        if ( allPatients.retainAll( getPatientsByOrgUnit( organisationUnit, min, max ) ) )
         {
             patients = allPatients;
         }
-        
+
         return patients;
     }
 
     public Collection<Patient> getPatientsByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
     {
-        //List<Patient> patientList = (ArrayList<Patient>) patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
-        return  patientIdentifierService.listPatientByOrganisationUnit( organisationUnit ,  min,  max );
+        // List<Patient> patientList = (ArrayList<Patient>)
+        // patientIdentifierService.listPatientByOrganisationUnit(
+        // organisationUnit );
+        return patientIdentifierService.listPatientByOrganisationUnit( organisationUnit, min, max );
     }
 
-    public Collection<Patient> getPatientsByOrgUnitAttr( OrganisationUnit organisationUnit, int min, int max , PatientAttribute patientAttribute)
+    public Collection<Patient> getPatientsByOrgUnitAttr( OrganisationUnit organisationUnit, int min, int max,
+        PatientAttribute patientAttribute )
     {
-        List<Patient> patientList =  (ArrayList<Patient>) patientIdentifierService.listPatientByOrganisationUnit( organisationUnit );
-        if(patientAttribute != null)
+        List<Patient> patientList = (ArrayList<Patient>) patientIdentifierService
+            .listPatientByOrganisationUnit( organisationUnit );
+        if ( patientAttribute != null )
         {
-            List<Patient> sortedPatientList = (ArrayList<Patient>) sortPatientsByAttribute(patientList, patientAttribute);
-            return sortedPatientList.subList(min, max);
+            List<Patient> sortedPatientList = (ArrayList<Patient>) sortPatientsByAttribute( patientList,
+                patientAttribute );
+            return sortedPatientList.subList( min, max );
         }
-        return patientList.subList(min, max);
+        return patientList.subList( min, max );
     }
 
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
@@ -216,11 +220,16 @@ public class DefaultPatientService
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patients );
 
-        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        if ( patientAttributeValues != null )
         {
-            if ( patientAttribute == patientAttributeValue.getPatientAttribute() )
-            {                
-                patientsSortedByAttribute.put( patientAttributeValue.getValue() + "-" + patientAttributeValue.getPatient().getFullName() + "-" + patientAttributeValue.getPatient().getId(), patientAttributeValue.getPatient() );
+            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+            {
+                if ( patientAttribute == patientAttributeValue.getPatientAttribute() )
+                {
+                    patientsSortedByAttribute.put( patientAttributeValue.getValue() + "-"
+                        + patientAttributeValue.getPatient().getFullName() + "-"
+                        + patientAttributeValue.getPatient().getId(), patientAttributeValue.getPatient() );
+                }
             }
         }
 
@@ -244,38 +253,38 @@ public class DefaultPatientService
 
         return sortedPatients;
     }
-    
 
-    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender )
+    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate,
+        String gender )
     {
-        return patientStore.getPatient( firstName, middleName, lastName, birthdate , gender);
+        return patientStore.getPatient( firstName, middleName, lastName, birthdate, gender );
     }
 
     public Collection<Patient> searchPatient( Integer identifierTypeId, Integer attributeId, String value )
     {
-        if( attributeId != null )
+        if ( attributeId != null )
         {
             PatientAttribute attribute = patientAttributeService.getPatientAttribute( attributeId );
-            if( attribute != null )
+            if ( attribute != null )
             {
                 return patientAttributeValueService.getPatient( attribute, value );
             }
         }
-        else if(  identifierTypeId != null )
+        else if ( identifierTypeId != null )
         {
             PatientIdentifierType idenType = patientIdentifierTypeService.getPatientIdentifierType( identifierTypeId );
-            if( idenType != null )
+            if ( idenType != null )
             {
-               Patient p = patientIdentifierService.getPatient( idenType, value );
-               if( p != null )
-               {
-                   Set<Patient> set = new HashSet<Patient>();
-                   set.add( p );
-                   return set;
-               }
+                Patient p = patientIdentifierService.getPatient( idenType, value );
+                if ( p != null )
+                {
+                    Set<Patient> set = new HashSet<Patient>();
+                    set.add( p );
+                    return set;
+                }
             }
         }
-        else 
+        else
         {
             return patientStore.getByNames( value );
         }
@@ -294,38 +303,44 @@ public class DefaultPatientService
 
     public int countGetPatients( String searchText )
     {
-        return patientStore.countGetPatientsByNames( searchText )+patientIdentifierService.countGetPatientsByIdentifier( searchText );
+        return patientStore.countGetPatientsByNames( searchText )
+            + patientIdentifierService.countGetPatientsByIdentifier( searchText );
     }
 
     public Collection<Patient> getPatients( String searchText, int min, int max )
     {
         int countPatientName = patientStore.countGetPatientsByNames( searchText );
-        
+
         Set<Patient> patients = new HashSet<Patient>();
-        
-        if( max < countPatientName )
+
+        if ( max < countPatientName )
         {
-            patients.addAll(  getPatientsByNames( searchText, min, max ) );
-            
+            patients.addAll( getPatientsByNames( searchText, min, max ) );
+
             min = min - patients.size();
-        }else {
-            if( min <= countPatientName )
+        }
+        else
+        {
+            if ( min <= countPatientName )
             {
-                patients.addAll(  getPatientsByNames( searchText, min, countPatientName ) );
-                
+                patients.addAll( getPatientsByNames( searchText, min, countPatientName ) );
+
                 min = 0;
                 max = max - countPatientName;
-                
-                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier( searchText, min, max );
-                
+
+                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier(
+                    searchText, min, max );
+
                 patients.addAll( patientsByIdentifier );
-            }else
+            }
+            else
             {
                 min = 0;
                 max = max - countPatientName;
-                
-                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier( searchText, min, max );
-                
+
+                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier(
+                    searchText, min, max );
+
                 patients.addAll( patientsByIdentifier );
             }
         }
@@ -341,38 +356,38 @@ public class DefaultPatientService
     {
         return patientStore.getPatientsByNames( name, min, max );
     }
-   
+
     public int createPatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
-        Integer relationshipTypeId,  List<PatientAttributeValue> patientAttributeValues ) 
+        Integer relationshipTypeId, List<PatientAttributeValue> patientAttributeValues )
     {
-        
+
         int patientid = savePatient( patient );
 
-        for( PatientAttributeValue pav : patientAttributeValues )
+        for ( PatientAttributeValue pav : patientAttributeValues )
         {
             patientAttributeValueService.savePatientAttributeValue( pav );
         }
-        //-------------------------------------------------------------------------
+        // -------------------------------------------------------------------------
         // If underAge = true : save representative information.
-        //-------------------------------------------------------------------------
-        
+        // -------------------------------------------------------------------------
+
         if ( patient.isUnderAge() )
         {
-            if( representativeId != null )
+            if ( representativeId != null )
             {
                 Patient representative = patientStore.get( representativeId );
-                if( representative != null )
+                if ( representative != null )
                 {
                     patient.setRepresentative( representative );
-                
+
                     Relationship rel = new Relationship();
                     rel.setPatientA( representative );
-                    rel.setPatientB(  patient );
-                    
-                    if( relationshipTypeId != null )
+                    rel.setPatientB( patient );
+
+                    if ( relationshipTypeId != null )
                     {
                         RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                        if( relType != null )
+                        if ( relType != null )
                         {
                             rel.setRelationshipType( relType );
                             relationshipService.saveRelationship( rel );
@@ -381,57 +396,58 @@ public class DefaultPatientService
                 }
             }
         }
-        
+
         return patientid;
-        
+
     }
-    
+
     public void updatePatient( Patient patient, OrganisationUnit orgUnit, Integer representativeId,
-        Integer relationshipTypeId,  List<PatientAttributeValue> valuesForSave,    List<PatientAttributeValue> valuesForUpdate,  Collection<PatientAttributeValue> valuesForDelete ) 
+        Integer relationshipTypeId, List<PatientAttributeValue> valuesForSave,
+        List<PatientAttributeValue> valuesForUpdate, Collection<PatientAttributeValue> valuesForDelete )
     {
-        
+
         patientStore.update( patient );
 
-        for( PatientAttributeValue av : valuesForSave )
+        for ( PatientAttributeValue av : valuesForSave )
         {
             patientAttributeValueService.savePatientAttributeValue( av );
         }
-        
+
         for ( PatientAttributeValue av : valuesForUpdate )
         {
             patientAttributeValueService.updatePatientAttributeValue( av );
         }
-        
+
         for ( PatientAttributeValue av : valuesForDelete )
         {
             patientAttributeValueService.deletePatientAttributeValue( av );
         }
-        
-        //-------------------------------------------------------------------------
+
+        // -------------------------------------------------------------------------
         // If underAge = true : save representative information.
-        //-------------------------------------------------------------------------
-        
+        // -------------------------------------------------------------------------
+
         if ( patient.isUnderAge() )
         {
-          
-            if( representativeId != null  )
+
+            if ( representativeId != null )
             {
-                if( patient.getRepresentative() == null ||  patient.getRepresentative().getId() != representativeId )
+                if ( patient.getRepresentative() == null || patient.getRepresentative().getId() != representativeId )
                 {
                     Patient representative = patientStore.get( representativeId );
-                    
-                    if( representative != null )
+
+                    if ( representative != null )
                     {
                         patient.setRepresentative( representative );
-                    
+
                         Relationship rel = new Relationship();
                         rel.setPatientA( representative );
-                        rel.setPatientB(  patient );
-                        
-                        if( relationshipTypeId != null )
+                        rel.setPatientB( patient );
+
+                        if ( relationshipTypeId != null )
                         {
                             RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                            if( relType != null )
+                            if ( relType != null )
                             {
                                 rel.setRelationshipType( relType );
                                 relationshipService.saveRelationship( rel );

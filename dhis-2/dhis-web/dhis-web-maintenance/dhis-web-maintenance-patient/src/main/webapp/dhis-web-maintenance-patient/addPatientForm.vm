@@ -166,6 +166,7 @@ td.error {padding-left:1em}
 		<tr><td>&nbsp;</td></tr>
 		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes )
+			#if($!attribute)
 			<tr>
 				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
@@ -192,6 +193,7 @@ td.error {padding-left:1em}
 					#end
 				</td>		
 			</tr>
+			#end
 		#end
 	#end
 	

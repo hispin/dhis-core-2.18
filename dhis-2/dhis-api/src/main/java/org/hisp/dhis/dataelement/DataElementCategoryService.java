@@ -329,4 +329,13 @@ public interface DataElementCategoryService
      * @return the Operands for the given Collection of DataElements.
      */
     Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements );
+    
+    /**
+     * Gets the Operands for the given Collection of DataElements. Operands will contain DataElement and CategoryOptionCombo object  
+     * 
+     * @param dataElements the Collection of DataElements.
+     * @return the Operands for the given Collection of DataElements.
+     */
+    
+    Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements );
 }

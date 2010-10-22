@@ -112,8 +112,6 @@ public class JdbcDataArchiveStore
 
         log.info( sql );
         
-        System.out.println("getNumberOfOverlappingValues = " + jdbcTemplate.queryForInt( sql ));
-        
         return jdbcTemplate.queryForInt( sql );
     }
 

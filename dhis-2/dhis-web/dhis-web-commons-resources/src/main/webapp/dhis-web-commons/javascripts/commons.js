@@ -714,29 +714,35 @@ function removeItem( itemId, itemName, confirmation, action )
     
     if ( result )
     {
+		setWaitMessage( i18n_process );
     	$.postJSON(
     	    action,
     	    {
     	        "id": itemId   
     	    },
     	    function( json )
-    	    {
+    	    { 
     	    	if ( json.response == "success" )
     	    	{
-    	    		jQuery( "tr#tr" + itemId ).remove();
-                
-	                jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+					jQuery( "tr#tr" + itemId ).remove();
+	                
+					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
 	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
 	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+					jQuery( "table.listTable tbody" ).trigger("update");
+  
+					showSuccessMessage( i18n_delete_success );
     	    	}
     	    	else if ( json.response == "error" )
-    	    	{
-    	    		showWarningMessage( json.message );
+    	    	{ 
+					showWarningMessage( json.message );
     	    	}
+				hideMessage();
     	    }
     	);
     }
 }
+
 
 /**
  * Create jQuery datepicker for input text with id * * 
@@ -1122,6 +1128,12 @@ function showPopupWindowById( id, width, height )
 	container.css('border', 'medium solid silver');
 	container.show(  jQuery.blockUI({message:null}));
 	
+}
+
+function hidePopupWindow( id )
+{
+	hideById( id );
+	unLockScreen();
 }
 /**
 * load All Data Element Groups into select combo box

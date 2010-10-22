@@ -35,6 +35,15 @@
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>
     
+    <action name="searchUser"
+			class="org.hisp.dhis.user.action.GetUserListAction" method="searchUserByName">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-user/responseUsers.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-user/responseInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
     <action name="getUser" class="org.hisp.dhis.user.action.GetUserAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseUser.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

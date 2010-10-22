@@ -6,13 +6,9 @@
 	#set ($sText = "" )
  #end
 
-
-
 <style>
 tr.relationship-row{background-color: #BFFFC2; display : none}
 </style>
-
-
 
 <table>
 	<tr>
@@ -28,12 +24,7 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 		<td>$total</td>
 	</tr>
 </table>
- <table>
- <tr>
- 	<td><label>$i18n.getString('show_patient_relationships')</label></td>
- 	<td><input type="checkbox" onclick="toggleRelationshipRow(this)"/></td>
- </tr>
- </table>
+
 <table class="mainPageTable">
   	
   <tr>
@@ -83,11 +74,9 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
           </tr>
           
           <tbody id="list">	
-          #set( $mark = false )
-        
+		  
           #foreach( $patient in $patients )
-			##set( $mark = !$mark)
-          	<tr #alternate( $mark )>
+          	<tr id="tr${patient.id}">
           	<td>			
                     #set( $nr = ( ( $pagingUtil.currentPage - 1  ) * $pagingUtil.pageSize ) + $velocityCount )
                     $nr
@@ -124,11 +113,7 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
                 <td style="text-align:center"#alternate( $mark )>                  
                   <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
                 </td>
-                <!--
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title="$i18n.getString( "edit_attribute_values" )"><img src="../images/attribute.png" alt="$i18n.getString( "edit_attribute_values" )"></a>
-                </td>
-                -->
+				
                 <td style="text-align:center"#alternate( $mark )>                  
                   <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="../images/relationship.png" alt="$i18n.getString( "manage_relationship" )"></a>
                 </td>        
@@ -213,11 +198,6 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 	                </td>
                </tr>
 			#end
-			#if( $mark )
-                #set( $mark = false )
-              #else
-                #set( $mark = true )
-              #end
     	#end
     	</tbody>
     

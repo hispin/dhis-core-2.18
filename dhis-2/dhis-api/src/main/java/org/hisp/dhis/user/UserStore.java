@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -245,4 +246,10 @@ public interface UserStore
     void deleteUserSetting( UserSetting userSetting );
     
     Collection<User> getAllUsers( int from, int to );
+  
+    Collection<UserCredentials> searchUsersByName( String key );
+  
+    Collection<UserCredentials> searchUsersByName( String key, int from, int to );
+    
+    int countNumberOfSearchUsersByName( String key );
 }

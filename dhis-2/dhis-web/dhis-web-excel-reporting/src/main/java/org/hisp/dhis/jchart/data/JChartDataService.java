@@ -33,5 +33,7 @@ import org.hisp.dhis.i18n.I18nManagerException;
  */
 public interface JChartDataService
 {
-    JChartData getJChartData( int jchartId ) throws I18nManagerException;
+
+    JChartData getJChartData( int jchartId, int periodId )
+        throws I18nManagerException;
 }

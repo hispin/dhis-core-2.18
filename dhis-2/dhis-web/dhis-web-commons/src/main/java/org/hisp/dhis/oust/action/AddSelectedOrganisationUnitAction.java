@@ -92,6 +92,13 @@ public class AddSelectedOrganisationUnitAction
         this.level = level;
     }
 
+    private Boolean children;
+
+    public void setChildren( Boolean children )
+    {
+        this.children = children;
+    }
+
     private Integer organisationUnitGroupId;
 
     public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
@@ -132,6 +139,14 @@ public class AddSelectedOrganisationUnitAction
             {
                 selectedUnits.addAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId )
                     .getMembers() );
+            }
+
+            if ( children != null && children == true )
+            {
+                for ( OrganisationUnit selected : selectionTreeManager.getSelectedOrganisationUnits() )
+                {
+                    selectedUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selected.getId() ) );
+                }
             }
 
             selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );

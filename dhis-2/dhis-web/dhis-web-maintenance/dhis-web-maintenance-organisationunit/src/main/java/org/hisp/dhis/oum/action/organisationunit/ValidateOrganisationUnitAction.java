@@ -69,7 +69,15 @@ public class ValidateOrganisationUnitAction
     {
         this.name = name;
     }
-
+    
+    private String code;
+    
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -102,6 +110,20 @@ public class ValidateOrganisationUnitAction
         {
 
             OrganisationUnit match = organisationUnitService.getOrganisationUnitByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_use" );
+
+                return ERROR;
+            }
+        }  
+        
+        
+        if ( code != null )
+        {
+
+            OrganisationUnit match = organisationUnitService.getOrganisationUnitByCode( code );
 
             if ( match != null && (id == null || match.getId() != id) )
             {

@@ -47,6 +47,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 public class JChart
 {
     public static final String PERIOD_CATEGORY = "PERIOD_CATEGORY";
+
     public static final String ORGANISATION_UNIT_CATEGORY = "ORGANISATION_UNIT_CATEGORY";
 
     public static final String LOAD_PERIOD_AUTO = "LOAD_PERIOD_AUTO";
@@ -74,6 +75,8 @@ public class JChart
      */
     private String legend;
 
+    private String storedby;
+
     // -------------------------------------------
     // Contructor
     // -------------------------------------------
@@ -85,6 +88,16 @@ public class JChart
     // -------------------------------------------
     // Method
     // -------------------------------------------
+
+    public boolean isPeriodCategory()
+    {
+        return this.categoryType.equals( PERIOD_CATEGORY );
+    }
+
+    public boolean isOrganisationUnitCategory()
+    {
+        return this.categoryType.equals( ORGANISATION_UNIT_CATEGORY );
+    }
 
     public boolean isLoadSelectedPeriods()
     {
@@ -236,6 +249,16 @@ public class JChart
     public void setUserRoles( Set<UserAuthorityGroup> userRoles )
     {
         this.userRoles = userRoles;
+    }
+
+    public String getStoredby()
+    {
+        return storedby;
+    }
+
+    public void setStoredby( String storedby )
+    {
+        this.storedby = storedby;
     }
 
     // -------------------------------------------

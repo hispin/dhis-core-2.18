@@ -44,11 +44,10 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
 
@@ -72,11 +71,11 @@ public class ViewCompletedReportByPeriodsAction
         this.periodService = periodService;
     }
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private DataSetService dataSetService;
@@ -100,23 +99,23 @@ public class ViewCompletedReportByPeriodsAction
     {
         this.dataValueService = dataValueService;
     }
-    
+
     // -------------------------------------------
     // Input
     // -------------------------------------------
 
-    private Integer id;
+    private Integer dataSetId;
 
-    public void setId( Integer id )
+    public void setDataSetId( Integer dataSetId )
     {
-        this.id = id;
+        this.dataSetId = dataSetId;
     }
 
-    protected Integer[] columns;
+    private List<Integer> periodIds;
 
-    public void setColumns( Integer[] columns )
+    public void setPeriodIds( List<Integer> periodIds )
     {
-        this.columns = columns;
+        this.periodIds = periodIds;
     }
 
     // -------------------------------------------
@@ -155,10 +154,9 @@ public class ViewCompletedReportByPeriodsAction
     public String execute()
         throws Exception
     {
-        dataSet = dataSetService.getDataSet( id );
+        dataSet = dataSetService.getDataSet( dataSetId );
 
-        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitSelectionManager
-            .getSelectedOrganisationUnit().getChildren() );
+        organisationUnits = new ArrayList<OrganisationUnit>( selectionTreeManager.getSelectedOrganisationUnits() );
 
         periods = new ArrayList<Period>();
 
@@ -168,35 +166,38 @@ public class ViewCompletedReportByPeriodsAction
 
         completedValues = new HashMap<String, Integer>();
 
-        for ( Integer id : columns )
+        for ( Integer id : periodIds )
         {
             period = periodService.getPeriod( id );
 
             for ( OrganisationUnit o : organisationUnits )
             {
-                 if ( o.getDataSets().contains( dataSet ) )
+                if ( dataSetService.getDataSetsBySource( o ).contains( dataSet ) )
                 {
                     Collection<DataElement> dataElements = dataSet.getDataElements();
                     Collection<DataValue> values = dataValueService.getDataValues( o, period, dataElements );
                     int count = 0;
-                    for(DataElement de : dataElements)
+                    for ( DataElement de : dataElements )
                     {
                         int opCount = 1;
-                        for ( DataElementCategory ca : de.getCategoryCombo().getCategories()){
+                        for ( DataElementCategory ca : de.getCategoryCombo().getCategories() )
+                        {
                             opCount *= ca.getCategoryOptions().size();
                         }
                         count += opCount;
                     }
-                    int percent = (values.size() * 100 ) / count ;
-                    
+                    int percent = (values.size() * 100) / count;
+
                     completeDataSetRegistration = completeDataSetRegistrationService.getCompleteDataSetRegistration(
                         dataSet, period, o );
 
                     if ( completeDataSetRegistration != null )
                     {
                         completedValues.put( o.getId() + ":" + id, percent );
-                    }else{
-                        percent = (percent == 0 ) ? 900 : ( 1000 * percent ) ;
+                    }
+                    else
+                    {
+                        percent = (percent == 0) ? 900 : (1000 * percent);
                         completedValues.put( o.getId() + ":" + id, percent );
                     }
                 }

@@ -7,7 +7,7 @@ function generateMinMaxValue(){
 }
 
 function minMaxValueCompleted( xmlObject ) {
-    setMessage( xmlObject.firstChild.nodeValue );
+    showSuccessMessage (xmlObject.firstChild.nodeValue);
 	return false;
 }
 //-----------------------------------------------------------------------------------

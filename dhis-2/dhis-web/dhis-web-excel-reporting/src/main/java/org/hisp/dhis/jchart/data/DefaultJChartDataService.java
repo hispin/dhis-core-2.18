@@ -40,8 +40,10 @@ import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartSeries;
 import org.hisp.dhis.jchart.JChartSevice;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 
@@ -64,11 +66,11 @@ public class DefaultJChartDataService
         this.jchartService = jchartService;
     }
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private AggregationService aggregationService;
@@ -99,21 +101,25 @@ public class DefaultJChartDataService
         this.periodDatabaseService = periodDatabaseService;
     }
 
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // Implement
     // -------------------------------------------------------------------------
 
-    @Override
-    public JChartData getJChartData( int jchartId )
+    private JChartData getJChartData( JChart jchart )
         throws I18nManagerException
     {
         statementManager.initialise();
 
         I18nFormat format = i18nManager.getI18nFormat();
 
-        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
-        JChart jchart = jchartService.getJChart( jchartId );
+        OrganisationUnit organisationUnit = selectionTreeManager.getSelectedOrganisationUnit();
 
         JChartData jChartData = new JChartData();
 
@@ -130,12 +136,12 @@ public class DefaultJChartDataService
         else
         {
             periodDatabaseService.setSelectedPeriodTypeName( jchart.getPeriodType().getName() );
-            
+
             periods.addAll( periodDatabaseService.getPeriodList() );
         }
 
         Collections.sort( periods, new AscendingPeriodComparator() );
-        
+
         for ( JChartSeries series : jchart.getSeries() )
         {
             JChartSeriesData jChartSeriesData = new JChartSeriesData();
@@ -161,4 +167,67 @@ public class DefaultJChartDataService
 
         return jChartData;
     }
+
+    private JChartData getJChartData( JChart jchart, Period period )
+        throws I18nManagerException
+    {
+        statementManager.initialise();
+
+        I18nFormat format = i18nManager.getI18nFormat();
+
+        JChartData jChartData = new JChartData();
+
+        jChartData.setTitle( jchart.getTitle() );
+        jChartData.setSubtitle( format.formatPeriod( period ) );
+        jChartData.setLegend( jchart.getLegend() );
+
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selectionTreeManager
+            .getSelectedOrganisationUnits() );
+
+        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+
+        for ( JChartSeries series : jchart.getSeries() )
+        {
+            JChartSeriesData jChartSeriesData = new JChartSeriesData();
+            jChartSeriesData.setColor( series.getColor() );
+            jChartSeriesData.setName( series.getIndicator().getName() );
+
+            for ( OrganisationUnit organisationUnit : organisationUnits )
+            {
+                Double value = aggregationService.getAggregatedIndicatorValue( series.getIndicator(), period
+                    .getStartDate(), period.getEndDate(), organisationUnit );
+
+                jChartSeriesData.addValue( value == null ? -1 : value );
+
+                jChartData.addCategory( organisationUnit.getName() );
+            }
+
+            jChartSeriesData.setType( series.getType() );
+
+            jChartData.addSeries( jChartSeriesData );
+        }
+
+        statementManager.destroy();
+
+        return jChartData;
+    }
+
+    @Override
+    public JChartData getJChartData( int jchartId, int periodId )
+        throws I18nManagerException
+    {
+        JChart jchart = jchartService.getJChart( jchartId );
+
+        if ( jchart.isPeriodCategory() )
+        {
+            return this.getJChartData( jchart );
+        }
+        else
+        {
+            Period period = periodService.getPeriod( periodId );
+
+            return this.getJChartData( jchart, period );
+        }
+    }
+
 }

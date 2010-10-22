@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td><label for="description">$i18n.getString( "description" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $validationRuleGroup.name )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
+        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $validationRuleGroup.description )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"></td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>

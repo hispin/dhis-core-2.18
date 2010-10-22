@@ -1,9 +1,0 @@
-#set( $size = $periodTypes.size() )
-{ "periodTypes": [
-#foreach( $periodType in $periodTypes )
-  {
-    "id": "$!encoder.jsEncode( $periodType.name )",
-    "name": "$!encoder.jsEncode( $i18n.getString($periodType.name) )"
-  }#if( $velocityCount < $size ),#end
-#end
-] }

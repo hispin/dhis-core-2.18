@@ -35,6 +35,8 @@ import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartSeries;
 import org.hisp.dhis.jchart.JChartSevice;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,6 +70,13 @@ public class AddJChartAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+   
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------
@@ -143,10 +152,17 @@ public class AddJChartAction
     {
         JChart jChart = new JChart();
         jChart.setTitle( title );
-        jChart.setLegend( legend );
+        jChart.setLegend( legend );   
         jChart.setLoadPeriodBy( loadPeriodBy );
         jChart.setPeriodType( periodService.getPeriodTypeByName( periodType ) );
         jChart.setCategoryType( categoryType );
+
+        jChart.setStoredby( currentUserService.getCurrentUsername() );
+        
+        if ( jChart.isOrganisationUnitCategory() )
+        {
+            jChart.setLoadPeriodBy( JChart.LOAD_PERIOD_SELECTED );
+        }
 
         for ( int i = 0; i < indicatorIds.size(); i++ )
         {
@@ -159,6 +175,7 @@ public class AddJChartAction
 
         if ( categoryType.equals( JChart.PERIOD_CATEGORY ) && loadPeriodBy.equals( JChart.LOAD_PERIOD_SELECTED ) )
         {
+            jChart.setLoadPeriodBy( loadPeriodBy );
 
             for ( Integer id : periodIds )
             {

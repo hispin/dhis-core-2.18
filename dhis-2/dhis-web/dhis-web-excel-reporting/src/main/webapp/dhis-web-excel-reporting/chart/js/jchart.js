@@ -1,12 +1,12 @@
 
 function showPeriodSelection()
 {
-	var v = getRadioValue( "loadPeriodBy" );
+	var v = getFieldValue( "loadPeriodBy" );
 	if( v == 'LOAD_PERIOD_SELECTED' ){
-		showById( "period_selection" );
+		showById( "periods_selection" );
 		addValidatorRulesById( 'periodIds',{required:true});
 	}else{
-		hideById( "period_selection" );
+		hideById( "periods_selection" );
 		removeValidatorRulesById( 'periodIds' );
 	}
 }
@@ -111,4 +111,20 @@ function enableLegend( enable )
 		
 		item.disabled = !enable;	
 	});
+}
+
+function selectCategoryType()
+{
+	value = getRadioValue( 'categoryType' );
+	loadperiodBy = getRadioValue( "loadPeriodBy" );
+	if( value == 'PERIOD_CATEGORY' ){
+		showById( 'periods_selection' );		
+		showById( 'selectLoadPeriodBy' );		
+		showPeriodSelection();
+	}else{
+		hideById( "periods_selection" );			
+		hideById( "selectLoadPeriodBy" );		
+		removeValidatorRulesById( 'periodIds' );
+	}	
+	
 }

@@ -49,8 +49,6 @@ var isGenerate = true;
 </table>
 </form>
 
-<span id='message' #if($!message) style='display: block' #end>$!message</span>
-
 <script type="text/javascript">
 
 	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';

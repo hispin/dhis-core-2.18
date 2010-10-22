@@ -88,6 +88,7 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
@@ -913,6 +914,22 @@ public abstract class DhisConvenienceTest
         return validationCriteria;
     }
 
+    
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     * @param sql A query statement to retreive record/data from database.
+     */
+    protected static SqlView createSqlView( char uniqueCharacter, String sql )
+    {
+        SqlView sqlView = new SqlView();
+        
+        sqlView.setName( "SqlView" + uniqueCharacter);
+        sqlView.setDescription( "Description" + uniqueCharacter );
+        sqlView.setSqlQuery( sql );
+
+        return sqlView;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

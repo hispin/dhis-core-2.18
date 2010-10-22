@@ -55,7 +55,7 @@ public class UpdatePatientIdentifierTypeAction
 
     private String description;
 
-    private String format;
+    private String formater;
     
     private Boolean mandatory;
     
@@ -75,7 +75,7 @@ public class UpdatePatientIdentifierTypeAction
             
             identifierType.setName( name );
             identifierType.setDescription( description );
-            identifierType.setFormat( format );
+            identifierType.setFormat( formater );
             identifierType.setMandatory( mandatory.booleanValue() );
             identifierType.setRelated( related.booleanValue() );
             patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
@@ -108,9 +108,9 @@ public class UpdatePatientIdentifierTypeAction
         this.id = id;
     }
 
-    public void setFormat( String format )
+    public void setFormater( String formater )
     {
-        this.format = format;
+        this.formater = formater;
     }
 
     public void setMandatory( Boolean mandatory )

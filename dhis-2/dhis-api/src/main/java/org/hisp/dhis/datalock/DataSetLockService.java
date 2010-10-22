@@ -27,6 +27,7 @@
 package org.hisp.dhis.datalock;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
@@ -145,6 +146,26 @@ public interface DataSetLockService
      * @param dataSetIdentifiers the data set Lock identifiers.
      * @return a distinct collection of data sets.
      */
-    Collection<DataSet> getDistinctDataSets( Collection<Integer> dataSetLockIdentifiers );    
+    Collection<DataSet> getDistinctDataSets( Collection<Integer> dataSetLockIdentifiers );
+    
+    /**
+     * Apply lock to data sets
+     * 
+     * @param dataSets The collection of data sets.
+     * @param periods The list of periods.
+     * @param selectedSources The selected organization unit from tree.
+     * @param userName The user name.
+     */
+    void applyCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods, Set<Source> selectedSources, String userName );
+    
+    /**
+     * Remove lock from data sets.
+     * 
+     * @param dataSets The collection of data sets.
+     * @param periods The list of periods.
+     * @param selectedSources The selected organization unit from tree.
+     * @param userName The user name.
+     */
+    void removeCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods, Set<Source> selectedSources, String userName );
 }
 

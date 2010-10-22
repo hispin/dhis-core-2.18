@@ -110,6 +110,7 @@
             </script>                    
         #else           
             #if( $dataElement.type == "string" )
+				#set( $dataEntryId = "value[$dataElement.id].value:value[$optionComboId].value" )
                 #set( $coun = 0 ) 
                 #foreach($customValue in $customValues)
                     #if($dataElement.id == $customValue.dataElement.id && $optionComboId == $customValue.optionCombo.id)                                    
@@ -126,7 +127,7 @@
                             #end 
                         </select>
                     #else
-                        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>                                
+                        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionComboId, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionComboId, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>                                
                     #end    
             #end            
             
@@ -210,9 +211,13 @@
 			var inputList = entryform.getElementsByTagName('input');
 			for(var i=0;i<inputList.length;i++){
 				var input = inputList[i];
-				
 					input.disabled = disabled;
-				
+			}	
+			
+			var selectList = entryform.getElementsByTagName('select');
+			for(var i=0;i< selectList.length;i++){
+				var select =  selectList[i];
+					select.disabled = disabled;
 			}	
 		}		
 	

@@ -6,32 +6,26 @@
 		</td>		
 	</tr>
 </table>
-
 <table width="100%" class="listTable" id="listTable">
 	<thead>
 		<tr>
 			<th>$i18n.getString('title')</th>			
-			<th width="40px" class="{sorter: false}"></th>
-					
+			<th width="40px" class="{sorter: false}"></th>								
 		</tr>
 	</thead>	
 	<tbody id="list">	
 	#foreach($jchart in $jcharts)
 		<tr id="tr${jchart.id}">
 			<td>$encoder.htmlEncode( $jchart.title )</td>	
-			<td align="left">				
-				<a href="javascript:void(0)" onclick="drawJChart( $jchart.id )" title="$i18n.getString( 'view_chart' )"><img src="images/chart-icon.png" alt="$i18n.getString( 'view_chart' )"></a>								
+			<td align="left">
+				<a href="javascript:void(0)" onclick="window.location='drawJChartParamSelection.action?id=$jchart.id'" title="$i18n.getString( 'view_chart' )"><img src="images/chart-icon.png" alt="$i18n.getString( 'view_chart' )"></a>												
 			</td>			
 		</tr>		
 	#end
 	</tbody>
 </table>
-<input type="hidden" id="selectedOrganisationUnit" value="$organisationUnit.id"/>
-<div id="container" style="width:800px;height:600px;position:fixed;display:none;">	
-	<div id="jchart" style="width:780px;height:600px;"></div>
-	<div class="close" onclick="closeJChart()"></div>
-</div>
 
+<input type="hidden" id="selectedOrganisationUnit" value="$!organisationUnit.id"/>
 
 <script>
 
@@ -54,107 +48,11 @@
 	}
 	
 	jQuery(document).ready(function(){	  
-		tableSorter( 'listTable' );
-		selection.setListenerFunction( organisationUnitSelected );		
+		tableSorter( 'listTable' );	
     });
 	
 	
 	
-	function drawJChart( id )
-	{
-		if(getFieldValue( 'selectedOrganisationUnit' )=='')
-		{
-			showWarningMessage( i18n_select_organisation );
-			
-			return;
-		}		
-		jQuery.postJSON("drawJChart.action"
-			,{id:id}
-			,function( json ){				
-				chart = new Highcharts.Chart({
-					chart: {
-						renderTo: 'jchart',						
-						marginRight: 50,
-						marginBottom: 100,
-						marginTop: 100						
-					},
-					title: {
-						text: json.title,
-						x: -20
-					},
-					subtitle: {
-						text: json.subtitle,
-						x: -20
-					},
-					xAxis: {
-						categories: json.categories,
-						labels: {
-							rotation: -45,
-							y:10,
-							align:'right'
-						}
-					},
-					yAxis: {
-						title: {
-							//text: 'Temperature (°C)'
-						},
-						plotLines: [{
-							value: 0,
-							width: 1,
-							color: '#808080'
-						}],
-						min: 0
-					},
-					tooltip: {
-						formatter: function() {
-								return '<b>'+ this.series.name +'</b><br/>'+
-								this.x +': '+ this.y;
-						}
-					},
-					legend: json.legend,
-					series: json.series,
-					plotOptions: {
-						line: {
-							dataLabels: {
-								enabled: true
-							},
-							enableMouseTracking: true
-						},
-						column: {
-							dataLabels: {
-								enabled: true,
-								rotation: 0 ,
-								color: '#000000',
-								align: 'center',	
-								formatter: function() {
-									return this.y;
-								},
-								style: {
-									font: 'normal 13px Verdana, sans-serif'
-								}
-							}
-						},
-						pie: {
-							allowPointSelect: true,
-							cursor: 'pointer',
-							dataLabels: {
-								enabled: true,
-								formatter: function() {
-									if (this.y > 5) return this.point.name;
-								},
-								color: 'white',
-								style: {
-									font: '13px Trebuchet MS, Verdana, sans-serif'
-								}
-							}
-						}
 	
-					}
-				});
-				
-				showPopupWindowById( 'container', 800, 600 );
-				
-			});
-	}
 	
 </script>

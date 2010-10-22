@@ -32,7 +32,7 @@
 	
 	<tr>
 		<td><label>$i18n.getString( "identifier_format" ) </label></td>
-		<td><input type="text" id="format" name="format" style="width:30em" ></td>
+		<td><input type="text" id="formater" name="formater" style="width:30em" ></td>
 		<td></td>
 	</tr>	
 	

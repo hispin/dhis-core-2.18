@@ -78,9 +78,9 @@
 		
 		setFieldValue( 'dataelement textarea[id=formula]', getFieldValue('expression') );
 		#if(!$reportExcel.isCategory()) 
-		showPopupWindowById( 'dataelement', 800, 400 );	
+		showPopupWindowById( 'dataelement', 800, 430 );	
 		#else
-		showPopupWindowById( 'dataelement', 800, 320 );	
+		showPopupWindowById( 'dataelement', 800, 350 );	
 		#end	
 	}
 	

@@ -141,6 +141,17 @@ jQuery.validator
     },
     "Please Letters, numbers, spaces or some special chars like .,-,%,(,) only ");
 
+ jQuery.validator.addMethod("greaterDate",function(value, element, params) {
+        
+		if ($(params).val()){
+			var closedDate = new Date(value);
+			var openDate= new Date($(params).val());
+			return closedDate > openDate;
+		}
+        return true;
+
+    }, "");
+
 jQuery.validator.addMethod("alphanumeric", function(value, element) {
     return this.optional(element) || /^[\w\s]+$/i.test(value);
 }, "Letters, numbers, spaces or underscores only please");

@@ -32,6 +32,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -51,7 +52,8 @@ import org.hisp.dhis.i18n.util.PathUtils;
  * @author Torgeir Lorange Ostby
  * @author Pham Thi Thuy
  * @author Nguyen Dang Quang
- * @version $Id: DefaultResourceBundleManager.java 6335 2008-11-20 11:11:26Z larshelg $
+ * @version $Id: DefaultResourceBundleManager.java 6335 2008-11-20 11:11:26Z
+ *          larshelg $
  */
 public class DefaultResourceBundleManager
     implements ResourceBundleManager
@@ -174,13 +176,14 @@ public class DefaultResourceBundleManager
 
     private Collection<Locale> getAvailableLocalesFromDir( String dirPath )
     {
-        dirPath = dirPath.replaceAll( "%20", " " );
-        File dir = new File( dirPath );    
+        dirPath = convertURLToFilePath( dirPath );
+
+        File dir = new File( dirPath );
         Set<Locale> availableLocales = new HashSet<Locale>();
         File[] files = dir.listFiles( new FilenameFilter()
         {
             public boolean accept( File dir, String name )
-            {             
+            {
                 return name.startsWith( globalResourceBundleName ) && name.endsWith( EXT_RESOURCE_BUNDLE );
             }
         } );
@@ -219,5 +222,22 @@ public class DefaultResourceBundleManager
         }
 
         return LocaleManager.DHIS_STANDARD_LOCALE;
+    }
+
+    // -------------------------------------------------------------------------
+    // Support method
+    // -------------------------------------------------------------------------
+
+    private String convertURLToFilePath( String url )
+    {
+        try
+        {
+            url = URLDecoder.decode( url, "iso-8859-1" );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        return url;
     }
 }

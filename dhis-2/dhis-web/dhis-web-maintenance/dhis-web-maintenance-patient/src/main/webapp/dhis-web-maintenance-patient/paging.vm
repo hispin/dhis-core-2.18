@@ -7,13 +7,14 @@
 	
 	<input type="hidden" id="baseLink" value="$!baseLink"/>
 	<input type="hidden" id="currentPage" value="$!currentPage"/>
+	<input type="hidden" id="numberOfPages" value="$!numberOfPages"/>
 	#if ( $numberOfPages > 0 )
 		<ul class="pageSizeSelection">
 			<li><span > $i18n.getString("no_of_pages"):</span> $numberOfPages</li>
 		  	<li> <span >$i18n.getString("size_of_page"):</span>
 			 <input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onchange="changePageSize('$baseLink');"></li>
 			<li> <span >$i18n.getString("jump_to_page"):</span>
-			 <input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onchange="jumpToPage('$baseLink');"></li>
+			 <input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onchange="jumpToPage('$baseLink');" ></li>
 		</ul>
 		<div class="paging">
 		#if ($currentPage > 1)

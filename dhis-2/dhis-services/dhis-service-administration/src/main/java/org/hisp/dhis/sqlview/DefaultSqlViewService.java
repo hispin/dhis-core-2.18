@@ -100,7 +100,7 @@ public class DefaultSqlViewService
     @Override
     public String makeUpForQueryStatement( String query )
     {
-        return query.replaceAll( ";\\s+", ";" ).replaceAll( ";+", ";" ).replaceAll( "\\s+", " " ).trim();
+        return query.replaceAll( "\\s*;\\s+", ";" ).replaceAll( ";+", ";" ).replaceAll( "\\s+", " " ).trim();
     }
 
     // -------------------------------------------------------------------------
@@ -132,8 +132,6 @@ public class DefaultSqlViewService
         
         for ( SqlView sqlView : getAllSqlViews() )
         {
-            setUpViewTableName( sqlView.getName() );
-
             if ( !createViewTable( sqlView ) )
             {
                 success = false;
